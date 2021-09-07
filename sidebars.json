@@ -1,0 +1,38 @@
+{
+  "sidebar": {
+    "Getting Started": [
+      "get-started/application",
+      "get-started/platform",
+      "get-started/what-you-get"
+    ],
+    "Get Ready to Develop": [
+      "get-ready/requirements",
+      "get-ready/install",
+      "get-ready/manual-installation",
+      "get-ready/database",
+      "get-ready/commands",
+      "get-ready/server",
+      "get-ready/workstation"
+    ],
+    "Build a Server in 8 Steps": [
+      "server/intro",
+      "server/data-model",
+      "server/event-handlers",
+      "server/state-machine",
+      "server/request-servers",
+      "server/data-servers",
+      "server/external-systems",
+      "server/auth",
+      "server/consolidators"
+    ],
+    "Build a Web Front-end in 6 Steps": [
+      "front-end/setup"
+    ],
+    "Advanced Features": [
+      "advanced/consolidators",
+      "advanced/data-modelling",
+      "advanced/event-handlers"
+    ],
+    "Operations": []
+  }
+}
