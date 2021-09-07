@@ -24,7 +24,7 @@
       "server/external-systems",
       "server/auth",
       "server/consolidators",
-      "server/euc-quick-example"
+      "server/creating-an-application-from-an-excel-workbook"
     ],
     "Build a Web Front-end in 6 Steps": [
       "front-end/setup"
