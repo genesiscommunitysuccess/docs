@@ -23,7 +23,8 @@
       "server/data-servers",
       "server/external-systems",
       "server/auth",
-      "server/consolidators"
+      "server/consolidators",
+      "server/euc-quick-example"
     ],
     "Build a Web Front-end in 6 Steps": [
       "front-end/setup"
@@ -33,6 +34,8 @@
       "advanced/data-modelling",
       "advanced/event-handlers"
     ],
-    "Operations": []
+    "Operations": [
+
+    ]
   }
 }
