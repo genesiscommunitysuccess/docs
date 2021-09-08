@@ -50,13 +50,13 @@ You can now use this compliant version of the xls to start the conversion proces
 
 This is a simple command that produces a Genesis data model very quickly. The syntax is:
 
-ExcelToGenesis
+**ExcelToGenesis**
 
-\-f, --file	the name of the worksheet you are going to convert.
+**-f, --file**	the name of the worksheet you are going to convert.
 
-\-n –name the name of the project (application) you want to create.
+**-n –name** the name of the project (application) you want to create.
 
-\-t –table	each table is automatically given a unique numeric ID. Supply the opening sequence number, for example, 10000. Numeric IDs enable you to change the name of a table without losing the data.
+**-t –table**	each table is automatically given a unique numeric ID. Supply the opening sequence number, for example, 10000. Numeric IDs enable you to change the name of a table without losing the data.
 
 So, for our example, we are going to run:
 
@@ -99,9 +99,15 @@ Inside the file `cash-tables-dictionary.kts`, the source of each table is includ
 
 Table IDs are sequential from the first one created, starting with the `-t` number supplied.
 
-Each field in the table has a comment showing the column it came from, as well as relevant notes on the function (e.g aggregation). Note the unable to parse field. You will have to deal with this, perhaps by creating a consolidator.
+Each field in the table has a comment showing the column it came from, as well as relevant notes on the function (e.g aggregation).
 
-The first column in each worksheet has been used as the primary key for the table.
+If the conversion process was not able to parse a field, this is clearly marked on the comment.
+
+![](/img/unable-to-parse.png)
+
+You will have to deal with this, perhaps by creating a consolidator.
+
+The first column in each worksheet is always  used as the primary key for the table.
 
 \**Note that it has handled a concatenation, where the primary key is created from the first two columns.
 
@@ -109,6 +115,8 @@ The Views file.
 
 Inside the file `cash-view-dictionary.kts`, you can see that the script has been able to find where tables need joins. Exceptions are highlighted.
 
-![](/img/tables.png)
+In the example here, the first worksheet has been converted. This has created a view with two joins successfully. But it has not been possible to create a third join:
+
+![](/img/views-2.png)
 
 Also note that the conversion has created derived fields. Our example includes both IF statements and VAL.
