@@ -119,4 +119,14 @@ In the example here, the first worksheet has been converted. This has created a 
 
 ![](/img/views-2.png)
 
-Also note that the conversion has created derived fields. Our example includes both IF statements and VAL.
+The conversion has created derived fields - simple calculations based on other fields in the view. Our example includes both IF statements and VAL. 
+
+![](/img/views-derived-fields-2.png)
+
+The data files
+
+Here is a look at p\[art of one of the 10 csv files created.
+
+![](/img/csv-cropped.png)
+
+You can use the **sendIt** command to load the data into the application's database.
