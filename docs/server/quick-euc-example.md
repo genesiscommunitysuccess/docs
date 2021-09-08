@@ -153,4 +153,6 @@ This creates,
 
 Run **genesisInstall** again to install these changes.
 
-You now have a basic application. The event handler, the request server and the dataserver only provide the simplest functions, but the data is exposed so that a front end can be created and connected.
+You now have a basic application. The event handler, the request server and the dataserver only provide the simplest functions, but the data is exposed so that a front end can be created and connected. The event handler, for example, provides very simple insert, modify and delete events.
+
+If you want to add validation at this stage, for example, you could edit the code to add it.
