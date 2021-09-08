@@ -95,11 +95,15 @@ The tables file
 
 Inside the file `cash-tables-dictionary.kts`, the source of each table is included as a comment at the beginning.
 
-Each field in the table has a comment showing the column it came from and relevant notes on the function (e.g aggregation). Note the unable to parse field. You will have to deal with this, perhaps by creating a consolidator.
+![](/img/tables.png)
 
-Primary key is the first column, by default. Note that it has handled a concatenation, where the primary key is created from the first two columns.
+Table IDs are sequential from the first one created, starting with the `-t` number supplied.
 
-Table ids are sequential from the first one created, starting with the `-t` number supplied.
+Each field in the table has a comment showing the column it came from, as well as relevant notes on the function (e.g aggregation). Note the unable to parse field. You will have to deal with this, perhaps by creating a consolidator.
+
+The first column in each worksheet has been used as the primary key for the table.
+
+\**Note that it has handled a concatenation, where the primary key is created from the first two columns.
 
 The Views file.
 
