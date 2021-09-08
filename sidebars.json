@@ -2,8 +2,8 @@
   "sidebar": {
     "Getting Started": [
       "get-started/application",
-      "get-started/platform",
       "get-started/what-you-get",
+      "get-started/platform",
       "Folder structures"
     ],
     "Get Ready to Develop": [
