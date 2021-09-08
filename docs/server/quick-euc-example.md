@@ -83,13 +83,17 @@ Inside the file `cash-fields-dictionary.kts`, you can see all the fields that ha
 
 ![](/img/fields-table.png)
 
+The fields are automatically sampled by the command to allocate a type. If it is not sure, it allocates a the field as STRONG. Most of these will be correct, but you will need to handle exceptions.
+
 Note that our example contains some long field names. Ideally, these should be shortened before the conversion process, but these long field names still work.
 
-Illegal character in field names are automatically converted. You can see here that the % sign has been changed to PERCENT.
+Illegal characters in field names have been automatically converted. You can see here that the % sign has been changed to PERCENT.
 
-Look at the Tables file. The source of each table is included as a comment at the beginning.
+![](/img/percent-has-been-changed.png)
 
-The fields are automatically sampled by the command to allocate a type. If it is not sure, it allocates a the field as a strong. Most of these will be correct, but you will need to handle exceptions.
+The tables file
+
+Inside the file `cash-tables-dictionary.kts`, the source of each table is included as a comment at the beginning.
 
 Each field in the table has a comment showing the column it came from and relevant notes on the function (e.g aggregation). Note the unable to parse field. You will have to deal with this, perhaps by creating a consolidator.
 
@@ -97,10 +101,10 @@ Primary key is the first column, by default. Note that it has handled a concaten
 
 Table ids are sequential from the first one created, starting with the `-t` number supplied.
 
-Look at the Views file.
+The Views file.
 
-The script has been able to find where tables need joins. Exceptions are highlighted.
+Inside the file `cash-view-dictionary.kts`, you can see that the script has been able to find where tables need joins. Exceptions are highlighted.
 
-It has been able to create derived fields. Example includes both IF statements and VAL.
+![](/img/tables.png)
 
-It has been able to translate the abs function.
+Also note that the conversion has created derived fields. Our example includes both IF statements and VAL.
