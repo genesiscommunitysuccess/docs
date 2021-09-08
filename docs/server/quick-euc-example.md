@@ -1,7 +1,7 @@
 ---
 sidebar_label: Quick EUC example
----
 
+---
 # Creating an application from an Excel workbook
 
 Operational functions sitting in Excel workbooks is a common occurrence in the financial sector. And it sometimes includes functions that are mission-critical.
@@ -36,7 +36,7 @@ Genesis can turn the key Excel functions into kotlin code for use by your applic
 
 Decide how you want to calculate the functions that are not translated for you. If data is being loaded from an external source, then you probably want to perform the calculations in the server. If the database is maintained internally, then you might prefer to do the calculations in the front end and only commit to the server on Save.
 
-[Functions converted by ExcelToGenesis](excel-functions). 
+[Functions converted by ExcelToGenesis](excel-functions).
 
 ### Column headings
 
@@ -68,15 +68,24 @@ The process is quick.It creates a number of tables and dictionaries using the ap
 
 This is what it gives us:
 
-The conversion has created a folder called `/home/core/run/cash.cfg`. This contains:
+![](/img/the-command-and-what-it-gives-you.png)
 
-the field definitions are in the file `cash-fields-dictionary.kts`
+The conversion has created a folder called **`/home/core/run/cash.cfg`**. This contains:
 
-the table definitions are in
+* The field definitions are in the file `cash-fields-dictionary.kts`
+* The table definitions are in the file `cash-tables-dictionary.kts`
+* The views definitions are in the file `cash-view-dictionary.kts`
+* There 10 files of data. The data from each worksheet has been extracted to a separate csv file.
 
-Data files. The data from each worksheet has been extracted to a separate csv file.
+The Fields table
 
-Look at the Fields table. Note some large field names. Note automatic conversion of illegal characters (% sign to PERCENT for example) to make them Genesis-compliant.
+Inside the file `cash-fields-dictionary.kts`, you can see all the fields that have been defined.
+
+![](/img/fields-table.png)
+
+Note that our example contains some long field names. Ideally, these should be shortened before the conversion process, but these long field names still work.
+
+Illegal character in field names are automatically converted. You can see here that the % sign has been changed to PERCENT.
 
 Look at the Tables file. The source of each table is included as a comment at the beginning.
 
