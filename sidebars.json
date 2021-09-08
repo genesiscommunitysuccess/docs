@@ -3,7 +3,8 @@
     "Getting Started": [
       "get-started/application",
       "get-started/platform",
-      "get-started/what-you-get"
+      "get-started/what-you-get",
+      "Folder structures"
     ],
     "Get Ready to Develop": [
       "get-ready/requirements",
