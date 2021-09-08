@@ -152,3 +152,5 @@ This creates,
 ![](/img/built-by-appgen.png)
 
 Run **genesisInstall** again to install these changes.
+
+You now have a basic application. The event handler, the request server and the dataserver only provide the simplest functions, but the data is exposed so that a front end can be created and connected.
