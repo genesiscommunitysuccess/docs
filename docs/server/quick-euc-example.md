@@ -137,6 +137,18 @@ After you have checked the files generated and addressed any issues in the field
 
 Run **genesisInstall** to 
 
-Run remap --commit to 
+Run **remap --commit** to 
 
-Run AppGen to generate an event handler,  request server and a data server. 
+Run **AppGen** to generate event handlers,  request servers and data servers for all the tables. For example: 
+
+    AppGen -n cash -p 10000
+
+This creates, 
+
+* the kts files for the event handlers, request servers and data servers
+* the service definitions
+* the process definitions
+
+![](/img/built-by-appgen.png)
+
+Run **genesisInstall** again to install these changes.
