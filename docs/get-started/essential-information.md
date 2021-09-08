@@ -1,7 +1,7 @@
 ---
-id: essential
-title: Essential information
-sidebar_label: Essential information
+id: foldersserver
+title: Folders in the server
+sidebar_label: Folders in the server
 
 ---
 Before you explore the platform in detail, you need the following essential information. You will see the folders, files and tools that we introduce here throughout the document. Reading this section first will enable you to put these into context more quickly.
