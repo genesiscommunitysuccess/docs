@@ -6,7 +6,7 @@ sidebar_label: Genesis application
 
 All Genesis applications share a common architecture. If you familiarise yourself with the components in the server and the web front-end, you will immediately have an understanding of the purpose of all the main elements of that architecture.
 
-Get to know the components of the server and front end right away; it is the foundation that every developer needs to know.
+Get to know the components of the server and front end right away; this diagram is the foundation that every developer needs to know.
 
 ![](/img/this-is-what-a-genesis-application.png)
 
