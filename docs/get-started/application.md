@@ -14,7 +14,7 @@ The User Interface is at the top. The server sits below.
 
 Both of these include system microservices that are part of the LCNC platform (these are the red boxes n the diagram). They control key aspects of the platform that run automatically, such as data persistence and inter-process messaging. You do not need to provide these essential functions. They have been done for you, and you can concentrate on configuring the services that make your application unique.
 
-\##The server
+## The server
 
 At the heart of the server is the data persistence layer and the data model. You model your data by defining fields, then tables, then views, which can be of a single table or of more than one table, with joins. 
 
@@ -32,6 +32,6 @@ You bring your application to life by creating a skeleton project and then confi
 
 **Request/Reply** (Request Servers) provide snapshot (non-real-time) information to the UI.
 
-The User Interface
+## The User Interface
 
 You can define all the elements you want to see in the Web User Interface using the Genesis Studio. It is easy to select these, configure them, then connect them to the relevant resource in the server (data server or request server) to provide the relevant permissioned data.
