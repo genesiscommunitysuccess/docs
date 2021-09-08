@@ -77,7 +77,7 @@ The conversion has created a folder called **`/home/core/run/cash.cfg`**. This c
 * The views definitions are in the file `cash-view-dictionary.kts`
 * There 10 files of data. The data from each worksheet has been extracted to a separate csv file.
 
-The Fields table
+### The Fields file
 
 Inside the file `cash-fields-dictionary.kts`, you can see all the fields that have been defined.
 
@@ -91,7 +91,7 @@ Illegal characters in field names have been automatically converted. You can see
 
 ![](/img/percent-has-been-changed.png)
 
-The tables file
+### The tables file
 
 Inside the file `cash-tables-dictionary.kts`, the source of each table is included as a comment at the beginning.
 
@@ -111,7 +111,7 @@ The first column in each worksheet is always  used as the primary key for the ta
 
 \**Note that it has handled a concatenation, where the primary key is created from the first two columns.
 
-The Views file.
+### The Views file
 
 Inside the file `cash-view-dictionary.kts`, you can see that the script has been able to find where tables need joins. Exceptions are highlighted.
 
@@ -123,10 +123,20 @@ The conversion has created derived fields - simple calculations based on other f
 
 ![](/img/views-derived-fields-2.png)
 
-The data files
+### The data files
 
-Here is a look at p\[art of one of the 10 csv files created.
+Here is a look at part of one of the 10 csv files created.
 
 ![](/img/csv-cropped.png)
 
 You can use the **sendIt** command to load the data into the application's database.
+
+## Creating the application from the data model
+
+After you have checked the files generated and addressed any issues in the fields, tables and views, you can run the sequence of commands to generate an application.
+
+Run **genesisInstall** to 
+
+Run remap --commit to 
+
+Run AppGen to generate an event handler,  request server and a data server. 
