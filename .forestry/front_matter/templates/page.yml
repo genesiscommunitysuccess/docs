@@ -16,3 +16,4 @@ pages:
 - docs/euc-replace/configure-the-event-handlers.md
 - docs/get-started/essential-information.md
 - docs/infrastruct-ref/clusters.md
+- docs/infrastruct-ref/software-dev.lifecycle.md
