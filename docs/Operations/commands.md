@@ -8,7 +8,7 @@ Once an application has been built and zipped, you can install it in any another
 
 To ensure a correct installation, you must follow the product installation procedure.
 
-\## installRelease script
+## installRelease script
 
 The installRelease script takes two arguments: one mandatory and one optional:
 
