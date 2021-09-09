@@ -6,11 +6,7 @@ sidebar_label: Folders in the server
 ---
 Before you explore the platform in detail, you need the following essential information. You will see the folders, files and tools that we introduce here throughout the document. Reading this section first will enable you to put these into context more quickly.
 
-## Skills and experience
-
-The Genesis LCNC Platform provides a set of tools that enable you to develop applications for the financial sector (and beyond) at speed. To develop an application, you need to have a working knowledge of Linux, Java and IDE. At key stages, clear visual tools help you select and configure key parts of an application, but for sophistication, your developer skills are invaluable
-
-## File structure
+## Folder structure
 
 The platform and your application are stored in the **\~/run** directory. This has the following folders:
 
@@ -46,7 +42,7 @@ In this folder, you can add items that override the standard definitions found e
 
 This is useful where you have used non-configurable genesis modules (which you cannot change). Any files or definitions that are listed in this folder automatically replace the definitions in the modules themselves (across the whole application).
 
-## Files in a module
+## Folders in a module
 
 Genesis is built on different modules, such as auth (permissions) or dataserver (real-time data delivery). The folder for each module has the same name as the module itself.
 
