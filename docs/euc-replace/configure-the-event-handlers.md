@@ -46,6 +46,10 @@ Now we shall create and run some unit testing for our new event handlers.
 
 ### Dependencies
 
+Add **ref_app_data-config** as a dependency with provided scope in the parent pom.
+
+Add the same file as a dependency with test scope in the file **script-config module pom**.
+
 ### Create unit tests
 
 ### Run the unit tests
