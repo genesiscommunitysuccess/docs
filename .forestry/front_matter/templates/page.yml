@@ -12,7 +12,6 @@ fields:
   name: sidebar_label
   label: sidebar_label
 pages:
-- docs/Operations/software-dev.lifecycle.md
 - docs/euc-replace/configure-the-event-handlers.md
 - docs/get-started/essential-information.md
 - docs/infrastruct-ref/clusters.md
