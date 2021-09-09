@@ -208,7 +208,7 @@ To achieve this, create aliases for the two fields you are retrieving from the s
 
  By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data). If you need to join to a table where there is real-time data, then you need to specify a backwards join. This requires the statement backwardsJoin = true when you are specifying the join. 
 
-It is worth noting that when you define your [data servers](/v1/docs/configure-your-data-servers), any of these that include views with backwards joins must include a similar statement: **backJoins = true**. Don’t forget to add this! 
+It is worth noting that when you define your [data servers](data-servers), any of these that include views with backwards joins must include a similar statement: **backJoins = true**. Don’t forget to add this! 
 
 ```
 query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {
