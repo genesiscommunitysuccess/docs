@@ -4,7 +4,7 @@ title: Commands
 sidebar_label: Commands
 
 ---
-Once an application has been built and zipped, you can install it in any another system that contains the Genesis LCNC platform. 
+Once an application has been built and zipped, you can install it in any another system that contains the Genesis LCNC platform.
 
 To ensure a correct installation, you must follow the product installation procedure.
 
@@ -46,9 +46,9 @@ Once complete, all configuration files will be copied and, where necessary, merg
 
 All processes configuration is stored within $GC
 
-\## remap script
+## Remap script
 
-The remap script reads all dictionary files (fields and table definitions) from $GC and remaps the memory resident database accordingly. 
+The remap script reads all dictionary files (fields and table definitions) from $GC and remaps the memory resident database accordingly.
 
 It also generates "dao" objects based on our dictionary tables, so we can perform database operations in a type safe way.
 
@@ -65,34 +65,34 @@ If we run remap with no arguments it simple gives a report of changes that exist
 For example:
 
     ==================================
-
+    
     Table Changes
-
+    
     ==================================
-
+    
     Added ADMINISTRATOR.NAME
-
+    
     ==================================
-
+    
     Field changes
-
+    
     ==================================
-
+    
     No changes
-
+    
     ==================================
-
+    
     Key changes
-
+    
     ==================================
-
+    
     No changes
 
 To commit the changes to the database use the --commit argument.
 
 \## startProcess script
 
-The startProcess script is used to start a Genesis process. It takes a single positional argument: 
+The startProcess script is used to start a Genesis process. It takes a single positional argument:
 
 <process name> and an optional argument "--dump", to ensure console output is shown on screen (useful for debugging).
 
@@ -102,7 +102,7 @@ Syntax:
 
 processName           name of the process that you want to start
 
-\--hostname HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]	where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node. Specify the Host Name. 
+\--hostname HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]	where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node. Specify the Host Name.
 
 \--cluster, -c         starts the process on every node in the cluster
 
@@ -111,11 +111,11 @@ processName           name of the process that you want to start
 The script looks in the processes.xml (see startServer below) to find out how to start the process.
 
     For example:
-
+    
         startProcess AUTH_DATASERVER
-
+    
     starts the process with the correct classpath and extra arguments. Something similar to:
-
+    
         java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
 
 \## killProcess script
@@ -126,13 +126,13 @@ Syntax:
 
     killProcess process_name HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\] \[--force\] \[--wait\]
 
- --hostname HOSTNAME HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]	Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node. Specify the Host Name. 
+\--hostname HOSTNAME HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]	Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node. Specify the Host Name.
 
- --force, -f           forcefully kills a process (using kill -9)
+\--force, -f           forcefully kills a process (using kill -9)
 
- --wait WAIT, -w WAIT  specifies how many seconds to wait before forcing the kill
+\--wait WAIT, -w WAIT  specifies how many seconds to wait before forcing the kill
 
- --cluster, -c         kills the process on every node in the cluster 
+\--cluster, -c         kills the process on every node in the cluster
 
 \## startServer script
 
@@ -144,13 +144,11 @@ Syntax:
 
 processName           name of the process that you want to start
 
-\--hostname HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]	Where the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node. Specify the Host Name. 
+\--hostname HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]	Where the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node. Specify the Host Name.
 
 \--cluster, -c         starts the process on every node in the cluster
 
 \--ignoreDaemon, -i    avoids killing/starting the daemon
-
-    
 
 The processes.xml file looks like this:
 
@@ -161,47 +159,47 @@ The processes.xml file looks like this:
 <configuration>
 
     <process name="GENESIS_AUTH_MANAGER">
-
+    
         <start>true</start>
-
+    
         <options>-Xmx512m -DXSD_VALIDATE=false</options>
-
+    
         <module>auth-manager</module>
-
+    
         <package>global.genesis.dta.auth.manager</package>
-
+    
         <classpath>quickfixj-core-2.1.0.jar</classpath>
-
+    
     </process>
-
+    
     <process name="GENESIS_AUTH_DATASERVER">
-
+    
         <start>true</start>
-
+    
         <options>-Xmx512m -DXSD_VALIDATE=false</options>
-
+    
         <module>dataserver</module>
-
+    
         <package>global.genesis.dataserver</package>
-
+    
         <config>auth-dataserver.xml</config>
-
+    
         <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
-
+    
     </process>
-
+    
     <process name="GENESIS_AUTH_PERMS">
-
+    
         <start>true</start>
-
+    
         <options>-Xmx512m -DXSD_VALIDATE=false</options>
-
+    
         <module>auth-perms</module>
-
+    
         <package>global.genesis.dta.auth.perms</package>
-
+    
         <dependency>AUTH_MANAGER,AUTH_DATASERVER </dependency>
-
+    
     </process>
 
 </configuration>
@@ -214,11 +212,11 @@ The dependency tag defines the processes that the current process is dependent o
 
 The loggingLevel tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to explicitly declare that you would like to log all the received/sent network messages.
 
-The classpath tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated and need to exist within a "lib" folder for any of the genesis products in the environment. A use case would be to use the quickfixj library to parse a fix message within a query definition. 
+The classpath tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated and need to exist within a "lib" folder for any of the genesis products in the environment. A use case would be to use the quickfixj library to parse a fix message within a query definition.
 
 \## killServer script
 
-The killServer script reads the $GC/processes.xml file to determine which processes to kill. It will prompt 
+The killServer script reads the $GC/processes.xml file to determine which processes to kill. It will prompt
 
 Syntax:
 
@@ -228,15 +226,15 @@ This command requires user confirmation: 'Are you sure you want to kill server? 
 
 optional arguments:
 
-  --hostname HOSTNAME HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]	Where the application is running on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node. Specify the Host Name. 
+\--hostname HOSTNAME HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]	Where the application is running on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node. Specify the Host Name.
 
                         Hosts Name or "cluster" for all hosts
 
-  --force, -f           forcefully kills a process (using kill -9)
+\--force, -f           forcefully kills a process (using kill -9)
 
-  --all                 kills all processes, including GENESIS_CLUSTER
+\--all                 kills all processes, including GENESIS_CLUSTER
 
-  --cluster, -c         kills the server on all the nodes in the cluster 
+\--cluster, -c         kills the server on all the nodes in the cluster
 
 \## DbMon script
 
@@ -249,82 +247,82 @@ Syntax:
 Once inside DbMon you can run the command **help**, which shows all the available commands.
 
     ==================================
-
+    
     Database Monitor
-
+    
     Enter 'help' for a list of commands
-
+    
     ==================================
-
+    
     DbMon>help
-
+    
     ==================================
-
+    
     Help Menu
-
+    
     ==================================
-
+    
     autoIncrementNumber <field_name>
-
+    
     clear
-
+    
     count
-
+    
     delete
-
+    
     deleteWhere <condition>
-
+    
     displayFields <field_names>
-
+    
     distinct <condition> \[-where <limiting_condition>\]
-
+    
     find <key_name>
-
+    
     first <key_name>
-
+    
     forceAutoIncrementNumber <field_name> <sequence_number>
-
+    
     forceSequenceNumber <sequence_name> <sequence_number>
-
+    
     h
-
+    
     insert
-
+    
     last <key_name>
-
+    
     listAll <key_name> <num_key_fields> <max_records>
-
+    
     next <key_name>
-
+    
     qsearch <condition> \[-l <limit>\]
-
+    
     qshow
-
+    
     search <condition> \[-l <limit>\]
-
+    
     sequenceNumber <sequence_name>
-
+    
     set <field_name> <field_value>
-
+    
     show
-
+    
     showKeys
-
+    
     showTables
-
+    
     table <table_name>
-
+    
     unset
-
+    
     update <key_name>
-
+    
     updateWhere <condition> <assignments>
-
+    
     writeMode
 
 Usage:
 
-DbMon has built-in help instruction for each command. Run "help <command>" to get more information. 
+DbMon has built-in help instruction for each command. Run "help <command>" to get more information.
 
 \## SendIt script
 
@@ -333,29 +331,29 @@ To send data into the database, use the SendIt command.
 Syntax:
 
         SendTable -t <table name> -f <file name>
-
+    
         Available options (use -h for help):
-
+    
          -a,--all                      import all the tables from all the csv
-
+    
                                        files, to the database
-
+    
          -d,--delete                   perform delete operations on all records
-
+    
          -f,--file <arg>               name of the csv file where table is
-
+    
                                        imported
-
+    
          -h,--help                     show usage information
-
+    
          -m,--modify <arg>             key name used to find original record
-
+    
          -mf,--modifyFields <arg>   specify fields to modify
-
+    
          -r,--recover                  perform recover operations on all records
-
+    
          -t,--table <arg>              the name of the table to import to database
-
+    
          -v,--verbose                  log every error line to output
 
 For Example:
@@ -368,13 +366,11 @@ To Modify records you, need to specify the key that will be used to identify the
 
     SendIt -t FUND -m FUND_BY_ID
 
-    
-
 Modify fields (-mf) is a special parameter that can be added to "-m" operations. SendTable will only attempt to modify the record fields specified in this comma-separated list parameter.
 
 To Delete records you need to specify -d (or --delete)
 
-	SendIt -t FUND -d
+    SendIt -t FUND -d
 
 If no file parameter is specified, \`\`\`.csv\`\`\` is assumed and read from the local directory.
 
@@ -389,28 +385,26 @@ To copy data out of a Genesis database, use the DumpIt command.
 Syntax:
 
     usage: DumpIt
-
-     -a,--all           exports all tables to csv
-
-     -f,--file <arg>    name of the csv file where table is exported
-
-     -fields <arg>      space separated field list e.g. "FIRST_NAME LAST_NAME"
-
-     -h,--help          show usage information
-
-     -s,--sql <arg>     name of the sql file where table is exported
-
-     -t,--table <arg>   the name of the table to export to csv
-
-     -where <arg>       match criteria e,g, "USER_NAME=='John'"
-
     
-
+     -a,--all           exports all tables to csv
+    
+     -f,--file <arg>    name of the csv file where table is exported
+    
+     -fields <arg>      space separated field list e.g. "FIRST_NAME LAST_NAME"
+    
+     -h,--help          show usage information
+    
+     -s,--sql <arg>     name of the sql file where table is exported
+    
+     -t,--table <arg>   the name of the table to export to csv
+    
+     -where <arg>       match criteria e,g, "USER_NAME=='John'"
+    
+    
+    
     example:  
 
 For Example:
-
-    
 
     DumpIt -t USER -where "USER_NAME=='John'" -fields "USER_NAME
 
@@ -440,42 +434,42 @@ Not setting GENESIS_LOGGING_LEVEL or setting a non-valid level will reset log le
 
 Syntax:
 
- LogLevel -p <process-name> -l <log level> -t <time> \[-optional
+LogLevel -p <process-name> -l <log level> -t <time> \[-optional
 
                         params\] -c <class-name> -DATADUMP_ON -DATADUMP_OFF or
-
+    
                         setLogLevel -r <process-name> \[-optional params\] -c
-
+    
                         <class-name>
-
+    
         Available options (use -h for help):
-
+    
          -c,--class <class name>                changes log level on the defined
-
+    
                                                 class
-
+    
          -DATADUMP_OFF                          changes the log level to info for
-
+    
                                                 Genesis messages
-
+    
          -DATADUMP_ON                           changes the log level to trace for
-
+    
                                                 Genesis messages
-
+    
          -h,--help                              show usage information
-
+    
          -l,--level <log level>                 log level - if log level is not
-
+    
                                                 correct it will be set
-
+    
                                                 automatically to DEBUG level
-
+    
          -p <process-name>,.., <process-name>   attaches processes to the command
-
+    
          -r <process-name>,..,<process-name>    remove processes
-
+    
          -t <time>                              duration of log level change in
-
+    
                                                 min/sec Eg: 1m, 1000s
 
 \## mon script
@@ -483,47 +477,47 @@ Syntax:
 To get a status for the overall system, type **mon** from the command. This shows you if the server is up or not.
 
     ***************************************************************************
-
+    
                                   GENESIS Monitor
-
+    
                              Version:  GENESIS 5.0.0.0
-
+    
     ***************************************************************************
-
     
-
+    
+    
     Start: 2021-08-22 12:46:48                                  Uptime: 5 hours
-
-    Date:  20121-08-22 17:47:10                               Cluster status: OK
-
     
-
+    Date:  20121-08-22 17:47:10                               Cluster status: OK
+    
+    
+    
     PID     Process Name                  Port        Status         CPU       Memory
-
+    
     ==================================================================================
-
+    
     9480    AUTH_CONSOLIDATOR             8006        RUNNING        0.30      1.60
-
+    
     9392    AUTH_DATASERVER               8002        RUNNING        0.30      1.70
-
+    
     9359    AUTH_MANAGER                  8001        RUNNING        0.30      1.60
-
+    
     9419    AUTH_PERMS                    8003        RUNNING        0.30      1.80
 
 Usage:
 
     mon \[-v | -c | -a\] polling_interval
-
     
-
+    
+    
     Options:
-
+    
       -h, --help     show this help message and exit
-
+    
       -v, --version  Shows installed products versions.
-
+    
       -c, --cfg      Shows the config files used by each process.
-
+    
       -a, --all      Shows all information.
 
 ## DropTable
@@ -541,15 +535,15 @@ DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3
 To populate the Holidays table with holidays based on a specific year(s), country(ies) and region(s), use the Populate command.
 
     The usage: PopulateHolidays
-
+    
      -c,--country <arg>   the country name to search for holidays
-
+    
      -h,--help            show usage information
-
+    
      -r,--region <arg>    the region name to search for holidays
-
+    
      -y,--year <arg>      the year of holidays
-
+    
     For example: PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
 
 \## CountRecords
@@ -569,12 +563,12 @@ Migrates the Genesis alias store from database storage to file storage and vice 
 Usage:
 
     MigrateAliases FILE
-
+    
     MigrateAliases DATABASE
 
 Aerospike and FDB implementations use internal aliases for fields and tables. Migrating these aliases from database to a file will help to debug problems in the data storage.
 
-It is recommended to use a file store if you are running Genesis in a single node and database mode if you are running Genesis in more than one node. 
+It is recommended to use a file store if you are running Genesis in a single node and database mode if you are running Genesis in more than one node.
 
 The "remap" operation will update the alias store, so if you are running a Genesis cluster it is better to use a database storage mode, as it is less error prone and the user won't have to manually copy the alias storage file to the remaining nodes manually.
 
@@ -602,8 +596,6 @@ Usage:
 
     GetNextSequenceNumbers
 
-    
-
 \## GetSequenceCount
 
 Gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by "SetSequence" script (see below)
@@ -611,11 +603,11 @@ Gets the current sequence number for all the sequences in the system. The values
 Usage:
 
     GetSequenceCount
-
+    
      -f,--file <arg>
-
+    
      -h,--help         show usage information
-
+    
      -p,--print
 
 \## GetAutoIncrementCount
@@ -625,11 +617,11 @@ Works like GetSequenceCount but for auto increment INT values defined in diction
 Usage:
 
     GetAutoIncrementCount
-
+    
      -f,--file <arg>
-
+    
      -h,--help         show usage information
-
+    
      -p,--print
 
 \## SetSequence
@@ -639,19 +631,19 @@ Allows the user to change a sequence number, or to do a bulk change for all the 
 Usage:
 
     SetSequence
-
+    
      -f,--file <arg>       Name of csv file for batch sequence/value pairs to
-
+    
                            be read from (overrides sequence and value option)
-
+    
      -h,--help
-
+    
      -s,--sequence <arg>   Two Character ID for the sequence (if setting
-
+    
                            individual value)
-
+    
      -v,--value <arg>      New integer value to be set (if setting individual
-
+    
                            value)
 
 \## SetAutoIncrement
@@ -661,17 +653,17 @@ Works like SetSequence but for auto increment INT values.
 Usage:
 
     SetAutoIncrement
-
+    
      -f,--file <arg>    Name of csv file for batch sequence/value pairs to be
-
+    
                         read from (overrides sequence and value option)
-
+    
      -h,--help
-
+    
      -s,--field <arg>
-
+    
      -t,--table <arg>
-
+    
      -v,--value <arg>
 
 \## DtaRun
@@ -748,11 +740,9 @@ There are a few considerations we should be aware of:
 
 \* Regarding keys and indexes.
 
- * Primary keys will be parsed as primary keys in Genesis, whether they are single column based or multiple column based.
-
- * Only unique indexes will be parsed as secondary keys.
-
- * There is no concept of foreign keys in Genesis, so foreign keys will be ignored.
+* Primary keys will be parsed as primary keys in Genesis, whether they are single column based or multiple column based.
+* Only unique indexes will be parsed as secondary keys.
+* There is no concept of foreign keys in Genesis, so foreign keys will be ignored.
 
 \* Strings parsed in lower camel case format (camelCase) will be transformed to upper underscore format (UPPER_UNDERSCORE).
 
@@ -805,15 +795,15 @@ Standard files will be generated, i.e. processes.xml and service-definitions.xml
 \## Parameters
 
     | Argument | Argument long name | Mandatory | Description |
-
+    
     | -- | -- | -- | -- |
-
+    
     | -d | dictionary file name | true | the name of the dictionary to read at startup |
-
+    
     | -t | table name(s) | false | the table name(s) of the dictionary to read at startup. It could be more than one tables separated by space |
-
+    
     | -p | port offset | true | the port range to use when generating services file |
-
+    
     | -pn | product name | true | the name of the product to create |
 
 \## Example Usage
@@ -825,21 +815,21 @@ Example without -t option.
 In this case we are specifying the dictionary to read is tas-dictionary.xml, the port offset is 4000 and the product name to generate is tas.  Running this command results in the following structure being created:
 
     tas/
-
+    
        /bin
-
+    
        /cfg/tas-dataserver.xml
-
+    
            /tas-dictionary.xml
-
+    
            /tas-fields.xml
-
+    
            /tas-processes.xml
-
+    
            /tas-requestserver.xml
-
+    
            /tas-service-definitions.xml
-
+    
        /scripts/tas-tnHandler.gy
 
 Example with -t option.
@@ -855,37 +845,37 @@ The tables mentioned in the above command will be appended to the files that wer
 This step is only required if using a self-signed certificate due to the absence of a proper trusted root authority issued one.
 
     $ keytool -genkey -keyalg RSA -keysize 2048 -alias selfsigned -storepass Password1233 -keystore keystore.jks -ext SAN=dns:genesisserv1,dns:genesisserv1.ad.genesis.global,dns:genesisserv2,dns:genesisserv2.ad.genesis.global,dns:genesisserv3,dns:genesisserv3.ad.genesis.global,dns:genesisserv4,dns:genesisserv4.ad.genesis.global,ip:193.144.16.43
-
+    
     What is your first and last name?
-
+    
       \[Unknown\]:  Fred Bloggs
-
+    
     What is the name of your organizational unit?
-
+    
       \[Unknown\]:  IT
-
+    
     What is the name of your organization?
-
+    
       \[Unknown\]:  Genesis Global Technology Ltd
-
+    
     What is the name of your City or Locality?
-
+    
       \[Unknown\]:  London
-
+    
     What is the name of your State or Province?
-
+    
       \[Unknown\]:  Greater London
-
+    
     What is the two-letter country code for this unit?
-
+    
       \[Unknown\]:  GB
-
+    
     Is CN=Fred Bloggs, OU=IT, O=Genesis Global Technology Ltd, L=London, ST=Greater London, C=GB correct?
-
+    
       \[no\]:  yes
-
+    
     Enter key password for <selfsigned>
-
+    
             (RETURN if same as keystore password):
 
 Assuming no problems with privileges you will now have a certificate called "selfsigned" with a private key using the same password as the keystore password e.g. Password123.
@@ -905,7 +895,7 @@ The keystore (.jks) is, in a way, the private key to be used in the two-way auth
 Varies according to the distribution being used. In Ubuntu:
 
     $ cp certificate.crt /usr/local/share/ca-certificates/
-
+    
     $ sudo update-ca-certificates
 
 \### Windows
@@ -933,27 +923,27 @@ Example:
 \`\`\`xml
 
     <configuration>
-
+    
         <service host="localhost" name="EXMON_DATASERVER" port="8911" secure="true"/>
-
+    
     </configuration>
 
 \`\`\`
 
 \### Setting the TLS settings for all processes by default
 
-Edit the *dta-system-definitions.xml* file and edit the values for DefaultKeystoreLocation, DefaultKeystoreLocation and DefaultCertificate.
+Edit the _dta-system-definitions.xml_ file and edit the values for DefaultKeystoreLocation, DefaultKeystoreLocation and DefaultCertificate.
 
     Example:
 
 \`\`\`xml
 
     <!-- Required if the processes are to communicate through SSL -->
-
+    
     <Item name="DefaultKeystoreLocation" value="/home/exmon/keystore.jks" />
-
+    
     <Item name="DefaultKeystorePassword" value="Password123" />
-
+    
     <Item name="DefaultCertificate" value="/home/exmon/certificate.crt" />
 
 \`\`\`
@@ -971,27 +961,27 @@ To have the following settings:-
 \`\`\`xml
 
     <authManager>
-
+    
         <settings>
-
+    
            <messaging>
-
+    
                <keyStoreLocation>
-
+    
                    /home/poc/keystore.jks
-
+    
                </keyStoreLocation>
-
+    
                <keyStorePassword>
-
+    
                    Password123
-
+    
                </keyStorePassword>
-
+    
            </messaging>
-
+    
         </settings>
-
+    
     </authManager>
 
 \`\`\`
@@ -1007,17 +997,17 @@ To enable the GUI to be ready to connect securely edit the %ProgramData%\\Genesi
 \`\`\`xml
 
     <?xml version="1.0"?>
-
+    
     <primary_service xmlns:xsd="[http://www.w3.org/2001/XMLSchema](http://www.w3.org/2001/XMLSchema "http://www.w3.org/2001/XMLSchema")" xmlns:xsi="[http://www.w3.org/2001/XMLSchema-instance](http://www.w3.org/2001/XMLSchema-instance "http://www.w3.org/2001/XMLSchema-instance")">
-
+    
       <encrypted>true</encrypted>
-
+    
       <hosts>
-
+    
         <host name="genesisserv4.ad.genesis.global" port="8001" />
-
+    
       </hosts>
-
+    
     </primary_service>
 
 \`\`\`
