@@ -42,4 +42,10 @@ Add the verification by inserting an **onVerify** block before the **onCommit** 
 
 You can make the same insertion to the TRADE_MODIFY and TRADE_DELETE blocks.
 
-### Testing the validation
+## Testing the event handlers
+
+Now we shall create and run some unit testing for our new event handlers. 
+
+### Create test data
+
+### Create havoc
