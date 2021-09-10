@@ -200,15 +200,15 @@ Example:
     
     </databaseStream>
 
-\`\`\`
-
-\## Table Joins
+### Table joins
 
 The process keeps track of the last record timestamp, so if you want to avoid reloading all records in Genesis to the RDBMS, it is very important to use a TIMESTAMP seedKey in order to make it work properly.
 
-\## Stored procedures
+### Stored procedures
 
-\*_A table must exist for each databaseStream._* Each database will need to create a table that can hold records as specified in the **fields** field. So following the previous example with "TRADE_ID", "TRADE_QUANTITY", "CLIENT_NAME" and "CURRENCY_DESCRIPTION", we need to have a SQL table with those column names and matching types. Matching types in this example could be: varchar(50), int, varchar(50) and varchar(50).
+You must have a separate table for each database stream.
+
+Each database must have a table that can hold records as specified in the **fields** field. So, following the previous example with TRADE_ID, TRADE_QUANTIY, CLIENT_NAME and CURRENCY_DESCRIPTION, you must have a SQL table with those column names and matching types. Matching types in this example could be: varchar(50), int, varchar(50) and varchar(50).
 
 \*_The stored procedures for insert, modify and delete should also be created beforehand_*. This process does not create any store procedures and it just attempts to call already existing ones. Therefore, insertTrade should insert a trade into its correspondent TRADE table and likewise for the rest of the stored procedures.
 
