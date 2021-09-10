@@ -1,7 +1,7 @@
 ---
-sidebar_label: 'Install'
----
+sidebar_label: Install
 
+---
 # Install in three easy steps
 
 To the Genesis LCNC Platform on your server, go through the following steps.
@@ -16,40 +16,33 @@ We  describe the recommended steps below, but you can also see the process in a 
 ![Video](https://vimeo.com/590505594){height="480" width="640"}
 
 ## Installing from an rpm
-You must start with a server with the operating system and relevant packages installed. Genesis supplies the rpm to simplify the installation. Everything you need is in the rpm, and nothing is downloaded when you install it. 
+
+You must start with a server with the operating system and relevant packages installed. Genesis supplies the rpm to simplify the installation. Everything you need is in the rpm, and nothing is downloaded when you install it.
 To install the rpm, you need a privileged user account.
-In our example, the rpm is called **genesis-platform-5.1.0-1.x86_64.rpm**. 
+In our example, the rpm is called **genesis-platform-5.1.0-1.x86_64.rpm**.
 
 ### 1. Give the user account a name
+
 By default, the installation creates an application user account called **genesis**. You can change this change this before you start by editing the file **genesis_install.conf**. For example, to change the user account to be created to octopus, edit it as follows:
- 
 
-![change account name](https://files.document360.io/82b38d6b-46dd-48c3-a583-c5981a5c6537/Images/Documentation/change%20account%20name.png){height="" width=""}
-
+![](/img/joseph1.png)
 
 ### 2. Install the rpm
+
 Now you can **sudo yum** and install the rpm.
- 
 
-![sudo yum run the rpm](https://files.document360.io/82b38d6b-46dd-48c3-a583-c5981a5c6537/Images/Documentation/sudo%20yum%20run%20the%20rpm.png){height="" width=""}
+![](/img/joseph2.png)This creates the user account and makes all the recommended security settings. Additionally, it creates the required directory structure and unpacks all the zipped files.
 
-
-This creates the user account and makes all the recommended security settings. Additionally, it creates the required directory structure and unpacks all the zipped files.
 When the process has finished, you can go to the root directory and see the user that has been created (octopus, in our example).
-  
 
-![completed installation](https://files.document360.io/82b38d6b-46dd-48c3-a583-c5981a5c6537/Images/Documentation/completed%20installation.png){height="" width=""}
-
+![](/img/joseph-3completed-installation.png)
 
 You can switch to that user and view the run directory for the newly installed platform, where you can find **auth** and **genesis** ready to be initialized.
- 
 
-![ready to initialize](https://files.document360.io/82b38d6b-46dd-48c3-a583-c5981a5c6537/Images/Documentation/ready%20to%20initialize.png){height="" width=""}
-
-
-Now you are ready to run **genesisInstall**.
+![](/img/joseph4-ready-to-initialize.png)
 
 ### 3. Run genesisInstall
+
 The script does all the hard work for you. Just run **genesisInstall**.
 
 The initialization process creates new directories. In addition to **auth** and **genesis**, you will see:
@@ -57,15 +50,9 @@ The initialization process creates new directories. In addition to **auth** and 
 •	**runtime**
 •	**site-specific**
 The process also creates some useful tools. Most immediately, try **mon** to see the processes that need to be run.
- 
 
-![mon](https://files.document360.io/82b38d6b-46dd-48c3-a583-c5981a5c6537/Images/Documentation/mon.png){height="" width=""}
-
+![](/img/joseph5-mon.png)
 
 At this point, no processes are running. So, run the command **startServer**. When it is complete, run **mon** again. This time, you can see all the processes running.
- 
-
-![mon processes running](https://files.document360.io/82b38d6b-46dd-48c3-a583-c5981a5c6537/Images/Documentation/mon%20processes%20running.png){height="" width=""}
-
 
 That’s it. You are now ready to start developing. Congratulations.
