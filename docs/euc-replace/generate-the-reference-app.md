@@ -26,9 +26,11 @@ This generates the **fields-dictionary.kts** and **tables-dictionary.kts** files
 
 Check these files and adjust them to suit your application. For example, the process has translated the field ENABLED was as an INT type; you need to edit that to make it a BOOLEAN type. 
 
+> Picture from Jose
+
 Create new ref_data_app folder structure inside GENESIS_HOME, including cfg and script folders 
 
-Copy output files from dictionary builder to ref_data_app/cfg folder inside the run directory.  
+Copy the output files from the dictionary build to the **ref_data_app/cfg** folder inside the run directory.  
 
 Run genesisInstall to verify everything is ok. 
 
@@ -54,20 +56,28 @@ But for this application, we are going to go into the pro code first, to add som
 
 You can run the mvn command either locally (in the server, local vm, wsl or cloud instance where the LCNC Platform is installed) or a separate local dev machine. In our example, we are using the same machine as before for consistency. 
 
-Run the mvncommand:
+Run the mvn command:
 
-mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=ref_data_app -B 
+**mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=ref_data_app -B** 
 
 This gives you the following project structure:
 
-\**screengab from Jose
+> screengab from Jose
 
 Move the generated ref_data_app/cfg files (from previous DictionaryBuilder and AppGen steps) to the ref_data_app-config/src/main/resources/cfg folder.
 
 Move the generated ref_data_app/scripts files (request server, data server and event handler) to the ref_data_app-script-config/src/main/resources/scripts folder.
 
-Build maven project with mvn install.  
+Build a maven project with mvn install.  
 
-Show archetype generation in intellij and repeat step 10) (have files at hand so we can copy them easily). 
+Show archetype generation in intellij 
 
-Build maven project with mvn install in intellij
+Again, you need to move the script and config files. Have these to hand, so you can copy them easily:
+
+Move the generated ref_data_app/cfg files (from previous DictionaryBuilder and AppGen steps) to the ref_data_app-config/src/main/resources/cfg folder.
+
+Move the generated ref_data_app/scripts files (request server, data server and event handler) to the ref_data_app-script-config/src/main/resources/scripts folder. (have files at hand so we can copy them easily). 
+
+Build a maven project with mvn install in intellij
+
+> screengrab of result
