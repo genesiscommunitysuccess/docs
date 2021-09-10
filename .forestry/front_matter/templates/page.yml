@@ -14,6 +14,7 @@ fields:
 pages:
 - docs/Operations/commands.md
 - docs/euc-replace/configure-the-event-handlers.md
+- docs/euc-replace/introduction.md
 - docs/genesistodb.md
 - docs/get-started/essential-information.md
 - docs/infrastruct-ref/clusters.md
