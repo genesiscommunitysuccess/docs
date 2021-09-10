@@ -51,7 +51,7 @@ To ignore errors in the configuration files, use the **--ignore** argument. This
 
 All processes configuration is stored within $**GC**.
 
-## Remap script
+## remap script
 
 The remap script reads all dictionary files (fields and table definitions) from $GC and remaps the memory resident database accordingly.
 
