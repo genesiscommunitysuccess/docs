@@ -123,9 +123,11 @@ The script looks in the processes.xml (see startServer below) to find out how to
     
         java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
 
-\## killProcess script
+\## 
 
-The killProcess script is used to terminate a specified process.
+## killProcess script
+
+This script is used to terminate a specified process.
 
 Syntax:
 
@@ -139,9 +141,9 @@ Syntax:
 
 \--cluster, -c         kills the process on every node in the cluster
 
-\## startServer script
+## startServer script
 
-The startServer script reads the $GC/processes.xml file to determine which processes to start and how to start them.
+This script reads the **$GC/processes.xml** file to determine which processes to start and how to start them.
 
 Syntax:
 
@@ -155,14 +157,12 @@ processName           name of the process that you want to start
 
 \--ignoreDaemon, -i    avoids killing/starting the daemon
 
-The processes.xml file looks like this:
+The **processes.xml** file looks like this:
 
-\`\`\`xml
-
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-
-<configuration>
-
+    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    
+    <configuration>
+    
     <process name="GENESIS_AUTH_MANAGER">
     
         <start>true</start>
@@ -206,22 +206,22 @@ The processes.xml file looks like this:
         <dependency>AUTH_MANAGER,AUTH_DATASERVER </dependency>
     
     </process>
-
-</configuration>
-
-\`\`\`
+    
+    </configuration>
+    
+    
 
 Each process property is defined in here, including JAVA arguments, configuration files, and scripts.
 
-The dependency tag defines the processes that the current process is dependent on. In the above example, the "GENESIS_AUTH_PERMS" process will start when all of its dependencies have been started.
+The dependency tag defines the processes that the current process is dependent on. In the above example, the GENESIS_AUTH_PERMS process will start after all its dependencies have started.
 
-The loggingLevel tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to explicitly declare that you would like to log all the received/sent network messages.
+The **loggingLevel** tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to explicitly declare that you would like to log all the received/sent network messages.
 
-The classpath tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated and need to exist within a "lib" folder for any of the genesis products in the environment. A use case would be to use the quickfixj library to parse a fix message within a query definition.
+The classpath tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated and need to exist within a lib folder for any of the genesis products in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.
 
-\## killServer script
+## killServer script
 
-The killServer script reads the $GC/processes.xml file to determine which processes to kill. It will prompt
+This script reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt
 
 Syntax:
 
@@ -551,7 +551,9 @@ To populate the Holidays table with holidays based on a specific year(s), countr
     
     For example: PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
 
-\## CountRecords
+\## 
+
+CountRecords
 
 Counts the number of records in the database, grouped by table, and prints to screen.
 
