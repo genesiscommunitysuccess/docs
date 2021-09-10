@@ -55,4 +55,6 @@ The process also creates some useful tools. Most immediately, try **mon** to see
 
 At this point, no processes are running. So, run the command **startServer**. When it is complete, run **mon** again. This time, you can see all the processes running.
 
+![](/img/mon-processes-running.png)
+
 That’s it. You are now ready to start developing. Congratulations.
