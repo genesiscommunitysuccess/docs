@@ -18,6 +18,7 @@ pages:
 - docs/euc-replace/generate-the-reference-app.md
 - docs/euc-replace/generate-the-trading-app.md
 - docs/euc-replace/introduction.md
+- docs/euc-replace/set-up-permissions.md
 - docs/euc-replace/set-up-static-and-dynamic-events.md
 - docs/genesistodb.md
 - docs/get-started/essential-information.md
