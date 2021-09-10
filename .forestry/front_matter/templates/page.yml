@@ -15,6 +15,7 @@ pages:
 - docs/Operations/commands.md
 - docs/euc-replace/configure-the-event-handlers.md
 - docs/euc-replace/generate-the-reference-app.md
+- docs/euc-replace/generate-the-trading-app.md
 - docs/euc-replace/introduction.md
 - docs/genesistodb.md
 - docs/get-started/essential-information.md
