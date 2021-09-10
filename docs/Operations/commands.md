@@ -35,7 +35,7 @@ i**nstallRelease** will try to use **global-product-details.xm**l inside GENESIS
 
 Execute **genesisInstall** after installing an application, so that the application details are stored in global-product-details.xml for future product installations.
 
-\## 
+\##
 
 ## genesisInstall script
 
@@ -43,9 +43,9 @@ This scriptscript validates all system and product configuration, checkin for su
 
     genesisInstall \[--ignore\]
 
-Once complete, all configuration files will be copied and, where necessary, merged into the **\~/run/generated/cfg** file, which we alias as **$GC**. 
+Once complete, all configuration files will be copied and, where necessary, merged into the **\~/run/generated/cfg** file, which we alias as **$GC**.
 
-If any problems are found in the generated configuration files, they will be deleted, which forces the user to correct the errors in the original configuration files. 
+If any problems are found in the generated configuration files, they will be deleted, which forces the user to correct the errors in the original configuration files.
 
 To ignore errors in the configuration files, use the **--ignore** argument. This leaves the configuration files undeleted, even if errors are found.
 
@@ -123,7 +123,7 @@ The script looks in the processes.xml (see startServer below) to find out how to
     
         java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
 
-\## 
+\##
 
 ## killProcess script
 
@@ -208,8 +208,6 @@ The **processes.xml** file looks like this:
     </process>
     
     </configuration>
-    
-    
 
 Each process property is defined in here, including JAVA arguments, configuration files, and scripts.
 
@@ -551,7 +549,7 @@ To populate the Holidays table with holidays based on a specific year(s), countr
     
     For example: PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
 
-\## 
+\##
 
 CountRecords
 
@@ -673,23 +671,31 @@ Usage:
     
      -v,--value <arg>
 
-\## DtaRun
+## GenesisRun
 
-In order to support the Genesis's native scripting language "groovy" we use *DtaRun to build up the necessary classpath, instead of building it up in each script.
+This is a python script wrapper for Genesis scripts.
 
-DtaRun is a python script that expects a ".groovy" file as first argument (the groovy script we want to execute) and a series of arguments which should be related to the particular groovy script we are calling. As DtaRun is inside the scripts folder, we can execute it from any working directory and therefore it has been implemented to search for groovy files inside the same directory for convenience.
+GenesisRun will attempt to find a script to execute within the genesis folder structure (e.g site-specific or scripts). 
 
-See example below of a DtaRun call in a Linux environment.
+There are two environment variables that can be used to configure how much RAM the scripts will use: 
 
-Script execution
+* SCRIPT_MAX_HEAP
+* REMAP_MAX_HEAP
 
-        DtaRun DictionaryBuilder.java arg1 arg2 arg3 ...
+**GenesisRun** can execute code in two different modes: Groovy script and GPAL Kotlin script. **GenesisRun** builds the necessary classpath, so you don't need to build it in each script.
 
-\## DictionaryBuilder
+1. Groovy script: GenesisRun SetLogLevelScript.groovy
+2. GPAL Kotlin script: GenesisRun customPurger-script.kts
 
-DictionaryBuilder is a groovy script which can be executed with DtaRun.
+There is a separate wrapper, **JvmRun** for Java main class scripts.
 
-DictionaryBuilder parses RDBMS schemas and uses this information to generate a Genesis dictionary. So far it supports MSSQL and Oracle databases and may be extended to support more database types if required. It accepts a series of arguments to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc).
+## DictionaryBuilder
+
+This is a groovy script which can be executed with **GenesisRun** or **JVMRun**.
+
+DictionaryBuilder parses RDBMS schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases. 
+
+The script accepts a series of arguments to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc).
 
 \##Arguments
 
