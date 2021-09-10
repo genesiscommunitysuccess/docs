@@ -4,7 +4,7 @@ sidebar_label: Install
 ---
 # Install in three easy steps
 
-To the Genesis LCNC Platform on your server, go through the following steps.
+To install the Genesis LCNC Platform on your server, go through the following steps.
 
 * Make sure you have the correct infrastructure for installing the platform.
 * Install the Genesis platform.
