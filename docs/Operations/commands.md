@@ -1027,6 +1027,6 @@ To enable the GUI to be ready to connect securely edit the %ProgramData%\\Genesi
 
 Note: With encryption, if using a self-signed certificate, it is required to install the certificate.crt in the target machine's operating system as a trusted root CA.
 
-\##Web applications
+## Web front-end
 
 Install the certificate.crt in the target machine's operating system as a trusted root CA. That is all you need to do.
