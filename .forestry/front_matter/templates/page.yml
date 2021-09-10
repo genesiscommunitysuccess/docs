@@ -13,6 +13,7 @@ fields:
   label: sidebar_label
 pages:
 - docs/Operations/commands.md
+- docs/euc-replace/add-joins-to-the-data-server.md
 - docs/euc-replace/configure-the-event-handlers.md
 - docs/euc-replace/generate-the-reference-app.md
 - docs/euc-replace/generate-the-trading-app.md
