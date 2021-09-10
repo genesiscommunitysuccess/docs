@@ -2,16 +2,18 @@ module.exports = {
   title: 'Genesis Platform',
   tagline: 'Code Less, Do More',
   url: 'https://genesis.global/',
-  baseUrl: '/',
+  baseUrl: process.env.BASE_URL || '/',
   favicon: 'img/favicon.ico',
   organizationName: 'genesislcap', // Usually your GitHub org/user name.
   projectName: 'docs', // Usually your repo name.
+  trailingSlash: true,
 
   presets: [
     [
       '@docusaurus/preset-classic',
       {
         docs: {
+          routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.json')
         },
         theme: {

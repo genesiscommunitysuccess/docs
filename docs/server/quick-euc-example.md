@@ -36,7 +36,7 @@ Genesis can turn the key Excel functions into kotlin code for use by your applic
 
 Decide how you want to calculate the functions that are not translated for you. If data is being loaded from an external source, then you probably want to perform the calculations in the server. If the database is maintained internally, then you might prefer to do the calculations in the front end and only commit to the server on Save.
 
-[Functions converted by ExcelToGenesis](excel-functions).
+[Functions converted by ExcelToGenesis](/server/excel-functions/).
 
 ### Column headings
 

@@ -60,7 +60,7 @@ A simple example is needed here)
 :::
 
 ## Defining state machines
-State machines, which define the conditions for moving from one state to another, are defined within your event handler files. See more detaila bout these in the section on [Defining your state machines](state-machine),
+State machines, which define the conditions for moving from one state to another, are defined within your event handler files. See more detaila bout these in the section on [Defining your state machines](/server/state-machine/),
 
 :::danger WIP
 (Finish here and move the rest to a page with a separate title)
