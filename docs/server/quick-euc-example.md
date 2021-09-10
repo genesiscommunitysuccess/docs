@@ -119,7 +119,7 @@ In the example here, the first worksheet has been converted. This has created a 
 
 ![](/img/views-2.png)
 
-The conversion has created derived fields - simple calculations based on other fields in the view. Our example includes both IF statements and VAL. 
+The conversion has created derived fields - simple calculations based on other fields in the view. Our example includes both IF statements and VAL.
 
 ![](/img/views-derived-fields-2.png)
 
@@ -135,15 +135,13 @@ You can use the **sendIt** command to load the data into the application's datab
 
 After you have checked the files generated and addressed any issues in the fields, tables and views, you can run the sequence of commands to generate an application.
 
-Run **genesisInstall** to 
-
-Run **remap --commit** to 
-
-Run **AppGen** to generate event handlers,  request servers and data servers for all the tables. For example: 
+1. Run **genesisInstall** to check all the config files and prepare the application for the current environment (using the files in site-specific to replace values in the modules, for example).
+2. Run **remap --commit** to set any changes to the database (modifications to fields, tables and views).
+3. Run **AppGen** to generate event handlers,  request servers and data servers for all the tables. For example:
 
     AppGen -n cash -p 10000
 
-This creates, 
+This creates,
 
 * the kts files for the event handlers, request servers and data servers
 * the service definitions
