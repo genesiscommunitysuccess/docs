@@ -26,25 +26,30 @@ At this point dependencies will be checked. If any dependency is not met (missin
 
 The script will also check for overridden configuration and script files, whether the product we are installing is currently installed or not. If the product is already installed be sure to merge every overridden configuration and script files with the new product before committing the new installation.
 
-If the product is not currently installed and the **--commit** option was specified, the application will be installed. A "new" back-up folder is created in GENESIS_HOME/releases/(applicationname)v.(version)/ with all the installation files.
-
-If the product is already installed in any version, the script will perform a reinstall/upgrade/downgrade. In case of downgrade, a warning message will be displayed, asking for extra confirmation. Two backups (folders) will be created inside GENESIS_HOME/releases/, one for the "old" installation and one for the "new" installation. If the --commit option was specified, the product will also be installed in the system.
+* If the product is not currently installed and the **--commit** option is specified, the application will be installed. A new back-up folder is created in GENESIS_HOME/releases/(_applicationnam_e)v.(version)/ with all the installation files.
+* If the product is already installed in any version, the script will perform a reinstall/upgrade/downgrade. In case of downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up (folders) will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the **--commit** option was specified, the product will also be installed in the system.
 
 Details to take into account:
 
-\* installRelease will try to use global-product-details.xml inside GENESIS_HOME/generated/cfg/ as its first information source. This file is generated when the genesisInstall script is executed, which gathers information from each installed product and stores it inside this global file. If this file does not exist, installRelease searches for independent productname-product-details.xml files in every installed product. If no information is found the installation will cancel.
+i**nstallRelease** will try to use **global-product-details.xm**l inside GENESIS_HOME/generated/cfg/ as its first information source. This file is generated when the **genesisInstal**l script is executed, which gathers information from each installed product and stores it inside this global file. If this file does not exist, **installReleas**e searches for independent productname-product-details.xml files in every installed product. If no information is found, the installation will be cancelled.
 
-\* **Execute genesisInstall** after installing a product, as its product details need to be stored in global-product-details.xml for future product installations.
+Execute **genesisInstall** after installing an application, so that the application details are stored in global-product-details.xml for future product installations.
 
-\## genesisInstall script
+\## 
 
-The genesisInstall script validates all system and product configuration, validating such things as fields not being duplicated, etc. Usage below:
+## genesisInstall script
+
+This scriptscript validates all system and product configuration, checkin for such things as field  duplication.
 
     genesisInstall \[--ignore\]
 
-Once complete, all configuration files will be copied and, where necessary, merged into the \~/run/generated/cfg, which we alias as **$GC**. If any problems are found in the generated configuration files, they will be deleted, which forces the user to correct the errors in the original configuration files. To ignore errors in the configuration files, use the --ignore argument. This leaves the configuration files undeleted, even if errors are found.
+Once complete, all configuration files will be copied and, where necessary, merged into the **\~/run/generated/cfg** file, which we alias as **$GC**. 
 
-All processes configuration is stored within $GC
+If any problems are found in the generated configuration files, they will be deleted, which forces the user to correct the errors in the original configuration files. 
+
+To ignore errors in the configuration files, use the **--ignore** argument. This leaves the configuration files undeleted, even if errors are found.
+
+All processes configuration is stored within $**GC**.
 
 ## Remap script
 
