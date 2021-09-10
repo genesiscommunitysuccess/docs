@@ -53,13 +53,13 @@ All processes configuration is stored within $**GC**.
 
 ## remap script
 
-The remap script reads all dictionary files (fields and table definitions) from $GC and remaps the memory resident database accordingly.
+The remap script reads all dictionary files (fields and table definitions) from **$GC** and remaps the memory resident database accordingly.
 
-It also generates "dao" objects based on our dictionary tables, so we can perform database operations in a type safe way.
+It also generates dao objects based on our dictionary tables, so we can perform database operations in a type safe way.
 
 Additionally, it will update the Genesis alias store (if running Aerospike or FDB).
 
-The Aerospike DB layer needs UDFs (User defined functions) to work correctly, and they are also generated at this step.
+The Aerospike DB layer needs UDFs (user defined functions) to work correctly, and they are also generated at this step.
 
 Syntax:
 
@@ -93,11 +93,11 @@ For example:
     
     No changes
 
-To commit the changes to the database use the --commit argument.
+To commit the changes to the database use the **--commit** argument.
 
-\## startProcess script
+## startProcess script
 
-The startProcess script is used to start a Genesis process. It takes a single positional argument:
+This script starts a Genesis process. It takes a single positional argument:
 
 <process name> and an optional argument "--dump", to ensure console output is shown on screen (useful for debugging).
 
