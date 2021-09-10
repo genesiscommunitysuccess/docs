@@ -735,9 +735,9 @@ It is also possible to use the double dash notation for any argument. Arguments 
 
         DtaRun DictionaryBuilder.groovy -u TAS -p fght123 -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
 
-\##Script behaviour
+### How the script behaves
 
-The script will try to connect to the RDBMS currently specified in the arguments. It will generate Genesis dictionary fields for column names and their types, and it will create tables with  their fields and keys likewise too.
+The script tries to connect to the RDBMS currently specified in the arguments. It generates Genesis dictionary fields for column names and their types, and it creates tables with their fields and keys.
 
 There are a few considerations we should be aware of:
 
