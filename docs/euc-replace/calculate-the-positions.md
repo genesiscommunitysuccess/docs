@@ -6,7 +6,7 @@ sidebar_label: Calculate the positions
 ---
 Ref_data_app exists (with all its tables) and the schema can be imported into trading_app. Trading_app exists and it contains the schema for TRADE table + event handlers, dataservers and req-reps.
 
-Define the data schema
+## Define the data schema
 
 Start defining the fields for the position table in the file **trading_app-fields-dictionary.kts**.
 
@@ -32,7 +32,7 @@ Use the field definition opportunity to run Ctrl + Q and display documentation a
 
 Run **generateSysDef** and **generateFields** tasks in maven so that the fields are applied and can be used in **-tables-dictionary.kts**
 
-Define the position and instrument tables
+## Define the position and instrument tables
 
 Add relevant indices / primary keys for each cable (position ID is pkey for position, instrument id is pkey for INSTRUMENT_PRICE table, and INSTRUMENT_ID and COUNTERPARTY_ID nonunique indices for POSITION table + unique index on INSTRUMENT_ID + COUNTERPARTY_ID (so we can do a lookup in consolidator)).
 
@@ -44,6 +44,6 @@ Add a new entry to **trading_app-processes.xml** with the consolidator2 process 
 
 Add a new entry to **trading_app-service-definitions.xml** with the consolidator2 details.
 
-Testing
+## Testing
 
 Optional? Create unit test to prove consolidator is working (test that when you insert a new trade in DB, a new position record is created with the relevant data after a while). You can have a look at core framework tests for this.
