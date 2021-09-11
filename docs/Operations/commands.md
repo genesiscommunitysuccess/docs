@@ -18,7 +18,7 @@ If the commit option is not specified, the product will not be installed, but th
 
 This is how the script behaves:
 
-First it gets the productname-product-details.xml information from the product zip file, and it verifise the correctness of this file.
+First it gets the **productname-product-details.xm**l information from the product zip file, and it verifies the correctness of this file.
 
 It checks if a previous installation of the application is present. (Is there a version of the same application installed by installRelease in the system?) This always happens, whether you used the **--commit** option or not. In case we do have an installation underway, the installation will stop at this point. If you want to force the installation, delete the folder "new" under GENESIS_HOME/releases/(productname)v.(version)/. For more information see points 4 and 5.
 
@@ -35,11 +35,9 @@ i**nstallRelease** will try to use **global-product-details.xm**l inside GENESIS
 
 Execute **genesisInstall** after installing an application, so that the application details are stored in global-product-details.xml for future product installations.
 
-\##
-
 ## genesisInstall script
 
-This scriptscript validates all system and product configuration, checkin for such things as field  duplication.
+This scriptscript validates all system and product configuration, checking for things such as field duplication.
 
     genesisInstall \[--ignore\]
 
