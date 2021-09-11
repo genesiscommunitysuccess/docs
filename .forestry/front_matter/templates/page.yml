@@ -15,6 +15,7 @@ pages:
 - docs/Operations/commands.md
 - docs/euc-replace/add-joins-to-the-data-server.md
 - docs/euc-replace/build-the-front-end.md
+- docs/euc-replace/calculate-the-positions.md
 - docs/euc-replace/conclusion.md
 - docs/euc-replace/configure-the-event-handlers.md
 - docs/euc-replace/generate-the-reference-app.md
