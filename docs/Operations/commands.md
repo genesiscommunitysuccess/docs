@@ -101,17 +101,17 @@ This script starts a Genesis process. It takes a single positional argument:
 
 <process name> and an optional argument "--dump", to ensure console output is shown on screen (useful for debugging).
 
-Syntax:
+Syntax
 
     startProcess processName \[--hostname <\[host names\]>\] \[--dump\] 
 
-processName           name of the process that you want to start
+**processName**          name of the process that you want to start
 
-\--hostname HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]	where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node. Specify the Host Name.
+**--hostname HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]**	where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name.
 
-\--cluster, -c         starts the process on every node in the cluster
+**--cluster, -c**         starts the process on every node in the cluster
 
-\-- dump	displays progress of starting the process, which is usful for debugging
+**-- dump**	displays progress of starting the process, which is usful for debugging
 
 The script looks in the processes.xml (see startServer below) to find out how to start the process.
 
@@ -675,9 +675,9 @@ Usage:
 
 This is a python script wrapper for Genesis scripts.
 
-GenesisRun will attempt to find a script to execute within the genesis folder structure (e.g site-specific or scripts). 
+GenesisRun will attempt to find a script to execute within the genesis folder structure (e.g site-specific or scripts).
 
-There are two environment variables that can be used to configure how much RAM the scripts will use: 
+There are two environment variables that can be used to configure how much RAM the scripts will use:
 
 * SCRIPT_MAX_HEAP
 * REMAP_MAX_HEAP
@@ -693,7 +693,7 @@ There is a separate wrapper, **JvmRun** for Java main class scripts.
 
 This is a groovy script which can be executed with **GenesisRun** or **JVMRun**.
 
-DictionaryBuilder parses RDBMS schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases. 
+DictionaryBuilder parses RDBMS schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases.
 
 The script accepts a series of arguments to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc).
 
