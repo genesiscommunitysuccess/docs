@@ -472,9 +472,9 @@ LogLevel -p <process-name> -l <log level> -t <time> \[-optional
     
                                                 min/sec Eg: 1m, 1000s
 
-\## mon script
+## mon script
 
-To get a status for the overall system, type **mon** from the command. This shows you if the server is up or not.
+This script shows the status of the overall system, so you can see if the server is up or not.
 
     ***************************************************************************
     
@@ -504,11 +504,9 @@ To get a status for the overall system, type **mon** from the command. This show
     
     9419    AUTH_PERMS                    8003        RUNNING        0.30      1.80
 
-Usage:
+Usage
 
     mon \[-v | -c | -a\] polling_interval
-    
-    
     
     Options:
     
@@ -524,13 +522,15 @@ Usage:
 
 To instantly remove database tables with all corresponding records, use the DropTable command.
 
-The command takes a flag of -t followed by a list of space separated table names.
+The command takes a flag of **-**t followed by a list of space-separated table names.
+
+For example:
+
+**DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3**
 
 Confirmation of removal is required for each table.
 
-DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3
-
-\## PopulateHolidays
+## PopulateHolidays
 
 To populate the Holidays table with holidays based on a specific year(s), country(ies) and region(s), use the Populate command.
 
@@ -546,11 +546,9 @@ To populate the Holidays table with holidays based on a specific year(s), countr
     
     For example: PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
 
-\##
+## CountRecords
 
-CountRecords
-
-Counts the number of records in the database, grouped by table, and prints to screen.
+This counts the number of records in the database, grouped by table, and prints to screen.
 
 Can either give the record count for each table defined in the dictionary, or of a provided space separated list, i.e.:
 
@@ -558,11 +556,11 @@ All Tables:  CountRecords
 
 Specific Tables: CountRecords TABLE_NAME1 TABLE_NAME2 ...
 
-\## MigrateAliases
+## MigrateAliases
 
-Migrates the Genesis alias store from database storage to file storage and vice versa.
+This migrates the Genesis alias store from database storage to file storage and vice versa.
 
-Usage:
+Usage
 
     MigrateAliases FILE
     
@@ -574,25 +572,29 @@ It is recommended to use a file store if you are running Genesis in a single nod
 
 The "remap" operation will update the alias store, so if you are running a Genesis cluster it is better to use a database storage mode, as it is less error prone and the user won't have to manually copy the alias storage file to the remaining nodes manually.
 
-\## MigrateDictionary
+## MigrateDictionary
 
-Migrates the Genesis dictionary from Database Dictionary Store to File Dictionary Store storage and vice versa.
+This migrates the Genesis dictionary from Database Dictionary Store to File Dictionary Store storage and vice versa.
 
 Usage:
 
     MigrateDictionary
 
-Uses a system definition file to get the "DictionarySource" property. If the property is "DB" (the server uses a Database Dictionary Store), then the "MigrateDictionary" script saves a dictionary to a file. If the "DictionarySource" is "FILE" (the server uses a File Dictionary Store), then the dictionary is saved to a database. The target database type - "DbLayer" - is retrieved from the system definitions file.
+The script uses a system definition file to get the **DictionarySource** property. 
 
-It is recommended to use a file store (set by default) if you are running Genesis in a single node and database store if you are running Genesis in more than one node.
+If the property is **DB** (the server uses a Database Dictionary Store), then the **MigrateDictionary** script saves a dictionary to a file. 
 
-The "remap" operation will update the dictionary, so if you are running a Genesis cluster it is better to use a Database Dictionary Store, as it is less error prone and the user won't have to manually copy the dictionary file to the remaining nodes manually.
+If the **DictionarySource** is **FILE** (the server uses a File Dictionary Store), then the dictionary is saved to a database. The target database type - **DbLayer** - is retrieved from the system definitions file.
 
-It is potentially dangerous to switch the "DictionarySource" property. The undesired effect can be caused by running "remap" (modifying dictionary) after "MigrateDictionary" and before switching "DictionarySource" property. In this way the file store and database store can contain different dictionaries and it is not safe to switch between them.
+It is recommended that you use a file store (set by default) if you are running Genesis in a single node and database store if you are running Genesis in more than one node.
 
-\## GetNextSequenceNumbers
+The **remap** operation will update the dictionary, so if you are running a Genesis cluster, it is better to use a Database Dictionary Store, as it is less error-prone and the user won't have to manually copy the dictionary file to the remaining nodes manually.
 
-Finds all the dictionary sequences and prints the next sequence number for each one of them. Prints the results on screen in a "csv" fashion, so it is easy to redirect the output and then reuse it with "SetSequence" script (see below).
+It is potentially dangerous to switch the **DictionarySource** property. If you run **remap** (which modifies the  dictionary) after **MigrateDictionary** and before switching **DictionarySource** property, the file store and database store could contain different dictionaries and it is not safe to switch between them.
+
+## GetNextSequenceNumbers
+
+This finds all the dictionary sequences and prints the next sequence number for each one of them. It displays the results on screen in  csv format, so it is easy to redirect the output and reuse it with the **SetSequence** script (see below).
 
 Usage:
 
