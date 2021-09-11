@@ -113,9 +113,8 @@ Syntax
 
 **-- dump**	displays progress of starting the process, which is usful for debugging
 
-The script looks in the processes.xml (see startServer below) to find out how to start the process.
+The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example:
 
-    For example:
     
         startProcess AUTH_DATASERVER
     
@@ -123,13 +122,11 @@ The script looks in the processes.xml (see startServer below) to find out how to
     
         java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
 
-\##
-
 ## killProcess script
 
 This script is used to terminate a specified process.
 
-Syntax:
+Syntax
 
     killProcess process_name HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\] \[--force\] \[--wait\]
 
@@ -145,7 +142,7 @@ Syntax:
 
 This script reads the **$GC/processes.xml** file to determine which processes to start and how to start them.
 
-Syntax:
+Syntax
 
     startServer \[--hostname <\[host names\]>\] \[--ignoreDaemon\] 
 
@@ -221,25 +218,25 @@ The classpath tag defines additional jar files that might be needed by the micro
 
 This script reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt
 
-Syntax:
+Syntax
 
     \[--hostname <\[hosts names\]>\]\[--force\]
 
-This command requires user confirmation: 'Are you sure you want to kill server? (y/n):' Optionally, you can use -force to skip it.
+This command requires user confirmation: '**Are you sure you want to kill server? (y/n):** Alternatively, you can use **-force** to skip it.
 
-optional arguments:
+optional arguments
 
-\--hostname HOSTNAME HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]	Where the application is running on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node. Specify the Host Name.
+**--hostname HOSTNAME HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]**	Where the application is running on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node. Specify the Host Name.
 
                         Hosts Name or "cluster" for all hosts
 
-\--force, -f           forcefully kills a process (using kill -9)
+**--force, -f**           forcefully kills a process (using kill -9)
 
-\--all                 kills all processes, including GENESIS_CLUSTER
+**--all**                 kills all processes, including GENESIS_CLUSTER
 
-\--cluster, -c         kills the server on all the nodes in the cluster
+**--cluster, -c**         kills the server on all the nodes in the cluster
 
-\## DbMon script
+## DbMon script
 
 This script enables you to navigate through the database tables from the command line.
 
@@ -323,15 +320,15 @@ Once inside DbMon you can run the command **help**, which shows all the availabl
     
     writeMode
 
-Usage:
+Usage
 
-DbMon has built-in help instruction for each command. Run "help <command>" to get more information.
+**DbMo**n has built-in help instruction for each command. Run "help <command>" to get more information.
 
 \## SendIt script
 
 To send data into the database, use the SendIt command.
 
-Syntax:
+Syntax
 
         SendTable -t <table name> -f <file name>
     
