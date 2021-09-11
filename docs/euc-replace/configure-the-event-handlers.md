@@ -44,6 +44,12 @@ Now we shall create and run some unit testing for our new event handlers.
 
 ### Create test data
 
+You need a set of counterparties and instruments to test the event handlers. This can be a CSV file, as shown in this example.
+
+in the same format as the one found in this folder (see EventHandler Script - TestData file example from different project). 
+
+The test data should ideally match the test data in the Trades excel file example (this means matching instrument_id and counterparty_id values in the example INSTRUMENT and COUNTERPARTY records). This makes it easy to correlate the test data.
+
 ### Dependencies
 
 Add **ref_app_data-config** as a dependency with provided scope in the parent pom.
