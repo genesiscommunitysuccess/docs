@@ -614,11 +614,13 @@ Usage:
     
      -p,--print
 
-\## GetAutoIncrementCount
+\## 
 
-Works like GetSequenceCount but for auto increment INT values defined in dictionaries.
+## GetAutoIncrementCount
 
-Usage:
+This works like the **GetSequenceCount**, but for auto increment INT values defined in dictionaries.
+
+Usage
 
     GetAutoIncrementCount
     
@@ -650,9 +652,9 @@ Usage:
     
                            value)
 
-\## SetAutoIncrement
+## SetAutoIncrement
 
-Works like SetSequence but for auto increment INT values.
+This works like **SetSequenc**e but for auto increment INT values.
 
 Usage:
 
@@ -1000,13 +1002,11 @@ To have the following settings:-
 
 Once the files have been saved, run **genesisInstall**. When the processes starts again, it will be secure.
 
-\##GUI
+## GUI
 
-To enable the GUI to be ready to connect securely edit the %ProgramData%\\Genesis\\exmon\\Rel\\Config\\PrimaryServiceConfig.xml setting "encrypted" to true
+To enable the GUI to  connect securely, edit the **%ProgramData%\\Genesis\\exmon\\Rel\\Config\\PrimaryServiceConfig.xml** setting **encrypted** to **true**.
 
-\###Example:
-
-\`\`\`xml
+### Example
 
     <?xml version="1.0"?>
     
@@ -1022,9 +1022,7 @@ To enable the GUI to be ready to connect securely edit the %ProgramData%\\Genesi
     
     </primary_service>
 
-\`\`\`
-
-Note: With encryption, if using a self-signed certificate, it is required to install the certificate.crt in the target machine's operating system as a trusted root CA.
+Note: With encryption, if using a self-signed certificate, you must install the certificate.crt in the target machine's operating system as a trusted root CA.
 
 ## Web front-end
 
