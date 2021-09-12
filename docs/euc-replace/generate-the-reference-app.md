@@ -4,7 +4,7 @@ title: Generate the reference app
 sidebar_label: Generate the reference app
 
 ---
-The first task is to generate a reference application from the exising RDBMS of reference data.
+The first task is to generate a reference application from the existing RDBMS of reference data.
 
 Before you start. You need the genesis server platform installed in a server/local vm/wsl/cloud instance (genesis and auth).
 
@@ -71,7 +71,7 @@ This gives you the following project structure:
 
 > screengrab from Jose
 
-### Move the files to the require location
+### Move the files to the required location
 
 Move the generated **ref_data_app/cfg** files (from the previous DictionaryBuilder and AppGen steps) to the **ref_data_app-config/src/main/resources/cfg** folder.
 
