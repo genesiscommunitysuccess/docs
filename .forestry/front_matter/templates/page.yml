@@ -14,6 +14,7 @@ fields:
 pages:
 - docs/Operations/commands.md
 - docs/euc-replace/add-joins-to-the-data-server.md
+- docs/euc-replace/adding-a-view.md
 - docs/euc-replace/build-the-front-end.md
 - docs/euc-replace/calculate-the-positions.md
 - docs/euc-replace/conclusion.md
