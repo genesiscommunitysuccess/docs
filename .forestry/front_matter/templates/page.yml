@@ -18,6 +18,7 @@ pages:
 - docs/euc-replace/build-the-front-end.md
 - docs/euc-replace/calculate-the-positions.md
 - docs/euc-replace/conclusion.md
+- docs/euc-replace/configure-state-machines.md
 - docs/euc-replace/configure-the-event-handlers.md
 - docs/euc-replace/generate-the-reference-app.md
 - docs/euc-replace/generate-the-trading-app.md
