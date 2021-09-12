@@ -57,7 +57,9 @@ Writing file cfg/ref_data_app-processes.xml
 
 Optionally, you could now run remap, which would give you cud operations for all the tables and request replies (static data from the request server), as well as for real-time data retrieval (via the data server.
 
-But for this application, we are going to go into the pro code first, to add some sophistication. Build a maven project so that you can use an IDE to build the app.
+But for this application, we are going to go into the pro code first, to add some sophistication. Build a maven project so that you can use an IDE to build the app. 
+
+### Build a maven project
 
 You can run the **mvn** command either locally (in the server, local vm, wsl or cloud instance where the LCNC Platform is installed) or a separate local dev machine. In our example, we are using the same machine as before for consistency.
 
@@ -67,15 +69,19 @@ Run the **mvn** command:
 
 This gives you the following project structure:
 
-> screengab from Jose
+> screengrab from Jose
 
-Move the generated ref_data_app/cfg files (from previous DictionaryBuilder and AppGen steps) to the ref_data_app-config/src/main/resources/cfg folder.
+### Move the files to the require location
 
-Move the generated ref_data_app/scripts files (request server, data server and event handler) to the ref_data_app-script-config/src/main/resources/scripts folder.
+Move the generated **ref_data_app/cfg** files (from the previous DictionaryBuilder and AppGen steps) to the **ref_data_app-config/src/main/resources/cfg** folder.
 
-Build a maven project with mvn install.
+Locate the generated files for the request server, data server and event handler. These are in the  **ref_data_app/scripts** folder. Move these to the **ref_data_app-script-config/src/main/resources/scripts** folder.
 
-Show archetype generation in intellij
+### Install the maven project 
+
+Now run **mvn install**.
+
+\**screengrab archetype generation in intellij
 
 Again, you need to move the script and config files. Have these to hand, so you can copy them easily:
 
@@ -83,6 +89,8 @@ Move the generated **ref_data_app/cfg** files (from the previous DictionaryBuild
 
 Locate the generated files for the request server, data server and event handler. These are in the  **ref_data_app/scripts** folder. Move these to the **ref_data_app-script-config/src/main/resources/scripts** folder.
 
-Build a maven project with mvn install in intellij
+### Install the maven project in intellij
 
-> screengrab of result
+In intellij, run **mvn install**.
+
+screengrab of result
