@@ -16,7 +16,12 @@ You can see the tables in the source relational database tables in DBeaver.
 
 \**dbeaver screenshot from Jose
 
-Run DictionaryBuilder
+## Generate the dictionary files
+
+The **DictionaryBuilder** script reads the source database and generates the appropriate fields, tables and views in Genesis format. These are stored in two files:
+
+* **-fields-dictionary.kts**
+* **-tables-dictionary.kts**
 
 Using the instance in which the platform is installed, run
 
@@ -28,13 +33,13 @@ Check these files and adjust them to suit your application. For example, the pro
 
 > Picture from Jose
 
-Create new ref_data_app folder structure inside GENESIS_HOME, including cfg and script folders
+Create a new ref_data_app folder structure inside GENESIS_HOME, including cfg and script folders
 
 Copy the output files from the dictionary build to the **ref_data_app/cfg** folder inside the run directory.
 
-Run genesisInstall to verify everything is ok.
+Run **genesisInstall** to verify everything is ok.
 
-Run AppGen to build your three modules (eventhandler, request server and data server):
+Run **AppGen** to build your three modules (eventhandler, request server and data server):
 
 AppGen -n ref_data_app -p 10000
 
@@ -54,9 +59,9 @@ Optionally, you could now run remap, which would give you cud operations for all
 
 But for this application, we are going to go into the pro code first, to add some sophistication. Build a maven project so that you can use an IDE to build the app.
 
-You can run the mvn command either locally (in the server, local vm, wsl or cloud instance where the LCNC Platform is installed) or a separate local dev machine. In our example, we are using the same machine as before for consistency.
+You can run the **mvn** command either locally (in the server, local vm, wsl or cloud instance where the LCNC Platform is installed) or a separate local dev machine. In our example, we are using the same machine as before for consistency.
 
-Run the mvn command:
+Run the **mvn** command:
 
 **mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=ref_data_app -B**
 
@@ -74,9 +79,9 @@ Show archetype generation in intellij
 
 Again, you need to move the script and config files. Have these to hand, so you can copy them easily:
 
-Move the generated ref_data_app/cfg files (from previous DictionaryBuilder and AppGen steps) to the ref_data_app-config/src/main/resources/cfg folder.
+Move the generated **ref_data_app/cfg** files (from the previous DictionaryBuilder and AppGen steps) to the **ref_data_app-config/src/main/resources/cfg** folder.
 
-Move the generated ref_data_app/scripts files (request server, data server and event handler) to the ref_data_app-script-config/src/main/resources/scripts folder. (have files at hand so we can copy them easily).
+Locate the generated files for the request server, data server and event handler. These are in the  **ref_data_app/scripts** folder. Move these to the **ref_data_app-script-config/src/main/resources/scripts** folder.
 
 Build a maven project with mvn install in intellij
 
