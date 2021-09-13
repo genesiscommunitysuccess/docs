@@ -4,7 +4,7 @@ title: Software Dev. Lifecycle
 sidebar_label: Software Dev. Lifecycle
 
 ---
-This are looks at the software development lifecycle of a Genesis project, and the approach to Continuous Improvement/Continuous Development
+This area looks at the software development lifecycle of a Genesis project, and the approach to Continuous Improvement/Continuous Development.
 
 ## Source Control management – Git Workflow
 
