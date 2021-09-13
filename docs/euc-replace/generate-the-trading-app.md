@@ -24,13 +24,13 @@ This generates the fields-dictionary.kts and -tables-dictionary.kts for the data
 
 The fields and tables can be adjusted to suit your new app. For example, we can remove INSTRUMENT_ID and COUNTERPARTY_ID LATER ON when we add them to intellij, as our intellij project will be importing them from ref_data_app. Additionally we can tweak TRADE_ID to be a STRING and use a “sequence” definition to generate the fields
 
-## Run **genesisInstall**
+## Run genesisInstall
 
-The next step is to run genesisInstall, which will run checks and highlight any issues.
+The next step is to run **genesisInstall**, which will run checks and highlight any issues.
 
 ### Example of a fail (duplicated fields)
 
-Let’s be practical here. Without changing the application, run genesisInstall.
+Let’s be practical here. Without changing the application, run **genesisInstall**.
 
 This will fail because of duplicate fields with wrong types. Remove the following duplicated fields/tables:
 
@@ -77,7 +77,7 @@ Run
 
 **mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=trading_app -B**
 
-\**Show resulting project structure. 
+\**Show resulting project structure.
 
 Move generated trading_app/cfg files (from previous Excellarator and AppGen steps) to trading_app-config/src/main/resources/cfg and move generated trading_app/scripts files (requestserver, dataserver and eventhandler) to trading_app-script-config/src/main/resources/scripts
 
