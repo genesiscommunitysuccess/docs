@@ -6,27 +6,27 @@ sidebar_label: Single Sign-on
 ---
 ## Introduction
 
-Single sign-on is a mechanism that allows you to authenticate users in your systems and subsequently tell a genesis global solution that the user has been authenticated. If you use single sign-on with JWT, a user is automatically verified with the identity provider when they sign in. The user is then allowed to access a genesis global solution without being prompted to enter separate sign-in credentials.
+Single sign-on is a mechanism that enables you to authenticate users in your systems, and subsequently tell a genesis global solution that the user has been authenticated. If you use single sign-on with JWT (JSON Web Token) a user is automatically verified with the identity provider when they sign in. The user is then allowed to access a genesis global solution without being prompted to enter separate sign-in credentials.
 
-At the core of single sign-on is a security mechanism that allows the genesis global solution to trust the sign-in requests it gets from your systems. The genesis global solution only grants access to the users who have been authenticated by the client’s internal AD component. 
+At the core of single sign-on is a security mechanism that allows the genesis global solution to trust the sign-in requests it gets from your systems. The genesis global solution only grants access to users who have been authenticated by your internal AD component.
+
+## JWT SSO
 
 In its simplest form, Genesis SSO relies on a technology called JSON Web Token (JWT) for securing the exchange of user authentication data.
 
-## JWT SSO 
+### Internal JWT authentication service
 
-2\.1	INTERNAL JWT AUTHENTICATION SERVICE
+The IT infrastructure/security team at an organisation is usually responsible for setting up and managing the company's JWT authentication service. If a solution isn’t in place, genesis global will provide a detailed instruction and assistance on how this is set up.
 
-The IT infrastructure/security team at an organisation is usually responsible for setting up and managing the company's JWT authentication service. If a solution isn’t in place, genesis global will provide a detailed instruction and assistance on how this is set up. 
+### Configuration details 
 
-2\.2	CONFIGURATION DETAILS SHARED WITH GENESIS GLOBAL
+The following data points need to be shared with genesis global to complete the solution. These data points are stored in the database of the specific genesis solution.
 
-The following data points needs to be shared with genesis global to complete the solution. These data points are stored in the database of the specific genesis solution.
+The public key of the JWT RSA key pair, (the private key is used to sign the JWT at the internal authentication service).
 
-1\.	The public key of the JWT RSA key pair, (the private key is used to sign the JWT at the internal authentication service).
+The URL to the internal JWT authentication service.
 
-2\.	The URL to the internal JWT authentication service.
-
-2\.3	HOW GENESIS JWT SSO WORKS
+### How Genesis JWT SSO works
 
 There are two paths to the SSO workflow dependent if CORS is configured on the internal authentication service to allow the genesis web platform to make direct authentication requests or not.
 
@@ -64,7 +64,7 @@ Example: [https://your-subdomain.genesisapplication.com/](https://your-subdomain
 
 6\.	The genesis platform is reloaded, recognises SSO is enabled but now with the JWT as a parameter and sends an SSO authentication request with the JWT for the specific organisation which if successful an active Session token is returned.
 
-3\.	SAML SSO 
+3\.	SAML SSO
 
 3\.1	WHAT IS SAML
 
@@ -104,49 +104,49 @@ For more information, see wikipedia
 
 <md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="[http://www.w3.org/2000/09/xmldsig#](http://www.w3.org/2000/09/xmldsig# "http://www.w3.org/2000/09/xmldsig#")" entityID="http://localhost:8080/simplesaml/saml2/idp/metadata.php">
 
-  <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+<md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
 
     <md:KeyDescriptor use="signing">
-
+    
       <ds:KeyInfo xmlns:ds="[http://www.w3.org/2000/09/xmldsig#](http://www.w3.org/2000/09/xmldsig# "http://www.w3.org/2000/09/xmldsig#")">
-
+    
         <ds:X509Data>
-
+    
           <ds:X509Certificate>MIIDXTCCAkWgAwIBAgIJALmVVuDWu4NYMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMTYxMjMxMTQzNDQ3WhcNNDgwNjI1MTQzNDQ3WjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzUCFozgNb1h1M0jzNRSCjhOBnR+uVbVpaWfXYIR+AhWDdEe5ryY+CgavOg8bfLybyzFdehlYdDRgkedEB/GjG8aJw06l0qF4jDOAw0kEygWCu2mcH7XOxRt+YAH3TVHa/Hu1W3WjzkobqqqLQ8gkKWWM27fOgAZ6GieaJBN6VBSMMcPey3HWLBmc+TYJmv1dbaO2jHhKh8pfKw0W12VM8P1PIO8gv4Phu/uuJYieBWKixBEyy0lHjyixYFCR12xdh4CA47q958ZRGnnDUGFVE1QhgRacJCOZ9bd5t9mr8KLaVBYTCJo5ERE8jymab5dPqe5qKfJsCZiqWglbjUo9twIDAQABo1AwTjAdBgNVHQ4EFgQUxpuwcs/CYQOyui+r1G+3KxBNhxkwHwYDVR0jBBgwFoAUxpuwcs/CYQOyui+r1G+3KxBNhxkwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAAiWUKs/2x/viNCKi3Y6blEuCtAGhzOOZ9EjrvJ8+COH3Rag3tVBWrcBZ3/uhhPq5gy9lqw4OkvEws99/5jFsX1FJ6MKBgqfuy7yh5s1YfM0ANHYczMmYpZeAcQf2CGAaVfwTTfSlzNLsF2lW/ly7yapFzlYSJLGoVE+OHEu8g5SlNACUEfkXw+5Eghh+KzlIN7R6Q7r2ixWNFBC/jWf7NKUfJyX8qIG5md1YUeT6GBW9Bm2/1/RiO24JTaYlfLdKK9TYb8sG5B+OLab2DImG99CJ25RkAcSobWNF5zD0O6lgOo3cEdB/ksCq3hmtlC/DlLZ/D8CJ+7VuZnS1rR2naQ==</ds:X509Certificate>
-
+    
         </ds:X509Data>
-
+    
       </ds:KeyInfo>
-
+    
     </md:KeyDescriptor>
-
+    
     <md:KeyDescriptor use="encryption">
-
+    
       <ds:KeyInfo xmlns:ds="[http://www.w3.org/2000/09/xmldsig#](http://www.w3.org/2000/09/xmldsig# "http://www.w3.org/2000/09/xmldsig#")">
-
+    
         <ds:X509Data>
-
+    
           <ds:X509Certificate>MIIDXTCCAkWgAwIBAgIJALmVVuDWu4NYMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMTYxMjMxMTQzNDQ3WhcNNDgwNjI1MTQzNDQ3WjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzUCFozgNb1h1M0jzNRSCjhOBnR+uVbVpaWfXYIR+AhWDdEe5ryY+CgavOg8bfLybyzFdehlYdDRgkedEB/GjG8aJw06l0qF4jDOAw0kEygWCu2mcH7XOxRt+YAH3TVHa/Hu1W3WjzkobqqqLQ8gkKWWM27fOgAZ6GieaJBN6VBSMMcPey3HWLBmc+TYJmv1dbaO2jHhKh8pfKw0W12VM8P1PIO8gv4Phu/uuJYieBWKixBEyy0lHjyixYFCR12xdh4CA47q958ZRGnnDUGFVE1QhgRacJCOZ9bd5t9mr8KLaVBYTCJo5ERE8jymab5dPqe5qKfJsCZiqWglbjUo9twIDAQABo1AwTjAdBgNVHQ4EFgQUxpuwcs/CYQOyui+r1G+3KxBNhxkwHwYDVR0jBBgwFoAUxpuwcs/CYQOyui+r1G+3KxBNhxkwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAAiWUKs/2x/viNCKi3Y6blEuCtAGhzOOZ9EjrvJ8+COH3Rag3tVBWrcBZ3/uhhPq5gy9lqw4OkvEws99/5jFsX1FJ6MKBgqfuy7yh5s1YfM0ANHYczMmYpZeAcQf2CGAaVfwTTfSlzNLsF2lW/ly7yapFzlYSJLGoVE+OHEu8g5SlNACUEfkXw+5Eghh+KzlIN7R6Q7r2ixWNFBC/jWf7NKUfJyX8qIG5md1YUeT6GBW9Bm2/1/RiO24JTaYlfLdKK9TYb8sG5B+OLab2DImG99CJ25RkAcSobWNF5zD0O6lgOo3cEdB/ksCq3hmtlC/DlLZ/D8CJ+7VuZnS1rR2naQ==</ds:X509Certificate>
-
+    
         </ds:X509Data>
-
+    
       </ds:KeyInfo>
-
+    
     </md:KeyDescriptor>
-
+    
     <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://localhost:8080/simplesaml/saml2/idp/SingleLogoutService.php"/>
-
+    
     <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
-
+    
     <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://localhost:8080/simplesaml/saml2/idp/SSOService.php"/>
 
-  </md:IDPSSODescriptor>
+</md:IDPSSODescriptor>
 
 </md:EntityDescriptor>
 
 3\.3	REQUIREMENTS
 
-Before starting you will need: 
+Before starting you will need:
 
 1\.	Access to the IDP meta data (will be generated by the idp)
 
@@ -161,19 +161,19 @@ SAML has to be enabled on GENESIS_ROUTER service, by changing the router process
 <process name="GENESIS_ROUTER">
 
     <start>true</start>
-
+    
     <groupId>GENESIS</groupId>
-
+    
     <options>-Xmx512m -DXSD_VALIDATE=false</options>
-
+    
     <module>router</module>
-
+    
     <package>global.genesis.router#global.genesis.console#global.genesis.auth.saml</package>
-
+    
     <config>genesis-router.xml</config>
-
+    
     <classpath>genesis-console-5.1.*.jar,auth-saml-*.jar</classpath>
-
+    
     <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
 
 </process>
@@ -212,10 +212,6 @@ Additionally, you will need a {product}-saml-config.kts file, as below:
             }
         }
     }
-
-   
-
-  
 
 Further, advanced configuration is available in the file onelogin.saml.properties. You will need to use this in case you need to configure a key for signing the authn request.
 
