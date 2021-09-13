@@ -18,6 +18,8 @@ The position table needs at least 5 fields:
 * QUANTITY: LONG (total number of shares)
 * NOTIONAL: DOUBLE (instrument price multiplied by quantity)
 
+![](/img/consolidator-1-nre-fields.png)
+
 The instrument price table needs at least two fields:
 
 * INSTRUMENT_ID : STRING
