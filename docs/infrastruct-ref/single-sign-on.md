@@ -131,7 +131,6 @@ SAML has to be enabled on the GENESIS_ROUTER service. Do this by changing the ro
         <classpath>genesis-console-5.1.*.jar,auth-saml-*.jar</classpath>
         <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
     </process>
-    
 
 Specifically; global.genesis.auth.saml needs to be added to the <package …/> tag and auth-saml-*.jar needs to be added to the <classpath …/> tag.
 
@@ -174,9 +173,9 @@ Once this is configured, a service provider meta data endpoint will be available
 
 ### Enabling users for SAML
 
-To enable users to be signed in using SAML, you must add the users to the USER, USER_ATTRIBUTES and SSO_USER tables. 
+To enable users to be signed in using SAML, you must add the users to the USER, USER_ATTRIBUTES and SSO_USER tables.
 
-In the SSO_USER table: 
+In the SSO_USER table:
 
 * SSO_METHOD must be set to SAML
 * SSO_SOURCE must be set to the identity provider name defined in the **saml-config.kts** file.
@@ -187,9 +186,9 @@ The genesis user name should be the user’s email address.
 
 In order to test the SAML flow, you can use a docker image found here. To run the image locally, run the following docker command:
 
-docker run -p 8080:8080 -p 8443:8443 -e SIMPLESAMLPHP_SP_ENTITY_ID=https://10.40.4.92/gwf/saml/metadata?idp=test -e SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=https://10.40.4.92/gwf/saml/logon?idp=test -e SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE=https://10.40.4.92/gwf/saml/logout?idp=test -d kristophjunge/test-saml-idp
+**docker run -p 8080:8080 -p 8443:8443 -e SIMPLESAMLPHP_SP_ENTITY_ID=https://10.40.4.92/gwf/saml/metadata?idp=test -e SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=https://10.40.4.92/gwf/saml/logon?idp=test -e SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE=https://10.40.4.92/gwf/saml/logout?idp=test -d kristophjunge/test-saml-idp**
 
-You will need to replace the IP with the address/IP of your genesis instance, and replace test with the name of the identify provider
+You will need to replace the IP with the address/IP of your genesis instance, and replace test with the name of the identify provider.
 
 ### OpenID Connect & OAuth 2.0
 
