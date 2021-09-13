@@ -1,0 +1,240 @@
+---
+id: sso
+title: Single Sign-on
+sidebar_label: Single Sign-on
+
+---
+## Introduction
+
+Single sign-on is a mechanism that allows you to authenticate users in your systems and subsequently tell a genesis global solution that the user has been authenticated. If you use single sign-on with JWT, a user is automatically verified with the identity provider when they sign in. The user is then allowed to access a genesis global solution without being prompted to enter separate sign-in credentials.
+
+At the core of single sign-on is a security mechanism that allows the genesis global solution to trust the sign-in requests it gets from your systems. The genesis global solution only grants access to the users who have been authenticated by the client’s internal AD component. 
+
+In its simplest form, Genesis SSO relies on a technology called JSON Web Token (JWT) for securing the exchange of user authentication data.
+
+## JWT SSO 
+
+2\.1	INTERNAL JWT AUTHENTICATION SERVICE
+
+The IT infrastructure/security team at an organisation is usually responsible for setting up and managing the company's JWT authentication service. If a solution isn’t in place, genesis global will provide a detailed instruction and assistance on how this is set up. 
+
+2\.2	CONFIGURATION DETAILS SHARED WITH GENESIS GLOBAL
+
+The following data points needs to be shared with genesis global to complete the solution. These data points are stored in the database of the specific genesis solution.
+
+1\.	The public key of the JWT RSA key pair, (the private key is used to sign the JWT at the internal authentication service).
+
+2\.	The URL to the internal JWT authentication service.
+
+2\.3	HOW GENESIS JWT SSO WORKS
+
+There are two paths to the SSO workflow dependent if CORS is configured on the internal authentication service to allow the genesis web platform to make direct authentication requests or not.
+
+2\.3.1	CORS ENABLED
+
+1\.	An unauthenticated user navigates to the genesis application.
+
+Example: [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/")
+
+2\.	The genesis web platform recognizes that SSO is enabled from the subdomain and that the user is not authenticated.
+
+3\.	A request is made to the genesis backend framework to request the URL for the specific authentication service.
+
+4\.	The genesis web platform makes a http request to your organization's authentication service which will include the end user’s internal authentication parameters.
+
+5\.	The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends it back to the genesis web platform.
+
+6\.	With the signed JWT the genesis web platform makes a SSO authentication request for the specific organisation which if successful an active Session token is returned.
+
+2\.3.2	CORS NOT CONFIGURED
+
+This setup will leverage the browser’s redirect functionality and might not be experienced as seamless to the end user and section 3.1.
+
+1\.	An unauthenticated user navigates to the genesis application.
+
+Example: [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/")
+
+2\.	The genesis web platform recognizes that SSO is enabled from the subdomain and that the user is not authenticated.
+
+3\.	A request is made to the genesis backend framework to request the URL for the specific authentication service.
+
+4\.	A redirect is triggered for the browser to the internal authentication service which will include the end user’s internal authentication parameters. A return parameter to [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/") is also part of the request.
+
+5\.	The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends a redirect trigger to the browser for [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/") which includes the JWT as a request parameter.
+
+6\.	The genesis platform is reloaded, recognises SSO is enabled but now with the JWT as a parameter and sends an SSO authentication request with the JWT for the specific organisation which if successful an active Session token is returned.
+
+3\.	SAML SSO 
+
+3\.1	WHAT IS SAML
+
+SAML is an SSO protocol that can be used to authenticate users within a genesis system. It works by connecting a Service Provider (SP), a genesis application in this case and an Identity Provider (IDP), which would be an external party.
+
+1\.	The SP and the IDP communicate using the user's web browser and do not need to be accessible to each other.
+
+2\.	Once SAML is enabled, a user can click on an SSO button in the gui. This starts the SAML authentication flow:
+
+3\.	User is directed to a genesis end point that generates the authentication (authn) request
+
+4\.	User is redirected to the IDP, with the authn request as a query parameter
+
+5\.	User identifies him or herself to the IDP
+
+6\.	User is redirected back to the genesis saml end point, with a response as a query parameter
+
+7\.	The response is validated, and the user is redirected back to the genesis logon end point with a token
+
+8\.	The front end starts the login process into genesis using this token.
+
+For more information, see wikipedia
+
+3\.2	DEFINITIONS
+
+|   Term   | Meaning                                                                                                                                                                                                        | Example                                                                                     |
+
+|:--------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+
+| IDP      | Identity Provider                                                                                                                                                                                              | The authentication source, for example the client                                           |
+
+| SP       | Service Provider                                                                                                                                                                                               | The service for which the user needs to be authenticated, for example a genesis application |
+
+| MetaData | For an IDP and SP to work  together, certain parts of the configuration needs to be shared; this is the meta data. An SP would need to know the IDP meta data, and the IDP might need to know the SP meta data | see below                                                                                   |
+
+<?xml version="1.0"?>
+
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="[http://www.w3.org/2000/09/xmldsig#](http://www.w3.org/2000/09/xmldsig# "http://www.w3.org/2000/09/xmldsig#")" entityID="http://localhost:8080/simplesaml/saml2/idp/metadata.php">
+
+  <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+
+    <md:KeyDescriptor use="signing">
+
+      <ds:KeyInfo xmlns:ds="[http://www.w3.org/2000/09/xmldsig#](http://www.w3.org/2000/09/xmldsig# "http://www.w3.org/2000/09/xmldsig#")">
+
+        <ds:X509Data>
+
+          <ds:X509Certificate>MIIDXTCCAkWgAwIBAgIJALmVVuDWu4NYMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMTYxMjMxMTQzNDQ3WhcNNDgwNjI1MTQzNDQ3WjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzUCFozgNb1h1M0jzNRSCjhOBnR+uVbVpaWfXYIR+AhWDdEe5ryY+CgavOg8bfLybyzFdehlYdDRgkedEB/GjG8aJw06l0qF4jDOAw0kEygWCu2mcH7XOxRt+YAH3TVHa/Hu1W3WjzkobqqqLQ8gkKWWM27fOgAZ6GieaJBN6VBSMMcPey3HWLBmc+TYJmv1dbaO2jHhKh8pfKw0W12VM8P1PIO8gv4Phu/uuJYieBWKixBEyy0lHjyixYFCR12xdh4CA47q958ZRGnnDUGFVE1QhgRacJCOZ9bd5t9mr8KLaVBYTCJo5ERE8jymab5dPqe5qKfJsCZiqWglbjUo9twIDAQABo1AwTjAdBgNVHQ4EFgQUxpuwcs/CYQOyui+r1G+3KxBNhxkwHwYDVR0jBBgwFoAUxpuwcs/CYQOyui+r1G+3KxBNhxkwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAAiWUKs/2x/viNCKi3Y6blEuCtAGhzOOZ9EjrvJ8+COH3Rag3tVBWrcBZ3/uhhPq5gy9lqw4OkvEws99/5jFsX1FJ6MKBgqfuy7yh5s1YfM0ANHYczMmYpZeAcQf2CGAaVfwTTfSlzNLsF2lW/ly7yapFzlYSJLGoVE+OHEu8g5SlNACUEfkXw+5Eghh+KzlIN7R6Q7r2ixWNFBC/jWf7NKUfJyX8qIG5md1YUeT6GBW9Bm2/1/RiO24JTaYlfLdKK9TYb8sG5B+OLab2DImG99CJ25RkAcSobWNF5zD0O6lgOo3cEdB/ksCq3hmtlC/DlLZ/D8CJ+7VuZnS1rR2naQ==</ds:X509Certificate>
+
+        </ds:X509Data>
+
+      </ds:KeyInfo>
+
+    </md:KeyDescriptor>
+
+    <md:KeyDescriptor use="encryption">
+
+      <ds:KeyInfo xmlns:ds="[http://www.w3.org/2000/09/xmldsig#](http://www.w3.org/2000/09/xmldsig# "http://www.w3.org/2000/09/xmldsig#")">
+
+        <ds:X509Data>
+
+          <ds:X509Certificate>MIIDXTCCAkWgAwIBAgIJALmVVuDWu4NYMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMTYxMjMxMTQzNDQ3WhcNNDgwNjI1MTQzNDQ3WjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzUCFozgNb1h1M0jzNRSCjhOBnR+uVbVpaWfXYIR+AhWDdEe5ryY+CgavOg8bfLybyzFdehlYdDRgkedEB/GjG8aJw06l0qF4jDOAw0kEygWCu2mcH7XOxRt+YAH3TVHa/Hu1W3WjzkobqqqLQ8gkKWWM27fOgAZ6GieaJBN6VBSMMcPey3HWLBmc+TYJmv1dbaO2jHhKh8pfKw0W12VM8P1PIO8gv4Phu/uuJYieBWKixBEyy0lHjyixYFCR12xdh4CA47q958ZRGnnDUGFVE1QhgRacJCOZ9bd5t9mr8KLaVBYTCJo5ERE8jymab5dPqe5qKfJsCZiqWglbjUo9twIDAQABo1AwTjAdBgNVHQ4EFgQUxpuwcs/CYQOyui+r1G+3KxBNhxkwHwYDVR0jBBgwFoAUxpuwcs/CYQOyui+r1G+3KxBNhxkwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAAiWUKs/2x/viNCKi3Y6blEuCtAGhzOOZ9EjrvJ8+COH3Rag3tVBWrcBZ3/uhhPq5gy9lqw4OkvEws99/5jFsX1FJ6MKBgqfuy7yh5s1YfM0ANHYczMmYpZeAcQf2CGAaVfwTTfSlzNLsF2lW/ly7yapFzlYSJLGoVE+OHEu8g5SlNACUEfkXw+5Eghh+KzlIN7R6Q7r2ixWNFBC/jWf7NKUfJyX8qIG5md1YUeT6GBW9Bm2/1/RiO24JTaYlfLdKK9TYb8sG5B+OLab2DImG99CJ25RkAcSobWNF5zD0O6lgOo3cEdB/ksCq3hmtlC/DlLZ/D8CJ+7VuZnS1rR2naQ==</ds:X509Certificate>
+
+        </ds:X509Data>
+
+      </ds:KeyInfo>
+
+    </md:KeyDescriptor>
+
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://localhost:8080/simplesaml/saml2/idp/SingleLogoutService.php"/>
+
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://localhost:8080/simplesaml/saml2/idp/SSOService.php"/>
+
+  </md:IDPSSODescriptor>
+
+</md:EntityDescriptor>
+
+3\.3	REQUIREMENTS
+
+Before starting you will need: 
+
+1\.	Access to the IDP meta data (will be generated by the idp)
+
+2\.	Enable saml support in the router
+
+3\.	Configure saml
+
+3\.4	HOW TO ENABLE SAML
+
+SAML has to be enabled on GENESIS_ROUTER service, by changing the router processes.xml config:
+
+<process name="GENESIS_ROUTER">
+
+    <start>true</start>
+
+    <groupId>GENESIS</groupId>
+
+    <options>-Xmx512m -DXSD_VALIDATE=false</options>
+
+    <module>router</module>
+
+    <package>global.genesis.router#global.genesis.console#global.genesis.auth.saml</package>
+
+    <config>genesis-router.xml</config>
+
+    <classpath>genesis-console-5.1.*.jar,auth-saml-*.jar</classpath>
+
+    <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
+
+</process>
+
+Specifically; global.genesis.auth.saml needs to be added to the <package …/> tag and auth-saml-*.jar needs to be added to the <classpath …/> tag.
+
+Additionally, you will need a {product}-saml-config.kts file, as below:
+
+    saml {
+        strictMode = false
+        debugMode = true
+        // this should be the extrenally facing genesis url:
+        loginEndpoint = "https://octosso.genesislab.global" 
+        tokenLifeInSeconds = 3000
+    
+        serviceProvider {
+            // this should be the url for accessing the router
+            entityId = "https://octosso.genesislab.global/gwf" 
+        }
+    
+        // for every identity provider we support we need one of these
+        identityProvider("citi") {
+            // we need the idp meta data, either a file:
+            metadataUrl = "citimetadata.xml" 
+            // or a url (idp should be accessible from genesis box):
+            metadataUrl = "http://localhost:8080/simplesaml/saml2/idp/metadata.php?output=xml" // idp meta data endpoint
+    
+            // where do we get the email address from
+            mapNameIdToUser()
+            // or 
+            mapToAttribute("email")
+    
+            // optional -> add url parameter to auth request
+            modifyRequest { config ->
+                addParameter("PartnerSpId", config.settings.spEntityId)
+            }
+        }
+    }
+
+   
+
+  
+
+Further, advanced configuration is available in the file onelogin.saml.properties. You will need to use this in case you need to configure a key for signing the authn request.
+
+Once this is configured, a service provider meta data endpoint will be available on: https://{url}/gwf/saml/metadata?idp={idp name}.
+
+3\.5	ENABLING USERS FOR SAML
+
+To enable users to be signed in using saml; the users need to be added to the USER, USER_ATTRIBUTES SSO_USER tables. In the SSO_USER table, SSO_METHOD should be set to SAML and SSO_SOURCE should be set to the indentity provider name defined in the saml-config.kts file.
+
+The genesis user name should be the user’s email address.
+
+3\.6	TESTING SAML
+
+In order to test the SAML flow, you can use a docker image found here. To run the image locally, run the following docker command:
+
+docker run -p 8080:8080 -p 8443:8443 -e SIMPLESAMLPHP_SP_ENTITY_ID=https://10.40.4.92/gwf/saml/metadata?idp=test -e SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=https://10.40.4.92/gwf/saml/logon?idp=test -e SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE=https://10.40.4.92/gwf/saml/logout?idp=test -d kristophjunge/test-saml-idp
+
+You will need to replace the IP with the address/IP of your genesis instance, and replace test with the name of the identify provider
+
+3\.7	OPENID CONNECT & OAUTH 2.0
+
+Support for OpenID Connect & OAuth 2.0 is p\[art of the genesis 2022 H1 technical roadmap

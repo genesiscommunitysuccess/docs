@@ -29,4 +29,5 @@ pages:
 - docs/genesistodb.md
 - docs/get-started/essential-information.md
 - docs/infrastruct-ref/clusters.md
+- docs/infrastruct-ref/single-sign-on.md
 - docs/infrastruct-ref/software-dev.lifecycle.md
