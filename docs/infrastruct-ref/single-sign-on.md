@@ -64,10 +64,10 @@ The workflow is:
 1. The SP and the IDP communicate using the user's web browser, and do not need to be accessible to each other.
 2. Once SAML is enabled, a user can click on an SSO button in the GUI. This starts the SAML authentication flow.
 3. The user is directed to a genesis end point that generates the authentication (authn) request
-4. The useris redirected to the IDP, with the authn request as a query parameter
-5. The useridentifies him or herself to the IDP
-6. The useris redirected back to the genesis saml end point, with a response as a query parameter
-7. The response is validated, and the user is redirected back to the genesis logon end point with a token
+4. The user is redirected to the IDP, with the authn request as a query parameter
+5. The user identifies him or herself to the IDP.
+6. The user is redirected back to the genesis SAML end point, with a response as a query parameter.
+7. The response is validated, and the user is redirected back to the genesis logon end point with a token.
 8. The front end starts the login process into genesis using this token.
 
 For more information, see wikipedia
