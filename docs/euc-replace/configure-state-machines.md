@@ -15,13 +15,13 @@ Also, you have enhanced the EVENT_TRADE_INSERT event handler so that it performs
 
 ## The objective
 
-We need a very simple state machine to add new trades. For this example, we shall have  a new TRADE_STATUS field with three possible states: ACTIVE, COMPLETED, CANCELLED. 
+We need a very simple state machine to add new trades. For this example, we shall have  a new TRADE_STATUS field with three possible states: ACTIVE, COMPLETED, CANCELLED.
 
-* ACTIVE can go to COMPLETED or CANCELLED. 
-* COMPLETED and CANCELLED can’t go anywhere else. 
+* ACTIVE can go to COMPLETED or CANCELLED.
+* COMPLETED and CANCELLED can’t go anywhere else.
 * ACTIVE is the only state you can use to insert new records.
 
-\** Diagram
+![](/img/diagram-of-states.png)
 
 ## Create the state machine
 
