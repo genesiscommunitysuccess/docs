@@ -4,15 +4,22 @@ title: Configure state machines
 sidebar_label: Configure state machines
 
 ---
-At this stage:
+Now we are going to configure state machine to control the workflow of trades.
 
-Ref_data_app exists (with all its tables) and the schema can be imported into trading_app. Trading_app exists and it contains the schema for TRADE table + event handlers, dataservers and req-reps.
+At this stage, you have:
 
-The EVENT_TRADE_INSERT has been enhanced with validation checks as per event handler script.
+* a Reference Data application. This has tables, so you can import the schema to the Trading application
+* a Trading application. This contains the schema for the TRADE table, plus event handlers, data servers and request servers
+
+Also, you have enhanced the EVENT_TRADE_INSERT event handler so that it performs validation checks.
 
 ## The objective
 
-We need a very simple state machine to add new trades. For this we could have a new TRADE_STATUS with three possible states: ACTIVE, COMPLETED, CANCELLED. ACTIVE can go to COMPLETED or CANCELLED. COMPLETED and CANCELLED can’t go anywhere else. ACTIVE is the only state you can use to insert new records..
+We need a very simple state machine to add new trades. For this example, we shall have  a new TRADE_STATUS field with three possible states: ACTIVE, COMPLETED, CANCELLED. 
+
+* ACTIVE can go to COMPLETED or CANCELLED. 
+* COMPLETED and CANCELLED can’t go anywhere else. 
+* ACTIVE is the only state you can use to insert new records.
 
 \** Diagram
 
