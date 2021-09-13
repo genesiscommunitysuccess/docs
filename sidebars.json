@@ -1,9 +1,9 @@
 {
   "sidebar": {
     "Getting Started": [
+      "get-started/platform",
       "get-started/application",
       "get-started/what-you-get",
-      "get-started/platform",
       "get-started/foldersserver"
     ],
     "Get Ready to Develop": [
