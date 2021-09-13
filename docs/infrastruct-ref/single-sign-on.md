@@ -57,27 +57,22 @@ This is the SSO workflow if CORS is enabled, the SSO workflow is:
 
 ## SAML SSO
 
-SAML is an SSO protocol that can be used to authenticate users within a genesis system. It works by connecting a Service Provider (SP), a genesis application in this case and an Identity Provider (IDP), which would be an external party.
+SAML is an SSO protocol that can be used to authenticate users within a genesis system. It works by connecting a Service Provider (SP) - the genesis application in this case - and an Identity Provider (IDP), which would be an external party.
 
-1\.	The SP and the IDP communicate using the user's web browser and do not need to be accessible to each other.
+The workflow is:
 
-2\.	Once SAML is enabled, a user can click on an SSO button in the gui. This starts the SAML authentication flow:
-
-3\.	User is directed to a genesis end point that generates the authentication (authn) request
-
-4\.	User is redirected to the IDP, with the authn request as a query parameter
-
-5\.	User identifies him or herself to the IDP
-
-6\.	User is redirected back to the genesis saml end point, with a response as a query parameter
-
-7\.	The response is validated, and the user is redirected back to the genesis logon end point with a token
-
-8\.	The front end starts the login process into genesis using this token.
+1. The SP and the IDP communicate using the user's web browser, and do not need to be accessible to each other.
+2. Once SAML is enabled, a user can click on an SSO button in the GUI. This starts the SAML authentication flow.
+3. The user is directed to a genesis end point that generates the authentication (authn) request
+4. The useris redirected to the IDP, with the authn request as a query parameter
+5. The useridentifies him or herself to the IDP
+6. The useris redirected back to the genesis saml end point, with a response as a query parameter
+7. The response is validated, and the user is redirected back to the genesis logon end point with a token
+8. The front end starts the login process into genesis using this token.
 
 For more information, see wikipedia
 
-3\.2	Defintions
+3\.2	Definitions
 
 |   Term   | Meaning                                                                                                                                                                                                        | Example                                                                                     |
 
