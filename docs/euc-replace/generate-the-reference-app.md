@@ -12,9 +12,9 @@ Ideally, maven should be installed in the server instance with adequate configur
 
 Otherwise, the maven installation and configuration must be available in a local development environment.
 
-You can see the tables in the source relational database tables in DBeaver.
+There are four tables in the source relational database tables. You can see these  in DBeaver.
 
-\**dbeaver screenshot from Jose
+![](/img/dbeaver-screenshot.png)
 
 ## Generate the dictionary files
 
@@ -41,7 +41,7 @@ Run **genesisInstall** to verify everything is ok.
 
 Run **AppGen** to build your three modules (eventhandler, request server and data server):
 
-AppGen -n ref_data_app -p 10000
+**AppGen -n ref_data_app -p 10000**
 
 Using output folder /root/run/ref_data_app
 
@@ -57,7 +57,7 @@ Writing file cfg/ref_data_app-processes.xml
 
 Optionally, you could now run remap, which would give you cud operations for all the tables and request replies (static data from the request server), as well as for real-time data retrieval (via the data server.
 
-But for this application, we are going to go into the pro code first, to add some sophistication. Build a maven project so that you can use an IDE to build the app. 
+But for this application, we are going to go into the pro code first, to add some sophistication. Build a maven project so that you can use an IDE to build the app.
 
 ### Build a maven project
 
@@ -77,7 +77,7 @@ Move the generated **ref_data_app/cfg** files (from the previous DictionaryBuild
 
 Locate the generated files for the request server, data server and event handler. These are in the  **ref_data_app/scripts** folder. Move these to the **ref_data_app-script-config/src/main/resources/scripts** folder.
 
-### Install the maven project 
+### Install the maven project
 
 Now run **mvn install**.
 
