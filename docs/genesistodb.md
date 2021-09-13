@@ -4,9 +4,8 @@ title: genesisToDb
 sidebar_label: genesisToDb
 
 ---
-GenesisToDb
 
-This module enables you to stream data from Genesis to classic RDBMS databases, such as Oracle or MSSQL.
+This **GenesisToDb** module enables you to stream data from Genesis to classic RDBMS databases, such as Oracle or MSSQL.
 
 The process listens to changes in the Genesis tables (insert, modify and delete) and immediately reproduces them in the selected RDBMS.
 
@@ -18,7 +17,7 @@ Use **startProcess** to start the **GenesisToDb** process. This can take two opt
 
 \**--force** if passed to the process it attempts to re-insert every trade found in our Genesis table to the RDBMS, ignoring previously inserted records.
 
-\## Configuration
+### Configuration
 
 The configuration is similar to **GenesisToDb** (and other Genesis modules). It can be configured through the standard Genesis configuration XML files.
 
@@ -222,13 +221,13 @@ Even though Genesis cannot modify these triggers/procedures and they can potenti
 
 \* \[PostgreSQL sample\](genesistodb-postgres.md)
 
-\## Encrypting user and passwords
+### Encrypting user and passwords
 
-A script called "encryptUserPass" is provided with Genesis so we can encrypt our user and password before using it in GenesisToDb.
+A script called "encryptUserPass" is provided with Genesis so we can encrypt our user and password before using it in **GenesisToDb**.
 
-\## How to
+## A practical example
 
-This a step-by-step example of how to get an Oracle database up and running with GenesisToDb.
+This a step-by-step example of how to get an Oracle database up and running with **GenesisToDb**.
 
 A series of screenshots with examples of how to create tables, stored procedures and genesistodb.xml configuration for dta. The images can be opened in a new tab to see them full size if necessary.
 
