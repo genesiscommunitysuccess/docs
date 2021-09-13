@@ -28,45 +28,34 @@ The URL to the internal JWT authentication service.
 
 ### How Genesis JWT SSO works
 
-There are two paths to the SSO workflow dependent if CORS is configured on the internal authentication service to allow the genesis web platform to make direct authentication requests or not.
+The  SSO workflow depends on whether CORS is configured on the internal authentication service to allow the genesis web platform to make direct authentication requests, or not.
 
-2\.3.1	CORS ENABLED
+#### CORS enabled
 
-1\.	An unauthenticated user navigates to the genesis application.
+If CORS is enabled, the SSO workflow is:
 
-Example: [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/")
+1. An unauthenticated user navigates to the genesis application.   
+   Example: [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/")
+2. The genesis web platform recognises that SSO is enabled from the subdomain and that the user is not authenticated.
+3. A request is made to the genesis back-end framework to request the URL for the specific authentication service.
+4. The genesis web platform makes an http request to your organisation's authentication service, which will include the end user’s internal authentication parameters.
+5. The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends it back to the genesis web platform.
+6. With the signed JWT the genesis web platform makes an SSO authentication request for the specific organisation. If this is successful, an active Session token is returned.
 
-2\.	The genesis web platform recognizes that SSO is enabled from the subdomain and that the user is not authenticated.
+#### CORS not configured
 
-3\.	A request is made to the genesis backend framework to request the URL for the specific authentication service.
+This setup uses the browser’s redirect functionality, so the user experience might not be  as seamless.
 
-4\.	The genesis web platform makes a http request to your organization's authentication service which will include the end user’s internal authentication parameters.
+This is the SSO workflow if CORS is enabled, the SSO workflow is:
 
-5\.	The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends it back to the genesis web platform.
+1. An unauthenticated user navigates to the genesis application.Example: [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/")
+2. The genesis web platform recognises that SSO is enabled from the subdomain and that the user is not authenticated.
+3. A request is made to the genesis back-end framework to request the URL for the specific authentication service.
+4. A redirect is triggered for the browser to the internal authentication service which will include the end user’s internal authentication parameters. A return parameter to [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/") is also part of the request.
+5. The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends a redirect trigger to the browser for [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/") which includes the JWT as a request parameter.
+6. The genesis platform is reloaded, recognises SSO is enabled but now with the JWT as a parameter. The platform  sends an SSO authentication request with the JWT for the specific organisation. If this is successful, an active Session token is returned.
 
-6\.	With the signed JWT the genesis web platform makes a SSO authentication request for the specific organisation which if successful an active Session token is returned.
-
-2\.3.2	CORS NOT CONFIGURED
-
-This setup will leverage the browser’s redirect functionality and might not be experienced as seamless to the end user and section 3.1.
-
-1\.	An unauthenticated user navigates to the genesis application.
-
-Example: [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/")
-
-2\.	The genesis web platform recognizes that SSO is enabled from the subdomain and that the user is not authenticated.
-
-3\.	A request is made to the genesis backend framework to request the URL for the specific authentication service.
-
-4\.	A redirect is triggered for the browser to the internal authentication service which will include the end user’s internal authentication parameters. A return parameter to [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/") is also part of the request.
-
-5\.	The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends a redirect trigger to the browser for [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/") which includes the JWT as a request parameter.
-
-6\.	The genesis platform is reloaded, recognises SSO is enabled but now with the JWT as a parameter and sends an SSO authentication request with the JWT for the specific organisation which if successful an active Session token is returned.
-
-3\.	SAML SSO
-
-3\.1	WHAT IS SAML
+## SAML SSO
 
 SAML is an SSO protocol that can be used to authenticate users within a genesis system. It works by connecting a Service Provider (SP), a genesis application in this case and an Identity Provider (IDP), which would be an external party.
 
@@ -88,7 +77,7 @@ SAML is an SSO protocol that can be used to authenticate users within a genesis 
 
 For more information, see wikipedia
 
-3\.2	DEFINITIONS
+3\.2	Defintions
 
 |   Term   | Meaning                                                                                                                                                                                                        | Example                                                                                     |
 
@@ -144,7 +133,7 @@ For more information, see wikipedia
 
 </md:EntityDescriptor>
 
-3\.3	REQUIREMENTS
+3\.3	Requirements
 
 Before starting you will need:
 
