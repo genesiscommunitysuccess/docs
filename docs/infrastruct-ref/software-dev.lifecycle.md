@@ -54,21 +54,21 @@ An instance upgrade process is triggered and orchestrated by Genesis Environment
 
 ## SAST and vulnerability testing
 
-As an integral part of all our CI/CD pipelines, security sanity checks are carried out. OWASP is leveraged for verifying external libraries used in the Genesis platform and products against security threats. SonarQube in turn performs SAST through static code analysis. 
+As an integral part of all our CI/CD pipelines, security sanity checks are carried out. OWASP is used to check that the external libraries used in the Genesis platform and products are protected against security threats. SonarQube in turn performs SAST through static code analysis. 
 
 Critical issues are addressed immediately with a hot patch, issues rated on high severity are addressed in the next minor release and medium to low are addressed in the next major release.
 
-1\.5	Secure design principals
+## Secure design principals
 
-At genesis we follow industry best practices and well-known patterns when designing our solutions. Any major change to the system design, either through new development or refactoring, is passed through an approval process with the technical stakeholder at genesis, Head of Core Engineering, Head of Web Engineering, Head of Infrastructure, VP of Engineering and VP of Product Development.  The pro and cons of the different design options is brought forward, discussed and when a consensus is reached, the approved design change can be incorporated into the genesis platform and solutions.
+At Genesis, we follow industry best practices and well-known patterns when designing our solutions. Any major change to the system design, either through new development or refactoring, is passed through an approval process with the technical stakeholder at genesis, Head of Core Engineering, Head of Web Engineering, Head of Infrastructure, VP of Engineering and VP of Product Development.  The pros and cons of the different design options are brought forward, discussed and when a consensus is reached, the approved design change can be incorporated into the Genesis platform and solutions.
 
-1\.6	Segregation of environments
+## Segregation of environments
 
-At genesis Development, QA, UAT and Production environments are completely segregated and by default there are no means of communicating between the environments. If there is an explicit need for inter environment communication, it will need approval from the client and operational actions on the firewalls needs to be executed to allow the connection.
+At Genesis Development, QA, UAT and Production environments are completely segregated and by default there are no means of communicating between the environments. If there is an explicit need for inter environment communication, it will need approval from the client and operational actions on the firewalls needs to be executed to allow the connection.
 
-UAT is an exact mirrored setup as Production but with its own separated database and with no redundancy.
+UAT is an exact mirrored set-up of Production, but with its own separated database and with no redundancy.
 
-1\.7	Protection of System test Data
+## Protection of System test Data
 
 Personal information or any other sensitive information is never stored in test databases unless specific authorisation has been given. All sensitive details and content will be removed or modified beyond recognition before use in testing environments.
 
@@ -76,6 +76,6 @@ Production data will never be copied to development computers or stored on devel
 
 Any time information is copied from the production environment to the testing environment a log will provide an audit trail of all information transfer.
 
-1\.8	Issue tracking
+## Issue tracking
 
-Genesis leverages Jira for tracking internal and external user stories, task and issues. Genesis’ Jira is fully integrated with the genesis workflows and other tools, github, Zendesk etc., to provide full traceability of the ticket’s life cycle.
+Genesis uses Jira for tracking internal and external user stories, tasks and issues. Genesis’ Jira is fully integrated with the Genesis workflows and other tools, (github, Zendesk etc.) to provide full traceability of a ticket’s life cycle.
