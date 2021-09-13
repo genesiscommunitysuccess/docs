@@ -1,5 +1,5 @@
 ---
-id: positions
+id: j-positions
 title: Calculate the positions
 sidebar_label: Calculate the positions
 
