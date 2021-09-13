@@ -10,6 +10,8 @@ This are looks at the software development lifecycle of a Genesis project, and t
 
 At Genesis we use a hybrid of the Gitflow workflow based on Github Enterprise. The only difference is that genesis uses release branches to encapsulate the changes for each Jira Epic -  i.e. each parallel stream of work on a given product.
 
+![](/img/sdlcpic1.png)
+
 The **master** branch is sacred and (almost) always aligned with production. Direct code commits and pushes are prohibited to the master branch, which is protected by the standard Genesis Git repo set-up.
 
 The **develop** branch is close to production and should only be used for adhoc changes e.g. bug fixes, emergency change requests etc. Direct code commits and pushes are prohibited to the develop branch which is protected by the standard Genesis Git repo setup.
@@ -47,6 +49,8 @@ The distributables generated from the fully automated CD/CI pipelines are autono
 All product pipelines are triggered by a new tag on the specific master branch, which is protected from direct submissions. The new tag indicates the build’s version number for which Jenkins will build a binary with the version number and automatically publish it to Artifactory.
 
 The Genesis build scripts are not held in the projects’ repos, but in a centralised location that is only accessible by VP of Product Development and VP of Engineering. This ensures consistency and security between the builds and across the projects.
+
+![](/img/sdlcpic2.png)
 
 The Genesis product Machine Images are propagated through the different stages, QA, UAT, Staging and finally Production in a complete tamper-proof operation.
 
