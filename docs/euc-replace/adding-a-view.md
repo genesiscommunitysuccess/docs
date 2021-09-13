@@ -40,10 +40,14 @@ The purpose of the test is to prove you can look up data with the repo and retri
 * look up by keys
 * perform get bulk from the main table.
 
-\### Test with single trade
+### Test with single trade
 
-\### Test with single trade - use get
+### Test with single trade
 
-\### Test with single trade - but no joins
+ - use get
 
-\### Test multiple trades
+### Test with single trade
+
+ - but no joins
+
+### Test multiple trades
