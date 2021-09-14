@@ -1,29 +1,14 @@
 ---
 id: set-up
-sidebar_label: 'Set-up'
+sidebar_label: Set-up
 sidebar_position: 4
-title: 'Set-up'
----
+title: Set-up
 
+---
 ## Requirements
 
 * NodeJS (14 LTS+) - https://nodejs.org/en/
-* npm 7+ (installed by NodeJS) setup for artifactory access
-
-## Setting up npm
-
-The contents of the .npmrc in your home folder
-
-    @genesisglobal:registry=https://genesisglobal.jfrog.io/artifactory/api/npm/npm-local/
-    //genesisglobal.jfrog.io/artifactory/api/npm/npm-local/:_password=<pass here>
-    //genesisglobal.jfrog.io/artifactory/api/npm/npm-local/:username=<user here>
-    //genesisglobal.jfrog.io/artifactory/api/npm/npm-local/:email=user.name@genesis.global
-    //genesisglobal.jfrog.io/artifactory/api/npm/npm-local/:always-auth=true
-
-Normally, you can go to the artifactory website, login, click on npm-local and click 'Set me up' in the top right corner
-of the npm-local workspace.
-
-Currently, there are no dependencies on private packages in artifactory.
+* npm 6+ (installed with NodeJS)
 
 ## Running
 
