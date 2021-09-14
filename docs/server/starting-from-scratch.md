@@ -8,7 +8,7 @@ This section walks you though how to set up a Genesis project using Maven archet
 
 You must have  JDK Maven and IntelliJIDEA in order to do this. These ainstructions are based on JDK 11.0.11, Maven 3.8.1 and IntelliJIDEA 2021.2.
 
-## 1.Generate a new project
+## 1. Generate a new project
 
 Genesis provides a Maven archetype to generate a skeleton project. This will host all the necessary modules and configuration for an application. To use it, open a terminal and execute:
 
@@ -20,55 +20,55 @@ Note that if your terminal is PowerShell, you must wrap the arguments in quotes:
 
 Here, we use  **sample.trade** for **groupId** and **trade-101** for **artifactId**. This gives the command:
 
-mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=sample.trade" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.2.0-SNAPSHOT" "-DartifactId=trade-101"
+**mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=sample.trade" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.2.0-SNAPSHOT" "-DartifactId=trade-101"**
 
-Build the project
+## 2. Build the project
 
-Once the project is generated change directory to it and execute mvn package
+Once the project has been generated, change directory to the new directory and execute the mvn package:
 
-cd trade-101
+**cd trade-101**
 
-mvn package
+**mvn package**
 
-This will download all necessary dependencies and generate Genesis files required for development
+This downloads all the necessary dependencies and generates Genesis files you need for development.
 
-Build Project
+## 3. Open the project in IntelliJIDEA
 
-Open the project in IntelliJIDEA
+Once the project has been built, you can open it in IntelliJIDEA. This is the recommended IDE, which ensures you can use autocompletion and type safety - really important tools for speedy development.
 
-Once the project is built you can open it in IntelliJIDEA. The DSL that is used is based on Kotlin and IntelliJIDEA is the recommended IDE. If another one is used the autocompletion and type safety will not be present during development unless additional plugins are installed. Once the project is open you will notice that it's multi module maven project. The README.md contains high level overview of the generated projects.
+Once the project is open, note that it is multi-module maven project. The README.md contains a high-level overview of the generated projects.
 
-Project in IntellijIDEA
+Starting from the top, let's open **trade-101-config**. It contains all the configuration. Navigate to **trade-101-config/src/main/resources/config/** to explore them. Each file is initially empty, and contain only the skeleton structure. 
 
-Starting from the top let's open trade-101-config. It contains all the configuration. Navigate to trade-101-config/src/main/resources/config/ to explore them. Each file is initially empty contain only the skeleton structure. Let's add few fields.
+## 4. Add some fields
 
-Add Fields
+Open **trade-101-config/src/main/resources/config/trade-101-fields-dictionary.kts**. The empty files looks like this:
 
-Open trade-101-config/src/main/resources/config/trade-101-fields-dictionary.kts. It's empty looking like this initially.
+    fields {
+    
+    }
 
-fields {
+We can add three simple fields to make start:
 
-}
+    fields {
+    
+    field("CODE", STRING)
+    
+    field("CREATED", DATE)
+    
+    field("PRICE", DOUBLE)
+    
+    }
 
-Go and add the following:
+While coding, note that autocompletion helps with the configuration and its arguments.
 
-fields {
-
-field("CODE", STRING)
-
-field("CREATED", DATE)
-
-field("PRICE", DOUBLE)
-
-}
-
-While coding you can notice that there is autocompletion that helps with the configuration and its arguments
+So that was easy. Now you know what your fields file looks like.
 
 Fields Code Completion
 
 Generate the Fields
 
-The next project to explore is trade-101-dictionary-cache. It depends on trade-101-config and contains the generated code based on the configuration. To explore the generated code navigate to trade-101-dictionary-cache/target/generated/sources/fields/global/genesis/gen/config/fields/Fields.kt. You will find Fields object with pre-generated literals - those are fields that are commonly used in trading applications so they get generated out of the box for faster development (is this true?). To see the fields you just added generated you will have to build the project again:
+The next project to explore is **trade-101-dictionary-cache**. It depends on trade-101-config and contains the generated code based on the configuration. To explore the generated code navigate to trade-101-dictionary-cache/target/generated/sources/fields/global/genesis/gen/config/fields/Fields.kt. You will find Fields object with pre-generated literals - those are fields that are commonly used in trading applications so they get generated out of the box for faster development (is this true?). To see the fields you just added generated you will have to build the project again:
 
 mvn package
 
