@@ -5,7 +5,6 @@ sidebar_label: Generate the reference app
 sidebar_position: 1
 
 ---
-
 The first task is to generate a reference application from the existing RDBMS of reference data.
 
 Before you start. You need the genesis server platform installed in a server/local vm/wsl/cloud instance (genesis and auth).
@@ -31,6 +30,8 @@ Using the instance in which the platform is installed, run
 
 This generates the **fields-dictionary.kts** and **tables-dictionary.kts** files for the data model.
 
+![](/img/dictionary-builder-screenshot.png)
+
 Check these files and adjust them to suit your application. For example, the process has translated the field ENABLED was as an INT type; you need to edit that to make it a BOOLEAN type.
 
 > Picture from Jose
@@ -41,23 +42,26 @@ Copy the output files from the dictionary build to the **ref_data_app/cfg** fold
 
 Run **genesisInstall** to verify everything is ok.
 
+![](/img/genesisinstall.png)
+
 Run **AppGen** to build your three modules (eventhandler, request server and data server):
 
 **AppGen -n ref_data_app -p 10000**
 
-Using output folder /root/run/ref_data_app
+![](/img/appgen.png)
 
-Writing file scripts/ref_data_app-dataserver.kts
+This gives you kts files for your new modules:
 
-Writing file scripts/ref_data_app-reqrep.kts
+* scripts/ref_data_app-dataserver.kts
+* scripts/ref_data_app-reqrep.kts
+* scripts/ref_data_app-eventhandler.kts
 
-Writing file scripts/ref_data_app-eventhandler.kts
+and xml files for service definitions and prcoesses:
 
-Writing file cfg/ref_data_app-service-definitions.xml
+* cfg/ref_data_app-service-definitions.xml
+* cfg/ref_data_app-processes.xml
 
-Writing file cfg/ref_data_app-processes.xml
-
-Optionally, you could now run remap, which would give you cud operations for all the tables and request replies (static data from the request server), as well as for real-time data retrieval (via the data server.
+Optionally, you could now run **remap**, which would give you cud operations for all the tables and request replies (static data from the request server), as well as for real-time data retrieval (via the data server.
 
 But for this application, we are going to go into the pro code first, to add some sophistication. Build a maven project so that you can use an IDE to build the app.
 
@@ -71,7 +75,7 @@ Run the **mvn** command:
 
 This gives you the following project structure:
 
-> screengrab from Jose
+![](/img/maven-archetype-result.png)
 
 ### Move the files to the required location
 
