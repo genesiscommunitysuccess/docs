@@ -4,21 +4,27 @@ title: Set up permissions
 sidebar_label: Set up permissions
 
 ---
-Pre-requisites to do the steps.
+At this stage, we have:
 
-Ref_data_app exists (with all its tables) and the schema can be imported into trading_app.
+ a Ref_data_app  (with all its tables) and the schema can be imported into trading_app.
 
-Trading_app exists and it contains the schema for TRADE table + event handlers, dataservers and req-reps.
+Trading_app exists and it contains the schema for TRADE table + event handlers, data servers and req-reps.
 
 ## The objective
 
-The objective is to use dynamic permissions and permission codes so that specific users have access to specific parts of the application – bot functions and data.. We can display the configuration of both in our req/rep, dataserver and eventhandler.
+The objective is to use dynamic permissions and permission codes so that specific users have access to specific parts of the application – both functions and data.. 
 
-We can enable COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system. You can read more about it here : [https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model](https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model "https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model")
+We can display the configuration of both in our req/rep, dataserver and eventhandler.
 
-Starting with the server, ensure we have two USER and USER_ATTRIBUTES records setup. One can be JohnDoe and another one can be JaneDoe (I have already set them up in dev-trading1 and can be found in \~/testData folder).
+We can enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system. 
 
-Set two new key values in site-specific/cfg/genesis-system-definition.kts as described in the docs above:
+You can read more about it here : [https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model](https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model "https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model")
+
+Starting with the server, make sure that  have two USER and USER_ATTRIBUTES records setup: JohnDoe and JaneDoe. 
+
+     (I have already set them up in dev-trading1 and can be found in \~/testData folder).
+
+Set two new key values in **site-specific/cfg/genesis-system-definition.kts** as described in the docs above:
 
 item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
 
@@ -28,11 +34,11 @@ Take note of auth-permissions.auto.xml in generated/cfg before running install
 
 Run **genesisInstall**
 
-Run remap. 
+Run **remap**.
 
-Remap will prompt you to add a new table called USER_COUNTERPARTY_MAP and a new field has been added to USER_ATTRIBUTES.
+**Remap** prompts you to add a new table called USER_COUNTERPARTY_MAP and a new field has been added to USER_ATTRIBUTES.
 
-After this we can set the ACCESS_TYPE field for JaneDoe to be ENTITY instead of ALL. This field is part of the USER_ATTRIBUTES table. We can do this using DbMon commands:
+After this, go to the USER_ATTRIBUTES table and use **DbMon** commands to set the ACCESS_TYPE field for JaneDoe to be ENTITY (instead of ALL). 
 
 table USER_ATTRIBUTES
 
@@ -44,7 +50,7 @@ writeMode
 
 update USER_ATTRIBUTES_BY_USER_NAME
 
-The auth-permissions.auto.xml in generated/cfg will be different now as the generic permissioning settings have been set in place. This means that next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started they will consider the new configuration.
+The **auth-permissions.auto.xml** in **generated/cfg** will be different now as the generic permissioning settings have been set in place. This means that next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started they will consider the new configuration.
 
 ## Configure dynamic permissions
 
