@@ -8,29 +8,29 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: <>Feature 1</>,
+    title: <>Get started quickly</>,
     imageUrl: '',
     description: (
       <>
-        Description
+        Our platform enables you to build quickly, but you need to get oriented before you can start. So start here.
       </>
     ),
   },
   {
-    title: <>Feature 2</>,
+    title: <>Server reference</>,
     imageUrl: '',
     description: (
       <>
-        Description
+        The server of a Genesis application can be as simple or complex as your needs. Take a look at the modules and the way they can be configured.
       </>
     ),
   },
   {
-    title: <>Feature 3</>,
+    title: <>Tutorials</>,
     imageUrl: '',
     description: (
       <>
-        Description
+        Want to know how to build a Genesis app? We'll take you from start to finish.
       </>
     ),
   },
@@ -68,7 +68,7 @@ function Home() {
                 'button button--secondary button--lg',
                 styles.getStarted,
               )}
-              to={useBaseUrl('get-started/application/')}>
+              to={useBaseUrl('getting-started/platform/')}>
               Get Started
             </Link>
           </div>
