@@ -1,11 +1,10 @@
 ---
 id: install
-sidebar_label: 'Install in three easy steps'
+sidebar_label: Install in three easy steps
 sidebar_position: 2
-title: 'Install in three easy steps'
+title: Install in three easy steps
+
 ---
-
-
 To install the Genesis LCNC Platform on your server, go through the following steps.
 
 * Make sure you have the correct infrastructure for installing the platform.
@@ -27,13 +26,15 @@ In our example, the rpm is called **genesis-platform-5.1.0-1.x86_64.rpm**.
 
 By default, the installation creates an application user account called **genesis**. You can change this change this before you start by editing the file **genesis_install.conf**. For example, to change the user account to be created to octopus, edit it as follows:
 
-![](/img/joseph1.png)
+    echo "genesis_user=octopus" >> /tmp/genesis_install.conf
 
 ### 2. Install the rpm
 
 Now you can **sudo yum** and install the rpm.
 
-![](/img/joseph2.png)This creates the user account and makes all the recommended security settings. Additionally, it creates the required directory structure and unpacks all the zipped files.
+    sudo yum --nogpgcheck localinstall genesis-platform-5.1.0-1.x86.rpm
+
+This creates the user account and makes all the recommended security settings. Additionally, it creates the required directory structure and unpacks all the zipped files.
 
 When the process has finished, you can go to the root directory and see the user that has been created (octopus, in our example).
 
