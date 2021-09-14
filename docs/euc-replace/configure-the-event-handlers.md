@@ -46,7 +46,7 @@ Now we shall create and run some unit testing for our new event handlers.
 
 You need a set of counterparties and instruments to test the event handlers. This can be a CSV file, as shown in this example.
 
-in the same format as the one found in this folder (see EventHandler Script - TestData file example from different project). 
+in the same format as the one found in this folder (see EventHandler Script - TestData file example from different project).
 
 The test data should ideally match the test data in the Trades excel file example (this means matching instrument_id and counterparty_id values in the example INSTRUMENT and COUNTERPARTY records). This makes it easy to correlate the test data.
 
@@ -58,24 +58,86 @@ Add the same file as a dependency with test scope in the file **script-config mo
 
 ### Create unit tests
 
-Create unit tests inside **-script-config** folder. The  maven archetype should have generated a sample file already, so we can reuse it. 
+Create unit tests inside **-script-config** folder. The  maven archetype should have generated a sample file already, so we can reuse it.
 
-    package global.genesisimport global.genesis.commons.model.GenesisSetimport global.genesis.testsupport.AbstractGenesisTestSupportimport global.genesis.testsupport.GenesisTestConfigclass TradingEventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(    GenesisTestConfig {        addPackageName("global.genesis.eventhandler.pal")        genesisHome = "/GenesisHome/"        scriptFileName = "trading_app-eventhandler.kts"        parser = { it }        initialDataFile = "TEST_DATA.csv"    }) {    override fun systemDefinition(): Map<String, Any> = mapOf("IS_SCRIPT" to "true")}
+    package global.genesis
+    
+    import global.genesis.commons.model.GenesisSet
+    import global.genesis.testsupport.AbstractGenesisTestSupport
+    import global.genesis.testsupport.GenesisTestConfig
+    
+    class TradingEventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
+        GenesisTestConfig {
+            addPackageName("global.genesis.eventhandler.pal")
+            genesisHome = "/GenesisHome/"
+            scriptFileName = "trading_app-eventhandler.kts"
+            parser = { it }
+            initialDataFile = "TEST_DATA.csv"
+        }
+    ) {
+        override fun systemDefinition(): Map<String, Any> = mapOf("IS_SCRIPT" to "true")
+    }
 
-Here are three example tests  for the EVENT_TRADE_INSERT. 
+Here are three example tests  for the EVENT_TRADE_INSERT.
 
 The first test checks that if all the details are correct, the validation passes the event.
 
-    @Test    fun `test insert trade`(): Unit = runBlocking {        val message = Event(            details = Trade {                tradeId = 1                counterpartyId = "1"                instrumentId = "2"            },            messageType = "EVENT_TRADE_INSERT"        )        val result: EventReply? = messageClient.suspendRequest(message)        result.assertedCast<EventReply.EventAck>()        val trade = entityDb.get(Trade.ById(1))        assertNotNull(trade)        assertEquals("1", trade.counterpartyId)        assertEquals("2", trade.instrumentId)    }
+    @Test
+    fun `test insert trade`(): Unit = runBlocking {
+        val message = Event(
+            details = Trade {
+                tradeId = 1
+                counterpartyId = "1"
+                instrumentId = "2"
+            },
+            messageType = "EVENT_TRADE_INSERT"
+        )
+        val result: EventReply? = messageClient.suspendRequest(message)
+        result.assertedCast<EventReply.EventAck>()
+        val trade = entityDb.get(Trade.ById(1))
+        assertNotNull(trade)
+        assertEquals("1", trade.counterpartyId)
+        assertEquals("2", trade.instrumentId)
+    }
 
 The second test checks that a missing instrument fails validation.
 
-       @Test    fun `test invalid instrument`(): Unit = runBlocking {        val message = Event(            details = Trade {                tradeId = 1                counterpartyId = "1"                instrumentId = "DOESNOTEXIST"            },            messageType = "EVENT_TRADE_INSERT"        )        val result: EventReply? = messageClient.suspendRequest(message)        val eventNack: EventReply.EventNack = result.assertedCast()        assertThat(eventNack.error).containsExactly(            StandardError(                "INTERNAL_ERROR",                "INSTRUMENT ById(instrumentId=DOESNOTEXIST) not found in database"            )        )    }
+    @Test
+    fun `test invalid instrument`(): Unit = runBlocking {
+        val message = Event(
+            details = Trade {
+                tradeId = 1
+                counterpartyId = "1"
+                instrumentId = "DOESNOTEXIST"
+            },
+            messageType = "EVENT_TRADE_INSERT"
+        )
+        val result: EventReply? = messageClient.suspendRequest(message)
+        val eventNack: EventReply.EventNack = result.assertedCast()
+        assertThat(eventNack.error).containsExactly(
+            StandardError(
+                "INTERNAL_ERROR",
+                "INSTRUMENT ById(instrumentId=DOESNOTEXIST) not found in database"
+            )
+        )
+    }
 
 The third test check that a missing counterparty fails validation.
 
-    @Test    fun `test invalid counterparty and instrument`(): Unit = runBlocking {        val message = Event(            details = Trade {                tradeId = 1                counterpartyId = "DOESNOTEXIST"                instrumentId = "DOESNOTEXIST"            },            messageType = "EVENT_TRADE_INSERT"        )        val result: EventReply? = messageClient.suspendRequest(message)        result.assertedCast<EventReply.EventNack>()    }
+    @Test
+    fun `test invalid counterparty and instrument`(): Unit = runBlocking {
+        val message = Event(
+            details = Trade {
+                tradeId = 1
+                counterpartyId = "DOESNOTEXIST"
+                instrumentId = "DOESNOTEXIST"
+            },
+            messageType = "EVENT_TRADE_INSERT"
+        )
+        val result: EventReply? = messageClient.suspendRequest(message)
+        result.assertedCast<EventReply.EventNack>()
+    }
 
 ### Run the unit tests
 
-Off you go.
+To follow.
