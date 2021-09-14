@@ -4,11 +4,9 @@ title: Generate the trading app
 sidebar_label: Generate the trading app
 
 ---
-Pre-requisites to do the steps. genesis server platform is installed in a server/local vm/wsl/cloud instance (genesis and auth).
+Previously, we have created a reference data application from our original RDBMS database. This has a schema that we can use here.
 
-Optionally, maven is installed in the server instance with adequate configuration to retrieve genesis binaries.
-
-Alternatively, the maven installation and configuration needs to be available in a local development environment.
+Now we are going to create a trading application, based on the source spreadsheet.
 
 ## The source spreadsheet
 
@@ -20,7 +18,9 @@ Using the instance in which the platform is installed, run **ExcelToGenesis**.
 
 **ExcelToGenesis -f Trades.xlsx -n trading_app -t 11000**
 
-This generates the fields-dictionary.kts and -tables-dictionary.kts for the data mode.
+This generates the **fields-dictionary.kts** and **-tables-dictionary.kts** for the data model.
+
+Check and adjust the fields and tables
 
 The fields and tables can be adjusted to suit your new app. For example, we can remove INSTRUMENT_ID and COUNTERPARTY_ID LATER ON when we add them to intellij, as our intellij project will be importing them from ref_data_app. Additionally we can tweak TRADE_ID to be a STRING and use a “sequence” definition to generate the fields
 
@@ -32,7 +32,7 @@ The next step is to run **genesisInstall**, which will run checks and highlight 
 
 Let’s be practical here. Without changing the application, run **genesisInstall**.
 
-This will fail because of duplicate fields with wrong types. Remove the following duplicated fields/tables:
+This will fail because we have duplicate fields with the different field types. Remove the following duplicated fields/tables:
 
 * COUNTERPARTY_ID
 * INSTRUMENT_ID
