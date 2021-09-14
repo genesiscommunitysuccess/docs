@@ -75,8 +75,6 @@ Run the **mvn** command:
 
 This gives you the following project structure:
 
-![](/img/maven-archetype-result.png)
-
 ### Move the files to the required location
 
 Move the generated **ref_data_app/cfg** files (from the previous DictionaryBuilder and AppGen steps) to the **ref_data_app-config/src/main/resources/cfg** folder.
