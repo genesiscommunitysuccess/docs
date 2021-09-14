@@ -1,7 +1,8 @@
 ---
-sidebar_label: 'Consolidator reference'
----
+sidebar_label: Consolidator reference
+id: consol-adv
 
+---
 # Consolidator reference
 
 A consolidator listens to a table in the database, performs a calculation using that data, then writes the result to another table in the database.

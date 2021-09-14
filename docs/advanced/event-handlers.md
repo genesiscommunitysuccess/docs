@@ -1,7 +1,8 @@
 ---
-sidebar_label: 'Event handler reference'
----
+sidebar_label: Event handler reference
+id: ehandle-adv
 
+---
 # Event handler reference
 
 :::danger WIP

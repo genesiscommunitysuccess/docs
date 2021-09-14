@@ -1,7 +1,8 @@
 ---
-sidebar_label: 'Data modelling reference'
----
+sidebar_label: Data modelling reference
+id: data-model-adv
 
+---
 # Data modelling reference
 
 ## Tables
@@ -101,7 +102,3 @@ primaryKey(name = "GENESIS_PROCESS_MONITOR_BY_HOSTNAME", id = 1) {
 ```
 
 In this example, the subtable GENESIS_PROCESS_MONITOR is defined (starting at line 20) within the GENESIS_PROCESS table, We first define the fields that are used to generate the join operation (lines 23-25), and these fields are inherited by the subtable automatically. Then we can define additional fields and keys (lines 27-30).
-
- 
-
- 
