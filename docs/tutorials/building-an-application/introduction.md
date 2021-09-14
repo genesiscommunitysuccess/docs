@@ -13,7 +13,7 @@ Along the way, you’ll see the tools and the short cuts, and you can take a loo
 
 Sound good?
 
-Before you follow this exercise, you need to have the LCNC Platform and your development environment fully [installed](https://yljfsx0alebzeg.instant.forestry.io/getting-started/get-ready-to-develop/requirements/#server-requirements), and you need to be familiar with the key information in Getting Started.
+Before you follow this exercise, you need to have the LCNC Platform and your development environment fully installed, and you need to be familiar with the key information in Getting Started.
 
 In short, you need to understand:
 
@@ -43,4 +43,4 @@ You will see things such as:
 * the ability to re-use schema day across more than one application- you can see we have effectively creating two applications: one for reference data and one for trading data
 * the process to create simple functioning microservices that you can then adjust and enrich
 * user permissioning
-* Timed and triggered events
+* timed and triggered events
