@@ -1,12 +1,12 @@
 ---
-id: from-zero
-title: Starting from scratch
-sidebar_label: Starting from scratch
+id: make-new-project
+title: Starting a new project
+sidebar_label: Starting a new project
 
 ---
-This section walks you though how to set up a Genesis project using Maven archetype. At the end you will have generated fields that can be .used in tables and views.
+This section walks you though how to set up a Genesis project using Maven archetype. At the end you will have generated fields that can be used in tables and views.
 
-You must have  JDK Maven and IntelliJIDEA in order to do this. These ainstructions are based on JDK 11.0.11, Maven 3.8.1 and IntelliJIDEA 2021.2.
+You must have  JDK Maven and IntelliJIDEA in order to do this. These instructions are based on JDK 11.0.11, Maven 3.8.1 and IntelliJIDEA 2021.2.
 
 ## 1. Generate a new project
 
@@ -64,18 +64,14 @@ While coding, note that autocompletion helps with the configuration and its argu
 
 So that was easy. Now you know what your fields file looks like.
 
-Fields Code Completion
+## 5. Generate the Fields
 
-Generate the Fields
+The next project to explore is **trade-101-dictionary-cache**. It depends on **trade-101-config** and contains the generated code based on the configuration. To explore the generated code, navigate to **trade-101-dictionary-cache/target/generated/sources/fields/global/genesis/gen/config/fields/Fields.kts**. 
 
-The next project to explore is **trade-101-dictionary-cache**. It depends on trade-101-config and contains the generated code based on the configuration. To explore the generated code navigate to trade-101-dictionary-cache/target/generated/sources/fields/global/genesis/gen/config/fields/Fields.kt. You will find Fields object with pre-generated literals - those are fields that are commonly used in trading applications so they get generated out of the box for faster development (is this true?). To see the fields you just added generated you will have to build the project again:
+Here, you will find Fields object with pre-generated literals - these are fields that are commonly used in trading applications; they get generated out-of-the box for faster development. To see the fields you have just added, you need to build the project again:
 
-mvn package
+**mvn package**
 
-Going back to the Fields object you will see the new generated fields at the bottom of the file.
+Go back to the Fields object. You can now see the newly generated fields at the bottom of the file.
 
-New Generated Fields
-
-Next steps
-
-Add tables and views
+After this, you will be able to look at your tables and views.
