@@ -31,3 +31,4 @@ pages:
 - docs/infrastruct-ref/clusters.md
 - docs/infrastruct-ref/single-sign-on.md
 - docs/infrastruct-ref/software-dev.lifecycle.md
+- docs/server/starting-from-scratch.md
