@@ -27,7 +27,9 @@ The process definition is made up of several fields that will setup the main con
 
 \*_preExpression_* defines dynamic groovy code (methods, imports, etc.) you can add to this module for further usage.
 
-\`\`\`xml
+
+
+```xml
 
 <preExpression>
 
@@ -59,7 +61,9 @@ The process definition is made up of several fields that will setup the main con
     
     </preExpression>
 
-\`\`\`
+```
+
+
 
 \*_options_* is a field container that represents the basic behaviour and database configuration of the process.
 
@@ -81,7 +85,7 @@ The process definition is made up of several fields that will setup the main con
 
 \* **maxOutstanding** will be the threshold to reach for the internal work queue from which the process will start logging warnings. Example use case: there are more than maxOutstanding records pending to be inserted in the RDBMS. Default: 10000.
 
-\`\`\`xml
+```xml
 
     <options>
     
@@ -101,7 +105,7 @@ The process definition is made up of several fields that will setup the main con
     
     </options>
 
-\`\`\`
+```
 
 \*_databaseStream_* represents one stream from Genesis to the RDBMS. It contains the necessary logic to join different tables if necessary and it sets the fields to be inserted or modified in the RDBMS. It also specifies the stored procedures calls to be used and the parameters ordering used to call them. You can define as many databaseStreams as you want. It has a name attribute to databaseStreams from each other.
 
@@ -113,7 +117,7 @@ The process definition is made up of several fields that will setup the main con
 
 Example:
 
-\`\`\`xml
+```xml
 
     <databaseStream name="ALL_TRADES">
     
@@ -198,6 +202,7 @@ Example:
         </proc>
     
     </databaseStream>
+```
 
 ### Table joins
 
@@ -257,10 +262,9 @@ A series of screenshots with examples of how to create tables, stored procedures
 
 It is by no means mandatory, but it provides a generic, quick and working example that can be further modified or extended with ease. However, the Genesis dictionary must be appropriately configured beforehand: TABLENAME_BY_TIMESTAMP key must exist (as shown in previous section examples) inside the table, as well as having a key made of a unique field (e.g "ORDER_ID").
 
-\`\`\`
-
 usage: generateSQLToRDB
 
+```
 \-cfg,--configFile <arg>        genesistodb config xml file to be modified
 
 \-dbName,--databaseName <arg>   the database name for Oracle dbs
@@ -275,4 +279,4 @@ usage: generateSQLToRDB
 
 \-t,--table <arg>               the name of the table to export to csv
 
-\`\`\`
+```

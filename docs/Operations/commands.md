@@ -12,7 +12,9 @@ To ensure a correct installation, you must follow the product installation proce
 
 The installRelease script takes two arguments: one mandatory and one optional:
 
+```
     installRelease productFile \[-c | --commit\]
+```
 
 If the commit option is not specified, the product will not be installed, but the full installation process will be shown, including changes, missing dependencies or any other kind of issues.
 
@@ -39,7 +41,9 @@ Execute **genesisInstall** after installing an application, so that the applicat
 
 This scriptscript validates all system and product configuration, checking for things such as field duplication.
 
+```
     genesisInstall \[--ignore\]
+```
 
 Once complete, all configuration files will be copied and, where necessary, merged into the **\~/run/generated/cfg** file, which we alias as **$GC**.
 
@@ -61,12 +65,15 @@ The Aerospike DB layer needs UDFs (user defined functions) to work correctly, an
 
 Syntax:
 
+```
     remap \[-c | --commit\]
+```
 
 If we run remap with no arguments it simple gives a report of changes that exist in the configuration.
 
 For example:
 
+```
     ==================================
     
     Table Changes
@@ -90,6 +97,7 @@ For example:
     ==================================
     
     No changes
+```
 
 To commit the changes to the database use the **--commit** argument.
 
@@ -97,11 +105,13 @@ To commit the changes to the database use the **--commit** argument.
 
 This script starts a Genesis process. It takes a single positional argument:
 
-<process name> and an optional argument "--dump", to ensure console output is shown on screen (useful for debugging).
+`<process name>` and an optional argument "--dump", to ensure console output is shown on screen (useful for debugging).
 
 Syntax
 
+```
     startProcess processName \[--hostname <\[host names\]>\] \[--dump\] 
+```
 
 **processName**          name of the process that you want to start
 
@@ -111,14 +121,17 @@ Syntax
 
 **-- dump**	displays progress of starting the process, which is usful for debugging
 
+
+
 The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example:
 
     
         startProcess AUTH_DATASERVER
     
     starts the process with the correct classpath and extra arguments. Something similar to:
-    
+```
         java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
+```
 
 ## killProcess script
 
@@ -126,6 +139,7 @@ This script is used to terminate a specified process.
 
 Syntax
 
+```
     killProcess process_name HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\] \[--force\] \[--wait\]
 
 \--hostname HOSTNAME HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]	Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node. Specify the Host Name.
@@ -135,6 +149,7 @@ Syntax
 \--wait WAIT, -w WAIT  specifies how many seconds to wait before forcing the kill
 
 \--cluster, -c         kills the process on every node in the cluster
+```
 
 ## startServer script
 
@@ -142,6 +157,7 @@ This script reads the **$GC/processes.xml** file to determine which processes to
 
 Syntax
 
+```
     startServer \[--hostname <\[host names\]>\] \[--ignoreDaemon\] 
 
 processName           name of the process that you want to start
@@ -203,6 +219,7 @@ The **processes.xml** file looks like this:
     </process>
     
     </configuration>
+```
 
 Each process property is defined in here, including JAVA arguments, configuration files, and scripts.
 
@@ -218,7 +235,10 @@ This script reads the **$GC/processes.xml** file to determine which processes to
 
 Syntax
 
+```
     \[--hostname <\[hosts names\]>\]\[--force\]
+```
+
 
 This command requires user confirmation: '**Are you sure you want to kill server? (y/n):** Alternatively, you can use **-force** to skip it.
 
@@ -240,10 +260,13 @@ This script enables you to navigate through the database tables from the command
 
 Syntax:
 
+```
     DbMon
+```
 
 Once inside DbMon you can run the command **help**, which shows all the available commands.
 
+```
     ==================================
     
     Database Monitor
@@ -317,10 +340,11 @@ Once inside DbMon you can run the command **help**, which shows all the availabl
     updateWhere <condition> <assignments>
     
     writeMode
+```
 
 Usage
 
-**DbMo**n has built-in help instruction for each command. Run "help <command>" to get more information.
+**DbMo**n has built-in help instruction for each command. Run `help <command>` to get more information.
 
 \## SendIt script
 
@@ -328,6 +352,7 @@ To send data into the database, use the SendIt command.
 
 Syntax
 
+```
         SendTable -t <table name> -f <file name>
     
         Available options (use -h for help):
@@ -353,16 +378,21 @@ Syntax
          -t,--table <arg>              the name of the table to import to database
     
          -v,--verbose                  log every error line to output
+```
 
 For Example:
 
+```
     SendIt -t FUND -f FUND
+```
 
 This reads the FUND.csv file in the local directory and insert the data from the file into the FUND table.
 
 To Modify records you, need to specify the key that will be used to identify the original record from the each row in the csv file. If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key.
 
+```
     SendIt -t FUND -m FUND_BY_ID
+```
 
 Modify fields (-mf) is a special parameter that can be added to "-m" operations. SendTable will only attempt to modify the record fields specified in this comma-separated list parameter.
 
@@ -382,6 +412,7 @@ To copy data out of a Genesis database, use the DumpIt command.
 
 Syntax:
 
+```
     usage: DumpIt
     
      -a,--all           exports all tables to csv
@@ -397,20 +428,21 @@ Syntax:
      -t,--table <arg>   the name of the table to export to csv
     
      -where <arg>       match criteria e,g, "USER_NAME=='John'"
-    
-    
-    
-    example:  
+```
 
 For Example:
 
+```
     DumpIt -t USER -where "USER_NAME=='John'" -fields "USER_NAME
+```
 
 This copies the data in the FUND table to FUND.csv.
 
 Another example:
 
+```
     DumpIt -t FUND -f FUND -fields "FUND_ID NAME" -where "NAME == 'FUND_FUND' && YEARS_IN_SERVICE >= 10"
+```
 
 This copies the FUND_ID and NAME fields of every record that has "FUND_FUND" for a name, and ten or more years in service.
 
@@ -432,6 +464,7 @@ Not setting GENESIS_LOGGING_LEVEL or setting a non-valid level will reset log le
 
 Syntax:
 
+```
 LogLevel -p <process-name> -l <log level> -t <time> \[-optional
 
                         params\] -c <class-name> -DATADUMP_ON -DATADUMP_OFF or
@@ -469,11 +502,13 @@ LogLevel -p <process-name> -l <log level> -t <time> \[-optional
          -t <time>                              duration of log level change in
     
                                                 min/sec Eg: 1m, 1000s
+```
 
 ## mon script
 
 This script shows the status of the overall system, so you can see if the server is up or not.
 
+```
     ***************************************************************************
     
                                   GENESIS Monitor
@@ -501,9 +536,11 @@ This script shows the status of the overall system, so you can see if the server
     9359    AUTH_MANAGER                  8001        RUNNING        0.30      1.60
     
     9419    AUTH_PERMS                    8003        RUNNING        0.30      1.80
+```
 
 Usage
 
+```
     mon \[-v | -c | -a\] polling_interval
     
     Options:
@@ -515,6 +552,7 @@ Usage
       -c, --cfg      Shows the config files used by each process.
     
       -a, --all      Shows all information.
+```
 
 ## DropTable
 
@@ -533,7 +571,7 @@ Confirmation of removal is required for each table.
 To populate the Holidays table with holidays based on a specific year(s), country(ies) and region(s), use the Populate command.
 
     The usage: PopulateHolidays
-    
+```
      -c,--country <arg>   the country name to search for holidays
     
      -h,--help            show usage information
@@ -543,6 +581,7 @@ To populate the Holidays table with holidays based on a specific year(s), countr
      -y,--year <arg>      the year of holidays
     
     For example: PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
+```
 
 ## CountRecords
 
@@ -560,9 +599,11 @@ This migrates the Genesis alias store from database storage to file storage and 
 
 Usage
 
+```
     MigrateAliases FILE
     
     MigrateAliases DATABASE
+```
 
 Aerospike and FDB implementations use internal aliases for fields and tables. Migrating these aliases from database to a file will help to debug problems in the data storage.
 
@@ -603,7 +644,7 @@ Usage:
 Gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by "SetSequence" script (see below)
 
 Usage:
-
+```
     GetSequenceCount
     
      -f,--file <arg>
@@ -611,7 +652,7 @@ Usage:
      -h,--help         show usage information
     
      -p,--print
-
+```
 \## 
 
 ## GetAutoIncrementCount
@@ -619,7 +660,7 @@ Usage:
 This works like the **GetSequenceCount**, but for auto increment INT values defined in dictionaries.
 
 Usage
-
+```
     GetAutoIncrementCount
     
      -f,--file <arg>
@@ -627,13 +668,13 @@ Usage
      -h,--help         show usage information
     
      -p,--print
-
+```
 \## SetSequence
 
 Allows the user to change a sequence number, or to do a bulk change for all the sequence in a ".csv" file (usually exported previously using GetNextSequenceNumbers or GetSequenceCount)
 
 Usage:
-
+```
     SetSequence
     
      -f,--file <arg>       Name of csv file for batch sequence/value pairs to
@@ -649,13 +690,14 @@ Usage:
      -v,--value <arg>      New integer value to be set (if setting individual
     
                            value)
+```
 
 ## SetAutoIncrement
 
 This works like **SetSequenc**e but for auto increment INT values.
 
 Usage:
-
+```
     SetAutoIncrement
     
      -f,--file <arg>    Name of csv file for batch sequence/value pairs to be
@@ -669,7 +711,7 @@ Usage:
      -t,--table <arg>
     
      -v,--value <arg>
-
+```
 ## GenesisRun
 
 This is a python script wrapper for Genesis scripts.
@@ -732,7 +774,9 @@ It is also possible to use the double dash notation for any argument. Arguments 
 
 \##Example |
 
-        DtaRun DictionaryBuilder.groovy -u TAS -p fght123 -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
+```
+    DtaRun DictionaryBuilder.groovy -u TAS -p fght123 -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
+```
 
 ### How the script behaves
 
@@ -822,10 +866,13 @@ Standard files will be generated, i.e. processes.xml and service-definitions.xml
 
 Example without -t option.
 
+```
     \~/run/genesis/scripts/unix/productGen -d tas-dictionary.xml -p 4000 -pn tas
+```
 
 In this case we are specifying the dictionary to read is tas-dictionary.xml, the port offset is 4000 and the product name to generate is tas.  Running this command results in the following structure being created:
 
+```
     tas/
     
        /bin
@@ -843,6 +890,7 @@ In this case we are specifying the dictionary to read is tas-dictionary.xml, the
            /tas-service-definitions.xml
     
        /scripts/tas-tnHandler.gy
+```
 
 Example with -t option.
 
@@ -856,6 +904,7 @@ The tables mentioned in the above command will be appended to the files that wer
 
 This step is only required if using a self-signed certificate due to the absence of a proper trusted root authority issued one.
 
+```
     $ keytool -genkey -keyalg RSA -keysize 2048 -alias selfsigned -storepass Password1233 -keystore keystore.jks -ext SAN=dns:genesisserv1,dns:genesisserv1.ad.genesis.global,dns:genesisserv2,dns:genesisserv2.ad.genesis.global,dns:genesisserv3,dns:genesisserv3.ad.genesis.global,dns:genesisserv4,dns:genesisserv4.ad.genesis.global,ip:193.144.16.43
     
     What is your first and last name?
@@ -889,6 +938,7 @@ This step is only required if using a self-signed certificate due to the absence
     Enter key password for <selfsigned>
     
             (RETURN if same as keystore password):
+```
 
 Assuming no problems with privileges you will now have a certificate called "selfsigned" with a private key using the same password as the keystore password e.g. Password123.
 
@@ -898,7 +948,9 @@ Please note, however, that this certificate should be stored in another director
 
 The keystore (.jks) is, in a way, the private key to be used in the two-way authentication in the SSL protocol. As such, we need to use it to generate the certificate that needs to be installed by the target computers/loaded by the processes that intend to communicate with.
 
+```
     $ keytool -export -alias mykey -file certificate.crt -keystore keystore.jks
+```
 
 \##Installing TLS certificate in environment
 
@@ -906,9 +958,11 @@ The keystore (.jks) is, in a way, the private key to be used in the two-way auth
 
 Varies according to the distribution being used. In Ubuntu:
 
+```
     $ cp certificate.crt /usr/local/share/ca-certificates/
     
     $ sudo update-ca-certificates
+```
 
 \### Windows
 
@@ -922,11 +976,15 @@ All Genesis modules are defined inside the service definition files:
 
 Syntax:
 
+```
     	\~/run/<product>/cfg/<product>-service-definitions.xml
+```
 
 Example:
 
+```
     	\~/run/exmon/cfg/exmon-service-definitions.xml
+```
 
 To enable a process to be set to communicate via SSL set the secure element to be true.
 
@@ -935,9 +993,7 @@ Example:
 \`\`\`xml
 
     <configuration>
-    
         <service host="localhost" name="EXMON_DATASERVER" port="8911" secure="true"/>
-    
     </configuration>
 
 \`\`\`
@@ -966,11 +1022,11 @@ These will be used by all processes to communicate with encrypted processes or t
 
 This setting is used if the develop wants to override the defaults established above for a specific process.
 
-Edit the process' configuration file (as defined in <product>-processes.xml)
+Edit the process' configuration file (as defined in `<product>-processes.xml`)
 
 To have the following settings:-
 
-\`\`\`xml
+```xml
 
     <authManager>
     
@@ -995,8 +1051,7 @@ To have the following settings:-
         </settings>
     
     </authManager>
-
-\`\`\`
+```
 
 Once the files have been saved, run **genesisInstall**. When the processes starts again, it will be secure.
 
@@ -1006,6 +1061,7 @@ To enable the GUI to  connect securely, edit the **%ProgramData%\\Genesis\\exmon
 
 ### Example
 
+```xml
     <?xml version="1.0"?>
     
     <primary_service xmlns:xsd="[http://www.w3.org/2001/XMLSchema](http://www.w3.org/2001/XMLSchema "http://www.w3.org/2001/XMLSchema")" xmlns:xsi="[http://www.w3.org/2001/XMLSchema-instance](http://www.w3.org/2001/XMLSchema-instance "http://www.w3.org/2001/XMLSchema-instance")">
@@ -1019,6 +1075,7 @@ To enable the GUI to  connect securely, edit the **%ProgramData%\\Genesis\\exmon
       </hosts>
     
     </primary_service>
+```
 
 Note: With encryption, if using a self-signed certificate, you must install the certificate.crt in the target machine's operating system as a trusted root CA.
 

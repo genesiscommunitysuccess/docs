@@ -12,6 +12,7 @@ module.exports = {
     [
       '@docusaurus/preset-classic',
       {
+        // https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs
         docs: {
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.json')
@@ -35,21 +36,8 @@ module.exports = {
     },
     footer: {
       style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [],
-        },
-        {
-          title: 'Community',
-          items: [],
-        },
-        {
-          title: 'More',
-          items: [],
-        },
-      ],
-      copyright: `© ${new Date().getFullYear()} My Project`,
+      links: [],
+      copyright: `© genesis global ${new Date().getFullYear()}. All rights reserved.`,
     }
   },
   
