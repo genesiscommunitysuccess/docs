@@ -3,32 +3,30 @@ label: Page
 hide_body: false
 fields:
 - type: text
-  name: id
-  label: id
-- type: text
   name: title
-  label: title
+  label: Title
+  config:
+    required: true
 - type: text
   name: sidebar_label
-  label: sidebar_label
-pages:
-- docs/Operations/commands.md
-- docs/euc-replace/add-joins-to-the-data-server.md
-- docs/euc-replace/adding-a-view.md
-- docs/euc-replace/build-the-front-end.md
-- docs/euc-replace/calculate-the-positions.md
-- docs/euc-replace/conclusion.md
-- docs/euc-replace/configure-state-machines.md
-- docs/euc-replace/configure-the-event-handlers.md
-- docs/euc-replace/generate-the-reference-app.md
-- docs/euc-replace/generate-the-trading-app.md
-- docs/euc-replace/introduction.md
-- docs/euc-replace/set-up-permissions.md
-- docs/euc-replace/set-up-static-and-dynamic-events.md
-- docs/euc-replace/test-and-deploy.md
-- docs/genesistodb.md
-- docs/get-started/essential-information.md
-- docs/infrastruct-ref/clusters.md
-- docs/infrastruct-ref/single-sign-on.md
-- docs/infrastruct-ref/software-dev.lifecycle.md
-- docs/server/starting-from-scratch.md
+  label: Sidebar label
+  config:
+    required: true
+- name: sidebar_position
+  type: number
+  label: Order within the sidebar category
+  description: ''
+  default: 0
+  required: true
+  config:
+    min: 
+    max: 
+    step: 
+    required: true
+- type: text
+  name: id
+  label: URL Name (ID)
+  description: Part of the URL after the last slash. Should be short (1-4 words),lowercase,
+    no special characters (except hyphens).
+  config:
+    required: true

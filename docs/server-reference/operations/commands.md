@@ -13,15 +13,13 @@ To ensure a correct installation, you must follow the product installation proce
 
 The installRelease script takes two arguments: one mandatory and one optional:
 
-```
-installRelease productFile [-c | --commit]
-```
+    installRelease productFile [-c | --commit]
 
 If the commit option is not specified, the product will not be installed, but the full installation process will be shown, including changes, missing dependencies or any other kind of issues.
 
 This is how the script behaves:
 
-First it gets the **productname-product-details.xm**l information from the product zip file, and it verifies the correctness of this file.
+First it gets the **productname-product-details.xml** information from the product zip file, and it verifies the correctness of this file.
 
 It checks if a previous installation of the application is present. (Is there a version of the same application installed by installRelease in the system?) This always happens, whether you used the **--commit** option or not. In case we do have an installation underway, the installation will stop at this point. If you want to force the installation, delete the folder "new" under GENESIS_HOME/releases/(productname)v.(version)/. For more information see points 4 and 5.
 
@@ -42,9 +40,7 @@ Execute **genesisInstall** after installing an application, so that the applicat
 
 This scriptscript validates all system and product configuration, checking for things such as field duplication.
 
-```
-genesisInstall [--ignore]
-```
+    genesisInstall [--ignore]
 
 Once complete, all configuration files will be copied and, where necessary, merged into the **\~/run/generated/cfg** file, which we alias as **$GC**.
 
@@ -66,39 +62,35 @@ The Aerospike DB layer needs UDFs (user defined functions) to work correctly, an
 
 Syntax:
 
-```
-remap [-c | --commit]
-```
+    remap [-c | --commit]
 
 If we run remap with no arguments it simple gives a report of changes that exist in the configuration.
 
 For example:
 
-```
-    ==================================
-    
-    Table Changes
-    
-    ==================================
-    
-    Added ADMINISTRATOR.NAME
-    
-    ==================================
-    
-    Field changes
-    
-    ==================================
-    
-    No changes
-    
-    ==================================
-    
-    Key changes
-    
-    ==================================
-    
-    No changes
-```
+        ==================================
+        
+        Table Changes
+        
+        ==================================
+        
+        Added ADMINISTRATOR.NAME
+        
+        ==================================
+        
+        Field changes
+        
+        ==================================
+        
+        No changes
+        
+        ==================================
+        
+        Key changes
+        
+        ==================================
+        
+        No changes
 
 To commit the changes to the database use the **--commit** argument.
 
@@ -110,9 +102,7 @@ This script starts a Genesis process. It takes a single positional argument:
 
 Syntax
 
-```
-startProcess processName [--hostname <[host names]>] [--dump] 
-```
+    startProcess processName [--hostname <[host names]>] [--dump] 
 
 **processName** name of the process that you want to start
 
@@ -122,12 +112,9 @@ startProcess processName [--hostname <[host names]>] [--dump]
 
 **-- dump**	displays progress of starting the process, which is usful for debugging
 
-
 The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
 
-```
-java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
-```
+    java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
 
 ## killProcess script
 
@@ -135,17 +122,15 @@ This script is used to terminate a specified process.
 
 Syntax
 
-```
-killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--force] [--wait]
-
---hostname HOSTNAME HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...]	Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node. Specify the Host Name.
-
---force, -f           forcefully kills a process (using kill -9)
-
---wait WAIT, -w WAIT  specifies how many seconds to wait before forcing the kill
-
---cluster, -c         kills the process on every node in the cluster
-```
+    killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--force] [--wait]
+    
+    --hostname HOSTNAME HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...]	Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node. Specify the Host Name.
+    
+    --force, -f           forcefully kills a process (using kill -9)
+    
+    --wait WAIT, -w WAIT  specifies how many seconds to wait before forcing the kill
+    
+    --cluster, -c         kills the process on every node in the cluster
 
 ## startServer script
 
@@ -153,17 +138,15 @@ This script reads the **$GC/processes.xml** file to determine which processes to
 
 Syntax
 
-```
-startServer [--hostname <[host names]>] [--ignoreDaemon] 
-
-processName           name of the process that you want to start
-
---hostname HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...]	Where the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node. Specify the Host Name.
-
---cluster, -c         starts the process on every node in the cluster
-
---ignoreDaemon, -i    avoids killing/starting the daemon
-```
+    startServer [--hostname <[host names]>] [--ignoreDaemon] 
+    
+    processName           name of the process that you want to start
+    
+    --hostname HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...]	Where the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node. Specify the Host Name.
+    
+    --cluster, -c         starts the process on every node in the cluster
+    
+    --ignoreDaemon, -i    avoids killing/starting the daemon
 
 The **processes.xml** file looks like this:
 
@@ -237,9 +220,7 @@ This script reads the **$GC/processes.xml** file to determine which processes to
 
 Syntax
 
-```
-[--hostname <[hosts names]>] [--force]
-```
+    [--hostname <[hosts names]>] [--force]
 
 This command requires user confirmation: '**Are you sure you want to kill server? (y/n):** Alternatively, you can use **-force** to skip it.
 
@@ -261,87 +242,83 @@ This script enables you to navigate through the database tables from the command
 
 Syntax:
 
-```
-DbMon
-```
+    DbMon
 
 Once inside DbMon you can run the command **help**, which shows all the available commands.
 
-```
-    ==================================
-    
-    Database Monitor
-    
-    Enter 'help' for a list of commands
-    
-    ==================================
-    
-    DbMon>help
-    
-    ==================================
-    
-    Help Menu
-    
-    ==================================
-    
-    autoIncrementNumber <field_name>
-    
-    clear
-    
-    count
-    
-    delete
-    
-    deleteWhere <condition>
-    
-    displayFields <field_names>
-    
-    distinct <condition> \[-where <limiting_condition>\]
-    
-    find <key_name>
-    
-    first <key_name>
-    
-    forceAutoIncrementNumber <field_name> <sequence_number>
-    
-    forceSequenceNumber <sequence_name> <sequence_number>
-    
-    h
-    
-    insert
-    
-    last <key_name>
-    
-    listAll <key_name> <num_key_fields> <max_records>
-    
-    next <key_name>
-    
-    qsearch <condition> \[-l <limit>\]
-    
-    qshow
-    
-    search <condition> \[-l <limit>\]
-    
-    sequenceNumber <sequence_name>
-    
-    set <field_name> <field_value>
-    
-    show
-    
-    showKeys
-    
-    showTables
-    
-    table <table_name>
-    
-    unset
-    
-    update <key_name>
-    
-    updateWhere <condition> <assignments>
-    
-    writeMode
-```
+        ==================================
+        
+        Database Monitor
+        
+        Enter 'help' for a list of commands
+        
+        ==================================
+        
+        DbMon>help
+        
+        ==================================
+        
+        Help Menu
+        
+        ==================================
+        
+        autoIncrementNumber <field_name>
+        
+        clear
+        
+        count
+        
+        delete
+        
+        deleteWhere <condition>
+        
+        displayFields <field_names>
+        
+        distinct <condition> \[-where <limiting_condition>\]
+        
+        find <key_name>
+        
+        first <key_name>
+        
+        forceAutoIncrementNumber <field_name> <sequence_number>
+        
+        forceSequenceNumber <sequence_name> <sequence_number>
+        
+        h
+        
+        insert
+        
+        last <key_name>
+        
+        listAll <key_name> <num_key_fields> <max_records>
+        
+        next <key_name>
+        
+        qsearch <condition> \[-l <limit>\]
+        
+        qshow
+        
+        search <condition> \[-l <limit>\]
+        
+        sequenceNumber <sequence_name>
+        
+        set <field_name> <field_value>
+        
+        show
+        
+        showKeys
+        
+        showTables
+        
+        table <table_name>
+        
+        unset
+        
+        update <key_name>
+        
+        updateWhere <condition> <assignments>
+        
+        writeMode
 
 Usage
 
@@ -353,55 +330,47 @@ To send data into the database, use the SendIt command.
 
 Syntax
 
-```
-SendTable -t <table name> -f <file name>
-
-Available options (use -h for help):
-
-    -a,--all                      import all the tables from all the csv
-
-                                files, to the database
-
-    -d,--delete                   perform delete operations on all records
-
-    -f,--file <arg>               name of the csv file where table is
-
-                                imported
-
-    -h,--help                     show usage information
-
-    -m,--modify <arg>             key name used to find original record
-
-    -mf,--modifyFields <arg>   specify fields to modify
-
-    -r,--recover                  perform recover operations on all records
-
-    -t,--table <arg>              the name of the table to import to database
-
-    -v,--verbose                  log every error line to output
-```
+    SendTable -t <table name> -f <file name>
+    
+    Available options (use -h for help):
+    
+        -a,--all                      import all the tables from all the csv
+    
+                                    files, to the database
+    
+        -d,--delete                   perform delete operations on all records
+    
+        -f,--file <arg>               name of the csv file where table is
+    
+                                    imported
+    
+        -h,--help                     show usage information
+    
+        -m,--modify <arg>             key name used to find original record
+    
+        -mf,--modifyFields <arg>   specify fields to modify
+    
+        -r,--recover                  perform recover operations on all records
+    
+        -t,--table <arg>              the name of the table to import to database
+    
+        -v,--verbose                  log every error line to output
 
 For Example:
 
-```
-SendIt -t FUND -f FUND
-```
+    SendIt -t FUND -f FUND
 
 This reads the FUND.csv file in the local directory and insert the data from the file into the FUND table.
 
 To Modify records you, need to specify the key that will be used to identify the original record from the each row in the csv file. If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key.
 
-```
-SendIt -t FUND -m FUND_BY_ID
-```
+    SendIt -t FUND -m FUND_BY_ID
 
 Modify fields (-mf) is a special parameter that can be added to "-m" operations. SendTable will only attempt to modify the record fields specified in this comma-separated list parameter.
 
 To Delete records you need to specify `-d` (or `--delete`)
 
-```
-SendIt -t FUND -d
-```
+    SendIt -t FUND -d
 
 If no file parameter is specified, `.csv` is assumed and read from the local directory.
 
@@ -415,45 +384,37 @@ To copy data out of a Genesis database, use the DumpIt command.
 
 Syntax:
 
-```
-    usage: DumpIt
-    
-     -a,--all           exports all tables to csv
-    
-     -f,--file <arg>    name of the csv file where table is exported
-    
-     -fields <arg>      space separated field list e.g. "FIRST_NAME LAST_NAME"
-    
-     -h,--help          show usage information
-    
-     -s,--sql <arg>     name of the sql file where table is exported
-    
-     -t,--table <arg>   the name of the table to export to csv
-    
-     -where <arg>       match criteria e,g, "USER_NAME=='John'"
-```
+        usage: DumpIt
+        
+         -a,--all           exports all tables to csv
+        
+         -f,--file <arg>    name of the csv file where table is exported
+        
+         -fields <arg>      space separated field list e.g. "FIRST_NAME LAST_NAME"
+        
+         -h,--help          show usage information
+        
+         -s,--sql <arg>     name of the sql file where table is exported
+        
+         -t,--table <arg>   the name of the table to export to csv
+        
+         -where <arg>       match criteria e,g, "USER_NAME=='John'"
 
 For Example:
 
-```
-DumpIt -t USER -where "USER_NAME=='John'" -fields "USER_NAME
-```
+    DumpIt -t USER -where "USER_NAME=='John'" -fields "USER_NAME
 
 This copies the data in the FUND table to FUND.csv.
 
 Another example:
 
-```
-DumpIt -t FUND -f FUND -fields "FUND_ID NAME" -where "NAME == 'FUND_FUND' && YEARS_IN_SERVICE >= 10"
-```
+    DumpIt -t FUND -f FUND -fields "FUND_ID NAME" -where "NAME == 'FUND_FUND' && YEARS_IN_SERVICE >= 10"
 
 This copies the FUND_ID and NAME fields of every record that has "FUND_FUND" for a name, and ten or more years in service.
 
 Dumping all the tables example:
 
-```
-DumpIt --all
-```
+    DumpIt --all
 
 This copies all tables in the system, creating one .csv file for each table in the database. The files are saved in the current directory. It is useful for taking a backup of the current system database.
 
@@ -469,95 +430,89 @@ Not setting GENESIS_LOGGING_LEVEL or setting a non-valid level will reset log le
 
 Syntax:
 
-```
-LogLevel -p <process-name> -l <log level> -t <time> \[-optional
-
-                        params\] -c <class-name> -DATADUMP_ON -DATADUMP_OFF or
+    LogLevel -p <process-name> -l <log level> -t <time> \[-optional
     
-                        setLogLevel -r <process-name> \[-optional params\] -c
-    
-                        <class-name>
-    
-        Available options (use -h for help):
-    
-         -c,--class <class name>                changes log level on the defined
-    
-                                                class
-    
-         -DATADUMP_OFF                          changes the log level to info for
-    
-                                                Genesis messages
-    
-         -DATADUMP_ON                           changes the log level to trace for
-    
-                                                Genesis messages
-    
-         -h,--help                              show usage information
-    
-         -l,--level <log level>                 log level - if log level is not
-    
-                                                correct it will be set
-    
-                                                automatically to DEBUG level
-    
-         -p <process-name>,.., <process-name>   attaches processes to the command
-    
-         -r <process-name>,..,<process-name>    remove processes
-    
-         -t <time>                              duration of log level change in
-    
-                                                min/sec Eg: 1m, 1000s
-```
+                            params\] -c <class-name> -DATADUMP_ON -DATADUMP_OFF or
+        
+                            setLogLevel -r <process-name> \[-optional params\] -c
+        
+                            <class-name>
+        
+            Available options (use -h for help):
+        
+             -c,--class <class name>                changes log level on the defined
+        
+                                                    class
+        
+             -DATADUMP_OFF                          changes the log level to info for
+        
+                                                    Genesis messages
+        
+             -DATADUMP_ON                           changes the log level to trace for
+        
+                                                    Genesis messages
+        
+             -h,--help                              show usage information
+        
+             -l,--level <log level>                 log level - if log level is not
+        
+                                                    correct it will be set
+        
+                                                    automatically to DEBUG level
+        
+             -p <process-name>,.., <process-name>   attaches processes to the command
+        
+             -r <process-name>,..,<process-name>    remove processes
+        
+             -t <time>                              duration of log level change in
+        
+                                                    min/sec Eg: 1m, 1000s
 
 ## mon script
 
 This script shows the status of the overall system, so you can see if the server is up or not.
 
-```
-    ***************************************************************************
-    
-                                  GENESIS Monitor
-    
-                             Version:  GENESIS 5.0.0.0
-    
-    ***************************************************************************
-    
-    
-    
-    Start: 2021-08-22 12:46:48                                  Uptime: 5 hours
-    
-    Date:  20121-08-22 17:47:10                               Cluster status: OK
-    
-    
-    
-    PID     Process Name                  Port        Status         CPU       Memory
-    
-    ==================================================================================
-    
-    9480    AUTH_CONSOLIDATOR             8006        RUNNING        0.30      1.60
-    
-    9392    AUTH_DATASERVER               8002        RUNNING        0.30      1.70
-    
-    9359    AUTH_MANAGER                  8001        RUNNING        0.30      1.60
-    
-    9419    AUTH_PERMS                    8003        RUNNING        0.30      1.80
-```
+        ***************************************************************************
+        
+                                      GENESIS Monitor
+        
+                                 Version:  GENESIS 5.0.0.0
+        
+        ***************************************************************************
+        
+        
+        
+        Start: 2021-08-22 12:46:48                                  Uptime: 5 hours
+        
+        Date:  20121-08-22 17:47:10                               Cluster status: OK
+        
+        
+        
+        PID     Process Name                  Port        Status         CPU       Memory
+        
+        ==================================================================================
+        
+        9480    AUTH_CONSOLIDATOR             8006        RUNNING        0.30      1.60
+        
+        9392    AUTH_DATASERVER               8002        RUNNING        0.30      1.70
+        
+        9359    AUTH_MANAGER                  8001        RUNNING        0.30      1.60
+        
+        9419    AUTH_PERMS                    8003        RUNNING        0.30      1.80
 
 Usage
 
-```
-    mon \[-v | -c | -a\] polling_interval
-    
-    Options:
-    
-      -h, --help     show this help message and exit
-    
-      -v, --version  Shows installed products versions.
-    
-      -c, --cfg      Shows the config files used by each process.
-    
-      -a, --all      Shows all information.
-```
+        mon \[-v | -c | -a\] polling_interval
+        
+        Options:
+        
+          -h, --help     show this help message and exit
+        
+          -v, --version  Shows installed products versions.
+        
+          -c, --cfg      Shows the config files used by each process.
+        
+          -a, --all      Shows all information.
 
 ## DropTable
 
@@ -576,17 +531,16 @@ Confirmation of removal is required for each table.
 To populate the Holidays table with holidays based on a specific year(s), country(ies) and region(s), use the Populate command.
 
     The usage: PopulateHolidays
-```
-     -c,--country <arg>   the country name to search for holidays
-    
-     -h,--help            show usage information
-    
-     -r,--region <arg>    the region name to search for holidays
-    
-     -y,--year <arg>      the year of holidays
-    
-    For example: PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
-```
+
+         -c,--country <arg>   the country name to search for holidays
+        
+         -h,--help            show usage information
+        
+         -r,--region <arg>    the region name to search for holidays
+        
+         -y,--year <arg>      the year of holidays
+        
+        For example: PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
 
 ## CountRecords
 
@@ -604,11 +558,9 @@ This migrates the Genesis alias store from database storage to file storage and 
 
 Usage
 
-```
-MigrateAliases FILE
-    
-MigrateAliases DATABASE
-```
+    MigrateAliases FILE
+        
+    MigrateAliases DATABASE
 
 Aerospike and FDB implementations use internal aliases for fields and tables. Migrating these aliases from database to a file will help to debug problems in the data storage.
 
@@ -622,13 +574,11 @@ This migrates the Genesis dictionary from Database Dictionary Store to File Dict
 
 Usage:
 
-```
-MigrateDictionary
-```
+    MigrateDictionary
 
-The script uses a system definition file to get the **DictionarySource** property. 
+The script uses a system definition file to get the **DictionarySource** property.
 
-If the property is **DB** (the server uses a Database Dictionary Store), then the **MigrateDictionary** script saves a dictionary to a file. 
+If the property is **DB** (the server uses a Database Dictionary Store), then the **MigrateDictionary** script saves a dictionary to a file.
 
 If the **DictionarySource** is **FILE** (the server uses a File Dictionary Store), then the dictionary is saved to a database. The target database type - **DbLayer** - is retrieved from the system definitions file.
 
@@ -644,82 +594,78 @@ This finds all the dictionary sequences and prints the next sequence number for 
 
 Usage:
 
-```
-GetNextSequenceNumbers
-```
+    GetNextSequenceNumbers
 
 ## GetSequenceCount
 
 Gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by "SetSequence" script (see below)
 
 Usage:
-```
-    GetSequenceCount
-    
-     -f,--file <arg>
-    
-     -h,--help         show usage information
-    
-     -p,--print
-```
+
+        GetSequenceCount
+        
+         -f,--file <arg>
+        
+         -h,--help         show usage information
+        
+         -p,--print
 
 ## GetAutoIncrementCount
 
 This works like the **GetSequenceCount**, but for auto increment INT values defined in dictionaries.
 
 Usage
-```
-    GetAutoIncrementCount
-    
-     -f,--file <arg>
-    
-     -h,--help         show usage information
-    
-     -p,--print
-```
+
+        GetAutoIncrementCount
+        
+         -f,--file <arg>
+        
+         -h,--help         show usage information
+        
+         -p,--print
+
 ## SetSequence
 
 Allows the user to change a sequence number, or to do a bulk change for all the sequence in a ".csv" file (usually exported previously using GetNextSequenceNumbers or GetSequenceCount)
 
 Usage:
-```
-    SetSequence
-    
-     -f,--file <arg>       Name of csv file for batch sequence/value pairs to
-    
-                           be read from (overrides sequence and value option)
-    
-     -h,--help
-    
-     -s,--sequence <arg>   Two Character ID for the sequence (if setting
-    
-                           individual value)
-    
-     -v,--value <arg>      New integer value to be set (if setting individual
-    
-                           value)
-```
+
+        SetSequence
+        
+         -f,--file <arg>       Name of csv file for batch sequence/value pairs to
+        
+                               be read from (overrides sequence and value option)
+        
+         -h,--help
+        
+         -s,--sequence <arg>   Two Character ID for the sequence (if setting
+        
+                               individual value)
+        
+         -v,--value <arg>      New integer value to be set (if setting individual
+        
+                               value)
 
 ## SetAutoIncrement
 
 This works like **SetSequenc**e but for auto increment INT values.
 
 Usage:
-```
-    SetAutoIncrement
-    
-     -f,--file <arg>    Name of csv file for batch sequence/value pairs to be
-    
-                        read from (overrides sequence and value option)
-    
-     -h,--help
-    
-     -s,--field <arg>
-    
-     -t,--table <arg>
-    
-     -v,--value <arg>
-```
+
+        SetAutoIncrement
+        
+         -f,--file <arg>    Name of csv file for batch sequence/value pairs to be
+        
+                            read from (overrides sequence and value option)
+        
+         -h,--help
+        
+         -s,--field <arg>
+        
+         -t,--table <arg>
+        
+         -v,--value <arg>
+
 ## GenesisRun
 
 This is a python script wrapper for Genesis scripts.
@@ -746,7 +692,7 @@ DictionaryBuilder parses RDBMS schemas and uses this information to generate a G
 
 The script accepts a series of arguments to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc).
 
-##Arguments
+\##Arguments
 
 | Argument | Argument long name | Mandatory | Description | Restricted Values |
 
@@ -780,11 +726,9 @@ The script accepts a series of arguments to establish a connection to the databa
 
 It is also possible to use the double dash notation for any argument. Arguments -sid or -db are not mandatory (as they can change from one database to another) but they should be passed accordingly when necessary.
 
-##Example
+\##Example
 
-```
-DtaRun DictionaryBuilder.groovy -u TAS -p fght123 -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
-```
+    DtaRun DictionaryBuilder.groovy -u TAS -p fght123 -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
 
 ### How the script behaves
 
@@ -793,24 +737,17 @@ The script tries to connect to the RDBMS currently specified in the arguments. I
 There are a few considerations we should be aware of:
 
 * If a column name (e.g. DATE) is found across several tables but has the same type, only one field will be specified in the dictionary. Contrarily, if the same column name is found in different tables with different types, a new field will be created keeping the column name and adding the table name (e.g. CALENDAR) in the following fashion: DATE_IN_CALENDAR. The script will output this event on screen so we can fix the name and/or type manually later on.
-
 * The types are mapped from [http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html "http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html") to Genesis dictionary types. As a matter of fact, each database can have their own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore this tool is not 100% accurate and results should be checked for correctness.
-
 * If there is no mapping available for the java.sql.Type retrieved by the column metadata query, it will be mapped by default to the Genesis dictionary type "STRING". This event will be shown on standard output too, so we can know there is an uncommon type we should take care of.
-
 * Every time a table is successfully parsed, the script will give feedback: "TABLE USERS complete".
-
 * VIEWS won't be parsed.
-
 * Regarding keys and indexes.
-
 * Primary keys will be parsed as primary keys in Genesis, whether they are single column based or multiple column based.
 * Only unique indexes will be parsed as secondary keys.
 * There is no concept of foreign keys in Genesis, so foreign keys will be ignored.
-
 * Strings parsed in lower camel case format (camelCase) will be transformed to upper underscore format (UPPER_UNDERSCORE).
 
-##Types mapping
+\##Types mapping
 
 | Genesis Type | JDBC Types |   |   |   |   |   |   |
 
@@ -874,37 +811,31 @@ Standard files will be generated, i.e. processes.xml and service-definitions.xml
 
 Example without -t option.
 
-```
-\~/run/genesis/scripts/unix/productGen -d tas-dictionary.xml -p 4000 -pn tas
-```
+    \~/run/genesis/scripts/unix/productGen -d tas-dictionary.xml -p 4000 -pn tas
 
 In this case we are specifying the dictionary to read is tas-dictionary.xml, the port offset is 4000 and the product name to generate is tas.  Running this command results in the following structure being created:
 
-```
-    tas/
-    
-       /bin
-    
-       /cfg/tas-dataserver.xml
-    
-           /tas-dictionary.xml
-    
-           /tas-fields.xml
-    
-           /tas-processes.xml
-    
-           /tas-requestserver.xml
-    
-           /tas-service-definitions.xml
-    
-       /scripts/tas-tnHandler.gy
-```
+        tas/
+        
+           /bin
+        
+           /cfg/tas-dataserver.xml
+        
+               /tas-dictionary.xml
+        
+               /tas-fields.xml
+        
+               /tas-processes.xml
+        
+               /tas-requestserver.xml
+        
+               /tas-service-definitions.xml
+        
+           /scripts/tas-tnHandler.gy
 
 Example with -t option.
 
-```
-\~/run/genesis/scripts/unix/productGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
-```
+    \~/run/genesis/scripts/unix/productGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
 
 The tables mentioned in the above command will be appended to the files that were created in tas folder
 
@@ -914,41 +845,39 @@ The tables mentioned in the above command will be appended to the files that wer
 
 This step is only required if using a self-signed certificate due to the absence of a proper trusted root authority issued one.
 
-```
-    $ keytool -genkey -keyalg RSA -keysize 2048 -alias selfsigned -storepass Password1233 -keystore keystore.jks -ext SAN=dns:genesisserv1,dns:genesisserv1.ad.genesis.global,dns:genesisserv2,dns:genesisserv2.ad.genesis.global,dns:genesisserv3,dns:genesisserv3.ad.genesis.global,dns:genesisserv4,dns:genesisserv4.ad.genesis.global,ip:193.144.16.43
-    
-    What is your first and last name?
-    
-      \[Unknown\]:  Fred Bloggs
-    
-    What is the name of your organizational unit?
-    
-      \[Unknown\]:  IT
-    
-    What is the name of your organization?
-    
-      \[Unknown\]:  Genesis Global Technology Ltd
-    
-    What is the name of your City or Locality?
-    
-      \[Unknown\]:  London
-    
-    What is the name of your State or Province?
-    
-      \[Unknown\]:  Greater London
-    
-    What is the two-letter country code for this unit?
-    
-      \[Unknown\]:  GB
-    
-    Is CN=Fred Bloggs, OU=IT, O=Genesis Global Technology Ltd, L=London, ST=Greater London, C=GB correct?
-    
-      \[no\]:  yes
-    
-    Enter key password for <selfsigned>
-    
-            (RETURN if same as keystore password):
-```
+        $ keytool -genkey -keyalg RSA -keysize 2048 -alias selfsigned -storepass Password1233 -keystore keystore.jks -ext SAN=dns:genesisserv1,dns:genesisserv1.ad.genesis.global,dns:genesisserv2,dns:genesisserv2.ad.genesis.global,dns:genesisserv3,dns:genesisserv3.ad.genesis.global,dns:genesisserv4,dns:genesisserv4.ad.genesis.global,ip:193.144.16.43
+        
+        What is your first and last name?
+        
+          \[Unknown\]:  Fred Bloggs
+        
+        What is the name of your organizational unit?
+        
+          \[Unknown\]:  IT
+        
+        What is the name of your organization?
+        
+          \[Unknown\]:  Genesis Global Technology Ltd
+        
+        What is the name of your City or Locality?
+        
+          \[Unknown\]:  London
+        
+        What is the name of your State or Province?
+        
+          \[Unknown\]:  Greater London
+        
+        What is the two-letter country code for this unit?
+        
+          \[Unknown\]:  GB
+        
+        Is CN=Fred Bloggs, OU=IT, O=Genesis Global Technology Ltd, L=London, ST=Greater London, C=GB correct?
+        
+          \[no\]:  yes
+        
+        Enter key password for <selfsigned>
+        
+                (RETURN if same as keystore password):
 
 Assuming no problems with privileges you will now have a certificate called "selfsigned" with a private key using the same password as the keystore password e.g. Password123.
 
@@ -958,9 +887,7 @@ Please note, however, that this certificate should be stored in another director
 
 The keystore (.jks) is, in a way, the private key to be used in the two-way authentication in the SSL protocol. As such, we need to use it to generate the certificate that needs to be installed by the target computers/loaded by the processes that intend to communicate with.
 
-```
-$ keytool -export -alias mykey -file certificate.crt -keystore keystore.jks
-```
+    $ keytool -export -alias mykey -file certificate.crt -keystore keystore.jks
 
 ## Installing TLS certificate in environment
 
@@ -968,11 +895,9 @@ $ keytool -export -alias mykey -file certificate.crt -keystore keystore.jks
 
 Varies according to the distribution being used. In Ubuntu:
 
-```
-$ cp certificate.crt /usr/local/share/ca-certificates/
-
-$ sudo update-ca-certificates
-```
+    $ cp certificate.crt /usr/local/share/ca-certificates/
+    
+    $ sudo update-ca-certificates
 
 ### Windows
 
@@ -986,15 +911,11 @@ All Genesis modules are defined inside the service definition files:
 
 Syntax:
 
-```
-\~/run/<product>/cfg/<product>-service-definitions.xml
-```
+    \~/run/<product>/cfg/<product>-service-definitions.xml
 
 Example:
 
-```
-\~/run/exmon/cfg/exmon-service-definitions.xml
-```
+    \~/run/exmon/cfg/exmon-service-definitions.xml
 
 To enable a process to be set to communicate via SSL set the secure element to be true.
 
@@ -1085,4 +1006,4 @@ Note: With encryption, if using a self-signed certificate, you must install the 
 
 ## Web front-end
 
-Install the certificate.crt in the target machine's operating system as a trusted root CA. That is all you need to do.
+Install the `certificate.crt` in the target machine's operating system as a trusted root CA. That is all you need to do.
