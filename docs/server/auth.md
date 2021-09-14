@@ -68,4 +68,50 @@ Where clauses
 
 You can define a where clause if you only want to show a row in specific cases. Authorisation definitions using a where clause first evaluate the where clause against the permission map. This functionality on its own is not that useful, as for a single auth permissions map the content of the where clause could be moved to the query where clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
 
-This example below for different where clauses depending on user role
+This example shows different where clauses based on user role.
+
+    permissioning {
+                auth(mapName = "ENTITY_VISIBILITY") {
+                    BID_OFFER_BIDDER_VIEW.CLIENT_ID
+                    where { view ->
+                        !(BidState.DRAFT == view.bidState && !(BidBookState.OPEN == view.bidBookState ||(BidBookState.UPCOMING == view.bidBookState)) )
+                    }
+                } or
+                auth(mapName = "ENTITY_VISIBILITY") {
+                    BID_OFFER_BIDDER_VIEW.BUYER_DEALER_ID
+                    where { view ->
+                        !((BidBookState.UPCOMING == view.bidBookState || BidBookState.OPEN == view.bidBookState) && DealerRole.PRINCIPAL == view.dealerRole)
+                    }
+                }
+            }
+
+HideFields
+
+You can also have different column visibility levels based on user authorisation and row content. 
+
+The example below hides the LAST_TRADED_PRICE column value for a particular instrument code.
+
+    query("ALL_TRADES_WITH_ENRICHED_AUTH", TRADE_VIEW) {
+        permissioning {
+            enrichedAuth(mapName = "TRADE_VISIBILITY", enrichedEntity = FAVOURITE_TRADES) {
+                TRADE_VIEW.TRADE_ID
+                FAVOURITE_TRADES.USER_NAME
+            }
+        }
+        enrich(FAVOURITE_TRADES){
+            join { userName, row ->
+                FavouriteTrades.ByTradeIdAndUserName(
+                    userName = userName,
+                    tradeId = row.tradeId
+                )
+            }
+            fields {
+                derivedField("FAVOURITE", BOOLEAN) { row, userData ->
+                    userData != null
+                }
+            }
+        }
+        config {
+            compression = true
+        }
+    }
