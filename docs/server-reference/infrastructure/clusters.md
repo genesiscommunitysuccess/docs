@@ -40,7 +40,6 @@ Add all the nodes in the cluster to the hosts section for the specific environme
         }
     
     }
-    
 
 To activate any configuration change to the genesis platform and/or application, you have to run the command **genesisInstall** on every changed node.
 
@@ -63,3 +62,5 @@ This should be the output of **MonCluster** if **SetPrimary** was executed on No
 ## Disaster recovery: example
 
 ## Vertical and horizontal scaling
+
+If you are adding nodes for horizontal scaling simply add the details of the extra nodes to the hosts section in **genesis-system-definition.kts**.
