@@ -7,7 +7,7 @@ id: set-up
 ---
 ## Authentication
 
-You need to be sure that only permitted individuals are able to gain access to your application.
+Content to follow shortly.
 
 ## Authorisation
 
