@@ -7,7 +7,7 @@ sidebar_position: 3
 ---
 
 import CodeBlock from '@theme/CodeBlock';
-import Imports from '!!raw-loader!../../../examples/server/xml/event-handlers/imports.java';
+import Imports from '!!raw-loader!../../../examples/server/java/event-handlers/imports.java';
 
 :::danger WIP
 (Add introduction and contents list here.)
