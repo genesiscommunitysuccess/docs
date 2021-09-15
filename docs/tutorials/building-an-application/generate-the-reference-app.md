@@ -7,13 +7,15 @@ sidebar_position: 1
 ---
 The first task is to generate a reference application from the existing RDBMS of reference data.
 
-Before you start. You need the genesis server platform installed in a server/local vm/wsl/cloud instance (genesis and auth).
+Before you start. You do have the platform and all the relevant tools installed, yes? The Genesis LCNC mus tbe installed on a server,local vm, wsl or cloud instance (genesis and auth).
 
 Ideally, maven should be installed in the server instance with adequate configuration to retrieve genesis binaries.
 
 Otherwise, the maven installation and configuration must be available in a local development environment.
 
-There are four tables in the source relational database tables. You can see these  in DBeaver.
+## The source database 
+
+There are four tables in the source relational database. You can see these  in DBeaver.
 
 ![](/img/dbeaver-screenshot.png)
 
@@ -79,15 +81,17 @@ This gives you the following project structure:
 
 Move the generated **ref_data_app/cfg** files (from the previous DictionaryBuilder and AppGen steps) to the **ref_data_app-config/src/main/resources/cfg** folder.
 
+![](/img/copy-generated-script-files-inside-ref_data_app-script-config.png)
+
 Locate the generated files for the request server, data server and event handler. These are in the  **ref_data_app/scripts** folder. Move these to the **ref_data_app-script-config/src/main/resources/scripts** folder.
+
+![](/img/copy-generated-script-files-inside-ref_data_app-script-config.png)
 
 ### Install the maven project
 
 Now run **mvn install**.
 
 ![](/img/build-maven-project-using-mvn-install.png)
-
-\**screengrab archetype generation in intellij
 
 Again, you need to move the script and config files. Have these to hand, so you can copy them easily:
 
@@ -99,4 +103,4 @@ Locate the generated files for the request server, data server and event handler
 
 In intellij, run **mvn install**.
 
-screengrab of result
+![](/img/run-maven-install-in-intellij.png)
