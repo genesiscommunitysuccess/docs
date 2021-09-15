@@ -67,9 +67,11 @@ In a clustered Genesis setup, all session data is shared amongst all nodes. Foll
 
 If you decide that the Primary will not to come back online within an acceptable timeframe, you then set the Secondary node to Primary.
 
-![](/img/cluster-4-disaster-b.png)
+Running **SetPrimary** on NodeB makes it the Primary node. You can see this again on **MonCluster**. But note here that the processes are back up on NodeA.
 
-Running **SetPrimary** on NodeB makes it the Primary node.
+![](/img/cluster-5-disaster-c.png)
+
+So, when you are satisfied that NodeA is performing satisfactorily, you can run **SetPrimary** on NodeA again to make it the Primary node.
 
 ## Vertical and horizontal scaling
 
