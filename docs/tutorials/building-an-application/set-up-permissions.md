@@ -97,6 +97,6 @@ permissions {
 
 }
 
-This means only users with TRADER permission code will be able to use that event handler. You can apply the same concept to req/reps and dataservers.
+This means only users with TRADER permission code will be able to use that event handler. You can add similar code to the request servers and data servers.
 
 The permission mechanism is driven by the RIGHT_SUMMARY table, which contains an association between a user and a right-code. You can see an example of a test for permissions in EventHandlerPalTest in genesis-server repo inside genesis-pal-test, it contains an example of adding a RIGHT_SUMMARY record as part of the @Before setup.
