@@ -61,7 +61,7 @@ This should be the output of **MonCluster** if **SetPrimary** was executed on No
 
 ## Disaster recovery: example
 
-In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Prerequisites section, if the Primary Node fails and goes offline, tThe load balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption. 
+In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Prerequisites section, if the Primary Node fails and goes offline, The load balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption. 
 
 
 
