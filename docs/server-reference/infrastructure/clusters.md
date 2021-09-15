@@ -76,4 +76,14 @@ Every Genesis process is an independent Java process running on a dedicated JVM.
 
 Example:
 
-<process name="GENESIS_WEBMON">
+    <process name="GENESIS_WEBMON">
+    	<start>true</start>
+    	<groupId>GENESIS</groupId>
+    	<options>-Xmx512m -DXSD_VALIDATE=false</options>
+    	<module>webmon</module>
+    	<package>global.genesis.webmon</package>
+    	<config>genesis-webmon-config.xml</config>
+    	<description>Admin and operations web interface</description>
+    </process>
+
+Environment variables
