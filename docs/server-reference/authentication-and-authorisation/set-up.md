@@ -67,11 +67,15 @@ If the profile has write access to an entity, then it automatically includes rea
 
 ### Entity level (row level) 
 
-GENESIS_AUTH_PERMS runs automatically on start-up and creates a memory-mapped file that acts as a big key-value pair – for example, User J has access to Counterparty 1, User J has access to Counterparty 2, User K has access to Counterparty 1, User K has access to Counterparty 4, etc. . If there is no appropriate entry in the file, the user won’t have access. 
+GENESIS_AUTH_PERMS runs automatically on start-up and creates a memory-mapped file that acts as a big key-value pair.
+
+For example, User J has access to Counterparty 1, User K has access to Counterparty 2, User L has access to Counterparty 4, etc.. 
+
+If there is no appropriate entry in the file, the user won’t have access.
 
 You must keep the process running, as it maintains itself automatically whenever any permissions change. If you a permission is changed on this way, then the change is automatically reflected on screen. If I have a grid on screen with 4 trades from Counterparty 1 and my permission to view that counterparty are withdrawn,  those 4 trades disappear from my screen immediately. 
 
-From here, we use the example in the documentation at Dynamic Authorisation - examples - john.hendry - Confluence (atlassian.net). 
+**From here, we use the example in the documentation at Dynamic Authorisation - examples - john.hendry - Confluence (atlassian.net).** 
 
 There are some additional pieces of info we might want to add at a later date. We can discuss another day.
 
