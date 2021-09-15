@@ -9,75 +9,63 @@ id: set-up
 
 You need to be sure that only permitted individuals are able to gain access to your application.
 
-:::danger WIP cintent in production!! :::
-
 ## Authorisation
 
-Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:: 
+Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example::
 
-* The whole entity 
-* Specific rows 
-* Specific columns 
+* The whole entity
+* Specific rows
+* Specific columns
 
-Effectively, you have three levels of control: 
+Effectively, you have three levels of control:
 
-**High level**. User A can view table ALL_TRADES. 
+**High level**. User A can view table ALL_TRADES.
 
-You could hide an entire grid from the UI, for example. So, one group could view reference data, but this would be hidden from the other groups. Or, you could hide an entire data server. For this, you use RIGHTS_CODE. This is like a switch – you can either see it or not, depending on whether the code is TRUE or FALSE. 
+You could hide an entire grid from the UI, for example. So, one group could view reference data, but this would be hidden from the other groups. Or, you could hide an entire data server. For this, you use RIGHTS_CODE. This is like a switch – you can either see it or not, depending on whether the code is TRUE or FALSE.
 
-**Entity level** 
+**Entity level**
 
 This is row or column-level access to information. Different users all view the same grid, but each one sees different data. This is, best explained with these simple examples:
 
-* You can have user A, user B and User C all having the RIGHTS_CODE to view a specific grid, but each one sees different trades in that grid. This enables you to separate different trading desks, for example. 
-* Each user might only have access to trades for specific customers. 
-* By including these permissions in an event handler,  user A can only enter a trade on behalf of a specific set of clients and user B can only enter trades on behalf of a different set of clients. 
+* You can have user A, user B and User C all having the RIGHTS_CODE to view a specific grid, but each one sees different trades in that grid. This enables you to separate different trading desks, for example.
+* Each user might only have access to trades for specific customers.
+* By including these permissions in an event handler,  user A can only enter a trade on behalf of a specific set of clients and user B can only enter trades on behalf of a different set of clients.
 
-Similarly, you can have different users seeing different columns in the same grid. This could be used for a support function, for example, where you don’t want the support team to see specific columns of sensitive data, such as who the client for a trade is. It can be specified by GPAL. 
+Similarly, you can have different users seeing different columns in the same grid. This could be used for a support function, for example, where you don’t want the support team to see specific columns of sensitive data, such as who the client for a trade is. It can be specified by GPAL.
 
-### Users, profiles and rights 
+### Users, profiles and rights
 
-We have rights codes, profiles and users.  
+We have rights codes, profiles and users.
 
-A profile can have zero to many rights codes and zero to many users. 
+A profile can have zero to many rights codes and zero to many users.
 
-So, if you have, say three roles, Trader, Support, and Operations, you set up the rights codes for each of these three profiles and then allocate each user to the appropriate profile. A user can have more than one profile, so you could allocate a superuser to all three profiles; that superuser would have the rights of all three profiles.  
+So, if you have, say three roles, Trader, Support, and Operations, you set up the rights codes for each of these three profiles and then allocate each user to the appropriate profile. A user can have more than one profile, so you could allocate a superuser to all three profiles; that superuser would have the rights of all three profiles.
 
-You cannot allocate rights codes directly to a specific user. But there is nothing to stop you from creating a profile that has only one user. 
+You cannot allocate rights codes directly to a specific user. But there is nothing to stop you from creating a profile that has only one user.
 
-This information is held on the following tables: 
+This information is held on the following tables:
 
-PROFILE_RIGHT. For each profile, this lists the entities that the profile has the right to view 
+* PROFILE_RIGHT. For each profile, this lists the entities that the profile has the right to view
+* PROFILE_USER. For each profile, this lists the users who have been allocated (and therefore, who have the rights in the relevant PROFILE_RIGHT table).
+* RIGHT_SUMMARY. This is created automatically by the system in real time. It maps all users to their rights.
 
-the right to view 
+In this way, the rights are easily accessible at speed. AUTH MANAGER process manages this automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY is updated immediately and all the users in that profile receive the new right automatically.
 
-PROFILE_USER. For each profile, this lists the users who have been allocated (and therefore, who have the rights in the relevant PROFILE_RIGHT table). 
+If the profile that has write access to an entity, then it automatically includes read rights.
 
-RIGHT_SUMMARY. This is created automatically by the system in real time. It maps all users to their rights. In this way, the rights are easily accessible at speed. AUTH MANAGER process manages this automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY is updated immediately and all the users in that profile receive the new right automatically. 
+### Loading a list of users
 
-If you are asked to load a list of users and profiles when you deliver an application, there is an extra step to take. You can SendIt the list to the database, but it does not update the RIGHT_SUMMARY table automatically. After loading the database, you need to run the script consolidateRights to update the RIGHT_SUMMARY table. 
+If you need to load a list of users and profiles you can use **SendIt** to send the list to the database, but it does not update the RIGHT_SUMMARY table automatically. After loading the database, you need to run the script **consolidateRights** to update the RIGHT_SUMMARY table.
 
-### Good practice, bad practice 
+### Good practice, bad practice
 
 With this route, you can allocate rights to profiles and users to rights – and  change them. There is no change to the code needed.  However, our advice is to be as granular as possible at the start, because it is more difficult to introduce that granularity at a later point.  If yo create a new right, you have to change the code.
 
-Read and write access 
+### Entity level (row level)
 
-If the profile has write access to an entity, then it automatically includes read rights. 
+GENESIS_AUTH_PERMS runs automatically on start-up and creates a memory-mapped file that acts as a big key-value pair – for example, User J has access to Counterparty 1, User J has access to Counterparty 2, User K has access to Counterparty 1, User K has access to Counterparty 4, etc. . If there is no appropriate entry in the file, the user won’t have access.
 
-### Entity level (row level) 
-
-GENESIS_AUTH_PERMS runs automatically on start-up and creates a memory-mapped file that acts as a big key-value pair.
-
-For example, User J has access to Counterparty 1, User K has access to Counterparty 2, User L has access to Counterparty 4, etc.. 
-
-If there is no appropriate entry in the file, the user won’t have access.
-
-You must keep the process running, as it maintains itself automatically whenever any permissions change. If you a permission is changed on this way, then the change is automatically reflected on screen. If I have a grid on screen with 4 trades from Counterparty 1 and my permission to view that counterparty are withdrawn,  those 4 trades disappear from my screen immediately. 
-
-**From here, we use the example in the documentation at Dynamic Authorisation - examples - john.hendry - Confluence (atlassian.net).** 
-
-There are some additional pieces of info we might want to add at a later date. We can discuss another day.
+You must keep the process running, as it maintains itself automatically whenever any permissions change. If you a permission is changed on this way, then the change is automatically reflected on screen. If I have a grid on screen with 4 trades from Counterparty 1 and my permission to view that counterparty are withdrawn,  those 4 trades disappear from my screen immediately.
 
 In many cases, you want different people to have access to different functions and different information, based on their roles.  In Genesis, users are not permissioned individually for these purposes. Instead, permissioining is based on roles. You define what information and functions are available to a role, and then you allocate users to these roles. We refer to this as dynamic authorisation. There is nothing to stop you creating a role that has only one user, of course.
 
