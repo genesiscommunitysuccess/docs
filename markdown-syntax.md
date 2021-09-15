@@ -49,17 +49,9 @@ Strikethrough uses two tildes. ~~Scratch this.~~
 
 ## Links
 
-[I'm an inline-style link](https://www.google.com/)
+Link to another documentation page: [Platform](/getting-started/platform/)
 
-[I'm an inline-style link with title](https://www.google.com/ "Google's Homepage")
-
-[I'm a reference-style link](https://www.mozilla.org/)
-
-[You can use numbers for reference-style link definitions](http://slashdot.org/)
-
-Or leave it empty and use the [link text itself](http://www.reddit.com/).
-
-URLs and URLs in angle brackets will automatically get turned into links. http://www.example.com/ or [http://www.example.com/](http://www.example.com/) and sometimes example.com (but not on GitHub, for example).
+External link: [Google](https://www.google.com/)
 
 [Anchor link](#markdown-syntax) to a section on the same page
 
@@ -67,15 +59,21 @@ URLs and URLs in angle brackets will automatically get turned into links. http:/
 
 ## Images
 
-Here's our logo (hover to see the title text):
+Stored in `static/img` folder and loaded as follows:
 
-Inline-style: ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+![](/img/this-is-what-a-genesis-application.png)
 
-Reference-style: ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 2")
+![alternative text](/img/this-is-what-a-genesis-application.png "Title text")
 
 ***
 
-## Code
+## Inline code references
+
+Sentence with a `variable`.
+
+Note: any code with angle brackets will need to be wrapped in an code block to prevent syntax errors e.g. `<category>`.
+
+## Code Blocks
 
 ```javascript
 var s = 'JavaScript syntax highlighting';
@@ -96,9 +94,23 @@ function highlightMe() {
 }
 ```
 
+## Loading code from a file
+
+import CodeBlock from '@theme/CodeBlock';
+import Example from '!!raw-loader!./examples/ui/helloWorld';
+
+<CodeBlock className="language-ts">{Example}</CodeBlock>
+
 ***
 
 ## Tables
+
+There must be at least 3 dashes separating each header cell. The outer pipes (|) are optional, and you don't need to make the raw Markdown line up prettily. You can also use inline Markdown.
+
+| Markdown | Less | Pretty |
+| --- | --- | --- |
+| Still | renders | nicely |
+| 1 | 2 | 3 |
 
 Colons can be used to align columns.
 
@@ -107,13 +119,6 @@ Colons can be used to align columns.
 | col 3 is | right-aligned | $1600 |
 | col 2 is | centered | $12 |
 | zebra stripes | are neat | $1 |
-
-There must be at least 3 dashes separating each header cell. The outer pipes (|) are optional, and you don't need to make the raw Markdown line up prettily. You can also use inline Markdown.
-
-| Markdown | Less | Pretty |
-| --- | --- | --- |
-| Still | renders | nicely |
-| 1 | 2 | 3 |
 
 ***
 
@@ -129,6 +134,17 @@ Quote break.
 
 ## Inline HTML
 
+Markdown can embed HTML elements, and `details` HTML elements comes with default styling:
+
+<details>
+  <summary>Toggle me!</summary>
+  <div>
+    <div>This is the detailed content</div>
+  </div>
+</details>
+
+You can use other elements too:
+
 <dl>
 <dt>Definition list</dt>
 <dd>Is something people use sometimes.</dd>
@@ -136,6 +152,7 @@ Quote break.
 <dt>Markdown in HTML</dt>
 <dd>Does _not_ work **very** well. Use HTML <em>tags</em>.</dd>
 </dl>
+
 
 ***
 
