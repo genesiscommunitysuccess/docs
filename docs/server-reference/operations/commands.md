@@ -834,13 +834,13 @@ In this case we are specifying the dictionary to read is `tas-dictionary.xml`, t
 ```
 tas/
     /bin
-    /cfg/tas-dataserver.xml
+    /cfg/tas-dataserver2.xml
         /tas-fields-dictionary.kts
-        /tas-tables-dictionary.kts
-        /tas-fields.xml
         /tas-processes.xml
-        /tas-requestserver.xml
+        /tas-reqrep.xml
         /tas-service-definitions.xml
+        /tas-system-definition.kts
+        /tas-tables-dictionary.kts
     /scripts/tas-tnHandler.gy
 ```
 

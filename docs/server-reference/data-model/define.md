@@ -49,9 +49,9 @@ For example, here we define two STRING fields. The second is nullable; the first
 
 ```java
 fields {
-field(name = "ORDER_ID", type = STRING)
-field(name = "DESCRIPTION", type = STRING, nullable = true)
-...
+    field(name = "ORDER_ID", type = STRING)
+    field(name = "DESCRIPTION", type = STRING, nullable = true)
+    ...
 }
 ```
 
@@ -97,32 +97,32 @@ Derived fields are read-only fields calculated during runtime (i.e. not stored i
 See example below for USER table:
 
 ```java
-    table(name = "USER", id = 1000, audit = details(1050, "UA")) {
-        Fields.USER_NAME
-        Fields.FIRST_NAME
-        Fields.LAST_NAME
-        Fields.EMAIL_ADDRESS
-        Fields.PASSWORD
-        Fields.REFRESH_TOKEN
-        Fields.LAST_LOGIN
-        Fields.STATUS
-        Fields.ONLINE
-        Fields.COMPANY_NAME
-        Fields.COMPANY_ID
-        derivedFields {
-            derivedField("FULL_NAME", Fields.FIRST_NAME, Fields.LAST_NAME) { first, last ->
-                // If no "output" type is defined, the output type will be equal to first field type (i.e. FIRST_NAME type)
-                "$first $last"
-            }
-            derivedField("USER_NAME_CHARS", Fields.USER_NAME, INT) { userName ->
-                // The output type will be equal to INT in this case, and GPAL will verify an INT is returned.
-                userName?.length ?: 0
-            }
+table(name = "USER", id = 1000, audit = details(1050, "UA")) {
+    Fields.USER_NAME
+    Fields.FIRST_NAME
+    Fields.LAST_NAME
+    Fields.EMAIL_ADDRESS
+    Fields.PASSWORD
+    Fields.REFRESH_TOKEN
+    Fields.LAST_LOGIN
+    Fields.STATUS
+    Fields.ONLINE
+    Fields.COMPANY_NAME
+    Fields.COMPANY_ID
+    derivedFields {
+        derivedField("FULL_NAME", Fields.FIRST_NAME, Fields.LAST_NAME) { first, last ->
+            // If no "output" type is defined, the output type will be equal to first field type (i.e. FIRST_NAME type)
+            "$first $last"
         }
-        primaryKey {
-            Fields.USER_NAME
+        derivedField("USER_NAME_CHARS", Fields.USER_NAME, INT) { userName ->
+            // The output type will be equal to INT in this case, and GPAL will verify an INT is returned.
+            userName?.length ?: 0
         }
     }
+    primaryKey {
+        Fields.USER_NAME
+    }
+}
 ```
 
 The functionality provided in the previous examples should satisfy most use cases. It also has the advantage of providing a type safe calculation which will guarantee no type errors between different field types, including nullability checks for nullable fields.
