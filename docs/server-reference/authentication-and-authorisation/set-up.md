@@ -7,11 +7,11 @@ id: set-up
 ---
 ## Authentication
 
-You need to be sure that only permitted individuals are able to gain access to your application.
+Content to follow shortly.
 
 ## Authorisation
 
-Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example::
+Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:
 
 * The whole entity
 * Specific rows
