@@ -89,3 +89,13 @@ Example:
 Environment variables
 
 The Genesis LCNC Pplatform supports extraction of system-level variables to populate solution-specific settings. The system-level variables can be derived from enterprise configuration management system and the platform supports encrypted settings.
+
+## External runtime dependencies
+
+
+
+## Encryption of data in transit and REST
+
+
+Genesis recommends using a local reverse proxy with SSL termination to provide end-to-end encryption from the web application to the application back end.
+The platform does not provide specific functionality to encrypt data at REST, as this is best achived by the database solution deployed for the overall installation and/or the disk partition encryption of the Virtual Machine (VM).
