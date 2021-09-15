@@ -50,4 +50,10 @@ Running the **mon** command should show the following:
 
 ![](/img/cluster-2-mon.png)
 
-Running the MonCluster command shows this:
+Running the **MonCluster** command shows this:
+
+Setting the primary node
+
+Use the **SetPrimary** command to set one of the nodes to Primary state
+
+This should be the output of **MonCluster** if **SetPrimary** was executed on NodeA:
