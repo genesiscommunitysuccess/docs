@@ -64,3 +64,10 @@ This should be the output of **MonCluster** if **SetPrimary** was executed on No
 ## Vertical and horizontal scaling
 
 If you are adding nodes for horizontal scaling simply add the details of the extra nodes to the hosts section in **genesis-system-definition.kts**.
+
+    hosts {
+    host(name = "NodeA")
+          host(name = "NodeB")
+    	host(name = "NodeC")
+          …
+    }
