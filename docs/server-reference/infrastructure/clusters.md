@@ -61,9 +61,7 @@ This should be the output of **MonCluster** if **SetPrimary** was executed on No
 
 ## Disaster recovery: example
 
-In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Prerequisites section, if the Primary Node fails and goes offline, The load balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption. 
-
-
+In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Prerequisites section, if the Primary Node fails and goes offline, The load balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption.
 
 ## Vertical and horizontal scaling
 
@@ -76,7 +74,7 @@ If you are adding nodes for horizontal scaling simply add the details of the ext
           …
     }
 
-Every Genesis process is an independent Java process running on a dedicated JVM. Each process can be configured with JVM-specific memory management configurations (-Xmx -Xms etc.) in the _modul_e**-processes.xml** file.
+Every Genesis process is an independent Java process running on a dedicated JVM. Each process can be configured with JVM-specific memory management configurations (-Xmx -Xms etc.) in the _module_**-processes.xml** file.
 
 Example:
 
@@ -92,7 +90,7 @@ Example:
 
 ## Environment variables
 
-The Genesis LCNC Pplatform supports extraction of system-level variables to populate solution-specific settings. The system-level variables can be derived from enterprise configuration management system and the platform supports encrypted settings.
+The Genesis LCNC Platform supports extraction of system-level variables to populate solution-specific settings. The system-level variables can be derived from enterprise configuration management system and the platform supports encrypted settings.
 
     item(name = "DbUsername", value = System.getenv("DBUSERNAME"), encrypted = true)
     item(name = "DbPassword", value = System.getenv("DBPASSWORD"), encrypted = true)
@@ -105,5 +103,4 @@ The genesis platform supports extraction of system level variables to populate s
 
 ## Encryption of data in transit and REST
 
-Genesis recommends using a local reverse proxy with SSL termination to provide end-to-end encryption from the web application to the application back end.
-The platform does not provide specific functionality to encrypt data at REST, as this is best achived by the database solution deployed for the overall installation and/or the disk partition encryption of the Virtual Machine (VM).
+Genesis recommends using a local reverse proxy with SSL termination to provide end-to-end encryption from the web application to the application back end. The platform does not provide specific functionality to encrypt data at REST, as this is best achieved by the database solution deployed for the overall installation and/or the disk partition encryption of the Virtual Machine (VM).
