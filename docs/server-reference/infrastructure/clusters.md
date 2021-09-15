@@ -61,17 +61,21 @@ This should be the output of **MonCluster** if **SetPrimary** was executed on No
 
 ## Disaster recovery: example
 
-In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Prerequisites section, if the Primary Node fails and goes offline, The load balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption. Below you can see the switch to the secondary node using **MonCluster**.
+In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Prerequisites section, if the Primary Node fails and goes offline, The Load Balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption. Below you can see the switch to the secondary node using **MonCluster**.
 
 ![](/img/cluster-4-disaster-a.png)
 
-If you decide that the Primary will not to come back online within an acceptable timeframe, you then set the Secondary node to Primary.
+If you decide that the Primary will not to come back online within an acceptable timeframe, you can then set the Secondary node to Primary.
 
-Running **SetPrimary** on NodeB makes it the Primary node. You can see this again on **MonCluster**. But note here that the processes are back up on NodeA.
+To do this, run **SetPrimary** on NodeB. You can then see the change on **MonCluster**. But note here that the processes are back up on NodeA.
 
 ![](/img/cluster-5-disaster-c.png)
 
 So, when you are satisfied that NodeA is performing satisfactorily, you can run **SetPrimary** on NodeA again to make it the Primary node.
+
+![](/img/cluster-6-disasterd.png)
+
+In summary, the Load Balancer has handled the automatic switching to the secondary node in response to failure. You have then been able to change the two nodes manually using **SetPrimary**.
 
 ## Vertical and horizontal scaling
 
