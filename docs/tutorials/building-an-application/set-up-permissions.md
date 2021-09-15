@@ -5,31 +5,33 @@ sidebar_label: Set up user permissions
 sidebar_position: 9
 
 ---
-At this stage, we have:
+At this stage, you have a working server with 
 
- a Ref_data_app  (with all its tables) and the schema can be imported into trading_app.
+a Ref_data_app and a Trading_app. The Trading_app has a consolidator to calculate the positions, event handlers to control changes to the database and data server and request servers to publish the data to the front end.
 
-Trading_app exists and it contains the schema for TRADE table + event handlers, data servers and req-reps.
+Now you want to premission users so that everyone has access to the correct parts of the system.
 
 ## The objective
 
-The objective is to use dynamic permissions and permission codes so that specific users have access to specific parts of the application – both functions and data.. 
+The objective is to use dynamic permissions and permission codes so that specific users have access to specific parts of the application – both functions and data..
 
-We can display the configuration of both in our req/rep, dataserver and eventhandler.
+We can display the configuration of both in our request server, data server and event handler.
 
-We can enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system. 
+Generic permissions
+
+First, enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system.
 
 You can read more about it here : [https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model](https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model "https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model")
 
-Starting with the server, make sure that  have two USER and USER_ATTRIBUTES records setup: JohnDoe and JaneDoe. 
+Starting with the server, make sure that you have two USER and USER_ATTRIBUTES records setup: JohnDoe and JaneDoe.
 
      (I have already set them up in dev-trading1 and can be found in \~/testData folder).
 
 Set two new key values in **site-specific/cfg/genesis-system-definition.kts** as described in the docs above:
 
-item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
+    item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
 
-item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
+    item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
 
 Take note of auth-permissions.auto.xml in generated/cfg before running install
 
@@ -39,7 +41,7 @@ Run **remap**.
 
 **Remap** prompts you to add a new table called USER_COUNTERPARTY_MAP and a new field has been added to USER_ATTRIBUTES.
 
-After this, go to the USER_ATTRIBUTES table and use **DbMon** commands to set the ACCESS_TYPE field for JaneDoe to be ENTITY (instead of ALL). 
+After this, go to the USER_ATTRIBUTES table and use **DbMon** commands to set the ACCESS_TYPE field for JaneDoe to be ENTITY (instead of ALL).
 
 table USER_ATTRIBUTES
 
