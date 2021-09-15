@@ -59,3 +59,7 @@ Running the **MonCluster** command shows this:
 Use the **SetPrimary** command to set one of the nodes to Primary state
 
 This should be the output of **MonCluster** if **SetPrimary** was executed on NodeA:
+
+## Disaster recovery: example
+
+## Vertical and horizontal scaling
