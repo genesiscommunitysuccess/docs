@@ -53,39 +53,23 @@ writeMode
 
 update USER_ATTRIBUTES_BY_USER_NAME
 
-The **auth-permissions.auto.xml** in **generated/cfg** will be different now as the generic permissioning settings have been set in place. This means that next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started they will consider the new configuration.
+the generic permissioning settings have been set in place, and are stored in **auth-permissions.auto.xml** in **generated/cfg**. The next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started they will consider the new configuration.
 
 ## Configure dynamic permissions
 
-You can now configure dynamic permissions for trades and positions in our IDE: req-rep, dataserver and eventhandler. For example:
-
-query("ALL_TRADES", TRADE){
-
-permissioning {
-
-    auth(mapName = “ENTITY_VISIBILITY”){ 
-    
-       TRADE.COUNTERPARTY_ID 
-    
-    } 
-
-}
-
-}
+You can now configure dynamic permissions for trades and positions in our IDE. You need to make these changes to the code for the request server,  data server and event handler. For example:
 
 The same applies to request servers.
 
 Event handlers are slightly different, because the input data class can be customised. The code would look like this:
 
-        permissions { 
-    
-            auth("ENTITY_VISIBILITY ") { 
-    
-                field { counterpartyId } 
-    
-            } 
-    
-        } 
+    query("ALL_TRADES", TRADE){
+    permissioning {
+       auth(mapName = “ENTITY_VISIBILITY”){ 
+          TRADE.COUNTERPARTY_ID 
+       }
+    }
+    }
 
 Testing
 
