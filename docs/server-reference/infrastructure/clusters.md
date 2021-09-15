@@ -42,4 +42,8 @@ Add all the nodes in the cluster to the hosts section for the specific environme
     }
     
 
-next
+To activate any configuration change to the genesis platform and/or application, you have to run the command **genesisInstall** on every changed node.
+
+Starting both nodes should present both nodes on a STANDBY mode.
+
+Running the **mon** command should show the following:
