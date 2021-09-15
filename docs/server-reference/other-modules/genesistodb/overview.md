@@ -157,15 +157,21 @@ This is a step-by-step example of how to get an Oracle database up and running w
 
 A series of screenshots with examples of how to create tables, stored procedures and genesistodb.xml configuration. The images can be opened in a new tab to see them full size if necessary.
 
-1. Create INSTRUMENT_L1_PRICE table.
+Create INSTRUMENT_L1_PRICE table.
 
-1. Create Insert procedure.
+![](/img/dbtogenesis-create-table.png)
 
-1. Create Modify procedure.
+Create Insert procedure.
 
-1. Create Delete table.
+![](/img/createinsertprocedure.png)
 
-1. Create GenesisToDb configuration. **Ensure the xmlns:xi attribute is included inside the "dtaToDb" field if you want to use xinclude in your configuration**.
+Create Modify procedure.
+
+Create Delete table.
+
+![](/img/createdeleteprocedure.png)
+
+Create GenesisToDb configuration. **Ensure the xmlns:xi attribute is included inside the "dtaToDb" field if you want to use xinclude in your configuration**.
 
 ## Script `generateSQLToRDB`
 
