@@ -19,7 +19,7 @@ In Genesis, we structure our data in the following way:
 - Tables
 - Views (a view can draw data from more than one table)
 
-Each of these must be specified in a separate block in the dictionary file.
+Each of these must be specified in a separate file on the filesytem
 
 ## Fields
 
@@ -45,28 +45,30 @@ The following field types are available:
 
 Fields are easily defined with a unique Name and a type, and additionally a few other options such as default value, non-nullable and others (some are relevant only for certain types).
 
-For example, here we define two STRING fields. The second is nullable; the first is not nullable):
+For example, here we define two `STRING` fields. (The second is nullable; the first is not nullable):
 
-```java
+```kotlin
 fields {
-field(name = "ORDER_ID", type = STRING)
-field(name = "DESCRIPTION", type = STRING, nullable = true)
-...
+  field(name = "ORDER_ID", type = STRING)
+  field(name = "DESCRIPTION", type = STRING, nullable = true)
+  ...
 }
 ```
 
-When you define a new field, it is good practice to run **codegen:generateSysDef**. You will be able to use intellisense to pick this new field within table definitions.
+Fields are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-fields-dictionary.kts`. For exmple for the `trade` application that file name would be `trade-fields-dictionary.kts`
+
+When you define a new field, it is good practice to run **codegen:generateSysDef**. This will generate code based on the fields definition and you will be able to use intellisense to pick this new field within table definitions.
 
 ### Naming fields 
 As is always the case, it is worth being careful with the names you give fields. Clear names help.
 
-If you create a field name that already exists, there are no consequences - as long as the field type is also the same. In effect, the second definition is simply ognored.
+If you create a field name that already exists, there are no consequences - as long as the field type is also the same. In effect, the second definition is simply ignored.
 
-However, if you create a field name that matches an existing name and you give it a different field type, this generates a dulication error.
+However, if you create a field name that matches an existing name and you give it a different field type, this generates a duplication error.
 
-The error is generated when you generate the code using Maven. 
+The error is shown when you generate the code using Maven. 
 
-I the code has already been generated - typically, if you are making changes to an existing server - the error is generated when you run **genesisInstall** after the change.
+If the code has already been generated - typically, if you are making changes to an existing server - the error is generated when you run **genesisInstall** after the change.
 
 :::danger WIP
 Checking with Peter
@@ -74,7 +76,7 @@ Checking with Peter
 
 Technically, it is possible to duplicate field names. When you build, this generates a duplication warning if the fields are defined in the same way, or an error if they are defined differently. If the duplication is between your own field and one you have inherited from another module, make sure you change the name of your own field, not the one from the other module.
 
-[Sample field definitions](/server/field-definition-example/) generated from GPAL.
+[Sample field definitions](field-definition-example.md) generated from GPAL.
 
 ## Tables
 
@@ -160,7 +162,8 @@ You can override the **null = true** setting within a specific table if you need
         }
     }
 ```
-States 
+
+### States 
 One of the most important decisions you need to make is about states. These control the state of financial entities throughout the trade lifecycle. For example, an order could be new, amended, open or complete.
 
 You control the transitions from state to state by defining state machines. But in order to do this, you need to define the list of possible states. 
@@ -192,7 +195,7 @@ table("TRADE", 102) {
     }
 }
 ```
-[Sample table definitions](/server/table-definition-example/) generated from GPAL.
+[Sample table definitions](table-definition-example.md) generated from GPAL.
 
 ## Views
 
