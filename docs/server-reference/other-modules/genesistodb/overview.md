@@ -155,25 +155,23 @@ A script called "encryptUserPass" is provided with Genesis so we can encrypt our
 
 This is a step-by-step example of how to get an Oracle database up and running with **GenesisToDb**.
 
-A series of screenshots with examples of how to create tables, stored procedures and genesistodb.xml configuration. The images can be opened in a new tab to see them full size if necessary.
-
-Create INSTRUMENT_L1_PRICE table.
+1. Create INSTRUMENT_L1_PRICE table.
 
 ![](/img/dbtogenesis-create-table.png)
 
-Create Insert procedure.
+2. Create Insert procedure.
 
 ![](/img/createinsertprocedure.png)
 
-Create Modify procedure.
+3. Create Modify procedure.
 
 ![](/img/createmodifyprocedure.png)
 
-Create Delete table.
+4. Create Delete table.
 
 ![](/img/createdeleteprocedure.png)
 
-Create GenesisToDb configuration. **Ensure the xmlns:xi attribute is included inside the "dtaToDb" field if you want to use xinclude in your configuration**.
+Create **GenesisToDb** configuration. **Ensure the xmlns:xi attribute is included inside the "dtaToDb" field if you want to use xinclude in your configuration**.
 
 ![](/img/createconfig.png)
 
