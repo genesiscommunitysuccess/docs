@@ -52,7 +52,9 @@ Running the **mon** command should show the following:
 
 Running the **MonCluster** command shows this:
 
-Setting the primary node
+![](/img/cluster-3-moncluster.png)
+
+## Set the primary node
 
 Use the **SetPrimary** command to set one of the nodes to Primary state
 
