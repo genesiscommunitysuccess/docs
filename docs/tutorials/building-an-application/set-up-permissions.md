@@ -5,11 +5,9 @@ sidebar_label: Set up user permissions
 sidebar_position: 9
 
 ---
-At this stage, you have a working server with 
+At this stage, you have a working server with a Ref_data_app and a Trading_app. The Trading_app has a consolidator to calculate the positions, event handlers to control changes to the database and data server and request servers to publish the data to the front end.
 
-a Ref_data_app and a Trading_app. The Trading_app has a consolidator to calculate the positions, event handlers to control changes to the database and data server and request servers to publish the data to the front end.
-
-Now you want to premission users so that everyone has access to the correct parts of the system.
+Now you want to permission users so that everyone has access to the correct parts of the system.
 
 ## The objective
 
@@ -17,7 +15,7 @@ The objective is to use dynamic permissions and permission codes so that specifi
 
 We can display the configuration of both in our request server, data server and event handler.
 
-Generic permissions
+## Set up generic permissions
 
 First, enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system.
 
@@ -71,13 +69,14 @@ Event handlers are slightly different, because the input data class can be custo
     }
     }
 
-Testing
+## Testing
 
-We can write unit tests based on auth-perms (see EventHandlerPalTest in genesis-server repo inside genesis-pal-test, it contains an example of adding an auth cache override in the GenesisTestConfig and as part of the @Before setup) For example:
+You can write unit tests based on auth-perms (see EventHandlerPalTest in genesis-server repo inside genesis-pal-test, it contains an example of adding an auth cache override in the GenesisTestConfig and as part of the @Before setup) 
 
-Unit test where user can complete action successfully due to permissions (e.g. JohnDoe)
+For example:
 
-Unit test where user cannot complete action successfully due to permissions (e.g. JaneDoe)
+* Unit test where user can complete action successfully due to permissions (e.g. JohnDoe)
+* Unit test where user cannot complete action successfully due to permissions (e.g. JaneDoe)
 
 Now moving to RIGHT_SUMMARY permission codes.
 
@@ -85,9 +84,12 @@ Permission codes allow you to establish yes/no type access to resources (req-rep
 
 For the purpose of this script we can keep things simple. In reality you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user (will have a diagram to add here).
 
-In our trading app example we can have two types of rights: TRADER (write trades but only related to their counterparties) and SUPPORT (read-only everything)
+In our trading app example we can set two types of rights:
 
-In terms of definitions, you can add the codes as part of the permissioning block. For example, for the TRADE_INSERT event handler we could have:
+*  TRADER (enables the trader to write trades - but only for their own related counterparties)
+*  SUPPORT (enables support to have read-only access to everything)
+
+In terms of definitions, you can add the codes as part of the permissioning block in the relevant event . For example, for the TRADE_INSERT event handler we could have:
 
 permissions {
 
