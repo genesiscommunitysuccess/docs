@@ -108,3 +108,7 @@ The genesis platform supports extraction of system level variables to populate s
 ## Encryption of data in transit and REST
 
 Genesis recommends using a local reverse proxy with SSL termination to provide end-to-end encryption from the web application to the application back end. The platform does not provide specific functionality to encrypt data at REST, as this is best achieved by the database solution deployed for the overall installation and/or the disk partition encryption of the Virtual Machine (VM).
+
+## Independent processes
+
+Every Genesis process is an independent Java process running on a dedicated JVM. This  enables segregation of data classification. account privileges & service tiering.
