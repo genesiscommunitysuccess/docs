@@ -21,6 +21,25 @@ The cluster servers need to be able to connect to each other on the configured c
 
 ## Configure the system definitions
 
-Add all the nodes in the cluster to the hosts section for the specific environment on all nodes. To do this, edit **genesis-system-definition.kts**.
+Add all the nodes in the cluster to the hosts section for the specific environment . You must do this on all nodes by editing **genesis-system-definition.kts**.
+
+    systems {
+    
+        system(name = "DEV") {
+    
+            hosts {
+                host(name = "NodeA")
+                host(name = "NodeB")
+            }
+    
+            item(name = "DbNamespace", value = "genesis")
+            item(name = "ClusterPort", value = "6000")
+            item(name = "location", value = "LO")
+            item(name = "LogFramework", value = "LOG4J2")
+            item(name = "LogFrameworkConfig", value = "log4j2-default.xml")
+        }
+    
+    }
+    
 
 next
