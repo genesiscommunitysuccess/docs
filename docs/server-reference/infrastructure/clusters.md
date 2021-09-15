@@ -71,3 +71,9 @@ If you are adding nodes for horizontal scaling simply add the details of the ext
     	host(name = "NodeC")
           …
     }
+
+Every Genesis process is an independent Java process running on a dedicated JVM. Each process can be configured with JVM-specific memory management configurations (-Xmx -Xms etc.) in the _modul_e**-processes.xml** file. 
+
+Example:
+
+<process name="GENESIS_WEBMON">
