@@ -74,7 +74,7 @@ Checking with Peter
 
 Technically, it is possible to duplicate field names. When you build, this generates a duplication warning if the fields are defined in the same way, or an error if they are defined differently. If the duplication is between your own field and one you have inherited from another module, make sure you change the name of your own field, not the one from the other module.
 
-[Sample field definitions](/server/field-definition-example/) generated from GPAL.
+[Sample field definitions](/server-reference/data-model/field-example/) generated from GPAL.
 
 ## Tables
 
@@ -192,7 +192,7 @@ table("TRADE", 102) {
     }
 }
 ```
-[Sample table definitions](/server/table-definition-example/) generated from GPAL.
+[Sample table definitions](/server-reference/data-model/table-example/) generated from GPAL.
 
 ## Views
 
@@ -209,7 +209,7 @@ To achieve this, create aliases for the two fields you are retrieving from the s
 
  By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data). If you need to join to a table where there is real-time data, then you need to specify a backwards join. This requires the statement backwardsJoin = true when you are specifying the join. 
 
-It is worth noting that when you define your [data servers](/server/data-servers/), any of these that include views with backwards joins must include a similar statement: **backJoins = true**. Don’t forget to add this! 
+It is worth noting that when you define your [data servers](/server-reference/data-servers/configure/), any of these that include views with backwards joins must include a similar statement: **backJoins = true**. Don’t forget to add this! 
 
 ```
 query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {

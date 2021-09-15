@@ -45,7 +45,7 @@ modifyEvent {
 
 ```
 
-You can click to view the [whole file for this example state machine](/server/state-machine-example/) and see how each of the events is handled.
+You can click to view the [whole file for this example state machine](/server-reference/state-machines/examples/) and see how each of the events is handled.
 
 
 

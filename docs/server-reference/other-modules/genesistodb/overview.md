@@ -1,7 +1,7 @@
 ---
-id: genesistodb
+id: overview
 title: genesisToDb
-sidebar_label: genesisToDb
+sidebar_label: Overview
 sidebar_position: 1
 
 ---
@@ -155,9 +155,9 @@ Each database must have a table that can hold records as specified in the **fiel
 
 Even though Genesis cannot modify these triggers/procedures and they can potentially be implemented in any desired way as long as they behave as expected, it is always useful to have some simple working examples.
 
-* [Oracle sample](genesistodb-oracle.md)
-* [MSSQL sample](genesistodb-mssql.md)
-* [PostgreSQL sample](genesistodb-postgres.md)
+* [Oracle sample](/server-reference/other-modules/genesistodb/genesistodb-oracle/)
+* [MSSQL sample](/server-reference/other-modules/genesistodb/genesistodb-mssql/)
+* [PostgreSQL sample](/server-reference/other-modules/genesistodb/genesistodb-postgres/)
 
 ### Encrypting user and passwords
 
