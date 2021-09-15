@@ -72,7 +72,7 @@ If you are adding nodes for horizontal scaling simply add the details of the ext
           …
     }
 
-Every Genesis process is an independent Java process running on a dedicated JVM. Each process can be configured with JVM-specific memory management configurations (-Xmx -Xms etc.) in the _modul_e**-processes.xml** file. 
+Every Genesis process is an independent Java process running on a dedicated JVM. Each process can be configured with JVM-specific memory management configurations (-Xmx -Xms etc.) in the _modul_e**-processes.xml** file.
 
 Example:
 
@@ -87,3 +87,5 @@ Example:
     </process>
 
 Environment variables
+
+The Genesis LCNC Pplatform supports extraction of system-level variables to populate solution-specific settings. The system-level variables can be derived from enterprise configuration management system and the platform supports encrypted settings.
