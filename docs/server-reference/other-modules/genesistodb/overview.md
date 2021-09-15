@@ -159,23 +159,13 @@ A series of screenshots with examples of how to create tables, stored procedures
 
 1. Create INSTRUMENT_L1_PRICE table.
 
-!\[\](images/genesistodb/CreateTable.png)
-
 1. Create Insert procedure.
-
-!\[\](images/genesistodb/CreateInsertProcedure.png)
 
 1. Create Modify procedure.
 
-!\[\](images/genesistodb/CreateModifyProcedure.png)
-
 1. Create Delete table.
 
-!\[\](images/genesistodb/CreateDeleteProcedure.png)
-
 1. Create GenesisToDb configuration. **Ensure the xmlns:xi attribute is included inside the "dtaToDb" field if you want to use xinclude in your configuration**.
-
-!\[\](images/genesistodb/CreateConfig.png)
 
 ## Script `generateSQLToRDB`
 
@@ -198,4 +188,3 @@ usage: generateSQLToRDB
     -h,--help                      show usage information
     
     -t,--table <arg>               the name of the table to export to csv
-    
