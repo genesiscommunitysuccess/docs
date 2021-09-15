@@ -47,3 +47,7 @@ To activate any configuration change to the genesis platform and/or application,
 Starting both nodes should present both nodes on a STANDBY mode.
 
 Running the **mon** command should show the following:
+
+![](/img/cluster-2-mon.png)
+
+Running the MonCluster command shows this:
