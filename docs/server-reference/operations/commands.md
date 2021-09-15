@@ -114,13 +114,13 @@ Syntax
 startProcess processName [--hostname <[host names]>] [--dump] 
 ```
 
-**processName** name of the process that you want to start
+`processName` is name of the process that you want to start.
 
-**--hostname HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...]**	where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name.
-
-**--cluster, -c** starts the process on every node in the cluster
-
-**--dump**	displays progress of starting the process, which is usful for debugging
+| Argument | Argument long name | Description |
+| :-- | :-- | :-- |
+| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name. |
+| -c | --cluster | starts the process on every node in the cluster |
+| | --dump | displays progress of starting the process, which is usful for debugging |	
 
 The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
 
@@ -136,15 +136,14 @@ Syntax
 
 ```
 killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--force] [--wait]
-
---hostname HOSTNAME HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...]	Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node. Specify the Host Name.
-
---force, -f           forcefully kills a process (using kill -9)
-
---wait WAIT, -w WAIT  specifies how many seconds to wait before forcing the kill
-
---cluster, -c         kills the process on every node in the cluster
 ```
+
+| Argument | Argument long name | Description |
+| :-- | :-- | :-- |
+| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node. Specify the Host Name. |
+| -f  | --force | forcefully kills a process (using kill -9) |
+| -w WAIT | --wait WAIT | specifies how many seconds to wait before forcing the kill |
+| -c | --cluster | kills the process on every node in the cluster |
 
 ## startServer script
 
@@ -212,19 +211,16 @@ Syntax
 killServer [--hostname <[hosts names]>] [--force]
 ```
 
-This command requires user confirmation: '**Are you sure you want to kill server? (y/n):** Alternatively, you can use **-force** to skip it.
+This command requires user confirmation: '**Are you sure you want to kill server? (y/n):** Alternatively, you can use **--force** to skip it.
 
-optional arguments
+### Optional arguments
 
-**--hostname HOSTNAME HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...]**	Where the application is running on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node. Specify the Host Name.
-
-                        Hosts Name or "cluster" for all hosts
-
-**--force, -f**           forcefully kills a process (using kill -9)
-
-**--all**                 kills all processes, including GENESIS_CLUSTER
-
-**--cluster, -c**         kills the server on all the nodes in the cluster
+| Argument | Argument long name | Description |
+| :-- | :-- | :-- |
+| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | Where the application is running on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node. Specify the Host Name. Hosts Name or `"cluster"` for all hosts |
+| -f  | --force | forcefully kills a process (using kill -9) |
+| | --all | kills all processes, including GENESIS_CLUSTER |
+| -c | --cluster | kills the server on all the nodes in the cluster |       
 
 ## DbMon script
 
