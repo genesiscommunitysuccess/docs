@@ -13,6 +13,14 @@ This setup will only focus on the genesis platform part of a HA setup. The datab
 
 Equally, a HA load balancer is expected to serve the web traffic to the primary node and fail over to the secondary node when the primary node is unresponsive.
 
-The cluster servers need to be able to connect to each other on the configured cluster port (6000 is the default conf) and by host name. 
+The cluster servers need to be able to connect to each other on the configured cluster port (6000 is the default conf) and by host name.
 
-Example setup in AWS
+### Example setup in AWS
+
+![](/img/cluster-1.png)
+
+## Configure the system definitions
+
+Add all the nodes in the cluster to the hosts section for the specific environment on all nodes. To do this, edit **genesis-system-definition.kts**.
+
+next
