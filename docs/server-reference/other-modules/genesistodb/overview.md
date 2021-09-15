@@ -167,6 +167,8 @@ Create Insert procedure.
 
 Create Modify procedure.
 
+![](/img/createmodifyprocedure.png)
+
 Create Delete table.
 
 ![](/img/createdeleteprocedure.png)
