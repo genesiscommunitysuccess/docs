@@ -49,7 +49,7 @@ Running the **mon** command should show the following:
 
 ![](/img/cluster-2-mon.png)
 
-Running the **MonCluster** command shows this:
+Running the **MonCluster** command shows both nodes:
 
 ![](/img/cluster-3-moncluster.png)
 
