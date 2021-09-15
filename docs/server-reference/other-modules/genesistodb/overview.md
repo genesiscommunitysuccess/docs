@@ -163,7 +163,7 @@ Create INSTRUMENT_L1_PRICE table.
 
 Create Insert procedure.
 
-![](/img/createinsertprocedure.png)
+(/img/createinsertprocedure.png)
 
 Create Modify procedure.
 
