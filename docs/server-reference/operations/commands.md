@@ -29,7 +29,7 @@ At this point dependencies will be checked. If any dependency is not met (missin
 
 The script will also check for overridden configuration and script files, whether the product we are installing is currently installed or not. If the product is already installed be sure to merge every overridden configuration and script files with the new product before committing the new installation.
 
-* If the product is not currently installed and the **--commit** option is specified, the application will be installed. A new back-up folder is created in GENESIS_HOME/releases/(_applicationnam_e)v.(version)/ with all the installation files.
+* If the product is not currently installed and the **--commit** option is specified, the application will be installed. A new back-up folder is created in GENESIS_HOME/releases/(_applicationname_)v.(version)/ with all the installation files.
 * If the product is already installed in any version, the script will perform a reinstall/upgrade/downgrade. In case of downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up (folders) will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the **--commit** option was specified, the product will also be installed in the system.
 
 Details to take into account:
@@ -46,7 +46,7 @@ This scriptscript validates all system and product configuration, checking for t
 genesisInstall [--ignore]
 ```
 
-Once complete, all configuration files will be copied and, where necessary, merged into the **\~/run/generated/cfg** file, which we alias as **$GC**.
+Once complete, all configuration files will be copied and, where necessary, merged into the **~/run/generated/cfg** file, which we alias as **$GC**.
 
 If any problems are found in the generated configuration files, they will be deleted, which forces the user to correct the errors in the original configuration files.
 
@@ -116,11 +116,11 @@ startProcess processName [--hostname <[host names]>] [--dump]
 
 **processName** name of the process that you want to start
 
-**--hostname HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]**	where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name.
+**--hostname HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...]**	where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name.
 
 **--cluster, -c** starts the process on every node in the cluster
 
-**-- dump**	displays progress of starting the process, which is usful for debugging
+**--dump**	displays progress of starting the process, which is usful for debugging
 
 The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
 
@@ -204,23 +204,19 @@ The classpath tag defines additional jar files that might be needed by the micro
 
 ## killServer script
 
-:::danger WIP
-Double check this section
-:::
-
 This script reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt
 
 Syntax
 
 ```
-[--hostname <[hosts names]>] [--force]
+killServer [--hostname <[hosts names]>] [--force]
 ```
 
 This command requires user confirmation: '**Are you sure you want to kill server? (y/n):** Alternatively, you can use **-force** to skip it.
 
 optional arguments
 
-**--hostname HOSTNAME HOSTNAME \[HOSTNAME ...\], -s HOSTNAME \[HOSTNAME ...\]**	Where the application is running on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node. Specify the Host Name.
+**--hostname HOSTNAME HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...]**	Where the application is running on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node. Specify the Host Name.
 
                         Hosts Name or "cluster" for all hosts
 
@@ -271,7 +267,7 @@ deleteWhere <condition>
 
 displayFields <field_names>
 
-distinct <condition> \[-where <limiting_condition>\]
+distinct <condition> [-where <limiting_condition>]
 
 find <key_name>
 
@@ -291,11 +287,11 @@ listAll <key_name> <num_key_fields> <max_records>
 
 next <key_name>
 
-qsearch <condition> \[-l <limit>\]
+qsearch <condition> [-l <limit>]
 
 qshow
 
-search <condition> \[-l <limit>\]
+search <condition> [-l <limit>]
 
 sequenceNumber <sequence_name>
 
@@ -320,7 +316,7 @@ writeMode
 
 Usage
 
-**DbMo**n has built-in help instruction for each command. Run `help <command>` to get more information.
+**DbMon** has built-in help instruction for each command. Run `help <command>` to get more information.
 
 ## SendIt script
 
@@ -384,7 +380,7 @@ Recover (`-r`) is a special operation meant to preserve original timestamp and s
 
 Verbose mode will additionally output line by line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes the script useful for scheduled/automated jobs (e.g. daily data loads)
 
-DumpIt script
+## DumpIt script
 
 To copy data out of a Genesis database, use the DumpIt command.
 
@@ -521,7 +517,7 @@ PID     Process Name                  Port        Status         CPU       Memor
 Usage
 
 ```
-mon \[-v | -c | -a\] polling_interval
+mon [-v | -c | -a] polling_interval
 
 Options:
 
@@ -692,7 +688,7 @@ SetSequence
 
 ## SetAutoIncrement
 
-This works like **SetSequenc**e but for auto increment INT values.
+This works like **SetSequence** but for auto increment INT values.
 
 Usage:
 
@@ -796,7 +792,7 @@ There are a few considerations we should be aware of:
 | DATE | DATE |   |   |   |   |   |   |
 | TIME | TIME |   |   |   |   |   |   |
 
-### ProductGen
+## ProductGen
 
 ProductGen can be used to generate a fully working dta product from a dictionary file.
 
@@ -816,7 +812,7 @@ Deletes will have a reduced metadata as we only require the columns to satisfy t
 
 Standard files will be generated, i.e. processes.xml and service-definitions.xml
 
-## Parameters
+### Parameters
 
 | Argument | Argument long name | Mandatory | Description |
 | -- | -- | -- | -- |
@@ -825,21 +821,22 @@ Standard files will be generated, i.e. processes.xml and service-definitions.xml
 | -p | port offset | true | the port range to use when generating services file |
 | -pn | product name | true | the name of the product to create |
 
-## Example Usage
+### Example Usage
 
 Example without -t option.
 
 ```
-\~/run/genesis/scripts/unix/productGen -d tas-dictionary.xml -p 4000 -pn tas
+productGen -d tas-dictionary.xml -p 4000 -pn tas
 ```
 
-In this case we are specifying the dictionary to read is tas-dictionary.xml, the port offset is 4000 and the product name to generate is tas.  Running this command results in the following structure being created:
+In this case we are specifying the dictionary to read is `tas-dictionary.xml`, the port offset is `4000` and the product name to generate is `tas`.  Running this command results in the following structure being created:
 
 ```
 tas/
     /bin
     /cfg/tas-dataserver.xml
-        /tas-dictionary.xml
+        /tas-fields-dictionary.kts
+        /tas-tables-dictionary.kts
         /tas-fields.xml
         /tas-processes.xml
         /tas-requestserver.xml
@@ -850,51 +847,43 @@ tas/
 Example with -t option.
 
 ```
-\~/run/genesis/scripts/unix/productGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
+productGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
 ```
 
-The tables mentioned in the above command will be appended to the files that were created in tas folder
+The tables mentioned in the above command will be appended to the files that were created in tas folder.
 
-### SSL/TLS Support
+## SSL/TLS Support
 
-#### Generating a self-signed keystore and respective certificate (optional)
+### Generating a self-signed keystore and respective certificate (optional)
 
 This step is only required if using a self-signed certificate due to the absence of a proper trusted root authority issued one.
 
-```
+```bash
 $ keytool -genkey -keyalg RSA -keysize 2048 -alias selfsigned -storepass Password1233 -keystore keystore.jks -ext SAN=dns:genesisserv1,dns:genesisserv1.ad.genesis.global,dns:genesisserv2,dns:genesisserv2.ad.genesis.global,dns:genesisserv3,dns:genesisserv3.ad.genesis.global,dns:genesisserv4,dns:genesisserv4.ad.genesis.global,ip:193.144.16.43
 
 What is your first and last name?
-
-    \[Unknown\]:  Fred Bloggs
+    [Unknown]:  Fred Bloggs
 
 What is the name of your organizational unit?
-
-    \[Unknown\]:  IT
+    [Unknown]:  IT
 
 What is the name of your organization?
-
-    \[Unknown\]:  Genesis Global Technology Ltd
+    [Unknown]:  Genesis Global Technology Ltd
 
 What is the name of your City or Locality?
-
-    \[Unknown\]:  London
+    [Unknown]:  London
 
 What is the name of your State or Province?
-
-    \[Unknown\]:  Greater London
+    [Unknown]:  Greater London
 
 What is the two-letter country code for this unit?
-
-    \[Unknown\]:  GB
+    [Unknown]:  GB
 
 Is CN=Fred Bloggs, OU=IT, O=Genesis Global Technology Ltd, L=London, ST=Greater London, C=GB correct?
-
-    \[no\]:  yes
+    [no]:  yes
 
 Enter key password for <selfsigned>
-
-        (RETURN if same as keystore password):
+    (RETURN if same as keystore password):
 ```
 
 Assuming no problems with privileges you will now have a certificate called "selfsigned" with a private key using the same password as the keystore password e.g. Password123.
@@ -909,9 +898,9 @@ The keystore (.jks) is, in a way, the private key to be used in the two-way auth
 $ keytool -export -alias mykey -file certificate.crt -keystore keystore.jks
 ```
 
-## Installing TLS certificate in environment
+### Installing TLS certificate in environment
 
-### Linux
+#### Linux
 
 Varies according to the distribution being used. In Ubuntu:
 
@@ -921,11 +910,11 @@ $ cp certificate.crt /usr/local/share/ca-certificates/
 $ sudo update-ca-certificates
 ```
 
-### Windows
+#### Windows
 
 Right-click on certificate.crt and select 'Install Certificate'. On 'Place all certificates in the following store', select 'Trusted Root Certification Authorities'.
 
-## Securing a Genesis processes
+## Securing Genesis processes
 
 ### Setting the process to communication via SSL/TLS
 
@@ -934,13 +923,13 @@ All Genesis modules are defined inside the service definition files:
 Syntax:
 
 ```
-\~/run/<product>/cfg/<product>-service-definitions.xml
+~/run/<product>/cfg/<product>-service-definitions.xml
 ```
 
 Example:
 
 ```
-\~/run/exmon/cfg/exmon-service-definitions.xml
+~/run/exmon/cfg/exmon-service-definitions.xml
 ```
 
 To enable a process to be set to communicate via SSL set the secure element to be true.
@@ -968,7 +957,11 @@ Edit the _dta-system-definitions.xml_ file and edit the values for DefaultKeysto
 
 These will be used by all processes to communicate with encrypted processes or to accept connections if they are encrypted themselves.
 
-### Setting the TLS settings for each individual process (you can have different processes secured via different certificates if required).
+### Setting the TLS settings for each individual process
+
+:::tip
+You can have different processes secured via different certificates if required.
+:::
 
 This setting is used if the develop wants to override the defaults established above for a specific process.
 
@@ -993,11 +986,11 @@ To have the following settings:-
 
 Once the files have been saved, run **genesisInstall**. When the processes starts again, it will be secure.
 
-## GUI
+### GUI
 
 To enable the GUI to  connect securely, edit the **%ProgramData%\\Genesis\\exmon\\Rel\\Config\\PrimaryServiceConfig.xml** setting **encrypted** to **true**.
 
-### Example
+#### Example
 
 ```xml
 <?xml version="1.0"?>
@@ -1011,6 +1004,6 @@ To enable the GUI to  connect securely, edit the **%ProgramData%\\Genesis\\exmon
 
 Note: With encryption, if using a self-signed certificate, you must install the certificate.crt in the target machine's operating system as a trusted root CA.
 
-## Web front-end
+### Web front-end
 
 Install the `certificate.crt` in the target machine's operating system as a trusted root CA. That is all you need to do.
