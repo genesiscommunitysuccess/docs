@@ -1,6 +1,6 @@
 # Genesis platform documentation
 
-Documentation is written using ([Markdown format](https://docusaurus.io/docs/markdown-features).
+Documentation is written using [Markdown format](https://docusaurus.io/docs/markdown-features).
 
 ### Installation
 

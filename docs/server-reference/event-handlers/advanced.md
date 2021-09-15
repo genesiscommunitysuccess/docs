@@ -6,6 +6,9 @@ sidebar_position: 3
 
 ---
 
+import CodeBlock from '@theme/CodeBlock';
+import Imports from '!!raw-loader!../../../examples/server/xml/event-handlers/imports.java';
+
 :::danger WIP
 (Add introduction and contents list here.)
 :::
@@ -14,19 +17,7 @@ sidebar_position: 3
 
 The following imports are automatically available inside GPAL event handlers:
 
-```java
-global.genesis.gen.dao.*
-kotlinx.coroutines.async
-kotlinx.coroutines.flow.*
-kotlinx.coroutines.rx3.await
-global.genesis.message.core.event.EventReply
-global.genesis.commons.model.GenesisSet.Companion.genesisSet
-global.genesis.db.DbRecord.Companion.dbRecord
-global.genesis.db.EntityModifyDetails
-global.genesis.eventhandler.pal.parse.EventDatabaseWrapper
-org.joda.time.DateTime
-
-```
+<CodeBlock className="language-java">{Imports}</CodeBlock>
 
 ### Automatic import
 
