@@ -92,6 +92,8 @@ The Genesis LCNC Pplatform supports extraction of system-level variables to popu
 
 ## External runtime dependencies
 
+The platform operates without any external dependencies and is well suited to network environments with no public ingress or egress traffic.
+The genesis platform supports extraction of system level variables to populate solution specific settings. The system level variables can be derived from enterprise configuration management system and the platform supports encrypted settings.
 
 
 ## Encryption of data in transit and REST
