@@ -63,9 +63,9 @@ This should be the output of **MonCluster** if **SetPrimary** was executed on No
 
 In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Prerequisites section, if the Primary Node fails and goes offline, The load balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption.
 
-You need to make an an active decision to set the Secondary node to Primary if you decide that the Primary will not to come back online within an acceptable timeframe.
+If you decide that the Primary will not to come back online within an acceptable timeframe, you then set the Secondary node to Primary.
 
-Running SetPrimary on NodeB makes it the Primary node. 
+Running **SetPrimary** on NodeB makes it the Primary node. 
 
 ## Vertical and horizontal scaling
 
