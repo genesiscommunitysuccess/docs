@@ -175,6 +175,8 @@ Create Delete table.
 
 Create GenesisToDb configuration. **Ensure the xmlns:xi attribute is included inside the "dtaToDb" field if you want to use xinclude in your configuration**.
 
+![](/img/createconfig.png)
+
 ## Script `generateSQLToRDB`
 
 `generateSQLToRDB` script is a tool that generates ".sql" files to create tables and procedures in our RDBMS system by reading the current Genesis dictionary. It also adds the pertinent databaseStream configuration to the specified genesistodb.xml configuration file.
