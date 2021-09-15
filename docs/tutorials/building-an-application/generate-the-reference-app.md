@@ -34,8 +34,6 @@ This generates the **fields-dictionary.kts** and **tables-dictionary.kts** files
 
 Check these files and adjust them to suit your application. For example, the process has translated the field ENABLED was as an INT type; you need to edit that to make it a BOOLEAN type.
 
-> Picture from Jose
-
 Create a new ref_data_app folder structure inside GENESIS_HOME, including cfg and script folders
 
 Copy the output files from the dictionary build to the **ref_data_app/cfg** folder inside the run directory.
@@ -44,7 +42,7 @@ Run **genesisInstall** to verify everything is ok.
 
 ![](/img/genesisinstall.png)
 
-Run **AppGen** to build your three modules (eventhandler, request server and data server):
+Run **AppGen** to build your three modules (event handler, request server and data server):
 
 **AppGen -n ref_data_app -p 10000**
 
@@ -75,6 +73,8 @@ Run the **mvn** command:
 
 This gives you the following project structure:
 
+![](/img/maven-archetype-result.png)
+
 ### Move the files to the required location
 
 Move the generated **ref_data_app/cfg** files (from the previous DictionaryBuilder and AppGen steps) to the **ref_data_app-config/src/main/resources/cfg** folder.
@@ -84,6 +84,8 @@ Locate the generated files for the request server, data server and event handler
 ### Install the maven project
 
 Now run **mvn install**.
+
+![](/img/build-maven-project-using-mvn-install.png)
 
 \**screengrab archetype generation in intellij
 
