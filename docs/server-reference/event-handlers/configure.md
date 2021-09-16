@@ -1,10 +1,10 @@
 ---
-title: 'Configure your event handlers'
-sidebar_label: 'Configure your event handlers'
+title: Configure your event handlers
+sidebar_label: Configure your event handlers
 sidebar_position: 1
 id: configure
----
 
+---
 The Genesis Platform has a real-time event-driven architecture.
 
 Applications built on the system must respond immediately to different types of input:  inputs from users, messages from other systems, market-data updates and internally calculated analytic signals.  These inputs are events.
@@ -18,51 +18,39 @@ That could be a simple linear workflow, such as a deal being enriched and approv
 Most applications built on the platform include the typical financial product **business entities**, such as orders, trades, bids, allocations and positions. These business entities have a lifecycle where they go through various **states**. The transition from one state to another is an event that needs to be handled. The paths through those states are workflows, and to assist the workflows, we use state machines.
 
 ## A simple example of an event handler
-Here is a simple example of an event handler that ...
 
-:::danger WIP
-(Add desciption of this.)
-:::
+Here is a simple example of an event handler file. It defines an event handler called Hello and then has a contextEventHandler that checks for a name and sends an acknowledgement.
 
-```
-eventHandler {
-
-    eventHandler<Hello> {
-
-        permissions {
-            auth("NAMES") {
-                field { name }
+    eventHandler {
+    
+        eventHandler<Hello> {
+    
+            permissions {
+                auth("NAMES") {
+                    field { name }
+                }
+            }
+    
+            onCommit {
+                ack()
             }
         }
-
-        onCommit {
-            ack()
-        }
-    }
-
-    contextEventHandler<Hello, String>("CONTEXT_HELLO") {
-        permissions {
-            auth("NAMES") {
-                field { name }
+    
+        contextEventHandler<Hello, String>("CONTEXT_HELLO") {
+            permissions {
+                auth("NAMES") {
+                    field { name }
+                }
             }
-        }
-
-        onValidate {
-            validationAck(validationContext = it.details.name)
-        }
-```
-:::danger WIP
-(A simple example is needed here)
-:::
+    
+            onValidate {
+                validationAck(validationContext = it.details.name)
+            }
 
 ## A more complex event handler
-:::danger WIP
-A simple example is needed here)
-:::
+
+A more complex example will follow shortly.
 
 ## Defining state machines
-State machines, which define the conditions for moving from one state to another, are defined within your event handler files. See more detaila bout these in the section on [Defining your state machines](/server/state-machine/),
 
-:::danger WIP
-(Finish here and move the rest to a page with a separate title)
-:::
+State machines, which define the conditions for moving from one state to another, are defined within your event handler files. See more details  about these in the section on [Defining your state machines](/server-reference/state-machines/define/),

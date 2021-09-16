@@ -7,6 +7,12 @@ module.exports = {
   organizationName: 'genesislcap', // Usually your GitHub org/user name.
   projectName: 'docs', // Usually your repo name.
   trailingSlash: true,
+  scripts: [
+    {
+        src: "/js/fast-components.iife.min.js",
+        async: true,
+    },
+],
 
   presets: [
     [
@@ -20,9 +26,11 @@ module.exports = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
-      },
+      }
     ],
   ],
+
+  themes: ['@docusaurus/theme-live-codeblock'],
 
   themeConfig: {
     colorMode: {
@@ -38,7 +46,10 @@ module.exports = {
       style: 'dark',
       links: [],
       copyright: `© genesis global ${new Date().getFullYear()}. All rights reserved.`,
-    }
+    },
+    prism: {
+      additionalLanguages: ['java', 'kotlin', 'powershell'],
+    },
   },
   
 };
