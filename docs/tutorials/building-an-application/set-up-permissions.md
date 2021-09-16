@@ -88,9 +88,9 @@ For example:
 
 Now moving to RIGHT_SUMMARY permission codes.
 
-Permission codes allow you to establish yes/no type access to resources (req-reps, data server, event handler), but they don’t act dynamically and they won’t filter rows based on fine-grain criteria (like dynamic permissions would).
+Permission codes enable you to establish yes/no type access to resources (request server, data server, event handler), but they don’t act dynamically and they won’t filter rows based on fine-grain criteria (like dynamic permissions would).
 
-For the purpose of this script we can keep things simple. In reality, you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user.
+For the purpose of this script, we can keep things simple. In reality, you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user.
 
 \[//\]: # (There is a plan to add a table at this point.)
 
