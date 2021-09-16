@@ -1,4 +1,5 @@
 const baseUrl = process.env.BASE_URL || '/';
+const routeBasePath = '/';
 
 module.exports = {
   title: 'Genesis Platform',
@@ -14,7 +15,15 @@ module.exports = {
         src: `${baseUrl}js/fast-components.iife.min.js`,
         async: true,
     },
-],
+  ],
+
+  plugins: [
+    [require.resolve('@cmfcmf/docusaurus-search-local'), {
+      docsRouteBasePath: routeBasePath,
+      indexBlog: false,
+      indexPages: false
+    }]
+  ],
 
   presets: [
     [
@@ -22,7 +31,7 @@ module.exports = {
       {
         // https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs
         docs: {
-          routeBasePath: '/',
+          routeBasePath,
           sidebarPath: require.resolve('./sidebars.json')
         },
         theme: {
