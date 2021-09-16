@@ -49,9 +49,9 @@ For example, here we define two STRING fields. The second is nullable; the first
 
 ```java
 fields {
-field(name = "ORDER_ID", type = STRING)
-field(name = "DESCRIPTION", type = STRING, nullable = true)
-...
+    field(name = "ORDER_ID", type = STRING)
+    field(name = "DESCRIPTION", type = STRING, nullable = true)
+    ...
 }
 ```
 
@@ -74,7 +74,7 @@ Checking with Peter
 
 Technically, it is possible to duplicate field names. When you build, this generates a duplication warning if the fields are defined in the same way, or an error if they are defined differently. If the duplication is between your own field and one you have inherited from another module, make sure you change the name of your own field, not the one from the other module.
 
-[Sample field definitions](/server/field-definition-example/) generated from GPAL.
+[Sample field definitions](/server-reference/data-model/field-example/) generated from GPAL.
 
 ## Tables
 
@@ -97,32 +97,32 @@ Derived fields are read-only fields calculated during runtime (i.e. not stored i
 See example below for USER table:
 
 ```java
-    table(name = "USER", id = 1000, audit = details(1050, "UA")) {
-        Fields.USER_NAME
-        Fields.FIRST_NAME
-        Fields.LAST_NAME
-        Fields.EMAIL_ADDRESS
-        Fields.PASSWORD
-        Fields.REFRESH_TOKEN
-        Fields.LAST_LOGIN
-        Fields.STATUS
-        Fields.ONLINE
-        Fields.COMPANY_NAME
-        Fields.COMPANY_ID
-        derivedFields {
-            derivedField("FULL_NAME", Fields.FIRST_NAME, Fields.LAST_NAME) { first, last ->
-                // If no "output" type is defined, the output type will be equal to first field type (i.e. FIRST_NAME type)
-                "$first $last"
-            }
-            derivedField("USER_NAME_CHARS", Fields.USER_NAME, INT) { userName ->
-                // The output type will be equal to INT in this case, and GPAL will verify an INT is returned.
-                userName?.length ?: 0
-            }
+table(name = "USER", id = 1000, audit = details(1050, "UA")) {
+    Fields.USER_NAME
+    Fields.FIRST_NAME
+    Fields.LAST_NAME
+    Fields.EMAIL_ADDRESS
+    Fields.PASSWORD
+    Fields.REFRESH_TOKEN
+    Fields.LAST_LOGIN
+    Fields.STATUS
+    Fields.ONLINE
+    Fields.COMPANY_NAME
+    Fields.COMPANY_ID
+    derivedFields {
+        derivedField("FULL_NAME", Fields.FIRST_NAME, Fields.LAST_NAME) { first, last ->
+            // If no "output" type is defined, the output type will be equal to first field type (i.e. FIRST_NAME type)
+            "$first $last"
         }
-        primaryKey {
-            Fields.USER_NAME
+        derivedField("USER_NAME_CHARS", Fields.USER_NAME, INT) { userName ->
+            // The output type will be equal to INT in this case, and GPAL will verify an INT is returned.
+            userName?.length ?: 0
         }
     }
+    primaryKey {
+        Fields.USER_NAME
+    }
+}
 ```
 
 The functionality provided in the previous examples should satisfy most use cases. It also has the advantage of providing a type safe calculation which will guarantee no type errors between different field types, including nullability checks for nullable fields.
@@ -192,7 +192,7 @@ table("TRADE", 102) {
     }
 }
 ```
-[Sample table definitions](/server/table-definition-example/) generated from GPAL.
+[Sample table definitions](/server-reference/data-model/table-example/) generated from GPAL.
 
 ## Views
 
@@ -209,7 +209,7 @@ To achieve this, create aliases for the two fields you are retrieving from the s
 
  By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data). If you need to join to a table where there is real-time data, then you need to specify a backwards join. This requires the statement backwardsJoin = true when you are specifying the join. 
 
-It is worth noting that when you define your [data servers](/server/data-servers/), any of these that include views with backwards joins must include a similar statement: **backJoins = true**. Don’t forget to add this! 
+It is worth noting that when you define your [data servers](/server-reference/data-servers/configure/), any of these that include views with backwards joins must include a similar statement: **backJoins = true**. Don’t forget to add this! 
 
 ```
 query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {

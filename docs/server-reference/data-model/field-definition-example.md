@@ -10,7 +10,6 @@ This example was generated from GPAL.
 
 ```
 fields {
-
     field(name = "ACTIVE", type = BOOLEAN)
     field(name = "ALERT_ID", type = STRING)
     field(name = "ATTRIBUTES", type = STRING)

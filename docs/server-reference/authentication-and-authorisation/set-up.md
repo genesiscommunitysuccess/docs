@@ -7,11 +7,11 @@ id: set-up
 ---
 ## Authentication
 
-You need to be sure that only permitted individuals are able to gain access to your application.
+Content to follow shortly.
 
 ## Authorisation
 
-Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example::
+Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:
 
 * The whole entity
 * Specific rows
@@ -95,25 +95,29 @@ Auth definitions can now be grouped with “and” or “or” operators. This m
 
 This example shows an AND grouping:
 
-          permissioning {
-                auth(mapName = "ENTITY_VISIBILITY") {
-                    TRADE.COUNTERPARTY_ID
-                } and auth(mapName = "SYMBOL_RESTRICTED") {
-                    TRADE.SYMBOL
-                }
-            }
+```
+permissioning {
+    auth(mapName = "ENTITY_VISIBILITY") {
+        TRADE.COUNTERPARTY_ID
+    } and auth(mapName = "SYMBOL_RESTRICTED") {
+        TRADE.SYMBOL
+    }
+}
+```
 
 #### OR grouping
 
 This example shows OR grouping
 
-     permissioning {
-                auth(mapName = "ENTITY_VISIBILITY") {
-                    BID_OFFER.BUYER_ID
-                } or auth(mapName = "ENTITY_VISIBILITY") {
-                    BID_OFFER.SELLER_ID
-                }
-            }
+```
+permissioning {
+    auth(mapName = "ENTITY_VISIBILITY") {
+        BID_OFFER.BUYER_ID
+    } or auth(mapName = "ENTITY_VISIBILITY") {
+        BID_OFFER.SELLER_ID
+    }
+}
+```
 
 ### Where clauses
 
@@ -121,20 +125,22 @@ You can define a where clause if you only want to show a row in specific cases. 
 
 This example shows different where clauses based on user role.
 
-    permissioning {
-                auth(mapName = "ENTITY_VISIBILITY") {
-                    BID_OFFER_BIDDER_VIEW.CLIENT_ID
-                    where { view ->
-                        !(BidState.DRAFT == view.bidState && !(BidBookState.OPEN == view.bidBookState ||(BidBookState.UPCOMING == view.bidBookState)) )
-                    }
-                } or
-                auth(mapName = "ENTITY_VISIBILITY") {
-                    BID_OFFER_BIDDER_VIEW.BUYER_DEALER_ID
-                    where { view ->
-                        !((BidBookState.UPCOMING == view.bidBookState || BidBookState.OPEN == view.bidBookState) && DealerRole.PRINCIPAL == view.dealerRole)
-                    }
-                }
-            }
+```
+permissioning {
+    auth(mapName = "ENTITY_VISIBILITY") {
+        BID_OFFER_BIDDER_VIEW.CLIENT_ID
+        where { view ->
+            !(BidState.DRAFT == view.bidState && !(BidBookState.OPEN == view.bidBookState ||(BidBookState.UPCOMING == view.bidBookState)) )
+        }
+    } or
+    auth(mapName = "ENTITY_VISIBILITY") {
+        BID_OFFER_BIDDER_VIEW.BUYER_DEALER_ID
+        where { view ->
+            !((BidBookState.UPCOMING == view.bidBookState || BidBookState.OPEN == view.bidBookState) && DealerRole.PRINCIPAL == view.dealerRole)
+        }
+    }
+}
+```
 
 ### HideFields
 
@@ -142,27 +148,29 @@ You can also have different column visibility levels based on user authorisation
 
 The example below hides the LAST_TRADED_PRICE column value for a particular instrument code.
 
-    query("ALL_TRADES_WITH_ENRICHED_AUTH", TRADE_VIEW) {
-        permissioning {
-            enrichedAuth(mapName = "TRADE_VISIBILITY", enrichedEntity = FAVOURITE_TRADES) {
-                TRADE_VIEW.TRADE_ID
-                FAVOURITE_TRADES.USER_NAME
-            }
-        }
-        enrich(FAVOURITE_TRADES){
-            join { userName, row ->
-                FavouriteTrades.ByTradeIdAndUserName(
-                    userName = userName,
-                    tradeId = row.tradeId
-                )
-            }
-            fields {
-                derivedField("FAVOURITE", BOOLEAN) { row, userData ->
-                    userData != null
-                }
-            }
-        }
-        config {
-            compression = true
+```
+query("ALL_TRADES_WITH_ENRICHED_AUTH", TRADE_VIEW) {
+    permissioning {
+        enrichedAuth(mapName = "TRADE_VISIBILITY", enrichedEntity = FAVOURITE_TRADES) {
+            TRADE_VIEW.TRADE_ID
+            FAVOURITE_TRADES.USER_NAME
         }
     }
+    enrich(FAVOURITE_TRADES){
+        join { userName, row ->
+            FavouriteTrades.ByTradeIdAndUserName(
+                userName = userName,
+                tradeId = row.tradeId
+            )
+        }
+        fields {
+            derivedField("FAVOURITE", BOOLEAN) { row, userData ->
+                userData != null
+            }
+        }
+    }
+    config {
+        compression = true
+    }
+}
+```
