@@ -27,17 +27,17 @@ cp ~/run/trading_app/cfg/trading_app-processes.xml site-specific/cfg/
 2. Add/edit loggingLevel tag in process you would like to change like below example
 
 ```xml
-    <process name="TRADING_APP_DATASERVER">
-        <groupId>TRADING_APP</groupId>
-        <start>true</start>
-        <options>-Xmx256m</options>
-        <module>genesis-pal-dataserver</module>
-        <package>global.genesis.dataserver.pal</package>
-        <script>chat-dataserver.kts</script>
-        <language>pal</language>
-        <description>Displays real-time details</description>
-        <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
-    </process> 
+<process name="TRADING_APP_DATASERVER">
+    <groupId>TRADING_APP</groupId>
+    <start>true</start>
+    <options>-Xmx256m</options>
+    <module>genesis-pal-dataserver</module>
+    <package>global.genesis.dataserver.pal</package>
+    <script>chat-dataserver.kts</script>
+    <language>pal</language>
+    <description>Displays real-time details</description>
+    <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
+</process> 
 ```
 
 3. Since there is change in configuration run `genesisInstall`
@@ -80,21 +80,21 @@ Logging level in scripts is set by default to "WARN". To change the log level yo
 
 Example of using LOG property inside script
 ```kotlin    
-    eventHandler<Trade>(name = "TRADE_INSERT") {
-        onValidate { event ->
-            val message = event.details
-            LOG.info("Validating trade with ID: {}", message.tradeId)
-            verify {
-                entityDb hasEntry Counterparty.ById(message.counterpartyId)
-                entityDb hasEntry Instrument.ById(message.instrumentId)
-            }
-            ack()
+eventHandler<Trade>(name = "TRADE_INSERT") {
+    onValidate { event ->
+        val message = event.details
+        LOG.info("Validating trade with ID: {}", message.tradeId)
+        verify {
+            entityDb hasEntry Counterparty.ById(message.counterpartyId)
+            entityDb hasEntry Instrument.ById(message.instrumentId)
         }
-        onCommit { event ->
-            val trade = event.details
-            LOG.info("Inserting trade with ID: {}", trade.tradeId)
-            stateMachine.insert(trade)
-            ack()
-        }
+        ack()
     }
+    onCommit { event ->
+        val trade = event.details
+        LOG.info("Inserting trade with ID: {}", trade.tradeId)
+        stateMachine.insert(trade)
+        ack()
+    }
+}
 ```
