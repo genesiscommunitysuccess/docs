@@ -1,15 +1,17 @@
+const baseUrl = process.env.BASE_URL || '/';
+
 module.exports = {
   title: 'Genesis Platform',
   tagline: 'Code Less, Do More',
   url: 'https://genesis.global/',
-  baseUrl: process.env.BASE_URL || '/',
+  baseUrl,
   favicon: 'img/favicon.ico',
   organizationName: 'genesislcap', // Usually your GitHub org/user name.
   projectName: 'docs', // Usually your repo name.
   trailingSlash: true,
   scripts: [
     {
-        src: "/js/fast-components.iife.min.js",
+        src: `${baseUrl}js/fast-components.iife.min.js`,
         async: true,
     },
 ],
@@ -48,7 +50,7 @@ module.exports = {
       copyright: `© genesis global ${new Date().getFullYear()}. All rights reserved.`,
     },
     prism: {
-      additionalLanguages: ['java', 'kotlin', 'powershell'],
+      additionalLanguages: ['java', 'kotlin', 'powershell', 'groovy'],
     },
   },
   
