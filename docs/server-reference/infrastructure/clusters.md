@@ -22,6 +22,7 @@ The cluster servers need to be able to connect to each other on the configured c
 ## Configure the system definitions
 
 Add all the nodes in the cluster to the hosts section for the specific environment . You must do this on all nodes by editing **genesis-system-definition.kts**.
+
 ```kotlin
 systems {
 
@@ -61,6 +62,7 @@ This should be the output of **MonCluster** if **SetPrimary** was executed on No
 ![](/img/cluster-nodea-now-primary.png)
 
 For reference, let's look at a process that has been configured to run on the Primary node only. The key definition at the end of the block is the one that sets **primaryOnly** to **true**:
+
 ```xml
 <process name="GENESIS_AUTH_CONSOLIDATOR">
     <groupId>AUTH</groupId>
@@ -88,7 +90,7 @@ You can then see the change on **MonCluster**. But note here that the processes 
 
 ![](/img/cluster-5-disaster-c.png)
 
-So, when you are satisfied that NodeA is performing satisfactorily, you can run **SetPrimary** on NodeA again to make it the Primary node. NodeB is automatically reset to Secondary.
+So, when you are satisfied that NodeA is performing reliably, you can run **SetPrimary** on NodeA again to make it the Primary node. NodeB is automatically reset to Secondary.
 
 ![](/img/cluster-6-disasterd.png)
 
@@ -97,6 +99,7 @@ In summary, the Load Balancer has handled the automatic switching to the seconda
 ## Vertical and horizontal scaling
 
 If you are adding nodes for horizontal scaling, simply add the details of the extra nodes to the hosts section in **genesis-system-definition.kts**.
+
 ```kotlin
 hosts {
     host(name = "NodeA")
@@ -109,6 +112,7 @@ hosts {
 Every Genesis process is an independent Java process running on a dedicated JVM. Each process can be configured with JVM-specific memory management configurations (-Xmx -Xms etc.) in the _module_**-processes.xml** file.
 
 Example:
+
 ```xml
 <process name="GENESIS_WEBMON">
     <start>true</start>
@@ -124,6 +128,7 @@ Example:
 ## Environment variables
 
 The Genesis LCNC Platform supports extraction of system-level variables to populate solution-specific settings. The system-level variables can be derived from enterprise configuration management system and the platform supports encrypted settings.
+
 ```kotlin
 item(name = "DbUsername", value = System.getenv("DBUSERNAME"), encrypted = true)
 item(name = "DbPassword", value = System.getenv("DBPASSWORD"), encrypted = true)
