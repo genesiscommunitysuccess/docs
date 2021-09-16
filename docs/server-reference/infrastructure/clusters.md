@@ -9,11 +9,11 @@ The genesis platform is highly resilient and easy to cluster for a High Availabi
 
 ## Pre-requisites
 
-This setup will only focus on the genesis platform part of a HA setup. The database is expected to be decoupled from the Genesis server instances in its HA setup.
+This set-up will only focus on the Genesis platform within an HA setup. The database is expected to be decoupled from the Genesis server instances in its HA setup.
 
-Equally, a HA load balancer is expected to serve the web traffic to the primary node and fail over to the secondary node when the primary node is unresponsive.
+An HA Load Balancer is required to direct web traffic to the primary node and fail over to the secondary node when the primary node is unresponsive.
 
-The cluster servers need to be able to connect to each other on the configured cluster port (6000 is the default conf) and by host name.
+The cluster servers need to be able to connect to each other on the configured cluster port (6000 is the default) and by host name.
 
 ### Example setup in AWS
 
@@ -41,37 +41,52 @@ Add all the nodes in the cluster to the hosts section for the specific environme
     
     }
 
-To activate any configuration change to the genesis platform and/or application, you have to run the command **genesisInstall** on every changed node.
+To activate any configuration change to the Genesis platform and/or application, you have to run the command **genesisInstall** on every changed node.
 
-Starting both nodes should present both nodes on a STANDBY mode.
-
-Running the **mon** command should show the following:
+When you start a node, it will be in STANDBY mode. You can run the **mon** command to confirm this:
 
 ![](/img/cluster-2-mon.png)
 
-Running the **MonCluster** command shows both nodes:
+Running the **MonCluster** command shows all nodes - there are two in this instance:
 
 ![](/img/cluster-3-moncluster.png)
 
 ## Set the primary node
 
-Use the **SetPrimary** command to set one of the nodes to Primary state
+Some Genesis processes (and, potentially, application processes) can only run on a single node. So it is important to set one of your nodes as the Primary node. Go to that node and run the **SetPrimary** command to set it to Primary state.
 
 This should be the output of **MonCluster** if **SetPrimary** was executed on NodeA:
 
+![](/img/cluster-nodea-now-primary.png)
+
+For reference, let's look at a process that has been configured to run on the Primary node only. The key definition at the end of the block is the one that sets **primaryOnly** to **true**:
+
+    <process name="GENESIS_AUTH_CONSOLIDATOR">
+        <groupId>AUTH</groupId>
+        <start>true</start>
+        <options>-Xmx128m -DXSD_VALIDATE=false</options>
+        <module>genesis-consolidator2</module>
+        <package>global.genesis.consolidator2</package>
+        <config>auth-consolidator.xml</config>
+        <description>Consolidator for all AUTH related consolidations</description>
+        <primaryOnly>true</primaryOnly>
+    </process>
+
 ## Disaster recovery: example
 
-In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Prerequisites section, if the Primary Node fails and goes offline, The Load Balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption. Below you can see the switch to the secondary node using **MonCluster**.
+In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Pre-requisites section, if the Primary node fails and goes offline, The Load Balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption. Below you can see the switch to the secondary node using **MonCluster**.
 
 ![](/img/cluster-4-disaster-a.png)
 
-If you decide that the Primary will not to come back online within an acceptable timeframe, you can then set the Secondary node to Primary.
+If you decide that the Primary node will not to come back online within an acceptable timeframe, you can then set the Secondary node to Primary.
 
-To do this, run **SetPrimary** on NodeB. You can then see the change on **MonCluster**. But note here that the processes are back up on NodeA.
+To do this, run **SetPrimary** on NodeB. This means that any of those processes where **primaryOnly** is defined as **true** will now start running on NodeB.
+
+You can then see the change on **MonCluster**. But note here that the processes are back up on NodeA.
 
 ![](/img/cluster-5-disaster-c.png)
 
-So, when you are satisfied that NodeA is performing satisfactorily, you can run **SetPrimary** on NodeA again to make it the Primary node.
+So, when you are satisfied that NodeA is performing satisfactorily, you can run **SetPrimary** on NodeA again to make it the Primary node. NodeB is automatically reset to Secondary.
 
 ![](/img/cluster-6-disasterd.png)
 
@@ -79,7 +94,7 @@ In summary, the Load Balancer has handled the automatic switching to the seconda
 
 ## Vertical and horizontal scaling
 
-If you are adding nodes for horizontal scaling simply add the details of the extra nodes to the hosts section in **genesis-system-definition.kts**.
+If you are adding nodes for horizontal scaling, simply add the details of the extra nodes to the hosts section in **genesis-system-definition.kts**.
 
     hosts {
     host(name = "NodeA")
@@ -112,8 +127,7 @@ The Genesis LCNC Platform supports extraction of system-level variables to popul
 
 ## External runtime dependencies
 
-The platform operates without any external dependencies and is well suited to network environments with no public ingress or egress traffic.
-The genesis platform supports extraction of system level variables to populate solution specific settings. The system level variables can be derived from enterprise configuration management system and the platform supports encrypted settings.
+The platform operates without any external dependencies and is well suited to network environments with no public ingress or egress traffic. The platform supports extraction of system-level variables to populate solution-specific settings. The system-level variables can be derived from the enterprise configuration management system and the platform supports encrypted settings.
 
 ## Encryption of data in transit and REST
 
