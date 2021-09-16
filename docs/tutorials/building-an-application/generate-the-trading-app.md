@@ -33,7 +33,11 @@ The next step is to run **genesisInstall**, which will run checks and highlight 
 
 Let’s be practical here. Without changing the application, run **genesisInstall**.
 
-This will fail because we have duplicate fields with the different field types. Remove the following duplicated fields/tables:
+This will fail because we have duplicate fields with the different field types. 
+
+![](/img/fail-duplicate-fields-and-tables.png)
+
+Remove the following duplicated fields/tables:
 
 * COUNTERPARTY_ID
 * INSTRUMENT_ID
