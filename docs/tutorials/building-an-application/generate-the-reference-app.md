@@ -13,7 +13,7 @@ Ideally, maven should be installed in the server instance with adequate configur
 
 Otherwise, the maven installation and configuration must be available in a local development environment.
 
-## The source database 
+## The source database
 
 There are four tables in the source relational database. You can see these  in DBeaver.
 
@@ -36,6 +36,8 @@ This generates the **fields-dictionary.kts** and **tables-dictionary.kts** files
 
 Check these files and adjust them to suit your application. For example, the process has translated the field ENABLED was as an INT type; you need to edit that to make it a BOOLEAN type.
 
+## Copy files and run genesisInstall
+
 Create a new ref_data_app folder structure inside GENESIS_HOME, including cfg and script folders
 
 Copy the output files from the dictionary build to the **ref_data_app/cfg** folder inside the run directory.
@@ -43,6 +45,8 @@ Copy the output files from the dictionary build to the **ref_data_app/cfg** fold
 Run **genesisInstall** to verify everything is ok.
 
 ![](/img/genesisinstall.png)
+
+## Run AppGen to build microservices
 
 Run **AppGen** to build your three modules (event handler, request server and data server):
 
@@ -63,9 +67,13 @@ and xml files for service definitions and prcoesses:
 
 Optionally, you could now run **remap**, which would give you cud operations for all the tables and request replies (static data from the request server), as well as for real-time data retrieval (via the data server.
 
-But for this application, we are going to go into the pro code first, to add some sophistication. Build a maven project so that you can use an IDE to build the app.
+But for this example application, we are going to go into the pro code, to to add some sophistication. 
+
+## Switching to pro code
 
 ### Build a maven project
+
+First, you need to build a maven project so that you can use an IDE to build the app. 
 
 You can run the **mvn** command either locally (in the server, local vm, wsl or cloud instance where the LCNC Platform is installed) or a separate local dev machine. In our example, we are using the same machine as before for consistency.
 
