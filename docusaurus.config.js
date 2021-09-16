@@ -46,7 +46,10 @@ module.exports = {
       style: 'dark',
       links: [],
       copyright: `© genesis global ${new Date().getFullYear()}. All rights reserved.`,
-    }
+    },
+    prism: {
+      additionalLanguages: ['java', 'kotlin', 'powershell'],
+    },
   },
   
 };
