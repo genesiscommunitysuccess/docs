@@ -34,7 +34,9 @@ Using the instance in which the platform is installed, run
 
 **DictionaryBuilder -t MSSQL -U admin -P Password11 -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d tradingapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument**
 
-This generates the **fields-dictionary.kts** and **tables-dictionary.kts** files for the data model.
+Note that we specified the names of the four source tables in the **--tables** argument of the command. 
+
+The **dictionaryBuilder** script generates the **fields-dictionary.kts** and **tables-dictionary.kts** files for the data model.
 
 ![](/img/dictionary-builder-screenshot.png)
 
