@@ -31,8 +31,8 @@ _preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add
 <preExpression>
     <!\[CDATA\[
 
-        import global.genesis.dta.commons.model.DtaSet
-        import global.genesis.dta.dta_db.DbRecord
+        import global.genesis.commons.model.GenesisSet
+        import global.genesis.db.DbRecord
 
         /*
         * Get market records for the given instrument id
@@ -171,7 +171,7 @@ This is a step-by-step example of how to get an Oracle database up and running w
 
 ![](/img/createdeleteprocedure.png)
 
-Create **GenesisToDb** configuration. **Ensure the xmlns:xi attribute is included inside the "dtaToDb" field if you want to use xinclude in your configuration**.
+Create **GenesisToDb** configuration. **Ensure the xmlns:xi attribute is included inside the "genesisToDb" field if you want to use xinclude in your configuration**.
 
 ![](/img/createconfig.png)
 

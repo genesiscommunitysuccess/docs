@@ -19,7 +19,8 @@ OPEN. The second defines the transition from DRAFT to
 CLOSED. The third defines the transition from DRAFT to 
 CANCELLED.  no other transitions have been defined, so it is not possible, for example, to transition from CLOSED to CANCELLED.
 
-```eventHandler {
+```kotlin
+eventHandler {
     stateMachine(TRADE.TRADE_STATUS) {
         insertEvent {
             initialStates(TradeStatus.DRAFT)

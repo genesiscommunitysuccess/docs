@@ -7,42 +7,60 @@ sidebar_position: 1
 ---
 The first task is to generate a reference application from the existing RDBMS of reference data.
 
-Before you start. You do have the platform and all the relevant tools installed, yes? The Genesis LCNC mus tbe installed on a server,local vm, wsl or cloud instance (genesis and auth).
+Before you start. You do have the platform and all the relevant tools installed, yes? The Genesis LCNC must be installed on a server,local vm, wsl or cloud instance (genesis and auth).
 
 Ideally, maven should be installed in the server instance with adequate configuration to retrieve genesis binaries.
 
 Otherwise, the maven installation and configuration must be available in a local development environment.
 
-## The source database 
+## The source database
 
-There are four tables in the source relational database. You can see these  in DBeaver.
+There are four tables in the source relational database. You can see these in DBeaver.
 
 ![](/img/dbeaver-screenshot.png)
 
-## Generate the dictionary files
+In this exercise, we are going to convert the contents of that database so that we have fields, tables and views we can use to build our Genesis application. And we shall generate a server with basic functions.
+
+## 1. Generate the dictionary files
 
 The **DictionaryBuilder** script reads the source database and generates the appropriate fields, tables and views in Genesis format. These are stored in two files:
 
 * **-fields-dictionary.kts**
 * **-tables-dictionary.kts**
 
+We shall call the product that we create **ref_data_app**. All the files we create will start with that name.
+
 Using the instance in which the platform is installed, run
 
 **DictionaryBuilder -t MSSQL -U admin -P Password11 -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d tradingapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument**
 
-This generates the **fields-dictionary.kts** and **tables-dictionary.kts** files for the data model.
+Note that we specified the names of the four source tables in the **--tables** argument of the command. 
+
+The **dictionaryBuilder** script generates the **fields-dictionary.kts** and **tables-dictionary.kts** files for the data model.
 
 ![](/img/dictionary-builder-screenshot.png)
 
-Check these files and adjust them to suit your application. For example, the process has translated the field ENABLED was as an INT type; you need to edit that to make it a BOOLEAN type.
+Check these files and adjust them to suit your application. For example, look inside the **fields-dictionary.kts** file to see the field definitions.
 
-Create a new ref_data_app folder structure inside GENESIS_HOME, including cfg and script folders
+The process has translated the field ENABLED as an INT type.
+
+    field(name = "ENABLED", type = INT)
+
+You need to edit that to make it a BOOLEAN type.
+
+    field(name = "ENABLED", type = BOOLEAN)
+
+## 2. Copy files and run genesisInstall
+
+Create a new ref_data_app folder structure inside GENES_S_HOME, including cfg and script folders_
 
 Copy the output files from the dictionary build to the **ref_data_app/cfg** folder inside the run directory.
 
 Run **genesisInstall** to verify everything is ok.
 
 ![](/img/genesisinstall.png)
+
+## 3. Run AppGen to build microservices
 
 Run **AppGen** to build your three modules (event handler, request server and data server):
 
@@ -63,9 +81,13 @@ and xml files for service definitions and prcoesses:
 
 Optionally, you could now run **remap**, which would give you cud operations for all the tables and request replies (static data from the request server), as well as for real-time data retrieval (via the data server.
 
-But for this application, we are going to go into the pro code first, to add some sophistication. Build a maven project so that you can use an IDE to build the app.
+But for this example application, we are going to go into the pro code, to to add some sophistication.
+
+## 4. Prepare for pro code
 
 ### Build a maven project
+
+First, you need to build a maven project so that you can use an IDE to build the app.
 
 You can run the **mvn** command either locally (in the server, local vm, wsl or cloud instance where the LCNC Platform is installed) or a separate local dev machine. In our example, we are using the same machine as before for consistency.
 
@@ -104,3 +126,5 @@ Locate the generated files for the request server, data server and event handler
 In intellij, run **mvn install**.
 
 ![](/img/run-maven-install-in-intellij.png)
+
+That's it. You have all the files in a project, ready for you to work in your IDE. In the following steps, you'll be working here to add key functionality to the application.

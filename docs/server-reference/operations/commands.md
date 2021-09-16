@@ -13,7 +13,7 @@ To ensure a correct installation, you must follow the product installation proce
 
 The installRelease script takes two arguments: one mandatory and one optional:
 
-```
+```bash
 installRelease productFile [-c | --commit]
 ```
 
@@ -42,7 +42,7 @@ Execute **genesisInstall** after installing an application, so that the applicat
 
 This scriptscript validates all system and product configuration, checking for things such as field duplication.
 
-```
+```bash
 genesisInstall [--ignore]
 ```
 
@@ -66,7 +66,7 @@ The Aerospike DB layer needs UDFs (user defined functions) to work correctly, an
 
 Syntax:
 
-```
+```bash
 remap [-c | --commit]
 ```
 
@@ -74,7 +74,7 @@ If we run remap with no arguments it simple gives a report of changes that exist
 
 For example:
 
-```
+```bash
 ==================================
 
 Table Changes
@@ -110,7 +110,7 @@ This script starts a Genesis process. It takes a single positional argument:
 
 Syntax
 
-```
+```bash
 startProcess processName [--hostname <[host names]>] [--dump] 
 ```
 
@@ -124,7 +124,7 @@ startProcess processName [--hostname <[host names]>] [--dump]
 
 The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
 
-```
+```bash
 java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
 ```
 
@@ -134,7 +134,7 @@ This script is used to terminate a specified process.
 
 Syntax
 
-```
+```bash
 killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--force] [--wait]
 ```
 
@@ -151,7 +151,7 @@ This script reads the **$GC/processes.xml** file to determine which processes to
 
 Syntax
 
-```
+```bash
 startServer [--hostname <[host names]>] [--ignoreDaemon] 
 
 processName           name of the process that you want to start
@@ -207,7 +207,7 @@ This script reads the **$GC/processes.xml** file to determine which processes to
 
 Syntax
 
-```
+```bash
 killServer [--hostname <[hosts names]>] [--force]
 ```
 
@@ -228,13 +228,13 @@ This script enables you to navigate through the database tables from the command
 
 Syntax:
 
-```
+```bash
 DbMon
 ```
 
 Once inside DbMon you can run the command **help**, which shows all the available commands.
 
-```
+```bash
 ==================================
 
 Database Monitor
@@ -320,7 +320,7 @@ To send data into the database, use the SendIt command.
 
 Syntax
 
-```
+```bash
 SendTable -t <table name> -f <file name>
 
 Available options (use -h for help):
@@ -350,7 +350,7 @@ Available options (use -h for help):
 
 For Example:
 
-```
+```bash
 SendIt -t FUND -f FUND
 ```
 
@@ -358,7 +358,7 @@ This reads the FUND.csv file in the local directory and insert the data from the
 
 To Modify records you, need to specify the key that will be used to identify the original record from the each row in the csv file. If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key.
 
-```
+```bash
 SendIt -t FUND -m FUND_BY_ID
 ```
 
@@ -366,7 +366,7 @@ Modify fields (-mf) is a special parameter that can be added to "-m" operations.
 
 To Delete records you need to specify `-d` (or `--delete`)
 
-```
+```bash
 SendIt -t FUND -d
 ```
 
@@ -382,7 +382,7 @@ To copy data out of a Genesis database, use the DumpIt command.
 
 Syntax:
 
-```
+```bash
 usage: DumpIt
 
     -a,--all           exports all tables to csv
@@ -402,7 +402,7 @@ usage: DumpIt
 
 For Example:
 
-```
+```bash
 DumpIt -t USER -where "USER_NAME=='John'" -fields "USER_NAME
 ```
 
@@ -410,7 +410,7 @@ This copies the data in the FUND table to FUND.csv.
 
 Another example:
 
-```
+```bash
 DumpIt -t FUND -f FUND -fields "FUND_ID NAME" -where "NAME == 'FUND_FUND' && YEARS_IN_SERVICE >= 10"
 ```
 
@@ -418,7 +418,7 @@ This copies the FUND_ID and NAME fields of every record that has "FUND_FUND" for
 
 Dumping all the tables example:
 
-```
+```bash
 DumpIt --all
 ```
 
@@ -436,7 +436,7 @@ Not setting GENESIS_LOGGING_LEVEL or setting a non-valid level will reset log le
 
 Syntax:
 
-```
+```bash
 LogLevel -p <process-name> -l <log level> -t <time> [-optional
 
                         params] -c <class-name> -DATADUMP_ON -DATADUMP_OFF or
@@ -480,7 +480,7 @@ LogLevel -p <process-name> -l <log level> -t <time> [-optional
 
 This script shows the status of the overall system, so you can see if the server is up or not.
 
-```
+```bash
 ***************************************************************************
 
                                 GENESIS Monitor
@@ -512,7 +512,7 @@ PID     Process Name                  Port        Status         CPU       Memor
 
 Usage
 
-```
+```bash
 mon [-v | -c | -a] polling_interval
 
 Options:
@@ -544,7 +544,7 @@ To populate the Holidays table with holidays based on a specific year(s), countr
 
 The usage: 
 
-```
+```bash
 PopulateHolidays
 
     -c,--country <arg>   the country name to search for holidays
@@ -566,13 +566,13 @@ This counts the number of records in the database, grouped by table, and prints 
 Can either give the record count for each table defined in the dictionary, or of a provided space separated list, i.e.:
 
 All Tables:
-```
+```bash
 CountRecords
 ```
 
 Specific Tables:
 
-```
+```bash
 CountRecords TABLE_NAME1 TABLE_NAME2 ...
 ```
 
@@ -582,7 +582,7 @@ This migrates the Genesis alias store from database storage to file storage and 
 
 Usage
 
-```
+```bash
 MigrateAliases FILE
 
 MigrateAliases DATABASE
@@ -600,7 +600,7 @@ This migrates the Genesis dictionary from Database Dictionary Store to File Dict
 
 Usage:
 
-```
+```bash
 MigrateDictionary
 ```
 
@@ -622,7 +622,7 @@ This finds all the dictionary sequences and prints the next sequence number for 
 
 Usage:
 
-```
+```bash
 GetNextSequenceNumbers
 ```
 
@@ -632,7 +632,7 @@ Gets the current sequence number for all the sequences in the system. The values
 
 Usage:
 
-```
+```bash
 GetSequenceCount
 
     -f,--file <arg>
@@ -648,7 +648,7 @@ This works like the **GetSequenceCount**, but for auto increment INT values defi
 
 Usage
 
-```
+```bash
 GetAutoIncrementCount
 
     -f,--file <arg>
@@ -664,7 +664,7 @@ Allows the user to change a sequence number, or to do a bulk change for all the 
 
 Usage:
 
-```
+```bash
 SetSequence
 
     -f,--file <arg>       Name of csv file for batch sequence/value pairs to
@@ -688,7 +688,7 @@ This works like **SetSequence** but for auto increment INT values.
 
 Usage:
 
-```
+```bash
 SetAutoIncrement
 
     -f,--file <arg>    Name of csv file for batch sequence/value pairs to be
@@ -752,7 +752,7 @@ It is also possible to use the double dash notation for any argument. Arguments 
 
 ### Example
 
-```
+```bash
 DtaRun DictionaryBuilder.groovy -u TAS -p fght123 -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
 ```
 
@@ -821,13 +821,13 @@ Standard files will be generated, i.e. processes.xml and service-definitions.xml
 
 Example without -t option.
 
-```
+```bash
 productGen -d tas-dictionary.xml -p 4000 -pn tas
 ```
 
 In this case we are specifying the dictionary to read is `tas-dictionary.xml`, the port offset is `4000` and the product name to generate is `tas`.  Running this command results in the following structure being created:
 
-```
+```bash
 tas/
     /bin
     /cfg/tas-dataserver2.xml
@@ -842,7 +842,7 @@ tas/
 
 Example with -t option.
 
-```
+```bash
 productGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
 ```
 
@@ -890,7 +890,7 @@ Please note, however, that this certificate should be stored in another director
 
 The keystore (.jks) is, in a way, the private key to be used in the two-way authentication in the SSL protocol. As such, we need to use it to generate the certificate that needs to be installed by the target computers/loaded by the processes that intend to communicate with.
 
-```
+```bash
 $ keytool -export -alias mykey -file certificate.crt -keystore keystore.jks
 ```
 
@@ -900,7 +900,7 @@ $ keytool -export -alias mykey -file certificate.crt -keystore keystore.jks
 
 Varies according to the distribution being used. In Ubuntu:
 
-```
+```bash
 $ cp certificate.crt /usr/local/share/ca-certificates/
 
 $ sudo update-ca-certificates
@@ -918,13 +918,13 @@ All Genesis modules are defined inside the service definition files:
 
 Syntax:
 
-```
+```bash
 ~/run/<product>/cfg/<product>-service-definitions.xml
 ```
 
 Example:
 
-```
+```bash
 ~/run/exmon/cfg/exmon-service-definitions.xml
 ```
 

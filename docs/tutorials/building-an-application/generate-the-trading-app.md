@@ -5,16 +5,17 @@ sidebar_label: Generate the trading app
 sidebar_position: 2
 
 ---
-
 Previously, we have created a reference data application from our original RDBMS database. This has a schema that we can use here.
 
 Now we are going to create a trading application, based on the source spreadsheet.
 
 ## The source spreadsheet
 
-Here is a look at the trades spreadsheet that will form the basis of our trading application:
+Here is a look at the trades workbook that will form the basis of our trading application. The main sheet shows a list of trades:
 
-## Convert the spreadsheet
+![](/img/source-table.png)
+
+## 1. Convert the spreadsheet
 
 Using the instance in which the platform is installed, run **ExcelToGenesis**.
 
@@ -22,11 +23,13 @@ Using the instance in which the platform is installed, run **ExcelToGenesis**.
 
 This generates the **fields-dictionary.kts** and **-tables-dictionary.kts** for the data model.
 
+![](/img/trading_app-creation-run-exceltogenesis-2.png)
+
 Check and adjust the fields and tables
 
 The fields and tables can be adjusted to suit your new app. For example, we can remove INSTRUMENT_ID and COUNTERPARTY_ID LATER ON when we add them to intellij, as our intellij project will be importing them from ref_data_app. Additionally we can tweak TRADE_ID to be a STRING and use a “sequence” definition to generate the fields
 
-## Run genesisInstall
+## 2. Run genesisInstall
 
 The next step is to run **genesisInstall**, which will run checks and highlight any issues.
 
@@ -34,7 +37,11 @@ The next step is to run **genesisInstall**, which will run checks and highlight 
 
 Let’s be practical here. Without changing the application, run **genesisInstall**.
 
-This will fail because we have duplicate fields with the different field types. Remove the following duplicated fields/tables:
+This will fail because we have duplicate fields with the different field types.
+
+![](/img/fail-duplicate-fields-and-tables.png)
+
+Remove the following duplicated fields/tables:
 
 * COUNTERPARTY_ID
 * INSTRUMENT_ID
@@ -47,13 +54,13 @@ Run **genesisInstall** again.
 
 \**screengrab
 
-## Remap
+## 3. Remap
 
 The remap script creates the database schema from the dictionary files.
 
 Run **remap –commit**.
 
-## AppGen
+## 4. AppGen
 
 **AppGen** creates three important modules for the application:
 
@@ -79,7 +86,9 @@ Run
 
 **mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=trading_app -B**
 
-\**Show resulting project structure.
+This gives you the following structure:
+
+![](/img/trading_app-creation-show-project-structure-13.png)
 
 Move generated trading_app/cfg files (from previous Excellarator and AppGen steps) to trading_app-config/src/main/resources/cfg and move generated trading_app/scripts files (requestserver, dataserver and eventhandler) to trading_app-script-config/src/main/resources/scripts
 
