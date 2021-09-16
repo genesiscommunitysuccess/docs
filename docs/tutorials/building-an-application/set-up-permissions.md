@@ -19,7 +19,7 @@ We can display the configuration of both in our request server, data server and 
 
 First, enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system.
 
-You can read more about it here: [https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model](https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model "https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model")
+You can read more about it [here](https://yljfsx0alebzeg.instant.forestry.io/server-reference/authentication-and-authorisation/set-up/#authorisation): 
 
 Starting with the server, make sure that you have two USER and USER_ATTRIBUTES records setup: JohnDoe and JaneDoe.
 
@@ -61,7 +61,7 @@ Now go to the **-view-dictionary.kts** file and add the COUNTERPARTY_ID field to
 
 ![](/img/step-08-add-counterparty_id-to-enhanced_view-in-view-dictionary-with-highlight.png)
 
-From the maven codegen plugin, run **generateView**. 
+From the maven codegen plugin, run **generateView**.
 
 ![](/img/step-08-run-maven-generateview-codegen-plugin-after-modifying-view.png)
 
