@@ -28,6 +28,8 @@ The **DictionaryBuilder** script reads the source database and generates the app
 * **-fields-dictionary.kts**
 * **-tables-dictionary.kts**
 
+We shall call the product that we create **ref_data_app**. All the files we create will start with that name.
+
 Using the instance in which the platform is installed, run
 
 **DictionaryBuilder -t MSSQL -U admin -P Password11 -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d tradingapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument**
@@ -44,7 +46,7 @@ The process has translated the field ENABLED as an INT type.
 
 You need to edit that to make it a BOOLEAN type.
 
-    
+    field(name = "ENABLED", type = BOOLEAN)
 
 ## 2. Copy files and run genesisInstall
 
