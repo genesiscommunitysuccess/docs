@@ -11,7 +11,9 @@ Now we are going to create a trading application, based on the source spreadshee
 
 ## The source spreadsheet
 
-Here is a look at the trades spreadsheet that will form the basis of our trading application:
+Here is a look at the trades workbook that will form the basis of our trading application. The main sheet shows a list of trades:
+
+![](/img/source-table.png)
 
 ## 1. Convert the spreadsheet
 
