@@ -25,7 +25,7 @@ Starting with the server, make sure that you have two USER and USER_ATTRIBUTES r
 
 ![](/img/jane-and-john-doe.png)
 
-Set two new key values in **site-specific/cfg/genesis-system-definition.kts** as described in the docs above:
+Add two new key values in **site-specific/cfg/genesis-system-definition.kts** as described in the docs above:
 
 ```kotlin
     item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
