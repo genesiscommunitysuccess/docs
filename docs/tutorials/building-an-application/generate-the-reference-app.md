@@ -52,7 +52,7 @@ You need to edit that to make it a BOOLEAN type.
 
 ## 2. Copy files and run genesisInstall
 
-Create a new ref_data_app folder structure inside GENESIS_HOME, including cfg and script folders
+Create a new ref_data_app folder structure inside GENES_S_HOME, including cfg and script folders_
 
 Copy the output files from the dictionary build to the **ref_data_app/cfg** folder inside the run directory.
 
