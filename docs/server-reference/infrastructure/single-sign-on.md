@@ -118,7 +118,7 @@ Specifically `global.genesis.auth.saml` needs to be added to the `<package …/>
 
 Additionally, you will need a `{product}-saml-config.kts` file, as below:
 
-```
+```kotlin
     saml {
         strictMode = false
         debugMode = true

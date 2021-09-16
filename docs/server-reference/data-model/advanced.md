@@ -28,7 +28,7 @@ The primary key for the table is defined in lines 10-13. We don’t declare any 
 
 An index can be defined as unique or non-unique. The example defines one of each (lines 13-20). In this example, we want to be able to do record lookups based on SESSION_ID (internal identifier for the session) and SESSION_AUTH_TOKEN (client authentication token), but we would also like to perform range searches based on USER_NAME (which isn’t always unique - a USER can have multiple sessions). By defining a nonUnique index on the USER_NAME field we can store that index in a more efficient way in our database layer and autogenerate optimised getRange operations in the repositories layer.
 
-```sql
+```kotlin
 table(name = "USER_SESSION", id = 2) {
     Fields.USER_NAME
     Fields.SESSION_ID
@@ -64,7 +64,7 @@ This requirement occurs for different tables (e.g. COUNTERPARTY → ALT_COUNTERP
 Subtables are defined within the body of the table definition. The example below shows the GENESIS_PROCESS monitoring table:
 
 
-```
+```kotlin
 table(name = "GENESIS_PROCESS", id = 12) {
     Fields.PROCESS_NAME
     Fields.PROCESS_STATUS

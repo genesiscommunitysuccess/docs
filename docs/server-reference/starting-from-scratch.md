@@ -19,7 +19,7 @@ mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupI
 
 Note that if your terminal is PowerShell, you must wrap the arguments in quotes:
 
-```
+```bash
 mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=<group_id>" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.2.0" "-DartifactId=<artifact_id>"
 ```
 
@@ -52,7 +52,7 @@ Starting from the top, let's open **trade-101-config**. It contains all the conf
 
 Open **trade-101-config/src/main/resources/config/trade-101-fields-dictionary.kts**. The empty files looks like this:
 
-```
+```kotlin
 fields {
 
 }
@@ -60,7 +60,7 @@ fields {
 
 We can add three simple fields to make start:
 
-```
+```kotlin
 fields {
     field("CODE", STRING)
     field("CREATED", DATE)
@@ -78,7 +78,7 @@ The next project to explore is **trade-101-dictionary-cache**. It depends on **t
 
 Here, you will find Fields object with pre-generated literals - these are fields that are commonly used in trading applications; they get generated out-of-the box for faster development. To see the fields you have just added, you need to build the project again:
 
-```
+```bash
 mvn package
 ```
 
