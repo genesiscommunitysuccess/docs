@@ -37,7 +37,7 @@ The next step is to run **genesisInstall**, which will run checks and highlight 
 
 Let’s be practical here. Without changing the application, run **genesisInstall**.
 
-This will fail because we have duplicate fields with the different field types. 
+This will fail because we have duplicate fields with the different field types.
 
 ![](/img/fail-duplicate-fields-and-tables.png)
 
@@ -86,7 +86,9 @@ Run
 
 **mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=trading_app -B**
 
-\**Show resulting project structure.
+This gives you the following structure:
+
+![](/img/trading_app-creation-show-project-structure-13.png)
 
 Move generated trading_app/cfg files (from previous Excellarator and AppGen steps) to trading_app-config/src/main/resources/cfg and move generated trading_app/scripts files (requestserver, dataserver and eventhandler) to trading_app-script-config/src/main/resources/scripts
 
