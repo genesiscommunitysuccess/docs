@@ -1,0 +1,466 @@
+---
+id: testing
+title: Testing
+sidebar_label: Testing
+sidebar_position: 11
+
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+There are two types of tests that you can develop - database tests and service tests. For both types you will need to start with a dictionary. This document will guide you through using GPAL dictionaries in Genesis tests. 
+
+
+:::note
+As of Genesis 5.2 a sample test case that uses production dictionary will be created out of the box when a new project is generated
+:::
+
+### Types of dictionaries
+
+There are three types of dictionaries you can use:
+
+1. Production dictionary
+2. Inline dictionary
+3. File dictionary
+
+#### Production Dictionary
+
+Use this type of dictionary if you want to test against the production dictionary. This is the prefered way of using a dictionary in product tests as production and test dictionaries are always in sync.
+
+This dictionary type is easiest to use, and it is supported in both Java and Kotlin. When writing a test extending `AbstractGenesisTestSupport`, the production dictionary is used by default. To use it from an `AbstractDatabseTest` class, is a couple of lines of code:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+override fun createMockDictionary(): GenesisDictionary = prodDictionary()
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Override
+protected GenesisDictionary createMockDictionary() {
+    return prodDictionary();
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### Inline Dictionary
+When writing a test in Kotlin, you can the GPAL syntax to define a dictionary inline. Use this type of dictionary if the dictionary you want to use in your tests is different from the production dictionary. This dictionary should only be used in framework type components where you want to test dictionaries that are distinct from your production dictionary. 
+
+```kotlin
+val USER_NAME by field(name = "USER_NAME", type = STRING)
+val AGE by field(name = "AGE", type = INT)
+
+override fun createMockDictionary(): GenesisDictionary = testDictionary {
+    table(name = "USER", id = 1) {
+        USER_NAME
+        AGE
+        primaryKey {
+            USER_NAME
+        }
+    }
+}
+```
+
+:::important 
+Please note that the table definitions should be valid. If you specify an invalid table, e.g. by not defining a primary key, the test will fail.
+:::
+
+#### File Dictionary
+
+These types of dictionaries should only be used if the dictionary you want to test is: 
+
+1. Different from the production dictionary
+2. Too big to be practical in an inline dictionary
+
+Please note that the test will need to resolve the absolute location of the dictionary file, for example: 
+```java
+@Override
+protected GenesisDictionary createMockDictionary() throws Exception {
+    return TestUtil.getDictionaryFromPath(Paths.get(this.getClass().getResource("/DeleteDependentRecords/Dictionaries/KeyIsIntAndString-dictionary.xml").toURI()).toString());
+}
+```
+
+In `AbstractDatabaseTest`, you can also overwrite the `dictionaryName()` method:
+```java
+@Override
+protected String dictionaryName() {
+    return "/dictionaries/standard-dictionary.xml";
+}
+```
+
+### Writing tests
+
+1. Database tests - use these types for testing classes that require database access.
+2. Test support tests - use these types of tests for testing a service 
+
+All dictionaries types work with both types of tests.
+
+#### AbstractDatabaseTest
+
+Use these types for testing classes that require database access. These tests will instantiate a `RxDb` object, with a dictionary. The full range of database operations are available, including the update queue. However, no other genesis components are provided. The only requirement for this type of tests is a dictionary.  
+
+To write a database test, begin by extending `AbstractDatabaseTest`, and overwriting the  `createMockDictionary` method, as in the samples below
+
+**Using a production dictionary:**
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+class SampleKotlinTest : AbstractDatabaseTest() {
+
+    override fun createMockDictionary(): GenesisDictionary = prodDictionary()
+
+    @Test
+    fun `test count`() {
+        assert(rxDb.count("USER").blockingGet() == 0L)
+    }
+}
+```
+</TabItem>
+<TabItem value="java">
+
+```java
+public class SampleJavaTest extends AbstractDatabaseTest {
+
+    @Override
+    protected GenesisDictionary createMockDictionary() throws Exception {
+        return prodDictionary();
+    }
+
+    @Test
+    public void testCount() {
+        assert getRxDb().count("USER").blockingGet() == 0L;
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+In this test we are using the production dictionary and making sure there are no records in the `USER` table. In both languages the `RxDb` is available. In Kotlin through the `rxDb` property, in Java using the `getRxDb()` method.
+
+**Using an inline dictionary:**
+```kotlin
+class SampleKotlinTest : AbstractDatabaseTest() {
+
+    val USER_NAME by field(name = "USER_NAME", type = STRING)
+    val AGE by field(name = "AGE", type = INT)
+
+    override fun createMockDictionary(): GenesisDictionary = testDictionary {
+        table(name = "USER", id = 1) {
+            USER_NAME
+            AGE
+            primaryKey {
+                USER_NAME
+            }
+        }
+    }
+
+    @Test
+    fun `test count`() {
+        assert(rxDb.count("USER").blockingGet() == 0L)
+    }
+}
+```
+
+In this test we are defining two fields and a table that uses them and making sure there are not records in hte `USER` table. Please note that since we are creating a stand alone dictionary, we can start with id 1
+
+**Using a file dictionary:**
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+class SampleKotlinTest : AbstractDatabaseTest() {
+
+    override fun dictionaryName() = "/genesisHome/genesis/cfg/genesis-dictionary.xml"
+
+    @Test
+    fun `test count`() {
+        assert(rxDb.count("USER").blockingGet() == 0L)
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+public class SampleJavaTest extends AbstractDatabaseTest {
+
+    @Test
+    public void testCount() {
+        assert getRxDb().count("USER").blockingGet() == 0L;
+    }
+
+    @Nullable
+    @Override
+    protected String dictionaryName() {
+        return "/genesisHome/genesis/cfg/genesis-dictionary.xml"
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+In this test the dictionary is read from an external file
+
+In all other regards, the database tests are a normal JUnit test. If you need addition components, you will need to construct them or mock them. You won’t be able to specify a `GENESIS_HOME` folder for additional configuration.
+
+If you add the `genesis-generated-dao` jar to your classpath you will be able to use repository classes as normal.
+
+#### AbstractGenesisTestSupport
+
+These are the more powerful type of tests. In addition to setting up the database it offers: 
+
+1. Start up a genesis service in memory
+2. Scan a `GENESIS_HOME` folder for additional configuration
+3. Inject other components directly into the test
+4. Mock auth-perms
+5. Asynchronous message handling with timeout and parsing
+
+##### Creating a test
+In the constructor you will need to provide a `GenesisTestConfig` instance:
+
+| Property | Required | Sets |
+| --- | --- | --- |
+| packageName | yes | corresponds to the `<package/>` tag in `processes.xml` |
+| genesisHome | yes | `GENESIS_HOME` folder for additional configuration |
+| parser | yes | function that takes a `GenesisSet` and transforms it, this will determine the generic type of `AbstractGenesisTestSupport` |
+| initialDataFile | no | csv files to load into the database |
+| configFileName | no | corresponds to the `<config/>` tag in `processes.xml` |
+| authCacheOverride | no | overrides auth-perms map to test  |
+
+Paths provided for `genesisHome` and `initialDataFile` should be absolute location. To help with this please wrap the string in a call to `resolvePath(…)`, this will try to locate the file or folder in your test resources.
+
+To use `AbstractGenesisTestSupport`, create a new class and extend
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+class UserControllerTest : AbstractGenesisTestSupport<EventResponse>(
+    GenesisTestConfig {
+        packageName = "global.genesis.auth.manager"
+        genesisHome = resolvePath("/genesisHome")
+        initialDataFile = resolvePath("standard-user-setup.csv")
+        authCacheOverride = "USER_VISIBILITY"
+        parser = EventResponse
+        configFileName = "config.xml"
+    }
+) {
+  // no tests defined yet
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+public class UserControllerJavaTest extends AbstractGenesisTestSupport<EventResponse> {
+
+    public UserControllerJavaTest() {
+        super(
+                new GenesisTestConfigImpl.Builder<EventResponse>()
+                        .addPackageName("global.genesis.auth.manager")
+                        .setGenesisHome(resolvePath("/genesisHome"))
+                        .addInitialDataFile(resolvePath("standard-user-setup.csv"))
+                        .setParser(EventResponse.Companion)
+                        .setConfigFileName("config.xml")
+                        .build()
+        );
+    }
+}
+```
+</TabItem>
+</Tabs>
+
+##### Parsing Messages
+These tests require a parser, this should take a `GenesisSet` and transform it. This is so that all logic dealing with reading values these messages is in a single place, and that this can be dealt with by the test support class, so that it can return a type safe object for the test to verify. `EventResponse` is provided as an option. This will parse messages into either an `EventResponse.Ack` or an `EventResponse.Nack`. The `Ack` does not hold a lot of data, but the `Nack` will provide `errorCode` and text properties to test failure conditions.
+
+It is recommended that the response type is a [sealed class in Kotlin](https://kotlinlang.org/docs/sealed-classes.html) with a companion object that implements `(GenesisSet) -> xxx`, where `xxx` is your sealed class. 
+```kotlin
+sealed class LoginResponse {
+    data class LoginAuthAck(
+        val sessionAuthToken: String,
+        val refreshAuthToken: String,
+        val sessionId: String,
+        val userName: String,
+        val daysToPasswordExpiry: Int?,
+        val notifyExpiry: Int?
+    ) : LoginResponse()
+
+    data class LoginAuthNack(
+        val errorCode: AuthFailure,
+        val text: String
+    ) : LoginResponse()
+
+    data class LogoutNack(val errorCode: AuthFailure) : LoginResponse()
+    object LogoutAck : LoginResponse()
+    object Other : LoginResponse()
+
+    companion object : (GenesisSet) -> LoginResponse {
+        override fun invoke(genesisSet: GenesisSet): LoginResponse =
+            when (genesisSet.getString("MESSAGE_TYPE")) {
+                "EVENT_LOGIN_AUTH_ACK" -> LoginAuthAck(
+                    sessionAuthToken = genesisSet.getString("SESSION_AUTH_TOKEN")!!,
+                    refreshAuthToken = genesisSet.getString("REFRESH_AUTH_TOKEN")!!,
+                    sessionId = genesisSet.getString("SESSION_ID")!!,
+                    userName = genesisSet.getString("USER_NAME")!!,
+                    daysToPasswordExpiry = genesisSet.getInteger("DETAILS.DAYS_TO_PASSWORD_EXPIRY"),
+                    notifyExpiry = genesisSet.getInteger("DETAILS.NOTIFY_EXPIRY")
+                )
+                "EVENT_LOGIN_AUTH_NACK" -> {
+                    val firstError = genesisSet.getArray<GenesisSet>("ERROR")!!
+                        .filterNotNull()
+                        .first()
+
+                    LoginAuthNack(
+                        errorCode = AuthFailure.valueOf(firstError.getString("CODE")!!),
+                        text = firstError.getString("TEXT", "NOT_SET")
+                    )
+                }
+                "LOGOUT_ACK" -> LogoutAck
+                "LOGOUT_NACK" -> LogoutNack(
+                    AuthFailure.valueOf(genesisSet.getString("CODE")!!)
+                )
+                else -> Other
+            }
+    }
+}
+```
+
+Having this parsing logic outside your tests cases, makes these a lot simpler to write. For example, using the sealed class and parser above, testing the logging in and logging out again becomes very simple:
+
+```kotlin
+@Test
+fun `test logout - success`() {
+    val message = sendMessage(buildLoginSet())      // build login request
+        .blockingGet()                              // await response
+        .assertedCast<LoginResponse.LoginAuthAck>() // assert message is LoginAuthNack
+        
+    sendMessage(buildLogoutSet(message.sessionId))  // build logout request with 
+                                                    //    provided session id
+        .blockingGet()                              // await response
+        .assertedCast<LoginResponse.LogoutAck>()    // assert message is LogoutAck
+}
+
+@Test
+fun `test logout - failure on session not found`() {
+    val message = sendMessage(buildLogoutSet("invalid...")) // send logout request 
+                                                            //    with invalid id
+        .blockingGet()                                     
+        .assertedCast<LoginResponse.LogoutNack>()           
+        
+    assert(message.errorCode == AuthFailure.SESSION_NOT_FOUND)
+}
+```
+
+`buildLoginSet` and `buildLogoutSet` supporting functions
+
+```kotlin
+private fun buildLoginSet(overrides: GenesisSet.() -> Unit = {}): GenesisSet {
+    val set = GenesisSet()
+    set.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
+    set.setDirect("DETAILS.USER_NAME", USER_NAME)
+    set.setDirect("DETAILS.PASSWORD", "Password11*")
+    set.overrides()
+    return set
+}
+
+private fun buildLogoutSet(sessionId: String): GenesisSet {
+    val set = GenesisSet()
+    set.setString("USER_NAME", USER_NAME)
+    set.setString("SESSION_ID", sessionId)
+    set.setString("MESSAGE_TYPE", "EVENT_LOGOUT")
+    return set
+}
+```
+
+##### Sending Messages
+There are two functions for sending messages to a service; one uses RxJava2 Single, the other uses Kotliln coroutines. Whichever one you use, shouldn’t make a whole lot of difference in your test. The method `sendMessage(…)` will return a `Single`, this will require a call to `blockingGet()` for every message you’re interested in. `sendMessageAsync` will require you to wrap your test in a `runBlocking { … }` block.
+
+```kotlin
+@Test
+fun `test logon failure - incorrect password (rxjava)`() {
+    val loginSet = buildLoginSet { setDirect("DETAILS.PASSWORD", "WRONG") }
+    
+    val message = sendMessage(loginSet)
+        .blockingGet()
+        .assertedCast<LoginResponse.LoginAuthNack>()
+        
+    assert(message.errorCode == AuthFailure.INCORRECT_CREDENTIALS) { message.toString() }
+}
+
+@Test
+fun `test logon failure - incorrect password (coroutines)`() = runBlocking {
+    val loginSet = buildLoginSet { setDirect("DETAILS.PASSWORD", "WRONG") }
+    
+    val message = sendMessageAsync(loginSet)
+        .assertedCast<LoginResponse.LoginAuthNack>()
+        
+    assert(message.errorCode == AuthFailure.INCORRECT_CREDENTIALS) { message.toString() }
+}
+```
+
+Both functions take a `GenesisSet` and optionally a timeout. If no timeout is provided it will default to 500. Timeouts are set in milliseconds. Behind the scenes a call will be made to `GenesisMessageClient`, which will handle source refs and waiting for a response (within the timeout).
+
+##### Providing System Defintion
+You can override system defintion properties in your test class by overriding the `systemDefintion()` function. 
+
+##### assertedCast
+This extension function can be called on any value with a type parameter. If the value is of that type it will be cast to that type, if not the call will fail with an `AssertError`, and a helpful description.
+
+```kotlin
+// message will be LoginResponse; our generic response type
+val message = sendMessageAsync(loginSet)
+
+// loginAuthAck will be of type LoginResponse.LoginAuthAck
+val loginAuthAck = message
+    .assertedCast<LoginResponse.LoginAuthAck>()
+```
+
+##### assertIsAuditedBy
+This function helps assertions related to audit tables. It will check all fields in the audited record match the audit record. 
+In this test, we build a request to insert a user. We then get the user from the database to make sure it exists. Next we check a USER_ATTRIBUTE row has been created. Finally we check to make sure a matching row in USER_AUDIT has been created.
+```kotlin
+@Test
+fun `test add users - success`() = runBlocking {
+    sendMessageAsync(buildUserSet(INSERT_USER))
+        .assertedCast<EventResponse.Ack>()
+
+    val user = userRepo.getByName("lmorris")
+        ?: throw IllegalArgumentException("User not found!")
+
+    assert(user.userName == "lmorris") { user }
+    assert(user.firstName == "Lee") { user }
+    assert(user.lastName == "Morris") { user }
+    assert(user.emailAddress == "lmorris@genesis.global") { user }
+    assert(user.status == "PASSWORD_EXPIRED") { user }
+
+    assert(passwordService.passwordIsValid(user, "TestPass123")) { "Password check failed" }
+
+    val attributes = attributeRepo.getByUserName(user.userName)
+        ?: throw IllegalArgumentException("Attributes not found!")
+
+    assert(attributes.accessType == AccessType.ALL) { attributes }
+
+    val userAudit = userAuditRepo.getRangeByUnderlyingId("lmorris")
+        .consumeAsFlow()
+        .first()
+
+    // assert all fields in user match in userAudit
+    user assertIsAuditedBy userAudit
+
+    assert(userAudit.auditEventType == "INSERT_USER") { userAudit.toString() }
+    assert(userAudit.auditEventUser == "JohnDoe") { userAudit.toString() }
+
+}
+```
