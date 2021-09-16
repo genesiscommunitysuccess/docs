@@ -436,13 +436,13 @@ fun `test add users - success`() = runBlocking {
     sendMessageAsync(buildUserSet(INSERT_USER))
         .assertedCast<EventResponse.Ack>()
 
-    val user = userRepo.getByName("lmorris")
+    val user = userRepo.getByName("test-user")
         ?: throw IllegalArgumentException("User not found!")
 
-    assert(user.userName == "lmorris") { user }
-    assert(user.firstName == "Lee") { user }
-    assert(user.lastName == "Morris") { user }
-    assert(user.emailAddress == "lmorris@genesis.global") { user }
+    assert(user.userName == "test-user") { user }
+    assert(user.firstName == "Test") { user }
+    assert(user.lastName == "User") { user }
+    assert(user.emailAddress == "test-user@genesis.global") { user }
     assert(user.status == "PASSWORD_EXPIRED") { user }
 
     assert(passwordService.passwordIsValid(user, "TestPass123")) { "Password check failed" }
@@ -452,7 +452,7 @@ fun `test add users - success`() = runBlocking {
 
     assert(attributes.accessType == AccessType.ALL) { attributes }
 
-    val userAudit = userAuditRepo.getRangeByUnderlyingId("lmorris")
+    val userAudit = userAuditRepo.getRangeByUnderlyingId("tuser")
         .consumeAsFlow()
         .first()
 
