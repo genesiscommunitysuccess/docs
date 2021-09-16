@@ -95,7 +95,7 @@ Auth definitions can now be grouped with “and” or “or” operators. This m
 
 This example shows an AND grouping:
 
-```
+```kotlin
 permissioning {
     auth(mapName = "ENTITY_VISIBILITY") {
         TRADE.COUNTERPARTY_ID
@@ -109,7 +109,7 @@ permissioning {
 
 This example shows OR grouping
 
-```
+```kotlin
 permissioning {
     auth(mapName = "ENTITY_VISIBILITY") {
         BID_OFFER.BUYER_ID
@@ -125,7 +125,7 @@ You can define a where clause if you only want to show a row in specific cases. 
 
 This example shows different where clauses based on user role.
 
-```
+```kotlin
 permissioning {
     auth(mapName = "ENTITY_VISIBILITY") {
         BID_OFFER_BIDDER_VIEW.CLIENT_ID
@@ -148,7 +148,7 @@ You can also have different column visibility levels based on user authorisation
 
 The example below hides the LAST_TRADED_PRICE column value for a particular instrument code.
 
-```
+```kotlin
 query("ALL_TRADES_WITH_ENRICHED_AUTH", TRADE_VIEW) {
     permissioning {
         enrichedAuth(mapName = "TRADE_VISIBILITY", enrichedEntity = FAVOURITE_TRADES) {

@@ -43,7 +43,7 @@ PATH=$PATH:$GROOVYHOME/bin
 This can be done using a link from the application user account.
 The recommended file structure is:
 
-```
+```bash
 /data/<app user>/server/<version>/run/
 ```
 
@@ -51,7 +51,7 @@ You must add a symbolic link to this directory from `**/home/<app user>/run**` t
     
 ## 4. Unzip and install the Genesis files
 Unzip the following two files in the directory structure:
-```
+```bash
 auth-distribution<version>-bin.zip
 genesis-distribution<version>-bin.zip
 ```

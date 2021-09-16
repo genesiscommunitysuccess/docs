@@ -219,7 +219,7 @@ To achieve this, create aliases for the two fields you are retrieving from the s
 
 It is worth noting that when you define your [data servers](/server-reference/data-servers/configure/), any of these that include views with backwards joins must include a similar statement: **backJoins = true**. Don’t forget to add this! 
 
-```
+```kotlin
 query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {
     config {
         backJoins = true
