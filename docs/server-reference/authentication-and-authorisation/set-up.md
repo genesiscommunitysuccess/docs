@@ -7,8 +7,6 @@ id: set-up
 ---
 ## Authentication
 
-Content to follow shortly.
-
 ### Authentication Types
 
 There are several authentication types to choose from when configuring the auth-preferences.xml file: INTERNAL, LDAP and HYBRID.
@@ -18,7 +16,6 @@ In order to select one, it is enough to change the type attribute of the authent
 ```xml
 <authentication type="INTERNAL"></authentication>
 ```
-
 
 #### Internal
 
@@ -201,9 +198,9 @@ Authorisation is achieved by permissioning dynamically. This means you can contr
 
 Effectively, you have three levels of control:
 
-**High level**. User A can view table ALL_TRADES.
+**High level**
 
-You could hide an entire grid from the UI, for example. So, one group could view reference data, but this would be hidden from the other groups. Or, you could hide an entire data server. For this, you use RIGHT_CODE. This is like a switch – you can either see it or not, depending on whether the code is TRUE or FALSE.
+You could hide an entire grid from the UI, for example. So one group could view reference data, but this would be hidden from the other groups. Or you could hide an entire data server. For this you use RIGHT_CODE. This is like a switch – you can either see it or not, depending on whether the code is TRUE or FALSE.
 
 **Entity level**
 
@@ -213,27 +210,27 @@ This is row or column-level access to information. Different users all view the 
 * Each user might only have access to trades for specific customers.
 * By including these permissions in an event handler,  user A can only enter a trade on behalf of a specific set of clients and user B can only enter trades on behalf of a different set of clients.
 
-Similarly, you can have different users seeing different columns in the same grid. This could be used for a support function, for example, where you don’t want the support team to see specific columns of sensitive data, such as who the client for a trade is. It can be specified by GPAL.
+Similarly, you can have different users seeing different columns in the same grid. This could be used for a support function, for example, where you don’t want the support team to see specific columns of sensitive data, such as who the client for a trade is. It can be specified by using GPAL.
 
 ### Users, profiles and rights
 
-We have rights codes, profiles and users.
+We have users, profiles and rights codes.
 
 A profile can have zero to many rights codes and zero to many users.
 
-So, if you have, say three roles, Trader, Support, and Operations, you set up the rights codes for each of these three profiles and then allocate each user to the appropriate profile. A user can have more than one profile, so you could allocate a superuser to all three profiles; that superuser would have the rights of all three profiles.
+So if you have, say three roles, Trader, Support, and Operations, you set up the rights codes for each of these three profiles and then allocate each user to the appropriate profile. A user can have more than one profile, so you could allocate a superuser to all three profiles; that superuser would have the rights of all three profiles.
 
 You cannot allocate rights codes directly to a specific user. But there is nothing to stop you from creating a profile that has only one user.
 
 This information is held on the following tables:
 
-* PROFILE_RIGHT. For each profile, this lists the entities that the profile has the right to view
+* PROFILE_RIGHT. For each profile, this lists the entities that the profile has the right to view.
 * PROFILE_USER. For each profile, this lists the users who have been allocated (and therefore, who have the rights in the relevant PROFILE_RIGHT table).
 * RIGHT_SUMMARY. This is created automatically by the system in real time. It maps all users to their rights.
 
-In this way, the rights are easily accessible at speed. AUTH MANAGER process manages this automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY is updated immediately and all the users in that profile receive the new right automatically.
+In this way, the rights are easily accessible at speed. The AUTH_MANAGER process manages this automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY table is updated immediately and all the users in that profile receive the new right automatically.
 
-If the profile that has write access to an entity, then it automatically includes read rights.
+If the profile has write access to an entity, then it automatically includes read rights.
 
 ### Loading a list of users
 
@@ -241,21 +238,21 @@ If you need to load a list of users and profiles you can use **SendIt** to send 
 
 ### Good practice, bad practice
 
-With this route, you can allocate rights to profiles and users to rights – and  change them. There is no change to the code needed.  However, our advice is to be as granular as possible at the start, because it is more difficult to introduce that granularity at a later point.  If yo create a new right, you have to change the code.
+With this route, you can allocate rights to profiles and users to rights – and  change them. There is no change to the code needed.  However, our advice is to be as granular as possible at the start, because it is more difficult to introduce that granularity at a later point.  If you create a new right, you have to change the code.
 
 ### Entity level (row level)
 
-GENESIS_AUTH_PERMS runs automatically on start-up and creates a memory-mapped file that acts as a big key-value pair – for example, User J has access to Counterparty 1, User J has access to Counterparty 2, User K has access to Counterparty 1, User K has access to Counterparty 4, etc. . If there is no appropriate entry in the file, the user won’t have access.
+The GENESIS_AUTH_PERMS process runs automatically on start-up and creates a memory-mapped file that acts as a big key-value pair – for example, User J has access to Counterparty 1, User J has access to Counterparty 2, User K has access to Counterparty 1, User K has access to Counterparty 4, etc. If there is no appropriate entry in the file, the user won’t have access.
 
-You must keep the process running, as it maintains itself automatically whenever any permissions change. If you a permission is changed on this way, then the change is automatically reflected on screen. If I have a grid on screen with 4 trades from Counterparty 1 and my permission to view that counterparty are withdrawn,  those 4 trades disappear from my screen immediately.
+You must keep the process running as it maintains itself automatically whenever any permissions change. If a permission is changed this way, then the change is automatically reflected on screen. If you have a grid on screen with 4 trades from Counterparty 1 and your permissions to view that counterparty are withdrawn, those 4 trades disappear from your screen immediately.
 
-In many cases, you want different people to have access to different functions and different information, based on their roles.  In Genesis, users are not permissioned individually for these purposes. Instead, permissioining is based on roles. You define what information and functions are available to a role, and then you allocate users to these roles. We refer to this as dynamic authorisation. There is nothing to stop you creating a role that has only one user, of course.
+In many cases you want different people to have access to different functions and different information, based on their roles.  In Genesis, users are not permissioned individually for these purposes. Instead, permissioning is based on roles. You define what information and functions are available to a role, and then you allocate users to these roles. We refer to this as dynamic authorisation. There is nothing to stop you creating a role that has only one user, of course.
 
 ### General approach
 
 On startup, the GENESIS_AUTH_PERMS process performs an initial scan of all entities. For each entity found, it performs authorisation against every user in the system. This builds a full map of permissioned users.
 
-By default, any updates to the entity and the user table will be automatically processed to permission new entities as they are entered into the database.
+By default, any updates to the entity and the USER table will be automatically processed to permission new entities as they are entered into the database.
 
 Entries are stored in a memory-mapped file located in **$GENESIS_HOME/runtime/authCache**.
 
@@ -277,7 +274,7 @@ Auth definitions can now be grouped with “and” or “or” operators. This m
 
 This example shows an AND grouping:
 
-```
+```kotlin
 permissioning {
     auth(mapName = "ENTITY_VISIBILITY") {
         TRADE.COUNTERPARTY_ID
@@ -291,7 +288,7 @@ permissioning {
 
 This example shows OR grouping
 
-```
+```kotlin
 permissioning {
     auth(mapName = "ENTITY_VISIBILITY") {
         BID_OFFER.BUYER_ID
@@ -307,7 +304,7 @@ You can define a where clause if you only want to show a row in specific cases. 
 
 This example shows different where clauses based on user role.
 
-```
+```kotlin
 permissioning {
     auth(mapName = "ENTITY_VISIBILITY") {
         BID_OFFER_BIDDER_VIEW.CLIENT_ID
@@ -330,7 +327,7 @@ You can also have different column visibility levels based on user authorisation
 
 The example below hides the LAST_TRADED_PRICE column value for a particular instrument code.
 
-```
+```kotlin
 query("ALL_TRADES_WITH_ENRICHED_AUTH", TRADE_VIEW) {
     permissioning {
         enrichedAuth(mapName = "TRADE_VISIBILITY", enrichedEntity = FAVOURITE_TRADES) {
