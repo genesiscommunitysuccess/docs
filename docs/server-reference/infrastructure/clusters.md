@@ -59,6 +59,20 @@ This should be the output of **MonCluster** if **SetPrimary** was executed on No
 
 ![](/img/cluster-nodea-now-primary.png)
 
+For reference, let's look at a process that has been configured to run on the Primary node only. The key definition at the end of the block is:  
+**<primaryOnly>true</primaryOnly>**
+
+    <process name="GENESIS_AUTH_CONSOLIDATOR">
+        <groupId>AUTH</groupId>
+        <start>true</start>
+        <options>-Xmx128m -DXSD_VALIDATE=false</options>
+        <module>genesis-consolidator2</module>
+        <package>global.genesis.consolidator2</package>
+        <config>auth-consolidator.xml</config>
+        <description>Consolidator for all AUTH related consolidations</description>
+        <primaryOnly>true</primaryOnly>
+    </process>
+
 ## Disaster recovery: example
 
 In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Prerequisites section, if the Primary Node fails and goes offline, The Load Balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption. Below you can see the switch to the secondary node using **MonCluster**.
