@@ -20,13 +20,13 @@ By default all process log levels are set to INFO and DATADUMP_STATUS is set to 
 
 1. Copy trading_app-processes.xml to site-specific
    
-```
-    cp ~/run/trading_app/cfg/trading_app-processes.xml site-specific/cfg/
+```bash
+cp ~/run/trading_app/cfg/trading_app-processes.xml site-specific/cfg/
 ```
 
 2. Add/edit loggingLevel tag in process you would like to change like below example
 
-```
+```xml
     <process name="TRADING_APP_DATASERVER">
         <groupId>TRADING_APP</groupId>
         <start>true</start>
@@ -52,26 +52,34 @@ Below are some examples of its usage
 
 Example 1: Change log level
 
-`LogLevel -p TRADING_APP_DATASERVER -l TRACE`
+```
+LogLevel -p TRADING_APP_DATASERVER -l TRACE
+```
 
 Example 2: Datadump status
 
-`LogLevel -p TRADING_APP_DATASERVER -DATADUMP_ON`
+```
+LogLevel -p TRADING_APP_DATASERVER -DATADUMP_ON
+```
 
 Example 3: Datadump nack status for 10 seconds
 
-`LogLevel -p TRADING_APP_DATASERVER -DATADUMP_NACK_ON -t 10s`
+```
+LogLevel -p TRADING_APP_DATASERVER -DATADUMP_NACK_ON -t 10s
+```
 
 Example 4: Change log level for class
 
-`LogLevel -p TRADING_APP_DATASERVER -c DbMon -l DEBUG`
+```
+LogLevel -p TRADING_APP_DATASERVER -c DbMon -l DEBUG
+```
 
 ### Script log level
 
 Logging level in scripts is set by default to "WARN". To change the log level you need to set environment variable GENESIS_LOGGING_LEVEL to any valid level [ERROR, WARN, INFO, DEBUG, TRACE]. Not setting GENESIS_LOGGING_LEVEL or setting a non-valid level will reset log level to default.
 
 Example of using LOG property inside script
-```    
+```kotlin    
     eventHandler<Trade>(name = "TRADE_INSERT") {
         onValidate { event ->
             val message = event.details
