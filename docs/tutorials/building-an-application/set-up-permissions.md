@@ -23,16 +23,17 @@ You can read more about it here : [https://genesisglobal.atlassian.net/wiki/spac
 
 Starting with the server, make sure that you have two USER and USER_ATTRIBUTES records setup: JohnDoe and JaneDoe.
 
-     (I have already set them up in dev-trading1 and can be found in \~/testData folder).
+![](/img/jane-and-john-doe.png)
 
 Set two new key values in **site-specific/cfg/genesis-system-definition.kts** as described in the docs above:
+
 ```kotlin
     item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
 
     item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
 ```
 
-Take note of auth-permissions.auto.xml in generated/cfg before running install
+Take note of **auth-permissions.auto.xml** in generated/cfg before running install.
 
 Run **genesisInstall**
 
@@ -61,6 +62,7 @@ You can now configure dynamic permissions for trades and positions in our IDE. Y
 The same applies to request servers.
 
 Event handlers are slightly different, because the input data class can be customised. The code would look like this:
+
 ```kotlin
 query("ALL_TRADES", TRADE){
     permissioning {
@@ -73,7 +75,7 @@ query("ALL_TRADES", TRADE){
 
 ## Testing
 
-You can write unit tests based on auth-perms (see EventHandlerPalTest in genesis-server repo inside genesis-pal-test, it contains an example of adding an auth cache override in the GenesisTestConfig and as part of the @Before setup) 
+You can write unit tests based on auth-perms (see EventHandlerPalTest in genesis-server repo inside genesis-pal-test, it contains an example of adding an auth cache override in the GenesisTestConfig and as part of the @Before setup)
 
 For example:
 
@@ -88,8 +90,8 @@ For the purpose of this script we can keep things simple. In reality you would u
 
 In our trading app example we can set two types of rights:
 
-*  TRADER (enables the trader to write trades - but only for their own related counterparties)
-*  SUPPORT (enables support to have read-only access to everything)
+* TRADER (enables the trader to write trades - but only for their own related counterparties)
+* SUPPORT (enables support to have read-only access to everything)
 
 In terms of definitions, you can add the codes as part of the permissioning block in the relevant event . For example, for the TRADE_INSERT event handler we could have:
 
