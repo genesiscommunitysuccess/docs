@@ -57,7 +57,7 @@ update USER_ATTRIBUTES_BY_USER_NAME
 
 The generic permissioning settings have now been set in place, and are stored in **auth-permissions.auto.xml** in **generated/cfg**. The next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started they will consider the new configuration.
 
-Now go to the -view-dictionary.kts file and add COUNTERPARTY_ID to ENHANCED_TRADE_VIEW.
+Now go to the **-view-dictionary.kts** file and add the COUNTERPARTY_ID field to ENHANCED_TRADE_VIEW.
 
 ![](/img/step-08-add-counterparty_id-to-enhanced_view-in-view-dictionary-with-highlight.png)
 
