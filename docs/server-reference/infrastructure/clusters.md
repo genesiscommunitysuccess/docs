@@ -22,24 +22,25 @@ The cluster servers need to be able to connect to each other on the configured c
 ## Configure the system definitions
 
 Add all the nodes in the cluster to the hosts section for the specific environment . You must do this on all nodes by editing **genesis-system-definition.kts**.
+```kotlin
+systems {
 
-    systems {
-    
-        system(name = "DEV") {
-    
-            hosts {
-                host(name = "NodeA")
-                host(name = "NodeB")
-            }
-    
-            item(name = "DbNamespace", value = "genesis")
-            item(name = "ClusterPort", value = "6000")
-            item(name = "location", value = "LO")
-            item(name = "LogFramework", value = "LOG4J2")
-            item(name = "LogFrameworkConfig", value = "log4j2-default.xml")
+    system(name = "DEV") {
+
+        hosts {
+            host(name = "NodeA")
+            host(name = "NodeB")
         }
-    
+
+        item(name = "DbNamespace", value = "genesis")
+        item(name = "ClusterPort", value = "6000")
+        item(name = "location", value = "LO")
+        item(name = "LogFramework", value = "LOG4J2")
+        item(name = "LogFrameworkConfig", value = "log4j2-default.xml")
     }
+
+}
+```
 
 To activate any configuration change to the Genesis platform and/or application, you have to run the command **genesisInstall** on every changed node.
 
@@ -60,17 +61,18 @@ This should be the output of **MonCluster** if **SetPrimary** was executed on No
 ![](/img/cluster-nodea-now-primary.png)
 
 For reference, let's look at a process that has been configured to run on the Primary node only. The key definition at the end of the block is the one that sets **primaryOnly** to **true**:
-
-    <process name="GENESIS_AUTH_CONSOLIDATOR">
-        <groupId>AUTH</groupId>
-        <start>true</start>
-        <options>-Xmx128m -DXSD_VALIDATE=false</options>
-        <module>genesis-consolidator2</module>
-        <package>global.genesis.consolidator2</package>
-        <config>auth-consolidator.xml</config>
-        <description>Consolidator for all AUTH related consolidations</description>
-        <primaryOnly>true</primaryOnly>
-    </process>
+```xml
+<process name="GENESIS_AUTH_CONSOLIDATOR">
+    <groupId>AUTH</groupId>
+    <start>true</start>
+    <options>-Xmx128m -DXSD_VALIDATE=false</options>
+    <module>genesis-consolidator2</module>
+    <package>global.genesis.consolidator2</package>
+    <config>auth-consolidator.xml</config>
+    <description>Consolidator for all AUTH related consolidations</description>
+    <primaryOnly>true</primaryOnly>
+</process>
+```
 
 ## Disaster recovery: example
 
@@ -95,35 +97,38 @@ In summary, the Load Balancer has handled the automatic switching to the seconda
 ## Vertical and horizontal scaling
 
 If you are adding nodes for horizontal scaling, simply add the details of the extra nodes to the hosts section in **genesis-system-definition.kts**.
-
-    hosts {
+```kotlin
+hosts {
     host(name = "NodeA")
-          host(name = "NodeB")
-    	host(name = "NodeC")
-          …
-    }
+    host(name = "NodeB")
+    host(name = "NodeC")
+        …
+}
+```
 
 Every Genesis process is an independent Java process running on a dedicated JVM. Each process can be configured with JVM-specific memory management configurations (-Xmx -Xms etc.) in the _module_**-processes.xml** file.
 
 Example:
-
-    <process name="GENESIS_WEBMON">
-    	<start>true</start>
-    	<groupId>GENESIS</groupId>
-    	<options>-Xmx512m -DXSD_VALIDATE=false</options>
-    	<module>webmon</module>
-    	<package>global.genesis.webmon</package>
-    	<config>genesis-webmon-config.xml</config>
-    	<description>Admin and operations web interface</description>
-    </process>
+```xml
+<process name="GENESIS_WEBMON">
+    <start>true</start>
+    <groupId>GENESIS</groupId>
+    <options>-Xmx512m -DXSD_VALIDATE=false</options>
+    <module>webmon</module>
+    <package>global.genesis.webmon</package>
+    <config>genesis-webmon-config.xml</config>
+    <description>Admin and operations web interface</description>
+</process>
+```
 
 ## Environment variables
 
 The Genesis LCNC Platform supports extraction of system-level variables to populate solution-specific settings. The system-level variables can be derived from enterprise configuration management system and the platform supports encrypted settings.
-
-    item(name = "DbUsername", value = System.getenv("DBUSERNAME"), encrypted = true)
-    item(name = "DbPassword", value = System.getenv("DBPASSWORD"), encrypted = true)
-    item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
+```kotlin
+item(name = "DbUsername", value = System.getenv("DBUSERNAME"), encrypted = true)
+item(name = "DbPassword", value = System.getenv("DBPASSWORD"), encrypted = true)
+item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
+```
 
 ## External runtime dependencies
 

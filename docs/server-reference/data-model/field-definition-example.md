@@ -8,7 +8,7 @@ id: field-example
 This example was generated from GPAL.
 
 
-```
+```kotlin
 fields {
     field(name = "ACTIVE", type = BOOLEAN)
     field(name = "ALERT_ID", type = STRING)

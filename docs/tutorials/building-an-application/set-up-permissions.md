@@ -26,10 +26,11 @@ Starting with the server, make sure that you have two USER and USER_ATTRIBUTES r
      (I have already set them up in dev-trading1 and can be found in \~/testData folder).
 
 Set two new key values in **site-specific/cfg/genesis-system-definition.kts** as described in the docs above:
-
+```kotlin
     item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
 
     item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
+```
 
 Take note of auth-permissions.auto.xml in generated/cfg before running install
 
@@ -60,14 +61,15 @@ You can now configure dynamic permissions for trades and positions in our IDE. Y
 The same applies to request servers.
 
 Event handlers are slightly different, because the input data class can be customised. The code would look like this:
-
-    query("ALL_TRADES", TRADE){
+```kotlin
+query("ALL_TRADES", TRADE){
     permissioning {
        auth(mapName = “ENTITY_VISIBILITY”){ 
           TRADE.COUNTERPARTY_ID 
        }
     }
-    }
+}
+```
 
 ## Testing
 
@@ -91,11 +93,13 @@ In our trading app example we can set two types of rights:
 
 In terms of definitions, you can add the codes as part of the permissioning block in the relevant event . For example, for the TRADE_INSERT event handler we could have:
 
+```kotlin
 permissions {
 
-            permissionCodes = listOf("TRADER") 
+    permissionCodes = listOf("TRADER") 
 
 }
+```
 
 This means only users with TRADER permission code will be able to use that event handler. You can add similar code to the request servers and data servers.
 

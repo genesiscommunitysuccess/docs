@@ -27,7 +27,7 @@ The following imports are automatically available inside GPAL event handlers:
 
 The following properties are automatically available inside GPAL event handlers:
 
-```java
+```kotlin
 val systemDefinition: SystemDefinitionService
 val rxDb: RxDb
 val entityDb: AsyncEntityDb
@@ -61,7 +61,7 @@ The **onValidate** block is optional if you are using the default reply message 
 
 However, it is mandatory when using custom reply message types, and the script will not compile if it is not defined. See the simple example below:
 
-```java
+```kotlin
    eventHandler<Company>(name = "COMPANY_INSERT") {
         onValidate { event ->
             val company = event.details
@@ -82,7 +82,7 @@ Kotlin’s *require* method throws an exception with a message if the boolean ex
 
 In order to optimise database lookup operations, you might want to reuse some data obtained within the **onValidate** block inside your **onCommit** block. To do this, you can use context event handlers, as shown below:
 
-```java
+```kotlin
     contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {
         onValidate {
             val company = it.details
@@ -113,7 +113,7 @@ If you use a custom reply message type, you won’t be able to use the default *
 
 For a custom message type called **TradeEvent** defined as:
 
-```java
+```kotlin
 data class TradeEvent(
     val price: Double,
     val quantity: Int,
@@ -127,7 +127,7 @@ data class TradeEvent(
 
 With a custom message reply type called **CustomTradeEventReply** defined as:
 
-```java
+```kotlin
 sealed class CustomTradeEventReply : Outbound() {
     class TradeEventValidateAck : CustomTradeEventReply()
     data class TradeEventAck(val tradeId: String) : CustomTradeEventReply()
@@ -137,7 +137,7 @@ sealed class CustomTradeEventReply : Outbound() {
 
 Please see example event handler below:
 
-```java
+```kotlin
     eventHandler<TradeEvent, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
         onException { event, throwable ->
             TradeEventNack(throwable.message!!)
@@ -166,7 +166,7 @@ The **onException** block can capture any exceptions thrown by the **onValidate*
 
 As with other GPL files (e.g. reqrep and dataserver), you can use a **permissions** block to define both dynamic permissions (AUTH) and fixed permissions (based on RIGHT_SUMMARY rights) if the event message type is a generated database entity. See the example below:
 
-```java
+```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
         permissions {
             auth(mapName = "COMPANY"){
@@ -185,7 +185,7 @@ As with other GPL files (e.g. reqrep and dataserver), you can use a **permission
 
 If your message type is not a database-generated entity,  you can still define fixed **permissionCodes** outside the permissions block:
 
-```java
+```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
         permissionCodes = listOf("INSERT_TRADE")
         onCommit { event ->
@@ -205,7 +205,7 @@ For example, if we need to insert a new record and create an audit record for th
 
 See the example below for defining an event handler this way (a transactional event handler):
 
-```java
+```kotlin
     eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
         onValidate {
             ack()
