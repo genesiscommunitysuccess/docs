@@ -43,19 +43,17 @@ Add all the nodes in the cluster to the hosts section for the specific environme
 
 To activate any configuration change to the genesis platform and/or application, you have to run the command **genesisInstall** on every changed node.
 
-Starting both nodes should present both nodes on a STANDBY mode.
-
-Running the **mon** command should show the following:
+When you start a node, it will be in STANDBY mode. You can run the **mon** command to confirm this:
 
 ![](/img/cluster-2-mon.png)
 
-Running the **MonCluster** command shows both nodes:
+Running the **MonCluster** command shows all nodes - there are two in this instance:
 
 ![](/img/cluster-3-moncluster.png)
 
 ## Set the primary node
 
-Use the **SetPrimary** command to set one of the nodes to Primary state
+One of the nodes needs to be set as the Primary node. Go to that node and run the **SetPrimary** command to set it to Primary state.
 
 This should be the output of **MonCluster** if **SetPrimary** was executed on NodeA:
 
