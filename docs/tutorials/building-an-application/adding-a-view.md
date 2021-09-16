@@ -22,14 +22,6 @@ The view will display all the TRADE fields except INSTRUMENT_ID, COUNTERPARTY_ID
 
 In short, you will add INSTRUMENT_NAME and COUNTERPARTY_NAME to enhance the view with human readable values.
 
-Run `codegen:generateView` to make the new view ready for use (See below).
-
-![](/img/generateView.png)
-
-## Add the new view to the data server
-
-Now go to the data server definition (inside the **-script-config** module). Replace the ALL_TRADES query in the data server with the new ENHANCED_TRADE_VIEW.
-
 ```kotlin
   view ("ENHANCED_TRADE_VIEW", TRADE) {
 
@@ -60,6 +52,21 @@ Now go to the data server definition (inside the **-script-config** module). Rep
       }
     }
   }
+```
+
+Run `codegen:generateView` to make the new view ready for use (See below).
+
+![](/img/generateView.png)
+
+## Add the new view to the data server
+
+Now go to the data server definition (inside the **-script-config** module). Replace the ALL_TRADES query in the data server with the new ENHANCED_TRADE_VIEW.
+
+```kotlin
+dataServer {
+
+  query("ALL_TRADES", ENHANCED_TRADE_VIEW)
+}
 ```
 
 ## Testing
