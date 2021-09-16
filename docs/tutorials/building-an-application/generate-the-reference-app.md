@@ -15,7 +15,7 @@ Otherwise, the maven installation and configuration must be available in a local
 
 ## The source database
 
-There are four tables in the source relational database. You can see these  in DBeaver.
+There are four tables in the source relational database. You can see these in DBeaver.
 
 ![](/img/dbeaver-screenshot.png)
 
