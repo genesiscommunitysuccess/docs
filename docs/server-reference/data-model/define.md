@@ -19,7 +19,7 @@ In Genesis, we structure our data in the following way:
 - Tables
 - Views (a view can draw data from more than one table)
 
-Each of these must be specified in a separate block in the dictionary file.
+Each of these must be specified in a separate file on the filesytem
 
 ## Fields
 
@@ -45,9 +45,9 @@ The following field types are available:
 
 Fields are easily defined with a unique Name and a type, and additionally a few other options such as default value, non-nullable and others (some are relevant only for certain types).
 
-For example, here we define two STRING fields. The second is nullable; the first is not nullable):
+For example, here we define two `STRING` fields. (The second is nullable; the first is not nullable):
 
-```java
+```kotlin
 fields {
     field(name = "ORDER_ID", type = STRING)
     field(name = "DESCRIPTION", type = STRING, nullable = true)
@@ -55,18 +55,20 @@ fields {
 }
 ```
 
-When you define a new field, it is good practice to run **codegen:generateSysDef**. You will be able to use intellisense to pick this new field within table definitions.
+Fields are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-fields-dictionary.kts`. For example for the `trade` application that file name would be `trade-fields-dictionary.kts`
+
+When you define a new field, it is good practice to run **codegen:generateSysDef**. This will generate code based on the fields definition and you will be able to use intellisense to pick this new field within table definitions.
 
 ### Naming fields 
 As is always the case, it is worth being careful with the names you give fields. Clear names help.
 
-If you create a field name that already exists, there are no consequences - as long as the field type is also the same. In effect, the second definition is simply ognored.
+If you create a field name that already exists, there are no consequences - as long as the field type is also the same. In effect, the second definition is simply ignored.
 
-However, if you create a field name that matches an existing name and you give it a different field type, this generates a dulication error.
+However, if you create a field name that matches an existing name and you give it a different field type, this generates a duplication error.
 
-The error is generated when you generate the code using Maven. 
+The error is shown when you generate the code using Maven. 
 
-I the code has already been generated - typically, if you are making changes to an existing server - the error is generated when you run **genesisInstall** after the change.
+If the code has already been generated - typically, if you are making changes to an existing server - the error is generated when you run **genesisInstall** after the change.
 
 :::danger WIP
 Checking with Peter
@@ -90,13 +92,15 @@ When you define a table, it is good to give it a clear name that describes the k
 
 Primary key and index definitions are used in the various “lego brick” configurations, as well as any custom Db operations when you build and create the DAO Objects. This covers, for example, the ability to retrieve a single record based on the primary key values, and the ability to get a list of records part matching the first key field value (**getRange**).
 
+Tables are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-tables-dictionary.kts`. For exmple for the `trade` application that file name would be `trade-tables-dictionary.kts`
+
 ### Derived fields
 
 Derived fields are read-only fields calculated during runtime (i.e. not stored in database), but they can be retrieved when using generated table entities in a “getter” fashion. You can define these in your table definition. You have to specify the logic that creates the content, which must be based on the other fields in the table. For example, if your fields include **quantity** and **price** , you can create a derived field **quantity x price**, where the value is calculated on the fly.
 
 See example below for USER table:
 
-```java
+```kotlin
 table(name = "USER", id = 1000, audit = details(1050, "UA")) {
     Fields.USER_NAME
     Fields.FIRST_NAME
@@ -129,7 +133,7 @@ The functionality provided in the previous examples should satisfy most use case
 
 However, we still offer full flexibility (at the expense of less type safety and easy of use) by using the following approach:
 
-```java
+```kotlin
     derivedField("TIMES_TWO_COUNTER_PLUS_VERSION"){
         ((Fields.APPROVED_COUNTER not null) * 2) + (Fields.VERSION not null)
     }
@@ -150,7 +154,7 @@ When using GPAL event handlers, the auditing is performed automatically, so each
 
 You can override the **null = true** setting within a specific table if you need to do so,
 
-```java
+```kotlin
  table(name = "PROFILE", id = 1002) {
         Fields.NAME
         Fields.DESCRIPTION not null
@@ -160,7 +164,8 @@ You can override the **null = true** setting within a specific table if you need
         }
     }
 ```
-States 
+
+### States 
 One of the most important decisions you need to make is about states. These control the state of financial entities throughout the trade lifecycle. For example, an order could be new, amended, open or complete.
 
 You control the transitions from state to state by defining state machines. But in order to do this, you need to define the list of possible states. 
@@ -173,7 +178,7 @@ field("TRADE_STATUS", ENUM("DRAFT", "CANCELLED", "OPEN", "CLOSED", default = "DR
 ```
 Essentially, every state machine needs to be based on a specific table. The table should include all the fields required to , as well as the field you created to control the state of the trade. In our example above, this is TRADE_STATUS. Below is an example of a table that can be used by a state machine. It includes the set of fields that are relevant to a trade (QUANTITY, PRICE, etc.)
 
-```
+```kotlin
 table("TRADE", 102) {
     sequence(TRADE_ID, "TR")
     QUANTITY
@@ -192,11 +197,14 @@ table("TRADE", 102) {
     }
 }
 ```
+
 [Sample table definitions](/server-reference/data-model/table-example/) generated from GPAL.
 
 ## Views
 
 To create a view, you must specify a name for the view and the identity of the primary table. Following that, you can specify the fields in the view, including derived fields.
+
+Views are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-view-dictionary.kts`. For exmple for the `trade` application that file name would be `trade-view-dictionary.kts`
  
 ### Joins
 Often, a view needs to contain fields from different tables.
