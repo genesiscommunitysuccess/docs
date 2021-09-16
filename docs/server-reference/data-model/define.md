@@ -92,13 +92,15 @@ When you define a table, it is good to give it a clear name that describes the k
 
 Primary key and index definitions are used in the various “lego brick” configurations, as well as any custom Db operations when you build and create the DAO Objects. This covers, for example, the ability to retrieve a single record based on the primary key values, and the ability to get a list of records part matching the first key field value (**getRange**).
 
+Tables are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-tables-dictionary.kts`. For exmple for the `trade` application that file name would be `trade-tables-dictionary.kts`
+
 ### Derived fields
 
 Derived fields are read-only fields calculated during runtime (i.e. not stored in database), but they can be retrieved when using generated table entities in a “getter” fashion. You can define these in your table definition. You have to specify the logic that creates the content, which must be based on the other fields in the table. For example, if your fields include **quantity** and **price** , you can create a derived field **quantity x price**, where the value is calculated on the fly.
 
 See example below for USER table:
 
-```java
+```kotlin
     table(name = "USER", id = 1000, audit = details(1050, "UA")) {
         Fields.USER_NAME
         Fields.FIRST_NAME
@@ -131,7 +133,7 @@ The functionality provided in the previous examples should satisfy most use case
 
 However, we still offer full flexibility (at the expense of less type safety and easy of use) by using the following approach:
 
-```java
+```kotlin
     derivedField("TIMES_TWO_COUNTER_PLUS_VERSION"){
         ((Fields.APPROVED_COUNTER not null) * 2) + (Fields.VERSION not null)
     }
@@ -152,7 +154,7 @@ When using GPAL event handlers, the auditing is performed automatically, so each
 
 You can override the **null = true** setting within a specific table if you need to do so,
 
-```java
+```kotlin
  table(name = "PROFILE", id = 1002) {
         Fields.NAME
         Fields.DESCRIPTION not null
@@ -176,7 +178,7 @@ field("TRADE_STATUS", ENUM("DRAFT", "CANCELLED", "OPEN", "CLOSED", default = "DR
 ```
 Essentially, every state machine needs to be based on a specific table. The table should include all the fields required to , as well as the field you created to control the state of the trade. In our example above, this is TRADE_STATUS. Below is an example of a table that can be used by a state machine. It includes the set of fields that are relevant to a trade (QUANTITY, PRICE, etc.)
 
-```
+```kotlin
 table("TRADE", 102) {
     sequence(TRADE_ID, "TR")
     QUANTITY
@@ -200,6 +202,8 @@ table("TRADE", 102) {
 ## Views
 
 To create a view, you must specify a name for the view and the identity of the primary table. Following that, you can specify the fields in the view, including derived fields.
+
+Views are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-view-dictionary.kts`. For exmple for the `trade` application that file name would be `trade-view-dictionary.kts`
  
 ### Joins
 Often, a view needs to contain fields from different tables.
@@ -212,7 +216,7 @@ To achieve this, create aliases for the two fields you are retrieving from the s
 
  By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data). If you need to join to a table where there is real-time data, then you need to specify a backwards join. This requires the statement backwardsJoin = true when you are specifying the join. 
 
-It is worth noting that when you define your [data servers](/server/data-servers/), any of these that include views with backwards joins must include a similar statement: **backJoins = true**. Don’t forget to add this! 
+It is worth noting that when you define your [data servers](../data-servers/configure.md), any of these that include views with backwards joins must include a similar statement: **backJoins = true**. Don’t forget to add this! 
 
 ```
 query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {
