@@ -75,17 +75,19 @@ For reference, let's look at a process that has been configured to run on the Pr
 
 ## Disaster recovery: example
 
-In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Prerequisites section, if the Primary Node fails and goes offline, The Load Balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption. Below you can see the switch to the secondary node using **MonCluster**.
+In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Pre-requisites section, if the Primary Node fails and goes offline, The Load Balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption. Below you can see the switch to the secondary node using **MonCluster**.
 
 ![](/img/cluster-4-disaster-a.png)
 
-If you decide that the Primary will not to come back online within an acceptable timeframe, you can then set the Secondary node to Primary.
+If you decide that the Primary node will not to come back online within an acceptable timeframe, you can then set the Secondary node to Primary.
 
-To do this, run **SetPrimary** on NodeB. You can then see the change on **MonCluster**. But note here that the processes are back up on NodeA.
+To do this, run **SetPrimary** on NodeB. This means that any of those processes defined as **<primaryOnly>true</primaryOnly>**will now start running on NodeB. 
+
+You can then see the change on **MonCluster**. But note here that the processes are back up on NodeA.
 
 ![](/img/cluster-5-disaster-c.png)
 
-So, when you are satisfied that NodeA is performing satisfactorily, you can run **SetPrimary** on NodeA again to make it the Primary node.
+So, when you are satisfied that NodeA is performing satisfactorily, you can run **SetPrimary** on NodeA again to make it the Primary node. NodeB is automatically reset to Secondary.
 
 ![](/img/cluster-6-disasterd.png)
 
@@ -93,7 +95,7 @@ In summary, the Load Balancer has handled the automatic switching to the seconda
 
 ## Vertical and horizontal scaling
 
-If you are adding nodes for horizontal scaling simply add the details of the extra nodes to the hosts section in **genesis-system-definition.kts**.
+If you are adding nodes for horizontal scaling, simply add the details of the extra nodes to the hosts section in **genesis-system-definition.kts**.
 
     hosts {
     host(name = "NodeA")
