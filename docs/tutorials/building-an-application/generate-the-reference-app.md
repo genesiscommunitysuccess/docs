@@ -36,7 +36,15 @@ This generates the **fields-dictionary.kts** and **tables-dictionary.kts** files
 
 ![](/img/dictionary-builder-screenshot.png)
 
-Check these files and adjust them to suit your application. For example, the process has translated the field ENABLED was as an INT type; you need to edit that to make it a BOOLEAN type.
+Check these files and adjust them to suit your application. For example, look inside the **fields-dictionary.kts** file to see the field definitions.
+
+The process has translated the field ENABLED as an INT type.
+
+    field(name = "ENABLED", type = INT)
+
+You need to edit that to make it a BOOLEAN type.
+
+    
 
 ## 2. Copy files and run genesisInstall
 
@@ -69,13 +77,13 @@ and xml files for service definitions and prcoesses:
 
 Optionally, you could now run **remap**, which would give you cud operations for all the tables and request replies (static data from the request server), as well as for real-time data retrieval (via the data server.
 
-But for this example application, we are going to go into the pro code, to to add some sophistication. 
+But for this example application, we are going to go into the pro code, to to add some sophistication.
 
 ## 4. Prepare for pro code
 
 ### Build a maven project
 
-First, you need to build a maven project so that you can use an IDE to build the app. 
+First, you need to build a maven project so that you can use an IDE to build the app.
 
 You can run the **mvn** command either locally (in the server, local vm, wsl or cloud instance where the LCNC Platform is installed) or a separate local dev machine. In our example, we are using the same machine as before for consistency.
 
