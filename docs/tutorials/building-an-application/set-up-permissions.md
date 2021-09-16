@@ -59,9 +59,11 @@ The generic permissioning settings have now been set in place, and are stored in
 
 ## Configure dynamic permissions
 
-You can now configure dynamic permissions for trades and positions in our IDE. You need to make these changes to the code for the request server,  data server and event handler. For example:
+You can now configure dynamic permissions for trades and positions in our IDE. You need to make these changes to the code for the request server,  data server and event handler. For example, here we add permissioning to a query in the data server:
 
-The same applies to request servers.
+![](/img/dataserver.png)
+
+You can add similar code to the queries in your request servers.
 
 Event handlers are slightly different, because the input data class can be customised. The code would look like this:
 
@@ -86,9 +88,11 @@ For example:
 
 Now moving to RIGHT_SUMMARY permission codes.
 
-Permission codes allow you to establish yes/no type access to resources (req-reps, dataserver, event handler), but they don’t act dynamically and they won’t filter rows based on fine grain criteria (like dynamic permissions would).
+Permission codes allow you to establish yes/no type access to resources (req-reps, data server, event handler), but they don’t act dynamically and they won’t filter rows based on fine-grain criteria (like dynamic permissions would).
 
-For the purpose of this script we can keep things simple. In reality you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user (will have a diagram to add here).
+For the purpose of this script we can keep things simple. In reality, you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user.
+
+\[//\]: # (There is a plan to add a table at this point.)
 
 In our trading app example we can set two types of rights:
 
