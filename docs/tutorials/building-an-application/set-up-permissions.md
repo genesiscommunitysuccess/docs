@@ -61,7 +61,13 @@ Now go to the **-view-dictionary.kts** file and add the COUNTERPARTY_ID field to
 
 ![](/img/step-08-add-counterparty_id-to-enhanced_view-in-view-dictionary-with-highlight.png)
 
-Run generateView maven codegen plugin.
+From the maven codegen plugin, run **generateView**. 
+
+![](/img/step-08-run-maven-generateview-codegen-plugin-after-modifying-view.png)
+
+This gives you
+
+![](/img/step-09-file-locations.png)
 
 ## Configure dynamic permissions
 
