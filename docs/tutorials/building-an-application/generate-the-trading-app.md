@@ -23,6 +23,8 @@ Using the instance in which the platform is installed, run **ExcelToGenesis**.
 
 This generates the **fields-dictionary.kts** and **-tables-dictionary.kts** for the data model.
 
+![](/img/trading_app-creation-run-exceltogenesis-2.png)
+
 Check and adjust the fields and tables
 
 The fields and tables can be adjusted to suit your new app. For example, we can remove INSTRUMENT_ID and COUNTERPARTY_ID LATER ON when we add them to intellij, as our intellij project will be importing them from ref_data_app. Additionally we can tweak TRADE_ID to be a STRING and use a “sequence” definition to generate the fields
