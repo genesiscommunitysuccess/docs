@@ -5,7 +5,6 @@ sidebar_label: Generate the trading app
 sidebar_position: 2
 
 ---
-
 Previously, we have created a reference data application from our original RDBMS database. This has a schema that we can use here.
 
 Now we are going to create a trading application, based on the source spreadsheet.
@@ -14,7 +13,7 @@ Now we are going to create a trading application, based on the source spreadshee
 
 Here is a look at the trades spreadsheet that will form the basis of our trading application:
 
-## Convert the spreadsheet
+## 1. Convert the spreadsheet
 
 Using the instance in which the platform is installed, run **ExcelToGenesis**.
 
@@ -26,7 +25,7 @@ Check and adjust the fields and tables
 
 The fields and tables can be adjusted to suit your new app. For example, we can remove INSTRUMENT_ID and COUNTERPARTY_ID LATER ON when we add them to intellij, as our intellij project will be importing them from ref_data_app. Additionally we can tweak TRADE_ID to be a STRING and use a “sequence” definition to generate the fields
 
-## Run genesisInstall
+## 2. Run genesisInstall
 
 The next step is to run **genesisInstall**, which will run checks and highlight any issues.
 
@@ -47,13 +46,13 @@ Run **genesisInstall** again.
 
 \**screengrab
 
-## Remap
+## 3. Remap
 
 The remap script creates the database schema from the dictionary files.
 
 Run **remap –commit**.
 
-## AppGen
+## 4. AppGen
 
 **AppGen** creates three important modules for the application:
 
