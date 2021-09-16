@@ -1,11 +1,11 @@
 ---
 title: Examples
 sidebar_label: Examples
-sidebar_position: 2
+sidebar_position: 3
 id: examples
 ---
 
-## Simple reqrep
+## Basic reqrep
 ```kotlin
 requestReplies {
     requestReply(INSTRUMENT_DETAILS)
@@ -123,7 +123,7 @@ requestReplies {
 }
 ```
 
-## Simple custom reqrep
+## Basic custom reqrep
 ```kotlin
 requestReplies {
     requestReply<Instrument.ById, Instrument> {
