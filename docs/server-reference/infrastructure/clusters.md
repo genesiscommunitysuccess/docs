@@ -9,11 +9,11 @@ The genesis platform is highly resilient and easy to cluster for a High Availabi
 
 ## Pre-requisites
 
-This setup will only focus on the genesis platform part of a HA setup. The database is expected to be decoupled from the Genesis server instances in its HA setup.
+This set-up will only focus on the Genesis platform within an HA setup. The database is expected to be decoupled from the Genesis server instances in its HA setup.
 
-Equally, a HA load balancer is expected to serve the web traffic to the primary node and fail over to the secondary node when the primary node is unresponsive.
+An HA Load Balancer is required to direct web traffic to the primary node and fail over to the secondary node when the primary node is unresponsive.
 
-The cluster servers need to be able to connect to each other on the configured cluster port (6000 is the default conf) and by host name.
+The cluster servers need to be able to connect to each other on the configured cluster port (6000 is the default) and by host name.
 
 ### Example setup in AWS
 
@@ -41,7 +41,7 @@ Add all the nodes in the cluster to the hosts section for the specific environme
     
     }
 
-To activate any configuration change to the genesis platform and/or application, you have to run the command **genesisInstall** on every changed node.
+To activate any configuration change to the Genesis platform and/or application, you have to run the command **genesisInstall** on every changed node.
 
 When you start a node, it will be in STANDBY mode. You can run the **mon** command to confirm this:
 
@@ -53,7 +53,7 @@ Running the **MonCluster** command shows all nodes - there are two in this insta
 
 ## Set the primary node
 
-Some Genesis processes (and, potentially, application processes) can only run on a single node. So it is important to set one of your node as the Primary node. Go to that node and run the **SetPrimary** command to set it to Primary state.
+Some Genesis processes (and, potentially, application processes) can only run on a single node. So it is important to set one of your nodes as the Primary node. Go to that node and run the **SetPrimary** command to set it to Primary state.
 
 This should be the output of **MonCluster** if **SetPrimary** was executed on NodeA:
 
@@ -74,7 +74,7 @@ For reference, let's look at a process that has been configured to run on the Pr
 
 ## Disaster recovery: example
 
-In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Pre-requisites section, if the Primary Node fails and goes offline, The Load Balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption. Below you can see the switch to the secondary node using **MonCluster**.
+In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Pre-requisites section, if the Primary node fails and goes offline, The Load Balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption. Below you can see the switch to the secondary node using **MonCluster**.
 
 ![](/img/cluster-4-disaster-a.png)
 
