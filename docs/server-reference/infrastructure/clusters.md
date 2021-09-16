@@ -53,9 +53,11 @@ Running the **MonCluster** command shows all nodes - there are two in this insta
 
 ## Set the primary node
 
-One of the nodes needs to be set as the Primary node. Go to that node and run the **SetPrimary** command to set it to Primary state.
+Some Genesis processes (and, potentially, application processes) can only run on a single node. So it is important to set one of your node as the Primary node. Go to that node and run the **SetPrimary** command to set it to Primary state.
 
 This should be the output of **MonCluster** if **SetPrimary** was executed on NodeA:
+
+![](/img/cluster-nodea-now-primary.png)
 
 ## Disaster recovery: example
 
