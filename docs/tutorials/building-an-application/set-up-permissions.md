@@ -99,7 +99,7 @@ In our trading app example we can set two types of rights:
 * TRADER (enables the trader to write trades - but only for their own related counterparties)
 * SUPPORT (enables support to have read-only access to everything)
 
-In terms of definitions, you can add the codes as part of the permissioning block in the relevant event . For example, for the TRADE_INSERT event handler we could have:
+In terms of definitions, you can add the codes as part of the permissioning block in the relevant event. For example, for the TRADE_INSERT event handler we could have:
 
 ```kotlin
 permissions {
