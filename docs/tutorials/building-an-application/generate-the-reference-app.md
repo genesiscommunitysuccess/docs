@@ -112,3 +112,5 @@ Locate the generated files for the request server, data server and event handler
 In intellij, run **mvn install**.
 
 ![](/img/run-maven-install-in-intellij.png)
+
+That's it. You have all the files in a project, ready for you to work in your IDE. In the following steps, you'll be working here to add key functionality to the application.
