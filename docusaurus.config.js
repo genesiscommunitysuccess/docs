@@ -48,7 +48,7 @@ module.exports = {
       copyright: `© genesis global ${new Date().getFullYear()}. All rights reserved.`,
     },
     prism: {
-      additionalLanguages: ['java', 'kotlin', 'powershell'],
+      additionalLanguages: ['java', 'kotlin', 'powershell', 'groovy'],
     },
   },
   
