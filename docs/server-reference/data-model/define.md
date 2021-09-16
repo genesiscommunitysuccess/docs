@@ -55,7 +55,7 @@ fields {
 }
 ```
 
-Fields are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-fields-dictionary.kts`. For exmple for the `trade` application that file name would be `trade-fields-dictionary.kts`
+Fields are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-fields-dictionary.kts`. For example for the `trade` application that file name would be `trade-fields-dictionary.kts`
 
 When you define a new field, it is good practice to run **codegen:generateSysDef**. This will generate code based on the fields definition and you will be able to use intellisense to pick this new field within table definitions.
 
