@@ -108,6 +108,12 @@ We can define the following preferences:
 * **restrictQWERTY** restricts QWERTY sequences in passwords (e.g. qwertyuiop). Sequences bigger or equal to 5 characters won't be allowed if active. Default: true.
 * **restrictNumericalSequences** restricts numerical sequences in passwords (e.g. 123456). Sequences bigger or equal to 5 numbers won't be allowed if active. Default: true.
 * **illegalCharacters** contains characters we don't want to accept in user passwords. In the example shown below we can see three banned characters: $, £ and ^. Default: empty.
+* **historicalCheck** if present prevents reuse of passwords used by the user for the configured number of historical uses. Default: null.
+* **dictionaryWordSize** if present prevents use of english words of the configured length. Default: null.
+* **repeatCharacterRestrictSize** if present prevents use of repeated characters of the configured length. Default: null.
+* **restrictUserName** if present prevents use of the user's username as part of their password. Default: false.
+* **passwordExpiryDays** if present forces a password to expire after the configured number of days. Default: null.
+* **passwordExpiryNotificationDays** if present a user should be notfied by the configured number of days before their password expires. Default: null.
 
 **heartbeat** represents a message sent periodically to the platform's authentication module from every user so the platform can determine who is still connected to it. The authentication module then replies with an acknowledgement in exchange.
 
@@ -122,6 +128,18 @@ We can define the following preferences:
 **maxSimultaneousUserLogins** defines the maximum number of active sessions any one user can maintain. To login once this limit is reached, then another session must be logged out. If the given value is zero, not defined or not a positive integer, then any number of sessions is permitted.
 
 **loginAckFields** is an optional xml block that allows us to define additional values to be sent back to the client as part of the LOGIN_ACK message. It follows a classic *join* xml definition similar to the ones used in [request reply](../../request-servers/configure) and [data server](../../data-servers/configure) modules.
+
+**mfa** is config for Multi-factor Authentication (MFA)
+* **codePeriodSeconds** How long an TOTP should work for. Default: 30.
+* **codePeriodDiscrepancy** ?. Default: 1.
+* **codeDigits** ?. Default: 6.
+* **hashingAlgorithm** Choice of Hashing Alogirthm SHA1, SHA256 or SHA512. Default: SHA1.
+* **issuer** ?. Default: Genesis.
+* **label** ?. Default: genesis.global.
+* **confirmWaitPeriodSecs** ?. Default: 300.
+* **secretEncryptKey** If present Secrets will be encrypted in the database. Default: null.
+* **usernameTableLookUpSalt** If present username will be hashed using the configured key in the database. Default: null.
+
 
 Example configuration:
 
@@ -149,6 +167,18 @@ Example configuration:
         </illegalCharacters>
 
     </passwordStrength>
+
+    <mfa>
+      <codePeriodSeconds value ="30"/>
+      <codePeriodDiscrepancy value ="1"/>
+      <codeDigits value ="6"/>
+      <hashingAlgorithm value ="SHA512"/>
+      <issuer value ="Genesis"/>
+      <label value ="admin@genesis.global"/>
+      <confirmWaitPeriodSecs value="60"/>
+      <secretEncryptKey value="abc"/>
+      <usernameTableLookUpSalt value="xyz"/>
+    </mfa>
 
     <heartbeat>
         <intervalSecs value="30" />
@@ -260,6 +290,151 @@ If you need to clear out the entries by hand, simply delete everything in that d
 
 More than one permission map per table may be created.
 
+### Auth generic permissions model
+
+#### Intro
+
+The generic permissions model available in auth automatically builds “auth-perms” maps and also ensures all the admin transactions, dataservers and request reply resources are authorised correctly on a multi-tenant basis. This generic approach might not work for every use case, but it should be good enough for many development scenarios and therefore should cover all the basics out of the box.
+
+#### Configuration
+There is a field called ACCESS_TYPE in the USER_ATTRIBUTES table which will determine what authorisation method should be applied for a particular user.
+```kotlin
+field(name = "ACCESS_TYPE", type = ENUM("ALL", "ENTITY", "MULTI_ENTITY", default = "ALL")) 
+```
+
+*Note*: Only ALL and ENTITY are in working condition at the moment.
+
+Users with ACCESS_TYPE set to ENTITY (e.g. the entity could be represented by COUNTERPARTY_ID) will be restricted in both visibility and entitlements to their own entity.
+
+The inner working of this new feature is also controlled by two system definition items:
+
+```kotlin
+systemDefinition {
+    global {
+        item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
+        item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
+    }
+}
+```
+
+These two items will change the structure of auth-tables-dictionary.kts and auth-permissions.templt.xml to accomodate the defined table and field and ensure table/permission data structure is built correctly.
+
+USER_ATTRIBUTES table definition in auth-tables-dictionary.kts below:
+```kotlin
+val permissionsField = SysDef.systemDefinition["ADMIN_PERMISSION_ENTITY_FIELD"].orElse(null)
+
+table(name = "USER_ATTRIBUTES", id = 1007, audit = details(1052, "AA")) {
+    Fields.USER_NAME
+    Fields.USER_TYPE
+    Fields.ACCESS_TYPE
+    if (permissionsField != null) {
+        Fields[permissionsField]
+    }
+    Fields.ADDRESS_LINE1
+    Fields.ADDRESS_LINE2
+    Fields.ADDRESS_LINE3
+    Fields.ADDRESS_LINE4
+    Fields.CITY
+    Fields.REGION
+    Fields.POSTAL_CODE
+    Fields.COUNTRY
+    Fields.TITLE
+    Fields.WEBSITE
+    Fields.MOBILE_NUMBER
+    Fields.TELEPHONE_NUMBER_DIRECT
+    Fields.TELEPHONE_NUMBER_OFFICE
+    primaryKey {
+        Fields.USER_NAME
+    }
+}
+```
+The permissions field will be added dynamically to USER_ATTRIBUTES so it can be used in our auth transactions to control entitlements.
+
+The following table will be created as well (ignore MULTI_ENTITY setup for now, still in development) which will be used internally to manage AUTH_PERMS results.:
+
+```kotlin
+val permissionsTable = SysDef.systemDefinition["ADMIN_PERMISSION_ENTITY_TABLE"].orElse(null)
+
+if (permissionsTable != null && permissionsField != null) {
+
+    table(name = "USER_${permissionsTable}_MAP", id = 1012) {
+        Fields.USER_NAME
+        Fields[permissionsField]
+        primaryKey {
+            Fields.USER_NAME
+        }
+        indices {
+            nonUnique(name = "USER_${permissionsTable}_MAP_BY_${permissionsField}") {
+                Fields[permissionsField]
+            }
+        }
+    }
+}
+```
+Two auth maps exist in auth-permissions.templt.xml to control row visibility of users (in auth dataserver and auth request reply) and also the generic entities. See below:
+```xml
+<entity name="USER_VISIBILITY"
+        tableName="USER"
+        maxEntries="2000"
+        idField="USER_NAME">
+    <updateOn tableName="USER_ATTRIBUTES">
+        <entities>
+            <![CDATA[
+                getUserRecord(rxDb, genericRecord.getString("USER_NAME")).toFlowable()
+        ]]>
+        </entities>
+        <users>
+            <![CDATA[
+                getUserRecord(rxDb, genericRecord.getString("USER_NAME")).toList()
+        ]]>
+        </users>
+    </updateOn>
+    <![CDATA[
+        final DbRecord targetUser = user
+        return Flowable.fromIterable(users).map { permissionedUser ->
+            final String userName = permissionedUser.getString("USER_NAME")
+            if(user.getString("ACCESS_TYPE") == "ALL"){
+                new AuthEntry(userName, entityId, true)
+            } else {
+                new AuthEntry(userName, entityId, targetUser.getString("{{ADMIN_PERMISSION_ENTITY_FIELD}}") == permissionedUser.getString("{{ADMIN_PERMISSION_ENTITY_FIELD}}"))
+            }
+        }
+        ]]>
+</entity>
+
+<!-- If multi has not been defined -->
+<entity name="ENTITY_VISIBILITY"
+        tableName="USER_{{ADMIN_PERMISSION_ENTITY_TABLE}}_MAP"
+        maxEntries="20000"
+        idField="{{ADMIN_PERMISSION_ENTITY_FIELD}}" >
+    <![CDATA[
+        final Set<String> validUsers = getUsernamesForEntity(rxDb, entityId, null)
+        return Flowable.fromIterable(users).map { user ->
+            final String userName = user.getString("USER_NAME")
+            if(user.getString("ACCESS_TYPE") == "ALL"){
+                new AuthEntry(userName, entityId, true)
+            } else {
+                new AuthEntry(userName, entityId, userName in validUsers)
+            }
+        }
+    ]]>
+</entity>
+```
+An example of using ENTITY_VISIBILITY in a dataserver/request-reply can be something like this:
+
+```kotlin
+query("ALL_BID_OFFER_SELLER_DEALER", BID_OFFER_SELLER_VIEW) {
+    permissioning {
+        auth(mapName = "ENTITY_VISIBILITY") {
+            BID_OFFER_SELLER_VIEW.SELLER_DEALER_ID
+        }
+        config {
+            backJoins = true
+        }
+    }
+}
+```
+
 ### Adding authorisation to the data server and request server
 
 The code for permissioning specific queries must be inserted into your data servers and request servers.
@@ -326,6 +501,24 @@ permissioning {
 You can also have different column visibility levels based on user authorisation and row content.
 
 The example below hides the LAST_TRADED_PRICE column value for a particular instrument code.
+
+```kotlin
+permissioning {
+    auth(mapName = "EXCHANGE") {
+        INSTRUMENT_DETAILS.EXCHANGE_ID
+        hideField { userName, rowData ->
+            if(rowData.instrumentCode == "ALLL3") LAST_TRADED_PRICE
+            else null
+        }
+    }
+}
+```
+
+#### EnrichedAuth
+
+Our permission model could require access to client enriched data, so dataservers have an additional level of auth functionality which takes this data into account.
+
+Example below:
 
 ```kotlin
 query("ALL_TRADES_WITH_ENRICHED_AUTH", TRADE_VIEW) {
