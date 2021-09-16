@@ -19,7 +19,9 @@ There are four tables in the source relational database. You can see these  in D
 
 ![](/img/dbeaver-screenshot.png)
 
-## Generate the dictionary files
+In this exercise, we are going to convert the contents of that database so that we have fields, tables and views we can use to build our Genesis application. And we shall generate a server with basic functions.
+
+## 1. Generate the dictionary files
 
 The **DictionaryBuilder** script reads the source database and generates the appropriate fields, tables and views in Genesis format. These are stored in two files:
 
@@ -36,7 +38,7 @@ This generates the **fields-dictionary.kts** and **tables-dictionary.kts** files
 
 Check these files and adjust them to suit your application. For example, the process has translated the field ENABLED was as an INT type; you need to edit that to make it a BOOLEAN type.
 
-## Copy files and run genesisInstall
+## 2. Copy files and run genesisInstall
 
 Create a new ref_data_app folder structure inside GENESIS_HOME, including cfg and script folders
 
@@ -46,7 +48,7 @@ Run **genesisInstall** to verify everything is ok.
 
 ![](/img/genesisinstall.png)
 
-## Run AppGen to build microservices
+## 3. Run AppGen to build microservices
 
 Run **AppGen** to build your three modules (event handler, request server and data server):
 
@@ -69,7 +71,7 @@ Optionally, you could now run **remap**, which would give you cud operations for
 
 But for this example application, we are going to go into the pro code, to to add some sophistication. 
 
-## Switching to pro code
+## 4. Prepare for pro code
 
 ### Build a maven project
 
