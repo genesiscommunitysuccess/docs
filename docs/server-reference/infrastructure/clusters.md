@@ -59,8 +59,7 @@ This should be the output of **MonCluster** if **SetPrimary** was executed on No
 
 ![](/img/cluster-nodea-now-primary.png)
 
-For reference, let's look at a process that has been configured to run on the Primary node only. The key definition at the end of the block is:  
-**<primaryOnly>true</primaryOnly>**
+For reference, let's look at a process that has been configured to run on the Primary node only. The key definition at the end of the block is the one that sets **primaryOnly** to **true**:
 
     <process name="GENESIS_AUTH_CONSOLIDATOR">
         <groupId>AUTH</groupId>
@@ -81,7 +80,7 @@ In a clustered Genesis setup, all session data is shared amongst all nodes. Foll
 
 If you decide that the Primary node will not to come back online within an acceptable timeframe, you can then set the Secondary node to Primary.
 
-To do this, run **SetPrimary** on NodeB. This means that any of those processes defined as **<primaryOnly>true</primaryOnly>**will now start running on NodeB. 
+To do this, run **SetPrimary** on NodeB. This means that any of those processes where **primaryOnly** is defined as **true** will now start running on NodeB.
 
 You can then see the change on **MonCluster**. But note here that the processes are back up on NodeA.
 
