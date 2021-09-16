@@ -7,7 +7,7 @@ sidebar_position: 1
 ---
 The first task is to generate a reference application from the existing RDBMS of reference data.
 
-Before you start. You do have the platform and all the relevant tools installed, yes? The Genesis LCNC mus tbe installed on a server,local vm, wsl or cloud instance (genesis and auth).
+Before you start. You do have the platform and all the relevant tools installed, yes? The Genesis LCNC must be installed on a server,local vm, wsl or cloud instance (genesis and auth).
 
 Ideally, maven should be installed in the server instance with adequate configuration to retrieve genesis binaries.
 
