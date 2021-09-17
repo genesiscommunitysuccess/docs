@@ -21,13 +21,7 @@ By default, FoundationDB is installed on the platform. If you need to use a Post
 
 ## Changing to PostgreSQL or Aerospike
 
-In this case, we have assumed you have installed the platform using the name octopus.
-
-1. 
-2. .
-3. Run **remap --commit** to create new default tables in PostgreSQL format.
-
-## 1. Edit the system configuration file
+### 1. Edit the system configuration file
 
 Edit the file **\~/run/site-specific/cfg/genesis-system-definition.kts**. Before you start, make sure you know the JDBC connection string for the database, which specifies the host, the user name and password.
 
@@ -45,15 +39,15 @@ item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?u
 
 ![](/img/jdbc-identifer-added.png)
 
-## 2. Activate the new configuration
+### 2. Activate the new configuration
 
 Run **genesisInstall**.
 
-## 3. Create new default table structures
+### 3. Create new default table structures
 
 Run **remap --commit**. This populates the database server with table structures.
 
-## Start the server and check
+### Start the server and check
 
 When those three steps have been completed, run **startServer** to start all the processes.
 
