@@ -124,31 +124,34 @@ Example for MSSQL procedure calls:
     
         </genesisStream>
 
-\## Important notes
+### Important notes
 
-\**A table must exist for each genesisStream in Genesis and an UPDATEQUEUE table must exist in our RDBMS to keep track of the changes.**
+A table must exist for each **genesisStream** in Genesis and an **UPDATEQUEUE** table must exist in the RDBMS to keep track of the changes.
 
-\* The table to retrieve data from will necessarily have at least as many fields as the configuration metaData specifies, using the same name as well.
+The source table must necessarily have at least as many fields as the **configuration metaData** specifies, using the same name.
 
-\* In addition, each database needs to have a table able to store table modifications as soon as they happen (insertions, updates and deletions) so DbToGenesis can keep track of them and replicate the changes into Genesis.
+In addition, each database needs to have a table able to store table modifications as soon as they happen (insertions, updates and deletions). This enables **DbToGenesis** to keep track and replicate the changes into Genesis.
 
- * This table has no name requirement (although it is referred as UPDATEQUEUE for simplicity), as the queryQueue and clearQueue stored procedures will call it internally, however the structure has to be fixed in order to retrieve data from it. The basic structure is defined in a later section.
+This table has no name requirement (although it is referred as UPDATEQUEUE for simplicity), as the **queryQueue** and **clearQueue** stored procedures will call it internally. However the structure has to be fixed in order to retrieve data from it. The basic structure is defined in a later section.
 
-\* Therefore, it is required to implement a trigger (or more) for each required table so it inserts new "events" in the UPDATEQUEUE for each inserted, modified and deleted row.
+Therefore, you have to implement a trigger (or more) for each required table so it inserts new events in the UPDATEQUEUE for each inserted, modified and deleted row.
 
-\**The stored procedures for queryQueue, clearQueue, loadTable and retrieveRecord should also be created beforehand**.
+\*_The stored procedures for queryQueue, clearQueue, loadTable and retrieveRecord should also be created beforehand_*.
 
-\* This process does not create any stored procedures and it just attempts to call already existing ones. Therefore, loadTable should read rows from our chosen table ('TRADE'), queryQueue should read from the so called UPDATEQUEUE table a trade into its correspondent TRADE table and likewise for the rest of the stored procedures.
+This process does not create any stored procedures and it just attempts to call already existing ones. Therefore:
+
+* **loadTable** should read rows from the chosen table ('TRADE')
+* **queryQueue** should read from the so called UPDATEQUEUE table a trade into its correspondent TRADE table, and likewise for the rest of the stored procedures.
 
 ## Basic workflow
 
-1\. The process starts and tries to load the full SQL table using the *loadTable* stored procedure if this is the first time we start it or if we are using the "--force" argument. Otherwise, skip this step and go to step 2.
+1\. The process starts and tries to load the full SQL table using the _loadTable_ stored procedure if this is the first time we start it or if we are using the "--force" argument. Otherwise, skip this step and go to step 2.
 
-2\. Reads rows from UPDATEQUEUE using *queryQueue* and the last known timestamp from the last retrieved record and process them accordingly.
+2\. Reads rows from UPDATEQUEUE using _queryQueue_ and the last known timestamp from the last retrieved record and process them accordingly.
 
-3\. Retrieves rows from the correspondent table using *retrieveRecord* and performs insert, modify or delete operations in Genesis accordingly.
+3\. Retrieves rows from the correspondent table using _retrieveRecord_ and performs insert, modify or delete operations in Genesis accordingly.
 
-4\. Deletes records in the UPDATEQUEUE using *clearQueue* and the last known timestamp, as they have no use anymore. Go back to step 2.
+4\. Deletes records in the UPDATEQUEUE using _clearQueue_ and the last known timestamp, as they have no use anymore. Go back to step 2.
 
 \## SQL Procedures
 
@@ -166,7 +169,7 @@ A script called "encryptUserPass" is provided with Genesis so we can encrypt our
 
 \## How To
 
-This an example step by step of how to get an Oracle database up and running with DbToGenesis. A series of screenshots are shown with examples of how to create tables, stored procedures and triggers and also the dbtogenesis.xml configuration for Genesis. 
+This an example step by step of how to get an Oracle database up and running with DbToGenesis. A series of screenshots are shown with examples of how to create tables, stored procedures and triggers and also the dbtogenesis.xml configuration for Genesis.
 
 Create the UpdateQueue table.  
 ![](/img/createupdatequeuetable.png)
@@ -190,7 +193,7 @@ Create the COUNTERPARTY trigger.
 ![](/img/createretrievecounterpartyrecordprocedure.png)Create the COUNTERPARTY retrieve table procedure.  
 ![](/img/createretrievecounterpartyrecordprocedure.png)
 
- Create the dictionary.xml tables.
+Create the dictionary.xml tables.
 
     xml
     <table name="INSTRUMENT">
