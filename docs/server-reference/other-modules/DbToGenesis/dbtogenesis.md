@@ -27,4 +27,4 @@ It is configured through the standard Genesis configuration XML files.
 
 The configuration is made up of two well-defined sections: process configuration and Genesis stream configurations.
 
-The process definition is made up of several fields that will setup the main configuration of the process:
+The process definition is made up of several fields that will se tup the main configuration of the process:
