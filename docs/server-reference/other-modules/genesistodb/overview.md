@@ -23,7 +23,7 @@ The configuration is similar to **GenesisToDb** (and other Genesis modules). It 
 
 There are two well defined sections: process configuration and database stream configurations.
 
-The process definition is made up of several fields that will setup the main configuration of the process:
+The process definition is made up of several fields that will set up the main configuration of the process:
 
 _preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add to this module for further usage.
 
