@@ -5,6 +5,191 @@ sidebar_position: 2
 id: reference
 ---
 
+import CodeBlock from '@theme/CodeBlock';
+import Imports from '!!raw-loader!../../../examples/server/java/request-servers/imports.java';
+
+:::danger WIP
+Add introduction. Can the "Configure your request servers" page be combined with this one and the blurb on that page becomes this page's introduction?
+:::
+
+## Defining a request server in GPAL
+### Default imports
+<CodeBlock className="language-java">{Imports}</CodeBlock>
+
+### Basic definition
+Here is the definition of a simple request server. You need to specify either a table or a view, in this case we are using the table INSTRUMENT_DETAILS.
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS)
+}
+```
+### Mutilple request servers
+You can include multiple request servers in a single file.
+```kotlin
+requestReplies {
+    requestReply(COUNTERPARTY)
+
+    requestReply(INSTRUMENT_DETAILS)
+}
+```
+### Specify fields on request and reply
+You can also specify which fields are on the request and which fields are on the response.
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS) {
+
+        request {
+            ALTERNATE_TYPE
+            INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
+        }
+
+        reply {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+### Using an index
+You can use an index for the request definition.
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS) {
+
+        request(INSTRUMENT_DETAILS.BY_ALTERNATE_TYPE_ALTERNATE_CODE)
+
+        reply {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+### Where block
+The where block supports adding an additional predicate based on the select row and incoming request.
+```kotlin
+requestReplies {
+    requestReply("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS) {
+
+        request {
+            ALTERNATE_TYPE
+        }
+
+        reply {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+
+        where { instrumentDetails, _ ->
+            "ALLL3" == instrumentDetails.instrumentCode
+        }
+    }
+}
+```
+### Pre-processing the request
+Request Reply scripts can optionally transform a request parameter’s value using `withTransformation`. `withTransformation` takes two inputs, the first is the request parameter’s value, which is nullable, and the second is the full request message.
+
+In the example shown below if the ALTERNATE_TYPE parameter has value "RIC" then the transformation block will use the value of INSTRUMENT_CODE from the request, otherwise it will assign it the value "NOT_RIC", before making the database lookup. The example also shows that if the ALTERNATE_TYPE parameter value is null then it will use "UNKNOWN" by default.
+```kotlin
+requestReplies {
+    requestReply("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS) {
+
+        request {
+            ALTERNATE_TYPE withTransformation { type, _ ->
+                type?.toUpperCase() ?: "UNKNOWN"
+            }
+            INSTRUMENT_CODE withTransformation { type, set ->
+                val value = if (set.fields["ALTERNATE_TYPE"].toString().toUpperCase() == "RIC") {
+                    type
+                } else {
+                    "NOT_RIC"
+                }
+                value
+            } withAlias "ALTERNATE_CODE"
+        }
+
+        reply {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+### Limit number of rows returned
+You can limit the number of row returned using property `rowReturnLimit`.
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS) {
+
+        rowReturnLimit = 2
+
+        request {
+            ALTERNATE_TYPE
+            INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
+        }
+
+        reply {
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+### Timeout
+You can specify a timeout (in seconds) for a request server using property `timeout`.
+```kotlin
+requestReplies {
+    requestReply("QUICK_INSTRUMENT", INSTRUMENT_DETAILS) {
+
+        timeout = 10
+
+        request {
+            ALTERNATE_TYPE
+            INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
+        }
+
+        reply {
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+
 ## Custom Request Replies
 To enable more flexibility in defining request replies, Genesis supports custom request replies. It allows developers to specify any class for the input and output for their request replies, similar to event handlers. For the request, optional fields should have a default value in the primary constructor.
 
@@ -118,12 +303,12 @@ requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId>("FAN
         auth("INSTRUMENT") {
             field { instrumentId }
             where {
-                alternateType == "RIC"
+                alternateType == "FOO"
             }
         } or auth("ALTERNATE_CODE") {
             field { alternateCode }
             where {
-                alternateType == "BLOOMBERG"
+                alternateType == "BAR"
             }
         }
     }
