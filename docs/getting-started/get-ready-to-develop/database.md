@@ -63,4 +63,4 @@ Run **remap --commit**.
 When those three steps have been completed, run **startServer** to start all the processes.
 On completion, run **mon**, and you can see the processes running. You have successfully completed the change.
 
-![db edit kts 7 mon final](https://files.document360.io/82b38d6b-46dd-48c3-a583-c5981a5c6537/Images/Documentation/db%20edit%20kts%207%20mon%20final.png){height="" width=""}
+![](/img/mon-processes-running.png)
