@@ -348,36 +348,30 @@ The example shows two different ways of using key values imported from Oracle.
         </genesisStream>
         </dbToGenesis>
 
-\# Script \`\`\`generateSQLFromRDB\`\`\`
+### generateSQLFromRDB
 
 The **generateSQLFromRDB** script is a tool that generates ".sql" files to create tables, triggers and procedures in the RDBMS system by reading the current Genesis dictionary. It also adds the pertinent **genesisStream** configuration to the specified **dbtogenesis.xml** configuration file.
 
-It is by no means mandatory, but it provides a generic, quick and working example that can be further modified or extended with ease. However, the Genesis dictionary must be appropriately configured beforehand: 
-EXTERNAL_ID field and TABLENAME_BY_EXTERNAL_ID key must exist (as shown in the examples in the previous section) inside the table
-You also need the CREATED_AT and CREATED_BY fields ni the table if you want to use the generateCreatedInfo option in the dbtogenesis.xml configuration.
+* It is by no means mandatory, but it provides a generic, quick and working example that can be further modified or extended with ease. However, the Genesis dictionary must be appropriately configured beforehand:
+  EXTERNAL_ID field and TABLENAME_BY_EXTERNAL_ID key must exist (as shown in the examples in the previous section) inside the table
+  
+* You also need the CREATED_AT and CREATED_BY fields in the table if you want to use the **generateCreatedInfo** option in the **dbtogenesis.xml** configuration.
 
 \`\`\`
 
 #### generateSQLFromRDB
 
-\-cfg,--configFile <arg>        dbtogenesis config xml file to be modified
-
-\-dbName,--databaseName <arg>   the database name for Oracle dbs
-
-\-dbType,--databaseType <arg>   the database type: MSSQL,ORACLE or
-
-                                POSTGRES
-
-\-f,--file <arg>                name of the sql file to export table
-
-\-genUID,--generateUniqueID     forces generation of a unique ID. Unique
-
-                                IDs are created ALWAYS if the primary key
+    ```
+    usage: generateSQLFromRDB
+    -cfg,--configFile <arg>        dbtogenesis config xml file to be modified
+    -dbName,--databaseName <arg>   the database name for Oracle dbs
+    -dbType,--databaseType <arg>   the database type: MSSQL,ORACLE or
+                                    POSTGRES
+    -f,--file <arg>                name of the sql file to export table
+    -genUID,--generateUniqueID     forces generation of a unique ID. Unique
+                                    IDs are created ALWAYS if the primary key
+                                    has more than one field.
+    -h,--help                      show usage information
+    -t,--table <arg>               the name of the table to export to csv
     
-                                has more than one field.
-
-\-h,--help                      show usage information
-
-\-t,--table <arg>               the name of the table to export to csv
-
-\`\`\`
+    ```
