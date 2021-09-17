@@ -597,7 +597,6 @@ Two auth maps exist in auth-permissions.templt.xml to control row visibility of 
         ]]>
 </entity>
 
-<!-- If multi has not been defined -->
 <entity name="ENTITY_VISIBILITY"
         tableName="USER_{{ADMIN_PERMISSION_ENTITY_TABLE}}_MAP"
         maxEntries="20000"
