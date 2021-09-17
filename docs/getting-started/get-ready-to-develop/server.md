@@ -82,7 +82,7 @@ This is a core microservice and the technology is Aeron.
 Authentication and Authorisation (Auth) is a service that controls:
 
 * whether users have access to the system (authentication)
-* whether the user has the roght to see a specific item of information (authorisation)
+* whether the user has the right to see a specific item of information (authorisation)
 
 Auth Permissions are set up and associated with a user role, not an individual. Visibility is controlled for every request (per UI object or other system), and also at a per-row level.
 
@@ -115,7 +115,7 @@ The task of these processes is to provide data to the Web User Interface, and to
 | DATASERVER | Pushes real-time data to the user interface every time the database is updated. |
 | REQUEST SERVER | Pushes static data to the user interface in response to specific events (for example, to populate a dialog in the user interface). |
 | DATA PUBLISHER | Publishes lightweight real-time market-data changes. |
-| DB_SERVER |  |
+| DB_SERVER | Maintains the database in cache for high performance. |
 | GENESIS_ROUTER | Manages sessions and routes messages to/from services over tcp/ip, websockets, html, with encryption & compression. The data server uses this process to determine which users should receive each update. |
 | GENESIS_WEB_ADAPTER | If you are viewing an older instance, you might see this process. This is no longer used. It has been replaced by the GENESIS_ROUTER. |
 
