@@ -46,7 +46,7 @@ It is possible to defined ranged data servers. These data servers only cache a d
 
 Syntax:
 
-```java
+```kotlin
 // this part is the same as all other dataservers, name is optional
 query("TRADE_RANGED_TRADE_RANGE_QTY", TRADE) {
     // the ranged key word makes this a ranged query
@@ -76,7 +76,7 @@ query("TRADE_RANGED_TRADE_RANGE_QTY", TRADE) {
 
 Examples
 
-```java
+```kotlin
 // all dollar trades:
 query("TRADE_RANGED_TRADE_RANGE_USD", TRADE) {
     ranged(Trade.ByCurrencyId, 1) {

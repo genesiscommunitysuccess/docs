@@ -17,9 +17,15 @@ We can display the configuration of both in our request server, data server and 
 
 ## Set up generic permissions
 
+First, enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system.
+
+You can read more about it [here](https://yljfsx0alebzeg.instant.forestry.io/server-reference/authentication-and-authorisation/set-up/#authorisation).
+
 Starting with the server, make sure that you have two USER and USER_ATTRIBUTES records setup: JohnDoe and JaneDoe.
 
-Set two new key values in `site-specific/cfg/genesis-system-definition.kts` to enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system:
+![](/img/jane-and-john-doe.png)
+
+Set two new key values in **site-specific/cfg/genesis-system-definition.kts** to enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system:
 
 ```kotlin
 item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
@@ -27,7 +33,7 @@ item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
 item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
 ```
 
-Take note of how auth-permissions.auto.xml looks in generated/cfg before running genesisInstall as this file will change.
+Take note of how **auth-permissions.auto.xml** looks in generated/cfg before running genesisInstall as this file will change.
 
 Run `genesisInstall`
 
@@ -51,19 +57,23 @@ update USER_ATTRIBUTES_BY_USER_NAME
 
 The generic permissioning settings have been set in place, and are stored in **auth-permissions.auto.xml** in **generated/cfg**. The next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started they will consider the new configuration.
 
-Add field COUNTERPARTY_ID to the view ENHANCED_TRADE_VIEW (in the view dictionary file) as this field will be used to verify permissions.
+Now go to the **-view-dictionary.kts** file and add the COUNTERPARTY_ID field to ENHANCED_TRADE_VIEW as this field will be used to verify permissions.
 
-![](/img/counterparty-id-enhanced-trade-view.png)
+![](/img/step-08-add-counterparty_id-to-enhanced_view-in-view-dictionary-with-highlight.png)
 
-Then run the generateView maven codegen plugin as below.
+Then run the **generateView** maven codegen plugin as below.
 
-![](/img/maven-generateView-codegen-plugin.png)
+![](/img/step-08-run-maven-generateview-codegen-plugin-after-modifying-view.png)
+
+This gives you
+
+![](/img/step-09-file-locations.png)
 
 ## Configure dynamic permissions
 
 You can now configure dynamic permissions for trades in our IDE. You need to make these changes to the code for the request server, data server and event handler.
+For example, here we add permissioning to a query in the data server:
 
-Data Server:
 ```kotlin
 dataServer {
 
@@ -76,6 +86,8 @@ dataServer {
   }
 }
 ```
+
+You can add similar code to the queries in your request servers.
 
 Request Server:
 ```kotlin
@@ -205,11 +217,7 @@ Permission codes allow you to establish a yes/no type access to resources (req-r
 
 For the purpose of this script we can keep things simple. In reality you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user.
 
-:::danger WIP
-
-Diagram to be added here
-
-:::
+\[//\]: # (There is a plan to add a table at this point.)
 
 In our trading app example we can set two types of rights:
 

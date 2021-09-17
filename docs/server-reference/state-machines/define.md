@@ -21,7 +21,7 @@ Here is an example of an event - in this case, a modification to a draft trade. 
 *  **onEvent**  (where system action is specified) 
 *  **onValidate**, where we specify any validation requirements - in this case, checking for a valid price and quantity.
 
-```
+```kotlin
 modifyEvent {
             mutableStates(TradeStatus.DRAFT, TradeStatus.OPEN)
 
