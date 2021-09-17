@@ -17,9 +17,9 @@ In Genesis, we structure our data in the following way:
 
 Each of these must be specified in a separate file on the filesytem:
 
-* fields.kts
-* tables.kts
-* view.kts
+* _application_**-fields-dictionary.kts**
+* _application_**-tables-dictionary.kts**
+* _application_**-view-dictionary.kts**
 
 ## Fields
 
