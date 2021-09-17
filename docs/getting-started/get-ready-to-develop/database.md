@@ -19,7 +19,7 @@ There are also tools that enable you to stream real-time data reliably to and fr
 
 By default, FoundationDB is installed on the platform. If you need to use a PostgreSQL or Aerospike database, follow the steps below.
 
-## Changing to PostgreSQL.
+## Changing to PostgreSQL
 
 In this case, we have assumed you have installed the platform using the name octopus.
 
