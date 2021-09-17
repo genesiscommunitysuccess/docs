@@ -17,11 +17,13 @@ At this stage, you have:
 
 We want to be able to track the changes made to the various trades on the TRADE table, such that we could see the times and modifications made in the history of the trade.
 
+This can be useful for historical purposes, if you need to at a later date be able to produce an accurate course of events.
+
 ## Adding Basic Auditing
 
 ### Adding audit to table dictionary
 
-The first step to add basic auditing, is to change the relevant table dictionary. In this instance we will be making changes to the **trading_app-tables-dictionary.kts**, in order to add the parameter `audit = details()` to the table definition, so that it resembles the following:
+The first step to add basic auditing is to change the relevant table dictionary. In this instance we will be making changes to the **trading_app-tables-dictionary.kts**, in order to add the parameter `audit = details()` to the table definition. It should resemble the following:
 
 ```kotlin {2}
 tables {
@@ -46,11 +48,13 @@ tables {
 }
 ```
 
+The id parameter indicates the id of the newly created audit table, and will need to be different from any other table id.
+
 If you are using the GPAL event handlers, this will be sufficient to enable auditing on this table. A new table is created by the name of the original table, with the **_AUDIT** suffix added to the end. In this instance that would be the **TRADE_AUDIT** table.
 
 ### Updating the state machine to use auditing
 
-Next we will change the insert, and modify methods in the TradeStateMachine.kt file, to use the AsyncMultiEntityReadWriteGenericSupport parameter and the internalState.withTransaction block.
+Next we will change the insert, and modify methods in the TradeStateMachine.kt file. We need to change their method signatures to use the AsyncMultiEntityReadWriteGenericSupport parameter and the `internalState.withTransaction(transaction) { }` code block.  An example can be found below:
 
 ```kotlin {2,5,10,12,20,23}
     suspend fun insert(
@@ -82,7 +86,7 @@ Next we will change the insert, and modify methods in the TradeStateMachine.kt f
 
 ### Update the event handlers to use auditing
 
-Now we will have to update the trading_app-eventhandler.kts in order to pass the `entityDb` object into the methods updated in the state machine, as the syncMultiEntityReadWriteGenericSupport parameter. This should resemble the example below:
+Now we will have to update the trading_app-eventhandler.kts in order to pass the `entityDb` object into the updated methods of the state machine, as the syncMultiEntityReadWriteGenericSupport parameter. This should resemble the example below:
 
 ```kotlin {12,19,26,35}
     eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -132,7 +136,7 @@ Now we will have to update the trading_app-eventhandler.kts in order to pass the
 
 Now we will add a unit test to the TradingEventHandlerTest.kt in order to verify the behaviour of the auditing implementation.
 
-The following test will create a trade, and then modify it, allocate it, and finally cancel it. The test will then check both that there are only 4 TestAudit entities, and there is one corresponding with each of the state transitions. 
+The following test will create a trade, then modify it, then allocate it, and finally cancel it. The test will then check both that there are only 4 TestAudit entities, and there is one corresponding with each of the state transitions. 
 
 ```kotlin
     @Test
