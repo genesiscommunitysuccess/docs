@@ -1,11 +1,13 @@
 ---
 id: overview
-title: genesisToDb
+title: GenesisToDb
 sidebar_label: Overview
 sidebar_position: 1
 
 ---
-This **GenesisToDb** module enables you to stream data from Genesis to classic RDBMS databases, such as Oracle or MSSQL.
+## GenesisToDb
+
+The **GenesisToDb** module enables you to stream data from Genesis to classic RDBMS databases, such as Oracle or MSSQL.
 
 The process listens to changes in the Genesis tables (insert, modify and delete) and immediately reproduces them in the selected RDBMS.
 
@@ -15,15 +17,15 @@ Use **startProcess** to start the **GenesisToDb** process. This can take two opt
 
 **--clearText** can be passed if you want to use clear text user and passwords in the configuration file, instead of encrypted ones.
 
-**--force** if passed to the process it attempts to re-insert every trade found in our Genesis table to the RDBMS, ignoring previously inserted records.
+**--force** if passed to the process, this  attempts to re-insert every trade found in our Genesis table to the RDBMS, ignoring previously inserted records.
 
 ### Configuration
 
-The configuration is similar to **GenesisToDb** (and other Genesis modules). It can be configured through the standard Genesis configuration XML files.
+The configuration is similar to **DbToGenesis** (and other Genesis modules). It can be configured through the standard Genesis configuration XML files.
 
 There are two well defined sections: process configuration and database stream configurations.
 
-The process definition is made up of several fields that will setup the main configuration of the process:
+The process definition is made up of several fields that will set up the main configuration of the process:
 
 _preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add to this module for further usage.
 
@@ -159,15 +161,15 @@ This is a step-by-step example of how to get an Oracle database up and running w
 
 ![](/img/dbtogenesis-create-table.png)
 
-2. Create Insert procedure.
+1. Create Insert procedure.
 
 ![](/img/createinsertprocedure.png)
 
-3. Create Modify procedure.
+1. Create Modify procedure.
 
 ![](/img/createmodifyprocedure.png)
 
-4. Create Delete table.
+1. Create Delete table.
 
 ![](/img/createdeleteprocedure.png)
 
