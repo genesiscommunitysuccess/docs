@@ -248,7 +248,7 @@ Create the dictionary.xml tables.
                 </keys>
             </table>
 
-dbtogenesis.xml configuration. **Ensure the xmlns:xi attribute is included if you want to use xinclude in your configuration**.
+Create the **dbtogenesis.xml** configuration. **Ensure the xmlns:xi attribute is included if you want to use xinclude in your configuration**.
 
     xml
     <dbToGenesis xmlns:xi="http://www.w3.org/2001/XInclude">
