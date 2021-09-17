@@ -2,7 +2,7 @@
 id: front-end
 title: Build the front end
 sidebar_label: Build the front end
-sidebar_position: 10
+sidebar_position: 11
 
 ---
 

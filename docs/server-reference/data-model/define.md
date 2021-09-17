@@ -146,7 +146,33 @@ In this case it is not clear what the output type will be (we haven’t specifie
 
 To make a table auditable, you need to add **audit = details** to the definition. You have to specify a unique ID, sequence ID (more later) and, optionally, a time stamp (**tsKey**).
 
-This automatically creates another table with all the fields of the table that is being audited. It has the same name as the table it audits, plus the suffix **_AUDIT**.
+For example, this may look like:
+
+```kotlin
+tables {
+    table (name = "TRADE", id = 11000, audit = details(id = 11003, sequence = "TR")) {
+        // Source: Trade
+        TRADE_ID            // A
+        INSTRUMENT_ID not null       // B
+        COUNTERPARTY_ID not null     // C
+        COUNTERPARTY        // D
+        INSTRUMENT_SYMBOL   // E
+        QUANTITY            // F
+        SIDE                // G
+        PRICE               // H
+        TRADE_DATE          // J
+        TRADE_DATETIME      // K
+        ENTERED_BY          // L
+
+        primaryKey {
+            TRADE_ID
+        }
+
+    }
+}
+```
+
+This automatically creates another table with all the fields of the table that is being audited. It has the same name as the table it audits, plus the suffix **_AUDIT**. In the previous example, this would be the **TRADE_AUDIT** table.
 
 When using GPAL event handlers, the auditing is performed automatically, so each update on a record in the table immediately creates a new record in the audit table.
 

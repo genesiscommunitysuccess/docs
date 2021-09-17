@@ -2,7 +2,7 @@
 id: permissions
 title: Set up user permissions
 sidebar_label: Set up user permissions
-sidebar_position: 9
+sidebar_position: 10
 
 ---
 At this stage, you have a working server with a Ref_data_app and a Trading_app. The Trading_app has a consolidator to calculate the positions, event handlers to control changes to the database and data server and request servers to publish the data to the front end.

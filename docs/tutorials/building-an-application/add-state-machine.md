@@ -5,7 +5,7 @@ sidebar_label: Workflow - add a state machine
 sidebar_position: 6
 
 ---
-Now we are going to configure state machine to control the workflow of trades.
+Now we are going to configure a state machine to control the workflow of trades.
 
 At this stage, you have:
 
