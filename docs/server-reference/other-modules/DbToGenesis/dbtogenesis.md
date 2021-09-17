@@ -7,7 +7,9 @@ id: dbtogenesis
 ---
 \# DbToGenesis
 
-The DbToGenesis module provides a way of streaming data from a classic RDBMS database like Oracle or MSSQL to a Genesis database. In summary, this process listen to changes in the SQL tables (insert, modify and delete) using a predefined system (triggers for each table to be streamed, procedures and a table to represent an update queue) and reproduce them in the selected Genesis table.
+The DbToGenesis module provides a way of streaming data from a classic RDBMS database, such as Oracle or MSSQL, to a Genesis database. 
+
+The process listens to changes in the SQL tables (insert, modify and delete) using a predefined system (triggers for each table to be streamed, procedures and a table to represent an update queue) and reproduces them immediately in the selected Genesis table.
 
 \## Arguments
 
