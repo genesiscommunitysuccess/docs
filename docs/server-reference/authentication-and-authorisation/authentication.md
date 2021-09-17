@@ -1,13 +1,12 @@
 ---
-title: Set up authentication and authorisation
-sidebar_label: Set up authentication and authorisation
+title: Authentication
+sidebar_label: Authentication
 sidebar_position: 1
-id: set-up
+id: authentication
 
 ---
-## Authentication
 
-### Authentication Types
+## Authentication Types
 
 There are several authentication types to choose from when configuring the auth-preferences.xml file: INTERNAL, LDAP and HYBRID.
 
@@ -17,15 +16,15 @@ In order to select one, it is enough to change the type attribute of the authent
 <authentication type="INTERNAL"></authentication>
 ```
 
-#### Internal
+### Internal
 
-The internal authentication is based on Genesis's own way of authenticating users. It checks user credentials against an internal database table and it allows a certain degree of extra functionality.
+The internal authentication uses hash values stored in the database to authenticate users. It checks user credentials against an internal database table and it allows a certain degree of extra functionality.
 
 User accounts set in this mode can be locked and passwords can be set to expire. In addition, users can also reset/change their password assuming they can login first.
 
 This is the default authentication behaviour if no type is specified in auth-preferences.xml.
 
-#### LDAP
+### LDAP
 
 LDAP authentication is available to be used within the AUTH environment as a basic login.
 
@@ -62,7 +61,7 @@ The configuration file needs extra parameters in order to set up LDAP authentica
 </authentication>
 ```
 
-#### Hybrid
+### Hybrid
 
 As its name suggests, Hybrid mode is a mix of Internal and LDAP authentication modes and it checks credentials against both.
 
@@ -84,11 +83,11 @@ The configuration file takes the same fields as LDAP, taking into account that n
 </authentication>
 ```
 
-### Authentication Preferences
+## Authentication Preferences
 
 The authentication preferences/options are specified in auth-preferences.xml and we can make a subdivision of them in three sections: authentication type configuration, password strength related configuration and general configuration.
 
-#### Basic preferences in detail
+### Basic preferences in detail
 
 We can define the following preferences:
 
@@ -218,7 +217,7 @@ Example configuration:
 
 ```
 
-### Message Flows
+## Message Flows
 
 Security messages can be split into three categories.
 - Pre-authentication
@@ -227,26 +226,26 @@ Security messages can be split into three categories.
 
 All requests below are capable of returning an error with a code of INTERNAL_ERROR which will be used as a last resort.
 
-#### Pre-authentication
+### Pre-authentication
 Pre-authentication messages can be sent by a client without the user being logged in.
-##### Login Preferences
+#### Login Preferences
 We need to advertise to any connecting client the types of functionality that are available/configured on the security module.  For example, we may offer the client two ways of resetting user passwords, either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, hence this information needs to be made available before the user logs in.
 Currently this is the only preference published.
-###### Request
+##### Request
     MESSAGE_TYPE = EVENT_LOGIN_PREFS
-###### Response
+##### Response
     MESSAGE_TYPE = EVENT_LOGIN_PREFS_ACK
         DETAILS.PASSWORD_RESET_TYPE = ADMIN/EMAIL
-#### Authentication
+### Authentication
 Once we have a list of preferences, we can show the correct login dialog and let the user make a login attempt.  The password is provided in plain text, as it is expected we will secure the connection using TLS.
-##### Login
-###### Request
+#### Login
+##### Request
 
     MESSAGE_TYPE = EVENT_LOGIN_AUTH
        DETAILS.USER_NAME = JohnDoe
        DETAILS.PASSWORD = Password123
 
-###### Response
+##### Response
 If successful:
 
     MESSAGE_TYPE = EVENT_LOGIN_AUTH_ACK
@@ -265,14 +264,14 @@ If there is a problem the server will return the standard error set with CODE/TE
 - PASSWORD_EXPIRED - Password must be changed
 - LOGIN_FAIL - Generic error code
 
-##### Password Change
+#### Password Change
 If the response is PASSWORD_EXPIRED, then the GUI can allow the user to change the password provided they know their existing password.
-###### Request
+##### Request
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD
         DETAILS.USER_NAME = JohnDoe
         DETAILS.OLD_PASSWORD = Password123
         DETAILS.NEW_PASSWORD = Password456
-###### Response
+##### Response
 If successful:
 
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD_ACK
@@ -286,23 +285,23 @@ If there's a problem, we will receive a standard error set with type
 - INSUFFICIENT_CHARACTERISTICS - May be provided if we have configured passwords to be successful if only 2 of 5 strength checks pass.  Should be provided alongside "real" error codes.
 - ILLEGAL_SEQUENCE - Numerical/alphabetical sequence detected
 
-##### Reset Password
+#### Reset Password
 Can only be called by an administrator, simply specifies a user name and will set the password to blank.
-###### Request
+##### Request
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD
         DETAILS.USER_NAME = JohnDoe
-###### Response
+##### Response
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD_ACK
-#### Post-authentication
+### Post-authentication
 Once the user is authenticated, the server will expect heartbeat messages, as defined in the interval setting on the ACK message.  If the GUI misses a configurable number of heartbeats, the session will be expired.  In response to a heartbeat, the GUI will receive a list of available services and their details.
 
 These services should be contacted on the hosts as they are defined in the list.  The ordering may change if the server is implementing a load balancing strategy.  Existing connections can simply ignore the ordering changes, but in a fail over or reconnection scenario, the ordering should be adhered to.
 
-###### Request
+##### Request
 
     MESSAGE_TYPE = EVENT_HEARTBEAT
     USER_NAME = JohnDoe
-###### Response
+##### Response
     MESSAGE_TYPE = EVENT_HEARTBEAT_ACK
         DETAILS.SERVICE[0].NAME = SBL_EVENT_HANDLER
         DETAILS.SERVICE[0].ENCRYPTED = false
@@ -318,10 +317,10 @@ These services should be contacted on the hosts as they are defined in the list.
             DETAILS.SERVICE[1].HOST[1].PORT = 9002
 
 
-##### Rights polling
+#### Rights polling
 The GUI can receive rights from a process called AUTH_DATASERVER.  The view USER_RIGHTS displays all users and codes.  A logged in user should automatically set the Filter expression to be USER_NAME=='xxx' to receive push updates to user privileges.
 
-##### Entity Management
+#### Entity Management
 We have the concept of profiles, users and rights.  A profile is a group of users, which can be permissioned.  For example we may have a SALES_TRADER group in which all users must have the same permissions.  In all cases where we're specifying either a right for a user/profile, or a user in a profile, the transaction represents what we want the entity to look like, i.e. if we amend a profile and don't supply a user that previously was part of that profile, then that user will be removed from that profile on the server.
 
 It's worth noting we do not support meta data on the following transactions, as the model is currently too complex for our meta data.  Also, we do not currently support 2 phase validation.
@@ -330,8 +329,8 @@ User/profile STATUS field can be ENABLED/DISABLED/PASSWORD_EXPIRED/PASSWORD_RESE
 PASSWORD_EXPIRED should prompt the user to enter a new password.
 PASSWORD_RESET should do the same but the server expects a blank "current password" field.
 
-##### Insert profile
-###### Request
+#### Insert profile
+##### Request
 
     MESSAGE_TYPE = EVENT_INSERT_PROFILE
     USER_NAME = JohnDoe
@@ -346,10 +345,10 @@ PASSWORD_RESET should do the same but the server expects a blank "current passwo
             DETAILS.USER[0].USER_NAME = JohnDoe
             DETAILS.USER[1].ID = 00000000000002USSP0
             DETAILS.USER[1].USER_NAME = james
-###### Response
+##### Response
     MESSAGE_TYPE = EVENT_INSERT_PROFILE_ACK
-##### Amend Profile
-###### Request
+#### Amend Profile
+##### Request
     MESSAGE_TYPE = EVENT_AMEND_PROFILE
     USER_NAME = JohnDoe
         DETAILS.ID = 000000000001PRSP0
@@ -364,17 +363,17 @@ PASSWORD_RESET should do the same but the server expects a blank "current passwo
             DETAILS.RIGHT[2].CODE = ORDEL
             DETAILS.USER[0].ID = 00000000000001USSP0
             DETAILS.USER[0].USER_NAME = JohnDoe
-###### Response
+##### Response
     MESSAGE_TYPE = EVENT_AMEND_PROFILE_ACK
-##### Delete Profile
-###### Request
+#### Delete Profile
+##### Request
     MESSAGE_TYPE = EVENT_DELETE_PROFILE
     USER_NAME = JohnDoe
         DETAILS.NAME = SALES_TRADERS
-###### Response
+##### Response
     MESSAGE_TYPE = EVENT_DELETE_PROFILE_ACK
-##### Insert User
-###### Request
+#### Insert User
+##### Request
     MESSAGE_TYPE = EVENT_INSERT_USER
     USER_NAME = mthompson
         DETAILS.USER_NAME = JohnDoe
@@ -386,10 +385,10 @@ PASSWORD_RESET should do the same but the server expects a blank "current passwo
             DETAILS.RIGHT[0].CODE = ORDEN
             DETAILS.RIGHT[1].ID = 00000000000002RISP0
             DETAILS.RIGHT[1].CODE = ORDAM
-###### Response
+##### Response
     MESSAGE_TYPE = EVENT_INSERT_USER_ACK
-##### Amend User
-###### Request
+#### Amend User
+##### Request
     MESSAGE_TYPE = EVENT_AMEND_USER
     USER_NAME = mthompson
         DETAILS.ID = 00000000000001USSP0
@@ -402,341 +401,15 @@ PASSWORD_RESET should do the same but the server expects a blank "current passwo
             DETAILS.RIGHT[0].CODE = ORDEN
             DETAILS.RIGHT[1].ID = 00000000000002RISP0
             DETAILS.RIGHT[1].CODE = ORDAM
-###### Response
+##### Response
     MESSAGE_TYPE = EVENT_AMEND_USER_ACK
-##### Delete User
-###### Request
+#### Delete User
+##### Request
     MESSAGE_TYPE = EVENT_DELETE_USER
     USER_NAME = JohnDoe
         DETAILS.USER_NAME = james
-###### Response
+##### Response
     MESSAGE_TYPE = EVENT_DELETE_USER_ACK
 
-
-## Authorisation
-
-Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:
-
-* The whole entity
-* Specific rows
-* Specific columns
-
-Effectively, you have three levels of control:
-
-**High level**
-
-You could hide an entire grid from the UI, for example. So one group could view reference data, but this would be hidden from the other groups. Or, you could hide an entire data server. For this, you use RIGHT_CODE. This is like a switch – you can either see it or not, depending on whether the code is TRUE or FALSE.
-
-**Entity level**
-
-This is row or column-level access to information. Different users all view the same grid, but each one sees different data. This is, best explained with these simple examples:
-
-* You can have user A, user B and user C all having the RIGHT_CODE to view a specific grid, but each one sees different trades in that grid. This enables you to separate different trading desks, for example.
-* Each user might only have access to trades for specific customers.
-* By including these permissions in an event handler,  user A can only enter a trade on behalf of a specific set of clients and user B can only enter trades on behalf of a different set of clients.
-
-Similarly, you can have different users seeing different columns in the same grid. This could be used for a support function, for example, where you don’t want the support team to see specific columns of sensitive data, such as who the client for a trade is. It can be specified by using GPAL.
-
-### Users, profiles and rights
-
-We have users, profiles and right codes.
-
-A profile can have zero to many rights codes and zero to many users.
-
-So, if you have, say three roles, Trader, Support, and Operations, you set up the rights codes for each of these three profiles and then allocate each user to the appropriate profile. A user can have more than one profile, so you could allocate a superuser to all three profiles; that superuser would have the rights of all three profiles.
-
-You cannot allocate rights codes directly to a specific user. But there is nothing to stop you from creating a profile that has only one user.
-
-This information is held on the following tables:
-
-* PROFILE_RIGHT. For each profile, this lists the entities that the profile has the right to view.
-* PROFILE_USER. For each profile, this lists the users who have been allocated (and therefore, who have the rights in the relevant PROFILE_RIGHT table).
-* RIGHT_SUMMARY. This is created automatically by the system in real time. It maps all users to their rights.
-
-In this way, the rights are easily accessible at speed. The AUTH_MANAGER process manages this automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY table is updated immediately and all the users in that profile receive the new right automatically.
-
-If the profile has write access to an entity, then it automatically includes read rights.
-
-### Loading a list of users
-
-If you need to load a list of users and profiles you can use **SendIt** to send the list to the database, but it does not update the RIGHT_SUMMARY table automatically. After loading the database, you need to run the script **consolidateRights** to update the RIGHT_SUMMARY table.
-
-### Good practice, bad practice
-
-With this route, you can allocate rights to profiles and users to rights – and  change them. There is no change to the code needed.  However, our advice is to be as granular as possible at the start, because it is more difficult to introduce that granularity at a later point.  If you create a new right, you have to change the code.
-
-### Entity level (row level)
-
-The GENESIS_AUTH_PERMS process runs automatically on start-up and creates a memory-mapped file that acts as a big key-value pair – for example, User J has access to Counterparty 1, User J has access to Counterparty 2, User K has access to Counterparty 1, User K has access to Counterparty 4, etc. If there is no appropriate entry in the file, the user won’t have access.
-
-You must keep the process running, as it maintains itself automatically whenever any permissions change. If a permission is changed this way, then the change is automatically reflected on screen. If I have a grid on screen with 4 trades from Counterparty 1 and my permission to view that counterparty are withdrawn, those 4 trades disappear from my screen immediately.
-
-In many cases, you want different people to have access to different functions and different information, based on their roles.  In Genesis, users are not permissioned individually for these purposes. Instead, permissioning is based on roles. You define what information and functions are available to a role, and then you allocate users to these roles. We refer to this as dynamic authorisation. There is nothing to stop you creating a role that has only one user, of course.
-
-### General approach
-
-On startup, the GENESIS_AUTH_PERMS process performs an initial scan of all entities. For each entity found, it performs authorisation against every user in the system. This builds a full map of permissioned users.
-
-By default, any updates to the entity and the USER table will be automatically processed to permission new entities as they are entered into the database.
-
-Entries are stored in a memory-mapped file located in **$GENESIS_HOME/runtime/authCache**.
-
-If you need to clear out the entries by hand, simply delete everything in that directory and restart GENESIS_AUTH_PERMS.
-
-More than one permission map per table may be created.
-
-### Auth generic permissions model
-
-#### Intro
-
-The generic permissions model available in auth automatically builds “auth-perms” maps and also ensures all the admin transactions, dataservers and request reply resources are authorised correctly on a multi-tenant basis. This generic approach might not work for every use case, but it should be good enough for many development scenarios and therefore should cover all the basics out of the box.
-
-#### Configuration
-There is a field called ACCESS_TYPE in the USER_ATTRIBUTES table which will determine what authorisation method should be applied for a particular user.
-```kotlin
-field(name = "ACCESS_TYPE", type = ENUM("ALL", "ENTITY", "MULTI_ENTITY", default = "ALL")) 
-```
-
-*Note*: Only ALL and ENTITY are in working condition at the moment.
-
-Users with ACCESS_TYPE set to ENTITY (e.g. the entity could be represented by COUNTERPARTY_ID) will be restricted in both visibility and entitlements to their own entity.
-
-The inner working of this new feature is also controlled by two system definition items:
-
-```kotlin
-systemDefinition {
-    global {
-        item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
-        item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
-    }
-}
-```
-
-These two items will change the structure of auth-tables-dictionary.kts and auth-permissions.templt.xml to accomodate the defined table and field and ensure table/permission data structure is built correctly.
-
-USER_ATTRIBUTES table definition in auth-tables-dictionary.kts below:
-```kotlin
-val permissionsField = SysDef.systemDefinition["ADMIN_PERMISSION_ENTITY_FIELD"].orElse(null)
-
-table(name = "USER_ATTRIBUTES", id = 1007, audit = details(1052, "AA")) {
-    Fields.USER_NAME
-    Fields.USER_TYPE
-    Fields.ACCESS_TYPE
-    if (permissionsField != null) {
-        Fields[permissionsField]
-    }
-    Fields.ADDRESS_LINE1
-    Fields.ADDRESS_LINE2
-    Fields.ADDRESS_LINE3
-    Fields.ADDRESS_LINE4
-    Fields.CITY
-    Fields.REGION
-    Fields.POSTAL_CODE
-    Fields.COUNTRY
-    Fields.TITLE
-    Fields.WEBSITE
-    Fields.MOBILE_NUMBER
-    Fields.TELEPHONE_NUMBER_DIRECT
-    Fields.TELEPHONE_NUMBER_OFFICE
-    primaryKey {
-        Fields.USER_NAME
-    }
-}
-```
-The permissions field will be added dynamically to USER_ATTRIBUTES so it can be used in our auth transactions to control entitlements.
-
-The following table will be created as well (ignore MULTI_ENTITY setup for now, still in development) which will be used internally to manage AUTH_PERMS results.:
-
-```kotlin
-val permissionsTable = SysDef.systemDefinition["ADMIN_PERMISSION_ENTITY_TABLE"].orElse(null)
-
-if (permissionsTable != null && permissionsField != null) {
-
-    table(name = "USER_${permissionsTable}_MAP", id = 1012) {
-        Fields.USER_NAME
-        Fields[permissionsField]
-        primaryKey {
-            Fields.USER_NAME
-        }
-        indices {
-            nonUnique(name = "USER_${permissionsTable}_MAP_BY_${permissionsField}") {
-                Fields[permissionsField]
-            }
-        }
-    }
-}
-```
-Two auth maps exist in auth-permissions.templt.xml to control row visibility of users (in auth dataserver and auth request reply) and also the generic entities. See below:
-```xml
-<entity name="USER_VISIBILITY"
-        tableName="USER"
-        maxEntries="2000"
-        idField="USER_NAME">
-    <updateOn tableName="USER_ATTRIBUTES">
-        <entities>
-            <![CDATA[
-                getUserRecord(rxDb, genericRecord.getString("USER_NAME")).toFlowable()
-        ]]>
-        </entities>
-        <users>
-            <![CDATA[
-                getUserRecord(rxDb, genericRecord.getString("USER_NAME")).toList()
-        ]]>
-        </users>
-    </updateOn>
-    <![CDATA[
-        final DbRecord targetUser = user
-        return Flowable.fromIterable(users).map { permissionedUser ->
-            final String userName = permissionedUser.getString("USER_NAME")
-            if(user.getString("ACCESS_TYPE") == "ALL"){
-                new AuthEntry(userName, entityId, true)
-            } else {
-                new AuthEntry(userName, entityId, targetUser.getString("{{ADMIN_PERMISSION_ENTITY_FIELD}}") == permissionedUser.getString("{{ADMIN_PERMISSION_ENTITY_FIELD}}"))
-            }
-        }
-        ]]>
-</entity>
-
-<entity name="ENTITY_VISIBILITY"
-        tableName="USER_{{ADMIN_PERMISSION_ENTITY_TABLE}}_MAP"
-        maxEntries="20000"
-        idField="{{ADMIN_PERMISSION_ENTITY_FIELD}}" >
-    <![CDATA[
-        final Set<String> validUsers = getUsernamesForEntity(rxDb, entityId, null)
-        return Flowable.fromIterable(users).map { user ->
-            final String userName = user.getString("USER_NAME")
-            if(user.getString("ACCESS_TYPE") == "ALL"){
-                new AuthEntry(userName, entityId, true)
-            } else {
-                new AuthEntry(userName, entityId, userName in validUsers)
-            }
-        }
-    ]]>
-</entity>
-```
-An example of using ENTITY_VISIBILITY in a dataserver/request-reply can be something like this:
-
-```kotlin
-query("ALL_BID_OFFER_SELLER_DEALER", BID_OFFER_SELLER_VIEW) {
-    permissioning {
-        auth(mapName = "ENTITY_VISIBILITY") {
-            BID_OFFER_SELLER_VIEW.SELLER_DEALER_ID
-        }
-        config {
-            backJoins = true
-        }
-    }
-}
-```
-
-### Adding authorisation to the data server and request server
-
-The code for permissioning specific queries must be inserted into your data servers and request servers.
-
-The dynamic authorisation definition in GPAL dataserver/requestserver has 4 settings which can be used in any combination.
-
-#### Grouping
-
-Auth definitions can now be grouped with “and” or “or” operators. This means you could have two simple permission maps, for example, one by counterparty and another one for forbidden symbols. This would require a user to have those two permissions at once in order to see the row. Alternatively, you could have two permission maps (one for buyer and one for seller). A user would be allowed to see a row if they have a seller or buyer profile, but users without one of the those profiles would be denied access.
-
-##### AND grouping
-
-This example shows an AND grouping:
-
-```kotlin
-permissioning {
-    auth(mapName = "ENTITY_VISIBILITY") {
-        TRADE.COUNTERPARTY_ID
-    } and auth(mapName = "SYMBOL_RESTRICTED") {
-        TRADE.SYMBOL
-    }
-}
-```
-
-##### OR grouping
-
-This example shows OR grouping
-
-```kotlin
-permissioning {
-    auth(mapName = "ENTITY_VISIBILITY") {
-        BID_OFFER.BUYER_ID
-    } or auth(mapName = "ENTITY_VISIBILITY") {
-        BID_OFFER.SELLER_ID
-    }
-}
-```
-
-#### Where clauses
-
-You can define a where clause if you only want to show a row in specific cases. Authorisation definitions using a where clause first evaluate the where clause against the permission map. This functionality on its own is not that useful, as for a single auth permissions map the content of the where clause could be moved to the query where clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
-
-This example shows different where clauses based on user role.
-
-```kotlin
-permissioning {
-    auth(mapName = "ENTITY_VISIBILITY") {
-        BID_OFFER_BIDDER_VIEW.CLIENT_ID
-        where { view ->
-            !(BidState.DRAFT == view.bidState && !(BidBookState.OPEN == view.bidBookState ||(BidBookState.UPCOMING == view.bidBookState)) )
-        }
-    } or
-    auth(mapName = "ENTITY_VISIBILITY") {
-        BID_OFFER_BIDDER_VIEW.BUYER_DEALER_ID
-        where { view ->
-            !((BidBookState.UPCOMING == view.bidBookState || BidBookState.OPEN == view.bidBookState) && DealerRole.PRINCIPAL == view.dealerRole)
-        }
-    }
-}
-```
-
-#### HideFields
-
-You can also have different column visibility levels based on user authorisation and row content.
-
-The example below hides the LAST_TRADED_PRICE column value for a particular instrument code.
-
-```kotlin
-permissioning {
-    auth(mapName = "EXCHANGE") {
-        INSTRUMENT_DETAILS.EXCHANGE_ID
-        hideField { userName, rowData ->
-            if(rowData.instrumentCode == "ALLL3") LAST_TRADED_PRICE
-            else null
-        }
-    }
-}
-```
-
-#### EnrichedAuth
-
-Our permission model could require access to client enriched data, so dataservers have an additional level of auth functionality which takes this data into account.
-
-Example below:
-
-```kotlin
-query("ALL_TRADES_WITH_ENRICHED_AUTH", TRADE_VIEW) {
-    permissioning {
-        enrichedAuth(mapName = "TRADE_VISIBILITY", enrichedEntity = FAVOURITE_TRADES) {
-            TRADE_VIEW.TRADE_ID
-            FAVOURITE_TRADES.USER_NAME
-        }
-    }
-    enrich(FAVOURITE_TRADES){
-        join { userName, row ->
-            FavouriteTrades.ByTradeIdAndUserName(
-                userName = userName,
-                tradeId = row.tradeId
-            )
-        }
-        fields {
-            derivedField("FAVOURITE", BOOLEAN) { row, userData ->
-                userData != null
-            }
-        }
-    }
-    config {
-        compression = true
-    }
-}
-```
+## Single Sign On (SSO)
+You can read about SSO [here](../infrastructure/single-sign-on.md).
