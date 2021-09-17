@@ -162,13 +162,13 @@ Even though Genesis cannot modify these triggers/procedures and they can potenti
 
 \* \[PostgreSQL sample\](dbtogenesis-postgres.md)
 
-\## Encrypting user and passwords
+### Encrypting user and passwords
 
-A script called "encryptUserPass" is provided with Genesis so we can encrypt our user and password before using it in DbToGenesis.
+A script called **encryptUserPass** is provided with Genesis so you can encrypt the user and password before using it in **DbToGenesis**.
 
-\## How To
+### How To
 
-This an example step by step of how to get an Oracle database up and running with DbToGenesis. A series of screenshots are shown with examples of how to create tables, stored procedures and triggers and also the dbtogenesis.xml configuration for Genesis.
+Here is an example step by step of how to get an Oracle database up and running with **DbToGenesis**. It shows how to create tables, stored procedures and triggers and also the **dbtogenesis.xml** configuration for Genesis.
 
 Create the UpdateQueue table.  
 ![](/img/createupdatequeuetable.png)
@@ -188,8 +188,12 @@ Create the COUNTERPARTY table.
 ![](/img/createcounterpartytable.png)
 
 Create the COUNTERPARTY trigger.  
-![](/img/createcounterpartytrigger.png)Create the COUNTERPARTY retrieve record procedure.  
-![](/img/createretrievecounterpartyrecordprocedure.png)Create the COUNTERPARTY retrieve table procedure.  
+![](/img/createcounterpartytrigger.png)
+
+Create the COUNTERPARTY retrieve record procedure.  
+![](/img/createretrievecounterpartyrecordprocedure.png)
+
+Create the COUNTERPARTY retrieve table procedure.  
 ![](/img/createretrievecounterpartyrecordprocedure.png)
 
 Create the dictionary.xml tables.
