@@ -78,3 +78,48 @@ _preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add
 * **retrieveRecord** receives one argument, which represents a primary key in the chosen SQL table ('TRADE') and returns this row.
 
 Example for MSSQL procedure calls:
+
+    xml
+          <genesisStream name="TRADE">
+    
+            <from>TRADE</from>
+            <to>TRADE</to>
+    
+            <GenesisPrimaryKeyId>TRADE_BY_EXTERNAL_ID</GenesisPrimaryKeyId>
+            <rdbmsPrimarykey>TRADE_ID</rdbmsPrimarykey>
+            <rdbmsTimestampField>TIMESTAMP</rdbmsTimestampField>
+            <generateCreatedInfo>true</generateCreatedInfo>
+    
+    
+            <metaData>
+                <field name="TRADE_ID" type="STRING" />
+                <field name="CURRENCY_DESCRIPTION" type="STRING" />
+                <field name="CLIENT_NAME" type="STRING" />
+                <field name="TRADE_QUANTITY" type="INT" />
+                <field name="TRADE_TIMESTAMP" type="DATETIME" />
+            </metaData>
+    
+            <proc>
+                <queryQueue>
+                    <![CDATA[
+                        {call queryUpdateQueue(?, ?)}
+                    ]]>
+                </queryQueue>
+                <clearQueue>
+                    <![CDATA[
+                        {call clearUpdateQueue(?, ?)}
+                    ]]>
+                </clearQueue>
+                <loadTable>
+                    <![CDATA[
+                        {call getTableTrade()}
+                    ]]>
+                </loadTable>
+                <retrieveRecord>
+                    <![CDATA[
+                        {call getTrade(?)}
+                    ]]>
+                </retrieveRecord>
+            </proc>
+    
+        </genesisStream>
