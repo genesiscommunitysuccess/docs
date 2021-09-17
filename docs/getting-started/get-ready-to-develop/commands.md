@@ -1,10 +1,10 @@
 ---
 id: commands
-sidebar_label: 'The most important commands'
+sidebar_label: The most important commands
 sidebar_position: 7
-title: 'The most important commands'
----
+title: The most important commands
 
+---
 Once you have created a Genesis project on your server machine, there is a useful subset of commands you can run to start and stop the application server or its individual processes.
 
 ## Starting and stopping the server
@@ -40,13 +40,6 @@ Including this flag monitors the progress of the kill on each process. If a proc
 ### StartGroup
 
 Groups of processes can be defined in the process definition files, where a set of processes is given a `**<group>**` tag. Typically, all the processes in a particular module are given the same `**<group>**` tag.
-
-:::danger WIP
-
-* (assume tag = group_ID - perfer to use just one of these.)
-* (simple code example of a defined process.)
-* (including the name of the proc definition file.)
-  :::
 
 **startGroup _group_ID_** starts all processes in the named group.
 
