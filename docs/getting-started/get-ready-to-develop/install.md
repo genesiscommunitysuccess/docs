@@ -14,9 +14,7 @@ That is it. Once you have an installed platform in the correct environment, you 
 
 We  describe the recommended steps below, but you can also see the process in a neat 10-minute video.
 
-<iframe src="[https://player.vimeo.com/video/590505594?h=5a99336928](https://player.vimeo.com/video/590505594?h=5a99336928 "https://player.vimeo.com/video/590505594?h=5a99336928")" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-
-<p><a href="[https://vimeo.com/590505594](https://vimeo.com/590505594 "https://vimeo.com/590505594")">Genesis Environment Provisioning Guide</a> from <a href="[https://vimeo.com/user96753901](https://vimeo.com/user96753901 "https://vimeo.com/user96753901")">genesis.global</a> on <a href="[https://vimeo.com](https://vimeo.com "https://vimeo.com")">Vimeo</a>.</p>
+<iframe src="https://player.vimeo.com/video/590505594?h=5a99336928" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
 
 ## Installing from an rpm
 
