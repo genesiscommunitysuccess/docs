@@ -158,7 +158,7 @@ These processes enable Genesis applications to send messages to and receive mess
 | STREAMER_SERVER |listens to a table or view, and streams data out to streamer clients. In almost all cases, the table or view must be an audit table. This covers both inbound and outbound messages. |
 | STREAMER_CLIENT| Receives data from a streamer server  When data is received, it transforms into the relevant format. This covers both inbound and outbound messages. |
 
-<!--- Need to add Market data above ---> 
+
 
 
 ## Putting the pieces together
