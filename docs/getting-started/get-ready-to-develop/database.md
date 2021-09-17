@@ -61,6 +61,7 @@ Run **remap --commit**.
 ## Start the server and check
 
 When those three steps have been completed, run **startServer** to start all the processes.
+
 On completion, run **mon**, and you can see the processes running. You have successfully completed the change.
 
 ![](/img/mon-processes-running.png)
