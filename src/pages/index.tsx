@@ -51,12 +51,13 @@ const Home = () => {
   const context = useDocusaurusContext();
   const {siteConfig = {}} = context;
   const heroImage = useBaseUrl('img/screen1.png');
+  const bgImage = useBaseUrl('img/bg.png');
   const platformImage = useBaseUrl('img/screen2.png');
   return (
     <Layout
       title={siteConfig.title}
       description={siteConfig.tagLine}>
-      <div className="homepage">
+      <div className="homepage" style={{ '--homepage-bg': `url(${bgImage})` } as unknown}>
         <div className="hero">
           <div className="container">
             <h1 className="hero__title">{siteConfig.title}</h1>
@@ -83,7 +84,7 @@ const Home = () => {
               </div>
             </section>
           )}
-          <section className={styles.platform}>
+          <section className={styles.platform} style={{ '--platform-bg': `url(${platformImage})` } as unknown}>
             <div className="container">
               <div className="row">
                 <div className="col col--8">
