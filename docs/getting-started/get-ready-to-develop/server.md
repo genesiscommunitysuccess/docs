@@ -120,7 +120,7 @@ The task of these processes is to provide data to the Web User Interface, and to
 | DATASERVER | Pushes real-time data to the user interface every time the database is updated. |
 | REQUEST SERVER | Pushes static data to the user interface in response to specific events (for example, to populate a dialog in the user interface). |
 | DATA PUBLISHER | Publishes lightweight real-time market-data changes. |
-| DB_SERVER |  |
+| DB_SERVER | 
 | GENESIS_ROUTER | Manages sessions and routes messages to/from services over tcp/ip, websockets, html, with encryption & compression. The data server uses this process to determine which users should receive each update. |
 | GENESIS_WEB_ADAPTER | If you are viewing an older instance, you might see this process. This is no longer used. It has been replaced by the GENESIS_ROUTER. |
 
