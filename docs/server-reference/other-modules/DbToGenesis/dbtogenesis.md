@@ -354,10 +354,7 @@ The **generateSQLFromRDB** script is a tool that generates ".sql" files to creat
 
 * It is by no means mandatory, but it provides a generic, quick and working example that can be further modified or extended with ease. However, the Genesis dictionary must be appropriately configured beforehand:
   EXTERNAL_ID field and TABLENAME_BY_EXTERNAL_ID key must exist (as shown in the examples in the previous section) inside the table
-  
 * You also need the CREATED_AT and CREATED_BY fields in the table if you want to use the **generateCreatedInfo** option in the **dbtogenesis.xml** configuration.
-
-\`\`\`
 
 #### generateSQLFromRDB
 
