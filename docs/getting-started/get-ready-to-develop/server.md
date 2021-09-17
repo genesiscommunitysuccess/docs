@@ -90,14 +90,12 @@ Permissions are stored in three summary tables in the NOSQL data store. This dat
 
 At log-in, user permission data is copied to the UI layer to control the data that the user is able to see.
 
-| Process name  | Purpose  |  
-|---|---|
-| AUTH_MANAGER  |  Handles authentication of users, with links to Single Sign On (SSO) and Active Directory. |   
-| AUTH_PERMS  | Handles permissions - whether the user has the right to view a specific piece of information. When the application starts, it checks every entity in the application and performs an authorisation check for every user on the system. In this way, it builds a map of permissioned users. |  
-| AUTH_DATASERVER  | Sends information on user rights to the User Interface, stored in the USER_RIGHTS table   |   
-| AUTH_CONSOLIDATIONS  | Provides data for authentication and authorisation.|   
-
-
+| Process name | Purpose |
+| --- | --- |
+| AUTH_MANAGER | Handles authentication of users, with links to Single Sign On (SSO) and Active Directory. |
+| AUTH_PERMS | Handles permissions - whether the user has the right to view a specific piece of information. When the application starts, it checks every entity in the application and performs an authorisation check for every user on the system. In this way, it builds a map of permissioned users. |
+| AUTH_DATASERVER | Sends information on user rights to the User Interface, stored in the USER_RIGHTS table |
+| AUTH_CONSOLIDATIONS | Provides data for authentication and authorisation. |
 
 ### Transaction and Event Handling processes
 
@@ -108,9 +106,6 @@ Everything in a Genesis application is driven by events. These could be incoming
 | EVENT_HANDLER | Controls the processing that takes place following each single event. |
 | EVALUATOR | Enables you to set up rules, so that configured events trigger an external action, such as an email or Symphony message. |
 
-
-
-
 ### API and Data Distribution processes
 
 The task of these processes is to provide data to the Web User Interface, and to ensure that each data item reaches the correct users (and nobody else).
@@ -120,10 +115,9 @@ The task of these processes is to provide data to the Web User Interface, and to
 | DATASERVER | Pushes real-time data to the user interface every time the database is updated. |
 | REQUEST SERVER | Pushes static data to the user interface in response to specific events (for example, to populate a dialog in the user interface). |
 | DATA PUBLISHER | Publishes lightweight real-time market-data changes. |
-| DB_SERVER | 
+| DB_SERVER |  |
 | GENESIS_ROUTER | Manages sessions and routes messages to/from services over tcp/ip, websockets, html, with encryption & compression. The data server uses this process to determine which users should receive each update. |
 | GENESIS_WEB_ADAPTER | If you are viewing an older instance, you might see this process. This is no longer used. It has been replaced by the GENESIS_ROUTER. |
-
 
 ### Data Persistence processes
 
@@ -133,8 +127,7 @@ These services ensure that database are kept on synch, and ensures that data is 
 | --- | --- |
 | GENESIS_TO_DB | Streams data from Genesis to a classic RDBMS database (such as Oracle or MSSQL). This process listens to changes in the Genesis tables (insert, modify and delete) and reproduces them in the selected RDBMS. |
 | DB_TO_GENESIS | Streams data from a classic RDBMS database (such as Oracle or MSSQL) to a Genesis database. This process listens to changes in the SQL tables (insert, modify and delete) using a predefined system (triggers for each table to be streamed, procedures and a table to represent an update queue). It then reproduces them in the specified Genesis table. |
-| GENESIS_SYNC |Synchronises two separate Genesis databases. Usually, this is used where  the distance is too great for clustering to be used. |  
-
+| GENESIS_SYNC | Synchronises two separate Genesis databases. Usually, this is used where  the distance is too great for clustering to be used. |
 
 ### Data Analytics processes
 
@@ -142,9 +135,8 @@ Analytics provide aggregated and calculated data, such as real-time positions, c
 
 | Process name | Purpose |
 | --- | --- |
-| CONSOLIDATOR | Aggregates data from the Genesis database in real time and  writes the new data in a separate data.|
+| CONSOLIDATOR | Aggregates data from the Genesis database in real time and  writes the new data in a separate data. |
 | R INTEGRATION | Enables consolidators to include R functions in their calculations. R is a statistical programming language. |
-
 
 ### Integration processes
 
@@ -152,29 +144,25 @@ These processes enable Genesis applications to send messages to and receive mess
 
 | Process name | Purpose |
 | --- | --- |
-| CAMEL | performs integration with external systems that produce or consume data..|
-| FIX| integrates Genesis with external systems that use the FIX messaging standard. |
-| PROTOCOL_BUFFER| integrates Genesis with external systems that use protocol buffers to control message format. |
-| STREAMER_SERVER |listens to a table or view, and streams data out to streamer clients. In almost all cases, the table or view must be an audit table. This covers both inbound and outbound messages. |
-| STREAMER_CLIENT| Receives data from a streamer server  When data is received, it transforms into the relevant format. This covers both inbound and outbound messages. |
-
+| CAMEL | performs integration with external systems that produce or consume data.. |
+| FIX | integrates Genesis with external systems that use the FIX messaging standard. |
+| PROTOCOL_BUFFER | integrates Genesis with external systems that use protocol buffers to control message format. |
+| STREAMER_SERVER | listens to a table or view, and streams data out to streamer clients. In almost all cases, the table or view must be an audit table. This covers both inbound and outbound messages. |
+| STREAMER_CLIENT | Receives data from a streamer server  When data is received, it transforms into the relevant format. This covers both inbound and outbound messages. |
 
 ## Putting the pieces together
 
 Below is an architectural overview that shows how these different processes and modules fit together.
 
-:::danger WIP
-(diagram at https://genesisglobal.atlassian.net/wiki/spaces/\~162018992/pages/2500296705/What+are+all+these+processes.)
-:::
+![](/img/all-the-processes-in-a-diagram.png)
 
 The Web User Interface is at the top. The server is below, where you can see:
 
-Security Session and Permission Services controlling access to data each time it is requested.
+* **Security Session and Permission Services** controlling access to data each time it is requested.
+* **Notification and Orchestration Services** connecting all the different processes with each other.
 
-Notification and Orchestration Services connecting all the different processes with each other.
+in the server:
 
-The Data Persistence Services are at the heart of of the server, ensuring that data is cached for fast and reliable access.
-
-Integration Services are on the left and right sides, connecting the server to any relevant external systems.
-
-Finally, note the Operational Control and Monitoring Services at the bottom. These are provided by GEM, Prometheus (monitoring and alerts) and Console.
+* The **Data Persistence Services** are at the heart of of the server, ensuring that data is cached for fast and reliable access.
+* **Integration Services** are on the left and right sides, connecting the server to any relevant external systems.
+* Finally, note the **Operational Control and Monitoring Services** at the bottom. These are provided by GEM, Prometheus (monitoring and alerts) and Console.
