@@ -145,15 +145,14 @@ This process does not create any stored procedures and it just attempts to call 
 
 ## Basic workflow
 
-1\. The process starts and tries to load the full SQL table using the _loadTable_ stored procedure if this is the first time we start it or if we are using the "--force" argument. Otherwise, skip this step and go to step 2.
+The process works in the the following order:
 
-2\. Reads rows from UPDATEQUEUE using _queryQueue_ and the last known timestamp from the last retrieved record and process them accordingly.
+1. The process starts and tries to load the full SQL table using the **loadTable** stored procedure if this is the first time it is started (or if you use the **--force** argument). Otherwise, it skips this step and goes to step 2.
+2. The process reads rows from UPDATEQUEUE using **queryQueue** and the last known timestamp from the last retrieved record, and process them accordingly.
+3. The process retrieves rows from the correspondent table using **retrieveRecord** and performs insert, modify or delete operations in Genesis accordingly.
+4. The process deletes records in the UPDATEQUEUE using **clearQueue** and the last known timestamp, as they have no use anymore. The process then goes back to step 2.
 
-3\. Retrieves rows from the correspondent table using _retrieveRecord_ and performs insert, modify or delete operations in Genesis accordingly.
-
-4\. Deletes records in the UPDATEQUEUE using _clearQueue_ and the last known timestamp, as they have no use anymore. Go back to step 2.
-
-\## SQL Procedures
+### SQL Procedures
 
 Even though Genesis cannot modify these triggers/procedures and they can potentially be implemented in any desired way as long as they behave as expected, it is always useful to have some simple working examples. These examples also show the mandatory structure for the UPDATEQUEUE table in a RDB system.
 
