@@ -170,6 +170,11 @@ A script called **encryptUserPass** is provided with Genesis so you can encrypt 
 
 Here is an example step by step of how to get an Oracle database up and running with **DbToGenesis**. It shows how to create tables, stored procedures and triggers and also the **dbtogenesis.xml** configuration for Genesis.
 
+The example shows two different ways of using key values imported from Oracle.
+
+* INSTRUMENT_ID represents the primary key in our Oracle table, but also our primary key in our Genesis table. **GenesisPrimaryKeyId** is set to INSTRUMENT_BY_EXTERNAL_ID in order to keep a relationship between records in each database, and even though in this case EXTERNAL_ID (which does not need to be specified in metaData) contains the same values as INSTRUMENT_ID, it could potentially be different. As we are specifying INSTRUMENT_ID in our metaData, the Oracle INSTRUMENT_ID value will become our INSTRUMENT_ID in Genesis too.
+* On the other hand, COUNTERPARTY_ID is also the primary key in both database systems, but we are not using its value in Genesis (COUNTERPARTY_ID is not specified in the metaData block). The Genesis COUNTERPARTY_ID value will be generated when you insert a new record in Genesis, as specified in the Genesis dictionary. The value of Oracle's COUNTERPARTY_ID will still be kept internally in the Genesis COUNTERPARTY table inside the EXTERNAL_ID field in order to correlate inserts, updates and deletions.
+
  1. Create the UpdateQueue table.  
     ![](/img/createupdatequeuetable.png)
  2. Create the ClearUpdateQueue procedure.  
@@ -246,7 +251,7 @@ Here is an example step by step of how to get an Oracle database up and running 
 
     xml
     <dbToGenesis xmlns:xi="http://www.w3.org/2001/XInclude">
-    
+
         <options>
             <databaseType>ORACLE</databaseType>
             <url>jdbc:oracle:thin:@db1.ad.genesis.global:1521:genesisdev</url>
@@ -255,17 +260,17 @@ Here is an example step by step of how to get an Oracle database up and running 
             <dbMinConnections>10</dbMinConnections>
             <dbMaxConnections>10</dbMaxConnections>
         </options>
-    
+        
         <genesisStream name="INSTRUMENT">
-    
+        
             <from>INSTRUMENT</from>
             <to>INSTRUMENT</to>
-    
+        
             <GenesisPrimaryKeyId>INSTRUMENT_BY_EXTERNAL_ID</GenesisPrimaryKeyId>
             <rdbmsPrimarykey>INSTRUMENT_ID</rdbmsPrimarykey>
             <rdbmsTimestampField>TIMESTAMP</rdbmsTimestampField>
             <generateCreatedInfo>true</generateCreatedInfo>
-    
+        
             <metaData>
                 <field name="INSTRUMENT_ID" type="STRING" />
                 <field name="NAME" type="STRING" />
@@ -274,7 +279,7 @@ Here is an example step by step of how to get an Oracle database up and running 
                 <field name="TICK_SIZE" type="DOUBLE" />
                 <field name="BAND_STATUS" type="ENUM" values="DISABLED ENABLED" default="ENABLED" />
             </metaData>
-    
+        
             <proc>
                 <queryQueue>
                     <![CDATA[
@@ -297,26 +302,26 @@ Here is an example step by step of how to get an Oracle database up and running 
                     ]]>
                 </retrieveRecord>
             </proc>
-    
+        
         </genesisStream>
-    
+        
         <genesisStream name="COUNTERPARTY">
-    
+        
             <from>COUNTERPARTY</from>
             <to>COUNTERPARTY</to>
-    
+        
             <GenesisPrimaryKeyId>COUNTERPARTY_BY_EXTERNAL_ID</GenesisPrimaryKeyId>
             <rdbmsPrimarykey>COUNTERPARTY_ID</rdbmsPrimarykey>
             <rdbmsTimestampField>TIMESTAMP</rdbmsTimestampField>
             <generateCreatedInfo>true</generateCreatedInfo>
-    
+        
             <metaData>
                 <field name="COUNTERPARTY_NAME" type="STRING" />
                 <field name="DESCRIPTION" type="STRING" />
                 <field name="COUNTERPARTY_TYPE" type="ENUM" values="BROKER CLIENT CHARITY" default="BROKER" />
                 <field name="BAND_STATUS" type="ENUM" values="DISABLED ENABLED" default="ENABLED" />
             </metaData>
-    
+        
             <proc>
                 <queryQueue>
                     <![CDATA[
@@ -339,10 +344,9 @@ Here is an example step by step of how to get an Oracle database up and running 
                     ]]>
                 </retrieveRecord>
             </proc>
-    
+        
         </genesisStream>
+
     </dbToGenesis>
 
 lkjlkj
-
-    
