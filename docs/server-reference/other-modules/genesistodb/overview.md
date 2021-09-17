@@ -15,7 +15,7 @@ Use **startProcess** to start the **GenesisToDb** process. This can take two opt
 
 **--clearText** can be passed if you want to use clear text user and passwords in the configuration file, instead of encrypted ones.
 
-**--force** if passed to the process it attempts to re-insert every trade found in our Genesis table to the RDBMS, ignoring previously inserted records.
+**--force** if passed to the process, this  attempts to re-insert every trade found in our Genesis table to the RDBMS, ignoring previously inserted records.
 
 ### Configuration
 
@@ -159,15 +159,15 @@ This is a step-by-step example of how to get an Oracle database up and running w
 
 ![](/img/dbtogenesis-create-table.png)
 
-2. Create Insert procedure.
+1. Create Insert procedure.
 
 ![](/img/createinsertprocedure.png)
 
-3. Create Modify procedure.
+1. Create Modify procedure.
 
 ![](/img/createmodifyprocedure.png)
 
-4. Create Delete table.
+1. Create Delete table.
 
 ![](/img/createdeleteprocedure.png)
 
