@@ -93,48 +93,26 @@ At log-in, user permission data is copied to the UI layer to control the data th
 | Process name  | Purpose  |  
 |---|---|---|---|---|
 | AUTH_MANAGER  |  Handles authentication of users, with links to Single Sign On (SSO) and Active Directory. |   
-|   |   |   |   |   |
-|   |   |   |   |   |
+| AUTH_PERMS  | 
+Handles permissions - whether the user has the right to view a specific piece of information. When the application starts, it checks every entity in the application and performs an authorisation check for every user on the system. In this way, it builds a map of permissioned users. |  
+| AUTH_DATASERVER  | Sends information on user rights to the User Interface, stored in the USER_RIGHTS table   |   
+| AUTH_CONSOLIDATIONS  | Provides data for authentication and authorisation.|   
 
 
 
-
-
-Handles authentication of users, with links to Single Sign On (SSO) and Active Directory.
-
-AUTH_PERMS
-
-Handles permissions - whether the user has the right to view a specific piece of information.
-
-When the application starts, it checks every entity in the application and performs an authorisation check for every user on the system. In this way, it builds a map of permissioned users.
-
-AUTH_DATASERVER
-
-Sends information on user rights to the User Interface, stored in the USER_RIGHTS table .
-
-AUTH_CONSOLIDATIONS
-
-Provides data for authentication and authorisation.
-
-## Transaction and Event Handling processes
+### Transaction and Event Handling processes
 
 Everything in a Genesis application is driven by events. These could be incoming messages, changes to the database or a user clicking on a button.
 
 | Process name | Purpose |
 | --- | --- |
-| EVENT_HANDLER | Controls the processing that takes place following each single events. For products that precede the development of EVENT_HANDLER, you might see TXN_HANDLER, which performs a similar function.|Process name
-| GENESIS_CLUSTER | Automatically performs inter-process messaging. |Process name
+| EVENT_HANDLER | Controls the processing that takes place following each single event. |
+| EVALUATOR | Enables you to set up rules, so that configured events trigger an external action, such as an email or Symphony message. |
 
 
 
 
-Controls the processing that takes place following each single events. For products that precede the development of EVENT_HANDLER, you might see TXN_HANDLER, which performs a similar function.
-
-EVALUATOR
-
-Enables you to set up rules, so that configured events trigger an external action, such as an email or Symphony message.
-
-## API and Data Distribution processes
+### API and Data Distribution processes
 
 The task of these processes is to provide data to the Web User Interface, and to ensure that each data item reaches the correct users (and nobody else).
 
@@ -166,7 +144,7 @@ GENESIS_WEB_ADAPTER
 
 If you are viewing an older instance, you might see this process. This is no longer used. It has been replaced by the GENESIS_ROUTER.
 
-## Data Persistence processes
+### Data Persistence processes
 
 These services ensure that database are kept on synch, and ensures that data is held in cache for fast access.
 
@@ -186,7 +164,7 @@ GENESIS_SYNC
 
 Synchronises two separate Genesis databases. Usually, this is used where  the distance is too great for clustering to be used.
 
-## Data Analytics processes
+### Data Analytics processes
 
 Analytics provide aggregated and calculated data, such as real-time positions, chart data, or orders outstanding. Note that the analytic data is stored in the Genesis database, so access to the data is through request server or data server.
 
@@ -202,7 +180,7 @@ R INTEGRATION
 
 Enables consolidators to include R functions in their calculations. R is a statistical programming language.
 
-## Integration processes
+### Integration processes
 
 These processes enable Genesis applications to send messages to and receive messages from external systems.
 
