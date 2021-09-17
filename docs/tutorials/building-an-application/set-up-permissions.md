@@ -22,9 +22,9 @@ Starting with the server, make sure that you have two USER and USER_ATTRIBUTES r
 Set two new key values in `site-specific/cfg/genesis-system-definition.kts` to enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system:
 
 ```kotlin
-    item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
+item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
 
-    item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
+item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
 ```
 
 Take note of how auth-permissions.auto.xml looks in generated/cfg before running genesisInstall as this file will change.
