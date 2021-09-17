@@ -151,3 +151,11 @@ Example for MSSQL procedure calls:
 4\. Deletes records in the UPDATEQUEUE using *clearQueue* and the last known timestamp, as they have no use anymore. Go back to step 2.
 
 \## SQL Procedures
+
+Even though Genesis cannot modify these triggers/procedures and they can potentially be implemented in any desired way as long as they behave as expected, it is always useful to have some simple working examples. These examples also show the mandatory structure for the UPDATEQUEUE table in a RDB system.
+
+\* \[Oracle sample\](dbtogenesis-oracle.md)
+
+\* \[MSSQL sample\](dbtogenesis-mssql.md)
+
+\* \[PostgreSQL sample\](dbtogenesis-postgres.md)
