@@ -190,4 +190,54 @@ Create the COUNTERPARTY trigger.
 ![](/img/createretrievecounterpartyrecordprocedure.png)Create the COUNTERPARTY retrieve table procedure.  
 ![](/img/createretrievecounterpartyrecordprocedure.png)
 
- dictionary.xml tables.
+ Create the dictionary.xml tables.
+
+    xml
+    <table name="INSTRUMENT">
+                <fields>
+                    <field name="INSTRUMENT_ID" sequence="IN"/>
+                    <field name="NAME" />
+                    <field name="DESCRIPTION" />
+                    <field name="INSTRUMENT_TYPE" />
+                    <field name="TICK_SIZE" />
+                    <field name="BAND_STATUS" />
+                    <field name="CREATED_AT" />
+                    <field name="CREATED_BY" />
+                    <field name="EXTERNAL_ID" sequence="XG"/>
+                </fields>
+                <keys>
+                    <key name="INSTRUMENT_BY_ID" id="1" primary="true">
+                        <field name="INSTRUMENT_ID" />
+                    </key>
+                    <key name="INSTRUMENT_BY_NAME" id="2">
+                        <field name="NAME" />
+                    </key>
+                    <key name="INSTRUMENT_BY_EXTERNAL_ID" id="3">
+                        <field name="EXTERNAL_ID" />
+                    </key>
+                </keys>
+            </table>
+    
+            <table name="COUNTERPARTY">
+                <fields>
+                    <field name="COUNTERPARTY_ID" sequence="CP"/>
+                    <field name="COUNTERPARTY_NAME" />
+                    <field name="DESCRIPTION" />
+                    <field name="COUNTERPARTY_TYPE" />
+                    <field name="BAND_STATUS" />
+                    <field name="CREATED_AT" />
+                    <field name="CREATED_BY" />
+                    <field name="EXTERNAL_ID" sequence="XH"/>
+                </fields>
+                <keys>
+                    <key name="COUNTERPARTY_BY_ID" id="1" primary="true">
+                        <field name="COUNTERPARTY_ID" />
+                    </key>
+                    <key name="COUNTERPARTY_BY_NAME" id="2">
+                        <field name="COUNTERPARTY_NAME" />
+                    </key>
+                    <key name="COUNTERPARTY_BY_EXTERNAL_ID" id="3">
+                        <field name="EXTERNAL_ID" />
+                    </key>
+                </keys>
+            </table>
