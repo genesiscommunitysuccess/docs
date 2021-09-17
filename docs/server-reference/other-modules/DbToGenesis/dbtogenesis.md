@@ -159,3 +159,50 @@ Even though Genesis cannot modify these triggers/procedures and they can potenti
 \* \[MSSQL sample\](dbtogenesis-mssql.md)
 
 \* \[PostgreSQL sample\](dbtogenesis-postgres.md)
+
+\## Encrypting user and passwords
+
+A script called "encryptUserPass" is provided with Genesis so we can encrypt our user and password before using it in DbToGenesis.
+
+\## How To
+
+This an example step by step of how to get an Oracle database up and running with DbToGenesis. A series of screenshots are shown with examples of how to create tables, stored procedures and triggers and also the dbtogenesis.xml configuration for Genesis. 
+
+Create the UpdateQueue table.  
+![](/img/createupdatequeuetable.png)
+
+Create the ClearUpdateQueue procedure.  
+![](/img/createclearupdatequeueprocedure.png)Create the **QueryUpdateQueue** procedure.  
+![](/img/createqueryupdatequeueprocedure.png)Create the INSTRUMENT table.  
+![](/img/createinstrumenttable.png)
+
+Create the INSTRUMENT trigger.  
+![](/img/createinstrumenttrigger.png)
+
+!\[\](images/dbtogenesis/CreateINSTRUMENTTrigger.png)
+
+6) Create INSTRUMENT retrieve record procedure.
+
+!\[\](images/dbtogenesis/CreateRetrieveInstrumentRecordProcedure.png)
+
+7) Create INSTRUMENT retrieve table procedure.
+
+!\[\](images/dbtogenesis/CreateRetrieveInstrumentTableProcedure.png)
+
+8) Create COUNTERPARTY table.
+
+!\[\](images/dbtogenesis/CreateCOUNTERPARTYTable.png)
+
+9) Create COUNTERPARTY trigger.
+
+!\[\](images/dbtogenesis/CreateCOUNTERPARTYTrigger.png)
+
+10) Create COUNTERPARTY retrieve record procedure.
+
+!\[\](images/dbtogenesis/CreateRetrieveCounterpartyRecordProcedure.png)
+
+11) Create COUNTERPARTY retrieve table procedure.
+
+!\[\](images/dbtogenesis/CreateRetrieveCounterpartyTableProcedure.png)
+
+12) dictionary.xml tables.
