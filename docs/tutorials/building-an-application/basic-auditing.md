@@ -26,18 +26,17 @@ The first step to add basic auditing, is to change the relevant table dictionary
 ```kotlin {2}
 tables {
   table (name = "TRADE", id = 11000, audit = details(id = 11003, sequence = "TR")) {
-    // Source: Trade
-    TRADE_ID            // A
-    INSTRUMENT_ID not null       // B
-    COUNTERPARTY_ID not null     // C
-    COUNTERPARTY        // D
-    INSTRUMENT_SYMBOL   // E
-    QUANTITY            // F
-    SIDE                // G
-    PRICE               // H
-    TRADE_DATE          // J
-    TRADE_DATETIME      // K
-    ENTERED_BY          // L
+    TRADE_ID
+    INSTRUMENT_ID not null
+    COUNTERPARTY_ID not null
+    COUNTERPARTY
+    INSTRUMENT_SYMBOL
+    QUANTITY
+    SIDE
+    PRICE
+    TRADE_DATE
+    TRADE_DATETIME
+    ENTERED_BY
 
     primaryKey {
       TRADE_ID
