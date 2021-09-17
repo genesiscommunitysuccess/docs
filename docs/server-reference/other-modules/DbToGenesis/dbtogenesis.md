@@ -170,85 +170,79 @@ A script called **encryptUserPass** is provided with Genesis so you can encrypt 
 
 Here is an example step by step of how to get an Oracle database up and running with **DbToGenesis**. It shows how to create tables, stored procedures and triggers and also the **dbtogenesis.xml** configuration for Genesis.
 
-Create the UpdateQueue table.  
-![](/img/createupdatequeuetable.png)
+ 1. Create the UpdateQueue table.  
+    ![](/img/createupdatequeuetable.png)
+ 2. Create the ClearUpdateQueue procedure.  
+    ![](/img/createclearupdatequeueprocedure.png)
+ 3. Create the **QueryUpdateQueue** procedure.  
+    ![](/img/createqueryupdatequeueprocedure.png)
+ 4. Create the INSTRUMENT table.  
+    ![](/img/createinstrumenttable.png)
+ 5. Create the INSTRUMENT trigger.  
+    ![](/img/createinstrumenttrigger.png)
+ 6. Create the INSTRUMENT retrieve record procedure.  
+    ![](/img/createretrieveinstrumentrecordprocedure.png)
+ 7. Create the INSTRUMENT retrieve table procedure.![](/img/createretrieveinstrumenttableprocedure.png)
+ 8. Create the COUNTERPARTY table.  
+    ![](/img/createcounterpartytable.png)
+ 9. Create the COUNTERPARTY trigger.  
+    ![](/img/createcounterpartytrigger.png)
+10. Create the COUNTERPARTY retrieve record procedure.  
+    ![](/img/createretrievecounterpartyrecordprocedure.png)
+11. Create the COUNTERPARTY retrieve table procedure.  
+    ![](/img/createretrievecounterpartyrecordprocedure.png)
+12. Create the dictionary.xml tables.
 
-Create the ClearUpdateQueue procedure.  
-![](/img/createclearupdatequeueprocedure.png)Create the **QueryUpdateQueue** procedure.  
-![](/img/createqueryupdatequeueprocedure.png)Create the INSTRUMENT table.  
-![](/img/createinstrumenttable.png)
-
-Create the INSTRUMENT trigger.  
-![](/img/createinstrumenttrigger.png)
-
-Create the INSTRUMENT retrieve record procedure.  
-![](/img/createretrieveinstrumentrecordprocedure.png)Create the INSTRUMENT retrieve table procedure.![](/img/createretrieveinstrumenttableprocedure.png)
-
-Create the COUNTERPARTY table.  
-![](/img/createcounterpartytable.png)
-
-Create the COUNTERPARTY trigger.  
-![](/img/createcounterpartytrigger.png)
-
-Create the COUNTERPARTY retrieve record procedure.  
-![](/img/createretrievecounterpartyrecordprocedure.png)
-
-Create the COUNTERPARTY retrieve table procedure.  
-![](/img/createretrievecounterpartyrecordprocedure.png)
-
-Create the dictionary.xml tables.
-
-    xml
-    <table name="INSTRUMENT">
-                <fields>
-                    <field name="INSTRUMENT_ID" sequence="IN"/>
-                    <field name="NAME" />
-                    <field name="DESCRIPTION" />
-                    <field name="INSTRUMENT_TYPE" />
-                    <field name="TICK_SIZE" />
-                    <field name="BAND_STATUS" />
-                    <field name="CREATED_AT" />
-                    <field name="CREATED_BY" />
-                    <field name="EXTERNAL_ID" sequence="XG"/>
-                </fields>
-                <keys>
-                    <key name="INSTRUMENT_BY_ID" id="1" primary="true">
-                        <field name="INSTRUMENT_ID" />
-                    </key>
-                    <key name="INSTRUMENT_BY_NAME" id="2">
+        xml
+        <table name="INSTRUMENT">
+                    <fields>
+                        <field name="INSTRUMENT_ID" sequence="IN"/>
                         <field name="NAME" />
-                    </key>
-                    <key name="INSTRUMENT_BY_EXTERNAL_ID" id="3">
-                        <field name="EXTERNAL_ID" />
-                    </key>
-                </keys>
-            </table>
-    
-            <table name="COUNTERPARTY">
-                <fields>
-                    <field name="COUNTERPARTY_ID" sequence="CP"/>
-                    <field name="COUNTERPARTY_NAME" />
-                    <field name="DESCRIPTION" />
-                    <field name="COUNTERPARTY_TYPE" />
-                    <field name="BAND_STATUS" />
-                    <field name="CREATED_AT" />
-                    <field name="CREATED_BY" />
-                    <field name="EXTERNAL_ID" sequence="XH"/>
-                </fields>
-                <keys>
-                    <key name="COUNTERPARTY_BY_ID" id="1" primary="true">
-                        <field name="COUNTERPARTY_ID" />
-                    </key>
-                    <key name="COUNTERPARTY_BY_NAME" id="2">
+                        <field name="DESCRIPTION" />
+                        <field name="INSTRUMENT_TYPE" />
+                        <field name="TICK_SIZE" />
+                        <field name="BAND_STATUS" />
+                        <field name="CREATED_AT" />
+                        <field name="CREATED_BY" />
+                        <field name="EXTERNAL_ID" sequence="XG"/>
+                    </fields>
+                    <keys>
+                        <key name="INSTRUMENT_BY_ID" id="1" primary="true">
+                            <field name="INSTRUMENT_ID" />
+                        </key>
+                        <key name="INSTRUMENT_BY_NAME" id="2">
+                            <field name="NAME" />
+                        </key>
+                        <key name="INSTRUMENT_BY_EXTERNAL_ID" id="3">
+                            <field name="EXTERNAL_ID" />
+                        </key>
+                    </keys>
+                </table>
+        
+                <table name="COUNTERPARTY">
+                    <fields>
+                        <field name="COUNTERPARTY_ID" sequence="CP"/>
                         <field name="COUNTERPARTY_NAME" />
-                    </key>
-                    <key name="COUNTERPARTY_BY_EXTERNAL_ID" id="3">
-                        <field name="EXTERNAL_ID" />
-                    </key>
-                </keys>
-            </table>
-
-Create the **dbtogenesis.xml** configuration. **Ensure the xmlns:xi attribute is included if you want to use xinclude in your configuration**.
+                        <field name="DESCRIPTION" />
+                        <field name="COUNTERPARTY_TYPE" />
+                        <field name="BAND_STATUS" />
+                        <field name="CREATED_AT" />
+                        <field name="CREATED_BY" />
+                        <field name="EXTERNAL_ID" sequence="XH"/>
+                    </fields>
+                    <keys>
+                        <key name="COUNTERPARTY_BY_ID" id="1" primary="true">
+                            <field name="COUNTERPARTY_ID" />
+                        </key>
+                        <key name="COUNTERPARTY_BY_NAME" id="2">
+                            <field name="COUNTERPARTY_NAME" />
+                        </key>
+                        <key name="COUNTERPARTY_BY_EXTERNAL_ID" id="3">
+                            <field name="EXTERNAL_ID" />
+                        </key>
+                    </keys>
+                </table>
+13. Create the **dbtogenesis.xml** configuration. **Ensure the xmlns:xi attribute is included if you want to use xinclude in your configuration**.
 
     xml
     <dbToGenesis xmlns:xi="http://www.w3.org/2001/XInclude">
@@ -348,3 +342,7 @@ Create the **dbtogenesis.xml** configuration. **Ensure the xmlns:xi attribute is
     
         </genesisStream>
     </dbToGenesis>
+
+lkjlkj
+
+    
