@@ -19,32 +19,31 @@ We can display the configuration of both in our request server, data server and 
 
 First, enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system.
 
-You can read more about it [here](https://yljfsx0alebzeg.instant.forestry.io/server-reference/authentication-and-authorisation/set-up/#authorisation): 
+You can read more about it [here](../../server-reference/authentication-and-authorisation/authorisation.md).
 
 Starting with the server, make sure that you have two USER and USER_ATTRIBUTES records setup: JohnDoe and JaneDoe.
 
 ![](/img/jane-and-john-doe.png)
 
-Add two new key values in **site-specific/cfg/genesis-system-definition.kts** as described in the docs above:
+Set two new key values in **site-specific/cfg/genesis-system-definition.kts** to enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system:
 
 ```kotlin
-    item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
+item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
 
-    item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
+item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
 ```
 
-Take note of **auth-permissions.auto.xml** in generated/cfg before running install.
+Take note of how **auth-permissions.auto.xml** looks in generated/cfg before running genesisInstall as this file will change.
 
-## Install and remap
+Run `genesisInstall`
 
-Run **genesisInstall** to check the changes you have made.
+Run `remap --commit`
 
-Run **remap**.
+**Remap** prompts you to add a new table called USER_COUNTERPARTY_MAP and a new field has been added to USER_ATTRIBUTES. Input `y` to commit the changes. Note: remap won’t work if any server processes are currently running.
 
-**Remap** prompts you to add a new table called USER_COUNTERPARTY_MAP and a new field has been added to USER_ATTRIBUTES.
+After this, go to the USER_ATTRIBUTES table and use the below **DbMon** commands to set the ACCESS_TYPE field for JaneDoe to be ENTITY (instead of ALL).
 
-After this, go to the USER_ATTRIBUTES table and use **DbMon** commands to set the ACCESS_TYPE field for JaneDoe to be ENTITY (instead of ALL).
-
+```
 table USER_ATTRIBUTES
 
 qsearch USER_NAME==”JaneDoe”
@@ -54,14 +53,15 @@ set ACCESS_TYPE ENTITY
 writeMode
 
 update USER_ATTRIBUTES_BY_USER_NAME
+```
 
-The generic permissioning settings have now been set in place, and are stored in **auth-permissions.auto.xml** in **generated/cfg**. The next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started they will consider the new configuration.
+The generic permissioning settings have been set in place, and are stored in **auth-permissions.auto.xml** in **generated/cfg**. The next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started they will consider the new configuration.
 
-Now go to the **-view-dictionary.kts** file and add the COUNTERPARTY_ID field to ENHANCED_TRADE_VIEW.
+Now go to the **-view-dictionary.kts** file and add the COUNTERPARTY_ID field to ENHANCED_TRADE_VIEW as this field will be used to verify permissions.
 
 ![](/img/step-08-add-counterparty_id-to-enhanced_view-in-view-dictionary-with-highlight.png)
 
-From the maven codegen plugin, run **generateView**.
+Then run the **generateView** maven codegen plugin as below.
 
 ![](/img/step-08-run-maven-generateview-codegen-plugin-after-modifying-view.png)
 
@@ -71,56 +71,277 @@ This gives you
 
 ## Configure dynamic permissions
 
-You can now configure dynamic permissions for trades and positions in our IDE. You need to make these changes to the code for the request server,  data server and event handler. For example, here we add permissioning to a query in the data server:
-
-![](/img/dataserver.png)
-
-You can add similar code to the queries in your request servers.
-
-Event handlers are slightly different, because the input data class can be customised. The code would look like this:
+You can now configure dynamic permissions for trades in our IDE. You need to make these changes to the code for the request server, data server and event handler.
+For example, here we add permissioning to a query in the data server:
 
 ```kotlin
-query("ALL_TRADES", TRADE){
+dataServer {
+
+  query("ALL_TRADES", ENHANCED_TRADE_VIEW) {
     permissioning {
-       auth(mapName = “ENTITY_VISIBILITY”){ 
-          TRADE.COUNTERPARTY_ID 
-       }
+      auth(mapName = "ENTITY_VISIBILITY") {
+        ENHANCED_TRADE_VIEW.COUNTERPARTY_ID
+      }
     }
+  }
 }
 ```
 
-## Testing
+You can add similar code to the queries in your request servers.
 
-You can write unit tests based on auth-perms (see EventHandlerPalTest in genesis-server repo inside genesis-pal-test, it contains an example of adding an auth cache override in the GenesisTestConfig and as part of the @Before setup)
+Request Server:
+```kotlin
+requestReplies {
 
-For example:
+  requestReply("TRADE", TRADE_VIEW) {
+    permissioning {
+      auth(mapName = "ENTITY_VISIBILITY") {
+        TRADE_VIEW.COUNTERPARTY_ID
+      }
+    }
+  }
+}
+```
 
-* Unit test where user can complete action successfully due to permissions (e.g. JohnDoe)
-* Unit test where user cannot complete action successfully due to permissions (e.g. JaneDoe)
+Event handlers are slightly different, because the input data class can be customised. The code would look like this (taking the TRADE_INSERT event handler as an example):
+
+```kotlin
+  eventHandler<Trade>(name = "TRADE_INSERT") {
+    permissions {
+      auth(mapName = "ENTITY_VISIBILITY") {
+        field { counterpartyId }
+      }
+    }
+    onValidate { event ->
+      val message = event.details
+      verify {
+        entityDb hasEntry Counterparty.ById(message.counterpartyId)
+        entityDb hasEntry Instrument.ById(message.instrumentId)
+      }
+      ack()
+    }
+    onCommit { event ->
+      val trade = event.details
+      stateMachine.insert(trade)
+      ack()
+    }
+  }
+```
+
+### Testing
+
+You can write unit tests based on auth-perms.
+
+For example, let's edit the `TradingEventHandlerTest` class:
+
+1. Add auth cache override to `GenesisTestConfig`. This will create the ENTITY_VISIBILITY auth cache map as part of the test.
+```kotlin
+class TradingEventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
+    GenesisTestConfig {
+        addPackageName("global.genesis.eventhandler.pal")
+        genesisHome = "/GenesisHome/"
+        scriptFileName = "trading_app-eventhandler.kts"
+        parser = { it }
+        initialDataFile = "TEST_DATA.csv"
+        addAuthCacheOverride("ENTITY_VISIBILITY")
+    }
+)
+```
+
+2. Add setup function and create two auth cache entries. The below authorises users JohnDoe and TestUser for entities with Counterparty ID = 1.
+```kotlin
+@Before
+fun setUp() {
+    authorise("ENTITY_VISIBILITY", "1", "JohnDoe")
+    authorise("ENTITY_VISIBILITY", "1", "TestUser")
+}
+```
+
+3. Create test showing where the user can complete action successfully due to permissions. Note that we are specifying the `userName` field on the `Event` object.
+```kotlin
+@Test
+fun `test insert trade`(): Unit = runBlocking {
+    val message = Event(
+        details = Trade {
+            tradeId = 1
+            counterpartyId = "1"
+            instrumentId = "2"
+        },
+        messageType = "EVENT_TRADE_INSERT",
+        userName = "JohnDoe"
+    )
+
+    val result: EventReply? = messageClient.suspendRequest(message)
+
+    result.assertedCast<EventReply.EventAck>()
+
+    val trade = entityDb.get(Trade.ById(1))
+    assertNotNull(trade)
+    assertEquals("1", trade.counterpartyId)
+    assertEquals("2", trade.instrumentId)
+    assertEquals(TradeStatus.NEW, trade.tradeStatus)
+}
+```
+
+4. Create test showing where the user cannot complete action successfully due to permissions. JaneDoe is not authorised due to not having an entry in the auth cache map ENTITY_VISIBILITY for Counterparty with ID 1 (In fact, at the moment user JaneDoe has no entries at all in the ENTITY_VISIBILITY map).
+```kotlin
+@Test
+fun `test trade insert without permission`(): Unit = runBlocking {
+    val message = Event(
+        details = Trade {
+            tradeId = 1
+            counterpartyId = "1"
+            instrumentId = "2"
+        },
+        messageType = "EVENT_TRADE_INSERT",
+        userName = "JaneDoe"
+    )
+
+    val result: EventReply? = messageClient.suspendRequest(message)
+
+    val eventNack = result.assertedCast<EventReply.EventNack>()
+    assertThat(eventNack.error).containsExactly(
+        StandardError(
+            "NOT_AUTHORISED",
+            "User JaneDoe lacks sufficient permissions"
+        )
+    )
+}
+```
+
+## Permission Codes
 
 Now moving to RIGHT_SUMMARY permission codes.
 
-Permission codes enable you to establish yes/no type access to resources (request server, data server, event handler), but they don’t act dynamically and they won’t filter rows based on fine-grain criteria (like dynamic permissions would).
+Permission codes allow you to establish a yes/no type access to resources (req-reps, dataserver, event handler), but they don’t act dynamically and they won’t filter rows based on fine grain criteria (like dynamic permissions would).
 
-For the purpose of this script, we can keep things simple. In reality, you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user.
+For the purpose of this script we can keep things simple. In reality you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user.
 
 \[//\]: # (There is a plan to add a table at this point.)
 
 In our trading app example we can set two types of rights:
 
-* TRADER (enables the trader to write trades - but only for their own related counterparties)
-* SUPPORT (enables support to have read-only access to everything)
+*  TRADER (enables the trader to read and write trades - but only for their own related counterparties)
+*  SUPPORT (enables support to have read-only access to everything)
 
-In terms of definitions, you can add the codes as part of the permissioning block in the relevant event. For example, for the TRADE_INSERT event handler we could have:
+In terms of definitions, you can add the codes as part of the permissions block in the relevant event handler. For example, for the TRADE_INSERT event handler we could have:
 
 ```kotlin
-permissions {
+  eventHandler<Trade>(name = "TRADE_INSERT") {
+    permissions {
+      permissionCodes = listOf("TRADER")
+      auth(mapName = "ENTITY_VISIBILITY") {
+        field { counterpartyId }
+      }
+    }
+    onValidate { event ->
+      val message = event.details
+      verify {
+        entityDb hasEntry Counterparty.ById(message.counterpartyId)
+        entityDb hasEntry Instrument.ById(message.instrumentId)
+      }
+      ack()
+    }
+    onCommit { event ->
+      val trade = event.details
+      stateMachine.insert(trade)
+      ack()
+    }
+  }
+```
 
-    permissionCodes = listOf("TRADER") 
+This means only users with the TRADER permission code will be able to use that event handler. You can add similar code to the request servers and data servers, as below, but for these we will also add the SUPPORT code to allow SUPPORT users to have read-only access to trades.
 
+Request Server:
+```kotlin
+requestReplies {
+
+  requestReply("TRADE", TRADE_VIEW) {
+    permissioning {
+      permissionCodes = listOf("TRADER", "SUPPORT")
+      auth(mapName = "ENTITY_VISIBILITY") {
+        TRADE_VIEW.COUNTERPARTY_ID
+      }
+    }
+  }
 }
 ```
 
-This means only users with TRADER permission code will be able to use that event handler. You can add similar code to the request servers and data servers.
+Data Server:
+```kotlin
+dataServer {
 
-The permission mechanism is driven by the RIGHT_SUMMARY table, which contains an association between a user and a right-code. You can see an example of a test for permissions in EventHandlerPalTest in genesis-server repo inside genesis-pal-test, it contains an example of adding a RIGHT_SUMMARY record as part of the @Before setup.
+  query("ALL_TRADES", ENHANCED_TRADE_VIEW) {
+    permissioning {
+      permissionCodes = listOf("TRADER", "SUPPORT")
+      auth(mapName = "ENTITY_VISIBILITY") {
+        ENHANCED_TRADE_VIEW.COUNTERPARTY_ID
+      }
+    }
+  }
+}
+```
+
+### Testing
+
+The permission mechanism is driven by the RIGHT_SUMMARY table, which contains an association between a user and a right-code.
+
+Now we need to write unit tests for this. As an example we will test the Event Handler.
+
+1. Modify the setup function. We are adding another entry to the ENTITY_VISIBILITY auth cache map for user JamieDoe. Also we are adding all of our users to the RIGHT_SUMMARY table.
+```kotlin
+@Before
+fun setUp() {
+    authorise("ENTITY_VISIBILITY", "1", "JohnDoe")
+    authorise("ENTITY_VISIBILITY", "1", "TestUser")
+    authorise("ENTITY_VISIBILITY", "1", "JamieDoe")
+
+    val trader = DbRecord.dbRecord("RIGHT_SUMMARY") {
+        "USER_NAME" with "JohnDoe"
+        "RIGHT_CODE" with "TRADER"
+    }
+    val support = DbRecord.dbRecord("RIGHT_SUMMARY") {
+        "USER_NAME" with "JaneDoe"
+        "RIGHT_CODE" with "SUPPORT"
+    }
+    val testUser = DbRecord.dbRecord("RIGHT_SUMMARY") {
+        "USER_NAME" with "TestUser"
+        "RIGHT_CODE" with "TRADER"
+    }
+    val jamieDoe = DbRecord.dbRecord("RIGHT_SUMMARY") {
+        "USER_NAME" with "TestUser"
+        "RIGHT_CODE" with "SUPPORT"
+    }
+    rxDb.insert(trader).blockingGet()
+    rxDb.insert(support).blockingGet()
+    rxDb.insert(testUser).blockingGet()
+    rxDb.insert(jamieDoe).blockingGet()
+}
+```
+
+2. Create a test for inserting a trade without the correct permission code.
+```kotlin
+@Test
+fun `test trade insert due to incorrect permission code`(): Unit = runBlocking {
+    val message = Event(
+        details = Trade {
+            tradeId = 1
+            counterpartyId = "1"
+            instrumentId = "2"
+        },
+        messageType = "EVENT_TRADE_INSERT",
+        userName = "JamieDoe"
+    )
+
+    val result: EventReply? = messageClient.suspendRequest(message)
+
+    val eventNack = result.assertedCast<EventReply.EventNack>()
+    assertThat(eventNack.error).containsExactly(
+        StandardError(
+            "NOT_AUTHORISED",
+            "User JamieDoe lacks sufficient permissions"
+        )
+    )
+}
+```
+User JamieDoe has the correct entry in the ENTITY_VISIBILITY auth cache map for Counterparty with ID = 1, but their RIGHT_CODE is SUPPORT, therefore is not authorised to enter a trade as the event handler requires the RIGHT_CODE to be TRADER.
