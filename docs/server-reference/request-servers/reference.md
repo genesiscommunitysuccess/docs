@@ -8,13 +8,23 @@ id: reference
 import CodeBlock from '@theme/CodeBlock';
 import Imports from '!!raw-loader!../../../examples/server/java/request-servers/imports.java';
 
-:::danger WIP
-Add introduction. Can the "Configure your request servers" page be combined with this one and the blurb on that page becomes this page's introduction?
-:::
-
 ## Defining a request server in GPAL
 ### Default imports
 <CodeBlock className="language-java">{Imports}</CodeBlock>
+
+The following properties are automatically available inside GPAL request servers:
+
+```kotlin
+val systemDefinition: SystemDefinitionService
+val rxDb: RxDb
+val entityDb: AsyncEntityDb
+val metaData: MetaDataRegistry
+val evaluatorPool: EvaluatorPool
+val messageDelegator: MessageDelegator
+val serviceDetailProvider: ServiceDetailProvider
+val genesisHFT: GenesisHFT
+val clientConnectionsManager: ClientConnectionsManager
+```
 
 ### Basic definition
 Here is the definition of a simple request server. You need to specify either a table or a view, in this case we are using the table INSTRUMENT_DETAILS.

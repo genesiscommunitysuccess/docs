@@ -6,6 +6,6 @@ global.genesis.gen.view.entity.*
 global.genesis.requestreply.pal.script.requestReply
 global.genesis.requestreply.pal.script.inject
 global.genesis.commons.model.GenesisSet
-global.genesis.commons.model.GenesisSet.genesisSet
+global.genesis.commons.model.GenesisSet.Companion.genesisSet
 org.joda.time.DateTime
 org.joda.time.DateTime.now
