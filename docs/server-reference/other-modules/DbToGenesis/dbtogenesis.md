@@ -241,3 +241,102 @@ Create the COUNTERPARTY trigger.
                     </key>
                 </keys>
             </table>
+
+    xml
+    <dbToGenesis xmlns:xi="http://www.w3.org/2001/XInclude">
+    
+        <options>
+            <databaseType>ORACLE</databaseType>
+            <url>jdbc:oracle:thin:@db1.ad.genesis.global:1521:genesisdev</url>
+            <user>dd67b69b937b25da0704bc682461f54fad20d5161ffffde210a4a30370fcb557</user>
+            <password>9577a0e7fc204a83ef59a57dcf9d543055100f440f2baebb38aef644c7ac2f03</password>
+            <dbMinConnections>10</dbMinConnections>
+            <dbMaxConnections>10</dbMaxConnections>
+        </options>
+    
+        <genesisStream name="INSTRUMENT">
+    
+            <from>INSTRUMENT</from>
+            <to>INSTRUMENT</to>
+    
+            <GenesisPrimaryKeyId>INSTRUMENT_BY_EXTERNAL_ID</GenesisPrimaryKeyId>
+            <rdbmsPrimarykey>INSTRUMENT_ID</rdbmsPrimarykey>
+            <rdbmsTimestampField>TIMESTAMP</rdbmsTimestampField>
+            <generateCreatedInfo>true</generateCreatedInfo>
+    
+            <metaData>
+                <field name="INSTRUMENT_ID" type="STRING" />
+                <field name="NAME" type="STRING" />
+                <field name="DESCRIPTION" type="STRING" />
+                <field name="INSTRUMENT_TYPE" type="ENUM" values="EQ DV FI FU" default="EQ" />
+                <field name="TICK_SIZE" type="DOUBLE" />
+                <field name="BAND_STATUS" type="ENUM" values="DISABLED ENABLED" default="ENABLED" />
+            </metaData>
+    
+            <proc>
+                <queryQueue>
+                    <![CDATA[
+                        {call queryUpdateQueue(?, ?, ?)}
+                    ]]>
+                </queryQueue>
+                <clearQueue>
+                    <![CDATA[
+                        {call clearUpdateQueue(?, ?)}
+                    ]]>
+                </clearQueue>
+                <loadTable>
+                    <![CDATA[
+                        {call retrieveInstrumentTable(?)}
+                    ]]>
+                </loadTable>
+                <retrieveRecord>
+                    <![CDATA[
+                        {call retrieveInstrumentRecord(?, ?)}
+                    ]]>
+                </retrieveRecord>
+            </proc>
+    
+        </genesisStream>
+    
+        <genesisStream name="COUNTERPARTY">
+    
+            <from>COUNTERPARTY</from>
+            <to>COUNTERPARTY</to>
+    
+            <GenesisPrimaryKeyId>COUNTERPARTY_BY_EXTERNAL_ID</GenesisPrimaryKeyId>
+            <rdbmsPrimarykey>COUNTERPARTY_ID</rdbmsPrimarykey>
+            <rdbmsTimestampField>TIMESTAMP</rdbmsTimestampField>
+            <generateCreatedInfo>true</generateCreatedInfo>
+    
+            <metaData>
+                <field name="COUNTERPARTY_NAME" type="STRING" />
+                <field name="DESCRIPTION" type="STRING" />
+                <field name="COUNTERPARTY_TYPE" type="ENUM" values="BROKER CLIENT CHARITY" default="BROKER" />
+                <field name="BAND_STATUS" type="ENUM" values="DISABLED ENABLED" default="ENABLED" />
+            </metaData>
+    
+            <proc>
+                <queryQueue>
+                    <![CDATA[
+                        {call queryUpdateQueue(?, ?, ?)}
+                    ]]>
+                </queryQueue>
+                <clearQueue>
+                    <![CDATA[
+                        {call clearUpdateQueue(?, ?)}
+                    ]]>
+                </clearQueue>
+                <loadTable>
+                    <![CDATA[
+                        {call retrieveCounterpartyTable(?)}
+                    ]]>
+                </loadTable>
+                <retrieveRecord>
+                    <![CDATA[
+                        {call retrieveCounterpartyRecord(?, ?)}
+                    ]]>
+                </retrieveRecord>
+            </proc>
+    
+        </genesisStream>
+    </dbToGenesis>
