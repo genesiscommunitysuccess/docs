@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: DbToGenesis
-sidebar_label: Introduction
+sidebar_label: DbToGenesis
 id: dbtogenesis
 
 ---
