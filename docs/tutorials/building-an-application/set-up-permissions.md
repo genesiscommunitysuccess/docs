@@ -19,21 +19,25 @@ We can display the configuration of both in our request server, data server and 
 
 First, enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system.
 
-You can read more about it here : [https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model](https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model "https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1178271745/4.1.0+Release+Key+Features+Breaking+changes#Auth-generic-permissions-model")
+You can read more about it [here](https://yljfsx0alebzeg.instant.forestry.io/server-reference/authentication-and-authorisation/set-up/#authorisation): 
 
 Starting with the server, make sure that you have two USER and USER_ATTRIBUTES records setup: JohnDoe and JaneDoe.
 
-     (I have already set them up in dev-trading1 and can be found in \~/testData folder).
+![](/img/jane-and-john-doe.png)
 
-Set two new key values in **site-specific/cfg/genesis-system-definition.kts** as described in the docs above:
+Add two new key values in **site-specific/cfg/genesis-system-definition.kts** as described in the docs above:
 
+```kotlin
     item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
 
     item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
+```
 
-Take note of auth-permissions.auto.xml in generated/cfg before running install
+Take note of **auth-permissions.auto.xml** in generated/cfg before running install.
 
-Run **genesisInstall**
+## Install and remap
+
+Run **genesisInstall** to check the changes you have made.
 
 Run **remap**.
 
@@ -51,27 +55,43 @@ writeMode
 
 update USER_ATTRIBUTES_BY_USER_NAME
 
-the generic permissioning settings have been set in place, and are stored in **auth-permissions.auto.xml** in **generated/cfg**. The next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started they will consider the new configuration.
+The generic permissioning settings have now been set in place, and are stored in **auth-permissions.auto.xml** in **generated/cfg**. The next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started they will consider the new configuration.
+
+Now go to the **-view-dictionary.kts** file and add the COUNTERPARTY_ID field to ENHANCED_TRADE_VIEW.
+
+![](/img/step-08-add-counterparty_id-to-enhanced_view-in-view-dictionary-with-highlight.png)
+
+From the maven codegen plugin, run **generateView**.
+
+![](/img/step-08-run-maven-generateview-codegen-plugin-after-modifying-view.png)
+
+This gives you
+
+![](/img/step-09-file-locations.png)
 
 ## Configure dynamic permissions
 
-You can now configure dynamic permissions for trades and positions in our IDE. You need to make these changes to the code for the request server,  data server and event handler. For example:
+You can now configure dynamic permissions for trades and positions in our IDE. You need to make these changes to the code for the request server,  data server and event handler. For example, here we add permissioning to a query in the data server:
 
-The same applies to request servers.
+![](/img/dataserver.png)
+
+You can add similar code to the queries in your request servers.
 
 Event handlers are slightly different, because the input data class can be customised. The code would look like this:
 
-    query("ALL_TRADES", TRADE){
+```kotlin
+query("ALL_TRADES", TRADE){
     permissioning {
        auth(mapName = “ENTITY_VISIBILITY”){ 
           TRADE.COUNTERPARTY_ID 
        }
     }
-    }
+}
+```
 
 ## Testing
 
-You can write unit tests based on auth-perms (see EventHandlerPalTest in genesis-server repo inside genesis-pal-test, it contains an example of adding an auth cache override in the GenesisTestConfig and as part of the @Before setup) 
+You can write unit tests based on auth-perms (see EventHandlerPalTest in genesis-server repo inside genesis-pal-test, it contains an example of adding an auth cache override in the GenesisTestConfig and as part of the @Before setup)
 
 For example:
 
@@ -80,22 +100,26 @@ For example:
 
 Now moving to RIGHT_SUMMARY permission codes.
 
-Permission codes allow you to establish yes/no type access to resources (req-reps, dataserver, event handler), but they don’t act dynamically and they won’t filter rows based on fine grain criteria (like dynamic permissions would).
+Permission codes enable you to establish yes/no type access to resources (request server, data server, event handler), but they don’t act dynamically and they won’t filter rows based on fine-grain criteria (like dynamic permissions would).
 
-For the purpose of this script we can keep things simple. In reality you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user (will have a diagram to add here).
+For the purpose of this script, we can keep things simple. In reality, you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user.
+
+\[//\]: # (There is a plan to add a table at this point.)
 
 In our trading app example we can set two types of rights:
 
-*  TRADER (enables the trader to write trades - but only for their own related counterparties)
-*  SUPPORT (enables support to have read-only access to everything)
+* TRADER (enables the trader to write trades - but only for their own related counterparties)
+* SUPPORT (enables support to have read-only access to everything)
 
-In terms of definitions, you can add the codes as part of the permissioning block in the relevant event . For example, for the TRADE_INSERT event handler we could have:
+In terms of definitions, you can add the codes as part of the permissioning block in the relevant event. For example, for the TRADE_INSERT event handler we could have:
 
+```kotlin
 permissions {
 
-            permissionCodes = listOf("TRADER") 
+    permissionCodes = listOf("TRADER") 
 
 }
+```
 
 This means only users with TRADER permission code will be able to use that event handler. You can add similar code to the request servers and data servers.
 

@@ -20,32 +20,33 @@ Most applications built on the platform include the typical financial product **
 ## A simple example of an event handler
 
 Here is a simple example of an event handler file. It defines an event handler called Hello and then has a contextEventHandler that checks for a name and sends an acknowledgement.
+```kotlin
+eventHandler {
 
-    eventHandler {
-    
-        eventHandler<Hello> {
-    
-            permissions {
-                auth("NAMES") {
-                    field { name }
-                }
-            }
-    
-            onCommit {
-                ack()
+    eventHandler<Hello> {
+
+        permissions {
+            auth("NAMES") {
+                field { name }
             }
         }
-    
-        contextEventHandler<Hello, String>("CONTEXT_HELLO") {
-            permissions {
-                auth("NAMES") {
-                    field { name }
-                }
+
+        onCommit {
+            ack()
+        }
+    }
+
+    contextEventHandler<Hello, String>("CONTEXT_HELLO") {
+        permissions {
+            auth("NAMES") {
+                field { name }
             }
-    
-            onValidate {
-                validationAck(validationContext = it.details.name)
-            }
+        }
+
+        onValidate {
+            validationAck(validationContext = it.details.name)
+        }
+```
 
 ## A more complex event handler
 

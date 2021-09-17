@@ -31,19 +31,22 @@ In this case, we have assumed you have installed the platform using the name oct
 
 ## 1. Edit the system configuration file
 The file is located at: 
-```
+```bash
 ~/run/site-specific/cfg/genesis-system-definition.kts
 ```
+
 ![db edit kts 1](https://files.document360.io/82b38d6b-46dd-48c3-a583-c5981a5c6537/Images/Documentation/db%20edit%20kts%201.png){height="" width=""}
 
 
 You need to make two changes.
 First, go to the line item for **DbLayer** and change the **value** from **FDB** to **SQL**. This informs the system that you are using PostgreSQL.
+
 ![db edit kts 4 with highlight](https://files.document360.io/82b38d6b-46dd-48c3-a583-c5981a5c6537/Images/Documentation/db%20edit%20kts%204%20with%20highlight.png){height="" width=""}
 
 
 Then, insert a line in the **hosts** block to identify the JDBC connection string for the database. This points the system to the local PostgreSQL server. For example:
-```
+
+```kotlin
 item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432”)
 ```
  

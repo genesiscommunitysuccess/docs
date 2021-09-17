@@ -1,11 +1,10 @@
 ---
 id: overview
-title: genesisToDb
+title: GenesisToDb
 sidebar_label: Overview
 sidebar_position: 1
 
 ---
-
 This **GenesisToDb** module enables you to stream data from Genesis to classic RDBMS databases, such as Oracle or MSSQL.
 
 The process listens to changes in the Genesis tables (insert, modify and delete) and immediately reproduces them in the selected RDBMS.
@@ -14,7 +13,7 @@ The process listens to changes in the Genesis tables (insert, modify and delete)
 
 Use **startProcess** to start the **GenesisToDb** process. This can take two optional arguments.
 
-**--clearText** can be passed if you want to use clear text user and passwords in our the configuration file, instead of encrypted ones.
+**--clearText** can be passed if you want to use clear text user and passwords in the configuration file, instead of encrypted ones.
 
 **--force** if passed to the process it attempts to re-insert every trade found in our Genesis table to the RDBMS, ignoring previously inserted records.
 
@@ -26,16 +25,14 @@ There are two well defined sections: process configuration and database stream c
 
 The process definition is made up of several fields that will setup the main configuration of the process:
 
-*_preExpression_* defines dynamic groovy code (methods, imports, etc.) you can add to this module for further usage.
-
-
+_preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add to this module for further usage.
 
 ```xml
 <preExpression>
     <!\[CDATA\[
 
-        import global.genesis.dta.commons.model.DtaSet
-        import global.genesis.dta.dta_db.DbRecord
+        import global.genesis.commons.model.GenesisSet
+        import global.genesis.db.DbRecord
 
         /*
         * Get market records for the given instrument id
@@ -52,25 +49,18 @@ The process definition is made up of several fields that will setup the main con
 </preExpression>
 ```
 
-*_options_* is a field container that represents the basic behaviour and database configuration of the process.
+_options_ is a field container that represents the basic behaviour and database configuration of the process.
 
 * **databaseType** can be set to ORACLE, MSSQL or POSTGRES.
-
 * **url** represents the database url to connect to using the JDBC driver. The url definition specifies the databaseType:
-
 * POSTGRES - `<url>jdbc:postgresql://IP_ADDRESS:PORT/DATABASE_NAME</url>`
 * MSSQL - `<url>jdbc:sqlserver://IP_ADDRESS:PORT;databaseName=DATABASE_NAME;</url>`
 * ORACLE - `<url>jdbc:oracle:thin:@IP_ADDRESS:PORT:DATABASE_NAME</url>`
-
 * **user** user from RDBMS. Encrypted by command line tool `encryptUserPass`.
-
 * **password** password from RDBMS. Encrypted by command line tool `encryptUserPass`.
-
 * **dbMinConnections** represents the minimum number of RDBMS connections that will be created on startup  inside each pool partition. Default: 10.
-
 * **dbMaxConnections** sets the maximum number of connections to be created by the RDBMS connection pool. Default: 10.
-
-* **maxOutstanding** will be the threshold to reach for the internal work queue from which the process will start logging warnings. Example use case: there are more than maxOutstanding records pending to be inserted in the RDBMS. Default: 10000.
+* **maxOutstanding** sets the threshold for the internal work queue that triggers the process to start logging warnings. Example use case: there are more than **maxOutstanding** records pending to be inserted in the RDBMS. Default: 10000.
 
 ```xml
     <options>
@@ -84,12 +74,10 @@ The process definition is made up of several fields that will setup the main con
     </options>
 ```
 
-*_databaseStream_* represents one stream from Genesis to the RDBMS. It contains the necessary logic to join different tables if necessary and it sets the fields to be inserted or modified in the RDBMS. It also specifies the stored procedures calls to be used and the parameters ordering used to call them. You can define as many databaseStreams as you want. It has a name attribute to databaseStreams from each other.
+_databaseStream_ represents one stream from Genesis to the RDBMS. It contains the necessary logic to join different tables if necessary and it sets the fields to be inserted or modified in the RDBMS. It also specifies the stored procedures calls to be used and the parameters ordering used to call them. You can define as many databaseStreams as you want. It has a name attribute to databaseStreams from each other.
 
 * **tables** Similar to DataServer configuration, you can specify a seed Genesis table with its seed key and join it to other Genesis tables so you can get all the data you need. GenesisToDb works with a timestamp system, and it can keep track of the last timestamp processed for each record, so the seedKey should be a timestamp field (e.g. "TIMESTAMP", "DATE_TIMESTAMP", "CREATED_AT", etc.) if you want to take full advantage of GenesisToDb capabilities.
-
 * **fields** is the representation of the SQL row to be written inside the RDBMS. Parameters are ordered by number from first to last. In the example we could associate "TRADE_ID" with parameter 1, "TRADE_QUANTITY" with parameter 2, and so on.
-
 * **proc** contains the store procedure calls for each of the use cases: insert, modify and delete. The standard JDBC call to RDBMS store procedures is standardised as _{call procedure(param1,param2,param3)}_. The configuration is flexible and allows to change the parameter order depending on the current call. A stored procedure could be called like: _insertIdAndClientName(1,3)_ and _modifyQuantity(2)_.
 
 Example:
@@ -149,7 +137,7 @@ You must have a separate table for each database stream.
 
 Each database must have a table that can hold records as specified in the **fields** field. So, following the previous example with TRADE_ID, TRADE_QUANTIY, CLIENT_NAME and CURRENCY_DESCRIPTION, you must have a SQL table with those column names and matching types. Matching types in this example could be: varchar(50), int, varchar(50) and varchar(50).
 
-*_The stored procedures for insert, modify and delete should also be created beforehand_*. This process does not create any store procedures and it just attempts to call already existing ones. Therefore, insertTrade should insert a trade into its correspondent TRADE table and likewise for the rest of the stored procedures.
+_The stored procedures for insert, modify and delete should also be created beforehand_. This process does not create any store procedures and it just attempts to call already existing ones. Therefore, insertTrade should insert a trade into its correspondent TRADE table and likewise for the rest of the stored procedures.
 
 ## SQL Procedures
 
@@ -165,29 +153,27 @@ A script called "encryptUserPass" is provided with Genesis so we can encrypt our
 
 ## A practical example
 
-This a step-by-step example of how to get an Oracle database up and running with **GenesisToDb**.
-
-A series of screenshots with examples of how to create tables, stored procedures and genesistodb.xml configuration for dta. The images can be opened in a new tab to see them full size if necessary.
+This is a step-by-step example of how to get an Oracle database up and running with **GenesisToDb**.
 
 1. Create INSTRUMENT_L1_PRICE table.
 
-!\[\](images/genesistodb/CreateTable.png)
+![](/img/dbtogenesis-create-table.png)
 
-1. Create Insert procedure.
+2. Create Insert procedure.
 
-!\[\](images/genesistodb/CreateInsertProcedure.png)
+![](/img/createinsertprocedure.png)
 
-1. Create Modify procedure.
+3. Create Modify procedure.
 
-!\[\](images/genesistodb/CreateModifyProcedure.png)
+![](/img/createmodifyprocedure.png)
 
-1. Create Delete table.
+4. Create Delete table.
 
-!\[\](images/genesistodb/CreateDeleteProcedure.png)
+![](/img/createdeleteprocedure.png)
 
-1. Create GenesisToDb configuration. **Ensure the xmlns:xi attribute is included inside the "dtaToDb" field if you want to use xinclude in your configuration**.
+Create **GenesisToDb** configuration. **Ensure the xmlns:xi attribute is included inside the "genesisToDb" field if you want to use xinclude in your configuration**.
 
-!\[\](images/genesistodb/CreateConfig.png)
+![](/img/createconfig.png)
 
 ## Script `generateSQLToRDB`
 
@@ -197,19 +183,16 @@ It is by no means mandatory, but it provides a generic, quick and working exampl
 
 usage: generateSQLToRDB
 
-```
--cfg,--configFile <arg>        genesistodb config xml file to be modified
-
--dbName,--databaseName <arg>   the database name for Oracle dbs
-
--dbType,--databaseType <arg>   the database type: MSSQL,ORACLE or
-
-                                POSTGRES
-
--f,--file <arg>                name of the sql file to export table
-
--h,--help                      show usage information
-
--t,--table <arg>               the name of the table to export to csv
-
-```
+    -cfg,--configFile <arg>        genesistodb config xml file to be modified
+    
+    -dbName,--databaseName <arg>   the database name for Oracle dbs
+    
+    -dbType,--databaseType <arg>   the database type: MSSQL,ORACLE or
+    
+                                    POSTGRES
+    
+    -f,--file <arg>                name of the sql file to export table
+    
+    -h,--help                      show usage information
+    
+    -t,--table <arg>               the name of the table to export to csv

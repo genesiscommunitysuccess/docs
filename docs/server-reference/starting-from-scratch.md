@@ -13,23 +13,30 @@ You must have  JDK Maven and IntelliJIDEA in order to do this. These instruction
 
 Genesis provides a Maven archetype to generate a skeleton project. This will host all the necessary modules and configuration for an application. To use it, open a terminal and execute:
 
-**mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=<group_id> -Dversion=1.0.0-SNAPSHOT -DinteractiveMode=true -DarchetypeVersion=5.2.0 -DartifactId=<artifact_id>**
+```bash
+mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=<group_id> -Dversion=1.0.0-SNAPSHOT -DinteractiveMode=true -DarchetypeVersion=5.2.0 -DartifactId=<artifact_id>
+```
 
 Note that if your terminal is PowerShell, you must wrap the arguments in quotes:
 
-**mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=<group_id>" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.2.0" "-DartifactId=<artifact_id>"**
+```bash
+mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=<group_id>" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.2.0" "-DartifactId=<artifact_id>"
+```
 
 Here, we use  **sample.trade** for **groupId** and **trade-101** for **artifactId**. This gives the command:
 
-**mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=sample.trade" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.2.0-SNAPSHOT" "-DartifactId=trade-101"**
+```
+mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=sample.trade" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.2.0-SNAPSHOT" "-DartifactId=trade-101"
+```
 
 ## 2. Build the project
 
 Once the project has been generated, change directory to the new directory and execute the mvn package:
 
-**cd trade-101**
-
-**mvn package**
+```bash
+cd trade-101
+mvn package
+```
 
 This downloads all the necessary dependencies and generates Genesis files you need for development.
 
@@ -45,21 +52,21 @@ Starting from the top, let's open **trade-101-config**. It contains all the conf
 
 Open **trade-101-config/src/main/resources/config/trade-101-fields-dictionary.kts**. The empty files looks like this:
 
-    fields {
-    
-    }
+```kotlin
+fields {
+
+}
+```
 
 We can add three simple fields to make start:
 
-    fields {
-    
+```kotlin
+fields {
     field("CODE", STRING)
-    
     field("CREATED", DATE)
-    
     field("PRICE", DOUBLE)
-    
-    }
+}
+```
 
 While coding, note that autocompletion helps with the configuration and its arguments.
 
@@ -71,7 +78,9 @@ The next project to explore is **trade-101-dictionary-cache**. It depends on **t
 
 Here, you will find Fields object with pre-generated literals - these are fields that are commonly used in trading applications; they get generated out-of-the box for faster development. To see the fields you have just added, you need to build the project again:
 
-**mvn package**
+```bash
+mvn package
+```
 
 Go back to the Fields object. You can now see the newly generated fields at the bottom of the file.
 

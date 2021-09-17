@@ -9,35 +9,37 @@ import styles from './styles.module.css';
 const features = [
   {
     title: <>Get started quickly</>,
-    imageUrl: '',
-    description: (
-      <>
-        Our platform enables you to build quickly, but you need to get oriented before you can start. So start here.
-      </>
+    description: (url) => (
+      <p>
+        Our platform enables you to build quickly, but you need to get oriented before you can start. <Link to={url}>So start here.</Link>
+      </p>
     ),
+    url: '/getting-started/platform/'
   },
   {
     title: <>Server reference</>,
-    imageUrl: '',
-    description: (
-      <>
-        The server of a Genesis application can be as simple or complex as your needs. Take a look at the modules and the way they can be configured.
-      </>
+    description: (url) => (
+      <p>
+        The server of a Genesis application can be as simple or complex as your needs. <Link to={url}>Take a look at the modules</Link> and the way they can be configured.
+      </p>
     ),
+    url: '/server-reference/intro/'
   },
   {
     title: <>Tutorials</>,
     imageUrl: '',
-    description: (
-      <>
-        Want to know how to build a Genesis app? We'll take you from start to finish.
-      </>
+    description: (url) => (
+      <p>
+        Want to know how to build a Genesis app? <Link to={url}>We'll take you from start to finish.</Link>
+      </p>
     ),
+    url: '/tutorials/building-an-application/intro/'
   },
 ];
 
-function Feature({imageUrl, title, description}) {
+const Feature = ({imageUrl, title, description, url}) => {
   const imgUrl = useBaseUrl(imageUrl);
+  const pageUrl = useBaseUrl(url);
   return (
     <div className={classnames('col col--4', styles.feature)}>
       {imgUrl && (
@@ -45,13 +47,13 @@ function Feature({imageUrl, title, description}) {
           <img className={styles.featureImage} src={imgUrl} alt={title} />
         </div>
       )}
-      <h3>{title}</h3>
-      <p>{description}</p>
+      <h3><Link to={pageUrl}>{title}</Link></h3>
+      {description(pageUrl)}
     </div>
   );
 }
 
-function Home() {
+const Home = () => {
   const context = useDocusaurusContext();
   const {siteConfig = {}} = context;
   return (

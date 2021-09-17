@@ -7,7 +7,7 @@ id: table-example
 
 Here is an example of a complete set of table definitions from GPAL.
 
-```sql
+```kotlin
 tables {
     table(name = "AUDIT_TRAIL", id = 0) {
         sequence(Fields.ID, "AT")

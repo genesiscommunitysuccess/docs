@@ -28,28 +28,28 @@ The primary key for the table is defined in lines 10-13. We don’t declare any 
 
 An index can be defined as unique or non-unique. The example defines one of each (lines 13-20). In this example, we want to be able to do record lookups based on SESSION_ID (internal identifier for the session) and SESSION_AUTH_TOKEN (client authentication token), but we would also like to perform range searches based on USER_NAME (which isn’t always unique - a USER can have multiple sessions). By defining a nonUnique index on the USER_NAME field we can store that index in a more efficient way in our database layer and autogenerate optimised getRange operations in the repositories layer.
 
-```sql
-    table(name = "USER_SESSION", id = 2) {
-        Fields.USER_NAME
+```kotlin
+table(name = "USER_SESSION", id = 2) {
+    Fields.USER_NAME
+    Fields.SESSION_ID
+    Fields.START_TIMESTAMP
+    Fields.LAST_ACCESS_TIME
+    Fields.SESSION_AUTH_TOKEN
+    Fields.TIMEOUT
+    Fields.HOST
+    Fields.ATTRIBUTES
+    primaryKey {
         Fields.SESSION_ID
-        Fields.START_TIMESTAMP
-        Fields.LAST_ACCESS_TIME
-        Fields.SESSION_AUTH_TOKEN
-        Fields.TIMEOUT
-        Fields.HOST
-        Fields.ATTRIBUTES
-        primaryKey {
-            Fields.SESSION_ID
+    }
+    indices {
+        nonUnique {
+            Fields.USER_NAME
         }
-        indices {
-            nonUnique {
-                Fields.USER_NAME
-            }
-            unique {
-                Fields.SESSION_AUTH_TOKEN
-            }
+        unique {
+            Fields.SESSION_AUTH_TOKEN
         }
     }
+}
 ```
 
 ### Subtables
@@ -64,7 +64,7 @@ This requirement occurs for different tables (e.g. COUNTERPARTY → ALT_COUNTERP
 Subtables are defined within the body of the table definition. The example below shows the GENESIS_PROCESS monitoring table:
 
 
-```sql
+```kotlin
 table(name = "GENESIS_PROCESS", id = 12) {
     Fields.PROCESS_NAME
     Fields.PROCESS_STATUS

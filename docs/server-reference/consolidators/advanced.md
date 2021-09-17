@@ -35,7 +35,7 @@ You can define as many consolidators as you like in your configuration file. Eac
 
 IMPORTANT: Do not supply null values  to the group method. If you are using a nullable field,  use the elvis operator: 
 
-```
+```kotlin
 group(trade.getString("DEAL_ID") ?: "NULL")
 ```
  
