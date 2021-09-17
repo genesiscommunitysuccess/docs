@@ -30,3 +30,5 @@ fields:
     no special characters (except hyphens).
   config:
     required: true
+pages:
+- docs/server-reference/other-modules/genesistodb/dbtogenesis.md
