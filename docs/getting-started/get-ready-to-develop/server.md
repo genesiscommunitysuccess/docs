@@ -125,48 +125,16 @@ The task of these processes is to provide data to the Web User Interface, and to
 | GENESIS_WEB_ADAPTER | If you are viewing an older instance, you might see this process. This is no longer used. It has been replaced by the GENESIS_ROUTER. |
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### Data Persistence processes
 
 These services ensure that database are kept on synch, and ensures that data is held in cache for fast access.
 
-Process name
+| Process name | Purpose |
+| --- | --- |
+| GENESIS_TO_DB | Streams data from Genesis to a classic RDBMS database (such as Oracle or MSSQL). This process listens to changes in the Genesis tables (insert, modify and delete) and reproduces them in the selected RDBMS. |
+| DB_TO_GENESIS | Streams data from a classic RDBMS database (such as Oracle or MSSQL) to a Genesis database. This process listens to changes in the SQL tables (insert, modify and delete) using a predefined system (triggers for each table to be streamed, procedures and a table to represent an update queue). It then reproduces them in the specified Genesis table. |
+| GENESIS_SYNC |Synchronises two separate Genesis databases. Usually, this is used where  the distance is too great for clustering to be used. |  
 
-Purpose
-
-GENESIS_TO_DB
-
-Streams data from Genesis to a classic RDBMS database (such as Oracle or MSSQL). This process listens to changes in the Genesis tables (insert, modify and delete) and reproduces them in the selected RDBMS.
-
-DB_TO_GENESIS
-
-Streams data from a classic RDBMS database (such as Oracle or MSSQL) to a Genesis database. This process listens to changes in the SQL tables (insert, modify and delete) using a predefined system (triggers for each table to be streamed, procedures and a table to represent an update queue). It then reproduces them in the specified Genesis table.
-
-GENESIS_SYNC
-
-Synchronises two separate Genesis databases. Usually, this is used where  the distance is too great for clustering to be used.
 
 ### Data Analytics processes
 
