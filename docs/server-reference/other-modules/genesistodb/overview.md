@@ -5,7 +5,9 @@ sidebar_label: Overview
 sidebar_position: 1
 
 ---
-This **GenesisToDb** module enables you to stream data from Genesis to classic RDBMS databases, such as Oracle or MSSQL.
+## GenesisToDb
+
+The **GenesisToDb** module enables you to stream data from Genesis to classic RDBMS databases, such as Oracle or MSSQL.
 
 The process listens to changes in the Genesis tables (insert, modify and delete) and immediately reproduces them in the selected RDBMS.
 
@@ -19,7 +21,7 @@ Use **startProcess** to start the **GenesisToDb** process. This can take two opt
 
 ### Configuration
 
-The configuration is similar to **GenesisToDb** (and other Genesis modules). It can be configured through the standard Genesis configuration XML files.
+The configuration is similar to **DbToGenesis** (and other Genesis modules). It can be configured through the standard Genesis configuration XML files.
 
 There are two well defined sections: process configuration and database stream configurations.
 
