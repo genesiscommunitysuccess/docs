@@ -242,7 +242,7 @@ Create the COUNTERPARTY trigger.
                 </keys>
             </table>
 
-dbtogenesis.xml configuration. **Ensure the xmlns:xi attribute is included if you want to use xinclude in your configuratio**n.
+dbtogenesis.xml configuration. **Ensure the xmlns:xi attribute is included if you want to use xinclude in your configuration**.
 
     xml
     <dbToGenesis xmlns:xi="http://www.w3.org/2001/XInclude">
