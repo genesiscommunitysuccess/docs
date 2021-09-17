@@ -249,10 +249,8 @@ The example shows two different ways of using key values imported from Oracle.
                 </table>
 13. Create the **dbtogenesis.xml** configuration. **Ensure the xmlns:xi attribute is included if you want to use xinclude in your configuration**.
 
-    xml
-    <dbToGenesis xmlns:xi="http://www.w3.org/2001/XInclude">
-
-        <options>
+        xml
+        <dbToGenesis xmlns:xi="http://www.w3.org/2001/XInclude"><options>
             <databaseType>ORACLE</databaseType>
             <url>jdbc:oracle:thin:@db1.ad.genesis.global:1521:genesisdev</url>
             <user>dd67b69b937b25da0704bc682461f54fad20d5161ffffde210a4a30370fcb557</user>
@@ -354,10 +352,7 @@ The **generateSQLFromRDB** script is a tool that generates ".sql" files to creat
 
 * It is by no means mandatory, but it provides a generic, quick and working example that can be further modified or extended with ease. However, the Genesis dictionary must be appropriately configured beforehand:
   EXTERNAL_ID field and TABLENAME_BY_EXTERNAL_ID key must exist (as shown in the examples in the previous section) inside the table
-  
 * You also need the CREATED_AT and CREATED_BY fields in the table if you want to use the **generateCreatedInfo** option in the **dbtogenesis.xml** configuration.
-
-\`\`\`
 
 #### generateSQLFromRDB
 
