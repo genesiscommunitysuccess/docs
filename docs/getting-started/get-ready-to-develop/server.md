@@ -140,49 +140,26 @@ These services ensure that database are kept on synch, and ensures that data is 
 
 Analytics provide aggregated and calculated data, such as real-time positions, chart data, or orders outstanding. Note that the analytic data is stored in the Genesis database, so access to the data is through request server or data server.
 
-Process name
+| Process name | Purpose |
+| --- | --- |
+| CONSOLIDATOR | Aggregates data from the Genesis database in real time and  writes the new data in a separate data.|
+| R INTEGRATION | Enables consolidators to include R functions in their calculations. R is a statistical programming language. |
 
-Purpose
-
-CONSOLIDATOR
-
-Aggregates data from the Genesis database in real time and  writes the new data in a separate data.
-
-R INTEGRATION
-
-Enables consolidators to include R functions in their calculations. R is a statistical programming language.
 
 ### Integration processes
 
 These processes enable Genesis applications to send messages to and receive messages from external systems.
 
-Process name
+| Process name | Purpose |
+| --- | --- |
+| CAMEL | performs integration with external systems that produce or consume data..|
+| FIX| integrates Genesis with external systems that use the FIX messaging standard. |
+| PROTOCOL_BUFFER| integrates Genesis with external systems that use protocol buffers to control message format. |
+| STREAMER_SERVER |listens to a table or view, and streams data out to streamer clients. In almost all cases, the table or view must be an audit table. This covers both inbound and outbound messages. |
+| STREAMER_CLIENT| Receives data from a streamer server  When data is received, it transforms into the relevant format. This covers both inbound and outbound messages. |
 
-Purpose
 
-CAMEL
 
-Performs integration with external systems that produce or consume data.
-
-FIX
-
-integrates Genesis with external systems that use the FIX messaging standard.
-
-MARKET DATA
-
-Details needed!!
-
-PROTOCOL_BUFFER
-
-Details needed!!
-
-STREAMER_SERVER
-
-Listens to a table or view, and streams data out to streamer clients. In almost all cases, the table or view must be an audit table. This covers both inbound and outbound messages.
-
-STREAMER_CLIENT
-
-Receives data from a streamer server  When data is received, it transforms into the relevant format. This covers both inbound and outbound messages.
 
 ## Putting the pieces together
 
