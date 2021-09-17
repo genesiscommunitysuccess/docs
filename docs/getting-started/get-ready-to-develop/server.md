@@ -93,8 +93,7 @@ At log-in, user permission data is copied to the UI layer to control the data th
 | Process name  | Purpose  |  
 |---|---|---|---|---|
 | AUTH_MANAGER  |  Handles authentication of users, with links to Single Sign On (SSO) and Active Directory. |   
-| AUTH_PERMS  | 
-Handles permissions - whether the user has the right to view a specific piece of information. When the application starts, it checks every entity in the application and performs an authorisation check for every user on the system. In this way, it builds a map of permissioned users. |  
+| AUTH_PERMS  | Handles permissions - whether the user has the right to view a specific piece of information. When the application starts, it checks every entity in the application and performs an authorisation check for every user on the system. In this way, it builds a map of permissioned users. |  
 | AUTH_DATASERVER  | Sends information on user rights to the User Interface, stored in the USER_RIGHTS table   |   
 | AUTH_CONSOLIDATIONS  | Provides data for authentication and authorisation.|   
 
