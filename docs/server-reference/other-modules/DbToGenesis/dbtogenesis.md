@@ -66,14 +66,13 @@ _preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add
   **Very important**: if you insert this timestamp field into the Genesis table and the field is also a key, there can be clashes if two records have a timestamp with the same number of milliseconds. You can avoid this situation by deleting this key from the Genesis table.
 * **generateCreatedInfo** is used to get extra information for every transaction. If set to **true**, it will write some extra information to our Genesis records: CREATED_AT (TIMESTAMP) and CREATED_BY(STRING). It is important to note that both fields must exist in the Genesis table in order to write these.
 * **metaData** represents a field list to be set in a Genesis record and ultimately represents the final row to be inserted in the Genesis table. Field names must be column names in the **from** table and **type** must be a valid Genesis column type.
-* **proc** contains the store procedure calls for each of the use cases:   
+* **proc** contains the stored procedure calls for each of the use cases:   
   query the update queue  
   clear the update queue,   
   load the table into Genesis for the first time (or if we force a reload)  
   retrieve a particular record from the selected table.   
-  The standard JDBC call to RDBMS store procedures is standardised as _{call procedure(param1,param2,param3)}_ and such standard will be followed in this configuration too. There is no need to hardcode any parameter, as they will be set up in runtime.
-* 
-  * **queryQueue** calls a stored procedure which is passed two parameters in order: the table name (e.g. 'TRADE') and a timestamp. This procedure should return all rows stored the SQL UpdateQueue table with the same TABLE_NAME argument and with a bigger timestamp than the timestamp argument.
+  The standard JDBC call to RDBMS store procedures is standardised as _{call procedure(param1,param2,param3)}_ and such standard will be followed in this configuration too. There is no need to hard-code any parameter, as these are wset up in runtime.
+* **queryQueue** calls a stored procedure which is passed two parameters in order: the table name (e.g. 'TRADE') and a timestamp. This procedure should return all rows stored the SQL UpdateQueue table with the same TABLE_NAME argument and with a bigger timestamp than the timestamp argument.
 * **clearQueu**e works the same way as the previous store procedure, but instead of returning rows, it deletes all the rows found in the SQL UpdateQueue table matching the same table name and a smaller or equal timestamp value. This procedure ensures we keep the UpdateQueue within a reasonable size after we have retrieved and applied the latest changes in Genesis.
 * **loadTable** has no arguments; it  simply returns every row stored in the selected SQL table, in our example it would be TRADE.
 * **retrieveRecord** receives one argument, which represents a primary key in the chosen SQL table ('TRADE') and returns this row.
