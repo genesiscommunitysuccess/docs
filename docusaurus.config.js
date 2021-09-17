@@ -2,8 +2,8 @@ const baseUrl = process.env.BASE_URL || '/';
 const routeBasePath = '/';
 
 module.exports = {
-  title: 'Genesis Platform',
-  tagline: 'Code Less, Do More',
+  title: 'Low-Code / No-Code For Financial Markets',
+  tagline: 'The Platform with 50+ Modern Building Blocks to Accelerate App Development.',
   url: 'https://genesis.global/',
   baseUrl,
   favicon: 'img/favicon.ico',
@@ -51,7 +51,10 @@ module.exports = {
       logo: {
         alt: 'Genesis Logo',
         src: 'img/logo.png',
-      }
+      },
+      items: [
+        {to: 'https://genesis.global/contact-us/', label: 'Register for a Demo', position: 'right', className: 'demo'}
+      ]
     },
     footer: {
       style: 'dark',

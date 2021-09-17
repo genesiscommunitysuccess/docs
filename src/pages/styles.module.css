@@ -5,37 +5,22 @@
  * and scoped locally.
  */
 
-.heroBanner {
-  padding: 6rem 0;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  background: url(/img/bg.png);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: bottom;
-}
-
-@media screen and (max-width: 966px) {
-  .heroBanner {
-    padding: 2rem;
-  }
-}
-
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .features {
   display: flex;
   align-items: center;
-  padding: 2rem 0;
+  padding: 2rem 0 0 0;
   width: 100%;
 }
 
-.featureImage {
-  height: 200px;
-  width: 200px;
+.feature {
+  --ifm-spacing-horizontal: 2rem;
 }
+
+.platform {
+  display: flex;
+  align-items: center;
+  padding: 10rem 0 20rem 0;
+  width: 100%;
+  background: top right url(/img/screen2.png) no-repeat;
+}
+

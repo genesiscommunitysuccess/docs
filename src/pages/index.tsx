@@ -37,17 +37,11 @@ const features = [
   },
 ];
 
-const Feature = ({imageUrl, title, description, url}) => {
-  const imgUrl = useBaseUrl(imageUrl);
+const Feature = ({title, description, url}) => {
   const pageUrl = useBaseUrl(url);
   return (
     <div className={classnames('col col--4', styles.feature)}>
-      {imgUrl && (
-        <div className="text--center">
-          <img className={styles.featureImage} src={imgUrl} alt={title} />
-        </div>
-      )}
-      <h3><Link to={pageUrl}>{title}</Link></h3>
+      <h2><Link to={pageUrl}>{title}</Link></h2>
       {description(pageUrl)}
     </div>
   );
@@ -56,39 +50,60 @@ const Feature = ({imageUrl, title, description, url}) => {
 const Home = () => {
   const context = useDocusaurusContext();
   const {siteConfig = {}} = context;
+  const heroImage = useBaseUrl('img/screen1.png');
+  const platformImage = useBaseUrl('img/screen2.png');
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
-      <header className={classnames('hero hero--primary', styles.heroBanner)}>
-        <div className="container">
-          <h1 className="hero__title">{siteConfig.title}</h1>
-          <p className="hero__subtitle">{siteConfig.tagline}</p>
-          <div className={styles.buttons}>
-            <Link
-              className={classnames(
-                'button button--secondary button--lg',
-                styles.getStarted,
-              )}
-              to={useBaseUrl('getting-started/platform/')}>
-              Get Started
-            </Link>
+      title={siteConfig.title}
+      description={siteConfig.tagLine}>
+      <div className="homepage">
+        <div className="hero">
+          <div className="container">
+            <h1 className="hero__title">{siteConfig.title}</h1>
+            <p className="hero__subtitle">{siteConfig.tagline}</p>
+            <img src={heroImage} alt="" />
+            <div>
+              <Link
+                className='button button--secondary button--outline button--lg button--getting-started'
+                to={useBaseUrl('getting-started/platform/')}>
+                Get Started
+              </Link>
+            </div>
           </div>
         </div>
-      </header>
-      <main>
-        {features && features.length > 0 && (
-          <section className={styles.features}>
+        <main>
+          {features && features.length > 0 && (
+            <section className={styles.features}>
+              <div className="container">
+                <div className="row">
+                  {features.map((props, idx) => (
+                    <Feature key={idx} {...props} />
+                  ))}
+                </div>
+              </div>
+            </section>
+          )}
+          <section className={styles.platform}>
             <div className="container">
               <div className="row">
-                {features.map((props, idx) => (
-                  <Feature key={idx} {...props} />
-                ))}
+                <div className="col col--8">
+                  <h2>Getting to know the platform</h2>
+                  <p><strong>The Genesis LCNC Platform is the only Low-Code/No-Code platform designed to build core, mission-critical systems for the financial markets.</strong></p>
+                  <p>It enables you to develop and deploy your own applications at speed, from the simplest of internal systems to complete exchanges.</p>
+                  <p>
+                    <a href={useBaseUrl('getting-started/platform/')}>Read more...</a>
+                  </p>
+                  <Link
+                    className='navbar__item navbar__link demo'
+                    to="https://genesis.global/contact-us/">
+                    Register for a Demo
+                  </Link>
+                </div>
               </div>
             </div>
           </section>
-        )}
-      </main>
+        </main>
+      </div>
     </Layout>
   );
 }
