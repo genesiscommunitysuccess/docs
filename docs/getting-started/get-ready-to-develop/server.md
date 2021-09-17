@@ -91,7 +91,7 @@ Permissions are stored in three summary tables in the NOSQL data store. This dat
 At log-in, user permission data is copied to the UI layer to control the data that the user is able to see.
 
 | Process name  | Purpose  |  
-|---|---|---|---|---|
+|---|---|
 | AUTH_MANAGER  |  Handles authentication of users, with links to Single Sign On (SSO) and Active Directory. |   
 | AUTH_PERMS  | Handles permissions - whether the user has the right to view a specific piece of information. When the application starts, it checks every entity in the application and performs an authorisation check for every user on the system. In this way, it builds a map of permissioned users. |  
 | AUTH_DATASERVER  | Sends information on user rights to the User Interface, stored in the USER_RIGHTS table   |   
@@ -115,33 +115,38 @@ Everything in a Genesis application is driven by events. These could be incoming
 
 The task of these processes is to provide data to the Web User Interface, and to ensure that each data item reaches the correct users (and nobody else).
 
-Process name
+| Process name | Purpose |
+| --- | --- |
+| DATASERVER | Pushes real-time data to the user interface every time the database is updated. |
+| REQUEST SERVER | Pushes static data to the user interface in response to specific events (for example, to populate a dialog in the user interface). |
+| DATA PUBLISHER | Publishes lightweight real-time market-data changes. |
+| DB_SERVER |  |
+| GENESIS_ROUTER | Manages sessions and routes messages to/from services over tcp/ip, websockets, html, with encryption & compression. The data server uses this process to determine which users should receive each update. |
+| GENESIS_WEB_ADAPTER | If you are viewing an older instance, you might see this process. This is no longer used. It has been replaced by the GENESIS_ROUTER. |
 
-Purpose
 
-DATASERVER
 
-Pushes real-time data to the user interface every time the database is updated.
 
-REQUEST SERVER
 
-Pushes static data to the user interface in response to specific events (for example, to populate a dialog in the user interface).
 
-DATA PUBLISHER
 
-Publishes lightweight real-time market-data changes.
 
-DB_SERVER
 
-Details needed!!
 
-GENESIS_ROUTER
 
-Manages sessions and routes messages to/from services over tcp/ip, websockets, html, with encryption & compression. The data server uses this process to determine which users should receive each update.
 
-GENESIS_WEB_ADAPTER
 
-If you are viewing an older instance, you might see this process. This is no longer used. It has been replaced by the GENESIS_ROUTER.
+
+
+
+
+
+
+
+
+
+
+
 
 ### Data Persistence processes
 
