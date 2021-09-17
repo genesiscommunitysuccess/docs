@@ -73,7 +73,7 @@ _preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add
   retrieve a particular record from the selected table.   
   The standard JDBC call to RDBMS store procedures is standardised as _{call procedure(param1,param2,param3)}_ and such standard will be followed in this configuration too. There is no need to hard-code any parameter, as these are wset up in runtime.
 * **queryQueue** calls a stored procedure which is passed two parameters in order: the table name (e.g. 'TRADE') and a timestamp. This procedure should return all rows stored the SQL UpdateQueue table with the same TABLE_NAME argument and with a bigger timestamp than the timestamp argument.
-* **clearQueu**e works the same way as the previous store procedure, but instead of returning rows, it deletes all the rows found in the SQL UpdateQueue table matching the same table name and a smaller or equal timestamp value. This procedure ensures we keep the UpdateQueue within a reasonable size after we have retrieved and applied the latest changes in Genesis.
+* **clearQueu**e works the same way as the previous store procedure, but instead of returning rows, it deletes all the rows found in the SQL **UpdateQueue** table matching the same table name and a smaller or equal timestamp value. This procedure ensures the system can keep the **UpdateQueue** within a reasonable size after the latest changes have been we have retrieved and applied in Genesis.
 * **loadTable** has no arguments; it  simply returns every row stored in the selected SQL table, in our example it would be TRADE.
 * **retrieveRecord** receives one argument, which represents a primary key in the chosen SQL table ('TRADE') and returns this row.
 
