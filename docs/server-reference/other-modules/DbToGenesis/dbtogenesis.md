@@ -179,30 +179,15 @@ Create the ClearUpdateQueue procedure.
 Create the INSTRUMENT trigger.  
 ![](/img/createinstrumenttrigger.png)
 
-!\[\](images/dbtogenesis/CreateINSTRUMENTTrigger.png)
+Create the INSTRUMENT retrieve record procedure.  
+![](/img/createretrieveinstrumentrecordprocedure.png)Create the INSTRUMENT retrieve table procedure.![](/img/createretrieveinstrumenttableprocedure.png)
 
-6) Create INSTRUMENT retrieve record procedure.
+Create the COUNTERPARTY table.  
+![](/img/createcounterpartytable.png)
 
-!\[\](images/dbtogenesis/CreateRetrieveInstrumentRecordProcedure.png)
+Create the COUNTERPARTY trigger.  
+![](/img/createcounterpartytrigger.png)Create the COUNTERPARTY retrieve record procedure.  
+![](/img/createretrievecounterpartyrecordprocedure.png)Create the COUNTERPARTY retrieve table procedure.  
+![](/img/createretrievecounterpartyrecordprocedure.png)
 
-7) Create INSTRUMENT retrieve table procedure.
-
-!\[\](images/dbtogenesis/CreateRetrieveInstrumentTableProcedure.png)
-
-8) Create COUNTERPARTY table.
-
-!\[\](images/dbtogenesis/CreateCOUNTERPARTYTable.png)
-
-9) Create COUNTERPARTY trigger.
-
-!\[\](images/dbtogenesis/CreateCOUNTERPARTYTrigger.png)
-
-10) Create COUNTERPARTY retrieve record procedure.
-
-!\[\](images/dbtogenesis/CreateRetrieveCounterpartyRecordProcedure.png)
-
-11) Create COUNTERPARTY retrieve table procedure.
-
-!\[\](images/dbtogenesis/CreateRetrieveCounterpartyTableProcedure.png)
-
-12) dictionary.xml tables.
+ dictionary.xml tables.
