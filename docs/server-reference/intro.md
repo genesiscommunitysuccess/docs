@@ -19,7 +19,7 @@ Broadly, there are eight main steps in creating a server. Depending on the compl
 4. [**Configure your request servers**](/server-reference/request-servers/configure/). These provide static data to the User Interface (for dialogs or charts, for example).
 5. [**Configure your data servers**](/server-reference/data-servers/configure/). These automatically provide real-time information to permissioned users via the User Interface.
 6. [**Integrate with external systems**](/server-reference/external-systems/configure/). In most cases, the application will receive messages from external systems and/or send messages out. This is where you configure how the messages are formatted so that incoming messages are reformatted to Genesis data model and outgoing messages are suitable formatted (such as FIX messages).
-7. [**Set up authentication and authorisation**](/server-reference/authentication-and-authorisation/set-up/). This is where you control access to the application and permission to view specific data or perform specific functions.
+7. [**Set up authentication and authorisation**](/server-reference/authentication-and-authorisation/authentication/). This is where you control access to the application and permission to view specific data or perform specific functions.
 8. [**Configure your consolidators**](/server-reference/consolidators/configure/). These perform aggregation of data (for example, incoming trades) and calculations (such as risk positions),
 
 Once you have completed these steps, you will have a working server, ready to provide information to your User Interface.

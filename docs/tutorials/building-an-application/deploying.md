@@ -2,6 +2,6 @@
 id: deploying
 title: Deploying
 sidebar_label: Deploying
-sidebar_position: 12
+sidebar_position: 13
 
 ---

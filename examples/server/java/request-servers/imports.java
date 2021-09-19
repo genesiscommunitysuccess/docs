@@ -1,0 +1,11 @@
+global.genesis.gen.dao.*
+global.genesis.gen.config.tables.*
+global.genesis.gen.config.view.*
+global.genesis.gen.dao.enums.*
+global.genesis.gen.view.entity.*
+global.genesis.requestreply.pal.script.requestReply
+global.genesis.requestreply.pal.script.inject
+global.genesis.commons.model.GenesisSet
+global.genesis.commons.model.GenesisSet.Companion.genesisSet
+org.joda.time.DateTime
+org.joda.time.DateTime.now
