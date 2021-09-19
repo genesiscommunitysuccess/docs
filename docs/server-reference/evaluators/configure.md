@@ -7,13 +7,13 @@ id: configure
 
 Evaluators allow developers to connect Event Handlers to two different kind of events.
 
-    *) *rules*, defined as groovy expression, which respond to changes to database table entries
-    *) Time Events, defined as standard cron expressions. 
+1. *Dynamic Rules*, are defined as groovy expression, which respond to changes to database table entries
+2. *Cron Rules*, ie Timing Rules are defined as standard cron expressions. 
 
 Both kind of event captures are defined in the database in tables DYNAMIC_RULES and CRON_RULES respectively. In both cases the GENESIS_EVALUATOR must be configured to be running.
 The configuration to run the GENESIS_EVALUATOR in available by default, but the process must be switched on.
 
-eg, aasuming having a file called `/home/trading/run/site-specific/cfg/genesis-processes.xml`, we can simply switch, start from true to false, making sure to run 
+eg, assuming having a file called `/home/trading/run/site-specific/cfg/genesis-processes.xml`, we can simply switch, start from true to false, making sure to run 
 "genesisInstall -> killServer -> startServers", so that configuration takes effect.
 
 ```xml {2}
