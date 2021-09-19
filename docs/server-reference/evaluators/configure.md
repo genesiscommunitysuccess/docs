@@ -80,9 +80,9 @@ data class PositionCancel(
 )
 ```
 
-To setup the EventHandler ` trading_app-script-config\src\main\resources\scripts\trading_app-eventhandler.kts`
+eg. event handlers that inserts a Notify message, which includes an email message into the database.
 
-with contents:-
+To setup the EventHandler ` trading_app-script-config\src\main\resources\scripts\trading_app-eventhandler.kts`, with code:-
 
 ```kotlin
 {
@@ -111,5 +111,4 @@ eventHandler<PositionCancel> {
 
 ```
 
-This example ab
-
+Event handlers are covered in more detail here.
