@@ -41,7 +41,7 @@ This will fail because we have duplicate fields with the different field types.
 
 ![](/img/fail-duplicate-fields-and-tables.png)
 
-Edit the file .Remove the following duplicated fields:
+Edit the file trading_app-fields-dictionary.kts .Remove the following duplicated fields:
 
 * COUNTERPARTY_ID
 * INSTRUMENT_ID
