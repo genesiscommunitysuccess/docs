@@ -102,6 +102,8 @@ Run
 
 **mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=trading_app -B**
 
+![](/img/trading_app-creation-prepare-maven-project-10-11-12.png)
+
 This gives you the following structure:
 
 ![](/img/trading_app-creation-show-project-structure-13.png)
