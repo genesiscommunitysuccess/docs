@@ -52,7 +52,7 @@ fields {
 }
 ```
 
-Add TRADE_STATUS field to TRADE table in `trading_app-tables-dictionary.kts` file
+Add the TRADE_STATUS field to TRADE table in `trading_app-tables-dictionary.kts` file
 
 ```kotlin {12}
 tables {
@@ -156,11 +156,11 @@ sealed class TradeEffect {
 
 ### Add the module as a pom dependency
 
-Add eventhandler module as pom dependency to script-config module and refresh maven
+Add the eventhandler module as a pom dependency to script-config module and refresh the maven.
 
 ![](/img/state-machine-pom-change.png)
 
-Integrate state machine in TRADE_INSERT event.
+Integrate the state machine in the TRADE_INSERT event.
 
 ```kotlin {2,15}
 eventHandler {
