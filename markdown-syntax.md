@@ -107,6 +107,8 @@ import Example from '!!raw-loader!./examples/ui/helloWorld';
 
 There must be at least 3 dashes separating each header cell. The outer pipes (|) are optional, and you don't need to make the raw Markdown line up prettily. You can also use inline Markdown.
 
+you can also use this [table generator website](https://www.tablesgenerator.com/markdown_tables#) to visually build markdown tables 
+
 | Markdown | Less | Pretty |
 | --- | --- | --- |
 | Still | renders | nicely |
