@@ -14,7 +14,7 @@ The caching mechanism applies to single-record database look-up operations acros
 The cache definition can be defined in two different forms:
 
 * in xml format,  inside the process config file itself.  (as used in xml-based configurations, such as consolidator.)
-* in a GPAL format. The GPAL format is generally used for microservices using a GPAL script (defined in the <script> attribute in processes.xml) and this file will be defined in the <config> attribute of the process definition. The GPAL file naming convention is: _application_**-process-config.kts**
+* in a GPAL format. The GPAL format is generally used for microservices using a GPAL script (defined in the <script> attribute in processes.xml) and this file will be defined in the <config> attribute of the process definition. 
 
 The available options for both XML and GPAL are:
 
