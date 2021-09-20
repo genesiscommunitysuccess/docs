@@ -53,7 +53,7 @@ If you are using the GPAL event handlers, this is sufficient to enable auditing 
 
 ### Updating the state machine to use auditing
 
-Next you need to change the insert, and modify methods in the **TradeStateMachine.kts** file. We need to change their method signatures to use the AsyncMultiEntityReadWriteGenericSupport parameter and the `internalState.withTransaction(transaction) { }` code block.  An example can be found below:
+Next you need to change the insert, and modify methods in the **TradeStateMachine.kts** file. Specifically, each method must be edited so that the method signature uses the **AsyncMultiEntityReadWriteGenericSupport** parameter and the `internalState.withTransaction(transaction) { }` code block.  For example:
 
 ```kotlin {2,5,10,12,20,23}
     suspend fun insert(
@@ -85,7 +85,7 @@ Next you need to change the insert, and modify methods in the **TradeStateMachin
 
 ### Update the event handlers to use auditing
 
-Now we will have to update the trading_app-eventhandler.kts in order to pass the `entityDb` object into the updated methods of the state machine, as the syncMultiEntityReadWriteGenericSupport parameter. This should resemble the example below:
+Now you must update the **trading_app-eventhandler.kts** in order to pass the `entityDb` object into the updated methods of the state machine, as the **syncMultiEntityReadWriteGenericSuppor**t parameter. This should resemble the example below:
 
 ```kotlin {12,19,26,35}
     eventHandler<Trade>(name = "TRADE_INSERT") {
