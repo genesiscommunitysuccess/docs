@@ -373,7 +373,7 @@ Test to check that you cannot allocate trade that has been cancelled:
     }
 ```
 
-Test to check that you can change price of the trade when entered by TestUser, which executes onCommit logic from state machine:
+Test to check that you can change the price of the trade when entered by TestUser, which executes onCommit logic from state machine:
 
 ```kotlin
     @Test
