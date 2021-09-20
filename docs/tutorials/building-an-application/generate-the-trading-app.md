@@ -76,7 +76,7 @@ Run **remap -commit**.
 
 ![](/img/trading_app-creation-run-remap-commit-2-6.png)
 
-## 4. AppGen
+## 4. Run AppGen
 
 **AppGen** creates three important modules for the application:
 
