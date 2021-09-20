@@ -45,6 +45,6 @@ jobs:
         AWS_S3_BUCKET: genesis-portal
         AWS_REGION: 'eu-west-2'
         SOURCE_DIR: 'build'
-        DEST_DIR: '/secure'
+        DEST_DIR: 'secure'
 
 
