@@ -134,9 +134,12 @@ Now you must update the **trading_app-eventhandler.kts** in order to pass the `e
 
 ### Unit Testing
 
-Now we will add a unit test to the TradingEventHandlerTest.kt in order to verify the behaviour of the auditing implementation.
+Now add a unit test to the **TradingEventHandlerTest.kts** in order to verify the behaviour of the auditing implementation.
 
-The following test will create a trade, then modify it, then allocate it, and finally cancel it. The test will then check both that there are only 4 TestAudit entities, and there is one corresponding with each of the state transitions.
+The following test will create a trade, then modify it, then allocate it, and finally cancel it. The test will then check:
+
+* there are only 4 TestAudit entities
+* there is one entity corresponding with each of the state transitions
 
 ```kotlin
     @Test
