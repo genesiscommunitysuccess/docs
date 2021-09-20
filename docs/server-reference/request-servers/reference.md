@@ -1,6 +1,6 @@
 ---
-title: Request Servers Reference
-sidebar_label: Request Servers Reference
+title: Request servers reference
+sidebar_label: Request servers rReference
 sidebar_position: 2
 id: reference
 
@@ -166,7 +166,7 @@ requestReplies {
 
 ### Limit number of rows returned
 
-You can limit the number of row returned using property `rowReturnLimit`.
+You can limit the number of rows returned using the property `rowReturnLimit`.
 
 ```kotlin
 requestReplies {
