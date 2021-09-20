@@ -34,7 +34,7 @@ Using the instance in which the platform is installed, run
 
 **DictionaryBuilder -t MSSQL -U admin -P Password11 -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d tradingapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument**
 
-Note that we specified the names of the four source tables in the **--tables** argument of the command. 
+Note that we specified the names of the four source tables in the **--tables** argument of the command.
 
 The **dictionaryBuilder** script generates the **fields-dictionary.kts** and **tables-dictionary.kts** files for the data model.
 
@@ -81,7 +81,7 @@ and xml files for service definitions and prcoesses:
 
 Optionally, you could now run **remap**, which would give you cud operations for all the tables and request replies (static data from the request server), as well as for real-time data retrieval (via the data server.
 
-But for this example application, we are going to go into the pro code, to to add some sophistication.
+But for this example application, we are going to go into the pro code, to add some sophistication.
 
 ## 4. Prepare for pro code
 
