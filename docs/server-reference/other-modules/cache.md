@@ -5,7 +5,7 @@ sidebar_label: Cache
 id: cache
 
 ---
-Database caching on local microserviceis supported out of the box. You can configure a caching layer for any Genesis module. The cache can reduce the database workload for tables that contain static data.
+Database caching on local microservices is supported out of the box. You can configure a caching layer for any Genesis module. The cache can reduce the database workload for tables that contain static data.
 
 ## Configuration
 
