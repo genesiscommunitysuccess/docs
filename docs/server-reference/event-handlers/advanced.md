@@ -6,6 +6,8 @@ sidebar_position: 3
 
 ---
 
+import Imports from '!!raw-loader!../../../examples/server/java/event-handlers/imports.java';
+
 ## Defining an event handler in GPAL
 
 The following imports are automatically available inside GPAL event handlers:
