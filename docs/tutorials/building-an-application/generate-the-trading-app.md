@@ -41,7 +41,9 @@ This will fail because we have duplicate fields with the different field types.
 
 ![](/img/fail-duplicate-fields-and-tables.png)
 
-Remove the following duplicated fields/tables:
+Remove the following duplicated fields:
+
+/tables:
 
 * COUNTERPARTY_ID
 * INSTRUMENT_ID
@@ -110,11 +112,13 @@ This gives you the following structure:
 
 ### Move the files to the correct location
 
-Move the files that have been generated so far from the **trading_app/cfg** folder to trading_app-con_ig/src/main/resources/cfg.
+Move the files that have been generated so far from the **trading_app/cfg** folder to **trading_app-con_ig/src/main/resources/cfg**.
 
 Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the trading_app-script-config/src/main/resources/scripts folder.
 
 ### Build a maven project with mvn install.
+
+Run 
 
 Show archetype generation in intellij and repeat step 10) (have files at hand so we can copy them easily).
 
