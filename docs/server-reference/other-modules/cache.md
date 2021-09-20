@@ -18,9 +18,9 @@ There two ways of defining the cache for a module:
 
 The available options for both XML and GPAL are:
 
-expireAfterWrite represents the period of time that an entry will be cached since the last time it was written (or replaced). timeUnit attribute specifies the kind of period to be used (NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS or DAYS) being SECONDS the default value. Default: 600 seconds.
+**expireAfterWrit**e the period of time that an entry will be cached following the last time it was written (or replaced). The **timeUnit** attribute specifies the unit of time for the period (NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS or DAYS). SECONDS is the default value. Default: 600 seconds.
 
-expireAfterAccess the period of time that an entry will be cached since the last time it was read. Uses **timeUnit** attribute like **expireAfterWrite** to define the kind of period. Default: 300 seconds.
+**expireAfterAccess** the period of time that an entry will be cached since the last time it was read. Uses the **timeUnit** attribute like **expireAfterWrite** to define the unit of time for the period. Default: 300 seconds.
 
 initialCapacity is the number of entries the cache will be able to hold without extending its size since the start of the process. Default: 10000.
 
