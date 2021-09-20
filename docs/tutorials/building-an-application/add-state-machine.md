@@ -223,7 +223,7 @@ eventHandler {
 }
 ```
 
-Create new event handler to handle completion: TRADE_ALLOCATED and integrate state machine in it.
+Create a new event handler called TRADE_ALLOCATED to handle completion. Integrate state machine in it.
 
 ```kotlin
 eventHandler {
@@ -239,7 +239,7 @@ eventHandler {
 }
 ```
 
-Modify the TRADE_MODIFY event handler to use state machine
+Modify the TRADE_MODIFY event handler to use the state machine
 
 ```kotlin {5}
 eventHandler {
