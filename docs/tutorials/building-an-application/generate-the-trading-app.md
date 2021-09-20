@@ -48,18 +48,12 @@ Edit the file **trading_app-fields-dictionary.kts**. Remove the following duplic
 
 ![](/img/remove-two-fields.png)
 
-Edit the file **trading_app-fields-dictionary.kts**. Remove the following duplicated tables:
+Edit the file **trading_app-tables-dictionary.kts**. Remove the following duplicated tables:
 
 * COUNTERPARTY
 * INSTRUMENT
 
-![](/img/trading_app-creation-run-genesisinstall-remove-dupes-3-4.png)
-
-![](/img/trading_app-creation-run-genesisinstall-remove-dupe-tables-1-4.png)
-
-![](/img/trading_app-creation-run-genesisinstall-remove-dupe-tables-2-4.png)
-
-![](/img/trading_app-creation-run-genesisinstall-remove-dupe-tables-1-4.png)
+![](/img/remove-two-tables.png)
 
 ### A successful install
 
