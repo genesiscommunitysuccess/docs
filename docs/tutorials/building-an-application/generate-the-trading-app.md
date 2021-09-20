@@ -48,6 +48,16 @@ Remove the following duplicated fields/tables:
 * COUNTERPARTY
 * INSTRUMENT
 
+![](/img/trading_app-creation-run-genesisinstall-remove-dupes-3-4.png)
+
+![](/img/trading_app-creation-run-genesisinstall-remove-dupes-3-4.png)
+
+![](/img/trading_app-creation-run-genesisinstall-remove-dupe-tables-1-4.png)
+
+![](/img/trading_app-creation-run-genesisinstall-remove-dupe-tables-2-4.png)
+
+![](/img/trading_app-creation-run-genesisinstall-remove-dupe-tables-1-4.png)
+
 ### A successful install
 
 Run **genesisInstall** again.
