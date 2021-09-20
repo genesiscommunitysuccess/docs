@@ -91,11 +91,11 @@ Run **AppGen**:
 
 ![](/img/trading_app-creation-run-appgen-7.png)
 
-## Load the trade data
+## 3. Load the trade data
 
 To progress from here, we need to prepare a  pro-code setup, in this case a maven project. This will enable us to use an IDE to work at speed.
 
-## Build a maven project
+## 4. Build a maven project
 
 The **mvn** command can be run in either the server/local vm/wsl/cloud instance containing the genesis platform installation or a separate local dev machine. We will use the same machine as before for consistency.
 
@@ -115,7 +115,7 @@ Move the files that have been generated so far from the **trading_app/cfg** fold
 
 Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the trading_app-script-config/src/main/resources/scripts folder.
 
-### Build a maven project with mvn install.
+### Build a maven project with mvn install
 
 Run
 
