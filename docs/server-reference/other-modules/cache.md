@@ -20,13 +20,13 @@ The available options for both XML and GPAL are:
 
 **expireAfterWrit**e the period of time that an entry will be cached following the last time it was written (or replaced). The **timeUnit** attribute specifies the unit of time for the period (NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS or DAYS). SECONDS is the default value. Default: 600 seconds.
 
-**expireAfterAccess** the period of time that an entry will be cached since the last time it was read. Uses the **timeUnit** attribute like **expireAfterWrite** to define the unit of time for the period. Default: 300 seconds.
+**expireAfterAccess** the period of time that an entry will be cached since the last time it was read. This option uses the **timeUnit** attribute in the same way as **expireAfterWrite** to define the unit of time for the period. Default: 300 seconds.
 
-initialCapacity is the number of entries the cache will be able to hold without extending its size since the start of the process. Default: 10000.
+**initialCapacity** is the number of entries the cache will be able to hold without extending its size since the start of the process. Default: 10000.
 
-maximumEntries is the limit of entries we can hold in our cache. If the limit is achieved, entries will be replaced with an LRU algorithm. Default: 10000.
+**maximumEntries** is the limit of entries we can hold in our cache. If the limit is achieved, entries will be replaced with an LRU algorithm. Default: 10000.
 
-concurrencyLevel sets the way the cache is structured internally, so it affect the amount of concurrency we can achieve with multi-threaded operations. It is a sensitive configuration parameter and can potentially worsen performance so should be used only for tweaking with care or not used at all. Default: 4.
+**concurrencyLevel** sets the way the cache is structured internally, so it affect the amount of concurrency we can achieve with multi-threaded operations. It is a sensitive configuration parameter and can potentially worsen performance so should be used only for tweaking with care or not used at all. Default: 4.
 
 multipleKeys if we set this to "true", any call to a record with any of its keys will hit cache as long as the record is in it (handy but involves data duplication). Otherwise, a call must use the same key it was used previously to retrieve a record from cache or we will have to reload the record from database (more efficient if the same keys are going to be used every time). Default: true
 
