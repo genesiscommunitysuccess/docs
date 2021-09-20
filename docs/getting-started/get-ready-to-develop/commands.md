@@ -39,7 +39,7 @@ Including this flag monitors the progress of the kill on each process. If a proc
 
 ### StartGroup
 
-Groups of processes can be defined in the process definition files, where a set of processes is given a `**<group>**` tag. Typically, all the processes in a particular module are given the same `**<group>**` tag.
+Groups of processes can be defined in the process definition files, where a set of processes is given a `<group>` tag. Typically, all the processes in a particular module are given the same `<group>` tag.
 
 **startGroup _group_ID_** starts all processes in the named group.
 
