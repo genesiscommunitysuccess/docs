@@ -60,7 +60,11 @@ Remove the following duplicated fields/tables:
 
 Run **genesisInstall** again.
 
-\**screengrab
+![](/img/trading_app-creation-run-genesisinstall-again-5.png)
+
+This time, we can see the files for the Genesis processes being created.
+
+![](/img/trading_app-creation-run-genesisinstall-again-2-5.png)
 
 ## 3. Remap
 
