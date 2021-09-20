@@ -38,6 +38,24 @@ The available options for both XML and GPAL are:
 
 xml example
 
+    xml
+        <cacheConfig>
+    		<cache>
+    			<expireAfterWrite timeUnit="SECONDS">600</expireAfterWrite>
+    			<expireAfterAccess timeUnit="SECONDS">300</expireAfterAccess>
+    			<initialCapacity>10000</initialCapacity>
+    			<maximumEntries>10000</maximumEntries>
+    			<concurrencyLevel>4</concurrencyLevel>
+    			<multipleKeys>true</multipleKeys>
+    			<update>false</update>
+    			<insertNewEntries>false</insertNewEntries>
+    			<tables>
+    				<table name="TRADE" />
+    				<table name="CLIENT" loadOnStart="true"/>
+    			</tables>
+    		</cache>
+    	</cacheConfig>
+
 GPAL example
 
     kotlin
