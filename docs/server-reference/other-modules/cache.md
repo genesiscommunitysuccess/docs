@@ -35,3 +35,40 @@ The available options for both XML and GPAL are:
 insertNewEntrie if you set this to true, it will force the caching of new records inserted for each table. Standard behaviour won't cache records inserted if they haven't been read before. This feature is also not available in **bulkCache**. Default: false.
 
 **tables** can define **loadOnStart** as true, if you want to pre-load the whole table in cache before the process starts. Default: false.
+
+xml example
+
+GPAL example
+
+    kotlin
+    import java.util.concurrent.TimeUnit
+    
+    process {
+    
+        systemDefinition {
+            item(name = "DbHost", value = "localhost")
+            item(name = "ClusterPort", value = "5678")
+        }
+    
+        cacheConfig {
+            expireAfterAccess(1, TimeUnit.DAYS)
+            expireAfterWrite(1, TimeUnit.DAYS)
+    
+            initialCapacity = 20_000
+            maximumEntries = 30_000
+            multipleKeys = true
+    
+            tables {
+                table(TRADE, loadOnStart = true)
+                table(INSTRUMENT, loadOnStart = true)
+                table(ALT_INSTRUMENT_ID, loadOnStart = true)
+                table(MARKET, loadOnStart = true)
+                table(EXCHANGE, loadOnStart = true)
+                table(CURRENCY, loadOnStart = true)
+            }
+        }
+    }
+
+As the example shows, the GPAL process-config file can override system definition values on a per microservice basis as well.
+
+Note: If no configuration is found at all for a process, or some fields are missing, the internal cache configuration will be filled with default values for every missing parameter. You can still use the database cache programmatically by adding tables manually in the code base using \`\`\`db.getCache().addTable("TABLE")\`\`\`.
