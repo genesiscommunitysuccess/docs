@@ -13,7 +13,7 @@ Evaluators allow developers to connect Event Handlers to two different kind of e
 Both kind of rules are defined in database, in the tables DYNAMIC_RULES and CRON_RULES respectively. In both cases the GENESIS_EVALUATOR must be configured to be running.
 The configuration to run the GENESIS_EVALUATOR in available by default, but the process must be switched on to actively use.
 
-eg: assuming we standard genesis file for controlling `/home/trading/run/site-specific/cfg/genesis-processes.xml`, we can simply switch, start from true to false, making sure to run 
+eg: assuming a standard genesis file for controlling `/home/trading/run/site-specific/cfg/genesis-processes.xml`, we can simply switch, start from true to false, making sure to run 
 "`genesisInstall` -> `killServer` -> `startServers`", so that the configuration takes effect.
 
 ```xml {2}
