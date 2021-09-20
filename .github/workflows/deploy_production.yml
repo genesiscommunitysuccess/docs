@@ -29,14 +29,21 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
 
-    # When deploying to a subfolder, set BASE_URL below
+    # When deploying to a subfolder, set the BASE_URL below
     # so static assets are resolved correctly
     - name: Build
       run: npm run build
       env:
         BASE_URL: /secure/
 
-    # TODO: live deployment
-    # compiled assets are in the build folder
+    - uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --follow-symlinks --delete
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_S3_BUCKET: genesis-portal
+        AWS_REGION: 'eu-west-2'
+        SOURCE_DIR: 'build'
 
 
