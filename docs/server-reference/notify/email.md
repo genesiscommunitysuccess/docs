@@ -6,7 +6,7 @@ id: email
 ---
 ###  Email
 
-#### System Definiotion Configuration
+#### System Definition Configuration
 
 The following configuration items are defined to detail SMTP server connection details as well as configuring email service related features.
 
@@ -30,9 +30,47 @@ The following configuration items are defined to detail SMTP server connection d
 #### Database configuration
 
 ##### GATEWAY
-Explain what each field does (including NA – e.g. INCOMING_TOPIC)
+
+| Field Name | Usage |
+| --- | --- |
+| GATEWAY_ID | A Unique name for the gateway which can be referenced in the NOTIFY_ROUTE   |
+| GATEWAY_TYPE | Set to "EmailDistribution" |
+| GATEWAY_VALUE | Static email distribution list specified for this gatway as a [JSON Structure](#GATEWAY_VALUE-JSON-Structure)  |
+| INCOMING_TOPIC | Currently not used for Email |
+
+#### GATEWAY_VALUE JSON Structure
+```json
+{
+  "emailDistribution": {
+    "to": ["jason <jason@email.com>", "carol@email.com>"],
+    "cc": ["susan@email.com", "Tom <tom@email.com>"],
+    "bcc": []
+} 
+```
+
+note, when using Genesis command line tool `SendIt` to import field values that contain quotes, such as JSON values, into the database, 
+you need to escape the quotes. eg `SendIt -t GATEWAY.CSV` where we are setting up an empty distribution list.
+
+```text
+GATEWAY_ID,GATEWAY_TYPE,GATEWAY_VALUE,INCOMING_TOPIC
+"EMAIL1","EmailDistribution","{ \"emailDistribution\" : { \"to\" : [ ], \"cc\" : [ ], \"bcc\" : [ ] } }",
+```
+
 ##### NOTIFY_ROUTE
-As above
+
+| Field Name | Usage |
+| --- | --- |
+| SENDER | Usage |
+| TOPIC | Usage |
+| EXPIRY | Usage |
+| HEADER | Usage |
+| BODY | Usage |
+| NOTIFY_COMPRESSION_TYPE | Usage |
+| APPLICATION_REF | Usage |
+| NOTIFY_SEVERITY | Usage |
+| DOCUMENT_ID | Usage |
+
+
 ##### NOTIFY
 As above
 Talk about the json approach for on the fly including more email addresses etc..
