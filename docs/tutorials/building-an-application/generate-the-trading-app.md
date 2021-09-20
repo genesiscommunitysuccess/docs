@@ -41,14 +41,14 @@ This will fail because we have duplicate fields with the different field types.
 
 ![](/img/fail-duplicate-fields-and-tables.png)
 
-Edit the file trading_app-fields-dictionary.kts .Remove the following duplicated fields:
+Edit the file **trading_app-fields-dictionary.kts**. Remove the following duplicated fields:
 
 * COUNTERPARTY_ID
 * INSTRUMENT_ID
 
 ![](/img/remove-two-fields.png)
 
-Remove the following duplicated fields:/tables:
+Edit the file **trading_app-fields-dictionary.kts**. Remove the following duplicated tables:
 
 * COUNTERPARTY
 * INSTRUMENT
@@ -121,7 +121,7 @@ Move the files from the **trading_app/scripts** folder (request server, data ser
 
 ### Build a maven project with mvn install.
 
-Run 
+Run
 
 Show archetype generation in intellij and repeat step 10) (have files at hand so we can copy them easily).
 
