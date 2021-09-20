@@ -140,15 +140,15 @@ Please see example event handler below:
 
 ### onCommit
 
-The **onCommit** block will be called when an event message is received with “validate = false” and has successfully passed the **onValidate** **block. This is the place where you perform the real changes to the system, whether it is a database update or uploading a report to a third party. The last value of the code block always needs to be the return message type.
+The **onCommit** block will be called when an event message is received with “validate = false” and has successfully passed the **onValidate** *block. This is the place where you perform the real changes to the system, whether it is a database update or uploading a report to a third party. The last value of the code block always needs to be the return message type.
 
 ### onException
 
-The **onException** block can capture any exceptions thrown by the **onValidate** **and **onCommit** blocks and returns the expected reply message type (as shown in the last example). This function is particularly useful if you are using a custom message type, as by default EventHandlers will attempt to translate exceptions automatically to an **EventNack** message, which might cause compatibility problems if you are using custom replies.
+The **onException** block can capture any exceptions thrown by the **onValidate** and **onCommit** blocks and returns the expected reply message type (as shown in the last example). This function is particularly useful if you are using a custom message type, as by default EventHandlers will attempt to translate exceptions automatically to an **EventNack** message, which might cause compatibility problems if you are using custom replies.
 
 ### permissions and permissionCodes
 
-As with other GPL files (e.g. reqrep and dataserver), you can use a **permissions** block to define both dynamic permissions (AUTH) and fixed permissions (based on RIGHT_SUMMARY rights) if the event message type is a generated database entity. See the example below:
+As with other GPAL files (e.g. request server and data server), you can use a **permissions** block to define both dynamic permissions (AUTH) and fixed permissions (based on RIGHT_SUMMARY rights) if the event message type is a generated database entity. See the example below:
 
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
