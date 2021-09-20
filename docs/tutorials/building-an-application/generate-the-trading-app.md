@@ -113,17 +113,17 @@ This gives you the following structure:
 
 Move the files that have been generated so far from the **trading_app/cfg** folder to **trading_app-con_ig/src/main/resources/cfg**.
 
-Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the trading_app-script-config/src/main/resources/scripts folder.
+Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the **trading_app-script-config/src/main/resources/scripts** folder.
 
 ### Build a maven project with mvn install
 
-Now run mvn install.
+Now run **mvn install**.
 
 Again, you need to move the script and config files. Have these to hand, so you can copy them easily:
 
-Move the generated ref_data_app/cfg files (from the previous DictionaryBuilder and AppGen steps) to the ref_data_app-config/src/main/resources/cfg folder.
+Move the files that have been generated so far from the **trading_app/cfg** folder to **trading_app-con_ig/src/main/resources/cfg**.
 
-Locate the generated files for the request server, data server and event handler. These are in the  ref_data_app/scripts folder. Move these to the ref_data_app-script-config/src/main/resources/scripts folder.
+Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the **trading_app-script-config/src/main/resources/scripts** folder.
 
 ### Install the maven project in intellij
 
