@@ -8,7 +8,7 @@ id: configure
 Evaluators allow developers to connect Event Handlers to two different kind of events.
 
 1. __Dynamic Rules__, which are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries, and
-2. __Cron Rules__, ie Scheduling Rules the are defined as standard [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
+2. __Cron Rules__, ie Scheduling Rules the are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
 
 Both kind of rules are defined in database, in the tables DYNAMIC_RULES and CRON_RULES respectively. In both cases the GENESIS_EVALUATOR must be configured to be running.
 The configuration to run the GENESIS_EVALUATOR in available by default, but the process must be switched on to actively use.
@@ -54,7 +54,7 @@ __Note__: Groovy Expressions need to be surrounded in brackets.
 In both Dynamic and Cron Rules, MESSAGE_TYPE fields defines the Java/kotlin Class that is instantiated and set by the RESULT_EXPRESSION. The MESSAGE_TYPE is defined as 
 SNAKE_CASE but the class is defined as regular Camel case. eg POSITION_CANCEL maps to PositionCancel.
 
-Fields which are set in the expression but are not on the Class are ignored. The Instantiated class is sent to the EventHandler implementation defined in the process
+Fields which are set in the expression but are not on the Class are ignored. The instantiated class is sent to the EventHandler implementation defined in the process
 identified by PROCESS_NAME 
 
 To setup a MESSAGE_TYPE for the event Handlers, simple create an appropriate data class, eg `trading_app-server\trading_app-messages\src\main\java\global\genesis\trading_app\message\event\PositionCancel.kt`.
@@ -69,7 +69,7 @@ data class PositionCancel(
 So if the RULE table is set to `POSITION`, and the RULE_EXPRESSION, is set to `(POSITION_ID = POSITION_ID)`, then this will take the POSITION_ID from the POSITION table and set it on PositionClass object that get instantiated  
 and ultimately sent to the Event Handler.
 
-eg. event handlers that inserts a Notify Email message( see Notify)
+eg. event handlers that inserts a Notify Email message, (see [Notify](/notify/configure) for more details on external messaging)
 
 To setup the EventHandler ` trading_app-script-config\src\main\resources\scripts\trading_app-eventhandler.kts`, with code:-
 
@@ -102,8 +102,8 @@ eventHandler<PositionCancel> {
 
 Event handlers are covered in more detail here.
 
-
-To define a timed based event, a user needs to insert a row into the `CRON_RULE` table, with the CRON Scheduling driving the event. The table is defined as follows, with the same 
+To define a timed based event, a user needs to insert a row into the `CRON_RULE` table, with the CRON Scheduling driving the event. The table is defined as follows, 
+with the same rules around connecting to Event Handlers as  
 
 ### CRON_RULE Table
 | Field Name | Usage |
