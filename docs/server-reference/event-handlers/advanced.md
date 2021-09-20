@@ -88,8 +88,6 @@ In order to optimise database lookup operations, you might want to reuse some da
     }
 ```
 
-\[//\]: <> (This still needs to be checked against the release notes.)
-
 As the  example shows, there is an additional type defined for the context event handler. This is a _String._ This enables us to optionally return a _String_ value from our **onValidate** block (see _validationAck_ logic) and then capture it in our **onCommit** block (see _context_ lambda parameter).
 
 Because we are creating validation context, we need to use the function **validationAck()** and not just **ack()**
