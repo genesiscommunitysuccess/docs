@@ -13,6 +13,12 @@ Using consolidators, you can group, summarize and aggregate sets of records in r
 Starting the process (cold start)
 This module can be passed one argument when you start the process using the startProcess command:
 
+:::warning
+
+should check this?
+
+:::
+
 **--coldStart**
 
 If you use this, it consolidates all records in the system before starting the real-time event-driven consolidations. At the beginning of a cold start, all fields in consolidationFields of the consolidation table are zeroed (or deleted, if transient) before initiating the re-consolidation of all the records in the database.

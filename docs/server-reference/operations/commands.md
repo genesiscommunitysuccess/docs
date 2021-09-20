@@ -17,6 +17,11 @@ The installRelease script takes two arguments: one mandatory and one optional:
 installRelease productFile [-c | --commit]
 ```
 
+| Argument    | Argument long name | Mandatory | Description                      | Restricted values |
+|-------------|--------------------|-----------|----------------------------------|-------------------|
+| productFile |                    | yes       | the product file                 |                   |
+| -c          | --commit           | no        | will apply changes to the system |                   |
+
 If the commit option is not specified, the product will not be installed, but the full installation process will be shown, including changes, missing dependencies or any other kind of issues.
 
 This is how the script behaves:
@@ -46,7 +51,10 @@ This scriptscript validates all system and product configuration, checking for t
 genesisInstall [--ignore]
 ```
 
-Once complete, all configuration files will be copied and, where necessary, merged into the **~/run/generated/cfg** file, which we alias as **$GC**.
+| Argument | Argument long name | Mandatory | Description                                                | Restricted values |
+|----------|--------------------|-----------|------------------------------------------------------------|-------------------|
+|          | --ignore           | no        | If supplied, will ignore errors in the configuration files | No                |
+|          | --ignoreHooks      | no        | If supplied, will ignore any install hooks found           | No                |
 
 If any problems are found in the generated configuration files, they will be deleted, which forces the user to correct the errors in the original configuration files.
 
@@ -69,6 +77,10 @@ Syntax:
 ```bash
 remap [-c | --commit]
 ```
+
+| Argument | Argument long name | Mandatory | Description                                                | Restricted values |
+|----------|--------------------|-----------|------------------------------------------------------------|-------------------|
+| -c       | --commit           | no        | If supplied, will apply dictionary changes to the database | No                |
 
 If we run remap with no arguments it simple gives a report of changes that exist in the configuration.
 
@@ -116,11 +128,11 @@ startProcess processName [--hostname <[host names]>] [--dump]
 
 `processName` is name of the process that you want to start.
 
-| Argument | Argument long name | Description |
-| :-- | :-- | :-- |
-| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | where the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name. |
-| -c | --cluster | starts the process on every node in the cluster |
-| | --dump | displays progress of starting the process, which is usful for debugging |	
+| Argument                   | Argument long name                          | Mandatory | Description                                                                                                                                                                                         | Restricted values |
+|----------------------------|---------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
+| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | No        | where   the application is running on more than one node, this identifies the node   where you want to start the process (so you can start a process on a   different node). Specify the Host Name. | No                |
+| -c                         | --cluster                                   | No        | starts   the process on every node in the cluster                                                                                                                                                   | No                |
+|                            | --dump                                      | No        | displays   progress of starting the process, which is useful for debugging                                                                                                                          | No                |	
 
 The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
 
@@ -138,12 +150,12 @@ Syntax
 killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--force] [--wait]
 ```
 
-| Argument | Argument long name | Description |
-| :-- | :-- | :-- |
-| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | Where the application is running on more than one node, this identifies the node where you want to kill the process (so you can kill a process on a different node. Specify the Host Name. |
-| -f  | --force | forcefully kills a process (using kill -9) |
-| -w WAIT | --wait WAIT | specifies how many seconds to wait before forcing the kill |
-| -c | --cluster | kills the process on every node in the cluster |
+| Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                      | Restricted values |
+|------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
+| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | No        | Where   the application is running on more than one node, this identifies the node   where you want to kill the process (so you can kill a process on a different   node. Specify the Host Name. | No                |
+| -f                           | --force                                       |           | forcefully   kills a process (using kill -9)                                                                                                                                                     | No                |
+| -w WAIT                      | --wait WAIT                                   | No        | specifies   how many seconds to wait before forcing the kill                                                                                                                                     | No                |
+| -c                           | --cluster                                     | No        | kills   the process on every node in the cluster                                                                                                                                                 | No                |
 
 ## startServer script
 
@@ -153,15 +165,13 @@ Syntax
 
 ```bash
 startServer [--hostname <[host names]>] [--ignoreDaemon] 
-
-processName           name of the process that you want to start
-
---hostname HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...]	Where the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node. Specify the Host Name.
-
---cluster, -c         starts the process on every node in the cluster
-
---ignoreDaemon, -i    avoids killing/starting the daemon
 ```
+
+| Argument                    | Argument long name                   | Mandatory | Description                                                                                                                                                                                | Restricted values |
+|-----------------------------|--------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
+|  -s HOSTNAME [HOSTNAME ...] | --hostname   HOSTNAME [HOSTNAME ...] | No        | Where the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node. Specify the Host Name. | No                |
+|  -c                         | --cluster                            | No        | Starts the process on every node in the cluster,                                                                                                                                           | No                |
+|  -i                         | --ignoreDaemon                       | No        | avoids killing/starting the daemon                                                                                                                                                         | No                |
 
 The **processes.xml** file looks like this:
 
@@ -188,7 +198,7 @@ The **processes.xml** file looks like this:
         <options>-Xmx512m -DXSD_VALIDATE=false</options>
         <module>auth-perms</module>
         <package>global.genesis.dta.auth.perms</package>
-        <dependency>AUTH_MANAGER,AUTH_DATASERVER </dependency>
+        <dependency>AUTH_MANAGER,AUTH_DATASERVER</dependency>
     </process>
 </configuration>
 ```
@@ -215,12 +225,12 @@ This command requires user confirmation: '**Are you sure you want to kill server
 
 ### Optional arguments
 
-| Argument | Argument long name | Description |
-| :-- | :-- | :-- |
-| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | Where the application is running on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node. Specify the Host Name. Hosts Name or `"cluster"` for all hosts |
-| -f  | --force | forcefully kills a process (using kill -9) |
-| | --all | kills all processes, including GENESIS_CLUSTER |
-| -c | --cluster | kills the server on all the nodes in the cluster |       
+| Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                                                          | Restricted values |
+|------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
+| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | No        | Where the application is running   on more than one node, this identifies the node where you want to kill the   server (so you can kill a server on a different node. Specify the Host Name. Hosts Name or "cluster" for all hosts | No                |
+| -f                           | --force                                       | No        | forcefully kills a process   (using kill -9)                                                                                                                                                                                         | No                |
+|                              | --all                                         | No        | kills all processes, including   GENESIS_CLUSTER                                                                                                                                                                                     | No                |
+| -c                           | --cluster                                     | No        | kills the server on all the   nodes in the cluster                                                                                                                                                                                   | No                |    
 
 ## DbMon script
 
@@ -242,73 +252,31 @@ Database Monitor
 Enter 'help' for a list of commands
 
 ==================================
-
-DbMon>help
-
-==================================
-
-Help Menu
-
-==================================
-
-autoIncrementNumber <field_name>
-
-clear
-
-count
-
-delete
-
-deleteWhere <condition>
-
-displayFields <field_names>
-
-distinct <condition> [-where <limiting_condition>]
-
-find <key_name>
-
-first <key_name>
-
-forceAutoIncrementNumber <field_name> <sequence_number>
-
-forceSequenceNumber <sequence_name> <sequence_number>
-
-h
-
-insert
-
-last <key_name>
-
-listAll <key_name> <num_key_fields> <max_records>
-
-next <key_name>
-
-qsearch <condition> [-l <limit>]
-
-qshow
-
-search <condition> [-l <limit>]
-
-sequenceNumber <sequence_name>
-
-set <field_name> <field_value>
-
-show
-
-showKeys
-
-showTables
-
-table <table_name>
-
-unset
-
-update <key_name>
-
-updateWhere <condition> <assignments>
-
-writeMode
 ```
+
+| Command                  | Argument                                    | Description                                     |
+|--------------------------|---------------------------------------------|-------------------------------------------------|
+| autoIncrementNumber      | `<field_name>`                              |                                                 |
+| clear                    |                                             | clears the current context                      |
+| count                    |                                             | counts the rows in the table                    |
+| delete                   |                                             | deletes the current row                         |
+| deleteWhere              | `<condition>`                               | deletes all matching rows in the selected table |
+| displayFields            | `<field_names>`                             |                                                 |
+| distinct                 | `<condition> [-where <limiting_condition>]` |                                                 |
+| find                     | `<key_name>`                                |                                                 |
+| first                    | `<key_name>`                                |                                                 |
+| forceAutoIncrementNumber | `<field_name> <sequence_number>`            |                                                 |
+| forceSequenceNumber      | `<sequence_name> <sequence_number>`         |                                                 |
+| help                     |                                             | lists all commands                              |
+| insert                   |                                             | inserts the current row                         |
+| last                     | `<key_name>`                                | gets the last record by key                     |
+| listAll                  | `<key_name> <num_key_fields> <max_records>` |                                                 |
+| next                     | `<key_name>`                                | gets the next record by key                     |
+| set                      | `<field_name> <field_value>`                | sets a field                                    |
+| unset                    |                                             | sets a field to `null`                          |
+| update                   | `<key_name>`                                | updates the current row by key                  |
+| updateWhere              | `<condition> <assignments>`                 |                                                 |
+| writeMode                |                                             | enables write mode                              |
 
 Usage
 
@@ -322,31 +290,19 @@ Syntax
 
 ```bash
 SendTable -t <table name> -f <file name>
-
-Available options (use -h for help):
-
-    -a,--all                      import all the tables from all the csv
-
-                                files, to the database
-
-    -d,--delete                   perform delete operations on all records
-
-    -f,--file <arg>               name of the csv file where table is
-
-                                imported
-
-    -h,--help                     show usage information
-
-    -m,--modify <arg>             key name used to find original record
-
-    -mf,--modifyFields <arg>   specify fields to modify
-
-    -r,--recover                  perform recover operations on all records
-
-    -t,--table <arg>              the name of the table to import to database
-
-    -v,--verbose                  log every error line to output
 ```
+
+| Argument | Argument long name     | Mandatory | Description                                                    | Restricted values |
+|----------|------------------------|-----------|----------------------------------------------------------------|-------------------|
+| -a       | --all                  | No        | import all   the tables from all the csv files to the database | No                |
+| -d       | --delete               | No        | perform   delete operations on all records                     | No                |
+| -f       | --file `<arg>`         | No        | name of the   csv file where table is imported                 | No                |
+| -h       | --help                 | No        | show usage   information                                       | No                |
+| -m       | --modify `<arg>`       | No        | key name used   to find original record                        | No                |
+| -mf      | --modifyFields `<arg>` | No        | specify   fields to modify                                     | No                |
+| -r       | --recover              | No        | perform   recover operations on all records                    | No                |
+| -t       | --table `<arg>`        | No        | the name of   the table to import to database                  | No                |
+| -v       | --verbose              | No        | log every   error line to output                               | No                |
 
 For Example:
 
@@ -382,24 +338,15 @@ To copy data out of a Genesis database, use the DumpIt command.
 
 Syntax:
 
-```bash
-usage: DumpIt
-
-    -a,--all           exports all tables to csv
-
-    -f,--file <arg>    name of the csv file where table is exported
-
-    -fields <arg>      space separated field list e.g. "FIRST_NAME LAST_NAME"
-
-    -h,--help          show usage information
-
-    -s,--sql <arg>     name of the sql file where table is exported
-
-    -t,--table <arg>   the name of the table to export to csv
-
-    -where <arg>       match criteria e,g, "USER_NAME=='John'"
-```
-
+| Argument | Argument long name | Mandatory | Description                                            | Restricted values |
+|----------|--------------------|-----------|--------------------------------------------------------|-------------------|
+| -a       | --all              | No        | exports all tables to csv                              | No                |
+| -f       | --file `<arg>`     | No        | name of the csv file where table is exported           | No                |
+|          | -fields `<arg>`    | No        | space separated field list e.g. "FIRST_NAME LAST_NAME" | No                |
+| -h       | --help             | No        | show usage information                                 | No                |
+| -s       | --sql `<arg>`      | No        | name of the sql file where table is exported           | No                |
+| -t       | --table `<arg>`    | No        | the name of the table to export to csv                 | No                |
+|          | -where `<arg>`     | No        | match criteria e,g, "USER_NAME=='John'"                | No                |
 For Example:
 
 ```bash
@@ -437,44 +384,23 @@ Not setting GENESIS_LOGGING_LEVEL or setting a non-valid level will reset log le
 Syntax:
 
 ```bash
-LogLevel -p <process-name> -l <log level> -t <time> [-optional
+LogLevel -p <process-name> -l <log level> -t <time> [-optional params] -c <class-name> -DATADUMP_ON -DATADUMP_OFF
 
-                        params] -c <class-name> -DATADUMP_ON -DATADUMP_OFF or
-    
-                        setLogLevel -r <process-name> [-optional params] -c
-    
-                        <class-name>
-    
-        Available options (use -h for help):
-    
-            -c,--class <class name>                changes log level on the defined
-    
-                                                class
-    
-            -DATADUMP_OFF                          changes the log level to info for
-    
-                                                Genesis messages
-    
-            -DATADUMP_ON                           changes the log level to trace for
-    
-                                                Genesis messages
-    
-            -h,--help                              show usage information
-    
-            -l,--level <log level>                 log level - if log level is not
-    
-                                                correct it will be set
-    
-                                                automatically to DEBUG level
-    
-            -p <process-name>,.., <process-name>   attaches processes to the command
-    
-            -r <process-name>,..,<process-name>    remove processes
-    
-            -t <time>                              duration of log level change in
-    
-                                                min/sec Eg: 1m, 1000s
+#or
+
+setLogLevel -r <process-name> [-optional params] -c
 ```
+
+| Argument                               | Argument long name                   | Mandatory | Description                                                                           | Restricted values |
+|----------------------------------------|--------------------------------------|-----------|---------------------------------------------------------------------------------------|-------------------|
+| -c                                     |  --class `<class name>`              | No        | changes log level on the defined class                                                | No                |
+|                                        |  -DATADUMP_OFF                       | No        | changes the log level to info for Genesis messages                                    | No                |
+|                                        |  -DATADUMP_ON                        | No        | changes the log level to trace for Genesis messages                                   | No                |
+| -h                                     |  --help                              | No        | show usage information                                                                | No                |
+| -l                                     |  --level `<log level>`               | No        | log level - if log level is not correct it will be set automatically to   DEBUG level | No                |
+| -p `<process-name>,..,<process-name>`  |                                      | No        | attaches processes to the command                                                     | No                |
+| -r `<process-name>,..,<process-name>`  |                                      | No        | remove processes                                                                      | No                |
+| -t `<time>`                            |                                      | No        | duration of log level change in min/sec Eg: 1m, 1000s                                 | No                |
 
 ## mon script
 
@@ -514,17 +440,16 @@ Usage
 
 ```bash
 mon [-v | -c | -a] polling_interval
-
-Options:
-
-    -h, --help     show this help message and exit
-
-    -v, --version  Shows installed products versions.
-
-    -c, --cfg      Shows the config files used by each process.
-
-    -a, --all      Shows all information.
 ```
+
+Options
+
+| Argument | Argument long name | Mandatory | Description                                  | Restricted values |
+|----------|--------------------|-----------|----------------------------------------------|-------------------|
+| -h       | --help             | No        | show this help message and exit              | No                |
+| -v       | --version          | No        | Shows installed products versions.           | No                |
+| -c       | --cfg              | No        | Shows the config files used by each process. | No                |
+| -a       | --all              | No        | Shows all information.                       | No                |
 
 ## DropTable
 
@@ -546,15 +471,14 @@ The usage:
 
 ```bash
 PopulateHolidays
-
-    -c,--country <arg>   the country name to search for holidays
-
-    -h,--help            show usage information
-
-    -r,--region <arg>    the region name to search for holidays
-
-    -y,--year <arg>      the year of holidays
 ```
+
+| Argument | Argument long name | Mandatory |               Description               | Restricted values |
+|----------|--------------------|-----------|-----------------------------------------|-------------------|
+| -c       | --country `<arg>`  | No        | the country name to search for holidays | No                |
+| -h       | --help             | No        | show usage information                  | No                |
+| -r       | --region `<arg>`   | No        | the region name to search for holidays  | No                |
+| -y       | --year `<arg>`     | No        | the year of holidays                    | No                |
 
 For example: `PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en`
 
@@ -634,13 +558,13 @@ Usage:
 
 ```bash
 GetSequenceCount
-
-    -f,--file <arg>
-
-    -h,--help         show usage information
-
-    -p,--print
 ```
+
+| Argument | Argument long name | Mandatory |               Description               | Restricted values |
+|----------|--------------------|-----------|-----------------------------------------|-------------------|
+| -f       | --file `<arg>`     | No        |                                         | No                |
+| -h       | --help             | No        | show usage information                  | No                |
+| -p       | --print            | No        |                                         | No                |
 
 ## GetAutoIncrementCount
 
@@ -650,13 +574,13 @@ Usage
 
 ```bash
 GetAutoIncrementCount
-
-    -f,--file <arg>
-
-    -h,--help         show usage information
-
-    -p,--print
 ```
+
+| Argument | Argument long name | Mandatory |               Description               | Restricted values |
+|----------|--------------------|-----------|-----------------------------------------|-------------------|
+| -f       | --file `<arg>`     | No        |                                         | No                |
+| -h       | --help             | No        | show usage information                  | No                |
+| -p       | --print            | No        |                                         | No                |
 
 ## SetSequence
 
@@ -666,21 +590,16 @@ Usage:
 
 ```bash
 SetSequence
+````
 
-    -f,--file <arg>       Name of csv file for batch sequence/value pairs to
+Options: 
 
-                        be read from (overrides sequence and value option)
-
-    -h,--help
-
-    -s,--sequence <arg>   Two Character ID for the sequence (if setting
-
-                        individual value)
-
-    -v,--value <arg>      New integer value to be set (if setting individual
-
-                        value)
-```
+| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
+|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
+| -f       | --file `<arg>`     | No        |  Name of csv file for batch sequence/value pairs to be read from (overrides sequence and value option) | No                |
+| -h       | --help             | No        |                                                                                                        | No                |
+| -s       | --sequence `<arg>` | No        |  Two Character ID for the sequence (if setting individual value)                                       | No                |
+| -v       | --value `<arg>`    | No        |  New integer value to be set (if setting individual value)                                             | No                |
 
 ## SetAutoIncrement
 
@@ -690,19 +609,17 @@ Usage:
 
 ```bash
 SetAutoIncrement
-
-    -f,--file <arg>    Name of csv file for batch sequence/value pairs to be
-
-                    read from (overrides sequence and value option)
-
-    -h,--help
-
-    -s,--field <arg>
-
-    -t,--table <arg>
-
-    -v,--value <arg>
 ```
+
+Options:
+
+| Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
+|----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
+| -f       | --file `<arg>`     | No        | Name of csv file for batch sequence/value pairs to be read from (overrides sequence and value option)  | No                |
+| -h       | --help             | No        |                                                                                                        | No                | 
+| -s       | --field `<arg>`    | No        |                                                                                                        | No                |
+| -t       | --table `<arg>`    | No        |                                                                                                        | No                |
+| -v       | --value `<arg>`    | No        |                                                                                                        | No                |
 
 ## GenesisRun
 
@@ -810,12 +727,12 @@ Standard files will be generated, i.e. processes.xml and service-definitions.xml
 
 ### Parameters
 
-| Argument | Argument long name | Mandatory | Description |
-| -- | -- | -- | -- |
-| -d | dictionary file name | true | the name of the dictionary to read at startup |
-| -t | table name(s) | false | the table name(s) of the dictionary to read at startup. It could be more than one tables separated by space |
-| -p | port offset | true | the port range to use when generating services file |
-| -pn | product name | true | the name of the product to create |
+| Argument | Argument long name | Mandatory | Description | Restricted Values |
+| -- | -- | -- | -- | -- |
+| -d | dictionary file name | true | the name of the dictionary to read at startup |No |
+| -t | table name(s) | false | the table name(s) of the dictionary to read at startup. It could be more than one tables separated by space |No |
+| -p | port offset | true | the port range to use when generating services file |No |
+| -pn | product name | true | the name of the product to create |No |
 
 ### Example Usage
 

@@ -11,39 +11,9 @@ You can create and store rules in the database either manually or using events f
 
 An example for CRON_RULE record looks very similar to a dynamic record. Something like this: 
 
-CRON_EXPRESSION 
-
-DESCRIPTION 
-
-TIME_ZONE 
-
-RULE_STATUS 
-
-NAME 
-
-USER_NAME 
-
-0 45 7 ? * MON,TUE,WED,THU,FRI * 
-
-It’s a rule 
-
-Europe/London 
-
-ENABLED 
-
-A rule 
-
-JohnDoe 
-
-PROCESS_NAME 
-
-MESSAGE_TYPE 
-
-RESULT_EXPRESSION 
-
-TRADING_APP_EVENTHANDLER 
-
-EVENT_POSITION_REPORT 
+| CRON_EXPRESSION | DESCRIPTION | TIME_ZONE | RULE_STATUS | NAME | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
+|------|------|------|------|------|------|------|------|------|
+| 0 45 7 ? * MON,TUE,WED,THU,FRI * | It’s a rule | Europe/London | ENABLED | A rule | JohnDoe | TRADING_APP_EVENTHANDLER | EVENT_POSITION_REPORT 
 
 The most important fields are: 
 
