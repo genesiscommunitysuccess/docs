@@ -117,8 +117,16 @@ Move the files from the **trading_app/scripts** folder (request server, data ser
 
 ### Build a maven project with mvn install
 
-Run
+Now run mvn install.
 
-Show archetype generation in intellij and repeat step 10) (have files at hand so we can copy them easily).
+Again, you need to move the script and config files. Have these to hand, so you can copy them easily:
 
-Build maven project with mvn install in intellij
+Move the generated ref_data_app/cfg files (from the previous DictionaryBuilder and AppGen steps) to the ref_data_app-config/src/main/resources/cfg folder.
+
+Locate the generated files for the request server, data server and event handler. These are in the  ref_data_app/scripts folder. Move these to the ref_data_app-script-config/src/main/resources/scripts folder.
+
+### Install the maven project in intellij
+
+In intellij, run mvn install.
+
+That's it. You have all the files in a project, ready for you to work in your IDE. In the following steps, you'll be working here to add key functionality to the application.
