@@ -26,9 +26,9 @@ The available options for both XML and GPAL are:
 
 **maximumEntries** is the limit of entries we can hold in our cache. If the limit is achieved, entries will be replaced with an LRU algorithm. Default: 10000.
 
-**concurrencyLevel** sets the way the cache is structured internally, so it affect the amount of concurrency we can achieve with multi-threaded operations. It is a sensitive configuration parameter and can potentially worsen performance so should be used only for tweaking with care or not used at all. Default: 4.
+**concurrencyLevel** sets the way the cache is structured internally, so it controls the extent of concurrency that is achieved with multi-threaded operations. It is a sensitive configuration parameter and can potentially worsen performance. Use it for fine-tuning - or not at all. You have been waned! Default: 4.
 
-multipleKeys if we set this to "true", any call to a record with any of its keys will hit cache as long as the record is in it (handy but involves data duplication). Otherwise, a call must use the same key it was used previously to retrieve a record from cache or we will have to reload the record from database (more efficient if the same keys are going to be used every time). Default: true
+**multipleKeys** if you set this to **true**, any call to a record with any of its keys will hit cache as long as the record is in it (this is handy, but involves data duplication). Otherwise, a call must use the same key that was used previously to retrieve a record from cache or you will have to reload the record from database (this is more efficient if the same keys are going to be used every time). Default: true
 
 update only available in cache and not bulkCache. It will update cached records when they are modified in our database. Default: false.
 
