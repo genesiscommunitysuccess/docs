@@ -58,7 +58,11 @@ Run **genesisInstall** again.
 
 The remap script creates the database schema from the dictionary files.
 
-Run **remap –commit**.
+Run **remap -commit**.
+
+![](/img/trading_app-creation-run-remap-commit-1-6.png)
+
+![](/img/trading_app-creation-run-remap-commit-2-6.png)
 
 ## 4. AppGen
 
@@ -72,7 +76,7 @@ Run **AppGen**:
 
 **AppGen -n trading_app -p 11000**
 
-\**Show the files
+![](/img/trading_app-creation-run-appgen-7.png)
 
 ## Load the trade data
 
