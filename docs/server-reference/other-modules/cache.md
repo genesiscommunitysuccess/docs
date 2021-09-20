@@ -13,5 +13,9 @@ The caching mechanism applies to single-record database look-up operations acros
 
 There two ways of defining the cache for a module:
 
-* in xml format,  inside the config file of the process.  
-* in GPAL format. The GPAL format is generally used for microservices using a GPAL script (defined in the script attribute in processes.xml). The cache file is defined in the config attribute of the process definition.
+* in xml format,  inside the config file of the process.
+* in GPAL format. The GPAL format is generally used for microservices using a GPAL script (defined in the **script** attribute in **processes.xm**l). The cache file is defined in the **config** attribute of the process definition. The GPAL file naming convention is: _application_**-process-config.kts**
+
+The available options for both XML and GPAL are:
+
+listed here.
