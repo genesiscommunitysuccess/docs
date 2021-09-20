@@ -41,12 +41,15 @@ This will fail because we have duplicate fields with the different field types.
 
 ![](/img/fail-duplicate-fields-and-tables.png)
 
-Remove the following duplicated fields:
-
-/tables:
+Edit the file .Remove the following duplicated fields:
 
 * COUNTERPARTY_ID
 * INSTRUMENT_ID
+
+![](/img/remove-two-fields.png)
+
+Remove the following duplicated fields:/tables:
+
 * COUNTERPARTY
 * INSTRUMENT
 
