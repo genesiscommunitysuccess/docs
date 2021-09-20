@@ -14,10 +14,6 @@ The following imports are automatically available inside GPAL event handlers:
 
 ### Automatic import
 
-:::danger WIP
-_details to follow_
-:::
-
 The following properties are automatically available inside GPAL event handlers:
 
 ```kotlin
@@ -92,9 +88,7 @@ In order to optimise database lookup operations, you might want to reuse some da
     }
 ```
 
-:::danger WIP
-(There are some refs here that need to be fetched from the source release notes.)
-:::
+\[//\]: <> (This still needs to be checked against the release notes.)
 
 As the  example shows, there is an additional type defined for the context event handler. This is a _String._ This enables us to optionally return a _String_ value from our **onValidate** block (see _validationAck_ logic) and then capture it in our **onCommit** block (see _context_ lambda parameter).
 
