@@ -108,7 +108,11 @@ This gives you the following structure:
 
 ![](/img/trading_app-creation-show-project-structure-13.png)
 
-Move generated trading_app/cfg files (from previous Excellarator and AppGen steps) to trading_app-config/src/main/resources/cfg and move generated trading_app/scripts files (requestserver, dataserver and eventhandler) to trading_app-script-config/src/main/resources/scripts
+Move the files to the correct location
+
+Move the files that have been generated so far from the **trading_app/cfg** folder to trading_app-con_ig/src/main/resources/cfg_
+
+Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the trading_app-script-config/src/main/resources/scripts
 
 Build maven project with mvn install.
 
