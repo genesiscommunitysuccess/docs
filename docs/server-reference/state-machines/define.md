@@ -23,25 +23,26 @@ Here is an example of an event - in this case, a modification to a draft trade. 
 
 ```kotlin
 modifyEvent {
-            mutableStates(TradeStatus.DRAFT, TradeStatus.OPEN)
+    mutableStates(TradeStatus.DRAFT, TradeStatus.OPEN)
 
-            excludedFields {
-                ENTERED_BY
-                ENTERED_TIME
-                MODIFIED_BY
-                MODIFIED_TIME
-            }
+    excludedFields {
+        ENTERED_BY
+        ENTERED_TIME
+        MODIFIED_BY
+        MODIFIED_TIME
+    }
 
-            onEvent { event, trade ->
-                trade.modifiedBy = event.userName
-                trade.modifiedTime = now()
-            }
+    onEvent { event, trade ->
+        trade.modifiedBy = event.userName
+        trade.modifiedTime = now()
+    }
 
-            onValidate { trade ->
-                verifyOnly { trade hasField TRADE.PRICE }
-                verifyOnly { trade hasField TRADE.QUANTITY greaterThanOrEqual 0 }
-            }
-
+    onValidate { trade ->
+        verifyOnly { trade hasField TRADE.PRICE }
+        verifyOnly { trade hasField TRADE.QUANTITY greaterThanOrEqual 0 }
+    }
+    // ... rest of the code
+}
 
 ```
 

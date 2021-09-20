@@ -5,7 +5,7 @@ sidebar_label: Workflow - add a state machine
 sidebar_position: 6
 
 ---
-Now we are going to configure a state machine to control the workflow of trades.
+Now we are going to configure state machine to control the workflow of trades.
 
 At this stage, you have:
 
@@ -16,11 +16,11 @@ Also, you have enhanced the EVENT_TRADE_INSERT event handler so that it performs
 
 ## The objective
 
-We need a very simple state machine to add new trades. For this example, we shall have  a new TRADE_STATUS field with three possible states: ACTIVE, COMPLETED, CANCELLED.
+We need a very simple state machine to add new trades. For this example, we shall have a new TRADE_STATUS field with three possible states: NEW, ALLOCATED, CANCELLED.
 
-* ACTIVE can go to COMPLETED or CANCELLED.
-* COMPLETED and CANCELLED can’t go anywhere else.
-* ACTIVE is the only state you can use to insert new records.
+* NEW can go to ALLOCATED or CANCELLED.
+* ALLOCATED and CANCELLED can’t go anywhere else.
+* NEW is the only state you can use to insert new records.
 
 ![](/img/diagram-of-states.png)
 
@@ -32,52 +32,382 @@ The automatically generated state machines
 
 ### Add the new field to the data model
 
-Add TRADE_STATUS field to fields file and tables file. Run Generate Fields then run Generate Dao
+Add TRADE_STATUS field to `trading_app-fields-dictionary.kts` file
+
+```kotlin {16}
+fields {
+  field(name = "COUNTERPARTY", type = STRING)
+  field(name = "COUNTERPARTY_LEI", type = STRING)
+  field(name = "COUNTERPARTY_NAME", type = STRING)
+  field(name = "ENTERED_BY", type = STRING)
+  field(name = "FIELD_3", type = LONG)
+  field(name = "INSTRUMENT_SYMBOL", type = STRING)
+  field(name = "PRICE", type = DOUBLE)
+  field(name = "QUANTITY", type = LONG)
+  field(name = "REFERENCE_PX", type = STRING)
+  field(name = "REFERENCE_QTY", type = DOUBLE)
+  field(name = "SIDE", type = STRING)
+  field(name = "SYMBOL", type = LONG)
+  field(name = "TRADE_DATETIME", type = DATETIME)
+  field(name = "TRADE_ID", type = LONG)
+  field(name = "TRADE_STATUS", type = ENUM("NEW", "ALLOCATED", "CANCELLED", default = "NEW"))
+}
+```
+
+Add TRADE_STATUS field to TRADE table in `trading_app-tables-dictionary.kts` file
+
+```kotlin {12}
+tables {
+  table (name = "TRADE", id = 11000) {
+    // Source: Trade
+    TRADE_ID            // A
+    INSTRUMENT_ID not null       // B
+    COUNTERPARTY_ID not null     // C
+    QUANTITY            // F
+    SIDE                // G
+    PRICE               // H
+    TRADE_DATETIME      // K
+    ENTERED_BY          // L
+    TRADE_STATUS
+
+    primaryKey {
+      TRADE_ID
+    }
+
+  }
+}
+```
+Run codegen to generate fields first and then run codegen for DAOs
+
+![](/img/state-machine-codegen.png)
 
 ### Create a new class for the state machine
 
-Add main folder in event handler module and create state machine class.
+Add main folder in event handler module and create state machine class
 
-Perform state machine definition in video.
+![](/img/state-machine-location.png)
 
-Assign a field in onCommit block which will be demonstrated in a unit test
+Add state machine definition and assign a field in onCommit block which will be demonstrated in a unit test
+
+```kotlin
+package global.genesis
+
+import com.google.inject.Inject
+import global.genesis.commons.annotation.Module
+import global.genesis.db.rx.entity.multi.AsyncEntityDb
+import global.genesis.db.statemachine.StateMachine
+import global.genesis.db.statemachine.Transition
+import global.genesis.gen.dao.Trade
+import global.genesis.gen.dao.enums.TradeStatus
+
+@Module
+class TradeStateMachine @Inject constructor(
+    db: AsyncEntityDb
+) {
+    private val internalState: StateMachine<Trade, TradeStatus, TradeEffect> = db.stateMachineBuilder {
+        readState { tradeStatus }
+
+        state(TradeStatus.NEW) {
+            isMutable = true
+
+            initialState(TradeEffect.New) {
+                onValidate { trade ->
+                    verify {
+                        db hasNoEntry Trade.ById(trade.tradeId)
+                    }
+                }
+            }
+
+            onCommit { trade ->
+                if (trade.enteredBy == "TestUser") {
+                    trade.price = 10.0
+                }
+            }
+
+            transition(TradeStatus.ALLOCATED, TradeEffect.Allocated)
+            transition(TradeStatus.CANCELLED, TradeEffect.Cancelled)
+        }
+
+        state(TradeStatus.ALLOCATED) {
+            isMutable = false
+
+            transition(TradeStatus.NEW, TradeEffect.Cancelled)
+            transition(TradeStatus.CANCELLED, TradeEffect.Cancelled)
+        }
+
+        state(TradeStatus.CANCELLED) {
+            isMutable = false
+        }
+    }
+
+    suspend fun insert(trade: Trade): Transition<Trade, TradeStatus, TradeEffect> = internalState.create(trade)
+
+    suspend fun modify(tradeId: Long, modify: suspend (Trade) -> Unit): Transition<Trade, TradeStatus, TradeEffect>? =
+        internalState.update(Trade.ById(tradeId)) { trade, _ -> modify(trade) }
+
+    suspend fun modify(trade: Trade): Transition<Trade, TradeStatus, TradeEffect>? = internalState.update(trade)
+}
+
+sealed class TradeEffect {
+    object New : TradeEffect()
+    object Allocated : TradeEffect()
+    object Cancelled : TradeEffect()
+}
+```
 
 ### Add the module as a pom dependency
 
 Add eventhandler module as pom dependency to script-config module and refresh maven
 
-Integrate state machine in EVENT_TRADE_INSERT
+![](/img/state-machine-pom-change.png)
 
-Create data classes that will be used in the cancel and completed event handlers. 2 will be required, one called TradeCancel and one called TradeCompleted which have a single field tradeId.
+Integrate state machine in TRADE_INSERT event
 
-Create new event handler to handle cancellation: EVENT_TRADE_CANCELLED. Integrate state machine in it.
+```kotlin {2,15}
+eventHandler {
+    val stateMachine = inject<TradeStateMachine>()
 
-Create new event handler to handle completion: EVENT_TRADE_COMPLETED. Integrate state machine in it.
+    eventHandler<Trade>(name = "TRADE_INSERT") {
+        onValidate { event ->
+            val message = event.details
+            verify {
+                entityDb hasEntry Counterparty.ById(message.counterpartyId)
+                entityDb hasEntry Instrument.ById(message.instrumentId)
+            }
+            ack()
+        }
+        onCommit { event ->
+            val trade = event.details
+            stateMachine.insert(trade)
+            ack()
+        }
+    }
+}
+```
+
+Create data classes that will be used in the cancel and allocated event handlers. These two data classes will be required, one called TradeCancel and one called TradeAllocated which have a single field tradeId.
+
+TradeAllocated:
+```kotlin
+package global.genesis.trading_app.message.event
+
+data class TradeAllocated(val tradeId: Long)
+```
+
+TradeCancelled:
+```kotlin
+package global.genesis.trading_app.message.event
+
+data class TradeCancel(val tradeId: Long)
+```
+
+Create new event handler to handle cancellation: TRADE_CANCELLED and integrate state machine in it.
+
+```kotlin
+eventHandler {
+    eventHandler<TradeCancel>(name = "TRADE_CANCELLED") {
+        onCommit { event ->
+            val message = event.details
+            stateMachine.modify(message.tradeId) { trade ->
+                trade.tradeStatus = TradeStatus.CANCELLED
+            }
+            ack()
+        }
+    }
+}
+```
+
+Create new event handler to handle completion: TRADE_ALLOCATED and integrate state machine in it.
+
+```kotlin
+eventHandler {
+    eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED") {
+        onCommit { event ->
+            val message = event.details
+            stateMachine.modify(message.tradeId) { trade ->
+                trade.tradeStatus = TradeStatus.ALLOCATED
+            }
+            ack()
+        }
+    }
+}
+```
 
 Modify the TRADE_MODIFY event handler to use state machine
 
+```kotlin {5}
+eventHandler {
+    eventHandler<Trade>(name = "TRADE_MODIFY") {
+        onCommit { event ->
+            val trade = event.details
+            stateMachine.modify(trade)
+            ack()
+        }
+    }
+}
+```
+
 Remove the TRADE_DELETE event handler
 
-In order to manage the state of the trade, you need to remove the delete event handler. If a trade is incorrect and needs to be deleted, similar functionality can be achieved by cancelling the trade.
+We want to carefully manage the state of the trade so are removing the delete event handler. If a trade is incorrect and needs to be deleted, similar
+functionality can be achieved by cancelling the trade.
 
 ## Testing
 
 ### Create the unit tests
 
+Create helper function to create Trade object which can be reused in tests
+
+```kotlin
+private fun setupTrade() = Trade {
+    tradeId = 1
+    counterpartyId = "1"
+    instrumentId = "2"
+}
+```
+
 Add 6 new unit tests to prove state machine behaviour:
 
-success cancelling trade,
+Cancel trade successfully:
+```kotlin
+    @Test
+    fun `test cancel trade`(): Unit = runBlocking {
+        val setupTrade = setupTrade()
+        entityDb.insert(setupTrade)
 
-failure cancelling trade (trade is already cancelled),
+        val message = Event(
+            details = TradeCancel(1),
+            messageType = "EVENT_TRADE_CANCELLED"
+        )
 
-success completing trade.
+        val result: EventReply? = messageClient.suspendRequest(message)
 
-failure complete trade (trade is already cancelled)
+        result.assertedCast<EventReply.EventAck>()
 
-Test which executes onCommit logic (changing price when entered by TestUser)
+        val trade = entityDb.get(Trade.ById(1))
+        assertEquals(TradeStatus.CANCELLED, trade?.tradeStatus)
+    }
+```
 
-Success transition from completed to cancelled
+Failure cancelling trade when trade is already cancelled:
+```kotlin
+    @Test
+    fun `test trying to cancel an already cancelled trade`(): Unit = runBlocking {
+        val setupTrade = Trade {
+            tradeId = 1
+            counterpartyId = "1"
+            instrumentId = "2"
+            tradeStatus = TradeStatus.CANCELLED
+        }
+        entityDb.insert(setupTrade)
 
+        val message = Event(
+            details = TradeCancel(1),
+            messageType = "EVENT_TRADE_CANCELLED"
+        )
+
+        val result: EventReply? = messageClient.suspendRequest(message)
+
+        val eventNack = result.assertedCast<EventReply.EventNack>()
+        assertThat(eventNack.error).containsExactly(
+            StandardError(
+                "INTERNAL_ERROR",
+                "State CANCELLED not recognised"
+            )
+        )
+    }
+```
+
+Allocate trade successfully:
+```kotlin
+    @Test
+    fun `test allocated trade`(): Unit = runBlocking {
+        val setupTrade = setupTrade()
+        entityDb.insert(setupTrade)
+
+        val message = Event(
+            details = TradeAllocated(1),
+            messageType = "EVENT_TRADE_ALLOCATED"
+        )
+
+        val result: EventReply? = messageClient.suspendRequest(message)
+
+        result.assertedCast<EventReply.EventAck>()
+        val trade = entityDb.get(Trade.ById(1))
+        assertEquals(TradeStatus.ALLOCATED, trade?.tradeStatus)
+    }
+```
+
+Failure to allocate trade when trade is cancelled:
+```kotlin
+    @Test
+    fun `test trying to allocate a cancelled trade`(): Unit = runBlocking {
+        val setupTrade = setupTrade()
+        setupTrade.tradeStatus = TradeStatus.CANCELLED
+        entityDb.insert(setupTrade)
+
+        val message = Event(
+            details = TradeAllocated(1),
+            messageType = "EVENT_TRADE_ALLOCATED"
+        )
+
+        val result: EventReply? = messageClient.suspendRequest(message)
+
+        val eventNack = result.assertedCast<EventReply.EventNack>()
+        assertThat(eventNack.error).containsExactly(
+            StandardError(
+                "INTERNAL_ERROR",
+                "Illegal transition: cannot transition from CANCELLED to ALLOCATED"
+            )
+        )
+    }
+```
+
+Change price of the trade when entered by TestUser, which executes onCommit logic from state machine:
+```kotlin
+    @Test
+    fun `test trade by TestUser`(): Unit = runBlocking {
+        val message = Event(
+            details = Trade {
+                tradeId = 1
+                counterpartyId = "1"
+                instrumentId = "2"
+                price = 5.0
+                enteredBy = "TestUser"
+            },
+            messageType = "EVENT_TRADE_INSERT"
+        )
+
+        val result: EventReply? = messageClient.suspendRequest(message)
+
+        result.assertedCast<EventReply.EventAck>()
+
+        val trade = entityDb.get(Trade.ById(1))
+        assertEquals(10.0, trade?.price)
+    }
+```
+
+Success transition from completed to cancelled:
+```kotlin
+    @Test
+    fun `test transition from allocated to cancelled status`(): Unit = runBlocking {
+        val setupTrade = setupTrade()
+        setupTrade.tradeStatus = TradeStatus.ALLOCATED
+        entityDb.insert(setupTrade)
+
+        val message = Event(
+            details = TradeCancel(1),
+            messageType = "EVENT_TRADE_CANCELLED"
+        )
+
+        val result: EventReply? = messageClient.suspendRequest(message)
+
+        result.assertedCast<EventReply.EventAck>()
+
+        val trade = entityDb.get(Trade.ById(1))
+        assertEquals(TradeStatus.CANCELLED, trade?.tradeStatus)
+    }
+```
 ### Run the tests
 
 Run all unit tests to confirm they pass
