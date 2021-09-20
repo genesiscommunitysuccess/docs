@@ -71,7 +71,7 @@ This time, we can see the files for the Genesis processes being created.
 
 The remap script creates the database schema from the dictionary files.
 
-Run **remap -commit**.
+Run **remap --commit**.
 
 ![](/img/trading_app-creation-run-remap-commit-1-6.png)
 
