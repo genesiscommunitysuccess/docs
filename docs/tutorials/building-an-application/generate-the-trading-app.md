@@ -55,6 +55,8 @@ Edit the file **trading_app-tables-dictionary.kts**. Remove the following duplic
 
 ![](/img/remove-two-tables.png)
 
+With these corrections, you are now ready to install again.
+
 ### A successful install
 
 Run **genesisInstall** again.
