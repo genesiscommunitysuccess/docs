@@ -6,13 +6,6 @@ sidebar_position: 3
 
 ---
 
-import CodeBlock from '@theme/CodeBlock';
-import Imports from '!!raw-loader!../../../examples/server/java/event-handlers/imports.java';
-
-:::danger WIP
-(Add introduction and contents list here.)
-:::
-
 ## Defining an event handler in GPAL
 
 The following imports are automatically available inside GPAL event handlers:
@@ -22,7 +15,7 @@ The following imports are automatically available inside GPAL event handlers:
 ### Automatic import
 
 :::danger WIP
-*details to follow*
+_details to follow_
 :::
 
 The following properties are automatically available inside GPAL event handlers:
@@ -43,11 +36,9 @@ val clientConnectionsManager: ClientConnectionsManager
 
 You can define an event handler by creating an **eventHandler** code block. This needs:
 
-- **Inbound and outbound message types**. An event handler requires one inbound message type (e.g. a generated dao entity or a custom defined message) and optionally an outbound message type. If a message type is not defined, the default *EventReply* message type will apply. For example, `eventHandler<TradeInsert>` and `eventHandler<TradeInsert,TradeInsertReply>`.
-- **Optionally, a name**. The prefix `EVENT_` will always be added to this automatically. The default name will be `EVENT_<message type name>`. So, for a message type declared as `OrderInsert`, declaring an event handler block as `eventHandler<OrderInsert>{}` automatically registers the event with the name `EVENT_ORDER_INSERT`.
-- **Optionally, a boolean to define if the event handler is transactional or not**. This enables the platform to run the whole **onValidate/onCommit** **blocks in a single ACID transaction if the database engine supports it.
-
-
+* **Inbound and outbound message types**. An event handler requires one inbound message type (e.g. a generated dao entity or a custom defined message) and optionally an outbound message type. If a message type is not defined, the default _EventReply_ message type will apply. For example, `eventHandler<TradeInsert>` and `eventHandler<TradeInsert,TradeInsertReply>`.
+* **Optionally, a name**. The prefix `EVENT_` will always be added to this automatically. The default name will be `EVENT_<message type name>`. So, for a message type declared as `OrderInsert`, declaring an event handler block as `eventHandler<OrderInsert>{}` automatically registers the event with the name `EVENT_ORDER_INSERT`.
+* **Optionally, a boolean to define if the event handler is transactional or not**. This enables the platform to run the whole **onValidate/onCommit** **blocks in a single ACID transaction if the database engine supports it.
 
 Inside each event handler you can define additional blocks and properties.
 
@@ -78,7 +69,7 @@ However, it is mandatory when using custom reply message types, and the script w
     }
 ```
 
-Kotlin’s *require* method throws an exception with a message if the boolean expression is not what is expected, and the event handler automatically converts that exception into a corresponding **EventNack**.
+Kotlin’s _require_ method throws an exception with a message if the boolean expression is not what is expected, and the event handler automatically converts that exception into a corresponding **EventNack**.
 
 In order to optimise database lookup operations, you might want to reuse some data obtained within the **onValidate** block inside your **onCommit** block. To do this, you can use context event handlers, as shown below:
 
@@ -99,13 +90,13 @@ In order to optimise database lookup operations, you might want to reuse some da
             ack(listOf(mapOf("VALUE" to parsedContext)))
         }
     }
-
 ```
+
 :::danger WIP
 (There are some refs here that need to be fetched from the source release notes.)
 :::
 
-As the  example shows, there is an additional type defined for the context event handler. This is a *String.* This enables us to optionally return a *String* value from our **onValidate** block (see *validationAck* logic) and then capture it in our **onCommit** block (see *context* lambda parameter).
+As the  example shows, there is an additional type defined for the context event handler. This is a _String._ This enables us to optionally return a _String_ value from our **onValidate** block (see _validationAck_ logic) and then capture it in our **onCommit** block (see _context_ lambda parameter).
 
 Because we are creating validation context, we need to use the function **validationAck()** and not just **ack()**
 
@@ -151,7 +142,6 @@ Please see example event handler below:
             TradeEventAck("Trade1")
         }
     }
-
 ```
 
 ### onCommit
@@ -180,7 +170,6 @@ As with other GPL files (e.g. reqrep and dataserver), you can use a **permission
             ack(listOf(mapOf("VALUE" to result.record.companyId)))
         }
     }
-
 ```
 
 If your message type is not a database-generated entity,  you can still define fixed **permissionCodes** outside the permissions block:
@@ -194,7 +183,6 @@ If your message type is not a database-generated entity,  you can still define f
             ack(listOf(mapOf("VALUE" to result.record.companyId)))
         }
     }
-
 ```
 
 ### ACID guaranteed
@@ -216,7 +204,6 @@ See the example below for defining an event handler this way (a transactional ev
             ack(listOf(mapOf("VALUE" to "SUCCESS!")))
         }
     }
-
 ```
 
 ### AutoAuditing
