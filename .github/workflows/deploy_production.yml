@@ -38,12 +38,13 @@ jobs:
 
     - uses: jakejarvis/s3-sync-action@master
       with:
-        args: --follow-symlinks --delete
+        args: --follow-symlinks
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_S3_BUCKET: genesis-portal
         AWS_REGION: 'eu-west-2'
         SOURCE_DIR: 'build'
+        DEST_DIR: '/secure'
 
 
