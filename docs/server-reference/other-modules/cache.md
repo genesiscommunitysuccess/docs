@@ -32,7 +32,7 @@ The available options for both XML and GPAL are:
 
 **update**. This is available in **cache** but not **bulkCache**. It will update cached records when they are modified in the database. Default: false.
 
-insertNewEntrie if you set this to true, it will force the caching of new records inserted for each table. Standard behaviour won't cache records inserted if they haven't been read before. This feature is also not available in **bulkCache**. Default: false.
+**insertNewEntries**. If you set this to **true**, it will force the caching of new records inserted for each table. Standard behaviour won't cache records inserted if they haven't been read before. This feature is not available in **bulkCache**. Default: false.
 
 **tables**. This can define **loadOnStart** as true, if you want to pre-load the whole table in cache before the process starts. Default: false.
 
