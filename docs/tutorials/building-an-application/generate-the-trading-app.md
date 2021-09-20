@@ -88,7 +88,7 @@ Run **AppGen**:
 
 ## Load the trade data
 
-Explain that we are going to prepare a pro-code setup, in this case a maven project. This way we can use an IDE to build our app and more (deploy artifacts, integrate CI/CD, create unit tests etc)..
+To progress from here, we need to prepare a  pro-code setup, in this case a maven project. This will enable us to use an IDE to work at speed.
 
 ## Build a maven project
 
