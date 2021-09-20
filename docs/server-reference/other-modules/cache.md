@@ -30,7 +30,7 @@ The available options for both XML and GPAL are:
 
 **multipleKeys** if you set this to **true**, any call to a record with any of its keys will hit cache as long as the record is in it (this is handy, but involves data duplication). Otherwise, a call must use the same key that was used previously to retrieve a record from cache or you will have to reload the record from database (this is more efficient if the same keys are going to be used every time). Default: true
 
-update only available in cache and not bulkCache. It will update cached records when they are modified in our database. Default: false.
+update this is only available in **cache** and not **bulkCache**. It will update cached records when they are modified in the database. Default: false.
 
 insertNewEntrie if set to true, it will force the caching of new records inserted for each table. Standard behaviour won't cache records inserted if they haven't been read before. This feature is also not available in bulkCache. Default: false.
 
