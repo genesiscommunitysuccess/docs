@@ -1,25 +1,25 @@
 ---
-title: 'Define your data model'
-sidebar_label: 'Define your data model'
+title: Define your data model
+sidebar_label: Define your data model
 sidebar_position: 1
 id: define
+
 ---
-
-:::danger WIP
-(talk about the files here: dictionary, etc.)
-:::
-
 The data model is at the heart of your application. Getting this right is critical not just to the success of the application, but to how intuitive it will be to develop.
 
 Get it right, and you will find all the other steps are much easier and more logical to complete.
 
 In Genesis, we structure our data in the following way:
 
-- Fields
-- Tables
-- Views (a view can draw data from more than one table)
+* Fields
+* Tables
+* Views (a view can draw data from more than one table)
 
-Each of these must be specified in a separate file on the filesytem
+Each of these must be specified in a separate file on the filesytem:
+
+* _application_**-fields-dictionary.kts**
+* _application_**-tables-dictionary.kts**
+* _application_**-view-dictionary.kts**
 
 ## Fields
 
@@ -31,17 +31,17 @@ But you can also define your own fields.
 
 The following field types are available:
 
-- LONG
-- INT
-- SHORT
-- DOUBLE
-- BIGDECIMAL
-- DATETIME
-- DATE
-- NANO_TIMESTAMP
-- RAW
-- STRING
-- ENUM
+* LONG
+* INT
+* SHORT
+* DOUBLE
+* BIGDECIMAL
+* DATETIME
+* DATE
+* NANO_TIMESTAMP
+* RAW
+* STRING
+* ENUM
 
 Fields are easily defined with a unique Name and a type, and additionally a few other options such as default value, non-nullable and others (some are relevant only for certain types).
 
@@ -59,20 +59,17 @@ Fields are defined in file under `<module-name>/src/main/resources/cfg` having t
 
 When you define a new field, it is good practice to run **codegen:generateSysDef**. This will generate code based on the fields definition and you will be able to use intellisense to pick this new field within table definitions.
 
-### Naming fields 
+### Naming fields
+
 As is always the case, it is worth being careful with the names you give fields. Clear names help.
 
 If you create a field name that already exists, there are no consequences - as long as the field type is also the same. In effect, the second definition is simply ignored.
 
 However, if you create a field name that matches an existing name and you give it a different field type, this generates a duplication error.
 
-The error is shown when you generate the code using Maven. 
+The error is shown when you generate the code using Maven.
 
 If the code has already been generated - typically, if you are making changes to an existing server - the error is generated when you run **genesisInstall** after the change.
-
-:::danger WIP
-Checking with Peter
-:::
 
 Technically, it is possible to duplicate field names. When you build, this generates a duplication warning if the fields are defined in the same way, or an error if they are defined differently. If the duplication is between your own field and one you have inherited from another module, make sure you change the name of your own field, not the one from the other module.
 
@@ -86,9 +83,7 @@ You can also specify one or more indices onto the table. These can be defined as
 
 When you define a table, it is good to give it a clear name that describes the key - so it is well worth planning these in advance. If you don’t define a name for the primary key, the default name will be:
 
-```
-<TABLE>_BY_<PK_FIELD_1>(_<PK_FIELD_2>
-```
+    <TABLE>_BY_<PK_FIELD_1>(_<PK_FIELD_2>
 
 Primary key and index definitions are used in the various “lego brick” configurations, as well as any custom Db operations when you build and create the DAO Objects. This covers, for example, the ability to retrieve a single record based on the primary key values, and the ability to get a list of records part matching the first key field value (**getRange**).
 
@@ -137,7 +132,6 @@ However, we still offer full flexibility (at the expense of less type safety and
     derivedField("TIMES_TWO_COUNTER_PLUS_VERSION"){
         ((Fields.APPROVED_COUNTER not null) * 2) + (Fields.VERSION not null)
     }
-
 ```
 
 In this case it is not clear what the output type will be (we haven’t specified it) as full flexibility is provided, so the user needs to explicitly define the output type (in this case it will be an INT type as both APPROVED_COUNTER and VERSION are INT types).
@@ -191,17 +185,18 @@ You can override the **null = true** setting within a specific table if you need
     }
 ```
 
-### States 
+### States
+
 One of the most important decisions you need to make is about states. These control the state of financial entities throughout the trade lifecycle. For example, an order could be new, amended, open or complete.
 
-You control the transitions from state to state by defining state machines. But in order to do this, you need to define the list of possible states. 
+You control the transitions from state to state by defining state machines. But in order to do this, you need to define the list of possible states.
 
 First, you need a field to define the possible states (which are entirely your choice).
 
 For example:
-```
-field("TRADE_STATUS", ENUM("DRAFT", "CANCELLED", "OPEN", "CLOSED", default = "DRAFT"))
-```
+
+    field("TRADE_STATUS", ENUM("DRAFT", "CANCELLED", "OPEN", "CLOSED", default = "DRAFT"))
+
 Essentially, every state machine needs to be based on a specific table. The table should include all the fields required to , as well as the field you created to control the state of the trade. In our example above, this is TRADE_STATUS. Below is an example of a table that can be used by a state machine. It includes the set of fields that are relevant to a trade (QUANTITY, PRICE, etc.)
 
 ```kotlin
@@ -231,19 +226,20 @@ table("TRADE", 102) {
 To create a view, you must specify a name for the view and the identity of the primary table. Following that, you can specify the fields in the view, including derived fields.
 
 Views are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-view-dictionary.kts`. For exmple for the `trade` application that file name would be `trade-view-dictionary.kts`
- 
+
 ### Joins
+
 Often, a view needs to contain fields from different tables.
 
 For a simple join, where you add reference data to price data, for example, include a **joins** statement when you define the table. For this, you can insert a join in your view. You need to specify the root table, the second table, and the fields that are being viewed in each one.
 
 You might need to join to two different parts of the same table - for example, if you need to pick up the currency of a trade currency and also the settlement currency.
- 
+
 To achieve this, create aliases for the two fields you are retrieving from the second table, for example, **tradeCcy** and s**ettCcy.**
 
- By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data). If you need to join to a table where there is real-time data, then you need to specify a backwards join. This requires the statement backwardsJoin = true when you are specifying the join. 
+By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data). If you need to join to a table where there is real-time data, then you need to specify a backwards join. This requires the statement backwardsJoin = true when you are specifying the join.
 
-It is worth noting that when you define your [data servers](/server-reference/data-servers/configure/), any of these that include views with backwards joins must include a similar statement: **backJoins = true**. Don’t forget to add this! 
+It is worth noting that when you define your [data servers](/server-reference/data-servers/configure/), any of these that include views with backwards joins must include a similar statement: **backJoins = true**. Don’t forget to add this!
 
 ```kotlin
 query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {
@@ -252,8 +248,3 @@ query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {
     }
 }
 ```
-    
-    
-    
-
-

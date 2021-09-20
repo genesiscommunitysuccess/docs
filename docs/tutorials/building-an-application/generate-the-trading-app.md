@@ -41,26 +41,43 @@ This will fail because we have duplicate fields with the different field types.
 
 ![](/img/fail-duplicate-fields-and-tables.png)
 
-Remove the following duplicated fields/tables:
+Edit the file **trading_app-fields-dictionary.kts**. Remove the following duplicated fields:
 
 * COUNTERPARTY_ID
 * INSTRUMENT_ID
+
+![](/img/remove-two-fields.png)
+
+Edit the file **trading_app-tables-dictionary.kts**. Remove the following duplicated tables:
+
 * COUNTERPARTY
 * INSTRUMENT
+
+![](/img/remove-two-tables.png)
+
+With these corrections, you are now ready to install again.
 
 ### A successful install
 
 Run **genesisInstall** again.
 
-\**screengrab
+![](/img/trading_app-creation-run-genesisinstall-again-5.png)
+
+This time, we can see the files for the Genesis processes being created.
+
+![](/img/trading_app-creation-run-genesisinstall-again-2-5.png)
 
 ## 3. Remap
 
 The remap script creates the database schema from the dictionary files.
 
-Run **remap –commit**.
+Run **remap -commit**.
 
-## 4. AppGen
+![](/img/trading_app-creation-run-remap-commit-1-6.png)
+
+![](/img/trading_app-creation-run-remap-commit-2-6.png)
+
+## 4. Run AppGen
 
 **AppGen** creates three important modules for the application:
 
@@ -72,13 +89,13 @@ Run **AppGen**:
 
 **AppGen -n trading_app -p 11000**
 
-\**Show the files
+![](/img/trading_app-creation-run-appgen-7.png)
 
-## Load the trade data
+## 3. Load the trade data
 
-Explain that we are going to prepare a pro-code setup, in this case a maven project. This way we can use an IDE to build our app and more (deploy artifacts, integrate CI/CD, create unit tests etc)..
+To progress from here, we need to prepare a  pro-code setup, in this case a maven project. This will enable us to use an IDE to work at speed.
 
-## Build a maven project
+## 4. Build a maven project
 
 The **mvn** command can be run in either the server/local vm/wsl/cloud instance containing the genesis platform installation or a separate local dev machine. We will use the same machine as before for consistency.
 
@@ -86,14 +103,30 @@ Run
 
 **mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=trading_app -B**
 
+![](/img/trading_app-creation-prepare-maven-project-10-11-12.png)
+
 This gives you the following structure:
 
 ![](/img/trading_app-creation-show-project-structure-13.png)
 
-Move generated trading_app/cfg files (from previous Excellarator and AppGen steps) to trading_app-config/src/main/resources/cfg and move generated trading_app/scripts files (requestserver, dataserver and eventhandler) to trading_app-script-config/src/main/resources/scripts
+### Move the files to the correct location
 
-Build maven project with mvn install.
+Move the files that have been generated so far from the **trading_app/cfg** folder to **trading_app-con_ig/src/main/resources/cfg**.
 
-Show archetype generation in intellij and repeat step 10) (have files at hand so we can copy them easily).
+Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the **trading_app-script-config/src/main/resources/scripts** folder.
 
-Build maven project with mvn install in intellij
+### Build a maven project with mvn install
+
+Now run **mvn install**.
+
+Again, you need to move the script and config files. Have these to hand, so you can copy them easily:
+
+Move the files that have been generated so far from the **trading_app/cfg** folder to **trading_app-con_ig/src/main/resources/cfg**.
+
+Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the **trading_app-script-config/src/main/resources/scripts** folder.
+
+### Install the maven project in intellij
+
+In intellij, run mvn install.
+
+That's it. You have all the files in a project, ready for you to work in your IDE. In the following steps, you'll be working here to add key functionality to the application.

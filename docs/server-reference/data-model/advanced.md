@@ -3,13 +3,15 @@ title: Data modelling reference
 sidebar_label: Data modelling reference
 id: advanced
 sidebar_position: 4
+
 ---
-
 ## Tables
-### Primary keys, secondary keys and indices
-The Genesis platform provides an abstraction layer so that you can use different database backends (FoundationDB, Aerospike, PostgreSQL) independently of your schema definition. 
 
-Genesis uses keys, which can be primary or secondary. In an SQL world, the closest similarity would be: 
+### Primary keys, secondary keys and indices
+
+The Genesis platform provides an abstraction layer so that you can use different database backends (FoundationDB, Aerospike, PostgreSQL) independently of your schema definition.
+
+Genesis uses keys, which can be primary or secondary. In an SQL world, the closest similarity would be:
 
 Genesis primary key → SQL primary key
 Genesis secondary key → SQL unique index definition.
@@ -20,13 +22,9 @@ Our abstraction layer enables you to ignore these differences as a developer.
 
 You can see an example of the syntax in the USER_SESSION table below.
 
-:::danger WIP
-(There are no line numbers now we are not using confluence. I need to rewrite the examples here, because there are numerous specific references.)
-:::
+The primary key for the table is defined after each of the fields has been listed. We don’t declare any key names or key IDs. They are auto-generated. Any time you add/remove fields to an index or key, the name will be changed accordingly. This ensures that names are always consistent with the actual fields of the key/index. This eliminates a lot of potential human error (when, for example, you replace one field for another and forget to change the key name).
 
-The primary key for the table is defined in lines 10-13. We don’t declare any key names or key IDs. They are auto-generated. Any time you add/remove fields to an index or key, the name will be changed accordingly. This ensures that names are always consistent with the actual fields of the key/index. This eliminates a lot of potential human error (when, for example, you replace one field for another and forget to change the key name).
-
-An index can be defined as unique or non-unique. The example defines one of each (lines 13-20). In this example, we want to be able to do record lookups based on SESSION_ID (internal identifier for the session) and SESSION_AUTH_TOKEN (client authentication token), but we would also like to perform range searches based on USER_NAME (which isn’t always unique - a USER can have multiple sessions). By defining a nonUnique index on the USER_NAME field we can store that index in a more efficient way in our database layer and autogenerate optimised getRange operations in the repositories layer.
+An index can be defined as unique or non-unique. The example defines one of each immediately after the primary key. In this example, we want to be able to do record lookups based on SESSION_ID (internal identifier for the session) and SESSION_AUTH_TOKEN (client authentication token), but we would also like to perform range searches based on USER_NAME (which isn’t always unique - a USER can have multiple sessions). By defining a nonUnique index on the USER_NAME field we can store that index in a more efficient way in our database layer and autogenerate optimised getRange operations in the repositories layer.
 
 ```kotlin
 table(name = "USER_SESSION", id = 2) {
@@ -53,16 +51,16 @@ table(name = "USER_SESSION", id = 2) {
 ```
 
 ### Subtables
-A subtable and provides a unique point of view on the data schema modelling which goes further than a simple join relationship. It gives extra functionality to a main table. 
 
-For example, a financial instrument can be modelled as an INSTRUMENT table, but this table won’t be enough to represent all the possible symbologies. So, we use a subtable called ALT_INSTRUMENT_ID, in which the relationship is one to many from INSTRUMENT to ALT_INSTRUMENT_ID. 
+A subtable and provides a unique point of view on the data schema modelling which goes further than a simple join relationship. It gives extra functionality to a main table.
 
-ALT_INSTRUMENT_ID is likely to inherit key fields from the INSTRUMENT table, and it simply acts as a lookup table for INSTRUMENT records.  
+For example, a financial instrument can be modelled as an INSTRUMENT table, but this table won’t be enough to represent all the possible symbologies. So, we use a subtable called ALT_INSTRUMENT_ID, in which the relationship is one to many from INSTRUMENT to ALT_INSTRUMENT_ID.
+
+ALT_INSTRUMENT_ID is likely to inherit key fields from the INSTRUMENT table, and it simply acts as a lookup table for INSTRUMENT records.
 
 This requirement occurs for different tables (e.g. COUNTERPARTY → ALT_COUNTERPARTY_ID, GENESIS_PROCESS → GENESIS_PROCESS_MONITOR, etc..
 
 Subtables are defined within the body of the table definition. The example below shows the GENESIS_PROCESS monitoring table:
-
 
 ```kotlin
 table(name = "GENESIS_PROCESS", id = 12) {
@@ -101,4 +99,5 @@ primaryKey(name = "GENESIS_PROCESS_MONITOR_BY_HOSTNAME", id = 1) {
 }
 ```
 
-In this example, the subtable GENESIS_PROCESS_MONITOR is defined (starting at line 20) within the GENESIS_PROCESS table, We first define the fields that are used to generate the join operation (lines 23-25), and these fields are inherited by the subtable automatically. Then we can define additional fields and keys (lines 27-30).
+In this example, the subtable GENESIS_PROCESS_MONITOR is defined within the GENESIS_PROCESS table. This is shown after the fields and the primary key have been defined.
+In the subtable, we first define the fields that are used to generate the join operation. These fields are inherited by the subtable automatically. Then we can define additional fields and keys.
