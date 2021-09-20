@@ -1,10 +1,10 @@
 ---
-title: 'Configure your data servers'
-sidebar_label: 'Configure your data servers'
+title: Configure your data servers
+sidebar_label: Configure your data servers
 sidebar_position: 1
 id: configure
----
 
+---
 Data servers monitor specific tables or views in the database. When a change in data occurs, the data server makes the changed data available to the User Interface.
 
 The data server configuration is refreshingly light, because all the hard work is done by the views.
@@ -35,10 +35,7 @@ The solution to this is to use a backwards join. Any table or view that specifie
 
 There is a cost to this, as it can cause significant extra processing, so do not use backwards joins unless there is a need for the data in question to be updated in real time. Counterparty data, if changed, can wait until overnight, for example. The rule of thumb is that you should only use backwards joins where the underlying data is being updated intraday.
 
-:::danger WIP
-* (below material needs to be moved to an advanced features section.)
-* (Also needs a clear intro and use case.)
-:::
+## Advanced features
 
 ### Ranged Dataserver Queries
 
