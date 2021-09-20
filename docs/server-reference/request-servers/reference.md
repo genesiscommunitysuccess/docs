@@ -1,6 +1,6 @@
 ---
 title: Request servers reference
-sidebar_label: Request servers rReference
+sidebar_label: Request servers reference
 sidebar_position: 2
 id: reference
 
