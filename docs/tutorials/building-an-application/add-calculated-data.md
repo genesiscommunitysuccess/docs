@@ -49,7 +49,9 @@ Add the relevant indices:
 * nonunique indices for POSITION table
 * unique index for the INSTRUMENT_ID and COUNTERPARTY_ID tables (This enables us to  do a lookup in consolidator.)
 
-![](/img/sharper-position-consolidator-add-keys-indices-6.png)
+![](/img/keys-and-indices.png)
+
+## Define the position-keeping logic in the consolidator
 
 Define a **trading_app-consolidator2.xml** file inside **trading_app-config/src/main/resources/cfg** This is where you define the consolidator logic.
 
