@@ -5,11 +5,16 @@ sidebar_label: Add calculated data
 sidebar_position: 4
 
 ---
-At this point, we a data model that serves both the reference database and the trading database, Our trading application has  a schema for the TRADE table, and it has event handlers, data servers and request servers.
+At this point, we have a data model that serves both the reference database and the trading database, Our trading application has  a schema for the TRADE table, and it has event handlers, data servers and request servers.
 
-Now we want to add calculations to add posiiton-keeping.
+Now we want to add calculations to add position-keeping. In brief you need to:
 
-## Define the data schema
+1. Create some new fields for the position-keeping information.
+2. Create a new table for displaying the information.
+3. Define the logic that calculates the positions in a new consolidator file.
+4. Update the system files to incorporate the new consolidator.
+
+## 1. Define the new fields
 
 Start defining the fields for the position table in the file **trading_app-fields-dictionary.kts**.
 
@@ -37,7 +42,7 @@ Once you have defined the fields, run the following tasks in maven:
 
 This applies the new fields  to **-tables-dictionary.kts**.
 
-## Add the primary keys for each table
+## 2. Add the primary keys for each table
 
 * POSITION_ID is the primary key  (**primaryKey**) for the POSITION table.
 * instrument id is the primary key (**primaryKey**) for the INSTRUMENT_PRICE, INSTRUMENT_ID and COUNTERPARTY_ID tables.
@@ -49,7 +54,7 @@ This applies the new fields  to **-tables-dictionary.kts**.
 * nonunique indices for the POSITION table
 * unique index for the INSTRUMENT_ID and COUNTERPARTY_ID tables (This enables you to do a lookup in consolidator.)
 
-## Define the position-keeping logic in the consolidator
+## 3. Define the position-keeping logic in the consolidator
 
 Define a **trading_app-consolidator2.xml** file inside **trading_app-config/src/main/resources/cfg**. This is where you define the consolidator logic.
 
@@ -57,15 +62,17 @@ The consolidator is going to increase or decrease the quantity for POSITION reco
 
 ![](/img/consolidator-logic-consolidate-positions.png)
 
-Update the processes.xml file
+## 4. Update the system files
 
-## Add a new entry to **trading_app-processes.xml** with the consolidator2 process definition.
+### Update the processes.xml file
+
+Add a new entry to **trading_app-processes.xml** with the consolidator2 process definition.
 
 ![](/img/add-new-process.png)
 
-Update the service-definitions.xml file
+### Update the service-definitions.xml file
 
-## Add a new entry to **trading_app-service-definitions.xml** with the consolidator2 details.
+Add a new entry to **trading_app-service-definitions.xml** with the consolidator2 details.
 
 ![](/img/add-to-service-defininitions.png)
 
