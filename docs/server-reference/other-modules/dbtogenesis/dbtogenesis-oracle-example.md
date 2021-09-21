@@ -5,7 +5,7 @@ sidebar_label: DbToGenesis Oracle example
 id: dbtogenesis-oracle
 
 ---
-Create a TRADE table
+**Create a TRADE table**
 
 >     CREATE TABLE DB_NAME.TRADE
 >     ( TRADE_ID varchar2(40) not null,
@@ -52,7 +52,7 @@ Create a TRADE table
 >                             COMMIT;
 >                         END;
 
-Create or replace the deleteTrade procedure.
+**Create or replace the deleteTrade procedure.**
 
     create or replace PROCEDURE deleteTrade(p_tradeid IN ALL_TRADES.TRADE_ID%TYPE)
                         IS
