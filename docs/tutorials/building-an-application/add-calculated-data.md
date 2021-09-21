@@ -47,7 +47,7 @@ Once you have defined the fields, run the following tasks in maven:
 1. **generateSysDef**
 2. **generateFields**
 
-This applies the new fields  to **-tables-dictionary.kts**.
+The important thing here is that these new fields have been generated as code; they are now available in the IDE to help with intellisense, which makes the remaining coding quicker, easier and less error-prone.
 
 ## 2. Add the primary keys and indices for each table
 
