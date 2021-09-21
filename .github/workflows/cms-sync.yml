@@ -22,5 +22,5 @@ jobs:
         source_repo: "cistov/docs"
         source_branch: "master"
         destination_repo: "genesislcap/docs"
-        destination_branch: "cms"
+        destination_branch: "master"
         ssh_private_key: ${{ secrets.CMS_SYNC_PRIVATE_KEY }}
