@@ -169,4 +169,6 @@ Add a new entry to **trading_app-service-definitions.xml** with the consolidator
 
 ## Testing
 
+Note that TradeAsyncRepository and PositionAsyncRepository are generated files based on the tables definition from the earlier steps
+
 Optional? Create unit test to prove consolidator is working (test that when you insert a new trade in DB, a new position record is created with the relevant data after a while). You can have a look at core framework tests for this.
