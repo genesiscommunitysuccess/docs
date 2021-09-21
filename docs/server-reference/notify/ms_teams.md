@@ -1,6 +1,6 @@
 ---
-title: 'Microsoft '
-sidebar_label: 'teams'
+title: 'Microsoft Teams'
+sidebar_label: 'Microsoft Teams'
 sidebar_position: 4
 id: ms_teams
 ---

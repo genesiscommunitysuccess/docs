@@ -1,5 +1,5 @@
 ---
-title: 'Configuring notify'
+title: 'Configuring Notify'
 sidebar_label: 'Configuring notify'
 sidebar_position: 1
 id: configure
