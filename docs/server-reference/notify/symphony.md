@@ -6,12 +6,13 @@ id: symphony
 ---
 ###  Symphony
 
-[Symphony](http://symphony.com) is a secure instant messaging service focused on support for financial companies. To make available symphony services, including the sending and recie to the Genesis system 
-you'll need to provision [symphony service](https://symphony.com/participate) and configure a [symphony bot](https://docs.developers.symphony.com/developer-tools/developer-tools/bdk-2.0) for sending and receiving messages.
+[Symphony](http://symphony.com) is a secure instant messaging service focused on support for financial companies. 
+To make available symphony services to Genesis, including the sending and receiving of messages, 
+you'll need to provision [symphony service](https://symphony.com/participate) and configure a [symphony bot](https://docs.developers.symphony.com/developer-tools/developer-tools/bdk-2.0).
 
 #### System Definition Configuration
 
-The following configuration details are an example of Symphony server connection details. Genesis requires the use of  Symphony POD, Symphony Bot and the generation of private/public key pairs. 
+The following configuration details are an example of Genesis Symphony Connection details. Genesis requires the use of Symphony POD, Symphony Bot and the generation of private/public key pairs. 
 This is covered extensively in Symphony Documentation.      
 
         // Symphony Config
@@ -29,13 +30,13 @@ This is covered extensively in Symphony Documentation.
         item(name = "SYMPHONY_BOT_PRIVATE_KEY_NAME", value = "76680.p.symphonybotkey.pem")
 
 In addition to this, where a Symphony Gateway has been configured for handling incoming messages, where those incoming messages have an attachment,
-those attachments will be dropped on the server to the following configured directory. 
-Also, incoming messages that are configured to publish to a topic will set the DOCUMENT_ID for that attachment eventual file location on the server. 
+those attachments will be dropped on the server to the following configured directory parameter `DOCUMENT_STORE_BASEDIR`. 
 
 eg:-
 
         item(name = "DOCUMENT_STORE_BASEDIR", value = "/home/trading/run/site-specific/incoming-docs")
 
+Also, incoming messages that are configured to publish to a topic will set the DOCUMENT_ID for that attachment eventual file location on the server.
 
 #### Database configuration
 
@@ -77,6 +78,8 @@ data class RemoveUserFromChannel(val channelName: String, val userId: String)
 
 ## Configuring Symphony On-Behalf-Of (OBO) for Outgoing Messages 
 
-To utilise the Symphony OBO feature, which allows messages to be sent through a configured symphony robot as a configured user.
+To utilise the Symphony OBO feature, 
+which allows messages to be sent through a configured symphony robot as a particular user, you'll need to configure genesis application to be point to the 
+required symphony extension app. Documentation on how to set this up in Symphony is covered [here](https://docs.developers.symphony.com/building-extension-applications-on-symphony/app-authentication/obo-authentication)
 
     item(name = "SYMPHONY_APP_ID", value = "GENESIS_EXTENSION_APP")
