@@ -17,9 +17,6 @@
   line-height: 1.5;
   -webkit-font-smoothing: auto;
 
-  --ifm-font-family-base: Roboto-Regular, Roboto, sans-serif;
-  --body-font: Roboto-Regular, Roboto, sans-serif;
-
   --ifm-container-width-xl: 1140px;
 
   --ifm-link-color: #5C6FF2;
@@ -93,6 +90,7 @@ main {
 .hero__subtitle {
   font-size: 18px;
   margin-bottom: 44px;
+  font-family: Roboto-Regular, Roboto, sans-serif;
 }
 
 .button--getting-started,
