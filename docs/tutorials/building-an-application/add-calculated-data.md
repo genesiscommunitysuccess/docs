@@ -99,49 +99,72 @@ Define a **trading_app-consolidator2.xml** file inside **trading_app-config/src/
 The consolidator is going to increase or decrease the quantity for POSITION records, based on the TRADE table updates. It also needs to calculate the new notional.
 
     <consolidations>
-     <consolidation name="CONSOLIDATE_POSITIONS" start="true">
-     <tables>
-     <table name="TRADE" alias="t" seedKey="TRADE_BY_ID" consolidationFields="QUANTITY PRICE"/>
-     <table name="INSTRUMENT_PRICE" alias="ip" >
-     <join key="INSTRUMENT_PRICE_BY_INSTRUMENT_ID">
-     <![CDATA[
-     ip.setString("INSTRUMENT_ID", t.getString("INSTRUMENT_ID"))
-     ]]>
-     </join>
-     </table>
-     </tables>
-     <groupBy>
-     <![CDATA[
-     group(t.getString("INSTRUMENT_ID"), t.getString("COUNTERPARTY_ID"))
-     ]]>
-     </groupBy>
-     <consolidateTable name="POSITION" alias="p" consolidationFields="QUANTITY NOTIONAL"
-     transient="true">
-     <consolidationTarget key="POSITION_BY_INSTRUMENT_ID_COUNTERPARTY_ID">
-     <![CDATA[
-     p.setString("COUNTERPARTY_ID", t?.getString("COUNTERPARTY_ID"))
-     p.setString("INSTRUMENT_ID", t?.getString("INSTRUMENT_ID"))
-     ]]>
-     </consolidationTarget>
-     <calculation>
-     <![CDATA[
-     long quantity = t.getLong("QUANTITY")
-     long previousQuantity = previous_t.getLong("QUANTITY")
-     long prevPositionQuantity = p.getLong("QUANTITY")
-     long newQuantity = prevPositionQuantity + (quantity - previousQuantity)
-     
-     p.setLong("QUANTITY", newQuantity)
-     Double lastPrice = ip?.getDouble("LAST_PRICE")
-     if (lastPrice != null) {
-     p.setDouble("NOTIONAL", newQuantity * lastPrice )
-     }
-     ]]>
-     </calculation>
-     </consolidateTable>
-     </consolidation>
+        <consolidation name="CONSOLIDATE_POSITIONS" start="true">
+            <tables>
+                <table name="TRADE" alias="t" seedKey="TRADE_BY_ID" consolidationFields="QUANTITY PRICE"/>
+                <table name="INSTRUMENT_PRICE" alias="ip" >
+                    <join key="INSTRUMENT_PRICE_BY_INSTRUMENT_ID">
+                        <![CDATA[
+                        ip.setString("INSTRUMENT_ID", t.getString("INSTRUMENT_ID"))
+                        ]]>
+                    </join>
+                </table>
+            </tables>
+            <groupBy>
+                <![CDATA[
+                    group(t.getString("INSTRUMENT_ID"), t.getString("COUNTERPARTY_ID"))
+                ]]>
+            </groupBy>
+            <consolidateTable name="POSITION" alias="p" consolidationFields="QUANTITY NOTIONAL"
+                              transient="true">
+                <consolidationTarget key="POSITION_BY_INSTRUMENT_ID_COUNTERPARTY_ID">
+                    <![CDATA[
+                    p.setString("COUNTERPARTY_ID", t?.getString("COUNTERPARTY_ID"))
+                    p.setString("INSTRUMENT_ID", t?.getString("INSTRUMENT_ID"))
+                    ]]>
+                </consolidationTarget>
+                <calculation>
+                    <![CDATA[
+                        long quantity = t.getLong("QUANTITY")
+                        long previousQuantity = previous_t.getLong("QUANTITY")
+                        long quantityDelta = quantity - previousQuantity
+                        String tradeStatus = t.getString("TRADE_STATUS")
+                        long newQuantity = p.getLong("QUANTITY")
+                        switch(tradeStatus) {
+                          case "NEW":
+                          case "ALLOCATED":
+                            String side = t.getString("SIDE")
+                            switch(side) {
+                              case "BUY":
+                                newQuantity += quantityDelta
+                                break
+                              case "SELL":
+                                newQuantity -=quantityDelta
+                                break
+                              }
+                            break
+                          case "CANCELLED":
+                            String previousSide = previous_t.getString("SIDE")
+                            switch(previousSide) {
+                              case "BUY":
+                                newQuantity -= quantityDelta
+                                break
+                              case "SELL":
+                                newQuantity +=quantityDelta
+                                break
+                              }
+                            break
+                        }
+                        p.setLong("QUANTITY", newQuantity)
+                        Double lastPrice = ip?.getDouble("LAST_PRICE")
+                        if (lastPrice != null) {
+                            p.setDouble("NOTIONAL", newQuantity * lastPrice )
+                        }
+                    ]]>
+                </calculation>
+            </consolidateTable>
+        </consolidation>
     </consolidations>
-
-![](/img/consolidator-logic-consolidate-positions.png)
 
 ## 4. Update the system files
 
@@ -169,6 +192,4 @@ Add a new entry to **trading_app-service-definitions.xml** with the consolidator
 
 ## Testing
 
-Note that TradeAsyncRepository and PositionAsyncRepository are generated files based on the tables definition from the earlier steps
-
-Optional? Create unit test to prove consolidator is working (test that when you insert a new trade in DB, a new position record is created with the relevant data after a while). You can have a look at core framework tests for this.
+We shall testing information here shortly.
