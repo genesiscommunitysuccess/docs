@@ -38,7 +38,9 @@ The instrument price table needs at least two fields:
 * INSTRUMENT_ID : STRING
 * LAST_PRICE: DOUBLE
 
-![](/img/fields-for-the-instrument-name-table.png)
+    // Instrument
+     field(name = "INSTRUMENT_ID", type = STRING)
+     field(name = "LAST_PRICE", type = DOUBLE)
 
 Once you have defined the fields, run the following tasks in maven:
 
