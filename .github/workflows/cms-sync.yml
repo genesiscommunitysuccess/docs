@@ -7,12 +7,14 @@ on:
 
 jobs:
 
-  sync:
+  cms-sync:
     if: ${{ secrets.CMS_SYNC_PRIVATE_KEY }}
 
     runs-on: ubuntu-latest
 
-      - uses: ./.github/actions/git-sync
+    steps:
+    - name: Sync
+      uses: ./.github/actions/git-sync
         with:
           source_repo: "cistov/docs"
           source_branch: "master"
