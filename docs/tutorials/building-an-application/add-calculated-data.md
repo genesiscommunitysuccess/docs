@@ -42,14 +42,15 @@ Once you have defined the fields, run the following tasks in maven:
 
 This applies the new fields  to **-tables-dictionary.kts**.
 
-## 2. Add the primary keys for each table
+## 2. Add the primary keys and indices for each table
+## Add the primary keys
 
 * POSITION_ID is the primary key  (**primaryKey**) for the POSITION table.
 * instrument id is the primary key (**primaryKey**) for the INSTRUMENT_PRICE, INSTRUMENT_ID and COUNTERPARTY_ID tables.
 
 ![](/img/keys-and-indices.png)
 
-## Add the indices for each table
+## Add the indices 
 
 * nonunique indices for the POSITION table
 * unique index for the INSTRUMENT_ID and COUNTERPARTY_ID tables (This enables you to do a lookup in consolidator.)
