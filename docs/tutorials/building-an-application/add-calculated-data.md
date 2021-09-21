@@ -42,12 +42,13 @@ The instrument price table needs at least two fields:
      field(name = "INSTRUMENT_ID", type = STRING)
      field(name = "LAST_PRICE", type = DOUBLE)
 
-Once you have defined the fields, run the following tasks in maven:
+Once you have defined the fields, run the following tasks with maven:
 
-1. **generateSysDef**
-2. **generateFields**
+    cd trading_app-dictionary-cache
+    mvn codegen:generateSysDef
+    mvn codegen:generateFields
 
-The important thing here is that these new fields have been generated as code; they are now available in the IDE to help with intellisense, which makes the remaining coding quicker, easier and less error-prone.
+The important thing here is that these new fields have now been generated as code; they are now available in the IDE to help with intellisense, which makes the remaining coding quicker, easier and less error-prone.
 
 ## 2. Define the POSITION and INSTRUMENT tables
 
