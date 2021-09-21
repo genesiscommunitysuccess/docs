@@ -15,26 +15,28 @@ you'll need to provision [symphony service](https://symphony.com/participate) an
 The following configuration details are an example of Genesis Symphony Connection details. Genesis requires the use of Symphony POD, Symphony Bot and the generation of private/public key pairs. 
 This is covered extensively in Symphony Documentation.      
 
-        // Symphony Config
-        item(name = "SYMPHONY_SESSION_AUTH_HOST", value = "76680.p.symphony.com")
-        item(name = "SYMPHONY_SESSION_AUTH_PORT", value = 443)
-        item(name = "SYMPHONY_KEY_AUTH_HOST", value = "76680.p.symphony.com")
-        item(name = "SYMPHONY_KEY_AUTH_PORT", value = 443)
-        item(name = "SYMPHONY_POD_HOST", value = "76680.p.symphony.com")
-        item(name = "SYMPHONY_POD_PORT", value = 443)
-        item(name = "SYMPHONY_AGENT_HOST", value = "76680.p.symphony.com")
-        item(name = "SYMPHONY_AGENT_PORT", value = 443)
-        item(name = "SYMPHONY_BOT_USERNAME", value = "botusergenesis@genesis.global")
-        item(name = "SYMPHONY_BOT_EMAIL_ADDRESS", value = "botusergenesis@genesis.global")
-        item(name = "SYMPHONY_BOT_PRIVATE_KEY_PATH", value = "/home/priss/run/site-specific/cfg/symphony/rsa/")
-        item(name = "SYMPHONY_BOT_PRIVATE_KEY_NAME", value = "76680.p.symphonybotkey.pem")
+```kotlin
+// Symphony Config
+item(name = "SYMPHONY_SESSION_AUTH_HOST", value = "76680.p.symphony.com")
+item(name = "SYMPHONY_SESSION_AUTH_PORT", value = 443)
+item(name = "SYMPHONY_KEY_AUTH_HOST", value = "76680.p.symphony.com")
+item(name = "SYMPHONY_KEY_AUTH_PORT", value = 443)
+item(name = "SYMPHONY_POD_HOST", value = "76680.p.symphony.com")
+item(name = "SYMPHONY_POD_PORT", value = 443)
+item(name = "SYMPHONY_AGENT_HOST", value = "76680.p.symphony.com")
+item(name = "SYMPHONY_AGENT_PORT", value = 443)
+item(name = "SYMPHONY_BOT_USERNAME", value = "botusergenesis@genesis.global")
+item(name = "SYMPHONY_BOT_EMAIL_ADDRESS", value = "botusergenesis@genesis.global")
+item(name = "SYMPHONY_BOT_PRIVATE_KEY_PATH", value = "/home/priss/run/site-specific/cfg/symphony/rsa/")
+item(name = "SYMPHONY_BOT_PRIVATE_KEY_NAME", value = "76680.p.symphonybotkey.pem")
+```
 
 In addition to this, where a Symphony Gateway has been configured for handling incoming messages, where those incoming messages have an attachment,
-those attachments will be dropped on the server to the following configured directory parameter `DOCUMENT_STORE_BASEDIR`. 
+those attachments will be dropped on the server to the following configured directory parameter `DOCUMENT_STORE_BASEDIR` e.g.:
 
-eg:-
-
-        item(name = "DOCUMENT_STORE_BASEDIR", value = "/home/trading/run/site-specific/incoming-docs")
+```kotlin
+item(name = "DOCUMENT_STORE_BASEDIR", value = "/home/trading/run/site-specific/incoming-docs")
+```
 
 Also, incoming messages that are configured to publish to a topic will set the DOCUMENT_ID for that attachment eventual file location on the server.
 
@@ -82,4 +84,6 @@ To utilise the Symphony OBO feature,
 which allows messages to be sent through a configured symphony robot as a particular user, you'll need to configure genesis application to be point to the 
 required symphony extension app. Documentation on how to set this up in Symphony is covered [here](https://docs.developers.symphony.com/building-extension-applications-on-symphony/app-authentication/obo-authentication)
 
-    item(name = "SYMPHONY_APP_ID", value = "GENESIS_EXTENSION_APP")
+```kotlin
+item(name = "SYMPHONY_APP_ID", value = "GENESIS_EXTENSION_APP")
+```

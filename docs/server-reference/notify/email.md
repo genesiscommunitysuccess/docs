@@ -10,22 +10,24 @@ id: email
 
 The following configuration items are defined to detail SMTP server connection details as well as configuring email service related features.
 
-        //Generated emails sent as this email address by default
-        item(name = "SYSTEM_DEFAULT_EMAIL", value = "notifications@genesis.global" )
-        //Display name of default email address
-        item(name = "SYSTEM_DEFAULT_USER_NAME", value = "GenesisGlobal" )
-        
-        //SMTP server connection details
-        
-        item(name = "EMAIL_SMTP_HOST", value = "smtp.office365.com" )
-        item(name = "EMAIL_SMTP_PORT", value = "587" )
-        //Credentials for SMTP server, note that the user will need to be permitted to send as the SYSTEM_DEFAULT_EMAIL on the SMTP server where values are different
-        item(name = "EMAIL_SMTP_USER", value = "myuser@genesis.global" )
-        item(name = "EMAIL_SMTP_PW", value = "NOTAPASSWORD" )
-        item(name = "EMAIL_SMTP_PROTOCOL", value = "SMTP_TLS" )
+```kotlin
+//Generated emails sent as this email address by default
+item(name = "SYSTEM_DEFAULT_EMAIL", value = "notifications@genesis.global" )
+//Display name of default email address
+item(name = "SYSTEM_DEFAULT_USER_NAME", value = "GenesisGlobal" )
 
-        //Set to false if the NOTIFY record severity should be added into the email subject/body
-        item(name = "EMAIL_SUPPRESS_SEVERITY_TEXT", value = "true" )
+//SMTP server connection details
+
+item(name = "EMAIL_SMTP_HOST", value = "smtp.office365.com" )
+item(name = "EMAIL_SMTP_PORT", value = "587" )
+//Credentials for SMTP server, note that the user will need to be permitted to send as the SYSTEM_DEFAULT_EMAIL on the SMTP server where values are different
+item(name = "EMAIL_SMTP_USER", value = "myuser@genesis.global" )
+item(name = "EMAIL_SMTP_PW", value = "NOTAPASSWORD" )
+item(name = "EMAIL_SMTP_PROTOCOL", value = "SMTP_TLS" )
+
+//Set to false if the NOTIFY record severity should be added into the email subject/body
+item(name = "EMAIL_SUPPRESS_SEVERITY_TEXT", value = "true" )
+```
 
 #### Database configuration
 

@@ -65,15 +65,15 @@ _options_ is a field container that represents the basic behaviour and database 
 * **maxOutstanding** sets the threshold for the internal work queue that triggers the process to start logging warnings. Example use case: there are more than **maxOutstanding** records pending to be inserted in the RDBMS. Default: 10000.
 
 ```xml
-    <options>
-        <databaseType>ORACLE</databaseType>
-        <url>jdbc:oracle:thin:@host.ad.company.com:1521:oracleSid</url>
-        <user>6487f8a8b25986efa34a4906332e7998606acd235b06b7ae2e8acfc0c31</user>
-        <password>db3b7fc7009c86cfa1b8e8b37811594094535b4df9c57b61a9bad169332e1f7c</password>
-        <dbMinConnections>10</dbMinConnections>
-        <dbMaxConnections>10</dbMaxConnections>
-        <maxOutstanding>100000</maxOutstanding>
-    </options>
+<options>
+    <databaseType>ORACLE</databaseType>
+    <url>jdbc:oracle:thin:@host.ad.company.com:1521:oracleSid</url>
+    <user>6487f8a8b25986efa34a4906332e7998606acd235b06b7ae2e8acfc0c31</user>
+    <password>db3b7fc7009c86cfa1b8e8b37811594094535b4df9c57b61a9bad169332e1f7c</password>
+    <dbMinConnections>10</dbMinConnections>
+    <dbMaxConnections>10</dbMaxConnections>
+    <maxOutstanding>100000</maxOutstanding>
+</options>
 ```
 
 _databaseStream_ represents one stream from Genesis to the RDBMS. It contains the necessary logic to join different tables if necessary and it sets the fields to be inserted or modified in the RDBMS. It also specifies the stored procedures calls to be used and the parameters ordering used to call them. You can define as many databaseStreams as you want. It has a name attribute to databaseStreams from each other.
@@ -85,48 +85,48 @@ _databaseStream_ represents one stream from Genesis to the RDBMS. It contains th
 Example:
 
 ```xml
-    <databaseStream name="ALL_TRADES">
-        <tables>
-            <table name="TRADE"
-                   alias="t"
-                   seedKey="TRADE_BY_TIMESTAMP" />
-            <table name="CLIENT" alias="c">
-                <join key="CLIENT_BY_ID">
-                    <!\[CDATA\[ c.setString("ID", t.getString("CLIENT_ID")) \]\]>
-                </join>
-            </table>
-            <table name="CURRENCY" alias="cu">
-                <join key="CURRENCY_BY_ID">
-                    <!\[CDATA\[ cu.setString("ID", t.getString("CURRENCY_ID")) \]\]>
-                </join>
-            </table>
-        </tables>
-        <fields>
+<databaseStream name="ALL_TRADES">
+    <tables>
+        <table name="TRADE"
+                alias="t"
+                seedKey="TRADE_BY_TIMESTAMP" />
+        <table name="CLIENT" alias="c">
+            <join key="CLIENT_BY_ID">
+                <!\[CDATA\[ c.setString("ID", t.getString("CLIENT_ID")) \]\]>
+            </join>
+        </table>
+        <table name="CURRENCY" alias="cu">
+            <join key="CURRENCY_BY_ID">
+                <!\[CDATA\[ cu.setString("ID", t.getString("CURRENCY_ID")) \]\]>
+            </join>
+        </table>
+    </tables>
+    <fields>
+        <!\[CDATA\[
+            sproc.setParameter("TRADE_ID", t.getString("ID"))
+            sproc.setParameter("TRADE_QUANTITY", t.getInteger("QUANTITY"))
+            sproc.setParameter("CLIENT_NAME", c.getString("NAME"))
+            sproc.setParameter("CURRENCY_DESCRIPTION", cu.getString("DESCRIPTION"))
+        \]\]>
+    </fields>
+    <proc>
+        <insert>
             <!\[CDATA\[
-                sproc.setParameter("TRADE_ID", t.getString("ID"))
-                sproc.setParameter("TRADE_QUANTITY", t.getInteger("QUANTITY"))
-                sproc.setParameter("CLIENT_NAME", c.getString("NAME"))
-                sproc.setParameter("CURRENCY_DESCRIPTION", cu.getString("DESCRIPTION"))
+                {call insertTrade(1,2,3,4)}
             \]\]>
-        </fields>
-        <proc>
-            <insert>
-                <!\[CDATA\[
-                    {call insertTrade(1,2,3,4)}
-                \]\]>
-            </insert>
-            <modify>
-                <!\[CDATA\[
-                    {call modifyTrade(1,2,3,4)}
-                \]\]>
-            </modify>
-            <delete>
-                <!\[CDATA\[
-                    {call deleteTrade(1)}
-                \]\]>
-            </delete>
-        </proc>
-    </databaseStream>
+        </insert>
+        <modify>
+            <!\[CDATA\[
+                {call modifyTrade(1,2,3,4)}
+            \]\]>
+        </modify>
+        <delete>
+            <!\[CDATA\[
+                {call deleteTrade(1)}
+            \]\]>
+        </delete>
+    </proc>
+</databaseStream>
 ```
 
 ### Table joins
