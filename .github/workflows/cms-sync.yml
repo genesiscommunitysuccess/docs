@@ -9,7 +9,7 @@ jobs:
 
   cms-sync:
     # execute on mirrors
-    if: ${{ github.repository_owner !== 'genesislcap' }}
+    if: ${{ github.repository_owner != 'genesislcap' }}
 
     runs-on: ubuntu-latest
 
