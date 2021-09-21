@@ -69,7 +69,7 @@ data class PositionCancel(
 So if the RULE table is set to `POSITION`, and the RULE_EXPRESSION, is set to `(POSITION_ID = POSITION_ID)`, then this will take the POSITION_ID from the POSITION table and set it on PositionClass object that get instantiated  
 and ultimately sent to the Event Handler.
 
-eg. event handlers that inserts a Notify Email message, (see [Notify](/notify/configure) for more details on external messaging)
+eg. event handlers that inserts a Notify Email message, (see [Notify](/server-reference/notify/configure) for more details on external messaging)
 
 To setup the EventHandler ` trading_app-script-config\src\main\resources\scripts\trading_app-eventhandler.kts`, with code:-
 
