@@ -45,7 +45,7 @@ git fetch source '+refs/heads/*:refs/heads/*' --update-head-ok
 
 # Update the source branch with any changes from the destination branch
 echo "Fetching destination";
-git fetch destination '+refs/heads/*:refs/heads/*' --update-head-ok
+git fetch destination
 echo "Merging from destination";
 git merge "destination/${DESTINATION_BRANCH}"
 
