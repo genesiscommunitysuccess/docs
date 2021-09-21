@@ -48,8 +48,10 @@ The following configuration items are defined to detail SMTP server connection d
 } 
 ```
 
-note, when using Genesis command line tool `SendIt` to import field values that contain quotes, such as JSON values, into the database, 
-you need to escape the quotes. eg `SendIt -t GATEWAY.CSV` where we are setting up an empty distribution list.
+note: when [SendIt] to send data to the database eg  `SendIt -t GATEWAY.CSV`, which use quotes to help delimit data you need to 
+escape quote embedding in text like JSON values and remove new lines.
+
+eg: here we are setting up an empty distribution list.
 
 ```text
 GATEWAY_ID,GATEWAY_TYPE,GATEWAY_VALUE,INCOMING_TOPIC
@@ -57,20 +59,41 @@ GATEWAY_ID,GATEWAY_TYPE,GATEWAY_VALUE,INCOMING_TOPIC
 ```
 
 ##### NOTIFY_ROUTE
-
 | Field Name | Usage |
 | --- | --- |
-| SENDER | Usage |
-| TOPIC | Usage |
-| EXPIRY | Usage |
-| HEADER | Usage |
-| BODY | Usage |
-| NOTIFY_COMPRESSION_TYPE | Usage |
-| APPLICATION_REF | Usage |
-| NOTIFY_SEVERITY | Usage |
-| DOCUMENT_ID | Usage |
+| ENTITY_ID | Genesis User sending message, null implies System |
+| ENTITY_ID_TYPE | Enum of "USER_NAME", "PROFILE_NAME", "GATEWAY" |
+| TOPIC_MATCH | Topic that should match that will forward to the GATEWAY |
+| GATEWAY_ID | The Gateway that matched topic messages will be sent to |
 
 
 ##### NOTIFY
-As above
-Talk about the json approach for on the fly including more email addresses etc..
+| Field Name | Usage |
+| --- | --- |
+| SENDER | Genesis User sending message, null implies System |
+| TOPIC | The Topic to broadcast this message |
+| BODY | Contents of message, for Email it should follow the [JSON Structure](#NOTIFY.BODY-JSON-Structure) |
+| NOTIFY_COMPRESSION_TYPE | Used internally by Genesis, indicates if the body of the message is compressed |
+| APPLICATION_REF | Currently not used for Email |
+
+#### NOTIFY.BODY JSON Structure
+```json
+{
+  "emailDistribution": {
+    "to": ["jason <jason@email.com>", "carol@email.com>"],
+    "cc": ["susan@email.com", "Tom <tom@email.com>"],
+    "bcc": [],
+    "contents" : "Content of Message Here"
+} 
+```
+
+When sending HTML within the contents of a JSON string you should, escape any quotes, and remove or replace newlines
+
+eg, doing this with Kotlin
+```kotlin
+htmlMailMessage.replaceAll("\"", "&quot;").replaceAll("\\R", "\\\\n");
+```
+
+The final outgoing emailDistribution with be the merger of the distribution list specified on the Notify message and 
+statically defined distributed list specified for any outgoing which messages may be routed too.
+
