@@ -5,7 +5,7 @@ sidebar_label: DbToGenesis MSQL example
 id: dbtogenesis-mssql
 
 ---
-Create TRADE table
+**Create TRADE table**
 
     CREATE TABLE DB_NAME.TRADE
     ( TRADE_ID varchar2(40) not null,
@@ -16,7 +16,7 @@ Create TRADE table
       CONSTRAINT TRADE_PK PRIMARY KEY (TRADE_ID)
     );
 
-Insert, modify and delete stored procedures
+**Insert, modify and delete stored procedures**
 
     create or replace PROCEDURE insertTrade(
                             p_tradeid IN ALL_TRADES.TRADE_ID%TYPE,
@@ -32,7 +32,7 @@ Insert, modify and delete stored procedures
                             COMMIT;
                         END;
 
-Create or replace the modifyTrade procedure
+**Create or replace the modifyTrade procedure**
 
     create or replace PROCEDURE modifyTrade(
                             p_tradeid IN ALL_TRADES.TRADE_ID%TYPE,
@@ -51,7 +51,7 @@ Create or replace the modifyTrade procedure
                             COMMIT;
                         END;
 
-Create or replace the deleteTrade procedure
+**Create or replace the deleteTrade procedure**
 
     create or replace PROCEDURE deleteTrade(p_tradeid IN ALL_TRADES.TRADE_ID%TYPE)
                         IS
