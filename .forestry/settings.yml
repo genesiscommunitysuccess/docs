@@ -8,7 +8,7 @@ sections:
   path: docs
   label: Docs
   create: all
-  match: "**/*.md"
+  match: "**/*"
   templates:
   - page
 - type: document
