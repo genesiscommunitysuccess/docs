@@ -7,7 +7,7 @@ sidebar_position: 4
 ---
 At this point, we a data model that serves both the reference database and the trading database, Our trading application has  a schema for the TRADE table, and it has event handlers, data servers and request servers.
 
-Now we want to add calculations to add posiiton-keeping. 
+Now we want to add calculations to add posiiton-keeping.
 
 ## Define the data schema
 
@@ -32,20 +32,24 @@ The instrument price table needs at least two fields:
 
 Once you have defined the fields, run the following tasks in maven:
 
-1. **generateSysDef** 
-2. **generateFields** 
+1. **generateSysDef**
+2. **generateFields**
 
 This applies the new fields  to **-tables-dictionary.kts**.
 
 ## Define the position and instrument tables
 
-Now add the relevant indices / primary keys for each table.
+Add the relevant primary keys for each table.
 
-position ID is pkey for position
+* position ID is the primary key  (**primaryKey**) for position.
+* instrument id is the primary key (**primaryKey**) for INSTRUMENT_PRICE table, and INSTRUMENT_ID and COUNTERPARTY_ID
 
-instrument id is pkey for INSTRUMENT_PRICE table, and INSTRUMENT_ID and COUNTERPARTY_ID 
+Add the relevant indices:
 
-nonunique indices for POSITION table + unique index on INSTRUMENT_ID + COUNTERPARTY_ID (so we can do a lookup in consolidator.
+* nonunique indices for POSITION table
+* unique index for the INSTRUMENT_ID and COUNTERPARTY_ID tables (This enables us to  do a lookup in consolidator.)
+
+![](/img/sharper-position-consolidator-add-keys-indices-6.png)
 
 Define a **trading_app-consolidator2.xml** file inside **trading_app-config/src/main/resources/cfg** This is where you define the consolidator logic.
 
