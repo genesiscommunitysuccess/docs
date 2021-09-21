@@ -5,7 +5,9 @@ sidebar_label: Add calculated data
 sidebar_position: 4
 
 ---
-Ref_data_app exists (with all its tables) and the schema can be imported into trading_app. Trading_app exists and it contains the schema for TRADE table + event handlers, dataservers and req-reps.
+At this point, we a data model that serves both the reference database and the trading database, Our trading application has  a schema for the TRADE table, and it has event handlers, data servers and request servers.
+
+Now we want to add calculations to add posiiton-keeping. 
 
 ## Define the data schema
 
