@@ -32,7 +32,7 @@ Insert, modify and delete stored procedures
                             COMMIT;
                         END;
 
-jknkjn
+Create or replace the modifyTrade procedure
 
     create or replace PROCEDURE modifyTrade(
                             p_tradeid IN ALL_TRADES.TRADE_ID%TYPE,
@@ -51,7 +51,7 @@ jknkjn
                             COMMIT;
                         END;
 
-lkjnlkn
+Create or replace the deleteTrade procedure
 
     create or replace PROCEDURE deleteTrade(p_tradeid IN ALL_TRADES.TRADE_ID%TYPE)
                         IS
