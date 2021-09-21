@@ -8,7 +8,8 @@ sections:
   path: docs
   label: Docs
   create: all
-  match: "**/*.md"
+  match: "**/*"
+  exclude: "**/*.yml"
   templates:
   - page
 - type: document

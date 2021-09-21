@@ -1,0 +1,26 @@
+name: CMS Sync
+
+# Triggered on new pushes to master
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+
+  cms-sync:
+    # execute on mirrors
+    if: ${{ github.repository_owner != 'genesislcap' }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Sync
+      uses: ./.github/actions/git-sync
+      with:
+        source_repo: "cistov/docs"
+        source_branch: "master"
+        destination_repo: "genesislcap/docs"
+        destination_branch: "master"
+        ssh_private_key: ${{ secrets.CMS_SYNC_PRIVATE_KEY }}

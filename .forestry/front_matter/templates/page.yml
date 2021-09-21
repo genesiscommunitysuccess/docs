@@ -32,3 +32,6 @@ fields:
     required: true
 pages:
 - docs/server-reference/other-modules/cache.md
+- docs/server-reference/other-modules/dbtogenesis/dbtogenesis-msql-example.md
+- docs/server-reference/other-modules/dbtogenesis/dbtogenesis-oracle-example.md
+- docs/server-reference/other-modules/dbtogenesis/dbtogenesis-postgres-example.md

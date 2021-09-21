@@ -6,6 +6,8 @@ on:
 
 jobs:
   deploy:
+    # don't execute on mirrors
+    if: ${{ github.repository_owner == 'genesislcap' }}
 
     runs-on: ubuntu-latest
 
