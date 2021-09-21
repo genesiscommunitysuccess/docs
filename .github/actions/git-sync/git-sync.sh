@@ -37,24 +37,30 @@ fi
 
 git remote add origin "$SOURCE_REPO"
 git remote add destination "$DESTINATION_REPO"
+git remote -v
 
 # Pull all branches references down locally so subsequent commands can see them
+echo "Fetching source";
 git fetch source '+refs/heads/*:refs/heads/*' --update-head-ok
 
 # Update the source branch with any changes from the destination branch
+echo "Fetching destination";
 git fetch destination '+refs/heads/*:refs/heads/*' --update-head-ok
+echo "Merging from destination";
 git merge "destination/${DESTINATION_BRANCH}"
 
 # Print out all branches
-git --no-pager branch -a -vv
+# git --no-pager branch -a -vv
 
 if [[ -n "$DESTINATION_SSH_PRIVATE_KEY" ]]; then
   # Push using destination ssh key if provided
   git config --local core.sshCommand "/usr/bin/ssh -i ~/.ssh/dst_rsa"
 fi
 
+echo "Updating destination";
 # Update destination
 git push destination "${SOURCE_BRANCH}:${DESTINATION_BRANCH}" -f
 
+echo "Updating source";
 # Update source
 git push origin "${SOURCE_BRANCH}:${SOURCE_BRANCH}" -f
