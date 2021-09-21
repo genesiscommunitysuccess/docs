@@ -15,9 +15,9 @@ jobs:
     steps:
     - name: Sync
       uses: ./.github/actions/git-sync
-        with:
-          source_repo: "cistov/docs"
-          source_branch: "master"
-          destination_repo: "genesislcap/docs"
-          destination_branch: "master"
-          ssh_private_key: ${{ secrets.CMS_SYNC_PRIVATE_KEY }}
+      with:
+        source_repo: "cistov/docs"
+        source_branch: "master"
+        destination_repo: "genesislcap/docs"
+        destination_branch: "master"
+        ssh_private_key: ${{ secrets.CMS_SYNC_PRIVATE_KEY }}
