@@ -30,9 +30,12 @@ The instrument price table needs at least two fields:
 
 ![](/img/fields-for-the-instrument-name-table.png)
 
-Use the field definition opportunity to run Ctrl + Q and display documentation and samples for fields declaration.
+Once you have defined the fields, run the following tasks in maven:
 
-Run **generateSysDef** and **generateFields** tasks in maven so that the fields are applied and can be used in **-tables-dictionary.kts**
+1. **generateSysDef** 
+2. **generateFields** 
+
+This applies the new fields  to **-tables-dictionary.kts**.
 
 ## Define the position and instrument tables
 
