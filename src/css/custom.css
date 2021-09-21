@@ -17,8 +17,7 @@
   line-height: 1.5;
   -webkit-font-smoothing: auto;
 
-  --ifm-font-family-base: Roboto-Regular, Roboto, sans-serif;
-  --body-font: Roboto-Regular, Roboto, sans-serif;
+  --ifm-container-width-xl: 1140px;
 
   --ifm-link-color: #5C6FF2;
   
@@ -38,14 +37,33 @@ h2 {
   --ifm-link-color: #555;
 }
 
-.aa-DetachedSearchButton {
+button.aa-DetachedSearchButton {
   --aa-font-family: 'Roboto-Medium', 'Roboto Medium', 'Roboto', sans-serif;
   --aa-font-size: 12px;
+  --aa-font-weight: 500;
   --aa-search-input-height: 36px;
   --aa-primary-color-rgb: 8, 195, 165;
   --aa-icon-size: 5px;
   --aa-input-border-color-rgb: 8, 195, 165;
+  --aa-muted-color-rgb: 8, 195, 165;
   --aa-input-border-color-alpha: 1;
+  --aa-muted-color-alpha: 1;
+  padding: 0 calc(var(--aa-search-input-height)/2.7);
+}
+
+button.aa-DetachedSearchButton:hover {
+  background: rgb(var(--aa-input-border-color-rgb));
+  color: #fff;
+}
+
+div.aa-DetachedSearchButtonIcon {
+  margin-right: 4px;
+  width: 16px;
+  color: var(--aa-muted-color-rgb);
+}
+
+.aa-Form:focus-within {
+  --aa-primary-color-rgb: var(--aa-input-border-color-rgb);
 }
 
 .navbar__logo {
@@ -72,6 +90,7 @@ main {
 .hero__subtitle {
   font-size: 18px;
   margin-bottom: 44px;
+  font-family: Roboto-Regular, Roboto, sans-serif;
 }
 
 .button--getting-started,
@@ -88,6 +107,7 @@ main {
   line-height: 2.4;
   color: #fff;
   border: none;
+  margin-top: 10px;
 }
 
 .button--getting-started.button--secondary.button--outline:not(.button--active):hover

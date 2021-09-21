@@ -46,6 +46,8 @@ eventHandler {
         onValidate {
             validationAck(validationContext = it.details.name)
         }
+    }
+}
 ```
 
 ## A more complex event handler
