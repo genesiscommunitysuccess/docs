@@ -39,7 +39,11 @@ This applies the new fields  to **-tables-dictionary.kts**.
 
 ## Define the position and instrument tables
 
-Add relevant indices / primary keys for each cable (position ID is pkey for position, instrument id is pkey for INSTRUMENT_PRICE table, and INSTRUMENT_ID and COUNTERPARTY_ID nonunique indices for POSITION table + unique index on INSTRUMENT_ID + COUNTERPARTY_ID (so we can do a lookup in consolidator)).
+NOw add the relevant indices / primary keys for each table.
+
+position ID is pkey for position
+
+instrument id is pkey for INSTRUMENT_PRICE table, and INSTRUMENT_ID and COUNTERPARTY_ID nonunique indices for POSITION table + unique index on INSTRUMENT_ID + COUNTERPARTY_ID (so we can do a lookup in consolidator)).
 
 Define a **trading_app-consolidator2.xml** file inside **trading_app-config/src/main/resources/cfg** This is where you define the consolidator logic.
 
