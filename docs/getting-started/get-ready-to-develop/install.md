@@ -26,13 +26,17 @@ In our example, the rpm is called **genesis-platform-5.1.0-1.x86_64.rpm**.
 
 By default, the installation creates an application user account called **genesis**. You can change this change this before you start by editing the file **genesis_install.conf**. For example, to change the user account to be created to octopus, edit it as follows:
 
-    echo "genesis_user=octopus" >> /tmp/genesis_install.conf
+```bash
+echo "genesis_user=octopus" >> /tmp/genesis_install.conf
+```
 
 ### 2. Install the rpm
 
 Now you can **sudo yum** and install the rpm.
 
-    sudo yum --nogpgcheck localinstall genesis-platform-5.1.0-1.x86.rpm
+```bash
+sudo yum --nogpgcheck localinstall genesis-platform-5.1.0-1.x86.rpm
+```
 
 This creates the user account and makes all the recommended security settings. Additionally, it creates the required directory structure and unpacks all the zipped files.
 
@@ -46,17 +50,17 @@ You can switch to that user and view the run directory for the newly installed p
 
 ### 3. Run genesisInstall
 
-The script does all the hard work for you. Just run **genesisInstall**.
+The script does all the hard work for you. Just run `genesisInstall`.
 
 The initialization process creates new directories. In addition to **auth** and **genesis**, you will see:
 •	**generated**
 •	**runtime**
 •	**site-specific**
-The process also creates some useful tools. Most immediately, try **mon** to see the processes that need to be run.
+The process also creates some useful tools. Most immediately, try `mon` to see the processes that need to be run.
 
 ![](/img/joseph5-mon.png)
 
-At this point, no processes are running. So, run the command **startServer**. When it is complete, run **mon** again. This time, you can see all the processes running.
+At this point, no processes are running. So, run the command `startServer`. When it is complete, run `mon` again. This time, you can see all the processes running.
 
 ![](/img/mon-processes-running.png)
 

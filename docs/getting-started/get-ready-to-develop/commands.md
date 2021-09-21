@@ -28,12 +28,12 @@ Including this flag monitors the progress of the kill on each process. If a proc
 
 ### startProcess
 
-**startServer _server name_** starts the named process.
+`startServer [server_name]`  starts the named process.
 It also compresses and moves all log files in `~/run/runtime/logs/` into `~/run/runtime/logs/currentRun`
 
 ### killProcess
 
-**killServer _server name_**  stops the named process.
+`killServer [server_name]`  stops the named process.
 **--force**
 Including this flag monitors the progress of the kill on each process. If a process is still running after 10 seconds, it runs a **SIGKILL** to ensure the process stops. Unsaved data is lost.
 
@@ -41,12 +41,12 @@ Including this flag monitors the progress of the kill on each process. If a proc
 
 Groups of processes can be defined in the process definition files, where a set of processes is given a `<group>` tag. Typically, all the processes in a particular module are given the same `<group>` tag.
 
-**startGroup _group_ID_** starts all processes in the named group.
+`startGroup [group_ID]` starts all processes in the named group.
 
 It also compresses and moves all log files in `~/run/runtime/logs/` into `~/run/runtime/logs/currentRun`.
 
 ## KillGroup
 
-**KillGroup \[group ID\]**
+`KillGroup [group_ID]`
 This stops the processes in the named group.
 **--force** If you include this flag, the command monitors the progress of the kill on each process. If a process is still running after 10 seconds, it runs a **SIGKILL** to ensure the process stops. Unsaved data is lost.
