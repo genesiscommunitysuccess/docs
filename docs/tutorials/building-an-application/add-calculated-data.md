@@ -39,15 +39,17 @@ This applies the new fields  to **-tables-dictionary.kts**.
 
 ## Define the position and instrument tables
 
-NOw add the relevant indices / primary keys for each table.
+Now add the relevant indices / primary keys for each table.
 
 position ID is pkey for position
 
-instrument id is pkey for INSTRUMENT_PRICE table, and INSTRUMENT_ID and COUNTERPARTY_ID nonunique indices for POSITION table + unique index on INSTRUMENT_ID + COUNTERPARTY_ID (so we can do a lookup in consolidator)).
+instrument id is pkey for INSTRUMENT_PRICE table, and INSTRUMENT_ID and COUNTERPARTY_ID 
+
+nonunique indices for POSITION table + unique index on INSTRUMENT_ID + COUNTERPARTY_ID (so we can do a lookup in consolidator.
 
 Define a **trading_app-consolidator2.xml** file inside **trading_app-config/src/main/resources/cfg** This is where you define the consolidator logic.
 
-The consolidator needs to increase/decrease quantity for POSITION records based on TRADE table updates. It also needs to calculate the new notional.
+The consolidator is going to increase or decrease the quantity for POSITION records, based on the TRADE table updates. It also needs to calculate the new notional.
 
 Add a new entry to **trading_app-processes.xml** with the consolidator2 process definition.
 
