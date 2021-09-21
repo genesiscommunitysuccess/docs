@@ -95,5 +95,5 @@ htmlMailMessage.replaceAll("\"", "&quot;").replaceAll("\\R", "\\\\n");
 ```
 
 The final outgoing emailDistribution with be the merger of the distribution list specified on the Notify message and 
-statically defined distributed list specified for any outgoing which messages may be routed too.
+the statically defined distribution list specified for any Gateway which messages may be routed too.
 
