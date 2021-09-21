@@ -113,11 +113,21 @@ The consolidator is going to increase or decrease the quantity for POSITION reco
 
 Add a new entry to **trading_app-processes.xml** with the consolidator2 process definition.
 
-![](/img/add-new-process.png)
+    <process name="TRADING_APP_CONSOLIDATOR">
+     <groupId>TRADING_APP</groupId>
+     <start>true</start>
+     <options>-Xmx256m -DRedirectStreamToLog=true</options>
+     <module>consolidator2</module>
+     <package>global.genesis.consolidator2</package>
+     <config>trading_app-consolidator2.xml</config>
+     <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
+     </process>
 
 ### Update the service-definitions.xml file
 
-Add a new entry to **trading_app-service-definitions.xml** with the consolidator2 details.
+This file lists all the active services for the application. You can see entries have been added automatically when the data server, request server and event handler were generated (by AppGen). 
+
+Add a new entry to **trading_app-service-definitions.xml** with the consolidator2 details. 
 
 ![](/img/add-to-service-defininitions.png)
 
