@@ -55,9 +55,19 @@ Define a **trading_app-consolidator2.xml** file inside **trading_app-config/src/
 
 The consolidator is going to increase or decrease the quantity for POSITION records, based on the TRADE table updates. It also needs to calculate the new notional.
 
-Add a new entry to **trading_app-processes.xml** with the consolidator2 process definition.
+![](/img/consolidator-logic-consolidate-positions.png)
 
-Add a new entry to **trading_app-service-definitions.xml** with the consolidator2 details.
+Update the processes.xml file
+
+## Add a new entry to **trading_app-processes.xml** with the consolidator2 process definition.
+
+![](/img/add-new-process.png)
+
+Update the service-definitions.xml file
+
+## Add a new entry to **trading_app-service-definitions.xml** with the consolidator2 details.
+
+![](/img/add-to-service-defininitions.png)
 
 ## Testing
 
