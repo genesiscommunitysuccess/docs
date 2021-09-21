@@ -35,6 +35,7 @@ else
   git clone "$SOURCE_REPO" /root/source --origin source && cd /root/source
 fi
 
+git remote add origin "$SOURCE_REPO"
 git remote add destination "$DESTINATION_REPO"
 
 # Pull all branches references down locally so subsequent commands can see them
@@ -42,7 +43,6 @@ git fetch source '+refs/heads/*:refs/heads/*' --update-head-ok
 
 # Update the source branch with any changes from the destination branch
 git fetch destination '+refs/heads/*:refs/heads/*' --update-head-ok
-git checkout "$SOURCE_BRANCH"
 git merge "destination/${DESTINATION_BRANCH}"
 
 # Print out all branches
