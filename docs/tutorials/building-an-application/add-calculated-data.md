@@ -49,7 +49,9 @@ Once you have defined the fields, run the following tasks in maven:
 
 The important thing here is that these new fields have been generated as code; they are now available in the IDE to help with intellisense, which makes the remaining coding quicker, easier and less error-prone.
 
-## 2. Add the primary keys and indices for each table
+## 2. Define the POSITION and INSTRUMENT tables
+
+## Add the primary keys and indices for each table
 
 ## Add the primary keys
 
