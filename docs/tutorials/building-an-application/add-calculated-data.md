@@ -28,6 +28,8 @@ The instrument price table needs at least two fields:
 * INSTRUMENT_ID : STRING
 * LAST_PRICE: DOUBLE
 
+![](/img/fields-for-the-instrument-name-table.png)
+
 Use the field definition opportunity to run Ctrl + Q and display documentation and samples for fields declaration.
 
 Run **generateSysDef** and **generateFields** tasks in maven so that the fields are applied and can be used in **-tables-dictionary.kts**
