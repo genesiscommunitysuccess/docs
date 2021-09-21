@@ -10,10 +10,12 @@ sidebar_position: 3
 
 The following imports are automatically available inside GPAL event handlers:
 
+
 import CodeBlock from '@theme/CodeBlock';
 import Imports from '!!raw-loader!../../../examples/server/java/event-handlers/imports.java';
 
 <CodeBlock className="language-java">{Imports}</CodeBlock>
+
 
 ### Automatic import
 

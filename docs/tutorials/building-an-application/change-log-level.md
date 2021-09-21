@@ -52,25 +52,25 @@ Below are some examples of its usage
 
 Example 1: Change log level
 
-```
+```bash
 LogLevel -p TRADING_APP_DATASERVER -l TRACE
 ```
 
 Example 2: Datadump status
 
-```
+```bash
 LogLevel -p TRADING_APP_DATASERVER -DATADUMP_ON
 ```
 
 Example 3: Datadump nack status for 10 seconds
 
-```
+```bash
 LogLevel -p TRADING_APP_DATASERVER -DATADUMP_NACK_ON -t 10s
 ```
 
 Example 4: Change log level for class
 
-```
+```bash
 LogLevel -p TRADING_APP_DATASERVER -c DbMon -l DEBUG
 ```
 
@@ -79,7 +79,7 @@ LogLevel -p TRADING_APP_DATASERVER -c DbMon -l DEBUG
 Logging level in scripts is set by default to "WARN". To change the log level you need to set environment variable GENESIS_LOGGING_LEVEL to any valid level [ERROR, WARN, INFO, DEBUG, TRACE]. Not setting GENESIS_LOGGING_LEVEL or setting a non-valid level will reset log level to default.
 
 Example of using LOG property inside script
-```kotlin    
+```kotlin {4,13} 
 eventHandler<Trade>(name = "TRADE_INSERT") {
     onValidate { event ->
         val message = event.details

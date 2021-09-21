@@ -19,7 +19,9 @@ Here is a look at the trades workbook that will form the basis of our trading ap
 
 Using the instance in which the platform is installed, run **ExcelToGenesis**.
 
-**ExcelToGenesis -f Trades.xlsx -n trading_app -t 11000**
+```bash
+ExcelToGenesis -f Trades.xlsx -n trading_app -t 11000
+```
 
 This generates the **fields-dictionary.kts** and **-tables-dictionary.kts** for the data model.
 
@@ -101,7 +103,9 @@ The **mvn** command can be run in either the server/local vm/wsl/cloud instance 
 
 Run
 
-**mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=trading_app -B**
+```bash
+mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=trading_app -B
+```
 
 ![](/img/trading_app-creation-prepare-maven-project-10-11-12.png)
 
@@ -117,7 +121,7 @@ Move the files from the **trading_app/scripts** folder (request server, data ser
 
 ### Build a maven project with mvn install
 
-Now run **mvn install**.
+Now run `mvn install`.
 
 Again, you need to move the script and config files. Have these to hand, so you can copy them easily:
 
@@ -127,6 +131,6 @@ Move the files from the **trading_app/scripts** folder (request server, data ser
 
 ### Install the maven project in intellij
 
-In intellij, run mvn install.
+In intellij, run `mvn install`.
 
 That's it. You have all the files in a project, ready for you to work in your IDE. In the following steps, you'll be working here to add key functionality to the application.

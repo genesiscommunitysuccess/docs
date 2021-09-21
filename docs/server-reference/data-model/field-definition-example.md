@@ -96,4 +96,4 @@ fields {
     field(name = "MONITOR_MESSAGE", type = STRING)
     field(name = "MONITOR_STATE", type = STRING)
 }
- 
+```

@@ -17,9 +17,9 @@ You define your state machine as a specific type of event handler. It must defin
 
 Here is an example of an event - in this case, a modification to a draft trade. The three key requirements for the event are:
 
-* **excludedFields** (those that are not checked),
-*  **onEvent**  (where system action is specified) 
-*  **onValidate**, where we specify any validation requirements - in this case, checking for a valid price and quantity.
+* **excludedFields**, those that are not checked.
+* **onEvent**, where system action is specified. 
+* **onValidate**, where we specify any validation requirements - in this case, checking for a valid price and quantity.
 
 ```kotlin
 modifyEvent {

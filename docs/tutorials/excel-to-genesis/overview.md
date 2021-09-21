@@ -136,11 +136,13 @@ You can use the **sendIt** command to load the data into the application's datab
 
 After you have checked the files generated and addressed any issues in the fields, tables and views, you can run the sequence of commands to generate an application.
 
-1. Run **genesisInstall** to check all the config files and prepare the application for the current environment (using the files in site-specific to replace values in the modules, for example).
-2. Run **remap --commit** to set any changes to the database (modifications to fields, tables and views).
-3. Run **AppGen** to generate event handlers,  request servers and data servers for all the tables. For example:
+1. Run `genesisInstall` to check all the config files and prepare the application for the current environment (using the files in site-specific to replace values in the modules, for example).
+2. Run `remap --commit` to set any changes to the database (modifications to fields, tables and views).
+3. Run `AppGen` to generate event handlers,  request servers and data servers for all the tables. For example:
 
+```bash
     AppGen -n cash -p 10000
+```
 
 This creates,
 
@@ -150,7 +152,7 @@ This creates,
 
 ![](/img/built-by-appgen.png)
 
-Run **genesisInstall** again to install these changes.
+Run `genesisInstall` again to install these changes.
 
 You now have a basic application. The event handler, the request server and the dataserver only provide the simplest functions, but the data is exposed so that a front end can be created and connected. The event handler, for example, provides very simple insert, modify and delete events.
 

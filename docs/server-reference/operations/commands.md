@@ -534,7 +534,9 @@ The command takes a flag of **-**t followed by a list of space-separated table n
 
 For example:
 
-**DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3**
+```bash
+DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3
+```
 
 Confirmation of removal is required for each table.
 
@@ -556,7 +558,11 @@ PopulateHolidays
     -y,--year <arg>      the year of holidays
 ```
 
-For example: `PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en`
+For example: 
+
+```bash
+PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
+```
 
 
 ## CountRecords
@@ -566,6 +572,7 @@ This counts the number of records in the database, grouped by table, and prints 
 Can either give the record count for each table defined in the dictionary, or of a provided space separated list, i.e.:
 
 All Tables:
+
 ```bash
 CountRecords
 ```

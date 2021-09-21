@@ -29,7 +29,7 @@ The process definition is made up of several fields that will set up the main co
 
 _preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add to this module for further usage.
 
-    xml
+```xml
     
         <options>
     
@@ -46,13 +46,14 @@ _preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add
             <dbMaxConnections>10</dbMaxConnections>
     
         </options>
+```
 
 * **options** is a field container that represents the basic behaviour and database configuration of the process.
 * **databaseType** can be set to **ORACLE**, **MSSQL** or **POSTGRES**.
 * **url** represents the database url to connect to using the JDBC driver. The url definition depends on the **databaseType**:
-  * POSTGRES - \`\`\`<url>jdbc:postgresql://IP_ADDRESS:PORT/DATABASE_NAME</url>\`\`\`
-  * MSSQL - \`\`\`<url>jdbc:sqlserver://IP_ADDRESS:PORT;databaseName=DATABASE_NAME;</url>\`\`\`
-  * ORACLE - \`\`\`<url>jdbc:oracle:thin:@IP_ADDRESS:PORT:DATABASE_NAME</url>\`\`\`
+  * POSTGRES - ```<url>jdbc:postgresql://IP_ADDRESS:PORT/DATABASE_NAME</url>```
+  * MSSQL - ```<url>jdbc:sqlserver://IP_ADDRESS:PORT;databaseName=DATABASE_NAME;</url>```
+  * ORACLE - ```<url>jdbc:oracle:thin:@IP_ADDRESS:PORT:DATABASE_NAME</url>```
 * **user** user from RDBMS. Encrypted by the command line tool \`**encryptUserPass**.
 * **password** password from RDBMS. Encrypted by the command line tool **encryptUserPass**.
 * **dbMinConnections** represents the minimum number of RDBMS connections that will be created on startup inside each pool partition. Default: 10.
@@ -73,13 +74,13 @@ _preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add
   retrieve a particular record from the selected table.  
   The standard JDBC call to RDBMS store procedures is standardised as _{call procedure(param1,param2,param3)}_ This standard is followed in the Genesis configuration. There is no need to hard-code any parameter, as these are set up in runtime.
 * **queryQueue** calls a stored procedure which is passed two parameters in order: the table name (e.g. 'TRADE') and a timestamp. This procedure should return all rows stored the SQL UpdateQueue table with the same TABLE_NAME argument and with a bigger timestamp than the timestamp argument.
-* **clearQueu**e works the same way as the previous store procedure, but instead of returning rows, it deletes all the rows found in the SQL **UpdateQueue** table matching the same table name and a smaller or equal timestamp value. This procedure ensures the system can keep the **UpdateQueue** within a reasonable size after the latest changes have been we have retrieved and applied in Genesis.
+* **clearQueue** works the same way as the previous store procedure, but instead of returning rows, it deletes all the rows found in the SQL **UpdateQueue** table matching the same table name and a smaller or equal timestamp value. This procedure ensures the system can keep the **UpdateQueue** within a reasonable size after the latest changes have been we have retrieved and applied in Genesis.
 * **loadTable** has no arguments; it  simply returns every row stored in the selected SQL table, in our example it would be TRADE.
 * **retrieveRecord** receives one argument, which represents a primary key in the chosen SQL table ('TRADE') and returns this row.
 
 Example for MSSQL procedure calls:
 
-    xml
+```xml
           <genesisStream name="TRADE">
     
             <from>TRADE</from>
@@ -123,6 +124,7 @@ Example for MSSQL procedure calls:
             </proc>
     
         </genesisStream>
+```
 
 ### Important notes
 
@@ -156,11 +158,11 @@ The process works in the the following order:
 
 Even though Genesis cannot modify these triggers/procedures and they can potentially be implemented in any desired way as long as they behave as expected, it is always useful to have some simple working examples. These examples also show the mandatory structure for the UPDATEQUEUE table in a RDB system.
 
-\* \[Oracle sample\](dbtogenesis-oracle.md)
+* [Oracle sample](dbtogenesis-oracle.md)
 
-\* \[MSSQL sample\](dbtogenesis-mssql.md)
+* [MSSQL sample](dbtogenesis-mssql.md)
 
-\* \[PostgreSQL sample\](dbtogenesis-postgres.md)
+* [PostgreSQL sample](dbtogenesis-postgres.md)
 
 ### Encrypting user and passwords
 

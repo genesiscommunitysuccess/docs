@@ -33,7 +33,7 @@ requestReplies {
 }
 ```
 
-### Mutilple request servers
+### Multiple request servers
 
 You can include multiple request servers in a single file.
 
