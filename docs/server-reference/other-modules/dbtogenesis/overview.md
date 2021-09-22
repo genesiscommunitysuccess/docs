@@ -150,11 +150,11 @@ The process works in the the following order:
 
 Even though Genesis cannot modify these triggers/procedures and they can potentially be implemented in any desired way as long as they behave as expected, it is always useful to have some simple working examples. These examples also show the mandatory structure for the UPDATEQUEUE table in a RDB system.
 
-* [Oracle sample](dbtogenesis-oracle.md)
+* [Oracle sample](secure/server-reference/other-modules/dbtogenesis/dbtogenesis-oracle/)
 
-* [MSSQL sample](dbtogenesis-mssql.md)
+* [MSSQL sample](secure/server-reference/other-modules/dbtogenesis/dbtogenesis-mssql/)
 
-* [PostgreSQL sample](dbtogenesis-postgres.md)
+* [PostgreSQL sample](secure/server-reference/other-modules/dbtogenesis/dbtogenesis-postgres/)
 
 ### Encrypting user and passwords
 
@@ -365,4 +365,4 @@ generateSQLFromRDB
 | -genUID  | --generateUniqueID      | No        | forces generation of a unique ID. Unique IDs are created ALWAYS if the primary key has more than one field.| No                        |
 | -f       |  --file `<arg>`         | No        | name of the sql file to export table                                                                       | No                        | 
 | -h       |  --help                 | No        | show usage information                                                                                     | No                        |
-| -t       |  --table `<arg>`        | No        | the name of the table to export to csv                                                                     | No                        |    
+| -t       |  --table `<arg>`        | No        | the name of the table to export to csv                                                                     | No                        |
