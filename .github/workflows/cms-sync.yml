@@ -19,7 +19,7 @@ jobs:
     - name: Sync
       uses: ./.github/actions/git-sync
       with:
-        source_repo: "cistov/docs"
+        source_repo: ${{ github.repository }}
         source_branch: "master"
         destination_repo: "genesislcap/docs"
         destination_branch: "master"

@@ -17,15 +17,15 @@ eg: assuming a standard genesis file for controlling `/home/trading/run/site-spe
 "`genesisInstall` -> `killServer` -> `startServers`", so that the configuration takes effect.
 
 ```xml {2}
-    <process name="GENESIS_EVALUATOR">
-        <start>true</start>
-        <groupId>GENESIS</groupId>
-        <options>-Xmx512m -DXSD_VALIDATE=false</options>
-        <module>genesis-evaluator</module>
-        <primaryOnly>true</primaryOnly>
-        <package>global.genesis.eventhandler,global.genesis.evaluator</package>
-        <description>Dynamic/time rules engine</description>
-    </process>
+<process name="GENESIS_EVALUATOR">
+    <start>true</start>
+    <groupId>GENESIS</groupId>
+    <options>-Xmx512m -DXSD_VALIDATE=false</options>
+    <module>genesis-evaluator</module>
+    <primaryOnly>true</primaryOnly>
+    <package>global.genesis.eventhandler,global.genesis.evaluator</package>
+    <description>Dynamic/time rules engine</description>
+</process>
 ```
 
 __Note__: the evaluator only runs on a primary node within the cluster. You can set your node to primary with the command `SetPrimary`, otherwise the GENESIS_EVALUATOR will go into STANDBY mode.

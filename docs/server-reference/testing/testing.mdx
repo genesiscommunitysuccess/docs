@@ -5,24 +5,26 @@ sidebar_label: Testing
 sidebar_position: 11
 
 ---
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-There are two types of tests that you can develop - database tests and service tests. For both types you will need to start with a dictionary. This document will guide you through using GPAL dictionaries in Genesis tests. 
-
+### Types of test
+There are two types of test that you can develop:
+-database tests
+service tests
+For both types, you will need to start with a dictionary. This section will guide you through using GPAL dictionaries in Genesis tests.
 
 :::note
 As of Genesis 5.2 a sample test case that uses production dictionary will be created out of the box when a new project is generated
 :::
 
-### Types of dictionaries
+### Types of dictionary
 
-There are three types of dictionaries you can use:
+There are three types of dictionary you can use:
 
-1. Production dictionary
-2. Inline dictionary
-3. File dictionary
+* Production dictionary
+* Inline dictionary
+* File dictionary
 
 #### Production Dictionary
 
@@ -51,7 +53,8 @@ protected GenesisDictionary createMockDictionary() {
 </Tabs>
 
 #### Inline Dictionary
-When writing a test in Kotlin, you can the GPAL syntax to define a dictionary inline. Use this type of dictionary if the dictionary you want to use in your tests is different from the production dictionary. This dictionary should only be used in framework type components where you want to test dictionaries that are distinct from your production dictionary. 
+
+When writing a test in Kotlin, you can the GPAL syntax to define a dictionary inline. Use this type of dictionary if the dictionary you want to use in your tests is different from the production dictionary. This dictionary should only be used in framework type components where you want to test dictionaries that are distinct from your production dictionary.
 
 ```kotlin
 val USER_NAME by field(name = "USER_NAME", type = STRING)
@@ -68,18 +71,19 @@ override fun createMockDictionary(): GenesisDictionary = testDictionary {
 }
 ```
 
-:::important 
+:::important
 Please note that the table definitions should be valid. If you specify an invalid table, e.g. by not defining a primary key, the test will fail.
 :::
 
 #### File Dictionary
 
-These types of dictionaries should only be used if the dictionary you want to test is: 
+These types of dictionaries should only be used if the dictionary you want to test is:
 
 1. Different from the production dictionary
 2. Too big to be practical in an inline dictionary
 
-Please note that the test will need to resolve the absolute location of the dictionary file, for example: 
+Please note that the test will need to resolve the absolute location of the dictionary file, for example:
+
 ```java
 @Override
 protected GenesisDictionary createMockDictionary() throws Exception {
@@ -88,6 +92,7 @@ protected GenesisDictionary createMockDictionary() throws Exception {
 ```
 
 In `AbstractDatabaseTest`, you can also overwrite the `dictionaryName()` method:
+
 ```java
 @Override
 protected String dictionaryName() {
@@ -98,13 +103,13 @@ protected String dictionaryName() {
 ### Writing tests
 
 1. Database tests - use these types for testing classes that require database access.
-2. Test support tests - use these types of tests for testing a service 
+2. Test support tests - use these types of tests for testing a service
 
 All dictionaries types work with both types of tests.
 
 #### AbstractDatabaseTest
 
-Use these types for testing classes that require database access. These tests will instantiate a `RxDb` object, with a dictionary. The full range of database operations are available, including the update queue. However, no other genesis components are provided. The only requirement for this type of tests is a dictionary.  
+Use these types for testing classes that require database access. These tests will instantiate a `RxDb` object, with a dictionary. The full range of database operations are available, including the update queue. However, no other genesis components are provided. The only requirement for this type of tests is a dictionary.
 
 To write a database test, begin by extending `AbstractDatabaseTest`, and overwriting the  `createMockDictionary` method, as in the samples below
 
@@ -123,6 +128,7 @@ class SampleKotlinTest : AbstractDatabaseTest() {
     }
 }
 ```
+
 </TabItem>
 <TabItem value="java">
 
@@ -147,6 +153,7 @@ public class SampleJavaTest extends AbstractDatabaseTest {
 In this test we are using the production dictionary and making sure there are no records in the `USER` table. In both languages the `RxDb` is available. In Kotlin through the `rxDb` property, in Java using the `getRxDb()` method.
 
 **Using an inline dictionary:**
+
 ```kotlin
 class SampleKotlinTest : AbstractDatabaseTest() {
 
@@ -218,7 +225,7 @@ If you add the `genesis-generated-dao` jar to your classpath you will be able to
 
 #### AbstractGenesisTestSupport
 
-These are the more powerful type of tests. In addition to setting up the database it offers: 
+These are the more powerful type of tests. In addition to setting up the database it offers:
 
 1. Start up a genesis service in memory
 2. Scan a `GENESIS_HOME` folder for additional configuration
@@ -227,16 +234,17 @@ These are the more powerful type of tests. In addition to setting up the databas
 5. Asynchronous message handling with timeout and parsing
 
 ##### Creating a test
+
 In the constructor you will need to provide a `GenesisTestConfig` instance:
 
 | Property | Required | Sets |
 | --- | --- | --- |
-| packageName | yes | corresponds to the `<package/>` tag in `processes.xml` |
-| genesisHome | yes | `GENESIS_HOME` folder for additional configuration |
-| parser | yes | function that takes a `GenesisSet` and transforms it, this will determine the generic type of `AbstractGenesisTestSupport` |
+| packageName | yes | corresponds to the <package/> tag in processes.xml |
+| genesisHome | yes | GENESIS_HOME folder for additional configuration |
+| parser | yes | function that takes a GenesisSet and transforms it, this will determine the generic type of AbstractGenesisTestSupport |
 | initialDataFile | no | csv files to load into the database |
-| configFileName | no | corresponds to the `<config/>` tag in `processes.xml` |
-| authCacheOverride | no | overrides auth-perms map to test  |
+| configFileName | no | corresponds to the <config/> tag in processes.xml |
+| authCacheOverride | no | overrides auth-perms map to test |
 
 Paths provided for `genesisHome` and `initialDataFile` should be absolute location. To help with this please wrap the string in a call to `resolvePath(…)`, this will try to locate the file or folder in your test resources.
 
@@ -279,13 +287,16 @@ public class UserControllerJavaTest extends AbstractGenesisTestSupport<EventResp
     }
 }
 ```
+
 </TabItem>
 </Tabs>
 
 ##### Parsing Messages
+
 These tests require a parser, this should take a `GenesisSet` and transform it. This is so that all logic dealing with reading values these messages is in a single place, and that this can be dealt with by the test support class, so that it can return a type safe object for the test to verify. `EventResponse` is provided as an option. This will parse messages into either an `EventResponse.Ack` or an `EventResponse.Nack`. The `Ack` does not hold a lot of data, but the `Nack` will provide `errorCode` and text properties to test failure conditions.
 
-It is recommended that the response type is a [sealed class in Kotlin](https://kotlinlang.org/docs/sealed-classes.html) with a companion object that implements `(GenesisSet) -> xxx`, where `xxx` is your sealed class. 
+It is recommended that the response type is a [sealed class in Kotlin](https://kotlinlang.org/docs/sealed-classes.html) with a companion object that implements `(GenesisSet) -> xxx`, where `xxx` is your sealed class.
+
 ```kotlin
 sealed class LoginResponse {
     data class LoginAuthAck(
@@ -385,6 +396,7 @@ private fun buildLogoutSet(sessionId: String): GenesisSet {
 ```
 
 ##### Sending Messages
+
 There are two functions for sending messages to a service; one uses RxJava2 Single, the other uses Kotliln coroutines. Whichever one you use, shouldn’t make a whole lot of difference in your test. The method `sendMessage(…)` will return a `Single`, this will require a call to `blockingGet()` for every message you’re interested in. `sendMessageAsync` will require you to wrap your test in a `runBlocking { … }` block.
 
 ```kotlin
@@ -413,9 +425,11 @@ fun `test logon failure - incorrect password (coroutines)`() = runBlocking {
 Both functions take a `GenesisSet` and optionally a timeout. If no timeout is provided it will default to 500. Timeouts are set in milliseconds. Behind the scenes a call will be made to `GenesisMessageClient`, which will handle source refs and waiting for a response (within the timeout).
 
 ##### Providing System Defintion
-You can override system defintion properties in your test class by overriding the `systemDefintion()` function. 
+
+You can override system defintion properties in your test class by overriding the `systemDefintion()` function.
 
 ##### assertedCast
+
 This extension function can be called on any value with a type parameter. If the value is of that type it will be cast to that type, if not the call will fail with an `AssertError`, and a helpful description.
 
 ```kotlin
@@ -428,8 +442,10 @@ val loginAuthAck = message
 ```
 
 ##### assertIsAuditedBy
-This function helps assertions related to audit tables. It will check all fields in the audited record match the audit record. 
+
+This function helps assertions related to audit tables. It will check all fields in the audited record match the audit record.
 In this test, we build a request to insert a user. We then get the user from the database to make sure it exists. Next we check a USER_ATTRIBUTE row has been created. Finally we check to make sure a matching row in USER_AUDIT has been created.
+
 ```kotlin
 @Test
 fun `test add users - success`() = runBlocking {

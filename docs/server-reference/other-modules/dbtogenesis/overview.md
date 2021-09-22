@@ -30,22 +30,14 @@ The process definition is made up of several fields that will set up the main co
 _preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add to this module for further usage.
 
 ```xml
-    
-        <options>
-    
-            <databaseType>MSSQL</databaseType>
-    
-            <url>jdbc:sqlserver://host.ad.company:1433;databaseName=DB_NAME;</url>
-    
-            <user>6487f8a8b25986efa34a4906332e7998606acd235b06b7ae2e8acfc0c31</user>
-    
-            <password>db3b7fc7009c86cfa1b8e8b37811594094535b4df9c57b61a9bad169332e1f7c</password>
-    
-            <dbMinConnections>10</dbMinConnections>
-    
-            <dbMaxConnections>10</dbMaxConnections>
-    
-        </options>
+<options>
+    <databaseType>MSSQL</databaseType>
+    <url>jdbc:sqlserver://host.ad.company:1433;databaseName=DB_NAME;</url>
+    <user>6487f8a8b25986efa34a4906332e7998606acd235b06b7ae2e8acfc0c31</user>
+    <password>db3b7fc7009c86cfa1b8e8b37811594094535b4df9c57b61a9bad169332e1f7c</password>
+    <dbMinConnections>10</dbMinConnections>
+    <dbMaxConnections>10</dbMaxConnections>
+</options>
 ```
 
 * **options** is a field container that represents the basic behaviour and database configuration of the process.
@@ -81,49 +73,49 @@ _preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add
 Example for MSSQL procedure calls:
 
 ```xml
-          <genesisStream name="TRADE">
-    
-            <from>TRADE</from>
-            <to>TRADE</to>
-    
-            <GenesisPrimaryKeyId>TRADE_BY_EXTERNAL_ID</GenesisPrimaryKeyId>
-            <rdbmsPrimarykey>TRADE_ID</rdbmsPrimarykey>
-            <rdbmsTimestampField>TIMESTAMP</rdbmsTimestampField>
-            <generateCreatedInfo>true</generateCreatedInfo>
-    
-    
-            <metaData>
-                <field name="TRADE_ID" type="STRING" />
-                <field name="CURRENCY_DESCRIPTION" type="STRING" />
-                <field name="CLIENT_NAME" type="STRING" />
-                <field name="TRADE_QUANTITY" type="INT" />
-                <field name="TRADE_TIMESTAMP" type="DATETIME" />
-            </metaData>
-    
-            <proc>
-                <queryQueue>
-                    <![CDATA[
-                        {call queryUpdateQueue(?, ?)}
-                    ]]>
-                </queryQueue>
-                <clearQueue>
-                    <![CDATA[
-                        {call clearUpdateQueue(?, ?)}
-                    ]]>
-                </clearQueue>
-                <loadTable>
-                    <![CDATA[
-                        {call getTableTrade()}
-                    ]]>
-                </loadTable>
-                <retrieveRecord>
-                    <![CDATA[
-                        {call getTrade(?)}
-                    ]]>
-                </retrieveRecord>
-            </proc>
-    
-        </genesisStream>
+<genesisStream name="TRADE">
+
+    <from>TRADE</from>
+    <to>TRADE</to>
+
+    <GenesisPrimaryKeyId>TRADE_BY_EXTERNAL_ID</GenesisPrimaryKeyId>
+    <rdbmsPrimarykey>TRADE_ID</rdbmsPrimarykey>
+    <rdbmsTimestampField>TIMESTAMP</rdbmsTimestampField>
+    <generateCreatedInfo>true</generateCreatedInfo>
+
+
+    <metaData>
+        <field name="TRADE_ID" type="STRING" />
+        <field name="CURRENCY_DESCRIPTION" type="STRING" />
+        <field name="CLIENT_NAME" type="STRING" />
+        <field name="TRADE_QUANTITY" type="INT" />
+        <field name="TRADE_TIMESTAMP" type="DATETIME" />
+    </metaData>
+
+    <proc>
+        <queryQueue>
+            <![CDATA[
+                {call queryUpdateQueue(?, ?)}
+            ]]>
+        </queryQueue>
+        <clearQueue>
+            <![CDATA[
+                {call clearUpdateQueue(?, ?)}
+            ]]>
+        </clearQueue>
+        <loadTable>
+            <![CDATA[
+                {call getTableTrade()}
+            ]]>
+        </loadTable>
+        <retrieveRecord>
+            <![CDATA[
+                {call getTrade(?)}
+            ]]>
+        </retrieveRecord>
+    </proc>
+
+</genesisStream>
 ```
 
 ### Important notes
@@ -200,153 +192,156 @@ The example shows two different ways of using key values imported from Oracle.
     ![](/img/createretrievecounterpartyrecordprocedure.png)
 12. Create the dictionary.xml tables.
 
-        xml
-        <table name="INSTRUMENT">
-                    <fields>
-                        <field name="INSTRUMENT_ID" sequence="IN"/>
-                        <field name="NAME" />
-                        <field name="DESCRIPTION" />
-                        <field name="INSTRUMENT_TYPE" />
-                        <field name="TICK_SIZE" />
-                        <field name="BAND_STATUS" />
-                        <field name="CREATED_AT" />
-                        <field name="CREATED_BY" />
-                        <field name="EXTERNAL_ID" sequence="XG"/>
-                    </fields>
-                    <keys>
-                        <key name="INSTRUMENT_BY_ID" id="1" primary="true">
-                            <field name="INSTRUMENT_ID" />
-                        </key>
-                        <key name="INSTRUMENT_BY_NAME" id="2">
-                            <field name="NAME" />
-                        </key>
-                        <key name="INSTRUMENT_BY_EXTERNAL_ID" id="3">
-                            <field name="EXTERNAL_ID" />
-                        </key>
-                    </keys>
-                </table>
-        
-                <table name="COUNTERPARTY">
-                    <fields>
-                        <field name="COUNTERPARTY_ID" sequence="CP"/>
-                        <field name="COUNTERPARTY_NAME" />
-                        <field name="DESCRIPTION" />
-                        <field name="COUNTERPARTY_TYPE" />
-                        <field name="BAND_STATUS" />
-                        <field name="CREATED_AT" />
-                        <field name="CREATED_BY" />
-                        <field name="EXTERNAL_ID" sequence="XH"/>
-                    </fields>
-                    <keys>
-                        <key name="COUNTERPARTY_BY_ID" id="1" primary="true">
-                            <field name="COUNTERPARTY_ID" />
-                        </key>
-                        <key name="COUNTERPARTY_BY_NAME" id="2">
-                            <field name="COUNTERPARTY_NAME" />
-                        </key>
-                        <key name="COUNTERPARTY_BY_EXTERNAL_ID" id="3">
-                            <field name="EXTERNAL_ID" />
-                        </key>
-                    </keys>
-                </table>
+```xml
+<table name="INSTRUMENT">
+    <fields>
+        <field name="INSTRUMENT_ID" sequence="IN"/>
+        <field name="NAME" />
+        <field name="DESCRIPTION" />
+        <field name="INSTRUMENT_TYPE" />
+        <field name="TICK_SIZE" />
+        <field name="BAND_STATUS" />
+        <field name="CREATED_AT" />
+        <field name="CREATED_BY" />
+        <field name="EXTERNAL_ID" sequence="XG"/>
+    </fields>
+    <keys>
+        <key name="INSTRUMENT_BY_ID" id="1" primary="true">
+            <field name="INSTRUMENT_ID" />
+        </key>
+        <key name="INSTRUMENT_BY_NAME" id="2">
+            <field name="NAME" />
+        </key>
+        <key name="INSTRUMENT_BY_EXTERNAL_ID" id="3">
+            <field name="EXTERNAL_ID" />
+        </key>
+    </keys>
+</table>
+
+<table name="COUNTERPARTY">
+    <fields>
+        <field name="COUNTERPARTY_ID" sequence="CP"/>
+        <field name="COUNTERPARTY_NAME" />
+        <field name="DESCRIPTION" />
+        <field name="COUNTERPARTY_TYPE" />
+        <field name="BAND_STATUS" />
+        <field name="CREATED_AT" />
+        <field name="CREATED_BY" />
+        <field name="EXTERNAL_ID" sequence="XH"/>
+    </fields>
+    <keys>
+        <key name="COUNTERPARTY_BY_ID" id="1" primary="true">
+            <field name="COUNTERPARTY_ID" />
+        </key>
+        <key name="COUNTERPARTY_BY_NAME" id="2">
+            <field name="COUNTERPARTY_NAME" />
+        </key>
+        <key name="COUNTERPARTY_BY_EXTERNAL_ID" id="3">
+            <field name="EXTERNAL_ID" />
+        </key>
+    </keys>
+</table>
+```
+
 13. Create the **dbtogenesis.xml** configuration. **Ensure the xmlns:xi attribute is included if you want to use xinclude in your configuration**.
 
-        xml
-        <dbToGenesis xmlns:xi="http://www.w3.org/2001/XInclude"><options>
-            <databaseType>ORACLE</databaseType>
-            <url>jdbc:oracle:thin:@db1.ad.genesis.global:1521:genesisdev</url>
-            <user>dd67b69b937b25da0704bc682461f54fad20d5161ffffde210a4a30370fcb557</user>
-            <password>9577a0e7fc204a83ef59a57dcf9d543055100f440f2baebb38aef644c7ac2f03</password>
-            <dbMinConnections>10</dbMinConnections>
-            <dbMaxConnections>10</dbMaxConnections>
-        </options>
-        
-        <genesisStream name="INSTRUMENT">
-        
-            <from>INSTRUMENT</from>
-            <to>INSTRUMENT</to>
-        
-            <GenesisPrimaryKeyId>INSTRUMENT_BY_EXTERNAL_ID</GenesisPrimaryKeyId>
-            <rdbmsPrimarykey>INSTRUMENT_ID</rdbmsPrimarykey>
-            <rdbmsTimestampField>TIMESTAMP</rdbmsTimestampField>
-            <generateCreatedInfo>true</generateCreatedInfo>
-        
-            <metaData>
-                <field name="INSTRUMENT_ID" type="STRING" />
-                <field name="NAME" type="STRING" />
-                <field name="DESCRIPTION" type="STRING" />
-                <field name="INSTRUMENT_TYPE" type="ENUM" values="EQ DV FI FU" default="EQ" />
-                <field name="TICK_SIZE" type="DOUBLE" />
-                <field name="BAND_STATUS" type="ENUM" values="DISABLED ENABLED" default="ENABLED" />
-            </metaData>
-        
-            <proc>
-                <queryQueue>
-                    <![CDATA[
-                        {call queryUpdateQueue(?, ?, ?)}
-                    ]]>
-                </queryQueue>
-                <clearQueue>
-                    <![CDATA[
-                        {call clearUpdateQueue(?, ?)}
-                    ]]>
-                </clearQueue>
-                <loadTable>
-                    <![CDATA[
-                        {call retrieveInstrumentTable(?)}
-                    ]]>
-                </loadTable>
-                <retrieveRecord>
-                    <![CDATA[
-                        {call retrieveInstrumentRecord(?, ?)}
-                    ]]>
-                </retrieveRecord>
-            </proc>
-        
-        </genesisStream>
-        
-        <genesisStream name="COUNTERPARTY">
-        
-            <from>COUNTERPARTY</from>
-            <to>COUNTERPARTY</to>
-        
-            <GenesisPrimaryKeyId>COUNTERPARTY_BY_EXTERNAL_ID</GenesisPrimaryKeyId>
-            <rdbmsPrimarykey>COUNTERPARTY_ID</rdbmsPrimarykey>
-            <rdbmsTimestampField>TIMESTAMP</rdbmsTimestampField>
-            <generateCreatedInfo>true</generateCreatedInfo>
-        
-            <metaData>
-                <field name="COUNTERPARTY_NAME" type="STRING" />
-                <field name="DESCRIPTION" type="STRING" />
-                <field name="COUNTERPARTY_TYPE" type="ENUM" values="BROKER CLIENT CHARITY" default="BROKER" />
-                <field name="BAND_STATUS" type="ENUM" values="DISABLED ENABLED" default="ENABLED" />
-            </metaData>
-        
-            <proc>
-                <queryQueue>
-                    <![CDATA[
-                        {call queryUpdateQueue(?, ?, ?)}
-                    ]]>
-                </queryQueue>
-                <clearQueue>
-                    <![CDATA[
-                        {call clearUpdateQueue(?, ?)}
-                    ]]>
-                </clearQueue>
-                <loadTable>
-                    <![CDATA[
-                        {call retrieveCounterpartyTable(?)}
-                    ]]>
-                </loadTable>
-                <retrieveRecord>
-                    <![CDATA[
-                        {call retrieveCounterpartyRecord(?, ?)}
-                    ]]>
-                </retrieveRecord>
-            </proc>
-        
-        </genesisStream>
-        </dbToGenesis>
+```xml
+<dbToGenesis xmlns:xi="http://www.w3.org/2001/XInclude"><options>
+    <databaseType>ORACLE</databaseType>
+    <url>jdbc:oracle:thin:@db1.ad.genesis.global:1521:genesisdev</url>
+    <user>dd67b69b937b25da0704bc682461f54fad20d5161ffffde210a4a30370fcb557</user>
+    <password>9577a0e7fc204a83ef59a57dcf9d543055100f440f2baebb38aef644c7ac2f03</password>
+    <dbMinConnections>10</dbMinConnections>
+    <dbMaxConnections>10</dbMaxConnections>
+</options>
+
+<genesisStream name="INSTRUMENT">
+
+    <from>INSTRUMENT</from>
+    <to>INSTRUMENT</to>
+
+    <GenesisPrimaryKeyId>INSTRUMENT_BY_EXTERNAL_ID</GenesisPrimaryKeyId>
+    <rdbmsPrimarykey>INSTRUMENT_ID</rdbmsPrimarykey>
+    <rdbmsTimestampField>TIMESTAMP</rdbmsTimestampField>
+    <generateCreatedInfo>true</generateCreatedInfo>
+
+    <metaData>
+        <field name="INSTRUMENT_ID" type="STRING" />
+        <field name="NAME" type="STRING" />
+        <field name="DESCRIPTION" type="STRING" />
+        <field name="INSTRUMENT_TYPE" type="ENUM" values="EQ DV FI FU" default="EQ" />
+        <field name="TICK_SIZE" type="DOUBLE" />
+        <field name="BAND_STATUS" type="ENUM" values="DISABLED ENABLED" default="ENABLED" />
+    </metaData>
+
+    <proc>
+        <queryQueue>
+            <![CDATA[
+                {call queryUpdateQueue(?, ?, ?)}
+            ]]>
+        </queryQueue>
+        <clearQueue>
+            <![CDATA[
+                {call clearUpdateQueue(?, ?)}
+            ]]>
+        </clearQueue>
+        <loadTable>
+            <![CDATA[
+                {call retrieveInstrumentTable(?)}
+            ]]>
+        </loadTable>
+        <retrieveRecord>
+            <![CDATA[
+                {call retrieveInstrumentRecord(?, ?)}
+            ]]>
+        </retrieveRecord>
+    </proc>
+
+</genesisStream>
+
+<genesisStream name="COUNTERPARTY">
+
+    <from>COUNTERPARTY</from>
+    <to>COUNTERPARTY</to>
+
+    <GenesisPrimaryKeyId>COUNTERPARTY_BY_EXTERNAL_ID</GenesisPrimaryKeyId>
+    <rdbmsPrimarykey>COUNTERPARTY_ID</rdbmsPrimarykey>
+    <rdbmsTimestampField>TIMESTAMP</rdbmsTimestampField>
+    <generateCreatedInfo>true</generateCreatedInfo>
+
+    <metaData>
+        <field name="COUNTERPARTY_NAME" type="STRING" />
+        <field name="DESCRIPTION" type="STRING" />
+        <field name="COUNTERPARTY_TYPE" type="ENUM" values="BROKER CLIENT CHARITY" default="BROKER" />
+        <field name="BAND_STATUS" type="ENUM" values="DISABLED ENABLED" default="ENABLED" />
+    </metaData>
+
+    <proc>
+        <queryQueue>
+            <![CDATA[
+                {call queryUpdateQueue(?, ?, ?)}
+            ]]>
+        </queryQueue>
+        <clearQueue>
+            <![CDATA[
+                {call clearUpdateQueue(?, ?)}
+            ]]>
+        </clearQueue>
+        <loadTable>
+            <![CDATA[
+                {call retrieveCounterpartyTable(?)}
+            ]]>
+        </loadTable>
+        <retrieveRecord>
+            <![CDATA[
+                {call retrieveCounterpartyRecord(?, ?)}
+            ]]>
+        </retrieveRecord>
+    </proc>
+
+</genesisStream>
+</dbToGenesis>
+```
 
 ### generateSQLFromRDB
 
@@ -357,18 +352,17 @@ The **generateSQLFromRDB** script is a tool that generates ".sql" files to creat
 * You also need the CREATED_AT and CREATED_BY fields in the table if you want to use the **generateCreatedInfo** option in the **dbtogenesis.xml** configuration.
 
 #### generateSQLFromRDB
+  
+```bash
+generateSQLFromRDB
+```
 
-    ```
-    usage: generateSQLFromRDB
-    -cfg,--configFile <arg>        dbtogenesis config xml file to be modified
-    -dbName,--databaseName <arg>   the database name for Oracle dbs
-    -dbType,--databaseType <arg>   the database type: MSSQL,ORACLE or
-                                    POSTGRES
-    -f,--file <arg>                name of the sql file to export table
-    -genUID,--generateUniqueID     forces generation of a unique ID. Unique
-                                    IDs are created ALWAYS if the primary key
-                                    has more than one field.
-    -h,--help                      show usage information
-    -t,--table <arg>               the name of the table to export to csv
-    
-    ```
+| Argument | Argument long name      | Mandatory |               Description                                                                                  | Restricted values         |
+|----------|-------------------------|-----------|------------------------------------------------------------------------------------------------------------|---------------------------|       
+| -cfg     |  --configFile `<arg>`   | No        | genesistodb config xml file to be modified                                                                 | No                        |                   
+| -dbName  |  --databaseName `<arg>` | No        | the database name for Oracle dbs                                                                           | No                        |         
+| -dbType  |  --databaseType `<arg>` | No        | the database type                                                                                          | MSSQL, ORACLE or POSTGRES |                    
+| -genUID  | --generateUniqueID      | No        | forces generation of a unique ID. Unique IDs are created ALWAYS if the primary key has more than one field.| No                        |
+| -f       |  --file `<arg>`         | No        | name of the sql file to export table                                                                       | No                        | 
+| -h       |  --help                 | No        | show usage information                                                                                     | No                        |
+| -t       |  --table `<arg>`        | No        | the name of the table to export to csv                                                                     | No                        |    
