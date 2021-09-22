@@ -260,7 +260,7 @@ Enter 'help' for a list of commands
 | clear |  | clears the current context |
 | count |  | counts the rows in the table |
 | delete |  | deletes the current row |
-| deleteWhere | <condition> | deletes all matching rows in the selected table |
+| deleteWhere | <'condition'> | deletes all matching rows in the selected table |
 | displayFields | <field_names> |  |
 | distinct | <condition> \[-where <limiting_condition>\] |  |
 | find | <key_name> |  |
