@@ -352,18 +352,17 @@ The **generateSQLFromRDB** script is a tool that generates ".sql" files to creat
 * You also need the CREATED_AT and CREATED_BY fields in the table if you want to use the **generateCreatedInfo** option in the **dbtogenesis.xml** configuration.
 
 #### generateSQLFromRDB
+  
+```bash
+generateSQLFromRDB
+```
 
-```
-    usage: generateSQLFromRDB
-    -cfg,--configFile <arg>        dbtogenesis config xml file to be modified
-    -dbName,--databaseName <arg>   the database name for Oracle dbs
-    -dbType,--databaseType <arg>   the database type: MSSQL,ORACLE or
-                                    POSTGRES
-    -f,--file <arg>                name of the sql file to export table
-    -genUID,--generateUniqueID     forces generation of a unique ID. Unique
-                                    IDs are created ALWAYS if the primary key
-                                    has more than one field.
-    -h,--help                      show usage information
-    -t,--table <arg>               the name of the table to export to csv
-    
-```
+| Argument | Argument long name      | Mandatory |               Description                                                                                  | Restricted values         |
+|----------|-------------------------|-----------|------------------------------------------------------------------------------------------------------------|---------------------------|       
+| -cfg     |  --configFile `<arg>`   | No        | genesistodb config xml file to be modified                                                                 | No                        |                   
+| -dbName  |  --databaseName `<arg>` | No        | the database name for Oracle dbs                                                                           | No                        |         
+| -dbType  |  --databaseType `<arg>` | No        | the database type                                                                                          | MSSQL, ORACLE or POSTGRES |                    
+| -genUID  | --generateUniqueID      | No        | forces generation of a unique ID. Unique IDs are created ALWAYS if the primary key has more than one field.| No                        |
+| -f       |  --file `<arg>`         | No        | name of the sql file to export table                                                                       | No                        | 
+| -h       |  --help                 | No        | show usage information                                                                                     | No                        |
+| -t       |  --table `<arg>`        | No        | the name of the table to export to csv                                                                     | No                        |    

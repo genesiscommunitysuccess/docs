@@ -53,11 +53,19 @@ This is a simple command that produces a Genesis data model very quickly. The sy
 
 **ExcelToGenesis**
 
-**-f, --file**	the name of the worksheet you are going to convert.
+Options
 
-**-n –name** the name of the project (application) you want to create.
+| Argument | Argument long name      | Mandatory |               Description                                 | Restricted values         |
+|----------|-------------------------|-----------|-----------------------------------------------------------|---------------------------|       
+| -f       | --file                  | Yes       | the name of the worksheet you are going to convert.       | No                        |        
+| -n       | -–name                  | Yes       | the name of the project (application) you want to create. | No                        |              
+| -t       | -–table                 | Yes       | the start of the table id sequence (see note below)       | No                        |        
 
-**-t –table**	each table is automatically given a unique numeric ID. Supply the opening sequence number, for example, 10000. Numeric IDs enable you to change the name of a table without losing the data.
+:::note 
+
+each table is automatically given a unique numeric ID. Supply the opening sequence number, for example, 10000. Numeric IDs enable you to change the name of a table without losing the data.
+
+::: 
 
 So, for our example, we are going to run:
 

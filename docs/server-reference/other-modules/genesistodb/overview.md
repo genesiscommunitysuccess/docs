@@ -183,18 +183,16 @@ Create **GenesisToDb** configuration. **Ensure the xmlns:xi attribute is include
 
 It is by no means mandatory, but it provides a generic, quick and working example that can be further modified or extended with ease. However, the Genesis dictionary must be appropriately configured beforehand: TABLENAME_BY_TIMESTAMP key must exist (as shown in previous section examples) inside the table, as well as having a key made of a unique field (e.g "ORDER_ID").
 
-usage: generateSQLToRDB
+usage: 
+```bash
+generateSQLToRDB
+```
 
-    -cfg,--configFile <arg>        genesistodb config xml file to be modified
-    
-    -dbName,--databaseName <arg>   the database name for Oracle dbs
-    
-    -dbType,--databaseType <arg>   the database type: MSSQL,ORACLE or
-    
-                                    POSTGRES
-    
-    -f,--file <arg>                name of the sql file to export table
-    
-    -h,--help                      show usage information
-    
-    -t,--table <arg>               the name of the table to export to csv
+| Argument | Argument long name      | Mandatory |               Description                    | Restricted values         |
+|----------|-------------------------|-----------|----------------------------------------------|---------------------------|       
+| -cfg     |  --configFile `<arg>`   | No        | genesistodb config xml file to be modified   | No                        |                   
+| -dbName  |  --databaseName `<arg>` | No        | the database name for Oracle dbs             | No                        |         
+| -dbType  |  --databaseType `<arg>` | No        | the database type                            | MSSQL, ORACLE or POSTGRES |                    
+| -f       |  --file `<arg>`         | No        | name of the sql file to export table         | No                        |             
+| -h       |  --help                 | No        | show usage information                       | No                        |
+| -t       |  --table `<arg>`        | No        | the name of the table to export to csv       | No                        |               
