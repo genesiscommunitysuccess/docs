@@ -33,7 +33,7 @@ Use this type of dictionary if you want to test against the production dictionar
 
 This dictionary type is easiest to use, and it is supported in both Java and Kotlin. When writing a test extending `AbstractGenesisTestSupport`, the production dictionary is used by default. To use it from an `AbstractDatabseTest` class, is a couple of lines of code:
 
-<Tabs defaultValue="kotlin" values={\[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }\]}>
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
@@ -115,7 +115,7 @@ Use these types for testing classes that require database access. These tests wi
 To write a database test, begin by extending `AbstractDatabaseTest`, and overwriting the  `createMockDictionary` method, as in the samples below
 
 **Using a production dictionary:**
-<Tabs defaultValue="kotlin" values={\[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }\]}>
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
@@ -181,7 +181,7 @@ class SampleKotlinTest : AbstractDatabaseTest() {
 In this test we are defining two fields and a table that uses them and making sure there are not records in hte `USER` table. Please note that since we are creating a stand alone dictionary, we can start with id 1
 
 **Using a file dictionary:**
-<Tabs defaultValue="kotlin" values={\[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }\]}>
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
@@ -251,7 +251,7 @@ Paths provided for `genesisHome` and `initialDataFile` should be absolute locati
 
 To use `AbstractGenesisTestSupport`, create a new class and extend
 
-<Tabs defaultValue="kotlin" values={\[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }\]}>
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
