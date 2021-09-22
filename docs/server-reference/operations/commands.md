@@ -377,7 +377,7 @@ Additionally, you can just run **DumpIt** without any arguments to enter interac
 
 To dynamically change the logging levels on any Genesis process, use the LogLevel command.
 
-Logging level in scripts is set by default to WARN. To change the level, set the environment variable GENESIS_LOGGING_VEL to_  of the following ERROR, WARN, INFO, DEBUG, TRACE.
+Logging level in scripts is set by default to WARN. To change the level, set the environment variable GENESIS_LOGGING_LEVEL to one of the following: ERROR, WARN, INFO, DEBUG, TRACE.
 
 Not setting GENESIS_LOGGING_LEVEL or setting a non-valid level will reset log level to default.
 
