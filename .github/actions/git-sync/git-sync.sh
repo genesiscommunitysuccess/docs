@@ -39,6 +39,9 @@ git remote add origin "$SOURCE_REPO"
 git remote add destination "$DESTINATION_REPO"
 git remote -v
 
+git config --global user.email "documentation@genesis.global"
+git config --global user.name "Genesis Documentation Bot"
+
 # Pull all branches references down locally so subsequent commands can see them
 echo "Fetching source";
 git fetch source '+refs/heads/*:refs/heads/*' --update-head-ok
