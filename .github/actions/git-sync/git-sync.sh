@@ -58,9 +58,7 @@ if [[ -n "$DESTINATION_SSH_PRIVATE_KEY" ]]; then
 fi
 
 echo "Updating destination";
-# Update destination
-git push destination "${SOURCE_BRANCH}:${DESTINATION_BRANCH}" -f
+git push destination "${SOURCE_BRANCH}:${DESTINATION_BRANCH}"
 
 echo "Updating source";
-# Update source
-git push origin "${SOURCE_BRANCH}:${SOURCE_BRANCH}" -f
+git push origin "${SOURCE_BRANCH}:${SOURCE_BRANCH}"
