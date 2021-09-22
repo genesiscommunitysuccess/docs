@@ -9,8 +9,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 ### Types of test
+
 There are two types of test that you can develop:
--database tests
+\-database tests
 service tests
 For both types, you will need to start with a dictionary. This section will guide you through using GPAL dictionaries in Genesis tests.
 
@@ -54,7 +55,7 @@ protected GenesisDictionary createMockDictionary() {
 
 #### Inline Dictionary
 
-When writing a test in Kotlin, you can the GPAL syntax to define a dictionary inline. Use this type of dictionary if the dictionary you want to use in your tests is different from the production dictionary. This dictionary should only be used in framework type components where you want to test dictionaries that are distinct from your production dictionary.
+When writing a test in Kotlin, you can the GPAL syntax to define a dictionary inline. Use this type of dictionary if the dictionary you want to use in your tests is different from the production dictionary. This dictionary should only be used in framework-type components where you want to test dictionaries that are distinct from your production dictionary.
 
 ```kotlin
 val USER_NAME by field(name = "USER_NAME", type = STRING)
