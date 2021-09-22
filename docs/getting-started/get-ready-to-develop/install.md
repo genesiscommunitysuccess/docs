@@ -32,7 +32,7 @@ echo "genesis_user=octopus" >> /tmp/genesis_install.conf
 
 ### 2. Install the rpm
 
-Now you can **sudo yum** and install the rpm.
+Now you can `sudo yum` and install the rpm.
 
 ```bash
 sudo yum --nogpgcheck localinstall genesis-platform-5.1.0-1.x86.rpm
@@ -53,9 +53,10 @@ You can switch to that user and view the run directory for the newly installed p
 The script does all the hard work for you. Just run `genesisInstall`.
 
 The initialization process creates new directories. In addition to **auth** and **genesis**, you will see:
-•	**generated**
-•	**runtime**
-•	**site-specific**
+* **generated**
+* **runtime**
+* **site-specific**
+
 The process also creates some useful tools. Most immediately, try `mon` to see the processes that need to be run.
 
 ![](/img/joseph5-mon.png)

@@ -13,8 +13,8 @@ The Genesis platform provides an abstraction layer so that you can use different
 
 Genesis uses keys, which can be primary or secondary. In an SQL world, the closest similarity would be:
 
-Genesis primary key → SQL primary key
-Genesis secondary key → SQL unique index definition.
+* Genesis primary key → SQL primary key
+* Genesis secondary key → SQL unique index definition.
 
 However, not all the underlying database technology is the same. For example, Aerospike does not have unique indexes or compound indexes.
 
@@ -58,7 +58,7 @@ For example, a financial instrument can be modelled as an INSTRUMENT table, but 
 
 ALT_INSTRUMENT_ID is likely to inherit key fields from the INSTRUMENT table, and it simply acts as a lookup table for INSTRUMENT records.
 
-This requirement occurs for different tables (e.g. COUNTERPARTY → ALT_COUNTERPARTY_ID, GENESIS_PROCESS → GENESIS_PROCESS_MONITOR, etc..
+This requirement occurs for different tables (e.g. COUNTERPARTY → ALT_COUNTERPARTY_ID, GENESIS_PROCESS → GENESIS_PROCESS_MONITOR, etc.
 
 Subtables are defined within the body of the table definition. The example below shows the GENESIS_PROCESS monitoring table:
 

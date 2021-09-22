@@ -64,7 +64,7 @@ For developers, it is good practise to create a folder within runtime when you n
 
 ## An early look at Genesis processes
 
-Here’s the scenario. You have just logged into a server and you have done a **sudo** to your new project. You then do a **mon** command to see what’s running.
+Here’s the scenario. You have just logged into a server and you have done a `sudo` to your new project. You then do a `mon` command to see what’s running.
 
 What are all those processes? Here’s a very short explanation of the ones you are most likely to see
 
