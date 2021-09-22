@@ -41,16 +41,16 @@ item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?u
 
 ### 2. Activate the new configuration
 
-Run **genesisInstall**.
+Run `genesisInstall`.
 
 ### 3. Create new default table structures
 
-Run **remap --commit**. This populates the database server with table structures.
+Run `remap --commit`. This populates the database server with table structures.
 
 ### Start the server and check
 
-When those three steps have been completed, run **startServer** to start all the processes.
+When those three steps have been completed, run `startServer` to start all the processes.
 
-On completion, run **mon**, and you can see the processes running. You have successfully completed the change.
+On completion, run `mon`, and you can see the processes running. You have successfully completed the change.
 
 ![](/img/mon-processes-running.png)

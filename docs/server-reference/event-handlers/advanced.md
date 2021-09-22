@@ -10,10 +10,12 @@ sidebar_position: 3
 
 The following imports are automatically available inside GPAL event handlers:
 
+
 import CodeBlock from '@theme/CodeBlock';
 import Imports from '!!raw-loader!../../../examples/server/java/event-handlers/imports.java';
 
 <CodeBlock className="language-java">{Imports}</CodeBlock>
+
 
 ### Automatic import
 
@@ -141,7 +143,7 @@ Please see example event handler below:
 
 ### onCommit
 
-The **onCommit** block will be called when an event message is received with “validate = false” and has successfully passed the **onValidate** *block. This is the place where you perform the real changes to the system, whether it is a database update or uploading a report to a third party. The last value of the code block always needs to be the return message type.
+The **onCommit** block will be called when an event message is received with “validate = false” and has successfully passed the **onValidate** block. This is the place where you perform the real changes to the system, whether it is a database update or uploading a report to a third party. The last value of the code block always needs to be the return message type.
 
 ### onException
 

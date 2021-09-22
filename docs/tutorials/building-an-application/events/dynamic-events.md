@@ -41,6 +41,7 @@ Add jar to event handler process xml
 
 This event handler can call a csv writer. We need to create the csv writer as well; Create static function that will take a rxDb, and write the csv files to the runtime/position-daily-report. We can write csv file like this:  
 
+```kotlin
 GenesisJacksonMapper.defaultCsvMapper 
 
     .writerFor(FxTrade::class.java) 
@@ -52,14 +53,17 @@ GenesisJacksonMapper.defaultCsvMapper
         writer.writeAll(listOf(trade)) 
 
     } 
+```
 
 ### Insert a CRON_RULE table entry
 
 Insert a CRON_RULE table entry in dbmon/csv as per the example above. 
 
+```csv
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION 
 
 "0 45 7 ? * MON,TUE,WED,THU,FRI *","It’s a rule","Europe/London","ENABLED","A rule","JohnDoe","TRADING_APP_EVENT_HANDLER","EVENT_POSITION_REPORT", 
+```
 
 Run set primary to start the evaluator 
 

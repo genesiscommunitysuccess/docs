@@ -22,7 +22,9 @@ $ npm start
 
 Creating a deployable stand-alone build of the UI:
 
+```bash
     $ npm run build
+```
 
 This will create a stand-alone version of the app that can be deployed, normally into a sub-directory called `./build`
 You can take this and deploy it on any domain or github pages.

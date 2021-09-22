@@ -69,7 +69,7 @@ However, if you create a field name that matches an existing name and you give i
 
 The error is shown when you generate the code using Maven.
 
-If the code has already been generated - typically, if you are making changes to an existing server - the error is generated when you run **genesisInstall** after the change.
+If the code has already been generated - typically, if you are making changes to an existing server - the error is generated when you run `genesisInstall` after the change.
 
 Technically, it is possible to duplicate field names. When you build, this generates a duplication warning if the fields are defined in the same way, or an error if they are defined differently. If the duplication is between your own field and one you have inherited from another module, make sure you change the name of your own field, not the one from the other module.
 
@@ -83,11 +83,13 @@ You can also specify one or more indices onto the table. These can be defined as
 
 When you define a table, it is good to give it a clear name that describes the key - so it is well worth planning these in advance. If you don’t define a name for the primary key, the default name will be:
 
+```
     <TABLE>_BY_<PK_FIELD_1>(_<PK_FIELD_2>
+```
 
 Primary key and index definitions are used in the various “lego brick” configurations, as well as any custom Db operations when you build and create the DAO Objects. This covers, for example, the ability to retrieve a single record based on the primary key values, and the ability to get a list of records part matching the first key field value (**getRange**).
 
-Tables are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-tables-dictionary.kts`. For exmple for the `trade` application that file name would be `trade-tables-dictionary.kts`
+Tables are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-tables-dictionary.kts`. For example for the `trade` application that file name would be `trade-tables-dictionary.kts`
 
 ### Derived fields
 
@@ -195,7 +197,9 @@ First, you need a field to define the possible states (which are entirely your c
 
 For example:
 
+```kotlin
     field("TRADE_STATUS", ENUM("DRAFT", "CANCELLED", "OPEN", "CLOSED", default = "DRAFT"))
+```
 
 Essentially, every state machine needs to be based on a specific table. The table should include all the fields required to , as well as the field you created to control the state of the trade. In our example above, this is TRADE_STATUS. Below is an example of a table that can be used by a state machine. It includes the set of fields that are relevant to a trade (QUANTITY, PRICE, etc.)
 
@@ -225,7 +229,7 @@ table("TRADE", 102) {
 
 To create a view, you must specify a name for the view and the identity of the primary table. Following that, you can specify the fields in the view, including derived fields.
 
-Views are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-view-dictionary.kts`. For exmple for the `trade` application that file name would be `trade-view-dictionary.kts`
+Views are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-view-dictionary.kts`. For example for the `trade` application that file name would be `trade-view-dictionary.kts`
 
 ### Joins
 
@@ -235,7 +239,7 @@ For a simple join, where you add reference data to price data, for example, incl
 
 You might need to join to two different parts of the same table - for example, if you need to pick up the currency of a trade currency and also the settlement currency.
 
-To achieve this, create aliases for the two fields you are retrieving from the second table, for example, **tradeCcy** and s**ettCcy.**
+To achieve this, create aliases for the two fields you are retrieving from the second table, for example, **tradeCcy** and **settCcy.**
 
 By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data). If you need to join to a table where there is real-time data, then you need to specify a backwards join. This requires the statement backwardsJoin = true when you are specifying the join.
 

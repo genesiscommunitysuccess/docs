@@ -43,13 +43,13 @@ The **dictionaryBuilder** script generates the **fields-dictionary.kts** and **t
 Check these files and adjust them to suit your application. For example, look inside the **fields-dictionary.kts** file to see the field definitions.
 
 The process has translated the field ENABLED as an INT type.
-
+```kotlin
     field(name = "ENABLED", type = INT)
-
+```
 You need to edit that to make it a BOOLEAN type.
-
+```kotlin
     field(name = "ENABLED", type = BOOLEAN)
-
+```
 ## 2. Copy files and run genesisInstall
 
 Create a new ref_data_app folder structure inside GENES_S_HOME, including cfg and script folders_
@@ -64,7 +64,9 @@ Run **genesisInstall** to verify everything is ok.
 
 Run **AppGen** to build your three modules (event handler, request server and data server):
 
-**AppGen -n ref_data_app -p 10000**
+```bash
+AppGen -n ref_data_app -p 10000
+```
 
 ![](/img/appgen.png)
 
@@ -93,7 +95,9 @@ You can run the **mvn** command either locally (in the server, local vm, wsl or 
 
 Run the **mvn** command:
 
-**mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=ref_data_app -B**
+```bash
+mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=ref_data_app -B
+```
 
 This gives you the following project structure:
 
@@ -111,7 +115,7 @@ Locate the generated files for the request server, data server and event handler
 
 ### Install the maven project
 
-Now run **mvn install**.
+Now run `mvn install`.
 
 ![](/img/build-maven-project-using-mvn-install.png)
 
@@ -123,7 +127,7 @@ Locate the generated files for the request server, data server and event handler
 
 ### Install the maven project in intellij
 
-In intellij, run **mvn install**.
+In intellij, run `mvn install`.
 
 ![](/img/run-maven-install-in-intellij.png)
 

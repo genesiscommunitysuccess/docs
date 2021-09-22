@@ -9,7 +9,7 @@ sidebar_position: 0
 
 The easiest way to learn how the LCNC Platform works is to follow the creation of an application from start to finish. That’s what we shall do here.
 
-Along the way, you’ll see the tools and the short cuts, and you can take a look at the code that is produced.
+Along the way, you’ll see the tools and the shortcuts, and you can take a look at the code that is produced.
 
 Sound good?
 

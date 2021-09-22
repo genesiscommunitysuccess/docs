@@ -22,6 +22,7 @@ installRelease productFile [-c | --commit]
 | productFile |                    | yes       | the product file                 |                   |
 | -c          | --commit           | no        | will apply changes to the system |                   |
 
+
 If the commit option is not specified, the product will not be installed, but the full installation process will be shown, including changes, missing dependencies or any other kind of issues.
 
 This is how the script behaves:
@@ -45,7 +46,7 @@ Execute **genesisInstall** after installing an application, so that the applicat
 
 ## genesisInstall script
 
-This scriptscript validates all system and product configuration, checking for things such as field duplication.
+This script validates all system and product configuration, checking for things such as field duplication.
 
 ```bash
 genesisInstall [--ignore]
@@ -55,6 +56,8 @@ genesisInstall [--ignore]
 |----------|--------------------|-----------|------------------------------------------------------------|-------------------|
 |          | --ignore           | no        | If supplied, will ignore errors in the configuration files | No                |
 |          | --ignoreHooks      | no        | If supplied, will ignore any install hooks found           | No                |
+
+Once complete, all configuration files will be copied and, where necessary, merged into the **~/run/generated/cfg** file, which we alias as **$GC**.
 
 If any problems are found in the generated configuration files, they will be deleted, which forces the user to correct the errors in the original configuration files.
 
@@ -459,7 +462,9 @@ The command takes a flag of **-**t followed by a list of space-separated table n
 
 For example:
 
-**DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3**
+```bash
+DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3
+```
 
 Confirmation of removal is required for each table.
 
@@ -480,7 +485,11 @@ PopulateHolidays
 | -r       | --region `<arg>`   | No        | the region name to search for holidays  | No                |
 | -y       | --year `<arg>`     | No        | the year of holidays                    | No                |
 
-For example: `PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en`
+For example: 
+
+```bash
+PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
+```
 
 
 ## CountRecords
@@ -490,6 +499,7 @@ This counts the number of records in the database, grouped by table, and prints 
 Can either give the record count for each table defined in the dictionary, or of a provided space separated list, i.e.:
 
 All Tables:
+
 ```bash
 CountRecords
 ```
