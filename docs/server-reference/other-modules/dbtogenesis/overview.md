@@ -150,11 +150,11 @@ The process works in the the following order:
 
 Even though Genesis cannot modify these triggers/procedures and they can potentially be implemented in any desired way as long as they behave as expected, it is always useful to have some simple working examples. These examples also show the mandatory structure for the UPDATEQUEUE table in a RDB system.
 
-* [Oracle sample](secure/server-reference/other-modules/dbtogenesis/dbtogenesis-oracle/)
+* [Oracle sample](/server-reference/other-modules/dbtogenesis/dbtogenesis-oracle/)
 
-* [MSSQL sample](secure/server-reference/other-modules/dbtogenesis/dbtogenesis-mssql/)
+* [MSSQL sample](/server-reference/other-modules/dbtogenesis/dbtogenesis-mssql/)
 
-* [PostgreSQL sample](secure/server-reference/other-modules/dbtogenesis/dbtogenesis-postgres/)
+* [PostgreSQL sample](/server-reference/other-modules/dbtogenesis/dbtogenesis-postgres/)
 
 ### Encrypting user and passwords
 
