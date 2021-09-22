@@ -285,6 +285,8 @@ Usage
 
 **DbMon** has built-in help instruction for each command. Run `help <command>` to get more information.
 
+**DbMon --quietMode** does database changes without triggering real-time updates in update queue layer
+
 ## SendIt script
 
 To send data into the database, use the SendIt command.
@@ -292,7 +294,7 @@ To send data into the database, use the SendIt command.
 Syntax
 
 ```bash
-SendTable -t <table name> -f <file name>
+SendIt -t <table name> -f <file name>
 ```
 
 | Argument | Argument long name     | Mandatory | Description                                                    | Restricted values |
@@ -303,6 +305,7 @@ SendTable -t <table name> -f <file name>
 | -h       | --help                 | No        | show usage   information                                       | No                |
 | -m       | --modify `<arg>`       | No        | key name used   to find original record                        | No                |
 | -mf      | --modifyFields `<arg>` | No        | specify   fields to modify                                     | No                |
+| -quiet   | --quietMode            | No        | Do database changes without triggering real-time updates in update queue layer | No |
 | -r       | --recover              | No        | perform   recover operations on all records                    | No                |
 | -t       | --table `<arg>`        | No        | the name of   the table to import to database                  | No                |
 | -v       | --verbose              | No        | log every   error line to output                               | No                |
@@ -380,29 +383,25 @@ Additionally, you can just run **DumpIt** without any arguments to enter interac
 
 To dynamically change the logging levels on any Genesis process, use the LogLevel command.
 
-Logging level in scripts is set by default to WARN. To change the level, set the environment variable GENESIS_LOGGING_LEVEL to one of the following: ERROR, WARN, INFO, DEBUG, TRACE.
-
-Not setting GENESIS_LOGGING_LEVEL or setting a non-valid level will reset log level to default.
-
 Syntax:
 
 ```bash
 LogLevel -p <process-name> -l <log level> -t <time> [-optional params] -c <class-name> -DATADUMP_ON -DATADUMP_OFF
-
-#or
-
-setLogLevel -r <process-name> [-optional params] -c
 ```
 
 | Argument                               | Argument long name                   | Mandatory | Description                                                                           | Restricted values |
 |----------------------------------------|--------------------------------------|-----------|---------------------------------------------------------------------------------------|-------------------|
 | -c                                     |  --class `<class name>`              | No        | changes log level on the defined class                                                | No                |
+|                                        | -DATADUMP_NACK_OFF                   | No        | changes log level to INFO for Genesis messages                                        | No                |
+|                                        | -DATADUMP_NACK_ON                    | No        | changes log level to TRACE and captures only _NACK messages from Genesis messages     | No                |
 |                                        |  -DATADUMP_OFF                       | No        | changes the log level to info for Genesis messages                                    | No                |
 |                                        |  -DATADUMP_ON                        | No        | changes the log level to trace for Genesis messages                                   | No                |
 | -h                                     |  --help                              | No        | show usage information                                                                | No                |
 | -l                                     |  --level `<log level>`               | No        | log level - if log level is not correct it will be set automatically to   DEBUG level | No                |
 | -p `<process-name>,..,<process-name>`  |                                      | No        | attaches processes to the command                                                     | No                |
 | -r `<process-name>,..,<process-name>`  |                                      | No        | remove processes                                                                      | No                |
+|                                        | -STATUSDUMP_OFF                      | No        | changes the log level to info for status updates                                      | No                |
+|                                        | -STATUSDUMP_ON                       | No        | changes the log level to trace for status updates                                     | No                |
 | -t `<time>`                            |                                      | No        | duration of log level change in min/sec Eg: 1m, 1000s                                 | No                |
 
 ## mon script
@@ -715,11 +714,11 @@ There are a few considerations we should be aware of:
 | DATE | DATE |   |   |   |   |   |   |
 | TIME | TIME |   |   |   |   |   |   |
 
-## ProductGen
+## AppGen
 
-ProductGen can be used to generate a fully working dta product from a dictionary file.
+AppGen can be used to generate a fully working dta product from a dictionary file.
 
-Usually when creating a product you would start with a schema and then build data servers, request replies and transaction handlers on top to create your product.  ProductGen automates all of this, and will generate the following:
+Usually when creating a application you would start with a schema and then build data servers, request replies and transaction handlers on top to create your product.  AppGen automates all of this, and will generate the following:
 
 ### Data server and Request Server
 
@@ -749,7 +748,7 @@ Standard files will be generated, i.e. processes.xml and service-definitions.xml
 Example without -t option.
 
 ```bash
-productGen -d tas-dictionary.xml -p 4000 -pn tas
+AppGen -d tas-dictionary.xml -p 4000 -pn tas
 ```
 
 In this case we are specifying the dictionary to read is `tas-dictionary.xml`, the port offset is `4000` and the product name to generate is `tas`.  Running this command results in the following structure being created:
@@ -770,7 +769,7 @@ tas/
 Example with -t option.
 
 ```bash
-productGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
+AppGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
 ```
 
 The tables mentioned in the above command will be appended to the files that were created in tas folder.
