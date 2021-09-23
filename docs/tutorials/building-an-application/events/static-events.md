@@ -55,17 +55,18 @@ So, run **startProcess GENESIS_EVALUATOR**.
 You can see that the process is present, but on Standby.
 ![](/img/monstandby.png)
 
-This is because the evaluator process is set to run only on the primary node. We only have one node, but we still have to identofy it as the Primary node.
+This is because the evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identofy it as the Primary node.
 
 Run **setPrimary**.
 
-When the eveluator is running, create a PostionReport class to trigger the new event
+## 2. Create a new class.
+When the eveluator is running, create a PostionReport class to trigger the new event.
 
 ```javapackage global.genesis.trading_app.message.event
 class PositionReport()
 ```
 
-## 2. Create an event handler
+## 3. Create an event handler
 
 Create an event handler that will write the csv files to the runtime/position-daily-report folder. Call it EVENT_POSITION_REPORT.
 
@@ -105,7 +106,7 @@ eventHandler {
 
 
 
-## 3. Update the process.xml file for the event handler
+## 4. Update the process.xml file for the event handler
 
 Update the trading app processes xml and change the tag for TRADING_APP_EVENT_HANDLER:
 ```xml
@@ -122,6 +123,7 @@ Update the trading app processes xml and change the tag for TRADING_APP_EVENT_HA
 </process>
 ```
 
+## 5.Load the cron rule on to the database
 Load the cron rule csv into the database. 
 Run `SendIt`.
 
@@ -132,30 +134,4 @@ CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,ME
 rule","JohnDoe","TRADING_APP_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 
-## 4. Create the csv writer
-
-This event handler needs to call a csv writer.
-
-Of course, you need to create the  csv writer itself.
-
-Create static function that will take a rxDb, and write the csv files to the runtime/position-daily-report.
-
-We can write csv file like this:
-
-```java
-    GenesisJacksonMapper.defaultCsvMapper 
-    
-        .writerFor(FxTrade::class.java) 
-    
-        .writeValues(file) 
-    
-        .use { writer -> 
-    
-            writer.writeAll(listOf(trade)) 
-    
-        } 
-```
-
-5\. Insert the cron rule
-
-Insert a CRON_RULE table entry in dbmon/csv as per the example above.
+That's it. 
