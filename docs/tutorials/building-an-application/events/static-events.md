@@ -35,4 +35,26 @@ Add jar to event handler process xml
 
 ## 4. Create the csv writer
 
-This event handler can call a csv writer. We need to create the csv writer as well; Create static function that will take a rxDb, and write the csv files to the runtime/position-daily-report. We can write csv file like this:
+This event handler needs to call a csv writer. 
+
+Of course, you need to create the  csv writer itself.
+
+Create static function that will take a rxDb, and write the csv files to the runtime/position-daily-report. 
+
+We can write csv file like this:
+
+    GenesisJacksonMapper.defaultCsvMapper 
+    
+        .writerFor(FxTrade::class.java) 
+    
+        .writeValues(file) 
+    
+        .use { writer -> 
+    
+            writer.writeAll(listOf(trade)) 
+    
+        } 
+
+5\. Insert the cron rule
+
+Insert a CRON_RULE table entry in dbmon/csv as per the example above.
