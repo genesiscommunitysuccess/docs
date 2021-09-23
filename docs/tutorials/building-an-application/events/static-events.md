@@ -31,6 +31,22 @@ The Genesis Evaluator is the process that runs cron jobs. In this exercise, you 
 
 To start, make a copy of **genesis-processes.xml** and place it in **site-specific/cfg**. 
 
+In the genesis-processes.xml file,  change the
+tag for **GENESIS_EVALUTATOR** and set the **<start>** tag to true
+  
+  GRAB HERE
+...
+<process name="GENESIS_EVALUATOR">
+    <start>true</start>
+    <groupId>GENESIS</groupId>
+    <options>-Xmx512m -DXSD_VALIDATE=false</options>
+    <module>genesis-evaluator</module>
+    <primaryOnly>true</primaryOnly>
+    <package>global.genesis.eventhandler,global.genesis.evaluator</package>
+    <description>Dynamic/time rules engine</description>
+</process>
+...
+
 Run **genesisInstall** to verify that it works as expected.
 
 Run **mon** to see the process:
