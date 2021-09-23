@@ -9,11 +9,26 @@ In this exercise you are going to create a cron rule that will trigger a batch j
 
 The batch job will generate a position csv for each counterparty and store it in **runtime/position-daily-report**. The file name will have the form COUNTERPARTY_ID-DATE.csv
 
-Our rule takes the following form:
+## The rule
+Our cron rule takes the following form:
 
 | CRON_EXPRESSION | DESCRIPTION | TIME_ZONE | RULE_STATUS | NAME | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 0 45 7 ? * MON,TUE,WED,THU,FRI * | It’s a rule | Europe/London | ENABLED | A rule | JohnDoe | TRADING_APP_EVENTHANDLER | EVENT_POSITION_REPORT |  |
+
+Let's look at the most important fields:
+
+* **RULE_STATUS** can be **ENABLED** or **DISABLED**. 
+
+* **CRON_EXPRESSION** determines when the rule is evaluated. 
+
+* **PROCESS_NAME** is the target process for the rule. When the rule is triggered, it will send a message to the process specified here.
+
+* **MESSAGE_TYPE** is the message that needs to be sent to the specified **PROCESS_NAME**.
+
+* **RESULT_EXPRESSION** is the values that will be sent as part of the transaction to the target PROCESS_NAME, we can leave RESULT_EXPRESSION empty as we are going to generate a report for all positions anyway. 
+
+
 
 ## 1. Configure the Evaluator 
 
