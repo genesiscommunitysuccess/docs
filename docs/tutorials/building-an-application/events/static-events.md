@@ -52,7 +52,7 @@ Run **mon**.
 You can see that the process is missing.
 So, run **startProcess GENESIS_EVALUATOR**.
 
-You can see that the process is present, but on Standby. 
+You can see that the process is present, but on Standby.
 ![](/img/monstandby.png)
 
 This is because the evaluator process is set to run only on the primary node. We only have one node, but we still have to identofy it as the Primary node.
@@ -63,16 +63,47 @@ Run **setPrimary**.
 
 Create an event handler that will write the csv files to the runtime/position-daily-report folder. Call it EVENT_POSITION_REPORT.
 
-Create message class and deploy jar
+Open the trading_app-eventhandler.kts. Add an event handler to generate the csv file:
+
+```java
+import global.genesis.commons.standards.GenesisPaths
+import global.genesis.jackson.core.GenesisJacksonMapper
+import java.io.File
+import java.time.LocalDate
+/**
+ *
+ * System : trading_app
+ * Sub-System : trading_app Configuration
+ * Version : 1.0
+ * Copyright : (c) GENESIS
+ * Date : 2021-09-07
+ *
+ * Function : Provide Event Handler configuration for trading_app.
+ *
+ * Modification History
+ *
+ */
+eventHandler {
+ //... other event handlers removed for clarity
+ eventHandler<PositionReport> {
+ onCommit {
+ val mapper = GenesisJacksonMapper.csvWriter<Trade>()
+ val today = LocalDate.now().toString()
+ val positionReportFolder = File(GenesisPaths.runtime()).resolve("position-da
+ if (!positionReportFolder.exists()) positionReportFolder.mkdirs()
+ entityDb.getBulk(TRADE)
+ .filter { it.counterpartyId != null }
+```
+
+
+
+
 
 ## 3. Update the process.xml file for the event handler
 
-Go to the file
+Update the trading app processes xml and change the tag for TRADING_APP_EVENT_HANDLER
 
-Add jar to event handler process xml
-
-![](/img/dictionary-builder-screenshot.png)
-CHange the grab - this was an experiment
+Add jar to event handler process xml Create message class and deploy jar)
 
 ## 4. Create the csv writer
 
