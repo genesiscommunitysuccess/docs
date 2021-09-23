@@ -34,8 +34,8 @@ To start, make a copy of **genesis-processes.xml** and place it in **site-specif
 In the genesis-processes.xml file,  change the
 tag for **GENESIS_EVALUTATOR** and set the **<start>** tag to true
   
+We can write csv file like this:
 
-...
 <process name="GENESIS_EVALUATOR">
     <start>true</start>
     <groupId>GENESIS</groupId>
@@ -45,6 +45,8 @@ tag for **GENESIS_EVALUTATOR** and set the **<start>** tag to true
     <package>global.genesis.eventhandler,global.genesis.evaluator</package>
     <description>Dynamic/time rules engine</description>
 </process>
+...
+
 ...
 
 Run **genesisInstall** to verify that it works as expected.
