@@ -3,7 +3,7 @@
 Each application will have *-processes.xml file. It contains configuration of each microservice like dataserver, request-reply and event-handler etc.
 Very important commands like startServer, killServer, startProcess and killProcess all refer to processes.xml file
 
-When you run command `genesisInstall` is executed details of all *-processes.xml files will be aggregated and added to generated folder
+When you run command `genesisInstall` details of all *-processes.xml files will be aggregated in generated processes.xml file in generated folder
 
 The processes.xml file looks like this:
 
