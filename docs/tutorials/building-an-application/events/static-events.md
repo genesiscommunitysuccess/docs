@@ -45,6 +45,8 @@ Go to the file
 
 Add jar to event handler process xml
 
+![](/img/dictionary-builder-screenshot.png)
+
 ## 4. Create the csv writer
 
 This event handler needs to call a csv writer.
