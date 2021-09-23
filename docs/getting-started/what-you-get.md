@@ -9,7 +9,7 @@ id: what-you-get
 
 **Genesis Studio**. This enables you to create data models and user interfaces via a graphical interface. Thus, you have a choice between No Code or Low Code to create your application. With the visual tools, you can get more done in less time. With the code, you can add sophistication and handle complexity.
 
-**Genesis SDK**. This enables you to create applications via our Low Code language (GPL - Genesis Platform Language) or a choice of Java, R or Groovy. GPL makes use of IntelliSense to provide intelligent access to existing definitions as you code to speed up creation, prevent errors as you code and cut down runtime errors.
+**Genesis SDK**. This enables you to create applications via our Low Code language (GPAL - Genesis Platform Abstraction Language) or a choice of Java, R or Groovy. GPAL makes use of IntelliSense to provide intelligent access to existing definitions as you code to speed up creation, prevent errors as you code and cut down runtime errors.
 
 ## Migrate
 

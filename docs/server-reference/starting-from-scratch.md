@@ -62,9 +62,9 @@ We can add three simple fields to make start:
 
 ```kotlin
 fields {
-    field("CODE", STRING)
-    field("CREATED", DATE)
-    field("PRICE", DOUBLE)
+    field(name = "CODE", type = STRING)
+    field(name = "CREATED", type = DATE)
+    field(name = "PRICE", type = DOUBLE)
 }
 ```
 

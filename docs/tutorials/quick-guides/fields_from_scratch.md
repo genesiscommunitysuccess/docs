@@ -83,9 +83,9 @@ fields {
 Go and add the following:
 ```kotlin
 fields {
-    field("CODE", STRING)
-    field("CREATED", DATE)
-    field("PRICE", DOUBLE)
+    field(name = "CODE", type = STRING)
+    field(name = "CREATED", type = DATE)
+    field(name = "PRICE", type = DOUBLE)
 }
 ```
 While coding you can notice that there is autocompletion that helps with the configuration and its arguments

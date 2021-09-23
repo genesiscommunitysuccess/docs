@@ -107,27 +107,27 @@ USER_ATTRIBUTES table definition in auth-tables-dictionary.kts below:
 val permissionsField = SysDef.systemDefinition["ADMIN_PERMISSION_ENTITY_FIELD"].orElse(null)
 
 table(name = "USER_ATTRIBUTES", id = 1007, audit = details(1052, "AA")) {
-    Fields.USER_NAME
-    Fields.USER_TYPE
-    Fields.ACCESS_TYPE
+    USER_NAME
+    USER_TYPE
+    ACCESS_TYPE
     if (permissionsField != null) {
         Fields[permissionsField]
     }
-    Fields.ADDRESS_LINE1
-    Fields.ADDRESS_LINE2
-    Fields.ADDRESS_LINE3
-    Fields.ADDRESS_LINE4
-    Fields.CITY
-    Fields.REGION
-    Fields.POSTAL_CODE
-    Fields.COUNTRY
-    Fields.TITLE
-    Fields.WEBSITE
-    Fields.MOBILE_NUMBER
-    Fields.TELEPHONE_NUMBER_DIRECT
-    Fields.TELEPHONE_NUMBER_OFFICE
+    ADDRESS_LINE1
+    ADDRESS_LINE2
+    ADDRESS_LINE3
+    ADDRESS_LINE4
+    CITY
+    REGION
+    POSTAL_CODE
+    COUNTRY
+    TITLE
+    WEBSITE
+    MOBILE_NUMBER
+    TELEPHONE_NUMBER_DIRECT
+    TELEPHONE_NUMBER_OFFICE
     primaryKey {
-        Fields.USER_NAME
+        USER_NAME
     }
 }
 ```
@@ -141,10 +141,10 @@ val permissionsTable = SysDef.systemDefinition["ADMIN_PERMISSION_ENTITY_TABLE"].
 if (permissionsTable != null && permissionsField != null) {
 
     table(name = "USER_${permissionsTable}_MAP", id = 1012) {
-        Fields.USER_NAME
+        USER_NAME
         Fields[permissionsField]
         primaryKey {
-            Fields.USER_NAME
+            USER_NAME
         }
         indices {
             nonUnique(name = "USER_${permissionsTable}_MAP_BY_${permissionsField}") {

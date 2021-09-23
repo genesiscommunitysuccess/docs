@@ -663,7 +663,7 @@ The script accepts a series of arguments to establish a connection to the databa
 |  -t  type | -type type | Yes | This argument represents the database type (Oracle or MSSQL). | Yes: ora or mssql |
 |  -t  type | -type type | Yes | This argument represents the database type (Oracle or MSSQL). | Yes: ora or mssql |
 | -u user | -username user | Yes | The database username. | No |
-| -p pass | -password pass | Yes | The database password for the previous username. | No |
+| -p pass | -password pass | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively  | No |
 | -product name |   | Yes |  Represents the product name and affects the output file. For example: "tas-dictionary.xml" | No |
 | -singleFile |   | No | If this argument is passed the generated dictionary will be written into a single file, instead of having a separate file for just the fields. | No |
 | -o outputPath | -output outputPath | No | Specifies the output directory for the dictionary files. If the directory does not exist it will be created. | No |

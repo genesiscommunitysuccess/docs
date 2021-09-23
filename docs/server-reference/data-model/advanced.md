@@ -11,10 +11,7 @@ sidebar_position: 4
 
 The Genesis platform provides an abstraction layer so that you can use different database backends (FoundationDB, Aerospike, PostgreSQL) independently of your schema definition.
 
-Genesis uses keys, which can be primary or secondary. In an SQL world, the closest similarity would be:
-
-* Genesis primary key → SQL primary key
-* Genesis secondary key → SQL unique index definition.
+Genesis uses well known database concepts like primary keys and indexes (unique and non-unique).
 
 However, not all the underlying database technology is the same. For example, Aerospike does not have unique indexes or compound indexes.
 
@@ -28,23 +25,23 @@ An index can be defined as unique or non-unique. The example defines one of each
 
 ```kotlin
 table(name = "USER_SESSION", id = 2) {
-    Fields.USER_NAME
-    Fields.SESSION_ID
-    Fields.START_TIMESTAMP
-    Fields.LAST_ACCESS_TIME
-    Fields.SESSION_AUTH_TOKEN
-    Fields.TIMEOUT
-    Fields.HOST
-    Fields.ATTRIBUTES
+    USER_NAME
+    SESSION_ID
+    START_TIMESTAMP
+    LAST_ACCESS_TIME
+    SESSION_AUTH_TOKEN
+    TIMEOUT
+    HOST
+    ATTRIBUTES
     primaryKey {
-        Fields.SESSION_ID
+        SESSION_ID
     }
     indices {
         nonUnique {
-            Fields.USER_NAME
+            USER_NAME
         }
         unique {
-            Fields.SESSION_AUTH_TOKEN
+            SESSION_AUTH_TOKEN
         }
     }
 }
@@ -64,35 +61,35 @@ Subtables are defined within the body of the table definition. The example below
 
 ```kotlin
 table(name = "GENESIS_PROCESS", id = 12) {
-    Fields.PROCESS_NAME
-    Fields.PROCESS_STATUS
-    Fields.PROCESS_STATUS_MESSAGE
-    Fields.PROCESS_STATE_TEXT
-    Fields.PROCESS_RESOURCES
-    Fields.PROCESS_HOSTNAME
-    Fields.PROCESS_CPU_USAGE
-    Fields.PROCESS_MEM_USAGE
-    Fields.PROCESS_SECURE
-    Fields.PROCESS_PORT
-    Fields.LOG_LEVEL
-    Fields.DATADUMP
-    Fields.START_TIME
-    Fields.RESOURCE_TYPES
+    PROCESS_NAME
+    PROCESS_STATUS
+    PROCESS_STATUS_MESSAGE
+    PROCESS_STATE_TEXT
+    PROCESS_RESOURCES
+    PROCESS_HOSTNAME
+    PROCESS_CPU_USAGE
+    PROCESS_MEM_USAGE
+    PROCESS_SECURE
+    PROCESS_PORT
+    LOG_LEVEL
+    DATADUMP
+    START_TIME
+    RESOURCE_TYPES
     primaryKey {
-        Fields.PROCESS_NAME
-        Fields.PROCESS_HOSTNAME
+        PROCESS_NAME
+        PROCESS_HOSTNAME
     }
     subTables {
-        fields(Fields.PROCESS_HOSTNAME, Fields.PROCESS_NAME)
+        fields(PROCESS_HOSTNAME, PROCESS_NAME)
             .joiningNewTable(name = "GENESIS_PROCESS_MONITOR", id = 20) {
-                Fields.MONITOR_NAME
-                Fields.MONITOR_MESSAGE
-                Fields.MONITOR_STATE
+                MONITOR_NAME
+                MONITOR_MESSAGE
+                MONITOR_STATE
 
-primaryKey(name = "GENESIS_PROCESS_MONITOR_BY_HOSTNAME", id = 1) {
-                    Fields.PROCESS_HOSTNAME
-                    Fields.PROCESS_NAME
-                    Fields.MONITOR_NAME
+            primaryKey(name = "GENESIS_PROCESS_MONITOR_BY_HOSTNAME", id = 1) {
+                    PROCESS_HOSTNAME
+                    PROCESS_NAME
+                    MONITOR_NAME
                 }
             }
     }
