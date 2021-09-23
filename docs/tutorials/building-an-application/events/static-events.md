@@ -53,7 +53,7 @@ You can see that the process is missing.
 So, run **startProcess GENESIS_EVALUATOR**.
 
 You can see that the process is present, but on Standby. 
-
+![](/img/monstandby.png)
 
 This is because the evaluator process is set to run only on the primary node. We only have one node, but we still have to identofy it as the Primary node.
 
