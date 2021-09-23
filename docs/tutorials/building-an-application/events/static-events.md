@@ -29,22 +29,22 @@ The Genesis Evaluator is the process that runs cron jobs. In this exercise, you 
 
 ## 1. Configure the Evaluator
 
-To start, make a copy of **genesis-processes.xml** and place it in **site-specific/cfg**. 
+To start, make a copy of **genesis-processes.xml** and place it in **site-specific/cfg**.
 
 In the genesis-processes.xml file,  change the
-tag for **GENESIS_EVALUTATOR** and set the **<start>** tag to true
-  
-...
+tag for **GENESIS_EVALUTATOR** and set the  `<start>` tag to true
+
+```xml
 <process name="GENESIS_EVALUATOR">
-    <start>true</start>
-    <groupId>GENESIS</groupId>
-    <options>-Xmx512m -DXSD_VALIDATE=false</options>
-    <module>genesis-evaluator</module>
-    <primaryOnly>true</primaryOnly>
-    <package>global.genesis.eventhandler,global.genesis.evaluator</package>
-    <description>Dynamic/time rules engine</description>
-</process>
-...
+<start>true</start>
+<groupId>GENESIS</groupId>
+<options>-Xmx512m -DXSD_VALIDATE=false</options>
+<module>genesis-evaluator</module>
+<primaryOnly>true</primaryOnly>
+<package>global.genesis.eventhandler,global.genesis_evaluator</package>
+<description>Dynamic/time rules engine</description>
+</process_>
+```
 
 Run **genesisInstall** to verify that the new process works as expected.
 
@@ -52,11 +52,10 @@ Run **mon**.
 You can see that the process is missing.
 So, run **startProcess GENESIS_EVALUATOR**.
 
- You can see that the process is present, but on Standby. This is because the evaluator process is set to run only on the primary node. We only have one node, but we still have to identofy it as the Primary node.
-  
- Run **setPrimary**.
-  
-  
+You can see that the process is present, but on Standby. This is because the evaluator process is set to run only on the primary node. We only have one node, but we still have to identofy it as the Primary node.
+
+Run **setPrimary**.
+
 ## 2. Create an event handler
 
 Create an event handler that will write the csv files to the runtime/position-daily-report folder. Call it EVENT_POSITION_REPORT.
@@ -65,13 +64,13 @@ Create message class and deploy jar
 
 ## 3. Update the process.xml file for the event handler
 
-Go to the file 
+Go to the file
 
 Add jar to event handler process xml
 
 ![](/img/dictionary-builder-screenshot.png)
 CHange the grab - this was an experiment
-  
+
 ## 4. Create the csv writer
 
 This event handler needs to call a csv writer.
