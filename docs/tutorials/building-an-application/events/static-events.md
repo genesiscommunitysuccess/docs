@@ -46,11 +46,14 @@ tag for **GENESIS_EVALUTATOR** and set the **<start>** tag to true
 </process>
 ...
 
-Run **genesisInstall** to verify that it works as expected.
+Run **genesisInstall** to verify that the new process works as expected.
 
 Run **mon** to see the process:
 
 ![](/img/dictionary-builder-screenshot.png)
+ change the grab - this was an experimeant
+  
+  
 ## 2. Create an event handler
 
 Create an event handler that will write the csv files to the runtime/position-daily-report folder. Call it EVENT_POSITION_REPORT.
@@ -64,7 +67,8 @@ Go to the file
 Add jar to event handler process xml
 
 ![](/img/dictionary-builder-screenshot.png)
-
+CHange the grab - this was an experiment
+  
 ## 4. Create the csv writer
 
 This event handler needs to call a csv writer.
