@@ -55,7 +55,7 @@ fields {
 }
 ```
 
-Fields are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-fields-dictionary.kts`. For example for the `trade` application that file name would be `trade-fields-dictionary.kts`
+Fields are defined in file under `<application-name>-config/src/main/resources/cfg` having the following name convention `<application-name>-fields-dictionary.kts`. For example for the `trade` application that file name would be `trade-fields-dictionary.kts`
 
 When you define a new field, it is good practice to run **codegen:generateSysDef**. This will generate code based on the fields definition and you will be able to use intellisense to pick this new field within table definitions.
 
@@ -77,19 +77,19 @@ Technically, it is possible to duplicate field names. When you build, this gener
 
 ## Tables
 
-To define a table, you need to specify a name, a unique ID, a list if unique fields, and a primary key.
+To define a table, you need to specify a name, a unique ID, a list of unique fields, and a primary key.
 
-You can also specify one or more indices onto the table. These can be defined as **Unique** (where it will contain a unique constraint on the table) and **nonUnique,** where it is typically just defined to create an index for efficient ranged lookups.
+You can also specify one or more indices onto the table. These can be defined as **unique** (where it will contain a unique constraint on the table) and **nonUnique,** where it is typically just defined to create an index for efficient ranged lookups.
 
 When you define a table, it is good to give it a clear name that describes the key - so it is well worth planning these in advance. If you don’t define a name for the primary key, the default name will be:
 
 ```
-    <TABLE>_BY_<PK_FIELD_1>(_<PK_FIELD_2>
+    <TABLE>_BY_<PK_FIELD_1>_<PK_FIELD_2>
 ```
 
 Primary key and index definitions are used in the various “lego brick” configurations, as well as any custom Db operations when you build and create the DAO Objects. This covers, for example, the ability to retrieve a single record based on the primary key values, and the ability to get a list of records part matching the first key field value (**getRange**).
 
-Tables are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-tables-dictionary.kts`. For example for the `trade` application that file name would be `trade-tables-dictionary.kts`
+Tables are defined in file under `<application-name>-config/src/main/resources/cfg` having the following name convention `<application-name>-tables-dictionary.kts`. For example for the `trade` application that file name would be `trade-tables-dictionary.kts`
 
 ### Derived fields
 
@@ -99,29 +99,29 @@ See example below for USER table:
 
 ```kotlin
 table(name = "USER", id = 1000, audit = details(1050, "UA")) {
-    Fields.USER_NAME
-    Fields.FIRST_NAME
-    Fields.LAST_NAME
-    Fields.EMAIL_ADDRESS
-    Fields.PASSWORD
-    Fields.REFRESH_TOKEN
-    Fields.LAST_LOGIN
-    Fields.STATUS
-    Fields.ONLINE
-    Fields.COMPANY_NAME
-    Fields.COMPANY_ID
+    USER_NAME
+    FIRST_NAME
+    LAST_NAME
+    EMAIL_ADDRESS
+    PASSWORD
+    REFRESH_TOKEN
+    LAST_LOGIN
+    STATUS
+    ONLINE
+    COMPANY_NAME
+    COMPANY_ID
     derivedFields {
-        derivedField("FULL_NAME", Fields.FIRST_NAME, Fields.LAST_NAME) { first, last ->
+        derivedField("FULL_NAME", FIRST_NAME, LAST_NAME) { first, last ->
             // If no "output" type is defined, the output type will be equal to first field type (i.e. FIRST_NAME type)
             "$first $last"
         }
-        derivedField("USER_NAME_CHARS", Fields.USER_NAME, INT) { userName ->
+        derivedField("USER_NAME_CHARS", USER_NAME, INT) { userName ->
             // The output type will be equal to INT in this case, and GPAL will verify an INT is returned.
             userName?.length ?: 0
         }
     }
     primaryKey {
-        Fields.USER_NAME
+        USER_NAME
     }
 }
 ```
@@ -132,7 +132,7 @@ However, we still offer full flexibility (at the expense of less type safety and
 
 ```kotlin
     derivedField("TIMES_TWO_COUNTER_PLUS_VERSION"){
-        ((Fields.APPROVED_COUNTER not null) * 2) + (Fields.VERSION not null)
+        ((APPROVED_COUNTER not null) * 2) + (VERSION not null)
     }
 ```
 
@@ -140,25 +140,24 @@ In this case it is not clear what the output type will be (we haven’t specifie
 
 ### Auditable tables
 
-To make a table auditable, you need to add **audit = details** to the definition. You have to specify a unique ID, sequence ID (more later) and, optionally, a time stamp (**tsKey**).
+To make a table auditable, you need to add **audit = details** to the definition. You have to specify a unique ID, sequence ID (more later) and, optionally, a flag to generate a unique index based on the record timestamp (**tsKey**).
 
 For example, this may look like:
 
 ```kotlin
 tables {
     table (name = "TRADE", id = 11000, audit = details(id = 11003, sequence = "TR")) {
-        // Source: Trade
-        TRADE_ID            // A
-        INSTRUMENT_ID not null       // B
-        COUNTERPARTY_ID not null     // C
-        COUNTERPARTY        // D
-        INSTRUMENT_SYMBOL   // E
-        QUANTITY            // F
-        SIDE                // G
-        PRICE               // H
-        TRADE_DATE          // J
-        TRADE_DATETIME      // K
-        ENTERED_BY          // L
+        TRADE_ID            
+        INSTRUMENT_ID not null       
+        COUNTERPARTY_ID not null     
+        COUNTERPARTY        
+        INSTRUMENT_SYMBOL   
+        QUANTITY            
+        SIDE                
+        PRICE               
+        TRADE_DATE          
+        TRADE_DATETIME      
+        ENTERED_BY          
 
         primaryKey {
             TRADE_ID
@@ -177,14 +176,14 @@ When using GPAL event handlers, the auditing is performed automatically, so each
 You can override the **null = true** setting within a specific table if you need to do so,
 
 ```kotlin
- table(name = "PROFILE", id = 1002) {
-        Fields.NAME
-        Fields.DESCRIPTION not null
-        Fields.STATUS
-        primaryKey {
-            Fields.NAME
-        }
+table(name = "PROFILE", id = 1002) {
+    NAME
+    DESCRIPTION not null
+    STATUS
+    primaryKey {
+        NAME
     }
+}
 ```
 
 ### States
@@ -198,7 +197,7 @@ First, you need a field to define the possible states (which are entirely your c
 For example:
 
 ```kotlin
-    field("TRADE_STATUS", ENUM("DRAFT", "CANCELLED", "OPEN", "CLOSED", default = "DRAFT"))
+    field(name = "TRADE_STATUS", type = ENUM("DRAFT", "CANCELLED", "OPEN", "CLOSED", default = "DRAFT"))
 ```
 
 Essentially, every state machine needs to be based on a specific table. The table should include all the fields required to , as well as the field you created to control the state of the trade. In our example above, this is TRADE_STATUS. Below is an example of a table that can be used by a state machine. It includes the set of fields that are relevant to a trade (QUANTITY, PRICE, etc.)
@@ -217,7 +216,7 @@ table("TRADE", 102) {
     PRICE
     TRADE_STATUS
 
-    primaryKey("TRADE_BY_ID", 1) {
+    primaryKey(name = "TRADE_BY_ID", id = 1) {
         TRADE_ID
     }
 }
@@ -229,7 +228,7 @@ table("TRADE", 102) {
 
 To create a view, you must specify a name for the view and the identity of the primary table. Following that, you can specify the fields in the view, including derived fields.
 
-Views are defined in file under `<module-name>/src/main/resources/cfg` having the following name convention `<application-name>-view-dictionary.kts`. For example for the `trade` application that file name would be `trade-view-dictionary.kts`
+Views are defined in file under `<application-name>-config/src/main/resources/cfg` having the following name convention `<application-name>-view-dictionary.kts`. For example for the `trade` application that file name would be `trade-view-dictionary.kts`
 
 ### Joins
 
@@ -243,7 +242,9 @@ To achieve this, create aliases for the two fields you are retrieving from the s
 
 By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data). If you need to join to a table where there is real-time data, then you need to specify a backwards join. This requires the statement backwardsJoin = true when you are specifying the join.
 
-It is worth noting that when you define your [data servers](/server-reference/data-servers/configure/), any of these that include views with backwards joins must include a similar statement: **backJoins = true**. Don’t forget to add this!
+It is worth noting that when you define your [data servers](/server-reference/data-servers/configure/), any of these that include views with backwards joins **must include a similar statement in order to enable the feature**: **backJoins = true**. Don’t forget to add this!
+
+Lastly, `backJoins` can be expensive in terms of computation and cost, so they should be used surgically rather than by default.
 
 ```kotlin
 query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {
