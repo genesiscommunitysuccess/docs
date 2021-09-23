@@ -63,7 +63,7 @@ Run **setPrimary**.
 
 Create an event handler that will write the csv files to the runtime/position-daily-report folder. Call it EVENT_POSITION_REPORT.
 
-Open the trading_app-eventhandler.kts. Add an event handler to generate the csv file:
+Open the file trading_app-eventhandler.kts. Add an event handler to generate the csv file:
 
 ```java
 import global.genesis.commons.standards.GenesisPaths
@@ -101,7 +101,20 @@ eventHandler {
 
 ## 3. Update the process.xml file for the event handler
 
-Update the trading app processes xml and change the tag for TRADING_APP_EVENT_HANDLER
+Update the trading app processes xml and change the tag for TRADING_APP_EVENT_HANDLER:
+```xml
+<process name="TRADING_APP_EVENT_HANDLER">
+<groupId>TRADING_APP</groupId>
+<start>true</start>
+<options>-Xmx256m -DRedirectStreamsToLog=true</options>
+<module>genesis-pal-eventhandler</module>
+<package>global.genesis.eventhandler.pal</package>
+<script>trading_app-eventhandler.kts</script>
+<description>Handles events</description>
+<classpath>trading_app-messages*</classpath>
+<language>pal</language>
+</process>
+```
 
 Add jar to event handler process xml Create message class and deploy jar)
 
