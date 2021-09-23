@@ -53,7 +53,7 @@ You can see that the process is missing.
 So, run **startProcess GENESIS_EVALUATOR**.
 
 You can see that the process is present, but on Standby.
-![](/img/monstandby.png)
+![](/img/standbysmall.png)
 
 This is because the evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identofy it as the Primary node.
 
@@ -134,4 +134,4 @@ CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,ME
 rule","JohnDoe","TRADING_APP_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 
-That's it. 
+That's it.
