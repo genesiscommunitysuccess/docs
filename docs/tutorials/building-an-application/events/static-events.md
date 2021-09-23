@@ -59,6 +59,12 @@ This is because the evaluator process is set to run only on the primary node. We
 
 Run **setPrimary**.
 
+When the eveluator is running, create a PostionReport class to trigger the new event
+
+```javapackage global.genesis.trading_app.message.event
+class PositionReport()
+```
+
 ## 2. Create an event handler
 
 Create an event handler that will write the csv files to the runtime/position-daily-report folder. Call it EVENT_POSITION_REPORT.
