@@ -122,7 +122,15 @@ Update the trading app processes xml and change the tag for TRADING_APP_EVENT_HA
 </process>
 ```
 
-Add jar to event handler process xml Create message class and deploy jar)
+Load the cron rule csv into the database. 
+Run `SendIt`.
+
+csv:
+```
+CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSA
+"0 * * ? * *","It’s a rule","Europe/London","ENABLED","A
+rule","JohnDoe","TRADING_APP_EVENT_HANDLER","EVENT_POSITION_REPORT"
+```
 
 ## 4. Create the csv writer
 
