@@ -81,6 +81,7 @@ Create static function that will take a rxDb, and write the csv files to the run
 
 We can write csv file like this:
 
+```java
     GenesisJacksonMapper.defaultCsvMapper 
     
         .writerFor(FxTrade::class.java) 
@@ -92,6 +93,7 @@ We can write csv file like this:
             writer.writeAll(listOf(trade)) 
     
         } 
+```
 
 5\. Insert the cron rule
 
