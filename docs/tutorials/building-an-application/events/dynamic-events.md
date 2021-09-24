@@ -46,21 +46,21 @@ eventHandler<PositionCancel> {
     onCommit { event ->
         val positionId = event.details.positionId
         entityDb.insert(
-          Notify {
-              topic = "PositionAlert"
-              header = "Position Alert for $positionId"
-              body = mapOf<String, Any?>(
-                  "emailDistribution" to mapOf(
-                  "to" to listOf("peter.kievits@genesis.global"),
-                  "cc" to emptyList(),
-                  "bcc" to emptyList(),
-              ),
-              "content" to "Position $positionId breached the limit"
-          ).toJsonString(true)
-         }
- )
- ack()
- }
+            Notify {
+                topic = "PositionAlert"
+                header = "Position Alert for $positionId"
+                body = mapOf<String, Any?>(
+                    "emailDistribution" to mapOf(
+                        "to" to listOf("peter.kievits@genesis.global"),
+                        "cc" to emptyList(),
+                        "bcc" to emptyList(),
+                    ),
+                    "content" to "Position $positionId breached the limit"
+                ).toJsonString(true)
+            }
+         )
+         ack()
+    }
  }
  ```
 
