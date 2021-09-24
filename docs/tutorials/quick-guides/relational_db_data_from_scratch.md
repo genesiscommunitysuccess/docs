@@ -1,12 +1,12 @@
 ---
 id: relational-db-data-from-scratch
-sidebar_label: 'Generate Fields and Tables From Relational Database'
+sidebar_label: Generate Fields and Tables From Relational Database
 sidebar_position: 2
-title: 'Generate Fields and Tables From Relational Database'
----
+title: Generate Fields and Tables From Relational Database
 
+---
 ## Introduction ##
-This guide walks you though how to setup a Genesis project using [Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html) and generate fields and tables configuration from existing relational database. At the end you will have generated fields and tables that can be later used to develop application that uses the same database model
+This guide walks you though how to setup a Genesis project using [Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html) and generate fields and tables configuration from existing relational database. At the end, you will have generated fields and tables that you can later use to develop any application that uses the same database model.
 
 ## Prerequisites ##
 
