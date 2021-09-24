@@ -5,13 +5,9 @@ sidebar_label: Dynamic events
 sidebar_position: 2
 
 ---
-We have now set up the evaluator so that our application creates reports daily. 
+We have now set up the evaluator so that our application creates reports daily.
 
 Now you are going to use the evaluator again to set up dynamic events. In this case, you want to send an email automatically of a certain limit has been breached.
-
-
-
-
 
 An example for CRON_RULE record looks very similar to a dynamic record. Something like this:
 
@@ -73,4 +69,8 @@ Run set primary to start the evaluator
 
 Insert this record in database and restart the GENESIS_EVALUATOR for it to come into place.
 
-That’s all. It might be a bit hard to show it working and we don’t want to generate positions every 10 seconds, but this illustrates how to setup jobs that trigger events.
+Now you can see that when the limit is breached, you receive an email automatically:
+
+!\[\](/img/state-machine-location.png)
+
+Well done!
