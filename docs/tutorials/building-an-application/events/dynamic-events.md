@@ -91,8 +91,8 @@ Change `GENESIS_NOTIFY` to `true`.
 
 Now you need to run `genesisInstall` to update the configuration.
 
-After that, you need to restart the server so that Notify runs aling with the other processes.
-Run `killServer`to stop the application. When that has been completed, run`startServer`to restart it.
+After that, you need to restart the server so that Notify runs along with the other processes.
+Run `killServer`to stop the application. When that has been completed, run `startServer`to restart it.
 
 When that has finished, you can run  `mon` at which point, you will see  GENESIS_NOTIFY as one of the processes that are runing.
 
@@ -143,21 +143,6 @@ LogLevel -p GENESIS_NOTIFY -DATADUMP_ON
 
 
 
-This event handler can call a csv writer. We need to create the csv writer as well; Create static function that will take a rxDb, and write the csv files to the runtime/position-daily-report. We can write csv file like this:
-
-```kotlin
-GenesisJacksonMapper.defaultCsvMapper 
-
-    .writerFor(FxTrade::class.java) 
-
-    .writeValues(file) 
-
-    .use { writer -> 
-
-        writer.writeAll(listOf(trade)) 
-
-    } 
-```
 
 ### Insert a CRON_RULE table entry
 

@@ -1,6 +1,13 @@
-# Service Definitions
+---
+title: Service definitions
+sidebar_label: Service definitions
+sidebar_position: 3
+id: service-defs
 
-In the same way each product has a \*-processes.xml config file, it should also have a \*-service-definitions.xml file. This file is where the developer specifies the ports of the various processes. These are the ports used to communicate between processes internally
+---
+# Service definitions
+
+Just as each application must have  a *-processes.xml config file, it must also have a *-service-definitions.xml file. This is where the developer specifies the ports of the various processes. These ports are used to communicate internally between processes.
 
 ```xml
 <configuration>
@@ -10,7 +17,7 @@ In the same way each product has a \*-processes.xml config file, it should also 
 </configuration>
 ```
 
-When `genesisInstall` is executed, all products have their \*-service-definitions.xml files compiled into a system-wide **$GC/global-service-definitions.xml**. Take the following example of a global-service-definitions.xml file when we have the *auth*, *dta* and *gcom* products installed:
+When `genesisInstall` is executed, all products have their *-service-definitions.xml files compiled into a system-wide **$GC/global-service-definitions.xml**. Take the following example of a global-service-definitions.xml file when we have the _auth_, _dta_ and _gcom_ products installed:
 
 ```xml
 <configuration>
@@ -27,6 +34,7 @@ When `genesisInstall` is executed, all products have their \*-service-definition
 
 If process lives in different server then set the `external` attribute to be "true"
 Ex:
+
 ```xml
 <configuration>
     <service host="hostname" name="GENESIS_CLUSTER" port="8510" external="true"/>
@@ -36,6 +44,7 @@ Ex:
 If you want to implement SSL for your processes then set the `secure` attribute to be "true" and edit genesis-system-definition.kts file
 Ex:
 processes.xml
+
 ```xml
 <configuration>
     <service host="localhost" name="GCOM_REQUEST_SERVER" port="8571" secure="true"/>
@@ -43,6 +52,7 @@ processes.xml
 ```
 
 genesis-system-definition.kts
+
 ```kotlin
 systemDefinition {
     global {
