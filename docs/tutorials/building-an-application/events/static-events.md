@@ -7,7 +7,7 @@ sidebar_position: 1
 ---
 In this exercise you are going to create a cron rule that will trigger a batch job that will run once each day.
 
-The batch job will generate a position csv for each counterparty and store it in **runtime/position-daily-report**. The file name of each report written will have the form COUNTERPARTY_ID-DATE.csv.
+The batch job will generate a position report as a csv for each counterparty. This wil be stored in **runtime/position-daily-report**. The file name of each report written will have the form COUNTERPARTY_ID-DATE.csv.
 
 
 ## The rule
