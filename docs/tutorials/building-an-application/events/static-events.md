@@ -7,7 +7,8 @@ sidebar_position: 1
 ---
 In this exercise you are going to create a cron rule that will trigger a batch job that will run once each day.
 
-The batch job will generate a position csv for each counterparty and store it in **runtime/position-daily-report**. The file name will have the form COUNTERPARTY_ID-DATE.csv
+The batch job will generate a position csv for each counterparty and store it in **runtime/position-daily-report**. The file name of each report written will have the form COUNTERPARTY_ID-DATE.csv.
+
 
 ## The rule
 
@@ -25,10 +26,11 @@ Let's look at the most important fields:
 * **MESSAGE_TYPE** is the message that needs to be sent to the specified **PROCESS_NAME**.
 * **RESULT_EXPRESSION** is the values that will be sent as part of the transaction to the target PROCESS_NAME, we can leave RESULT_EXPRESSION empty as we are going to generate a report for all positions anyway.
 
-The Genesis Evaluator is the process that runs cron jobs. In this exercise, you will see this being configured.
+
 
 ## 1. Configure the Evaluator
 
+The Genesis Evaluator is the process that runs cron jobs. 
 To start, make a copy of **genesis-processes.xml** and place it in **site-specific/cfg**.
 
 In the genesis-processes.xml file,  change the
