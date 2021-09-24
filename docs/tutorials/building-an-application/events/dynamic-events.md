@@ -71,6 +71,6 @@ Insert this record in database and restart the GENESIS_EVALUATOR for it to come 
 
 Now you can see that when the limit is breached, you receive an email automatically:
 
-![](/img/standbysmall.png)
+![](/img/dynamic-email.png)
 
 Well done!
