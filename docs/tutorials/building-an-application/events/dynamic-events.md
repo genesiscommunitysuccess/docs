@@ -112,7 +112,7 @@ Insert the following:
 "ENTITY_ID","ENTITY_ID_TYPE","TOPIC_MATCH","GATEWAY_ID"
 ,"GATEWAY","PositionAlert","EmailDistribution1" 
 ```
-## 6. Add ervice definition
+## 6. Add connection details to the service definition
 Open the genesis-system-definitions.kts file and add the details of the connection for the SMTP server:
 ```
 item(name = "SYSTEM_DEFAULT_USER_NAME", value =
