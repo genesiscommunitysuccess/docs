@@ -112,7 +112,7 @@ Insert the following:
 "ENTITY_ID","ENTITY_ID_TYPE","TOPIC_MATCH","GATEWAY_ID"
 ,"GATEWAY","PositionAlert","EmailDistribution1" 
 ```
-## 6. Add connection details to the service definition
+## 6. Add connection details to the system definition
 Open the genesis-system-definitions.kts file and add the details of the connection for the SMTP server:
 ```
 item(name = "SYSTEM_DEFAULT_USER_NAME", value =
@@ -138,27 +138,12 @@ LogLevel -p GENESIS_EVALUATOR -DATADUMP_ON
 
 LogLevel -p GENESIS_NOTIFY -DATADUMP_ON
 `
+## 8. Trigger the event to test the rule
+So, let's see i fthat has worked.
 
-**THIS IS JUST STUFF**
+Insert the file POSITION.csv into the database. This is the file that you prepared earlier, and it contains a value that breaches a limit that shoud trigger our event.
 
-
-
-
-### Insert a CRON_RULE table entry
-
-Insert a CRON_RULE table entry in dbmon/csv as per the example above.
-
-```csv
-CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION 
-
-"0 45 7 ? * MON,TUE,WED,THU,FRI *","It’s a rule","Europe/London","ENABLED","A rule","JohnDoe","TRADING_APP_EVENT_HANDLER","EVENT_POSITION_REPORT", 
-```
-
-Run set primary to start the evaluator
-
-Insert this record in database and restart the GENESIS_EVALUATOR for it to come into place.
-
-Now you can see that when the limit is breached, you receive an email automatically:
+You can see that when the limit is breached, you receive an email automatically:
 
 ![](/img/dynamic-email.png)
 
