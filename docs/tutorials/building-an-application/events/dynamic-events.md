@@ -34,13 +34,36 @@ Configure GENESIS_EVALUATOR in genesis-processes.xml. For this we should take a 
 
 Run **genesisInstall** to verify it works as expected and GENESIS_EVALUATOR and the process appears in mon.
 
-Set up the dynamic rule
+## 1. Set up the dynamic rule
 
 To set up the dynamic rule, go to the DYNAMIC_RULE table and insert a row. Run `SendIt -t DYNAMIC_RULE”`
 
-Update the event handler
-We now need to create the EVENT_HANDLER which the dynamic rule will call when activated.
-in the trading_app-eventhandler.kts file add the following text
+## 2. Update the event handler
+The rule needs to call an event handler in the file **trading_app-eventhandler.kts**. Opne this file and insert this code block:
+
+ ```java
+eventHandler<PositionCancel> {
+ onCommit { event ->
+ val positionId = event.details.positionId
+ entityDb.insert(
+ Notify {
+ topic = "PositionAlert"
+ header = "Position Alert for $positionId"
+ body = mapOf<String, Any?>(
+ "emailDistribution" to mapOf(
+ "to" to listOf("peter.kievits@genesis.global"),
+ "cc" to emptyList(),
+ "bcc" to emptyList(),
+ ),
+ "content" to "Position $positionId breached the limit"
+ ).toJsonString(true)
+ }
+ )
+ ack()
+ }
+ }
+ ```
+
 
 
 **THIS IS JUST STUFF**
