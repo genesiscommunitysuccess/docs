@@ -2,7 +2,7 @@
 title: Service definitions
 sidebar_label: Service definitions
 sidebar_position: 3
-id: service-defs
+id: service-definitions
 
 ---
 # Service definitions

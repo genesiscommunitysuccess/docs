@@ -1,7 +1,7 @@
 ---
-id: server
+id: folders
 sidebar_label: Folders in the server
-sidebar_position: 6
+sidebar_position: 1
 title: Folders in the server
 
 ---
@@ -18,7 +18,7 @@ It makes it easy to roll back if things go wrong, simply by repointing to the ol
 For example, the symlink below points run to a directory for an application called `foxtrot`, dated 18th May, 2021.
 
 ```bash
-    run-> data/foxtrot/20210518/run
+run-> data/foxtrot/20210518/run
 ```
 
 ### Folders
