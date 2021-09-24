@@ -13,7 +13,7 @@ We support the following database technology:
 
 Because we abstract from the underlying technology, you can easily toggle between any of these three.
 
-There are also tools that enable you to [stream real-time data reliably to and from any classic Oracle/SQL database](/server-reference/other-modules/dbtogenesis).
+There are also tools that enable you to [stream real-time data reliably to and from any classic Oracle/SQL database](/server-reference/other-modules/dbtogenesis/overview).
 
 By default, FoundationDB is installed on the platform. If you need to use a PostgreSQL or Aerospike database, follow the steps below.
 
