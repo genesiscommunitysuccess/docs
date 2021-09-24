@@ -7,7 +7,7 @@ id: service-definitions
 ---
 # Service definitions
 
-Just as each application must have  a *-processes.xml config file, it must also have a *-service-definitions.xml file. This is where the developer specifies the ports of the various processes. These ports are used to communicate internally between processes.
+Just as each application must have  a *-processes.xml* config file, it must also have a *-service-definitions.xml* file. This is where the developer specifies the ports of the various processes. These ports are used to communicate internally between processes.
 
 ```xml
 <configuration>
@@ -17,7 +17,7 @@ Just as each application must have  a *-processes.xml config file, it must also 
 </configuration>
 ```
 
-When `genesisInstall` is executed, all products have their *-service-definitions.xml files compiled into a system-wide **$GC/global-service-definitions.xml**. Take the following example of a global-service-definitions.xml file when we have the _auth_, _dta_ and _gcom_ products installed:
+When `genesisInstall` is executed, all products have their *-service-definitions.xml* files compiled into a system-wide **$GC/global-service-definitions.xml**. Take the following example of a global-service-definitions.xml file when we have the _auth_, _dta_ and _gcom_ products installed:
 
 ```xml
 <configuration>
