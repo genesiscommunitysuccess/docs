@@ -30,7 +30,7 @@ MESSAGE_TYPE is the message that needs to be sent to the PROCESS_NAME
 
 RESULT_EXPRESSION is the values that will be sent as part of the transaction to the target PROCESS_NAME, we can leave RESULT_EXPRESSION empty as we are going to generate a report for all positions anyway.
 
-Configure GENESIS_EVALUATOR in genesis-processes.xml. For this we should take a copy of genesis-processes.xml and place it in site-specific/cfg. 
+Configure GENESIS_EVALUATOR in genesis-processes.xml. For this we should take a copy of genesis-processes.xml and place it in site-specific/cfg.
 
 Run **genesisInstall** to verify it works as expected and GENESIS_EVALUATOR and the process appears in mon.
 
@@ -38,7 +38,10 @@ Set up the dynamic rule
 
 To set up the dynamic rule, go to the DYNAMIC_RULE table and insert a row. Run `SendIt -t DYNAMIC_RULE”`
 
-, where the csv data resides in file called, DYNAMIC_RULE.csv
+Update the event handler
+We now need to create the EVENT_HANDLER which the dynamic rule will call when activated.
+in the trading_app-eventhandler.kts file add the following text
+
 
 **THIS IS JUST STUFF**
 
