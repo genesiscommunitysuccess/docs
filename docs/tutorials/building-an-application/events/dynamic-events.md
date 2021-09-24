@@ -39,7 +39,8 @@ Run **genesisInstall** to verify it works as expected and GENESIS_EVALUATOR and 
 To set up the dynamic rule, go to the DYNAMIC_RULE table and insert a row. Run `SendIt -t DYNAMIC_RULE”`
 
 ## 2. Update the event handler
-The rule needs to call an event handler in the file **trading_app-eventhandler.kts**. Opne this file and insert this code block:
+The rule needs to call an event handler, which will be called `<PositionCancel>`. 
+We have defined the event handler in the code block below. Open the file **trading_app-eventhandler.kts** and insert the code block:
 
  ```java
 eventHandler<PositionCancel> {
@@ -58,8 +59,8 @@ eventHandler<PositionCancel> {
                     "content" to "Position $positionId breached the limit"
                 ).toJsonString(true)
             }
-         )
-         ack()
+        )
+        ack()
     }
  }
  ```
