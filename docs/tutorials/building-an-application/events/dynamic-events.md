@@ -11,7 +11,7 @@ Now you are going to use the evaluator again to set up dynamic events. In this c
 
 ## Preparation
 
-First, check that you have the evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron job](/server-reference/other-modules/dbtogenesis/overview).
+First, check that you have the evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron job](/tutorials/building-an-application/events/static-events).
 
 setting up a cron job \[setting up a cron job\](/server-reference/other-modules/dbtogenesis/dbtogenesis-oracle/).
 
