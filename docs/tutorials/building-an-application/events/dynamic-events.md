@@ -31,26 +31,7 @@ POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
 ,2,2,600,1100000
 ```
 
-CHECK FROM HERE
-An example for CRON_RULE record looks very similar to a dynamic record. Something like this:
-
-| CRON_EXPRESSION | DESCRIPTION | TIME_ZONE | RULE_STATUS | NAME | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 0 45 7 ? * MON,TUE,WED,THU,FRI * | It’s a rule | Europe/London | ENABLED | A rule | JohnDoe | TRADING_APP_EVENTHANDLER | EVENT_POSITION_REPORT |  |
-
-The most important fields are:
-
-RULE_STATUS can be ENABLED or DISABLED
-
-CRON_EXPRESSION determines when the rule is evaluated.
-
-PROCESS_NAME is the target process for the rule. If a rule is triggered it will send a message to that PROCESS_NAME process.
-
-MESSAGE_TYPE is the message that needs to be sent to the PROCESS_NAME
-
-RESULT_EXPRESSION is the values that will be sent as part of the transaction to the target PROCESS_NAME, we can leave RESULT_EXPRESSION empty as we are going to generate a report for all positions anyway.
-
-
+Now you are ready to begin setting up your dynamic rule.
 
 ## 1. Set up the dynamic rule
 
