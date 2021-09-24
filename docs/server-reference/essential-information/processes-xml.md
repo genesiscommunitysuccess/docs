@@ -60,7 +60,7 @@ The processes.xml file looks like this:
 
 ### Tags
 
-Each tag is defined below.
+Each tag is explained below.
 
 The `dependency` tag defines the processes that the current process is dependent on. In the above example, the "TRADING_APP_CONSOLIDATOR" process will start when all of its dependencies have been started.
 
