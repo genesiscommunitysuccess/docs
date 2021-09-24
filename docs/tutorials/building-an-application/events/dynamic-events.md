@@ -9,9 +9,14 @@ We have now set up the evaluator so that our application creates reports daily.
 
 Now you are going to use the evaluator again to set up dynamic events. In this case, you want to send an email automatically of a certain limit has been breached.
 
-You need to create your rule in a csv file with the correct format, as you saw with the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
+## Preparation
+First, check that you have the evaluator running. If it is not, check the procedure at the beginning of the exercise on setting up a cron job.
 
-You'll need to be able to test the rule, so also create a file called POSITION.csv with the following data:
+You need to create two csv files for this exercise.
+
+The first is the file with your rule. your rule in a csv file with the correct format, as you saw with the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
+
+The second is a csvfile that enables you to test the rule. Create a file called POSITION.csv with the following data:
 
 
 ```
@@ -38,9 +43,7 @@ MESSAGE_TYPE is the message that needs to be sent to the PROCESS_NAME
 
 RESULT_EXPRESSION is the values that will be sent as part of the transaction to the target PROCESS_NAME, we can leave RESULT_EXPRESSION empty as we are going to generate a report for all positions anyway.
 
-Configure GENESIS_EVALUATOR in genesis-processes.xml. For this we should take a copy of genesis-processes.xml and place it in site-specific/cfg.
 
-Run **genesisInstall** to verify it works as expected and GENESIS_EVALUATOR and the process appears in mon.
 
 ## 1. Set up the dynamic rule
 
