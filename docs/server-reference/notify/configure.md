@@ -22,7 +22,7 @@ The growing list of currently supported services are:
 
 ### Configuration Overview
 
-Gensis Notify is a generic service; it requires various configuration items across system definition and the database. This is a high-level view of those configuration items and why they are needed. Supplementing this, we have listed each service, along with the specific configuration requirements and examples.
+Gensis Notify is a generic service; it requires various configuration items across system definition and the database. Here, we shall give you a high-level view of those configuration items and why they are needed. Supplementing this, we have listed each service, along with the specific configuration requirements and examples.
 
 #### System Definition
 
