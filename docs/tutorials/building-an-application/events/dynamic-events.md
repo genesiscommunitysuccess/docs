@@ -88,13 +88,36 @@ When that has finished, you can run  `mon` at which point, you will see  GENESIS
 
 ## 5. Set up GENESIS_NOTIFY in the database
 ### Insert Gateway Route
-
+Note that the GATEWAY_VALUE column requires an empty email distribution JSON definition.
+Insert the following:
+```
+EmailDistribution1,EmailDistribution,"{
+\"emailDistribution\" : { \"to\" : [ ], \"cc\" : [ ], \"bcc\" : [ ] } }"
+```
 
 ### Insert NOTIFY_ROUTE
+Insert the following:
 
-
-## 6. service definition
-
+```
+"ENTITY_ID","ENTITY_ID_TYPE","TOPIC_MATCH","GATEWAY_ID"
+,"GATEWAY","PositionAlert","EmailDistribution1" 
+```
+## 6. Add ervice definition
+Open the genesis-system-definitions.kts file and add the details of the connection for the SMTP server:
+```
+item(name = "SYSTEM_DEFAULT_USER_NAME", value =
+"GenesisGlobal" )
+item(name = "SYSTEM_DEFAULT_EMAIL", value =
+"notifications@genesis.global" )
+item(name = "EMAIL_SMTP_HOST", value =
+"smtp.office365.com" )
+item(name = "EMAIL_SMTP_PORT", value = "587" )
+item(name = "EMAIL_SMTP_USER", value =
+"notifications@genesis.global" )
+item(name = "EMAIL_SMTP_PW", value = "Dufferin!St33t" )
+item(name = "EMAIL_SMTP_PROTOCOL", value = "SMTP_TLS"
+)
+```
 
 **THIS IS JUST STUFF**
 
