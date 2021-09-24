@@ -3,9 +3,9 @@ id: excel-functions
 sidebar_label: Excel Functions
 title: Excel Functions
 sidebar_position: 2
----
 
-# Functions converted by ExcelToGenesis
+---
+## Functions converted by ExcelToGenesis
 
 The following Excel functions are currently supported by ExcelToGenesis.
 
@@ -35,5 +35,3 @@ The following Excel functions are currently supported by ExcelToGenesis.
 | RoundDown | ROUNDDOWN(A, 2), ROUNDDOWN(A) |
 | Search | SEARCH(A, “Hello”) |
 | Is Error | ISERR(A) |
-
-
