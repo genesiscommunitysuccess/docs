@@ -92,7 +92,7 @@ Change `GENESIS_NOTIFY` to `true`.
 Now you need to run `genesisInstall` to update the configuration.
 
 After that, you need to restart the server so that Notify runs along with the other processes.
-Run `killServer`to stop the application. When that has been completed, run `startServer`to restart it.
+Run `killServer`to stop the application. When that has been completed, run `startServer` to restart it.
 
 When that has finished, you can run  `mon` at which point, you will see  GENESIS_NOTIFY as one of the processes that are runing.
 
