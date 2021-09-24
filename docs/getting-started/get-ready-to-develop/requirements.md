@@ -33,4 +33,4 @@ The following additional packages are required:
 * **firewalld**	Firewall
 * **unoconv**	Universal Office Convertor. This is a dependent of the installed Genesis modules
 
-Once you have a server with the correct operating system, you are ready to install the Genesis platform. By default, this installs FoundationDB as the database. If you need to use a different database (such asPostgreSQL), it is easy to change this after the installation process.
+Once you have a server with the correct operating system, you are ready to install the Genesis platform. By default, this installs FoundationDB as the database. If you need to use a different database (such as PostgreSQL), it is easy to change this after the installation process.
