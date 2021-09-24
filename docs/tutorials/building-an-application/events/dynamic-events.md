@@ -14,7 +14,14 @@ First, check that you have the evaluator running. If it is not, check the proced
 
 You need to create two csv files for this exercise.
 
-The first is the file with your rule. your rule in a csv file with the correct format, as you saw with the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
+The first is the file with your rule in the correct format, as you saw with the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
+```
+NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSA
+MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY >
+500),JohnDoe,TRADING_APP_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) &&
+(POSITION_ID = POSITION_ID))
+```
+
 
 The second is a csvfile that enables you to test the rule. Create a file called POSITION.csv with the following data:
 
