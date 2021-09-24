@@ -11,6 +11,14 @@ Now you are going to use the evaluator again to set up dynamic events. In this c
 
 You need to create your rule in a csv file with the correct format, as you saw with the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
 
+You'll need to be able to test the rule, so also create a file called POSITION.csv with the following data:
+
+
+```
+POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
+,2,2,600,1100000
+```
+
 CHECK FROM HERE
 An example for CRON_RULE record looks very similar to a dynamic record. Something like this:
 
@@ -82,8 +90,10 @@ The module GENESIS_NOTIFY does not run by default. To change this, open the edit
 Change `GENESIS_NOTIFY` to `true`.
 
 Now you need to run `genesisInstall` to update the configuration.
+
 After that, you need to restart the server so that Notify runs aling with the other processes.
 Run `killServer`to stop the application. When that has been completed, run`startServer`to restart it.
+
 When that has finished, you can run  `mon` at which point, you will see  GENESIS_NOTIFY as one of the processes that are runing.
 
 ## 5. Set up GENESIS_NOTIFY in the database
@@ -118,14 +128,20 @@ item(name = "EMAIL_SMTP_PW", value = "Dufferin!St33t" )
 item(name = "EMAIL_SMTP_PROTOCOL", value = "SMTP_TLS"
 )
 ```
+## 7. Switch on data dumps 
+Data dumps need to be switched on for both EVALUATOR and NOTIFY.
+
+Run the following commands:
+
+`
+LogLevel -p GENESIS_EVALUATOR -DATADUMP_ON
+
+LogLevel -p GENESIS_NOTIFY -DATADUMP_ON
+`
 
 **THIS IS JUST STUFF**
 
-Create an event handler that will write the csv files to the runtime/position-daily-report folder. We could call it EVENT_POSITION_REPORT.
 
-Create message class and deploy jar
-
-Add jar to event handler process xml
 
 This event handler can call a csv writer. We need to create the csv writer as well; Create static function that will take a rxDb, and write the csv files to the runtime/position-daily-report. We can write csv file like this:
 
