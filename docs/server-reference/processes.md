@@ -1,9 +1,14 @@
-#Processes
+---
+title: Processes.xml
+sidebar_label: Processes.xml
+id: procs-xml
+sidebar_position: 2
 
-Each application will have *-processes.xml file. It contains configuration of each microservice like dataserver, request-reply and event-handler etc.
-Very important commands like startServer, killServer, startProcess and killProcess all refer to processes.xml file
+---
 
-When you run command `genesisInstall` details of all *-processes.xml files will be aggregated in generated processes.xml file in generated folder
+Each application must have *-processes.xml file. This contains configuration of each microservice (data server, request server and event-handler etc). Very important commands like startServer, killServer, startProcess and killProcess all refer to processes.xml file
+
+When you run the command `genesisInstall` details of all *-processes.xml files will be aggregated in a newly-generated processes.xml file in generated folder
 
 The processes.xml file looks like this:
 
@@ -75,7 +80,7 @@ The `config` tag defines which config file the process should refer
 
 The `script` tag defines which script file the process should refer
 
-The `language` tag: Defines what language the script is using. Default value is Groovy. Accepted values are [pal, groovy, R]
+The `language` tag: Defines what language the script is using. Default value is Groovy. Accepted values are \[pal, groovy, R\]
 
 The `scheduleRestart` tag accepts boolean value if set to true indicates that the process needs to be restarted automatically if process dies unexpectedly. Default value is false
 
