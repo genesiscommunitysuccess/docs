@@ -76,12 +76,24 @@ data class PositionCancel(
       val positionId: String,
 )
 ```
-## 4. Set up the Notify module
+## 4. Set up the Notify module and start the process
 The module GENESIS_NOTIFY does not run by default. To change this, open the edit the file **genesis-process.xml**.
 
 Change `GENESIS_NOTIFY` to `true`.
 
+Now you need to run `genesisInstall` to update the configuration.
+After that, you need to restart the server so that Notify runs aling with the other processes.
+Run `killServer`to stop the application. When that has been completed, run`startServer`to restart it.
+When that has finished, you can run  `mon` at which point, you will see  GENESIS_NOTIFY as one of the processes that are runing.
 
+## 5. Set up GENESIS_NOTIFY in the database
+### Insert Gateway Route
+
+
+### Insert NOTIFY_ROUTE
+
+
+## 6. service definition
 
 
 **THIS IS JUST STUFF**
