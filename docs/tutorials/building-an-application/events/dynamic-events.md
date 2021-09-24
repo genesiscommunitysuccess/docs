@@ -43,21 +43,21 @@ The rule needs to call an event handler in the file **trading_app-eventhandler.k
 
  ```java
 eventHandler<PositionCancel> {
- onCommit { event ->
- val positionId = event.details.positionId
- entityDb.insert(
- Notify {
- topic = "PositionAlert"
- header = "Position Alert for $positionId"
- body = mapOf<String, Any?>(
- "emailDistribution" to mapOf(
- "to" to listOf("peter.kievits@genesis.global"),
- "cc" to emptyList(),
- "bcc" to emptyList(),
- ),
- "content" to "Position $positionId breached the limit"
- ).toJsonString(true)
- }
+    onCommit { event ->
+        val positionId = event.details.positionId
+        entityDb.insert(
+          Notify {
+              topic = "PositionAlert"
+              header = "Position Alert for $positionId"
+              body = mapOf<String, Any?>(
+                  "emailDistribution" to mapOf(
+                  "to" to listOf("peter.kievits@genesis.global"),
+                  "cc" to emptyList(),
+                  "bcc" to emptyList(),
+              ),
+              "content" to "Position $positionId breached the limit"
+          ).toJsonString(true)
+         }
  )
  ack()
  }
