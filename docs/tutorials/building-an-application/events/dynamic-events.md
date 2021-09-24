@@ -30,19 +30,15 @@ MESSAGE_TYPE is the message that needs to be sent to the PROCESS_NAME
 
 RESULT_EXPRESSION is the values that will be sent as part of the transaction to the target PROCESS_NAME, we can leave RESULT_EXPRESSION empty as we are going to generate a report for all positions anyway.
 
-The goal of this script is to create a cron rule to trigger a batch job using a cron expression. Once a day, we want to generate a position csv for each counterparty and store it in runtime/position-daily-report. The file name should be COUNTERPARTY_ID-DATE.csv
-
-Configure GENESIS_EVALUATOR in genesis-processes.xml. For this we should take a copy of genesis-processes.xml and place it in site-specific/cfg. There should be an example there of GENESIS_EVALUATOR we can enable.
+Configure GENESIS_EVALUATOR in genesis-processes.xml. For this we should take a copy of genesis-processes.xml and place it in site-specific/cfg. 
 
 Run **genesisInstall** to verify it works as expected and GENESIS_EVALUATOR and the process appears in mon.
 
+Set up the dynamic rule
 
-
-To set up the dynamic rule, go to the DYNAMIC_RULE table and insert a row.
-Run `SendIt -t DYNAMIC_RULE”`
+To set up the dynamic rule, go to the DYNAMIC_RULE table and insert a row. Run `SendIt -t DYNAMIC_RULE”`
 
 , where the csv data resides in file called, DYNAMIC_RULE.csv
-
 
 **THIS IS JUST STUFF**
 
