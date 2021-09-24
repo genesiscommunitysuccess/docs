@@ -5,7 +5,6 @@ id: processes-xml
 sidebar_position: 2
 
 ---
-
 Each application must have *-processes.xml file. This contains configuration of each microservice (data server, request server and event-handler etc). Very important commands like startServer, killServer, startProcess and killProcess all refer to processes.xml file
 
 When you run the command `genesisInstall` details of all *-processes.xml files will be aggregated in a newly-generated processes.xml file in generated folder
@@ -59,7 +58,9 @@ The processes.xml file looks like this:
 </processes>
 ```
 
-Definition of each tag:
+Tags
+
+Each tag is defined below.
 
 The `dependency` tag defines the processes that the current process is dependent on. In the above example, the "TRADING_APP_CONSOLIDATOR" process will start when all of its dependencies have been started.
 
@@ -84,11 +85,10 @@ The `language` tag: Defines what language the script is using. Default value is 
 
 The `scheduleRestart` tag accepts boolean value if set to true indicates that the process needs to be restarted automatically if process dies unexpectedly. Default value is false
 
-The `groupId` tag defines which group the project belongs to. Example: genesis and auth processes belong to GENESIS and AUTH groupId respectively.
-For any new application the value for groupId will be **application name**. Commands startGroup and killGroup will use groupId to start/kill groups of processes
+The `groupId` tag defines which group the project belongs to. Example: genesis and auth processes belong to GENESIS and AUTH groupId respectively. For any new application, the value for groupId will be **application name**. Commands startGroup and killGroup will use groupId to start/kill groups of processes
 
-The `description` tag describes about the process
+The `description` tag describes the process
 
 The `primaryOnly` tag accepts boolean value. Defines which processes are set to run on primary nodes only in a cluster ex: GENESIS_AUTH_CONSOLIDATOR. Default value is false
 
-The `arguments` tag: This helps in hardcoding the process arguments while starting the processes since some processes always need arguments on startup
+The `arguments` tag: This helps in hard-coding the process arguments while starting the processes,  since some processes always need arguments on startup
