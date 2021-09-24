@@ -76,8 +76,7 @@ eventHandler<PositionCancel> {
  }
  ```
 ## 3. Set up the event handler message class
-To define the event handler message class.
-Insert the following code:
+To define the event handler message class, insert the following code:
 
 
 ```java
