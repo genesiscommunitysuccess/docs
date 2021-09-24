@@ -64,6 +64,23 @@ eventHandler<PositionCancel> {
     }
  }
  ```
+## 3. Set up the event handler message class
+To define the event handler message class.
+Insert the following code:
+
+
+```java
+package global.genesis.trading_app.message.event
+
+data class PositionCancel(
+      val positionId: String,
+)
+```
+## 4. Set up the Notify module
+The module GENESIS_NOTIFY does not run by default. To change this, open the edit the file **genesis-process.xml**.
+
+Change `GENESIS_NOTIFY` to `true`.
+
 
 
 
