@@ -5,14 +5,6 @@ sidebar_label: Build the front end
 sidebar_position: 11
 
 ---
+We shall be bringing you this information shortly.
 
-Genesis Studio
-
-* routes
-* configure each page, for example... grid...insert trade
-
-Move to CLI and load the files to the required location
-
-Get stuck into the code
-
-Deploy and succeed
+Thank you for your patience.
