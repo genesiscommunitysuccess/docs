@@ -5,7 +5,7 @@ id: processes-xml
 sidebar_position: 2
 
 ---
-Each application must have *-processes.xml file. This contains configuration of each microservice (data server, request server and event-handler etc). Very important commands like startServer, killServer, startProcess and killProcess all refer to processes.xml file
+Each application must have a *-processes.xml* file. This contains the configuration of each microservice (data server, request server and event-handler etc). Very important commands like startServer, killServer, startProcess and killProcess all refer to processes.xml file
 
 When you run the command `genesisInstall` details of all *-processes.xml files will be aggregated in a newly-generated processes.xml file in generated folder
 
@@ -69,21 +69,21 @@ The `loggingLevel` tag defines the default log level for the process, which is b
 The `classpath` tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma separated and need to exist within a "lib" folder for any of the genesis products in the environment.
 You can use wildcards as well like above example for TRADING_APP_DATASERVER
 
-The `start` tag defines whether the process needs to be started when startServer command is executed and whether to show this process in mon command display. Default value is true
+The `start` tag defines whether the process needs to be started when startServer command is executed and whether to show this process in the mon command display. Default value is true
 
 The `options` tag defines JVM arguments
 
 The `package` tag defines which package the process should refer to from framework
 
-The `module` tag defines which module the process should refer to from framework. It refers to base jar file. In the above example module genesis-pal-eventhandler means look for any jar file with text genesis-pal-eventhandler and get all the classpath dependencies available for it
+The `module` tag defines which module the process should refer to from framework. It refers to a base jar file. In the above example module genesis-pal-eventhandler means look for any jar file with the text genesis-pal-eventhandler and get all the classpath dependencies available for it
 
 The `config` tag defines which config file the process should refer
 
 The `script` tag defines which script file the process should refer
 
-The `language` tag: Defines what language the script is using. Default value is Groovy. Accepted values are \[pal, groovy, R\]
+The `language` tag defines what language the script is using. Default value is Groovy. Accepted values are \[pal, groovy, R\]
 
-The `scheduleRestart` tag accepts boolean value if set to true indicates that the process needs to be restarted automatically if process dies unexpectedly. Default value is false
+The `scheduleRestart` tag accepts boolean value if set to true; this indicates that the process must be restarted automatically it dies unexpectedly. Default value is false
 
 The `groupId` tag defines which group the project belongs to. Example: genesis and auth processes belong to GENESIS and AUTH groupId respectively. For any new application, the value for groupId will be **application name**. Commands startGroup and killGroup will use groupId to start/kill groups of processes
 
