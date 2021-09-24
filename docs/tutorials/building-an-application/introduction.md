@@ -31,7 +31,7 @@ You have:
 
 We are going to build the rest at speed.
 
-Overall, the server for application we shall bid looks like this:
+Overall, the server for application we shall build looks like this:
 
 ![](/img/colour-diagram.png)
 
@@ -40,7 +40,7 @@ In itself, this is not a very useful application , but it is a valuable learning
 You will see things such as:
 
 * tools to create a Genesis database from your existing resources
-* the ability to re-use schema day across more than one application- you can see we have effectively creating two applications: one for reference data and one for trading data
+* the ability to re-use schema data across more than one application- you can see we have effectively creating two applications: one for reference data and one for trading data
 * the process to create simple functioning microservices that you can then adjust and enrich
 * user permissioning
 * timed and triggered events
