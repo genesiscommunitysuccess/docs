@@ -126,7 +126,7 @@ This is our own scripting language, which plugs in to IntelliJ.
 It means that you have access to autocompletion Help and error highlighting as you code. Once you define an object in GPAL (such as a View), you can use it in multiple components. 
 
 ## Java Binary Object
-A binary object is a wrapper over the binary representation of an entry stored in a cache. Each binary object has the field (name) method, which returns the value of the given field and the type () method that extracts the information about the type of the object . Binary objects are useful when you want to work only with some fields of the objects and do not need to deserialize the entire content set.
+A binary object is a wrapper over the binary representation of an entry stored in a cache. Each binary object has the `field (name)` method, which returns the value of the given field and the `type ()` method, which extracts the information about the type of the object. Binary objects are useful when you want to work only with some fields of the objects and do not need to deserialize the entire content set.
 
 ## MarkitWire
 An electronic trade capture and confirmation platform.
@@ -143,16 +143,16 @@ A common use of LDAP is to provide a central store of usernames and passwords. T
 
 ## Maven
 A tool for building and managing Java-based projects. 
-There is a very useful Maven tutorial at:
-https://www.tutorialspoint.com/maven/maven_overview.htm
-Maven provides sensible default behavior for projects. When a Maven project is created, Maven creates default project structure. A Developer only needs to put files in the right places and there is no need to define any configuration in pom.xml.
+There is a very useful (Maven tutorial)[https://www.tutorialspoint.com/maven/maven_overview.htm]
+
+Maven provides  default behavior for projects. When a Maven project is created, Maven creates a default project structure. As a developer, all you have to do is put the files in the right places. There is no need to define any configuration in pom.xml.
+
 Maven Plugins are generally used to:
-create jar file
-create war file
-compile code files
-unit testing of code
-create project documentation
-create project reports
+* create jar and war files
+* compile code files
+* unit-test your code
+* create project documentation
+* create project reports
 
 ## Maven repository
 In Maven terminology, a repository is a directory where all the project jars, library jar, plugins or any other project-specific artifacts are stored for use by Maven.
@@ -165,14 +165,19 @@ By default, a local repository is created by Maven in the %USER_HOME% directory.
 
 
 ## Netty
-Netty is a socket communication component in Camel.
-It is an NIO client server framework for developing networkServerInitializerFactory applications, such as protocol servers and clients.
+Netty is a socket communication component in Camel. It is an NIO client server framework for developing networkServerInitializerFactory applications, such as protocol servers and clients.
+
 The aim is to simplify and streamline network programming, such as TCP and UDP socket server.
+
 Netty supports both producer and consumer endpoints.
+
 It has several options and allows fine-grained control of a number of TCP/UDP communication parameters (buffer sizes, keepAlives, tcpNoDelay, etc) and facilitates both In-Only and In-Out communication on a Camel route.
+
 Maven users need to add a dependency to their pom.xml to use Netty.
-Find this and a lot more at:
-https://camel.apache.org/components/latest/netty-component.html
+
+Find this and a lot more at the [Camel website](https://camel.apache.org/components/latest/netty-component.html).
+
+
 
 
 
