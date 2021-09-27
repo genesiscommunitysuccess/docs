@@ -34,7 +34,7 @@ It enables processes running on different hosts (or the same host) to communicat
 
 It is used in real-time systems that have high throughput, or which require minimal response time. 
 
-Aeron operates in a peer-to-peer model, it is brokerless, in contrast to other middleware, such as RabbitMQ, Kafka, and TIBCO EMS.
+Aeron operates in a peer-to-peer model. It is brokerless, in contrast to other middleware, such as RabbitMQ, Kafka, and TIBCO EMS.
 
 There is an [aeron wiki](https://github.com/real-logic/aeron/wiki) on github.
 
@@ -66,7 +66,114 @@ A basic Ansible command or playbook:
 
 If you are excited, stimulated or inspired, you can start [here](https://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html#intro-getting-started). 
 
-## 
+## Atomic broadcast
+In fault-tolerant distributed computing, an atomic broadcast or total order broadcast is a broadcast where all correct processes in a system of multiple processes receive the same set of messages in the same order; that is, the same sequence of messages.
+
+The broadcast is termed "atomic" because it either eventually completes correctly at all participants, or all participants abort without side effects. 
+
+The following properties are usually required from an atomic broadcast protocol:
+
+* Validity. If a correct participant broadcasts a message, then all correct participants will eventually receive it.
+* Uniform Agreement. If one correct participant receives a message, then all correct participants will eventually receive that message.
+* Uniform Integrity. A message is received by each participant once only, and only if it was previously broadcast.
+* Uniform Total Order. The messages are totally ordered in the mathematical sense; if any correct participant receives message 1 first and message 2 second, then every other correct participant must receive message 1 before message 2.
+
+## Camel (Apache Camel)
+An Open Source integration framework that enables you to integrate different systems that consume or produce data.
+
+You can define routing and mediation rules in a variety of domain-specific languages, including a Java-based Fluent API, Spring or Blueprint XML Configuration files. This gives you smart completion of routing rules in your IDE, whether in a Java or XML editor.
+
+Apache Camel uses Uniform Resource Identifiers (URIs) to work directly with the Transport or messaging model. This can be HTTP, ActiveMQ, JMS, JBI, SCA, MINA or CXF, as well as pluggable Components and Data Format options. 
+
+## DBeaver
+[Dbeaver](dbeaver.com) is a desktop application written in Java and based on the Eclipse platform.
+
+It is an  SQL client software application and database administration tool that enables you to view data and develop in SQL.
+
+* For relational databases it uses the JDBC application programming interface (API) to interact with databases via a JDBC driver.
+
+* For other databases (NoSQL) it uses proprietary database drivers. 
+
+Dbeaver provides an editor for SQL that supports code completion and syntax highlighting. 
+
+It provides a plug-in architecture (based on the Eclipse plugins architecture) that enables users to modify much of the application's behavior to provide database-specific functionality or features that are database-independent. 
+
+There are also tools for drawing diagrams, import/export and data analysis.
+
+
+
+## EC2
+Amazon Elastic Compute Cloud
+This is where our Dev, Test and Production Instances are housed in the cloud.
+
+## FIX
+Financial Information Exchange 
+A protocol for sending and receiving financial information.
+
+FIX has standard dictionaries of different messages. Typically, we use v4.4. note that some banks use earlier versions (usually 4.2) and some have already moved to 5.0). Also note that you can customise these dictionaries to create our own messages.
+
+Genesis uses [QuickFIX](quickfixengine.org) (open source). 
+
+There is a standard FIX module that you can include in applications. 
+
+This inlcudes the standard FIX libraries.
+
+It also gives you a standard FIX inbound streamer that listens to the FIX_In table in the datbase.
+
+## GPAL
+Genesis Platform Abstraction Language
+This is our own scripting language, which plugs in to IntelliJ.
+It means that you have access to autocompletion Help and error highlighting as you code. Once you define an object in GPAL (such as a View), you can use it in multiple components. 
+
+## Java Binary Object
+A binary object is a wrapper over the binary representation of an entry stored in a cache. Each binary object has the field (name) method, which returns the value of the given field and the type () method that extracts the information about the type of the object . Binary objects are useful when you want to work only with some fields of the objects and do not need to deserialize the entire content set.
+
+## MarkitWire
+An electronic trade capture and confirmation platform.
+
+## MQ (IBM MQ)
+IBM protocol which has an API so it can interact with JMS.
+Message queues provide an asynchronous communications protocol, meaning that the sender and receiver of the message do not need to interact with the message queue at the same time. Messages placed onto the queue are stored until the recipient retrieves them. Message queues have implicit or explicit limits on the size of data that may be transmitted in a single message and the number of messages that may remain outstanding on the queue. 
+
+## LDAP
+Lightweight Directory Access Protocol
+Industry-standard application protocol for accessing and maintaining distributed directory information services over an Internet Protocol (IP) network.
+
+A common use of LDAP is to provide a central store of usernames and passwords. This allows many different applications and services to connect to the LDAP server to validate users.
+
+## Maven
+A tool for building and managing Java-based projects. 
+There is a very useful Maven tutorial at:
+https://www.tutorialspoint.com/maven/maven_overview.htm
+Maven provides sensible default behavior for projects. When a Maven project is created, Maven creates default project structure. A Developer only needs to put files in the right places and there is no need to define any configuration in pom.xml.
+Maven Plugins are generally used to:
+create jar file
+create war file
+compile code files
+unit testing of code
+create project documentation
+create project reports
+
+## Maven repository
+In Maven terminology, a repository is a directory where all the project jars, library jar, plugins or any other project-specific artifacts are stored for use by Maven.
+
+Maven local repository is a folder location on your machine. It is created when you run any maven command for the first time. 
+
+When you run a Maven build, Maven automatically downloads all the dependency jars into the local repository. It helps to avoid references to dependencies stored on remote machine every time a project is built.
+
+By default, a local repository is created by Maven in the %USER_HOME% directory. To override the default location, specify a different path in the Maven settings.xml file available at %M2_HOME%\conf directory.
+
+
+## Netty
+Netty is a socket communication component in Camel.
+It is an NIO client server framework for developing networkServerInitializerFactory applications, such as protocol servers and clients.
+The aim is to simplify and streamline network programming, such as TCP and UDP socket server.
+Netty supports both producer and consumer endpoints.
+It has several options and allows fine-grained control of a number of TCP/UDP communication parameters (buffer sizes, keepAlives, tcpNoDelay, etc) and facilitates both In-Only and In-Out communication on a Camel route.
+Maven users need to add a dependency to their pom.xml to use Netty.
+Find this and a lot more at:
+https://camel.apache.org/components/latest/netty-component.html
+
 
 
 ##
