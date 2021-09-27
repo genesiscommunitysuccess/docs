@@ -39,16 +39,15 @@ There is a cost to this, as it can cause significant extra processing, so do not
 
 ### Ranged data server queries
 
-It is possible to define ranged data servers. These data servers only cache a defined ranged of a table or view. This makes the data server more responsive and reduces resource requirements.
+It is possible to define ranged data servers. These data servers only cache a defined range of a table or view. This makes the data server more responsive and reduces resource requirements.
 
 Syntax:
 
 ```kotlin
-// this part is the same as all other dataservers, name is optional
-query("TRADE_RANGED_TRADE_RANGE_QTY", TRADE) {
+query("TRADE_RANGED_LAST_2_HOURS", TRADE) {
     // the ranged key word makes this a ranged query
     //    the index and the number of key fields needs to be specified
-    ranged(Trade.ByQuantity, 1) {
+    ranged(index = Trade.ByTradeDateTimeAndType, numKeyFields = 1) {
         // optionally refresh keys periodically, for example when we are doing a
         // range on dates
         refresh {
@@ -57,15 +56,13 @@ query("TRADE_RANGED_TRADE_RANGE_QTY", TRADE) {
             // or at specific time
             at(8.pm)
         }
-
         // required, starting key
         from {
-            Trade.ByQuantity(100)
+            Trade.ByTradeDateTime(now().minusHours(2), "")
         }
-
         // optionally end key
         to {
-            Trade.ByQuantity(1000)
+            Trade.ByTradeDateTime(now().plusHours(1), "")
         }
     }
 }
