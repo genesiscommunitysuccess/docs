@@ -31,6 +31,7 @@ fields:
   config:
     required: true
 pages:
+- docs/Glossary/glossary.md
 - docs/server-reference/other-modules/cache.md
 - docs/server-reference/other-modules/dbtogenesis/dbtogenesis-msql-example.md
 - docs/server-reference/other-modules/dbtogenesis/dbtogenesis-oracle-example.md
