@@ -18,7 +18,7 @@ Here, we provide a list of the endpoints for each resource.
 ## Event handler
 
 Transactions are submitted via a POST request to
-`[genesis_router_port]/[event_name]`
+`[host]:[genesis_router_port]/[event_name]`
 
 
 Event fields are represented as JSON properties in a `DETAILS` object.
@@ -55,7 +55,7 @@ Sample response:
 ## Request server
 
 Request Servers are accessed via a GET request to
-`[genesis_router_port]/[request_reply_name]`.
+`[host]:[genesis_router_port]/[request_reply_name]`.
 
 Any request parameters should be set as URL parameters prefixed by `REQUEST`. E.g. `REQUEST.[request_parameter]=[value]`.
 
@@ -101,7 +101,7 @@ Following is a list of data server messages mapped to HTTP endpoints.
 ### DATA_LOGON
 
 To initiate a data server query, a DATA_LOGON message is required to create the subscription. This is requested via a POST request to 
-`[genesis_router_port]/[data_server_query_name]`.
+`[host]:[genesis_router_port]/[data_server_query_name]`.
 
 A body is optional; if provided, it can contain data server parameters, such as `MAX_ROWS` and `FIELDS`
 
@@ -192,8 +192,9 @@ Sample response:
 ### QUERY_UPDATE
 
 To poll for updates to the given subscription to a DataServer query, a QUERY_UPDATE message needs to be sent. This is requested via a GET request to 
+`[host]:[genesis_router_port]/[data_server_query_name]`.
 
-`[host]:[dta_web_adapter_port]/[data_server_query_name]`.
+
 
 The `SOURCE_REF` should match that used in the original DATA_LOGON (subscription).
 
@@ -247,7 +248,8 @@ Sample response:
 
 It is possible to change the columns supplied on updates to the given subscription to a data server query.
 
-This is requested via a PUT request to `[host]:[dta_web_adapter_port]/[data_server_query_name]`.
+This is requested via a PUT request to 
+`[host]:[genesis_router_port]/[data_server_query_name]`.
 
 This particular message is slightly different from other data server messages; specifically, the `SOURCE_REF` should be unique. A `SUBSCRIPTION_REF` is also needed and must match that `SOURCE_REF` value used in the original DATA_LOGON (subscription). The reason for the change in this message is that the response is a simple ACK/NACK, and the client should use this to know if it was successful or not. If an ACK is received, a further GET for the original `SOURCE_REF` (this request's `SUBSCRIPTION_REF`) will provide the added columns for each row the client has received, but nothing regarding the deleted columns. So the ACK is a means of telling the client it is OK to remove the deleted columns from the UI.
 
@@ -284,7 +286,8 @@ Sample response:
 
 PUT requests can also be used to request MORE_ROWS. This is when the client has specified a `MAX_ROWS` and received that many rows, but would like to get more. This is handy for pagination implementations.
 
-This is requested via a PUT request to `[host]:[dta_web_adapter_port]/[data_server_query_name]`.
+This is requested via a PUT request to 
+`[host]:[genesis_router_port]/[data_server_query_name]`.
 
 The body of this request should contain a `MESSAGE_TYPE` element with the value MORE_ROWS.
 
@@ -317,7 +320,8 @@ Sample response:
 
 A DELETE request is made to log off and end the subscription for the given `SOURCE_REF`.
 
-This is requested via a DELETE request to `[host]:[dta_web_adapter_port]/[data_server_query_name]`.
+This is requested via a DELETE request to 
+`[host]:[genesis_router_port]/[data_server_query_name]`.
 
 The `SOURCE_REF` should match that used in the original DATA_LOGON (subscription).
 
@@ -348,7 +352,9 @@ If AUTH is enabled on the server, for any new session you will need to log in to
 
 ### TXN_LOGIN_AUTH
 
-The URL for the login transaction is `[host]:[dta_web_adapter_port]/txn-login-auth`
+The URL for the login transaction is 
+`[host]:[genesis_router_port]/ehandler-login-auth`.
+
 
 Requests require a `USER_NAME` parameter in the `DETAILS` object.
 
@@ -485,9 +491,11 @@ There are special requests which can be used to retrieve available system resour
 
 ### RESOURCES
 
-This request will return all the resources available on the server, each resource has a name and a type (e.g. RequestServer, DataServer, EventHandler)
+This request will return all the resources available on the server, each resource has a name and a type (e.g. RequestServer, DataServer, EventHandler).
 
-Resources can be accessed with a GET request to `[host]:[dta_web_adapter_port]/resources-request`
+Resources can be accessed with a GET request to 
+`[host]:[genesis_router_port]/resources-request`.
+
 
 Sample request:
 
@@ -534,7 +542,8 @@ Sample response:
 
 This request will return all the metadata associated with a given resource.
 
-Metadata can be accessed with a GET request to `[host]:[dta_web_adapter_port]/meta-request?DETAILS[FEATURE]=[resource_name]`
+Metadata can be accessed with a GET request to 
+`[host]:[genesis_router_port]/meta-request?DETAILS[FEATURE]=[resource_name]`.
 
 Request Server resources will return the request and reply fields available to the resource and their associated metadata.
 
