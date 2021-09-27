@@ -181,7 +181,28 @@ Find this and a lot more at the [Camel website](https://camel.apache.org/compone
 
 
 
-##
+## Node Package Manager
+[NPM](https://medium.com/swlh/what-is-npm-a-simple-english-guide-to-truly-understanding-the-node-package-manager-41e82f6c5515#:~:text=The%20Basics%20of%20Using%20NPM%201%20npm%20init,package%20to%20your%20node_modules%20folder.%20More%20items...%20) automates the management of third-party packages (exact version number, etc).
+
+As a general rule, any project that uses Node.js will need a package.json file. This is the control centre for NPM, where you tell NPM which libraries you want to import, provide information about source control, project metadata, and more.
+
+Whenever you run npm install, NPM will look at your package.json file and importa the relevant libraries.
+
+
+## POJO
+Plain Old Java Object
+
+## POM
+Project Object Model
+A key project file for Maven, provided as xml.
+
+## R
+A statistical programming language.
+
+It is widely used by statisticians and data miners for developing statistical software and data analysis. 
+
+Genesis enables you to use R functions in our Consolidators.
+
 
 
 ##
