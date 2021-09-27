@@ -106,6 +106,14 @@ There are also tools for drawing diagrams, import/export and data analysis.
 Amazon Elastic Compute Cloud
 This is where our Dev, Test and Production Instances are housed in the cloud.
 
+## Endpoint
+A url that gives you access to data from the database of an application.
+
+In the world of Application Program Interfaces, an endpoint is the place an application goes to find a resource in the application server.
+
+So, let's say that again. An endpoint is a URL.
+
+
 ## FIX
 Financial Information Exchange 
 A protocol for sending and receiving financial information.
@@ -249,6 +257,3 @@ Custom components and widgets build on the Web Component standards. They are des
 
 ## WSL
 Windows Subsystem for Linux
-
-
-
