@@ -5,10 +5,11 @@ sidebar_label: REST Endpoints
 sidebar_position: 1
 
 ---
-The Genesis Platform automatically exposes all configured resources as HTTP Endpoints if the web adapter is enabled.
-All requests and responses which contain a body are represented in JSON format.
+The Genesis Platform automatically exposes all configured resources as HTTP endpoints via the GENESIS_ROUTER service.
 
-When Genesis AUTH product is installed and enabled, all requests require a valid `SESSION_AUTH_TOKEN HTTP` header. A `SESSION_AUTH_TOKEN` is retrieved after successful user Authentication.
+All requests and responses that contain a body are represented in JSON format.
+
+When the Genesis AUTH product is installed and enabled, all requests require a valid `SESSION_AUTH_TOKEN HTTP` header. A `SESSION_AUTH_TOKEN` is retrieved after successful user Authentication.
 
 Here, we provide a list of the endpoints for each resource.
 
