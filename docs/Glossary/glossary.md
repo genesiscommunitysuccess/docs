@@ -28,7 +28,7 @@ According to the ACID definition, a database is consistent if, and only if ,it c
 
 ## Aeron
 
-[Aeron](https://weareadaptive.com/2020/05/20/aeronhydra/c) is an open-source, low-latency messaging system, initially developed for a large US exchange. 
+Aeron is an open-source, low-latency messaging system, initially developed for a large US exchange. 
 
 It enables processes running on different hosts (or the same host) to communicate with minimal and consistent latency. 
 
@@ -36,11 +36,15 @@ It is used in real-time systems that have high throughput, or which require mini
 
 Aeron operates in a peer-to-peer model, it is brokerless, in contrast to other middleware, such as RabbitMQ, Kafka, and TIBCO EMS.
 
+There is an [aeron wiki](https://github.com/real-logic/aeron/wiki) on github.
+
+
 ## Akka
 Akka is a set of open-source libraries for designing scalable, resilient systems that span processor cores and networks. 
-Akka provides low-level code to deliver reliable behavior, fault tolerance, and high performance.
-Many common practices and accepted programming models do not address important challenges inherent in designing systems for modern computer architectures. To be successful, distributed systems must cope in an environment where components crash without responding, messages get lost without a trace on the wire, and network latency fluctuates. 
-These problems occur regularly in carefully managed intra-datacenter environments - even more so in virtualized architectures.
+Akka provides low-level code to deliver reliable behaviour, fault tolerance, and high performance.
+
+Aeron addresses important challenges inherent in designing distributed systems. To be successful, they must cope in an environment where components crash without responding, messages get lost without a trace on the wire, and network latency fluctuates. 
+These are regular problems in carefully managed intra-datacenter environments - even more so in virtualized architectures.
 
 ## Amazon Elastic Compute Cloud 
 Known as EC2.
@@ -48,3 +52,27 @@ This is Amazon's [Amazon Web Services cloud-computing platform](https://aws.amaz
 In effect, these are virtual computers that we use to run our services.
 It enables us to boot an Amazon Machine Image (AMI) to configure a virtual machine - an instance - where we can install any software we like.
 We also use the AWS Free Tier (known as S3).
+
+## Ansible
+A development tool.
+
+An engine that automates cloud provisioning, configuration management, application deployment, intra-service orchestration, and many other IT needs.
+
+A basic Ansible command or playbook:
+
+* selects machines to execute against from inventory
+* connects to those machines (or network devices, or other managed nodes), usually over SSH
+* copies one or more modules to the remote machines and starts execution there
+
+If you are excited, stimulated or inspired, you can start [here](https://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html#intro-getting-started). 
+
+## 
+
+
+##
+
+
+##
+
+
+##
