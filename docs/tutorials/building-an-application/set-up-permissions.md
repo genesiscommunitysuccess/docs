@@ -148,7 +148,7 @@ class TradingEventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 )
 ```
 
-1. Add setup function and create two auth cache entries. The below authorises users JohnDoe and TestUser for entities with Counterparty ID = 1.
+2. Add setup function and create two auth cache entries. The below authorises users JohnDoe and TestUser for entities with Counterparty ID = 1.
 
 ```kotlin
 @Before
@@ -158,7 +158,7 @@ fun setUp() {
 }
 ```
 
-1. Create test showing where the user can complete action successfully due to permissions. Note that we are specifying the `userName` field on the `Event` object.
+3. Create test showing where the user can complete action successfully due to permissions. Note that we are specifying the `userName` field on the `Event` object.
 
 ```kotlin
 @Test
@@ -185,7 +185,7 @@ fun `test insert trade`(): Unit = runBlocking {
 }
 ```
 
-1. Create test showing where the user cannot complete action successfully due to permissions. JaneDoe is not authorised due to not having an entry in the auth cache map ENTITY_VISIBILITY for Counterparty with ID 1 (In fact, at the moment user JaneDoe has no entries at all in the ENTITY_VISIBILITY map).
+4. Create test showing where the user cannot complete action successfully due to permissions. JaneDoe is not authorised due to not having an entry in the auth cache map ENTITY_VISIBILITY for Counterparty with ID 1 (In fact, at the moment user JaneDoe has no entries at all in the ENTITY_VISIBILITY map).
 
 ```kotlin
 @Test
@@ -220,7 +220,7 @@ Permission codes enable you to establish a yes/no type access to resources (requ
 
 For the purpose of this script, we can keep things simple. In reality you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user.
 
-\[//\]: # (There is a plan to add a table at this point.)
+
 
 In our trading app example we can set two types of rights:
 
