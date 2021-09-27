@@ -43,17 +43,15 @@ Run `remap --commit`
 
 After this, go to the USER_ATTRIBUTES table and use the below **DbMon** commands to set the ACCESS_TYPE field for JaneDoe to be ENTITY (instead of ALL).
 
-```
-table USER_ATTRIBUTES
-
-qsearch USER_NAME==”JaneDoe”
-
-set ACCESS_TYPE ENTITY
-
-writeMode
-
-update USER_ATTRIBUTES_BY_USER_NAME
-```
+    table USER_ATTRIBUTES
+    
+    qsearch USER_NAME==”JaneDoe”
+    
+    set ACCESS_TYPE ENTITY
+    
+    writeMode
+    
+    update USER_ATTRIBUTES_BY_USER_NAME
 
 The generic permissioning settings have been set in place, and are stored in **auth-permissions.auto.xml** in **generated/cfg**. The next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started they will consider the new configuration.
 
@@ -90,6 +88,7 @@ dataServer {
 You can add similar code to the queries in your request servers.
 
 Request Server:
+
 ```kotlin
 requestReplies {
 
@@ -135,6 +134,7 @@ You can write unit tests based on auth-perms.
 For example, let's edit the `TradingEventHandlerTest` class:
 
 1. Add auth cache override to `GenesisTestConfig`. This will create the ENTITY_VISIBILITY auth cache map as part of the test.
+
 ```kotlin
 class TradingEventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
     GenesisTestConfig {
@@ -148,7 +148,8 @@ class TradingEventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 )
 ```
 
-2. Add setup function and create two auth cache entries. The below authorises users JohnDoe and TestUser for entities with Counterparty ID = 1.
+1. Add setup function and create two auth cache entries. The below authorises users JohnDoe and TestUser for entities with Counterparty ID = 1.
+
 ```kotlin
 @Before
 fun setUp() {
@@ -157,7 +158,8 @@ fun setUp() {
 }
 ```
 
-3. Create test showing where the user can complete action successfully due to permissions. Note that we are specifying the `userName` field on the `Event` object.
+1. Create test showing where the user can complete action successfully due to permissions. Note that we are specifying the `userName` field on the `Event` object.
+
 ```kotlin
 @Test
 fun `test insert trade`(): Unit = runBlocking {
@@ -183,7 +185,8 @@ fun `test insert trade`(): Unit = runBlocking {
 }
 ```
 
-4. Create test showing where the user cannot complete action successfully due to permissions. JaneDoe is not authorised due to not having an entry in the auth cache map ENTITY_VISIBILITY for Counterparty with ID 1 (In fact, at the moment user JaneDoe has no entries at all in the ENTITY_VISIBILITY map).
+1. Create test showing where the user cannot complete action successfully due to permissions. JaneDoe is not authorised due to not having an entry in the auth cache map ENTITY_VISIBILITY for Counterparty with ID 1 (In fact, at the moment user JaneDoe has no entries at all in the ENTITY_VISIBILITY map).
+
 ```kotlin
 @Test
 fun `test trade insert without permission`(): Unit = runBlocking {
@@ -211,20 +214,20 @@ fun `test trade insert without permission`(): Unit = runBlocking {
 
 ## Permission Codes
 
-Now moving to RIGHT_SUMMARY permission codes.
+Now you need to look at RIGHT_SUMMARY permission codes.
 
-Permission codes allow you to establish a yes/no type access to resources (req-reps, dataserver, event handler), but they don’t act dynamically and they won’t filter rows based on fine grain criteria (like dynamic permissions would).
+Permission codes enable you to establish a yes/no type access to resources (request servers, dataserver, event handler), but they don’t act dynamically and they won’t filter rows based on fine-grain criteria (in the way that dynamic permissions would).
 
-For the purpose of this script we can keep things simple. In reality you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user.
+For the purpose of this script, we can keep things simple. In reality you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user.
 
 \[//\]: # (There is a plan to add a table at this point.)
 
 In our trading app example we can set two types of rights:
 
-*  TRADER (enables the trader to read and write trades - but only for their own related counterparties)
-*  SUPPORT (enables support to have read-only access to everything)
+* TRADER (enables the trader to read and write trades - but only for their own related counterparties)
+* SUPPORT (enables support to have read-only access to everything)
 
-In terms of definitions, you can add the codes as part of the permissions block in the relevant event handler. For example, for the TRADE_INSERT event handler we could have:
+In terms of definitions, you can add the codes as part of the permissions block in the relevant event handler. For example, for the TRADE_INSERT event handler you could have:
 
 ```kotlin
   eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -253,6 +256,7 @@ In terms of definitions, you can add the codes as part of the permissions block 
 This means only users with the TRADER permission code will be able to use that event handler. You can add similar code to the request servers and data servers, as below, but for these we will also add the SUPPORT code to allow SUPPORT users to have read-only access to trades.
 
 Request Server:
+
 ```kotlin
 requestReplies {
 
@@ -268,6 +272,7 @@ requestReplies {
 ```
 
 Data Server:
+
 ```kotlin
 dataServer {
 
@@ -289,6 +294,7 @@ The permission mechanism is driven by the RIGHT_SUMMARY table, which contains an
 Now we need to write unit tests for this. As an example we will test the Event Handler.
 
 1. Modify the setup function. We are adding another entry to the ENTITY_VISIBILITY auth cache map for user JamieDoe. Also we are adding all of our users to the RIGHT_SUMMARY table.
+
 ```kotlin
 @Before
 fun setUp() {
@@ -320,6 +326,7 @@ fun setUp() {
 ```
 
 2. Create a test for inserting a trade without the correct permission code.
+
 ```kotlin
 @Test
 fun `test trade insert due to incorrect permission code`(): Unit = runBlocking {
@@ -344,4 +351,5 @@ fun `test trade insert due to incorrect permission code`(): Unit = runBlocking {
     )
 }
 ```
-User JamieDoe has the correct entry in the ENTITY_VISIBILITY auth cache map for Counterparty with ID = 1, but their RIGHT_CODE is SUPPORT, therefore is not authorised to enter a trade as the event handler requires the RIGHT_CODE to be TRADER.
+
+User JamieDoe has the correct entry in the ENTITY_VISIBILITY auth cache map for Counterparty with ID = 1. But their RIGHT_CODE is SUPPORT, and so they are not authorised to enter a trade -  because the event handler requires the RIGHT_CODE to be TRADER.
