@@ -143,7 +143,7 @@ A common use of LDAP is to provide a central store of usernames and passwords. T
 
 ## Maven
 A tool for building and managing Java-based projects. 
-There is a very useful (Maven tutorial)[https://www.tutorialspoint.com/maven/maven_overview.htm]
+There is a very useful [Maven tutorial](https://www.tutorialspoint.com/maven/maven_overview.htm)
 
 Maven provides  default behavior for projects. When a Maven project is created, Maven creates a default project structure. As a developer, all you have to do is put the files in the right places. There is no need to define any configuration in pom.xml.
 
