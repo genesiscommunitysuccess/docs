@@ -39,7 +39,7 @@ There is a cost to this, as it can cause significant extra processing, so do not
 
 ### Ranged data server queries
 
-It is possible to defined ranged data servers. These data servers only cache a defined ranged of a table or view. This makes the data server more responsive and reduces resource requirements.
+It is possible to define ranged data servers. These data servers only cache a defined ranged of a table or view. This makes the data server more responsive and reduces resource requirements.
 
 Syntax:
 
