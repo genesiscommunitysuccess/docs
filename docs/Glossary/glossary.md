@@ -205,7 +205,47 @@ Genesis enables you to use R functions in our Consolidators.
 
 
 
-##
+## SSH
+Secure Shell Protocol
+A protocol for operating secure network services over an unsecured network.
+Typical applications include remote command-line, login, and remote command execution, but any network service can be secured with SSH.
+SSH creates a secure channel on a network by using a client–server architecture. It connects an SSH client application with an SSH server. [2] There are two major versions: SSH-1 and SSH-2. The standard TCP port for SSH is 22. 
+SSH is generally used to access Unix-like operating systems, but it can also be used on Microsoft Windows.
+
+Terraform
+A tool for building, changing, and versioning infrastructure safely and efficiently. 
+Configuration files describe to Terraform the components needed to run a single application or a datacenter. Terraform generates an execution plan describing what it will do to reach the desired state, and then executes it to build the described infrastructure. As the configuration changes, Terraform is able to determine what changed and create incremental execution plans which can be applied.
+The infrastructure Terraform can manage includes low-level components, such as compute instances, storage, and networking, as well as high-level components such as DNS entries, SaaS features, etc.
+Infrastructure as Code
+You describe your infrastructure using a high-level configuration syntax to create a blueprint of your datacenter. This can be versioned and treated as you would any other code. Additionally, infrastructure can be shared and re-used.
+Execution Plans
+Terraform has a planning step that generates an execution plan. This shows what Terraform will do when you call apply - so you can avoid any nasty surprises.
+Resource Graph
+Terraform builds a graph of all resources, and parallelizes the creation and modification of any non-dependent resources. Because of this, Terraform builds infrastructure as efficiently as possible, and operators get insight into dependencies in their infrastructure.
+Change Automation
+Complex changesets can be applied to infrastructure with minimal human interaction. With the previously mentioned execution plan and resource graph, you know exactly what Terraform will change and in what order, avoiding many possible human errors.
+
+UDP
+User Datagram Protocol. 
+While TCP provides apps a way to deliver (and receive) an ordered and error-checked stream of information packets over the network, the User Datagram Protocol (UDP) is used by apps to deliver a faster stream of information by doing away with error-checking. 
+A datagram and a packet are more or less the same thing. UDP, built on top of the IP protocol, works similarly to TCP, but is simpler and faster. 
+The main difference is that UDP doesn’t require the recipient to acknowledge that each packet has been received. Any packets that get lost in transit are not resent.
+
+## VLAN
+A Virtual Local Area Network (VLAN) is a logical grouping of different hosts in a similar broadcast domain. 
 
 
-##
+Virtual LANs provide mechanisms for aking logical groups of end devices, even where  they are on different networks. They increase the number of broadcast domains possible in a LAN by grouping various hosts with similar functions. Being virtual, there no issues plugging or unplugging cables. 
+
+Implementing VLANs reduces the security risks significantly, as the number of hosts connected on a broadcast domain decreases. This is done by configuring a separate VLAN for only the hosts with the relevant access permissions. So you control  which devices have local access to each other.
+
+VLANs offer flexible networking models which groups different users based on their departments (jobs/function), rather than just physical locations of that network.
+
+## Web components
+https://www.webcomponents.org/introduction
+
+## WSL
+Windows Subsystem for Linux
+
+
+
