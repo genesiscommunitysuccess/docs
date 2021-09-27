@@ -211,6 +211,17 @@ It is widely used by statisticians and data miners for developing statistical so
 
 Genesis enables you to use R functions in our Consolidators.
 
+## Resource
+In the world of applications servers, a resource is a component that can send and receive messages. It is the part of the application that the front end goes to when it wants to read, write, modify or delete data.
+
+Genesis applications provide three types of resource: 
+* request server (request reply), which supplies static data (reference data)
+* data server, which provides real-time data, such as price information
+* event handler, which handles interaction from the front end (such as user clicks), responses to internal database changes and messages to and from external services
+
+In most cases, you can generate these resources automticall (via the AppGen command). You can then configure these beasic resources to add sophisticatuon to the application.
+
+
 ## REST
 Something developers don't do very often.
 
