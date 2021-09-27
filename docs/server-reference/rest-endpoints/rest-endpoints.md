@@ -28,7 +28,7 @@ A unique `SOURCE_REF` header should be supplied on every request with a unique v
 Sample request:
 
 ```json
-POST /txn-order-insert HTTP/1.1
+POST /event-order-insert HTTP/1.1
 Host: myhost.acme.com:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: 83eLYBnlqjIWt1tqtJhKwTXJj2IL2WA0
@@ -350,7 +350,7 @@ Sample response:
 
 If AUTH is enabled on the server, for any new session you will need to log in to retrieve a valid `SESSION_AUTH_TOKEN` to supply on your requests.
 
-### TXN_LOGIN_AUTH
+### EVENT_LOGIN_AUTH
 
 The URL for the login transaction is 
 `[host]:[genesis_router_port]/ehandler-login-auth`.
@@ -366,7 +366,7 @@ To login initially
 Sample request:
 
 ```json
-POST /txn-login-auth HTTP/1.1
+POST /event-login-auth HTTP/1.1
 Host: myhost.acme.com:9064
 Content-Type: application/json
 SOURCE_REF: 123456-789041
@@ -416,7 +416,7 @@ To refresh the token
 Sample request:
 
 ```json
-POST /txn-login-auth HTTP/1.1
+POST /event-login-auth HTTP/1.1
 Host: myhost.acme.com:9064
 Content-Type: application/json
 SOURCE_REF: 123456-789042
@@ -448,7 +448,7 @@ Sample response:
         "LAST_LOGIN_DATETIME": 1516567765917,
         "PRODUCT": [
             {
-                "NAME": "dta",
+                "NAME": "genesis",
                 "VERSION": "2.2.2"
             },
             {
@@ -461,14 +461,14 @@ Sample response:
 }
 ```
 
-### TXN_LOGOUT
+### EVENT_LOGOUT
 
-To end the user's session you need to send a logout TXN. This particular request `SESSION_ID` (supplied on the last login reply payload) in the HTTP headers and requires no body.
+To end the user's session you need to send a logout EVENT. This particular request `SESSION_ID` (supplied on the last login reply payload) in the HTTP headers and requires no body.
 
 Sample request:
 
 ```json
-POST /txn-logout HTTP/1.1
+POST /event-logout HTTP/1.1
 Host: myhost.acme.com:9064
 Content-Type: application/json
 SOURCE_REF: 123456-789043
@@ -515,15 +515,15 @@ Sample response:
     "RESOURCES": [
         {
             "RESOURCE_NAME": "EVENT_ORDER_INSERT",
-            "RESOURCE_TYPE": "TXNHANDLER"
+            "RESOURCE_TYPE": "EVENT_HANDLER"
         },
         {
             "RESOURCE_NAME": "EVENT_ORDER_AMEND",
-            "RESOURCE_TYPE": "TXNHANDLER"
+            "RESOURCE_TYPE": "EVENT_HANDLER"
         },
         {
             "RESOURCE_NAME": "EVENT_ORDER_CANCEL",
-            "RESOURCE_TYPE": "TXNHANDLER"
+            "RESOURCE_TYPE": "EVENT_HANDLER"
         },
         {
             "RESOURCE_NAME": "COUNTERPARTY_DETAILS",
