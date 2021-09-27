@@ -126,7 +126,7 @@ This is our own scripting language, which plugs in to IntelliJ.
 It means that you have access to autocompletion Help and error highlighting as you code. Once you define an object in GPAL (such as a View), you can use it in multiple components. 
 
 ## Java Binary Object
-A binary object is a wrapper over the binary representation of an entry stored in a cache. Each binary object has the `field (name)` method, which returns the value of the given field and the `type ()` method, which extracts the information about the type of the object. Binary objects are useful when you want to work only with some fields of the objects and do not need to deserialize the entire content set.
+A binary object is a wrapper over the binary representation of an entry stored in a cache. Each binary object has the `field (name)` method, which returns the value of the given field, and the `type ()` method, which extracts the information about the type of the object. Binary objects are useful when you want to work only with some fields of the objects and do not need to deserialize the entire content set.
 
 ## MarkitWire
 An electronic trade capture and confirmation platform.
