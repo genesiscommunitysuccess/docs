@@ -211,6 +211,28 @@ It is widely used by statisticians and data miners for developing statistical so
 
 Genesis enables you to use R functions in our Consolidators.
 
+## REST
+Something developers don't do very often.
+
+In the world of applications and servers, REST is short for **RE**presentational **S**tate **T**ransfer. 
+
+When you have finished wondering if anyone got paid for thinking that up, we'll explain what is going on below.
+
+REST is a standard that enables client and server systems to talk to each other over the internet. Clients send requests to retrieve or modify data on the server, and servers send responses to these requests. 
+
+A request generally consists of:
+
+* an HTTP verb, which defines what kind of operation to perform
+* a header, which allows the client to pass along information about the request (see below)
+* a path to a resource
+* an optional message body containing data
+
+There are 4 basic HTTP verbs used in REST:
+
+* GET — retrieve a specific resource (by ID) or a collection of resources
+* POST — create a new resource
+* PUT — update a specific resource (by ID)
+* DELETE — remove a specific resource (by ID)
 
 
 ## SSH
@@ -220,20 +242,22 @@ Typical applications include remote command-line, login, and remote command exec
 SSH creates a secure channel on a network by using a client–server architecture. It connects an SSH client application with an SSH server. [2] There are two major versions: SSH-1 and SSH-2. The standard TCP port for SSH is 22. 
 SSH is generally used to access Unix-like operating systems, but it can also be used on Microsoft Windows.
 
-Terraform
+## Terraform
 A tool for building, changing, and versioning infrastructure safely and efficiently. 
-Configuration files describe to Terraform the components needed to run a single application or a datacenter. Terraform generates an execution plan describing what it will do to reach the desired state, and then executes it to build the described infrastructure. As the configuration changes, Terraform is able to determine what changed and create incremental execution plans which can be applied.
-The infrastructure Terraform can manage includes low-level components, such as compute instances, storage, and networking, as well as high-level components such as DNS entries, SaaS features, etc.
-Infrastructure as Code
-You describe your infrastructure using a high-level configuration syntax to create a blueprint of your datacenter. This can be versioned and treated as you would any other code. Additionally, infrastructure can be shared and re-used.
-Execution Plans
-Terraform has a planning step that generates an execution plan. This shows what Terraform will do when you call apply - so you can avoid any nasty surprises.
-Resource Graph
-Terraform builds a graph of all resources, and parallelizes the creation and modification of any non-dependent resources. Because of this, Terraform builds infrastructure as efficiently as possible, and operators get insight into dependencies in their infrastructure.
-Change Automation
-Complex changesets can be applied to infrastructure with minimal human interaction. With the previously mentioned execution plan and resource graph, you know exactly what Terraform will change and in what order, avoiding many possible human errors.
 
-UDP
+TerraformConfiguration files describe the components needed to run a single application or a datacenter. Terraform generates an execution plan describing what it will do to reach the desired state, and then executes it to build the described infrastructure. 
+
+As the configuration changes, Terraform is able to determine what changed. It  creates incremental execution plans that can be applied when you are ready.
+
+The infrastructure Terraform can manage includes low-level components, such as compute instances, storage, and networking, as well as high-level components, such as DNS entries, SaaS features, etc.
+
+You describe your infrastructure using a high-level configuration syntax to create a blueprint of your datacenter. This can be versioned and treated as you would any other code. Additionally, infrastructure can be shared and re-used.
+
+Terraform has a planning step that generates an execution plan. This shows what Terraform will do when you call apply - so you can avoid any nasty surprises.
+
+Terraform can also build a Resource Graph of all resources, and parallelizes the creation and modification of any non-dependent resources. This gives operators insight into dependencies in their infrastructure.
+
+## UDP
 User Datagram Protocol. 
 While TCP provides apps a way to deliver (and receive) an ordered and error-checked stream of information packets over the network, the User Datagram Protocol (UDP) is used by apps to deliver a faster stream of information by doing away with error-checking. 
 A datagram and a packet are more or less the same thing. UDP, built on top of the IP protocol, works similarly to TCP, but is simpler and faster. 
