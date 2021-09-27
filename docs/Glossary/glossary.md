@@ -147,7 +147,7 @@ There is a very useful [Maven tutorial](https://www.tutorialspoint.com/maven/mav
 
 Maven provides  default behavior for projects. When a Maven project is created, Maven creates a default project structure. As a developer, all you have to do is put the files in the right places. There is no need to define any configuration in pom.xml.
 
-Maven Plugins are generally used to:
+Maven pPlugins are generally used to:
 * create jar and war files
 * compile code files
 * unit-test your code
