@@ -86,7 +86,7 @@ You can define routing and mediation rules in a variety of domain-specific langu
 Apache Camel uses Uniform Resource Identifiers (URIs) to work directly with the Transport or messaging model. This can be HTTP, ActiveMQ, JMS, JBI, SCA, MINA or CXF, as well as pluggable Components and Data Format options. 
 
 ## DBeaver
-[Dbeaver](dbeaver.com) is a desktop application written in Java and based on the Eclipse platform.
+[DBeaver](https://dbeaver.com/docs/wiki/) is a desktop application written in Java and based on the Eclipse platform.
 
 It is an  SQL client software application and database administration tool that enables you to view data and develop in SQL.
 
@@ -120,7 +120,7 @@ A protocol for sending and receiving financial information.
 
 FIX has standard dictionaries of different messages. Typically, we use v4.4. note that some banks use earlier versions (usually 4.2) and some have already moved to 5.0). Also note that you can customise these dictionaries to create our own messages.
 
-Genesis uses [QuickFIX](quickfixengine.org) (open source). 
+Genesis uses [QuickFIX](http://www.quickfixengine.org/quickfix/doc/html/?quickfix/doc/html) (open source). 
 
 There is a standard FIX module that you can include in applications. 
 
