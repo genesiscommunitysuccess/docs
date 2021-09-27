@@ -243,6 +243,7 @@ VLANs offer flexible networking models which groups different users based on the
 
 ## Web components
 [Web components](https://www.webcomponents.org/introduction) are web platform APIs that enable you to create new custom, reusable, encapsulated HTML tags for use in web pages and web apps. 
+
 Custom components and widgets build on the Web Component standards. They are designed to work across all standard browsers, and can be used with any JavaScript library or framework that works with HTML.
 
 
