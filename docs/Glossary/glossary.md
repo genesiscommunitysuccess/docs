@@ -245,12 +245,29 @@ There are 4 basic HTTP verbs used in REST:
 * PUT — update a specific resource (by ID)
 * DELETE — remove a specific resource (by ID)
 
+## Script
+A command that can be run from the command line of the server.
+
+In the Genesis LCNC platform, you are provided with a set of scripts to enable you to do simple things, such as start or stop a process, or more complex things, such as create a schema from an existing database or spreadsheet.
+
+## Service
+A vital component of the server in an application. A service performs critical action, such as maintaining authorisation information, providing communications between other processes, or providing a resource.
+
+Each service is configured in a proceeses.xml file.
+In the Genesis LCNC many of these services are included automatically when you create an application. Some of these are locked because they are essential to the running of the platform (for example, ). Others can be configured to suit the exact requirements of your application (most obviously, the event handler).
+
+And finally, you can create your own service if you want to do something particularly clever that isn't already provided by one of the standard Genesis processes. You will be able to use that service in any further applications you develop on the platform.
 
 ## SSH
 Secure Shell Protocol
 A protocol for operating secure network services over an unsecured network.
+
 Typical applications include remote command-line, login, and remote command execution, but any network service can be secured with SSH.
-SSH creates a secure channel on a network by using a client–server architecture. It connects an SSH client application with an SSH server. [2] There are two major versions: SSH-1 and SSH-2. The standard TCP port for SSH is 22. 
+
+SSH creates a secure channel on a network by using a client–server architecture. It connects an SSH client application with an SSH server. 
+
+There are two major versions: SSH-1 and SSH-2. The standard TCP port for SSH is 22. 
+
 SSH is generally used to access Unix-like operating systems, but it can also be used on Microsoft Windows.
 
 ## Terraform
