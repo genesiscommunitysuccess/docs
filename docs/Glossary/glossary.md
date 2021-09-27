@@ -254,7 +254,8 @@ In the Genesis LCNC platform, you are provided with a set of scripts to enable y
 A vital component of the server in an application. A service performs critical action, such as maintaining authorisation information, providing communications between other processes, or providing a resource.
 
 Each service is configured in a proceeses.xml file.
-In the Genesis LCNC many of these services are included automatically when you create an application. Some of these are locked because they are essential to the running of the platform (for example, ). Others can be configured to suit the exact requirements of your application (most obviously, the event handler).
+
+In the Genesis LCNC many of these services are included automatically when you create an application. Some of these are locked because they are essential to the running of the platform (for example, AUTH). Others can be configured to suit the exact requirements of the application (most obviously, the event handler).
 
 And finally, you can create your own service if you want to do something particularly clever that isn't already provided by one of the standard Genesis processes. You will be able to use that service in any further applications you develop on the platform.
 
