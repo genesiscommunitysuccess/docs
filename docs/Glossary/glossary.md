@@ -28,7 +28,7 @@ According to the ACID definition, a database is consistent if, and only if ,it c
 
 ## Aeron
 
-Aeron is an open-source, low-latency messaging system, initially developed for a large US exchange. 
+[Aeron](https://weareadaptive.com/2020/05/20/aeronhydra/c) is an open-source, low-latency messaging system, initially developed for a large US exchange. 
 
 It enables processes running on different hosts (or the same host) to communicate with minimal and consistent latency. 
 
@@ -44,8 +44,7 @@ These problems occur regularly in carefully managed intra-datacenter environment
 
 ## Amazon Elastic Compute Cloud 
 Known as EC2.
-https://aws.amazon.com/ec2/?ec2-whats-new.sort-by=item.additionalFields.postDateTime&ec2-whats-new.sort-order=desc
-This is Amazon's Amazon Web Services cloud-computing platform, where the Genesis servers are located.
-In effect, these are virtual computers that we rent to run our services.
+This is Amazon's [Amazon Web Services cloud-computing platform](https://aws.amazon.com/ec2/?ec2-whats-new.sort-by=item.additionalFields.postDateTime&ec2-whats-new.sort-order=desc), where the Genesis servers are located.
+In effect, these are virtual computers that we use to run our services.
 It enables us to boot an Amazon Machine Image (AMI) to configure a virtual machine - an instance - where we can install any software we like.
 We also use the AWS Free Tier (known as S3).
