@@ -6,7 +6,7 @@ title: Generate Fields and Tables From Relational Database
 
 ---
 ## Introduction ##
-This guide walks you though how to setup a Genesis project using [Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html) and generate fields and tables configuration from existing relational database. At the end, you will have generated fields and tables that you can later use to develop any application that uses the same database model.
+This guide walks you though how to set up a Genesis project using [Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html) and generate fields and tables configuration from an existing relational database. At the end, you will have generated fields and tables that you can then use to develop applications that use the same database model.
 
 ## Prerequisites ##
 
