@@ -686,10 +686,10 @@ DtaRun DictionaryBuilder.groovy -u TAS -p fght123 -db TAS -port 1433 -h db2.ad.g
 
 The script tries to connect to the RDBMS currently specified in the arguments. It generates Genesis dictionary fields for column names and their types, and it creates tables with their fields and keys.
 
-There are a few considerations we should be aware of:
+There are a few considerations you should be aware of:
 
-* If a column name (e.g. DATE) is found across several tables but has the same type, only one field will be specified in the dictionary. Contrarily, if the same column name is found in different tables with different types, a new field will be created keeping the column name and adding the table name (e.g. CALENDAR) in the following fashion: DATE_IN_CALENDAR. The script will output this event on screen so we can fix the name and/or type manually later on.
-* The types are mapped from [http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html "http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html") to Genesis dictionary types. As a matter of fact, each database can have their own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore this tool is not 100% accurate and results should be checked for correctness.
+* If a column name (e.g. DATE) is found in several tables, but it always has the same type, only one field will be specified in the dictionary. However, if the same column name is found in different tables with different types, a new field will be created, keeping the column name and adding the table name (e.g. CALENDAR) in the following fashion: DATE_IN_CALENDAR. The script will output this event on screen so you can fix the name and/or type manually later on.
+* The types are mapped from [http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html "http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html") to Genesis dictionary types. As a matter of fact, each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate and results should be checked for correctness.
 * If there is no mapping available for the java.sql.Type retrieved by the column metadata query, it will be mapped by default to the Genesis dictionary type "STRING". This event will be shown on standard output too, so we can know there is an uncommon type we should take care of.
 * Every time a table is successfully parsed, the script will give feedback: "TABLE USERS complete".
 * VIEWS won't be parsed.
@@ -716,23 +716,23 @@ There are a few considerations we should be aware of:
 
 ## AppGen
 
-AppGen can be used to generate a fully working dta product from a dictionary file.
+AppGen can be used to generate a fully working application from a dictionary file.
 
-Usually when creating a application you would start with a schema and then build data servers, request replies and transaction handlers on top to create your product.  AppGen automates all of this, and will generate the following:
+Usually when creating a application, you would start with a schema; you then build data servers, request servers and event handlers on top to create your product.  AppGen automates all of this, and will generate the following:
 
 ### Data server and Request Server
 
 One block will be generated per table, complete with meta data (all fields on table) and a field block (returning all fields on table).  For request server the inbound meta data will be based on primary key.
 
-### Transaction handler
+### Event handler
 
-Groovy transaction handler complete with insert, amend and delete transactions.  All transactions support validation and meta data.  If a field is marked as a sequence in the dictionary (i.e. generated ID) then the field is not specified on the meta data for inserts, but will be specified on modifies/deletes.
+Event handler, complete with insert, amend and delete transactions.  All transactions support validation and meta data.  If a field is marked as a sequence in the dictionary (i.e. generated ID) then the field is not specified on the meta data for inserts, but will be specified on modifies/deletes.
 
-Deletes will have a reduced metadata as we only require the columns to satisfy the primary key to do the delete.
+Deletes will have a reduced metadata, as we only require the columns to satisfy the primary key to do the delete.
 
 ### Static files
 
-Standard files will be generated, i.e. processes.xml and service-definitions.xml
+Two standard files will be generated: processes.xml and service-definitions.xml
 
 ### Parameters
 
@@ -743,7 +743,7 @@ Standard files will be generated, i.e. processes.xml and service-definitions.xml
 | -p | port offset | true | the port range to use when generating services file |No |
 | -pn | product name | true | the name of the product to create |No |
 
-### Example Usage
+### Examples
 
 Example without -t option.
 
@@ -751,7 +751,7 @@ Example without -t option.
 AppGen -d tas-dictionary.xml -p 4000 -pn tas
 ```
 
-In this case we are specifying the dictionary to read is `tas-dictionary.xml`, the port offset is `4000` and the product name to generate is `tas`.  Running this command results in the following structure being created:
+In this case, the dictionary to read is `tas-dictionary.xml`, the port offset is `4000` and the product name to generate is `tas`.  Running this command results in the following structure being created:
 
 ```bash
 tas/
@@ -772,7 +772,7 @@ Example with -t option.
 AppGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
 ```
 
-The tables mentioned in the above command will be appended to the files that were created in tas folder.
+The tables mentioned in the above command will be appended to the files that were created in the tas folder.
 
 ## SSL/TLS Support
 
@@ -808,13 +808,13 @@ Enter key password for <selfsigned>
     (RETURN if same as keystore password):
 ```
 
-Assuming no problems with privileges you will now have a certificate called "selfsigned" with a private key using the same password as the keystore password e.g. Password123.
+Assuming no problems with privileges, you will now have a certificate called "selfsigned" with a private key using the same password as the keystore password e.g. Password123.
 
 In our example this certificate can be found here: /home/exmon/keystore.jks
 
-Please note, however, that this certificate should be stored in another directory outside of this product in case it should be shared among multiple products in the same machine and then simply creating a symbolic link to it. For example, it could be stored in /etc/genesis-certs/ and then linked into /home/exmon/ and /home/oems.
+Please note, however, that this certificate should be stored in another directory outside the application.
 
-The keystore (.jks) is, in a way, the private key to be used in the two-way authentication in the SSL protocol. As such, we need to use it to generate the certificate that needs to be installed by the target computers/loaded by the processes that intend to communicate with.
+The keystore (.jks) is, in a way, the private key to be used in the two-way authentication in the SSL protocol. As such, you need to use it to generate the certificate that has to be installed by the target computers/loaded by the processes that intend to communicate with.
 
 ```bash
 $ keytool -export -alias mykey -file certificate.crt -keystore keystore.jks
@@ -866,7 +866,7 @@ Example:
 
 ### Setting the TLS settings for all processes by default
 
-Edit the _dta-system-definitions.xml_ file and edit the values for DefaultKeystoreLocation, DefaultKeystoreLocation and DefaultCertificate.
+Edit the _genesis-system-definitions.xml_ file and edit the values for DefaultKeystoreLocation, DefaultKeystoreLocation and DefaultCertificate.
 
     Example:
 

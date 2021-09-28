@@ -92,9 +92,9 @@ Sample response:
 
 ## Data Server
 
-Data servers are slightly more complex, as HTTP requests can only have a single response, but the purpose of a data server is to allow for a continuous stream of data to be published to a subscribing client.
+Data servers are slightly more complex, as HTTP requests can only have a single response, but the data server enables you to publish a continuous stream of data to a subscribing client.
 
-For all data server requests, a `SOURCE_REF` header is mandatory, as it is used to match requests to the correct client subscription. This  in turn allows for multiple subscriptions to the same query for the same session (think multiple grids in the UI using the same query with different filters).
+For all data server requests, a `SOURCE_REF` header is mandatory, as it is used to match requests to the correct client subscription. This in turn allows for multiple subscriptions to the same query for the same session (think multiple grids in the UI using the same query with different filters).
 
 Following is a list of data server messages mapped to HTTP endpoints.
 
@@ -191,7 +191,7 @@ Sample response:
 
 ### QUERY_UPDATE
 
-To poll for updates to the given subscription to a DataServer query, a QUERY_UPDATE message needs to be sent. This is requested via a GET request to 
+To poll for updates to the given subscription to a DataServer query, you need to send a QUERY_UPDATE message. This is requested via a GET request to 
 `[host]:[genesis_router_port]/[data_server_query_name]`.
 
 
