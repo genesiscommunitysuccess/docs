@@ -62,7 +62,7 @@ The processes.xml file looks like this:
 
 Each tag is explained below.
 
-The `dependency` tag defines the processes that the current process is dependent on. In the above example, the "TRADING_APP_CONSOLIDATOR" process will start when all of its dependencies have been started.
+The `dependency` tag defines the processes that the current process is dependent on. In the above example, the "TRADING_APP_CONSOLIDATOR" process will start when all its dependencies have been started.
 
 The `loggingLevel` tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to explicitly declare that you would like to log all the received/sent network messages.
 
