@@ -196,6 +196,12 @@ Maven users need to add a dependency to their pom.xml to use Netty.
 
 Find this and a lot more at the [Camel website](https://camel.apache.org/components/latest/netty-component.html).
 
+## NIO
+Non-blocking I/O
+This usually refers to [java.nio](https://docs.oracle.com/javase/10/docs/api/java/nio/package-summary.html), which is a set of Java programming language APIs for intensive I/O operations. 
+The APIs give access to low-level I/O operations in operating systems. So you have APIs that use the most efficient operations of the underlying platform.
+
+
 ## Node Package Manager
 
 [NPM](https://medium.com/swlh/what-is-npm-a-simple-english-guide-to-truly-understanding-the-node-package-manager-41e82f6c5515#:\~:text=The%20Basics%20of%20Using%20NPM%201%20npm%20init,package%20to%20your%20node_modules%20folder.%20More%20items...%20) automates the management of third-party packages (exact version number, etc).
