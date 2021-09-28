@@ -184,7 +184,7 @@ By default, a local repository is created by Maven in the %USER_HOME% directory.
 
 ## Netty
 
-Netty is a socket communication component in Camel. It is an NIO client server framework for developing networkServerInitializerFactory applications, such as protocol servers and clients.
+Netty is a socket communication component in Camel. It is an NIO client server framework for developing network applications, such as protocol servers and clients.
 
 The aim is to simplify and streamline network programming, such as TCP and UDP socket server.
 
