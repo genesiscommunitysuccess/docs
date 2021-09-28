@@ -9,22 +9,26 @@ The Genesis Platform automatically exposes all configured resources as HTTP endp
 
 All requests and responses that contain a body are represented in JSON format.
 
-When the Genesis AUTH product is installed and enabled, all requests require a valid `SESSION_AUTH_TOKEN HTTP` header. A `SESSION_AUTH_TOKEN` is retrieved after successful user Authentication.
+There is a switch in GENESIS_ROUTER that enables you to set whether authentication is required or not.
+
+All requests require a valid `SESSION_AUTH_TOKEN` HTTP header. A `SESSION_AUTH_TOKEN` is retrieved after successful user Authentication.
 
 Here, we provide a list of the endpoints for each resource.
 
-## Transaction handler
+## Event handler
 
-Transactions are submitted via a POST request to `[host]:[dta_web_adapter_port]/[txn_name]`.
+Transactions are submitted via a POST request to
+`[host]:[genesis_router_port]/[event_name]`
 
-Transaction fields are represented as JSON properties in a `DETAILS` object.
+
+Event fields are represented as JSON properties in a `DETAILS` object.
 
 A unique `SOURCE_REF` header should be supplied on every request with a unique value and will be supplied back on the relative response.
 
 Sample request:
 
 ```json
-POST /txn-order-insert HTTP/1.1
+POST /event-order-insert HTTP/1.1
 Host: myhost.acme.com:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: 83eLYBnlqjIWt1tqtJhKwTXJj2IL2WA0
@@ -50,11 +54,12 @@ Sample response:
 
 ## Request server
 
-Request Servers are accessed via a GET request to `[host]:[dta_web_adapter_port]/req-[request_reply_name]`.
+Request Servers are accessed via a GET request to
+`[host]:[genesis_router_port]/[request_reply_name]`.
 
 Any request parameters should be set as URL parameters prefixed by `REQUEST`. E.g. `REQUEST.[request_parameter]=[value]`.
 
-Parameter values can be wild-carded (*, A*, _A, _A*, etc.) or left blank (and assumed to be *).
+Parameter values can be wild-carded (`*`, `A*`, `_A`, `_A*`, etc.) or left blank (and assumed to be `*`).
 
 A unique `SOURCE_REF` header should be supplied on every request with a unique value and will be supplied back on the relative response.
 
@@ -87,22 +92,23 @@ Sample response:
 
 ## Data Server
 
-DataServers are slightly more complex as HTTP requests can only have a single response, but the purpose of a DataServer is to allow for a continuous stream of data to be published to a subscribing client.
+Data servers are slightly more complex, as HTTP requests can only have a single response, but the purpose of a data server is to allow for a continuous stream of data to be published to a subscribing client.
 
-For all DataServer requests, a `SOURCE_REF` header is mandatory as it is used to match requests to the correct client subscription, which in turn allows for multiple subscriptions to the same query for the same session (think multiple grids in the UI using the same query with different filters)
+For all data server requests, a `SOURCE_REF` header is mandatory, as it is used to match requests to the correct client subscription. This  in turn allows for multiple subscriptions to the same query for the same session (think multiple grids in the UI using the same query with different filters).
 
-Following is a list of DataServer messages mapped to HTTP endpoints
+Following is a list of data server messages mapped to HTTP endpoints.
 
 ### DATA_LOGON
 
-To initiate a DataServer query, a DATA_LOGON message is required to create the subscription. This is requested via a POST request to `[host]:[dta_web_adapter_port]/[data_server_query_name]`.
+To initiate a data server query, a DATA_LOGON message is required to create the subscription. This is requested via a POST request to 
+`[host]:[genesis_router_port]/[data_server_query_name]`.
 
-A body is optional, if provided it may contain DataServer parameters such as `MAX_ROWS` and `FIELDS`
+A body is optional; if provided, it can contain data server parameters, such as `MAX_ROWS` and `FIELDS`
 
 The response contains the initial set of data for the subscription. The `ROW_REF` is a unique handle to each row returned and will be present on all QUERY_UPDATE requests where the given row has changed (e.g. modify/delete).
 
 :::note
-To avoid memory leaks, the server will timeout subscriptions that have not been active for a period of time (no GET or PUT requests received). At this point a new subscription can be made via a new DATA_LOGON request
+To avoid memory leaks, the server will timeout subscriptions that have not been active for a period of time (no GET or PUT requests received). At this point, a new subscription can be made via a new DATA_LOGON request
 :::
 
 Sample request:
@@ -185,7 +191,10 @@ Sample response:
 
 ### QUERY_UPDATE
 
-To poll for updates to the given subscription to a DataServer query, a QUERY_UPDATE message needs to be sent in. This is requested via a GET request to `[host]:[dta_web_adapter_port]/[data_server_query_name]`.
+To poll for updates to the given subscription to a DataServer query, a QUERY_UPDATE message needs to be sent. This is requested via a GET request to 
+`[host]:[genesis_router_port]/[data_server_query_name]`.
+
+
 
 The `SOURCE_REF` should match that used in the original DATA_LOGON (subscription).
 
@@ -237,13 +246,14 @@ Sample response:
 
 ### CHANGE_COLUMNS
 
-It is possible to change the columns supplied on updates to the given subscription to a DataServer query.
+It is possible to change the columns supplied on updates to the given subscription to a data server query.
 
-This is requested via a PUT request to `[host]:[dta_web_adapter_port]/[data_server_query_name]`.
+This is requested via a PUT request to 
+`[host]:[genesis_router_port]/[data_server_query_name]`.
 
-This particular message is slightly different to other DataServer messages in that the `SOURCE_REF` should be unique. A `SUBSCRIPTION_REF` is also needed and must  match that `SOURCE_REF` value used in the original DATA_LOGON (subscription). The reason for the change in this message is that the response is a simple ACK/NACK, and the client should use this to know if it was successful or not. If an ACK is received a further GET for the original `SOURCE_REF` (this request's `SUBSCRIPTION_REF`) will provide the added columns for each row the client has received, but nothing regarding the deleted columns. So the ACK is a means of telling the client it is good to remove the deleted columns from the UI.
+This particular message is slightly different from other data server messages; specifically, the `SOURCE_REF` should be unique. A `SUBSCRIPTION_REF` is also needed and must match that `SOURCE_REF` value used in the original DATA_LOGON (subscription). The reason for the change in this message is that the response is a simple ACK/NACK, and the client should use this to know if it was successful or not. If an ACK is received, a further GET for the original `SOURCE_REF` (this request's `SUBSCRIPTION_REF`) will provide the added columns for each row the client has received, but nothing regarding the deleted columns. So the ACK is a means of telling the client it is OK to remove the deleted columns from the UI.
 
-The body of this request should contain a `DETAILS` objectk with `ADD_COLUMNS` (further replies should include these columns) and/or `DROP_COLUMNS` (further replies should not include these columns)
+The body of this request should contain a `DETAILS` object with `ADD_COLUMNS` (further replies should include these columns) and/or `DROP_COLUMNS` (further replies should not include these columns)
 
 Sample request:
 
@@ -276,7 +286,8 @@ Sample response:
 
 PUT requests can also be used to request MORE_ROWS. This is when the client has specified a `MAX_ROWS` and received that many rows, but would like to get more. This is handy for pagination implementations.
 
-This is requested via a PUT request to `[host]:[dta_web_adapter_port]/[data_server_query_name]`.
+This is requested via a PUT request to 
+`[host]:[genesis_router_port]/[data_server_query_name]`.
 
 The body of this request should contain a `MESSAGE_TYPE` element with the value MORE_ROWS.
 
@@ -309,7 +320,8 @@ Sample response:
 
 A DELETE request is made to log off and end the subscription for the given `SOURCE_REF`.
 
-This is requested via a DELETE request to `[host]:[dta_web_adapter_port]/[data_server_query_name]`.
+This is requested via a DELETE request to 
+`[host]:[genesis_router_port]/[data_server_query_name]`.
 
 The `SOURCE_REF` should match that used in the original DATA_LOGON (subscription).
 
@@ -338,9 +350,11 @@ Sample response:
 
 If AUTH is enabled on the server, for any new session you will need to log in to retrieve a valid `SESSION_AUTH_TOKEN` to supply on your requests.
 
-### TXN_LOGIN_AUTH
+### EVENT_LOGIN_AUTH
 
-The URL for the login transaction is `[host]:[dta_web_adapter_port]/txn-login-auth`
+The URL for the login transaction is 
+`[host]:[genesis_router_port]/ehandler-login-auth`.
+
 
 Requests require a `USER_NAME` parameter in the `DETAILS` object.
 
@@ -352,7 +366,7 @@ To login initially
 Sample request:
 
 ```json
-POST /txn-login-auth HTTP/1.1
+POST /event-login-auth HTTP/1.1
 Host: myhost.acme.com:9064
 Content-Type: application/json
 SOURCE_REF: 123456-789041
@@ -402,7 +416,7 @@ To refresh the token
 Sample request:
 
 ```json
-POST /txn-login-auth HTTP/1.1
+POST /event-login-auth HTTP/1.1
 Host: myhost.acme.com:9064
 Content-Type: application/json
 SOURCE_REF: 123456-789042
@@ -434,7 +448,7 @@ Sample response:
         "LAST_LOGIN_DATETIME": 1516567765917,
         "PRODUCT": [
             {
-                "NAME": "dta",
+                "NAME": "genesis",
                 "VERSION": "2.2.2"
             },
             {
@@ -447,14 +461,14 @@ Sample response:
 }
 ```
 
-### TXN_LOGOUT
+### EVENT_LOGOUT
 
-To end the user's session you need to send a logout TXN. This particular request `SESSION_ID` (supplied on the last login reply payload) in the HTTP headers and requires no body.
+To end the user's session you need to send a logout EVENT. This particular request `SESSION_ID` (supplied on the last login reply payload) in the HTTP headers and requires no body.
 
 Sample request:
 
 ```json
-POST /txn-logout HTTP/1.1
+POST /event-logout HTTP/1.1
 Host: myhost.acme.com:9064
 Content-Type: application/json
 SOURCE_REF: 123456-789043
@@ -477,9 +491,11 @@ There are special requests which can be used to retrieve available system resour
 
 ### RESOURCES
 
-This request will return all the resources available on the server, each resource has a name and a type (e.g. RequestServer, DataServer, EventHandler)
+This request will return all the resources available on the server, each resource has a name and a type (e.g. RequestServer, DataServer, EventHandler).
 
-Resources can be accessed with a GET request to `[host]:[dta_web_adapter_port]/resources-request`
+Resources can be accessed with a GET request to 
+`[host]:[genesis_router_port]/resources-request`.
+
 
 Sample request:
 
@@ -499,15 +515,15 @@ Sample response:
     "RESOURCES": [
         {
             "RESOURCE_NAME": "EVENT_ORDER_INSERT",
-            "RESOURCE_TYPE": "TXNHANDLER"
+            "RESOURCE_TYPE": "EVENT_HANDLER"
         },
         {
             "RESOURCE_NAME": "EVENT_ORDER_AMEND",
-            "RESOURCE_TYPE": "TXNHANDLER"
+            "RESOURCE_TYPE": "EVENT_HANDLER"
         },
         {
             "RESOURCE_NAME": "EVENT_ORDER_CANCEL",
-            "RESOURCE_TYPE": "TXNHANDLER"
+            "RESOURCE_TYPE": "EVENT_HANDLER"
         },
         {
             "RESOURCE_NAME": "COUNTERPARTY_DETAILS",
@@ -526,13 +542,14 @@ Sample response:
 
 This request will return all the metadata associated with a given resource.
 
-Metadata can be accessed with a GET request to `[host]:[dta_web_adapter_port]/meta-request?DETAILS[FEATURE]=[resource_name]`
+Metadata can be accessed with a GET request to 
+`[host]:[genesis_router_port]/meta-request?DETAILS[FEATURE]=[resource_name]`.
 
-RequestServer resources will return the request and reply fields available to the resource and their associated metadata.
+Request Server resources will return the request and reply fields available to the resource and their associated metadata.
 
-DataServer resources will return the fields available to the resource and their associated metadata.
+Data server resources will return the fields available to the resource and their associated metadata.
 
-TransactionHandler resources will return the transaction fields available to the resource and their associated metadata.
+Event handler resources will return the transaction fields available to the resource and their associated metadata.
 
 Sample request:
 
