@@ -89,7 +89,7 @@ Sample response:
 }
 ```
 
-## Data Server
+## Data server
 
 Data servers are slightly more complex; HTTP requests can only have a single response, but the data server enables you to publish a continuous stream of data to a subscribing client.
 
