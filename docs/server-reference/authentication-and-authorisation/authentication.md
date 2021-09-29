@@ -10,7 +10,7 @@ id: authentication
 
 There are several authentication types to choose from when configuring the auth-preferences.xml file: INTERNAL, LDAP and HYBRID.
 
-In order to select one, it is enough to change the type attribute of the authentication field:
+To select one, just change the `type` attribute of the `authentication` field:
 
 ```xml
 <authentication type="INTERNAL"></authentication>
@@ -18,7 +18,7 @@ In order to select one, it is enough to change the type attribute of the authent
 
 ### Internal
 
-The internal authentication uses hash values stored in the database to authenticate users. It checks user credentials against an internal database table and it allows a certain degree of extra functionality.
+The internal authentication uses hash values stored in the database to authenticate users. It checks user credentials against an internal database table, which provides a certain degree of extra functionality.
 
 User accounts set in this mode can be locked and passwords can be set to expire. In addition, users can also reset/change their password assuming they can login first.
 
