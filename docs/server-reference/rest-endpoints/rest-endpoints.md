@@ -91,7 +91,7 @@ Sample response:
 
 ## Data Server
 
-Data servers are slightly more complex, as HTTP requests can only have a single response, but the data server enables you to publish a continuous stream of data to a subscribing client.
+Data servers are slightly more complex; HTTP requests can only have a single response, but the data server enables you to publish a continuous stream of data to a subscribing client.
 
 For all data server requests, a `SOURCE_REF` header is mandatory, as it is used to match requests to the correct client subscription. This in turn allows for multiple subscriptions to the same query for the same session (think multiple grids in the UI using the same query with different filters).
 
@@ -462,7 +462,7 @@ Sample response:
 
 ### EVENT_LOGOUT
 
-To end the user's session you need to send a logout EVENT. This particular request `SESSION_ID` (supplied on the last login reply payload) in the HTTP headers and requires no body.
+To end the user's session, you need to send a logout EVENT. This particular request `SESSION_ID` (supplied on the last login reply payload) in the HTTP headers requires no body.
 
 Sample request:
 
@@ -544,11 +544,11 @@ This request will return all the metadata associated with a given resource.
 Metadata can be accessed with a GET request to 
 `[host]:[genesis_router_port]/meta-request?DETAILS[FEATURE]=[resource_name]`.
 
-Request Server resources will return the request and reply fields available to the resource and their associated metadata.
+* Request server resources will return the request and reply fields available to the resource and their associated metadata.
 
-Data server resources will return the fields available to the resource and their associated metadata.
+* Data server resources will return the fields available to the resource and their associated metadata.
 
-Event handler resources will return the transaction fields available to the resource and their associated metadata.
+* Event handler resources will return the transaction fields available to the resource and their associated metadata.
 
 Sample request:
 

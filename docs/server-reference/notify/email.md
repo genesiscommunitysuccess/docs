@@ -4,9 +4,9 @@ sidebar_label: 'Email'
 sidebar_position: 2
 id: email
 ---
-###  Email
 
-#### System Definition Configuration
+
+#### System Definition configuration
 
 The following configuration items can be defined in order to provide SMTP server connection details, and to configure email service-related features.
 
