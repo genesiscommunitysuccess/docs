@@ -256,7 +256,7 @@ If successful:
             DETAILS.SYSTEM.PRODUCT[1].NAME = AUTH
             DETAILS.SYSTEM.PRODUCT[1].VERSION = 1.0.1.RELEASE
 
-If there is a problem the server will return the standard error set with CODE/TEXT details and the error code LOGIN_AUTH_NACK.  The following error codes can be provided:
+If there is a problem, the server will return the standard error set with CODE/TEXT details and the error code LOGIN_AUTH_NACK.  The following error codes can be provided:
 
 - UNKNOWN_ACCOUNT - User is unknown
 - INCORRECT_CREDENTIALS - User/password combination is invalid
@@ -265,7 +265,7 @@ If there is a problem the server will return the standard error set with CODE/TE
 - LOGIN_FAIL - Generic error code
 
 #### Password Change
-If the response is PASSWORD_EXPIRED, then the GUI can allow the user to change the password provided they know their existing password.
+If the response is PASSWORD_EXPIRED, then the GUI can allow the user to change the password, provided they know their existing password.
 ##### Request
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD
         DETAILS.USER_NAME = JohnDoe
@@ -286,16 +286,16 @@ If there's a problem, we will receive a standard error set with type
 - ILLEGAL_SEQUENCE - Numerical/alphabetical sequence detected
 
 #### Reset Password
-Can only be called by an administrator, simply specifies a user name and will set the password to blank.
+Can only be called by an administrator; this simply specifies a user name and will set the password to blank.
 ##### Request
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD
         DETAILS.USER_NAME = JohnDoe
 ##### Response
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD_ACK
 ### Post-authentication
-Once the user is authenticated, the server will expect heartbeat messages, as defined in the interval setting on the ACK message.  If the GUI misses a configurable number of heartbeats, the session will be expired.  In response to a heartbeat, the GUI will receive a list of available services and their details.
+Once the user has been authenticated, the server will expect heartbeat messages, as defined in the interval setting on the ACK message.  If the GUI misses a configurable number of heartbeats, the session will be expired.  In response to a heartbeat, the GUI will receive a list of available services and their details.
 
-These services should be contacted on the hosts as they are defined in the list.  The ordering may change if the server is implementing a load balancing strategy.  Existing connections can simply ignore the ordering changes, but in a fail over or reconnection scenario, the ordering should be adhered to.
+These services should be contacted on the hosts as they are defined in the list.  The ordering may change if the server implements a load-balancing strategy.  Existing connections can simply ignore the ordering changes, but in a fail over or reconnection scenario, the ordering should be adhered to.
 
 ##### Request
 
@@ -318,13 +318,15 @@ These services should be contacted on the hosts as they are defined in the list.
 
 
 #### Rights polling
-The GUI can receive rights from a process called AUTH_DATASERVER.  The view USER_RIGHTS displays all users and codes.  A logged in user should automatically set the Filter expression to be USER_NAME=='xxx' to receive push updates to user privileges.
+The GUI can receive rights from a process called AUTH_DATASERVER.  The view USER_RIGHTS displays all users and codes.  A logged-in user should automatically set the Filter expression to be USER_NAME=='xxx' to receive push updates to user privileges.
 
-#### Entity Management
-We have the concept of profiles, users and rights.  A profile is a group of users, which can be permissioned.  For example we may have a SALES_TRADER group in which all users must have the same permissions.  In all cases where we're specifying either a right for a user/profile, or a user in a profile, the transaction represents what we want the entity to look like, i.e. if we amend a profile and don't supply a user that previously was part of that profile, then that user will be removed from that profile on the server.
+#### Entity management
+We have the concept of profiles, users and rights.  A profile is a group of users, which can be permissioned.  For example, you could have a SALES_TRADER group in which all users must have the same permissions.  In all cases where you specify either a right for a user/profile, or a user in a profile, the event represents what we want the entity to look like; i.e. if you amend a profile and don't supply a user that previously was part of that profile, then that user will be removed from that profile on the server.
 
-It's worth noting we do not support meta data on the following transactions, as the model is currently too complex for our meta data.  Also, we do not currently support 2 phase validation.
+Note the following:
 
+* 2-phase validation is not curren;y supported
+* meta data is not supported on the following transactions.
 User/profile STATUS field can be ENABLED/DISABLED/PASSWORD_EXPIRED/PASSWORD_RESET.
 PASSWORD_EXPIRED should prompt the user to enter a new password.
 PASSWORD_RESET should do the same but the server expects a blank "current password" field.
