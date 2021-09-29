@@ -28,9 +28,9 @@ This is the default authentication behaviour if no type is specified in auth-pre
 
 LDAP authentication is available to be used within the AUTH environment as a basic login.
 
-However, we lose control of the internal authentication functionality, as the authentication relies on an external party that cannot be operated from Genesis. As a direct consequence requests to change/reset password won't be accepted.
+However, you lose control of the internal authentication functionality, as the authentication relies on an external party that cannot be operated from Genesis. As a direct consequence, requests to change/reset password won't be accepted.
 
-Note that a username **must** exist inside the internal records if we want to use LDAP authentication. This means a user entry must be created inside the USER database table for every LDAP user we desire to give access. Otherwise every LDAP user could get authenticated, which is not the expected behaviour. There is no password checking against the internal records though, as the authentication will rely solely on LDAP.
+Note that a username **must** exist inside the internal records if you want to use LDAP authentication. This means a user entry must be created inside the USER database table for every LDAP user you want to give access to. Otherwise, every LDAP user could get authenticated, which is not the expected behaviour. There is no password checking against the internal records though, as the authentication will rely solely on LDAP.
 
 The configuration file needs extra parameters in order to set up LDAP authentication:
 
@@ -40,13 +40,13 @@ The configuration file needs extra parameters in order to set up LDAP authentica
 
 **searchBase** defines the location(s) in the directory from which the LDAP search begins. Default: ou=temp,dc=temp
 
-**userPrefix** is an optional prefix we can add to every username received from login requests in our authentication server. Default: empty string.
+**userPrefix** is an optional prefix you can add to every username received from login requests in your authentication server. Default: empty string.
 
-**bindDn** is an optional distinguished name which acts as a first LDAP login and it is normally required to perform a search. If this field is not specified no bindings will be used. Default: null
+**bindDn** is an optional distinguished name which acts as a first LDAP login and it is normally required to perform a search. If this field is not specified, no bindings will be used. Default: null
 
 **bindPassword** represents the password associated to the **bindDn** account. Default: null.
 
-**userIdType** defines the attribute to match in the directory search against the provided username. Amongst the most common LDAP implementations we can find three main ways of configuring user names: by using the "uid" attribute, the "cn" attribute or the "sAMAccountName" in Windows. Default: cn.
+**userIdType** defines the attribute to match in the directory search against the provided username. Amongst the most common LDAP implementations you can find three main ways of configuring user names: by using the "uid" attribute, the "cn" attribute or the "sAMAccountName" in Windows. Default: cn.
 
 ```xml
 <authentication type="LDAP">
@@ -65,9 +65,9 @@ The configuration file needs extra parameters in order to set up LDAP authentica
 
 As its name suggests, Hybrid mode is a mix of Internal and LDAP authentication modes and it checks credentials against both.
 
-First an internal authentication will be performed and in case of a successful outcome, another authentication against the LDAP server will take place. Both authentications need to be successful to accept a login request.
+First, an internal authentication will be performed and in case of a successful outcome, another authentication against the LDAP server will take place. Both authentications need to be successful to accept a login request.
 
-In this mode we can take advantage of all the available functionality in internal mode (locked accounts, expiring passwords, reset/change passwords), but on the other hand, if passwords are changed or expired they should be changed manually in LDAP too, as authentication always happens in both services.
+In this mode, you can take advantage of all the available functionality in internal mode (locked accounts, expiring passwords, reset/change passwords).However, if passwords are changed or expired, they should be changed manually in LDAP too, as authentication always happens in both services.
 
 The configuration file takes the same fields as LDAP, taking into account that now the authentication type should be changed to HYBRID.
 
@@ -85,11 +85,11 @@ The configuration file takes the same fields as LDAP, taking into account that n
 
 ## Authentication Preferences
 
-The authentication preferences/options are specified in auth-preferences.xml and we can make a subdivision of them in three sections: authentication type configuration, password strength related configuration and general configuration.
+The authentication preferences/options are specified in auth-preferences.xml and you can make a subdivision of them in three sections: authentication type configuration, password strength related configuration and general configuration.
 
 ### Basic preferences in detail
 
-We can define the following preferences:
+You can define the following preferences:
 
 **authentication** represents the authentication type to be used by the platform. There are three authentication types (INTERNAL, LDAP and DEFAULT) and they are explained in detail in the "Authentication Types" subsection. Default: INTERNAL.
 
@@ -106,7 +106,7 @@ We can define the following preferences:
 * **restrictAlphaSequences** restricts alphabetical sequences in passwords (e.g. abcdefg). Sequences bigger or equal to 5 characters won't be allowed if active. Default: false.
 * **restrictQWERTY** restricts QWERTY sequences in passwords (e.g. qwertyuiop). Sequences bigger or equal to 5 characters won't be allowed if active. Default: true.
 * **restrictNumericalSequences** restricts numerical sequences in passwords (e.g. 123456). Sequences bigger or equal to 5 numbers won't be allowed if active. Default: true.
-* **illegalCharacters** contains characters we don't want to accept in user passwords. In the example shown below we can see three banned characters: $, £ and ^. Default: empty.
+* **illegalCharacters** contains characters you don't want to accept in user passwords. In the example shown below, you can see three banned characters: $, £ and ^. Default: empty.
 * **historicalCheck** if present prevents reuse of passwords used by the user for the configured number of historical uses. Default: null.
 * **dictionaryWordSize** if present prevents use of english words of the configured length. Default: null.
 * **repeatCharacterRestrictSize** if present prevents use of repeated characters of the configured length. Default: null.
@@ -229,7 +229,7 @@ All requests below are capable of returning an error with a code of INTERNAL_ERR
 ### Pre-authentication
 Pre-authentication messages can be sent by a client without the user being logged in.
 #### Login Preferences
-We need to advertise to any connecting client the types of functionality that are available/configured on the security module.  For example, we may offer the client two ways of resetting user passwords, either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, hence this information needs to be made available before the user logs in.
+You need to advertise to any connecting client the types of functionality that are available/configured on the security module.  For example, you could offer the client two ways of resetting user passwords, either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, hence this information needs to be made available before the user logs in.
 Currently this is the only preference published.
 ##### Request
     MESSAGE_TYPE = EVENT_LOGIN_PREFS
@@ -237,7 +237,7 @@ Currently this is the only preference published.
     MESSAGE_TYPE = EVENT_LOGIN_PREFS_ACK
         DETAILS.PASSWORD_RESET_TYPE = ADMIN/EMAIL
 ### Authentication
-Once we have a list of preferences, we can show the correct login dialog and let the user make a login attempt.  The password is provided in plain text, as it is expected we will secure the connection using TLS.
+Once you have a list of preferences, you can show the correct login dialog and let the user make a login attempt.  The password is provided in plain text, as it is expected you will secure the connection using TLS.
 #### Login
 ##### Request
 
@@ -275,14 +275,14 @@ If the response is PASSWORD_EXPIRED, then the GUI can allow the user to change t
 If successful:
 
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD_ACK
-If there's a problem, we will receive a standard error set with type
+If there's a problem, you will receive a standard error set with type
 - CHANGE_USER_PASSWORD_NACK.  The error codes that can be returned are currently:
 - TOO_SHORT - Password length too short
 - TOO_LONG - Password length too long
 - INSUFFICIENT_CHARACTERS - Covers a few cases so text field may be required, used for things like no digits provided when 1 digit is required.
 - ILLEGAL_MATCH - Covers a few cases so text field may be required, used for things like repeating characters in password
 - ILLEGAL_WHITESPACE - If password contains white space
-- INSUFFICIENT_CHARACTERISTICS - May be provided if we have configured passwords to be successful if only 2 of 5 strength checks pass.  Should be provided alongside "real" error codes.
+- INSUFFICIENT_CHARACTERISTICS - May be provided if you have configured passwords to be successful if only 2 of 5 strength checks pass.  Should be provided alongside "real" error codes.
 - ILLEGAL_SEQUENCE - Numerical/alphabetical sequence detected
 
 #### Reset Password
@@ -321,7 +321,7 @@ These services should be contacted on the hosts as they are defined in the list.
 The GUI can receive rights from a process called AUTH_DATASERVER.  The view USER_RIGHTS displays all users and codes.  A logged-in user should automatically set the Filter expression to be USER_NAME=='xxx' to receive push updates to user privileges.
 
 #### Entity management
-We have the concept of profiles, users and rights.  A profile is a group of users, which can be permissioned.  For example, you could have a SALES_TRADER group in which all users must have the same permissions.  In all cases where you specify either a right for a user/profile, or a user in a profile, the event represents what we want the entity to look like; i.e. if you amend a profile and don't supply a user that previously was part of that profile, then that user will be removed from that profile on the server.
+In the Genesis LCNC Platform, there are profiles, users and rights.  A profile is a group of users, which can be permissioned.  For example, you could have a SALES_TRADER group in which all users must have the same permissions.  In all cases where you specify either a right for a user/profile, or a user in a profile, the event represents what you want the entity to look like; i.e. if you amend a profile and don't supply a user that previously was part of that profile, then that user will be removed from that profile on the server.
 
 Note the following:
 
