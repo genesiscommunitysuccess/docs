@@ -4,7 +4,7 @@ sidebar_label: 'Microsoft Teams'
 sidebar_position: 4
 id: ms_teams
 ---
-Microsoft Team provides a mechanism for exposing it channels to remote system via webhooks. A webhook url can be created as described [here](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook)
+Microsoft Teams provides a mechanism for exposing its channels to a remote system via webhooks. A webhook url can be created as described [here](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook)
 
 ##### GATEWAY
 

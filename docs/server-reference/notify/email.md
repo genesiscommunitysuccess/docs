@@ -8,7 +8,7 @@ id: email
 
 #### System Definition Configuration
 
-The following configuration items are defined to detail SMTP server connection details as well as configuring email service related features.
+The following configuration items can be defined in order to provide SMTP server connection details, and to configure email service-related features.
 
 ```kotlin
 //Generated emails sent as this email address by default

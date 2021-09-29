@@ -1,14 +1,14 @@
 ---
 title: Configuring Notify
-sidebar_label: Configuring notify
+sidebar_label: Configuring Notify
 sidebar_position: 1
 id: configure
 
 ---
 ### Overview
 
-The Genesis Notify module is designed to enable you to configure an application to send and receive  messages to/from various messaging services.
-The growing list of currently supported services are:
+The Genesis Notify module is designed to enable you to configure an application to send and receive  messages to and from various messaging services.
+The growing list of currently supported services is:
 
 #### Sending:
 
@@ -20,21 +20,22 @@ The growing list of currently supported services are:
 
 * Symphony
 
-### Configuration Overview
+### Configuration overview
 
-Gensis Notify is a generic service; it requires various configuration items across system definition and the database. Here, we shall give you a high-level view of those configuration items and why they are needed. Supplementing this, we have listed each service, along with the specific configuration requirements and examples.
+Genesis Notify is a generic service; it has various configuration requirements across system definition and the database. Here, we shall give you a high-level view of those configuration items and why they are needed. Supplementing this, we have listed each service, along with the specific configuration requirements and examples.
 
-#### System Definition
+#### System definition
 
-This is used to store high level connection details to the given, for example SMTP server configuration, Symphony/Teams server configurations.
+This is used to store high-level connection details to the given, for example SMTP server configuration, Symphony/Teams server configurations.
 
 #### Database
 
 ##### GATEWAY
 
 A gateway record gives details to a given “entity” within the given service.
-For email this is a set of addresses to send emails to
-For symphony/teams it contains details of a given “chat” or “room”. Each record is given a topic
+
+* For email, this is a set of addresses to send emails to
+* For symphony/teams, it contains details of a given “chat” or “room”. Each record is given a topic
 
 ##### NOTIFY
 

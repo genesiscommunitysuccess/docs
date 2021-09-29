@@ -4,13 +4,12 @@ sidebar_label: 'Symphony'
 sidebar_position: 3
 id: symphony
 ---
-###  Symphony
 
-[Symphony](http://symphony.com) is a secure instant messaging service focused on support for financial companies. 
-To make available symphony services to Genesis, including the sending and receiving of messages, 
-you'll need to provision [symphony service](https://symphony.com/participate) and configure a [symphony bot](https://docs.developers.symphony.com/developer-tools/developer-tools/bdk-2.0).
+[Symphony](http://symphony.com) is a secure instant messaging service focused on financial companies. 
+To make Symphony services available to Genesis, including the sending and receiving of messages, 
+you need to provision [symphony service](https://symphony.com/participate) and configure a [symphony bot](https://docs.developers.symphony.com/developer-tools/developer-tools/bdk-2.0).
 
-#### System Definition Configuration
+#### System Definition configuration
 
 The following configuration details are an example of Genesis Symphony Connection details. Genesis requires the use of Symphony POD, Symphony Bot and the generation of private/public key pairs. 
 This is covered extensively in Symphony Documentation.      
@@ -65,7 +64,7 @@ Also, incoming messages that are configured to publish to a topic will set the D
 
 #### Additional Genesis Notify Service for symphony
 
-The Genesis Notify Service currently provides additional Symphony operation exposed as Event Handlers.
+The Genesis Notify Service currently provides additional Symphony operation exposed as event handlers.
 
 * GATEWAY_CREATE_CHANNEL - Adds a user to a channel
 * GATEWAY_ADD_MEMBER_TO_CHANNEL - Adds a user to a channel
@@ -78,10 +77,10 @@ data class AddUserToChannel(val channelName: String, val userId: String)
 data class RemoveUserFromChannel(val channelName: String, val userId: String)
 ```
 
-## Configuring Symphony On-Behalf-Of (OBO) for Outgoing Messages 
+## Configuring Symphony On-Behalf-Of (OBO) for outgoing messages 
 
 To utilise the Symphony OBO feature, 
-which allows messages to be sent through a configured symphony robot as a particular user, you'll need to configure genesis application to be point to the 
+which enables messages to be sent through a configured symphony robot as a particular user, you need to configure your application to point to the 
 required symphony extension app. Documentation on how to set this up in Symphony is covered [here](https://docs.developers.symphony.com/building-extension-applications-on-symphony/app-authentication/obo-authentication)
 
 ```kotlin
