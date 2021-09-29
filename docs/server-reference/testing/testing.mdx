@@ -29,7 +29,7 @@ There are three types of dictionary you can use:
 * Inline dictionary
 * File dictionary
 
-#### Production Dictionary
+#### Production dictionary
 
 Use this type of dictionary if you want to test against the production dictionary. This is the prefered way of using a dictionary in product tests as production and test dictionaries are always in sync.
 
@@ -55,7 +55,7 @@ protected GenesisDictionary createMockDictionary() {
 </TabItem>
 </Tabs>
 
-#### Inline Dictionary
+#### Inline dictionary
 
 When writing a test in Kotlin, you can the GPAL syntax to define a dictionary inline. Use this type of dictionary if the dictionary you want to use in your tests is different from the production dictionary. This dictionary should only be used in framework-type components where you want to test dictionaries that are distinct from your production dictionary.
 
@@ -78,9 +78,9 @@ override fun createMockDictionary(): GenesisDictionary = testDictionary {
 Please note that the table definitions should be valid. If you specify an invalid table, e.g. by not defining a primary key, the test will fail.
 :::
 
-#### File Dictionary
+#### File dictionary
 
-These types of dictionaries should only be used if the dictionary you want to test is:
+Only use a File dictionary if the dictionary you want to test is:
 
 1. Different from the production dictionary
 2. Too big to be practical in an inline dictionary
