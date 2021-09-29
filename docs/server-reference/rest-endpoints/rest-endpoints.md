@@ -16,8 +16,7 @@ All requests require a valid `SESSION_AUTH_TOKEN` HTTP header. A `SESSION_AUTH_T
 Here, we provide a list of the endpoints for each resource.
 
 ## Event handler
-
-Transactions are submitted via a POST request to
+Events are submitted via a POST request to
 `[host]:[genesis_router_port]/[event_name]`
 
 
