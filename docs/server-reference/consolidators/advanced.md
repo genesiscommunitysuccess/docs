@@ -20,7 +20,7 @@ If you use this, it consolidates all records in the system before starting the r
 ## Configuration
 The consolidator is configured through the standard Genesis configuration XML files. The naming convention and extension is **-consolidator.xml**. So, if your application is called *Tiresias*, your configuration file is **tiresias-consolidator.xml**.
 
-You can define as many consolidators as you like in your configuration file. Each consolidator definition is made up of:
+You can define as many consolidators as you like in your configuration file. Each consolidator definition is made up of the following elements:
 
 * **name** to identify the consolidation block.
 
