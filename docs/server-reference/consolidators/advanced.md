@@ -18,9 +18,11 @@ This module can be passed one argument when you start the process using the star
 If you use this, it consolidates all records in the system before starting the real-time event-driven consolidations. At the beginning of a cold start, all fields in consolidationFields of the consolidation table are zeroed (or deleted, if transient) before initiating the re-consolidation of all the records in the database.
 
 ## Configuration
-The consolidator is configured through the standard Genesis configuration XML files. The naming convention and extension is **-consolidator.xml**. So, if your application is called *Tiresias*, your configuration file is **tiresias-consolidator.xml**.
+You define consolidators in an xml file with the name **_application_-consolidator.xml**. 
+If your application is called *Tiresias*, your configuration file is **tiresias-consolidator.xml**.
+Within your file, you can define as many consolidators as you like. 
+Each consolidator definition is a code block with the following elements:
 
-You can define as many consolidators as you like in your configuration file. Each consolidator definition is made up of the following elements:
 
 * **name** to identify the consolidation block.
 

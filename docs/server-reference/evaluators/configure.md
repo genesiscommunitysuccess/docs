@@ -5,15 +5,17 @@ sidebar_position: 1
 id: configure
 ---
 
-Evaluators allow developers to connect Event Handlers to two different kind of events.
+Evaluators enable you to connect event eandlers to two different kinds of event: dynamic and static (cron rules).
 
 1. __Dynamic Rules__, which are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries, and
-2. __Cron Rules__, ie Scheduling Rules the are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
+2. __Cron Rules__, which are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
 
-Both kind of rules are defined in database, in the tables DYNAMIC_RULES and CRON_RULES respectively. In both cases the GENESIS_EVALUATOR must be configured to be running.
-The configuration to run the GENESIS_EVALUATOR in available by default, but the process must be switched on to actively use.
+In both cases, you define the rule in two separate tables in the database: DYNAMIC_RULES and CRON_RULES. 
 
-eg: assuming a standard genesis file for controlling `/home/trading/run/site-specific/cfg/genesis-processes.xml`, we can simply switch, start from true to false, making sure to run 
+The GENESIS_EVALUATOR must be configured to be running. The configuration to run the GENESIS_EVALUATOR is available by default, but the process must be switched on before you can actively use it.
+
+Example
+Assuming a standard genesis file for controlling `/home/trading/run/site-specific/cfg/genesis-processes.xml`, you can simply switch, start from `true` to `false`. Then run 
 "`genesisInstall` -> `killServer` -> `startServers`", so that the configuration takes effect.
 
 ```xml {2}
