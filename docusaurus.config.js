@@ -32,7 +32,8 @@ module.exports = {
         // https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs
         docs: {
           routeBasePath,
-          sidebarPath: require.resolve('./sidebars.json')
+          sidebarPath: require.resolve('./sidebars.json'),
+          exclude: ['**/front-end-reference/**/*.*']
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
