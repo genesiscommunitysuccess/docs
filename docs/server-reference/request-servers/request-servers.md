@@ -5,7 +5,8 @@ sidebar_position: 1
 id: configure
 ---
 
-Request Servers, otherwise known as request/replies or reqreps, retrieve snapshot data from a table or a view. They then make the data available to the UI. By default, a requestReply uses the metadata of the target index or table to specify which field or fields are requested and which field or fields are returned in the response. The request will be the primary key, and the response provides every field in the table or view.
+Request servers, otherwise known as request/replies or reqreps, retrieve snapshot data from a table or a view. They then make the data available to the UI.
+By default, a requestReply uses the metadata of the target index or table to specify which field or fields are requested and which field or fields are returned in the response. The request will be the primary key, and the response provides every field in the table or view.
 
 However, you can choose to specify both the request fields and the response fields as part of the statement. Request fields can include wildcards, so you could request all RIC Codes for example, or all RIC Codes beginning with V.
 

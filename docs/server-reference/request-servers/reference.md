@@ -25,7 +25,7 @@ val clientConnectionsManager: ClientConnectionsManager
 
 ### Basic definition
 
-Here is the definition of a simple request server. You need to specify either a table or a view, in this case we are using the table INSTRUMENT_DETAILS.
+Here is the definition of a simple request server. You need to specify either a table or a view. In this example, we are using the table INSTRUMENT_DETAILS.
 
 ```kotlin
 requestReplies {
@@ -98,7 +98,7 @@ requestReplies {
 
 ### Where block
 
-The where block supports adding an additional predicate based on the select row and incoming request.
+The `where` block enables you to specify the conditions for running the particular code block.
 
 ```kotlin
 requestReplies {
@@ -128,9 +128,14 @@ requestReplies {
 
 ### Pre-processing the request
 
-Request Reply scripts can optionally transform a request parameter’s value using `withTransformation`. `withTransformation` takes two inputs, the first is the request parameter’s value, which is nullable, and the second is the full request message.
+Request server scripts can optionally transform a request parameter’s value using `withTransformation`. This takes two inputs:
+* the request parameter’s value (which is nullable)
+* the full request message
 
-In the example shown below if the ALTERNATE_TYPE parameter has value "RIC" then the transformation block will use the value of INSTRUMENT_CODE from the request, otherwise it will assign it the value "NOT_RIC", before making the database lookup. The example also shows that if the ALTERNATE_TYPE parameter value is null then it will use "UNKNOWN" by default.
+In the example  below, `withTransformation` is used twice.
+
+* If the ALTERNATE_TYPE parameter value is null, then the request server will use "UNKNOWN" by default.
+* If the ALTERNATE_TYPE parameter has the value "RIC", then the transformation block will use the value of INSTRUMENT_CODE from the request. Otherwise, it will assign it the value "NOT_RIC" before making the database lookup. 
 
 ```kotlin
 requestReplies {
@@ -166,7 +171,7 @@ requestReplies {
 
 ### Limit number of rows returned
 
-You can limit the number of rows returned using the property `rowReturnLimit`.
+You can limit the number of rows returned using the property `rowReturnLimit`. In this example, we limit it to 2.
 
 ```kotlin
 requestReplies {
@@ -194,7 +199,7 @@ requestReplies {
 
 ### Timeout
 
-You can specify a timeout (in seconds) for a request server using property `timeout`.
+You can specify a timeout (in seconds) for a request server using property `timeout`. In this example, we set a timeout of 10 seconds.
 
 ```kotlin
 requestReplies {
@@ -300,7 +305,7 @@ requestReply<Hello, World>("HELLO_WORLD_CHECK") {
 }
 ```
 
-In this next example we are using the generated dao classes to get a single record from the INSTRUMENT table using the INSTRUMENT_BY_ID index. We use the db property to access the entity db.
+In this next example, we are using the generated dao classes to get a single record from the INSTRUMENT table using the INSTRUMENT_BY_ID index. We use the `db` property to access the entity db.
 
 ```kotlin
 requestReply<Instrument.ById, Instrument> {
@@ -332,7 +337,7 @@ requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId> {
 }
 ```
 
-Also, we can have more complicated auth logic:
+In the example below, we have defined a more complicated auth logic:
 
 ```kotlin
 requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId>("FANCY_INSTRUMENT") {
