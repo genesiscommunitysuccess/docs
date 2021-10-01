@@ -19,7 +19,7 @@ import NpmrcSetup from './_includes/_npmrc_setup.md'
 
 ## Running
 
-Clone the code into its own directory and install its dependencies. You may want to checkout the develop branch
+Clone the code into its own directory and install its dependencies. You may want to check out the develop branch
 first.
 
 ```bash
@@ -33,7 +33,7 @@ Creating a deployable stand-alone build of the UI:
     $ npm run build
 ```
 
-This will create a stand-alone version of the app that can be deployed, normally into a sub-directory called `./build`
+This will create a stand-alone version of the app that can be deployed, normally into a sub-directory called `./build`.
 You can take this and deploy it on any domain or github pages.
 
 ### Developer tools

@@ -5,20 +5,17 @@ sidebar_position: 10
 title: 'Introduction'
 ---
 
-# Web Strategy
+# Web strategy
 
 ## Web Components
 
-Web Components are custom html elements that completely encapsulate their logic to create self-contained reusable 
-components, that won’t clash or interfere with the rest of application. They are future proof and interoperal with
-traditional web frameworks.
+Web Components are custom html elements that completely encapsulate their logic to create self-contained reusable components, that do not clash or interfere with the rest of application. They are future-proof and interoperal with traditional web frameworks.
 
 ## Genesis Foundation UI
 
-Genesis Foundation UI is our frontend tech stack. Web Components are at the very core of our stragety here at Genesis.  
+Genesis Foundation UI is our front-end tech stack. Web Components are at the very core of our strategy here at Genesis.  
 
-The Genesis Foundation UI is built on top of [Microsoft FAST](https://www.fast.design/docs/introduction/). The repo is
-managed with [Lerna](https://github.com/lerna/lerna), see the lerna docs for more information.
+The Genesis Foundation UI is built on top of [Microsoft FAST](https://www.fast.design/docs/introduction/). The repo is managed with [Lerna](https://github.com/lerna/lerna), see the lerna docs for more information.
 
 Lerna (Monorepo manager)
 
@@ -54,7 +51,7 @@ Dynamic switching
 
 Window/Panel layout participent
 
-Testing (I’d like to use Playwright here, in-progress)
+Testing (I’d like to use Playwright here, in-progress TODO)
 
 UNIT
 

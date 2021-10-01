@@ -9,6 +9,6 @@ tags:
   - ui
 ---
 
-# Deploying the Frontend
+# Deploying the front end
 
-You can deploy the frontend of a Genesis Application in various ways, including...
+You can deploy the front end of a Genesis Application in various ways, including... TODO

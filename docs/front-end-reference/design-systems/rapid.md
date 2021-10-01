@@ -11,16 +11,14 @@ tags:
 
 ## Introduction
 
-Like all the Design Systems built by our UX teams, they start in [Axure](https://www.axure.com/) and have been lab
-tested to meet the needs of our financial markets applications.
-[Rapid Design System](https://n42r49.axshare.com/#id=u42cgo&p=primitives&c=1) is our initial offering that you can use
-as is out of the box or customise to your needs.
+Like all the Design Systems built by the Genesis UX teams, our Design System starts in [Axure](https://www.axure.com/) and has been lab-tested to meet the needs of  financial markets applications.
+[Rapid Design System](https://n42r49.axshare.com/#id=u42cgo&p=primitives&c=1) is our initial offering. You can use it straight from the box or you can customise it to your needs.
 
 ## Using the Rapid Design System {#step-1}
 
-At a code level rapid is referred to as `zero`. We have plans to consolidate this to align with the UX codename `rapid`
-in the very near future. Before you can use the design system in your application you need to register it and the
-components you wish to use. Omitted components won't be bundled to reduce the size of your application.
+At a code level, rapid is referred to as `zero`. We have plans to consolidate this to align with the UX codename `rapid`
+in the very near future. Before you can use the design system in your application, you need to register it and the
+components you wish to use. Omitted components won't be bundled; this is designed to reduce the size of your application.
 
 ```typescript
 import {
@@ -36,18 +34,17 @@ provideZeroDesignSystem()
     );
 ```
 
-## Add Element to HTML
+## Adding elements to HTML
 
-Once you've registered the components as shown above, they are now available for use in your document (or template).
-Just use the new elements like any other HTML element:
+Once you've registered the components, they are  available for use in your document (or template).
+You can use the new elements like any other HTML element:
 
 ```html
 <zero-button>Hello World</zero-button>
 ```
 
-With the provider custom element registered, you can also declaratively set design system properties for specific child
-nodes, and you and deeply nest these however you like. Components will use token values from their nearest design system
-provider ancestor, or programmatically set values.
+With the provider custom element registered, you can also declaratively set design-system properties for specific child
+nodes, and you can deeply nest these in any way you like. Components will use token values from their nearest design-system provider ancestor, or from programmatically set values.
 
 ```html
 <zero-button>Small Button</zero-button>
@@ -67,7 +64,7 @@ wish to use have been registered with the provider as in the [first step](#step-
 
 ## Customising the Rapid Design System
 
-You can programmatically set design `tokens` to effect the entire application or for a single element and its children.
+You can programmatically set design tokens to affect the entire application, or just a single element and its children.
 
 ```html
 <zero-card id="my-card">
@@ -92,7 +89,7 @@ const targetElement = document.querySelector('#my-card') as HTMLElement;
 accentPalette.setValueFor(targetElement, myAccentPalette);
 ```
 
-This combined with the declarative approach is very powerful. 
+This, combined with the declarative approach, is very powerful. 
 
 :::tip
 
