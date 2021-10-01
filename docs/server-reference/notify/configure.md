@@ -7,7 +7,7 @@ id: configure
 ---
 ### Overview
 
-The Genesis Notify module is designed to enable you to configure an application to send and receive  messages to and from various messaging services.
+The Genesis Notify module is designed to enable you to configure an application to send and receive messages to and from various messaging services.
 The growing list of currently supported services is:
 
 #### Sending:
@@ -45,5 +45,5 @@ A notify record represents a given message that we want to “notify” to a giv
 
 The notify route table provides linkage between NOTIFY, so that it can be picked up and sent to the given GATEWAY. It is intended for future developments of the notify service such as:
 
-* Topic based multi service messages
+* Topic based multi-service messages
 * Retry mechanisms
