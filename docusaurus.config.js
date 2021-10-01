@@ -33,7 +33,7 @@ module.exports = {
         docs: {
           routeBasePath,
           sidebarPath: require.resolve('./sidebars.json'),
-          exclude: ['**/front-end-reference/**/*.*']
+          remarkPlugins: [require('mdx-mermaid')],
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

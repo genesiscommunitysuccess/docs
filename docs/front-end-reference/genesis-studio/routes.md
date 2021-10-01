@@ -1,6 +1,10 @@
 ---
 id: routes
-sidebar_label: 'Creating Routes'
-sidebar_position: 1
-title: 'Creating Routes'
+sidebar_label: Routes
+sidebar_position: 20
+title: Routes
 ---
+
+# Routes
+
+Routes in Genesis Studio...
