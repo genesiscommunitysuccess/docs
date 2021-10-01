@@ -1,6 +1,6 @@
 ---
-title: Processes.xml
-sidebar_label: Processes.xml
+title: Processes
+sidebar_label: Processes
 id: processes-xml
 sidebar_position: 2
 
