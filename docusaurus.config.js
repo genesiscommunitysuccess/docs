@@ -12,7 +12,7 @@ module.exports = {
   trailingSlash: true,
   scripts: [
     {
-        src: `${baseUrl}js/fast-components.iife.min.js`,
+        src: `${baseUrl}js/alpha.iife.min.js`,
         async: true,
     },
   ],

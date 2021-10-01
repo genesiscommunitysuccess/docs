@@ -1,7 +1,7 @@
 ---
 id: deployment
 sidebar_label: Deployment
-sidebar_position: 80
+sidebar_position: 90
 title: Deployment
 tags:
   - deployment
