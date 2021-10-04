@@ -42,9 +42,9 @@ Ex:
 ```
 
 #### Enable SSL for processes
-Set the `secure` attribute to be "true" and edit genesis-system-definition.kts file
-Ex: processes.xml
+Set the `secure` attribute to be "true" on process you want to enable SSL and edit genesis-system-definition.kts file as specified in the example below
 
+Ex: processes.xml
 ```xml
 <configuration>
     <service host="localhost" name="GCOM_REQUEST_SERVER" port="8571" secure="true"/>
@@ -52,7 +52,6 @@ Ex: processes.xml
 ```
 
 genesis-system-definition.kts
-
 ```kotlin
 systemDefinition {
     global {
