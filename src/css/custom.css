@@ -181,3 +181,47 @@ img[alt^="masthead-fade"] {
 img[alt^="masthead-cut"] {
   clip-path: polygon(0% 0%,100.00% 0.00%,100.00% 80.00%,95.00% 100.00%,90.00% 80.00%,85.00% 100.00%,80.00% 80.00%,75.00% 100.00%,70.00% 80.00%,65.00% 100.00%,60.00% 80.00%,55.00% 100.00%,50.00% 80.00%,45.00% 100.00%,40.00% 80.00%,35.00% 100.00%,30.00% 80.00%,25.00% 100.00%,20.00% 80.00%,15.00% 100.00%,10.00% 80.00%,5.00% 100.00%,0.00% 80.00%);
 }
+
+alpha-avatar {
+  --avatar-fill-accent-primary: #0EAFE2;
+}
+
+alpha-checkbox,
+alpha-breadcrumb-item,
+alpha-radio-group,
+alpha-radio,
+alpha-select,
+alpha-slider,
+alpha-slider-label,
+alpha-switch,
+alpha-text-area,
+alpha-text-field,
+alpha-accordion,
+alpha-accordion-item,
+alpha-tab {
+  --neutral-foreground-rest: #666;
+}
+
+alpha-horizontal-scroll {
+  max-width: 400px;
+}
+
+alpha-card {
+  padding: 20px;
+}
+
+alpha-horizontal-scroll alpha-card {
+  width: 170px;
+}
+
+alpha-skeleton {
+  border-radius: 4px;
+  width: 500px;
+  height: 250px;
+}
+
+alpha-skeleton svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+}

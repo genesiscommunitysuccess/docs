@@ -1,0 +1,82 @@
+---
+id: getting-started
+sidebar_label: Getting Started
+sidebar_position: 10
+title: Getting Started
+tags:
+  - components
+  - frontend
+  - ui
+---
+
+After initialising your project using the [CLI](/front-end-reference/cli/), you will have a workspace available. It wil contain multiple packages including a design system.
+
+Design system package provides the following:
+
+* set of reusable UI components
+* configuration files which allow you to control colours, typography, sizing and various other aspects
+* building blocks for creating your own custom components on top the design system
+
+Each workspace gets an instance of a design system by default. You can also reuse design systems across workspaces to ensure consistency.
+
+:::info
+In the examples below we refer to a sample `@genesislcap/alpha-design-system` design system with an `alpha` prefix. In your project design system would likely have a different name/prefix while still exposing the same API.
+:::
+
+## Register components
+
+Web components from the Genesis Foundation UI components must be registered prior to being used in HTML. Importing the necessary component definition and registering it with a `DesignSystem` will register the custom element with the platform:
+
+```ts
+import {provideDesignSystem, alphaButton} from '@genesislcap/alpha-design-system';
+
+provideDesignSystem().register(
+  alphaButton
+);
+```
+
+As a shortcut, if you wish to easily register most of the available components, rather than registering each one, you can use the following pattern with either design system:
+
+
+```ts
+import {provideDesignSystem, alphaBaseComponents} from '@genesislcap/alpha-design-system';
+
+provideDesignSystem().register(
+  alphaBaseComponents
+);
+```
+
+:::note
+When working with a tree-shaking supporting bundler such as Webpack or Rollup, you will want to import and register the individual components. This will ensure that any unused components are tree-shaken out of your builds.
+:::
+
+## Add components to HTML
+
+Once you've registered the components as shown above, they are now available for use in your document (or template). Just use the new elements like any other HTML element.
+
+```html live
+<alpha-button>Button</alpha-button>
+```
+
+## Hide undefined elements
+
+Custom Elements that have not been [upgraded](https://developers.google.com/web/fundamentals/web-components/customelements#upgrades) and don't have styles attached can still be rendered by the browser but they likely do not look how they are supposed to. To avoid a *flash of un-styled content* (FOUC), visually hide Custom Elements that are not yet defined:
+
+```css
+:not(:defined) {
+  visibility: hidden;
+}
+```
+
+:::important
+The consuming application must apply this, as the components themselves do not.
+:::
+
+
+## Explore the available components
+
+There are over 40 components provided out of the box with a Genesis Foundation UI design system. You can explore them by category:
+
+* [Form](/front-end-reference/components/form/button/), such as button, checkbox, text field etc.
+* [Interaction](/front-end-reference/components/interaction/accordion/), such tabs, modal, tooltip etc.
+* [Presentation & Visualisation](/front-end-reference/components/presentation/ag-grid/) such as grids, cards, progress indicators etc.
