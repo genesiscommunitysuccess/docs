@@ -41,10 +41,10 @@ Ex:
 </configuration>
 ```
 
-If you want to implement SSL for your processes then set the `secure` attribute to be "true" and edit genesis-system-definition.kts file
-Ex:
-processes.xml
+#### Enable SSL for processes
+Set the `secure` attribute to be "true" on process you want to enable SSL and edit genesis-system-definition.kts file as specified in the example below
 
+Ex: processes.xml
 ```xml
 <configuration>
     <service host="localhost" name="GCOM_REQUEST_SERVER" port="8571" secure="true"/>
@@ -52,13 +52,12 @@ processes.xml
 ```
 
 genesis-system-definition.kts
-
 ```kotlin
 systemDefinition {
     global {
-        item(name = "DefaultKeystoreLocation", value = "/home/exmon/keystore.jks")
+        item(name = "DefaultKeystoreLocation", value = "/home/applicationName/keystore.jks")
         item(name = "DefaultKeystorePassword", value = "Password123")
-        item(name = "DefaultCertificate", value = "/home/exmon/certificate.crt")
+        item(name = "DefaultCertificate", value = "/home/applicationName/certificate.crt")
     }
 }
 ```
