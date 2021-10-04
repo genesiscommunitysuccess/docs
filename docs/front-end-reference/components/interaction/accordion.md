@@ -5,9 +5,7 @@ sidebar_position: 10
 ---
 
 
-As defined by the [W3C](https://w3c.github.io/aria-practices/#accordion):
-
-> An accordion is a vertically stacked set of interactive headings that each contain a title, content snippet, or thumbnail representing a section of content. The headings function as controls that enable users to reveal or hide their associated sections of content. Accordions are commonly used to reduce the need to scroll when presenting multiple sections of content on a single page.
+An accordion is a vertically stacked set of interactive headings representing a section of content. The headings function as controls that enable users to reveal or hide their associated sections of content. Accordions are commonly used to reduce the need to scroll when presenting multiple sections of content on a single page.
 
 ## Setup
 
@@ -21,7 +19,7 @@ provideDesignSystem().register(alphaAccordion(), alphaAccordionItem());
 
 ```html live
 <alpha-accordion>
-  <alpha-accordion-item expanded="">
+  <alpha-accordion-item expanded>
     <span slot="heading">Panel one</span>
     Panel one content
   </alpha-accordion-item>
@@ -29,7 +27,7 @@ provideDesignSystem().register(alphaAccordion(), alphaAccordionItem());
     <span slot="heading">Panel two</span>
     Panel two content
   </alpha-accordion-item>
-  <alpha-accordion-item expanded="">
+  <alpha-accordion-item>
     <span slot="heading">Panel three</span>
     Panel three content
   </alpha-accordion-item>

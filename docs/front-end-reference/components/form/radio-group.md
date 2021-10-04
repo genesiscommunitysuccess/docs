@@ -21,7 +21,7 @@ provideDesignSystem().register(alphaRadioGroup(), alphaRadio());
 ## Usage
 
 ```html live
-<alpha-radio-group value="mango" name="favorite-fruit">
+<alpha-radio-group value="apple" name="favorite-fruit">
   <alpha-radio value="apple">Apple</alpha-radio>
   <alpha-radio value="mango">Mango</alpha-radio>
   <alpha-radio value="orange">Orange</alpha-radio>
@@ -30,7 +30,7 @@ provideDesignSystem().register(alphaRadioGroup(), alphaRadio());
 
 ## Use cases
 
-* Radio group allows the user to be presented with a list of all the options visible which can facilitate the comparison of choice.
+* Present options where only one option is allowed
 
 ## Additional resources
 

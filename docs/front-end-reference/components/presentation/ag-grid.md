@@ -1,6 +1,6 @@
 ---
 id: ag-grid
-title: Ag-Grid
+title: AG Grid
 sidebar_position: 10
 ---
 
@@ -19,8 +19,10 @@ provideDesignSystem();
 ## Usage
 
 ```html
-<alpha-ag-grid></alpha-ag-grid>
-<alpha-button id="js-alpha-load-row-data">Load grid data</alpha-button>
+<alpha-card>
+  <alpha-ag-grid></alpha-ag-grid>
+  <alpha-button id="js-alpha-load-row-data">Load grid data</alpha-button>
+</alpha-card>
 ```
 
 ```ts
@@ -42,7 +44,7 @@ const rowData = [
 
 const loadGridData = document.querySelector('#js-alpha-load-row-data');
 loadGridData .addEventListener('click', () => {
-  const foundationDataAgGrid = document.querySelector('foundation-ag-grid');
+  const grid = document.querySelector('foundation-ag-grid');
 
   const gridOptions = {
     defaultColDef: {
@@ -53,7 +55,7 @@ loadGridData .addEventListener('click', () => {
     rowData,
   };
 
-  foundationDataAgGrid['gridOptions'] = gridOptions;
+  grid.gridOptions = gridOptions;
 }, {passive: true});
 ```
 

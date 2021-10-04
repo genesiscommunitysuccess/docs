@@ -17,14 +17,14 @@ provideDesignSystem().register(alphaDialog());
 ## Usage
 
 ```html
-<alpha-card id="alpha-dialog" style="min-height: 400px;">
+<alpha-card id="alpha-dialog">
   <h6>Dialog</h6>
-  <alpha-button id="js-alpha-show-dialog">Show Rapid Dialog</alpha-button>
+  <alpha-button id="js-alpha-show-dialog">Show Dialog</alpha-button>
 
   <alpha-dialog>
     <h5 slot="top">Dialog title</h5>
-    <p>Some text in a Rapid Dialog</p>
-    <alpha-button slot="bottom" id="js-alpha-close-dialog">Close this dialog</alpha-button>
+    <p>Some text</p>
+    <alpha-button slot="bottom" id="js-alpha-close-dialog">Close dialog</alpha-button>
   </alpha-dialog>
 </alpha-card>
 ```

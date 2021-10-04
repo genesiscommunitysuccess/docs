@@ -30,6 +30,8 @@
 
   --ifm-navbar-height: 64px;
   --ifm-navbar-shadow: -5px 3px 16px 0px rgba(0, 0, 0, 0.15);
+
+  --ifm-pre-background: #2B2B2B;
 }
 
 h2 {
@@ -182,24 +184,12 @@ img[alt^="masthead-cut"] {
   clip-path: polygon(0% 0%,100.00% 0.00%,100.00% 80.00%,95.00% 100.00%,90.00% 80.00%,85.00% 100.00%,80.00% 80.00%,75.00% 100.00%,70.00% 80.00%,65.00% 100.00%,60.00% 80.00%,55.00% 100.00%,50.00% 80.00%,45.00% 100.00%,40.00% 80.00%,35.00% 100.00%,30.00% 80.00%,25.00% 100.00%,20.00% 80.00%,15.00% 100.00%,10.00% 80.00%,5.00% 100.00%,0.00% 80.00%);
 }
 
-alpha-avatar {
-  --avatar-fill-accent-primary: #0EAFE2;
+alpha-button::part(start) {
+  padding-right: 5px;
 }
 
-alpha-checkbox,
-alpha-breadcrumb-item,
-alpha-radio-group,
-alpha-radio,
-alpha-select,
-alpha-slider,
-alpha-slider-label,
-alpha-switch,
-alpha-text-area,
-alpha-text-field,
-alpha-accordion,
-alpha-accordion-item,
-alpha-tab {
-  --neutral-foreground-rest: #666;
+alpha-avatar {
+  --avatar-fill-accent-primary: #0EAFE2;
 }
 
 alpha-horizontal-scroll {
@@ -224,4 +214,19 @@ alpha-skeleton svg {
   position: absolute;
   left: 0;
   top: 0;
+}
+
+.playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module alpha-button {
+  margin-right: 10px;
+}
+
+.playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module legend,
+.playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module  {
+  color: var(--neutral-foreground-rest);
+}
+
+.playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module alpha-anchored-region  {
+  color: var(--neutral-foreground-rest);
+  background: var(--accent-fill-rest);
+  padding: 10px;
 }
