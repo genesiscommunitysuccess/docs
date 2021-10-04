@@ -4,7 +4,6 @@ title: Avatar
 sidebar_position: 20
 ---
 
-
 The `alpha-avatar` component is used to graphically represent a user or an object.
 
 ## Setup

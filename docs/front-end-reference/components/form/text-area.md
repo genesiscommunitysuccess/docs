@@ -17,7 +17,7 @@ provideDesignSystem().register(alphaTextArea());
 ## Usage
 
 ```html live
-<alpha-text-area placeholder="Describe your experience">How was your stay?</alpha-text-area>
+<alpha-text-area placeholder="Your feedback">Free-text comment form</alpha-text-area>
 ```
 
 ## Use cases

@@ -14,7 +14,7 @@ module.exports = {
     {
         src: `${baseUrl}js/alpha.iife.min.js`,
         async: true,
-    },
+    }
   ],
 
   plugins: [

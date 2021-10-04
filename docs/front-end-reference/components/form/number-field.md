@@ -4,7 +4,7 @@ title: NumberField
 sidebar_position: 50
 ---
 
-An implementation of a [text field](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/text) as a form-connected web-component. The `alpha-number-field` supports two visual appearances, outline and filled, with the control defaulting to the outline appearance.
+A text field for numeric entry.
 
 ## Setup
 
@@ -15,6 +15,8 @@ provideDesignSystem().register(alphaNumberField());
 ```
 
 ## Usage
+
+The `alpha-number-field` supports two visual appearances, outline and filled, with the control defaulting to the outline appearance.
 
 ```html live
 <alpha-number-field appearance="filled" min="0" max="10"></alpha-number-field>

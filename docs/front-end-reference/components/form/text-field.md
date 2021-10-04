@@ -19,7 +19,7 @@ provideDesignSystem().register(alphaTextField());
 ## Usage
 
 ```html live
-<alpha-text-field appearance="filled" placeholder="user@email.com">Email</alpha-text-field>
+<alpha-text-field>Name</alpha-text-field>
 ```
 
 ## Use cases
