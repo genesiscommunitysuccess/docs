@@ -1,4 +1,8 @@
-# text-field
+---
+id: text-field
+title: Textfield
+sidebar_position: 140
+---
 
 An implementation of a [text field](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/text) as a form-connected web-component. The `alpha-text-field` supports two visual appearances, outline and filled, with the control defaulting to the outline appearance.
 
@@ -14,15 +18,8 @@ provideDesignSystem().register(alphaTextField());
 
 ## Usage
 
-```js preview-story
-import { html } from '@microsoft/fast-element';
-import { provideDesignSystem, alphaTextField } from '@genesislcap/alpha-design-system';
-
-provideDesignSystem().register(alphaTextField());
-
-export const usageStory = () => html`
-  <alpha-text-field appearance="filled" placeholder="user@email.com">Email</alpha-text-field>
-`;
+```html live
+<alpha-text-field appearance="filled" placeholder="user@email.com">Email</alpha-text-field>
 ```
 
 ## Use cases
@@ -35,8 +32,3 @@ Used anywhere an author might otherwise use:
 - input\[type="tel"]
 - input\[type="url"]
 
-## Additional resources
-
-- [Fast documentation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/text-field/README.md)
-- [Fast specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/text-field/text-field.spec.md)
-- [Fast styles implementation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-components/src/text-field/text-field.styles.ts)

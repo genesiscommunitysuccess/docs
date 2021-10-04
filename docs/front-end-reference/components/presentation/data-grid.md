@@ -1,15 +1,19 @@
+---
+id: data-grid
+title: Data-grid
+sidebar_position: 60
+---
 
-
-# data-grid
+A more light-weight grid for scenarios where you don't need the full power of [Ag-Grid](/front-end-reference/components/presentation/ag-grid/).
 
 The `alpha-data-grid` component is used to display tabular data. The `alpha-data-grid-row` and `alpha-data-grid-cell` components are typically created programmatically by the parent grid but some authors may find it useful to create them manually.
 
 ## Setup
 
 ```ts
-import { provideDesignSystem, alphaDataGrid, getDataGridCell, getDataGridRow } from '@genesislcap/alpha-design-system';
+import { provideDesignSystem, alphaDataGrid, alphaDataGridCell, alphaDataGridRow } from '@genesislcap/alpha-design-system';
 
-provideDesignSystem().register(alphaDataGrid(), getDataGridCell(), getDataGridRow());
+provideDesignSystem().register(alphaDataGrid(), alphaDataGridCell(), alphaDataGridRow());
 ```
 
 ## Usage
@@ -30,11 +34,8 @@ document.getElementById('samplegrid').rowsData = [
 
 ## Use cases
 
-Any time an author wants to display tabular data.
+* Tabular data
 
 ## Additional resources
 
 - [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#grid)
-- [Fast documentation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/data-grid/README.md)
-- [Fast specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/data-grid/data-grid.spec.md)
-- [Fast styles implementation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-components/src/data-grid/data-grid.styles.ts)

@@ -1,6 +1,8 @@
-# skeleton
-
-<alpha-skeleton></alpha-skeleton>
+---
+id: skeleton
+title: Skeleton
+sidebar_position: 120
+---
 
 The `skeleton` component is used as a visual placeholder for an element while it is in a loading state and usually presents itself as a simplified wireframe-like version of the UI it is representing.
 
@@ -16,47 +18,27 @@ provideDesignSystem().register(alphaSkeleton());
 
 ### Basic Usage
 
-```html
-<alpha-skeleton
-  style="
-        border-radius: 4px;
-        width: 50px;
-        height: 50px;
-    "
-  shape="circle"
-></alpha-skeleton>
+```html live
+<alpha-skeleton shape="circle"></alpha-skeleton>
 ```
 
 ### Pattern
 
 A URL for an image asset may be passed to the `pattern` attribute. In this mode, the `alpha-skeleton` component is used as a container for a transparent SVG that may express a more complex placeholder
 
-```html
-<alpha-skeleton
-  style="
-        border-radius: 4px;
-        width: 500px;
-        height: 250px;
-    "
-  shape="rect"
-  pattern="https://static.fast.design/assets/skeleton-test-pattern.svg"
-></alpha-skeleton>
+```html live
+<alpha-skeleton shape="rect" pattern="/svg/skeleton-test-pattern.svg"></alpha-skeleton>
 ```
 
 ### Shimmer
 
 The `shimmer` boolean attribute will activate the component's shimmer effect.
 
-```html
+```html live
 <alpha-skeleton
-  style="
-        border-radius: 4px;
-        width: 500px;
-        height: 250px;
-    "
   shape="rect"
-  pattern="https://static.fast.design/assets/skeleton-test-pattern.svg"
-  shimmer=""
+  pattern="/svg/skeleton-test-pattern.svg"
+  shimmer
 ></alpha-skeleton>
 ```
 
@@ -64,17 +46,12 @@ The `shimmer` boolean attribute will activate the component's shimmer effect.
 
 An inline SVG can also be inserted into the slot of the `alpha-skeleton`.
 
-```html
+```html live
 <alpha-skeleton
-  style="
-        border-radius: 4px;
-        width: 500px;
-        height: 250px;
-    "
   shape="rect"
-  shimmer=""
+  shimmer
 >
-  <svg style="position: absolute; left: 0; top: 0;" id="pattern" width="100%" height="100%">
+  <svg id="pattern" width="100%" height="100%">
     <defs>
       <mask id="mask" x="0" y="0" width="100%" height="100%">
         <rect x="0" y="0" width="100%" height="100%" fill="#ffffff"></rect>
@@ -102,10 +79,4 @@ The following CSS variables can be used to customize the appearance.
 
 ## Use cases
 
-Used to give users a sense of loading progress activity rather than merely presenting a blank page or container.
-
-## Additional resources
-
-- [Fast documentation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/skeleton/README.md)
-- [Fast specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/skeleton/skeleton.spec.md)
-- [Fast styles implementation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-components/src/skeleton/skeleton.styles.ts)
+* Indicating loading state

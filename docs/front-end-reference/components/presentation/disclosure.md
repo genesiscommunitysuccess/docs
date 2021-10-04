@@ -1,4 +1,8 @@
-# disclosure
+---
+id: disclosure
+title: Disclosure
+sidebar_position: 70
+---
 
 A disclosure component is the implementation of native `details` and `summary` controls that toggles the visibility of the extra content. Visually, it would look like a button or hyperlink and beneath extra content. As defined by the W3C:
 
@@ -14,31 +18,20 @@ provideDesignSystem().register(alphaDisclosure());
 
 ## Usage
 
-```js preview-story
-import { html } from '@microsoft/fast-element';
-import { provideDesignSystem, alphaDisclosure } from '@genesislcap/alpha-design-system';
-
-provideDesignSystem().register(alphaDisclosure());
-
-export const usageStory = () => html`
+```html live
   <alpha-disclosure appearance="lightweight">
-    <strong slot="title">Read about FAST</strong>
+    <strong slot="title">Read about Foundation UI</strong>
     <div>
-      FAST is a collection of technologies built on Web Components and modern Web Standards, designed to help you
+      Foundation UI is a collection of technologies built on Web Components and modern Web Standards, designed to help you
       efficiently tackle some of the most common challenges in website and application design and development.
     </div>
   </alpha-disclosure>
-`;
 ```
 
 ## Use cases
 
-- In general, reveal the extra information on button click when the end-user is needed to know/see.
-- Laurel wanted to buy a new phone and she was looking at one of the websites where all the basic information was shown. She read about a camera feature called Night Mode and there was a section labeled "See the advanced technology that goes into every Night mode shot". She clicked on it and found out how that feature would work. With that extra information on that feature, she was quite confident in her buying.
+* Revealing additional information
 
 ## Additional resources
 
 - [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#disclosure)
-- [Fast documentation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/disclosure/README.md)
-- [Fast specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/disclosure/disclosure.spec.md)
-- [Fast styles implementation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-components/src/disclosure/disclosure.styles.ts)

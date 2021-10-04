@@ -1,4 +1,8 @@
-# radio-group
+---
+id: radio-group
+title: Radio Group
+sidebar_position: 80
+---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#radiobutton):
 
@@ -9,35 +13,26 @@ While any DOM content is permissible as a child of the radiogroup, only `alpha-r
 ## Setup
 
 ```ts
-import { provideDesignSystem, alphaRadioGroup, getRadio } from '@genesislcap/alpha-design-system';
+import { provideDesignSystem, alphaRadioGroup, alphaRadio } from '@genesislcap/alpha-design-system';
 
-provideDesignSystem().register(alphaRadioGroup(), getRadio());
+provideDesignSystem().register(alphaRadioGroup(), alphaRadio());
 ```
 
 ## Usage
 
-```js preview-story
-import { html } from '@microsoft/fast-element';
-import { provideDesignSystem, alphaRadio, getRadioGroup } from '@genesislcap/alpha-design-system';
-
-provideDesignSystem().register(alphaRadio(), getRadioGroup());
-
-export const usageStory = () => html`
-  <alpha-radio-group value="mango" name="favorite-fruit">
-    <alpha-radio value="apple">Apple</alpha-radio>
-    <alpha-radio value="mango">Mango</alpha-radio>
-    <alpha-radio value="orange">Orange</alpha-radio>
-  </alpha-radio-group>
-`;
+```html live
+<alpha-radio-group value="mango" name="favorite-fruit">
+  <alpha-radio value="apple">Apple</alpha-radio>
+  <alpha-radio value="mango">Mango</alpha-radio>
+  <alpha-radio value="orange">Orange</alpha-radio>
+</alpha-radio-group>
 ```
 
 ## Use cases
 
-Radio group allows the user to be presented with a list of all the options visible which can facilitate the comparison of choice.
+* Radio group allows the user to be presented with a list of all the options visible which can facilitate the comparison of choice.
 
 ## Additional resources
 
 - [W3C Component Aria Practices](https://www.w3.org/TR/wai-aria/#radiogroup)
-- [Fast documentation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/radio-group/README.md)
-- [Fast specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/radio-group/radio-group.spec.md)
-- [Fast styles implementation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-components/src/radio-group/radio-group.styles.ts)
+

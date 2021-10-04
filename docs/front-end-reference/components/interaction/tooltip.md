@@ -1,4 +1,8 @@
-# tooltip
+---
+id: tooltip
+title: Tooltip
+sidebar_position: 90
+---
 
 The `alpha-tooltip` component is used provide extra information about another element when it is hovered.
 
@@ -12,7 +16,7 @@ provideDesignSystem().register(alphaTooltip());
 
 ## Usage
 
-```html
+```html live
 <div>
   <alpha-button id="anchor">Hover me</alpha-button>
   <alpha-tooltip anchor="anchor">Tooltip text</alpha-tooltip>
@@ -26,6 +30,3 @@ Tooltips are often used to supplement UI elements and provide additional informa
 ## Additional resources
 
 - [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#tooltip)
-- [Fast documentation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/tooltip/README.md)
-- [Fast specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/tooltip/tooltip.spec.md)
-- [Fast styles implementation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-components/src/tooltip/tooltip.styles.ts)

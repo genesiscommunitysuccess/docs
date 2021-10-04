@@ -1,4 +1,8 @@
-# card
+---
+id: card
+title: Card
+sidebar_position: 50
+---
 
 The `alpha-card` component is a visual container without semantics that takes children. Cards are snapshots of content that are typically used in a group to present collections of related information.
 
@@ -12,26 +16,13 @@ provideDesignSystem().register(alphaCard());
 
 ## Usage
 
-```js preview-story
-import { html } from '@microsoft/fast-element';
-import { provideDesignSystem, alphaButton, getCard } from '@genesislcap/alpha-design-system';
-
-provideDesignSystem().register(alphaButton(), getCard());
-
-export const usageStory = () => html`
-  <alpha-card>
-    <h3>Card title</h3>
-    <p>
-      At purus lectus quis habitant commodo, cras. Aliquam malesuada velit a tortor. Felis orci tellus netus risus et
-      ultricies augue aliquet.
-    </p>
-    <alpha-button>Learn more</alpha-button>
-  </alpha-card>
-`;
+```html live
+<alpha-card>
+  <h3>Card title</h3>
+  <p>
+    At purus lectus quis habitant commodo, cras. Aliquam malesuada velit a tortor. Felis orci tellus netus risus et
+    ultricies augue aliquet.
+  </p>
+  <alpha-button>Learn more</alpha-button>
+</alpha-card>
 ```
-
-## Additional resources
-
-- [Fast documentation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/card/README.md)
-- [Fast specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/card/card.spec.md)
-- [Fast styles implementation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-components/src/card/card.styles.ts)

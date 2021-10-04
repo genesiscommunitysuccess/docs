@@ -1,4 +1,9 @@
-# avatar
+---
+id: avatar
+title: Avatar
+sidebar_position: 20
+---
+
 
 The `alpha-avatar` component is used to graphically represent a user or an object.
 
@@ -14,16 +19,14 @@ provideDesignSystem().register(alphaAvatar());
 
 ### Basic Usage
 
-```html
-<alpha-avatar src="..." alt="..." link="..."> </alpha-avatar>
+```html live
+<alpha-avatar alt="User profile image" link="#" name="John Doe" shape="circle" fill="accent-primary"></alpha-avatar>
 ```
 
-### Used with a Badge
+### Shape
 
-```html
-<alpha-avatar src="..." alt="..." link="...">
-  <alpha-badge slot="badge">&nbsp</alpha-badge>
-</alpha-avatar>
+```html live
+<alpha-avatar alt="User profile image" link="#" name="John Doe" shape="circle" fill="accent-primary" shape="square"></alpha-avatar>
 ```
 
 ### Filled, Colored, and Shaped
@@ -31,26 +34,14 @@ provideDesignSystem().register(alphaAvatar());
 The `fill` and `color` attributes of the _avatar_ create CSS custom properties which can be used to style the control.
 
 ```css
-fs-avatar {
-  --avatar-fill-primary: #00ff00;
+alpha-avatar {
+  --avatar-fill-primary: #0EAFE2;
   --avatar-fill-danger: #ff0000;
   --avatar-color-light: #ffffff;
   --avatar-color-dark: #000000;
 }
 ```
 
-While the `shape` attribute lets you choose between `circle` (default) or `square`:
-
-```html
-<alpha-avatar src="..." alt="..." link="..." fill="primary" color="dark" shape="square"> </alpha-avatar>
-```
-
 ## Use cases
 
-A common use case would be to display an image or text (usually initials) of a user or an object, such as in a user profile.
-
-## Additional resources
-
-- [Fast documentation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/avatar/README.md)
-- [Fast specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/avatar/avatar.spec.md)
-- [Fast styles implementation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-components/src/avatar/avatar.styles.ts)
+* Display an image or text (usually initials) of a user

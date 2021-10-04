@@ -1,4 +1,8 @@
-# tree-view
+---
+id: tree-view
+title: Tree View
+sidebar_position: 100
+---
 
 As defined by the [W3C](https://w3c.github.io/aria/#tree):
 
@@ -7,39 +11,29 @@ As defined by the [W3C](https://w3c.github.io/aria/#tree):
 ## Setup
 
 ```ts
-import { provideDesignSystem, alphaTreeView, getTreeItem } from '@genesislcap/alpha-design-system';
+import { provideDesignSystem, alphaTreeView, alphaTreeItem } from '@genesislcap/alpha-design-system';
 
-provideDesignSystem().register(alphaTreeView(), getTreeItem());
+provideDesignSystem().register(alphaTreeView(), alphaTreeItem());
 ```
 
 ## Usage
 
-```js preview-story
-import { html } from '@microsoft/fast-element';
-import { provideDesignSystem, alphaTreeItem, getTreeView } from '@genesislcap/alpha-design-system';
-
-provideDesignSystem().register(alphaTreeItem(), getTreeView());
-
-export const usageStory = () => html`
-  <alpha-tree-view>
-    Root
-    <alpha-tree-item>
-      Item 1
-      <alpha-tree-item>Sub-item 1</alpha-tree-item>
-      <alpha-tree-item>Sub-item 2</alpha-tree-item>
-    </alpha-tree-item>
-    <alpha-tree-item>Item 2</alpha-tree-item>
-  </alpha-tree-view>
-`;
+```html live
+<alpha-tree-view>
+  Root
+  <alpha-tree-item>
+    Item 1
+    <alpha-tree-item>Sub-item 1</alpha-tree-item>
+    <alpha-tree-item>Sub-item 2</alpha-tree-item>
+  </alpha-tree-item>
+  <alpha-tree-item>Item 2</alpha-tree-item>
+</alpha-tree-view>
 ```
 
 ## Use cases
 
-Primarily used to present a hierarchical list such as a file system. A tree view can also be served as a flat list.
+* Hierarchical list such as a file system
 
 ## Additional resources
 
 - [W3C Component Aria Practices](https://www.w3.org/TR/wai-aria/#tree)
-- [Fast documentation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/tree-view/README.md)
-- [Fast specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/tree-view/tree-view.spec.md)
-- [Fast styles implementation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-components/src/tree-view/tree-view.styles.ts)

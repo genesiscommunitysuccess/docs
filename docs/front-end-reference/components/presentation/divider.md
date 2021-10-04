@@ -1,6 +1,8 @@
-# divider
-
-<alpha-divider></alpha-divider>
+---
+id: divider
+title: Divider
+sidebar_position: 80
+---
 
 A web component implementation of a [horizontal rule](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr).
 
@@ -14,21 +16,10 @@ provideDesignSystem().register(alphaDivider());
 
 ## Usage
 
-```js preview-story
-import { html } from '@microsoft/fast-element';
-import { provideDesignSystem, alphaDivider } from '@genesislcap/alpha-design-system';
-
-provideDesignSystem().register(alphaDivider());
-
-export const usageStory = () => html` <alpha-divider></alpha-divider> `;
+```html live
+<alpha-divider></alpha-divider>
 ```
 
 ## Use cases
 
 Used anywhere a horizontal rule might be used.
-
-## Additional resources
-
-- [Fast documentation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/divider/README.md)
-- [Fast specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/divider/divider.spec.md)
-- [Fast styles implementation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-components/src/divider/divider.styles.ts)

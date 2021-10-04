@@ -1,4 +1,8 @@
-# menu
+---
+id: menu
+title: Menu
+sidebar_position: 60
+---
 
 As defined by the W3C:
 
@@ -20,63 +24,53 @@ provideDesignSystem().register(alphaMenu(), alphaMenuItem());
 
 ### Basic Usage
 
-```js preview-story
-export const basicUsageStory = () => html`
-  <alpha-menu>
-    <alpha-menu-item>Menu item 1</alpha-menu-item>
-    <alpha-menu-item>Menu item 2</alpha-menu-item>
-    <alpha-menu-item>Menu item 3</alpha-menu-item>
-    <alpha-divider></alpha-divider>
-    <alpha-menu-item role="menuitemradio">Menu item 4</alpha-menu-item>
-    <alpha-menu-item role="menuitemradio">Menu item 5</alpha-menu-item>
-  </alpha-menu>
-`;
+```html live
+<alpha-menu>
+  <alpha-menu-item>Menu item 1</alpha-menu-item>
+  <alpha-menu-item>Menu item 2</alpha-menu-item>
+  <alpha-menu-item>Menu item 3</alpha-menu-item>
+  <alpha-divider></alpha-divider>
+  <alpha-menu-item role="menuitemradio">Menu item 4</alpha-menu-item>
+  <alpha-menu-item role="menuitemradio">Menu item 5</alpha-menu-item>
+</alpha-menu>
 ```
 
 ### Nested Menus
 
-```js preview-story
-export const nestedMenusStory = () => html`
-  <alpha-menu>
-    <alpha-menu-item>
-      Menu item 1
-      <alpha-menu>
-        <alpha-menu-item>Menu item 1.1</alpha-menu-item>
-        <alpha-menu-item>Menu item 1.2</alpha-menu-item>
-        <alpha-menu-item>Menu item 1.3</alpha-menu-item>
-      </alpha-menu>
-    </alpha-menu-item>
-    <alpha-menu-item>
-      Menu item 2
-      <alpha-menu>
-        <alpha-menu-item>Menu item 2.1</alpha-menu-item>
-        <alpha-menu-item>Menu item 2.2</alpha-menu-item>
-        <alpha-menu-item>Menu item 2.3</alpha-menu-item>
-      </alpha-menu>
-    </alpha-menu-item>
-    <alpha-menu-item>
-      Menu item 3
-      <alpha-menu>
-        <alpha-menu-item>Menu item 3.1</alpha-menu-item>
-        <alpha-menu-item>Menu item 3.2</alpha-menu-item>
-        <alpha-menu-item>Menu item 3.3</alpha-menu-item>
-      </alpha-menu>
-    </alpha-menu-item>
-  </alpha-menu>
-`;
+```html live
+<alpha-menu>
+  <alpha-menu-item>
+    Menu item 1
+    <alpha-menu>
+      <alpha-menu-item>Menu item 1.1</alpha-menu-item>
+      <alpha-menu-item>Menu item 1.2</alpha-menu-item>
+      <alpha-menu-item>Menu item 1.3</alpha-menu-item>
+    </alpha-menu>
+  </alpha-menu-item>
+  <alpha-menu-item>
+    Menu item 2
+    <alpha-menu>
+      <alpha-menu-item>Menu item 2.1</alpha-menu-item>
+      <alpha-menu-item>Menu item 2.2</alpha-menu-item>
+      <alpha-menu-item>Menu item 2.3</alpha-menu-item>
+    </alpha-menu>
+  </alpha-menu-item>
+  <alpha-menu-item>
+    Menu item 3
+    <alpha-menu>
+      <alpha-menu-item>Menu item 3.1</alpha-menu-item>
+      <alpha-menu-item>Menu item 3.2</alpha-menu-item>
+      <alpha-menu-item>Menu item 3.3</alpha-menu-item>
+    </alpha-menu>
+  </alpha-menu-item>
+</alpha-menu>
 ```
 
 ## Use cases
 
-1. Paired with a persistent [menu button](https://w3c.github.io/aria-practices/#menubutton) to create a dropdown menu control. An example of this might be the common `...` overflow menu patterns where the menus visual state is toggled when the menu button is clicked.
-
-2. A contextual menu triggered via right click, not paired with a menu button.
-
-3. A less common, but still conventional pattern would be a visually persistent menu docked to the side of a screen, such as the example docked to the left (ltr) in this [Microsoft store example](https://www.microsoft.com/en-us/store/top-free/apps/pc).
+* Dropdown menu control triggered by a button click e.g. settings menu
+* A contextual menu triggered by a right-click
 
 ## Additional resources
 
 - [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#menu)
-- [Fast documentation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/menu/README.md)
-- [Fast specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/menu/menu.spec.md)
-- [Fast styles implementation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-components/src/menu/menu.styles.ts)

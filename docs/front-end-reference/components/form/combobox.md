@@ -1,4 +1,8 @@
-# combobox
+---
+id: combobox
+title: Combobox
+sidebar_position: 30
+---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#combobox):
 
@@ -7,38 +11,27 @@ As defined by the [W3C](https://w3c.github.io/aria-practices/#combobox):
 ## Setup
 
 ```ts
-import { provideDesignSystem, alphaCombobox, getOption } from '@genesislcap/alpha-design-system';
+import { provideDesignSystem, alphaCombobox, alphaOption } from '@genesislcap/alpha-design-system';
 
-provideDesignSystem().register(alphaCombobox(), getOption());
+provideDesignSystem().register(alphaCombobox(), alphaOption());
 ```
 
 ## Usage
 
-```js preview-story
-import { html } from '@microsoft/fast-element';
-import { provideDesignSystem, alphaCombobox, getOption } from '@genesislcap/alpha-design-system';
-
-provideDesignSystem().register(alphaCombobox(), getOption());
-
-export const usageStory = () => html`
-  <alpha-combobox autocomplete="both">
-    <alpha-option>Christopher Eccleston</alpha-option>
-    <alpha-option>David Tenant</alpha-option>
-    <alpha-option>Matt Smith</alpha-option>
-    <alpha-option>Peter Capaldi</alpha-option>
-    <alpha-option>Jodie Whittaker</alpha-option>
-  </alpha-combobox>
-`;
+```html live
+<alpha-combobox autocomplete="both">
+  <alpha-option>Christopher Eccleston</alpha-option>
+  <alpha-option>David Tenant</alpha-option>
+  <alpha-option>Matt Smith</alpha-option>
+  <alpha-option>Peter Capaldi</alpha-option>
+  <alpha-option>Jodie Whittaker</alpha-option>
+</alpha-combobox>
 ```
 
 ## Use cases
 
-- _A customer using the component on a web page._
-  On a web page a customer is providing their US mailing address for an order form. The customer clicks a `<alpha-combobox>` to fill in their state (California, Ohio, etc.) and sees a list of options. The customer begins typing the state name and the field is automatically populated with the closest matching state. Then, the customer uses the arrow keys to highlight their state and presses `enter` to commit the value to the combobox.
+* Auto-complete
 
 ## Additional resources
 
 - [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#combobox)
-- [Fast documentation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/combobox/README.md)
-- [Fast specification](https://github.com/microsoft/fast/tree/master/packages/web-components/fast-foundation/src/combobox)
-- [Fast styles implementation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-components/src/combobox/combobox.styles.ts)

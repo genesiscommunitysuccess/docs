@@ -1,5 +1,8 @@
-
-# anchor
+---
+id: anchor
+title: Anchor
+sidebar_position: 20
+---
 
 As defined by the W3C:
 
@@ -17,16 +20,6 @@ provideDesignSystem().register(alphaAnchor());
 
 ## Usage
 
-```js preview-story
-import { html } from '@microsoft/fast-element';
-import { provideDesignSystem, alphaAnchor } from '@genesislcap/alpha-design-system';
-
-provideDesignSystem().register(alphaAnchor());
-
-export const usageStory = () => html` <alpha-anchor href="https://fast.design" appearance="hypertext">FAST</alpha-anchor> `;
+```html live
+<alpha-anchor href="https://genesis.global/" appearance="hypertext">Genesis</alpha-anchor>
 ```
-
-## Additional resources
-
-- [Fast documentation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/anchor/README.md)
-- [Fast styles implementation](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-components/src/anchor/anchor.styles.ts)
