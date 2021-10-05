@@ -17,13 +17,13 @@ const features = [
     url: '/getting-started/platform/'
   },
   {
-    title: <>Server reference</>,
+    title: <>Platform reference</>,
     description: (url) => (
       <p>
         The server of a Genesis application can be as simple or complex as your needs. <Link to={url}>Take a look at the modules</Link> and the way they can be configured.
       </p>
     ),
-    url: '/server-reference/intro/'
+    url: '/platform-reference/intro/'
   },
   {
     title: <>Tutorials</>,
