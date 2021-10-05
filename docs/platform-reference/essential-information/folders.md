@@ -33,6 +33,10 @@ This is the Genesis framework, containing all the libraries and config files.
 
 This contains all the installation-generated files (for example, cfg) following the most recent installation, upgrade or remap.
 
+:::warning
+Never change the files in this folder, because any changes will be lost the next time you run `genesisInstall`.
+:::
+
 #### Modules
 
 Within the run directory, you can find the key Genesis modules, each of which delivers important functions. Note two modules in particular:
