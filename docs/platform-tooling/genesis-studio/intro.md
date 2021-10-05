@@ -48,7 +48,7 @@ Simply click **Edit** for the project you want to work on. This displays the wor
 ### Top menu
 The menu at the top shows the following options:
 
-![](/img/studio-menu-1s.png)
+![](/img/studio-menu-1.png)
 
 To the right at the top is a collection of useful icons and controls:
 
