@@ -268,7 +268,7 @@ views {
 }
 ```
 
-### `joins`:
+### `joins`
 Defines the joins within a view (optional). Often, a view needs to contain fields from different tables.
 Joins are a way of combining data from different tables into a single view. To make a table accessible in fields it must either be the rootTable or joined to in the `joins` tag
 You can define maximum of 20 join per view level
@@ -331,7 +331,7 @@ query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {
 }
 ```
 
-*One to one and one many joins*
+*One to one and one many joins*:
 View definition supports one to one and one to many relationship. One to many joins are only usable in request reply definitions.
 When joining from table A to table B, how many records can we expect. This comes down to index matching. When we define a join we need to specify the fields to join on, if there is primary key or unique index where all the
 fields in the index are in the join we can guarantee a one-to-one join. If not we default to a one-to-many join.
@@ -340,7 +340,7 @@ There are a number of advantages for one-to-one joins:
 1. More efficient, we can create a more efficient query plan for one to one joins
 2. Views using only one to one joins can be used in data servers
 
-*Parameterized join*
+*Parameterized join*:
 Some join operations could require external parameters that are not available in the context of the table join definition, but will be available when the view repository is accessible (e.g. client enriched definitions), so we have included the option to create parametrised joins
 When you want to utilize the view you need to provide certain parameters. This join will be mostly used where you have one to many relationship between tables
 Explained below with an example:
@@ -392,7 +392,7 @@ joining(fixCal, JoinType.INNER, backwardsJoin = true) {
 }
 ```
 
-### `fields`:
+### `fields`
 Defines the fields in the view.
 
 #### Ways of defining fields:
@@ -483,7 +483,7 @@ fields {
 }
 ```
 
-#### [Derived fields](/server-reference/data-model/define/Derived fields)
+#### [Derived fields](/platform-reference/data-model/define/#derived-fields)
 Sample:
 ```kotlin
 fields {
@@ -508,6 +508,6 @@ fields {
                 else ask - bid
             }
         }
-    }
+    }   
 }
 ```
