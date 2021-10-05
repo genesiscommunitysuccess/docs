@@ -7,7 +7,7 @@ id: service-definitions
 ---
 # Service definitions
 
-Just as each application must have  a *-processes.xml* config file, it must also have a *-service-definitions.xml* file. This is where the developer specifies the ports of the various processes. These ports are used to communicate internally between processes.
+Just as each application must have  a *-processes.xml* config file, it must also have a *-service-definitions.xml* file. This is where you specify the ports of the various processes. These ports are used to communicate internally between processes.
 
 ```xml
 <configuration>
@@ -32,7 +32,7 @@ When `genesisInstall` is executed, all products have their *-service-definitions
 </configuration>
 ```
 
-If process lives in different server then set the `external` attribute to be "true"
+If the process lives on a different server, then set the `external` attribute to be "true"
 Ex:
 
 ```xml
