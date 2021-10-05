@@ -19,7 +19,7 @@ We can display the configuration of both in our request server, data server and 
 
 First, enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system.
 
-You can read more about it [here](../../server-reference/authentication-and-authorisation/authorisation.md).
+You can read more about it [here](../../platform-reference/authentication-and-authorisation/authorisation.md).
 
 Starting with the server, make sure that you have two USER and USER_ATTRIBUTES records setup: JohnDoe and JaneDoe.
 
