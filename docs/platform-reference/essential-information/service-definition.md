@@ -42,7 +42,7 @@ For example:
 ```
 
 ## Enable SSL for processes
-To enable SSL for a process, set the `secure` attribute to  "true" on the process in the **$GC/global-service-definitions.xml** file.
+To enable SSL for a process, set the `secure` attribute to  "true" on the process in the **-service-definitions.xml** file.
 For example:
 
 
@@ -51,7 +51,7 @@ For example:
     <service host="localhost" name="GCOM_REQUEST_SERVER" port="8571" secure="true"/>
 </configuration>
 ```
-You must also edit the _application_**-system-definition.kts** file, as specified in the example below:
+You must also edit the _application_**genesis-system-definition.kts** file, as specified in the example below:
 
 
 ```kotlin
@@ -65,8 +65,9 @@ systemDefinition {
 ```
 
 :::warning
-The global-service-definitions.xml file and the processes.xml file are are erased and re-generated every time you run `genesisInstall`. 
-Therefore, it is essential that you set the service-definitions.xml file for each module  in this way.
+The global-service-definitions.xml file and the processes.xml file are are erased and re-generated every time you run `genesisInstall`. (You should never change these files, because any changes will be lost the next time you run genesisInstall.)
+
+Therefore, it is essential that you set the **service-definitions.xml** file this way for every service or module for which you want to enable SSL.
 :::
 
 
