@@ -23,8 +23,7 @@ lightweight abstraction to easily build performant, memory-efficient, standards-
 Our genesis packages are scoped to `@genesislcap`. These consist of:
 
 - `@genesislcap/foundation-ui`: Base components
-- `@genesislcap/foundation-zero`: A design system variant
-- `@genesislcap/foundation-alpha`: A design system variant
+- `@genesislcap/foundation-zero`: The zero design system variant
 - `@genesislcap/foundation-utils`: Utilities
 - `@genesislcap/foundation-comms`: Comms system
 - ...etc
