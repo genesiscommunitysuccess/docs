@@ -10,3 +10,6 @@ tags:
   - getting started
 ---
 
+# Genesis IDE
+
+The Genesis IDE is a browser based IDE designed to work seamlessly with Genesis Studio or standalone.

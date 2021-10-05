@@ -19,7 +19,8 @@
     "mermaid": "^8.13.0",
     "raw-loader": "^4.0.2",
     "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "react-dom": "^16.8.4",
+    "tslib": "^2.1.0"
   },
   "browserslist": {
     "production": [
