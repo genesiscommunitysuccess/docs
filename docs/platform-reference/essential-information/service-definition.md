@@ -7,7 +7,7 @@ id: service-definitions
 ---
 # Service definitions
 
-Just as each application must have  a *-processes.xml* config file, it must also have a *-service-definitions.xml* file. This is where you specify the ports of the various processes. These ports are used to communicate internally between processes.
+Just as each application must have  a *-processes.xml* config file, it must also have a *-service-definitions.xml* file. This is where you specify the ports of the various processes. These  are used to communicate internally between processes.
 
 ```xml
 <configuration>
@@ -65,8 +65,8 @@ systemDefinition {
 ```
 
 :::warning
-The global-service-definitions.xml file and the processes.xml file are created whenever you run `genesisInstall`. The existing files are erased and re-generated every time you do this.
-**Therefore, this setting is essential.**
+The global-service-definitions.xml file and the processes.xml file are are erased and re-generated every time you run `genesisInstall`. 
+Therefore, it is essential that you set the service-definitions.xml file for each module  in this way.
 :::
 
 
