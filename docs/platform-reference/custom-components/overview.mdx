@@ -23,6 +23,9 @@ by selecting ```File -> New -> Module``` from Intellij's menu options.
 
 ![](/img/new-module.png)
 
+A custom component can be used to implement custom logic for your service. Configuration for your component can be defined in [Genesis System Definition](/platform-reference/essential-information/systemDefinition) and
+testing can follow the practise [here](testing/testing)
+
 ## Genesis Dependency Injection Framework
 
 Genesis supports the key annotations from javax.annotation and javax.inject defined in [Java Platform Enterprise Edition](https://docs.oracle.com/javaee/7/index.html), In addition Genesis provides some of it's own annotations.
@@ -35,7 +38,7 @@ All classes requiring creation by the genesis startup need to be annotated with 
 
 Used to annotate a class that is responsible for acting as Factory for a specified type.
 
-Example below shows
+Example:-
 ```kotlin
 @Singleton
 @ProviderOf(type = PriceFeed::class)
@@ -62,7 +65,9 @@ Genesis runtime environment will call this only once after initialization of the
 
 Genesis runtime environment will call this only once just before genesis remove this from the application context.
 
-eg below show using a @Module and @Inject annotation in a constructor,on a method and on a field
+## Example
+
+Combining a **@Module**, **@Named** and **@Inject** annotation on a constructor, on a method and on a field
 
 ```kotlin
 @Module
