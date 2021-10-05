@@ -63,3 +63,10 @@ systemDefinition {
     }
 }
 ```
+
+:::warning
+The global-service-definitions.xml file and the processes.xml file are created whenever you run `genesisInstall`. The existing files are erased and re-generated every time you do this.
+**Therefore, this setting is essential.**
+:::
+
+
