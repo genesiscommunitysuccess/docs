@@ -184,10 +184,6 @@ img[alt^="masthead-cut"] {
   clip-path: polygon(0% 0%,100.00% 0.00%,100.00% 80.00%,95.00% 100.00%,90.00% 80.00%,85.00% 100.00%,80.00% 80.00%,75.00% 100.00%,70.00% 80.00%,65.00% 100.00%,60.00% 80.00%,55.00% 100.00%,50.00% 80.00%,45.00% 100.00%,40.00% 80.00%,35.00% 100.00%,30.00% 80.00%,25.00% 100.00%,20.00% 80.00%,15.00% 100.00%,10.00% 80.00%,5.00% 100.00%,0.00% 80.00%);
 }
 
-alpha-button::part(start) {
-  padding-right: 5px;
-}
-
 alpha-avatar {
   --avatar-fill-accent-primary: #0EAFE2;
 }
@@ -198,6 +194,8 @@ alpha-horizontal-scroll {
 
 alpha-card {
   padding: 20px;
+  --zero-card-fill-color: var(--neutral-layer-1);
+  --zero-card-foreground-color: var(--neutral-foreground-rest);
 }
 
 alpha-horizontal-scroll alpha-card {
@@ -206,22 +204,28 @@ alpha-horizontal-scroll alpha-card {
 
 alpha-skeleton {
   border-radius: 4px;
-  width: 500px;
-  height: 250px;
+  width: 50px;
+  height: 50px;
 }
 
-alpha-skeleton svg {
-  position: absolute;
-  left: 0;
-  top: 0;
+.playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module  {
+  color: var(--neutral-foreground-rest);
+  --ifm-heading-color: var(--neutral-foreground-rest);
 }
 
-.playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module alpha-button {
+alpha-button .icon {
+  margin-right: 5px;
+}
+
+.button-examples alpha-button {
   margin-right: 10px;
 }
 
-.playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module legend,
-.playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module  {
+.button-examples alpha-button .icon {
+  padding-right: 5px;
+}
+
+.playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module legend {
   color: var(--neutral-foreground-rest);
 }
 
@@ -229,4 +233,17 @@ alpha-skeleton svg {
   color: var(--neutral-foreground-rest);
   background: var(--accent-fill-rest);
   padding: 10px;
+}
+
+.combobox-examples .playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module {
+  min-height: 300px;
+}
+
+.select-examples .playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module,
+.toolbar-examples .playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module {
+  min-height: 250px;
+}
+
+.tooltip-examples .playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module {
+  min-height: 110px;
 }

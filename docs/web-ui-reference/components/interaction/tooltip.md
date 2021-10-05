@@ -4,6 +4,8 @@ title: Tooltip
 sidebar_position: 90
 ---
 
+<div class="tooltip-examples">
+
 The `alpha-tooltip` component is used provide extra information about another element when it is hovered.
 
 ## Setup
@@ -30,3 +32,5 @@ Tooltips are often used to supplement UI elements and provide additional informa
 ## Additional resources
 
 - [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#tooltip)
+
+</div>

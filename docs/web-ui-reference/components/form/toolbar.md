@@ -4,6 +4,8 @@ title: Toolbar
 sidebar_position: 150
 ---
 
+<div class="toolbar-examples">
+
 As defined by the [W3C](https://w3c.github.io/aria-practices/#toolbar):
 
 > A toolbar is a container for grouping a set of controls, such as buttons, menubuttons, or checkboxes.
@@ -43,3 +45,5 @@ provideDesignSystem().register(alphaToolbar());
 ## Additional resources
 
 - [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#toolbar)
+
+</div>
