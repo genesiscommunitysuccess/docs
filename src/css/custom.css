@@ -208,7 +208,7 @@ alpha-skeleton {
   height: 50px;
 }
 
-.playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module  {
+[class^="playgroundPreview"] {
   color: var(--neutral-foreground-rest);
   --ifm-heading-color: var(--neutral-foreground-rest);
 }
@@ -225,25 +225,25 @@ alpha-button .icon {
   padding-right: 5px;
 }
 
-.playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module legend {
+[class^="playgroundPreview"] legend {
   color: var(--neutral-foreground-rest);
 }
 
-.playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module alpha-anchored-region  {
+[class^="playgroundPreview"] alpha-anchored-region  {
   color: var(--neutral-foreground-rest);
   background: var(--accent-fill-rest);
   padding: 10px;
 }
 
-.combobox-examples .playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module {
+.combobox-examples [class^="playgroundPreview"]{
   min-height: 300px;
 }
 
-.select-examples .playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module,
-.toolbar-examples .playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module {
+.select-examples [class^="playgroundPreview"],
+.toolbar-examples [class^="playgroundPreview"]{
   min-height: 250px;
 }
 
-.tooltip-examples .playgroundPreview_node_modules-\@docusaurus-theme-live-codeblock-src-theme-Playground-styles-module {
+.tooltip-examples [class^="playgroundPreview"]{
   min-height: 110px;
 }
