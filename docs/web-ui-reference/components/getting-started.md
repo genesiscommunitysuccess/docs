@@ -73,10 +73,10 @@ The consuming application must apply this, as the components themselves do not.
 :::
 
 
-## Explore the available components
+## Explore all the available components
 
-There are over 40 components provided out of the box with a Genesis Foundation UI design system. You can explore them by category:
+Genesis Foundation UI provides over 40 components out of the box. You can explore them by category:
 
-* [Form](/web-ui-reference/components/form/button/), such as button, checkbox, text field etc.
-* [Interaction](/web-ui-reference/components/interaction/accordion/), such tabs, modal, tooltip etc.
-* [Presentation & Visualisation](/web-ui-reference/components/presentation/ag-grid/) such as grids, cards, progress indicators etc.
+* [Form](/web-ui-reference/components/form/button/), such as button, checkbox, text field.
+* [Interaction](/web-ui-reference/components/interaction/accordion/), such as tabs, modal, tooltip.
+* [Presentation & Visualisation](/web-ui-reference/components/presentation/ag-grid/) such as grids, cards, progress indicators.
