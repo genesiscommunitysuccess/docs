@@ -230,17 +230,93 @@ To create a view, you must specify a name for the view and the identity of the p
 
 Views are defined in file under `<application-name>-config/src/main/resources/cfg` having the following name convention `<application-name>-view-dictionary.kts`. For example for the `trade` application that file name would be `trade-view-dictionary.kts`
 
-### Joins
+## View keywords:
 
-Often, a view needs to contain fields from different tables.
+### `debugMode`
+Enables debug mode for this view. This will generate extra logging statements when the view repositories are used.
 
-For a simple join, where you add reference data to price data, for example, include a **joins** statement when you define the table. For this, you can insert a join in your view. You need to specify the root table, the second table, and the fields that are being viewed in each one.
+### `withAlias`
+Allows you to define an alias for a field. This is useful in different scenarios, for example when you need to join on the same table multiple times
 
-You might need to join to two different parts of the same table - for example, if you need to pick up the currency of a trade currency and also the settlement currency.
+```kotlin
+views {
+    view("ALL_MESSAGES_VIEW", rootTable = MESSAGE) {
+        val sender = USER withAlias "sender"
+        val receiver = USER withAlias "receiver"
 
-To achieve this, create aliases for the two fields you are retrieving from the second table, for example, **tradeCcy** and **settCcy.**
+        joins {
+            joining(sender) {
+                on(MESSAGE {SENDER_NAME} to sender {USER_NAME})
+            }
+            joining(receiver) {
+                    on(MESSAGE {RECEIVER_NAME} to receiver {USER_NAME})
+                }
+        }
 
-By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data). If you need to join to a table where there is real-time data, then you need to specify a backwards join. This requires the statement backwardsJoin = true when you are specifying the join.
+        fields {
+
+            MESSAGE.allFields()
+
+            sender {
+                EMAIL_ADDRESS withAlias "SENDER_EMAIL_ID"
+            }
+            receiver {
+                EMAIL_ADDRESS withAlias "RECEIVER_EMAIL_ID"
+            }
+        }
+    }
+}
+```
+
+### `joins`
+Defines the joins within a view (optional). Often, a view needs to contain fields from different tables.
+Joins are a way of combining data from different tables into a single view. To make a table accessible in the `fields` section it must either be the rootTable or joined to in the `joins` tag
+You can define maximum of 20 joins per view level
+
+#### Different types of joins
+
+*Outer join:*
+By default views use outer joins, this means that if a join returns no record that the view row is eligible and provided as normal with fields from the missing table defaulting to null
+
+```kotlin
+    view("USER_SESSION_DETAILS", USER_DETAILS) {
+        joins {
+            joining(USER_SESSION) {
+                on(USER_DETAILS.USER_NAME to USER_SESSION.USER_NAME)
+            }
+        }
+        fields {
+            USER_DETAILS.allFields()
+            USER_SESSION.LAST_ACCESS_TIME
+        }
+    }
+```
+
+*Inner join*: Inner joins require that all joins match exactly, if one join fails to match this row will be discarded
+```kotlin
+    view("USER_SESSION_DETAILS", USER_DETAILS) {
+        joins {
+            joining(USER_SESSION, joinType = JoinType.INNER) {
+                on(USER_DETAILS.USER_NAME to USER_SESSION.USER_NAME)
+            }
+        }
+        fields {
+            USER_DETAILS.allFields()
+            USER_SESSION.LAST_ACCESS_TIME
+        }
+    }
+```
+
+*Backword Join*:
+By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data). If you need to join to a table where there is real-time data, then you need to specify a backwards join. This requires the statement backwardsJoin = true when you are specifying the join. This will ensure that updates to a joined table will trigger a forward join from the root table and provide the most up to date information to the view repository user (e.g. a dataserver)
+
+```kotlin
+joins {
+    joining(USER_ATTRIBUTES, backwardsJoin = true) {
+        on(USER.USER_NAME to USER_ATTRIBUTES.USER_NAME)
+    }
+}
+```
 
 It is worth noting that when you define your [data servers](/platform-reference/data-servers/configure/), any of these that include views with backwards joins **must include a similar statement in order to enable the feature**: **backJoins = true**. Don’t forget to add this!
 
@@ -251,5 +327,186 @@ query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {
     config {
         backJoins = true
     }
+}
+```
+
+*One to one and one many joins*:
+View definition supports one to one and one to many relationship. One to many joins are only usable in request reply definitions.
+When joining from table A to table B, the view records output comes down to index matching. When we define a join we need to specify the fields to join on, if there is primary key or unique index where all the
+fields in the index are in the join we can guarantee a one-to-one join. If not we default to a one-to-many join.
+
+There are a number of advantages for one-to-one joins:
+1. Better efficiency, as we can create a more efficient query plan for one to one joins
+2. Views using one to one joins exclusively can be used in data servers
+
+*Parameterized join*:
+Some join operations could require external parameters that are not available in the context of the table join definition, but will be available when the view repository is used (e.g. client enriched definitions or req/rep definitions), so we have included the option to create parameterised joins
+These parameters will be requested when the view repository is used (e.g. getBulk() or get() operations). This type of join is mostly used when you have one to many relationship between tables
+Explained below with an example:
+
+```kotlin {5}
+view("INSTRUMENT_PARAMETERS", INSTRUMENT) {
+    joins {
+        joining(ALT_INSTRUMENT_ID, JoinType.INNER) {
+            on(INSTRUMENT.ID to ALT_INSTRUMENT_ID.INSTRUMENT_ID)
+                .and(ALT_INSTRUMENT_ID.ALTERNATE_TYPE.asParameter())
+        }
+    }
+    fields {
+        ALT_INSTRUMENT_ID {
+            ALTERNATE_CODE withAlias "INSTRUMENT_CODE"
+        }
+        INSTRUMENT {
+            NAME withPrefix INSTRUMENT
+        }
+    }
+}
+```
+
+In the above example there is a "one to many" relationship between INSTRUMENT and ALT_INSTRUMENT_ID table. When this view is used in any of the service like data-server (in client enriched scenarios), request-replies or event handlers, the user will need to provide values for INSTRUMENT_ID (which is the root table primary key) and ALTERNATE_TYPE fields.
+
+*Dynamic joins*
+Dynamic joins are helpful if you want to do complex join operations. This join option has shares the same syntax as "derived fields"
+
+```kotlin
+joining(fix, backwardsJoin = true) {
+   on {
+      withEntity(TRADE_TO_SIDE) { tradeToSide ->
+         TradeSide.BySideId("prefix" + tradeToSide.fixId)
+      }
+   }
+}
+```
+
+```kotlin
+joining(fixCal, JoinType.INNER, backwardsJoin = true) {
+    on {
+        withInput(fix { CALENDAR_ID }) { calendarId ->
+            when (calendarId) {
+                null -> null
+                else -> TradeCalendar.ByCalendarId(calendarId)
+            }
+        }
+    }
+}
+```
+
+### `fields`
+Defines the fields in the view.
+
+#### Ways of defining fields:
+There are two ways of adding fields to a view. Either using the `TABLE.FIELD` syntax or by using the `TABLE { FIELD }` syntax. Both methods can be use interchangeably as well as in the same
+definition. When adding many fields from the table the `TABLE { FIELD }` syntax would lead to a more concise and readable definition.
+
+Please note that for a table to be used within the `fields {...}` tag, it should either be the root table or be joined in the joins tag.
+
+#### The `TABLE.FIELD` syntax
+Sample:
+```kotlin
+fields {
+    PROFILE_RIGHT.PROFILE_NAME
+    PROFILE_RIGHT.RIGHT_CODE
+
+    // more fields go here...
+}
+```
+
+#### The `TABLE { FIELD }` syntax
+Sample:
+```kotlin
+fields {
+    USER {
+        USER_NAME
+        LAST_LOGIN
+        EMAIL_ADDRESS
+        COMPANY_ID
+    }
+
+    // more fields go here...
+}
+```
+
+#### Ways for customizing fields
+
+As well as adding fields, views provide ways of manipulating the added data.
+This can be done in the following ways:
+1. Changing an existing field:
+    1. Setting a field alias using `withAlias`
+    2. Setting a field prefix using `withPrefix`
+    3. Setting a field format using `withFormat`
+2. Adding a new field by declaring a derived field using `derivedField`
+
+Please note that everything described below works when accessing fields using the `TABLE.FIELD`
+syntax as well as the `TABLE { FIELD }` syntax. Also, formats can be used with prefixed and
+aliased fields.
+
+#### Field aliases
+Sample:
+```kotlin
+fields {
+    USER_ATTRIBUTES_AUDIT {
+        ADDRESS_LINE1 withAlias "ADDRESS_LINE_1"
+    }
+    // or
+    USER_ATTRIBUTES_AUDIT.ADDRESS_LINE1 withAlias "ADDRESS_LINE_1"
+}
+```
+You might need to join to two different parts of the same table - for example, if you need to pick up the currency of a trade currency and also the settlement currency.
+To achieve this, create aliases for the two fields you are retrieving from the second table, for example, **tradeCcy** and **settCcy.**
+
+#### Field prefix
+Sample:
+```kotlin
+fields {
+    USER {
+        NAME withPrefix USER
+        NAME withPrefix "GENESIS_USER"
+    }
+    // or
+    USER.NAME withPrefix USER
+    USER.NAME withPrefix "GENESIS_USER"
+}
+```
+
+#### Formatting fields
+Sample:
+```kotlin
+fields {
+    USER {
+        LAST_LOGIN withFormat "dd/MM/yyyy"
+        LAST_LOGIN withAlias "LAST_DATE" withFormat "dd/MM/yyyy"
+    }
+    // or
+    USER.LAST_LOGIN withFormat "dd/MM/yyyy"
+    USER.LAST_LOGIN withPrefix USER withFormat "dd/MM/yyyy"
+}
+```
+
+#### [Derived fields](/platform-reference/data-model/define/#derived-fields)
+Sample:
+```kotlin
+fields {
+    // with entity input
+    derivedField("SPREAD", DOUBLE) {
+        withEntity(INSTRUMENT_PRICE) { price ->
+            price.askPrice - price.bidPrice
+        }
+    }
+    // or with field input
+    derivedField("SPREAD", DOUBLE) {
+        withInput(INSTRUMENT_PRICE.BID_PRICE, INSTRUMENT_PRICE.ASK_PRICE) { bid, ask ->
+            if (ask == null || bid == null) null
+            else ask - bid
+        }
+    }
+    // or
+    INSTRUMENT_PRICE {
+        derivedField("SPREAD", DOUBLE) {
+            withInput(BID_PRICE, ASK_PRICE) { bid, ask ->
+                if (ask == null || bid == null) null
+                else ask - bid
+            }
+        }
+    }   
 }
 ```
