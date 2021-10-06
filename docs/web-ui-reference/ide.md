@@ -1,7 +1,7 @@
 ---
 id: ide
 sidebar_label: IDE
-sidebar_position: 70
+sidebar_position: 80
 title: IDE
 tags:
   - ide
