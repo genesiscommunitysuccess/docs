@@ -233,10 +233,10 @@ Views are defined in file under `<application-name>-config/src/main/resources/cf
 ## View keywords:
 
 ### `debugMode`
-Enables debug mode for this view
+Enables debug mode for this view. This will generate extra logging statements when the view repositories are used.
 
 ### `withAlias`
-Provides an alias for a table, for when joining on the same table multiple times
+Allows you to define an alias for a field. This is useful in different scenarios, for example when you need to join on the same table multiple times
 
 ```kotlin
 views {
@@ -270,14 +270,13 @@ views {
 
 ### `joins`
 Defines the joins within a view (optional). Often, a view needs to contain fields from different tables.
-Joins are a way of combining data from different tables into a single view. To make a table accessible in fields it must either be the rootTable or joined to in the `joins` tag
-You can define maximum of 20 join per view level
+Joins are a way of combining data from different tables into a single view. To make a table accessible in the `fields` section it must either be the rootTable or joined to in the `joins` tag
+You can define maximum of 20 joins per view level
 
 #### Different types of joins
 
-*Outer join/join:*
-For a simple join, where you add reference data to price data, for example, include a **joins** statement when you define the table. For this, you can insert a join in your view. You need to specify the root table, the second table, and the fields that are being viewed in each one.
-By default views use outer joins, this means that if a join returns no record that the view record is returned as normal with fields from the missing table will default to null
+*Outer join:*
+By default views use outer joins, this means that if a join returns no record that the view row is eligible and provided as normal with fields from the missing table defaulting to null
 
 ```kotlin
     view("USER_SESSION_DETAILS", USER_DETAILS) {
@@ -309,7 +308,7 @@ By default views use outer joins, this means that if a join returns no record th
 ```
 
 *Backword Join*:
-By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data). If you need to join to a table where there is real-time data, then you need to specify a backwards join. This requires the statement backwardsJoin = true when you are specifying the join.
+By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data). If you need to join to a table where there is real-time data, then you need to specify a backwards join. This requires the statement backwardsJoin = true when you are specifying the join. This will ensure that updates to a joined table will trigger a forward join from the root table and provide the most up to date information to the view repository user (e.g. a dataserver)
 
 ```kotlin
 joins {
@@ -333,16 +332,16 @@ query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {
 
 *One to one and one many joins*:
 View definition supports one to one and one to many relationship. One to many joins are only usable in request reply definitions.
-When joining from table A to table B, how many records can we expect. This comes down to index matching. When we define a join we need to specify the fields to join on, if there is primary key or unique index where all the
+When joining from table A to table B, the view records output comes down to index matching. When we define a join we need to specify the fields to join on, if there is primary key or unique index where all the
 fields in the index are in the join we can guarantee a one-to-one join. If not we default to a one-to-many join.
 
 There are a number of advantages for one-to-one joins:
-1. More efficient, we can create a more efficient query plan for one to one joins
-2. Views using only one to one joins can be used in data servers
+1. Better efficiency, as we can create a more efficient query plan for one to one joins
+2. Views using one to one joins exclusively can be used in data servers
 
 *Parameterized join*:
-Some join operations could require external parameters that are not available in the context of the table join definition, but will be available when the view repository is accessible (e.g. client enriched definitions), so we have included the option to create parametrised joins
-When you want to utilize the view you need to provide certain parameters. This join will be mostly used where you have one to many relationship between tables
+Some join operations could require external parameters that are not available in the context of the table join definition, but will be available when the view repository is used (e.g. client enriched definitions or req/rep definitions), so we have included the option to create parameterised joins
+These parameters will be requested when the view repository is used (e.g. getBulk() or get() operations). This type of join is mostly used when you have one to many relationship between tables
 Explained below with an example:
 
 ```kotlin {5}
@@ -364,10 +363,10 @@ view("INSTRUMENT_PARAMETERS", INSTRUMENT) {
 }
 ```
 
-In the above example there is one to many relationship between INSTRUMENT and ALT_INSTRUMENT_ID table. When this view is used in any of the service like data-server/request-replies or event handlers, user needs to provide values for INSTRUMENT_ID and ALTERNATE_TYPE fields
+In the above example there is a "one to many" relationship between INSTRUMENT and ALT_INSTRUMENT_ID table. When this view is used in any of the service like data-server (in client enriched scenarios), request-replies or event handlers, the user will need to provide values for INSTRUMENT_ID (which is the root table primary key) and ALTERNATE_TYPE fields.
 
 *Dynamic joins*
-Dynamic joins are helpful if you want to do complex join operations. This has a shared syntax with derived fields
+Dynamic joins are helpful if you want to do complex join operations. This join option has shares the same syntax as "derived fields"
 
 ```kotlin
 joining(fix, backwardsJoin = true) {
@@ -396,7 +395,7 @@ joining(fixCal, JoinType.INNER, backwardsJoin = true) {
 Defines the fields in the view.
 
 #### Ways of defining fields:
-There are two ways of adding fields. Either using the `TABLE.FIELD` syntax or by using the `TABLE { FIELD }` syntax. Both methods can be use interchangeably as well as in the same
+There are two ways of adding fields to a view. Either using the `TABLE.FIELD` syntax or by using the `TABLE { FIELD }` syntax. Both methods can be use interchangeably as well as in the same
 definition. When adding many fields from the table the `TABLE { FIELD }` syntax would lead to a more concise and readable definition.
 
 Please note that for a table to be used within the `fields {...}` tag, it should either be the root table or be joined in the joins tag.
