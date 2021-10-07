@@ -4,8 +4,6 @@ title: Combobox
 sidebar_position: 30
 ---
 
-<div class="combobox-examples">
-
 A combobox is an input with an associated popup that enables users to select a value from a collection of possible values (auto-complete).
 
 ## Setup
@@ -35,5 +33,3 @@ provideDesignSystem().register(alphaCombobox(), alphaOption());
 ## Additional resources
 
 - [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#combobox)
-
-</div>

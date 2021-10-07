@@ -7,6 +7,7 @@ title: 'More on the dashboard'
 
 After you have checked the main panel of the dashboard, look at the lower panels:
 
+![](/img/GEM4.png)
 
 * **Instance Users**. This area shows the User ID of each user on the instance you have clicked on in the main panel. This is useful for shared Dev machines.
 
@@ -14,14 +15,17 @@ After you have checked the main panel of the dashboard, look at the lower panels
 
 * **Scheduled Events**. This area shows any scheduled events that are connected with the instance you have clicked on in the main panel.
 
-Borders
+## ## Borders
 If you want to see more in any panel, you can easily click and drag the borders to change the size.
 
+![](/img/GEM5.png)
 
 Click on the double row of dots in the relevant border and drag them in the direction you want.
 
-Column control
+## Column control
 In any panel, you can click on the Columns selector. in the right-hand border This enables you to remove or add columns to suit yourself.
+
+![](/img/GEM6.png)
 
 
 You can also:
