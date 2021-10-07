@@ -147,7 +147,7 @@ First, take a look at the control buttons at the top, beneath the menu bar.
 
 ![](/img/schema-menu.png)
 
-### So what do  you see?
+### So what do you see?
 Existing schema details (if any) are displayed in the main area of the screen. This example shows the fields and tables in a large schema:
 
 ![](/img/Studioschema1.png)
