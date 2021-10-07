@@ -31,7 +31,7 @@ You have:
 
 We are going to build the rest at speed.
 
-Overall, the server for application we shall build looks like this:
+Overall, the server for the application we shall build looks like this:
 
 ![](/img/colour-diagram.png)
 
