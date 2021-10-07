@@ -74,22 +74,22 @@ Clicking on the **Settings** button enables you to export your files and to make
 * **Project** enables you to set the Home page and to define key aspects of the appearance of the user interface.
 
 **Connection** requires a URL and port number:
-![](\img\settings-connection.png)
+![](/img/settings-connection.png)
 
 **Project** provide s settings for themes, location of your logo, location of navigation, etc.
-![](\img\settings-project.png)
+![](/img/settings-project.png)
 
 
 ### Routes
 This is where you define the pages of your user interface.
 
-![](/routes1.png)
+![](/img/routes1.png)
 
 To add a new page, click on **Add Page**.
 
 This displays a set of page properties that you need to specify
 
-![](/routes2.png)
+![](/img/routes2.png)
 
 
 * **Title in navigation**. Enter a title that describes the page, for example, _Trade Blotter_.
@@ -145,7 +145,7 @@ This area enables you to configure fields, tables and views.
 
 First, take a look at the control buttons at the top, beneath the menu bar.
 
-![](\img\schema-menu.png)
+![](/img/schema-menu.png)
 
 ### So what do  you see?
 Existing schema details (if any) are displayed in the main area of the screen. This example shows the fields and tables in a large schema:
@@ -189,5 +189,5 @@ In the tables display, each field has three dots on the left side. You can click
 Clicking on **State** in the top menu enables you to configure states and the permitted transformations between states. 
 
 
-![](\img\studio-states1.png)
+![](/img/studio-states1.png)
 
