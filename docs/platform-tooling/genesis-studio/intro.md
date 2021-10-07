@@ -55,13 +55,13 @@ To the right at the top is a collection of useful icons and controls:
 ![](/img/studio-controls.png)
 
 
-**Last deployment** indicates whether the last deployment was successful (tick) or unsuccessful (cross).
+* **Last deployment** indicates whether the last deployment was successful (tick) or unsuccessful (cross).
 
-**Alerts** indicates whether any alerts have been generated (for example, if you have saved a table without a primaryKey. If there any alerts, this icon displays the number of unread notifications.
+* **Alerts** indicates whether any alerts have been generated (for example, if you have saved a table without a primaryKey. If there any alerts, this icon displays the number of unread notifications.
 
-**Settings** enables you to export the complete project to an external directory and to make key settings for the project.
+* **Settings** enables you to export the complete project to an external directory and to make key settings for the project.
 
-**Username** enables you to log out.
+* **Username** enables you to log out.
 
 ### Settings
 Clicking on the **Settings** button enables you to export your files and to make key settings.
@@ -71,40 +71,53 @@ Clicking on the **Settings** button enables you to export your files and to make
 **Settings** gives you two options:
 
 * **Connection** enables you to specify the URL and port of the server API.
-* **Project** enables you to  TODO
+* **Project** enables you to set the Home page and to define key aspects of the appearance of the user interface.
+
+**Connection** requires a URL and port number:
+![](/img/settings-connection.png)
+
+**Project** provide s settings for themes, location of your logo, location of navigation, etc.
+![](/img/settings-project.png)
 
 
 ### Routes
 This is where you define the pages of your user interface.
 
+![](/img/routes1.png)
+
 To add a new page, click on **Add Page**.
 
-This displays a set of page properties that you need to specify:
+This displays a set of page properties that you need to specify
 
-**Title in navigation**. Enter a title that describes the page, for example, _Trade Blotter_.
+![](/img/routes2.png)
 
-**URL path**. Specify a path that begins at the home page.
 
-**Navigation icon**. Click to choose an icon from the drop-down list.
+* **Title in navigation**. Enter a title that describes the page, for example, _Trade Blotter_.
 
-**Location in nav**. Click to set this to **Top**, **Secondary** or **Component Only**.
+* **URL path**. Specify a path that begins at the home page.
 
-**Route permissions**. You can set the**is public** radio button to on or off.
+* **Navigation icon**. Click to choose an icon from the drop-down list.
 
-**Default route** (this is not set here – use the **Settings** link.
+* **Location in nav**. Click to set this to **Top**, **Secondary** or **Component Only**.
+
+* **Route permissions**. You can set the **is public** radio button to on or off.
+
+* **Default route** (this is not set here – use the **Settings** link.
 
 Your changes remain in memory only until you click on **Save Changes**.
 
 ### Pages
 
-Here you can configure the pages that you created in the Routes area. 
+In this area, you can configure the pages that you created in the Routes area. 
 
 
-![](/img/Studio 2 Home Page AddPage.png)
+![](/img/s.png)
 
-On the right are the page properties that were set in the Routes area when the page was created.
+On the right are the page properties that were set in the [Routes](/platform-tooling/genesis-studio/intro/#routes) area when the page was created.
 
-On the left, select the page you want to configure. Then add acomponent. Here we have added a heading (Trade Blotter) and we have just selected to add a grid. The tables that the supply data to the grid are listed on the left:
+### Adding components
+All you need to do is select the component from the list on the left and then configure it as required.
+Below, we have added a heading (**Trade Blotter**) and we have just selected to add a grid. The tables that the supply data to the grid are listed on the left:
 
 
 ![](/img/Studio5.png)
@@ -113,7 +126,8 @@ Here we have chosen the table ALL_TRADES_VIEWS:
 
 ![](/img/Studio6.png)
 
-Here we are adding a Select. Enteringa field and value on the the right and clicking on the **+** button enbables you to add the logic.
+
+Here we are adding a Select box. Entering a field and value on the the right and clicking on the **+** button enbables you to add the logic.
 
 ![](/img/Studio7.png)
 
@@ -122,14 +136,19 @@ Here we have added a button (which we have labelled **Export**).
 
 ![](/img/Studio8.png)
 
-ANd finally, we have added a text field (which has he text *dd/mm/yy**).
+And finally, we have added a text field (which has the text **dd/mm/yy**).
 
-If yoyu want to keep the changes you have made, make sure you click on **Save**.
+If you want to keep the changes you have made, make sure you click on **Save**.
 
 ### Schema
 This area enables you to configure fields, tables and views.
 
-Existing tables and views (if any) are displayed in the main area of the screen.
+First, take a look at the control buttons at the top, beneath the menu bar.
+
+![](/img/schema-menu.png)
+
+### So what do  you see?
+Existing schema details (if any) are displayed in the main area of the screen. This example shows the fields and tables in a large schema:
 
 ![](/img/Studioschema1.png)
 
@@ -137,8 +156,38 @@ At the bottom right corner is a high-level view of the whole schema. In many cas
 
 There are two different ways of looking at the schema, which can be chosen from the first of the control buttons above the main area:
 
-* **Fields and tables**
+* **Fields and tables** As seen in the previous example.
 
-* **Views**
+* **Views** As seen in the example below. 
 
+
+![](/img/Studioschema1.png)
+
+The different modules in the application are listed on the left. You can click on a module to list the relevant views for that module, which you can then select to display.
+In this case, we are looking at the POSITIONS module, which has two views; we have selected to display the view called TRADES_VIEW. 
+
+To add a field to a table:
+
+1. Click on **Tables** above the left menu and select the table you want to modify.
+2. Click on **Fields** above the menu on the left to display the fields.
+3. Scroll down to the field you want to add, then click and drag it into the table.
+
+
+![](/img/studio-schema-add-field.png)
+
+In the tables display, each field has three dots on the left side. You can click on the dots for a field to select:
+
+* make the field the primaryKey
+* view the field properties
+* delete the field
+
+![](/img/schema-field-options.png)
+
+
+### State
+
+Clicking on **State** in the top menu enables you to configure states and the permitted transformations between states. 
+
+
+![](/img/studio-states1.png)
 
