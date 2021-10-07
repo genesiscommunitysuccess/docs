@@ -19,14 +19,20 @@ provideDesignSystem().register(alphaSkeleton());
 ### Basic Usage
 
 ```html live
-<alpha-skeleton shape="circle"></alpha-skeleton>
+<alpha-skeleton></alpha-skeleton>
+```
+
+### Shape
+
+```html
+<alpha-skeleton shape="circle" style="width: 50px; height: 50px;"></alpha-skeleton>
 ```
 
 ### Pattern
 
 A URL for an image asset may be passed to the `pattern` attribute. In this mode, the `alpha-skeleton` component is used as a container for a transparent SVG that may express a more complex placeholder
 
-```html live
+```html
 <alpha-skeleton shape="rect" pattern="/svg/skeleton-test-pattern.svg"></alpha-skeleton>
 ```
 
@@ -34,7 +40,7 @@ A URL for an image asset may be passed to the `pattern` attribute. In this mode,
 
 The `shimmer` boolean attribute will activate the component's shimmer effect.
 
-```html live
+```html
 <alpha-skeleton
   shape="rect"
   pattern="/svg/skeleton-test-pattern.svg"
@@ -46,7 +52,7 @@ The `shimmer` boolean attribute will activate the component's shimmer effect.
 
 An inline SVG can also be inserted into the slot of the `alpha-skeleton`.
 
-```html live
+```html
 <alpha-skeleton
   shape="rect"
   shimmer
