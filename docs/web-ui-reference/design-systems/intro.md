@@ -39,14 +39,14 @@ Documentation site presents the different parts of a design system together alon
 
 ## Hierarchy
 
-It is possible to have more than one design system in a project e.g. a light and a dark variant.
+It is possible to have multiple design systems within a project.
 
-It is also possible for one design system to extend another. For example, a foundation design system can focus on functionality and provide components with minimal styling, while more specialised design systems can extend it and provide styling for a given target audience.
+It is also possible for one design system to extend another. For example, a foundation design system can focus on functionality and provide components with minimal styling, while more specialised design systems can extend it and provide styling for a given target audience. 
 
-### Rapid
+### Genesis Foundation UI
 
 When you generate a design system using [CLI](/web-ui-reference/cli/) it will automatically extend a base design system that we have provided.
 
-This highly configurable design system is called [Rapid](https://n42r49.axshare.com/#id=u42cgo&p=primitives&c=1). It's made up of a set of web components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options as necessary for your application.
+This highly configurable design system is called Genesis Foundation UI. It's made up of a set of web components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options as necessary for your application.
 
 Like all the design systems built by the Genesis UX teams, our design system starts in [Axure](https://www.axure.com/) and has been lab-tested to meet the needs of financial markets applications.

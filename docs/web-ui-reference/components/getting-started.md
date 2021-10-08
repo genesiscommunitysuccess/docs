@@ -25,17 +25,14 @@ import DSNameMessage from '../_includes/_ds-name-message.md'
 
 ## Register components
 
-Components must be registered prior to being used in HTML. Importing the necessary definition and registering it with a `DesignSystem` will register the custom element with the platform:
+Components must be registered prior to being used. Import the necessary component and pass it to a [design system](/web-ui-reference/design-systems/intro/) to register:
 
-```ts
-import {provideDesignSystem, alphaButton} from '@genesislcap/alpha-design-system';
+import CodeBlock from '@theme/CodeBlock';
+import Example from '!!raw-loader!../../../examples/ui/alphaImports';
 
-provideDesignSystem().register(
-  alphaButton
-);
-```
+<CodeBlock className="language-ts">{Example}</CodeBlock>
 
-You can use the following shortcut to register most of the available components:
+You can also use `alphaBaseComponents` shortcut to register all the available components:
 
 
 ```ts
@@ -52,7 +49,7 @@ When working with a tree-shaking supporting bundler such as Webpack or Rollup, i
 
 ## Add components to HTML
 
-Once you've registered the components as shown above, they are now available for use in your document (or template). Just use the new elements like any other HTML element.
+Once you have registered the components as shown above, they are available to use in your document (or template) like any other HTML element:
 
 ```html live
 <alpha-button>Button</alpha-button>
