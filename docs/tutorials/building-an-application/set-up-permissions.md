@@ -33,7 +33,8 @@ item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
 item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
 ```
 
-Take note of how **auth-permissions.auto.xml** looks in generated/cfg before running genesisInstall as this file will change.
+Take a look inside the **auth-permissions.auto.xml** file in generated/cfg. You are about to run  `genesisInstall`, which will create a new version of this file with your changes in it. If you copy the contents of the file, you will be able to compare the old and new versions and see the effect of your changes.
+
 
 Run `genesisInstall`
 
@@ -53,7 +54,7 @@ After this, go to the USER_ATTRIBUTES table and use the below **DbMon** commands
     
     update USER_ATTRIBUTES_BY_USER_NAME
 
-The generic permissioning settings have been set in place, and are stored in **auth-permissions.auto.xml** in **generated/cfg**. The next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started they will consider the new configuration.
+The generic permissioning settings have been set in place, and are stored in **auth-permissions.auto.xml** in **generated/cfg**. The next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started, they will use these settings.
 
 Now go to the **-view-dictionary.kts** file and add the COUNTERPARTY_ID field to ENHANCED_TRADE_VIEW as this field will be used to verify permissions.
 
