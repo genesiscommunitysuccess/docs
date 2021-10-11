@@ -42,6 +42,7 @@ Run `remap --commit`
 
 As *remap** runs, it shows you the details of the changed tables. You will be prompted to confirm the changes.
 
+![](/img/remap-table-changes.png)
 
 Input **y** to confirm.
  Note: remap won’t work if any server processes are currently running.
