@@ -7,17 +7,16 @@ sidebar_position: 10
 ---
 At this stage, you have a working server with a Ref_data_app and a Trading_app. The Trading_app has a consolidator to calculate the positions, event handlers to control changes to the database and data server and request servers to publish the data to the front end.
 
-Now you want to permission users so that everyone has access to the correct parts of the system.
+For this part of the tutorial,  you want to permission users so that each one has access to the correct parts of the system.
 
 ## The objective
 
-The objective is to use dynamic permissions and permission codes so that specific users have access to specific parts of the application – both functions and data..
+The objective is to use dynamic permissions and permission codes so that specific users have access to specific parts of the application – both functions and data.
 
-We can display the configuration of both in our request server, data server and event handler.
 
 ## Set up generic permissions
 
-First, enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system.
+First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field  part of the generic permissions system.
 
 You can read more about it [here](../../platform-reference/authentication-and-authorisation/authorisation.md).
 
@@ -25,7 +24,7 @@ Starting with the server, make sure that you have two USER and USER_ATTRIBUTES r
 
 ![](/img/jane-and-john-doe.png)
 
-Set two new key values in **site-specific/cfg/genesis-system-definition.kts** to enable the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system:
+Set two new key values in **site-specific/cfg/genesis-system-definition.kts** file. This enables the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system:
 
 ```kotlin
 item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
@@ -33,16 +32,21 @@ item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
 item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
 ```
 
+:::tip
 Take a look inside the **auth-permissions.auto.xml** file in generated/cfg. You are about to run  `genesisInstall`, which will create a new version of this file with your changes in it. If you copy the contents of the file, you will be able to compare the old and new versions and see the effect of your changes.
-
+:::
 
 Run `genesisInstall`
 
 Run `remap --commit`
 
-**Remap** prompts you to add a new table called USER_COUNTERPARTY_MAP and a new field has been added to USER_ATTRIBUTES. Input `y` to commit the changes. Note: remap won’t work if any server processes are currently running.
+As *remap** runs, it shows you the details of the changed tables. You will be prompted to confirm the changes.
 
-After this, go to the USER_ATTRIBUTES table and use the below **DbMon** commands to set the ACCESS_TYPE field for JaneDoe to be ENTITY (instead of ALL).
+
+Input **y** to confirm.
+ Note: remap won’t work if any server processes are currently running.
+
+After this, go to the USER_ATTRIBUTES table and use **DbMon** commands to set the ACCESS_TYPE field for JaneDoe to be ENTITY (instead of ALL).
 
     table USER_ATTRIBUTES
     
@@ -60,13 +64,10 @@ Now go to the **-view-dictionary.kts** file and add the COUNTERPARTY_ID field to
 
 ![](/img/step-08-add-counterparty_id-to-enhanced_view-in-view-dictionary-with-highlight.png)
 
-Then run the **generateView** maven codegen plugin as below.
+You must generate the code for this change (which also makes it available to Intellisense). To do this, run the **generateView** maven codegen: 
 
 ![](/img/step-08-run-maven-generateview-codegen-plugin-after-modifying-view.png)
 
-This gives you
-
-![](/img/step-09-file-locations.png)
 
 ## Configure dynamic permissions
 
