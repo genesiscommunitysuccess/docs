@@ -53,14 +53,14 @@ To do this, run `DBMON`, then:
 1. Set the table to `USER_ATTRIBUTES`.
 2. Find JaneDoe with the command `qsearch USER_NAME--"JaneDoe"`
 This finds the record for Jane Doe.
-![](/img/step-08-run-maven-generateview-codegen-plugin-after-modifying-view.png)
+![](/img/findjanedoe.png)
 3. Run the following **DbMon**commands:
 `set ACCESS_TYPE ENTITY"`
 `writeMode`
 `update USER_ATTRIBUTES_BY_USER_NAME`
 You will be asked to confirm the last command. Enter **y**.
 
-![](/img/step-08-run-maven-generateview-codegen-plugin-after-modifying-view.png)
+![](/img/update-janedoe.png)
 
 You have now set the generic permissioning settings in place. They are stored in **auth-permissions.auto.xml** in **generated/cfg**. The next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started, they will use these settings.
 
