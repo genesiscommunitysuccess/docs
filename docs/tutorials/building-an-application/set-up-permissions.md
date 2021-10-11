@@ -53,7 +53,7 @@ To do this, run `DBMON`, then:
 1. Set the table to `USER_ATTRIBUTES`.
 2. Find JaneDoe with the command `qsearch USER_NAME--"JaneDoe"`
 This finds the record for Jane Doe.
-![](/img/findjanedoe.png)
+![](/img/find-janedoe.png)
 3. Run the following **DbMon**commands:
 `set ACCESS_TYPE ENTITY"`
 `writeMode`
