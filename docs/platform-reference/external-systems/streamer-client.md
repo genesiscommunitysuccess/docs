@@ -16,7 +16,7 @@ To create a streamer client you will need the following:
     <options>-Xmx128m -DXSD_VALIDATE=false</options>
     <module>genesis-pal-streamer</module>
     <package>global.genesis.streamer</package>
-    <config>trading_app-streamer-client.kts</config>
+    <script>trading_app-streamer-client.kts</script>
 </process>
 ```
 

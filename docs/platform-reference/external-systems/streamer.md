@@ -17,7 +17,7 @@ Ex:
     <options>-Xmx128m -DXSD_VALIDATE=false</options>
     <module>genesis-pal-streamer</module>
     <package>global.genesis.streamer</package>
-    <config>trading_app-streamer.kts</config>
+    <script>trading_app-streamer.kts</script>
 </process>
 ```
 
