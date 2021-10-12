@@ -142,4 +142,4 @@ send("QUOTE_HANDLER", "QUOTE_EVENT") { quote, set ->
     set.setString("SYMBOL", quote.symbol)
 }
 ```
-When  using this syntax, you will have to specify the parameters, (quote -> or quote, set -> in this case), the default parameter it does’t work in this instance
+When using this example, you need to specify both parameters, (quote -> or quote, set ->). The default parameter does not work in this case.
