@@ -43,5 +43,5 @@ You need to create a streamer to monitor this table and stream the data to the r
 Note that Genesis has a pre-built FIX module, which has all the Quick FIX libraries. It also gives you a default outbound streamer that is set up to listen to the FIX_IN table in the database.
 
 ### FIX Xlator
-The GPAL FIX Xlator is a plugin for the streamer and streamer client, to bring in type safe handling of FIX messages.
+The FIX Xlator is a plugin for the streamer and streamer client, to bring in type safe handling of FIX messages.
 Follow this link to know more about [FIX Xlator](/platform-reference/external-systems/fix-xlator)
