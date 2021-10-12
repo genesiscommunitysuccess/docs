@@ -68,7 +68,7 @@ permissionCodes = listOf("TRADER", "SUPPORT")
 Where this is defined, it allows for further fined grained (programmatic control) of what data, at the row or cell level, is returned to a specific user. 
 If it is not defined then all data is returned for the enclosing resource, assuming permissionCodes are not restricting.
 
-- The mapName refers to a specific Permission "entity" defined on the server via the [auth-permission.xml](auth-permission.xml) file.
+- The mapName refers to a specific Permission "entity" defined on the server via the [auth-permission.xml](/platform-reference/authentication-and-authorisation/authorisation#defining-a-permission-rule) file.
 
   **eg auth-permission.xml entity entry snippet**
 ```xml
@@ -78,7 +78,7 @@ If it is not defined then all data is returned for the enclosing resource, assum
               tableName="USER_COUNTERPARTY_MAP"
               maxEntries="20000"
               idField="USER_NAME">
-    <!-- further structure with groovy expression to define progmattic control and define an AuthMap -->
+    <!-- further structure with groovy expression to define programmatic control and define an AuthMap -->
     </entity>
   <!-- additional entities would go here-->
 </dynamicPermissions>
