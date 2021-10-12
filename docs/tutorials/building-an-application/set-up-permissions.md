@@ -16,15 +16,15 @@ The objective is to use dynamic permissions and permission codes so that specifi
 
 ## Set up generic permissions
 
-First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field  part of the generic permissions system.
+First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field part of the generic permissions system.
 
 You can read more about it [here](../../platform-reference/authentication-and-authorisation/authorisation.md).
 
-Starting with the server, make sure that you have two USER and USER_ATTRIBUTES records setup: JohnDoe and JaneDoe.
+Starting with the server, set up two USER and USER_ATTRIBUTES records: JohnDoe and JaneDoe.
 
 ![](/img/jane-and-john-doe.png)
 
-Set two new key values in **site-specific/cfg/genesis-system-definition.kts** file. This enables the COUNTERPARTY table and COUNTERPARTY_ID field as part of the generic permissions system:
+Set two new key values in **site-specific/cfg/genesis-system-definition.kts** file. This enables the COUNTERPARTY table and COUNTERPARTY_ID field to become part of the generic permissions system:
 
 ```kotlin
 item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
@@ -42,23 +42,27 @@ Run `remap --commit`
 
 As *remap** runs, it shows you the details of the changed tables. You will be prompted to confirm the changes.
 
+![](/img/remap-table-changes.png)
 
 Input **y** to confirm.
  Note: remap won’t work if any server processes are currently running.
 
-After this, go to the USER_ATTRIBUTES table and use **DbMon** commands to set the ACCESS_TYPE field for JaneDoe to be ENTITY (instead of ALL).
+After this, go to the USER_ATTRIBUTES table and run **DbMon** to set the ACCESS_TYPE field for JaneDoe to be ENTITY (instead of ALL).
+To do this, run `DBMON`, then:
 
-    table USER_ATTRIBUTES
-    
-    qsearch USER_NAME==”JaneDoe”
-    
-    set ACCESS_TYPE ENTITY
-    
-    writeMode
-    
-    update USER_ATTRIBUTES_BY_USER_NAME
+1. Set the table to `USER_ATTRIBUTES`.
+2. Find JaneDoe with the command `qsearch USER_NAME--"JaneDoe"`
+This finds the record for Jane Doe.
+![](/img/find-janedoe.png)
+3. Run the following **DbMon**commands:
+`set ACCESS_TYPE ENTITY"`
+`writeMode`
+`update USER_ATTRIBUTES_BY_USER_NAME`
+You will be asked to confirm the last command. Enter **y**.
 
-The generic permissioning settings have been set in place, and are stored in **auth-permissions.auto.xml** in **generated/cfg**. The next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started, they will use these settings.
+![](/img/update-janedoe.png)
+
+You have now set the generic permissioning settings in place. They are stored in **auth-permissions.auto.xml** in **generated/cfg**. The next time GENESIS_AUTH_MANAGER and GENESIS_AUTH_PERMS are started, they will use these settings.
 
 Now go to the **-view-dictionary.kts** file and add the COUNTERPARTY_ID field to ENHANCED_TRADE_VIEW as this field will be used to verify permissions.
 
@@ -218,9 +222,9 @@ fun `test trade insert without permission`(): Unit = runBlocking {
 
 Now you need to look at RIGHT_SUMMARY permission codes.
 
-Permission codes enable you to establish a yes/no type access to resources (request servers, dataserver, event handler), but they don’t act dynamically and they won’t filter rows based on fine-grain criteria (in the way that dynamic permissions would).
+Permission codes enable you to establish a yes/no type access to resources (request servers, dataserver, event handler). These do not act dynamically and they won’t filter rows based on fine-grain criteria (in the way that dynamic permissions would).
 
-For the purpose of this script, we can keep things simple. In reality you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user.
+For the purpose of this script, we can keep things simple. In reality, you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user.
 
 
 
@@ -255,7 +259,9 @@ In terms of definitions, you can add the codes as part of the permissions block 
   }
 ```
 
-This means only users with the TRADER permission code will be able to use that event handler. You can add similar code to the request servers and data servers, as below, but for these we will also add the SUPPORT code to allow SUPPORT users to have read-only access to trades.
+This means only users with the TRADER permission code will be able to use that event handler. 
+
+You can add similar code to the request servers and data servers, as below. In these examples, you also  add the SUPPORT code to allow SUPPORT users to have read-only access to trades.
 
 Request Server:
 
@@ -293,7 +299,7 @@ dataServer {
 
 The permission mechanism is driven by the RIGHT_SUMMARY table, which contains an association between a user and a right-code.
 
-Now we need to write unit tests for this. As an example we will test the Event Handler.
+Now you need to write unit tests for this. As an example, test the Event Handler.
 
 1. Modify the setup function. We are adding another entry to the ENTITY_VISIBILITY auth cache map for user JamieDoe. Also we are adding all of our users to the RIGHT_SUMMARY table.
 
@@ -354,4 +360,4 @@ fun `test trade insert due to incorrect permission code`(): Unit = runBlocking {
 }
 ```
 
-User JamieDoe has the correct entry in the ENTITY_VISIBILITY auth cache map for Counterparty with ID = 1. But their RIGHT_CODE is SUPPORT, and so they are not authorised to enter a trade -  because the event handler requires the RIGHT_CODE to be TRADER.
+User JamieDoe has the correct entry in the ENTITY_VISIBILITY auth cache map for Counterparty with ID = 1. But JamieDoe's RIGHT_CODE is SUPPORT, so they are not authorised to enter a trade -  because the event handler requires the RIGHT_CODE to be TRADER.
