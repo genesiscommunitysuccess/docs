@@ -161,7 +161,6 @@ If you need to create multiple modules, the name of each module must be:
 For example:
 
 test-fix-abc-messages
-
 test-fix-xyz-messages
 
 ```xml
