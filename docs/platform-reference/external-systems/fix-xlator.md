@@ -118,9 +118,9 @@ The return values are always nullable. Any quick fix date type will automaticall
 This function sets the field value in the GenesisSet. Optionally, you can specify the field name. Otherwise, the field name will be automatically converted
 
 ```kotlin
-genesiSet.set(executionReport.yield)
+genesisSet.set(executionReport.yield)
 
-genesiSet.set("REPORTED_YIELD", executionReport.yield)
+genesisSet.set("REPORTED_YIELD", executionReport.yield)
 ```
 
 `setWithDefault`
@@ -128,11 +128,11 @@ genesiSet.set("REPORTED_YIELD", executionReport.yield)
 This function is similar to `set`, but enables you to specify a default value:
 
 ```kotlin
-genesiSet.setWithDefault(executionReport.yield, 1.0)
+genesisSet.setWithDefault(executionReport.yield, 1.0)
 
-genesiSet.setWithDefault("REPORTED_YIELD", executionReport.yield, 1.0)
+genesisSet.setWithDefault("REPORTED_YIELD", executionReport.yield, 1.0)
 
-genesiSet.setWithDefault("REPORTED_YIELD", executionReport.yield, executionReport.otherYield)
+genesisSet.setWithDefault("REPORTED_YIELD", executionReport.yield, executionReport.otherYield)
 ```
 
 #### Field extension functions
