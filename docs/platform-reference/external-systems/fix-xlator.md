@@ -5,12 +5,13 @@ sidebar_position: 3
 id: fix-xlator
 ---
 
-The FIX Xlator is a plugin for the streamer and streamer client, to bring in type safe handling of FIX messages.
+The FIX Xlator is a plugin for the streamer and streamer client, which enables type-safe handling of FIX messages. It also gives access to a set of vital integration features, such as FIX_IN, EXECUTION_REPORT and CUSTOM_FIX.
 
-### Enabling
 
-To enable the plugin follow below steps:
-1. Add Xlator plugin dependency in streamer/streamer-client module pom.
+### Enabling the FIX-xlator
+
+To enable the plugin:
+1. Add an Xlator plugin dependency to the module pom for the streamer or streamer-client.
 
 ```xml
 <dependency> 
@@ -20,8 +21,8 @@ To enable the plugin follow below steps:
 </dependency>
 ```
 
-2. Add below code block at the top of the configuration file for streamer/streamer-client:
-   The `plugins` tag enables the plugin and the `fixConfiguration` tag selects the version to use.
+2. Add the following code block at the beginning of the configuration file for the streamer or streamer-client:
+  
 ```kotlin
 plugins {
     plugin(FixXlatorPlugin)
@@ -31,9 +32,9 @@ fixConfiguration {
     version = fix50ref
 }
 ```
+ The `plugins` tag enables the plugin, and the `fixConfiguration` tag specifies the version to use.
 
-
-3. Add dependency on the class path for module called {applicationName}-fix-messages which is generated using the [fix-codegen-plugin](/platform-reference/external-systems/fix-xlator/#fix-code-generation-plugin).
+3. Add a dependency on the class path for the module called {applicationName}-fix-messages. This file is generated using the [fix-codegen-plugin](/platform-reference/external-systems/fix-xlator/#fix-code-generation-plugin).
 
 ### Streamer
 
@@ -42,8 +43,8 @@ Enabling the plugin in a streamer definition enables the `fixStream` definition.
 **Fix Streams**:
 Fix Streams are enhanced stream definitions that come with a few useful defaults, enhanced fixed handling and automatic conversion to GenesisSet.
 
-Usage: 
-There are three separate types of fixStream configurations:
+#### Types of fixStream
+There are three separate types of fixStream configuration:
 
 ```kotlin
 fixStream("FIX_IN") 
@@ -62,7 +63,7 @@ fixStream("CUSTOM", CUSTOM_FIX.FIX_INDEX, CUSTOM_FIX.DATA, ExecutionReport::clas
 
 When using the FIX_IN table, the appropriate index and column are selected automatically.
 
-When specifying a message type, this will become a filter on type, so the "EXECUTION_REPORT" stream will only stream execution reports. Also, the fields can now be accessed in a typesafe manner:
+When specifying a message type, this will become a filter on type, so the "EXECUTION_REPORT" stream will only stream execution reports. Also, the fields can now be accessed in a type-safe manner:
 
 ```kotlin
 fixStream<ExecutionReport>("EXECUTION_REPORT_VODL") {
@@ -74,13 +75,13 @@ fixStream<ExecutionReport>("EXECUTION_REPORT_VODL") {
 
 ### Streamer Client
 
-The xlator plugin will enable a number of extension functions for streamer client explained below
+The xlator plugin enables a number of extension functions for the streamer client. These are explained below.
 
 #### Message extension functions
 
 `toGenesisSet`
 
-Converts a fix message to a GenesisSet. Optional parameters, list of fields:
+This converts a fix message to a GenesisSet. Optional parameters, list of fields:
 
 ```kotlin
 val set = message.toGenesisSet()
@@ -116,7 +117,7 @@ The return values are always nullable. Any quick fix date type will automaticall
 
 `set`
 
-This function sets the field value in the GenesisSet. Optionally, the field name can be specified, otherwise the field name will be automatically converted
+This function sets the field value in the GenesisSet. Optionally, you can specify the field name. Otherwise, the field name will be automatically converted
 
 ```kotlin
 genesiSet.set(executionReport.yield)
@@ -126,7 +127,7 @@ genesiSet.set("REPORTED_YIELD", executionReport.yield)
 
 `setWithDefault`
 
-This function is similar, but allows a default value to be specified:
+This function is similar to `set`, but enables you to specify a default value:
 
 ```kotlin
 genesiSet.setWithDefault(executionReport.yield, 1.0)
@@ -149,10 +150,19 @@ executionReport.yield(1.0)
 
 ### FIX code generation plugin
 
-Fix code generation plugin is used to generate Java sources from QuickFIX XML dictionary
+Fix code generation plugin is used to generate Java sources from a QuickFIX XML dictionary.
 
-Create a new maven module called {applicationName}-fix-messages and add plugin dependency like below in module pom file. If you need to create multiple modules, the name of the module needs to be
-{applicationName}-fix-{type}-messages. For example test-fix-abc-messages and test-fix-xyz-messages
+Create a new maven module called {applicationName}-fix-messages. Add the following plugin dependency to the module pom file. 
+
+If you need to create multiple modules, the name of each module must be:
+
+{applicationName}-fix-{type}-messages. 
+
+For example:
+
+test-fix-abc-messages
+
+test-fix-xyz-messages
 
 ```xml
 <plugins>
