@@ -35,9 +35,9 @@ Router configuration example below:
         <route msgType="ALL_TRADES" process="OEMS_DATASERVER"/>
         <route msgType="ALL_ORDER_AUDITS" process="OEMS_DATASERVER"/>
     </routes>
-    <whiteList name="PROCESS_A"/>
-    <whiteList name="PROCESS_B"/>
-    <whiteList name="PROCESS_C"/>
+    <whiteList name="ALL_ORDERS"/>
+    <whiteList name="ALL_TRADES"/>
+    <whiteList name="ALL_ORDER_AUDITS"/>
 </router>
 ```
 
@@ -70,7 +70,7 @@ For more information follow this [link](https://netty.io/4.1/api/io/netty/handle
   * maxContentLength - the maximum length of the aggregated content in bytes. Default value 262144
   * closeOnExpectationFailed - If a 100-continue response is detected but the content length is too large then true means close the connection. Otherwise the connection will remain open and data will be consumed and discarded until the next request is received. Default value false
 
-**Allowed Resources**: This contains the list of approved resources. You can mention about these resources in `whiteList` tag as shown above. If you choose to add any resources in white list then some framework resources are allowed by default, which are
+**Allowed Resources**: It is possible to limit the resources to be exposed by the genesis router by using the `whitelist` tag (see example above). It is important to note that the following message types will always be allowed by default regardless of the whitelist definition:
 EVENT_LOGIN_AUTH, EVENT_LOGOUT, MORE_ROWS, MORE_COLUMNS, DATA_LOGOFF, DATA_GET
 
 **Message Routes**: You can redirect some microservice messages to particular processes using tag `routes.route` as shown above
