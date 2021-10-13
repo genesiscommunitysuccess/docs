@@ -5,10 +5,10 @@ sidebar_position: 4
 id: streamer-client
 ---
 
-### Create streamer-client
-To create a streamer client you will need the following:
+### Create streamer client
+To create a streamer client:
 
-1. Add streamer-client process configuration in {applicationName}-processes.xml file
+1. Add the configuration for the streamer client process to the {applicationName}-processes.xml file:
 
 ```xml
 <process name="TRADING_APP-STREAMER">
@@ -20,7 +20,7 @@ To create a streamer client you will need the following:
 </process>
 ```
 
-2. Create kotlin script file named {applicationName}-streamer-client.kts and add following
+2. Create a kotlin script file named {applicationName}-streamer-client.kts and add the following details:
     * A streamer client name
     * A streamer data source process and stream name
     * One or more `onMessage` tags
@@ -39,15 +39,16 @@ streamerClients {
 
 This will take a message from a streamer and send the message to QUOTE_EVENT_HANDLER as a QUOTE_UPDATE_EVENT.
 
-There are also the following properties on a streamer client:
+You can also the following properties in a streamer client:
 
-`isReplayable` - Flag that determines if the stream is replayable. Default value is `false`
-`eventHandlerBuffer` - How many messages to buffer for the event handler. Stops sending events to if the event handler failed to respond after [eventHandlerBuffer] number of events. Default value is 50
-`sentWarningRange` and `receiveWarndingRange` - These properties deal with the streamer process status; if an event handler takes too long to respond the process status will go to either warning or error. 
+`isReplayable`. This flag determines if the stream is replayable. Default value is `false`
+`eventHandlerBuffer`. This specifies how many messages to buffer for the event handler. If the event handler fails to respond after this number of messages is reached, the streamer stops sending messages. Default value is 50
+`sentWarningRange`. Specifies a range that controls the status of the streamer process.  If an event handler takes too long to respond, the process status will go to either warning or error. 
+`receiveWarndingRange`. Specifies a range that controls the status of the streamer process.  If an event handler takes too long to respond, the process status will go to either warning or error.  
 
-### Types of streamer clients
+### Types of streamer client
 
-There are two types of streamer clients:
+There are two types of streamer client:
 
 * Table or View entity streamer client
 ```kotlin
@@ -60,7 +61,9 @@ streamerClient(clientName = "{name}", source = QUOTES) { ... }
 streamerClient(clientName = "{name}") { ... }
 ```
 
-Furthermore, you can define a selective streamer client, this will allow `onMessage` blocks to only request specific messages, for example, we could handle VDX quotes one way and MSFT quotes another. For an entity streamer client the syntax is:
+You can also define a selective streamer client. In the `onMessage` block, you can set the streamer to request only specific messages.
+This enables you to handle VDX quotes one way and MSFT quotes another, for example. 
+For an entity streamer client, the syntax is:
 
 ```kotlin
 streamerClient(clientName = "CLIENT", selectOn = QUOTES.SYMBOL) {
@@ -69,7 +72,7 @@ streamerClient(clientName = "CLIENT", selectOn = QUOTES.SYMBOL) {
 }
 ```
 
-For a GenesisSet streamer client the syntax could be one of:
+For a GenesisSet streamer client, the syntax can be one of the following:
 
 ```kotlin
 // use the Fields object:
@@ -88,14 +91,20 @@ The onMessage tag defines what the streamer client does with your message, and h
 * send
 
 **Where**
-Where allows you to specify a predicate on the message, it has one parameter, the type of the streamer client, either a table or view entity or a GenesisSet and should return a Boolean:
+**Where** enables you to make the action conditional. 
+This operation has one parameter: the type of the streamer client. This can be:
+* a table or view entity
+* a GenesisSet
+The operation must return a Boolean.
+
+Example:
 
 ```kotlin
 where { quotes ->
     quotes.price > BigDecimal.ZERO
 }
 ```
-
+Another example:
 or:
 ```kotlin
 where { quotes ->
@@ -106,9 +115,9 @@ where { quotes ->
 **Send**
 Send directs and optionally formats the outgoing message. 
 It requires:
-    1. a target process
-    2. a message type
-The `onMessage` block will require at least one send block
+* a target process
+* a message type
+The `onMessage` block must have at least one send block.
 
 For example:
 ```kotlin
@@ -117,7 +126,7 @@ send(targetProcess = "QUOTE_HANDLER", messageType = "QUOTE_EVENT")
 
 This will send the full content of the streamer message on to the target.
 
-In addition, for entity streamers, you can format the message in the same way as you would define view, data server and request reply output, using sendFormatted:
+In addition, for entity streamers, you can format the message in the same way as you would define the output of a view, data server or request reply. Use `sendFormatted`:
 
 ```kotlin
 sendFormatted("QUOTE_HANDLER", "QUOTE_EVENT") {
@@ -125,7 +134,8 @@ sendFormatted("QUOTE_HANDLER", "QUOTE_EVENT") {
     QUOTES.PRICE
 }
 ```
-Finally, you can craft the message from scratch, using just the message as a parameter
+Finally, you can craft the message from scratch.
+This example uses just the message as a parameter:
 
 ```kotlin
 send("QUOTE_HANDLER", "QUOTE_EVENT") { quote ->
@@ -135,7 +145,7 @@ send("QUOTE_HANDLER", "QUOTE_EVENT") { quote ->
     }
 }
 ```
-or the message and a GenesisSet as parameter
+This example uses the message and a GenesisSet as parameter
 
 ```kotlin
 send("QUOTE_HANDLER", "QUOTE_EVENT") { quote, set ->

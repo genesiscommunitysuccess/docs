@@ -1,6 +1,6 @@
 ---
 title: FIX Xlator
-sidebar_label: fix-xlator
+sidebar_label: FIX-Xlator
 sidebar_position: 3
 id: fix-xlator
 ---
@@ -8,7 +8,7 @@ id: fix-xlator
 The FIX Xlator is a plugin for the streamer and streamer client, which enables type-safe handling of FIX messages. It also gives access to a set of vital integration features, such as FIX_IN, EXECUTION_REPORT and CUSTOM_FIX.
 
 
-### Enabling the FIX-xlator
+### Enabling the FIX Xlator
 
 To enable the plugin:
 1. Add an Xlator plugin dependency to the module pom for the streamer or streamer-client.
@@ -75,7 +75,7 @@ fixStream<ExecutionReport>("EXECUTION_REPORT_VODL") {
 
 ### Streamer Client
 
-The xlator plugin enables a number of extension functions for the streamer client. These are explained below.
+The FIX-Xlator plugin enables a number of extension functions for the streamer client. These are explained below.
 
 #### Message extension functions
 
@@ -89,9 +89,7 @@ val set = message.toGenesisSet()
 
 `set`
 
-This is an operator function that allows you to set message fields straight from a GenesisSet
-
-or a value
+This is an operator function that allows you to set message fields straight from a GenesisSet or a value.
 
 ```kotlin
 executionReport.set(executionReport.yield, set)

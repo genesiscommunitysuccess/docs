@@ -15,7 +15,7 @@ For this, Genesis uses streamers, streamer clients and gateways.
   Follow this link to know more about [streamer-client](/platform-reference/external-systems/streamer-client)
 * A **gateway** is a message routing service that connects to an external service. For example, a Fix gateway uses the FIX protocol to connect to exchanges or other trading hubs.
 
-Having a separate streamer and streamer client enables us to use a single streamer to serve multiple clients that perform different activities.
+Having a separate streamer and streamer client enables you to use a single streamer to serve multiple clients that perform different activities.
 
 For example, you could have two separate streamer clients listening to streamer A:
 
@@ -43,5 +43,5 @@ You need to create a streamer to monitor this table and stream the data to the r
 Note that Genesis has a pre-built FIX module, which has all the Quick FIX libraries. It also gives you a default outbound streamer that is set up to listen to the FIX_IN table in the database.
 
 ### FIX Xlator
-The FIX Xlator is a plugin for the streamer and streamer client, to bring in type safe handling of FIX messages.
+The FIX Xlator is a plugin for the streamer and streamer client, to bring in type-safe handling of FIX messages.
 Follow this link to know more about [FIX Xlator](/platform-reference/external-systems/fix-xlator)
