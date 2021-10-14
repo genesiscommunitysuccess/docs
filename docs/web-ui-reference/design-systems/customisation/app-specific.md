@@ -1,43 +1,22 @@
 ---
-id: customisation
-title: Design System Customisation
-sidebar_label: Customisation
-sidebar_position: 30
+id: app-specific
+title: Application-specific customisation
+sidebar_label: Application-specific
+sidebar_position: 20
 ---
 
-Our design systems and components are highly configurable. Let's have a look at how this can be leveraged.
+When performing design system customisations you can control the scope as follows:
 
-Design system can be shared across multiple applications. When performing customisations you can control the scope as follows:
+* [General](/web-ui-reference/design-systems/customisation/general/) - applied to all applications using the system.
+* Application-specific - only applied to a single application. Described below.
 
-* general - applied to all applications using the system.
-* application-specific - only applied in a single application. Other applications using the same system are not affected.
+You can also choose to customise either all or only individual components.
 
-## General
+## Customising all components
 
-Starting point for making general customisations is the `_config` folder. You will find it in the root of your design system.
+When you register a design system in an application, there are several configuration options which will affect all the components provided by that design system.
 
-### Configuring defaults
-
-You can achieve major visual changes by modifying default values of the design tokens. There are several different categories of tokens available:
-
-* [Colour](/web-ui-reference/design-systems/colour-tokens/): base colours, dark/light mode, colour variants for interactive states (hover etc.)
-* [Typography](/web-ui-reference/design-systems/typography-tokens/): default font family, font size and line height hierarchy
-* [Sizing](/web-ui-reference/design-systems/sizing-tokens/): component sizing, spacing and border style
-* [Miscellaneous](/web-ui-reference/design-systems/misc-tokens/): any other configuration options such as the naming prefix (e.g. `alpha`)
-
-### Overriding default implementation
-
-You can go beyond adjusting token values and override the default component implementation. You can choose to only override certain aspects of a component (such as template, styles or shadom DOM options) or provide a completely custom implementation.
-
-## Application-specific
-
-If your customisations are specific to only one application, you can apply them using the APIs described below.
-
-### Design System
-
-When you register a design system in an application, there are several configuration options available. They will affect all the components provided by that design system.
-
-#### Prefix
+### Prefix
 
 You can override the default prefix set in the `_config` folder for a specific application as follows:
 
@@ -55,7 +34,7 @@ Element can then be used in HTML using the `custom` prefix:
 <custom-button>Button</custom-button>
 ```
 
-#### Default Shadow DOM Mode
+### Default Shadow DOM Mode
 
 You can override the default [shadow root mode](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode) (typically `open`, as that is both recommended and the default). You can choose to close all shadow roots by default using `withShadowRootMode()`:
 
@@ -65,7 +44,7 @@ provideDesignSystem()
     .register(/* ... */)
 ```
 
-#### Name disambiguation
+### Name disambiguation
 
 By default, an element registered with an already-taken name will not be re-registered with the platform. However, its element definition callback will still be invoked, allowing it to define an alternate presentation (styles and template), scoped to the DOM tree that the design system is defined on.
 
@@ -91,11 +70,11 @@ provideDesignSystem()
     .register(/* ... */)
 ```
 
-### Components
+## Customising individual components
 
 The APIs described above impact all components, but those options can also be configured or overridden on a per-component basis. Configuring the component itself takes priority over any design system configuration.
 
-#### Prefix
+### Prefix
 
 The prefix for a component can be configured for a component registration by providing a configuration object with a prefix field during registration:
 
@@ -106,7 +85,7 @@ provideDesignSystem()
     );
 ```
 
-#### Template
+### Template
 
 To use a custom template for a component, provide a `template` field to the configuration object during registration:
 
@@ -121,7 +100,7 @@ provideDesignSystem()
     )
 ```
 
-#### Styles
+### Styles
 
 Styles for a component can be configured as well, by providing a `styles` field to the configuration object during registration:
 
@@ -150,7 +129,7 @@ provideDesignSystem()
     )
 ```
 
-#### Shadow Options
+### Shadow Options
 
 Shadow options can be configured as well, including both [shadow root mode](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode) and [focus delegation](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus):
 

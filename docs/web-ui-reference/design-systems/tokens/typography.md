@@ -1,13 +1,14 @@
 ---
-id: typography-tokens
-title: Typography tokens
-sidebar_position: 50
+id: typography
+title: Typography Tokens
+sidebar_position: 20
+sidebar_label: Typography
 hide_table_of_contents: true
 ---
 
 ## Configuration
 
-You can adjust any of the defaults in the `_config` folder of your design system.
+You can adjust any of the defaults in the `src/_config` folder of your design system.
 
 ## Body font
 

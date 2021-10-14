@@ -1,7 +1,8 @@
 ---
-id: sizing-tokens
+id: sizing
 title: Sizing tokens
-sidebar_position: 60
+sidebar_label: Sizing
+sidebar_position: 30
 ---
 
 Contains the following tokens:
@@ -13,7 +14,7 @@ Contains the following tokens:
 
 ## Configuration
 
-You can adjust any of the defaults in the `_config` folder of your design system.
+You can adjust any of the defaults in the `src/_config` folder of your design system.
 
 ## Usage
 
