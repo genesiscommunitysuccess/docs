@@ -12,6 +12,21 @@ You can adjust any of the defaults in the `_config` folder of your design system
 
 ### Usage
 
+### Prefix
+
+```ts
+export const prefix = 'alpha';
+```
+
+Custom Web components (as opposed to standard HTML components like `<h1>` or `<div>`) require a hyphen character (`-`) included in the name e.g. `<alpha-button>`. Part of the name before the hyphen is called prefix and can be customised e.g.:
+
+```ts
+export const prefix = 'custom';
+```
+
+You will then be able to use your component in HTML as `<custom-button>`.
+
+
 ## direction
 
 The primary document direction (LTR or RTL). Please refer to [the official documentation about this token and `DirectionalStyleSheetBehavior`](https://www.fast.design/docs/design/localization#document-direction) to read more details.
