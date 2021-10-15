@@ -39,10 +39,46 @@ You can achieve major visual changes simply by modifying token defaults. There a
 * [Sizing](/web-ui-reference/design-systems/tokens/sizing/): component sizing, spacing and border style
 * [Miscellaneous](/web-ui-reference/design-systems/tokens/misc/): any other configuration options such as the naming prefix (e.g. `alpha`)
 
+:::tip
+To help you visualise how modifying tokens impacts the component look and feel, we have created a [live configuration preview](/web-ui-reference/design-systems/customisation/live-preview/).
+:::
+
 ### Overriding default implementation
 
 You can go beyond adjusting token values and override the default component implementation. You can choose to only override certain aspects of a component (such as template, styles or shadom DOM options) or provide a completely custom implementation.
 
-<design-system-configurator>
-    <fs-preview></fs-preview>
-</design-system-configurator>
+By default components in your design simply re-export components from the underlying foundation design system as is (exact code can vary):
+
+```ts
+import {foundationButton} from '@genesislcap/foundation-ui';
+
+export const alphaButton = () => foundationButton();
+```
+
+Instead of re-exporting the default, you can provide your own custom implementation:
+
+```ts
+import {css, FoundationElement, FoundationElementDefinition, html} from '@genesislcap/foundation-ui';
+
+export const styles = css`
+/* CSS  */
+`;
+
+export const template = html<AlphaButton>`
+/* Template */
+`;
+
+interface ButtonDefinition extends FoundationElementDefinition {
+  /* Any properties */
+}
+
+export class Button extends FoundationElement {
+  /* Any custom logic */
+}
+
+export const alphaButton = Button.compose<ButtonDefinition>({
+  baseName: 'button',
+  template,
+  styles
+});
+```
