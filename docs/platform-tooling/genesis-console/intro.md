@@ -20,14 +20,16 @@ Go to the URL provided and enter the hostname. Click on **Connect to host**.
 ![](/img/con-hostname.png)
 
 Then enter your username and password and click on **Login**.
+
+## Dashboard
 By default, you see the Dashboard when you log in. This has separate graphics showing CPU usage and memory usage. (You can scroll down to view CPU usage, of necessary.) The CPU usage chart also shows how many processes are running and how many are stopped.
 
 ![](/img/con-dashboard.png)
 
 At the top of the screen is a menu that enables you to move between different displays.
-* **Dashboard**
+* **[Dashboard](/platform-tooling/genesis-console/intro/#dashboard)** (This is the display you see when you log in.)
 * **[Microservices](/platform-tooling/genesis-console/microservices/)**
-Data
-Resource
-Packages 
-Messages
+* **[Data](/platform-tooling/genesis-console/data/)**
+* **[Resources](/platform-tooling/genesis-console/resources/)**
+* **[Packages](/platform-tooling/genesis-console/packages/) **
+* **[Messages](/platform-tooling/genesis-console/messages/)**
