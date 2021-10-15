@@ -9,7 +9,7 @@ title: 'Data'
 
 
 
-## Data
+
 This lists all the tables in your data model.
 
 ![](/img/con-data1.png)

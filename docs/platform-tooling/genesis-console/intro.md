@@ -25,8 +25,8 @@ By default, you see the Dashboard when you log in. This has separate graphics sh
 ![](/img/con-dashboard.png)
 
 At the top of the screen is a menu that enables you to move between different displays.
-Dashboard
-Microservices
+* **Dashboard**
+* **[Microservices](/platform-tooling/genesis-console/microservices/)**
 Data
 Resource
 Packages 
