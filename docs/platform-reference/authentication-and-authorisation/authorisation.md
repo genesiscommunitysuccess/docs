@@ -354,67 +354,32 @@ We want to allow a user to view an account if one of the following is true:
 The first thing we want to do is find out what type of user we're currently dealing with. We do this by checking the TAG table, and getting the PERSON_TYPE record for the given user. We can wrap this logic into a simple function and place it into the preExpression block:
 ```groovy
 <preExpression>
-    <![CDATA[
-        import java.util.Collections
-        import com.google.common.util.concurrent.Futures
-        import com.google.common.util.concurrent.ListenableFuture
-        import com.google.common.util.concurrent.FutureCallback
-        import rx.Emitter
-        import global.genesis.dta.dta_db.engine.aerospike.ops.RecordSearchDetails
-        
-        /*
-            * Get user record based on userName
-            */
-        static Observable<DbRecord> getUserRecord(DtaDb db, String userName){
-            final DbRecord userRecord = new DbRecord("USER")
-            userRecord.setString("USER_NAME", userName)
-            return Observable.from(db.get(userRecord, "USER_BY_NAME"))
-        }
+        <![CDATA[
 
-        /*
-            * Get user type based on tag value
-            */
-        static Observable<DbRecord> getUserType(userName) {
-            def tagRec = new DbRecord('TAG')
-            tagRec.setString('CODE', 'PERSON_TYPE')
-            tagRec.setString('ENTITY_ID', userName)
-            return Observable.from(db.get(tagRec, 'TAG_BY_CODE'))
-        }
-        
-        // Other useful functions to create more performant Observables    
-        static Observable<DbRecord> toObservable(ListenableFuture<DbRecord> getOperation){
-            return Observable.create({ Emitter<DbRecord> emitter ->
-                Futures.addCallback(getOperation, new FutureCallback<DbRecord>() {
-                        @Override
-                        public void onSuccess(DbRecord record){
-                            emitter.onNext(record)
-                            emitter.onCompleted()
-                        }
-        
-                        public void onFailure(Throwable t){
-                            emitter.onError(t)
-                        }
-                });
-            }, Emitter.BackpressureMode.NONE)
-        }
+            import java.util.Collections
+            import io.reactivex.rxjava3.core.SingleEmitter
+            import io.reactivex.rxjava3.core.Flowable
+            import io.reactivex.rxjava3.core.Single
+            import io.reactivex.rxjava3.core.Maybe
+            import static global.genesis.auth.perms.processor.PermsProcessorUtils.*
             
-        static Observable<List<DbRecord>> toObservableList(ListenableFuture<List<DbRecord>> getOperation){
-            return Observable.create({ Emitter<List<DbRecord>> emitter ->
-                Futures.addCallback(getOperation, new FutureCallback<List<DbRecord>>() {
-                        @Override
-                        public void onSuccess(List<DbRecord> record){
-                            emitter.onNext(record)
-                            emitter.onCompleted()
-                        }
-        
-                        public void onFailure(Throwable t){
-                            emitter.onError(t)
-                        }
-                });
-            }, Emitter.BackpressureMode.NONE)
-        }
-        
-    ]]>
+            static Flowable<DbRecord> getUserRecord(RxDb rxDb, String userName){
+                final DbRecord userRecord = new DbRecord("USER")
+                userRecord.setString("USER_NAME", userName)
+                return Flowable.fromIterable(rxDb.get(userRecord, "USER_BY_NAME"))
+            }
+            
+            /*
+             * Get user type based on tag value
+             */
+            static Flowable<Boolean> getUserType(String userName) {
+                def tagRec = new DbRecord('TAG')
+                tagRec.setString('CODE', 'PERSON_TYPE')
+                tagRec.setString('ENTITY_ID', userName)
+                return Flowable.fromIterable(rxDb.get(tagRec, 'TAG_BY_CODE'))
+            }
+        ]]>
+</preExpression>
     
 </preExpression>
 ```
@@ -422,52 +387,51 @@ The first thing we want to do is find out what type of user we're currently deal
 Here, we're simply creating a TAG record and attempting to find the PERSON_TYPE record. Once this call has returned, we can perform our logic, which looks like this:
 ```groovy
 <entity name="ACCOUNT" maxEntries="10000" idField="ID">
-    <updateOn table="TAG">
-        <!-- Entities is expected to return an Observable<DbRecord> or 'null' to force a full refresh of entity table -->
+        <updateOn table="TAG">
+        <!-- Entities is expected to return a Flowable<DbRecord> or 'null' to force a full refresh of entity table -->
         <entities>
-        <![CDATA[
-            // If the TAG record does not contain a PERSON_TYPE change, then we don't need to process it
-            if(genericRecord.getString('CODE') != 'PERSON_TYPE'){
-                return Observable.empty()
-            } else {
-                // If the TAG record contained a PERSON_TYPE change, we need to re-evaluate all ACCOUNT records against this user,
-                // therefore return "null" to force a full table refresh.
+            <![CDATA[
+                // If the TAG record does not contain a PERSON_TYPE change, then we don't need to process it
+                if(genericRecord.getString('CODE') != 'PERSON_TYPE'){
+                    return Flowable.empty()
+                } else {
+                    // If the TAG record contained a PERSON_TYPE change, we need to re-evaluate all ACCOUNT records against this user,
+                    // therefore return "null" to force a full table refresh.
                 return null
             }
-        ]]>
+            ]]>
         </entities>
-        <!-- Users block is expected to return an Observable<List<DbRecord>> or 'null' to force a full refresh of user table -->
+        <!-- Users block is expected to return an FLowable<List<DbRecord>> or 'null' to force a full refresh of user table -->
         <users>
-        <![CDATA[
-            // Return an Observable<List<DbRecord>> (we perform a conversion toList()) for a single user
-            def userObs = getUserRecord(db, genericRecord.getString('ENTITY_ID'))
-            return userObs.filter{it != null}.toList()
-        ]]>
+            <![CDATA[
+                def userObs = getUserRecord(db, genericRecord.getString('ENTITY_ID'))
+                return userObs.filter{it != null}.toList()
+            ]]>
         </users>
-    </updateOn>
+        </updateOn>
 
     <![CDATA[
         // "users" is a Groovy expression binding which contains all the users that need to be updated against an entity
         def entityCode = account.getString('ID')
-        return Observable.from(users).flatMap{ user ->
+        return Flowable.fromIterable(users).flatMap{ user ->
             def userName = user.getString('USER_NAME')
-            
+    
             return getUserType(userName).flatMap{ tagRec ->
                 def allowed = false
                 def entityType = tagRec?.getString('TAG_VALUE')
-
+        
                 if(entityType == 'SALES_OFFICER') {
                     if(account.getString('OFFICER_ID') == userName) {
                         allowed = true
                     }
                 }
-
+        
                 if(entityType == 'ASSET_MANAGER') {
                     if(account.getString('ASSET_MANAGER_ID') == userName) {
                         allowed = true
                     }
                 }
-                return Observable.just(new AuthEntry(userName, entityCode, allowed))
+                return Flowable.just(new AuthEntry(userName, entityCode, allowed))
             }
         }
     ]]>
@@ -475,9 +439,9 @@ Here, we're simply creating a TAG record and attempting to find the PERSON_TYPE 
 ```
 As you can see, we first get the **entityType** (note the inline null check to handle the fact the tag record may not exist). We can then check if the current user is stored against the account as either the sales officer, or the asset manager.
 
-We always emit an **AuthEntry** object within our returned Observable, which specifies whether the user is permissioned or not.
+We always emit an **AuthEntry** object within our returned Flowable, which specifies whether the user is permissioned or not.
 
-Also note the fact we're using Observables. We wrap the users list to be an Observable, then we **flatMap** the **getUserType** call and return an observable in the form of an **AuthEntry**.
+Also note the fact we're using Flowable. We wrap the users list to be an Flowable, then we **flatMap** the **getUserType** call and return a Flowable in the form of an **AuthEntry**.
 
 We also define several items on the entity element:
 
@@ -496,72 +460,40 @@ As mentioned above, we will also refresh when either the entity or user table is
         <![CDATA[
 
             import java.util.Collections
-            import com.google.common.util.concurrent.Futures
-            import com.google.common.util.concurrent.ListenableFuture
-            import com.google.common.util.concurrent.FutureCallback
-            import rx.Emitter
-            import global.genesis.dta.dta_db.engine.aerospike.ops.RecordSearchDetails
-            
-            static Observable<DbRecord> getUserRecord(DtaDb db, String userName){
+            import io.reactivex.rxjava3.core.SingleEmitter
+            import io.reactivex.rxjava3.core.Flowable
+            import io.reactivex.rxjava3.core.Single
+            import io.reactivex.rxjava3.core.Maybe
+            import static global.genesis.auth.perms.processor.PermsProcessorUtils.*
+
+            static Flowable<DbRecord> getUserRecord(RxDb rxDb, String userName){
                 final DbRecord userRecord = new DbRecord("USER")
                 userRecord.setString("USER_NAME", userName)
-                return Observable.from(db.get(userRecord, "USER_BY_NAME"))
+                return Flowable.fromIterable(rxDb.get(userRecord, "USER_BY_NAME"))
             }
-
+            
             /*
-                * Get user type based on tag value
-                */
-            static Observable<DbRecord> getUserType(userName) {
+             * Get user type based on tag value
+             */
+            static Flowable<Boolean> getUserType(String userName) {
                 def tagRec = new DbRecord('TAG')
                 tagRec.setString('CODE', 'PERSON_TYPE')
                 tagRec.setString('ENTITY_ID', userName)
-                return Observable.from(db.get(tagRec, 'TAG_BY_CODE'))
+                return Flowable.fromIterable(rxDb.get(tagRec, 'TAG_BY_CODE'))
             }
-            
-            // Other useful functions to create more performant Observables    
-            static Observable<DbRecord> toObservable(ListenableFuture<DbRecord> getOperation){
-                return Observable.create({ Emitter<DbRecord> emitter ->
-                    Futures.addCallback(getOperation, new FutureCallback<DbRecord>() {
-                            @Override
-                            public void onSuccess(DbRecord record){
-                                emitter.onNext(record)
-                                emitter.onCompleted()
-                            }
-            
-                            public void onFailure(Throwable t){
-                                emitter.onError(t)
-                            }
-                    });
-                }, Emitter.BackpressureMode.NONE)
-            }
-                
-            static Observable<List<DbRecord>> toObservableList(ListenableFuture<List<DbRecord>> getOperation){
-                return Observable.create({ Emitter<List<DbRecord>> emitter ->
-                    Futures.addCallback(getOperation, new FutureCallback<List<DbRecord>>() {
-                            @Override
-                            public void onSuccess(List<DbRecord> record){
-                                emitter.onNext(record)
-                                emitter.onCompleted()
-                            }
-            
-                            public void onFailure(Throwable t){
-                                emitter.onError(t)
-                            }
-                    });
-                }, Emitter.BackpressureMode.NONE)
-            }
+
         ]]>
     </preExpression>
 
     <!-- USER updates are assumed -->
     <entity name="ACCOUNT" maxEntries="10000" idField="ID">
         <updateOn table="TAG">
-            <!-- Entities is expected to return an Observable<DbRecord> or 'null' to force a full refresh of entity table -->
+            <!-- Entities is expected to return an Flowable<DbRecord> or 'null' to force a full refresh of entity table -->
             <entities>
             <![CDATA[
                 // If the TAG record does not contain a PERSON_TYPE change, then we don't need to process it
                 if(genericRecord.getString('CODE') != 'PERSON_TYPE'){
-                    return Observable.empty()
+                    return Flowable.empty()
                 } else {
                     // If the TAG record contained a PERSON_TYPE change, we need to re-evaluate all ACCOUNT records against this user,
                     // therefore return "null" to force a full table refresh.
@@ -569,10 +501,9 @@ As mentioned above, we will also refresh when either the entity or user table is
                 }
             ]]>
             </entities>
-            <!-- Users block is expected to return an Observable<List<DbRecord>> or 'null' to force a full refresh of user table -->
+            <!-- Users block is expected to return an Flowable<List<DbRecord>> or 'null' to force a full refresh of user table -->
             <users>
             <![CDATA[
-                // Return an Observable<List<DbRecord>> (we perform a conversion toList()) for a single user
                 def userObs = getUserRecord(db, genericRecord.getString('ENTITY_ID'))
                 return userObs.filter{it != null}.toList()
             ]]>
@@ -582,7 +513,7 @@ As mentioned above, we will also refresh when either the entity or user table is
         <![CDATA[
             // "users" is a Groovy expression binding which contains all the users that need to be updated against an entity
             def entityCode = account.getString('ID')
-            return Observable.from(users).flatMap{ user ->
+            return Flowable.fromIterable(users).flatMap{ user ->
                 def userName = user.getString('USER_NAME')
                 
                 return getUserType(userName).flatMap{ tagRec ->
@@ -600,7 +531,7 @@ As mentioned above, we will also refresh when either the entity or user table is
                             allowed = true
                         }
                     }
-                    return Observable.just(new AuthEntry(userName, entityCode, allowed))
+                    return Flowable.just(new AuthEntry(userName, entityCode, allowed))
                 }
             }
         ]]>
