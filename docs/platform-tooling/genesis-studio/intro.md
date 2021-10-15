@@ -74,9 +74,11 @@ Clicking on the **Settings** button enables you to export your files and to make
 * **Project** enables you to set the Home page and to define key aspects of the appearance of the user interface.
 
 **Connection** requires a URL and port number:
+
 ![](/img/settings-connection.png)
 
-**Project** provide s settings for themes, location of your logo, location of navigation, etc.
+**Project** provides settings for themes, location of your logo, location of navigation, etc.
+
 ![](/img/settings-project.png)
 
 
