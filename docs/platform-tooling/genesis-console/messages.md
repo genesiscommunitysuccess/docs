@@ -1,5 +1,5 @@
 ---
-id: mMessages
+id: messages
 sidebar_label: 'Messages'
 sidebar_position: 60
 title: 'Messages'
@@ -9,7 +9,7 @@ title: 'Messages'
 
 
 
-## Messages
+
 This page displays system messages.
 The **Suppress Heartbeats** switch at the top is useful for excluding these regular system messages that just check for activity from the web UI. In the example below, we have done this.
 

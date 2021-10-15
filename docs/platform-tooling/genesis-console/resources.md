@@ -9,7 +9,7 @@ title: 'Resources'
 
 
 
-## Resources
+
 This page shows all the available resources that publish data to the web UI. 
 
 ![](/img/con-resources1.png)
