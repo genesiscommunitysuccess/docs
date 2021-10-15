@@ -1,16 +1,32 @@
 ---
-id: misc-tokens
+id: misc
 title: Miscellaneous tokens
-sidebar_position: 70
+sidebar_label: Miscellaneous
+sidebar_position: 40
 ---
 
 Contains a number of tokens which are hard to classify.
 
 ## Configuration
 
-You can adjust any of the defaults in the `_config` folder of your design system.
+You can adjust any of the defaults in the `src/_config` folder of your design system.
 
 ### Usage
+
+### Prefix
+
+```ts
+export const prefix = 'alpha';
+```
+
+Custom Web components (as opposed to standard HTML components like `<h1>` or `<div>`) require a hyphen character (`-`) included in the name e.g. `<alpha-button>`. Part of the name before the hyphen is called prefix and can be customised e.g.:
+
+```ts
+export const prefix = 'custom';
+```
+
+You will then be able to use your component in HTML as `<custom-button>`.
+
 
 ## direction
 

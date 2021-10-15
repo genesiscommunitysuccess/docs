@@ -32,14 +32,14 @@ import Example from '!!raw-loader!../../../examples/ui/alphaImports';
 
 <CodeBlock className="language-ts">{Example}</CodeBlock>
 
-You can also use `alphaBaseComponents` shortcut to register all the available components:
+You can also use `baseComponents` shortcut to register all the available components:
 
 
 ```ts
-import {provideDesignSystem, alphaBaseComponents} from '@genesislcap/alpha-design-system';
+import {provideDesignSystem, baseComponents} from '@genesislcap/alpha-design-system';
 
 provideDesignSystem().register(
-  alphaBaseComponents
+  baseComponents
 );
 ```
 
