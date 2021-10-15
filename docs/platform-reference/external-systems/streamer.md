@@ -6,11 +6,11 @@ id: streamer
 ---
 
 ### Create streamer
-To create a streamer the following are required:
+To create a streamer:
 
-1. Add streamer process configuration in {applicationName}-processes.xml file
+1. Add streamer process configuration to the {applicationName}-processes.xml file. for example:
 
-Ex:
+
 ```xml
 <process name="TRADING_APP-STREAMER">
     <start>true</start>
@@ -21,9 +21,9 @@ Ex:
 </process>
 ```
 
-2. Create kotlin script file named {applicationName}-streamer.kts and add following
+2. Create a kotlin script file named {applicationName}-streamer.kts. Add the following information:
     * A stream name 
-    * An GPAL index reference for a unique index with a single LONG field, this could refer to a table index or a view index.
+    * A GPAL index reference for a unique index with a single LONG field, this could refer to a table index or a view index.
 
 The simplest streamer definition is:
 ```kotlin
@@ -32,9 +32,9 @@ streams {
 }
 ```
 
-This will create a stream called “ORDER_OUT”, based on the ORDERS_OUT table (or view), and the data will be streamed ordered by timestamp.
+This creates a stream called “ORDER_OUT”, based on the ORDERS_OUT table (or view). The data will be streamed, ordered by timestamp.
 
-The following settings are also available as optional parameters you can specify in stream block
+You can also specify the following optional parameters in a stream block:
 
 `batchSize` - default value 100
 
@@ -42,7 +42,8 @@ The following settings are also available as optional parameters you can specify
 
 `maxLogons` - default value 1
 
-Also, the following blocks are available to transform the stream:
+#### Transforing the srteam
+You can define the following blocks to transform the stream:
 * where
 * fields
 * toGenesisSet
@@ -74,7 +75,7 @@ streams {
 ```
 
 **Fields**
-The fields tag allows the output to be transformed in a similar way to views, data server and req rep definitions. For example, here we output three fields:
+The fields tag enables you to transform the output in a similar way to views, data server and req rep definitions. For example, here we output three fields:
 ```kotlin
 streams {
     stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP) {
@@ -88,7 +89,7 @@ streams {
 ```
 
 **toGenesisSet**
-This allows you to create a custom GenesisSet from the entity
+This enables you to create a custom GenesisSet from the entity:
 ```kotlin
 streams {
     stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP) {
