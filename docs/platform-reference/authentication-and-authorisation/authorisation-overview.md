@@ -17,7 +17,7 @@ All these services can be optionally permissioned using a permissioning GPAL syn
 
 **Permissioning block snippet**
 ```kotlin
-// would be enclosed within a resource (eg DataServer Query) specific block
+// this example would be enclosed within a resource (eg DataServer Query) specific block
 permissioning {
     
     // 'permission Code' list, users must have the permission to access the enclosing resource
@@ -30,8 +30,32 @@ permissioning {
 }
 ```
 
+This permissioning block can exist inside a resource (reqrep, query or eventhandler) definition:
+```kotlin
+requestReplies {
+    requestReply("MARKET_INSTRUMENTS", INSTRUMENT_DETAILS) {
+        permissioning {
+            permissionCodes = listOf("TRADER")
+        }
+    }
+}
+```
+
+Or at a global level:
+```kotlin
+requestReplies {
+    permissioning {
+        permissionCodes = listOf("TRADER")
+    }
+    requestReply("MARKET_INSTRUMENTS", INSTRUMENT_DETAILS)
+}
+```
+
+It is important to mention that the permissioning block at the global can only contain `permissionCodes` as the `auth` block is based on each individual resource definition. The global permissioning block can be overriden at the resource level.
+
 For every request that comes into a Genesis server it will include the username of an authenticated user. 
 Non-authenticated users will not have access or visibility to the genesis services.
+
 
 There are two main optional sub-blocks to the Permissioning block.
 
