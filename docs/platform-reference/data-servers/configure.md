@@ -49,7 +49,7 @@ dataServer {
 
 **Top level only settings**
 
-**lmdbAllocateSize**: sets the size of the memory mapped file of the in-memory detabase used to store dataserver query rows. This configuration seeting can only be applied at the top level and affects the whole dataserver. 
+**lmdbAllocateSize**: sets the size of the memory mapped file of the in-memory cache used to store dataserver query rows. This configuration seeting can only be applied at the top level and affects the whole dataserver. 
 
 Please note that this is the size in bytes, to use MB or GB use the `MEGA_BYTE` or `GIGA_BYTE` functions. Defaults to 2 GB.
 
@@ -62,11 +62,11 @@ lmdbAllocateSize = 512.MEGA_BYTE()
 
 **Top level and query level settings** 
 
-**compression**: if true, it will compress query row data before writing it to the in-memory database. Defaults to `false`.
+**compression**: if true, it will compress query row data before writing it to the in-memory cache. Defaults to `false`.
 
 **chunkLargeMessages**: if true, it will split large updates into smaller ones. Defaults to `false`.
 
-**defaultStringSize**: size to be used for string storage in the dataserver in-memory database. Higher values lead to higher memory use and lower values to truncation. Defaults to `40`.
+**defaultStringSize**: size to be used for string storage in the dataserver in-memory cache. Higher values lead to higher memory use and lower values to truncation. Defaults to `40`.
 
 **batchingPeriod**: delay in millseconds to wait before sending new data to dataserver clients. Defaults to `500ms`.
 
@@ -90,7 +90,7 @@ The type aware criteria evaluator is able to automatically convert criteria comp
 
 For example, it might be desirable for a frontend client to perform a criteria search on a `TRADE_DATE` field like this: `TRADE_DATE > '2015-03-01' && TRADE_DATE < '2015-03-02'`. This search criteria can be automatically translated to the right field types internally (even though `TRADE_DATE` is a field of type `DateTime`) and our index search mechanism can also identify the appropriate search intervals in order to provide an optimised experience. The type aware evaluator can also transform strings to integers and basically any other sensible and possible conversions (e.g `TRADE_ID == '1'`). As a side note, this type aware evaluator is also available in `DbMon` for operations like `search` and `qsearch`.
 
-By contrast, the traditional criteria evaluator needs field types to match the dataserver query fields. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. It usually preferable to handle date searches in this case using our [common date expressions](#common-expressions)
+By contrast, the traditional criteria evaluator needs field types to match the dataserver query fields. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. It is usually preferable to handle date searches in this case using our [common date expressions](#common-expressions).
 
 
 #### Additional information on backwards joins
@@ -112,7 +112,7 @@ Also you can use these clauses to focus on a specific set of fields or a single 
 Finally, note that **where** clauses can also be used for permissioning. If only users with a specific ID are permitted to have access to this data, you could permission them here.
 
 
-## Indexes
+## Indices
 
 Index sample:
 
@@ -133,7 +133,7 @@ dataServer {
 The **indices** (optional) block defines additional indexing at the query level. When an index is used, it will make all query rows be ordered by the "fields" specified, in an ascending order. This definition is identical to the one defined in data modelling for dictionary tables.
 
 There are two scenarios in which an index will be used:
-* The query criteria search can be optimised by using an index. If a dataserver client specifies a criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, the dataserver will automatically select the best matching index, and in our example it would be `SIMPLE_QUERY_BY_QUANTITY`. This means we don't need to scan all the query rows stored in the dataserver memory mapped file database and instead perform a very efficient indexed search.
+* The query criteria search can be optimised by using an index. If a dataserver client specifies a criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, the dataserver will automatically select the best matching index, and in our example it would be `SIMPLE_QUERY_BY_QUANTITY`. This means we don't need to scan all the query rows stored in the dataserver memory mapped file cache and instead perform a very efficient indexed search.
 * The dataserver client specifies an index. If an `ORDER_BY` value is received as part of the `DATA_LOGON` process, the dataserver will use a specific index to query the data. This means the data will be returned to the client in ascending order based on the index field definition. See more at [Client side (runtime) options](#client-side-runtime-options)
 
 *Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add SIMPLE_ID to the index definition to ensure we maintain uniqueness.
@@ -250,19 +250,19 @@ DateTime as Date: _yyyyMMdd_
 
 ### Date operations
 
-#### dateIsBefore(date as String/Long, Date)
+#### dateIsBefore(date as DateTime|String|Long, String)
 Returns true when the date in the given field is before the date specified
 
 ##### example:
 `Expr.dateIsBefore(TRADE_DATE,'20150518')`
 
-#### dateIsAfter(date as String/Long, Date)
+#### dateIsAfter(date as DateTime|String|Long, String)
 Returns true when the date in the given field is after the date specified
 
 ##### example:
 `Expr.dateIsAfter(TRADE_DATE,'20150518')`
 
-#### dateIsGreaterEqual(date as String/Long, Date)
+#### dateIsGreaterEqual(date as DateTime|String|Long, String)
 
 Returns true when the date in the given field is greater or equal to the date specified
 
@@ -270,7 +270,7 @@ Returns true when the date in the given field is greater or equal to the date sp
 
 `Expr.dateIsGreaterEqual(TRADE_DATE,'20150518')`
 
-#### dateIsLessEqual(date as String/Long, Date)
+#### dateIsLessEqual(date as DateTime|String|Long, String)
 
 Returns true when the date in the given field is less or equal to the date specified
 
@@ -278,13 +278,13 @@ Returns true when the date in the given field is less or equal to the date speci
 
 `Expr.dateIsLessEqual(TRADE_DATE,'20150518')`
 
-#### dateIsEqual(date as String/Long, Date)
+#### dateIsEqual(date as DateTime|String|Long, String)
 Returns true when the date in the given field is equal to the date specified
 
 #### example:
 `Expr.dateIsEqual(TRADE_DATE,'20150518')`
 
-#### dateIsToday(date as String/Long)
+#### dateIsToday(date as DateTime|String|Long)
 Returns true when the data in the given field is equal to today's date (using system local time)
 
 #### example:
@@ -292,7 +292,7 @@ Returns true when the data in the given field is equal to today's date (using sy
 
 ### DateTime operations
 
-#### dateTimeIsBefore(datetime as String/Long, Date)
+#### dateTimeIsBefore(datetime as DateTime|String|Long, String)
 
 Returns true when the datetime in the given field is before the datetime specified
 
@@ -300,7 +300,7 @@ Returns true when the datetime in the given field is before the datetime specifi
 
 `Expr.dateTimeIsBefore(TRADE_DATETIME,'20150518-10:50:24')`
 
-#### dateTimeIsAfter(datetime as String/Long, Date)
+#### dateTimeIsAfter(datetime as DateTime|String|Long, String)
 
 Returns true when the datetime in the given field is after the datetime specified
 
@@ -308,7 +308,7 @@ Returns true when the datetime in the given field is after the datetime specifie
 
 `Expr.dateTimeIsAfter(TRADE_DATETIME,'20150518-10:50:24')`
 
-#### dateTimeIsGreaterEqual(datetime as String/Long, Date)
+#### dateTimeIsGreaterEqual(datetime as DateTime|String|Long, String)
 
 Returns true when the datetime in the given field is greater or equal to the datetime specified
 
@@ -317,7 +317,7 @@ Returns true when the datetime in the given field is greater or equal to the dat
 
 `Expr.dateTimeIsGreaterEqual(TRADE_DATETIME,'20150518-10:50:24')`
 
-#### dateTimeIsLessEqual(datetime as String/Long, Date)
+#### dateTimeIsLessEqual(datetime as DateTime|String|Long, String)
 
 
 Returns true when the datetime in the given field is less or equal to the datetime specified
