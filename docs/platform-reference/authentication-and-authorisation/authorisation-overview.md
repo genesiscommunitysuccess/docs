@@ -48,7 +48,7 @@ permissionCodes = listOf("TRADER", "SUPPORT")
   - the permission code needs to be defined in the RIGHT table,
   - linked to an entry in the PROFILE_RIGHT table,
   - and to a PROFILE that is associated with the USER from PROFILE_USER
-  - The Auth Manager process will populate the RIGHT_SUMMARY table based upon the table configuration. This table ultimately drives  tha available permission codes for all users in the system. 
+  - The AUTH_MANAGER process will populate the RIGHT_SUMMARY table based upon the table configurations above. This table ultimately drives the available permission codes for all users in the system. 
   
   These tables are part of the Genesis Auth Module.
 
@@ -66,7 +66,7 @@ permissionCodes = listOf("TRADER", "SUPPORT")
         }
 ```
 
-Where this is defined, it allows for further fined grained of what data, at the row is returned to a specific user. 
+Where this is defined, it allows for further fined grained control of what data, at the row level, is returned to a specific user. 
 If it is not defined then all data is returned for the enclosing resource, assuming permissionCodes are not restricting.
 
 - The mapName refers to a specific Permission "entity" defined on the server via the [auth-permission.xml](/platform-reference/authentication-and-authorisation/authorisation#defining-a-permission-rule) file.
@@ -125,7 +125,6 @@ There are two kinds of permission entities defined by Generic Permissions in ```
 - **USER_VISIBILITY** - An AuthCache which determines which user is visible to which user, this is driven by which users associated for the entity. Using our example, if two users are both in the same counterparty then they should be viewable to each other.
 
 - **ENTITY_VISIBILITY** - An AuthCache which determine if a user has access to particular entity, in our example, if the user permissioned for a particular counterparty, then it will be able to see the associated row data for that counterparty.
-
 
 
 :::note
