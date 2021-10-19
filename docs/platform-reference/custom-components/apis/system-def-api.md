@@ -10,8 +10,9 @@ System-definition file is the base of all configurations. Explained below differ
 Default methods have implementation to provide default values for property, for more information follow this [link](/platform-reference/essential-information/system_definitions-latest) 
 
 Most of the functions are to get/set particular property. Use functions `get` or `getItem` if you add any other property whose getter/setter function is not available 
+You can access system definition properties in two ways:
 
-**Functions**
+## Using existing APIs
 
 | name | signature |
 | --- | --- |
@@ -42,9 +43,12 @@ Most of the functions are to get/set particular property. Use functions `get` or
 | getZeroMQOutboundPort | `default Integer getZeroMQOutboundPort()` |
 | getZeroMQProxyModeEnabled | `default Boolean getZeroMQProxyModeEnabled()` |
 | getZeroMQUnicastRelayEnabled | `default Boolean getZeroMQUnicastRelayEnabled()` |
-| isAuthDisabled | `default boolean isClusteringEnabled()` |
+| isAuthDisabled | `default boolean isAuthDisabled()` |
 | isClusteringEnabled | `default boolean isClusteringEnabled()` |
 | isEncrypted | `default boolean isEncrypted(String key)` |
 | isMetricsEnabled | `boolean isMetricsEnabled()` |
 | parseProperty | `static <T, R> Optional<R> parseProperty(Supplier<Optional<T>> property, Predicate<? super T> canBeTransformed, Function<? super T, ? extends R> transformer)` |
 | parseStringProperty | `static <R> Optional<R> parseStringProperty(Supplier<Optional<String>> property, Function<? super String, ? extends R> transformer)` |
+
+## Using @Named genesis annotation
+Follow this [link](/platform-reference/custom-components/custom-components/#injectable-properties-from-system-definition) for example
