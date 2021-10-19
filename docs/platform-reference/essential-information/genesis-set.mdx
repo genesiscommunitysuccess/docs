@@ -3,15 +3,20 @@ title: GenesisSet
 sidebar_label: GenesisSet
 id: genesis-set
 sidebar_position: 6
-
 ---
 
-Genesis Set is a key/value store that is used to communicate with other Genesis components. Sets can store primitives as well as other sets.
-Any request/reply to and from Genesis components is in the form of GenesisSet.
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Genesis Set is a key/value store, and it is **generic** message type used to communicate with other Genesis microservices. Sets can store primitives as well as other sets.
 
 Examples: 
 
-1. GenesisSet to send message to Event handler service using genesisSet method of companion object explained below
+1. GenesisSet to send message to Event handler service
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
 ```kotlin
 genesisSet {
     MESSAGE_TYPE with "EVENT_LOGIN_AUTH"
@@ -24,7 +29,29 @@ genesisSet {
 }
 ```
 
-2. GenesisSet to send message to request reply service using genesisSet method of companion object explained below
+</TabItem>
+<TabItem value="java">
+
+```java
+GenesisSet.builder()
+    .setString(MESSAGE_TYPE, "EVENT_LOGIN_AUTH")
+    .setString(SERVICE_NAME, "GENESIS_AUTH_MANAGER")
+    .setString(SOURCE_REF, "sourceRef")
+    .setGenesisSet("DETAILS", GenesisSet.builder()
+            .setString("USER_NAME", "User")
+            .setString("PASSWORD", "Password")
+            .build()
+    ).build();
+```
+
+</TabItem>
+</Tabs>
+
+2. GenesisSet to send message to request reply service
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
 ```kotlin
 genesisSet {
     MESSAGE_TYPE with "REQ_INSTRUMENT"
@@ -36,12 +63,45 @@ genesisSet {
 }
 ```
 
+</TabItem>
+<TabItem value="java">
+
+```java
+GenesisSet.builder()
+    .setString(MESSAGE_TYPE, "REQ_INSTRUMENT")
+    .setString(SERVICE_NAME, "GCOM_REQUEST_SERVER")
+    .setString(SOURCE_REF, "sourceRef")
+    .setGenesisSet("REQUEST", GenesisSet.builder()
+            .setString("INSTRUMENT_ID", "*")
+            .build()
+    ).build();
+```
+
+</TabItem>
+</Tabs>
+
 3. GenesisSet using constructor
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
 ```kotlin
 val genesisSet = GenesisSet()
 genesisSet.setInteger("PRICE", 10)
 genesisSet.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+GenesisSet genesisSet = new GenesisSet();
+genesisSet.setInteger("PRICE", 10)
+genesisSet.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
+```
+
+</TabItem>
+</Tabs>
 
 ## Constructors
 
@@ -60,7 +120,6 @@ genesisSet.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
 | getBigDecimal | fun getBigDecimal(property: String, defaultValue: BigDecimal) | Get a BigDecimal value, or default value if property not present. |
 | getBoolean | fun getBoolean(property: String, defaultValue: Boolean) | Get a boolean value, or the 'defaultValue' parameter if field not found. |
 | getByteArray | fun getByteArray(property: String): ByteArray? | Get a byte array value (assume a Base64 string if a string is found).  You can use a full stop to denote an embedded Genesis set, or retrieve the set directly. |
-| getData | override fun getData(): MutableMap<String, *> | Provides data for reporting service. |
 | getDate | fun getDate(key: String, defaultValue: DateTime) | Get a DateTime value, or default value if property not present. |
 | getDouble | fun getDouble(property: String, defaultValue: Double) | Get a double value, or default value if property not present. |
 | getGenesisSet | fun getGenesisSet(property: String, defaultValue: GenesisSet) | Get a Genesis set, or default value if property not present. |
@@ -69,7 +128,6 @@ genesisSet.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
 | getObject | tailrec fun getObject(property: String, genesisSet: GenesisSet = this): Any? | Recursively get an object. |
 | getShort | fun getShort(property: String, defaultValue: Short) | Get a short value, or default value if property not present. |
 | getString | fun getString(property: String, defaultValue: String) | Get a string value, or the default value if property not found.  You can use a full stop to denote an embedded Genesis set, or retrieve the set directly. |
-| readFrom | fun readFrom(unpacker: MessageUnpacker) | Deserialize object from given unpacker.  Provided for MessagePack. |
 | setArray | fun setArray(key: String, value: Any?) | Set an array value.  Method can be called repeatedly with the same key to build up a list of values. |
 | setBigDecimal | fun setBigDecimal(key: String, value: BigDecimal?) | Set BigDecimal value.  If the value exists in the set it is overwritten. |
 | setBoolean | fun setBoolean(key: String, value: Boolean?) | Set integer value.  If the value exists in the set it is overwritten. |
@@ -88,7 +146,6 @@ genesisSet.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
 | unSetDirect | tailrec fun unSetDirect(property: String, genesisSet: GenesisSet = this) | Shorthand method to unset a field that may be multiple sets deep |
 | unSetGenesisSet | fun unSetGenesisSet(key: String) | Shorthand method to unset a GenesisSet. |
 | with | infix fun String.with(any: Any?) | Sets key-value in GenesisSet Ex: MESSAGE_TYPE with EVENT_INSERT |
-| writeTo | fun writeTo(pk: MessagePacker) | Serialize object into specified packer.  Provided for MessagePack |
 
 ## Companion object
 
@@ -97,6 +154,7 @@ genesisSet.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
 `fun genesisSet(init: GenesisSet.() -> Unit): GenesisSet`
 
 `fun builder(): GenesisSetBuilder`
+: This method will be used while creating GenesisSet from Java class. GenesisSetBuilder creates new instance of GenesisSet and use `build` method to get instance of GenesisSet as shown in above examples
 
 `fun toStringNanos(timeNs: Long): String`
 
