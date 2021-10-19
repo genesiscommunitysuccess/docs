@@ -117,7 +117,8 @@ template which is processed at genesisInstall time, using entries from system-de
 When new users are created in the Genesis Gui Admin screens, a required field COUNTERPARTY will be presented to the operating user. This limits users to belonging to a single counterparty.
 :::
 
-You can define additional -permissions.xml files. I could define something like oems-permissions.xml with my order management system auth implementation and it will be read by AUTH_PERMS on startup. That way you don't need to constantly override auth-permissions.xml and deployment is simplified.
+You can define additional -permissions.xml files. For example, you could define something like oems-permissions.xml with 
+an order management system auth implementation, and it will be read by AUTH_PERMS process on startup.
 
 There are two kinds of permission entities defined by Generic Permissions in ```auth-permission.templt.xml``` file.
 
