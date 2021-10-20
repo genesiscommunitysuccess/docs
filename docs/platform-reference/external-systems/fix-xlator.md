@@ -111,6 +111,22 @@ val yield = executionReport[executionReport.yield]
 
 The return values are always nullable. Any quick fix date type will automatically be converted to a joda DateTime value before being returned.
 
+`encodeInGenesisSet`
+
+Creates genesis set with FIX_VERSION, MESSAGE_TYPE and FIX_STRING keys, based on calling fix message
+
+```kotlin
+message.encodeInGenesisSet()
+```
+
+`createFieldWithDefault`
+
+Creates a field with default value for provided fix message tag.
+
+```kotlin
+message.createFieldWithDefault(fixMessageTag)
+```
+
 #### GenesisSet extension functions
 
 `set`
@@ -125,13 +141,16 @@ genesisSet.set("REPORTED_YIELD", executionReport.yield)
 
 `setWithDefault`
 
-This function is similar to `set`, but enables you to specify a default value:
+This function is similar to `set`, but enables you to specify a default value, default value can be constant or value of another field
 
 ```kotlin
+// set yield with value 1.0
 genesisSet.setWithDefault(executionReport.yield, 1.0)
 
+// Set key: REPORTED_YIELD with executionReport.yield or 1.0 if executionReport.yield is null
 genesisSet.setWithDefault("REPORTED_YIELD", executionReport.yield, 1.0)
 
+// Set key: REPORTED_YIELD with executionReport.yield or executionReport.otherYield if executionReport.yield is null
 genesisSet.setWithDefault("REPORTED_YIELD", executionReport.yield, executionReport.otherYield)
 ```
 

@@ -6,15 +6,36 @@ sidebar_label: Typography
 hide_table_of_contents: true
 ---
 
-## Configuration
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 You can adjust any of the defaults in the `src/_config` folder of your design system.
 
 ## Body font
 
-The base typeface for most of the components.
+The base typeface for most of the components. You can modify the default as needed.
 
-### Usage
+```ts
+export const bodyFontValue = '"Segoe UI", Arial, Helvetica, sans-serif';
+```
+
+### Usage in your code
+
+<Tabs
+  defaultValue="css"
+  values={[
+    { label: 'CSS', value: 'css', },
+    { label: 'JavaScript', value: 'token', }
+  ]
+}>
+<TabItem value="css">
+
+```css
+font-family: var(--body-font);
+```
+
+</TabItem>
+<TabItem value="token">
 
 ```ts
 import {bodyFont} from '@genesislcap/alpha-design-system';
@@ -25,9 +46,37 @@ const styles = css`
 }`;
 ```
 
+</TabItem>
+</Tabs>
+
 ## Font sizes and line heights
 
-### Usage
+Group of variables describing the font size and line-height hierarchy.
+
+```ts
+export const typeRampBaseFontSizeValue = '14px';
+export const typeRampBaseLineHeightValue = '20px';
+// ... remaining variables
+```
+
+### Usage in your code
+
+<Tabs
+  defaultValue="css"
+  values={[
+    { label: 'CSS', value: 'css', },
+    { label: 'JavaScript', value: 'token', }
+  ]
+}>
+<TabItem value="css">
+
+```css
+font-size: var(--type-ramp-minus-1-font-size);
+line-height: var(--type-ramp-minus-1-line-height);
+```
+
+</TabItem>
+<TabItem value="token">
 
 ```ts
 import {typeRampMinus1FontSize, typeRampMinus1LineHeight} from '@genesislcap/alpha-design-system';
@@ -39,19 +88,7 @@ const styles = css`
 }`;
 ```
 
-#### Typography
+</TabItem>
+</Tabs>
 
-| Level              | Font Size Token Name            | Line Height Token Name           |
-|--------------------|---------------------------------|----------------------------------|
-| Minus 2 (smallest) | `typeRampMinus2FontSize`        | `typeRampMinus2LineHeight`       |
-| Minus 1            | `typeRampMinus1FontSize`        | `typeRampMinus1LineHeight`       |
-| Base (body)        | `typeRampBaseFontSize`          | `typeRampBaseLineHeight`         |
-| Plus 1             | `typeRampPlus1FontSize`         | `typeRampPlus1LineHeight`        |
-| Plus 2             | `typeRampPlus2FontSize`         | `typeRampPlus2LineHeight`        |
-| Plus 3             | `typeRampPlus3FontSize`         | `typeRampPlus3LineHeight`        |
-| Plus 4             | `typeRampPlus4FontSize`         | `typeRampPlus4LineHeight`        |
-| Plus 5             | `typeRampPlus5FontSize`         | `typeRampPlus5LineHeight`        |
-| Plus 6 (largest)   | `typeRampPlus6FontSize`         | `typeRampPlus6LineHeight`        |
--------------------------------------------------
-
-<dockit-fast-frame-typography-tokens></dockit-fast-frame-typography-tokens>
+<typography-tokens></typography-tokens>
