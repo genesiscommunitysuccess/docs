@@ -25,6 +25,10 @@ flowchart LR
 
 You don't have to follow the steps in this exact order e.g. you could set set dark/light mode first if you prefer.
 
+:::tip
+To help you visualise how modifying tokens impacts the component look and feel, we have created a [live configuration preview](/web-ui-reference/design-systems/customisation/live-preview/).
+:::
+
 ### Choose base colours
 
 You can set values for accent and neutral colours:
@@ -36,9 +40,9 @@ const neutralColorValue = '#808080';
 
 Behind the scenes accent and neutral colour palettes will be generated from the base colours provided:
 
-<dockit-fast-frame-color-palette type="accent"></dockit-fast-frame-color-palette>
+<color-palette type="accent"></color-palette>
 
-<dockit-fast-frame-color-palette type="neutral"></dockit-fast-frame-color-palette>
+<color-palette type="neutral"></color-palette>
 
 ### Choose mode
 
@@ -70,7 +74,7 @@ After you have configured your colours, you will have a number of variables avai
 
 Variable names are not tied to specific colours, as they are context dependent and can vary between light and dark modes - they follow semantic naming conventions described below.
 
-#### CSS 
+#### CSS Custom Property
 
 ```css
 background: var(--accent-fill-rest);
@@ -80,7 +84,7 @@ background: var(--accent-fill-rest);
 You should consider the CSS custom properties emitted by design tokens to be immutable. Avoid changing their values in CSS, as that can lead to rendering and accessibility issues. If you need to change any values, update the base colour and delta configuration as described above.
 :::
 
-#### JavaScript/TypeScript
+#### Token
 
 ```ts
 import {css} from '@genesislcap/foundation-ui';
@@ -197,10 +201,10 @@ More subtle than `neutralFill` in that the resting state is transparent. Often u
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
-| `neutralFillStrongRest` | `--neutral-fill-strong` | <color-token tokenName="neutralFillStrongRest"></color-token>  |
-| `neutralFillStrongHover` | `--neutral-fill-strong` | <color-token tokenName="neutralFillStrongHover"></color-token> |
-| `neutralFillStrongActive` | `--neutral-fill-strong` | <color-token tokenName="neutralFillStrongActive"></color-token>  |
-| `neutralFillStrongFocus` | `--neutral-fill-strong` | <color-token tokenName="neutralFillStrongFocus"></color-token> |
+| `neutralFillStrongRest` | `--neutral-fill-strong-rest` | <color-token tokenName="neutralFillStrongRest"></color-token>  |
+| `neutralFillStrongHover` | `--neutral-fill-strong-hover` | <color-token tokenName="neutralFillStrongHover"></color-token> |
+| `neutralFillStrongActive` | `--neutral-fill-strong-active` | <color-token tokenName="neutralFillStrongActive"></color-token>  |
+| `neutralFillStrongFocus` | `--neutral-fill-strong-focus` | <color-token tokenName="neutralFillStrongFocus"></color-token> |
 
 
 
@@ -275,4 +279,3 @@ A special layer for floating layers, like flyouts or menus. It will be lighter t
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
 | `neutralLayerFloating` | `--neutral-layer-floating` | <color-token tokenName="neutralLayerFloating"></color-token>  |
-
