@@ -1,3 +1,10 @@
+---
+title: 'View definition example'
+sidebar_label: 'View definition example'
+sidebar_position: 5
+id: view-example
+---
+
 ### View definitions that use different joins:
 
 ```kotlin
