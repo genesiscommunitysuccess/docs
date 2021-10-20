@@ -126,7 +126,7 @@ You can define the following preferences:
 
 **maxSimultaneousUserLogins** defines the maximum number of active sessions any one user can maintain. To login once this limit is reached, then another session must be logged out. If the given value is zero, not defined or not a positive integer, then any number of sessions is permitted.
 
-**loginAckFields** is an optional xml block that allows us to define additional values to be sent back to the client as part of the LOGIN_ACK message. It follows a classic *join* xml definition similar to the ones used in [request reply](../../request-servers/configure) and [data server](../../data-servers/configure) modules.
+**loginAckFields** is an optional xml block that allows us to define additional values to be sent back to the client as part of the LOGIN_ACK message. It follows a classic *join* xml definition similar to the ones used in [request reply](/platform-reference/configure-key-modules/request-servers) and [data server](/platform-reference/configure-key-modules/data-servers/configure/) modules.
 
 **mfa** is config for Multi-factor Authentication (MFA)
 * **codePeriodSeconds** How long an TOTP should work for. Default: 30.

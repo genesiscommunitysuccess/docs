@@ -34,7 +34,7 @@ fixConfiguration {
 ```
  The `plugins` tag enables the plugin, and the `fixConfiguration` tag specifies the version to use.
 
-3. Add a dependency on the class path for the module called {applicationName}-fix-messages. This file is generated using the [fix-codegen-plugin](/platform-reference/external-systems/fix-xlator/#fix-code-generation-plugin).
+3. Add a dependency on the class path for the module called {applicationName}-fix-messages. This file is generated using the [fix-codegen-plugin](/platform-reference/integrations/external-systems/fix-xlator/#fix-code-generation-plugin).
 
 ### Streamer
 

@@ -242,7 +242,7 @@ To achieve this, create aliases for the two fields you are retrieving from the s
 
 By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data). If you need to join to a table where there is real-time data, then you need to specify a backwards join. This requires the statement backwardsJoin = true when you are specifying the join.
 
-It is worth noting that when you define your [data servers](/platform-reference/data-servers/configure/), any of these that include views with backwards joins **must include a similar statement in order to enable the feature**: **backJoins = true**. Don’t forget to add this!
+It is worth noting that when you define your [data servers](/platform-reference/configure-key-modules/data-servers/configure), any of these that include views with backwards joins **must include a similar statement in order to enable the feature**: **backJoins = true**. Don’t forget to add this!
 
 Lastly, `backJoins` can be expensive in terms of computation and cost, so they should be used surgically rather than by default.
 

@@ -56,4 +56,4 @@ A more complex example will follow shortly.
 
 ## Defining state machines
 
-State machines, which define the conditions for moving from one state to another, are defined within your event handler files. See more details about these in the section on [Defining your state machines](/platform-reference/state-machines/define/),
+State machines, which define the conditions for moving from one state to another, are defined within your event handler files. See more details about these in the section on [Defining your state machines](/platform-reference/configure-key-modules/state-machines/define/),

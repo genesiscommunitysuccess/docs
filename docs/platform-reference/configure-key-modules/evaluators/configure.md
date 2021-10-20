@@ -7,7 +7,7 @@ id: configure
 
 You can use the evaluator to schedule the production of EOD reports (for example), or to send warnings when a defined limit is breached.
 
-In system terms, evaluators enable you to connect [event handlers](platform-reference/event-handlers/configure/#a-simple-example-of-an-event-handler) to two different kinds of event: dynamic and static (cron rules). 
+In system terms, evaluators enable you to connect event handlers to two different kinds of event: dynamic and static (cron rules). 
 
 1. __Dynamic Rules__, which are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries, and
 2. __Cron Rules__, which are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
