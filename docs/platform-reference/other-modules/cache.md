@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 20
 title: Cache
 sidebar_label: Cache
 id: cache
