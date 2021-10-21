@@ -126,15 +126,15 @@ You can define the following preferences:
 
 **maxSimultaneousUserLogins** defines the maximum number of active sessions any one user can maintain. To login once this limit is reached, then another session must be logged out. If the given value is zero, not defined or not a positive integer, then any number of sessions is permitted.
 
-**loginAckFields** is an optional xml block that allows us to define additional values to be sent back to the client as part of the LOGIN_ACK message. It follows a classic *join* xml definition similar to the ones used in [request reply](../../request-servers/configure) and [data server](../../data-servers/configure) modules.
+**loginAckFields** is an optional xml block that allows us to define additional values to be sent back to the client as part of the LOGIN_ACK message. It follows a classic *join* xml definition similar to the ones used in [request reply](/platform-reference/configure-key-modules/request-servers/configure/) and [data server](/platform-reference/configure-key-modules/data-servers/configure/) modules.
 
 **mfa** is config for Multi-factor Authentication (MFA)
 * **codePeriodSeconds** How long an TOTP should work for. Default: 30.
 * **codePeriodDiscrepancy** Discrepany to the above allowed. 1 means a block of each codePeriodSeconds either side of the time window. Default: 1.
 * **codeDigits** Number of digits used in the TOTP. Default: 6.
-* **hashingAlgorithm** Choice of Hashing Alogirthm SHA1, SHA256 or SHA512. Default: SHA1.
+* **hashingAlgorithm** Choice of Hashing Algorithm SHA1, SHA256 or SHA512. Default: SHA1.
 * **issuer** A reference to the Organsition or Entity issuing the MFA. Default: Genesis.
-* **label** A label, tyipcally an email address of the issuing Entity or Organisation. Default: genesis.global.
+* **label** A label, typcally an email address of the issuing Entity or Organisation. Default: genesis.global.
 * **confirmWaitPeriodSecs** The period of time before a secret has to be confirmed. Default: 300.
 * **secretEncryptKey** If present Secrets will be encrypted in the database. Default: null.
 * **usernameTableLookUpSalt** If present username will be hashed using the configured key in the database. Default: null.
