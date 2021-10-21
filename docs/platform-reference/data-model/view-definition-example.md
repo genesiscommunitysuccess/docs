@@ -1,4 +1,4 @@
-### Sample view definition examples using different joins:
+### View definitions that use different joins:
 
 ```kotlin
 views {
