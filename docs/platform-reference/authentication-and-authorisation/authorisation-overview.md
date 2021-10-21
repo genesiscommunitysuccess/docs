@@ -17,7 +17,7 @@ All these services can be optionally permissioned using a permissioning GPAL syn
 
 **Permissioning block snippet**
 ```kotlin
-// would be enclosed within a resource (eg DataServer Query) specific block
+// this example would be enclosed within a resource (eg DataServer Query) specific block
 permissioning {
     
     // 'permission Code' list, users must have the permission to access the enclosing resource
@@ -30,8 +30,32 @@ permissioning {
 }
 ```
 
+This permissioning block can exist inside a resource (reqrep, query or eventhandler) definition:
+```kotlin
+requestReplies {
+    requestReply("MARKET_INSTRUMENTS", INSTRUMENT_DETAILS) {
+        permissioning {
+            permissionCodes = listOf("TRADER")
+        }
+    }
+}
+```
+
+Or at a global level:
+```kotlin
+requestReplies {
+    permissioning {
+        permissionCodes = listOf("TRADER")
+    }
+    requestReply("MARKET_INSTRUMENTS", INSTRUMENT_DETAILS)
+}
+```
+
+It is important to mention that the permissioning block at the global can only contain `permissionCodes` as the `auth` block is based on each individual resource definition. The global permissioning block can be overriden at the resource level.
+
 For every request that comes into a Genesis server it will include the username of an authenticated user. 
 Non-authenticated users will not have access or visibility to the genesis services.
+
 
 There are two main optional sub-blocks to the Permissioning block.
 
@@ -48,12 +72,13 @@ permissionCodes = listOf("TRADER", "SUPPORT")
   - the permission code needs to be defined in the RIGHT table,
   - linked to an entry in the PROFILE_RIGHT table,
   - and to a PROFILE that is associated with the USER from PROFILE_USER
+  - The AUTH_MANAGER process will populate the RIGHT_SUMMARY table based upon the table configurations above. This table ultimately drives the available permission codes for all users in the system. 
   
   These tables are part of the Genesis Auth Module.
 
 :::note
 
-  Synonyms: PermissionCodes, Permission, Right, Rights, RightCodes
+  Synonyms: PermissionCodes, Permission, Right, Rights, RightCodes, RightSummary
 
   Synonyms: Profile, Role, Group
 :::
@@ -65,7 +90,7 @@ permissionCodes = listOf("TRADER", "SUPPORT")
         }
 ```
 
-Where this is defined, it allows for further fined grained (programmatic control) of what data, at the row or cell level, is returned to a specific user. 
+Where this is defined, it allows for further fined grained control of what data, at the row level, is returned to a specific user. 
 If it is not defined then all data is returned for the enclosing resource, assuming permissionCodes are not restricting.
 
 - The mapName refers to a specific Permission "entity" defined on the server via the [auth-permission.xml](/platform-reference/authentication-and-authorisation/authorisation#defining-a-permission-rule) file.
@@ -90,11 +115,12 @@ This value is used as a key into a specific AuthCache, identified by entity name
 
 ## Generic Permissions
 
-The Genesis Auth Module comes with a predefined ```auth-permission.templt.xml``` file (which is a genesis [mustache](https://en.wikipedia.org/wiki/Mustache_(template_system)) 
-template which is processed at genesisInstall time, using entries from system-definition).
+'Generic Permissions' is a term used to name the optional permissions' configuration that is available for a Genesis application 
+that is included as part of the Genesis Auth Module.
 
-To fully activate generic permissions you need to provide these values in your system definition before you run genesisInstall.
-These values specify which table column will be used to associate users to entities for fine-grained row (or programmatic) permissions. 
+To fully activate 'Generic Permissions' you need to provide these values in your system definition before you run genesisInstall.
+These values specify which table column will be used to associate users to entities for fine-grained row permissions.
+
 
 ```kotlin
 systemDefinition {
@@ -109,19 +135,22 @@ systemDefinition {
 This will add the specified field to the USER_ATTRIBUTES table as a required field and create a new table called, in the case of our example, USER_COUNTERPARTY_MAP,
 that will be suitably populated by the AUTH_MANAGER process on a realtime basis. 
 
-The USER_COUNTERPARTY_MAP table is referenced in ENTITY_VISIBILITY entity in ```auth-permission.templt.xml``` file. 
+The USER_COUNTERPARTY_MAP table is referenced in ENTITY_VISIBILITY entity in ```auth-permission.templt.xml``` file. (which is a genesis [mustache](https://en.wikipedia.org/wiki/Mustache_(template_system))
+template which is processed at genesisInstall time, using entries from system-definition).
 
 When new users are created in the Genesis Gui Admin screens, a required field COUNTERPARTY will be presented to the operating user. This limits users to belonging to a single counterparty.
 :::
 
-
+A user can define additional -permissions.xml files. For example, you could define something like order-management-permissions.xml with 
+an order management system auth implementation, and it will be read by AUTH_PERMS process on startup.
 
 There are two kinds of permission entities defined by Generic Permissions in ```auth-permission.templt.xml``` file.
 
-- **USER_VISIBILITY** - An AuthCache which determines which user is visible to which user, this is driven by which users associated for the entity. Using are example, if two users are both in the same counterparty then they should be viewable to each other.
+- **USER_VISIBILITY** - An AuthCache which determines which user is visible to which user, this is driven by which users associated for the entity. Using our example, if two users are both in the same counterparty then they should be viewable to each other.
 
-- **ENTITY_VISIBILITY** - An AuthCache which determine if a user has access to particular entity, in our example, if the user permissioned for a particular counterparty, then it will be abel to see the associated row data for that counterparty.
+- **ENTITY_VISIBILITY** - An AuthCache which determine if a user has access to particular entity, in our example, if the user permissioned for a particular counterparty, then it will be able to see the associated row data for that counterparty.
+
 
 :::note
-synonym: Dynamic Permission, Permission Entity, Entity, AuthMap, AuthCache
+Synonym: Dynamic Permission, Permission Entity, Entity, AuthMap, AuthCache
 :::
