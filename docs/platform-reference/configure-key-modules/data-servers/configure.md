@@ -17,6 +17,48 @@ Note that any table or view that you are monitoring might contain a join. By def
 
 Typically in Genesis, each module has its own data server process, which points at this configuration.
 
+## Basic definition
+
+Here is the definition of a simple dataserver. You need to specify either a table or a view. In this example, we are using the table INSTRUMENT_DETAILS.
+
+```kotlin
+dataServer {
+    query(INSTRUMENT_DETAILS)
+}
+```
+
+### Multiple queries
+
+You can include multiple query definitions servers in a single file.
+
+```kotlin
+dataServer {
+    query(INSTRUMENT_DETAILS)
+
+    query(COUNTERPARTY)
+}
+```
+
+### Specify fields
+By default, all table or view fields in a query definition will be exposed. However, you can also specify which fields are exposed by the dataserver by defining a the field list.
+
+```kotlin
+dataServer {
+    query(INSTRUMENT_DETAILS) {
+        fields {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+
 ## Configuration settings
 
 Example configuration settings below:
@@ -141,6 +183,98 @@ There are two scenarios in which an index will be used:
 
 
 ## Advanced features
+
+### Client enriched data
+
+In some scenarios the platform user might want to associate the results of dataserver queries with the user initiating those queries. This is possible by using the ```enrich``` feature which enables an additional table or view join and (including backward joins). By using this feature you can provide user specific values for each row, or even perform cell level permissioning (i.e. hide cell values) depending on entitlements.
+
+The `join` operation receives two parameters: `userName` and `row`. `userName` is the current user name .subscribed to the query and `row` is the already pre-built query `row`. With those two values you can build the necessary table or view index class to perform the database lookup.
+
+`hideFields` allows you to define a list of fields that should be hidden if certain conditions apply. For this purpose, three parameters are provided: `userName`, `row` and `userData`. The first two parameters are the same as the ones available in `join`, but `userData` will be table or view lookup result. `userData` can be null if the lookup fails to find a record.
+
+The `fields` section defines what fields should be visible as part of the query. This is useful if we want to use a subset of fields from the enriched table or view, or if we want to declare our own derived fields.
+
+The examples below should help to understand the functionality.
+
+Example: 
+
+```kotlin
+// Example using "hideFields" and creating derived fields based on user counterparty association
+query("ALL_BUYER_SELLER_TRADES", BUYER_SELLER_TRADE_VIEW){
+    permissioning {
+        permissionCodes = listOf("ViewTrades")
+        auth("ENTITY_VISIBILITY"){
+            BUYER_SELLER_TRADE_VIEW.BUYER_COUNTERPARTY_ID
+        } or
+        auth("ENTITY_VISIBILITY"){
+            BUYER_SELLER_TRADE_VIEW.SELLER_COUNTERPARTY_ID
+        }
+    }
+    enrich(USER_COUNTERPARTY_MAP) {
+        join { userName, row ->
+            UserCounterpartyMap.ByUserName(userName)
+        }
+        // Hide buyer counterparty id to users associated to counterparty seller if "isHiddenToSeller" is true.
+        hideFields { userName, row, userData ->
+            if(userData?.counterpartyId == queryRow.sellerConterPartyId && queryRow.isHiddenToSeller == true){
+                listOf(BUYER_SELLER_TRADE_VIEW.BUYER_COUNTERPARTY_ID)
+            } else{
+                emptyList()
+            }
+        }
+        fields {
+            // If a user belows to the buyer counterparty, "COUNTERPARTY" value will be the seller name
+            // in the reverse scenario it will be the buyer name
+            derivedField("COUNTERPARTY", STRING) { row, userData ->
+                when {
+                    userData?.counterpartyId == row.buyerId -> row.sellerName
+                    userData?.counterpartyId == row.sellerId -> row.buyerName
+                    else -> ""
+                }
+            }
+            // If a user belows to the buyer counterparty, "DIRECTION" will be "BUY"
+            // in the reverse scenario it will be "SELL"
+            derivedField("DIRECTION", STRING) { row, userData ->
+                when {
+                    userData?.counterpartyId == row.buyerId -> "BUY"
+                    userData?.counterpartyId == row.sellerId -> "SELL"
+                    else -> ""
+                }
+            }
+        }
+    }
+}
+
+// Example: selecting fields from enriched view
+query("ALL_COUNTERPARTIES" , COUNTERPARTY_VIEW) {
+    // Lookup user counterparty favourite view and provide user enrich field to display if a counterparty has been marked as favourite by the user.
+    enrich(USER_COUNTERPARTY_FAVOURITE) {
+        join { userName, row ->
+            UserCounterpartyFavourite.ByUserNameCounterparty(username, row.counterpartyId)
+        }
+        // We only care about selecting the IS_FAVOURITE field from the USER_COUNTERPARTY_FAVOURITE view
+        fields {
+            USER_COUNTERPARTY_FAVOURITE.IS_FAVOURITE
+        }
+    }
+}
+
+// Example: using "enrichedAuth" to combine fields from enrichment with authorisation mechanism
+query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
+    permissioning {
+        enrichedAuth("COUNTERPARTY_FAVOURITE_VISIBILITY", USER_COUNTERPARTY_FAVOURITE) {
+            COUNTERPARTY_VIEW.COUNTERPARTY_ID
+            USER_COUNTERPARTY_FAVOURITE.IS_FAVOURITE
+        }
+    }
+    enrich(USER_COUNTERPARTY_FAVOURITE) {
+        join { userName, row ->
+            UserCounterpartyFavourite.ByUserNameCounterparty(username, row.counterpartyId)
+        }
+    }
+}
+
+```
 
 ### Ranged data server queries
 
