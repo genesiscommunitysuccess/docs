@@ -72,7 +72,7 @@ data class PositionCancel(
 So if the RULE table is set to `POSITION`, and the RULE_EXPRESSION is set to `(POSITION_ID = POSITION_ID)`, then this will take the POSITION_ID from the POSITION table and set it on the PositionClass object that gets instantiated  
 and ultimately sent to the event handler.
 
-For example, if you have an event handler that inserts a [Notify](/platform-reference/notify/configure) email message, you could set up the event handler in this way in the _application_**-script-config\src\main\resources\scripts\application-eventhandler.kts** file:
+For example, if you have an event handler that inserts a [Notify](/platform-reference/integrations/notify/configure/) email message, you could set up the event handler in this way in the _application_**-script-config\src\main\resources\scripts\application-eventhandler.kts** file:
 
 
 ```kotlin
