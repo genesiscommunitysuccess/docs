@@ -1,7 +1,7 @@
 ---
 title: Request servers reference
 sidebar_label: Request servers reference
-sidebar_position: 2
+sidebar_position: 20
 id: reference
 
 ---
@@ -169,7 +169,7 @@ requestReplies {
 }
 ```
 
-### Limit number of rows returned
+### Limit the number of rows returned
 
 You can limit the number of rows returned using the property `rowReturnLimit`. In this example, we limit it to 2.
 
@@ -199,7 +199,7 @@ requestReplies {
 
 ### Timeout
 
-You can specify a timeout (in seconds) for a request server using property `timeout`. In this example, we set a timeout of 10 seconds.
+You can specify a timeout (in seconds) for a request server using the property `timeout`. In this example, we set a timeout of 10 seconds.
 
 ```kotlin
 requestReplies {
@@ -227,7 +227,7 @@ requestReplies {
 
 ## Custom request servers
 
-To enable more flexibility in defining request replies, Genesis supports custom request servers (request replies). This enables you to specify any class for the input and output for their request replies, similar to event handlers. For the request, optional fields should have a default value in the primary constructor.
+To enable more flexibility in defining request replies, Genesis supports custom request servers (request replies). This enables you to specify any class for the input and output for the request reply, similar to event handlers. For the request, optional fields should have a default value in the primary constructor.
 
 Syntax:
 
@@ -279,7 +279,7 @@ requestReply<[input class], [output class]> ("{optional name}") {
 
 ### Examples
 
-In this example we define two data classes; Hello and World and we use it to create a hello world request:
+In this example, we define two data classes; Hello and World. We use these to create a Hello World request:
 
 ```kotlin
 data class Hello(val name: String)
@@ -315,7 +315,9 @@ requestReply<Instrument.ById, Instrument> {
 }
 ```
 
-Next is a more complex example; using the ALT_INSTRUMENT_ID table. We are using the index as input, but we return either a getBulk, a getRange or a get, depending on the input. Also, we check if the user is authorised to view the instrument:
+Next is a more complex example. 
+The first block checks that the user is authorised to view the instrument.
+The second block uses the ALT_INSTRUMENT_ID table. The index is used as the input, but we return either a `getBulk`, a `getRange` or a `get`, depending on the input. 
 
 ```kotlin
 requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId> {
