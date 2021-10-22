@@ -142,6 +142,9 @@ The script looks in the **processes.xml** file (see startServer below) to find o
 ```bash
 java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
 ```
+:::Note
+`startServer` has an additional optional parameter that is used to restart the consolidator. This is the `--coldStart` parameter, which ensures that any data changes that took place while the process was not running are calculated before running real-time calculations.
+:::
 
 ## killProcess script
 

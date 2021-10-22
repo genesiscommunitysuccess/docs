@@ -2,7 +2,7 @@
 title: Consolidator reference
 sidebar_label: Consolidator reference
 id: advanced
-sidebar_position: 3
+sidebar_position: 20
 
 ---
 
@@ -10,12 +10,13 @@ A consolidator listens to a table in the database, performs a calculation using 
 
 Using consolidators, you can group, summarize and aggregate sets of records in real time. For example, a consolidator can be used to calculate the residual quantity of all the orders within an order basket.
 
-Starting the process (cold start)
-This module can be passed one argument when you start the process using the startProcess command:
+## Starting the process (cold start)
+
+Use the **startProcess** command to start the consolidator. The command has one optional argument:
 
 **--coldStart**
 
-If you use this, it consolidates all records in the system before starting the real-time event-driven consolidations. At the beginning of a cold start, all fields in consolidationFields of the consolidation table are zeroed (or deleted, if transient) before initiating the re-consolidation of all the records in the database.
+If you use this, it consolidates all records in the system before starting the real-time event-driven consolidations. At the beginning of a cold start, all fields in `consolidationFields` of the consolidation table are zeroed (or deleted, if transient) before initiating the re-consolidation of all the records in the database.
 
 ## Configuration
 You define consolidators in an xml file with the name **_application_-consolidator.xml**. 
@@ -30,10 +31,10 @@ Each consolidator definition is a code block with the following elements:
 
 * **group** is optional and causes consolidations to be thread-safe between each other. This is useful to make sure numbers are correct if you need records to be consolidated based on different root tables. For example, TRADE -> ORDER and ORDER -> ORDER consolidations should be in the the same group.
 
-* **tables** which are the table joins used to get the data, in a similar way to the dataserver. A table has a name, and an alias used to bind the results of queries to variables and, optionally, the list of field names that will be used for numeric calculations in the node (consolidationFields attribute). 
-* If you don't define a **consolidationFields** attribute, the consolidation manager will attempt to set all numeric values to **0** for each consolidation to avoid any potential null pointer exceptions (not efficient with large tables). Backward joins are also supported (only one per consolidation).
+* **tables** which are the table joins used to get the data, in a similar way to the dataserver. A table has a name, and an alias used to bind the results of queries to variables and, optionally, the list of field names that will be used for numeric calculations in the node (`consolidationFields` attribute). 
+* If you don't define a `consolidationFields` attribute, the consolidation manager will attempt to set all numeric values to **0** for each consolidation to avoid any potential null pointer exceptions (not efficient with large tables). Backward joins are also supported (only one per consolidation).
 
-* **groupBy** represents the unique "group" key to define where each event belongs. This is a Groovy expression that needs to return a string, and all the aliases from `<tables>` are available as bindings. For convenience, there is a helper method called "group", that accepts multiple input values and concatenates them using the "|" symbol.
+* **groupBy** represents the unique `group` key to define where each event belongs. This is a Groovy expression that needs to return a string, and all the aliases from `<tables>` are available as bindings. For convenience, there is a helper method called "group", that accepts multiple input values and concatenates them using the "|" symbol.
 
 IMPORTANT: Do not supply null values  to the group method. If you are using a nullable field,  use the elvis operator: 
 
@@ -43,7 +44,7 @@ group(trade.getString("DEAL_ID") ?: "NULL")
  
 * **consolidateTable** which represents the table in which the consolidation rows are fetched and modified. They have a name and an alias which will be used to reference this record in the `<calculation>` and `<consolidationTarget>` nodes. They can also be set as transient or non-transient (the default). consolidationFields attribute is also (optionally) present in this table.
 
-* **consolidateTarget** which contains the join expression used to fetch the "consolidated" row relative to this specific consolidation event using the key defined in the "key" attribute. If the consolidation record is not found, it will be created with all numeric fields zeroed representing an initial row. Additionally, the computed string in the 104"groupBy" Groovy expression is available as a binding called "groupId".
+* **consolidateTarget** which contains the join expression used to fetch the "consolidated" row relative to this specific consolidation event using the key defined in the "key" attribute. If the consolidation record is not found, it will be created with all numeric fields zeroed representing an initial row. Additionally, the computed string in the `groupBy` Groovy expression is available as a binding called `groupId`.
 
 * **calculation** is groovy code where the actual computation of the consolidation is performed.
 
