@@ -10,13 +10,6 @@ A consolidator listens to a table in the database, performs a calculation using 
 
 Using consolidators, you can group, summarize and aggregate sets of records in real time. For example, a consolidator can be used to calculate the residual quantity of all the orders within an order basket.
 
-## Starting the process (cold start)
-
-Use the **startProcess** command to start the consolidator. The command has one optional argument:
-
-**--coldStart**
-
-If you use this, it consolidates all records in the system before starting the real-time event-driven consolidations. At the beginning of a cold start, all fields in `consolidationFields` of the consolidation table are zeroed (or deleted, if transient) before initiating the re-consolidation of all the records in the database.
 
 ## Configuration
 You define consolidators in an xml file with the name **_application_-consolidator.xml**. 
