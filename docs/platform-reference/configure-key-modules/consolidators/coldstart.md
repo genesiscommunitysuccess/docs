@@ -1,7 +1,7 @@
 ---
 title: The importance of a cold start
 sidebar_label: The importance of a cold start
-id: advanced
+id: coldstart
 sidebar_position: 30
 
 ---

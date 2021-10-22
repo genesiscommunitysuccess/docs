@@ -23,4 +23,4 @@ A consolidator does not do anything else. It is a self-contained box in the serv
 
 So what you do with the results of the Consolidator is your problem. If you need to publish the data it writes to the database, you'll need a [data server](/platform-reference/configure-key-modules/data-servers/configure/) or [request server](/platform-reference/configure-key-modules/request-servers/configure/).
 
-There is one important operational consideration if you have a consolidator in your application. If you stop the process, you need to use the `--coldStart` parameter when you restart. In short, you make a [cold start](/platform-reference/configure-key-modules/consolidators/coldstart/).
+There is one important operational consideration if you have a consolidator in your application. If you stop the process, you need to use the `--coldStart` parameter when you restart. In short, you need to do a [cold start](/platform-reference/configure-key-modules/consolidators/coldstart/).
