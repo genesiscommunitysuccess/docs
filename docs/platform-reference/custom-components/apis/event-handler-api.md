@@ -2,30 +2,126 @@
 id: event-handler-api
 title: Event handler API
 sidebar_label: Event handler API
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 # Custom event handlers
 
-Genesis has 3 different flavours of custom event handlers:
-1. Async Event handler - Async event handler uses Kotlin coroutines API for a fully asynchronous behaviour. GPAL event handlers are asynchronous too but creating custom event handler using below APIs is more configurable.
-2. RxJava3 - RxJava3 event handlers use RxJava which is a popular library for composing asynchronous and event based programs
+Custom event handlers provide a way of implementing business logic in Java or Kotlin outside the Genesis GPAL Event Handler definition in a more traditional and flexible development approach. Genesis has 3 different flavours of custom event handlers:
+1. Async - The Async event handler uses the Kotlin coroutines API to simplify asynchronous development. This is the underlying implementation used in GPAL event handlers.
+2. RxJava3 - RxJava3 event handlers use the RxJava3 library which is a popular option for composing asynchronous event based programs.
 3. Sync - Creates synchronous event handlers
 
-## EventHandler
+Each custom event handler needs to define an input message type `I` and an output message type `O` (like GPAL event handlers do). 
 
-EventHandler is supertype of AsyncEventHandler, Rx3EventHandler and SyncEventHandler
+## Input messages
+
+The input message type `I` is defined as a Kotlin data class and it will determine all the necessary information to parse the incoming message and also to expose as metadata. E.g:
+
+```kotlin
+enum class LogLevel {
+    TRACE, DEBUG, INFO, WARN, ERROR
+}
+
+data class SetLogLevel(
+    @Title("Process name")
+    val processName: String,
+    @Description("Represents the target logging level")
+    val logLevel: LogLevel? = null,
+    val datadump: Boolean = false,
+    val expiration: Int = 0
+)
+```
+
+In this example, the `SetLogLevel` data class has a single constructor which also defines the data class properties. We can see that `processName` does not have a default value associated with it, therefore it is implicity mandatory and necessary to construct this message. As such, it will exposed as a *mandatory* metadata field. On the other `logLevel`, `datadump` and `expiration` have default values and therefore will be exposed as optional metadata fields.
+
+In terms of metadata fields types, we are free to use our metadata field basic types (Boolean, Short, Int, Long, Double, String, BigDecimal or Joda DateTime), basic collection types (List, Set and Map), enumerated types (i.e. see defined `LogLevel` above) and other Kotlin data classes as long as they are composed using the same elements. All of these different types will be understood by the metadata system and exposed accordingly. Kotlin also has nullable and non-nullable types, and the metadata system will expose this information too.
+
+Additionally, certain annotations like `@Title` and `@Description`, can be used to provide extra information to the frontend. For example, `@Title` could be used to provide a “human readable name” of a metadata field to be displayed in a grid column, and `@Description` could be used to provide tooltip information when hovering over that column header. Please see all supported metadata annotations [here](metadata-annotations.md).
+
+Read only values can be exposed inside a Kotlin companion object and can be as complex as any other metadata field definition. See example enhanced `SetLogLevel` class below which provides information about the default LogLevel:
+
+```kotlin
+data class SetLogLevel(
+    @Title("Process name")
+    val processName: String,
+    @Description("Represents the target logging level")
+    val logLevel: LogLevel? = null,
+    val datadump: Boolean = false,
+    val expiration: Int = 0
+) {
+    companion object ReadOnly {
+        val defaultLogLevel: LogLevel = LogLevel.INFO
+    }
+}
+```
+
+## Output messages
+
+The default output message type to use in event handlers is `EventReply`. `EventReply` is a Kotlin sealed class which is most commonly represent by these two subtypes: `EventAck` and `EventNack`. See their Kotlin definitions below:
+
+```kotlin
+data class EventAck(val generated: List<Map<String, Any>> = emptyList()) : EventReply()
+data class EventNack(
+    val warning: List<GenesisError> = emptyList(),
+    val error: List<GenesisError> = emptyList()
+) : EventReply()
+```
+
+Alteratively, you can create your own reply by using a normal Kotlin data class or a Kotlin sealed class. See example below for `EventSetLogLevelReply`:
+```kotlin
+sealed class EventSetLogLevelReply : Outbound() {
+    class EventSetLogLevelAck : EventSetLogLevelReply()
+    data class EventSetLogLevelNack(val error: String) : EventSetLogLevelReply()
+}
+```
+
+Custom reply types are powerful, as they allow a fixed number of customised replies for an eventhandler with their type information exposed in the metadata system. However, they need to be handled carefully, as the internal event handler error handling mechanism is only ready to handle `EventReply` messages, therefore non-captured exceptions and errors will be handled as such and will break the type-safety guarantees of the reply. IMPORTANT! The success message should always end in `Ack` in order for the internal event handler logic to handle validation correctly.
+
+## EventHandler interface
+
+The EventHandler interface is the common supertype of AsyncEventHandler, Rx3EventHandler and SyncEventHandler, but it is not meant to be used on its own. It provides basic options for each event handler definition which can be overriden. See Kotlin methods explanation below:
 
 | Name | Signature | Default value | Description |
 |---|---|---|---|
-| excludeMetadataFields | `fun excludeMetadataFields(): Set<String>` | setOf("RECORD_ID", "TIMESTAMP") | Contains list of metadata fields which needs to be set as optional |
-| includeMetadataFields | `fun includeMetadataFields(): Set<String>` | emptySet() | Contains list of metadata fields which needs to be set as mandatory |
-| messageType | `fun messageType(): String?` | null | Contains name of the event handler |
-| overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains map of meta-field name to meta-field object. Overrides meta-field properties with new properties provided  |
-| requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is intended where particular system events require a second system user to approve them in order to take effect |
+| excludeMetadataFields | `fun excludeMetadataFields(): Set<String>` | setOf("RECORD_ID", "TIMESTAMP") | Contains a list of metadata fields to be excluded from the event metadata extracted from the input `I`|
+| includeMetadataFields | `fun includeMetadataFields(): Set<String>` | emptySet() | Contains list of metadata fields which needs to be included in the event metadata which must be available in input `I`. A non empty list will exclude the other fields. |
+| messageType | `fun messageType(): String?` | null | Contains name of the event handler. If undefined, the event handler name will become `EVENT_INPUT_CLASS_NAME`. E.g. for an event handler using an input type called `TradeInsert`, the message type will become `EVENT_TRADE_INSERT` |
+| overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. Allows developers to override the metadata field properties extracted from input `I` |
+| requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is intended where particular system events require a second system user to approve them in order to take effect ([see pending approval documentation](event-handler-pending-approval.md))|
 
+## Async
 ### AsyncEventHandler
+This most basic definition of an async event handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface which is defined as:
 `interface AsyncEventHandler<I : Any, O : Outbound> : AsyncEventWorkflowProcessor<I, O>, EventHandler`
+
+The only mandatory method to implement in this interface case will be:
+
+| Name | Signature |
+|---|---|
+| process | `fun suspend process(message: Event<I>) : O` |
+
+This method passes the input message type `I` as a parameter and expects the output message type `O` to be returned. The `message` object contains information about the event message, including the flags for `validate`, `requiresApproval` and `ignoreWarnings`.
+
+Example definition:
+
+```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.eventhandler.typed.async.AsyncEventHandler
+import global.genesis.message.core.event.Event
+import global.genesis.message.core.event.EventReply
+
+@Module
+class EventCompanyHandlerAsync : AsyncEventHandler<Company, EventReply> {
+    override suspend fun process(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return EventReply.EventAck()
+    }
+}
+```
+
+The methods below are provided as part of `AsyncEventHandler` as an easy way of creating `EventReply` responses.
 
 | Name | Signature |
 |---|---|
@@ -34,72 +130,130 @@ EventHandler is supertype of AsyncEventHandler, Rx3EventHandler and SyncEventHan
 | nack | `fun <I : Any> AsyncEventHandler<I, EventReply>.nack(throwable: Throwable): EventReply` |
 | nack | `fun <I : Any> AsyncEventHandler<I, EventReply>.nack(error: String): EventReply` |
 
-#### AsyncValidatingEventHandler
-`interface AsyncValidatingEventHandler<I : Any, O : Outbound> : AsyncEventHandler<I, O>`
-
-Using this interface you can add validation and commit stage
-
-| Name | Signature |
-|---|---|
-| onCommit | `suspend fun onCommit(message: Event<I>): O` |
-| onValidate | `suspend fun onValidate(message: Event<I>): O` |
-| process | `override suspend fun process(message: Event<I>): O` |
-
-#### AsyncContextValidatingEventHandler
-`interface AsyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : AsyncEventHandler<I, O>`
-
-Using this interface you can pass some context information from the validation stage (i.e. onValidate) to the commit stage (i.e. onCommit)
-
-| Name | Signature |
-|---|---|
-| onCommit | `suspend fun onCommit(message: Event<I>, context: C?): O` |
-| onValidate | `suspend fun onValidate(message: Event<I>): ValidationResult<O, C>` |
-| process | `override suspend fun process(message: Event<I>): O` |
-| validationResult | `fun validationResult(result: O): ValidationResult<O, C>` |
-| validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
-
-`process` method:
-AsyncValidatingEventHandler and AsyncContextValidatingEventHandler interfaces have overridden `process` method, its implementation follows below
+So using these helper methods you could simplify the previous implementation like this:
 
 ```kotlin
-override suspend fun process(message: Event<I>): O {
-    return if (message.validate) {
-        onValidate(message)
-    } else {
-        val result = onValidate(message)
-        if (result.messageType.endsWith("_ACK")) {
-            onCommit(message)
-        } else {
-            result
-        }
+import global.genesis.commons.annotation.Module
+import global.genesis.eventhandler.typed.async.AsyncEventHandler
+import global.genesis.message.core.event.Event
+import global.genesis.message.core.event.EventReply
+
+@Module
+class EventCompanyHandlerAsync : AsyncEventHandler<Company, EventReply> {
+    override suspend fun process(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return ack()
     }
 }
 ```
 
-#### Example of AsyncEventHandler
+### AsyncValidatingEventHandler
+
+In the previous example there was no distinction between validation and commit blocks, which is something we have in GPAL event handlers. In order have a better separation of concernes using custom event handlers you can implement the `AsyncValidatingEventHandler` interface which is defined as:
+
+`interface AsyncValidatingEventHandler<I : Any, O : Outbound> : AsyncEventHandler<I, O>`
+
+Using this interface, you don't need to override the `process` method anymore and you can split your logic in validation and commit stages. See methods to implement below:
+
+| Name | Signature |
+|---|---|
+| onValidate | `suspend fun onValidate(message: Event<I>): O` |
+| onCommit | `suspend fun onCommit(message: Event<I>): O` |
+
+
+Example:
 
 ```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.eventhandler.typed.async.AsyncValidatingEventHandler
+import global.genesis.message.core.event.Event
+import global.genesis.message.core.event.EventReply
+
 @Module
-class CustomCompanyEventHandlerAsync: AsyncValidatingEventHandler<Company, EventReply> {
-    override fun messageType(): String = "CUSTOM_COMPANY_EVENT_HANDLER_ASYNC"
+class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply> {
+    override suspend fun onValidate(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return ack()
+    }
 
     override suspend fun onCommit(message: Event<Company>): EventReply {
         val company = message.details
         // custom code block..
         return ack()
     }
+}
+```
 
-    override suspend fun onValidate(message: Event<Company>): EventReply {
+If the `validate` flag is received as `true`, only the `onValidate` code block will be executed. If the `validate` flag is received as `false` both `onValidate` and `onCommit` blocks will be executed.
+
+### AsyncContextValidatingEventHandler
+
+In some cases you might want to carry information from the `onValidate` code block to the `onCommit` code block for efficiency purposes (i.e. several database lookups happen in `onValidate` and you want to reuse that information). Using this `AsyncContextValidatingEventHandler` interface you can provide this context information from the validation stage to the commit stage. See the interface below:
+`interface AsyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : AsyncEventHandler<I, O>`
+
+As with the previous example, when using this interface, you don't need to override the `process` method anymore. See the available methods to implement below:
+
+| Name | Signature |
+|---|---|
+| onValidate | `suspend fun onValidate(message: Event<I>): ValidationResult<O, C>` |
+| onCommit | `suspend fun onCommit(message: Event<I>, context: C?): O` |
+
+Also the `validationResult` methods are provided to help with the context creation:
+
+| Name | Signature |
+|---|---|
+| validationResult | `fun validationResult(result: O): ValidationResult<O, C>` |
+| validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
+
+The type `C` represent the contextual information we want to provide, and it can be any Java/Kotlin type. An example in of an implementation could be:
+
+```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.eventhandler.typed.async.AsyncContextValidatingEventHandler
+import global.genesis.message.core.event.Event
+import global.genesis.message.core.event.EventReply
+import global.genesis.message.core.event.ValidationResult
+
+@Module
+class TestCompanyHandlerAsync : AsyncContextValidatingEventHandler<Company, EventReply, String> {
+    override suspend fun onValidate(message: Event<Company>): ValidationResult<EventReply, String> {
+        val company = message.details
+        // custom code block..
+        val companyName = company.companyName
+        return validationResult(ack(), companyName)
+    }
+
+    override suspend fun onCommit(message: Event<Company>, context: String?): EventReply {
+        if(context != null){
+            // Do something with the context
+        }
+        val company = message.details
         // custom code block..
         return ack()
     }
 }
 ```
 
+## Rx3
+
+All the mechanism explained in [Async](#async) can be recycled and reapplied in Rx3 event handlers. 
+
 ### Rx3EventHandler
+
+In a similar fashion to `AsyncEventHandler` we also provide an Rx3 implementation flavour. It works in a very similar way [`AsyncEventHandler`](#asynceventhandler) does, but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
+
+See interface definition below:
 `interface Rx3EventHandler<I : Any, O : Outbound> : Rx3EventWorkflowProcessor<I, O>, EventHandler`
 
-Rx3EventHandler implementation has similar methods as AsyncEventHandler
+Mandatory method to implement:
+
+| Name | Signature |
+|---|---|
+| process | `fun process(message: Event<I>) : Single<O>` |
+
+Helper methods:
 
 | Name | Signature |
 |---|---|
@@ -108,69 +262,124 @@ Rx3EventHandler implementation has similar methods as AsyncEventHandler
 | nack | `fun <I : Any> Rx3EventHandler<I, EventReply>.nack(throwable: Throwable): Single<EventReply>` |
 | nack | `fun <I : Any> Rx3EventHandler<I, EventReply>.nack(error: String): Single<EventReply>` |
 
-#### Rx3ValidatingEventHandler
-`interface Rx3ValidatingEventHandler<I : Any, O : Outbound> : Rx3EventHandler<I, O>`
-
-| Name | Signature |
-|---|---|
-| onCommit | `override fun process(message: Event<I>): Single<O>` |
-| onValidate | `fun onValidate(message: Event<I>): Single<O>` |
-| process | `fun onCommit(message: Event<I>): Single<O>` |
-
-#### Rx3ContextValidatingEventHandler
-`interface Rx3ContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : Rx3EventHandler<I, O>`
-
-| Name | Signature |
-|---|---|
-| onCommit | `fun onCommit(message: Event<I>, context: C?): Single<O>` |
-| onValidate | `fun onValidate(message: Event<I>): Single<ValidationResult<O, C>>` |
-| process | `override fun process(message: Event<I>): Single<O>` |
-| validationResult | `fun validationResult(result: O): ValidationResult<O, C>` |
-| validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
-
-`process` method
+Example:
 
 ```kotlin
-override fun process(message: Event<I>): Single<O> {
-        return if (message.validate) {
-            onValidate(message)
-        } else {
-            onValidate(message)
-                .flatMap { result ->
-                    if (result.messageType.endsWith("_ACK")) {
-                        onCommit(message)
-                    } else {
-                        Single.just(result)
-                    }
-                }
-        }
+import global.genesis.commons.annotation.Module
+import global.genesis.eventhandler.typed.rx3.Rx3EventHandler
+import global.genesis.message.core.event.Event
+import global.genesis.message.core.event.EventReply
+import io.reactivex.rxjava3.core.Single
+
+@Module
+class TestCompanyHandlerRx3 : Rx3EventHandler<Company, EventReply> {
+    override fun process(message: Event<Company>): Single<EventReply> {
+        return ack()
     }
+}
 ```
 
-#### Example of Rx3EventHandler
+### Rx3ValidatingEventHandler
+The same applies to Rx3ValidatingEventHandler. It is similar to [AsyncValidatingEventHandler](#asyncvalidatingeventhandler) in every way, but the return type is still `Single<O>`.
+
+`interface Rx3ValidatingEventHandler<I : Any, O : Outbound> : Rx3EventHandler<I, O>`
+
+Methods to implement:
+
+| Name | Signature |
+|---|---|
+| onValidate | `fun onValidate(message: Event<I>): Single<O>` |
+| onCommit | `fun onCommit(message: Event<I>): Single<O>` |
+
+Example:
 
 ```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.eventhandler.typed.rx3.Rx3ValidatingEventHandler
+import global.genesis.message.core.event.Event
+import global.genesis.message.core.event.EventReply
+import io.reactivex.rxjava3.core.Single
+
 @Module
-class Rx3EventHandler: Rx3ValidatingEventHandler<Company, EventReply> {
-    override fun messageType(): String = "CUSTOM_COMPANY_EVENT_HANDLER_RX3"
+class TestCompanyHandlerRx3 : Rx3ValidatingEventHandler<Company, EventReply> {
+    override fun onValidate(message: Event<Company>): Single<EventReply> {
+        val company = message.details
+        // custom code block..
+        return ack()
+    }
 
     override fun onCommit(message: Event<Company>): Single<EventReply> {
         val company = message.details
         // custom code block..
         return ack()
     }
+}
+```
 
-    override fun onValidate(message: Event<Company>): Single<EventReply> {
+### Rx3ContextValidatingEventHandler
+And the same goes for `Rx3ContextValidatingEventHandler` in relation to [AsyncContextValidatingEventHandler](#asynccontextvalidatingeventhandler).
+
+`interface Rx3ContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : Rx3EventHandler<I, O>`
+
+Methods to implement:
+
+| Name | Signature |
+|---|---|
+| onValidate | `fun onValidate(message: Event<I>): Single<ValidationResult<O, C>>` |
+| onCommit | `fun onCommit(message: Event<I>, context: C?): Single<O>` |
+
+Helper methods:
+
+| Name | Signature |
+|---|---|
+| validationResult | `fun validationResult(result: O): ValidationResult<O, C>` |
+| validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
+
+
+Example:
+
+```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.eventhandler.typed.rx3.Rx3ContextValidatingEventHandler
+import global.genesis.message.core.event.Event
+import global.genesis.message.core.event.EventReply
+import global.genesis.message.core.event.ValidationResult
+import io.reactivex.rxjava3.core.Single
+
+@Module
+class TestCompanyHandlerRx3 : Rx3ContextValidatingEventHandler<Company, EventReply, String> {
+    override fun onValidate(message: Event<Company>): Single<ValidationResult<EventReply, String>> {
+        val company = message.details
+        // custom code block..
+        val companyName = company.companyName
+        return Single.just(validationResult(EventReply.EventAck(), companyName))
+    }
+
+    override fun onCommit(message: Event<Company>, context: String?): Single<EventReply> {
+        if (context != null) {
+            // Do something with the context
+        }
+        val company = message.details
         // custom code block..
         return ack()
     }
 }
 ```
 
+## Sync
+Sync works similarly to [Async](#async) and [Rx3](#rx3), but in this case there is no `Single<O>` being returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the event handler logic is just the `O` type
+
 ### SyncEventHandler
+
 `interface SyncEventHandler<I : Any, O : Outbound> : SyncEventWorkflowProcessor<I, O>, EventHandler`
 
-SyncEventHandler implementation has similar methods as AsyncEventHandler
+Method to implement:
+
+| Name | Signature |
+|---|---|
+| process | `fun process(message: Event<I>) : O` |
+
+Helper methods:
 
 | Name | Signature |
 |---|---|
@@ -179,58 +388,93 @@ SyncEventHandler implementation has similar methods as AsyncEventHandler
 | nack | `fun <I : Any> SyncEventHandler<I, EventReply>.nack(throwable: Throwable): EventReply` |
 | nack | `fun <I : Any> SyncEventHandler<I, EventReply>.nack(error: String): EventReply` |
 
-#### SyncValidatingEventHandler
-
-`interface SyncValidatingEventHandler<I : Any, O : Outbound> : SyncEventHandler<I, O>`
-
-| Name | Signature |
-|---|---|
-| onCommit | `fun onCommit(message: Event<I>): O` |
-| onValidate | `fun onValidate(message: Event<I>): O` |
-| process | `override fun process(message: Event<I>): O` |
-
-#### SyncContextValidatingEventHandler
-`interface SyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : SyncEventHandler<I, O>`
-
-| Name | Signature |
-|---|---|
-| onCommit | `fun onCommit(message: Event<I>, context: C?): O` |
-| onValidate | `fun onValidate(message: Event<I>): ValidationResult<O, C>` |
-| process | `override fun process(message: Event<I>): O` |
-| validationResult | `fun validationResult(result: O): ValidationResult<O, C>` |
-| validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
-
-`process` method
+Example:
 
 ```kotlin
-override fun process(message: Event<I>): O {
-    return if (message.validate) {
-        onValidate(message)
-    } else {
-        val result = onValidate(message)
-        if (result.messageType.endsWith("_ACK")) {
-            onCommit(message)
-        } else {
-            result
-        }
+import global.genesis.commons.annotation.Module
+import global.genesis.eventhandler.typed.sync.SyncEventHandler
+import global.genesis.message.core.event.Event
+import global.genesis.message.core.event.EventReply
+
+@Module
+class TestCompanyHandlerSync : SyncEventHandler<Company, EventReply> {
+    override fun process(message: Event<Company>): EventReply {
+        return ack()
     }
 }
 ```
 
-#### Example of SyncEventHandler
+#### SyncValidatingEventHandler
+
+`interface SyncValidatingEventHandler<I : Any, O : Outbound> : SyncEventHandler<I, O>`
+
+Methods to implement:
+
+| Name | Signature |
+|---|---|
+| onValidate | `fun onValidate(message: Event<I>): O` |
+| onCommit | `fun onCommit(message: Event<I>): O` |
+
+Example:
 
 ```kotlin
-@Module
-class SyncCompanyEventHandler : SyncValidatingEventHandler<Company, EventReply>{
-    override fun messageType(): String = "CUSTOM_COMPANY_EVENT_HANDLER_SYNC"
+import global.genesis.commons.annotation.Module
+import global.genesis.eventhandler.typed.sync.SyncValidatingEventHandler
+import global.genesis.message.core.event.Event
+import global.genesis.message.core.event.EventReply
 
-    override fun onCommit(message: Event<Company>): EventReply {
+@Module
+class TestCompanyHandlerSync : SyncValidatingEventHandler<Company, EventReply> {
+    override fun onValidate(message: Event<Company>): EventReply {
         val company = message.details
-        // custom code block..
         return ack()
     }
 
-    override fun onValidate(message: Event<Company>): EventReply {
+    override fun onCommit(message: Event<Company>): EventReply {
+        val company = message.details
+        return ack()
+    }
+}
+```
+
+
+#### SyncContextValidatingEventHandler
+`interface SyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : SyncEventHandler<I, O>`
+
+Methods to implement:
+
+| Name | Signature |
+|---|---|
+| onValidate | `fun onValidate(message: Event<I>): ValidationResult<O, C>` |
+| onCommit | `fun onCommit(message: Event<I>, context: C?): O` |
+
+Helper methods:
+
+| validationResult | `fun validationResult(result: O): ValidationResult<O, C>` |
+| validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
+
+Example:
+```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.eventhandler.typed.sync.SyncContextValidatingEventHandler
+import global.genesis.message.core.event.Event
+import global.genesis.message.core.event.EventReply
+import global.genesis.message.core.event.ValidationResult
+
+@Module
+class TestCompanyHandlerSync : SyncContextValidatingEventHandler<Company, EventReply, String> {
+    override fun onValidate(message: Event<Company>): ValidationResult<EventReply, String> {
+        val company = message.details
+        // custom code block..
+        val companyName = company.companyName
+        return validationResult(ack(), companyName)
+    }
+
+    override fun onCommit(message: Event<Company>, context: String?): EventReply {
+        if (context != null) {
+            // Do something with the context
+        }
+        val company = message.details
         // custom code block..
         return ack()
     }
