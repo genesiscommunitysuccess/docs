@@ -36,34 +36,6 @@ Button supports several visual appearances (accent, lightweight, neutral, outlin
 </>
 ```
 
-Additionally, the following Rapid UX visual appearances are supported:
-
-### Rapid UX Primary
-
-```html live
-<>
-  <alpha-button appearance="primary-purple">Primary Purple Button</alpha-button>
-  <alpha-button appearance="primary-gradient">Primary Gradient Button</alpha-button>
-  <alpha-button appearance="primary-blue">Primary Blue Button</alpha-button>
-  <alpha-button appearance="outline-primary-gradient">Outline Primary Gradient Button</alpha-button>
-</>
-```
-
-### Rapid UX Secondary
-
-```html live
-<>
-  <alpha-button appearance="secondary-teal">Secondary Teal Button</alpha-button>
-  <alpha-button appearance="outline-secondary-teal">Outline Secondary Teal Button</alpha-button>
-</>
-```
-
-### Rapid UX Neutral
-
-```html live
-<alpha-button appearance="neutral-grey">Neutral Grey Button</alpha-button>
-```
-
 ## Disabled
 
 Disabled buttons prevent user interaction: they cannot be pressed or focused.
