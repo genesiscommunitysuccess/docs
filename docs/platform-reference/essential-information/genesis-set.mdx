@@ -8,11 +8,12 @@ sidebar_position: 6
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Genesis Set is a key/value store, and it is **generic** message type used to communicate with other Genesis microservices. Sets can store primitives as well as other sets.
+GenesisSet is a generic format for sending (and receiving) messages between Genesis proesses. The information itin the emssages must be stored as key-value pairs.
+A genesisSet can store integers, booleans, text, etc. Importatnly, it can also contain other genesis ests.
 
-Examples: 
+In this section, we give you some examples that illustrate usage and structure.
 
-1. GenesisSet to send message to Event handler service
+## Send message to Event handler service
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -47,7 +48,7 @@ GenesisSet.builder()
 </TabItem>
 </Tabs>
 
-2. GenesisSet to send message to request reply service
+## Send message to request reply service
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -80,7 +81,7 @@ GenesisSet.builder()
 </TabItem>
 </Tabs>
 
-3. GenesisSet using constructor
+## Using constructor
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
