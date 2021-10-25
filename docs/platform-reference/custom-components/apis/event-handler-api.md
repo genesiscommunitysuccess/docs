@@ -58,6 +58,24 @@ Using this interface you can pass some context information from the validation s
 | validationResult | `fun validationResult(result: O): ValidationResult<O, C>` |
 | validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
 
+`process` method:
+AsyncValidatingEventHandler and AsyncContextValidatingEventHandler interfaces have overridden `process` method, its implementation follows below
+
+```kotlin
+override suspend fun process(message: Event<I>): O {
+    return if (message.validate) {
+        onValidate(message)
+    } else {
+        val result = onValidate(message)
+        if (result.messageType.endsWith("_ACK")) {
+            onCommit(message)
+        } else {
+            result
+        }
+    }
+}
+```
+
 #### Example of AsyncEventHandler
 
 ```kotlin
@@ -109,6 +127,25 @@ Rx3EventHandler implementation has similar methods as AsyncEventHandler
 | process | `override fun process(message: Event<I>): Single<O>` |
 | validationResult | `fun validationResult(result: O): ValidationResult<O, C>` |
 | validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
+
+`process` method
+
+```kotlin
+override fun process(message: Event<I>): Single<O> {
+        return if (message.validate) {
+            onValidate(message)
+        } else {
+            onValidate(message)
+                .flatMap { result ->
+                    if (result.messageType.endsWith("_ACK")) {
+                        onCommit(message)
+                    } else {
+                        Single.just(result)
+                    }
+                }
+        }
+    }
+```
 
 #### Example of Rx3EventHandler
 
@@ -162,6 +199,23 @@ SyncEventHandler implementation has similar methods as AsyncEventHandler
 | process | `override fun process(message: Event<I>): O` |
 | validationResult | `fun validationResult(result: O): ValidationResult<O, C>` |
 | validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
+
+`process` method
+
+```kotlin
+override fun process(message: Event<I>): O {
+    return if (message.validate) {
+        onValidate(message)
+    } else {
+        val result = onValidate(message)
+        if (result.messageType.endsWith("_ACK")) {
+            onCommit(message)
+        } else {
+            result
+        }
+    }
+}
+```
 
 #### Example of SyncEventHandler
 
