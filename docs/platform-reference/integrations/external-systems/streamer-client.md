@@ -11,14 +11,16 @@ To create a streamer client:
 1. Add the configuration for the streamer client process to the {applicationName}-processes.xml file:
 
 ```xml
-<process name="TRADING_APP-STREAMER">
+<process name="TRADING_APP_STREAMER_CLIENT">
     <start>true</start>
     <options>-Xmx128m -DXSD_VALIDATE=false</options>
-    <module>genesis-pal-streamer</module>
-    <package>global.genesis.streamer</package>
+    <module>genesis-pal-streamerclient</module>
+    <package>global.genesis.pal.streamerclient</package>
     <script>trading_app-streamer-client.kts</script>
 </process>
 ```
+
+For more information on above process tags follow this [link](/platform-reference/essential-information/processes-xml)
 
 2. Create a kotlin script file named {applicationName}-streamer-client.kts and add the following details:
     * A streamer client name

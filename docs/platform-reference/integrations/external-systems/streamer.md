@@ -10,9 +10,8 @@ To create a streamer:
 
 1. Add streamer process configuration to the {applicationName}-processes.xml file. for example:
 
-
 ```xml
-<process name="TRADING_APP-STREAMER">
+<process name="TRADING_APP_STREAMER">
     <start>true</start>
     <options>-Xmx128m -DXSD_VALIDATE=false</options>
     <module>genesis-pal-streamer</module>
@@ -20,6 +19,8 @@ To create a streamer:
     <script>trading_app-streamer.kts</script>
 </process>
 ```
+
+For more information on above process tags follow this [link](/platform-reference/essential-information/processes-xml)
 
 2. Create a kotlin script file named {applicationName}-streamer.kts. Add the following information:
     * A stream name 
