@@ -17,3 +17,21 @@ Note that any table or view that you are monitoring might contain a join. By def
 
 Typically in Genesis, each module has its own data server process, which points at this configuration.
 
+### Configure in processes.xml
+
+Data server service configuration is added in processes.xml like below example, for more information of each tag in below config follow this [link](/platform-reference/essential-information/processes-xml)
+
+```xml
+<process name="TRADING_APP_DATASERVER">
+    <groupId>TRADING_APP</groupId>
+    <start>true</start>
+    <options>-Xmx256m</options>
+    <module>genesis-pal-dataserver</module>
+    <package>global.genesis.dataserver.pal</package>
+    <script>trading_app-dataserver.kts</script>
+    <description>Displays real-time details</description>
+    <language>pal</language>
+    <classpath>quickfixj-core-*.jar</classpath>
+</process>
+```
+

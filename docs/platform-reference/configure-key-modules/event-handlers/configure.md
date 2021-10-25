@@ -50,6 +50,24 @@ eventHandler {
 }
 ```
 
+### Configure in processes.xml
+
+Event handler service configuration is added in processes.xml like below example, for more information of each tag in below config follow this [link](/platform-reference/essential-information/processes-xml)
+
+```xml
+<process name="TRADING_APP_EVENT_HANDLER">
+    <groupId>TRADING_APP</groupId>
+    <start>true</start>
+    <options>-Xmx256m -DRedirectStreamsToLog=true</options>
+    <module>genesis-pal-eventhandler</module>
+    <package>global.genesis.eventhandler.pal</package>
+    <script>trading_app-eventhandler.kts</script>
+    <description>Handles events</description>
+    <classpath>trading_app-messages*,trading_app-eventhandler*</classpath>
+    <language>pal</language>
+</process>
+```
+
 ## A more complex event handler
 
 A more complex example will follow shortly.
