@@ -106,10 +106,10 @@ genesisSet.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
 
 ## Constructors
 
-| | |
+| Signature | Description |
 |---|---|
-| GenesisSet | fun GenesisSet(expectedSize: Int = 32) |
-| GenesisSet | fun GenesisSet(fields: MutableMap<String, Any?>) |
+GenesisSet(expectedSize: Int = 32) | Creates a GenesisSet object with a predetermined expected number of key-value pairs.
+GenesisSet(fields: MutableMap<String, Any?>) | Creates a GenesisSet object using an already existing `Map` object containing key-value pairs.
 
 ## Functions
 
@@ -152,13 +152,6 @@ genesisSet.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
 
 **Functions**
 
-`fun genesisSet(init: GenesisSet.() -> Unit): GenesisSet`
+`fun genesisSet(init: GenesisSet.() -> Unit): GenesisSet` : This function enables the Kotlin DSL builder used in these [examples](#send-message-to-event-handler-service).
 
-`fun builder(): GenesisSetBuilder`
-: This method will be used while creating GenesisSet from Java class. GenesisSetBuilder creates new instance of GenesisSet and use `build` method to get instance of GenesisSet as shown in above examples
-
-`fun toStringNanos(timeNs: Long): String`
-
-**Fields**
-
-`val EMPTY_SET = GenesisSet()`
+`fun builder(): GenesisSetBuilder` : This method is commonly used as an alternative to the Kotlin DSL builder when creating GenesisSet objects in Java. GenesisSetBuilder allows you to create new instances of GenesisSet in fluent way as shown in the above [examples](#send-message-to-event-handler-service).
