@@ -46,13 +46,14 @@ These relationships are held in the following tables:
 
 Related to these tables we have the RIGHT_SUMMARY table, which  contains the superset of rights any given user has based on the profiles assigned to them.
 
-![](user-profile-rights-setup.png)
+![](/img/user-profile-rights-setup.png)
 
 The RIGHT_SUMMARY table entries are automatically maintained by the system in real time. In this way, the rights are easily accessible at speed. The GENESIS_AUTH_MANAGER process manages this table's entries automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY table is updated immediately and all the users in that profile receive the new right automatically.
 
-#WARNING
+:::warning
 This table is only automatically maintained when profile user/right entries are maintained via GENESIS_AUTH_MANAGER business events. When updating the data in tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. DbMon or SendIt) then the RIGHT_SUMMARY table will not be automatically maintained.
 In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script should be run and will scan all entries in PROFILE_USER and PROFILE_RIGHT and populate RIGHT_SUMMARY accordingly.
+:::
 
 ### Good design practice
 
