@@ -27,7 +27,7 @@ This is row or column-level access to information. Different users all view the 
 
 Similarly, you can have different users seeing different columns in the same grid. This could be used for a support function, for example, where you don’t want the support team to see specific columns of sensitive data, such as who the client for a trade is. It can be specified by using GPAL.
 
-## Users, profiles and rights codes
+### Users, profiles and rights codes
 
 Genesis has the concept of users, profiles and right codes. Each have their own table to store the related entity data:
 
@@ -35,7 +35,7 @@ Genesis has the concept of users, profiles and right codes. Each have their own 
 * PROFILE
 * RIGHT
 
-Users can rights via profiles. So we have tables to determine which users ands rights belong to each given profile. Note that you cannot allocate rights codes directly to a specific user, however a given user can have multiple profiles.
+Users gain rights via profiles. So we have tables to determine which users ands rights belong to each given profile. Note that you cannot allocate rights codes directly to a specific user, however a given user can have multiple profiles.
 
 A profile can have zero or more rights and zero or more users.
 
@@ -44,7 +44,7 @@ These relationships are held in the following tables:
 * PROFILE_RIGHT
 * PROFILE_USER
 
-Related to these tables we have the RIGHT_SUMMARY table, which  contains the superset of rights any given user has based on the profiles assigned to them.
+Related to these tables we have the RIGHT_SUMMARY table, which contains the superset of rights any given user has based on the profiles assigned to them. This is the key table used when checking rights, and it exists to allow the efficient checking of a user's rights.
 
 ![](/img/user-profile-rights-setup.png)
 
@@ -54,10 +54,32 @@ The RIGHT_SUMMARY table entries are automatically maintained by the system in re
 This table is only automatically maintained when profile user/right entries are maintained via GENESIS_AUTH_MANAGER business events. When updating the data in tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. DbMon or SendIt) then the RIGHT_SUMMARY table will not be automatically maintained.
 In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script should be run and will scan all entries in PROFILE_USER and PROFILE_RIGHT and populate RIGHT_SUMMARY accordingly.
 :::
+#### Sample explanation
 
-### Good design practice
+See the following simple system setup. We have a set of entities (our user, rights and profiles), a set of profile mappings (to users and rights) and finally the resultant set of right entries we would see in RIGHT_SUMMARY
 
-Having profiles as an intemediary between users and rights allows admin users of the system to create complex permission models with no code change. Our advice is to have enough granularity in the rights to ensure code change isn't required. 
+![](/img/user-profile-rights-example-simple.png)
+
+So here we have:
+* 3 profiles each with particular rights assigned
+* 4 users
+..* 3 of which simply have one profile assigned each
+..* 1 of which Jenny.Super - Is assigned to have all rights
+
+Looking at the resulting right entries, we see the 3 users with a single profile simply have the same rights as their given profile.
+However Jenny has multiple profiles, and the resulting right entries she has is the superset of all of the rights which those profiles have assigned.
+
+Another way of achieving this same setup would be to have a fourth profile, say SUPER, as per below, and to have all rights assigned to it, and Jenny.Super assigned just to the one profile:
+
+![](/img/user-profile-rights-example-super.png)
+
+Note how we now have an extra profile, and edits to the PROFILE_USER and PROFILE_RIGHT entries, but still see the same resulting rights
+
+As you can tell you can build powerful combinations here, and since Users, Profiles and Profile_Users and Profile_Rights are all editable by system administrators, they can build their own setup that makes sense for their org setup.
+
+#### Good design practice
+
+Having profiles as an intemediary between users and rights allows admin users of the system to create complex permission models with no code change. Where as since rights codes generally need to be added to the code, although simple to do they require a code change. Our advice is to design applications with enough granularity in the rights to ensure code change isn't required.
 
 ### Entity level (row level)
 
