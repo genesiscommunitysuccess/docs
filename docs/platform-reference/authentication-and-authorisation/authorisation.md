@@ -63,8 +63,8 @@ See the following simple system setup. We have a set of entities (our user, righ
 So here we have:
 * 3 profiles each with particular rights assigned
 * 4 users
-..* 3 of which simply have one profile assigned each
-..* 1 of which Jenny.Super - Is assigned to have all rights
+    * 3 of which simply have one profile assigned each
+    * 1 of which Jenny.Super - Is assigned to have all rights
 
 Looking at the resulting right entries, we see the 3 users with a single profile simply have the same rights as their given profile.
 However Jenny has multiple profiles, and the resulting right entries she has is the superset of all of the rights which those profiles have assigned.
