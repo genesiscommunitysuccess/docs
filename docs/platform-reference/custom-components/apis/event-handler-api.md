@@ -12,71 +12,7 @@ Custom event handlers provide a way of implementing business logic in Java or Ko
 2. RxJava3 - RxJava3 event handlers use the RxJava3 library which is a popular option for composing asynchronous event based programs.
 3. Sync - Creates synchronous event handlers
 
-Each custom event handler needs to define an input message type `I` and an output message type `O` (like GPAL event handlers do). 
-
-## Input messages
-
-The input message type `I` is defined as a Kotlin data class and it will determine all the necessary information to parse the incoming message and also to expose as metadata. E.g:
-
-```kotlin
-enum class LogLevel {
-    TRACE, DEBUG, INFO, WARN, ERROR
-}
-
-data class SetLogLevel(
-    @Title("Process name")
-    val processName: String,
-    @Description("Represents the target logging level")
-    val logLevel: LogLevel? = null,
-    val datadump: Boolean = false,
-    val expiration: Int = 0
-)
-```
-
-In this example, the `SetLogLevel` data class has a single constructor which also defines the data class properties. We can see that `processName` does not have a default value associated with it, therefore it is implicity mandatory and necessary to construct this message. As such, it will exposed as a *mandatory* metadata field. On the other `logLevel`, `datadump` and `expiration` have default values and therefore will be exposed as optional metadata fields.
-
-In terms of metadata fields types, we are free to use our metadata field basic types (Boolean, Short, Int, Long, Double, String, BigDecimal or Joda DateTime), basic collection types (List, Set and Map), enumerated types (i.e. see defined `LogLevel` above) and other Kotlin data classes as long as they are composed using the same elements. All of these different types will be understood by the metadata system and exposed accordingly. Kotlin also has nullable and non-nullable types, and the metadata system will expose this information too.
-
-Additionally, certain annotations like `@Title` and `@Description`, can be used to provide extra information to the frontend. For example, `@Title` could be used to provide a “human readable name” of a metadata field to be displayed in a grid column, and `@Description` could be used to provide tooltip information when hovering over that column header. Please see all supported metadata annotations [here](metadata-annotations.md).
-
-Read only values can be exposed inside a Kotlin companion object and can be as complex as any other metadata field definition. See example enhanced `SetLogLevel` class below which provides information about the default LogLevel:
-
-```kotlin
-data class SetLogLevel(
-    @Title("Process name")
-    val processName: String,
-    @Description("Represents the target logging level")
-    val logLevel: LogLevel? = null,
-    val datadump: Boolean = false,
-    val expiration: Int = 0
-) {
-    companion object ReadOnly {
-        val defaultLogLevel: LogLevel = LogLevel.INFO
-    }
-}
-```
-
-## Output messages
-
-The default output message type to use in event handlers is `EventReply`. `EventReply` is a Kotlin sealed class which is most commonly represent by these two subtypes: `EventAck` and `EventNack`. See their Kotlin definitions below:
-
-```kotlin
-data class EventAck(val generated: List<Map<String, Any>> = emptyList()) : EventReply()
-data class EventNack(
-    val warning: List<GenesisError> = emptyList(),
-    val error: List<GenesisError> = emptyList()
-) : EventReply()
-```
-
-Alteratively, you can create your own reply by using a normal Kotlin data class or a Kotlin sealed class. See example below for `EventSetLogLevelReply`:
-```kotlin
-sealed class EventSetLogLevelReply : Outbound() {
-    class EventSetLogLevelAck : EventSetLogLevelReply()
-    data class EventSetLogLevelNack(val error: String) : EventSetLogLevelReply()
-}
-```
-
-Custom reply types are powerful, as they allow a fixed number of customised replies for an eventhandler with their type information exposed in the metadata system. However, they need to be handled carefully, as the internal event handler error handling mechanism is only ready to handle `EventReply` messages, therefore non-captured exceptions and errors will be handled as such and will break the type-safety guarantees of the reply. IMPORTANT! The success message should always end in `Ack` in order for the internal event handler logic to handle validation correctly.
+Each custom event handler needs to define an input message type `I` and an output message type `O` (like GPAL event handlers do). Please see the [type-safe messages](../../Inter-process%20messages/type-safe-messages.md) section for more information. 
 
 ## EventHandler interface
 
