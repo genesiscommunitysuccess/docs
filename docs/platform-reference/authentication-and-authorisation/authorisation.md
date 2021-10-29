@@ -27,33 +27,59 @@ This is row or column-level access to information. Different users all view the 
 
 Similarly, you can have different users seeing different columns in the same grid. This could be used for a support function, for example, where you don’t want the support team to see specific columns of sensitive data, such as who the client for a trade is. It can be specified by using GPAL.
 
-## User roles and profiles
+### Users, profiles and rights codes
 
-We have users, profiles and right codes.
+Genesis has the concept of users, profiles and right codes. Each have their own table to store the related entity data:
 
-A profile can have zero to many rights codes and zero to many users.
+* USER
+* PROFILE
+* RIGHT
 
-So, if you have, say three roles, Trader, Support, and Operations, you set up the rights codes for each of these three profiles and then allocate each user to the appropriate profile. A user can have more than one profile, so you could allocate a superuser to all three profiles; that superuser would have the rights of all three profiles.
+Users gain rights via profiles. So we have tables to determine which users ands rights belong to each given profile. Note that you cannot allocate rights codes directly to a specific user, however a given user can have multiple profiles.
 
-You cannot allocate rights codes directly to a specific user. But there is nothing to stop you from creating a profile that has only one user.
+A profile can have zero or more rights and zero or more users.
 
-This information is held on the following tables:
+These relationships are held in the following tables:
 
-* PROFILE_RIGHT. For each profile, this lists the entities that the profile has the right to view.
-* PROFILE_USER. For each profile, this lists the users who have been allocated (and therefore, who have the rights in the relevant PROFILE_RIGHT table).
-* RIGHT_SUMMARY. This is created automatically by the system in real time. It maps all users to their rights.
+* PROFILE_RIGHT
+* PROFILE_USER
 
-In this way, the rights are easily accessible at speed. The AUTH_MANAGER process manages this automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY table is updated immediately and all the users in that profile receive the new right automatically.
+Related to these tables we have the RIGHT_SUMMARY table, which contains the superset of rights any given user has based on the profiles assigned to them. This is the key table used when checking rights, and it exists to allow the efficient checking of a user's rights.
 
-If the profile has write access to an entity, then it automatically includes read rights.
+![](/img/user-profile-rights-setup.png)
 
-### Loading a list of users
+The RIGHT_SUMMARY table entries are automatically maintained by the system in real time. In this way, the rights are easily accessible at speed. The GENESIS_AUTH_MANAGER process manages this table's entries automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY table is updated immediately and all the users in that profile receive the new right automatically.
 
-If you need to load a list of users and profiles you can use **SendIt** to send the list to the database, but it does not update the RIGHT_SUMMARY table automatically. After loading the database, you need to run the script **consolidateRights** to update the RIGHT_SUMMARY table.
+:::warning
+This table is only automatically maintained when profile user/right entries are maintained via GENESIS_AUTH_MANAGER business events. When updating the data in tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. DbMon or SendIt) then the RIGHT_SUMMARY table will not be automatically maintained.
+In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script should be run and will scan all entries in PROFILE_USER and PROFILE_RIGHT and populate RIGHT_SUMMARY accordingly.
+:::
+#### Sample explanation
 
-### Good practice, bad practice
+See the following simple system setup. We have a set of entities (our user, rights and profiles), a set of profile mappings (to users and rights) and finally the resultant set of right entries we would see in RIGHT_SUMMARY
 
-With this route, you can allocate rights to profiles and users to rights – and  change them. There is no change to the code needed.  However, our advice is to be as granular as possible at the start, because it is more difficult to introduce that granularity at a later point.  If you create a new right, you have to change the code.
+![](/img/user-profile-rights-example-simple.png)
+
+So here we have:
+* 3 profiles each with particular rights assigned
+* 4 users
+    * 3 of which simply have one profile assigned each
+    * 1 of which Jenny.Super - Is assigned to have all rights
+
+Looking at the resulting right entries, we see the 3 users with a single profile simply have the same rights as their given profile.
+However Jenny has multiple profiles, and the resulting right entries she has is the superset of all of the rights which those profiles have assigned.
+
+Another way of achieving this same setup would be to have a fourth profile, say SUPER, as per below, and to have all rights assigned to it, and Jenny.Super assigned just to the one profile:
+
+![](/img/user-profile-rights-example-super.png)
+
+Note how we now have an extra profile, and edits to the PROFILE_USER and PROFILE_RIGHT entries, but still see the same resulting rights
+
+As you can tell you can build powerful combinations here, and since Users, Profiles and Profile_Users and Profile_Rights are all editable by system administrators, they can build their own setup that makes sense for their org setup.
+
+#### Good design practice
+
+Having profiles as an intemediary between users and rights allows admin users of the system to create complex permission models with no code change. Where as since rights codes generally need to be added to the code, although simple to do they require a code change. Our advice is to design applications with enough granularity in the rights to ensure code change isn't required.
 
 ### Entity level (row level)
 
@@ -65,7 +91,8 @@ In many cases, you want different people to have access to different functions a
 
 ## General approach
 
-On startup, the GENESIS_AUTH_PERMS process performs an initial scan of all entities. For each entity found, it performs authorisation against every user in the system. This builds a full map of permissioned users.
+On startup, the GENESIS_AUTH_PERMS process performs an initial scan of all entities. For each entity found, it performs authorisation against every user in the system. This builds a 
+full map of permissioned users.
 
 By default, any updates to the entity and the USER table will be automatically processed to permission new entities as they are entered into the database.
 
