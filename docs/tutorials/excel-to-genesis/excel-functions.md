@@ -2,7 +2,7 @@
 id: excel-functions
 sidebar_label: Excel Functions
 title: Excel Functions
-sidebar_position: 2
+sidebar_position: 110
 
 ---
 ## Functions converted by ExcelToGenesis
