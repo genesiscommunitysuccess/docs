@@ -15,6 +15,7 @@ Here is an example of a generated processes.xml file for an application that has
 * a request server
 * an event handler
 * a consolidator
+* a streamer and streamer-client
 
 
 ```xml
@@ -60,6 +61,20 @@ Here is an example of a generated processes.xml file for an application that has
       <config>trading_app-consolidator2.xml</config>
       <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
       <dependency>TRADING_APP_EVENT_HANDLER</dependency>
+  </process>
+  <process name="TRADING_APP_STREAMER_CLIENT">
+      <start>true</start>
+      <options>-Xmx128m -DXSD_VALIDATE=false</options>
+      <module>genesis-pal-streamerclient</module>
+      <package>global.genesis.pal.streamerclient</package>
+      <script>trading_app-streamer-client.kts</script>
+  </process>
+  <process name="TRADING_APP-STREAMER">
+      <start>true</start>
+      <options>-Xmx128m -DXSD_VALIDATE=false</options>
+      <module>genesis-pal-streamer</module>
+      <package>global.genesis.streamer</package>
+      <script>trading_app-streamer.kts</script>
   </process>
 </processes>
 ```
