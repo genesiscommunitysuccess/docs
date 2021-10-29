@@ -19,7 +19,7 @@ You could hide an entire grid from the UI, for example. So one group could view 
 
 **Entity level**
 
-This is row or column-level access to information. Different users all view the same grid, but each one sees different data. This is, best explained with these simple examples:
+This is row or column-level access to information. Different users all view the same grid, but each one sees different data. This is best explained with these simple examples:
 
 * You can have user A, user B and user C all having the RIGHT_CODE to view a specific grid, but each one sees different trades in that grid. This enables you to separate different trading desks, for example.
 * Each user might only have access to trades for specific customers.
@@ -35,7 +35,7 @@ Genesis has the concept of users, profiles and right codes. Each have their own 
 * PROFILE
 * RIGHT
 
-Users gain rights via profiles. So we have tables to determine which users ands rights belong to each given profile. Note that you cannot allocate rights codes directly to a specific user, however a given user can have multiple profiles.
+Users gain rights via profiles. So we have tables to determine which users ands rights belong to each given profile. Note that you cannot allocate rights codes directly to a specific user. However, a given user can have multiple profiles.
 
 A profile can have zero or more rights and zero or more users.
 
@@ -44,7 +44,7 @@ These relationships are held in the following tables:
 * PROFILE_RIGHT
 * PROFILE_USER
 
-Related to these tables we have the RIGHT_SUMMARY table, which contains the superset of rights any given user has based on the profiles assigned to them. This is the key table used when checking rights, and it exists to allow the efficient checking of a user's rights.
+Related to these tables, we have the RIGHT_SUMMARY table, which contains the superset of rights any given user has. These are based on the profiles assigned to them. This is the key table used when checking rights, and it exists to allow the efficient checking of a user's rights.
 
 ![](/img/user-profile-rights-setup.png)
 
@@ -56,7 +56,7 @@ In such situations (e.g. setting up a brand new environemnt and bulk loading dat
 :::
 #### Sample explanation
 
-See the following simple system setup. We have a set of entities (our user, rights and profiles), a set of profile mappings (to users and rights) and finally the resultant set of right entries we would see in RIGHT_SUMMARY
+See the following simple system set-up. We have a set of entities (our user, rights and profiles), a set of profile mappings (to users and rights) and finally the resultant set of right entries we would see in RIGHT_SUMMARY
 
 ![](/img/user-profile-rights-example-simple.png)
 
@@ -67,25 +67,26 @@ So here we have:
     * 1 of which Jenny.Super - Is assigned to have all rights
 
 Looking at the resulting right entries, we see the 3 users with a single profile simply have the same rights as their given profile.
-However Jenny has multiple profiles, and the resulting right entries she has is the superset of all of the rights which those profiles have assigned.
+However, Jenny has multiple profiles, and the resulting right entries she has is the superset of all of the rights which those profiles have assigned.
 
-Another way of achieving this same setup would be to have a fourth profile, say SUPER, as per below, and to have all rights assigned to it, and Jenny.Super assigned just to the one profile:
+Another way of achieving this same set-up would be to have a fourth profile, say SUPER, as per below, and to have all rights assigned to it, and Jenny.Super assigned just to the one profile:
 
 ![](/img/user-profile-rights-example-super.png)
 
 Note how we now have an extra profile, and edits to the PROFILE_USER and PROFILE_RIGHT entries, but still see the same resulting rights
 
-As you can tell you can build powerful combinations here, and since Users, Profiles and Profile_Users and Profile_Rights are all editable by system administrators, they can build their own setup that makes sense for their org setup.
+As you can tell, this enables you to build powerful combinations, and since Users, Profiles and Profile_Users and Profile_Rights are all editable by system administrators, they can build their own set-up that makes sense for their organisation's set-up.
 
 #### Good design practice
 
-Having profiles as an intemediary between users and rights allows admin users of the system to create complex permission models with no code change. Where as since rights codes generally need to be added to the code, although simple to do they require a code change. Our advice is to design applications with enough granularity in the rights to ensure code change isn't required.
+Having profiles as an intemediary between users and rights allows admin users of the system to create complex permission models with no code change. Rights codes generally need to be added to the code, although simple to do, they require a code change. Our advice is to design applications with enough granularity in the rights to ensure code change isn't required.
 
 ### Entity level (row level)
 
-The GENESIS_AUTH_PERMS process runs automatically on start-up and creates a memory-mapped file that acts as a big key-value pair – for example, User J has access to Counterparty 1, User J has access to Counterparty 2, User K has access to Counterparty 1, User K has access to Counterparty 4, etc. If there is no appropriate entry in the file, the user won’t have access.
+The GENESIS_AUTH_PERMS process runs automatically on start-up and creates a memory-mapped file that acts as a big key-value pair.
+For example, User J has access to Counterparty 1, User K has access to Counterparty 2, User L has access to Counterparty 1, User M has access to Counterparty 4, etc. If there is no appropriate entry in the file, the user won’t have access.
 
-You must keep the process running, as it maintains itself automatically whenever any permissions change. If a permission is changed this way, then the change is automatically reflected on screen. If I have a grid on screen with 4 trades from Counterparty 1 and my permission to view that counterparty are withdrawn, those 4 trades disappear from my screen immediately.
+You must keep the process running, as it maintains itself automatically whenever any permissions change. If a permission is changed this way, then the change is automatically reflected on screen. If I have a grid on screen with 4 trades from Counterparty 1 and my permission to view that counterparty is withdrawn, those 4 trades disappear from my screen immediately.
 
 In many cases, you want different people to have access to different functions and different information, based on their roles.  In Genesis, users are not permissioned individually for these purposes. Instead, permissioning is based on roles. You define what information and functions are available to a role, and then you allocate users to these roles. We refer to this as dynamic authorisation. There is nothing to stop you creating a role that has only one user, of course.
 
@@ -100,7 +101,7 @@ Entries are stored in a memory-mapped file located in **$GENESIS_HOME/runtime/au
 
 If you need to clear out the entries by hand, simply delete everything in that directory and restart GENESIS_AUTH_PERMS.
 
-More than one permission map per table may be created.
+More than one permission map per table can be created.
 
 ## Generic Permissions
 
@@ -252,7 +253,7 @@ The dynamic authorisation definition in GPAL dataserver/requestserver has 4 sett
 
 #### Grouping
 
-Auth definitions can now be grouped with “and” or “or” operators. This means you could have two simple permission maps, for example, one by counterparty and another one for forbidden symbols. This would require a user to have those two permissions at once in order to see the row. Alternatively, you could have two permission maps (one for buyer and one for seller). A user would be allowed to see a row if they have a seller or buyer profile, but users without one of the those profiles would be denied access.
+Auth definitions can now be grouped with “and” or “or” operators. This means you could have two simple permission maps, for example: one by counterparty and another one for forbidden symbols. This would require a user to have those two permissions at once in order to see the row. Alternatively, you could have two permission maps (one for buyer and one for seller). A user would be allowed to see a row if they have a seller or buyer profile, but users without one of the those profiles would be denied access.
 
 ##### AND grouping
 
@@ -284,7 +285,7 @@ permissioning {
 
 #### Where clauses
 
-You can define a where clause if you only want to show a row in specific cases. Authorisation definitions using a where clause first evaluate the where clause against the permission map. This functionality on its own is not that useful, as for a single auth permissions map the content of the where clause could be moved to the query where clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
+You can define a where clause if you only want to show a row in specific cases. Authorisation definitions using a where clause first evaluate the where clause against the permission map. This functionality on its own is not that useful, as for a single auth permissions map, the content of the where clause could be moved to the query where clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
 
 This example shows different where clauses based on user role.
 
@@ -468,7 +469,7 @@ As you can see, we first get the **entityType** (note the inline null check to h
 
 We always emit an **AuthEntry** object within our returned Flowable, which specifies whether the user is permissioned or not.
 
-Also note the fact we're using Flowable. We wrap the users list to be an Flowable, then we **flatMap** the **getUserType** call and return a Flowable in the form of an **AuthEntry**.
+Also note the fact we're using Flowable. We wrap the users list to be a Flowable, then we **flatMap** the **getUserType** call and return a Flowable in the form of an **AuthEntry**.
 
 We also define several items on the entity element:
 
