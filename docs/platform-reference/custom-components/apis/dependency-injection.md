@@ -7,7 +7,7 @@ sidebar_position: 7
 
 # Dependency Injection
 
-Genesis supports some of the key annotations from javax.annotation and javax.inject defined in [Java Platform Enterprise Edition](https://docs.oracle.com/javaee/7/index.html) by using Google Guice as the internal dependency injection mechanism. In addition Genesis provides some of it's own annotations.
+Genesis supports some of the key annotations from javax.annotation and javax.inject defined in [Java Platform Enterprise Edition](https://docs.oracle.com/javaee/7/index.html) by using Google Guice as the internal dependency injection mechanism. In addition Genesis provides some of its own annotations.
 
 ## @Module
 
@@ -15,7 +15,7 @@ All classes requiring creation on microservice startup need to be annotated with
 
 ## @ProviderOf
 
-Used to annotate a class that is responsible for acting as Factory for a specified type. Adding the @Singleton annotation ensures only one Factory class is created.
+This is used to annotate a class that is responsible for acting as Factory for a specified type. Adding the @Singleton annotation ensures only one Factory class is created.
 
 Example:-
 ```kotlin
@@ -32,7 +32,7 @@ class PriceFeedProvider : Provider<PriceFeedProvider> {
 ```
 
 ## @Inject
-Used to annotate a field or constructor to indicate to Genesis that it should inject an object of matching type during the dependency injection stage. These types can be provided with the aforementioned **@Module** and **@ProviderOf** annotations. You should use the [java](https://docs.oracle.com/javaee/7/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.) **@Inject** annotation for best practices.
+This is used to annotate a field or constructor to indicate to Genesis that it should inject an object of matching type during the dependency injection stage. These types can be provided with the aforementioned **@Module** and **@ProviderOf** annotations. You should use the [java](https://docs.oracle.com/javaee/7/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.) **@Inject** annotation for best practice.
 
 ## @Named
 
@@ -72,7 +72,7 @@ class PriceFeed @Inject constructor(@Named("CONNECTION_URL") private val connect
 
 ## Conditional annotations
 ### Conditional on property
-You can define a module as conditional based on system definition properties. As an example, our AeronDriverModule will only be instantiated if the MqLayer property is set to AERON. See example annotations below:
+You can define a module as conditional based on system definition properties. As an example, the AeronDriverModule will only be instantiated if the MqLayer property is set to AERON. See the example annotations below:
 
 ```kotlin
 @Module
@@ -88,9 +88,9 @@ Likewise, modules can be defined to be conditional on classes, so if the selecte
 ```
 
 ### Conditional on missing class
-We can also add conditional modules on missing classes. This annotation is very helpful if an “extension” mechanism is to be developed as part of a genesis product/framework. For example, you could define an interface, and a @Module implementing this interface with a conditional on that interface class being missing. This means that if a class is defined as a @Module which implements that interface, that class will be selected (i.e. this class can be defined in an external jar and added to classpath using framework config). If no class is defined as a **@Module** to implement that interface, then the **@ConditionalOnMissingClass** module will be instantiated.
+You can also add conditional modules on missing classes. This annotation is very helpful if an “extension” mechanism is to be developed as part of a genesis application or framework. For example, you could define an interface, and a @Module implementing this interface with a conditional on that interface class being missing. This means that if a class is defined as a @Module which implements that interface, that class will be selected (i.e. this class can be defined in an external jar and added to classpath using framework config). If no class is defined as a **@Module** to implement that interface, then the **@ConditionalOnMissingClass** module will be instantiated.
 
-For example, lets imagine we want to create a “hook” into our message handling logic, so it can be extended as desired in different products. The interface and default class would look like this in Kotlin:
+For example, imagine you want to create a “hook” into the message handling logic, so it can be extended as desired in other applications. The interface and default class would look like this in Kotlin:
 
 ```kotlin
 interface MessageTracer{
@@ -111,10 +111,10 @@ class ProductMessageTracer : MessageTracer{
     override fun onMessageReceived(msg: Message) = println("Hi $msg")
 }
 ```
-If this the package for this class is available in the classpath (i.e.``` <classpath>``` section in processes.xml) and is also being scanned (i.e. ```<package>``` section in processes.xml), ProductMessageTracer will take precedence when starting the process and DefaultMessageTracer will be ignored. Otherwise, DefaultMessageTracer will be instantiated.
+If the package for this class is available in the classpath (i.e.``` <classpath>``` section in processes.xml) and is also being scanned (i.e. ```<package>``` section in processes.xml), ProductMessageTracer will take precedence when starting the process and DefaultMessageTracer will be ignored. Otherwise, DefaultMessageTracer will be instantiated.
 
 ### Conditional on property and missing class
-Lastly, we have a combination of both “conditional on property” and “conditional on missing class “annotations. Referring to the previous example, we could use both features at once like this:
+Lastly, we have a combination of both “conditional on property” and “conditional on missing class“ annotations. Referring to the previous example, we could use both features at once like this:
 
 ```kotlin
 @Module
@@ -124,7 +124,7 @@ class DefaultMessageTracer : MessageTracer{
 }
 
 ```
-The process will crash on startup if the system definition value for MessageTracer is set to anything other than DEFAULT and no implementation have been provided for MessageTracer . This annotation can be used to enforce good practices.
+The process will crash on startup if the system definition value for MessageTracer is set to anything other than DEFAULT and no implementation has been provided for MessageTracer. This annotation can be used to enforce good practice.
 
 ## Injectable properties from System Definition
 

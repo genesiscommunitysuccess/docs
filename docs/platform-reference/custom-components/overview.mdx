@@ -18,12 +18,12 @@ A Genesis Custom Component is a user-developed maven module that sits alongside 
 - **trading_app-price-feed**  (eg of a custom component)
 - trading_app-script-config
 
-You can create a new module by hand by creating the necessary [standard maven directory structure](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html) from the command line or you can take advantage of intellij module creation features
+You can create a new module by creating the necessary [standard maven directory structure](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html) from the command line or you can take advantage of intellij module creation features
 by selecting ```File -> New -> Module``` from Intellij's menu options.
 
 ![](/img/new-module.png)
 
-A custom component can be used to implement custom logic for your service. Configuration for your component can be defined in [Genesis System Definition](/platform-reference/essential-information/system_definitions-latest.md) and
+A custom component can implement custom logic for your service. Configuration for your component can be defined in [Genesis System Definition](/platform-reference/essential-information/system_definitions-latest.md) and
 testing can follow the practise [here](/platform-reference/testing/testing.mdx)
 
 ## Genesis Dependency Injection Framework
@@ -36,7 +36,7 @@ All classes requiring creation by the genesis startup need to be annotated with 
 
 ## @ProviderOf
 
-Used to annotate a class that is responsible for acting as Factory for a specified type.
+This is used to annotate a class that is responsible for acting as Factory for a specified type.
 
 Example:-
 ```kotlin
@@ -54,7 +54,7 @@ class PriceFeedProvider : Provider<PriceFeedProvider> {
 This annotation is used differentiate between different objects of the same type.
 
 ## @Inject
-Used to annotate a set of parameters to indicate to Genesis that it should inject an object matching type parameters of on either the constructor, method or field definition. You can use either the [java](https://docs.oracle.com/javaee/6/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.)
+This is used to annotate a set of parameters to indicate to Genesis that it should inject an object matching type parameters of on either the constructor, method or field definition. You can use either the [java](https://docs.oracle.com/javaee/6/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.)
  or google guice version of the file. The google guice
 
 ## @PostConstruct
@@ -96,7 +96,7 @@ class PriceFeed @Inject constructor(@Named("CONNECTION_URL") private val connect
 
 ## Conditional annotations
 ### Conditional on property
-You can define a module as conditional based on system definition properties. As an example, our AeronDriverModule will only be instantiated if the MqLayer property is set to AERON. See example annotations below:
+You can define a module as conditional based on system definition properties. As an example, the AeronDriverModule will only be instantiated if the MqLayer property is set to AERON. See example annotations below:
 
 ```kotlin
 @Module
