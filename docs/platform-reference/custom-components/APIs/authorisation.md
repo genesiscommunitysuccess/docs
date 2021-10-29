@@ -5,7 +5,7 @@ id: authorisation_api
 sidebar_position: 3
 ---
 
-The authorisation API consist of two main classes that enable you to add permission checks to your custom component.
+The authorisation API consists of two main classes that enable you to add permission checks to your custom component.
 
 - ```RightSummaryCache```is a kotlin class whose instance can be obtained by simply injecting it into your custom component. This functionality relates directly to the permission codes functionality
   covered in more detail in the [Permission Codes section](/platform-reference/authentication-and-authorisation/overview#PermissionCodes-list). 
@@ -13,7 +13,7 @@ The method ```userHasRight(userName: String, rightCode: String): Boolean``` is u
 
 - ```AuthCache``` is a kotlin class whose instance should be created by calling the static method ```AuthCache.newReader(mapName: String, updateQueue: UpdateQueue): AuthCache```.  
   An UpdateQueue instance can be obtained from an injected RxDb connection as follows ```rxDb.updateQueue```. A Permission check for the entity is done by calling ```isAuthorised(entityId: String?, userName: String): Boolean```,
-  How this work is covered in more detail [AuthCache section](/platform-reference/authentication-and-authorisation/overview#Auth-sub-block). 
+  How this works is covered in more detail [AuthCache section](/platform-reference/authentication-and-authorisation/overview#Auth-sub-block). 
 
 ### Permissions Code API
 ```kotlin

@@ -28,7 +28,7 @@ The EventHandler interface is the common supertype of AsyncEventHandler, Rx3Even
 
 ## Async
 ### AsyncEventHandler
-This most basic definition of an async event handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface which is defined as:
+This is the most basic definition of an async event handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface which is defined as:
 `interface AsyncEventHandler<I : Any, O : Outbound> : AsyncEventWorkflowProcessor<I, O>, EventHandler`
 
 The only mandatory method to implement in this interface case will be:
@@ -86,11 +86,11 @@ class EventCompanyHandlerAsync : AsyncEventHandler<Company, EventReply> {
 
 ### AsyncValidatingEventHandler
 
-In the previous example there was no distinction between validation and commit blocks, which is something we have in GPAL event handlers. In order have a better separation of concernes using custom event handlers you can implement the `AsyncValidatingEventHandler` interface which is defined as:
+In the previous example, there was no distinction between validation and commit blocks, which is something we have in GPAL event handlers. In order to have a better separation of concerns using custom event handlers you can implement the `AsyncValidatingEventHandler` interface which is defined as:
 
 `interface AsyncValidatingEventHandler<I : Any, O : Outbound> : AsyncEventHandler<I, O>`
 
-Using this interface, you don't need to override the `process` method anymore and you can split your logic in validation and commit stages. See methods to implement below:
+Using this interface, you don't need to override the `process` method anymore and you can split your logic into validation and commit stages. There are various methods of implementing this, which are described below:
 
 | Name | Signature |
 |---|---|
@@ -126,7 +126,7 @@ If the `validate` flag is received as `true`, only the `onValidate` code block w
 
 ### AsyncContextValidatingEventHandler
 
-In some cases you might want to carry information from the `onValidate` code block to the `onCommit` code block for efficiency purposes (i.e. several database lookups happen in `onValidate` and you want to reuse that information). Using this `AsyncContextValidatingEventHandler` interface you can provide this context information from the validation stage to the commit stage. See the interface below:
+In some cases, you might want to carry information from the `onValidate` code block to the `onCommit` code block for efficiency purposes (i.e. several database lookups happen in `onValidate` and you want to reuse that information). Using this `AsyncContextValidatingEventHandler` interface, you can provide this context information from the validation stage to the commit stage. See the interface below:
 `interface AsyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : AsyncEventHandler<I, O>`
 
 As with the previous example, when using this interface, you don't need to override the `process` method anymore. See the available methods to implement below:
@@ -143,7 +143,7 @@ Also the `validationResult` methods are provided to help with the context creati
 | validationResult | `fun validationResult(result: O): ValidationResult<O, C>` |
 | validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
 
-The type `C` represent the contextual information we want to provide, and it can be any Java/Kotlin type. An example in of an implementation could be:
+The type `C` represents the contextual information we want to provide, and it can be any Java/Kotlin type. An example in of an implementation could be:
 
 ```kotlin
 import global.genesis.commons.annotation.Module
@@ -174,11 +174,11 @@ class TestCompanyHandlerAsync : AsyncContextValidatingEventHandler<Company, Even
 
 ## Rx3
 
-All the mechanism explained in [Async](#async) can be recycled and reapplied in Rx3 event handlers. 
+The mechanism explained in [Async](#async) can be recycled and reapplied in Rx3 event handlers. 
 
 ### Rx3EventHandler
 
-In a similar fashion to `AsyncEventHandler` we also provide an Rx3 implementation flavour. It works in a very similar way [`AsyncEventHandler`](#asynceventhandler) does, but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
+In a similar fashion to `AsyncEventHandler` there is an Rx3 implementation flavour. It works in a very similar way to [`AsyncEventHandler`](#asynceventhandler), but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
 
 See interface definition below:
 `interface Rx3EventHandler<I : Any, O : Outbound> : Rx3EventWorkflowProcessor<I, O>, EventHandler`
@@ -303,7 +303,7 @@ class TestCompanyHandlerRx3 : Rx3ContextValidatingEventHandler<Company, EventRep
 ```
 
 ## Sync
-Sync works similarly to [Async](#async) and [Rx3](#rx3), but in this case there is no `Single<O>` being returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the event handler logic is just the `O` type
+Sync works similarly to [Async](#async) and [Rx3](#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the event handler logic is just the `O` type
 
 ### SyncEventHandler
 
