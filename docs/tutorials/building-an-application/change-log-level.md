@@ -40,13 +40,13 @@ cp ~/run/trading_app/cfg/trading_app-processes.xml site-specific/cfg/
 </process> 
 ```
 
-3. Since there is change in configuration run `genesisInstall`
+3. Since there is a change in configuration, run `genesisInstall`
 
 4. Restart process `TRADING_APP_DATASERVER`
 
 #### Change process log level dynamically
 
-To change process log level dynamically you need to use [LogLevel](/platform-reference/operations/commands/#loglevel-script) command.
+To change process log level dynamically,  use the [LogLevel](/platform-tooling/commands/#loglevel-script) command.
 With this command you will be able to change the log level for specified/indefinite period of time.
 Below are some examples of its usage
 
@@ -76,7 +76,7 @@ LogLevel -p TRADING_APP_DATASERVER -c DbMon -l DEBUG
 
 ### Script log level
 
-Logging level in scripts is set by default to "WARN". To change the log level you need to set environment variable GENESIS_LOGGING_LEVEL to any valid level [ERROR, WARN, INFO, DEBUG, TRACE]. Not setting GENESIS_LOGGING_LEVEL or setting a non-valid level will reset log level to default.
+Logging level in scripts is set by default to "WARN". To change the log level, set the environment variable GENESIS_LOGGING_LEVEL to any valid level [ERROR, WARN, INFO, DEBUG, TRACE]. Not setting GENESIS_LOGGING_LEVEL or setting a non-valid level will reset log level to default.
 
 Example of using LOG property inside script
 ```kotlin {4,13} 

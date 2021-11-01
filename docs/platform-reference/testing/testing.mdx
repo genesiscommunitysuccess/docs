@@ -249,7 +249,7 @@ In the constructor you will need to provide a `GenesisTestConfig` instance:
 | configFileName | no | corresponds to the <config/> tag in processes.xml |
 | authCacheOverride | no | overrides auth-perms map to test |
 
-Paths provided for `genesisHome` and `initialDataFile` should be absolute location. To help with this please wrap the string in a call to `resolvePath(…)`, this will try to locate the file or folder in your test resources.
+Paths provided for `genesisHome` and `initialDataFile` should be absolute location.
 
 To use `AbstractGenesisTestSupport`, create a new class and extend
 
@@ -260,8 +260,8 @@ To use `AbstractGenesisTestSupport`, create a new class and extend
 class UserControllerTest : AbstractGenesisTestSupport<EventResponse>(
     GenesisTestConfig {
         packageName = "global.genesis.auth.manager"
-        genesisHome = resolvePath("/genesisHome")
-        initialDataFile = resolvePath("standard-user-setup.csv")
+        genesisHome = "/genesisHome"
+        initialDataFile = "standard-user-setup.csv"
         authCacheOverride = "USER_VISIBILITY"
         parser = EventResponse
         configFileName = "config.xml"
@@ -281,8 +281,8 @@ public class UserControllerJavaTest extends AbstractGenesisTestSupport<EventResp
         super(
                 new GenesisTestConfigImpl.Builder<EventResponse>()
                         .addPackageName("global.genesis.auth.manager")
-                        .setGenesisHome(resolvePath("/genesisHome"))
-                        .addInitialDataFile(resolvePath("standard-user-setup.csv"))
+                        .setGenesisHome("/genesisHome")
+                        .addInitialDataFile("standard-user-setup.csv")
                         .setParser(EventResponse.Companion)
                         .setConfigFileName("config.xml")
                         .build()
