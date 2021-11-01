@@ -66,14 +66,14 @@ Here is an example of a generated processes.xml file for an application that has
       <start>true</start>
       <options>-Xmx128m -DXSD_VALIDATE=false</options>
       <module>genesis-pal-streamerclient</module>
-      <package>global.genesis.pal.streamerclient</package>
+      <package>global.genesis.streamerclient.pal</package>
       <script>trading_app-streamer-client.kts</script>
   </process>
   <process name="TRADING_APP-STREAMER">
       <start>true</start>
       <options>-Xmx128m -DXSD_VALIDATE=false</options>
       <module>genesis-pal-streamer</module>
-      <package>global.genesis.streamer</package>
+      <package>global.genesis.streamer.pal</package>
       <script>trading_app-streamer.kts</script>
   </process>
 </processes>
