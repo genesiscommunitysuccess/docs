@@ -6,27 +6,29 @@ id: email
 ---
 
 
-### System Definition configuration
+### Email Configuration
 
 You can define the following configuration items in order to provide SMTP server connection details, and to configure email service-related features.
 
+filename: ```notify.kts```
+
 ```kotlin
-//Generated emails sent as this email address by default
-item(name = "SYSTEM_DEFAULT_EMAIL", value = "notifications@genesis.global" )
-//Display name of default email address
-item(name = "SYSTEM_DEFAULT_USER_NAME", value = "GenesisGlobal" )
+notify {
 
-//SMTP server connection details
+    // note: the connection 'id' will default to 'Email' if it's not specified, however if you have multiple connections
+    //       of the same type (in this case email) then it will need to be specified.
+    email( id = "Email1") {
+    
+            // Default Linux Email SMTP Server
+            smtpHost = "localhost"
+            smtpPort = 25
+            smtpUser = "notifications@genesis.global"
+            smtpUserPw = ""
+            smtpProtocol = "SMTP"
+    }
 
-item(name = "EMAIL_SMTP_HOST", value = "smtp.office365.com" )
-item(name = "EMAIL_SMTP_PORT", value = "587" )
-//Credentials for SMTP server, note that the user will need to be permitted to send as the SYSTEM_DEFAULT_EMAIL on the SMTP server where values are different
-item(name = "EMAIL_SMTP_USER", value = "myuser@genesis.global" )
-item(name = "EMAIL_SMTP_PW", value = "NOTAPASSWORD" )
-item(name = "EMAIL_SMTP_PROTOCOL", value = "SMTP_TLS" )
-
-//Set to false if the NOTIFY record severity should be added into the email subject/body
-item(name = "EMAIL_SUPPRESS_SEVERITY_TEXT", value = "true" )
+    // optionally include additional connections, including additional Symphony, Email or Microsoft Teams connections
+}
 ```
 
 ### Database configuration
@@ -39,6 +41,7 @@ item(name = "EMAIL_SUPPRESS_SEVERITY_TEXT", value = "true" )
 | GATEWAY_TYPE | Set to "EmailDistribution" |
 | GATEWAY_VALUE | Static email distribution list specified for this gatway as a [JSON Structure](#GATEWAY_VALUE-JSON-Structure)  |
 | INCOMING_TOPIC | Currently not used for Email |
+| CONNECTION_ID | This should reference the connection `id` specified in the ```notify.kts``` file. Note if the id is specified in the connection, then you should use the default id of `Email`
 
 ### GATEWAY_VALUE JSON Structure
 ```json
