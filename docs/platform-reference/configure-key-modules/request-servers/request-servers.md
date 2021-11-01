@@ -14,3 +14,20 @@ However, you can build your request server file manually (or edit the ones that 
 That means you can specify both the request fields and the response fields as part of the requestReply codeblock. Request fields can include wildcards, so you could request all RIC Codes for example, or all RIC Codes beginning with V.
 
 The `requestReply` code blocks in these [custom request servers](/platform-reference/configure-key-modules/request-servers/custom/) can be as simple or complex as your requirements. They are useful, for example, if you want to request data from a number of different tables and views that are not related. By nesting and joining all the relevant data in your `requestReply` statement, you create your own metadata for the request server, so it can then be used anywhere in the module.
+
+### Configure in processes.xml
+
+Request-Reply service configuration is added in processes.xml like below example, for more information of each tag in below config follow this [link](/platform-reference/essential-information/processes-xml)
+
+```xml
+<process name="TRADING_APP_REQUEST_SERVER">
+  <groupId>TRADING_APP</groupId>
+  <start>true</start>
+  <options>-Xmx256m</options>
+  <module>genesis-pal-requestserver</module>
+  <package>global.genesis.requestreply.pal</package>
+  <script>trading_app-reqrep.kts</script>
+  <description>Server one-shot requests for details</description>
+  <language>pal</language>
+</process>
+```

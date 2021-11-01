@@ -51,9 +51,9 @@ requestReplies {
 }
 ```
 
-It is important to mention that the permissioning block at the global can only contain `permissionCodes` as the `auth` block is based on each individual resource definition. The global permissioning block can be overriden at the resource level.
+It is important to mention that the permissioning block at the global level can only contain `permissionCodes` as the `auth` block is based on each individual resource definition. The global permissioning block can be overriden at the resource level.
 
-For every request that comes into a Genesis server it will include the username of an authenticated user. 
+For every request that comes into a Genesis server, it will include the username of an authenticated user. 
 Non-authenticated users will not have access or visibility to the genesis services.
 
 
@@ -64,15 +64,16 @@ There are two main optional sub-blocks to the Permissioning block.
 permissionCodes = listOf("TRADER", "SUPPORT")
 ```
 
-  Where this is defined the user will need to have one of the listed permission codes to access the GPAL enclosed resource. 
-  If the user does not belong to one of the listed permission code, the subsequent auth block will essentially be ignored.
+  Where this is defined, the user will need to have one of the listed permission codes to access the GPAL enclosed resource. 
+  If the user does not belong to one of the listed permission codes, the subsequent auth block will essentially be ignored.
 
   To enable a User to have access to a specific PermissionCode
 
-  - the permission code needs to be defined in the RIGHT table,
-  - linked to an entry in the PROFILE_RIGHT table,
+  - the permission code needs to be defined in the RIGHT table
+  - linked to an entry in the PROFILE_RIGHT table
   - and to a PROFILE that is associated with the USER from PROFILE_USER
-  - The AUTH_MANAGER process will populate the RIGHT_SUMMARY table based upon the table configurations above. This table ultimately drives the available permission codes for all users in the system. 
+ 
+  The AUTH_MANAGER process will populate the RIGHT_SUMMARY table based upon the table configurations above. This table ultimately drives the available permission codes for all users in the system. 
   
   These tables are part of the Genesis Auth Module.
 
@@ -90,8 +91,9 @@ permissionCodes = listOf("TRADER", "SUPPORT")
         }
 ```
 
-Where this is defined, it allows for further fined grained control of what data, at the row level, is returned to a specific user. 
-If it is not defined then all data is returned for the enclosing resource, assuming permissionCodes are not restricting.
+Where this is defined, it allows for further fine-grained control of what data, at the row level, is returned to a specific user. 
+
+If it is not defined, then all data is returned for the enclosing resource, assuming permissionCodes are not restricting.
 
 - The mapName refers to a specific Permission "entity" defined on the server via the [auth-permission.xml](/platform-reference/authentication-and-authorisation/authorisation#defining-a-permission-rule) file.
 
@@ -115,10 +117,9 @@ This value is used as a key into a specific AuthCache, identified by entity name
 
 ## Generic Permissions
 
-'Generic Permissions' is a term used to name the optional permissions' configuration that is available for a Genesis application 
-that is included as part of the Genesis Auth Module.
+'Generic Permissions' is a term used to name the optional permissions' configuration that is available for a Genesis application that is included as part of the Genesis Auth Module.
 
-To fully activate 'Generic Permissions' you need to provide these values in your system definition before you run genesisInstall.
+To fully activate 'Generic Permissions' you need to provide these values in your system definition before you run `genesisInstall`.
 These values specify which table column will be used to associate users to entities for fine-grained row permissions.
 
 
@@ -133,9 +134,9 @@ systemDefinition {
 
 :::note detail
 This will add the specified field to the USER_ATTRIBUTES table as a required field and create a new table called, in the case of our example, USER_COUNTERPARTY_MAP,
-that will be suitably populated by the AUTH_MANAGER process on a realtime basis. 
+which will be suitably populated by the AUTH_MANAGER process on a realtime basis. 
 
-The USER_COUNTERPARTY_MAP table is referenced in ENTITY_VISIBILITY entity in ```auth-permission.templt.xml``` file. (which is a genesis [mustache](https://en.wikipedia.org/wiki/Mustache_(template_system))
+The USER_COUNTERPARTY_MAP table is referenced in ENTITY_VISIBILITY entity in the ```auth-permission.templt.xml``` file. (which is a genesis [mustache](https://en.wikipedia.org/wiki/Mustache_(template_system))
 template which is processed at genesisInstall time, using entries from system-definition).
 
 When new users are created in the Genesis Gui Admin screens, a required field COUNTERPARTY will be presented to the operating user. This limits users to belonging to a single counterparty.
@@ -144,7 +145,7 @@ When new users are created in the Genesis Gui Admin screens, a required field CO
 A user can define additional -permissions.xml files. For example, you could define something like order-management-permissions.xml with 
 an order management system auth implementation, and it will be read by AUTH_PERMS process on startup.
 
-There are two kinds of permission entities defined by Generic Permissions in ```auth-permission.templt.xml``` file.
+There are two kinds of permission entitiy defined by Generic Permissions in ```auth-permission.templt.xml``` file.
 
 - **USER_VISIBILITY** - An AuthCache which determines which user is visible to which user, this is driven by which users associated for the entity. Using our example, if two users are both in the same counterparty then they should be viewable to each other.
 
