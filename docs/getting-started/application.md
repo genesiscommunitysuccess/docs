@@ -27,7 +27,7 @@ You bring your application to life by creating a skeleton project and then confi
 
 **Consolidators** monitor key data in real time, perform calculations (analytics) and feed that information back to a separate area to provide the information in real time.
 
-**Interface handlers** handle integration with external systems, such as FIX Gateways for order routing or external relational datanases.
+**Interface handlers** handle integration with external systems, such as FIX Gateways for order routing or external relational databases.
 
 **Data Servers** make real-time information available to the UI. The first request provides all the information being monitored. After that, only changed fields are passed back to the UI in real time.
 
