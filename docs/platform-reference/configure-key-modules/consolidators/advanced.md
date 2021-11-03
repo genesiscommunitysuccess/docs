@@ -44,8 +44,10 @@ group(trade.getString("DEAL_ID") ?: "NULL")
 ### Example
 Here is an example file that defines two consolidators:
 
-* CON_ORDER_FROM_TRADES
-* CON_BASKET_FROM_ORDERS
+* CON_ORDER_FROM_TRADES - This consolidator totals up order quantity volume across the ```TRADE``` table, grouping by ```TRADE.ORDER_ID```
+                          into a table ```ORDER_CONSOLIDATED_VOLUME```
+               
+* CON_BASKET_FROM_ORDERS - This consolidator  
 
 ```xml
 <consolidations>
