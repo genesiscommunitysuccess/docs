@@ -9,6 +9,7 @@ title: 'Analyse, adjust and run'
 
 We are going to start with a workbook that has ten different worksheets.
 
+![](/img/narrow-xls.png)
 
 
 ## Analyse the workbook
@@ -17,7 +18,7 @@ When you analyse the workbook, there are some clear things to look out for.
 
 ### Structure
 
-The content of each sheet in the workbook is essentially a simple grid.
+The content of each sheet in our source workbook is essentially a simple grid.
 
 By default, the conversion process will convert each separate worksheet into a table. That works well for the workbook we have here.
 
