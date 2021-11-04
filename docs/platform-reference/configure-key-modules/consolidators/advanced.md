@@ -44,8 +44,13 @@ group(trade.getString("DEAL_ID") ?: "NULL")
 ### Example
 Here is an example file that defines two consolidators:
 
-* CON_ORDER_FROM_TRADES
-* CON_BASKET_FROM_ORDERS
+* CON_ORDER_FROM_TRADES - This consolidator totals up 'order quantity' across the ```TRADE``` table, grouping by field ```TRADE.ORDER_ID```
+                          into a table ```ORDER_CONSOLIDATED_VOLUME```
+               
+* CON_BASKET_FROM_ORDERS - This consolidator counts up 'number of orders' and the 'order quantity' grouped by field ```BASKET_ORDER_DETAILS.BASKET_ID``` from the ```ORDERS``` table
+                           with basket being determined from a join on the ```BASKET_ORDER_DETAILS``` table, into a table ```BASKET```. 
+                           The Backward joining definition ensures that any real time changes made to the ```BASKET_ORDER_DETAILS``` are reflected back into the calculation.  
+
 
 ```xml
 <consolidations>
