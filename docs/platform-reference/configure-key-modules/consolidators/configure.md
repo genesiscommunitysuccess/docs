@@ -27,7 +27,6 @@ There is one important operational consideration if you have a consolidator in y
 
 ### Adding the consolidator to processes.xml
 
-Consolidator service configuration is added in processes.xml like below example, for more information of each tag in below config follow this [link](/platform-reference/essential-information/processes-xml) 
 If you are going to use the Consolidator process, you must ensure that it is included in the  **processes.xml** file for the application. This is located in the .cfg folder for the application. The file contains tags that define key characteristics of the Consolidator - for example, dependencies and logging level. Here is an example configuration (the tags are explained in the page on the [processes.xml file](/platform-reference/essential-information/processes-xml)):
  
 

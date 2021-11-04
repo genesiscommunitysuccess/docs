@@ -22,7 +22,6 @@ After you have checked the files generated and addressed any issues in the field
 
 This creates an application called **Cash** with:
 
-* the kts files for the event handlers, request servers and data servers
 * the kts files for the  [event handler](/tutorials/excel-to-genesis/Files/excel-tut-5/), [request server](/tutorials/excel-to-genesis/Files/excel-tut-6/) and [data server](/tutorials/excel-to-genesis/Files/excel-tut-7/)
 * the [service definitions](/tutorials/excel-to-genesis/Files/excel-tut-10/)
 * the [process definitions](/tutorials/excel-to-genesis/Files/excel-tut-9/)
