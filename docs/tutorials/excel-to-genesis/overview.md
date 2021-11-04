@@ -2,9 +2,10 @@
 id: overview
 sidebar_label: 'Overview'
 sidebar_position: 10
-title: 'Excel to Genesis - a quick look'
+title: 'Excel to Genesis - at speed'
 ---
 
+![](/img/intro3-xtg.png)
 All across the financial sector, you can find operational functions sitting in Excel workbooks. And this sometimes includes functions that are mission-critical.
 
 The Genesis LCNC Platform gives you a way of turning these into applications that can be audited and maintained in a standard and controlled manner. Along the way, you can build in better workflow and usability without heavy IT development effort.
