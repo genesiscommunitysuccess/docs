@@ -199,4 +199,4 @@ Add a new entry to **trading_app-service-definitions.xml** with the consolidator
 
 ## Testing
 
-We shall testing information here shortly.
+We shall add testing information here shortly.

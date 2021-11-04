@@ -51,11 +51,11 @@ Illegal characters in field names have been automatically converted. You can see
 field(name = "DEPOSIT_AMOUNT_ON_MAY_IN_PERCENT_HAIR_CUT_AND_MAX_PERCENT_ON_FUNDS", type = DOUBLE)
   ```
 
-And yes, it would have been a very good idea to have made the source column headong shorter before we converted the workbook!
+And yes, it would have been a very good idea to have made the source column heading shorter before we converted the workbook!
 
 ### The tables file
 
-Inside the file `cash-tables-dictionary.kts`, each table created has a name and numeric ID. Each field in a table has a comment showing the column it came from, as well as relevant notes on the function (e.g aggregation).For example:
+Inside the file `cash-tables-dictionary.kts`, each table created has a name and numeric ID. Each field in a table has a comment showing the column it came from, as well as relevant notes on the function (e.g aggregation). For example:
 
 
 ```kotlin
