@@ -7,20 +7,23 @@ title: 'Check the files and load the data'
 
 
 
-Now you have run the conversion script, let's look at the files that have been created:
+Now you have run the conversion script, let's look at the files that have been created. 
 
-![](/img/the-command-and-what-it-gives-you.png)
+First, it creates a folder called **`/home/core/run/cash.cfg`**. Then it writes the dictionary files for the fields, tables and views that make up your data model.
 
-The conversion has created a folder called **`/home/core/run/cash.cfg`**. This contains:
 
-* The field definitions are in the file `cash-fields-dictionary.kts`
-* The table definitions are in the file `cash-tables-dictionary.kts`
-* The views definitions are in the file `cash-view-dictionary.kts`
-* There 10 files of data. The data from each worksheet has been extracted to a separate csv file.
+![](/img/xtg2.png)
+
+Following that, it creates a separate folder for the data. In this, it writes separate csv files for each worksheet.
+
+
+![](/img/xtg3.png)
+
+In the end, you have 10 files of data: one for each worksheet. 
 
 ### The Fields file
 
-Inside the file `cash-fields-dictionary.kts`, you can see all the fields that have been defined.
+Inside the file `cash-fields-dictionary.kts`, you can see all the fields that have been defined. Here is the beginning of the file:
 
 ```kotlin
 fields {
@@ -32,94 +35,28 @@ fields {
   field(name = "ACCOUNT_NUMBER_PREFERRED_PER_FORMATTED", type = STRING)
   field(name = "ACCT_CODE", type = STRING)
   field(name = "ACTION", type = STRING)
-  field(name = "AGREEMENT_DESCRIPTION", type = STRING)
-  field(name = "ASSET_TYPE", type = STRING)
-  field(name = "AVAILABLE_BALANCE_DATE", type = STRING)
-  field(name = "AVAILABLE_BALANCE_END_OF_DAY", type = DOUBLE)
-  field(name = "AVAILABLE_BALANCE_PREVIOUS_DAY_CLOSING", type = DOUBLE)
-  field(name = "BALANCE_DATE", type = STRING)
-  field(name = "BASE_ADJUSTED_COLLATERAL_VALUE_HELD_BY_CPTY", type = DOUBLE)
-  field(name = "BASE_ADJUSTED_COLLATERAL_VALUE_HELD_BY_PRINCIPAL", type = LONG)
-  field(name = "BASE_ADJUSTED_EXPOSURE", type = DOUBLE)
-  field(name = "BASE_CALL_AMOUNT", type = DOUBLE)
-  field(name = "BASE_COUNTERPARTY_IA", type = LONG)
-  field(name = "BASE_CURRENCY", type = STRING)
-  field(name = "BASE_MIN_TRANSFER_COUNTERPARTY", type = LONG)
-  field(name = "BASE_MIN_TRANSFER_PRINCIPAL", type = LONG)
-  field(name = "BASE_PRINCIPAL_IA", type = LONG)
-  field(name = "BASE_THRESHOLD_COUNTERPARTY", type = STRING)
-  field(name = "BASE_THRESHOLD_PRINCIPAL", type = STRING)
-  field(name = "BASE_TOTAL_EXPOSURE_AMOUNT", type = DOUBLE)
-  field(name = "BLOOMBERG_REFERENCE_NO", type = STRING)
-  field(name = "BROKER", type = STRING)
-  field(name = "CLIENT_LEGAL_NAME", type = STRING)
-  field(name = "CONSOLIDATED_FUNDS", type = STRING)
-  field(name = "COUNTERPARTY", type = STRING)
-  field(name = "COUNTERPARTY_AMOUNT", type = LONG)
-  field(name = "CURRENCY", type = STRING)
-  field(name = "CURRENT_FUNDING_POSN", type = DOUBLE)
-  field(name = "CURRENT_INVESTABLE", type = DOUBLE)
-  field(name = "CURRENT_NONINVESTABLE", type = DOUBLE)
-  field(name = "CUSTODY_BALANCE", type = STRING)
-  field(name = "CUSTODY_CASH_ACCOUNT", type = STRING)
-  field(name = "DAYS_TO_MATURITY", type = DOUBLE)
-  field(name = "DEPOSIT_AMOUNT_ON_MAY_IN_PERCENT_HAIR_CUT_AND_MAX_PERCENT_ON_FUNDS", type = DOUBLE)
-  field(name = "DISPUTE_AGE", type = LONG)
-  field(name = "DISPUTE_VALUE", type = LONG)
-  field(name = "EXPECTED_BALANCE_AFTER_REDEMPTION_PER_DEPOSIT_CASH_ONLY_NO_TBILLS", type = DOUBLE)
-  field(name = "EXPECTED_CASH_BALANCE_PERCENT", type = DOUBLE)
-  field(name = "EXPECTED_MARGIN_INFLOWS", type = DOUBLE)
-  field(name = "EXPECTED_MARGIN_OUTFLOWS", type = DOUBLE)
-  field(name = "EXP_MARGIN_INFLOW", type = DOUBLE)
-  field(name = "EXP_MARGIN_OUTFLOWS", type = DOUBLE)
-  field(name = "FIELD_2", type = STRING)
-  field(name = "FUND_ADMIN_BALANCE", type = DOUBLE)
-  field(name = "FUND_HOLDINGS_LEVEL", type = DOUBLE)
-  field(name = "ISIN", type = STRING)
-  field(name = "MAX_DEPOSIT_AMOUNT_BASED_ON_PERCENT_LIMIT", type = DOUBLE)
-  field(name = "MKTVALL", type = DOUBLE)
-  field(name = "MULTIPLE_ITEMS", type = STRING)
-  field(name = "MV_PLUS_PENDING", type = DOUBLE)
-  field(name = "NAV_ID", type = STRING)
-  field(name = "NET_AVAILABLE_BALANCE", type = DOUBLE)
-  field(name = "NOTES", type = STRING)
-  field(name = "OPEN_INVESTABLE", type = DOUBLE)
-  field(name = "OPEN_NONINVESTABLE", type = DOUBLE)
-  field(name = "ORDERG_PRICE", type = LONG)
-  field(name = "PERCENT_OF_FUNDS_ALL", type = DOUBLE)
-  field(name = "POTENTIAL_ADDITIONAL_TBILLS_DEPOSIT", type = DOUBLE)
-  field(name = "PREVIOUS_CLOSE_BALANCE", type = DOUBLE)
-  field(name = "PRINCIPAL", type = STRING)
-  field(name = "REPORTING_ADJUSTED_EXPOSURE", type = DOUBLE)
-  field(name = "REPORTING_CALL_AMOUNT", type = DOUBLE)
-  field(name = "ROW_LABELS", type = STRING)
-  field(name = "SECURITY", type = STRING)
-  field(name = "SECURITY_DESCRIPTION", type = STRING)
-  field(name = "SUGGESTED_ACTION", type = STRING)
-  field(name = "SUM_OF_FUND_HOLDINGS_LEVEL", type = DOUBLE)
-  field(name = "SUM_OF_GLF_HOLDINGS", type = DOUBLE)
-  field(name = "SUM_OF_NAV", type = DOUBLE)
-  field(name = "SUM_OF_REPORTING_CALL_AMOUNT", type = DOUBLE)
-  field(name = "SUM_OF_TBILLS_HOLDINGS", type = DOUBLE)
-  field(name = "TA_ACCOUTNS", type = STRING)
-  field(name = "TA_REGISTRATION_NAME", type = STRING)
-  field(name = "TBILLS_HOLDINGS", type = DOUBLE)
-  field(name = "UNDERLYING_PARSEKEY", type = STRING)
-  field(name = "UPDATE_CASH", type = STRING)
-}
+  
 ```
+You can see the whole file [here](/tutorials/excel-to-genesis/Files/excel-tut-11/)
 
+#### Field types
 The fields are automatically sampled by the command to allocate a type. If it is not sure, it allocates a the field as STRONG. Most of these will be correct, but you will need to handle exceptions.
 
+#### Long names and illegal chracters
 Note that our example contains some long field names. Ideally, these should be shortened before the conversion process, but these long field names still work.
 
-Illegal characters in field names have been automatically converted. You can see here that the % sign has been changed to PERCENT.
+Illegal characters in field names have been automatically converted. You can see here that the **%** sign has twice been changed to PERCENT in this field name.
 
-![](/img/percent-has-been-changed.png)
+```kotlin
+field(name = "DEPOSIT_AMOUNT_ON_MAY_IN_PERCENT_HAIR_CUT_AND_MAX_PERCENT_ON_FUNDS", type = DOUBLE)
+  ```
+
+And yes, it would have been a very good idea to have made the source column headong shorter before we converted the workbook!
 
 ### The tables file
 
-Inside the file `cash-tables-dictionary.kts`, the source of each table is included as a comment at the beginning.
+Inside the file `cash-tables-dictionary.kts`, each table created has a name and numeric ID. Each field in a table has a comment showing the column it came from, as well as relevant notes on the function (e.g aggregation).For example:
+
 
 ```kotlin
 tables {
@@ -149,24 +86,35 @@ tables {
       ACCT_CODE
     }
 
-  }
-  table (name = "CONSOLIDATED_FUNDS", id = 10001) {
-    // Source: Consolidated Funds
-    CONSOLIDATED_FUNDS           // A
-    CUSTODY_BALANCE              // B
-    FUND_ADMIN_BALANCE           // C
-    SUM_OF_TBILLS_HOLDINGS       // D
-    EXP_MARGIN_OUTFLOWS          // E
-    EXP_MARGIN_INFLOW            // F
-    SUM_OF_NAV                   // G
-    SUM_OF_FUND_HOLDINGS_LEVEL   // H
-    SUM_OF_GLF_HOLDINGS          // I
+  
+```
 
-    primaryKey {
-      CONSOLIDATED_FUNDS
-    }
+You can see the whole tables file [here](/tutorials/excel-to-genesis/Files/excel-tut-12)
 
-  }
+
+Table IDs are sequential from the first one created, starting with the `-t` number supplied when you ran the script.
+
+#### Unable to parse
+
+If the conversion process was not able to parse a field, this is clearly marked by the comment. For example:
+
+```kotlin
+   CURRENT_FUNDING_POSN                                                 // P unable to parse: IFERROR(VLOOKUP(A2,GLFHoldingsRange,3,FALSE),0); see log for details
+ ```
+
+You will have to deal with this, perhaps by creating a consolidator.
+
+#### Primary key
+The first column in each worksheet is always used as the primary key for the table.
+
+The process is able to handle concatenations in excel. For example, in the Cash Mvmnt Orders sheet, column A contains a conctenation of columns B and C:
+
+![](/img/concat-xls.png)
+
+Consequently, the conversion has used both these fields to create the primary key:
+
+```kotlin
+}
   table (name = "CASH_MVMNT_ORDERS", id = 10002) {
     // Source: Cash Mvmnt Orders
     SECURITY               // B
@@ -183,188 +131,51 @@ tables {
       SECURITY
     }
 
-  }
-  table (name = "MARGIN_AGGREGATE", id = 10003) {
-    // Source: Margin Aggregate
-    ACTION           // A
-    MULTIPLE_ITEMS   // B
-    FIELD_2          // C
-
-    primaryKey {
-      ACTION
-    }
-
-  }
-  table (name = "CUSTODY_POSITIONS", id = 10004) {
-    // Source: 1. Custody Positions
-    ACCOUNT_NAME                             // B
-    ACCOUNT_NUMBER_PREFERRED_PER_FORMATTED   // C
-    ACCOUNT_CURRENCY                         // D
-    AVAILABLE_BALANCE_END_OF_DAY             // E
-    AVAILABLE_BALANCE_DATE                   // F
-    AVAILABLE_BALANCE_PREVIOUS_DAY_CLOSING   // G
-
-    primaryKey {
-      ACCOUNT_NAME
-      ACCOUNT_NUMBER_PREFERRED_PER_FORMATTED
-    }
-
-    indices {
-      unique {
-        ACCOUNT_NUMBER_PREFERRED_PER_FORMATTED
-      }
-    }
-  }
-  table (name = "MARGIN_CALLS", id = 10005) {
-    // Source: 2. Margin Calls
-    PRINCIPAL                                          // A
-    AGREEMENT_DESCRIPTION                              // B
-    COUNTERPARTY                                       // C
-    BASE_THRESHOLD_PRINCIPAL                           // D
-    BASE_MIN_TRANSFER_PRINCIPAL                        // E
-    BASE_THRESHOLD_COUNTERPARTY                        // F
-    BASE_MIN_TRANSFER_COUNTERPARTY                     // G
-    BASE_TOTAL_EXPOSURE_AMOUNT                         // H
-    BASE_ADJUSTED_COLLATERAL_VALUE_HELD_BY_PRINCIPAL   // I
-    BASE_PRINCIPAL_IA                                  // J
-    BASE_ADJUSTED_COLLATERAL_VALUE_HELD_BY_CPTY        // K
-    BASE_COUNTERPARTY_IA                               // L
-    BASE_CALL_AMOUNT                                   // M
-    BASE_ADJUSTED_EXPOSURE                             // N
-    COUNTERPARTY_AMOUNT                                // O
-    DISPUTE_AGE                                        // P
-    DISPUTE_VALUE                                      // Q
-    REPORTING_ADJUSTED_EXPOSURE                        // R
-    REPORTING_CALL_AMOUNT                              // S
-    BASE_CURRENCY                                      // T
-    ACTION                                             // U
-
-    primaryKey {
-      PRINCIPAL
-    }
-
-  }
-  table (name = "FUND_ADMIN_BALANCES", id = 10006) {
-    // Source: 3. Fund Admin Balances
-    BALANCE_DATE            // A
-    OPEN_INVESTABLE         // B
-    CURRENT_INVESTABLE      // C
-    OPEN_NONINVESTABLE      // D
-    CURRENT_NONINVESTABLE   // E
-
-    primaryKey {
-      BALANCE_DATE
-    }
-
-  }
-  table (name = "FUND_NAV", id = 10007) {
-    // Source: 4. Fund NAV
-    BALANCE_DATE      // A
-    NAV_ID            // B
-    ACCOUNT_CODE      // C
-    MV_PLUS_PENDING   // D
-    MKTVALL           // E
-
-    primaryKey {
-      BALANCE_DATE
-    }
-
-  }
-  table (name = "T_BILL_HOLDINGS", id = 10008) {
-    // Source: 5. T Bill Holdings
-    ACCOUNT_CODE           // B
-    SECURITY_DESCRIPTION   // C
-    ISIN                   // D
-    ASSET_TYPE             // E
-    DAYS_TO_MATURITY       // F
-    UNDERLYING_PARSEKEY    // G
-    CURRENCY               // H
-    MKTVALL                // I
-    MV_PLUS_PENDING        // J
-
-    primaryKey {
-      ACCOUNT_CODE
-      ISIN
-    }
-
-  }
-  table (name = "FUND_HOLDINGS", id = 10009) {
-    // Source: 6. Fund Holdings
-    ACCOUNT_CODE           // B
-    SECURITY_DESCRIPTION   // C
-    ISIN                   // D
-    ASSET_TYPE             // E
-    DAYS_TO_MATURITY       // F
-    UNDERLYING_PARSEKEY    // G
-    CURRENCY               // H
-    MKTVALL                // I
-    MV_PLUS_PENDING        // J
-
-    primaryKey {
-      ACCOUNT_CODE
-      SECURITY_DESCRIPTION
-    }
-
-  }
-  table (name = "MAPPING", id = 10010) {
-    // Source: Mapping
-    BLOOMBERG_REFERENCE_NO   // A
-    CLIENT_LEGAL_NAME        // B
-
-    primaryKey {
-      BLOOMBERG_REFERENCE_NO
-    }
-
-  }
-  table (name = "COL_SUMMARY", id = 10011) {
-    // Source: Col Summary
-    ROW_LABELS                     // A
-    SUM_OF_REPORTING_CALL_AMOUNT   // B
-
-    primaryKey {
-      ROW_LABELS
-    }
-
-  }
-  table (name = "SHEET", id = 10012) {
-    // Source: Sheet2
-    NOTES   // A
-
-    primaryKey {
-      NOTES
-    }
-
-  }
-}
 ```
 
-
-
-Table IDs are sequential from the first one created, starting with the `-t` number supplied when you ran the script.
-
-Each field in the table has a comment showing the column it came from, as well as relevant notes on the function (e.g aggregation).
-
-If the conversion process was not able to parse a field, this is clearly marked on the comment.
-
-![](/img/unable-to-parse.png)
-
-You will have to deal with this, perhaps by creating a consolidator.
-
-The first column in each worksheet is always used as the primary key for the table.
-
-\**Note that it has handled a concatenation, where the primary key is created from the first two columns.
-
-### The Views file
+### The view file
 
 Inside the file `cash-view-dictionary.kts`, you can see that the script has been able to find where tables need joins. Exceptions are highlighted.
 
 In the example here, the first worksheet has been converted. This has created a view with two joins successfully. But it has not been possible to create a third join:
 
-![](/img/views-2.png)
+```kotlin
+views {
 
+  view ("CASH_MGMT_DASHBOARD_VIEW", CASH_MGMT_DASHBOARD) {
+    joins {
+      joining(MAPPING) {
+        on(CASH_MGMT_DASHBOARD.ACCT_CODE to MAPPING.BLOOMBERG_REFERENCE_NO)
+      }
+      joining(CUSTODY_POSITIONS) {
+        on(CASH_MGMT_DASHBOARD.ACCOUNT_NUMBER to CUSTODY_POSITIONS.ACCOUNT_NUMBER_PREFERRED_PER_FORMATTED)
+      }
+      joining(FUND_ADMIN_BALANCES) {
+        // unable to join using: "${"      "}${ACCT_CODE}"
+        on(CASH_MGMT_DASHBOARD.ACCT_CODE to FUND_ADMIN_BALANCES.BALANCE_DATE)
+      }
+      joining(FUND_NAV) {
+        on(CASH_MGMT_DASHBOARD.ACCT_CODE to FUND_NAV.BALANCE_DATE)
+      }
+    }
+    
+```
+You can see the complete view file [here](/tutorials/excel-to-genesis/Files/excel-tut-13/).
+
+#### Derived fields
 The conversion has created derived fields - simple calculations based on other fields in the view. Our example includes both IF statements and VAL.
 
-![](/img/views-derived-fields-2.png)
+```kotlin
+derivedField("FINAL_QUANTITY", DOUBLE) {
+        // F: I2
+        withInput(CASH_MVMNT_ORDERS.ACCOUNT, CASH_MGMT_DASHBOARD.POTENTIAL_ADDITIONAL_TBILLS_DEPOSIT) { ACCOUNT, CASH_MGMT_DASHBOARD_POTENTIAL_ADDITIONAL_TBILLS_DEPOSIT -> 
+          if(ACCOUNT == null) return@withInput null
+          if(CASH_MGMT_DASHBOARD_POTENTIAL_ADDITIONAL_TBILLS_DEPOSIT == null) return@withInput null
+          val SUGGESTED_QUANTITY = (CASH_MGMT_DASHBOARD_POTENTIAL_ADDITIONAL_TBILLS_DEPOSIT / 10000.0) * 10000.0
+          SUGGESTED_QUANTITY
+        }
+```
+
 
 ### The data files
 
