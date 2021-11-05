@@ -46,6 +46,7 @@ db.get(Trade.ById("TR_123"))
     * `modify` / `modifyAll`
     * `upsert` / `upsertAll`
     * `delete` / `deleteAll`
+    * `update` / `updateAll` / `updateByRange`
 * Transactions
     * readTransaction
     * writeTransaction
@@ -439,6 +440,75 @@ This will try to delete a record
 3. `deleteAll(List<E>): List<DeleteResult<E>>`
 4. `deleteAll(Flow<E>): List<DeleteResult<E>>`
 
+### Update
+
+The update operation is a condensed syntax for modifying data in the database. It works by providing a scope and a
+transformation. The scope could be one of:
+
+1. `updateBy` - a unique index
+2. `updateRangeBy` - an index range
+3. `updateAll` - a whole table
+
+The transformation is a lambda, where the rows that are in scope are provided one by one. The rows are provided as in
+the database, and can be modified in place, which the changes applied to the database. All update calls will use the
+`safeWriteTransaction` and will be transactional if the database supports it.
+
+In the async entity db the lambda will be of type `E.() -> Unit`. The entity will be the receiver and in the lambda,
+`this` will refer to the row. Which should be modified in place.
+
+In the rx entity db the lambda will be of type `Consumer<E>`. The lambda will have a single parameter, the entity.
+Similar to in the async version, the row should be modified in place.
+
+In both cases, the full record will be provided and values can be read as well as updated. The operations return
+`List<ModifyResult<E>>` for `updateAll` and `updateRangeBy` methods and `ModifyResult<E>` for the `updateBy` operation.
+
+For example:
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+db.updateBy(Trade.byId("xxxxx")) {
+    price = 15.0
+}
+
+db.updateByRange(Trade.byOrderId("xxxx")) {
+    orderStatus = OrderStatus.CANCELLED
+}
+
+db.updateByRange(Trade.byOrderId("xxxx"), Trade.byOrderId("yyyy") {
+    orderStatus = OrderStatus.CANCELLED
+}
+
+db.updateAll<Trade> {
+    orderStatus = OrderStatus.CANCELLED
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+db.updateBy(Trade.byId("xxx"), trade -> {
+    trade.setPrice(15.0);
+}).blockingGet();
+
+db.updateByRange(Trade.byOrderId("xxxx"), trade -> {
+    trade.setTradeType(OrderStatus.CANCELLED);
+}).blockingGet();
+
+db.updateByRange(Trade.byOrderId("xxxx"), Trade.byOrderId("yyyy"), trade -> {
+    trade.setTradeType(OrderStatus.CANCELLED);
+}).blockingGet();
+
+db.updateAll(Trade.class, trade -> {
+    trade.setTradeType(OrderStatus.CANCELLED);
+}).blockingGet();
+```
+
+</TabItem>
+</Tabs>
+
 ## Transactions
 
 If the underlying database supports transactions, then the entity db provides type safe access to these. A
@@ -446,7 +516,12 @@ read-transaction will support the same read operations as the entity db, and a w
 read and write operations. If a write-transaction fails all operations will be reverted. Subscribe operations are not
 supported within transactions.
 
-Currently, this is supported when using **FoundationDb** and **Postgresql**.
+Currently, this is supported when using **FoundationDb** and **Postgresql**. Using transaction on Aerospike will
+result in a failure.
+
+When code is expected to run on multiple database types and transactions transaction and transactions should be used
+when available, developers can use `safeReadTransaction` and `safeWriteTransaction`. This will run operations in the
+block in a single transaction if supported.
 
 One distinction between kotlin and java here is that when using kotlin, the transaction is the receiver in
 the `readTransaction` call. This means that within the block `this` refers to the transaction. In the java world, the
@@ -485,8 +560,8 @@ Single<OrderTrade> oderTrade = db.readTransaction(transaction -> {
 ### Write Transaction
 
 Write transactions ensure all read and write operations are consistent, furthermore, if any exception bubbles up to the
-transaction level, all writes are rolled back. The `writeTransaction` will return
-a `Pair<T, List<EntityWriteResult<*>>>` where `T` is the value returned in the `writeTransaction` lambda.
+transaction level, all writes are rolled back. The `writeTransaction` will return a `Pair<T, List<EntityWriteResult<*>>>`
+where `T` is the value returned in the `writeTransaction` lambda.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
