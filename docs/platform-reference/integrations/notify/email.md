@@ -15,15 +15,15 @@ filename: ```notify.kts```
 ```kotlin
 notify {
 
-    // note: the connection 'id' will default to 'Email' if it's not specified, however if you have multiple connections
+    // note: the connection 'id' will default to 'email1' if it's not specified, however if you have multiple connections
     //       of the same type (in this case email) then it will need to be specified.
-    email( id = "Email1") {
+    email(id = "email1") {
     
             // Default Linux Email SMTP Server
             smtpHost = "localhost"
             smtpPort = 25
             smtpUser = "notifications@genesis.global"
-            smtpUserPw = ""
+            smtpPw = ""
             smtpProtocol = "SMTP"
     }
 

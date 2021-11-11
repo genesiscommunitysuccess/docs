@@ -20,7 +20,7 @@ notify {
 
     // note: the connection 'id' will default to 'Symphony' if it's not specified, however if you have multiple connections
     //       of the same type (in this case symphony) then it will need to be specified. 
-    symphony(id = "Symphony1") {
+    symphony(id = "symphony1") {
 
         sessionAuthHost = "76680.p.symphony.com"
         botUsername = "botusergenesis@genesis.global"
@@ -73,6 +73,8 @@ The Genesis Notify service currently provides additional Symphony operations, ex
 * GATEWAY_CREATE_CHANNEL creates a channel
 * GATEWAY_ADD_MEMBER_TO_CHANNEL adds a user to a channel
 * GATEWAY_REMOVE_MEMBER_FROM_CHANNEL removes a user from a channel
+
+- note: where there is more than one symphony connection defined, these operations act upon the first listed.
 
 ```kotlin
 package global.genesis.message.core.event.notify
