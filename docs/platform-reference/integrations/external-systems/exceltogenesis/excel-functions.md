@@ -1,8 +1,8 @@
 ---
 id: excel-functions
-sidebar_label: Excel Functions
-title: Excel Functions
-sidebar_position: 210
+sidebar_label: Excel functions
+title: Excel functions
+sidebar_position: 20
 
 ---
 ## Functions converted by ExcelToGenesis

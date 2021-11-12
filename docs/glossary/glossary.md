@@ -218,7 +218,13 @@ Plain Old Java Object
 ## POM
 
 Project Object Model
-A key project file for Maven, provided as xml.
+
+The key project file for Maven, provided as an xml file.
+The xml file contains information about the project and its configuration details, such as project dependencies, plugins and build profiles.  
+Maven uses these details to build the project.
+Genesis provides a standard pom.xls that ensures that all applications are created with a consistent structure and set of file names.
+For more information on maven and pom, go to the [Maven website](https://maven.apache.org/guides/introduction/introduction-to-the-pom.html).
+
 
 ## R
 
