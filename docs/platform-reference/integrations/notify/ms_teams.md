@@ -14,3 +14,4 @@ Microsoft Teams provides a mechanism for exposing its channels to a remote syste
 | GATEWAY_TYPE | should be set to MsTeamsChannel |
 | GATEWAY_VALUE | Teams WebHook Url |
 | INCOMING_TOPIC | Do not currently support incoming messages |
+| CONNECTION_ID | N/A
