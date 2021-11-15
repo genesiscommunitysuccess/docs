@@ -31,9 +31,7 @@ You have:
 
 We are going to build the rest at speed.
 
-Overall, the server for the application we shall build looks like this:
 
-![](/img/colour-diagram-updated.png)
 
 In itself, this is not a very useful application , but it is a valuable learning tool. As you work through each part,  it will introduce you to many of the features you’ll be working with when you create your own applications:
 
