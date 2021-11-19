@@ -4,7 +4,7 @@ title: Data-grid
 sidebar_position: 60
 ---
 
-A more light-weight grid for scenarios where you don't need the full power of [Ag-Grid](/web-ui-reference/components/presentation/ag-grid/).
+A more light-weight grid for scenarios where you don't need the full power of [Ag-Grid](/web-ui-reference/components/ag-grid/ag-grid-intro).
 
 The `alpha-data-grid` component is used to display tabular data. The `alpha-data-grid-row` and `alpha-data-grid-cell` components are typically created programmatically by the parent grid but some authors may find it useful to create them manually.
 

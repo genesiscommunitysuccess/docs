@@ -76,4 +76,4 @@ There are over 40 components provided out of the box with a Genesis Foundation U
 
 * [Form](/web-ui-reference/components/form/button/), such as button, checkbox, text field etc.
 * [Interaction](/web-ui-reference/components/interaction/accordion/), such tabs, modal, tooltip etc.
-* [Presentation & Visualisation](/web-ui-reference/components/presentation/ag-grid/) such as grids, cards, progress indicators etc.
+* [Presentation & Visualisation](/web-ui-reference/components/ag-grid/ag-grid-intro) such as grids, cards, progress indicators etc.

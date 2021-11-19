@@ -8,25 +8,30 @@ id: symphony
 [Symphony](http://symphony.com) is a secure instant messaging service focused on financial companies. 
 To make Symphony services available to Genesis, including the sending and receiving of messages, you need to provision [symphony service](https://symphony.com/participate) and configure a [symphony bot](https://docs.developers.symphony.com/developer-tools/developer-tools/bdk-2.0).
 
-### System Definition configuration
+### Symphony Configuration
 
 The following configuration details are an example of Genesis Symphony connection details. Genesis requires the use of Symphony POD, Symphony Bot and the generation of private/public key pairs. 
-This is covered extensively in the Symphony Documentation.      
+This is covered extensively in the Symphony Documentation.  
+
+filename: ```notify.kts```
 
 ```kotlin
-// Symphony Config
-item(name = "SYMPHONY_SESSION_AUTH_HOST", value = "76680.p.symphony.com")
-item(name = "SYMPHONY_SESSION_AUTH_PORT", value = 443)
-item(name = "SYMPHONY_KEY_AUTH_HOST", value = "76680.p.symphony.com")
-item(name = "SYMPHONY_KEY_AUTH_PORT", value = 443)
-item(name = "SYMPHONY_POD_HOST", value = "76680.p.symphony.com")
-item(name = "SYMPHONY_POD_PORT", value = 443)
-item(name = "SYMPHONY_AGENT_HOST", value = "76680.p.symphony.com")
-item(name = "SYMPHONY_AGENT_PORT", value = 443)
-item(name = "SYMPHONY_BOT_USERNAME", value = "botusergenesis@genesis.global")
-item(name = "SYMPHONY_BOT_EMAIL_ADDRESS", value = "botusergenesis@genesis.global")
-item(name = "SYMPHONY_BOT_PRIVATE_KEY_PATH", value = "/home/priss/run/site-specific/cfg/symphony/rsa/")
-item(name = "SYMPHONY_BOT_PRIVATE_KEY_NAME", value = "76680.p.symphonybotkey.pem")
+notify {
+
+    // note: the connection 'id' will default to 'Symphony' if it's not specified, however if you have multiple connections
+    //       of the same type (in this case symphony) then it will need to be specified. 
+    symphony(id = "symphony1") {
+
+        sessionAuthHost = "76680.p.symphony.com"
+        botUsername = "botusergenesis@genesis.global"
+        botPrivateKeyPath = "/home/priss/run/site-specific/cfg/symphony/rsa/"
+        botPrivateKeyName = "bot1.test.pem"
+        appId = "GENESIS_EXTENSION_APP"  // optional, required for Symphony OBO feature
+    }
+    
+    // optionally include additional connections, including additional Symphony, Email or Microsoft Teams connections 
+}
+
 ```
 
 Where you have configured a Symphony Gateway for handling incoming messages, any attachments to incoming messages will be dropped on the server to the following configured directory parameter `DOCUMENT_STORE_BASEDIR` . For example:
@@ -48,6 +53,7 @@ Also, if the incoming message is configured to publish to a topic, the filename 
 | GATEWAY_TYPE | For Symphony connection this might be SymphonyRoom, SymphonyByUserEmail, SymphonyRoomReqRep|
 | GATEWAY_VALUE | This is the room name specified as Symphony Conversation Id Or [Stream Id](https://docs.developers.symphony.com/building-bots-on-symphony/datafeed/overview-of-streams).|
 | INCOMING_TOPIC | When the GATEWAY_TYPE is specified as SymphonyRoom, then Incoming messages are directed to this TOPIC. <br />  When the GATEWAY_TYPE is specified as SymphonyRoomReqRep then it's treated as colon-separated string specifying the PROCESS_NAME:EVENT_HANDLER_NAME, such that incoming messages will be directed to the named Event Handler running in the named process |
+| CONNECTION_ID | This should reference the connection `id` specified in the ```notify.kts``` file. Note if not id is specified in the connection, then you should use the default id of `Symphony`
 
 #### NOTIFY
 | Field Name | Usage |
@@ -67,6 +73,8 @@ The Genesis Notify service currently provides additional Symphony operations, ex
 * GATEWAY_CREATE_CHANNEL creates a channel
 * GATEWAY_ADD_MEMBER_TO_CHANNEL adds a user to a channel
 * GATEWAY_REMOVE_MEMBER_FROM_CHANNEL removes a user from a channel
+
+- note: where there is more than one symphony connection defined, these operations act upon the first listed.
 
 ```kotlin
 package global.genesis.message.core.event.notify

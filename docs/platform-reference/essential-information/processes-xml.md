@@ -5,9 +5,14 @@ id: processes-xml
 sidebar_position: 2
 
 ---
-Each application must have a *-processes.xml* file. This contains the configuration of each microservice (data server, request server and event-handler etc). Very important commands like startServer, killServer, startProcess and killProcess all refer to the processes.xml file
+Each application must have a **-processes.xml** file. This contains the configuration of each microservice (data server, request server and event-handler etc). It is generated automatically when you [create a new Genesis project using maven](/platform-reference/essential-information/starting-from-scratch/).
 
-When you run the command `genesisInstall`, details of all *-processes.xml* files will be aggregated in a single newly-generated processes.xml file in the *generated* folder
+If you add new processes, you need to add their details to the _application_**-processes.xml** file
+
+When you run the command `genesisInstall`, the details of this file are aggregated along with details from internal Genesis files (for example, **auth-processes.xml**) into a single newly-generated **processes.xml** file in the **generated** folder.
+
+Very important commands like **startServer**, **killServer**, **startProcess** and **killProcess** all refer to the generated file to check which processes they need to act on.
+
 
 Here is an example of a generated processes.xml file for an application that has:
 
@@ -17,6 +22,7 @@ Here is an example of a generated processes.xml file for an application that has
 * a consolidator
 * a streamer and streamer-client
 
+You can see that this file has separate code blocks for each of the application's processes. Each code block has tags that define the characteristics of the process.
 
 ```xml
 <processes>
@@ -69,7 +75,7 @@ Here is an example of a generated processes.xml file for an application that has
       <package>global.genesis.streamerclient.pal</package>
       <script>trading_app-streamer-client.kts</script>
   </process>
-  <process name="TRADING_APP-STREAMER">
+  <process name="TRADING_APP_STREAMER">
       <start>true</start>
       <options>-Xmx128m -DXSD_VALIDATE=false</options>
       <module>genesis-pal-streamer</module>
@@ -79,37 +85,91 @@ Here is an example of a generated processes.xml file for an application that has
 </processes>
 ```
 
-### Tags
+## Tags
 
-Each tag is explained below.
+For each process, the tags define key information. Let's look at the tags that are available.
 
-The `dependency` tag defines the processes that the current process is dependent on. In the above example, the "TRADING_APP_CONSOLIDATOR" process will start when all its dependencies have been started.
 
-The `loggingLevel` tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to explicitly declare that you would like to log all the received/sent network messages.
+### dependency
 
-The `classpath` tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma separated and need to exist within a "lib" folder for any of the genesis products in the environment.
-You can use wildcards as well like above example for TRADING_APP_DATASERVER
+This tag defines the processes that the current process is dependent on. In the above example, the **TRADING_APP_CONSOLIDATOR** process will only start once the **TRADING_APP_EVENT_HANDLER** process is running. 
 
-The `start` tag defines whether the process needs to be started when startServer command is executed and whether to show this process in the mon command display. Default value is true
+When you are defining the process in your application's **process.xml**, this tag is optional.
 
-The `options` tag defines JVM arguments
+### loggingLevel
 
-The `package` tag defines which package the process should refer to from framework
+This tag defines the default log level for the process, which is based on [slf4j](http://www.slf4j.org/) levels. It also accepts DATADUMP_ON/DATADUMP_OFF to explicitly declare that you would like to log all the received/sent network messages.
 
-The `module` tag defines which module the process should refer to from framework. It refers to a base jar file. In the above example module genesis-pal-eventhandler means look for any jar file with the text genesis-pal-eventhandler and get all the classpath dependencies available for it
+When you are defining the process in your application's **process.xml**, this tag is optional.
 
-The `config` tag defines which config file the process should refer
+### classpath 
 
-The `script` tag defines which script file the process should refer
+This tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated and need to exist within a "lib" folder for any of the genesis products in the environment.
 
-The `language` tag defines what language the script is using. Default value is Groovy. Accepted values are \[pal, groovy, R\]
+You can use wild cards in your specification. This can be seen in the **classpath** for the **TRADING_APP_DATASERVER** configuration in the example above.
 
-The `scheduleRestart` tag accepts boolean value if set to true; this indicates that the process must be restarted automatically it dies unexpectedly. Default value is false
+When you are defining the process in your application's **process.xml**, this tag is optional.
+## start
 
-The `groupId` tag defines which group the project belongs to. Example: genesis and auth processes belong to GENESIS and AUTH groupId respectively. For any new application, the value for groupId will be **application name**. Commands startGroup and killGroup will use groupId to start/kill groups of processes
+This tag defines whether the process needs to be started when startServer command is executed and whether to show this process in the mon command display. Default value is true
 
-The `description` tag describes the process
+### options
 
-The `primaryOnly` tag accepts boolean value. Defines which processes are set to run on primary nodes only in a cluster ex: GENESIS_AUTH_CONSOLIDATOR. Default value is false
+This tag defines JVM arguments.
 
-The `arguments` tag: This helps in hard-coding the process arguments while starting the processes,  since some processes always need arguments on startup
+When you are defining the process in your application's **process.xml**, this tag is optional.
+
+### package
+
+This tag defines which package the process should refer to. All Genesis source code is contained in packages. So, in the example above, the configuration for the **TRADING_APP_STREAMER** process points to the source code in the package **global.genesis.streamer.pal**.
+
+### module
+This tag defines where in the package (see above) the process should look for its binaries - base jar files. In the above example, the configuration of the **TRADING_APP_EVENT_HANDLER** has a **module** tag that points to **genesis-pal-eventhandler**.  This finds every jar file with the text **genesis-pal-eventhandler** and gets all the relevant classpath dependencies.
+
+When you are defining the process in your application's **process.xml**, this tag is mandatory.
+
+### config
+
+This tag defines which config file the process should refer to.
+
+When you are defining the process in your application's **process.xml**, this tag is mandatory for some services.
+
+### script
+
+This tag defines which script file the process should refer to. 
+
+When you are defining the process in its **process.xml**, if the process uses scripts, then you have to specify the script file using this tag. In the example above, the **TRADING_APP_REQEST_SERVER** has a script tag identifying **trading_app-reqrep.kts**, which is where the configuration of the request server exists. If you are not using scripts for the process, then this tag is not needed.
+
+### langauge
+
+This tag defines what language the script is using. The default value is Groovy. Accepted values are \[pal, groovy, R\].
+
+When you are defining the process in your application's **process.xml**, this tag is mandatory if you have specified a script file.
+
+
+### scheduleRestart
+
+This tag requires a boolean value. It controls what the platform does if the process dies unexpectedly. If set to **true**; the process will be restarted automatically. The default value is **false**.
+
+When you are defining the process in your application's **process.xml**, this tag is optional.
+
+### groupId
+
+Use this tag if you want to make the process part of a pre-defined group. You must specify the **groupID** of the group you have created. For example, the genesis process belongs to the GENESIS group. For any new application, the value for groupId will be *application name*. The commands **startGroup** and **killGroup** use the **groupId** to start or kill groups of processes.
+
+When you are defining the process in your application's **process.xml**, this tag is optional.
+
+### description
+This tag provides a simple description of the process. 
+
+When you are defining the process in your application's **process.xml**, this tag is optional.
+
+### primaryOnly
+This tag specifies that the process can only run on the primary node in a cluster. It requires a boolean value: **true** or **false**. The default value is false.
+
+When you are defining the process in your application's **process.xml**, this tag is optional.
+
+### arguments
+This tag helps in hard-coding the process arguments for starting the processes,  since some processes always need arguments on startup.
+
+When you are defining the process in your application's **process.xml**, this tag is optional.

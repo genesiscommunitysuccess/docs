@@ -31,9 +31,11 @@ You have:
 
 We are going to build the rest at speed.
 
-Overall, the server for the application we shall build looks like this:
+here is a high-level view of what we are going to build:
 
-![](/img/colour-diagram-updated.png)
+
+![](/img/Colour-diagram-updated.png)
+
 
 Note straightaway that our overall application contains two separate applications, each with its own database. One application provides reference data, such as counterparty IDs, while the other provides details of trades done. You will see that a single data model can be used to set up both these applications.
 
