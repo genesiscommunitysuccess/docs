@@ -5,7 +5,9 @@ sidebar_label: Starting from scratch
 sidebar_position: 4
 
 ---
+
 If you want to start a new Genesis project from scratch, you can do this using a predefined maven archetype. This page takes you through the steps to achieve this. When you have finished, you will have a standard project structure and you will have generated fields that can be used in tables and views.
+
 
 You must have  JDK Maven and IntelliJIDEA in order to do this. These instructions are based on JDK 11.0.11, Maven 3.8.1 and IntelliJIDEA 2021.2.
 
@@ -46,7 +48,7 @@ Once the project has been built, you can open it in IntelliJIDEA. This is the re
 
 Once the project is open, note that it is multi-module maven project. The README.md contains a high-level overview of the generated projects.
 
-Starting from the top, let's open **trade-101-config**. It contains all the configuration. Navigate to **trade-101-config/src/main/resources/config/** to explore them. Each file is initially empty, and contain only the skeleton structure. 
+Starting from the top, let's open **trade-101-config**. It contains all the configuration. Navigate to **trade-101-config/src/main/resources/config/** to explore them. Each file is initially empty, and contains only the skeleton structure. 
 
 ## 4. Add some fields
 
@@ -58,7 +60,7 @@ fields {
 }
 ```
 
-We can add three simple fields to make start:
+We can add three simple fields to make a start:
 
 ```kotlin
 fields {
@@ -74,9 +76,9 @@ So that was easy. Now you know what your fields file looks like.
 
 ## 5. Generate the Fields
 
-The next project to explore is **trade-101-dictionary-cache**. It depends on **trade-101-config** and contains the generated code based on the configuration. To explore the generated code, navigate to **trade-101-dictionary-cache/target/generated/sources/fields/global/genesis/gen/config/fields/Fields.kts**. 
+Now look at **trade-101-dictionary-cache**. It depends on **trade-101-config** and contains the generated code based on the configuration. To explore the generated code, navigate to **trade-101-dictionary-cache/target/generated/sources/fields/global/genesis/gen/config/fields/Fields.kts**. 
 
-Here, you will find Fields object with pre-generated literals - these are fields that are commonly used in trading applications; they get generated out-of-the box for faster development. To see the fields you have just added, you need to build the project again:
+Here, you will find a Fields object with pre-generated literals - these are fields that are commonly used in trading applications; they get generated out-of-the box to help you develop faster . To see the fields you have just added, you need to build the project again:
 
 ```bash
 mvn package
