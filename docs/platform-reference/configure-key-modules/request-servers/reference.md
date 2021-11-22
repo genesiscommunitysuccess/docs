@@ -98,7 +98,12 @@ requestReplies {
 
 ### Where block
 
-The `where` block enables you to specify the conditions for running the particular code block.
+The `where` block enables you to specify the conditions for running the particular code block. The where block can take two optional parameters:
+    * instrumentDetails - this represents a row from the table or view
+    * parameters - this a GenesisSet which holds the parameters that are passed on the request. The parameters can be accessed by using the GenesisSet getters to access named parameters.
+
+In this contrived example below the where block filters rows that are not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG". 
+
 
 ```kotlin
 requestReplies {
@@ -119,8 +124,9 @@ requestReplies {
             EXCHANGE_ID
         }
 
-        where { instrumentDetails, _ ->
-            "ALLL3" == instrumentDetails.instrumentCode
+        where { instrumentDetails, parameters ->
+            "ALLL3" == instrumentDetails.instrumentCode &&                         
+             parameters.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
         }
     }
 }
