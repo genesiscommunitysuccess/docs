@@ -520,7 +520,7 @@ read transaction will support the same read operations as the entity db, and a w
 read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not
 supported within transactions.
 
-Currently, transactions arebsupported on **FoundationDb** and **Postgresql**. Using transaction on Aerospike will
+Currently, transactions are supported on **FoundationDb** and **Postgresql**. Using transaction on Aerospike will
 result in a failure.
 
 When code is expected to run on multiple database types, transactions should be used when available. You can use `safeReadTransaction` and `safeWriteTransaction`. These will run operations in the
@@ -777,7 +777,7 @@ Generated _index classes_ are nested inside the _entity classes_; for each index
 input in some database operations. The database distinguishes between _unique_ and _non-unique_
 indices. In some cases, the database only accepts _unique_ indices, and in other cases it will accept either.
 
-When building index classes, you don not have to provide all fields. However, the fields you provide must always be listed in order.
+When building index classes, you do not have to provide all fields. However, the fields you provide must always be listed in order.
 A unique index will turn into a non-unique index if not all fields are provided.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
