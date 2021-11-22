@@ -454,7 +454,7 @@ transformation. The scope could be one of:
 * `updateAll` - a whole table
 
 The transformation is a lambda, where the rows that are in scope are provided one by one. The rows are provided as in
-the database, and can be modified in place, which the changes applied to the database. All update calls will use the
+the database, and can be modified in place, with the changes applied to the database. All update calls will use the
 `safeWriteTransaction` and will be transactional if the database supports it.
 
 * In the async entity db, the lambda will be of type `E.() -> Unit`. The entity will be the receiver and in the lambda,
