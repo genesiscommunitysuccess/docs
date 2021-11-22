@@ -1,6 +1,6 @@
 ---
-title: 'EntityDb Api Reference'
-sidebar_label: 'EntityDb Api Reference'
+title: 'EntityDb API reference'
+sidebar_label: 'EntityDb API reference'
 sidebar_position: 2
 id: entity-db
 ---
@@ -56,21 +56,21 @@ db.get(Trade.ById("TR_123"))
     * `bulkSubscribe`
     * `rangeSubscribe`
 
-## Entity Types
+## Entity types
 
 The entity database uses generated table and view entity types and indexes to perform type-safe operations on the
 database.
 
 On views, the indices of the root table will become indices if:
 
-1. the index is the primary key
-2. the first field of the index used in the view
+* the index is the primary key
+* the first field of the index used in the view
 
-If a view has any one-to-many joins, then all unique indices, including the primary key will get downgraded to a
+If a view has any one-to-many joins, then all unique indices, including the primary key, will be downgraded to a
 non-unique index.
 
 In the examples below, kotlin will use the `AsyncEntityDb`, whereas the java examples will use
-the `RxEntityDb` type. The `AsyncEntityDb` is only available through kotlin, the `RxEntityDb` however can be
+the `RxEntityDb` type. The `AsyncEntityDb` is only available through kotlin, but the `RxEntityDb` can be
 used in both java and kotlin.
 
 We shall use the following table definition as our base:
@@ -129,11 +129,11 @@ found.
 
 The following overloads exist for get; fields is a `Set<String>`.
 
-1. `get(E, EntityIndexReference<E>, fields) : E?`
-2. `get(E, fields) : E?`
-3. `get(E, EntityIndexReference<E>) : E?`
-4. `get(UniqueEntityIndex<E>, fields) : E?`
-5. `get(UniqueEntityIndex<E>) : E?`
+* `get(E, EntityIndexReference<E>, fields) : E?`
+* `get(E, fields) : E?`
+* `get(E, EntityIndexReference<E>) : E?`
+* `get(UniqueEntityIndex<E>, fields) : E?`
+* `get(UniqueEntityIndex<E>) : E?`
 
 #### Syntax
 
@@ -184,8 +184,8 @@ a `List<Pair<String, NonUniqueEntityIndex<E>>>`, where the `String` is a unique 
 
 #### Overloads
 
-1. `getAll(requestDetails: Flow<Pair<String, UI<E>>): Map<String, E?>`
-2. `getAll(requestDetails: List<Pair<String, UI<E>>): Map<String, E?>`
+* `getAll(requestDetails: Flow<Pair<String, UI<E>>): Map<String, E?>`
+* `getAll(requestDetails: List<Pair<String, UI<E>>): Map<String, E?>`
 
 ```kotlin
 val map = db.getAll(listOf("A" to Trade.byId("TRADE_A"), "B" to Trade.byId("TRADE_B")))
@@ -196,15 +196,15 @@ val recordB = map["B"]
 
 ### getAllAsList
 
-This operation is similar to the above, but takes a `List<NonUniqueEntityIndex<E>>`, and will return a `List<E?>`.
+This operation is similar to the one above, but takes a `List<NonUniqueEntityIndex<E>>`, and will return a `List<E?>`.
 The results are returned in the order they were requested and will be `null` if no record was found. The result
 list is guaranteed to be the same count as the input.
 
 #### Overloads
 
-1. `getAllAsList(Flow<UI<E>>): List<E?>`
-2. `getAllAsList(List<UI<E>>): List<E?>`
-3. `getAllAsList(vararg UI<E>): List<E?>`
+* `getAllAsList(Flow<UI<E>>): List<E?>`
+* `getAllAsList(List<UI<E>>): List<E?>`
+* `getAllAsList(vararg UI<E>): List<E?>`
 
 ```kotlin
 val list = db.getAllAsList(Trade.byId("TRADE_A"), Trade.byId("TRADE_B"))
@@ -223,15 +223,15 @@ the whole table after the provided record.
 
 #### Overloads
 
-1. `getBulk<E>(): Flow<E>` (kotlin only)
-2. `getBulk([Class<E> /  KClass<E>]): Flow<E>`
-3. `getBulk(UR<E>): Flow<E>`
-4. `getBulk(UR<E>, fields): Flow<E>`
-5. `getBulk(UR<E>, E, fields): Flow<E>` (continuation)
-6. `getBulkFromEnd(UR<E>): Flow<E>`
-7. `getBulkFromEnd(UR<E>, E), E: Flow<E>` (continuation)
-7. `getBulkFromEnd(UR<E>, E, fields), E: Flow<E>` (continuation)
-8. `getBulkFromEnd(UR<E>, fields): Flow<E>`
+* `getBulk<E>(): Flow<E>` (kotlin only)
+* `getBulk([Class<E> /  KClass<E>]): Flow<E>`
+* `getBulk(UR<E>): Flow<E>`
+* `getBulk(UR<E>, fields): Flow<E>`
+* `getBulk(UR<E>, E, fields): Flow<E>` (continuation)
+* `getBulkFromEnd(UR<E>): Flow<E>`
+* `getBulkFromEnd(UR<E>, E), E: Flow<E>` (continuation)
+* `getBulkFromEnd(UR<E>, E, fields), E: Flow<E>` (continuation)
+* `getBulkFromEnd(UR<E>, fields): Flow<E>`
 
 #### Syntax
 
@@ -283,21 +283,21 @@ index. If we pass 1 for `numKeyFields` the range will return records by `TRADE_T
 
 #### Overloads
 
-1. `getRange(E, EntityIndexReference<E>, numKeyFields): Flow<E>`
-2. `getRange(E, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
-3. `getRange(E, E?, EntityIndexReference<E>, numKeyFields): Flow<E>`
-4. `getRange(E, E?, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
-5. `getRange(EntityIndex<E>, numKeyFields): Flow<E>`
-6. `getRange(EntityIndex<E>, numKeyFields, fields): Flow<E>`
-7. `getRange(NonUniqueEntityIndex<E>, NonUniqueEntityIndex<E>): Flow<E>`
-8. `getRange(NonUniqueEntityIndex<E>): Flow<E>`
-9. `getRange(NonUniqueEntityIndex<E>, fields): Flow<E>`
-10. `getRange(EntityIndex<E>, EntityIndex<E>, numKeyFields): Flow<E>`
-11. `getRange(EntityIndex<E>, EntityIndex<E>, numKeyFields, fields): Flow<E>`
-12. `getRangeFromEnd(E, E, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
-13. `getRangeFromEnd(E, E, EntityIndexReference<E>, numKeyFields): Flow<E>`
-14. `getRangeFromEnd(EntityIndex<E>, EntityIndex<E>, numKeyFields, fields): Flow<E>`
-15. `getRangeFromEnd(EntityIndex<E>, EntityIndex<E>, numKeyFields): Flow<E>`
+* `getRange(E, EntityIndexReference<E>, numKeyFields): Flow<E>`
+* `getRange(E, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
+* `getRange(E, E?, EntityIndexReference<E>, numKeyFields): Flow<E>`
+* `getRange(E, E?, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
+* `getRange(EntityIndex<E>, numKeyFields): Flow<E>`
+* `getRange(EntityIndex<E>, numKeyFields, fields): Flow<E>`
+* `getRange(NonUniqueEntityIndex<E>, NonUniqueEntityIndex<E>): Flow<E>`
+* `getRange(NonUniqueEntityIndex<E>): Flow<E>`
+* `getRange(NonUniqueEntityIndex<E>, fields): Flow<E>`
+* `getRange(EntityIndex<E>, EntityIndex<E>, numKeyFields): Flow<E>`
+* `getRange(EntityIndex<E>, EntityIndex<E>, numKeyFields, fields): Flow<E>`
+* `getRangeFromEnd(E, E, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
+* `getRangeFromEnd(E, E, EntityIndexReference<E>, numKeyFields): Flow<E>`
+* `getRangeFromEnd(EntityIndex<E>, EntityIndex<E>, numKeyFields, fields): Flow<E>`
+* `getRangeFromEnd(EntityIndex<E>, EntityIndex<E>, numKeyFields): Flow<E>`
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -399,10 +399,10 @@ function takes multiple records, and has several overloads:
 
 #### Overloads
 
-1. `insert(E): InsertResult<E>`
-2. `insertAll(vararg E): List<InsertResult<E>>`
-3. `insertAll(List<E>): List<InsertResult<E>>`
-4. `insertAll(Flow<E>): List<InsertResult<E>>`
+* `insert(E): InsertResult<E>`
+* `insertAll(vararg E): List<InsertResult<E>>`
+* `insertAll(List<E>): List<InsertResult<E>>`
+* `insertAll(Flow<E>): List<InsertResult<E>>`
 
 ### Modify
 
@@ -410,13 +410,13 @@ This will try to modify a record in the database. If the record does not exist, 
 
 #### Overloads
 
-1. `modify(EntityModifyDetails<E>): ModifyResult<E>`
-2. `modify(E): ModifyResult<E>`
-3. `modify(E, UniqueEntityIndexReference<E>): ModifyResult<E>`
-4. `modifyAll(vararg E): List<ModifyResult<E>>`
-5. `modifyAll(vararg EntityModifyDetails<E>): List<ModifyResult<E>>`
-6. `modifyAll(List<EntityModifyDetails<E>>): List<ModifyResult<E>>`
-7. `modifyAll(Flow<EntityModifyDetails<E>>): List<ModifyResult<E>>`
+* `modify(EntityModifyDetails<E>): ModifyResult<E>`
+* `modify(E): ModifyResult<E>`
+* `modify(E, UniqueEntityIndexReference<E>): ModifyResult<E>`
+* `modifyAll(vararg E): List<ModifyResult<E>>`
+* `modifyAll(vararg EntityModifyDetails<E>): List<ModifyResult<E>>`
+* `modifyAll(List<EntityModifyDetails<E>>): List<ModifyResult<E>>`
+* `modifyAll(Flow<EntityModifyDetails<E>>): List<ModifyResult<E>>`
 
 ### Upsert
 
@@ -424,12 +424,12 @@ This will try to modify a record in the database. If the record does not exist, 
 
 #### Overloads
 
-1. `upsert(EntityModifyDetails<E>): UpsertResult<E>`
-2. `upsert(E): UpsertResult<E>`
-3. `upsertAll(vararg E): List<UpsertResult<E>>`
-4. `upsertAll(vararg EntityModifyDetails<E>): List<UpsertResult<E>>`
-5. `upsertAll(List<EntityModifyDetails<E>>): List<UpsertResult<E>>`
-6. `upsertAll(Flow<EntityModifyDetails<E>>): List<UpsertResult<E>>`
+* `upsert(EntityModifyDetails<E>): UpsertResult<E>`
+* `upsert(E): UpsertResult<E>`
+* `upsertAll(vararg E): List<UpsertResult<E>>`
+* `upsertAll(vararg EntityModifyDetails<E>): List<UpsertResult<E>>`
+* `upsertAll(List<EntityModifyDetails<E>>): List<UpsertResult<E>>`
+* `upsertAll(Flow<EntityModifyDetails<E>>): List<UpsertResult<E>>`
 
 ### Delete
 
@@ -437,12 +437,12 @@ This will try to delete a record.
 
 #### Overloads
 
-1. `delete(E): DeleteResult<E>`
-1. `delete(UniqueEntityIndex<E>): DeleteResult<E>`
-2. `deleteAll(vararg E): List<DeleteResult<E>>`
-2. `deleteAll(vararg UniqueEntityIndex<E>): List<DeleteResult<E>>`
-3. `deleteAll(List<E>): List<DeleteResult<E>>`
-4. `deleteAll(Flow<E>): List<DeleteResult<E>>`
+* `delete(E): DeleteResult<E>`
+* `delete(UniqueEntityIndex<E>): DeleteResult<E>`
+* `deleteAll(vararg E): List<DeleteResult<E>>`
+* `deleteAll(vararg UniqueEntityIndex<E>): List<DeleteResult<E>>`
+* `deleteAll(List<E>): List<DeleteResult<E>>`
+* `deleteAll(Flow<E>): List<DeleteResult<E>>`
 
 ### Update
 
@@ -520,7 +520,7 @@ read transaction will support the same read operations as the entity db, and a w
 read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not
 supported within transactions.
 
-Currently, transactions are supported on **FoundationDb** and **Postgresql**. Using transaction on Aerospike will
+Currently, transactions are supported on **FoundationDb** and **Postgresql**. Using transaction on **Aerospike** will
 result in a failure.
 
 When code is expected to run on multiple database types, transactions should be used when available. You can use `safeReadTransaction` and `safeWriteTransaction`. These will run operations in the
@@ -531,7 +531,7 @@ There is a distinction between using kotlin and java here.
 * When using kotlin, the transaction is the receiver in the `readTransaction` call. This means that within the block, `this` refers to the transaction. 
 * When using java world, the transaction is the first parameter of the lambda.
 
-### Read Transactions
+### Read transactions
 
 Read transactions ensure all read operations are consistent. Intervening writes will not affect reads within the
 transaction. The return value in the transaction will also be returned from the transaction. For the `RxEntityDb`, it
@@ -608,7 +608,7 @@ For tables, this works in the standard way. You subscribe to updates, and:
 * when a record is modified we get a modify update 
 * when a record is deleted we get a delete updatethe published update will
 
-#### views
+#### Views
 For views, when a record is inserted to the root table, you get an insert update. Modify and delete work the same way. 
 
 However, if there is an inner join, there is a range of outcomes.
@@ -666,7 +666,7 @@ final var subscription = db.subscribe(Trade.class)
 </TabItem>
 </Tabs>
 
-### Bulk Subscribe
+### Bulk subscribe
 
 The `bulkSubscribe` combines a `getBulk` and a `subscribe` call into a single function. This operation is useful when
 a class needs to read a full table and then keep updated of changes to the underlying table or view. 
@@ -723,9 +723,9 @@ within the last 2 hours). The dynamic range will be updated on a schedule, eithe
 * `rangeSubscribe(rangeProvider, rangeProvider, updateFrequency, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
 * `rangeSubscribe(rangeProvider, updateFrequency, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
 
-## Entity Reference
+## Entity reference
 
-### Generated Entity Class
+### Generated entity class
 
 Generated _entity classes_ are classes that represent a single row in table or a view. In our example, `Trade`. Instances
 of these classes can be used in some database operations as inputs, and most often included in the output. _Entity
@@ -770,7 +770,7 @@ final var byId = trade.byId();
 </TabItem>
 </Tabs>
 
-### Generated Index Class
+### Generated index cClass
 
 Generated _index classes_ are nested inside the _entity classes_; for each index, a class is generated. In our
 `TRADE` example we have `Trade.ById`, `Trade.ByTypeId` and `Trade.ByDate`. Instances of these classes can be used as
