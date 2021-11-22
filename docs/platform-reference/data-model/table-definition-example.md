@@ -1,7 +1,7 @@
 ---
 title: 'Table definition example'
 sidebar_label: 'Table definition example'
-sidebar_position: 4
+sidebar_position: 40
 id: table-example
 ---
 

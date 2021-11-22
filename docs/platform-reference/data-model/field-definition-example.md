@@ -1,7 +1,7 @@
 ---
 title: 'Field definition example'
 sidebar_label: 'Field definition example'
-sidebar_position: 3
+sidebar_position: 30
 id: field-example
 ---
 

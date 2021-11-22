@@ -1,7 +1,7 @@
 ---
 title: Define your data model
 sidebar_label: Define your data model
-sidebar_position: 1
+sidebar_position: 10
 id: define
 
 ---
