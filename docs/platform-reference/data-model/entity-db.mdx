@@ -693,7 +693,7 @@ These functions are available in kotlin only:
 
 2. `bulkSubscribe<E>(fields*, delay*, index*, subscribeLocally*, backwardJoins*) : Flow<Bulk<E>>`
 
-### Range Subscribe
+### Range subscribe
 
 Range subscribe is like bulk subscribe, but it combines a `getRange` with `subscribe`. This operation is useful when
 a class needs to read part of a table or view and then keep updated of changes. The range will be applied to the `subscribe`
