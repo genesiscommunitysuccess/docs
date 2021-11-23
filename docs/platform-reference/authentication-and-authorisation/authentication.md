@@ -8,9 +8,9 @@ id: authentication
 
 ## Authentication Types
 
-There are several authentication types to choose from when configuring the auth-preferences.xml file: INTERNAL, LDAP and HYBRID.
+There are several types of authentication that you can specify when you configure the auth-preferences.xml file: INTERNAL, LDAP and HYBRID.
 
-To select one, just change the `type` attribute of the `authentication` field:
+To specify which one to use, just change the `type` attribute of the `authentication` field:
 
 ```xml
 <authentication type="INTERNAL"></authentication>
