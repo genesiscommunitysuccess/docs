@@ -236,7 +236,8 @@ requestReplies {
 ### Ranges
 
 You can specify ranges from the client of the requestReply server by postfixing the request parameter names with _FROM and _TO. The example below shows a client building a GenesisSet request based upon
-the requestReplies defined from previous example. This examples stipulates a textual range between "AMBV4" and "BBDC3". Leaving out FROM will define a top end range, leaving out TO will define a bottom end range.
+the requestReplies defined from previous example. This examples stipulates a price range between 1,000 and 10,000. Leaving out FROM will define a top end range, leaving out TO will define a bottom end range. 
+In addition, ranges which are not based on indexes will perform slower.
 
 ```kotlin
 
@@ -244,8 +245,8 @@ the requestReplies defined from previous example. This examples stipulates a tex
     val request = genesisSet {
     
         "DETAILS" with genesisSet {
-            "INSTRUMENT_CODE_FROM" to "AMBV4"
-            "INSTRUMENT_CODE_TO" to "BBDC3"
+            "LAST_TRADED_PRICE_FROM" to 1_000
+            "LAST_TRADED_PRICE_TO" to 10_000
         }
     }
 
