@@ -143,7 +143,7 @@ Finally, note that **where** clauses can also be used for permissioning. If only
 
 ## Where example
 
-In this example we have a dataserver query based upon on the existing ENHANCED_TRADE_VIEW which filters results whose value is larger than 1 million 
+In this example we have a dataserver query based upon on the existing ENHANCED_TRADE_VIEW which filters results whose value is larger than 1 million.
 
 ```kotlin
 dataServer {
