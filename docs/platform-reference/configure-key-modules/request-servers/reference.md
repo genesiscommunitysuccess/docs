@@ -102,8 +102,8 @@ The `where` block enables you to specify the conditions for running the particul
     * instrumentDetails - this represents a row from the table or view
     * parameters - this a GenesisSet which holds the parameters that are passed on the request. The parameters can be accessed by using the GenesisSet getters to access named parameters.
 
-In this contrived example below, the where block filters rows  hose instrumentCode is not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG". 
-The row parameter represents the rows returned from the table or view definined at the top of the requestReply definition, in this case INSTRUMENT_DETAILS.
+In this contrived example below, the where block filters rows whose instrumentCode is not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG". 
+The row parameter represents the rows returned from the table or view defined at the top of the requestReply definition, in this case INSTRUMENT_DETAILS.
 
 
 
