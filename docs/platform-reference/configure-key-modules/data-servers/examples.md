@@ -155,8 +155,8 @@ dataServer {
                 ENHANCED_TRADE_VIEW.COUNTERPARTY_ID
             }
         }
-        where { 
-            trade -> (trade.quantity * trade.price) > 1000000 
+        where { trade -> 
+            (trade.quantity * trade.price) > 1000000 
         }
     }
 }
