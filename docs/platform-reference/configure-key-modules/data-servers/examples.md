@@ -141,6 +141,27 @@ Also you can use these clauses to focus on a specific set of fields or a single 
 
 Finally, note that **where** clauses can also be used for permissioning. If only users with a specific ID are permitted to have access to this data, you could permission them here.
 
+## Where example
+
+In this example we have a dataserver query based upon on the existing ENHANCED_TRADE_VIEW which filters results whose value is larger than 1 million 
+
+```kotlin
+dataServer {
+
+    query("ALL_TRADES_LARGE_POSITION", ENHANCED_TRADE_VIEW) {
+        permissioning {
+            permissionCodes = listOf("TRADER", "SUPPORT")
+            auth(mapName = "ENTITY_VISIBILITY") {
+                ENHANCED_TRADE_VIEW.COUNTERPARTY_ID
+            }
+        }
+        where { 
+            trade -> (trade.quantity * trade.price) > 1000000 
+        }
+    }
+}
+```
+
 
 ## Indices
 
