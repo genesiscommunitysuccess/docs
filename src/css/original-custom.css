@@ -34,12 +34,8 @@
   --ifm-pre-background: #2B2B2B;
 }
 
-h1 {
-  font-size: 28px;
-  --ifm-link-color: #555;
-}
 h2 {
-  font-size: 24px;
+  font-size: 28px;
   --ifm-link-color: #555;
 }
 

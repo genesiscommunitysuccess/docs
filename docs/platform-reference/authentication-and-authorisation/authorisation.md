@@ -1,7 +1,7 @@
 ---
 title: Authorisation
 sidebar_label: Authorisation
-sidebar_position: 2
+sidebar_position: 40
 id: authorisation
 ---
 
@@ -13,29 +13,30 @@ Authorisation is achieved by permissioning dynamically. This means you can contr
 
 Effectively, you have three levels of control:
 
-**High level**
+**High-level**
 
-You could hide an entire grid from the UI, for example. So one group could view reference data, but this would be hidden from the other groups. Or, you could hide an entire data server. For this, you use RIGHT_CODE. This is like a switch – you can either see it or not, depending on whether the code is TRUE or FALSE.
+You could hide an entire grid from the UI, for example. So one group of users could view reference data, but other groups would not see this. Or, you could hide an entire data server. To achieve this, you use RIGHT_CODE. This is like a switch – you can either see it or not, depending on whether the code is TRUE or FALSE.
 
-**Entity level**
+**Entity-level**
 
-This is row or column-level access to information. Different users all view the same grid, but each one sees different data. This is best explained with these simple examples:
+This is row- or column-level access to information. Different users can all view the same grid, but each one sees different data. This is best explained with these simple examples:
 
 * You can have user A, user B and user C all having the RIGHT_CODE to view a specific grid, but each one sees different trades in that grid. This enables you to separate different trading desks, for example.
 * Each user might only have access to trades for specific customers.
-* By including these permissions in an event handler,  user A can only enter a trade on behalf of a specific set of clients and user B can only enter trades on behalf of a different set of clients.
 
-Similarly, you can have different users seeing different columns in the same grid. This could be used for a support function, for example, where you don’t want the support team to see specific columns of sensitive data, such as who the client for a trade is. It can be specified by using GPAL.
+By including these permissions in an event handler,  user A can only enter a trade on behalf of a specific set of clients and user B can only enter trades on behalf of a different set of clients.
 
-### Users, profiles and rights codes
+Similarly, you can have different users seeing different columns in the same grid. This could be used for a support function, for example. You can prevent the support team from seeing specific columns of sensitive data, such as who the client for a trade is. This can be specified by using GPAL.
 
-Genesis has the concept of users, profiles and right codes. Each have their own table to store the related entity data:
+### Users, profiles and right codes
+
+Genesis has the concept of users, profiles and right codes. For each one, there is a table to store the related entity data:
 
 * USER
 * PROFILE
 * RIGHT
 
-Users gain rights via profiles. So we have tables to determine which users ands rights belong to each given profile. Note that you cannot allocate rights codes directly to a specific user. However, a given user can have multiple profiles.
+Users gain rights via profiles. So we have tables to determine which users and rights belong to each given profile. Note that you cannot allocate right codes directly to a specific user. However, a user can have multiple profiles.
 
 A profile can have zero or more rights and zero or more users.
 
@@ -51,49 +52,48 @@ Related to these tables, we have the RIGHT_SUMMARY table, which contains the sup
 The RIGHT_SUMMARY table entries are automatically maintained by the system in real time. In this way, the rights are easily accessible at speed. The GENESIS_AUTH_MANAGER process manages this table's entries automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY table is updated immediately and all the users in that profile receive the new right automatically.
 
 :::warning
-This table is only automatically maintained when profile user/right entries are maintained via GENESIS_AUTH_MANAGER business events. When updating the data in tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. DbMon or SendIt) then the RIGHT_SUMMARY table will not be automatically maintained.
-In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script should be run and will scan all entries in PROFILE_USER and PROFILE_RIGHT and populate RIGHT_SUMMARY accordingly.
+This table is only automatically maintained when profile user/right entries are maintained via GENESIS_AUTH_MANAGER business events. If you update the data in the tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. **DbMon** or **SendIt**) then the RIGHT_SUMMARY table will not be maintained automatically.
+In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in PROFILE_USER and PROFILE_RIGHT and populates RIGHT_SUMMARY withe the correct data.
 :::
 #### Sample explanation
 
-See the following simple system set-up. We have a set of entities (our user, rights and profiles), a set of profile mappings (to users and rights) and finally the resultant set of right entries we would see in RIGHT_SUMMARY
+See the following simple system set-up. We have a set of entities (our user, rights and profiles), a set of profile mappings (to users and rights) and, finally, the resultant set of right entries we would see in RIGHT_SUMMARY
 
 ![](/img/user-profile-rights-example-simple.png)
 
 So here we have:
-* 3 profiles each with particular rights assigned
+* 3 profiles, each with particular rights assigned
 * 4 users
     * 3 of which simply have one profile assigned each
-    * 1 of which Jenny.Super - Is assigned to have all rights
+    * 1 of which, Jenny.Super - is assigned to have all rights
 
 Looking at the resulting right entries, we see the 3 users with a single profile simply have the same rights as their given profile.
-However, Jenny has multiple profiles, and the resulting right entries she has is the superset of all of the rights which those profiles have assigned.
+However, Jenny has multiple profiles, and the resulting right entries she has is the superset of all of the rights in all those profiles .
 
 Another way of achieving this same set-up would be to have a fourth profile, say SUPER, as per below, and to have all rights assigned to it, and Jenny.Super assigned just to the one profile:
 
 ![](/img/user-profile-rights-example-super.png)
 
-Note how we now have an extra profile, and edits to the PROFILE_USER and PROFILE_RIGHT entries, but still see the same resulting rights
+Note how we now have an extra profile, and edits to the PROFILE_USER and PROFILE_RIGHT entries, but still see the same resulting rights.
 
-As you can tell, this enables you to build powerful combinations, and since Users, Profiles and Profile_Users and Profile_Rights are all editable by system administrators, they can build their own set-up that makes sense for their organisation's set-up.
+As you can tell, this enables you to build powerful combinations, and since Users, Profiles, Profile_Users and Profile_Rights are all editable by system administrators, they can build their own set-up that makes sense for their organisation's set-up.
 
 #### Good design practice
 
-Having profiles as an intemediary between users and rights allows admin users of the system to create complex permission models with no code change. Rights codes generally need to be added to the code, although simple to do, they require a code change. Our advice is to design applications with enough granularity in the rights to ensure code change isn't required.
+Having profiles as an intemediary between users and rights enabkes admin users of the system to create complex permission models with no code change. Rights codes generally need to be added to the code.  Although this is simple to do, it requires a code change. Our advice is to design applications with enough granularity in the rights to ensure that code changes aren't required.
 
-### Entity level (row level)
+### Entity-level (row-level)
 
 The GENESIS_AUTH_PERMS process runs automatically on start-up and creates a memory-mapped file that acts as a big key-value pair.
 For example, User J has access to Counterparty 1, User K has access to Counterparty 2, User L has access to Counterparty 1, User M has access to Counterparty 4, etc. If there is no appropriate entry in the file, the user won’t have access.
 
-You must keep the process running, as it maintains itself automatically whenever any permissions change. If a permission is changed this way, then the change is automatically reflected on screen. If I have a grid on screen with 4 trades from Counterparty 1 and my permission to view that counterparty is withdrawn, those 4 trades disappear from my screen immediately.
+You must keep the GENESIS_AUTH_PERMS process running, as it maintains itself automatically whenever any permissions change. When a permission is changed, then it is automatically reflected on screen. If I have a grid on screen with 4 trades from Counterparty 1 and my permission to view that counterparty is withdrawn, those 4 trades disappear from my screen immediately.
 
 In many cases, you want different people to have access to different functions and different information, based on their roles.  In Genesis, users are not permissioned individually for these purposes. Instead, permissioning is based on roles. You define what information and functions are available to a role, and then you allocate users to these roles. We refer to this as dynamic authorisation. There is nothing to stop you creating a role that has only one user, of course.
 
 ## General approach
 
-On startup, the GENESIS_AUTH_PERMS process performs an initial scan of all entities. For each entity found, it performs authorisation against every user in the system. This builds a 
-full map of permissioned users.
+On startup, the GENESIS_AUTH_PERMS process performs an initial scan of all entities. For each entity found, it performs authorisation against every user in the system. This builds a full map of permissioned users.
 
 By default, any updates to the entity and the USER table will be automatically processed to permission new entities as they are entered into the database.
 
@@ -108,16 +108,16 @@ More than one permission map per table can be created.
 The generic permissions model available in auth automatically builds “auth-perms” maps and also ensures all the admin transactions, dataservers and request reply resources are authorised correctly on a multi-tenant basis. This generic approach might not work for every use case, but it should be good enough for many development scenarios and therefore should cover all the basics out of the box.
 
 ### Configuration
-There is a field called ACCESS_TYPE in the USER_ATTRIBUTES table which will determine what authorisation method should be applied for a particular user.
+There is a field called ACCESS_TYPE in the USER_ATTRIBUTES table. This determines the authorisation method to be applied for a particular user.
 ```kotlin
 field(name = "ACCESS_TYPE", type = ENUM("ALL", "ENTITY", "MULTI_ENTITY", default = "ALL")) 
 ```
 
 *Note*: Only ALL and ENTITY are in working condition at the moment.
 
-Users with ACCESS_TYPE set to ENTITY (e.g. the entity could be represented by COUNTERPARTY_ID) will be restricted in both visibility and entitlements to their own entity.
+Users with ACCESS_TYPE set to ENTITY (e.g. the entity could be represented by COUNTERPARTY_ID) will be permissioned only to see data relating to the value stored in the x field in the USER_ATTRIBUTES table. The name of x field is set in the ADMIN_PERMISSION_ENTITY_FIELD in the system definition file, as you can see in the example below. 
 
-The inner working of this new feature is also controlled by two system definition items:
+
 
 ```kotlin
 systemDefinition {
@@ -128,9 +128,10 @@ systemDefinition {
 }
 ```
 
-These two items will change the structure of auth-tables-dictionary.kts and auth-permissions.templt.xml to accomodate the defined table and field and ensure table/permission data structure is built correctly.
+These two items change the structure of **auth-tables-dictionary.kts** and **auth-permissions.templt.xml** to accomodate the defined table and field, and ensure that the table/permission data structure is built correctly.
 
-USER_ATTRIBUTES table definition in auth-tables-dictionary.kts below:
+Here is the USER_ATTRIBUTES table definition in **auth-tables-dictionary.kts**:
+
 ```kotlin
 val permissionsField = SysDef.systemDefinition["ADMIN_PERMISSION_ENTITY_FIELD"].orElse(null)
 
@@ -159,9 +160,9 @@ table(name = "USER_ATTRIBUTES", id = 1007, audit = details(1052, "AA")) {
     }
 }
 ```
-The permissions field will be added dynamically to USER_ATTRIBUTES so it can be used in our auth transactions to control entitlements.
+The permissions field will be added dynamically to USER_ATTRIBUTES, so it can be used in auth transactions to control entitlements.
 
-The following table will be created as well (ignore MULTI_ENTITY setup for now, still in development) which will be used internally to manage AUTH_PERMS results.:
+The following table will be created as well (ignore MULTI_ENTITY setup for now; this is in development). It is used by the Genesis LCNC Platform to manage AUTH_PERMS results.
 
 ```kotlin
 val permissionsTable = SysDef.systemDefinition["ADMIN_PERMISSION_ENTITY_TABLE"].orElse(null)
@@ -182,7 +183,8 @@ if (permissionsTable != null && permissionsField != null) {
     }
 }
 ```
-Two auth maps exist in auth-permissions.templt.xml to control row visibility of users (in auth dataserver and auth request reply) and also the generic entities. See below:
+There are two auth maps in **auth-permissions.templt.xml** to control how users have visibility of rows (in auth dataserver and auth request reply) and also the generic entities. See below:
+
 ```xml
 <entity name="USER_VISIBILITY"
         tableName="USER"
@@ -230,7 +232,7 @@ Two auth maps exist in auth-permissions.templt.xml to control row visibility of 
     ]]>
 </entity>
 ```
-An example of using ENTITY_VISIBILITY in a dataserver/request-reply can be something like this:
+Here is an example of using ENTITY_VISIBILITY in a data server or request server:
 
 ```kotlin
 query("ALL_BID_OFFER_SELLER_DEALER", BID_OFFER_SELLER_VIEW) {
@@ -249,13 +251,17 @@ query("ALL_BID_OFFER_SELLER_DEALER", BID_OFFER_SELLER_VIEW) {
 
 The code for permissioning specific queries must be inserted into your data servers and request servers.
 
-The dynamic authorisation definition in GPAL dataserver/requestserver has 4 settings which can be used in any combination.
+The dynamic authorisation definition in a GPAL data server or request server has 4 settings, which can be used in any combination:
+- grouping (and/or)
+- where clauses
+- hideFields
+- enrichedAuth
 
 #### Grouping
 
-Auth definitions can now be grouped with “and” or “or” operators. This means you could have two simple permission maps, for example: one by counterparty and another one for forbidden symbols. This would require a user to have those two permissions at once in order to see the row. Alternatively, you could have two permission maps (one for buyer and one for seller). A user would be allowed to see a row if they have a seller or buyer profile, but users without one of the those profiles would be denied access.
-
-##### AND grouping
+Auth definitions can be grouped with “and” or “or” operators. 
+- You could have two simple permission maps, for example: one by counterparty and another one for forbidden symbols. If the user wants to see a specific row, they need to have both permissions at once. 
+- You could have two permission maps: one for buyer and one for seller. A user would be allowed to see a row if they have a seller or buyer profile, but users without one of the those profiles would be denied access.
 
 This example shows an AND grouping:
 
@@ -269,7 +275,6 @@ permissioning {
 }
 ```
 
-##### OR grouping
 
 This example shows OR grouping
 
@@ -285,28 +290,29 @@ permissioning {
 
 #### Where clauses
 
-You can define a where clause if you only want to show a row in specific cases. Authorisation definitions using a where clause first evaluate the where clause against the permission map. This functionality on its own is not that useful, as for a single auth permissions map, the content of the where clause could be moved to the query where clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
+You can define a where clause if you only want to show a row in specific cases. These authorisation definitions first evaluate the where clause against the permission map. This functionality on its own is not that useful, because for a single auth permissions map, the content of the where clause could be moved to the query where clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
 
-This example shows different where clauses based on user role.
+The example below shows permissioning where authorisation is successful if the user satisifies one of two code blocks:
+- The first block has a where clause that prevents the user (a permissioned buying countparty) from viewing cancelled trades.
+- The second block makes the information visible to any permissioned selling counterparty - so the can view cancelled trades.
 
 ```kotlin
 permissioning {
     auth(mapName = "ENTITY_VISIBILITY") {
-        BID_OFFER_BIDDER_VIEW.CLIENT_ID
-        where { view ->
-            !(BidState.DRAFT == view.bidState && !(BidBookState.OPEN == view.bidBookState ||(BidBookState.UPCOMING == view.bidBookState)) )
+        TRADE.BUYING_COUNTERPARTY
+        where { trade ->
+            TradeState.CANCELLED != trade.tradeState
         }
+        //Only visible to users with entity access to SELLING_COUNTERPARTY ID on the trade WHERE trade state is not CANCELLED (so buyer can't see cancelled trades effectively)
     } or
     auth(mapName = "ENTITY_VISIBILITY") {
-        BID_OFFER_BIDDER_VIEW.BUYER_DEALER_ID
-        where { view ->
-            !((BidBookState.UPCOMING == view.bidBookState || BidBookState.OPEN == view.bidBookState) && DealerRole.PRINCIPAL == view.dealerRole)
-        }
+        TRADE.SELLING_COUNTERPARTY
+        //No where clause, so always visible to users with entity access to SELLING_COUNTERPARTY ID on the trade
     }
 }
 ```
 
-#### HideFields
+#### hideFields
 
 You can also have different column visibility levels based on user authorisation and row content.
 
@@ -324,11 +330,11 @@ permissioning {
 }
 ```
 
-#### EnrichedAuth
+#### enrichedAuth
 
-Our permission model could require access to client enriched data, so dataservers have an additional level of auth functionality which takes this data into account.
+Our permission model could require access to client-enriched data, so data servers have an additional level of auth functionality which takes this data into account.
 
-Example below:
+Here is an example:
 
 ```kotlin
 query("ALL_TRADES_WITH_ENRICHED_AUTH", TRADE_VIEW) {
@@ -357,9 +363,9 @@ query("ALL_TRADES_WITH_ENRICHED_AUTH", TRADE_VIEW) {
 }
 ```
 
-## Dynamic Permissioning
+## Dynamic permissioning
 
-Here’s the scenario, we want to permission by checking the ACCOUNT table.
+Here’s the scenario; we want to permission by checking the ACCOUNT table.
 ```kotlin
 table(name = "ACCOUNT", id = 1000) {
     ID
@@ -475,7 +481,7 @@ We also define several items on the entity element:
 
 * **name** - The entity (and table name) we're dealing with
 * **maxEntries** - Max number of entries to read on initial scan
-* **idField** - The Account ID
+* **idField** - The account ID
 * **updateOn** xml block - We want to re-evaluate the auth entries (entities and users) when the TAG table is updated, just in case we make a user sales officer/asset manager.
 
 As mentioned above, we will also refresh when either the entity or user table is updated.
@@ -569,9 +575,10 @@ As mentioned above, we will also refresh when either the entity or user table is
 ```
 ## Defining a permission rule
 
-All permission rules are held in the file auth-permissions.xml.  In this file, you define rules against a specific entity, and each entity is defined against a database table.
+All permission rules are held in the file **auth-permissions.xml**.  In this file, you define rules against a specific entity, and each entity is defined against a database table.
 
-We have a preExpression block inside our file, which is applied to all entities. This makes the definition isUserEnabled  available to all entities.
+We have a preExpression block inside our file, which is applied to all entities. This makes the definition `isUserEnabled`  available to all entities.
+
 
     <preExpression>
         <![CDATA[
@@ -584,7 +591,8 @@ We have a preExpression block inside our file, which is applied to all entities.
 		     }
         ]]>
     </preExpression>
-We can now call isUserEnabled from any entity block.
+
+We can now call `isUserEnabled` from any entity block.
 
 You must define an entity block for every entity you want to authorise.  Each block can have the following attributes:
 
@@ -600,7 +608,7 @@ You must define an entity block for every entity you want to authorise.  Each bl
 | averageUsers         | Average number of users on the system. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                                  | No. Default = 1,000                    |   |   |
 | updateOn             | Custom logic to trigger authorisation updates in specific scenarios. When tables defined in this section are modified, the authorisation map is refreshed following the configuration logic. See the example. | No                                     |   |   |
 
-### Data Server snippet
+### Data server snippet
 ```kotlin
 dataServer {
 
@@ -614,7 +622,7 @@ dataServer {
 }
 ```
 
-### Request Server snippet
+### Request server snippet
 ```kotlin
 requestReplies {
 
