@@ -1,11 +1,11 @@
 ---
 id: event-handler-pending-approval
-title: Pending Approval
-sidebar_label: Pending Approval
+title: Pending approvals
+sidebar_label: Pending approvals
 sidebar_position: 5
 ---
 
-# Pending Approvals
+# Pending approvals
 
 The Genesis LCNC Platform has an in-built pending approval mechanism for optional use with event handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check". 
 
@@ -57,7 +57,7 @@ eventHandler {
 }
 ```
 
-Events submitted with a "REQUIES_APPROVAL" flag set to true are validated as usual (i.e. the onValidate method is run) and, if the validation is successful, the “delayed” event is stored in the APPROVAL table in a json format. 
+Events submitted with a "REQUIRES_APPROVAL" flag set to true are validated as usual (i.e. the onValidate method is run) and, if the validation is successful, the “delayed” event is stored in the APPROVAL table in a json format. 
 
 
 Assuming the event is inserting, updating or deleting a target database record, it is possible to have have multiple APPROVAL records associated to a single database entity. Use the event `onValidate` method to check for pre-existing approvals against the entities related to the event if you need to ensure there is only one pending approval per record. The validate method can also be used to determine if the incoming event needs approval e.g. checking if a particular field has been amended, or checking the tier on an incoming EVENT_ADD_CLIENT. If it does, then you can add the REQUIRES_APPROVAL flag to the event message.

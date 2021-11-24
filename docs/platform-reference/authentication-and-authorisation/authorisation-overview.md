@@ -1,8 +1,8 @@
 ---
-title: Overview
-sidebar_label: Overview
-sidebar_position: 1
-id: overview
+title: Authorisation overview
+sidebar_label: Authorisation overview
+sidebar_position: 30
+id: authorisation-over
 ---
 
 ## Authorisation
@@ -134,7 +134,7 @@ systemDefinition {
 
 :::note detail
 This will add the specified field to the USER_ATTRIBUTES table as a required field and create a new table called, in the case of our example, USER_COUNTERPARTY_MAP,
-which will be suitably populated by the AUTH_MANAGER process on a realtime basis. 
+which will be suitably populated by the AUTH_MANAGER process on a real-time basis. 
 
 The USER_COUNTERPARTY_MAP table is referenced in ENTITY_VISIBILITY entity in the ```auth-permission.templt.xml``` file. (which is a genesis [mustache](https://en.wikipedia.org/wiki/Mustache_(template_system))
 template which is processed at genesisInstall time, using entries from system-definition).
