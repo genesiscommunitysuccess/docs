@@ -115,3 +115,96 @@ then the generated ID will be `000000000001TRLO1` where "LO" represents Location
 **LogFrameworkConfig**: Contains name of the log framework configuration file.
 
 If you want to enable SSL for your process communication, this is done in the [service definition](/platform-reference/essential-information/service-definitions/#enable-ssl-for-processes).
+
+## HashiCorp Vault Support
+
+:::important
+
+This is an unreleased feature, supported from version 6.0
+
+:::
+
+Services can also load their configuration from HashiCorp vault. 
+This can be done by adding a `vault` tag in the `global`, `system` or `host`
+tags. The vault tag has three sub tags, `config`, `sslConfig` and `readSecrets`. Of
+these three, `config` and `readSecrets` are required:
+
+```kotlin
+vault {
+  config {  
+    ...
+  }
+
+  sslConfig { 
+    ...
+  }
+
+  readSecrets { 
+    ...
+  }
+}
+```
+
+### Config 
+
+This part of the configuration tells the service where to read secrets from: 
+
+```kotlin
+config {
+    address("http://localhost:8200")     // Defaults to "VAULT_ADDR" environment variable
+    token("s.NSxyuF4ClXxd4YoSFvKwil0i")  // Defaults to "VAULT_TOKEN" environment variable
+    openTimeout(5)                       // Defaults to "VAULT_OPEN_TIMEOUT" environment variable
+    readTimeout(30)                      // Defaults to "VAULT_READ_TIMEOUT" environment variable 
+}
+```
+
+### sslConfig
+
+This part of the configuration tells the service how to handle the ssl hand 
+shake with the vault server. For details regarding the ssl config, please see
+[here](https://github.com/BetterCloud/vault-java-driver#ssl-config).
+Please note that the `SslConfig` object will be passed as the receiver within 
+the `sslConfig` tag.
+
+### readSecrets
+
+This part of the configuration tells the service which secrets to load:
+
+```kotlin
+readSecrets {
+  read("secret/path_to_secret")
+}
+```
+
+Currently, a single call to `read` is supported. This takes a single parameter
+which is the path to the secrets.
+
+Please note that secrets are always provided as `String`
+
+## Linked properties Support
+
+:::important
+
+This is an unreleased feature, supported from version 6.0
+
+:::
+
+When reading secrets from external systems, the keys to these secrets might 
+not map directly to the required properties in genesis. To help with this
+genesis supports the linking of properties. This is supporting in the `global`, 
+`system` and `host` tags. 
+
+To create a link use `link`, as per below, where we link `DbHost` to `secret.db.host`:
+
+```kotlin
+systemDefinition {
+  global {
+    link(name = "DbHost", source = "secret.db.host")
+  }
+  ...
+}
+```
+
+Please note that multiple levels of linking are supported. However `genesisInstall`
+will fail if a circular link is detected, or if the `source` of a link is not 
+found. 
