@@ -47,7 +47,7 @@ This is a complex field made of many options. These enable you to specify in det
 #### heartbeat
 A heartbeat message is automatically sent from every logged-in user to the platform's authentication module. This ensures that the platform can determine who is still connected to it. The authentication module then replies with an acknowledgement in exchange.
 
-* **intervalSecs** is the number of seconds to wait between sending one heartbeat message and the next one. This number is sent from the user client's connection to the authentication module. Default: null.
+* **intervalSecs** is the number of seconds to wait between sending one heartbeat message and the next one. This number is sent from the user client's connection to the authentication module. In the example confih=guration on this page, the heartbeat is set to be sent every 30 seconds. Default: null.
 
 #### sessionTimeoutMins
 This specifies the time to wait before timing out an idle session with a user client. A user client may very well be answering heartbeats but at the same time being idle (i.e. not using the platform). This timeout represents the number of minutes a user needs to be idle to be logged out of the platform. Default: 30.
@@ -166,9 +166,9 @@ Security messages can be split into three categories.
 All requests below are capable of returning an error with a code of INTERNAL_ERROR, which will be used as a last resort.
 
 ### Pre-authentication
-Pre-authentication messages can be sent by a client without the user being logged in.
+Pre-authentication messages can be sent by a client without the user being logged in
 #### Login preferences
-You need make sure that any connecting client knows the types of functionality that you have configured on the security module.  For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knws this before any user logs in.
+You need make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knws this before any user logs in.
 Currently, this is the only preference published.
 ##### Request
     MESSAGE_TYPE = EVENT_LOGIN_PREFS
@@ -203,7 +203,7 @@ If there is a problem, the server will return the standard error set with CODE/T
 - PASSWORD_EXPIRED - Password must be changed
 - LOGIN_FAIL - Generic error code
 
-#### Password Change
+#### Password change
 If the response is PASSWORD_EXPIRED, then the GUI can allow the user to change the password, provided they know their existing password.
 ##### Request
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD

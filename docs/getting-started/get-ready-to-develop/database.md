@@ -1,7 +1,7 @@
 ---
 id: database
 sidebar_label: Setting the database technology
-sidebar_position: 3
+sidebar_position: 30
 title: Setting the database technology
 
 ---
