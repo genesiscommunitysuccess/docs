@@ -2,7 +2,7 @@
 id: change-log-level
 title: Change log level
 sidebar_label: Change log level
-sidebar_position: 13
+sidebar_position: 14
 
 ---
 
