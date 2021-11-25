@@ -24,15 +24,15 @@ by selecting ```File -> New -> Module``` from Intellij's menu options.
 ![](/img/new-module.png)
 
 A custom component can implement custom logic for your service. Configuration for your component can be defined in [Genesis System Definition](/platform-reference/essential-information/system_definitions-latest.md) and
-testing can follow the practise [here](/platform-reference/testing/testing.mdx)
+testing can follow the Genesis [testing practice](/platform-reference/testing/testing.mdx)
 
-## Genesis Dependency Injection Framework
+## Genesis dependency injection fFramework
 
-Genesis supports the key annotations from javax.annotation and javax.inject defined in [Java Platform Enterprise Edition](https://docs.oracle.com/javaee/7/index.html), In addition Genesis provides some of it's own annotations.
+Genesis supports the key annotations from javax.annotation and javax.inject, defined in [Java Platform Enterprise Edition](https://docs.oracle.com/javaee/7/index.html), In addition, Genesis provides its own annotations.
 
 ## @Module
 
-All classes requiring creation by the genesis startup need to be annotated with this Annotation, this is also acts as a singleton.
+All classes requiring creation by the Genesis startup need to be annotated with this annotation. This also acts as a singleton.
 
 ## @ProviderOf
 
@@ -51,7 +51,7 @@ class PriceFeedProvider : Provider<PriceFeedProvider> {
 
 ## @Named
 
-This annotation is used differentiate between different objects of the same type.
+This annotation is used to differentiate between different objects of the same type.
 
 ## @Inject
 This is used to annotate a set of parameters to indicate to Genesis that it should inject an object matching type parameters of on either the constructor, method or field definition. You can use either the [java](https://docs.oracle.com/javaee/6/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.)
@@ -59,11 +59,11 @@ This is used to annotate a set of parameters to indicate to Genesis that it shou
 
 ## @PostConstruct
 
-Genesis runtime environment will call this only once after initialization of the object including all injected beans
+Genesis runtime environment will call this only once after initialization of the object, including all injected beans.
 
 ## @PreDestroy
 
-Genesis runtime environment will call this only once just before genesis remove this from the application context.
+Genesis runtime environment will call this only once: just before genesis removes this from the application context.
 
 ## Example
 
@@ -96,7 +96,8 @@ class PriceFeed @Inject constructor(@Named("CONNECTION_URL") private val connect
 
 ## Conditional annotations
 ### Conditional on property
-You can define a module as conditional based on system definition properties. As an example, the AeronDriverModule will only be instantiated if the MqLayer property is set to AERON. See example annotations below:
+You can define a module as conditional, based on system definition properties. 
+For example, the AeronDriverModule will only be instantiated if the MqLayer property is set to AERON:
 
 ```kotlin
 @Module
@@ -104,7 +105,7 @@ You can define a module as conditional based on system definition properties. As
 ```
 
 ### Conditional on class
-Likewise, modules can be defined to be conditional on classes, so if the selected class has been instantiated (e.g. the previous example shown as AeronDriverModule), then our dependency injection mechanism will instantiate this class as well.
+Likewise, modules can be defined to be conditional on classes. So, if the selected class has been instantiated (e.g. the previous example shown as AeronDriverModule), then our dependency injection mechanism will instantiate this class as well.
 
 ```kotlin
 @Module
@@ -114,7 +115,7 @@ Likewise, modules can be defined to be conditional on classes, so if the selecte
 ### Conditional on missing class
 We can also add conditional modules on missing classes. This annotation is very helpful if an “extension” mechanism is to be developed as part of a genesis product/framework. For example, you could define an interface, and a @Module implementing this interface with a conditional on that interface class being missing. This means that if a class is defined as a @Module which implements that interface, that class will be selected (i.e. this class can be defined in an external jar and added to classpath using framework config). If no class is defined as a @Module to implement that interface, then the @ConditionalOnMissingClass module will be instantiated.
 
-For example, lets imagine we want to create a “hook” into our message handling logic, so it can be extended as desired in different products. The interface and default class would look like this in Kotlin:
+For example, let's imagine we want to create a “hook” into our message-handling logic, so it can be extended as desired in different products. The interface and default class would look like this in Kotlin:
 
 ```kotlin
 interface MessageTracer{
