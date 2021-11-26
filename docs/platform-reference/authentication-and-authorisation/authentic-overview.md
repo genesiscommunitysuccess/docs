@@ -23,7 +23,7 @@ Internal authentication uses hash values stored in the database to authenticate 
 - Passwords can be set to expire
 - Users can reset or change their password (assuming they can login first)
 
-Internal authentication is the default authentication behaviour if no type is specified in **auth-preferences.xml**.
+Internal authentication is the default authentication behaviour if you don't specify a type in **auth-preferences.xml**.
 
 ### LDAP
 
@@ -31,7 +31,7 @@ LDAP authentication can be used within the AUTH environment as a basic login.
 
 However, if you specify this, you lose control of the internal authentication functionality. This is becuase the authentication relies on an external party that cannot be operated from Genesis. As a direct consequence, requests to change/reset password won't be accepted.
 
-For LDAP authentication, a username **must** exist inside the internal records of the application. To do thi, you must create a user entry inside the USER database table for every LDAP user you want to give access to. If you do not do this, all LDAP users could be authenticated, which is unlikely to meet yor security requirements. There is no password checking against the internal records, and the authentication will rely solely on LDAP.
+For LDAP authentication, a username **must** exist inside the internal records of the application. To do this, you must create a user entry inside the USER database table for every LDAP user you want to give access to. If you do not do this, all LDAP users could be authenticated, which is unlikely to meet yor security requirements. There is no password checking against the internal records, and the authentication will rely solely on LDAP.
 
 To set up LDAP authentication, the configuration file needs extra parameters:
 
