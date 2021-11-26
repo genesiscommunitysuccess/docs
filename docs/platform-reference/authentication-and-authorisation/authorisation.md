@@ -11,11 +11,11 @@ Authorisation is achieved by permissioning dynamically. This means you can contr
 * Specific rows
 * Specific columns
 
-Effectively, you have three levels of control:
+Effectively, you have two levels of control:
 
 **High-level**
 
-You could hide an entire grid from the UI, for example. So one group of users could view reference data, but other groups would not see this. Or, you could hide an entire data server. To achieve this, you use RIGHT_CODE. This is like a switch – you can either see it or not, depending on whether the code is TRUE or FALSE.
+You could hide an entire grid from the UI, for example. So, one group of users could view reference data, but other groups would not see this. Or, you could hide an entire data server. To achieve this, you use RIGHT_CODE. This is like a switch – you can either see it or not, depending on whether the code is TRUE or FALSE.
 
 **Entity-level**
 
@@ -24,7 +24,7 @@ This is row- or column-level access to information. Different users can all view
 * You can have user A, user B and user C all having the RIGHT_CODE to view a specific grid, but each one sees different trades in that grid. This enables you to separate different trading desks, for example.
 * Each user might only have access to trades for specific customers.
 
-By including these permissions in an event handler,  user A can only enter a trade on behalf of a specific set of clients and user B can only enter trades on behalf of a different set of clients.
+By including these permissions in an event handler, user A can only enter a trade on behalf of a specific set of clients and user B can only enter trades on behalf of a different set of clients.
 
 Similarly, you can have different users seeing different columns in the same grid. This could be used for a support function, for example. You can prevent the support team from seeing specific columns of sensitive data, such as who the client for a trade is. This can be specified by using GPAL.
 
@@ -294,7 +294,7 @@ You can define a where clause if you only want to show a row in specific cases. 
 
 The example below shows permissioning where authorisation is successful if the user satisifies one of two code blocks:
 - The first block has a where clause that prevents the user (a permissioned buying countparty) from viewing cancelled trades.
-- The second block makes the information visible to any permissioned selling counterparty - so the can view cancelled trades.
+- The second block makes the information visible to any permissioned selling counterparty - so they can view cancelled trades.
 
 ```kotlin
 permissioning {

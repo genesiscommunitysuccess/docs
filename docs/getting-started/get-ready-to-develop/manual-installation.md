@@ -1,7 +1,7 @@
 ---
 id: manual-installation
 sidebar_label: 'Manual installation'
-sidebar_position: 4
+sidebar_position: 40
 title: 'Manual installation'
 ---
 

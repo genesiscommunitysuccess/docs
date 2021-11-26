@@ -1,7 +1,7 @@
 ---
 id: application
 sidebar_label: 'This is what an application looks like '
-sidebar_position: 3
+sidebar_position: 30
 title: 'This is what an application looks like'
 ---
 

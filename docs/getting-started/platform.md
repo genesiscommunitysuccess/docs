@@ -1,7 +1,7 @@
 ---
 id: platform
 sidebar_label: 'Getting to know the platform'
-sidebar_position: 1
+sidebar_position: 10
 title: 'Getting to know the platform'
 ---
 
