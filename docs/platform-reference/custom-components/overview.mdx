@@ -23,7 +23,7 @@ select ```File -> New -> Module``` from Intellij's menu options.
 
 ![](/img/new-module.png)
 
-A custom component can implement custom logic for your application. You must configure the component in [Genesis System Definition](/platform-reference/essential-information/system_definitions-latest.md). For testing, follow the [standard Genesis practice](/platform-reference/testing/testing.mdx).
+The point of a custom component is to implement custom logic for your application. If you create a custom component, you must configure it in [Genesis System Definition](/platform-reference/essential-information/system_definitions-latest.md). For testing, follow the [standard Genesis practice](/platform-reference/testing/testing.mdx).
 
 ## Genesis dependency injection framework
 
@@ -31,7 +31,7 @@ Genesis supports the key annotations from javax.annotation and javax.inject defi
 
 ## @Module
 
-All classes requiring creation by the genesis startup need to have this Annotation, this also acts as a singleton.
+All classes that need to be created by the Genesis startup must have this annotation. It also acts as a singleton.
 
 ## @ProviderOf
 
@@ -50,10 +50,10 @@ class PriceFeedProvider : Provider<PriceFeedProvider> {
 
 ## @Named
 
-This annotation is used differentiate between different objects of the same type.
+This annotation is used to differentiate between different objects of the same type.
 
 ## @Inject
-This is used to annotate a set of parameters to indicate to Genesis that it should inject an object matching type parameters of on either the constructor, method or field definition. You can use either the [java](https://docs.oracle.com/javaee/6/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.)
+This is used to annotate a set of parameters that indicate that Genesis must inject an object matching type parameters of either the constructor, method or field definition. You can use either the [java](https://docs.oracle.com/javaee/6/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.)
  or google guice version of the file. 
 
 ## @PostConstruct
@@ -95,7 +95,7 @@ class PriceFeed @Inject constructor(@Named("CONNECTION_URL") private val connect
 
 ## Conditional annotations
 ### Conditional on property
-You can define a module as conditional, based on system definition properties. FOr example, the AeronDriverModule will only be instantiated if the MqLayer property is set to AERON:
+You can define a module as conditional, based on system definition properties. For example, the AeronDriverModule will only be instantiated if the MqLayer property is set to AERON:
 
 ```kotlin
 @Module
@@ -134,7 +134,7 @@ class ProductMessageTracer : MessageTracer{
     override fun onMessageReceived(msg: Message) = println("Hi $msg")
 }
 ```
-If this the package for this class is available in the classpath (i.e.``` <classpath>``` section in processes.xml) and is also being scanned (i.e. ```<package>``` section in processes.xml), ProductMessageTracer will take precedence when starting the process and DefaultMessageTracer will be ignored. Otherwise, DefaultMessageTracer will be instantiated.
+If the package for this class is available in the classpath (i.e.``` <classpath>``` section in processes.xml) and is also being scanned (i.e. ```<package>``` section in processes.xml), ProductMessageTracer will take precedence when starting the process and DefaultMessageTracer will be ignored. Otherwise, DefaultMessageTracer will be instantiated.
 
 ### Conditional on property and missing class
 Lastly, we have a combination of both “conditional on property” and “conditional on missing class “annotations. Referring to the previous example, we could use both features at once like this:
@@ -147,7 +147,7 @@ class DefaultMessageTracer : MessageTracer{
 }
 
 ```
-The process will crash on startup if the system definition value for MessageTracer is set to anything other than DEFAULT and no implementation have been provided for MessageTracer . This annotation can be used to enforce good practices.
+The process will crash on startup if the system definition value for `MessageTracer` is set to anything other than DEFAULT and no implementation have been provided for MessageTracer . This annotation can be used to enforce good practices.
 
 ## Injectable properties from System Definition
 

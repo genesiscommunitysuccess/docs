@@ -34,19 +34,30 @@
   --ifm-pre-background: #2B2B2B;
 }
 
-h1 {
-  font-size: 32px;
+main .container {
+  background-color: #f5f5f5 !important;
+}
+
+.markdown header > h1:first-child {
+  --ifm-h1-font-size: 36px;
   margin-bottom:12px;
   --ifm-link-color: #555;
 }
-h2 {
-  font-size: 22px;
+
+.markdown > h2 {
+  --ifm-h2-font-size: 24px;
   margin-bottom:0px;
   --ifm-link-color: #555;
 }
 
-h3 {
-  font-size: 16px;
+.markdown > h3 {
+  --ifm-h3-font-size: 20px;
+  --ifm-link-color: #555;
+  margin-bottom:0px;
+}
+
+.markdown > h4 {
+  --ifm-h4-font-size: 16px;
   --ifm-link-color: #555;
   margin-bottom:0px;
 }
