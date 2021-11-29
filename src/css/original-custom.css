@@ -27,40 +27,18 @@
   --ifm-heading-line-height: normal;
 
   --ifm-hero-background-color: transparent;
- 
+
   --ifm-navbar-height: 64px;
   --ifm-navbar-shadow: -5px 3px 16px 0px rgba(0, 0, 0, 0.15);
 
   --ifm-pre-background: #2B2B2B;
 }
 
-main .container {
-  background-color: #f5f5f5 !important;
-}
-
-.markdown header > h1:first-child {
-  --ifm-h1-font-size: 36px;
-  margin-bottom:12px;
+h2 {
+  font-size: 28px;
   --ifm-link-color: #555;
 }
 
-.markdown > h2 {
-  --ifm-h2-font-size: 24px;
-  margin-bottom:0px;
-  --ifm-link-color: #555;
-}
-
-.markdown > h3 {
-  --ifm-h3-font-size: 20px;
-  --ifm-link-color: #555;
-  margin-bottom:0px;
-}
-
-.markdown > h4 {
-  --ifm-h4-font-size: 16px;
-  --ifm-link-color: #555;
-  margin-bottom:0px;
-}
 button.aa-DetachedSearchButton {
   --aa-font-family: 'Roboto-Medium', 'Roboto Medium', 'Roboto', sans-serif;
   --aa-font-size: 12px;

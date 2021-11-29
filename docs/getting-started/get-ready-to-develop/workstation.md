@@ -1,7 +1,7 @@
 ---
 id: workstation
 sidebar_label: 'Workstation infrastructure'
-sidebar_position: 5
+sidebar_position: 50
 title: 'Workstation infrastructure'
 ---
 

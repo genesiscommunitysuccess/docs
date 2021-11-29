@@ -98,7 +98,14 @@ requestReplies {
 
 ### Where block
 
-The `where` block enables you to specify the conditions for running the particular code block.
+The `where` block enables you to specify the conditions for running the particular code block. The where block can take two optional parameters:
+    * instrumentDetails - this represents a row from the table or view
+    * parameters - this a GenesisSet which holds the parameters that are passed on the request. The parameters can be accessed by using the GenesisSet getters to access named parameters.
+
+In this contrived example below, the where block filters rows whose instrumentCode is not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG". 
+The row parameter represents the rows returned from the table or view defined at the top of the requestReply definition, in this case INSTRUMENT_DETAILS.
+
+
 
 ```kotlin
 requestReplies {
@@ -119,8 +126,9 @@ requestReplies {
             EXCHANGE_ID
         }
 
-        where { instrumentDetails, _ ->
-            "ALLL3" == instrumentDetails.instrumentCode
+        where { row, parameters ->
+            "ALLL3" == row.instrumentCode &&                         
+             parameters.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
         }
     }
 }
@@ -223,4 +231,24 @@ requestReplies {
         }
     }
 }
+```
+
+### Ranges
+
+You can specify ranges from the client of the requestReply server by postfixing the request parameter names with _FROM and _TO. The example below shows a client building a GenesisSet request based upon
+the requestReplies defined from previous example. This examples stipulates a price range between 1,000 and 10,000. Leaving out FROM will define a top end range, leaving out TO will define a bottom end range. 
+In addition, ranges which are not based on indexes will perform slower.
+
+```kotlin
+
+    // client building request  
+    val request = genesisSet {
+    
+        "DETAILS" with genesisSet {
+            "LAST_TRADED_PRICE_FROM" to 1_000
+            "LAST_TRADED_PRICE_TO" to 10_000
+        }
+    }
+
+    sendRequest(request) // details of sending request hidden for brevity
 ```
