@@ -8,7 +8,7 @@ sidebar_position: 2
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-A custom component is a user-developed maven module that sits alongside the standard generated genesis existing modules.
+A custom component is a user-developed maven module that sits alongside the standard generated Genesis existing modules.
 
 - trading_app-config
 - trading_app-dictionary-cache
@@ -53,7 +53,7 @@ class PriceFeedProvider : Provider<PriceFeedProvider> {
 This annotation is used to differentiate between different objects of the same type.
 
 ## @Inject
-This is used to annotate a set of parameters that indicate that Genesis must inject an object matching type parameters of either the constructor, method or field definition. You can use either the [java](https://docs.oracle.com/javaee/6/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.)
+This is used to annotate a set of parameters that indicate that Genesis must inject an object matching the type parameters of either the constructor, method or field definition. You can use either the [java](https://docs.oracle.com/javaee/6/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.)
  or google guice version of the file. 
 
 ## @PostConstruct
@@ -66,7 +66,7 @@ Genesis runtime environment calls this only once, just before Genesis removes th
 
 ## Example
 
-This example includes **@Module**, **@Named** and **@Inject** annotation on a constructor, on a method and on a field
+This example includes **@Module**, **@Named** and **@Inject** annotation on a constructor, on a method and on a field.
 
 ```kotlin
 @Module
@@ -113,7 +113,7 @@ Likewise, modules can be defined to be conditional on classes. So. if the select
 ### Conditional on missing class
 We can also add conditional modules on missing classes. This annotation is very helpful if you are developing an “extension” mechanism as part of a Genesis application. For example, you could define an interface; include an @Module implementing the interface with a conditional on that interface class being missing. This means that if a class is defined as a @Module which implements that interface, that class will be selected (i.e. this class can be defined in an external jar and added to classpath using framework config). If no class is defined as an @Module to implement that interface, then the @ConditionalOnMissingClass module will be instantiated.
 
-For example, lets imagine we want to create a “hook” into our message handling logic, so it can be extended as desired in different products. The interface and default class would look like this in Kotlin:
+For example, imagine we want to create a “hook” into the Genesis message-handling logic, so it can be extended as desired in different applicatins. The interface and default class would look like this in Kotlin:
 
 ```kotlin
 interface MessageTracer{
