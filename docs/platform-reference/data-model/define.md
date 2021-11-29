@@ -234,15 +234,20 @@ Views are defined in file under `<application-name>-config/src/main/resources/cf
 
 Often, a view needs to contain fields from different tables.
 
-For a simple join, where you add reference data to price data, for example, include a **joins** statement when you define the table. For this, you can insert a join in your view. You need to specify the root table, the second table, and the fields that are being viewed in each one.
+For a simple join, where you add reference data to price data, for example, include a **joins** statement when you define 
+the table. For this, you can insert a join in your view. You need to specify the root table, the second table, and the fields that are being viewed in each one.
 
-You might need to join to two different parts of the same table - for example, if you need to pick up the currency of a trade currency and also the settlement currency.
+You might need to join to two different parts of the same table - for example, if you need to pick up the currency of 
+a trade currency and also the settlement currency.
 
 To achieve this, create aliases for the two fields you are retrieving from the second table, for example, **tradeCcy** and **settCcy.**
 
-By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data). If you need to join to a table where there is real-time data, then you need to specify a backwards join. This requires the statement backwardsJoin = true when you are specifying the join.
+By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data).
+If you need to join to a table where there is real-time data, then you need to specify a backwards join. 
+This requires the statement backwardsJoin = true when you are specifying the join.
 
-It is worth noting that when you define your [data servers](/platform-reference/configure-key-modules/data-servers/configure), any of these that include views with backwards joins **must include a similar statement in order to enable the feature**: **backJoins = true**. Don’t forget to add this!
+It is worth noting that when you define your [data servers](/platform-reference/configure-key-modules/data-servers/configure), 
+any of these that include views with backwards joins **must include a similar statement in order to enable the feature**: **backJoins = true**. Don’t forget to add this!
 
 Lastly, `backJoins` can be expensive in terms of computation and cost, so they should be used surgically rather than by default.
 
@@ -265,7 +270,8 @@ Available join types are INNER and OUTER.
 * One to one and one to many. One to many joins are only usable in request reply definitions.
 
 ### Parametrised joins
-Some join operations could require external parameters that are not available in the context of the table join definition, but will be available when the view repository is access (e.g. client enriched definitions), so we have included the option to create parametrised joins.
+Some join operations require external parameters that are not available in the context of the table join definition,
+but will be available when the view repository is access (e.g. client enriched definitions), so an option exists to create parametrised joins.
 
 ### Fields functionality
 Common functionality like table aliasing, field aliasing/prefixing, field formatting, and derived fields is available within view definitions in order to reduce code duplication.
