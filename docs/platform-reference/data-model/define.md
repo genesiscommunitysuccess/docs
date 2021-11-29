@@ -267,14 +267,11 @@ Available join types are INNER and OUTER.
 ### Parametrised joins
 Some join operations could require external parameters that are not available in the context of the table join definition, but will be available when the view repository is access (e.g. client enriched definitions), so we have included the option to create parametrised joins.
 
-### Backward joins
-As view repositories can be used in event handlers and basically any Java/Kotlin code, we have also implemented the backwardJoin functionality under the hood. Previously it was only possible to use backwardJoin definitions in a dataserver definition, but with the introduction of views and ViewRepositories product developers are now able to enjoy backwardJoin functionality in the same way you would register a classical database update queue listener.
-
 ### Fields functionality
 Common functionality like table aliasing, field aliasing/prefixing, field formatting, and derived fields is available within view definitions in order to reduce code duplication.
 
 ### Entity input for derived fields
-Previously, it was only possible to specify field inputs for derived fields. Going forward it is also possible to specify a single entity as input. This has a number of advantages:
+It is possible to specify field inputs for derived fields as well as being able to  specify a single entity as input. This has a number of advantages:
 
 1. When a derived field has multiple inputs from a single table, only one input is required.
 
@@ -309,7 +306,7 @@ derivedField("SPREAD", DOUBLE) {
     }
 }
 ```
-By default all fields populated in the entity. For larger tables this might have a performance impact, if many fields are loaded that will not be used in the calculation or the final view. To mitigate this, you can specify to either only load non-null fields, or specify fields to be populated. Non-null fields will always be populated.
+By default all fields are populated in the entity. For larger tables this might have a performance impact, if many fields are loaded that will not be used in the calculation or the final view. To mitigate this, you can specify to either only load non-null fields, or specify fields to be populated. Non-null fields will always be populated.
 
 Only load non-null fields:
 
@@ -349,7 +346,7 @@ joining(TRADE.JOIN_TRADE_TO_SIDE, JoinType.INNER, backwardsJoin = true) {
 ```
 
 ### Dynamic joins
-From this release the framework will support dynamic joins in views. This has a shared syntax with derived fields. However, rather than specifying a field name and type, it should always return an entity index type of the table you’re joining on.
+This has a shared syntax with derived fields. However, rather than specifying a field name and type, it should always return an entity index type of the table you’re joining on.
 
 :::warning
 When using dynamic joins on aliased tables, the alias name should match the alias variable name. E.g.: ```val fixCal = TRADE_CALENDAR withAlias "fixCal"```, here it is ```fixCal``` in both cases.
