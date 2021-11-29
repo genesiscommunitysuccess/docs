@@ -7,11 +7,16 @@ sidebar_position: 5
 
 # Pending approvals
 
-The Genesis LCNC Platform has an in-built pending approval mechanism for optional use with event handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check". 
+The Genesis LCNC Platform has an in-built pending approval mechanism that can be used with event handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check". 
 
 ## Set an event to require approval
 
-Any event can be marked to "require approval" as long as the `REQUIRES_APPROVAL` flag is set to `true` in the incoming message. However, an event can be configured for a mandatory `REQUIRES_APPROVAL` flag check by overriding the `requiresPendingApproval` method to `true` in the custom event handler definitions and setting the `requiresPendingAproval` property to `true` in a GPAL event handler. 
+Any event can be marked to "require approval" as long as the `REQUIRES_APPROVAL` flag is set to `true` in the incoming message. 
+
+To configure an event for a mandatory `REQUIRES_APPROVAL` flag check:
+
+1. Override the `requiresPendingApproval` method to `true` in the custom event handler definitions. 
+2. Setg the `requiresPendingAproval` property to `true` in a GPAL event handler. 
 
 Here is an example of a custom event handler definition:
 
@@ -60,9 +65,11 @@ eventHandler {
 Events submitted with a "REQUIRES_APPROVAL" flag set to true are validated as usual (i.e. the onValidate method is run) and, if the validation is successful, the “delayed” event is stored in the APPROVAL table in a json format. 
 
 
-Assuming the event is inserting, updating or deleting a target database record, it is possible to have have multiple APPROVAL records associated to a single database entity. Use the event `onValidate` method to check for pre-existing approvals against the entities related to the event if you need to ensure there is only one pending approval per record. The validate method can also be used to determine if the incoming event needs approval e.g. checking if a particular field has been amended, or checking the tier on an incoming EVENT_ADD_CLIENT. If it does, then you can add the REQUIRES_APPROVAL flag to the event message.
+Assuming the event is inserting, updating or deleting a target database record, it is possible to have multiple APPROVAL records associated with a single database entity. Use the event `onValidate` method to check for pre-existing approvals against the entities related to the event if you need to ensure there is only one pending approval per record. 
 
-The APPROVAL record is keyed on an auto-generated APPROVAL_ID and does not have a direct link to the original record. You have to create a link by adding “approval entity” details to the payload returned on an event ack in the "onValidate" method. These details include the ENTITY_TABLE and ENTITY_KEY. This allows the developer to decide how to identify the original record (e.g. creating a compound key in the case of multi-field keys). When the approval entity details are provided, the platform creates a record in the APPROVAL_ENTITY table and populates it with the provided details, and the APPROVAL_ID of the APPROVAL record. There is also an APPROVAL_ENTITY_COUNTER which is populated by the AUTH_CONSOLIDATOR process by default and can be handy in order to easily know how many approvals are pending for a given entity.
+The validate method can also be used to determine if the incoming event needs approval e.g. checking if a particular field has been amended, or checking the tier on an incoming EVENT_ADD_CLIENT. If it does, then you can add the REQUIRES_APPROVAL flag to the event message.
+
+The APPROVAL record is keyed on an auto-generated APPROVAL_ID and does not have a direct link to the original record. You have to create a link by adding “approval entity” details to the payload returned on an event ack in the `onValidate` method. These details include the ENTITY_TABLE and ENTITY_KEY. This allows you to decide how to identify the original record (e.g. creating a compound key in the case of multi-field keys). When the approval entity details are provided, the platform creates a record in the APPROVAL_ENTITY table and populates it with the details provided, and the APPROVAL_ID of the APPROVAL record. There is also an APPROVAL_ENTITY_COUNTER, which is populated by the AUTH_CONSOLIDATOR process by default; this can be handy in order to easily know how many approvals are pending for a given entity.
 
 
 ```kotlin
@@ -74,7 +81,7 @@ The APPROVAL record is keyed on an auto-generated APPROVAL_ID and does not have 
 ```
 
 
-In order to display pending approvals against the original record in the GUI, you can use the APPROVAL_ENTITY table to join to the APPROVAL records in a view and then display the information using a dataserver or a request reply. The details of the pending event are stored in json format.
+In order to display pending approvals against the original record in the GUI, you can use the APPROVAL_ENTITY table to join to the APPROVAL records in a view. You can then display the information using a data server or request server. The details of the pending event are stored in json format.
 
 
 **Example APPROVAL DB record**
@@ -105,7 +112,7 @@ All messages accept a REASON_CODE in their metadata.
 
 The platform ensures that users cannot approve their own events. Additional levels of control (e.g. based on user groups) can be added to the front end, to the event validate method, or can be specified in server-side configuration.
 
-To configure the allowed approvers in a server-side configuration, you need to create a new xml file with the following content and add the filename to the GENESIS_CLUSTER `<config></config>` element in a site-specific version of the genesis-processes.xml:
+To configure the allowed approvers in a server-side configuration, you need to create a new xml file with the following content.  You need to add the filename to the GENESIS_CLUSTER `<config></config>` element in the site-specific version of the genesis-processes.xml:
 
 ```xml
 <genesisCluster>
@@ -140,11 +147,11 @@ To configure the allowed approvers in a server-side configuration, you need to c
 </genesisCluster>
 ```
 
-You can replace the "true" return value with Groovy code in each "pendingApproval" block. The platform makes the following objects accessible to your code:
+You can replace the "true" return value with Groovy code in each `pendingApproval` block. The platform makes the following objects accessible to your code:
 
-- `userName` - a string property containing the user name who trigger the event (insert, accept, reject or cancel)
+- `userName` - a string property containing the user name who triggered the event (insert, accept, reject or cancel).
 - `db` - an RxDb property so you can access the database layer and do appropriate checks.
-- `pendingApproval` - the pending approval record stored in database (only available in accept, reject or cancel events)
+- `pendingApproval` - the pending approval record stored in the database (only available in accept, reject or cancel events).
 
 Using this xml configuration, you can look up the user's rights in the database and return `true` only if the necessary rights are in place. For example, if your system has the concept of internal and external users and you only want to allow internal users to accept pending events, then you could check your custom user "ACCESS_TYPE" field as follows:
 

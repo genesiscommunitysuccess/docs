@@ -7,31 +7,31 @@ sidebar_position: 4
 
 # Custom event handlers
 
-Custom event handlers provide a way of implementing business logic in Java or Kotlin outside the Genesis GPAL Event Handler definition in a more traditional and flexible development approach. Genesis has 3 different flavours of custom event handlers:
-1. Async - The Async event handler uses the Kotlin coroutines API to simplify asynchronous development. This is the underlying implementation used in GPAL event handlers.
-2. RxJava3 - RxJava3 event handlers use the RxJava3 library which is a popular option for composing asynchronous event based programs.
-3. Sync - Creates synchronous event handlers
+Custom event handlers provide a way of implementing business logic in Java or Kotlin outside the Genesis GPAL Event Handler definition, in a more traditional and flexible development approach. Genesis has 3 different flavours of custom event handlers:
+- Async - The Async event handler uses the Kotlin coroutines API to simplify asynchronous development. This is the underlying implementation used in GPAL event handlers.
+ RxJava3 - RxJava3 event handlers use the RxJava3 library which is a popular option for composing asynchronous event based programs.
+- Sync - Creates synchronous event handlers.
 
-Each custom event handler needs to define an input message type `I` and an output message type `O` (like GPAL event handlers do). Please see the [type-safe messages](../../Inter-process%20messages/type-safe-messages.md) section for more information. 
+Each custom event handler must define an input message type `I` and an output message type `O` (like GPAL event handlers do). Please see the [type-safe messages](../../Inter-process%20messages/type-safe-messages.md) section for more information. 
 
-## EventHandler interface
+## Event handler interface
 
-The EventHandler interface is the common supertype of AsyncEventHandler, Rx3EventHandler and SyncEventHandler, but it is not meant to be used on its own. It provides basic options for each event handler definition which can be overriden. See Kotlin methods explanation below:
+The event handler interface is the common supertype of AsyncEventHandler, Rx3EventHandler and SyncEventHandler, but it is not meant to be used on its own. It provides basic options for each event handler definition, which can be overriden. See Kotlin methods explanation below:
 
 | Name | Signature | Default value | Description |
 |---|---|---|---|
 | excludeMetadataFields | `fun excludeMetadataFields(): Set<String>` | setOf("RECORD_ID", "TIMESTAMP") | Contains a list of metadata fields to be excluded from the event metadata extracted from the input `I`|
-| includeMetadataFields | `fun includeMetadataFields(): Set<String>` | emptySet() | Contains list of metadata fields which needs to be included in the event metadata which must be available in input `I`. A non empty list will exclude the other fields. |
-| messageType | `fun messageType(): String?` | null | Contains name of the event handler. If undefined, the event handler name will become `EVENT_INPUT_CLASS_NAME`. E.g. for an event handler using an input type called `TradeInsert`, the message type will become `EVENT_TRADE_INSERT` |
-| overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. Allows developers to override the metadata field properties extracted from input `I` |
-| requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is intended where particular system events require a second system user to approve them in order to take effect ([see pending approval documentation](event-handler-pending-approval.md))|
+| includeMetadataFields | `fun includeMetadataFields(): Set<String>` | emptySet() | Contains a list of metadata fields that need to be included in the event metadata; this must be available in input `I`. A non-empty list will exclude the other fields. |
+| messageType | `fun messageType(): String?` | null | Contains the name of the event handler. If undefined, the event handler name will become `EVENT_*INPUT_CLASS_NAME*`. So, for an event handler using an input type called `TradeInsert`, the message type will become `EVENT_TRADE_INSERT`. |
+| overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I` |
+| requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them in order to take effect ([see pending approval documentation](event-handler-pending-approval.md))|
 
 ## Async
 ### AsyncEventHandler
-This is the most basic definition of an async event handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface which is defined as:
+This is the most basic definition of an async event handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface, which is defined as:
 `interface AsyncEventHandler<I : Any, O : Outbound> : AsyncEventWorkflowProcessor<I, O>, EventHandler`
 
-The only mandatory method to implement in this interface case will be:
+The only mandatory method to implement in this interface case ise:
 
 | Name | Signature |
 |---|---|
@@ -57,7 +57,7 @@ class EventCompanyHandlerAsync : AsyncEventHandler<Company, EventReply> {
 }
 ```
 
-The methods below are provided as part of `AsyncEventHandler` as an easy way of creating `EventReply` responses.
+The methods below are provided as part of `AsyncEventHandler`; they provide an easy way of creating `EventReply` responses.
 
 | Name | Signature |
 |---|---|
@@ -66,7 +66,7 @@ The methods below are provided as part of `AsyncEventHandler` as an easy way of 
 | nack | `fun <I : Any> AsyncEventHandler<I, EventReply>.nack(throwable: Throwable): EventReply` |
 | nack | `fun <I : Any> AsyncEventHandler<I, EventReply>.nack(error: String): EventReply` |
 
-So using these helper methods you could simplify the previous implementation like this:
+Using these helper method,s you could simplify the previous implementation like this:
 
 ```kotlin
 import global.genesis.commons.annotation.Module
@@ -86,7 +86,7 @@ class EventCompanyHandlerAsync : AsyncEventHandler<Company, EventReply> {
 
 ### AsyncValidatingEventHandler
 
-In the previous example, there was no distinction between validation and commit blocks, which is something we have in GPAL event handlers. In order to have a better separation of concerns using custom event handlers you can implement the `AsyncValidatingEventHandler` interface which is defined as:
+In the previous example, there was no distinction between validation and commit blocks, which is something we have in GPAL event handlers. In order to have a better separation of concerns using custom event handlers, you can implement the `AsyncValidatingEventHandler` interface, which is defined as:
 
 `interface AsyncValidatingEventHandler<I : Any, O : Outbound> : AsyncEventHandler<I, O>`
 
@@ -122,11 +122,11 @@ class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply>
 }
 ```
 
-If the `validate` flag is received as `true`, only the `onValidate` code block will be executed. If the `validate` flag is received as `false` both `onValidate` and `onCommit` blocks will be executed.
+If the `validate` flag is received as `true`, only the `onValidate` code block will be executed. If the `validate` flag is received as `false`, both the  `onValidate` and `onCommit` blocks will be executed.
 
 ### AsyncContextValidatingEventHandler
 
-In some cases, you might want to carry information from the `onValidate` code block to the `onCommit` code block for efficiency purposes (i.e. several database lookups happen in `onValidate` and you want to reuse that information). Using this `AsyncContextValidatingEventHandler` interface, you can provide this context information from the validation stage to the commit stage. See the interface below:
+In some cases, you might want to carry information from the `onValidate` code block to the `onCommit` code block for efficiency purposes (i.e. several database lookups happen in `onValidate` and you want to reuse that information). Using the `AsyncContextValidatingEventHandler` interface, you can provide this context information from the validation stage to the commit stage. See the interface below:
 `interface AsyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : AsyncEventHandler<I, O>`
 
 As with the previous example, when using this interface, you don't need to override the `process` method anymore. See the available methods to implement below:
@@ -178,7 +178,7 @@ The mechanism explained in [Async](#async) can be recycled and reapplied in Rx3 
 
 ### Rx3EventHandler
 
-In a similar fashion to `AsyncEventHandler` there is an Rx3 implementation flavour. It works in a very similar way to [`AsyncEventHandler`](#asynceventhandler), but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
+In a similar fashion to `AsyncEventHandler`, there is an Rx3 implementation flavour. It works in a very similar way to [`AsyncEventHandler`](#asynceventhandler), but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
 
 See interface definition below:
 `interface Rx3EventHandler<I : Any, O : Outbound> : Rx3EventWorkflowProcessor<I, O>, EventHandler`
@@ -216,7 +216,7 @@ class TestCompanyHandlerRx3 : Rx3EventHandler<Company, EventReply> {
 ```
 
 ### Rx3ValidatingEventHandler
-The same applies to Rx3ValidatingEventHandler. It is similar to [AsyncValidatingEventHandler](#asyncvalidatingeventhandler) in every way, but the return type is still `Single<O>`.
+The same applies to an Rx3ValidatingEventHandler. It is similar to [AsyncValidatingEventHandler](#asyncvalidatingeventhandler) in every way, but the return type is still `Single<O>`.
 
 `interface Rx3ValidatingEventHandler<I : Any, O : Outbound> : Rx3EventHandler<I, O>`
 
@@ -303,7 +303,7 @@ class TestCompanyHandlerRx3 : Rx3ContextValidatingEventHandler<Company, EventRep
 ```
 
 ## Sync
-Sync works similarly to [Async](#async) and [Rx3](#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the event handler logic is just the `O` type
+Sync works similarly to [Async](#async) and [Rx3](#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the event handler logic is just the `O` type.
 
 ### SyncEventHandler
 

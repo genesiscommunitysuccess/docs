@@ -6,14 +6,17 @@ sidebar_position: 1
 
 ---
 
-The system-definition file is the base of all configurations. Explained below are the different functions available to get properties specified in the system-definition.kts file.
-Default methods have implementation to provide default values for property. For more information, follow this [link](/platform-reference/essential-information/system_definitions-latest) 
+The system-definition file is the basis of all configurations. In this page, we describe the different functions available to get properties specified in the system-definition.kts file.
+Default methods have implementations to provide default values for property. For more information, follow this [link](/platform-reference/essential-information/system_definitions-latest) 
 
-Most of the functions are to get/set particular property. 
+Most of the functions are to get or set a particular property. 
 
-Use functions `get` or `getItem` if you add any other property whose getter/setter function is not available 
+Use functions `get` or `getItem` if you add any other property whose getter or setter function is not available. 
 
 You can access system definition properties in two ways:
+
+- using exsiting APIs
+- using @Named Genesis annotation
 
 ## Using existing APIs
 
@@ -54,4 +57,4 @@ You can access system definition properties in two ways:
 | parseStringProperty | `static <R> Optional<R> parseStringProperty(Supplier<Optional<String>> property, Function<? super String, ? extends R> transformer)` |
 
 ## Using @Named genesis annotation
-Follow this [link](/platform-reference/custom-components/custom-components/#injectable-properties-from-system-definition) for example
+Follow this [link](/platform-reference/custom-components/custom-components/#injectable-properties-from-system-definition) for examples
