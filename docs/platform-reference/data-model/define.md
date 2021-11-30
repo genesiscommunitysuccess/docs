@@ -267,8 +267,6 @@ Available join types are INNER and OUTER.
 
 * OUTER joins will provide null references for failed joins and will still allow the row to be built.
 
-* One to one and one to many. One to many joins are only usable in request reply definitions.
-
 ### Parametrised joins
 Some join operations require external parameters that are not available in the context of the table join definition,
 but will be available when the view repository is access (e.g. client enriched definitions), so an option exists to create parametrised joins.
