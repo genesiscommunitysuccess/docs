@@ -275,9 +275,9 @@ but will be available when the view repository is access (e.g. client enriched d
 Common functionality like table aliasing, field aliasing/prefixing, field formatting, and derived fields is available within view definitions in order to reduce code duplication.
 
 ### Derived fields
-Derived fields allow the developer to compute the results of a field.
+Derived fields allow the developer to compute the results for a generated field.
 
-It is possible to specify inputs to this calculation with field inputs or entity. Entity input have the advantage that:-
+It is possible to specify inputs to this calculation with field inputs or entity inputs. Entity input have the advantage that:-
 
 1. When a derived field has multiple inputs from a single table, only one input is required.
 
@@ -287,19 +287,19 @@ It is possible to specify inputs to this calculation with field inputs or entity
 ### Derived fields withEntity   
 Syntax:
 ```kotlin
-derivedField("{field name}", FIELD_TYPE) {
-    withEntity(TABLE_NAME) { {optional parameter name} ->
-        {code}
+derivedField("SPREAD", DOUBLE) {
+    withEntity(INSTRUMENT_PRICE) { price ->
+        price.askPrice - price.bidPrice
     }
 }
 ```
 
 ### Derived fields withInput
 
-eg with two fields
+eg with two fields from a table
 ```kotlin
 derivedField("SPREAD", DOUBLE) {
-withInput(INSTRUMENT_PRICE.BID_PRICE, INSTRUMENT_PRICE.ASK_PRICE) { bid, ask ->
+    withInput(INSTRUMENT_PRICE.BID_PRICE, INSTRUMENT_PRICE.ASK_PRICE) { bid, ask ->
         ask - bid
     }
 }
