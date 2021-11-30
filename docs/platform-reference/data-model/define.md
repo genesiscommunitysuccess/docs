@@ -297,8 +297,7 @@ With field input:
 ```kotlin
 derivedField("SPREAD", DOUBLE) {
 withInput(INSTRUMENT_PRICE.BID_PRICE, INSTRUMENT_PRICE.ASK_PRICE) { bid, ask ->
-    if (ask == null || bid == null) null
-    else ask - bid
+        ask - bid
     }
 }
 ```
