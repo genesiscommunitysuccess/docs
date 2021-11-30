@@ -4,7 +4,7 @@ title: Introduction
 sidebar_position: 10
 ---
 
-This is our Web Component wrapper for [AG grid](https://www.ag-grid.com/), that allows both **simple data** and **connected data** scenarios.
+This is our Web Component wrapper for [AG Grid](https://www.ag-grid.com/), that allows both **simple data** and **connected data** scenarios.
 
 ## Use cases
 
