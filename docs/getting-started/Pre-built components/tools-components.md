@@ -5,7 +5,7 @@ sidebar_position: 50
 id: tools-components
 ---
 
-These tools are components that . 
+These tools are components that give you power and control all along the life cycle of an application: the ability to create, monitor, control and test. 
 
 | Name| Description|
 |------------------------------------|--------------------|
