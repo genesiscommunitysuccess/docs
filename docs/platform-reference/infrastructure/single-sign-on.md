@@ -109,7 +109,7 @@ SAML has to be enabled on the GENESIS_ROUTER service. Do this by changing the ro
         <module>router</module>
         <package>global.genesis.router#global.genesis.console#global.genesis.auth.saml</package>
         <config>genesis-router.xml</config>
-        <classpath>genesis-console-5.1.*.jar,auth-saml-*.jar</classpath>
+        <classpath>genesis-console-5.2.*.jar,auth-saml-*.jar</classpath>
         <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
     </process>
 ```

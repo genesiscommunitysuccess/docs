@@ -22,6 +22,8 @@ You can read more about it [here](../../platform-reference/authentication-and-au
 
 Starting with the server, set up two USER and USER_ATTRIBUTES records: JohnDoe and JaneDoe.
 
+If you are not sure how to read and write information from the Genesis database, please see the reference for the 
+
 ![](/img/jane-and-john-doe.png)
 
 Set two new key values in **site-specific/cfg/genesis-system-definition.kts** file. This enables the COUNTERPARTY table and COUNTERPARTY_ID field to become part of the generic permissions system:

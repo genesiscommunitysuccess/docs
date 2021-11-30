@@ -38,19 +38,19 @@ Following are the steps to complete this guide.
 Genesis provides a [Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html) to generate a skeleton project that will host all the necessary modules and configuration for an application. To use it, open a terminal and execute:
 
 ```bash
-mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=<group_id> -Dversion=1.0.0-SNAPSHOT -DinteractiveMode=true -DarchetypeVersion=5.1.2 -DartifactId=<artifact_id>
+mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=<group_id> -Dversion=1.0.0-SNAPSHOT -DinteractiveMode=true -DarchetypeVersion=5.2.0 -DartifactId=<artifact_id>
 ```
 
 Note that if your terminal is PowerShell you will have to wrap the arguments in quotes, like this:
 
 ```powershell
-mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=<group_id>" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.1.2" "-DartifactId=<artifact_id>"
+mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=<group_id>" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.2.0" "-DartifactId=<artifact_id>"
 ```
 
 For this guide `sample.trade` for `groupId` and `trade-101` for `artifactId` will be used. The final command would be:
 
 ```powershell
-mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=sample.trade" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.1.2" "-DartifactId=trade-101"
+mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=sample.trade" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.2.0" "-DartifactId=trade-101"
 ```
 
 ### Build the project
