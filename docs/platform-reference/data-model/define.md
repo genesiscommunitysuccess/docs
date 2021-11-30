@@ -265,7 +265,7 @@ Available join types are INNER and OUTER.
 
 * INNER joins require that all joins match exactly, if one join fails to match this row will be discarded.
 
-* OUTER joins will provide null references for failed joins and will still allow the row to be built.
+* OUTER joins will provide null references for failed joins and will still allow the row to be built. (also known as left outer join)
 
 ### Parametrised joins
 Some join operations require external parameters that are not available in the context of the table join definition,
