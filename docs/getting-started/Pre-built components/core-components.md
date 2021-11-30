@@ -5,7 +5,7 @@ sidebar_position: 20
 id: core-components
 ---
 
-These core components are part of the Genesis LCNC Platform. They run automtically, and take away the need for much of the low-level programming that is essential to creating financial markets applications. It's there for you already, so you can concntrate on developing the essential value that is specific to your application.
+These core components are part of the Genesis LCNC Platform. They run automatically, and take away the need for much of the low-level programming that is essential to creating financial markets applications. It's there for you already, so you can concntrate on developing the essential value that is specific to your application.
 
 | Name| Description|
 |------------------------------------|
