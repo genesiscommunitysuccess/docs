@@ -83,7 +83,7 @@ And it generates xml files for service definitions and prcoesses:
 * cfg/ref_data_app-service-definitions.xml
 * cfg/ref_data_app-processes.xml
 
-Optionally, you could now run **remap**, which would give you cud operations for all the tables and request replies (static data from the request server), as well as for real-time data retrieval (via the data server.
+Optionally, you could now run **remap**, which would give you CRUD operations for all the tables and request replies (static data from the request server), as well as for real-time data retrieval (via the data server).
 
 But for this example application, we are going to go into the pro code, to add some sophistication.
 
@@ -98,7 +98,7 @@ You can run the **mvn** command either locally (in the server, local vm, wsl or 
 Run the **mvn** command:
 
 ```bash
-mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=ref_data_app -B
+mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.2.0 -DartifactId=ref_data_app -B
 ```
 
 This gives you the following project structure:
