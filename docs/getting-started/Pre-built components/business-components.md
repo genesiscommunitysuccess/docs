@@ -5,7 +5,7 @@ sidebar_position: 40
 id: business-components
 ---
 
-These technical components enable you to create working event-driven applications quickly. You can then configure them to add precise control, complexity and sophistication to your application. 
+Most financial applications have to interact with other systems to exchange information and create smooth workflows. The Genesis LCNC Platform has a growing list of components that enable you to connect quickly to market-leadong services. You don't need to create interfaces from scratch; you just select your component, enable it, and configure.
 
 | Name| Description|
 |------------------------------------|--------------------|

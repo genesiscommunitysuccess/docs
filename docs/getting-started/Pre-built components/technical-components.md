@@ -5,7 +5,7 @@ sidebar_position: 30
 id: technical-components
 ---
 
-These technical components enable you to create working event-driven applications quickly. You can then configure them to add precise control, complexity and sophistication to your application. 
+These technical components enable you to create working event-driven applications quickly. You can configure each component as required. By doing this, you add precise control, complexity and sophistication to your application. 
 
 | Name| Description|
 |------------------------------------|--------------------|

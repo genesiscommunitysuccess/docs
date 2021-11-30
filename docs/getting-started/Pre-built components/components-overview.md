@@ -8,7 +8,7 @@ id: components
 
 The Genesis LCNC Platform offers you more than 50 components that provide proven quality code - and which seriously speed up your development, testing and deployment.
 
-- Core components 
+- [Core components](/getting-started/Pre-built%20components/core-components/) 
 - Technical components
 - Business components
 - Tools
