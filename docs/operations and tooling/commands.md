@@ -653,7 +653,7 @@ There is a separate wrapper, **JvmRun** for Java main class scripts.
 
 ## DictionaryBuilder
 
-This is a groovy script which can be executed with **GenesisRun** or **JVMRun**.
+This is a groovy script that can be executed with **GenesisRun** or **JVMRun**.
 
 DictionaryBuilder parses RDBMS schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases.
 
@@ -813,7 +813,7 @@ Enter key password for <selfsigned>
 
 Assuming no problems with privileges, you will now have a certificate called "selfsigned" with a private key using the same password as the keystore password e.g. Password123.
 
-In our example this certificate can be found here: /home/exmon/keystore.jks
+In our example, this certificate can be found here: /home/exmon/keystore.jks
 
 Please note, however, that this certificate should be stored in another directory outside the application.
 
@@ -823,7 +823,7 @@ The keystore (.jks) is, in a way, the private key to be used in the two-way auth
 $ keytool -export -alias mykey -file certificate.crt -keystore keystore.jks
 ```
 
-### Installing TLS certificate in environment
+### Installing a TLS certificate in your environment
 
 #### Linux
 

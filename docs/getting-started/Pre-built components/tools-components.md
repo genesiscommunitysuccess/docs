@@ -9,9 +9,9 @@ These tools are components that give you power and control all along the life cy
 
 | Name| Description|
 |------------------------------------|--------------------|
-| DictionaryBuilder |  Creates Genesis schema from external sources (e.g. relational databases)        | 
+| DictionaryBuilder(/platform-tooling/commands/#dictionarybuilder) |  Creates Genesis schema from external sources (e.g. relational databases)        | 
 | Genesis Studio | Graphical environment for building Genesis applications with No Code    |
-| Console | Monitoring status, exploring log files and querying application data      |
-| GEM | Cloud-agnostic management and auditing of Genesis environments |
+| [Console](/platform-tooling/genesis-console/intro/) | Monitoring status, exploring log files and querying application data      |
+| [GEM](/platform-tooling/genesis-environment-manager/intro/) | Cloud-agnostic management and auditing of Genesis environments |
 | Server Unit Test Framework |  Unit testing of back-end business logic |
 | Genesis SDK | Framework for building Genesis applications in Low Code with the Genesis Platform Language           | 
