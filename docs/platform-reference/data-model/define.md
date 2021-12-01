@@ -271,6 +271,31 @@ Available join types are INNER and OUTER.
 Some join operations require external parameters that are not available in the context of the table join definition,
 but will be available when the view repository is access (e.g. client enriched definitions), so an option exists to create parametrised joins.
 
+eg. here, we've extend the join condition to match on a parameter called "TYPE_NAME" that will need to pass as an input field to the view. 
+The name is optional for the ```asParameter()```, where it's not included, the parameter will default to the field name it's been called from.
+
+```kotlin
+    view(INSTRUMENT) {
+        joins {
+            joining(ALT_INSTRUMENT_ID, JoinType.INNER) {
+                on(INSTRUMENT.ID to ALT_INSTRUMENT_ID.INSTRUMENT_ID)
+                    .and(ALT_INSTRUMENT_ID.ALTERNATE_TYPE.asParameter("TYPE_NAME"))
+            }
+        }
+
+        fields {
+            ALT_INSTRUMENT_ID {
+                ALTERNATE_CODE withAlias "INSTRUMENT_CODE"
+            }
+
+            INSTRUMENT {
+                NAME withPrefix INSTRUMENT
+            }
+        }
+    }
+
+```
+
 ### Fields functionality
 Common functionality like table aliasing, field aliasing and field prefixing, are available from views.
 
