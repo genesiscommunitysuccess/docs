@@ -284,19 +284,8 @@ It is possible to specify inputs to this calculation with field inputs or entity
 2. Non-null fields on the entity will be non-null
 
 
-### Derived fields withEntity   
-Syntax:
-```kotlin
-derivedField("SPREAD", DOUBLE) {
-    withEntity(INSTRUMENT_PRICE) { price ->
-        price.askPrice - price.bidPrice
-    }
-}
-```
-
 ### Derived fields withInput
 
-eg with two fields from a table
 ```kotlin
 derivedField("SPREAD", DOUBLE) {
     withInput(INSTRUMENT_PRICE.BID_PRICE, INSTRUMENT_PRICE.ASK_PRICE) { bid, ask ->
@@ -304,8 +293,7 @@ derivedField("SPREAD", DOUBLE) {
     }
 }
 ```
-
-With entity input:
+### Derived fields withEntity
 
 ```kotlin
 derivedField("SPREAD", DOUBLE) {
