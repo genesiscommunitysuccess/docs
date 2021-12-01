@@ -272,7 +272,42 @@ Some join operations require external parameters that are not available in the c
 but will be available when the view repository is access (e.g. client enriched definitions), so an option exists to create parametrised joins.
 
 ### Fields functionality
-Common functionality like table aliasing, field aliasing/prefixing, field formatting, and derived fields is available within view definitions in order to reduce code duplication.
+Common functionality like table aliasing, field aliasing and field prefixing, are available from views.
+
+```kotlin
+  view("INSTRUMENT_DOUBLE_PARAMETERS", INSTRUMENT) {
+    
+        // here we alias the table two times so that it can be referenced in the join multiple times
+        val alt1 = ALT_INSTRUMENT_ID withAlias "alt1"
+        val alt2 = ALT_INSTRUMENT_ID withAlias "alt2"
+
+        joins {
+            joining(alt1, JoinType.INNER) {
+                on(INSTRUMENT.ID to alt1 { INSTRUMENT_ID })
+                    .and(alt1 { ALTERNATE_TYPE }.asParameter("ALTERNATE_TYPE"))
+            }
+            joining(alt2, JoinType.INNER) {
+                on(INSTRUMENT.ID to alt2 { INSTRUMENT_ID })
+                    .and(alt2 { ALTERNATE_TYPE }.asParameter("ALTERNATE_TYPE"))
+            }
+        }
+
+        fields {
+            // here we use field aliasing to disambiguate each INSTRUMENT_CODE from the aliased table.
+            alt1 {
+                ALTERNATE_CODE withAlias "INSTRUMENT_CODE_1"
+            }
+            alt2 {
+                ALTERNATE_CODE withAlias "INSTRUMENT_CODE_2"
+            }
+
+            // here we use field prefixing
+            INSTRUMENT {
+                NAME withPrefix INSTRUMENT
+            }
+        }
+    }
+```
 
 ### Derived fields
 Derived fields allow the developer to compute the results for a generated field.
