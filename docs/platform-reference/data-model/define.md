@@ -265,45 +265,95 @@ Available join types are INNER and OUTER.
 
 * INNER joins require that all joins match exactly, if one join fails to match this row will be discarded.
 
-* OUTER joins will provide null references for failed joins and will still allow the row to be built.
-
-* One to one and one to many. One to many joins are only usable in request reply definitions.
+* OUTER joins will provide null references for failed joins and will still allow the row to be built. (also known as left outer join)
 
 ### Parametrised joins
 Some join operations require external parameters that are not available in the context of the table join definition,
 but will be available when the view repository is access (e.g. client enriched definitions), so an option exists to create parametrised joins.
 
-### Fields functionality
-Common functionality like table aliasing, field aliasing/prefixing, field formatting, and derived fields is available within view definitions in order to reduce code duplication.
+eg. here, we've extend the join condition to match on a parameter called "TYPE_NAME" that will need to pass as an input field to the view. 
+The name is optional for the ```asParameter()```, where it's not included, the parameter will default to the field name it's been called from.
 
-### Entity input for derived fields
-It is possible to specify field inputs for derived fields as well as being able to  specify a single entity as input. This has a number of advantages:
+```kotlin
+    view(INSTRUMENT) {
+        joins {
+            joining(ALT_INSTRUMENT_ID, JoinType.INNER) {
+                on(INSTRUMENT.ID to ALT_INSTRUMENT_ID.INSTRUMENT_ID)
+                    .and(ALT_INSTRUMENT_ID.ALTERNATE_TYPE.asParameter("TYPE_NAME"))
+            }
+        }
+
+        fields {
+            ALT_INSTRUMENT_ID {
+                ALTERNATE_CODE withAlias "INSTRUMENT_CODE"
+            }
+
+            INSTRUMENT {
+                NAME withPrefix INSTRUMENT
+            }
+        }
+    }
+
+```
+
+### Fields functionality
+Common functionality like table aliasing, field aliasing and field prefixing, are available from views.
+
+```kotlin
+  view("INSTRUMENT_DOUBLE_PARAMETERS", INSTRUMENT) {
+    
+        // here we alias the table two times so that it can be referenced in the join multiple times
+        val alt1 = ALT_INSTRUMENT_ID withAlias "alt1"
+        val alt2 = ALT_INSTRUMENT_ID withAlias "alt2"
+
+        joins {
+            joining(alt1, JoinType.INNER) {
+                on(INSTRUMENT.ID to alt1 { INSTRUMENT_ID })
+                    .and(alt1 { ALTERNATE_TYPE }.asParameter("ALTERNATE_TYPE"))
+            }
+            joining(alt2, JoinType.INNER) {
+                on(INSTRUMENT.ID to alt2 { INSTRUMENT_ID })
+                    .and(alt2 { ALTERNATE_TYPE }.asParameter("ALTERNATE_TYPE"))
+            }
+        }
+
+        fields {
+            // here we use field aliasing to disambiguate each INSTRUMENT_CODE from the aliased table.
+            alt1 {
+                ALTERNATE_CODE withAlias "INSTRUMENT_CODE_1"
+            }
+            alt2 {
+                ALTERNATE_CODE withAlias "INSTRUMENT_CODE_2"
+            }
+
+            // here we use field prefixing
+            INSTRUMENT {
+                NAME withPrefix INSTRUMENT
+            }
+        }
+    }
+```
+
+### Derived fields
+Derived fields allow the developer to compute the results for a generated field.
+
+It is possible to specify inputs to this calculation with field inputs or entity inputs. Entity input have the advantage that:-
 
 1. When a derived field has multiple inputs from a single table, only one input is required.
 
 2. Non-null fields on the entity will be non-null
-   
-Syntax:
-```kotlin
-derivedField("{field name}", FIELD_TYPE) {
-    withEntity(TABLE_NAME) { {optional parameter name} ->
-        {code}
-    }
-}
-```
 
-With field input:
+
+### Derived fields withInput
 
 ```kotlin
 derivedField("SPREAD", DOUBLE) {
-withInput(INSTRUMENT_PRICE.BID_PRICE, INSTRUMENT_PRICE.ASK_PRICE) { bid, ask ->
-    if (ask == null || bid == null) null
-    else ask - bid
+    withInput(INSTRUMENT_PRICE.BID_PRICE, INSTRUMENT_PRICE.ASK_PRICE) { bid, ask ->
+        ask - bid
     }
 }
 ```
-
-With entity input:
+### Derived fields withEntity
 
 ```kotlin
 derivedField("SPREAD", DOUBLE) {
