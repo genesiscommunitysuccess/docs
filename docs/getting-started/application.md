@@ -1,13 +1,13 @@
 ---
 id: application
-sidebar_label: 'This is what an application looks like '
-sidebar_position: 3
-title: 'This is what an application looks like'
+sidebar_label: 'An example application'
+sidebar_position: 30
+title: 'An example application'
 ---
 
-All Genesis applications share a common architecture. If you familiarise yourself with the components in the server and the web front-end, you will immediately have an understanding of the purpose of all the main elements of that architecture.
+Every Genesis application is different, but all Genesis applications share a common architecture. If you familiarise yourself with the components in the server and the web front-end, you will immediately have an understanding of the purpose of all the main elements of that architecture.
 
-Get to know the components of the server and front end right away; this diagram is the foundation that every developer needs to know.
+The diagram below shows what an example application looks like. Get to know the components of the server and front end right away; this diagram is the foundation that every developer needs to know.
 
 ![](/img/this-is-what-a-genesis-application.png)
 

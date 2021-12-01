@@ -1,7 +1,7 @@
 ---
 title: 'View definition example'
 sidebar_label: 'View definition example'
-sidebar_position: 5
+sidebar_position: 50
 id: view-example
 ---
 

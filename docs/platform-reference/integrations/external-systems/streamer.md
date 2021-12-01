@@ -17,6 +17,7 @@ To create a streamer:
     <module>genesis-pal-streamer</module>
     <package>global.genesis.streamer.pal</package>
     <script>trading_app-streamer.kts</script>
+	<language>pal</language>
 </process>
 ```
 

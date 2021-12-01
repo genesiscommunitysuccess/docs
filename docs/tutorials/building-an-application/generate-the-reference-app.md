@@ -5,9 +5,9 @@ sidebar_label: Generate the reference app
 sidebar_position: 1
 
 ---
-The first task is to generate a reference application from the existing RDBMS of reference data.
+In this first exercise, we shall generate the reference application with its database of reference data. We shall create thsi from the existing RDBMS of reference data.
 
-Before you start. You do have the platform and all the relevant tools installed, yes? The Genesis LCNC must be installed on a server,local vm, wsl or cloud instance (genesis and auth).
+Before you start. Make sure you have the platform and all the relevant tools [installed](/getting-started/get-ready-to-develop/install/).The Genesis LCNC must be installed on a server, local vm, wsl or cloud instance (genesis and auth).
 
 Ideally, maven should be installed in the server instance with adequate configuration to retrieve genesis binaries.
 
@@ -19,7 +19,7 @@ There are four tables in the source relational database. You can see these in DB
 
 ![](/img/dbeaver-screenshot.png)
 
-In this exercise, we are going to convert the contents of that database so that we have fields, tables and views we can use to build our Genesis application. And we shall generate a server with basic functions.
+In this exercise, we are going to convert the contents of that database so that we have fields, tables and views. From this data model, we can build our Genesis application. And we shall generate a server with basic functions.
 
 ## 1. Generate the dictionary files
 
@@ -52,7 +52,7 @@ You need to edit that to make it a BOOLEAN type.
 ```
 ## 2. Copy files and run genesisInstall
 
-Create a new ref_data_app folder structure inside GENES_S_HOME, including cfg and script folders_
+Create a new ref_data_app folder structure inside GENESIS_HOME, including cfg and script folders.
 
 Copy the output files from the dictionary build to the **ref_data_app/cfg** folder inside the run directory.
 
@@ -76,12 +76,14 @@ This gives you kts files for your new modules:
 * scripts/ref_data_app-reqrep.kts
 * scripts/ref_data_app-eventhandler.kts
 
-and xml files for service definitions and prcoesses:
+![](/img/appgen.png)
+
+And it generates xml files for service definitions and prcoesses:
 
 * cfg/ref_data_app-service-definitions.xml
 * cfg/ref_data_app-processes.xml
 
-Optionally, you could now run **remap**, which would give you cud operations for all the tables and request replies (static data from the request server), as well as for real-time data retrieval (via the data server.
+Optionally, you could now run **remap**, which would give you CRUD operations for all the tables and request replies (static data from the request server), as well as for real-time data retrieval (via the data server).
 
 But for this example application, we are going to go into the pro code, to add some sophistication.
 
@@ -96,7 +98,7 @@ You can run the **mvn** command either locally (in the server, local vm, wsl or 
 Run the **mvn** command:
 
 ```bash
-mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=ref_data_app -B
+mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.2.0 -DartifactId=ref_data_app -B
 ```
 
 This gives you the following project structure:

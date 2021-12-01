@@ -1,23 +1,24 @@
 ---
-title: 'EntityDb Api Reference'
-sidebar_label: 'EntityDb Api Reference'
-sidebar_position: 2
+title: 'EntityDb API reference'
+sidebar_label: 'EntityDb API reference'
+sidebar_position: 60
 id: entity-db
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The entity db allows developers to interact with the database layer; using any of the generated type-safe entities, for
-both tables and views. The interface supports the same operations as the generated repositories, but will accept any
+The entity db enables developers to interact with the database layer; you can use any generated type-safe entities for
+tables and views. The interface supports the same operations as the generated repositories, but will accept any
 entity. It supports read operations for views and tables and write operations for tables only.
 
-The entity db differs from the generated repositories, in that it can handle any table and most view entities and
-it differs from `RxDb` in that all operations are type safe.
+The entity db differs from the generated repositories in that it can handle any table and most view entities and
+it differs from `RxDb` in that all operations are type-safe.
 
-As with the generated repositories, there are two flavours of the entity db, one supports RxJava signatures, where
-return types are either `Maybe`, `Single` or `Flowable`, this will be the entity db to use from Java.
+As with the generated repositories, there are two flavours of the entity db: 
 
-The other flavour supports Kotlin coroutines, and instead of `Maybe` and `Single` there are `suspend` functions that
+* One supports RxJava signatures, where return types are either `Maybe`, `Single` or `Flowable`, this will be the entity db to use from Java.
+
+* The other flavour supports Kotlin coroutines. Instead of `Maybe` and `Single` there are `suspend` functions that
 return either nullable or non-nullable values, depending on the operation. Instead of `Flowable` this implementation
 returns kotlin native `Flow`.
 
@@ -55,24 +56,24 @@ db.get(Trade.ById("TR_123"))
     * `bulkSubscribe`
     * `rangeSubscribe`
 
-## Entity Types
+## Entity types
 
-The entity database uses generated table and view entity types and indexes to perform type safe operations on the
+The entity database uses generated table and view entity types and indexes to perform type-safe operations on the
 database.
 
-On views the indices of the root table will become indices if:
+On views, the indices of the root table will become indices if:
 
-1. the index is the primary key
-2. the first field of the index used in the view
+* the index is the primary key
+* the first field of the index used in the view
 
-If a view has any one to many joins, then all unique indices, including the primary key will get downgraded to a
+If a view has any one-to-many joins, then all unique indices, including the primary key, will be downgraded to a
 non-unique index.
 
-Please note that the examples below for kotlin will use the `AsyncEntityDb` whereas the java examples will use
-the `RxEntityDb` type. The `AsyncEntityDb` is only available through kotlin, the `RxEntityDb` however can be
+In the examples below, kotlin will use the `AsyncEntityDb`, whereas the java examples will use
+the `RxEntityDb` type. The `AsyncEntityDb` is only available through kotlin, but the `RxEntityDb` can be
 used in both java and kotlin.
 
-For this document we will use the following table definition as our base:
+We shall use the following table definition as our base:
 
 ```kotlin
 tables {
@@ -123,16 +124,16 @@ This will have the following index types:
 
 ### get
 
-Get is a simple lookup on the database; it will return a single entity if a match is found or no records if none is
+Get is a simple lookup on the database; it will return a single entity if a match is found, or no records if none is
 found.
 
-The following overloads exists for get, fields is a `Set<String>`.
+The following overloads exist for get; fields is a `Set<String>`.
 
-1. `get(E, EntityIndexReference<E>, fields) : E?`
-2. `get(E, fields) : E?`
-3. `get(E, EntityIndexReference<E>) : E?`
-4. `get(UniqueEntityIndex<E>, fields) : E?`
-5. `get(UniqueEntityIndex<E>) : E?`
+* `get(E, EntityIndexReference<E>, fields) : E?`
+* `get(E, fields) : E?`
+* `get(E, EntityIndexReference<E>) : E?`
+* `get(UniqueEntityIndex<E>, fields) : E?`
+* `get(UniqueEntityIndex<E>) : E?`
 
 #### Syntax
 
@@ -178,13 +179,13 @@ final var trade = db.get(trade.byTypeId())
 
 ### getAll
 
-Get all will take multiple _unique_ index class instances and return the type entity type for record. It takes
+Get all will take multiple _unique_ index class instances and return the type entity type for the record. It takes
 a `List<Pair<String, NonUniqueEntityIndex<E>>>`, where the `String` is a unique reference to each request.
 
 #### Overloads
 
-1. `getAll(requestDetails: Flow<Pair<String, UI<E>>): Map<String, E?>`
-2. `getAll(requestDetails: List<Pair<String, UI<E>>): Map<String, E?>`
+* `getAll(requestDetails: Flow<Pair<String, UI<E>>): Map<String, E?>`
+* `getAll(requestDetails: List<Pair<String, UI<E>>): Map<String, E?>`
 
 ```kotlin
 val map = db.getAll(listOf("A" to Trade.byId("TRADE_A"), "B" to Trade.byId("TRADE_B")))
@@ -195,15 +196,15 @@ val recordB = map["B"]
 
 ### getAllAsList
 
-This operation is similar to the above, but takes a `List<NonUniqueEntityIndex<E>>`, and will return a `List<E?>`,
-the results are returned in the same order they were requested and will be `null` if no record was found. The result
+This operation is similar to the one above, but takes a `List<NonUniqueEntityIndex<E>>`, and will return a `List<E?>`.
+The results are returned in the order they were requested and will be `null` if no record was found. The result
 list is guaranteed to be the same count as the input.
 
 #### Overloads
 
-1. `getAllAsList(Flow<UI<E>>): List<E?>`
-2. `getAllAsList(List<UI<E>>): List<E?>`
-3. `getAllAsList(vararg UI<E>): List<E?>`
+* `getAllAsList(Flow<UI<E>>): List<E?>`
+* `getAllAsList(List<UI<E>>): List<E?>`
+* `getAllAsList(vararg UI<E>): List<E?>`
 
 ```kotlin
 val list = db.getAllAsList(Trade.byId("TRADE_A"), Trade.byId("TRADE_B"))
@@ -214,23 +215,23 @@ val recordB = list[1]
 
 ### getBulk
 
-Get bulk will create a `Flow` or `Flowable` of the whole table. If the database layer supports it, these will be
-sorted in ascending order by the provided index or by the primary key if none is provided. Currently, only
-FoundationDb and Postgres support an ordered `getBulk`. There are also `getBulkFromEnd` function which will
+This will create a `Flow` or `Flowable` of the whole table. If the database layer supports it, these will be
+sorted in ascending order by the index provided, or by the primary key if none is provided. Currently, only
+FoundationDb and Postgres support an ordered `getBulk`. There is also the `getBulkFromEnd` function, which will
 return records in descending order. There are also a number of continuation operations, which will return
 the whole table after the provided record.
 
 #### Overloads
 
-1. `getBulk<E>(): Flow<E>` (kotlin only)
-2. `getBulk([Class<E> /  KClass<E>]): Flow<E>`
-3. `getBulk(UR<E>): Flow<E>`
-4. `getBulk(UR<E>, fields): Flow<E>`
-5. `getBulk(UR<E>, E, fields): Flow<E>` (continuation)
-6. `getBulkFromEnd(UR<E>): Flow<E>`
-7. `getBulkFromEnd(UR<E>, E), E: Flow<E>` (continuation)
-7. `getBulkFromEnd(UR<E>, E, fields), E: Flow<E>` (continuation)
-8. `getBulkFromEnd(UR<E>, fields): Flow<E>`
+* `getBulk<E>(): Flow<E>` (kotlin only)
+* `getBulk([Class<E> /  KClass<E>]): Flow<E>`
+* `getBulk(UR<E>): Flow<E>`
+* `getBulk(UR<E>, fields): Flow<E>`
+* `getBulk(UR<E>, E, fields): Flow<E>` (continuation)
+* `getBulkFromEnd(UR<E>): Flow<E>`
+* `getBulkFromEnd(UR<E>, E), E: Flow<E>` (continuation)
+* `getBulkFromEnd(UR<E>, E, fields), E: Flow<E>` (continuation)
+* `getBulkFromEnd(UR<E>, fields): Flow<E>`
 
 #### Syntax
 
@@ -262,39 +263,41 @@ final var flowable = db.getBulk(Trade.ById.Companion);
 
 ### getRange
 
-Whereas a `get` operation selects for a single entry from a unique index, and a `getBulk` operation selects the whole
-table, `getRange` selects a range within an index. For example to select all trades by a single currency. There
+Whereas a `get` operation selects a single entry from a unique index, and a `getBulk` operation selects the whole
+table, `getRange` selects a range within an index. For example, to select all trades by a single currency, there
 are a number of ways a range can be specified:
 
-1. A non-unique index entry.
-2. A range between two index entries.
-3. When an index has more than one column, part of the index starting from the first column.
+* A non-unique index entry.
+* A range between two index entries.
+* When an index has more than one column, part of the index starting from the first column.
 
 When selecting on part of an index, the number of columns can be specified using the `numKeyFields` parameter. The fields
 are always selected in the order they are specified in the index.
 
 There are 15 different get range functions. The records will be returned in ascending order, apart from when using
-the `fromEnd` functions, in which case the records will be returned in descending order. The `numKeyFields` property
-specifies the number of fields to use from an index. For example in the `TRADE` example there is the `TRADE_BY_TYPE_ID`
-index. If we pass in 1 for `numKeyFields` the range will return records by `TRADE_TYPE` the first column in that index.
+the `fromEnd` functions, in which case the records will be returned in descending order. 
+
+The `numKeyFields` property
+specifies the number of fields to use from an index. For example, in the `TRADE` example, there is the `TRADE_BY_TYPE_ID`
+index. If we pass 1 for `numKeyFields` the range will return records by `TRADE_TYPE`, which is the first column in that index.
 
 #### Overloads
 
-1. `getRange(E, EntityIndexReference<E>, numKeyFields): Flow<E>`
-2. `getRange(E, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
-3. `getRange(E, E?, EntityIndexReference<E>, numKeyFields): Flow<E>`
-4. `getRange(E, E?, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
-5. `getRange(EntityIndex<E>, numKeyFields): Flow<E>`
-6. `getRange(EntityIndex<E>, numKeyFields, fields): Flow<E>`
-7. `getRange(NonUniqueEntityIndex<E>, NonUniqueEntityIndex<E>): Flow<E>`
-8. `getRange(NonUniqueEntityIndex<E>): Flow<E>`
-9. `getRange(NonUniqueEntityIndex<E>, fields): Flow<E>`
-10. `getRange(EntityIndex<E>, EntityIndex<E>, numKeyFields): Flow<E>`
-11. `getRange(EntityIndex<E>, EntityIndex<E>, numKeyFields, fields): Flow<E>`
-12. `getRangeFromEnd(E, E, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
-13. `getRangeFromEnd(E, E, EntityIndexReference<E>, numKeyFields): Flow<E>`
-14. `getRangeFromEnd(EntityIndex<E>, EntityIndex<E>, numKeyFields, fields): Flow<E>`
-15. `getRangeFromEnd(EntityIndex<E>, EntityIndex<E>, numKeyFields): Flow<E>`
+* `getRange(E, EntityIndexReference<E>, numKeyFields): Flow<E>`
+* `getRange(E, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
+* `getRange(E, E?, EntityIndexReference<E>, numKeyFields): Flow<E>`
+* `getRange(E, E?, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
+* `getRange(EntityIndex<E>, numKeyFields): Flow<E>`
+* `getRange(EntityIndex<E>, numKeyFields, fields): Flow<E>`
+* `getRange(NonUniqueEntityIndex<E>, NonUniqueEntityIndex<E>): Flow<E>`
+* `getRange(NonUniqueEntityIndex<E>): Flow<E>`
+* `getRange(NonUniqueEntityIndex<E>, fields): Flow<E>`
+* `getRange(EntityIndex<E>, EntityIndex<E>, numKeyFields): Flow<E>`
+* `getRange(EntityIndex<E>, EntityIndex<E>, numKeyFields, fields): Flow<E>`
+* `getRangeFromEnd(E, E, EntityIndexReference<E>, numKeyFields, fields): Flow<E>`
+* `getRangeFromEnd(E, E, EntityIndexReference<E>, numKeyFields): Flow<E>`
+* `getRangeFromEnd(EntityIndex<E>, EntityIndex<E>, numKeyFields, fields): Flow<E>`
+* `getRangeFromEnd(EntityIndex<E>, EntityIndex<E>, numKeyFields): Flow<E>`
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -332,10 +335,11 @@ db.getRange(trade1,trade2,Trade.ByTypeId.Companion,1).toList();
 
 ## Write Operations
 
-All write operations have versions that take a single entity and versions that take multiple entries. The return values
-for these operations are type safe (see details below), provided all entries are of the same type. For example, when
+All write operations have versions that take a single entity and versions that take multiple entries. 
+
+The return values for these operations are type-safe (see details below), provided all entries are of the same type. For example, when
 inserting multiple `Trade` entries, the return type will be `List<InsertResult<Trade>>`. Different entity types can be
-inserted in the same operation, however, the return type will be `List<InsertResult<Entity>>`. Also, modify operations
+inserted in the same operation; however, the return type will be `List<InsertResult<Entity>>`. Also, modify operations
 only accept table entities.
 
 ### Default and generated values
@@ -343,20 +347,20 @@ only accept table entities.
 When writing a record to the database, typically all non null properties should be set on the entity. An entity property
 becomes non-nullable if:
 
-1. It has a default value
-2. It is generated by the database, i.e. sequence or auto increment fields
-3. The column is included in an index or is specifically declared not null in the schema
+* It has a default value
+* It is generated by the database, i.e. sequence or auto increment fields
+* The column is included in an index or is specifically declared not null in the schema
 
 #### Default values
 
-Properties with a default value, will have the value set by default unless set explicitly in the builder.
+Properties with a default value will have the value set by default, unless set explicitly in the builder.
 
 #### Generated properties
 
 Generated properties will be left in an indeterminate state if not set in the builder. When writing to the
 database, this indeterminate state will be set in the return value. Trying to read the property while it is
-in this will result in an `IllegalArugmentException`. Each generated property will have two read only
-associated properties to access these properties in a safe manner. These will be a `is[FieldName]Generated`
+in this state will result in an `IllegalArugmentException`. Each generated property will have two read-only
+associated properties to access these properties in a safe manner. These are an `is[FieldName]Generated`
 boolean property and a `[fieldName]OrNull` property.
 
 For example:
@@ -383,10 +387,10 @@ trade.isTradeIdInitialised();   // will return true if set
 </TabItem>
 </Tabs>
 
-#### Columns in Indices or are not null explicitly
+#### Columns in indices or are not null explicitly
 
 Columns in indices or declared not null should always be set in a builder, unless it has a default value or is a
-generated column. In all other instances a `NullPointerException` will be thrown when building the object.
+generated column. In all other instances, a `NullPointerException` will be thrown when building the object.
 
 ### Insert
 
@@ -395,71 +399,71 @@ function takes multiple records, and has several overloads:
 
 #### Overloads
 
-1. `insert(E): InsertResult<E>`
-2. `insertAll(vararg E): List<InsertResult<E>>`
-3. `insertAll(List<E>): List<InsertResult<E>>`
-4. `insertAll(Flow<E>): List<InsertResult<E>>`
+* `insert(E): InsertResult<E>`
+* `insertAll(vararg E): List<InsertResult<E>>`
+* `insertAll(List<E>): List<InsertResult<E>>`
+* `insertAll(Flow<E>): List<InsertResult<E>>`
 
 ### Modify
 
-This will try to modify a record in the database, if the record does not exist, an error will be thrown.
+This will try to modify a record in the database. If the record does not exist, an error will be thrown.
 
 #### Overloads
 
-1. `modify(EntityModifyDetails<E>): ModifyResult<E>`
-2. `modify(E): ModifyResult<E>`
-3. `modify(E, UniqueEntityIndexReference<E>): ModifyResult<E>`
-4. `modifyAll(vararg E): List<ModifyResult<E>>`
-5. `modifyAll(vararg EntityModifyDetails<E>): List<ModifyResult<E>>`
-6. `modifyAll(List<EntityModifyDetails<E>>): List<ModifyResult<E>>`
-7. `modifyAll(Flow<EntityModifyDetails<E>>): List<ModifyResult<E>>`
+* `modify(EntityModifyDetails<E>): ModifyResult<E>`
+* `modify(E): ModifyResult<E>`
+* `modify(E, UniqueEntityIndexReference<E>): ModifyResult<E>`
+* `modifyAll(vararg E): List<ModifyResult<E>>`
+* `modifyAll(vararg EntityModifyDetails<E>): List<ModifyResult<E>>`
+* `modifyAll(List<EntityModifyDetails<E>>): List<ModifyResult<E>>`
+* `modifyAll(Flow<EntityModifyDetails<E>>): List<ModifyResult<E>>`
 
 ### Upsert
 
-This will try to modify a record in the database, if the record does not exist, the record will be inserted instead.
+This will try to modify a record in the database. If the record does not exist, the record will be inserted instead.
 
 #### Overloads
 
-1. `upsert(EntityModifyDetails<E>): UpsertResult<E>`
-2. `upsert(E): UpsertResult<E>`
-3. `upsertAll(vararg E): List<UpsertResult<E>>`
-4. `upsertAll(vararg EntityModifyDetails<E>): List<UpsertResult<E>>`
-5. `upsertAll(List<EntityModifyDetails<E>>): List<UpsertResult<E>>`
-6. `upsertAll(Flow<EntityModifyDetails<E>>): List<UpsertResult<E>>`
+* `upsert(EntityModifyDetails<E>): UpsertResult<E>`
+* `upsert(E): UpsertResult<E>`
+* `upsertAll(vararg E): List<UpsertResult<E>>`
+* `upsertAll(vararg EntityModifyDetails<E>): List<UpsertResult<E>>`
+* `upsertAll(List<EntityModifyDetails<E>>): List<UpsertResult<E>>`
+* `upsertAll(Flow<EntityModifyDetails<E>>): List<UpsertResult<E>>`
 
 ### Delete
 
-This will try to delete a record
+This will try to delete a record.
 
 #### Overloads
 
-1. `delete(E): DeleteResult<E>`
-1. `delete(UniqueEntityIndex<E>): DeleteResult<E>`
-2. `deleteAll(vararg E): List<DeleteResult<E>>`
-2. `deleteAll(vararg UniqueEntityIndex<E>): List<DeleteResult<E>>`
-3. `deleteAll(List<E>): List<DeleteResult<E>>`
-4. `deleteAll(Flow<E>): List<DeleteResult<E>>`
+* `delete(E): DeleteResult<E>`
+* `delete(UniqueEntityIndex<E>): DeleteResult<E>`
+* `deleteAll(vararg E): List<DeleteResult<E>>`
+* `deleteAll(vararg UniqueEntityIndex<E>): List<DeleteResult<E>>`
+* `deleteAll(List<E>): List<DeleteResult<E>>`
+* `deleteAll(Flow<E>): List<DeleteResult<E>>`
 
 ### Update
 
 The update operation is a condensed syntax for modifying data in the database. It works by providing a scope and a
 transformation. The scope could be one of:
 
-1. `updateBy` - a unique index
-2. `updateRangeBy` - an index range
-3. `updateAll` - a whole table
+* `updateBy` - a unique index
+* `updateRangeBy` - an index range
+* `updateAll` - a whole table
 
 The transformation is a lambda, where the rows that are in scope are provided one by one. The rows are provided as in
-the database, and can be modified in place, which the changes applied to the database. All update calls will use the
+the database, and can be modified in place, with the changes applied to the database. All update calls will use the
 `safeWriteTransaction` and will be transactional if the database supports it.
 
-In the async entity db the lambda will be of type `E.() -> Unit`. The entity will be the receiver and in the lambda,
-`this` will refer to the row. Which should be modified in place.
+* In the async entity db, the lambda will be of type `E.() -> Unit`. The entity will be the receiver and in the lambda,
+`this` will refer to the row, which should be modified in place.
 
-In the rx entity db the lambda will be of type `Consumer<E>`. The lambda will have a single parameter, the entity.
-Similar to in the async version, the row should be modified in place.
+* In the rx entity db, the lambda will be of type `Consumer<E>`. The lambda will have a single parameter, the entity.
+Similar to the async version, the row should be modified in place.
 
-In both cases, the full record will be provided and values can be read as well as updated. The operations return
+In both cases, the full record will be provided, and values can be read as well as updated. The operations return
 `List<ModifyResult<E>>` for `updateAll` and `updateRangeBy` methods and `ModifyResult<E>` for the `updateBy` operation.
 
 For example:
@@ -511,26 +515,26 @@ db.updateAll(Trade.class, trade -> {
 
 ## Transactions
 
-If the underlying database supports transactions, then the entity db provides type safe access to these. A
-read-transaction will support the same read operations as the entity db, and a write-transaction will support the same
-read and write operations. If a write-transaction fails all operations will be reverted. Subscribe operations are not
+If the underlying database supports transactions, then the entity db provides type-safe access to these. A
+read transaction will support the same read operations as the entity db, and a write transaction will support the same
+read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not
 supported within transactions.
 
-Currently, this is supported when using **FoundationDb** and **Postgresql**. Using transaction on Aerospike will
+Currently, transactions are supported on **FoundationDb** and **Postgresql**. Using transaction on **Aerospike** will
 result in a failure.
 
-When code is expected to run on multiple database types and transactions transaction and transactions should be used
-when available, developers can use `safeReadTransaction` and `safeWriteTransaction`. This will run operations in the
-block in a single transaction if supported.
+When code is expected to run on multiple database types, transactions should be used when available. You can use `safeReadTransaction` and `safeWriteTransaction`. These will run operations in the
+block in a single transaction, if supported.
 
-One distinction between kotlin and java here is that when using kotlin, the transaction is the receiver in
-the `readTransaction` call. This means that within the block `this` refers to the transaction. In the java world, the
-transaction is the first parameter of the lambda.
+There is a distinction between using kotlin and java here.
 
-### Read Transactions
+* When using kotlin, the transaction is the receiver in the `readTransaction` call. This means that within the block, `this` refers to the transaction. 
+* When using java world, the transaction is the first parameter of the lambda.
 
-Read transactions ensure all read operations are consistent and intervening writes will not affect reads within the
-transaction. The return value in the transaction will also be returned from the transaction. For the `RxEntityDb` it
+### Read transactions
+
+Read transactions ensure all read operations are consistent. Intervening writes will not affect reads within the
+transaction. The return value in the transaction will also be returned from the transaction. For the `RxEntityDb`, it
 will be a `Single<*>`.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -559,7 +563,7 @@ Single<OrderTrade> oderTrade = db.readTransaction(transaction -> {
 
 ### Write Transaction
 
-Write transactions ensure all read and write operations are consistent, furthermore, if any exception bubbles up to the
+Write transactions ensure all read and write operations are consistent. If any exception reaches the
 transaction level, all writes are rolled back. The `writeTransaction` will return a `Pair<T, List<EntityWriteResult<*>>>`
 where `T` is the value returned in the `writeTransaction` lambda.
 
@@ -593,17 +597,39 @@ final var writeResults = pair.getSecond();
 
 ### Subscribe
 
-Subscribe starts a database listener that will receive updates to tables or views. When subscribing to view updates,
-only updates to the root table will be published. Further, if the view has any inner joins, the published update will
-not necessarily reflect the underlying operation. A `ModifyResult` might be transformed into an `InsertResult` if the
-new record returns the in the inner join and the previous value did or conversely, it might get transformed into a
-`DeleteResult` in the reverse scenario.
+Subscribe starts a database listener that receives updates to tables or views. When subscribing to view updates,
+only updates to the root table will be published. 
 
+If the view has any inner joins, these are handled in a range of different ways.
+
+#### Tables
+For tables, this works in the standard way. You subscribe to updates, and:
+* when a record is inserted, you get an insert update
+* when a record is modified we get a modify update 
+* when a record is deleted we get a delete updatethe published update will
+
+#### Views
+For views, when a record is inserted to the root table, you get an insert update. Modify and delete work the same way. 
+
+However, if there is an inner join, there is a range of outcomes.
+
+For example, if you join onto counterparty, and you only return records for which you have a valid counterparty:
+
+* If there is an insert with no valid counterparty, the listener to view will not receive the insert
+* If there is a delete with no valid counterparty, the listener to view will not receive the delete
+
+And if there is a modify:
+* If both the previous record and the new record link to an existing counterparty, nothing changes
+* If the previous record was linked to an invalid counterparty and the new record links to a valid counterparty, it will transform the modify to an insert – because the record has moved into the view
+* If the previous record linked to a valid counterparty, but no longer does after the update, it becomes a delete
+
+
+#### Parameters
 Subscribe supports the following parameters:
 
-1. `delay`: `Int` the listener will batch updates every x milliseconds
-2. `fields`: `Set<String>` filters `ModifyResult` on fields
-3. `subscribeLocally`: `Boolean` only publish updates local to the node
+* `delay`: `Int` the listener will batch updates every x milliseconds
+* `fields`: `Set<String>` filters `ModifyResult` on fields
+* `subscribeLocally`: `Boolean` only publish updates local to the node
 
 ### Overloads
 
@@ -640,21 +666,22 @@ final var subscription = db.subscribe(Trade.class)
 </TabItem>
 </Tabs>
 
-### Bulk Subscribe
+### Bulk subscribe
 
 The `bulkSubscribe` combines a `getBulk` and a `subscribe` call into a single function. This operation is useful when
-a class needs to read a full table and keep updated of changes to the underlying table or view. The further benefit
-of this is that this operation also support backward joins for views. This means that it can receive updates of the
-root table as well as joined tables. The view needs to support this in the definition and it will need to be enabled
+a class needs to read a full table and then keep updated of changes to the underlying table or view. 
+
+This operation supports backward joins for views. This means that it can receive updates to the
+root table as well as joined tables. The view needs to support this in the definition, and it must be enabled
 on the `bulkSubscribe` call.
 
 `bulkSubscribe` supports the following parameters:
 
-1. `delay`: `Int` the listener will batch updates every x milliseconds
-2. `fields`: `Set<String>` filters `ModifyResult` on fields
-3. `index`: `UniqueEntityIndex<E>` the index to use for the `getBulk` part of the call
-4. `subscribeLocally`: `Boolean` only publish updates local to the node
-5. `backwardJoins`: `Boolean` enable backward joins in views
+* `delay`: `Int` the listener will batch updates every x milliseconds
+* `fields`: `Set<String>` filters `ModifyResult` on fields
+* `index`: `UniqueEntityIndex<E>` the index to use for the `getBulk` part of the call
+* `subscribeLocally`: `Boolean` only publish updates local to the node
+* `backwardJoins`: `Boolean` enable backward joins in views
 
 #### Overloads
 
@@ -666,41 +693,41 @@ These functions are available in kotlin only:
 
 2. `bulkSubscribe<E>(fields*, delay*, index*, subscribeLocally*, backwardJoins*) : Flow<Bulk<E>>`
 
-### Range Subscribe
+### Range subscribe
 
 Range subscribe is like bulk subscribe, but it combines a `getRange` with `subscribe`. This operation is useful when
-a class needs to read part of a table or view and keep updated of changes. The range will be applied to the `subscribe`
+a class needs to read part of a table or view and then keep updated of changes. The range will be applied to the `subscribe`
 as well. As such, the update type will reflect whether a row comes into the range or moves out of the range, rather
 than what happened in the database. This means that a `ModifyResult<E>` might be converted to an `InsertResult<E>` or a
 `DeleteResult<E>`.
 
-Furthermore, `rangeSubscribe` can take a static range, for example all USD trades, or a dynamic range, all trades booked
-within the last 2 hours. The dynamic range will be updated on a schedule, either at an interval or at a time.
+Furthermore, `rangeSubscribe` can take a static range (for example, all USD trades) or a dynamic range (for example, all trades booked
+within the last 2 hours). The dynamic range will be updated on a schedule, either at an interval or at a time.
 
 #### Overloads
 
 `rangeSubscribe` supports the following parameters:
 
-1. `delay`: `Int` the listener will batch updates every x milliseconds
-2. `numKeyFields`: `Int` the number of key fields to take into account for the range
-3. `fields`: `Set<String>` filters `ModifyResult` on fields
-4. `index`: `UniqueEntityIndex<E>` the index to use for the `getBulk` part of the call
-5. `subscribeLocally`: `Boolean` only publish updates local to the node
-6. `backwardJoins`: `Boolean` enable backward joins in views
-7. `updateFrequency`: `PalDuration` a schedule for updating dynamic ranges
-8. `rangeProvider`: `() -> EntityIndex<E>` a lambda providing a `EntityIndex<E>`, for use in dynamic ranges
+* `delay`: `Int` the listener will batch updates every x milliseconds
+* `numKeyFields`: `Int` the number of key fields to take into account for the range
+* `fields`: `Set<String>` filters `ModifyResult` on fields
+* `index`: `UniqueEntityIndex<E>` the index to use for the `getBulk` part of the call
+* `subscribeLocally`: `Boolean` only publish updates local to the node
+* `backwardJoins`: `Boolean` enable backward joins in views
+* `updateFrequency`: `PalDuration` a schedule for updating dynamic ranges
+* `rangeProvider`: `() -> EntityIndex<E>` a lambda providing a `EntityIndex<E>`, for use in dynamic ranges
 
-Static range
-1. `rangeSubscribe(from: EntityIndex<E>, to: EntityIndex<E>, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
-2. `rangeSubscribe(EntityIndex<E>, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
-3. `rangeSubscribe(rangeProvider, rangeProvider, updateFrequency, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
-4. `rangeSubscribe(rangeProvider, updateFrequency, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
+#### Static range
+* `rangeSubscribe(from: EntityIndex<E>, to: EntityIndex<E>, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
+* `rangeSubscribe(EntityIndex<E>, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
+* `rangeSubscribe(rangeProvider, rangeProvider, updateFrequency, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
+* `rangeSubscribe(rangeProvider, updateFrequency, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
 
-## Entity Reference
+## Entity reference
 
-### Generated Entity Class
+### Generated entity class
 
-Generated _entity classes_ are classes that represent a single row in table or a view. In our example `Trade`. Instances
+Generated _entity classes_ are classes that represent a single row in table or a view. In our example, `Trade`. Instances
 of these classes can be used in some database operations as inputs, and most often included in the output. _Entity
 classes_ have associated index types.
 
@@ -743,15 +770,15 @@ final var byId = trade.byId();
 </TabItem>
 </Tabs>
 
-### Generated Index Class
+### Generated index class
 
-Generated _index classes_ are nested inside the _entity classes_, for each index a class is generated. In our
+Generated _index classes_ are nested inside the _entity classes_; for each index, a class is generated. In our
 `TRADE` example we have `Trade.ById`, `Trade.ByTypeId` and `Trade.ByDate`. Instances of these classes can be used as
 input in some database operations. The database distinguishes between _unique_ and _non-unique_
 indices. In some cases, the database only accepts _unique_ indices, and in other cases it will accept either.
 
-When building index classes, not all fields need to be provided, however the fields should always be listed in order.
-Also, a unique index will turn into a non-unique index if not all fields are provided.
+When building index classes, you do not have to provide all fields. However, the fields you provide must always be listed in order.
+A unique index will turn into a non-unique index if not all fields are provided.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -775,7 +802,7 @@ final var swap = Trade.byTypeId("SWAP");
 </TabItem>
 </Tabs>
 
-### Generated Index Reference
+### Generated index reference
 
 Generated _index references_ have the same name as the _index classes_, but are used as a reference to a specific index,
 rather than an index row. As with the _index classes_ the database distinguishes between
@@ -783,19 +810,18 @@ _unique_ and _non-unique_ index references.
 
 ## Write result reference
 
-The entity database will return type safe results for write operations. There are 4 main write results, one for each of
-the type of write operations. In all cases the records in these result will be a generated entity that matches the
-input. So for inserting a `Trade` instance the database will return an result of type `InsertResult<Trade>` where the
+The entity database will return type-safe results for write operations. There are four main write results, one for each type of write operation. In all cases, the records in the result will be a generated entity that matches the
+input. So, for inserting a `Trade` instance, the database will return a result of type `InsertResult<Trade>` where the
 property `record` will be of type `Trade`.
 
-1. `InsertResult`
-3. `DeleteResult`
-2. `ModifyResult`
-4. `UpsertResult`; either a `InsertResult` or a `ModifyResult`
+* `InsertResult`
+* `DeleteResult`
+* `ModifyResult`
+* `UpsertResult`; either a `InsertResult` or a `ModifyResult`
 
 ### InsertResult
 
-The `InsertResult` has a single property `record` which is the inserted record and includes any generated values.
+The `InsertResult` has a single property `record` which is the inserted record. This includes any generated values.
 
 ### DeleteResult
 
@@ -804,32 +830,30 @@ The `DeleteResult` has a single property `record` which is the record as it was 
 ### ModifyResult
 
 The `ModifyResult` is slightly more complex, it has a `record` property, which is the record in the database after
-the modify operation. There is also a `previous` property, which is the record as it was prior to the modify operation.
+the modify operation. There is also a `previous` property, which is the record as it was *before* the modify operation.
 Finally, there is a `modifiedFieds` property, which holds a `Set<String>` of the fields that were changed in the modify.
 
-## Record Update Reference
+## Record update reference
 
-When subscribing to database updates using the entity db, updates are provided in a type safe manner. All update types
-have the same super class, `GenericRecordUpdate<E>`, where `E` is the entity type. Using the entity db, developers can
-subscribe to table and view updates. There are three different update subtypes, one of each the update operations:
+When subscribing to database updates using the entity db, updates are provided in a type-safe manner. All update types
+have the same super class, `GenericRecordUpdate<E>`, where `E` is the entity type. Using the entity db, you can
+subscribe to table and view updates. There are three different update subtypes, which match the update operations:
 
-1. `GenericRecordUpdate.Insert`
-2. `GenericRecordUpdate.Delete`
-3. `GenericRecordUpdate.Modify`
+* `GenericRecordUpdate.Insert`
+* `GenericRecordUpdate.Delete`
+* `GenericRecordUpdate.Modify`
 
 Each one of these has the following properties:
 
-1. `tableName`: `String`
-6. `recordId`: `Long`
-7. `timestamp`: `Long`
-8. `emitter`: `String?`
+* `tableName`: `String`
+* `recordId`: `Long`
+* `timestamp`: `Long`
+* `emitter`: `String?`
 
-When subscribing to view updates, the update listener will listen to updates on the root table. Also, the update type
-will be based on whether the record is shown in the view or not. For example, if after a modify operation a row is no
-longer visible in the view due to a inner join, the view subscriber will receive the update as a delete, rather than a
-modify.
+When subscribing to view updates, the update listener listens to updates on the root table. The update type is based on whether the record is shown in the view or not. For example, if after a modify operation a row is no
+longer visible in the view due to a inner join, the view subscriber will receive the update as a delete, rather than a modify.
 
-## Bulk Reference
+## Bulk reference
 
 Bulk objects are returned to `bulkSubscribe` and `rangeSubscribe` listeners and are a concatenation of a read and a
 normal `subscribe` operation. The bulk type has the following hierarchy, where every instance is one of the subtypes,
@@ -851,10 +875,10 @@ A bulk flow will always follow this sequence:
 2. 1 `Bulk.Prime.Complete`
 3. 0 or more `Bulk.Update` subtypes
 
-## EntityModifyDetails Reference
+## EntityModifyDetails reference
 
-When performing modify and upsert operations, it becomes necessary to specify the index to use to identify the record to
-modify and which fields to modify. For this there is the `EntityModifyDetails` class.
+When performing modify and upsert operations, you must specify the index to use. This identifies the record to
+modify and the fields to modify. For this, there is the `EntityModifyDetails` class.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">

@@ -104,7 +104,7 @@ The **mvn** command can be run in either the server/local vm/wsl/cloud instance 
 Run
 
 ```bash
-mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.1.2-RC -DartifactId=trading_app -B
+mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.2.0 -DartifactId=trading_app -B
 ```
 
 ![](/img/trading_app-creation-prepare-maven-project-10-11-12.png)

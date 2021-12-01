@@ -1,14 +1,14 @@
 ---
 title: Genesis router
-sidebar_label: Genesis router
+sidebar_label: Genesis Router
 sidebar_position: 6
 id: genesis-router
 
 ---
 
-Genesis router is responsible for communication between front-end and back-end. Configuration is mentioned in file called genesis-router.xml file
+Genesis Router is responsible for communication between front-end and back-end. This is configured in file called genesis-router.xml file
 
-Router configuration example below:
+Here is an example:
 
 ```xml
 <router>
@@ -41,7 +41,7 @@ Router configuration example below:
 </router>
 ```
 
-### Router configuration tags explained
+### Router configuration tags 
 
 `socketPort`: This port is used for http/websockets
 
