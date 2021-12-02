@@ -6,7 +6,7 @@ sidebar_position: 15
 
 This is a `slotted` component that allows a "visual approach" when configuring cell renderers. Each `ag-cell` will take an `ICellRendererFunc` typed function that is an exact match to the official AG Grid's [Cell Renderer](https://www.ag-grid.com/javascript-data-grid/component-cell-renderer/). It will also take an `ICellRendererParams` typed params object to be used with the `ICellRendererFunc`.
 
-The `ag-cell` must be used as a slot of the [Genesis AG Column](/web-ui-reference/components/ag-grid/ag-genesis-column/) and can't be used separately since it's just an extra visual layer for defining the cell renderer (that can also be configured directly from the `ag-column` definition prop).
+The `ag-cell` must be used as a slot of the [Genesis AG Column](/web-ui-reference/components/grids/ag-grid/ag-genesis-column/) and can't be used separately since it's just an extra visual layer for defining the cell renderer (that can also be configured directly from the `ag-column` definition prop).
 
 :::tip
 Using `ag-cell` is not mandatory and it's for highly customized cases. Most of the features here can be achieved with just `ag-column` and/or `auto-cell-renderer-by-type` prop on a given AG Grid.
@@ -24,7 +24,7 @@ import { provideDesignSystem, alphaAgGrid } from '@genesislcap/alpha-design-syst
 provideDesignSystem().register(alphaAgGrid());
 ```
 
-## Usages
+## Usage
 
 We can define `ColDef` objects in different ways, in this example it's being set in the context/component's own class:
 

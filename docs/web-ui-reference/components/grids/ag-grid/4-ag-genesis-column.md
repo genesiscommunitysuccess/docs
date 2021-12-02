@@ -10,7 +10,7 @@ This is a `slotted` component that allows a more "visual approach" when defining
 Customizing column definitions using this approach useful when on **connected data** cases, where the data will be dynamic but there's still a need for extra definitions (e.g. events, transformers, etc).
 :::
 
-## Usages
+## Usage
 
 We can define `ColDef` objects in different ways, in this example it's being set in the context/component's own class:
 
