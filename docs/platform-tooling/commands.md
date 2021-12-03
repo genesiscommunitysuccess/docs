@@ -754,6 +754,7 @@ because the tables being compared are in separate databases, and as such aren't 
 | -s | --nullstring | false | Evaluate null and empty strings as equal |No value required |
 | -n | --numdays | false | Only compare records with timestamps between now and number of days specified. If either DB has matching records outside of timestamp range this will not be flagged as a reconciliation difference |Yes: Number > 0 |
 | -i | --ignorefields | false | Comma separated list of additional fields to ignore ("RECORD_ID" and "TIMESTAMP" are always ignored) |No |
+| -h | --help | false | Show usage information |No |
 
 ### Examples
 
@@ -763,7 +764,7 @@ Simple run with remote postgres DB
 ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass
 ```
 
-Run with remote postgres DB, compare null and empty strings as equal, compare records up to 2 days ago and also ignore the field STATUS
+Run with remote postgres DB, evaluate null and empty strings as equal, compare records up to 2 days ago and also ignore the field STATUS
 
 ```bash
 ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass -s -n 2 -i STATUS
