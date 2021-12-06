@@ -2,7 +2,7 @@
 id: deploying
 title: Deploying
 sidebar_label: Deploying
-sidebar_position: 13
+sidebar_position: 15
 
 ---
 We shall be bringing you this information shortly.

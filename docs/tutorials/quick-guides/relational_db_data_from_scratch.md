@@ -22,7 +22,7 @@ Versions used while writing this guide:
  - JDK 11.0.11
  - Maven 3.8.1
  - IntelliJIDEA 2021.2.1
- - Genesis Platform 5.1
+ - Genesis Platform 5.2
 
 :::note
 You will need access to Maven repository that provides the Genesis Platform
@@ -61,17 +61,17 @@ Once the command has finished, it will generate the `fields-dictionary.kts` and 
 ### Generate project ###
 Genesis provides a [Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html) to generate a skeleton project that will host all the necessary modules and configuration for an application. To use it open a terminal and execute:
 ```bash
-mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=<group_id> -Dversion=1.0.0-SNAPSHOT -DinteractiveMode=true -DarchetypeVersion=5.1.2 -DartifactId=<artifact_id>
+mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=<group_id> -Dversion=1.0.0-SNAPSHOT -DinteractiveMode=true -DarchetypeVersion=5.2.0 -DartifactId=<artifact_id>
 ```
 
 Note that if your terminal is PowerShell, you will have to wrap the arguments in quotes like this:
 ```powershell
-mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=<group_id>" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.1.2" "-DartifactId=<artifact_id>"
+mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=<group_id>" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.2.0" "-DartifactId=<artifact_id>"
 ```
 
 For this guide `sample.trade` for `groupId` and `ref-data-app` for `artifactId` will be used. The final command would be
 ```powershell
-mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=sample.trade" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.1.2" "-DartifactId=ref_data_app"
+mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=sample.trade" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.2.0" "-DartifactId=ref_data_app"
 ```
 
 ### Move the files to the required location ###

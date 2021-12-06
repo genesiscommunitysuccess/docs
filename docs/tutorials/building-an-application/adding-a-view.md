@@ -134,7 +134,7 @@ import javax.inject.Inject
 class EnhancedTradeViewTest : AbstractDatabaseTest() {
 
     @Inject
-    lateinit var enhancedTradeViewRepository: EnhancedTradeViewRepository
+    lateinit var enhancedTradeViewRepository: EnhancedTradeViewAsyncRepository
 
     override fun createMockDictionary(): GenesisDictionary = prodDictionary()
 

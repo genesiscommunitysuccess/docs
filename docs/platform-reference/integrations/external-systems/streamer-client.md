@@ -17,6 +17,7 @@ To create a streamer client:
     <module>genesis-pal-streamerclient</module>
     <package>global.genesis.streamerclient.pal</package>
     <script>trading_app-streamer-client.kts</script>
+	<language>pal</language>
 </process>
 ```
 
@@ -44,8 +45,11 @@ This will take a message from a streamer and send the message to QUOTE_EVENT_HAN
 You can also the following properties in a streamer client:
 
 `isReplayable`. This flag determines if the stream is replayable. Default value is `false`
+
 `eventHandlerBuffer`. This specifies how many messages to buffer for the event handler. If the event handler fails to respond after this number of messages is reached, the streamer stops sending messages. Default value is 50
+
 `sentWarningRange`. Specifies a range that controls the status of the streamer process.  If an event handler takes too long to respond, the process status will go to either warning or error. 
+
 `receiveWarndingRange`. Specifies a range that controls the status of the streamer process.  If an event handler takes too long to respond, the process status will go to either warning or error.  
 
 ### Types of streamer client
@@ -92,8 +96,8 @@ The onMessage tag defines what the streamer client does with your message, and h
 * where
 * send
 
-**Where**
-**Where** enables you to make the action conditional. 
+**Where** 
+Where enables you to make the action conditional. 
 This operation has one parameter: the type of the streamer client. This can be:
 * a table or view entity
 * a GenesisSet
@@ -107,7 +111,6 @@ where { quotes ->
 }
 ```
 Another example:
-or:
 ```kotlin
 where { quotes ->
     quote.getBigDecimal("QUOTE", BigDecimal.ZERO) > BigDecimal.ZERO
