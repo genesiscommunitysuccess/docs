@@ -131,6 +131,7 @@ By default, the primary table and all joined tables and views with a backward jo
 
 Queries that do not have **backJoins = false** will use any backwards joins in any view included in the query. The monitoring of these backward joins can come at a cost, as it can cause significant extra processing. Do not use backwards joins unless there is a need for the data in question to be updated in real time. Counterparty data, if changed, can wait until overnight, for example. The rule of thumb is that you should only use backwards joins where the underlying data is being updated intraday.
 
+
 ## Where clauses
 
 These are server-side criteria. If you include a **where** clause, the request is only processed if the criteria specified in the clause are met. For example, If you have an application that deals with derivatives that have parent and child trades, you can use a **where** clause to confine the query only to parent trades.
