@@ -247,9 +247,9 @@ If you need to join to a table where there is real-time data, then you need to s
 This requires the statement backwardsJoin = true when you are specifying the join.
 
 It is worth noting that when you define your [data servers](/platform-reference/configure-key-modules/data-servers/configure), 
-any of these that include views with backwards joins **must include a similar statement in order to enable the feature**: **backJoins = true**. Don’t forget to add this!
+any of these that include views with backwards joins will automatically use a similar backwards join as if it had the statement: **backJoins = true**.
 
-Lastly, `backJoins` can be expensive in terms of computation and cost, so they should be used surgically rather than by default.
+Lastly, `backJoins` can be expensive in terms of computation and cost, so they should be used only where needed.
 
 ```kotlin
 query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {
