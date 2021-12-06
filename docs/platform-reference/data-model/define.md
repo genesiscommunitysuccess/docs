@@ -249,7 +249,7 @@ This requires the statement backwardsJoin = true when you are specifying the joi
 It is worth noting that when you define your [data servers](/platform-reference/configure-key-modules/data-servers/configure), 
 any of these that include views with backwards joins will automatically use a similar backwards join as if it had the statement: **backJoins = true**.
 
-Lastly, `backJoins` can be expensive in terms of computation and cost, so they should be used only where needed.
+Lastly, `backJoins` can be expensive in terms of computation and cost, so they should be used surgically rather than by default
 
 ```kotlin
 query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {
