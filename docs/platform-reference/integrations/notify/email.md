@@ -39,7 +39,7 @@ notify {
 | --- | --- |
 | GATEWAY_ID | A Unique name for the gateway which can be referenced in the NOTIFY_ROUTE   |
 | GATEWAY_TYPE | Set to "EmailDistribution" |
-| GATEWAY_VALUE | Static email distribution list specified for this gatway as a [JSON Structure](#GATEWAY_VALUE-JSON-Structure)  |
+| GATEWAY_VALUE | Static email distribution list specified for this gateway as a [JSON Structure](#GATEWAY_VALUE-JSON-Structure)  |
 | INCOMING_TOPIC | Currently not used for Email |
 | CONNECTION_ID | This should reference the connection `id` specified in the ```notify.kts``` file. Note if the id is specified in the connection, then you should use the default id of `Email`
 
@@ -52,13 +52,14 @@ notify {
     "bcc": []
 } 
 ```
+Any of the `to`, `cc`, or `bcc` fields in the structure above can be omitted if they are empty arrays. In this instance, all three are present to show all the potential fields.
 
 When you use [SendIt] to send data to the database, keep two things in mind.
 
-* [SendIt} uses quotes to delimit strings. So, if there quotes within any string in your data, you need to escape them.
-* [SendIt} interprets a new line as a new row in the database. So, make sure all the relevant data is on one single line - remove any unwanted line breaks.
+* [SendIt] uses quotes to delimit strings. So, if there quotes within any string in your data, you need to escape them.
+* [SendIt] interprets a new line as a new row in the database. So, make sure all the relevant data is on one single line - remove any unwanted line breaks.
 
-For example, here we are going to run [SendIt] to send an empty distribution list to the data base. 
+For example, here we are going to run [SendIt] to send an empty distribution list to the database.
 
 The command is:  `SendIt -t GATEWAY.CSV`
 
