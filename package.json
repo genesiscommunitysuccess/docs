@@ -11,17 +11,17 @@
     "swizzle": "docusaurus swizzle"
   },
   "dependencies": {
-    "@cmfcmf/docusaurus-search-local": "^0.6.7",
-    "@docusaurus/core": "^2.0.0-beta.8",
-    "@docusaurus/preset-classic": "^2.0.0-beta.8",
-    "@docusaurus/theme-live-codeblock": "^2.0.0-beta.8",
-    "classnames": "^2.2.6",
-    "mdx-mermaid": "^1.1.0",
-    "mermaid": "^8.13.3",
+    "@cmfcmf/docusaurus-search-local": "^0.8.0",
+    "@docusaurus/core": "^2.0.0-beta.9",
+    "@docusaurus/preset-classic": "^2.0.0-beta.9",
+    "@docusaurus/theme-live-codeblock": "^2.0.0-beta.9",
+    "classnames": "^2.3.1",
+    "mdx-mermaid": "^1.1.1",
+    "mermaid": "^8.13.4",
     "raw-loader": "^4.0.2",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
-    "tslib": "^2.1.0"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "tslib": "^2.3.1"
   },
   "browserslist": {
     "production": [

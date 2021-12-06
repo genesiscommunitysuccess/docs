@@ -14,7 +14,7 @@ That is it. Once you have an installed platform in the correct environment, you 
 
 We  describe the recommended steps below, but you can also see the process in a neat 10-minute video.
 
-<iframe src="https://player.vimeo.com/video/590505594?h=5a99336928" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+<iframe src="https://player.vimeo.com/video/590505594?h=5a99336928" width="640" height="360" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture" allowFullScreen></iframe>
 
 ## Installing from an rpm
 
