@@ -52,7 +52,7 @@ notify {
     "bcc": []
 } 
 ```
-Any of the `to`, `cc`, or `bcc` fields in the structure above can be omitted if they are empty arrays. In this instance, all three are present to show all the potential fields.
+Any of the `to`, `cc`, or `bcc` fields in the structure above can be omitted if they are empty arrays. In this instance, all three are present to show you all the potential fields, `bcc` could be omitted to no functional difference.
 
 When you use [SendIt] to send data to the database, keep two things in mind.
 
