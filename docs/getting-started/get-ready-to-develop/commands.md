@@ -37,7 +37,7 @@ It also compresses and moves all log files in `~/run/runtime/logs/` into `~/run/
 **--force**
 Including this flag monitors the progress of the kill on each process. If a process is still running after 10 seconds, it runs a **SIGKILL** to ensure the process stops. Unsaved data is lost.
 
-### StartGroup
+### startGroup
 
 Groups of processes can be defined in the process definition files, where a set of processes is given a `<group>` tag. Typically, all the processes in a particular module are given the same `<group>` tag.
 
@@ -45,8 +45,8 @@ Groups of processes can be defined in the process definition files, where a set 
 
 It also compresses and moves all log files in `~/run/runtime/logs/` into `~/run/runtime/logs/currentRun`.
 
-## KillGroup
+## killGroup
 
-`KillGroup [group_ID]`
+`killGroup [group_ID]`
 This stops the processes in the named group.
 **--force** If you include this flag, the command monitors the progress of the kill on each process. If a process is still running after 10 seconds, it runs a **SIGKILL** to ensure the process stops. Unsaved data is lost.

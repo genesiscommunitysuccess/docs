@@ -9,9 +9,9 @@ In this first exercise, we shall generate the reference application with its dat
 
 Before you start. Make sure you have the platform and all the relevant tools [installed](/getting-started/get-ready-to-develop/install/).The Genesis LCNC must be installed on a server, local vm, wsl or cloud instance (genesis and auth).
 
-Ideally, maven should be installed in the server instance with adequate configuration to retrieve genesis binaries.
+Ideally, Maven should be installed in the server instance with adequate configuration to retrieve genesis binaries.
 
-Otherwise, the maven installation and configuration must be available in a local development environment.
+Otherwise, the Maven installation and configuration must be available in a local development environment.
 
 ## The source database
 
@@ -78,7 +78,7 @@ This gives you kts files for your new modules:
 
 ![](/img/appgen.png)
 
-And it generates xml files for service definitions and prcoesses:
+And it generates xml files for service definitions and processes:
 
 * cfg/ref_data_app-service-definitions.xml
 * cfg/ref_data_app-processes.xml

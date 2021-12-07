@@ -17,13 +17,13 @@ Required software:
 
 * JDK 11
 * Maven
-* IntelliJIDEA
+* IntelliJ IDEA
 
 Versions used while writing this guide:
 
 * JDK 11.0.11
 * Maven 3.8.1
-* IntelliJIDEA 2021.2.1
+* IntelliJ IDEA 2021.2.1
 
 :::note
 You will need access to Maven repository that provides the Genesis Platform.
@@ -70,13 +70,13 @@ Make sure you have access to the Maven repository that provides the Genesis Plat
 
 ![Build Project](/img/built_project.png)
 
-### Open the project in IntelliJIDEA
+### Open the project in IntelliJ IDEA
 
-Once the project is built, you can open it in IntelliJIDEA. The DSL that is used is based on Kotlin and IntelliJIDEA is the recommended IDE. If a different IDE is used, you win't have access to the autocompletion and type safety during development, unless additional plugins are installed.
+Once the project is built, you can open it in IntelliJ IDEA. The DSL that is used is based on Kotlin and IntelliJ IDEA is the recommended IDE. If a different IDE is used, you win't have access to the autocompletion and type safety during development, unless additional plugins are installed.
 
 Once the project is open, you will notice that it is a [multi module maven project](https://maven.apache.org/guides/mini/guide-multiple-modules.html). The `README.md` contains a high-level overview of the generated projects.
 
-![Project in IntellijIDEA](/img/open_generated_project.png)
+![Project in Intellij IDEA](/img/open_generated_project.png)
 
 Starting from the top, let's open `trade-101-config`. It contains all the configuration. Navigate to `trade-101-config/src/main/resources/config/` to explore them. Each file is initially empty, containing only the skeleton structure. Let's add a few fields.
 
