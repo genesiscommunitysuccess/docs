@@ -39,7 +39,7 @@ notify {
 | --- | --- |
 | GATEWAY_ID | A Unique name for the gateway which can be referenced in the NOTIFY_ROUTE   |
 | GATEWAY_TYPE | Set to "EmailDistribution" |
-| GATEWAY_VALUE | Static email distribution list specified for this gateway as a [JSON Structure](#GATEWAY_VALUE-JSON-Structure)  |
+| GATEWAY_VALUE | Static email distribution list specified for this gateway as a [JSON Structure](#GATEWAY_VALUE-JSON-Structure). Can be omitted to default to empty.  |
 | INCOMING_TOPIC | Currently not used for Email |
 | CONNECTION_ID | This should reference the connection `id` specified in the ```notify.kts``` file. Note if the id is specified in the connection, then you should use the default id of `Email`
 
