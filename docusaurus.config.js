@@ -19,9 +19,8 @@ module.exports = {
 
   plugins: [
     [require.resolve('@cmfcmf/docusaurus-search-local'), {
-      docsRouteBasePath: routeBasePath,
-      indexBlog: false,
-      indexPages: false
+      indexBlog: true,
+      indexPages: true
     }]
   ],
 

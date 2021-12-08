@@ -18,7 +18,7 @@ import { provideDesignSystem, alphaAgGrid } from '@genesislcap/alpha-design-syst
 provideDesignSystem().register(alphaAgGrid());
 ```
 
-## Usages
+## Usage
 
 ```html title="Streaming data from ALL_PROCESS_STATUS data server"
 <alpha-card>
