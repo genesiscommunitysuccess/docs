@@ -244,6 +244,7 @@ To define a join, add a join statement to your view definition; for this, you ne
 - the second table (the one yu are joining to)
 - the fields that are being viewed in each table
 
+<<<<<<< HEAD
 In the example below, we define the view ENHANCED_TRADE_VIEW, which has the root table TRADE.
 In the view, we join the TRADE table to the COUNTERPARTY table. The join is made between the TRADE.COUNTERPARTY_ID (the COUNTERPARTY_ID field from TRADE) and the COUNTERPARTY.COUNTERPARTY_ID (the COUNTERPARTY_ID field from COUNTERPARTY). 
 The view returns all fields from both tables.
@@ -258,11 +259,127 @@ view ("ENHANCED_TRADE_VIEW", TRADE) {
     fields {
       TRADE.allFields()
       COUNTERPARTY.allFields()
+=======
+To achieve this, create aliases for the two fields you are retrieving from the second table, for example, **tradeCcy** and **settCcy.**
+
+By default, the fields in the second table are not monitored in real time (because, in most cases, the second table is providing some form of static data).
+If you need to join to a table where there is real-time data, then you need to specify a backwards join. 
+This requires the statement backwardsJoin = true when you are specifying the join.
+
+It is worth noting that when you define your [data servers](/platform-reference/configure-key-modules/data-servers/configure), 
+any of these that include views with backwards joins will automatically use a similar backwards join as if it had the statement: **backJoins = true**.
+
+Lastly, `backJoins` can be expensive in terms of computation and cost, so they should be used surgically rather than by default
+
+```kotlin
+query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {
+    config {
+        backJoins = true
+    }
+}
+```
+
+
+### Join types
+Available join types are INNER and OUTER.
+
+* INNER joins require that all joins match exactly, if one join fails to match this row will be discarded.
+
+* OUTER joins will provide null references for failed joins and will still allow the row to be built. (also known as left outer join)
+
+### Parametrised joins
+Some join operations require external parameters that are not available in the context of the table join definition,
+but will be available when the view repository is access (e.g. client enriched definitions), so an option exists to create parametrised joins.
+
+eg. here, we've extend the join condition to match on a parameter called "TYPE_NAME" that will need to pass as an input field to the view. 
+The name is optional for the ```asParameter()```, where it's not included, the parameter will default to the field name it's been called from.
+
+```kotlin
+    view(INSTRUMENT) {
+        joins {
+            joining(ALT_INSTRUMENT_ID, JoinType.INNER) {
+                on(INSTRUMENT.ID to ALT_INSTRUMENT_ID.INSTRUMENT_ID)
+                    .and(ALT_INSTRUMENT_ID.ALTERNATE_TYPE.asParameter("TYPE_NAME"))
+            }
+        }
+
+        fields {
+            ALT_INSTRUMENT_ID {
+                ALTERNATE_CODE withAlias "INSTRUMENT_CODE"
+            }
+
+            INSTRUMENT {
+                NAME withPrefix INSTRUMENT
+            }
+        }
+    }
+
+```
+
+### Fields functionality
+Common functionality like table aliasing, field aliasing and field prefixing, are available from views.
+
+```kotlin
+  view("INSTRUMENT_DOUBLE_PARAMETERS", INSTRUMENT) {
+    
+        // here we alias the table two times so that it can be referenced in the join multiple times
+        val alt1 = ALT_INSTRUMENT_ID withAlias "alt1"
+        val alt2 = ALT_INSTRUMENT_ID withAlias "alt2"
+
+        joins {
+            joining(alt1, JoinType.INNER) {
+                on(INSTRUMENT.ID to alt1 { INSTRUMENT_ID })
+                    .and(alt1 { ALTERNATE_TYPE }.asParameter("ALTERNATE_TYPE"))
+            }
+            joining(alt2, JoinType.INNER) {
+                on(INSTRUMENT.ID to alt2 { INSTRUMENT_ID })
+                    .and(alt2 { ALTERNATE_TYPE }.asParameter("ALTERNATE_TYPE"))
+            }
+        }
+
+        fields {
+            // here we use field aliasing to disambiguate each INSTRUMENT_CODE from the aliased table.
+            alt1 {
+                ALTERNATE_CODE withAlias "INSTRUMENT_CODE_1"
+            }
+            alt2 {
+                ALTERNATE_CODE withAlias "INSTRUMENT_CODE_2"
+            }
+
+            // here we use field prefixing
+            INSTRUMENT {
+                NAME withPrefix INSTRUMENT
+            }
+        }
+    }
+```
+
+### Derived fields
+Derived fields allow the developer to compute the results for a generated field.
+
+It is possible to specify inputs to this calculation with field inputs or entity inputs. Entity input have the advantage that:-
+
+1. When a derived field has multiple inputs from a single table, only one input is required.
+
+2. Non-null fields on the entity will be non-null
+
+
+### Derived fields withInput
+
+```kotlin
+derivedField("SPREAD", DOUBLE) {
+    withInput(INSTRUMENT_PRICE.BID_PRICE, INSTRUMENT_PRICE.ASK_PRICE) { bid, ask ->
+        ask - bid
+>>>>>>> master
     }
   }
 ```
+<<<<<<< HEAD
 
 #### Double joins
+=======
+### Derived fields withEntity
+>>>>>>> master
 
 Sometimes, you need to join to the same table in two places - for example, if you want to fetch the nam of both the buying counterparty and the selling counterparty.
 In the example below, the root table is again TRADE. We want to join it to the 

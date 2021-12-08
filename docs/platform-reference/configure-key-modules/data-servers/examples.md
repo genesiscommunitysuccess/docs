@@ -110,9 +110,9 @@ lmdbAllocateSize = 512.MEGA_BYTE()
 
 **defaultCriteria**: represents the default criteria for the query. Defaults to `null`.
 
-**disableAuthUpdates**: Disables real-time auth updates in order to improve overall data-server responsiveness and performace. Defaults to `false`.
+**disableAuthUpdates**: Disables real-time auth updates in order to improve overall data server responsiveness and performance. Defaults to `false`.
 
-**backJoins**: Enables backwards joins on a view query; these need to be configured at the join level of the query to work correctly. Defaults to `false`.
+**backJoins**: Enables backward joins on a view query, these need to be configured at the join level of the query to work correctly. Defaults to `true`.
 
 #### enableTypeAwareCriteriaEvaluator
 
@@ -129,11 +129,10 @@ By contrast, the traditional criteria evaluator needs field types to match the q
 
 As we have seen, each query to a data server creates what is effectively an open connection between each requesting user and the data server. After the initial send of all the data, the data server only sends modifications, deletes and inserts in real time.
 
-However, it is only the primary table or view that is monitored by default. Any views that are joined are not monitored, so changes to these are not sent automatically.
+By default, the primary table and all joined tables and views with a backward join flag are monitored. Any changes to these are sent automatically.
 
-The solution to this is to use a backwards join. Any view that specifies this in the join will be monitored in real time, along with the primary table or view. When creating the data server query, you need to include the statement have **backJoins = true**.
+Queries that do not have **backJoins = false** will use any backwards joins in any view included in the query. The monitoring of these backward joins can come at a cost, as it can cause significant extra processing. Do not use backwards joins unless there is a need for the data in question to be updated in real time. Counterparty data, if changed, can wait until overnight, for example. The rule of thumb is that you should only use backwards joins where the underlying data is being updated intraday.
 
-There is a cost to this, as it can cause significant extra processing, so do not use backwards joins unless there is a need for the data in question to be updated in real time. Counterparty data, if changed, can wait until overnight, for example. The rule of thumb is that you should only use backwards joins where the underlying data is being updated intraday.
 
 ## Where clauses
 

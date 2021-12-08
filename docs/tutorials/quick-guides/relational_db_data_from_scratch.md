@@ -15,13 +15,13 @@ You will need between 10 and 15 minutes to finish this guide.
 Required software: 
  - JDK 11
  - Maven
- - IntelliJIDEA
+ - IntelliJ IDEA
  - Genesis Platform installed either on remote host or locally
 
 Versions used while writing this guide:
  - JDK 11.0.11
  - Maven 3.8.1
- - IntelliJIDEA 2021.2.1
+ - IntelliJ IDEA 2021.2.1
  - Genesis Platform 5.2
 
 :::note
@@ -94,9 +94,9 @@ This will download all necessary dependencies and generate Genesis files require
 Make sure you have access to Maven repository that provides the Genesis Platform as otherwise this step will fail
 :::
 
-### Open the project in IntelliJIDEA ####
+### Open the project in IntelliJ IDEA ####
 
-Once the project is built you can open it in IntelliJIDEA. The DSL that is used is based on Kotlin and IntelliJIDEA is the recommended IDE. If another one is used the autocompletion and type safety will not be present during development unless additional plugins are installed.
+Once the project is built you can open it in IntelliJ IDEA. The DSL that is used is based on Kotlin and IntelliJ IDEA is the recommended IDE. If another one is used the autocompletion and type safety will not be present during development unless additional plugins are installed.
 
 Once the project is open you will notice that it's [multi module maven project](https://maven.apache.org/guides/mini/guide-multiple-modules.html). The `README.md` contains high level overview of the generated projects. 
 

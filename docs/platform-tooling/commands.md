@@ -717,6 +717,59 @@ There are a few considerations you should be aware of:
 | DATE | DATE |   |   |   |   |   |   |
 | TIME | TIME |   |   |   |   |   |   |
 
+## ReconcileDatabaseSync
+
+This is used to check if there are differences between a local DB and a remote DB with common dictionary tables.
+Typically, this would be used to reconcile tables that are being kept in sync by the GENESIS_SYNC process.
+
+The local DB's details (host, port, user, etc) are read from the system definition file in the local environment. The remote DB's details are specified as options to the command.
+
+The tables to check the differences of are specified in the `genesis-sync-definition.xml` file. Example below:
+
+```xml
+<sync>
+    <tables>
+        <table name="TRADE"/>
+        <table name="ORDER"/>
+    </tables>
+</sync>
+```
+
+If there are any differences found between the local and remote tables then the result will be output to a text file. The location of this text file will be shown in the console output.
+There are 3 categories in the output: "Records Missing From Local", "Records Missing From Remote" and "Records Which Differ Between Remote and Local".
+
+Records are compared using the primary key field. The TIMESTAMP and RECORD_ID fields are extremely likely to differ
+because the tables being compared are in separate databases, and as such aren't part of the comparison.
+
+### Options
+
+| Argument | Argument long name | Mandatory | Description | Restricted Values |
+| -- | -- | -- | -- | -- |
+| -d | --dblayer | true | Database Layer type | Yes: FDB, FDB2, AEROSPIKE, SQL, SIMPLE |
+| -f | --fdb | false | FDB cluster file name |No |
+| -H | --host | false | Remote DB hostname |No |
+| -P | --port | false | Remote DB port |Yes: Number > 0 |
+| -u | --username | false | DB user username |No |
+| -p | --password | false | DB user password |No |
+| -s | --nullstring | false | Evaluate null and empty strings as equal |No value required |
+| -n | --numdays | false | Only compare records with timestamps between now and number of days specified. If either DB has matching records outside of timestamp range this will not be flagged as a reconciliation difference |Yes: Number > 0 |
+| -i | --ignorefields | false | Comma separated list of additional fields to ignore ("RECORD_ID" and "TIMESTAMP" are always ignored) |No |
+| -h | --help | false | Show usage information |No |
+
+### Examples
+
+Simple run with remote postgres DB
+
+```bash
+ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass
+```
+
+Run with remote postgres DB, evaluate null and empty strings as equal, compare records up to 2 days ago and also ignore the field STATUS
+
+```bash
+ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass -s -n 2 -i STATUS
+```
+
 ## AppGen
 
 AppGen can be used to generate a fully working application from a dictionary file.

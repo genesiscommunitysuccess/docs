@@ -5,7 +5,7 @@ sidebar_position: 40
 id: business-components
 ---
 
-Most financial applications have to interact with other systems to exchange information and create smooth workflows. The Genesis LCNC Platform has a growing list of components that enable you to connect quickly to market-leadong services. You don't need to create interfaces from scratch; you just select your component, enable it, and configure.
+Most financial applications have to interact with other systems to exchange information and create smooth workflows. The Genesis LCNC Platform has a growing list of components that enable you to connect quickly to market-leading services. You don't need to create interfaces from scratch; you just select your component, enable it, and configure.
 
 | Name| Description|
 |------------------------------------|--------------------|

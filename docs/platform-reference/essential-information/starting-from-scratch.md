@@ -9,7 +9,7 @@ sidebar_position: 4
 If you want to start a new Genesis project from scratch, you can do this using a predefined maven archetype. This page takes you through the steps to achieve this. When you have finished, you will have a standard project structure and you will have generated fields that can be used in tables and views.
 
 
-You must have  JDK Maven and IntelliJIDEA in order to do this. These instructions are based on JDK 11.0.11, Maven 3.8.1 and IntelliJIDEA 2021.2.
+You must have JDK Maven and IntelliJ IDEA in order to do this. These instructions are based on JDK 11.0.11, Maven 3.8.1 and IntelliJ IDEA 2021.2.
 
 ## 1. Generate a new project
 
@@ -42,11 +42,11 @@ mvn package
 
 This downloads all the necessary dependencies and generates Genesis files you need for development.
 
-## 3. Open the project in IntelliJIDEA
+## 3. Open the project in IntelliJ IDEA
 
-Once the project has been built, you can open it in IntelliJIDEA. This is the recommended IDE, which ensures you can use autocompletion and type safety - really important tools for speedy development.
+Once the project has been built, you can open it in IntelliJ IDEA. This is the recommended IDE, which ensures you can use autocompletion and type safety - really important tools for speedy development.
 
-Once the project is open, note that it is multi-module maven project. The README.md contains a high-level overview of the generated projects.
+Once the project is open, note that it is multi-module Maven project. The README.md contains a high-level overview of the generated projects.
 
 Starting from the top, let's open **trade-101-config**. It contains all the configuration. Navigate to **trade-101-config/src/main/resources/config/** to explore them. Each file is initially empty, and contains only the skeleton structure. 
 
