@@ -28,7 +28,7 @@ dataServer {
 ```
 
 ### Specifying fields
-By default, all table or view fields in a query definition will be exposed. If you don't want them all to be available, you must define the fields htat are required. For example:
+By default, all table or view fields in a query definition will be exposed. If you don't want them all to be available, you must define the fields that are required. For example:
 
 ```kotlin
 dataServer {

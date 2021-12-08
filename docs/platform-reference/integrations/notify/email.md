@@ -6,7 +6,7 @@ id: email
 ---
 
 
-### Email Configuration
+### Email configuration
 
 You can define the following configuration items in order to provide SMTP server connection details, and to configure email service-related features.
 
@@ -41,9 +41,9 @@ notify {
 | GATEWAY_TYPE | Set to "EmailDistribution" |
 | GATEWAY_VALUE | Static email distribution list specified for this gateway as a [JSON Structure](#GATEWAY_VALUE-JSON-Structure). Can be omitted to default to empty.  |
 | INCOMING_TOPIC | Currently not used for Email |
-| CONNECTION_ID | This should reference the connection `id` specified in the ```notify.kts``` file. Note if the id is specified in the connection, then you should use the default id of `Email`
+| CONNECTION_ID | This should reference the connection `id` specified in the ```notify.kts``` file. Note: if the id is specified in the connection, then you should use the default id of `Email`
 
-### GATEWAY_VALUE JSON Structure
+### GATEWAY_VALUE JSON structure
 ```json
 {
   "emailDistribution": {
@@ -54,7 +54,7 @@ notify {
 ```
 Any of the `to`, `cc`, or `bcc` fields in the structure above can be omitted if they are empty arrays. If they are all empty, you can instead omit the entire `emailDistribution` JSON object. In this instance, all three are present to show you all the potential fields, `bcc` could be omitted to no functional difference.
 
-When you use [SendIt] to send data to the database, keep two things in mind.
+When you use [SendIt] to send data to the database, keep two things in mind:
 
 * [SendIt] uses quotes to delimit strings. So, if there quotes within any string in your data, you need to escape them.
 * [SendIt] interprets a new line as a new row in the database. So, make sure all the relevant data is on one single line - remove any unwanted line breaks.
@@ -89,7 +89,7 @@ The data is all on one single line. It has three strings, and the third string h
 | NOTIFY_COMPRESSION_TYPE | Used internally by Genesis, indicates if the body of the message is compressed |
 | APPLICATION_REF | Currently not used for Email |
 
-#### NOTIFY.BODY JSON Structure
+#### NOTIFY.BODY JSON structure
 ```json
 {
   "emailDistribution": {
@@ -100,12 +100,12 @@ The data is all on one single line. It has three strings, and the third string h
 } 
 ```
 
-When sending HTML within the contents of a JSON string you should escape any quotes, and remove or replace new lines.
+When sending HTML within the contents of a JSON string, you should escape any quotes, and remove or replace new lines.
 
 Here is an example in Kotlin:
 ```kotlin
 htmlMailMessage.replaceAll("\"", "&quot;").replaceAll("\\R", "\\\\n");
 ```
 
-The final outgoing emailDistribution with be the merger of the distribution list specified on the Notify message and the statically defined distribution list specified for any Gateway which messages may be routed too.
+The final outgoing emailDistribution will be the merger of the distribution list specified on the Notify message and the statically defined distribution list specified for any Gateway which messages may be routed to.
 
