@@ -7,7 +7,8 @@ id: examples
 
 ## Basic definition
 
-Here is the definition of a simple data server. You need to specify either a table or a view. In this example, we are using the table INSTRUMENT_DETAILS.
+A data server consists of one or more queries. Each query listens to a specified table or view, and publishes that data whenever it changes. In this simple example, there is one query, which publishes changes to the table INSTRUMENT_DETAILS.
+
 
 ```kotlin
 dataServer {
@@ -15,9 +16,8 @@ dataServer {
 }
 ```
 
-### Multiple queries
+And here is a simple example that has two queries:
 
-You can include multiple query definitions servers in a single file.
 
 ```kotlin
 dataServer {
@@ -27,8 +27,8 @@ dataServer {
 }
 ```
 
-### Specify fields
-By default, all table or view fields in a query definition will be exposed. If you don't want them all to be available, you can define a field list that contains only the required ones. For example:
+### Specifying fields
+By default, all table or view fields in a query definition will be exposed. If you don't want them all to be available, you must define the fields htat are required. For example:
 
 ```kotlin
 dataServer {
@@ -79,9 +79,9 @@ dataServer {
 
 **Top level only settings**
 
-**lmdbAllocateSize**: sets the size of the memory mapped file of the in-memory cache used to store data server query rows. This configuration seeting can only be applied at the top level and affects the whole data server. 
+**lmdbAllocateSize**: sets the size of the memory-mapped file where the in-memory cache stores data server query rows. This configuration seeting can only be applied at the top level, and affects the whole data server. 
 
-Please note that this is the size in bytes, to use MB or GB use the `MEGA_BYTE` or `GIGA_BYTE` functions. Defaults to 2 GB.
+By default, the size is defined in bytes. To use MB or GB, use the `MEGA_BYTE` or `GIGA_BYTE` functions. The default is 2 GB.
 
 Sample:
 ```kotlin
@@ -100,11 +100,11 @@ lmdbAllocateSize = 512.MEGA_BYTE()
 
 **batchingPeriod**: delay in millseconds to wait before sending new data to data server clients. Defaults to `500ms`.
 
-**linearScan**: enables linear scan behaviour in the query definition. If false, it will reject criteria expressions which don't hit defined indexes. Defaults to `true`.
+**linearScan**: enables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes. Defaults to `true`.
 
-**excludedEmitters**: enables update filtering for a list of process names. Any database updated emitted from one of these processes will be ignored. Defaults to an empty list.
+**excludedEmitters**: enables update filtering for a list of process names. Any database updated omitted from one of these processes will be ignored. Defaults to an empty list.
 
-**enableTypeAwareCriteriaEvaluator**: enables the type aware criteria evaluator at the data server level. Defaults to `false`. [Click here to read more](#additional-information-on-enabletypeawarecriteriaevaluator)
+**enableTypeAwareCriteriaEvaluator**: enables the type-aware criteria evaluator at the data-server level. Defaults to `false`. [Click here to read more](#additional-information-on-enabletypeawarecriteriaevaluator)
 
 ### Query settings
 
@@ -114,13 +114,15 @@ lmdbAllocateSize = 512.MEGA_BYTE()
 
 **backJoins**: Enables backward joins on a view query, these need to be configured at the join level of the query to work correctly. Defaults to `true`.
 
-#### Additional information on enableTypeAwareCriteriaEvaluator
+#### enableTypeAwareCriteriaEvaluator
 
-The type aware criteria evaluator is able to automatically convert criteria comparisons that don't match the original type of the data server field but are still useful to end users. 
+The type-aware criteria evaluator can automatically convert criteria comparisons that don't match the original type of the data server field; these can still be useful to end users. 
 
-For example, it might be desirable for a front-end client to perform a criteria search on a `TRADE_DATE` field like this: `TRADE_DATE > '2015-03-01' && TRADE_DATE < '2015-03-02'`. This search  can be  translated automatically to the right field types internally (even though `TRADE_DATE` is a field of type `DateTime`). The Genesis  our index search mechanism can also identify the appropriate search intervals in order to provide an optimised experience. The type-aware evaluator can also transform strings to integers, and basically any other sensible and possible conversion (e.g `TRADE_ID == '1'`). As a side note, this type-aware evaluator is also available in `DbMon` for operations like `search` and `qsearch`.
+For example, you might want a front-end client to perform a criteria search on a `TRADE_DATE` field like this: `TRADE_DATE > '2015-03-01' && TRADE_DATE < '2015-03-02'`. 
+This search  can be  translated automatically to the right field types internally (even though `TRADE_DATE` is a field of type `DateTime`). The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimised experience. 
+The type-aware evaluator can transform strings to integers, and any other sensible and possible conversion (e.g `TRADE_ID == '1'`). As a side note, this type-aware evaluator is also available in `DbMon` for operations like `search` and `qsearch`.
 
-By contrast, the traditional criteria evaluator needs field types to match the query fields in the data server . So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should  using our [common date expressions](#common-expressions) to handle date searches.
+By contrast, the traditional criteria evaluator needs field types to match the query fields in the data server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should  using our [common date expressions](#common-expressions) to handle date searches.
 
 
 ### Backwards joins
@@ -140,9 +142,7 @@ Also you can use these clauses to focus on a specific set of fields or a single 
 
 Finally, note that **where** clauses can also be used for permissioning. If only users with a specific ID are permitted to have access to this data, you could permission them here.
 
-## Where example
-
-In this example we have a dataserver query based upon on the existing ENHANCED_TRADE_VIEW which filters results whose value is larger than 1 million.
+In the example below, we have a data server query based on on the existing ENHANCED_TRADE_VIEW, which filters results whose value is larger than 1 million.
 
 ```kotlin
 dataServer {
@@ -180,11 +180,11 @@ dataServer {
 ```
 
 ### Index definition
-The **indices** (optional) block defines additional indexing at the query level. When an index is used, it will order all query rows by the "fields" specified, in  ascending order. This definition is identical to the one defined in data modelling for dictionary tables.
+The **indices** (optional) block defines additional indexing at the query level. When an index is used, it will order all query rows by the "fields" specified, in ascending order. This definition is identical to the one defined in data modelling for dictionary tables.
 
-There are two scenarios in which an index will be used:
-* The query criteria search can be optimised by using an index. If a data server client specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, the data server will automatically select the best matching index, and in our example it would be `SIMPLE_QUERY_BY_QUANTITY`. This means we don't need to scan all the query rows stored in the data server memory mapped file cache and instead perform a very efficient indexed search.
-* The data server client specifies an index. If an `ORDER_BY` value is received as part of the `DATA_LOGON` process, the data server will use a specific index to query the data. This means the data will be returned to the client in ascending order, based on the index field definition. See more at [Client side (runtime) options](#client-side-runtime-options).
+There are two scenarios in which an index can be used:
+* Optimising query criteria search. If a data server client specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, the data server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means we don't need to scan all the query rows stored in the data server memory-mapped file cache; instead, we perform a very efficient indexed search.
+* Index specifed in thhe data server client. If an `ORDER_BY` value is received as part of the `DATA_LOGON` process, the data server will use a specific index to query the data. The data will be returned to the client in ascending order, based on the index field definition. See more at [Client side (runtime) options](#client-side-runtime-options).
 
 *Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add SIMPLE_ID to the index definition to ensure we maintain uniqueness.
 
@@ -194,13 +194,20 @@ There are two scenarios in which an index will be used:
 
 ### Client-enriched data
 
-In some scenarios the platform user might want to associate the results of data server queries with the user initiating those queries. You can achieve this using the ```enrich``` feature, which enables an additional table or view join (including backward joins). By using this feature, you can provide user specific values for each row, or even perform cell-level permissioning (for example, hide cell values) depending on entitlements.
+In some scenarios, you might want to associate the results of data server queries with the user who initiated the queries. You can achieve this using the ```enrich``` feature, which enables an additional table or view join (including backwards joins). By using this feature, you can provide user-specific values for each row, or even perform cell-level permissioning (for example, to hide cell values), depending on entitlements.
 
-The `join` operation receives two parameters: `userName` and `row`. `userName` is the current user name .subscribed to the query and `row` is the already pre-built query `row`. With those two values you can build the necessary table or view index class to perform the database lookup.
+The `join` operation receives two parameters: `userName` and `row`. 
+- `userName` is the current user name subscribed to the query
+- `row` is the pre-built query `row`
+With those two values, you can build the necessary table or view index class to perform the database lookup.
 
-`hideFields` allows you to define a list of fields that should be hidden if certain conditions apply. For this purpose, three parameters are provided: `userName`, `row` and `userData`. The first two parameters are the same as the ones available in `join`, but `userData` will be table or view lookup result. `userData` can be null if the lookup fails to find a record.
+`hideFields` enables you to define a list of fields that will be hidden if certain conditions apply. Three parameters are provided: 
+- `userName` the current user name subscribed to the query
+- `row` he pre-built query `row`
+-`userData` the table or view lookup result; this will be null if the lookup fails to find a record
 
-The `fields` section defines what fields should be visible as part of the query. This is useful if we want to use a subset of fields from the enriched table or view, or if we want to declare our own derived fields.
+
+The `fields` section defines what fields should be visible as part of the query. This is useful if you want to use a subset of fields from the enriched table or view, or if you want to declare your own derived fields.
 
 The examples below should help to understand the functionality.
 
@@ -286,7 +293,7 @@ query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
 
 ### Ranged data server queries
 
-It is possible to define ranged data servers. These data servers only cache a defined range of a table or view. This makes the data server more responsive and reduces resource requirements.
+You can define a ranged data servers. This only caches a defined range of a table or view. So, the data server is more responsive and resource requirements are reduced.
 
 Syntax:
 
