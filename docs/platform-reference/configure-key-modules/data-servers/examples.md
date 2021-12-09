@@ -105,11 +105,12 @@ lmdbAllocateSize = 512.MEGA_BYTE()
 
 **excludedEmitters**. This enables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored. Defaults to an empty list.
 
-**enableTypeAwareCriteriaEvaluator**This enables the type-aware criteria evaluator at the data-server level. Defaults to `false`. [Click here to read more](#additional-information-on-enabletypeawarecriteriaevaluator)
+**enableTypeAwareCriteriaEvaluator**. This enables the type-aware criteria evaluator at the data-server level. Defaults to `false`. [Click here to read more](
+    /platform-reference/configure-key-modules/data-servers/examples/#enabletypeawarecriteriaevaluator)
 
 ### Query settings
 
-**defaultCriteria**This represents the default criteria for the query. Defaults to `null`.
+**defaultCriteria**. This represents the default criteria for the query. Defaults to `null`.
 
 **disableAuthUpdates**. This disables real-time auth updates in order to improve the overall data responsiveness and performance of the server. Defaults to `false`.
 
@@ -123,7 +124,7 @@ For example, you might want a front-end client to perform a criteria search on a
 This search  can be  translated automatically to the right field types internally (even though `TRADE_DATE` is a field of type `DateTime`). The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimised experience. 
 The type-aware evaluator can transform strings to integers, and any other sensible and possible conversion (e.g `TRADE_ID == '1'`). As a side note, this type-aware evaluator is also available in `DbMon` for operations like `search` and `qsearch`.
 
-By contrast, the traditional criteria evaluator needs the field types to match the query fields in the data server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our [common date expressions](#common-expressions) to handle date searches.
+By contrast, the traditional criteria evaluator needs the field types to match the query fields in the data server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our [common date expressions](/platform-reference/configure-key-modules/data-servers/examples/#common-datedatetime-criteria-expressions) to handle date searches.
 
 
 ### Backwards joins
@@ -209,7 +210,7 @@ Another parameter gives you extra flexibility.b`hideFields` enables you to defin
 
 The `fields` section defines what fields should be visible as part of the query. use this if you want to use a subset of fields from the enriched table or view, or if you want to declare your own derived fields.
 
-The example below should help to understand the functionality. Comments are included in the code to ease understanding.
+The example below should help you to understand the functionality. Comments are included in the code to ease understanding.
 
 
 ```kotlin
@@ -364,7 +365,7 @@ With refresh queries, rows that move out of the filter range will be removed fro
 
 When using **numKeyFields** that is less than the number of fields in the index, dummy values need to be passed into the index constructor.
 
-## Client side (runtime) options
+## Client-side (runtime) options
 
 When a client initiates a subscription to a data server by sending a **DATA_LOGON** message, there are several options that can be specified. It is important to note that all them are **optional**, and therefore they are not required to initiate a subscription. See the table below for a detailed explanation of all its features:
 
