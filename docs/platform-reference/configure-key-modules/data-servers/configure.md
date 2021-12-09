@@ -1,6 +1,6 @@
 ---
-title: Data servers
-sidebar_label: Data servers
+title: Introduction
+sidebar_label: Introduction
 sidebar_position: 1
 id: configure
 
@@ -19,7 +19,9 @@ Typically in Genesis, each module has its own data server process, which points 
 
 ### Configure in processes.xml
 
-Data server service configuration is added in processes.xml like below example, for more information of each tag in below config follow this [link](/platform-reference/essential-information/processes-xml)
+Make sure that your data server is correctly configured in your application's **processes.xml** file.
+In the example below, we have added a data server that we have called TRADING_APP_DATASERVER.
+For information on the tags you can use in this configuration, see the page on the [processes.xml](/platform-reference/essential-information/processes-xml) file.
 
 ```xml
 <process name="TRADING_APP_DATASERVER">
