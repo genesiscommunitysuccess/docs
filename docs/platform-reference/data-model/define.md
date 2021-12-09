@@ -314,5 +314,7 @@ query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {
     }
 }
 ```
+#### Complex joins
+There is a range of [more complex joins](/platform-reference/data-model/view-complex-joins/) that give you extended flexibility.
 
 
