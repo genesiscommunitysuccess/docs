@@ -5,7 +5,7 @@ sidebar_position: 20
 id: examples
 ---
 
-## Basic definition
+## The simplest possible definition
 
 A data server consists of one or more queries. Each query listens to a specified table or view, and publishes that data whenever it changes. In this simple example, there is one query, which publishes changes to the table INSTRUMENT_DETAILS.
 
@@ -28,7 +28,7 @@ dataServer {
 ```
 
 ### Specifying fields
-By default, all table or view fields in a query definition will be exposed. If you don't want them all to be available, you must define the fields that are required. For example:
+By default, all table or view fields in a query definition will be exposed. If you don't want them all to be available, you must define the fields that are required. In the example below, we specify eight fields:
 
 ```kotlin
 dataServer {
@@ -49,7 +49,8 @@ dataServer {
 
 ## Configuration settings
 
-Example configuration settings below:
+Before you define any queries, you can make configuration settings for the data server. These control the overall behaviour of the data server. Use the `config` statement.
+Here is an example of some configuration settings: 
 
 ```kotlin
 dataServer {
@@ -74,45 +75,45 @@ dataServer {
     }
 }
 ```
+Below, we shall examine the settings that are available for your `config` statement.
 
 ### Global settings
 
-**Top level only settings**
+**Top-level-only settings**
 
-**lmdbAllocateSize**: sets the size of the memory-mapped file where the in-memory cache stores data server query rows. This configuration seeting can only be applied at the top level, and affects the whole data server. 
+**lmdbAllocateSize**. This sets the size of the memory-mapped file where the in-memory cache stores the data server query rows. This configuration setting can only be applied at the top level. It affects the whole data server. 
 
-By default, the size is defined in bytes. To use MB or GB, use the `MEGA_BYTE` or `GIGA_BYTE` functions. The default is 2 GB.
+By default, the size is defined in bytes. To use MB or GB, use the `MEGA_BYTE` or `GIGA_BYTE` functions. You can see these in the example below. The default is 2 GB.
 
-Sample:
 ```kotlin
 lmdbAllocateSize = 2.GIGA_BYTE()
 // or
 lmdbAllocateSize = 512.MEGA_BYTE()
 ```
 
-**Top level and query level settings** 
+**Top-level and query-level settings** 
 
-**compression**: if true, it will compress query row data before writing it to the in-memory cache. Defaults to `false`.
+**compression**. If this is set to `true`, it will compress the query row data before writing it to the in-memory cache. Defaults to `false`.
 
-**chunkLargeMessages**: if true, it will split large updates into smaller ones. Defaults to `false`.
+**chunkLargeMessages**. If this is set to true, it will split large updates into smaller ones. Defaults to `false`.
 
-**defaultStringSize**: size to be used for string storage in the data server in-memory cache. Higher values lead to higher memory use and lower values to truncation. Defaults to `40`.
+**defaultStringSize**. This is the size to be used for string storage in the data server in-memory cache. Higher values lead to higher memory use and lower values lead to truncation. Defaults to `40`.
 
-**batchingPeriod**: delay in millseconds to wait before sending new data to data server clients. Defaults to `500ms`.
+**batchingPeriod**. This is the delay in milliseconds to wait before sending new data to data-server clients. Defaults to `500ms`.
 
-**linearScan**: enables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes. Defaults to `true`.
+**linearScan**. This enables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes. Defaults to `true`.
 
-**excludedEmitters**: enables update filtering for a list of process names. Any database updated omitted from one of these processes will be ignored. Defaults to an empty list.
+**excludedEmitters**. This enables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored. Defaults to an empty list.
 
-**enableTypeAwareCriteriaEvaluator**: enables the type-aware criteria evaluator at the data-server level. Defaults to `false`. [Click here to read more](#additional-information-on-enabletypeawarecriteriaevaluator)
+**enableTypeAwareCriteriaEvaluator**This enables the type-aware criteria evaluator at the data-server level. Defaults to `false`. [Click here to read more](#additional-information-on-enabletypeawarecriteriaevaluator)
 
 ### Query settings
 
-**defaultCriteria**: represents the default criteria for the query. Defaults to `null`.
+**defaultCriteria**This represents the default criteria for the query. Defaults to `null`.
 
-**disableAuthUpdates**: Disables real-time auth updates in order to improve overall data server responsiveness and performance. Defaults to `false`.
+**disableAuthUpdates**. This disables real-time auth updates in order to improve the overall data responsiveness and performance of the server. Defaults to `false`.
 
-**backJoins**: Enables backward joins on a view query, these need to be configured at the join level of the query to work correctly. Defaults to `true`.
+**backJoins**. This enables backwards joins on a view query, these need to be configured at the join level of the query in order to work correctly. Defaults to `true`.
 
 #### enableTypeAwareCriteriaEvaluator
 
@@ -122,7 +123,7 @@ For example, you might want a front-end client to perform a criteria search on a
 This search  can be  translated automatically to the right field types internally (even though `TRADE_DATE` is a field of type `DateTime`). The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimised experience. 
 The type-aware evaluator can transform strings to integers, and any other sensible and possible conversion (e.g `TRADE_ID == '1'`). As a side note, this type-aware evaluator is also available in `DbMon` for operations like `search` and `qsearch`.
 
-By contrast, the traditional criteria evaluator needs field types to match the query fields in the data server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should  using our [common date expressions](#common-expressions) to handle date searches.
+By contrast, the traditional criteria evaluator needs the field types to match the query fields in the data server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our [common date expressions](#common-expressions) to handle date searches.
 
 
 ### Backwards joins
@@ -138,11 +139,11 @@ Queries that do not have **backJoins = false** will use any backwards joins in a
 
 These are server-side criteria. If you include a **where** clause, the request is only processed if the criteria specified in the clause are met. For example, If you have an application that deals with derivatives that have parent and child trades, you can use a **where** clause to confine the query only to parent trades.
 
-Also you can use these clauses to focus on a specific set of fields or a single field. You can then use Java syntax, such as **contains**, or string/numeric operations.
+Also, you can use these clauses to focus on a specific set of fields or a single field. You can then use Java syntax, such as **contains**, or string/numeric operations.
 
-Finally, note that **where** clauses can also be used for permissioning. If only users with a specific ID are permitted to have access to this data, you could permission them here.
+Finally, note that **where** clauses can also be used for permissioning. If you want only users with a specific ID to have access to this data, you could permission them here.
 
-In the example below, we have a data server query based on on the existing ENHANCED_TRADE_VIEW, which filters results whose value is larger than 1 million.
+In the example below, we have a data server query based on the existing ENHANCED_TRADE_VIEW, which filters trades so that only those whose value is larger than 1 million are permissioned.
 
 ```kotlin
 dataServer {
@@ -194,24 +195,22 @@ There are two scenarios in which an index can be used:
 
 ### Client-enriched data
 
-In some scenarios, you might want to associate the results of data server queries with the user who initiated the queries. You can achieve this using the ```enrich``` feature, which enables an additional table or view join (including backwards joins). By using this feature, you can provide user-specific values for each row, or even perform cell-level permissioning (for example, to hide cell values), depending on entitlements.
+In some scenarios, you might want to associate the results of data server queries with the user who initiated the queries. You can achieve this using the ```enrich``` feature, which enables an additional table or view join (including backwards joins). With this feature, you can provide user-specific values for each row, or even perform cell-level permissioning (for example, to hide cell values), depending on entitlements.
 
-The `join` operation receives two parameters: `userName` and `row`. 
+The `join` operation receives two parameters: 
 - `userName` is the current user name subscribed to the query
 - `row` is the pre-built query `row`
-With those two values, you can build the necessary table or view index class to perform the database lookup.
-
-`hideFields` enables you to define a list of fields that will be hidden if certain conditions apply. Three parameters are provided: 
+With these two values, you can build the necessary table or view index class to perform the database lookup.
+Another parameter gives you extra flexibility.b`hideFields` enables you to define a list of fields that will be hidden if certain conditions apply. Three parameters are provided: 
 - `userName` the current user name subscribed to the query
-- `row` he pre-built query `row`
--`userData` the table or view lookup result; this will be null if the lookup fails to find a record
+- `row` the pre-built query `row`
+- `userData` the table or view lookup result; this will be null if the lookup fails to find a record
 
 
-The `fields` section defines what fields should be visible as part of the query. This is useful if you want to use a subset of fields from the enriched table or view, or if you want to declare your own derived fields.
+The `fields` section defines what fields should be visible as part of the query. use this if you want to use a subset of fields from the enriched table or view, or if you want to declare your own derived fields.
 
-The examples below should help to understand the functionality.
+The example below should help to understand the functionality. Comments are included in the code to ease understanding.
 
-Example: 
 
 ```kotlin
 // Example using "hideFields" and creating derived fields based on user counterparty association
@@ -293,9 +292,9 @@ query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
 
 ### Ranged data server queries
 
-You can define a ranged data servers. This only caches a defined range of a table or view. So, the data server is more responsive and resource requirements are reduced.
+Ranged data servers only cache a defined range within a table or view. This makes the data server more responsive and reduces resource requirements.
 
-Syntax:
+The example below includes comments to ease understanding:
 
 ```kotlin
 query("TRADE_RANGED_LAST_2_HOURS", TRADE) {
@@ -371,97 +370,99 @@ When a client initiates a subscription to a data server by sending a **DATA_LOGO
 
 | Option         | Default   | Description                                                  |
 | -------------- | --------- | ------------------------------------------------------------ |
-| MAX_ROWS       | 250       | Maximum number of rows to be returned as part of the initial message, and as part of any additional **MORE_ROWS** messages. |
+| MAX_ROWS       | 250       | Maximum number of rows to be returned as part of the initial message, and as part of any additional **MORE_ROWS** messages |
 | MAX_VIEW       | 1000      | Maximum number of rows to track as part of a client "view"   |
-| MOVING_VIEW    | **true**  | Defines the behaviour of the client "view" when new rows are received in real-time. If **MOVING_VIEW** is set to true, and **MAX_VIEW** is reached, any new rows arriving to the query will start replacing the oldest rows from the view. This guarantees that only the most recent rows are shown by default. |
-| CRITERIA_MATCH |           | Clients can send a Groovy expression to perform filters on the query server that will remain active for the life of the subscription. For example: `Expr.dateIsBefore(TRADE_DATE,'20150518')` or `QUANTITY > 10000` |
-| FIELDS         |           | This optional parameter allows to select a subset of fields from the query if the client is not interested in receiving all of them. Example: "TRADE_ID QUANTITY PRICE INSTRUMENT_ID". By default all fields are returned if this option is not specified. |
-| ORDER_BY       |           | This option can be used to select a data server index (defined in xml), which is especially useful if you want the data to be sorted in a certain way. By default, data server rows will be returned by order of creation (from oldest database record to newest). |
-| REVERSE        | **false** | This option changes the data server index iteration. For example, if we are using the default index, they query will return rows from newest database records to oldest. |
+| MOVING_VIEW    | **true**  | Defines the behaviour of the client "view" when new rows are received in real time. If **MOVING_VIEW** is set to true, and **MAX_VIEW** is reached, any new rows arriving to the query will start replacing the oldest rows in the view. This guarantees that only the most recent rows are shown by default |
+| CRITERIA_MATCH |           | Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: `Expr.dateIsBefore(TRADE_DATE,'20150518')` or `QUANTITY > 10000` |
+| FIELDS         |           | This optional parameter enables you to select a subset of fields from the query if the client is not interested in receiving all of them. Example: "TRADE_ID QUANTITY PRICE INSTRUMENT_ID". By default all fields are returned if this option is not specified |
+| ORDER_BY       |           | This option can be used to select a data server index (defined in xml), which is especially useful if you want the data to be sorted in a specific way. By default, data server rows will be returned in order of creation (from oldest database record to newest) |
+| REVERSE        | **false** | This option changes the data server index iteration. For example, if you are using the default index, they query will return rows from newest database records to oldest |
 
 ## Common Date/DateTime criteria expressions
 
-The data server criteria support some common expressions all called using the `Expr` special binding. All of them return a boolean value (`true` or `false`) and are especially helpful for `Date` and `DateTime` client-side filtering. The first parameter is always a query field, which can either represent the epoch time in milliseconds or a `String` value representing the actual `Date` and `DateTime` in the supported formats. The second parameter (if applicable) is a predefined `String` value, also represented using the supported formats.
+The data server criteria support some common expressions all called using the `Expr` special binding. All these return a boolean value (`true` or `false`) and are especially helpful for `Date` and `DateTime` client-side filtering. 
+- The first parameter is always a query field, which can either represent the epoch time in milliseconds or a `String` value representing the actual `Date` and `DateTime` in the supported formats. 
+- The second parameter (if applicable) is a predefined `String` value, also represented using the supported formats.
 
 The allowed String formats are:
 
 
-DateTime with milliseconds precision: _yyyyMMdd-HH:mm:ss.SSS_
+- DateTime with milliseconds precision: _yyyyMMdd-HH:mm:ss.SSS_
 
 
-DateTime with seconds precision: _yyyyMMdd-HH:mm:ss_
+- DateTime with seconds precision: _yyyyMMdd-HH:mm:ss_
 
 
-DateTime with minutes precision: _yyyyMMdd-HH:mm_
+- DateTime with minutes precision: _yyyyMMdd-HH:mm_
 
 
-DateTime as Date: _yyyyMMdd_
+- DateTime as Date: _yyyyMMdd_
 
 ### Date operations
 
 #### dateIsBefore(date as DateTime|String|Long, String)
-Returns true when the date in the given field is before the date specified
+This returns true when the date in the given field is before the date specified
 
-##### example:
+For example:
 `Expr.dateIsBefore(TRADE_DATE,'20150518')`
 
 #### dateIsAfter(date as DateTime|String|Long, String)
-Returns true when the date in the given field is after the date specified
+This returns true when the date in the given field is after the date specified
 
-##### example:
+For example:
 `Expr.dateIsAfter(TRADE_DATE,'20150518')`
 
 #### dateIsGreaterEqual(date as DateTime|String|Long, String)
 
-Returns true when the date in the given field is greater or equal to the date specified
+This returns true when the date in the given field is greater or equal to the date specified
 
-##### example:
+For example:
 
 `Expr.dateIsGreaterEqual(TRADE_DATE,'20150518')`
 
 #### dateIsLessEqual(date as DateTime|String|Long, String)
 
-Returns true when the date in the given field is less or equal to the date specified
+This returns true when the date in the given field is less or equal to the date specified
 
-##### example:
+For example:
 
 `Expr.dateIsLessEqual(TRADE_DATE,'20150518')`
 
 #### dateIsEqual(date as DateTime|String|Long, String)
-Returns true when the date in the given field is equal to the date specified
+This returns true when the date in the given field is equal to the date specified
 
-#### example:
+For example:
 `Expr.dateIsEqual(TRADE_DATE,'20150518')`
 
 #### dateIsToday(date as DateTime|String|Long)
-Returns true when the data in the given field is equal to today's date (using system local time)
+This returns true when the data in the given field is equal to today's date (using system local time).
 
-#### example:
+For example:
 `Expr.dateIsToday(TRADE_DATE)`
 
 ### DateTime operations
 
 #### dateTimeIsBefore(datetime as DateTime|String|Long, String)
 
-Returns true when the datetime in the given field is before the datetime specified
+This returns true when the datetime in the given field is before the datetime specified.
 
-##### example:
+For example:
 
 `Expr.dateTimeIsBefore(TRADE_DATETIME,'20150518-10:50:24')`
 
 #### dateTimeIsAfter(datetime as DateTime|String|Long, String)
 
-Returns true when the datetime in the given field is after the datetime specified
+This returns true when the datetime in the given field is after the datetime specified.
 
-##### example:
+For example:
 
 `Expr.dateTimeIsAfter(TRADE_DATETIME,'20150518-10:50:24')`
 
 #### dateTimeIsGreaterEqual(datetime as DateTime|String|Long, String)
 
-Returns true when the datetime in the given field is greater or equal to the datetime specified
+This returns true when the datetime in the given field is greater or equal to the datetime specified.
 
-##### example:
+For example:
 
 
 `Expr.dateTimeIsGreaterEqual(TRADE_DATETIME,'20150518-10:50:24')`
@@ -469,9 +470,9 @@ Returns true when the datetime in the given field is greater or equal to the dat
 #### dateTimeIsLessEqual(datetime as DateTime|String|Long, String)
 
 
-Returns true when the datetime in the given field is less or equal to the datetime specified
+This returns true when the datetime in the given field is less or equal to the datetime specified.
 
-##### Example:
+For example:
 
 
 `Expr.dateTimeIsLessEqual(TRADE_DATETIME,'20150518-10:50:24')`
