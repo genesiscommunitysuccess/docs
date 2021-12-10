@@ -12,8 +12,8 @@ import TabItem from '@theme/TabItem';
 
 There are two types of test that you can develop:
 
-* database tests
-* service tests
+* database test
+* service test
 
 For both types, you will need to start with a dictionary. This section will guide you through using GPAL dictionaries in Genesis tests.
 
@@ -82,8 +82,8 @@ Please note that the table definitions should be valid. If you specify an invali
 
 Only use a File dictionary if the dictionary you want to test is:
 
-1. Different from the production dictionary
-2. Too big to be practical in an inline dictionary
+-  different from the production dictionary
+-  too big to be practical in an inline dictionary
 
 Please note that the test will need to resolve the absolute location of the dictionary file, for example:
 
@@ -105,14 +105,14 @@ protected String dictionaryName() {
 
 ### Writing tests
 
-1. Database tests - use these types for testing classes that require database access.
-2. Test support tests - use these types of tests for testing a service
+- Database tests - use these types for testing classes that require database access.
+- Test support tests - use these types of tests for testing a service
 
-All dictionaries types work with both types of tests.
+All dictionaries types work with both types of test.
 
 #### AbstractDatabaseTest
 
-Use these types for testing classes that require database access. These tests will instantiate a `RxDb` object, with a dictionary. The full range of database operations are available, including the update queue. However, no other genesis components are provided. The only requirement for this type of tests is a dictionary.
+Use these types for testing classes that require database access. These tests will instantiate an `RxDb` object, with a dictionary. The full range of database operations are available, including the update queue. However, no other genesis components are provided. The only requirement for this type of tests is a dictionary.
 
 To write a database test, begin by extending `AbstractDatabaseTest`, and overwriting the  `createMockDictionary` method, as in the samples below
 
@@ -180,7 +180,7 @@ class SampleKotlinTest : AbstractDatabaseTest() {
 }
 ```
 
-In this test we are defining two fields and a table that uses them and making sure there are not records in hte `USER` table. Please note that since we are creating a stand alone dictionary, we can start with id 1
+In this test, we define two fields and a table that uses these. We make sure there are no records in the `USER` table. Please note that since we are creating a stand-alone dictionary, we can start with id 1.
 
 **Using a file dictionary:**
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -294,9 +294,9 @@ public class UserControllerJavaTest extends AbstractGenesisTestSupport<EventResp
 </TabItem>
 </Tabs>
 
-##### Parsing Messages
+##### Parsing messages
 
-These tests require a parser, this should take a `GenesisSet` and transform it. This is so that all logic dealing with reading values these messages is in a single place, and that this can be dealt with by the test support class, so that it can return a type safe object for the test to verify. `EventResponse` is provided as an option. This will parse messages into either an `EventResponse.Ack` or an `EventResponse.Nack`. The `Ack` does not hold a lot of data, but the `Nack` will provide `errorCode` and text properties to test failure conditions.
+These tests require a parser. This should take a `GenesisSet` and transform it. This is so that all logic dealing with reading values in these messages is in a single place, and that this can be dealt with by the test support class, so that it can return a type-safe object for the test to verify. `EventResponse` is provided as an option. This will parse messages into either an `EventResponse.Ack` or an `EventResponse.Nack`. The `Ack` does not hold a lot of data, but the `Nack` will provide `errorCode` and text properties to test failure conditions.
 
 It is recommended that the response type is a [sealed class in Kotlin](https://kotlinlang.org/docs/sealed-classes.html) with a companion object that implements `(GenesisSet) -> xxx`, where `xxx` is your sealed class.
 
@@ -351,7 +351,7 @@ sealed class LoginResponse {
 }
 ```
 
-Having this parsing logic outside your tests cases, makes these a lot simpler to write. For example, using the sealed class and parser above, testing the logging in and logging out again becomes very simple:
+Having this parsing logic outside your tests cases makes these a lot simpler to write. For example, using the sealed class and parser above, testing the logging in and logging out again, becomes very simple:
 
 ```kotlin
 @Test
@@ -398,9 +398,9 @@ private fun buildLogoutSet(sessionId: String): GenesisSet {
 }
 ```
 
-##### Sending Messages
+##### Sending messages
 
-There are two functions for sending messages to a service; one uses RxJava2 Single, the other uses Kotliln coroutines. Whichever one you use, shouldn’t make a whole lot of difference in your test. The method `sendMessage(…)` will return a `Single`, this will require a call to `blockingGet()` for every message you’re interested in. `sendMessageAsync` will require you to wrap your test in a `runBlocking { … }` block.
+There are two functions for sending messages to a service; one uses RxJava2 Single, the other uses Kotlin coroutines. Whichever one you use, shouldn’t make a whole lot of difference in your test. The method `sendMessage(…)` will return a `Single`, this will require a call to `blockingGet()` for every message you’re interested in. `sendMessageAsync` will require you to wrap your test in a `runBlocking { … }` block.
 
 ```kotlin
 @Test
@@ -424,10 +424,7 @@ fun `test logon failure - incorrect password (coroutines)`() = runBlocking {
     assert(message.errorCode == AuthFailure.INCORRECT_CREDENTIALS) { message.toString() }
 }
 ```
-
-Both functions take a `GenesisSet` and optionally a timeout. If no timeout is provided it will default to 500. Timeouts are set in milliseconds. Behind the scenes a call will be made to `GenesisMessageClient`, which will handle source refs and waiting for a response (within the timeout).
-
-##### Additional methods of testing Req Reps
+##### Additional method of testing Req Reps
 
 Below is an example of writing a type safe req rep test using a `RequestReplyWorkflow`. `RequestReplyWorkflow` requires two type parameters. The first is the inbound class and the second is the outbound class.
 
@@ -445,13 +442,15 @@ Below is an example of writing a type safe req rep test using a `RequestReplyWor
     }
 ```
 
-##### Providing System Defintion
+Both functions take a `GenesisSet` and, optionally, a timeout. If no timeout is provided, it will default to 500. Timeouts are set in milliseconds. Behind the scenes, a call will be made to `GenesisMessageClient`, which will handle source refs and waiting for a response (within the timeout).
 
-You can override system defintion properties in your test class by overriding the `systemDefintion()` function.
+##### Overriding the system definition
+
+You can override system definition properties in your test class by overriding the `systemDefintion()` function.
 
 ##### assertedCast
 
-This extension function can be called on any value with a type parameter. If the value is of that type it will be cast to that type, if not the call will fail with an `AssertError`, and a helpful description.
+This extension function can be called on any value with a type parameter. If the value is of that type, it will be cast to that type; if not, the call will fail with an `AssertError`, and a helpful description.
 
 ```kotlin
 // message will be LoginResponse; our generic response type
@@ -464,8 +463,8 @@ val loginAuthAck = message
 
 ##### assertIsAuditedBy
 
-This function helps assertions related to audit tables. It will check all fields in the audited record match the audit record.
-In this test, we build a request to insert a user. We then get the user from the database to make sure it exists. Next we check a USER_ATTRIBUTE row has been created. Finally we check to make sure a matching row in USER_AUDIT has been created.
+This function helps assertions related to audit tables. It will check that all fields in the audited record match the audit record.
+In the test below, we build a request to insert a user. We then get the user from the database to make sure it exists. Next, we check a USER_ATTRIBUTE row has been created. Finally, we check to make sure a matching row in USER_AUDIT has been created.
 
 ```kotlin
 @Test

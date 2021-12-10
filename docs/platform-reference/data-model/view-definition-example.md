@@ -5,7 +5,9 @@ sidebar_position: 50
 id: view-example
 ---
 
-### View definitions that use different joins:
+### View definitions that use different joins
+This example shows a range of different joins. Comments have been added to explain each one.
+
 
 ```kotlin
 views {
