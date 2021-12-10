@@ -10,9 +10,9 @@ Used in [Connected Data](/web-ui-reference/components/grids/ag-grid/ag-grid-conn
 
 - **`criteria: string`**: Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: Expr.dateIsBefore(TRADE_DATE,'20150518') or QUANTITY > 10000.
 
-- **`fields: boolean`**: This optional parameter enables you to select a subset of fields from the query if the client is not interested in receiving all of them. Example: "TRADE_ID QUANTITY PRICE INSTRUMENT_ID". By default all fields are returned if this option is not specified.
+- **`fields: boolean`**: Smilar to `request` but for [Data Server](/platform-reference/configure-key-modules/data-servers/configure/) scenarios. This optional parameter allows you to select a subset of fields from the query if the client is not interested in receiving all of them. Example: "TRADE_ID QUANTITY PRICE INSTRUMENT_ID". By default all fields are returned if this option is not specified.
 
-- **`isSnapshot: boolean`**: 
+- **`isSnapshot: boolean`**: Defaults to false. 
 
 - **`maxRows: number`**: Maximum number of rows to be returned as part of the initial message, and as part of any additional MORE_ROWS messages
 
@@ -20,9 +20,9 @@ Used in [Connected Data](/web-ui-reference/components/grids/ag-grid/ag-grid-conn
 
 - **`orderBy: string`**: This option can be used to select a data server index (defined in xml), which is especially useful if you want the data to be sorted in a specific way. By default, data server rows will be returned in order of creation (from oldest database record to newest).
 
-- **`request: any`**: 
+- **`request: any`**: Similar to `fields` but for [Request Server](/platform-reference/configure-key-modules/request-servers/configure/) scenarios. This optional parameter allow you to specify request fields which can include wildcards. Example: you could request all RIC Codes for example, or all RIC Codes beginning with "V" for example.
 
-- **`resourceName: string`**: 
+- **`resourceName: string`**: The target [Data Server](/platform-reference/configure-key-modules/data-servers/configure/) or [Request Server](/platform-reference/configure-key-modules/request-servers/configure/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
 
 - **`reverse: boolean`**: This option changes the data server index iteration. For example, if you are using the default index, they query will return rows from newest database records to oldest.
 
