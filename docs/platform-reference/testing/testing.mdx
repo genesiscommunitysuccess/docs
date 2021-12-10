@@ -429,10 +429,7 @@ Both functions take a `GenesisSet` and optionally a timeout. If no timeout is pr
 
 ##### Additional methods of testing Req Reps
 
-Using `AbstractGenesisTestSupport`, there are additional options which we can use to test Req Reps. See below for examples of each.
-
-1. `sendRequest` method with a `RequestReplyWorkflow`. This approach returns just the retrieved entities and is type safe.
-`RequestReplyWorkflow` requires two type parameters. The first is the inbound class and the second is the outbound class.
+Below is an example of writing a type safe req rep test using a `RequestReplyWorkflow`. `RequestReplyWorkflow` requires two type parameters. The first is the inbound class and the second is the outbound class.
 
 ```kotlin
     object CompanyFlow : RequestReplyWorkflow<Company.ById, Company> by requestReplyWorkflowBuilder()
@@ -445,40 +442,6 @@ Using `AbstractGenesisTestSupport`, there are additional options which we can us
 
         assertEquals(1, reply.size)
         assertEquals("1", reply.first().companyId)
-    }
-```
-
-2. `messageClient.request` which takes an object whose class extends `Inbound` and a class that extends `Outbound`.
-
-```kotlin
-    @Test
-    fun `test req rep`(): Unit = runBlocking {
-        messageClient.registerReaderType(Reply::class, Company::class, "REP_COMPANY")
-        val request = Request(Company.ById("1"), "REQ_COMPANY")
-
-        val reply = messageClient.request(request, Reply::class.java).blockingGet()
-
-        assertEquals(1, reply.reply.size)
-        assertEquals("1", reply.first().companyId)
-    }
-```
-
-3. `messageClient.sendReqRep` which uses GenesisSet so is not type safe.
-```kotlin
-    @Test
-    fun `test req rep`(): Unit = runBlocking {
-        val request = genesisSet {
-            MessageType.MESSAGE_TYPE with "REQ_COMPANY"
-            "REQUEST" with genesisSet {
-                "COMPANY_ID" with "1"
-            }
-        }
-
-        val result: GenesisSet = messageClient.sendReqRep(request).get()
-
-        val reply = result.getArray<Any>("REPLY")
-        assertEquals(1, reply?.size)
-        assertEquals("1", (reply?.first() as GenesisSet).getString("COMPANY_ID"))
     }
 ```
 
