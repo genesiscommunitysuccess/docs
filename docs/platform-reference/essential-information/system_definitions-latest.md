@@ -88,13 +88,13 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...)
 
-**DbMode**: This setting is only needed if you use the Aerospike database. Accepted values are "VANILLA" and "DURABLE_DELETE".
+**DbMode**: This setting is only needed if you use the Aerospike database. Accepted values are "VANILLA" and "DURABLE_DELETE". Default is "VANILLA". (Note: Durable Delete requires Aerospike Server Enterprise Edition 3.10+)
 
 **ResourcePollerTimeout**: This setting controls how often the genesis daemon process keeps the processes and their metadata up to date.
 
 **ReqRepTimeout**: This setting contains the default timeout for the request server resources in the system.
 
-**MetadataChronicleMapAverageKeySizeBytes**, **MetadataChronicleMapAverageValueSizeBytes**, **MetadataChronicleMapEntriesCount**: These are the settings for chronicle map and are are related to the way processes store their own metadata resources inside /runtime/proc_metadata
+**MetadataChronicleMapAverageKeySizeBytes**, **MetadataChronicleMapAverageValueSizeBytes**, **MetadataChronicleMapEntriesCount**: These are the settings for chronicle map and are related to the way processes store their own metadata resources inside /runtime/proc_metadata
 
 **DaemonServerPort**: This defines the port for daemon process, daemon process is the background process, which collects information about micro-services
 
@@ -107,7 +107,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.
 
-**Location**: This item contains a 2-character value used to generate **standard ID** for a given entity. For examepl, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR",
+**Location**: This item contains a 2-character value used to generate **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR",
 then the generated ID will be `000000000001TRLO1` where "LO" represents Location string.
 
 **LogFramework**: Contains name of the logging framework. Supported framework: LOG4J2
