@@ -1,17 +1,17 @@
 ---
 id: fields-from-scratch
-sidebar_label: Generate Fields From Scratch
+sidebar_label: Generate fields from scratch
 sidebar_position: 1
-title: Generate Fields From Scratch
+title: Generate fields from scratch
 
 ---
 ## Introduction
 
-This guide walks you though how to setup a Genesis project using [Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html). At the end you will have generated fields that can be  used later in tables and views.
+This exercise walks you though how to set up a Genesis project using a [Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html). At the end, you will have generated fields that can be  used later in tables and views.
 
 ## Prerequisites
 
-You will need between 5 and 10 minutes to finish this guide.
+You will need between 5 and 10 minutes to finish this exercise.
 
 Required software:
 
@@ -26,14 +26,19 @@ Versions used while writing this guide:
 * IntelliJ IDEA 2021.2.1
 
 :::note
-You will need access to Maven repository that provides the Genesis Platform.
+You will need access to the Maven repository that provides the Genesis Platform.
 :::
 
 ## Steps
 
-Following are the steps to complete this guide.
+This exercise has the following steps:
+1. Generate the project.
+2. Build the project.
+3. Open the project in IntelliJ.
+4. Add the fields.
+5. Rebuild the project to generate the fields.
 
-### Generate project
+### Generate the project
 
 Genesis provides a [Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html) to generate a skeleton project that will host all the necessary modules and configuration for an application. To use it, open a terminal and execute:
 
@@ -89,7 +94,7 @@ fields {
 }
 ```
 
-Go and add the following:
+Add three fields, as you see below:
 
 ```kotlin
 fields {
@@ -99,13 +104,14 @@ fields {
 }
 ```
 
-While coding, you shoule notice that there is autocompletion that helps with the configuration and its arguments.
+While coding, note that autocompletion helps with the configuration and its arguments.
 
 ![Fields Code Completion](/img/field_autocompletion.png)
 
 ### Generate the Fields
 
-The next project to explore is `trade-101-dictionary-cache`. It depends on `trade-101-config` and contains the generated code based on the configuration. To explore the generated code, navigate to `trade-101-dictionary-cache/target/generated/sources/fields/global/genesis/gen/config/fields/Fields.kt`. You will find the `Fields` object with pre-generated literals - those are fields that are commonly used in trading applications so they get generated out-of-the-box for faster development. To see the fields you have just added, you will have to build the project again:
+Now look at the `trade-101-dictionary-cache`. This depends on `trade-101-config` and contains the generated code based on the configuration. 
+To explore the generated code, navigate to `trade-101-dictionary-cache/target/generated/sources/fields/global/genesis/gen/config/fields/Fields.kt`. You will find the `Fields` object with pre-generated literals. These are fields that are commonly used in trading application,s so they get generated out-of-the-box for faster development. To see the fields you have just added, you will have to build the project again:
 
 ```bash
 mvn package
