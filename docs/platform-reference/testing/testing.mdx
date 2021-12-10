@@ -424,7 +424,10 @@ fun `test logon failure - incorrect password (coroutines)`() = runBlocking {
     assert(message.errorCode == AuthFailure.INCORRECT_CREDENTIALS) { message.toString() }
 }
 ```
-##### Additional method of testing Req Reps
+
+Both functions take a `GenesisSet` and, optionally, a timeout. If no timeout is provided, it will default to 500. Timeouts are set in milliseconds. Behind the scenes, a call will be made to `GenesisMessageClient`, which will handle source refs and waiting for a response (within the timeout).
+
+##### Type safe Req Rep tests
 
 Below is an example of writing a type safe req rep test using a `RequestReplyWorkflow`. `RequestReplyWorkflow` requires two type parameters. The first is the inbound class and the second is the outbound class.
 
@@ -441,8 +444,6 @@ Below is an example of writing a type safe req rep test using a `RequestReplyWor
         assertEquals("1", reply.first().companyId)
     }
 ```
-
-Both functions take a `GenesisSet` and, optionally, a timeout. If no timeout is provided, it will default to 500. Timeouts are set in milliseconds. Behind the scenes, a call will be made to `GenesisMessageClient`, which will handle source refs and waiting for a response (within the timeout).
 
 ##### Overriding the system definition
 
