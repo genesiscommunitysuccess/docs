@@ -2,7 +2,7 @@
 id: network-api
 title: Network API
 sidebar_label: Network API
-sidebar_position: 8
+sidebar_position: 50
 ---
 
 Use these APIs to send/receive messages to micro-services

@@ -2,7 +2,7 @@
 id: service-detail-provider
 title: Service detail provider
 sidebar_label: Service provider API
-sidebar_position: 2
+sidebar_position: 20
 ---
 
 In this page, we look at details of the functions that enable you to interact with the Genesis services specified that can be specified in the **service-definition.xml** file.
