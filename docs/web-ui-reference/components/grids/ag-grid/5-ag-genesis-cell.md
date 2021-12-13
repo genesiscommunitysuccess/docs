@@ -4,18 +4,18 @@ title: Genesis AG Cell
 sidebar_position: 15
 ---
 
-This is a `slotted` component that allows a "visual approach" when configuring cell renderers. Each `ag-cell` will take an `ICellRendererFunc` typed function that is an exact match to the official AG Grid's [Cell Renderer](https://www.ag-grid.com/javascript-data-grid/component-cell-renderer/). It will also take an `ICellRendererParams` typed params object to be used with the `ICellRendererFunc`.
+This is a `slotted` component that allows a "visual approach" when configuring cell renderers. Each `ag-cell` takes an `ICellRendererFunc` typed function that is an exact match to the official AG Grid's [Cell Renderer](https://www.ag-grid.com/javascript-data-grid/component-cell-renderer/). It also takes an `ICellRendererParams` typed params object to be used with the `ICellRendererFunc`.
 
-The `ag-cell` must be used as a slot of the [Genesis AG Column](/web-ui-reference/components/grids/ag-grid/ag-genesis-column/) and can't be used separately since it's just an extra visual layer for defining the cell renderer (that can also be configured directly from the `ag-column` definition prop).
+The `ag-cell` must be used as a slot of the [Genesis AG Column](/web-ui-reference/components/grids/ag-grid/ag-genesis-column/) and can't be used separately, since it's just an extra visual layer for defining the cell renderer (that can also be configured directly from the `ag-column` definition prop).
 
 :::tip
 Using `ag-cell` is not mandatory and it's for highly customized cases. Most of the features here can be achieved with just `ag-column` and/or `auto-cell-renderer-by-type` prop on a given AG Grid.
 :::
 
-## Setup
+## Set-up
 
 :::info
-In the examples below we refer to a sample `@genesislcap/alpha-design-system` design system with an `alpha` prefix. Your design system would likely have a different name/prefix while still exposing the same API.
+In the examples below, we refer to a sample `@genesislcap/alpha-design-system` design system with an `alpha` prefix. Your design system would probably have a different name/prefix, while still exposing the same API.
 :::
 
 ```ts

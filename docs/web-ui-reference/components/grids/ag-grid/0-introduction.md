@@ -12,10 +12,10 @@ This is our Web Component wrapper for that, allowing both **simple data** and **
 
 As mentioned before, there will be two main use cases for our AG Grid component: **simple data** and **connected data** cases:
 
-#### Simple Data
+#### Simple data
 
 :::tip 
-A good scenario for this is when there's no need for streams or you're using a non-Genesis based data source (e.g. a custom REST API).
+A good scenario for this is when there's no need for streams or you're using a non-Genesis-based data source (e.g. a custom REST API).
 :::
 
 :::info
@@ -26,7 +26,7 @@ The **simple data** use case is when you have your own data model & flow (JSON, 
 
 This use case requires the client app to handle all the data transformations/updates/deletes/cell renderers in the grid.
 
-#### Connected Data
+#### Connected data
 
 :::tip 
 This is the most common use case for our AG Grid component. When connecting to a [Data Server](/platform-reference/configure-key-modules/data-servers/configure/) or [Request Server](/platform-reference/configure-key-modules/request-servers/configure/). 
@@ -40,7 +40,7 @@ The **connected data** use case is when you have a [Data Server](/platform-refer
 
 `ag-genesis-datasource`
 
-## Attributes & Props
+## Attributes & props
 
 - **`agGridFontFace: string`**: The font face to be used in the the grid. <br /> *Defaults to **'agGridAlpine'** but is replaced with **'Roboto'** font family when using `<zero-ag-grid>`.*
 
@@ -52,7 +52,7 @@ The **connected data** use case is when you have a [Data Server](/platform-refer
 
 - **`headerHeight: number`**: The height of the header in pixels. <br /> *Defaults to **'32'** when using `<zero-ag-grid>`*
 
-- **`onlyTemplateColDefs: boolean`**: Whether to only use the template column definitions (no extra column definitions). <br /> *Defaults to **'false'**.*
+- **`onlyTemplateColDefs: boolean`**: Whether to use only the template column definitions (no extra column definitions). <br /> *Defaults to **'false'**.*
 
 - **`rowHeight: number`**: The height of a row in pixels. <br /> *Defaults to **'32'** when using `<zero-ag-grid>`*
 
@@ -60,7 +60,7 @@ The **connected data** use case is when you have a [Data Server](/platform-refer
 
 - **`theme`**: The theme to use for the grid. <br /> *Defaults to **'ag-theme-rapid'** when using `<zero-ag-grid>` and to **'ag-theme-alpine'** when using `<foundation-ag-grid>`.*
 
-## Default Overrides
+## Default overrides
 
 A given custom [Design System](/web-ui-reference/design-systems/intro/) may have its own AG Grid variant, extending the base `foundation-ag-grid` and overriding the following by default:
 

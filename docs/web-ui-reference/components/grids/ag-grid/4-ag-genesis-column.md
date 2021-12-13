@@ -4,10 +4,10 @@ title: Genesis AG Column
 sidebar_position: 14
 ---
 
-This is a `slotted` component that allows a more "visual approach" when defining columns. Each `ag-column` will take a `ColDef` typed object that is an exact match to the official AG Grid's [Column Definition](https://www.ag-grid.com/javascript-data-grid/column-definitions/).
+This is a `slotted` component that allows a more "visual approach" when defining columns. Each `ag-column` takes a `ColDef` typed object that is an exact match to the official AG Grid's [Column Definition](https://www.ag-grid.com/javascript-data-grid/column-definitions/).
 
 :::tip 
-Customizing column definitions using this approach useful when on **connected data** cases, where the data will be dynamic but there's still a need for extra definitions (e.g. events, transformers, etc).
+Customizing column definitions using this approach is useful when on **connected data** cases, where the data will be dynamic but there's still a need for extra definitions (e.g. events, transformers, etc).
 :::
 
 ## Usage
@@ -49,7 +49,7 @@ public myOtherSingleCustomColumnConfigObj: ColDef = [
 ];
 ```
 
-When using `ColDef` objects it's up to the application developer to decide the approach (array of definitions + repeat or one by one, there's no right or wrong here as the goal is flexibility):
+When using `ColDef` objects, it's up to the application developer to decide the approach (array of definitions + repeat or one by one; there's no right or wrong here, as the goal is flexibility):
 
 ```html title="Using the ColDef array of objects with an extra single object"
 <foundation-ag-grid>
