@@ -2,7 +2,7 @@
 title: Authorisation API
 sidebar_label: Authorisation API
 id: authorisation_api
-sidebar_position: 3
+sidebar_position: 30
 ---
 
 The authorisation API consists of two main classes that enable you to add permission checks to your custom component.

@@ -2,7 +2,8 @@
 id: event-handler-pending-approval
 title: Pending approvals
 sidebar_label: Pending approvals
-sidebar_position: 5
+sidebar_position: 30
+
 ---
 
 # Pending approvals
