@@ -427,6 +427,24 @@ fun `test logon failure - incorrect password (coroutines)`() = runBlocking {
 
 Both functions take a `GenesisSet` and, optionally, a timeout. If no timeout is provided, it will default to 500. Timeouts are set in milliseconds. Behind the scenes, a call will be made to `GenesisMessageClient`, which will handle source refs and waiting for a response (within the timeout).
 
+##### Type safe Req Rep tests
+
+Below is an example of writing a type safe req rep test using a `RequestReplyWorkflow`. `RequestReplyWorkflow` requires two type parameters. The first is the inbound class and the second is the outbound class.
+
+```kotlin
+    object CompanyFlow : RequestReplyWorkflow<Company.ById, Company> by requestReplyWorkflowBuilder()
+
+    @Test
+    fun `test req rep`(): Unit = runBlocking {
+        val request = Company.ById("1")
+
+        val reply = sendRequest(CompanyFlow, request)
+
+        assertEquals(1, reply.size)
+        assertEquals("1", reply.first().companyId)
+    }
+```
+
 ##### Overriding the system definition
 
 You can override system definition properties in your test class by overriding the `systemDefintion()` function.
