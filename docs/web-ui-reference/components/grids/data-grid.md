@@ -8,7 +8,7 @@ A more light-weight grid for scenarios where you don't need the full power of [A
 
 The `alpha-data-grid` component is used to display tabular data. The `alpha-data-grid-row` and `alpha-data-grid-cell` components are typically created programmatically by the parent grid but some authors may find it useful to create them manually.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaDataGrid, alphaDataGridCell, alphaDataGridRow } from '@genesislcap/alpha-design-system';
