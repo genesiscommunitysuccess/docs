@@ -1,6 +1,6 @@
 ---
 title: Authorisation API
-sidebar_label: Authorisation API
+sidebar_label: Authorisation API ZZ
 id: zz-authorisation_api
 sidebar_position: 31
 ---

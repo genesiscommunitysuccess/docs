@@ -1,16 +1,15 @@
 ---
 id: network-api
 title: Network API
-sidebar_label: Network API
-sidebar_position: 50
+sidebar_label: Network API ZZ
+sidebar_position: 51
 ---
 
-((THIS IS THE ORIGINAL FILE))
 Use these APIs to send/receive messages to micro-services
 
 ### ClientConnectionsManager
 
-Use @Inject like below to create ClientConnectionsManager
+Use @Inject to create ClientConnectionsManager. See the examplae below:
 
 ```kotlin
 class TestService(@Inject val clientConnectionManager: ClientConnectionsManager) {
