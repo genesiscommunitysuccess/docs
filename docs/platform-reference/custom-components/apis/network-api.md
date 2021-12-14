@@ -1,7 +1,7 @@
 ---
-id: zz-network-api
+id: network-api
 title: Network API
-sidebar_label: Network API ZZZZ
+sidebar_label: Network API
 sidebar_position: 51
 ---
 
