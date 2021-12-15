@@ -70,17 +70,26 @@ Also, if the incoming message is configured to publish to a topic, the filename 
 
 The Genesis Notify service currently provides additional Symphony operations, exposed as event handlers.
 
-* GATEWAY_CREATE_CHANNEL creates a channel
-* GATEWAY_ADD_MEMBER_TO_CHANNEL adds a user to a channel
+* GATEWAY_CREATE_CHANNEL creates a channel (to allow external users to be added to a channel, a channel should be created with external set to true amd public to false)
+* GATEWAY_ADD_MEMBER_TO_CHANNEL adds a user to a channel (note if the user is not a member of the host POD then a connection request will be sent to that user)
 * GATEWAY_REMOVE_MEMBER_FROM_CHANNEL removes a user from a channel
+* GATEWAY_ACTION_ON_CHANNEL allows a channel to be reactivated or deactivated
 
 - note: where there is more than one symphony connection defined, these operations act upon the first listed.
 
 ```kotlin
 package global.genesis.message.core.event.notify
-data class CreateChannel(val topic: String, val channelName: String)
+data class CreateChannel(
+    val topic: String,
+    val channelName: String,
+    val external: Boolean = false,
+    val multilateral: Boolean = false,
+    val discoverable: Boolean = true,
+    val public: Boolean = true
+)
 data class AddUserToChannel(val channelName: String, val userId: String)
 data class RemoveUserFromChannel(val channelName: String, val userId: String)
+data class ActionOnChannel(val roomId: String, val activate: Boolean)
 ```
 
 ## Configuring Symphony On-Behalf-Of (OBO) for outgoing messages 
