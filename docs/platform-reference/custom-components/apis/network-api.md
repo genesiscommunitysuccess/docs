@@ -5,7 +5,7 @@ sidebar_label: Network API
 sidebar_position: 51
 ---
 
-Use these APIs to send/receive messages to micro-services
+Use these APIs to send and receive messages between micro-services.
 
 ### ClientConnectionsManager
 
@@ -18,8 +18,11 @@ class TestService(@Inject val clientConnectionManager: ClientConnectionsManager)
 ```
 
 ### GenesisMessageClient
-GenesisMessageClient is messaging client and can be obtained by using ClientConnectionManager like below example. 
-You will get GenesisMessageClient if successfully connected to TRADING_APP_EVENT_HANDLER service or null
+GenesisMessageClient is a messaging client that can be obtained using ClientConnectionManager.
+Here is an example:
+
+If you connect successfully, you will get GenesisMessageClient.  Otherwise you will get null.
+if successfully connected to TRADING_APP_EVENT_HANDLER service or null
 
 ```kotlin
 class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnectionsManager) {
@@ -92,7 +95,7 @@ class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnecti
 
 ### GenesisMessageHandler
 
-GenesisMessageHandler allows you to attach listeners to servers and clients
+GenesisMessageHandler enables you to attach listeners to servers and clients.
 
 #### Functions
 
@@ -109,7 +112,7 @@ public interface GenesisMessageListener<V extends GenesisMessage>`
 
 #### onNewMessage
 
-This method is called when new message is received
+This method is called when new message is received.
 
 Example:
 

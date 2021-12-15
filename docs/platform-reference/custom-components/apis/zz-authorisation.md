@@ -55,7 +55,8 @@ class AuthCache private constructor(private val mapName: String, updateQueue: Up
 ```
 
 
-###  Example of both Permissions Codes and AuthCache in use
+###  In practice
+The example belwo shows permission codes and `AuthCache` in use:
 
 ```kotlin
 

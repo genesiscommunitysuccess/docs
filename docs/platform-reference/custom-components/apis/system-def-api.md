@@ -6,8 +6,8 @@ sidebar_position: 10
 
 ---
 
-The system-definition file is the basis of all configurations. In this page, we describe the different functions available to get properties specified in the system-definition.kts file.
-Default methods have implementations to provide default values for property. For more information, follow this [link](/platform-reference/essential-information/system_definitions-latest) 
+The [system-definition](/platform-reference/essential-information/system_definitions-latest) file is the basis of all configurations. In this page, we describe the different functions available to get properties specified in the system-definition.kts file.
+Default methods have implementations to provide default values for each property. 
 
 Most of the functions are to get or set a particular property. 
 
