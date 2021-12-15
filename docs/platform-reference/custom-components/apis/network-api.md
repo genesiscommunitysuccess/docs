@@ -21,13 +21,12 @@ class TestService(@Inject val clientConnectionManager: ClientConnectionsManager)
 GenesisMessageClient is a messaging client that can be obtained using ClientConnectionManager.
 Here is an example:
 
-If you connect successfully, you will get GenesisMessageClient.  Otherwise you will get null.
-if successfully connected to TRADING_APP_EVENT_HANDLER service or null
+If you connect successfully to the TRADING_APP_EVENT_HANDLER service, you will get GenesisMessageClient. Otherwise, you will get null.
 
 ```kotlin
 class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnectionsManager) {
 
-    private val genesisMessageClient = clientConnectionManager.getGenesisMessageClient("GENESIS_AUTH_MANAGER")
+    private val genesisMessageClient = clientConnectionManager.getGenesisMessageClient("TRADING_APP_EVENT_HANDLER")
 
     // custom code here
 }

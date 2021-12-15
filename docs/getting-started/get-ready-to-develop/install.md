@@ -42,11 +42,38 @@ This creates the user account and makes all the recommended security settings. A
 
 When the process has finished, you can go to the root directory and see the user that has been created (octopus, in our example).
 
-![](/img/joseph-3completed-installation.png)
+```bash
+Installed:
+   genesis-platform.x86_64 0:5.1.0-1
+
+Complete!
+[centos@genesisserv1 tmp]$ cd
+[centos@genesisserv1 ~]$ cd ..
+[centos@genesisserv1 home]$ ls
+centos		octopus
+```
+
 
 You can switch to that user and view the run directory for the newly installed platform, where you can find **auth** and **genesis** ready to be initialized.
 
-![](/img/joseph4-ready-to-initialize.png)
+```bash
+[centos@genesisserv1 home]$ sudo su - octopus
+[octopus@genesisserv1 ~]$ ls
+run
+[octopus@genesisserv1 ~]$ ls -ls
+total 12
+drwx------.  2 octopus octopus  78  Aug21 13:54 .
+drwxr-xr-x.  4 root    root     35  Aug21 13:54 ..
+--r-r--r--.  1 octopus octopus  18  Apr  1 2020 .bash_logout
+--r-r--r--.  1 octopus octopus 193  Apr  1 2020 .bash_profile
+--r-r--r--.  1 octopus octopus 351  Aug 21 13:54 .bashrc
+lrwxrwxrwx.r 1 root    root     34  Aug 21 13:54 run -> /data/octopus/server/20210821/run/
+[octopus@genesisserv1 ~]$ cd run/
+[octopus@genesisserv1 run]$ ls
+auth    genesis
+[octopus@genesisserv1 run]$
+```
+
 
 ### 3. Run genesisInstall
 

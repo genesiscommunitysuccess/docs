@@ -27,7 +27,15 @@ You need to make two changes.
 
 First, go to the line item for **DbLayer** and change the **value** from **FDB** to **SQL** (for PostgreSQL) or **AEROSPIKE**.
 
-![](/img/change-to-sql.png)
+```kotlin
+systemDefinition {
+    global {
+        item(name = "MqLayer", value = "ZeroMQ")
+        item(name = "DbLayer", value = "SQL")
+        item(name = "DictionarySource", value = "DB")
+
+```
+
 
 Then, insert a line in the **hosts** block to identify the JDBC connection string for the database. This points the system to the local PostgreSQL or Aerospike server. For example:
 
@@ -35,7 +43,24 @@ Then, insert a line in the **hosts** block to identify the JDBC connection strin
 item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432”)
 ```
 
-![](/img/jdbc-identifer-added.png)
+Here is the example in place:
+
+```kotlin
+systems {
+        system(name = "DEV") {
+            hosts {
+                host(name = "genesis-serv")
+            }
+
+            item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432”)
+            item(name = "DbNamespace", value = "genesis")
+            item(name = "ClusterPort", value = "6000")
+            item(name = "Location", value = "LO")
+            item(name = "LogFramework", value = "LOG4J2")
+            item(name = "LogFrameworkConfig", value = "log4j2-default.xml")
+        }
+    }
+```
 
 ### 2. Activate the new configuration
 
