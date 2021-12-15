@@ -8,15 +8,15 @@ sidebar_position: 40
 # Custom event handlers
 
 Custom event handlers provide a way of implementing business logic in Java or Kotlin outside the Genesis GPAL Event Handler definition, in a more traditional and flexible development approach. Genesis has 3 different flavours of custom event handlers:
-- Async - The Async event handler uses the Kotlin coroutines API to simplify asynchronous development. This is the underlying implementation used in GPAL event handlers.
- RxJava3 - RxJava3 event handlers use the RxJava3 library which is a popular option for composing asynchronous event based programs.
-- Sync - Creates synchronous event handlers.
+- Async. This event handler uses the Kotlin coroutines API to simplify asynchronous development. This is the underlying implementation used in GPAL event handlers.
+ - RxJava3. These event handlers use the RxJava3 library, which is a popular option for composing asynchronous event-based programs.
+- Sync. This creates synchronous event handlers.
 
 Each custom event handler must define an input message type `I` and an output message type `O` (like GPAL event handlers do). Please see the [type-safe messages](../../Inter-process%20messages/type-safe-messages.md) section for more information. 
 
 ## Event handler interface
 
-The event handler interface is the common supertype of AsyncEventHandler, Rx3EventHandler and SyncEventHandler, but it is not meant to be used on its own. It provides basic options for each event handler definition, which can be overriden. See Kotlin methods explanation below:
+The event handler interface is the common supertype of AsyncEventHandler, Rx3EventHandler and SyncEventHandler, but it is not meant to be used on its own. It provides basic options for each event handler definition, which can be overriden. See the Kotlin methods explanation below:
 
 | Name | Signature | Default value | Description |
 |---|---|---|---|
@@ -90,7 +90,7 @@ In the previous example, there was no distinction between validation and commit 
 
 `interface AsyncValidatingEventHandler<I : Any, O : Outbound> : AsyncEventHandler<I, O>`
 
-Using this interface, you don't need to override the `process` method anymore and you can split your logic into validation and commit stages. There are various methods of implementing this, which are described below:
+Using this interface, you don't need to override the `process` method any more and you can split your logic into validation and commit stages. There are various methods of implementing this, which are described below:
 
 | Name | Signature |
 |---|---|
@@ -129,7 +129,7 @@ If the `validate` flag is received as `true`, only the `onValidate` code block w
 In some cases, you might want to carry information from the `onValidate` code block to the `onCommit` code block for efficiency purposes (i.e. several database lookups happen in `onValidate` and you want to reuse that information). Using the `AsyncContextValidatingEventHandler` interface, you can provide this context information from the validation stage to the commit stage. See the interface below:
 `interface AsyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : AsyncEventHandler<I, O>`
 
-As with the previous example, when using this interface, you don't need to override the `process` method anymore. See the available methods to implement below:
+As with the previous example, when using this interface, you don't need to override the `process` method any more. See the available methods to implement below:
 
 | Name | Signature |
 |---|---|
