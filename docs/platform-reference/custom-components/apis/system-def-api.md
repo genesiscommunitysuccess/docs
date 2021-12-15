@@ -11,11 +11,11 @@ Default methods have implementations to provide default values for each property
 
 Most of the functions are to get or set a particular property. 
 
-Use functions `get` or `getItem` if you add any other property whose getter or setter function is not available. 
+If you add any other property whose getter or setter function is not availablese, use the functions `get` or `getItem`. 
 
 You can access system definition properties in two ways:
 
-- using exsiting APIs
+- using existing APIs
 - using @Named Genesis annotation
 
 ## Using existing APIs

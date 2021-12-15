@@ -12,7 +12,7 @@ The authorisation API consists of two main classes that enable you to add permis
 The method ```userHasRight(userName: String, rightCode: String): Boolean``` is used to determine if a particular user has the permission to a rights code.
 
 - ```AuthCache``` is a kotlin class whose instance should be created by calling the static method ```AuthCache.newReader(mapName: String, updateQueue: UpdateQueue): AuthCache```.  
-  An UpdateQueue instance can be obtained from an injected RxDb connection as follows ```rxDb.updateQueue```. A Permission check for the entity is done by calling ```isAuthorised(entityId: String?, userName: String): Boolean```,
+  An UpdateQueue instance can be obtained from an injected RxDb connection: ```rxDb.updateQueue```. A permission check for the entity is done by calling ```isAuthorised(entityId: String?, userName: String): Boolean```,
   How this works is covered in more detail [AuthCache section](/platform-reference/authentication-and-authorisation/authorisation-over). 
 
 ### Permission code API
@@ -56,7 +56,7 @@ class AuthCache private constructor(private val mapName: String, updateQueue: Up
 
 
 ###  In practice
-The example belwo shows permission codes and `AuthCache` in use:
+The example below shows permission codes and `AuthCache` in use:
 
 ```kotlin
 
