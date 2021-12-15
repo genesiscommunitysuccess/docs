@@ -9,9 +9,9 @@ id: authorisation-over
 Authorisation is the process by which you offer specific permissions to resources for authenticated users. 
 The Genesis Server presents three main types of resource entry points for clients to instigate events or query data.
 
-- DataServers  
-- EventHandlers  
-- ReqReqServer
+- Data servers  
+- Event handlers  
+- Request serverx
 
 All these services can be optionally permissioned using a permissioning GPAL syntax block in the GPAL configuration associated with the service. 
 

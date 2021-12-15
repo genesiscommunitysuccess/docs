@@ -31,7 +31,7 @@ The event handler interface is the common supertype of AsyncEventHandler, Rx3Eve
 This is the most basic definition of an async event handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface, which is defined as:
 `interface AsyncEventHandler<I : Any, O : Outbound> : AsyncEventWorkflowProcessor<I, O>, EventHandler`
 
-The only mandatory method to implement in this interface case ise:
+The only mandatory method to implement in this interface case is:
 
 | Name | Signature |
 |---|---|
@@ -39,7 +39,7 @@ The only mandatory method to implement in this interface case ise:
 
 This method passes the input message type `I` as a parameter and expects the output message type `O` to be returned. The `message` object contains information about the event message, including the flags for `validate`, `requiresApproval` and `ignoreWarnings`.
 
-Example definition:
+#### Example
 
 ```kotlin
 import global.genesis.commons.annotation.Module
@@ -66,7 +66,7 @@ The methods below are provided as part of `AsyncEventHandler`; they provide an e
 | nack | `fun <I : Any> AsyncEventHandler<I, EventReply>.nack(throwable: Throwable): EventReply` |
 | nack | `fun <I : Any> AsyncEventHandler<I, EventReply>.nack(error: String): EventReply` |
 
-Using these helper method,s you could simplify the previous implementation like this:
+Using these helper methods, you could simplify the previous implementation like this:
 
 ```kotlin
 import global.genesis.commons.annotation.Module
@@ -90,7 +90,8 @@ In the previous example, there was no distinction between validation and commit 
 
 `interface AsyncValidatingEventHandler<I : Any, O : Outbound> : AsyncEventHandler<I, O>`
 
-Using this interface, you don't need to override the `process` method any more and you can split your logic into validation and commit stages. There are various methods of implementing this, which are described below:
+#### Implementation
+Using this interface, you don't need to override the `process` method; you can split your logic into validation and commit stages. There are various methods of implementing this, which are described below:
 
 | Name | Signature |
 |---|---|
@@ -98,7 +99,7 @@ Using this interface, you don't need to override the `process` method any more a
 | onCommit | `suspend fun onCommit(message: Event<I>): O` |
 
 
-Example:
+#### Example
 
 ```kotlin
 import global.genesis.commons.annotation.Module
@@ -126,17 +127,18 @@ If the `validate` flag is received as `true`, only the `onValidate` code block w
 
 ### AsyncContextValidatingEventHandler
 
-In some cases, you might want to carry information from the `onValidate` code block to the `onCommit` code block for efficiency purposes (i.e. several database lookups happen in `onValidate` and you want to reuse that information). Using the `AsyncContextValidatingEventHandler` interface, you can provide this context information from the validation stage to the commit stage. See the interface below:
+In some cases, you might want to carry information from the `onValidate` code block to the `onCommit` code block for efficiency purposes (for example, if several database lookups happen in `onValidate` and you want to reuse that information). Using the `AsyncContextValidatingEventHandler` interface, you can provide this context information from the validation stage to the commit stage. See the interface below:
 `interface AsyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : AsyncEventHandler<I, O>`
 
-As with the previous example, when using this interface, you don't need to override the `process` method any more. See the available methods to implement below:
+#### Implementation
+As with the previous example, when using this interface, you don't need to override the `process` method. The different methods for implementing this are described below:
 
 | Name | Signature |
 |---|---|
 | onValidate | `suspend fun onValidate(message: Event<I>): ValidationResult<O, C>` |
 | onCommit | `suspend fun onCommit(message: Event<I>, context: C?): O` |
 
-Also the `validationResult` methods are provided to help with the context creation:
+The `validationResult` methods are provided to help with the context creation:
 
 | Name | Signature |
 |---|---|
@@ -180,16 +182,17 @@ The mechanism explained in [Async](#async) can be recycled and reapplied in Rx3 
 
 In a similar fashion to `AsyncEventHandler`, there is an Rx3 implementation flavour. It works in a very similar way to [`AsyncEventHandler`](#asynceventhandler), but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
 
-See interface definition below:
+See the interface definition below:
 `interface Rx3EventHandler<I : Any, O : Outbound> : Rx3EventWorkflowProcessor<I, O>, EventHandler`
 
-Mandatory method to implement:
+#### Implementation
+The mandatory method for implementing this is:
 
 | Name | Signature |
 |---|---|
 | process | `fun process(message: Event<I>) : Single<O>` |
 
-Helper methods:
+#### Helper methods
 
 | Name | Signature |
 |---|---|
@@ -198,7 +201,7 @@ Helper methods:
 | nack | `fun <I : Any> Rx3EventHandler<I, EventReply>.nack(throwable: Throwable): Single<EventReply>` |
 | nack | `fun <I : Any> Rx3EventHandler<I, EventReply>.nack(error: String): Single<EventReply>` |
 
-Example:
+#### Example
 
 ```kotlin
 import global.genesis.commons.annotation.Module
@@ -220,14 +223,14 @@ The same applies to an Rx3ValidatingEventHandler. It is similar to [AsyncValidat
 
 `interface Rx3ValidatingEventHandler<I : Any, O : Outbound> : Rx3EventHandler<I, O>`
 
-Methods to implement:
+#### Implementation
 
 | Name | Signature |
 |---|---|
 | onValidate | `fun onValidate(message: Event<I>): Single<O>` |
 | onCommit | `fun onCommit(message: Event<I>): Single<O>` |
 
-Example:
+#### Example
 
 ```kotlin
 import global.genesis.commons.annotation.Module
@@ -257,14 +260,14 @@ And the same goes for `Rx3ContextValidatingEventHandler` in relation to [AsyncCo
 
 `interface Rx3ContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : Rx3EventHandler<I, O>`
 
-Methods to implement:
+#### Implementation
 
 | Name | Signature |
 |---|---|
 | onValidate | `fun onValidate(message: Event<I>): Single<ValidationResult<O, C>>` |
 | onCommit | `fun onCommit(message: Event<I>, context: C?): Single<O>` |
 
-Helper methods:
+#### Helper methods
 
 | Name | Signature |
 |---|---|
@@ -272,7 +275,7 @@ Helper methods:
 | validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
 
 
-Example:
+#### Example
 
 ```kotlin
 import global.genesis.commons.annotation.Module
@@ -309,13 +312,13 @@ Sync works similarly to [Async](#async) and [Rx3](#rx3), but in this case, there
 
 `interface SyncEventHandler<I : Any, O : Outbound> : SyncEventWorkflowProcessor<I, O>, EventHandler`
 
-Method to implement:
+#### Implementation
 
 | Name | Signature |
 |---|---|
 | process | `fun process(message: Event<I>) : O` |
 
-Helper methods:
+#### Helper methods
 
 | Name | Signature |
 |---|---|
@@ -324,7 +327,7 @@ Helper methods:
 | nack | `fun <I : Any> SyncEventHandler<I, EventReply>.nack(throwable: Throwable): EventReply` |
 | nack | `fun <I : Any> SyncEventHandler<I, EventReply>.nack(error: String): EventReply` |
 
-Example:
+#### Example
 
 ```kotlin
 import global.genesis.commons.annotation.Module
@@ -344,14 +347,14 @@ class TestCompanyHandlerSync : SyncEventHandler<Company, EventReply> {
 
 `interface SyncValidatingEventHandler<I : Any, O : Outbound> : SyncEventHandler<I, O>`
 
-Methods to implement:
+#### Implementation
 
 | Name | Signature |
 |---|---|
 | onValidate | `fun onValidate(message: Event<I>): O` |
 | onCommit | `fun onCommit(message: Event<I>): O` |
 
-Example:
+#### Example
 
 ```kotlin
 import global.genesis.commons.annotation.Module
@@ -377,19 +380,19 @@ class TestCompanyHandlerSync : SyncValidatingEventHandler<Company, EventReply> {
 #### SyncContextValidatingEventHandler
 `interface SyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : SyncEventHandler<I, O>`
 
-Methods to implement:
+#### Implementation
 
 | Name | Signature |
 |---|---|
 | onValidate | `fun onValidate(message: Event<I>): ValidationResult<O, C>` |
 | onCommit | `fun onCommit(message: Event<I>, context: C?): O` |
 
-Helper methods:
+#### Helper methods
 
 | validationResult | `fun validationResult(result: O): ValidationResult<O, C>` |
 | validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
 
-Example:
+#### Example
 ```kotlin
 import global.genesis.commons.annotation.Module
 import global.genesis.eventhandler.typed.sync.SyncContextValidatingEventHandler
