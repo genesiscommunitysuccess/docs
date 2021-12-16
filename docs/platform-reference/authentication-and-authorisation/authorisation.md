@@ -241,7 +241,7 @@ query("ALL_BID_OFFER_SELLER_DEALER", BID_OFFER_SELLER_VIEW) {
             BID_OFFER_SELLER_VIEW.SELLER_DEALER_ID
         }
         config {
-            backJoins = true
+            backwardsJoins = true
         }
     }
 }
