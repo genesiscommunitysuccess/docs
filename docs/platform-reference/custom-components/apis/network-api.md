@@ -9,7 +9,7 @@ Use these APIs to send and receive messages between micro-services.
 
 ### ClientConnectionsManager
 
-Use @Inject to create ClientConnectionsManager. See the examplae below:
+Use `@Inject` to create `ClientConnectionsManager`. See the example below:
 
 ```kotlin
 class TestService(@Inject val clientConnectionManager: ClientConnectionsManager) {
@@ -18,10 +18,12 @@ class TestService(@Inject val clientConnectionManager: ClientConnectionsManager)
 ```
 
 ### GenesisMessageClient
-GenesisMessageClient is a messaging client that can be obtained using ClientConnectionManager.
+`GenesisMessageClient` is a messaging client that can be obtained using `ClientConnectionManager`.
 Here is an example:
 
+
 If you connect successfully to the TRADING_APP_EVENT_HANDLER service, you will get GenesisMessageClient. Otherwise, you will get null.
+
 
 ```kotlin
 class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnectionsManager) {
@@ -105,13 +107,13 @@ GenesisMessageHandler enables you to attach listeners to servers and clients.
 
 ### GenesisMessageListener
 
-GenesisMessageListener is functional interface with method `onNewMessage` which listens for any new messages
+`GenesisMessageListener` is a functional interface with method `onNewMessage`, which listens for any new messages.
 `@FunctionalInterface
 public interface GenesisMessageListener<V extends GenesisMessage>`
 
 #### onNewMessage
 
-This method is called when new message is received.
+This method is called when a new message is received.
 
 Example:
 
