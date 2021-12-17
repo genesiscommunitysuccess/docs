@@ -308,8 +308,8 @@ SendIt -t <table name> -f <file name>
 | -m       | --modify `<arg>`       | No        | key name used to find original record                        | No                |
 | -mf      | --modifyFields `<arg>` | No        | specifies fields to modify                                     | No                |
 | -quiet   | --quietMode            | No        | make database changes without triggering real-time updates in update queue layer | No |
-| -r       | --recover              | No        | perform recover operations on all records; this is a special operation meant to preserve the original timestamp; it should only be used when restoring a completely empty table; **use with caution**                    | No                |
-| -t       | --table `<arg>`        | No        | the name of the table to import to database                  | No                |
+| -r       | --recover              | No        | perform recover operations on all records; this is a special operation meant to preserve the original timestamps; **use with caution**. Only use this when you want to restore a system after completely erasing the database tables. You must use only untouched files from a real back-up of the original dataset. There are no other circumstances in which you should use this option. Ever | No                |
+| -t       | --table `<arg>`        | No        | the name of the table to import to the database                  | No                |
 | -v       | --verbose              | No        | log every error line to output                               | No                |
 
 For example:
