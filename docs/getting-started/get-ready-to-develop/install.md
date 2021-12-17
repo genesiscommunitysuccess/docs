@@ -50,7 +50,7 @@ Complete!
 [centos@genesisserv1 tmp]$ cd
 [centos@genesisserv1 ~]$ cd ..
 [centos@genesisserv1 home]$ ls
-centos		octopus
+centos  octopus
 ```
 
 
@@ -62,12 +62,12 @@ You can switch to that user and view the run directory for the newly installed p
 run
 [octopus@genesisserv1 ~]$ ls -ls
 total 12
-drwx------.  2 octopus octopus  78  Aug21 13:54 .
+drwx------.  2 octopus octopus  73  Aug21 13:54 .
 drwxr-xr-x.  4 root    root     35  Aug21 13:54 ..
---r-r--r--.  1 octopus octopus  18  Apr  1 2020 .bash_logout
---r-r--r--.  1 octopus octopus 193  Apr  1 2020 .bash_profile
---r-r--r--.  1 octopus octopus 351  Aug 21 13:54 .bashrc
-lrwxrwxrwx.r 1 root    root     34  Aug 21 13:54 run -> /data/octopus/server/20210821/run/
+-rw-r--r--.  1 octopus octopus  18  Apr  1 2020 .bash_logout
+-rw-r--r--.  1 octopus octopus 193  Apr  1 2020 .bash_profile
+-rw-r--r--.  1 octopus octopus 351  Aug 21 13:54 .bashrc
+lrwxrwxrwx.  1 root    root     34  Aug 21 13:54 run -> /data/octopus/server/20210821/run/
 [octopus@genesisserv1 ~]$ cd run/
 [octopus@genesisserv1 run]$ ls
 auth    genesis
