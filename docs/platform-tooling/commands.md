@@ -308,12 +308,12 @@ SendIt -t <table name> -f <file name>
 | -h       | --help                 | No        | show usage   information                                       | No                |
 | -m       | --modify `<arg>`       | No        | key name used   to find original record                        | No                |
 | -mf      | --modifyFields `<arg>` | No        | specify   fields to modify                                     | No                |
-| -quiet   | --quietMode            | No        | Do database changes without triggering real-time updates in update queue layer | No |
-| -r       | --recover              | No        | perform   recover operations on all records                    | No                |
-| -t       | --table `<arg>`        | No        | the name of   the table to import to database                  | No                |
-| -v       | --verbose              | No        | log every   error line to output                               | No                |
+| -quiet   | --quietMode            | No        | make database changes without triggering real-time updates in update queue layer | No |
+| -r       | --recover              | No        | perform recover operations on all records; this is a special operation meant to preserve the original timestamp; it should only be used when restoring a completely empty table; **use with caution**                    | No                |
+| -t       | --table `<arg>`        | No        | the name of the table to import to database                  | No                |
+| -v       | --verbose              | No        | log every error line to output                               | No                |
 
-For Example:
+For example:
 
 ```bash
 SendIt -t FUND -f FUND
@@ -329,7 +329,7 @@ SendIt -t FUND -m FUND_BY_ID
 
 Modify fields (-mf) is a special parameter that can be added to "-m" operations. SendTable will only attempt to modify the record fields specified in this comma-separated list parameter.
 
-To Delete records you need to specify `-d` (or `--delete`)
+To delete records you need to specify `-d` (or `--delete`)
 
 ```bash
 SendIt -t FUND -d
@@ -337,9 +337,7 @@ SendIt -t FUND -d
 
 If no file parameter is specified, `.csv` is assumed and read from the local directory.
 
-Recover (`-r`) is a special operation meant to preserve original timestamp and should only be used when restoring a completely empty table. **Use with caution**.
-
-Verbose mode will additionally output line by line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes the script useful for scheduled/automated jobs (e.g. daily data loads)
+Verbose mode will additionally output line-by-line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes the script useful for scheduled/automated jobs (e.g. daily data loads).
 
 ## DumpIt script
 
@@ -356,7 +354,7 @@ Syntax:
 | -s       | --sql `<arg>`      | No        | name of the sql file where table is exported           | No                |
 | -t       | --table `<arg>`    | No        | the name of the table to export to csv                 | No                |
 |          | -where `<arg>`     | No        | match criteria e,g, "USER_NAME=='John'"                | No                |
-For Example:
+For example:
 
 ```bash
 DumpIt -t USER -where "USER_NAME=='John'" -fields "USER_NAME
@@ -372,13 +370,13 @@ DumpIt -t FUND -f FUND -fields "FUND_ID NAME" -where "NAME == 'FUND_FUND' && YEA
 
 This copies the FUND_ID and NAME fields of every record that has "FUND_FUND" for a name, and ten or more years in service.
 
-Dumping all the tables example:
+If you want to dump all the tables in the database, here is an example:
 
 ```bash
 DumpIt --all
 ```
 
-This copies all tables in the system, creating one .csv file for each table in the database. The files are saved in the current directory. It is useful for taking a backup of the current system database.
+This copies all tables in the system, creating one .csv file for each table in the database. The files are saved in the current directory. It is useful for taking a back-up of the current system database.
 
 Additionally, you can just run **DumpIt** without any arguments to enter interactive mode.
 
@@ -458,9 +456,9 @@ Options
 
 ## DropTable
 
-To instantly remove database tables with all corresponding records, use the DropTable command.
+To remove database tables and all corresponding records instantly, use the DropTable command.
 
-The command takes a flag of **-**t followed by a list of space-separated table names.
+The command takes a flag of **-t**, followed by a list of space-separated table names.
 
 For example:
 
@@ -468,7 +466,7 @@ For example:
 DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3
 ```
 
-Confirmation of removal is required for each table.
+The command will ask you to confirm the removal of each table explicitly.
 
 ## PopulateHolidays
 
@@ -498,15 +496,15 @@ PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
 
 This counts the number of records in the database, grouped by table, and prints to screen.
 
-Can either give the record count for each table defined in the dictionary, or of a provided space separated list, i.e.:
+By default, the command provides the record count for each table defined in the dictionary. If you only want a count for specific tables, you can specify a space-separated list of those tables.
 
-All Tables:
+This example gives a record count for all tables:
 
 ```bash
 CountRecords
 ```
 
-Specific Tables:
+This example gives a record count for two specific Tables:
 
 ```bash
 CountRecords TABLE_NAME1 TABLE_NAME2 ...
@@ -528,11 +526,11 @@ Aerospike and FDB implementations use internal aliases for fields and tables. Mi
 
 It is recommended to use a file store if you are running Genesis in a single node and database mode if you are running Genesis in more than one node.
 
-The "remap" operation will update the alias store, so if you are running a Genesis cluster it is better to use a database storage mode, as it is less error prone and the user won't have to manually copy the alias storage file to the remaining nodes manually.
+The "remap" operation will update the alias store, so if you are running a Genesis cluster it is better to use a database storage mode, as it is less error-prone and you won't have to copy the alias storage file to the remaining nodes manually.
 
 ## MigrateDictionary
 
-This migrates the Genesis dictionary from Database Dictionary Store to File Dictionary Store storage and vice versa.
+This migrates the Genesis dictionary from the Database Dictionary Store to the File Dictionary Store storage and vice versa.
 
 Usage:
 
@@ -540,7 +538,7 @@ Usage:
 MigrateDictionary
 ```
 
-The script uses a system definition file to get the **DictionarySource** property.
+The script uses the system definition file to get the **DictionarySource** property.
 
 If the property is **DB** (the server uses a Database Dictionary Store), then the **MigrateDictionary** script saves a dictionary to a file.
 
@@ -554,7 +552,7 @@ It is potentially dangerous to switch the **DictionarySource** property. If you 
 
 ## GetNextSequenceNumbers
 
-This finds all the dictionary sequences and prints the next sequence number for each one of them. It displays the results on screen in  csv format, so it is easy to redirect the output and reuse it with the **SetSequence** script (see below).
+This finds all the dictionary sequences and prints the next sequence number for each one of them. It displays the results on screen in csv format, so it is easy to redirect the output and reuse it with the **SetSequence** script (see below).
 
 Usage:
 
@@ -564,7 +562,7 @@ GetNextSequenceNumbers
 
 ## GetSequenceCount
 
-Gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by "SetSequence" script (see below)
+This gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by the "SetSequence" script (see below)
 
 Usage:
 
@@ -596,7 +594,7 @@ GetAutoIncrementCount
 
 ## SetSequence
 
-Allows the user to change a sequence number, or to do a bulk change for all the sequence in a ".csv" file (usually exported previously using GetNextSequenceNumbers or GetSequenceCount)
+This enables you to change a sequence number, or to do a bulk change for all the sequence in a ".csv" file (usually, this will be one that you have exported previously using either GetNextSequenceNumbers or GetSequenceCount)
 
 Usage:
 
@@ -637,7 +635,7 @@ Options:
 
 This is a python script wrapper for Genesis scripts.
 
-GenesisRun will attempt to find a script to execute within the genesis folder structure (e.g site-specific or scripts).
+GenesisRun will attempt to find a script to execute within the genesis folder structure (site-specific or scripts).
 
 There are two environment variables that can be used to configure how much RAM the scripts will use:
 
@@ -646,14 +644,14 @@ There are two environment variables that can be used to configure how much RAM t
 
 **GenesisRun** can execute code in two different modes: Groovy script and GPAL Kotlin script. **GenesisRun** builds the necessary classpath, so you don't need to build it in each script.
 
-1. Groovy script: GenesisRun SetLogLevelScript.groovy
-2. GPAL Kotlin script: GenesisRun customPurger-script.kts
+* Groovy script: GenesisRun SetLogLevelScript.groovy
+* GPAL Kotlin script: GenesisRun customPurger-script.kts
 
 There is a separate wrapper, **JvmRun** for Java main class scripts.
 
 ## DictionaryBuilder
 
-This is a groovy script which can be executed with **GenesisRun** or **JVMRun**.
+This is a groovy script; it can be executed with **GenesisRun** or **JVMRun**.
 
 DictionaryBuilder parses RDBMS schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases.
 
@@ -677,7 +675,7 @@ The script accepts a series of arguments to establish a connection to the databa
 | -help |   | No | Prints the usage message | No |
 | -tNames TABLE1,ETC | -tableNames TABLE1,ETC   | No | Tables to copy from RDBMS | No |
 
-It is also possible to use the double dash notation for any argument. Arguments -sid or -db are not mandatory (as they can change from one database to another) but they should be passed accordingly when necessary.
+YOu can use double-dash notation for any argument. Arguments -sid or -db are not mandatory (as they can change from one database to another), but they should be passed accordingly when necessary.
 
 ### Example
 
@@ -691,16 +689,17 @@ The script tries to connect to the RDBMS currently specified in the arguments. I
 
 There are a few considerations you should be aware of:
 
-* If a column name (e.g. DATE) is found in several tables, but it always has the same type, only one field will be specified in the dictionary. However, if the same column name is found in different tables with different types, a new field will be created, keeping the column name and adding the table name (e.g. CALENDAR) in the following fashion: DATE_IN_CALENDAR. The script will output this event on screen so you can fix the name and/or type manually later on.
-* The types are mapped from [http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html "http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html") to Genesis dictionary types. As a matter of fact, each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate and results should be checked for correctness.
-* If there is no mapping available for the java.sql.Type retrieved by the column metadata query, it will be mapped by default to the Genesis dictionary type "STRING". This event will be shown on standard output too, so we can know there is an uncommon type we should take care of.
+* If a column name (e.g. DATE) is found in several tables, and it always has the same type, only one field will be specified in the dictionary. However, if the same column name is found in different tables with different types, a new field will be created for each type, keeping the column name and adding the table name (e.g. CALENDAR) in the following fashion: DATE_IN_CALENDAR. The script will output this event on screen so you can fix the name and/or type it manually later on.
+* The types are mapped from [http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html "http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html") to Genesis dictionary types. Each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate; you must check the results for correctness.
+* If there is no mapping available for the java.sql.Type retrieved by the column metadata query, it will be mapped by default to the Genesis dictionary type "STRING". This event will be shown on standard output too, so you can know that there is an uncommon type that you should take care of.
 * Every time a table is successfully parsed, the script will give feedback: "TABLE USERS complete".
-* VIEWS won't be parsed.
-* Regarding keys and indexes.
-* Primary keys will be parsed as primary keys in Genesis, whether they are single column based or multiple column based.
-* Only unique indexes will be parsed as secondary keys.
-* There is no concept of foreign keys in Genesis, so foreign keys will be ignored.
-* Strings parsed in lower camel case format (camelCase) will be transformed to upper underscore format (UPPER_UNDERSCORE).
+* VIEWS are not parsed.
+
+#### Keys and indexes.
+Primary keys will be parsed as primary keys in Genesis, whether they are single column based or multiple-column-based.
+Only unique indexes will be parsed as secondary keys.
+There is no concept of foreign keys in Genesis, so these are ignored.
+Strings parsed in lower camel-case format (camelCase) will be transformed to upper underscore format (UPPER_UNDERSCORE).
 
 ### Types mapping
 
@@ -724,7 +723,7 @@ Typically, this would be used to reconcile tables that are being kept in sync by
 
 The local DB's details (host, port, user, etc) are read from the system definition file in the local environment. The remote DB's details are specified as options to the command.
 
-The tables to check the differences of are specified in the `genesis-sync-definition.xml` file. Example below:
+The tables to check are specified in the `genesis-sync-definition.xml` file. Here is a simple example that specifies two tables:
 
 ```xml
 <sync>
@@ -735,11 +734,11 @@ The tables to check the differences of are specified in the `genesis-sync-defini
 </sync>
 ```
 
-If there are any differences found between the local and remote tables then the result will be output to a text file. The location of this text file will be shown in the console output.
+If there are any differences found between the local and remote tables, then the result will be output to a text file. The location of this text file will be shown in the console output.
 There are 3 categories in the output: "Records Missing From Local", "Records Missing From Remote" and "Records Which Differ Between Remote and Local".
 
-Records are compared using the primary key field. The TIMESTAMP and RECORD_ID fields are extremely likely to differ
-because the tables being compared are in separate databases, and as such aren't part of the comparison.
+Records are compared using the primary key field. The TIMESTAMP and RECORD_ID fields are extremely likely to differ,
+because the tables being compared are in separate databases. Therefore, these fields are not compared.
 
 ### Options
 
@@ -752,19 +751,19 @@ because the tables being compared are in separate databases, and as such aren't 
 | -u | --username | false | DB user username |No |
 | -p | --password | false | DB user password |No |
 | -s | --nullstring | false | Evaluate null and empty strings as equal |No value required |
-| -n | --numdays | false | Only compare records with timestamps between now and number of days specified. If either DB has matching records outside of timestamp range this will not be flagged as a reconciliation difference |Yes: Number > 0 |
-| -i | --ignorefields | false | Comma separated list of additional fields to ignore ("RECORD_ID" and "TIMESTAMP" are always ignored) |No |
+| -n | --numdays | false | Only compare records with timestamps between now and the number of days specified. If either DB has matching records outside this timestamp range, this will not be flagged as a reconciliation difference |Yes: Number > 0 |
+| -i | --ignorefields | false | Comma-separated list of additional fields to ignore ("RECORD_ID" and "TIMESTAMP" are always ignored) |No |
 | -h | --help | false | Show usage information |No |
 
 ### Examples
 
-Simple run with remote postgres DB
+This is a simple run with a remote postgres DB:
 
 ```bash
 ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass
 ```
 
-Run with remote postgres DB, evaluate null and empty strings as equal, compare records up to 2 days ago and also ignore the field STATUS
+This example runs with a remote postgres DB. it evaluates null and empty strings as equal; it compares records up to 2 days ago, and it ignores the field STATUS.
 
 ```bash
 ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass -s -n 2 -i STATUS
@@ -778,30 +777,30 @@ Usually when creating a application, you would start with a schema; you then bui
 
 ### Data server and Request Server
 
-One block will be generated per table, complete with meta data (all fields on table) and a field block (returning all fields on table).  For request server the inbound meta data will be based on primary key.
+One block will be generated per table, complete with meta data (all fields on the table) and a field block (returning all fields on the table).  For request servers, the inbound meta data will be based on the primary key.
 
 ### Event handler
 
 Event handler, complete with insert, amend and delete transactions.  All transactions support validation and meta data.  If a field is marked as a sequence in the dictionary (i.e. generated ID) then the field is not specified on the meta data for inserts, but will be specified on modifies/deletes.
 
-Deletes will have a reduced metadata, as we only require the columns to satisfy the primary key to do the delete.
+Deletes will have reduced metadata, as we only require the columns to satisfy the primary key to do the delete.
 
 ### Static files
 
-Two standard files will be generated: processes.xml and service-definitions.xml
+Two essential Genesis files will be generated: **processes.xml** and **service-definitions.xml**.
 
 ### Parameters
 
 | Argument | Argument long name | Mandatory | Description | Restricted Values |
 | -- | -- | -- | -- | -- |
 | -d | dictionary file name | true | the name of the dictionary to read at startup |No |
-| -t | table name(s) | false | the table name(s) of the dictionary to read at startup. It could be more than one tables separated by space |No |
-| -p | port offset | true | the port range to use when generating services file |No |
+| -t | table name(s) | false | the table name(s) within the dictionary to read at startup. Multiple tables must be separated by spaces |No |
+| -p | port offset | true | the port range to use when generating the services file |No |
 | -pn | product name | true | the name of the product to create |No |
 
 ### Examples
 
-Example without -t option.
+This example has no **-t** option.
 
 ```bash
 AppGen -d tas-dictionary.xml -p 4000 -pn tas
@@ -822,19 +821,19 @@ tas/
     /scripts/tas-tnHandler.gy
 ```
 
-Example with -t option.
+This example has a **-t** option, which specifies that only the table ORDER USER should be read from the source dictionary.
 
 ```bash
 AppGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
 ```
 
-The tables mentioned in the above command will be appended to the files that were created in the tas folder.
+The ORDER USER table will be appended to the files that were created in the tas folder.
 
 ## SSL/TLS Support
 
 ### Generating a self-signed keystore and respective certificate (optional)
 
-This step is only required if using a self-signed certificate due to the absence of a proper trusted root authority issued one.
+This step is only required if you are using a self-signed certificate due to the absence of one issued by a proper trusted root authority.
 
 ```bash
 $ keytool -genkey -keyalg RSA -keysize 2048 -alias selfsigned -storepass Password1233 -keystore keystore.jks -ext SAN=dns:genesisserv1,dns:genesisserv1.ad.genesis.global,dns:genesisserv2,dns:genesisserv2.ad.genesis.global,dns:genesisserv3,dns:genesisserv3.ad.genesis.global,dns:genesisserv4,dns:genesisserv4.ad.genesis.global,ip:193.144.16.43
@@ -866,21 +865,21 @@ Enter key password for <selfsigned>
 
 Assuming no problems with privileges, you will now have a certificate called "selfsigned" with a private key using the same password as the keystore password e.g. Password123.
 
-In our example this certificate can be found here: /home/exmon/keystore.jks
+In our example, this certificate can be found at: /home/exmon/keystore.jks
 
 Please note, however, that this certificate should be stored in another directory outside the application.
 
-The keystore (.jks) is, in a way, the private key to be used in the two-way authentication in the SSL protocol. As such, you need to use it to generate the certificate that has to be installed by the target computers/loaded by the processes that intend to communicate with.
+The keystore (.jks) is, in a way, the private key to be used in the two-way authentication in the SSL protocol. As such, you need to use it to generate the certificate that has to be installed by the target computers, or to be loaded by the processes that the application intends to communicate with.
 
 ```bash
 $ keytool -export -alias mykey -file certificate.crt -keystore keystore.jks
 ```
 
-### Installing TLS certificate in environment
+### Installing TLS certificate in different environments
 
 #### Linux
 
-Varies according to the distribution being used. In Ubuntu:
+This varies according to the distribution being used. In Ubuntu:
 
 ```bash
 $ cp certificate.crt /usr/local/share/ca-certificates/
@@ -910,9 +909,9 @@ Example:
 ~/run/exmon/cfg/exmon-service-definitions.xml
 ```
 
-To enable a process to be set to communicate via SSL set the secure element to be true.
+To enable a process to be set to communicate via SSL, set the `secure` element to `true`.
 
-Example:
+For example:
 
 ```xml
 <configuration>
@@ -922,9 +921,9 @@ Example:
 
 ### Setting the TLS settings for all processes by default
 
-Edit the _genesis-system-definitions.xml_ file and edit the values for DefaultKeystoreLocation, DefaultKeystoreLocation and DefaultCertificate.
+Open the **genesis-system-definitions.xml** file and edit the values for `DefaultKeystoreLocation`, `DefaultKeystoreLocation` and `DefaultCertificate`.
 
-    Example:
+For example:
 
 ```xml
 <!-- Required if the processes are to communicate through SSL -->
@@ -938,14 +937,12 @@ These will be used by all processes to communicate with encrypted processes or t
 ### Setting the TLS settings for each individual process
 
 :::tip
-You can have different processes secured via different certificates if required.
+You can have different processes secured via different certificates, if required.
 :::
 
 This setting is used if the develop wants to override the defaults established above for a specific process.
 
-Edit the process' configuration file (as defined in `<product>-processes.xml`)
-
-To have the following settings:-
+Open the configuration file for the process (as defined in `<product>-processes.xml`). Make sure it has the following settings:-
 
 ```xml
 <authManager>
@@ -966,7 +963,7 @@ Once the files have been saved, run **genesisInstall**. When the processes start
 
 ### GUI
 
-To enable the GUI to  connect securely, edit the **%ProgramData%\\Genesis\\exmon\\Rel\\Config\\PrimaryServiceConfig.xml** setting **encrypted** to **true**.
+To enable the GUI to connect securely, edit the **%ProgramData%\\Genesis\\exmon\\Rel\\Config\\PrimaryServiceConfig.xml** setting `encrypted` to `true`.
 
 #### Example
 
@@ -980,7 +977,7 @@ To enable the GUI to  connect securely, edit the **%ProgramData%\\Genesis\\exmon
 </primary_service>
 ```
 
-Note: With encryption, if using a self-signed certificate, you must install the certificate.crt in the target machine's operating system as a trusted root CA.
+Note: With encryption, if you are using a self-signed certificate, you must install the certificate.crt in the target machine's operating system as a trusted root CA.
 
 ### Web front-end
 
