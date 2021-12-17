@@ -19,7 +19,7 @@ installRelease productFile [-c | --commit]
 
 | Argument    | Argument long name | Mandatory | Description                      | Restricted values |
 |-------------|--------------------|-----------|----------------------------------|-------------------|
-| productFile |                    | yes       | the product file                 |                   |
+| productFile |                    | yes       | the name of the product file                 |                   |
 | -c          | --commit           | no        | will apply changes to the system |                   |
 
 
@@ -27,20 +27,20 @@ If the commit option is not specified, the product will not be installed, but th
 
 This is how the script behaves:
 
-First it gets the **productname-product-details.xml** information from the product zip file, and it verifies the correctness of this file.
+First, it gets the **productname-product-details.xml** information from the product zip file, and it verifies the correctness of this file.
 
-It checks if a previous installation of the application is present. (Is there a version of the same application installed by installRelease in the system?) This always happens, whether you used the **--commit** option or not. If you have an installation underway, the installation will stop at this point. If you want to force the installation, delete the folder "new" under GENESIS_HOME/releases/(productname)v.(version)/. For more information see points 4 and 5.
+It checks if a previous installation of the application is present. (Is there a version of the same application installed by installRelease in the system?) This always happens, whether you used the **--commit** option or not. If you have an installation under way, the installation will stop at this point. If you want to force the installation, delete the folder "new" under GENESIS_HOME/releases/(productname)v.(version)/. There is more information on this folder below.
 
-At this point dependencies will be checked. If any dependency is not met (missing products, or old versions) the product will not be installed. If any installed dependency has a higher version than the dependency version specified in the product details, the script will ask the user for confirmation.
+At this point, dependencies will be checked. If any dependency is not met (missing products, or old versions) the product will not be installed. If any installed dependency has a higher version than the dependency version specified in the product details, the script will ask the user for confirmation.
 
-The script will also check for overridden configuration and script files, whether the product we are installing is currently installed or not. If the product is already installed be sure to merge every overridden configuration and script files with the new product before committing the new installation.
+The script will also check for overridden configuration and script files, whether the product you are installing is currently installed or not. If the product is already installed, be sure to merge every overridden configuration and script file with the new product before committing the new installation.
 
 * If the product is not currently installed and the **--commit** option is specified, the application will be installed. A new back-up folder is created in GENESIS_HOME/releases/(_applicationname_)v.(version)/ with all the installation files.
-* If the product is already installed in any version, the script will perform a reinstall/upgrade/downgrade. In case of downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up (folders) will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the **--commit** option was specified, the product will also be installed in the system.
+* If the product is already installed in any version, the script will perform a reinstall, upgrade or downgrade. In case of downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up (folders) will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the **--commit** option was specified, the product will also be installed in the system.
 
 Details to take into account:
 
-**installRelease** will try to use **global-product-details.xml** inside GENESIS_HOME/generated/cfg/ as its first information source. This file is generated when the **genesisInstall** script is executed, which gathers information from each installed product and stores it inside this global file. If this file does not exist, **installRelease** searches for independent productname-product-details.xml files in every installed product. If no information is found, the installation will be cancelled.
+**installRelease** will use **global-product-details.xml** inside GENESIS_HOME/generated/cfg/ as its first information source. This file is generated when the **genesisInstall** script is executed, (this script gathers information from each installed product and stores it inside this global file). If this file does not exist, **installRelease** searches for independent productname-product-details.xml files in every installed product. If no information is found, the installation will be cancelled.
 
 Execute **genesisInstall** after installing an application, so that the application details are stored in global-product-details.xml for future product installations.
 
@@ -59,17 +59,17 @@ genesisInstall [--ignore]
 
 Once complete, all configuration files will be copied and, where necessary, merged into the **~/run/generated/cfg** file, which we alias as **$GC**.
 
-If any problems are found in the generated configuration files, they will be deleted, which forces the user to correct the errors in the original configuration files.
+If any problems are found in the generated configuration files, they will be deleted. This forces you to correct the errors in the original configuration files.
 
 To ignore errors in the configuration files, use the **--ignore** argument. This leaves the configuration files undeleted, even if errors are found.
 
-All processes configuration is stored within $**GC**.
+All processes configuration is stored within **$GC**.
 
 ## remap script
 
 The remap script reads all dictionary files (fields and table definitions) from **$GC** and remaps the memory resident database accordingly.
 
-It also generates dao objects based on our dictionary tables, so we can perform database operations in a type safe way.
+It also generates dao objects based on the dictionary tables, so you can perform database operations in a type-safe way.
 
 Additionally, it will update the Genesis alias store (if running Aerospike or FDB).
 
@@ -85,7 +85,7 @@ remap [-c | --commit]
 |----------|--------------------|-----------|------------------------------------------------------------|-------------------|
 | -c       | --commit           | no        | If supplied, will apply dictionary changes to the database | No                |
 
-If we run remap with no arguments it simple gives a report of changes that exist in the configuration.
+If we run remap with no arguments, it simply gives a report of changes that exist in the configuration.
 
 For example:
 
@@ -134,8 +134,8 @@ startProcess processName [--hostname <[host names]>] [--dump]
 | Argument                   | Argument long name                          | Mandatory | Description                                                                                                                                                                                         | Restricted values |
 |----------------------------|---------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
 | -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | No        | where   the application is running on more than one node, this identifies the node   where you want to start the process (so you can start a process on a   different node). Specify the Host Name. | No                |
-| -c                         | --cluster                                   | No        | starts   the process on every node in the cluster                                                                                                                                                   | No                |
-|                            | --dump                                      | No        | displays   progress of starting the process, which is useful for debugging                                                                                                                          | No                |	
+| -c                         | --cluster                                   | No        | starts  the process on every node in the cluster                                                                                                                                                   | No                |
+|                            | --dump                                      | No        | displays progress of the process, which is useful for debugging                                                                                                                          | No                |	
 
 The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
 
@@ -213,13 +213,13 @@ Each process property is defined in here, including JAVA arguments, configuratio
 
 The dependency tag defines the processes that the current process is dependent on. In the above example, the GENESIS_AUTH_PERMS process will start after all its dependencies have started.
 
-The **loggingLevel** tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to explicitly declare that you would like to log all the received/sent network messages.
+The **loggingLevel** tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to declare explicitly that you would like to log all the received/sent network messages.
 
-The classpath tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated and need to exist within a lib folder for any of the genesis products in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.
+The classpath tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated; they need to exist within a lib folder for one of the genesis products in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.
 
 ## killServer script
 
-This script reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt
+This script reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt for confirmation, unless you specify **--force**: '**Are you sure you want to kill server? (y/n):**
 
 Syntax
 
@@ -227,16 +227,15 @@ Syntax
 killServer [--hostname <[hosts names]>] [--force]
 ```
 
-This command requires user confirmation: '**Are you sure you want to kill server? (y/n):** Alternatively, you can use **--force** to skip it.
 
 ### Optional arguments
 
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                                                          | Restricted values |
 |------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | No        | Where the application is running   on more than one node, this identifies the node where you want to kill the   server (so you can kill a server on a different node. Specify the Host Name. Hosts Name or "cluster" for all hosts | No                |
+| -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | No        | Where the application is running  on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node). Specify the Host Name, Host Names or "cluster" for all hosts | No                |
 | -f                           | --force                                       | No        | forcefully kills a process   (using kill -9)                                                                                                                                                                                         | No                |
 |                              | --all                                         | No        | kills all processes, including   GENESIS_CLUSTER                                                                                                                                                                                     | No                |
-| -c                           | --cluster                                     | No        | kills the server on all the   nodes in the cluster                                                                                                                                                                                   | No                |    
+| -c                           | --cluster                                     | No        | kills the server on all the nodes in the cluster                                                                                                                                                                                   | No                |    
 
 ## DbMon script
 
@@ -248,7 +247,7 @@ Syntax:
 DbMon
 ```
 
-Once inside DbMon you can run the command **help**, which shows all the available commands.
+Once inside DbMon, you can run the command **help**, which shows all the available DbMon commands.
 
 ```bash
 ==================================
@@ -302,12 +301,12 @@ SendIt -t <table name> -f <file name>
 
 | Argument | Argument long name     | Mandatory | Description                                                    | Restricted values |
 |----------|------------------------|-----------|----------------------------------------------------------------|-------------------|
-| -a       | --all                  | No        | import all   the tables from all the csv files to the database | No                |
-| -d       | --delete               | No        | perform   delete operations on all records                     | No                |
-| -f       | --file `<arg>`         | No        | name of the   csv file where table is imported                 | No                |
+| -a       | --all                  | No        | import all the tables from all the csv files to the database | No                |
+| -d       | --delete               | No        | perform delete operations on all records                     | No                |
+| -f       | --file `<arg>`         | No        | name of the csv file where table is imported                 | No                |
 | -h       | --help                 | No        | show usage   information                                       | No                |
-| -m       | --modify `<arg>`       | No        | key name used   to find original record                        | No                |
-| -mf      | --modifyFields `<arg>` | No        | specify   fields to modify                                     | No                |
+| -m       | --modify `<arg>`       | No        | key name used to find original record                        | No                |
+| -mf      | --modifyFields `<arg>` | No        | specifies fields to modify                                     | No                |
 | -quiet   | --quietMode            | No        | make database changes without triggering real-time updates in update queue layer | No |
 | -r       | --recover              | No        | perform recover operations on all records; this is a special operation meant to preserve the original timestamp; it should only be used when restoring a completely empty table; **use with caution**                    | No                |
 | -t       | --table `<arg>`        | No        | the name of the table to import to database                  | No                |
