@@ -6,7 +6,7 @@ sidebar_position: 12
 
 The examples below use JSX syntax. Real-world scenarions might be different, depending on the client application tooling & structure.
 
-For `foundation-ui` versions after **0.0.16** the [Genesis Datasource](/web-ui-reference/components/grids/ag-grid/ag-genesis-datasource/) has its own slotted component. The documentation should be valid for both usages (current vs. previous), since attributes/props are the same.
+For `foundation-ui` versions after **0.0.17** the [Genesis Datasource](/web-ui-reference/components/grids/ag-grid/ag-genesis-datasource/) has its own slotted component. The documentation should be valid for both usages (current vs. previous), since attributes/props are the same.
 
 ## Setup
 
@@ -24,7 +24,7 @@ import { provideDesignSystem, alphaAgGrid } from '@genesislcap/alpha-design-syst
 provideDesignSystem().register(alphaAgGrid());
 ```
 
-## Usage (0.0.17+)
+## Usage (0.0.18+)
 
 ```html title="Streaming data from ALL_PROCESS_STATUS data server"
 <alpha-card>
@@ -56,7 +56,7 @@ provideDesignSystem().register(alphaAgGrid());
 </alpha-card>
 ```
 
-## Usage (0.0.16 and prior)
+## Usage (0.0.17 and prior)
 
 ```html title="Streaming data from ALL_PROCESS_STATUS data server"
 <alpha-card>
