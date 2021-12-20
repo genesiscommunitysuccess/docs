@@ -42,11 +42,11 @@ The **dictionaryBuilder** script generates the **fields-dictionary.kts** and **t
 
 Check these files and adjust them to suit your application. For example, look inside the **fields-dictionary.kts** file to see the field definitions.
 
-The process has translated the field ENABLED as an INT type.
+For example, check the ENABLED field. In some cases, the process translates this field as an INT type.
 ```kotlin
     field(name = "ENABLED", type = INT)
 ```
-You need to edit that to make it a BOOLEAN type.
+We need this field to be type BOOLEAN. If necessary, edit the field to make it a BOOLEAN type.
 ```kotlin
     field(name = "ENABLED", type = BOOLEAN)
 ```
