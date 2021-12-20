@@ -52,7 +52,7 @@ We need this field to be type BOOLEAN. If necessary, edit the field to make it a
 ```
 ## 2. Copy files and run genesisInstall
 
-Create a new ref_data_app folder structure inside GENESIS_HOME, including cfg and script folders.
+Create a **new ref_data_app** folder inside **GENESIS_HOME**, including **cfg** and **scripts** folders.
 
 Copy the output files from the dictionary build to the **ref_data_app/cfg** folder inside the run directory.
 
@@ -98,7 +98,7 @@ You can run the **mvn** command either locally (in the server, local vm, wsl or 
 Run the **mvn** command:
 
 ```bash
-mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.2.0 -DartifactId=ref_data_app -B
+mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.5.0 -DartifactId=ref_data_app -B
 ```
 
 This gives you the following project structure:
