@@ -42,7 +42,7 @@ The **dictionaryBuilder** script generates the **fields-dictionary.kts** and **t
 
 Check these files and adjust them to suit your application. For example, look inside the **fields-dictionary.kts** file to see the field definitions.
 
-For example, check the ENABLED field. In some cases, the process translates this field as an INT type.
+In some cases, the process translates the ENABLED field as an INT type.
 ```kotlin
     field(name = "ENABLED", type = INT)
 ```
