@@ -10,7 +10,9 @@ Once an application has been built and zipped, you can install it in any another
 To ensure a correct installation, you must follow the product installation procedure.
 
 ## installRelease script
+This script installs an application on the Genesis platform from the specified file. 
 
+### Syntax
 The installRelease script takes two arguments: one mandatory and one optional:
 
 ```bash
@@ -23,20 +25,20 @@ installRelease productFile [-c | --commit]
 | -c          | --commit           | no        | will apply changes to the system |                   |
 
 
-If the commit option is not specified, the product will not be installed, but the full installation process will be shown, including changes, missing dependencies or any other kind of issues.
+If the commit option is not specified, the application will not be installed, but the full installation process will be shown, including changes, missing dependencies or any other kind of issues.
 
 This is how the script behaves:
 
-First, it gets the **productname-product-details.xml** information from the product zip file, and it verifies the correctness of this file.
+First, it gets the **productname-product-details.xml** information from the application zip file, and it verifies the correctness of this file.
 
-It checks if a previous installation of the application is present. (Is there a version of the same application installed by installRelease in the system?) This always happens, whether you used the **--commit** option or not. If you have an installation under way, the installation will stop at this point. If you want to force the installation, delete the folder "new" under GENESIS_HOME/releases/(productname)v.(version)/. There is more information on this folder below.
+It checks if a previous installation of the application is present. (Is there a version of the same application installed by installRelease in the system?) This always happens, whether you used the **--commit** option or not. If you have an installation under way, the installation will stop at this point. If you want to force the installation, delete the **new** folder in GENESIS_HOME/releases/(productname)v.(version)/. There is more information on this folder below.
 
-At this point, dependencies will be checked. If any dependency is not met (missing products, or old versions) the product will not be installed. If any installed dependency has a higher version than the dependency version specified in the product details, the script will ask the user for confirmation.
+At this point, dependencies will be checked. If any dependency is not met (missing products, or old versions) the product will not be installed. If any installed dependency has a higher version than the dependency version specified in the product details, the script will ask you for confirmation.
 
 The script will also check for overridden configuration and script files, whether the product you are installing is currently installed or not. If the product is already installed, be sure to merge every overridden configuration and script file with the new product before committing the new installation.
 
 * If the product is not currently installed and the **--commit** option is specified, the application will be installed. A new back-up folder is created in GENESIS_HOME/releases/(_applicationname_)v.(version)/ with all the installation files.
-* If the product is already installed in any version, the script will perform a reinstall, upgrade or downgrade. In case of downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up (folders) will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the **--commit** option was specified, the product will also be installed in the system.
+* If the product is already installed in any version, the script will perform a reinstall, upgrade or downgrade. In the case of a downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up (folders) will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the **--commit** option was specified, the application will be installed in the system.
 
 Details to take into account:
 
@@ -47,6 +49,8 @@ Execute **genesisInstall** after installing an application, so that the applicat
 ## genesisInstall script
 
 This script validates all system and product configuration, checking for things such as field duplication.
+
+### Syntax
 
 ```bash
 genesisInstall [--ignore]
@@ -63,19 +67,19 @@ If any problems are found in the generated configuration files, they will be del
 
 To ignore errors in the configuration files, use the **--ignore** argument. This leaves the configuration files undeleted, even if errors are found.
 
-All processes configuration is stored within **$GC**.
+All process configuration is stored within **$GC**.
 
 ## remap script
 
-The remap script reads all dictionary files (fields and table definitions) from **$GC** and remaps the memory resident database accordingly.
+The remap script reads all dictionary files (fields and table definitions) from **$GC** and remaps the memory-resident database accordingly.
 
 It also generates dao objects based on the dictionary tables, so you can perform database operations in a type-safe way.
 
 Additionally, it will update the Genesis alias store (if running Aerospike or FDB).
 
-The Aerospike DB layer needs UDFs (user defined functions) to work correctly, and they are also generated at this step.
+The Aerospike DB layer needs UDFs (user defined functions) to work correctly, and these are also generated at this step.
 
-Syntax:
+### Syntax
 
 ```bash
 remap [-c | --commit]
@@ -85,7 +89,7 @@ remap [-c | --commit]
 |----------|--------------------|-----------|------------------------------------------------------------|-------------------|
 | -c       | --commit           | no        | If supplied, will apply dictionary changes to the database | No                |
 
-If we run remap with no arguments, it simply gives a report of changes that exist in the configuration.
+If you run remap with no arguments, it simply gives a report of changes that exist in the configuration.
 
 For example:
 
@@ -115,7 +119,7 @@ Key changes
 No changes
 ```
 
-To commit the changes to the database use the **--commit** argument.
+To commit the changes to the database, use the **--commit** argument.
 
 ## startProcess script
 
@@ -123,7 +127,7 @@ This script starts a Genesis process. It takes a single positional argument:
 
 `<process name>` and an optional argument "--dump", to ensure console output is shown on screen (useful for debugging).
 
-Syntax
+### Syntax
 
 ```bash
 startProcess processName [--hostname <[host names]>] [--dump] 
@@ -150,7 +154,7 @@ java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBoot
 
 This script is used to terminate a specified process.
 
-Syntax
+### Syntax
 
 ```bash
 killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--force] [--wait]
@@ -167,7 +171,7 @@ killProcess process_name HOSTNAME [HOSTNAME ...], -s HOSTNAME [HOSTNAME ...] [--
 
 This script reads the **$GC/processes.xml** file to determine which processes to start and how to start them.
 
-Syntax
+### Syntax
 
 ```bash
 startServer [--hostname <[host names]>] [--ignoreDaemon] 
