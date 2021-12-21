@@ -13,7 +13,7 @@ To ensure a correct installation, you must follow the product installation proce
 This script installs an application on the Genesis platform from the specified file. 
 
 ### Syntax
-The installRelease script takes two arguments: one mandatory and one optional:
+The 'installRelease' script takes two arguments: one mandatory and one optional:
 
 ```bash
 installRelease productFile [-c | --commit]
@@ -31,20 +31,20 @@ This is how the script behaves:
 
 First, it gets the **productname-product-details.xml** information from the application zip file, and it verifies the correctness of this file.
 
-It checks if a previous installation of the application is present. (Is there a version of the same application installed by installRelease in the system?) This always happens, whether you used the **--commit** option or not. If you have an installation under way, the installation will stop at this point. If you want to force the installation, delete the **new** folder in GENESIS_HOME/releases/(productname)v.(version)/. There is more information on this folder below.
+It checks if a previous installation of the application is present. (Is there a version of the same application installed by 'installRelease' in the system?) This always happens, whether you use the '--commit' option or not. If you have an installation under way, the installation will stop at this point. If you want to force the installation, delete the **new** folder in GENESIS_HOME/releases/(productname)v.(version)/. There is more information on this folder below.
 
 At this point, dependencies will be checked. If any dependency is not met (missing products, or old versions) the product will not be installed. If any installed dependency has a higher version than the dependency version specified in the product details, the script will ask you for confirmation.
 
 The script will also check for overridden configuration and script files, whether the product you are installing is currently installed or not. If the product is already installed, be sure to merge every overridden configuration and script file with the new product before committing the new installation.
 
-* If the product is not currently installed and the **--commit** option is specified, the application will be installed. A new back-up folder is created in GENESIS_HOME/releases/(_applicationname_)v.(version)/ with all the installation files.
+* If the product is not currently installed and the '--commit' option is specified, the application will be installed. A new back-up folder is created in GENESIS_HOME/releases/(_applicationname_)v.(version)/ with all the installation files.
 * If the product is already installed in any version, the script will perform a reinstall, upgrade or downgrade. In the case of a downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up (folders) will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the **--commit** option was specified, the application will be installed in the system.
 
 Details to take into account:
 
-**installRelease** will use **global-product-details.xml** inside GENESIS_HOME/generated/cfg/ as its first information source. This file is generated when the **genesisInstall** script is executed, (this script gathers information from each installed product and stores it inside this global file). If this file does not exist, **installRelease** searches for independent productname-product-details.xml files in every installed product. If no information is found, the installation will be cancelled.
+'installRelease' will use **global-product-details.xml** in GENESIS_HOME/generated/cfg/ as its first information source. This file is generated when the 'genesisInstall' script is executed, (this script gathers information from each installed product and stores it inside this global file). If this file does not exist, 'installRelease' searches for independent _application_**-product-details.xml** files in every installed application. If no information is found, the installation will be cancelled.
 
-Execute **genesisInstall** after installing an application, so that the application details are stored in global-product-details.xml for future product installations.
+Execute 'genesisInstall' after installing an application, so that the application details are stored in global-product-details.xml for future product installations.
 
 ## genesisInstall script
 
@@ -65,7 +65,7 @@ Once complete, all configuration files will be copied and, where necessary, merg
 
 If any problems are found in the generated configuration files, they will be deleted. This forces you to correct the errors in the original configuration files.
 
-To ignore errors in the configuration files, use the **--ignore** argument. This leaves the configuration files undeleted, even if errors are found.
+To ignore errors in the configuration files, use the '--ignore' argument. This leaves the configuration files undeleted, even if errors are found.
 
 All process configuration is stored within **$GC**.
 
@@ -125,7 +125,7 @@ To commit the changes to the database, use the **--commit** argument.
 
 This script starts a Genesis process. It takes a single positional argument:
 
-`<process name>` and an optional argument "--dump", to ensure console output is shown on screen (useful for debugging).
+`<process name>` and an optional argument '--dump'", to ensure console output is shown on screen (useful for debugging).
 
 ### Syntax
 
@@ -179,7 +179,7 @@ startServer [--hostname <[host names]>] [--ignoreDaemon]
 
 | Argument                    | Argument long name                   | Mandatory | Description                                                                                                                                                                                | Restricted values |
 |-----------------------------|--------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-|  -s HOSTNAME [HOSTNAME ...] | --hostname   HOSTNAME [HOSTNAME ...] | No        | Where the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node. Specify the Host Name. | No                |
+|  -s HOSTNAME [HOSTNAME ...] | --hostname   HOSTNAME [HOSTNAME ...] | No        | If the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node. Specify the Host Name. | No                |
 |  -c                         | --cluster                            | No        | Starts the process on every node in the cluster,                                                                                                                                           | No                |
 |  -i                         | --ignoreDaemon                       | No        | avoids killing/starting the daemon                                                                                                                                                         | No                |
 
@@ -223,7 +223,7 @@ The classpath tag defines additional jar files that might be needed by the micro
 
 ## killServer script
 
-This script reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt for confirmation, unless you specify **--force**: '**Are you sure you want to kill server? (y/n):**
+This script reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt for confirmation ('Are you sure you want to kill server? (y/n):'), unless you specify '--force'.
 
 Syntax
 
@@ -618,13 +618,11 @@ Options:
 
 This works like **SetSequence** but for auto increment INT values.
 
-Usage:
+### Syntax
 
 ```bash
 SetAutoIncrement
 ```
-
-Options:
 
 | Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
@@ -670,7 +668,7 @@ The script accepts a series of arguments to establish a connection to the databa
 | -p pass | -password pass | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively  | No |
 | -product name |   | Yes |  Represents the product name and affects the output file. For example: "tas-dictionary.xml" | No |
 | -singleFile |   | No | If this argument is passed the generated dictionary will be written into a single file, instead of having a separate file for just the fields. | No |
-| -o outputPath | -output outputPath | No | Specifies the output directory for the dictionary files. If the directory does not exist it will be created. | No |
+| -o outputPath | -output outputPath | No | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created. | No |
 | -h hostName | -host hostName | Yes | The database hostname. | No |
 | -port port |   | Yes | The database port. | No |
 | -sid sid |   | No | The Oracle System ID. | To be used with -t ora |
@@ -678,7 +676,7 @@ The script accepts a series of arguments to establish a connection to the databa
 | -help |   | No | Prints the usage message | No |
 | -tNames TABLE1,ETC | -tableNames TABLE1,ETC   | No | Tables to copy from RDBMS | No |
 
-YOu can use double-dash notation for any argument. Arguments -sid or -db are not mandatory (as they can change from one database to another), but they should be passed accordingly when necessary.
+You can use double-dash notation for any argument. Arguments -sid or -db are not mandatory (as they can change from one database to another), but they should be passed accordingly when necessary.
 
 ### Example
 
