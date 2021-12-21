@@ -70,13 +70,11 @@ AppGen -n ref_data_app -p 10000
 
 ![](/img/appgen.png)
 
-This gives you kts files for your new modules:
+As you can see, this gives you kts files for your new modules:
 
 * scripts/ref_data_app-dataserver.kts
 * scripts/ref_data_app-reqrep.kts
 * scripts/ref_data_app-eventhandler.kts
-
-![](/img/appgen.png)
 
 And it generates xml files for service definitions and processes:
 
