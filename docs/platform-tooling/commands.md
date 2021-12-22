@@ -125,7 +125,7 @@ To commit the changes to the database, use the **--commit** argument.
 
 This script starts a Genesis process. It takes a single positional argument:
 
-`<process name>` and an optional argument '--dump'", to ensure console output is shown on screen (useful for debugging).
+`<process name>` and an optional argument '--dump', to ensure console output is shown on screen (useful for debugging).
 
 ### Syntax
 
@@ -217,9 +217,9 @@ Each process property is defined in here, including JAVA arguments, configuratio
 
 The dependency tag defines the processes that the current process is dependent on. In the above example, the GENESIS_AUTH_PERMS process will start after all its dependencies have started.
 
-The **loggingLevel** tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to declare explicitly that you would like to log all the received/sent network messages.
+The 'loggingLevel' tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to declare explicitly that you would like to log all the received/sent network messages.
 
-The classpath tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated; they need to exist within a lib folder for one of the genesis products in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.
+The 'classpath' tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated; they need to exist within a lib folder for one of the genesis products in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.
 
 ## killServer script
 
@@ -245,13 +245,18 @@ killServer [--hostname <[hosts names]>] [--force]
 
 This script enables you to navigate through the database tables from the command line.
 
-Syntax:
+Once inside `DbMon`, you can run the command 'help', which shows all the available DbMon commands. 
+To get help on a specific command, run `help _command_`.
+
+**DbMon --quietMode** does database changes without triggering real-time updates in update queue layer
+
+### Syntax
 
 ```bash
 DbMon
 ```
 
-Once inside DbMon, you can run the command **help**, which shows all the available DbMon commands.
+ds.
 
 ```bash
 ==================================
@@ -287,15 +292,15 @@ Enter 'help' for a list of commands
 | updateWhere              | `<condition> <assignments>`                 |                                                 |
 | writeMode                |                                             | enables write mode                              |
 
-Usage
 
-**DbMon** has built-in help instruction for each command. Run `help <command>` to get more information.
 
-**DbMon --quietMode** does database changes without triggering real-time updates in update queue layer
+
+
+
 
 ## SendIt script
 
-To send data into the database, use the SendIt command.
+To send data into the database, use the 'SendIt' command.
 
 Syntax
 
@@ -324,13 +329,13 @@ SendIt -t FUND -f FUND
 
 This reads the FUND.csv file in the local directory and insert the data from the file into the FUND table.
 
-To Modify records you, need to specify the key that will be used to identify the original record from the each row in the csv file. If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key.
+To modify records you, need to specify the key that will be used to identify the original record from the each row in the csv file. If you want to modify a key field, you need to ensure the lookup key does not use this field; for example, you can't change an ID in the file and then modify on _BY_ID key.
 
 ```bash
 SendIt -t FUND -m FUND_BY_ID
 ```
 
-Modify fields (-mf) is a special parameter that can be added to "-m" operations. SendTable will only attempt to modify the record fields specified in this comma-separated list parameter.
+Modify fields ('-mf') is a special parameter that can be added to '-m' operations. SendTable will only attempt to modify the record fields specified in this comma-separated list parameter.
 
 To delete records you need to specify `-d` (or `--delete`)
 
