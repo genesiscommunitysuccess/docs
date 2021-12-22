@@ -50,6 +50,16 @@ Execute 'genesisInstall' after installing an application, so that the applicatio
 
 This script validates all system and product configuration, checking for things such as field duplication.
 
+'genesisInstall' looks at all the folders (apart from runtime and generated), all the modules, and all files in the **cfg** directory. It copies the config files from the **cfg** directory into the **generated** folder. 
+
+In the files collected, the command examines the installation environment and looks for system definition tokens (file names with suffix **.tmplt.xml**). The generated **cfg** file names have their token placeholders replaced with the environment's system definition value for the token, and the suffix will be changed to **.auto.xml**.
+
+The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a  file in **site-specific/cfg** has the same name as a file in a module's **cfg**, the version in **site-specific/cfg** will always be used.
+
+Following this, when you start any process, the 'startProcess' command reads from the **cfg** directory in the **generated** folder.
+
+'genesisInstall' also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the **run/generated/cfg** area.
+
 ### Syntax
 
 ```bash
@@ -225,7 +235,7 @@ The 'classpath' tag defines additional jar files that might be needed by the mic
 
 This script reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt for confirmation ('Are you sure you want to kill server? (y/n):'), unless you specify '--force'.
 
-Syntax
+### Syntax
 
 ```bash
 killServer [--hostname <[hosts names]>] [--force]
@@ -248,7 +258,7 @@ This script enables you to navigate through the database tables from the command
 Once inside `DbMon`, you can run the command 'help', which shows all the available DbMon commands. 
 To get help on a specific command, run `help _command_`.
 
-**DbMon --quietMode** does database changes without triggering real-time updates in update queue layer
+'DbMon --quietMode' does database changes without triggering real-time updates in the update queue layer
 
 ### Syntax
 
@@ -291,11 +301,6 @@ Enter 'help' for a list of commands
 | update                   | `<key_name>`                                | updates the current row by key                  |
 | updateWhere              | `<condition> <assignments>`                 |                                                 |
 | writeMode                |                                             | enables write mode                              |
-
-
-
-
-
 
 
 ## SendIt script
@@ -349,9 +354,9 @@ Verbose mode will additionally output line-by-line operation outcome, and a fina
 
 ## DumpIt script
 
-To copy data out of a Genesis database, use the DumpIt command.
+To copy data out of a Genesis database, use the 'DumpIt' command.
 
-Syntax:
+### Syntax
 
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|
@@ -386,7 +391,7 @@ DumpIt --all
 
 This copies all tables in the system, creating one .csv file for each table in the database. The files are saved in the current directory. It is useful for taking a back-up of the current system database.
 
-Additionally, you can just run **DumpIt** without any arguments to enter interactive mode.
+Additionally, you can just run 'DumpIt' without any arguments to enter interactive mode.
 
 ## LogLevel script
 
@@ -466,7 +471,7 @@ Options
 
 To remove database tables and all corresponding records instantly, use the DropTable command.
 
-The command takes a flag of **-t**, followed by a list of space-separated table names.
+The command takes a flag of '-t', followed by a list of space-separated table names.
 
 For example:
 
@@ -478,9 +483,9 @@ The command will ask you to confirm the removal of each table explicitly.
 
 ## PopulateHolidays
 
-To populate the Holidays table with holidays based on a specific year(s), country(ies) and region(s), use the Populate command.
+This script populates the Holidays table with holidays, based on a specific year(s), country(ies) and region(s).
 
-The usage: 
+### Syntax
 
 ```bash
 PopulateHolidays
@@ -522,7 +527,7 @@ CountRecords TABLE_NAME1 TABLE_NAME2 ...
 
 This migrates the Genesis alias store from database storage to file storage and vice versa.
 
-Usage
+### Syntax
 
 ```bash
 MigrateAliases FILE
