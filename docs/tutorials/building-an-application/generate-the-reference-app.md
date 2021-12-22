@@ -107,11 +107,16 @@ This gives you the following project structure:
 
 Move the generated **ref_data_app/cfg** files (from the previous DictionaryBuilder and AppGen steps) to the **ref_data_app-config/src/main/resources/cfg** folder.
 
-![](/img/copy-generated-script-files-inside-ref_data_app-script-config.png)
-
+```bash
+[trading@dev-trading1 ref_data_app]$ cp /home/trading/run/ref_data_app/cfg/* ref_data_app-config/src/main/resources/cfg/
+```
 Locate the generated files for the request server, data server and event handler. These are in the  **ref_data_app/scripts** folder. Move these to the **ref_data_app-script-config/src/main/resources/scripts** folder.
 
-![](/img/copy-generated-script-files-inside-ref_data_app-script-config.png)
+
+
+```bash
+[trading@dev-trading1 ref_data_app]$ cp /home/trading/run/ref_data_app/scripts/* ref_data_app-script-config/src/main/resources/scripts/
+```
 
 ### Install the maven project
 
