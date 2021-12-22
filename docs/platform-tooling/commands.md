@@ -50,6 +50,16 @@ Execute 'genesisInstall' after installing an application, so that the applicatio
 
 This script validates all system and product configuration, checking for things such as field duplication.
 
+'genesisInstall' looks at all the folders (apart from runtime and generated), all the modules, and all files in the **cfg** directory. It copies the config files from the **cfg** directory into the **generated** folder. 
+
+In the files collected, the command examines the installation environment and looks for system definition tokens (file names with suffix **.tmplt.xml**). The generated **cfg** file names have their token placeholders replaced with the environment's system definition value for the token, and the suffix will be changed to **.auto.xml**.
+
+The command also checks the system-specific definitions and uses these to replace any definitions that have the same name in any of the modules. Where a  file in **site-specific/cfg** has the same name as a file in a module's **cfg**, the version in **site-specific/cfg** will always be used.
+
+Following this, when you start any process, the 'startProcess' command reads from the **cfg** directory in the **generated** folder.
+
+'genesisInstall' also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the **run/generated/cfg** area.
+
 ### Syntax
 
 ```bash
@@ -225,7 +235,7 @@ The 'classpath' tag defines additional jar files that might be needed by the mic
 
 This script reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt for confirmation ('Are you sure you want to kill server? (y/n):'), unless you specify '--force'.
 
-Syntax
+### Syntax
 
 ```bash
 killServer [--hostname <[hosts names]>] [--force]
@@ -248,7 +258,7 @@ This script enables you to navigate through the database tables from the command
 Once inside `DbMon`, you can run the command 'help', which shows all the available DbMon commands. 
 To get help on a specific command, run `help _command_`.
 
-**DbMon --quietMode** does database changes without triggering real-time updates in update queue layer
+'DbMon --quietMode' does database changes without triggering real-time updates in the update queue layer
 
 ### Syntax
 
