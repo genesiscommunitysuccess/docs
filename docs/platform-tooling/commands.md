@@ -303,11 +303,6 @@ Enter 'help' for a list of commands
 | writeMode                |                                             | enables write mode                              |
 
 
-
-
-
-
-
 ## SendIt script
 
 To send data into the database, use the 'SendIt' command.
@@ -359,9 +354,9 @@ Verbose mode will additionally output line-by-line operation outcome, and a fina
 
 ## DumpIt script
 
-To copy data out of a Genesis database, use the DumpIt command.
+To copy data out of a Genesis database, use the 'DumpIt' command.
 
-Syntax:
+### Syntax
 
 | Argument | Argument long name | Mandatory | Description                                            | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------|-------------------|
@@ -396,7 +391,7 @@ DumpIt --all
 
 This copies all tables in the system, creating one .csv file for each table in the database. The files are saved in the current directory. It is useful for taking a back-up of the current system database.
 
-Additionally, you can just run **DumpIt** without any arguments to enter interactive mode.
+Additionally, you can just run 'DumpIt' without any arguments to enter interactive mode.
 
 ## LogLevel script
 
@@ -476,7 +471,7 @@ Options
 
 To remove database tables and all corresponding records instantly, use the DropTable command.
 
-The command takes a flag of **-t**, followed by a list of space-separated table names.
+The command takes a flag of '-t', followed by a list of space-separated table names.
 
 For example:
 
@@ -488,9 +483,9 @@ The command will ask you to confirm the removal of each table explicitly.
 
 ## PopulateHolidays
 
-To populate the Holidays table with holidays based on a specific year(s), country(ies) and region(s), use the Populate command.
+This script populates the Holidays table with holidays, based on a specific year(s), country(ies) and region(s).
 
-The usage: 
+### Syntax
 
 ```bash
 PopulateHolidays
@@ -532,7 +527,7 @@ CountRecords TABLE_NAME1 TABLE_NAME2 ...
 
 This migrates the Genesis alias store from database storage to file storage and vice versa.
 
-Usage
+### Syntax
 
 ```bash
 MigrateAliases FILE
