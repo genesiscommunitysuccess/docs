@@ -89,6 +89,10 @@ Additionally, it will update the Genesis alias store (if running Aerospike or FD
 
 The Aerospike DB layer needs UDFs (user defined functions) to work correctly, and these are also generated at this step.
 
+When you run `remap`, the database is automatically locked to ensure that no other `remap` can run concurrently. 
+
+If the database crashes during a `remap` and the database remains locked (or if the database is locked for any other reason), run `remap --force --commit` to run `remap` and unlock the database.
+
 ### Syntax
 
 ```bash
@@ -97,6 +101,7 @@ remap [-c | --commit]
 
 | Argument | Argument long name | Mandatory | Description                                                | Restricted values |
 |----------|--------------------|-----------|------------------------------------------------------------|-------------------|
+|       | --force           | no        | If supplied, will unlock a locked database | No                |
 | -c       | --commit           | no        | If supplied, will apply dictionary changes to the database | No                |
 
 If you run remap with no arguments, it simply gives a report of changes that exist in the configuration.
