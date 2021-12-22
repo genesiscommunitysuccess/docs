@@ -42,7 +42,7 @@ The script will also check for overridden configuration and script files, whethe
 
 Details to take into account:
 
-'installRelease' will use **global-product-details.xml** in GENESIS_HOME/generated/cfg/ as its first information source. This file is generated when the 'genesisInstall' script is executed, (this script gathers information from each installed product and stores it inside this global file). If this file does not exist, 'installRelease' searches for independent _application_**-product-details.xml** files in every installed application. If no information is found, the installation will be cancelled.
+'installRelease' uses **global-product-details.xml** in GENESIS_HOME/generated/cfg/ as its first information source. This file is generated when the 'genesisInstall' script is executed, (the script gathers information from each installed product and stores it inside this global file). If this file does not exist, 'installRelease' searches for independent _application_**-product-details.xml** files in every installed application. If no information is found, the installation will be cancelled.
 
 Execute 'genesisInstall' after installing an application, so that the application details are stored in global-product-details.xml for future product installations.
 
@@ -156,9 +156,7 @@ The script looks in the **processes.xml** file (see startServer below) to find o
 ```bash
 java -Xmx256m -DXSD_VALIDATE=false global.genesis.dta.dta_process.DtaProcessBootstrap -name AUTH_DATASERVER -scan global.genesis.dta.dataserver -module dataserver -config auth-dataserver.xml -loggingLevel INFO,DATADUMP_OFF >/dev/null 2> $L/AUTH_DATASERVER.log.err &
 ```
-:::Note
-`startServer` has an additional optional parameter that is used to restart the consolidator. This is the `--coldStart` parameter, which ensures that any data changes that took place while the process was not running are calculated before running real-time calculations.
-:::
+
 
 ## killProcess script
 
@@ -242,8 +240,6 @@ killServer [--hostname <[hosts names]>] [--force]
 ```
 
 
-### Optional arguments
-
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                                                          | Restricted values |
 |------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
 | -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | No        | Where the application is running  on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node). Specify the Host Name, Host Names or "cluster" for all hosts | No                |
@@ -258,7 +254,7 @@ This script enables you to navigate through the database tables from the command
 Once inside `DbMon`, you can run the command 'help', which shows all the available DbMon commands. 
 To get help on a specific command, run `help _command_`.
 
-'DbMon --quietMode' does database changes without triggering real-time updates in the update queue layer
+'DbMon --quietMode' performs database changes without triggering real-time updates in the update queue layer
 
 ### Syntax
 
@@ -307,7 +303,7 @@ Enter 'help' for a list of commands
 
 To send data into the database, use the 'SendIt' command.
 
-Syntax
+### Syntax
 
 ```bash
 SendIt -t <table name> -f <file name>
@@ -342,7 +338,7 @@ SendIt -t FUND -m FUND_BY_ID
 
 Modify fields ('-mf') is a special parameter that can be added to '-m' operations. SendTable will only attempt to modify the record fields specified in this comma-separated list parameter.
 
-To delete records you need to specify `-d` (or `--delete`)
+To delete records, specify `-d` (or `--delete`)
 
 ```bash
 SendIt -t FUND -d
@@ -397,7 +393,7 @@ Additionally, you can just run 'DumpIt' without any arguments to enter interacti
 
 To dynamically change the logging levels on any Genesis process, use the LogLevel command.
 
-Syntax:
+### Syntax
 
 ```bash
 LogLevel -p <process-name> -l <log level> -t <time> [-optional params] -c <class-name> -DATADUMP_ON -DATADUMP_OFF
@@ -452,7 +448,7 @@ PID     Process Name                  Port        Status         CPU       Memor
 9419    AUTH_PERMS                    8003        RUNNING        0.30      1.80
 ```
 
-Usage
+### Syntax
 
 ```bash
 mon [-v | -c | -a] polling_interval
@@ -471,9 +467,8 @@ Options
 
 To remove database tables and all corresponding records instantly, use the DropTable command.
 
-The command takes a flag of '-t', followed by a list of space-separated table names.
-
-For example:
+### Syntax 
+The command takes a flag of '-t', followed by a list of space-separated table names, for example:
 
 ```bash
 DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3
@@ -509,6 +504,7 @@ PopulateHolidays -y 2020,2021 -c BR,GB -r rj,en
 
 This counts the number of records in the database, grouped by table, and prints to screen.
 
+### Syntax
 By default, the command provides the record count for each table defined in the dictionary. If you only want a count for specific tables, you can specify a space-separated list of those tables.
 
 This example gives a record count for all tables:
@@ -545,7 +541,7 @@ The "remap" operation will update the alias store, so if you are running a Genes
 
 This migrates the Genesis dictionary from the Database Dictionary Store to the File Dictionary Store storage and vice versa.
 
-Usage:
+### Syntax
 
 ```bash
 MigrateDictionary
@@ -555,19 +551,22 @@ The script uses the system definition file to get the **DictionarySource** prope
 
 If the property is **DB** (the server uses a Database Dictionary Store), then the **MigrateDictionary** script saves a dictionary to a file.
 
-If the **DictionarySource** is **FILE** (the server uses a File Dictionary Store), then the dictionary is saved to a database. The target database type - **DbLayer** - is retrieved from the system definitions file.
+If the `DictionarySource` is `FILE` (the server uses a File Dictionary Store), then the dictionary is saved to a database. The target database type - `DbLayer` - is retrieved from the system definitions file.
 
-It is recommended that you use a file store (set by default) if you are running Genesis in a single node and database store if you are running Genesis in more than one node.
+Here is a recommendation:
 
-The **remap** operation will update the dictionary, so if you are running a Genesis cluster, it is better to use a Database Dictionary Store, as it is less error-prone and the user won't have to manually copy the dictionary file to the remaining nodes manually.
+- Use a file store (set by default) if you are running Genesis in a single node
+- Use database store if you are running Genesis in more than one node
 
-It is potentially dangerous to switch the **DictionarySource** property. If you run **remap** (which modifies the  dictionary) after **MigrateDictionary** and before switching **DictionarySource** property, the file store and database store could contain different dictionaries and it is not safe to switch between them.
+The `remap` operation will update the dictionary, so if you are running a Genesis cluster, it is better to use a Database Dictionary Store, as it is less error-prone and the user won't have to copy the dictionary file to the remaining nodes manually.
+
+It is potentially dangerous to switch the `DictionarySource` property. If you run 'remap` (which modifies the  dictionary) after `MigrateDictionary` and before switching the `DictionarySource` property, the file store and database store could contain different dictionaries and it is not safe to switch between them.
 
 ## GetNextSequenceNumbers
 
 This finds all the dictionary sequences and prints the next sequence number for each one of them. It displays the results on screen in csv format, so it is easy to redirect the output and reuse it with the **SetSequence** script (see below).
 
-Usage:
+### Syntax
 
 ```bash
 GetNextSequenceNumbers
