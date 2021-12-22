@@ -38,11 +38,11 @@ At this point, dependencies will be checked. If any dependency is not met (missi
 The script will also check for overridden configuration and script files, whether the product you are installing is currently installed or not. If the product is already installed, be sure to merge every overridden configuration and script file with the new product before committing the new installation.
 
 * If the product is not currently installed and the `--commit` option is specified, the application will be installed. A new back-up folder is created in GENESIS_HOME/releases/(_applicationname_)v.(version)/ with all the installation files.
-* If the product is already installed in any version, the script will perform a reinstall, upgrade or downgrade. In the case of a downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up (folders) will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the `--commit` option was specified, the application will be installed in the system.
+* If the product is already installed in any version, the script will perform a reinstall, upgrade or downgrade. In the case of a downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up folders will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the `--commit` option was specified, the application will be installed in the system.
 
 Details to take into account:
 
-`installRelease` uses **global-product-details.xml** in GENESIS_HOME/generated/cfg/ as its first information source. This file is generated when the 'genesisInstall' script is executed, (the script gathers information from each installed product and stores it inside this global file). If this file does not exist, 'installRelease' searches for independent _application_**-product-details.xml** files in every installed application. If no information is found, the installation will be cancelled.
+`installRelease` uses the **global-product-details.xml** file in **GENESIS_HOME/generated/cfg/** as its first information source. This file is generated when the 'genesisInstall' script is executed, (the script gathers information from each installed product and stores it inside this global file). If this file does not exist, 'installRelease' searches for independent _application_**-product-details.xml** files in every installed application. If no information is found, the installation will be cancelled.
 
 Execute `genesisInstall` after installing an application, so that the application details are stored in global-product-details.xml for future product installations.
 
