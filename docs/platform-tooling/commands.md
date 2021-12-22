@@ -13,7 +13,7 @@ To ensure a correct installation, you must follow the product installation proce
 This script installs an application on the Genesis platform from the specified file. 
 
 ### Syntax
-The 'installRelease' script takes two arguments: one mandatory and one optional:
+The `installRelease` script takes two arguments: one mandatory and one optional:
 
 ```bash
 installRelease productFile [-c | --commit]
@@ -25,32 +25,32 @@ installRelease productFile [-c | --commit]
 | -c          | --commit           | no        | will apply changes to the system |                   |
 
 
-If the commit option is not specified, the application will not be installed, but the full installation process will be shown, including changes, missing dependencies or any other kind of issues.
+If the `--commit` option is not specified, the application will not be installed, but the full installation process will be shown, including changes, missing dependencies or any other kind of issues.
 
 This is how the script behaves:
 
 First, it gets the **productname-product-details.xml** information from the application zip file, and it verifies the correctness of this file.
 
-It checks if a previous installation of the application is present. (Is there a version of the same application installed by 'installRelease' in the system?) This always happens, whether you use the '--commit' option or not. If you have an installation under way, the installation will stop at this point. If you want to force the installation, delete the **new** folder in GENESIS_HOME/releases/(productname)v.(version)/. There is more information on this folder below.
+It checks if a previous installation of the application is present. (Is there a version of the same application installed by `installRelease` in the system?) This always happens, whether you use the `--commit` option or not. If you have an installation under way, the installation will stop at this point. If you want to force the installation, delete the **new** folder in GENESIS_HOME/releases/(productname)v.(version)/. There is more information on this folder below.
 
 At this point, dependencies will be checked. If any dependency is not met (missing products, or old versions) the product will not be installed. If any installed dependency has a higher version than the dependency version specified in the product details, the script will ask you for confirmation.
 
 The script will also check for overridden configuration and script files, whether the product you are installing is currently installed or not. If the product is already installed, be sure to merge every overridden configuration and script file with the new product before committing the new installation.
 
-* If the product is not currently installed and the '--commit' option is specified, the application will be installed. A new back-up folder is created in GENESIS_HOME/releases/(_applicationname_)v.(version)/ with all the installation files.
-* If the product is already installed in any version, the script will perform a reinstall, upgrade or downgrade. In the case of a downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up (folders) will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the **--commit** option was specified, the application will be installed in the system.
+* If the product is not currently installed and the `--commit` option is specified, the application will be installed. A new back-up folder is created in GENESIS_HOME/releases/(_applicationname_)v.(version)/ with all the installation files.
+* If the product is already installed in any version, the script will perform a reinstall, upgrade or downgrade. In the case of a downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up (folders) will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the `--commit` option was specified, the application will be installed in the system.
 
 Details to take into account:
 
-'installRelease' uses **global-product-details.xml** in GENESIS_HOME/generated/cfg/ as its first information source. This file is generated when the 'genesisInstall' script is executed, (the script gathers information from each installed product and stores it inside this global file). If this file does not exist, 'installRelease' searches for independent _application_**-product-details.xml** files in every installed application. If no information is found, the installation will be cancelled.
+`installRelease` uses **global-product-details.xml** in GENESIS_HOME/generated/cfg/ as its first information source. This file is generated when the 'genesisInstall' script is executed, (the script gathers information from each installed product and stores it inside this global file). If this file does not exist, 'installRelease' searches for independent _application_**-product-details.xml** files in every installed application. If no information is found, the installation will be cancelled.
 
-Execute 'genesisInstall' after installing an application, so that the application details are stored in global-product-details.xml for future product installations.
+Execute `genesisInstall` after installing an application, so that the application details are stored in global-product-details.xml for future product installations.
 
 ## genesisInstall script
 
 This script validates all system and product configuration, checking for things such as field duplication.
 
-'genesisInstall' looks at all the folders (apart from runtime and generated), all the modules, and all files in the **cfg** directory. It copies the config files from the **cfg** directory into the **generated** folder. 
+`genesisInstall` looks at all the folders (apart from runtime and generated), all the modules, and all files in the **cfg** directory. It copies the config files from the **cfg** directory into the **generated** folder. 
 
 In the files collected, the command examines the installation environment and looks for system definition tokens (file names with suffix **.tmplt.xml**). The generated **cfg** file names have their token placeholders replaced with the environment's system definition value for the token, and the suffix will be changed to **.auto.xml**.
 
@@ -143,7 +143,7 @@ This script starts a Genesis process. It takes a single positional argument:
 startProcess processName [--hostname <[host names]>] [--dump] 
 ```
 
-`processName` is name of the process that you want to start.
+`processName` is the name of the process that you want to start.
 
 | Argument                   | Argument long name                          | Mandatory | Description                                                                                                                                                                                         | Restricted values |
 |----------------------------|---------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
@@ -254,15 +254,13 @@ This script enables you to navigate through the database tables from the command
 Once inside `DbMon`, you can run the command 'help', which shows all the available DbMon commands. 
 To get help on a specific command, run `help _command_`.
 
-'DbMon --quietMode' performs database changes without triggering real-time updates in the update queue layer
+'DbMon --quietMode' performs database changes without triggering real-time updates in the update queue layer.
 
 ### Syntax
 
 ```bash
 DbMon
 ```
-
-ds.
 
 ```bash
 ==================================
@@ -301,7 +299,7 @@ Enter 'help' for a list of commands
 
 ## SendIt script
 
-To send data into the database, use the 'SendIt' command.
+To send data into the database, use the `SendIt` command.
 
 ### Syntax
 
@@ -346,11 +344,11 @@ SendIt -t FUND -d
 
 If no file parameter is specified, `.csv` is assumed and read from the local directory.
 
-Verbose mode will additionally output line-by-line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes the script useful for scheduled/automated jobs (e.g. daily data loads).
+Verbose mode will additionally output line-by-line operation outcome, and a final summary of error lines to be corrected and resubmitted. This makes the script useful for scheduled or automated jobs (e.g. daily data loads).
 
 ## DumpIt script
 
-To copy data out of a Genesis database, use the 'DumpIt' command.
+To copy data from a Genesis database, use the 'DumpIt' command.
 
 ### Syntax
 
@@ -387,7 +385,7 @@ DumpIt --all
 
 This copies all tables in the system, creating one .csv file for each table in the database. The files are saved in the current directory. It is useful for taking a back-up of the current system database.
 
-Additionally, you can just run 'DumpIt' without any arguments to enter interactive mode.
+Additionally, you can just run `DumpIt` without any arguments to enter interactive mode.
 
 ## LogLevel script
 
