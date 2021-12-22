@@ -37,8 +37,8 @@ At this point, dependencies will be checked. If any dependency is not met (missi
 
 The script will also check for overridden configuration and script files, whether the product you are installing is currently installed or not. If the product is already installed, be sure to merge every overridden configuration and script file with the new product before committing the new installation.
 
-* If the product is not currently installed and the `--commit` option is specified, the application will be installed. A new back-up folder is created in GENESIS_HOME/releases/(_applicationname_)v.(version)/ with all the installation files.
-* If the product is already installed in any version, the script will perform a reinstall, upgrade or downgrade. In the case of a downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up folders will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the `--commit` option was specified, the application will be installed in the system.
+- If the product is not currently installed and the `--commit` option is specified, the application will be installed. A new back-up folder is created in GENESIS_HOME/releases/(_applicationname_)v.(version)/ with all the installation files.
+- If the product is already installed in any version, the script will perform a reinstall, upgrade or downgrade. In the case of a downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up folders will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the `--commit` option was specified, the application will be installed in the system.
 
 Details to take into account:
 
@@ -155,6 +155,8 @@ startProcess processName [--hostname <[host names]>] [--dump]
 | -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | No        | where   the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | No                |
 | -c                         | --cluster                                   | No        | starts  the process on every node in the cluster                                                                                                                                                   | No                |
 |                            | --dump                                      | No        | displays progress of the process, which is useful for debugging                                                                                                                          | No                |	
+|                            | --coldStart                                      | No        | this is only used if you have a consolidator. Consolidators aggregate data from IN table(s) into an OUT table; a coldStart effectively zeros out values in the OUT table records and then iterating over all the IN table records and rebuilding them on startUp. After this, the consildators in their normal way
+ | No                |	
 
 The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
 
@@ -610,9 +612,9 @@ GetAutoIncrementCount
 
 ## SetSequence
 
-This enables you to change a sequence number, or to do a bulk change for all the sequence in a ".csv" file (usually, this will be one that you have exported previously using either GetNextSequenceNumbers or GetSequenceCount)
+This enables you to change a sequence number, or to do a bulk change for all the sequence in a ".csv" file. In mpst cases, this will be one that you have exported previously using either `GetNextSequenceNumbers` or `GetSequenceCount`.
 
-Usage:
+### Syntax
 
 ```bash
 SetSequence
@@ -689,7 +691,7 @@ The script accepts a series of arguments to establish a connection to the databa
 | -help |   | No | Prints the usage message | No |
 | -tNames TABLE1,ETC | -tableNames TABLE1,ETC   | No | Tables to copy from RDBMS | No |
 
-You can use double-dash notation for any argument. Arguments -sid or -db are not mandatory (as they can change from one database to another), but they should be passed accordingly when necessary.
+You can use double-dash notation for any argument. Arguments `-sid` or `-db` are not mandatory (as they can change from one database to another), but they should be passed accordingly when necessary.
 
 ### Example
 
@@ -705,9 +707,9 @@ There are a few considerations you should be aware of:
 
 * If a column name (e.g. DATE) is found in several tables, and it always has the same type, only one field will be specified in the dictionary. However, if the same column name is found in different tables with different types, a new field will be created for each type, keeping the column name and adding the table name (e.g. CALENDAR) in the following fashion: DATE_IN_CALENDAR. The script will output this event on screen so you can fix the name and/or type it manually later on.
 * The types are mapped from [http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html "http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html") to Genesis dictionary types. Each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate; you must check the results for correctness.
-* If there is no mapping available for the java.sql.Type retrieved by the column metadata query, it will be mapped by default to the Genesis dictionary type "STRING". This event will be shown on standard output too, so you can know that there is an uncommon type that you should take care of.
-* Every time a table is successfully parsed, the script will give feedback: "TABLE USERS complete".
-* VIEWS are not parsed.
+* If there is no mapping available for the `java.sql.Type` retrieved by the column metadata query, it will be mapped by default to the Genesis dictionary type `STRING`. This event will be shown on standard output too, so you can know that there is an uncommon type that you should take care of.
+* Every time a table is successfully parsed, the script will give feedback: `TABLE USERS complete`.
+* Views are not parsed.
 
 #### Keys and indexes
 Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based.
@@ -748,7 +750,7 @@ The tables to check are specified in the **genesis-sync-definition.xml** file. H
 </sync>
 ```
 
-If there are any differences found between the local and remote tables, then the result will be output to a text file. The location of this text file will be shown in the console output.
+If there are any differences found between the local and remote tables, then the result will be output to a text file. The location of this text file will be displayed on screen.
 There are 3 categories in the output: "Records Missing From Local", "Records Missing From Remote" and "Records Which Differ Between Remote and Local".
 
 Records are compared using the primary key field. The TIMESTAMP and RECORD_ID fields are extremely likely to differ,
@@ -790,14 +792,14 @@ AppGen can be used to generate a fully working application from a dictionary fil
 Usually when creating a application, you would start with a schema; you then build data servers, request servers and event handlers on top to create your application.  AppGen automates all this, and will generate the following new files:
 
 - Data server: _application_**-dataserver.kts**
-- Request server: _application_**-requestserver.kts**
-- Event handler: _application_**-event-handler.kts**
+- Request server: _application_**-reqrep.kts**
+- Event handler: _application_**-eventhandler.kts**
 - Sytem processes: _application_**-processes.xml**
 - Service definitions: _application_**-service-definitions.xml
 
 ### Data server and request server
 
-One block will be generated for each table in the database, complete with metadata (all fields on the table) and a field block that returns all fields on the table.  Forrequest servers, the inbound metadata will be based on the primary key.
+One block will be generated for each table in the database, complete with metadata (all fields on the table) and a field block that returns all fields on the table.  For request servers, the inbound metadata will be based on the primary key.
 
 ### Event handler
 
