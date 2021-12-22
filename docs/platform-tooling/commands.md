@@ -42,7 +42,7 @@ The script will also check for overridden configuration and script files, whethe
 
 Details to take into account:
 
-`installRelease` uses the **global-product-details.xml** file in **GENESIS_HOME/generated/cfg/** as its first information source. This file is generated when the 'genesisInstall' script is executed, (the script gathers information from each installed product and stores it inside this global file). If this file does not exist, 'installRelease' searches for independent _application_**-product-details.xml** files in every installed application. If no information is found, the installation will be cancelled.
+`installRelease` uses the **global-product-details.xml** file in **GENESIS_HOME/generated/cfg/** as its first information source. This file is generated when the 'genesisInstall' script is executed, (the script gathers information from each installed product and stores it inside this global file). If this file does not exist, `installRelease` searches for independent _application_**-product-details.xml** files in every installed application. If no information is found, the installation will be cancelled.
 
 Execute `genesisInstall` after installing an application, so that the application details are stored in global-product-details.xml for future product installations.
 
@@ -58,7 +58,7 @@ The command also checks the system-specific definitions and uses these to replac
 
 Following this, when you start any process, the 'startProcess' command reads from the **cfg** directory in the **generated** folder.
 
-'genesisInstall' also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the **run/generated/cfg** area.
+`genesisInstall` also completes config checking, looking out for mistakes in the configured code and providing warnings and error messages. If an error is encountered, the configuration will not be propagated to the **run/generated/cfg** area.
 
 ### Syntax
 
@@ -135,7 +135,7 @@ To commit the changes to the database, use the **--commit** argument.
 
 This script starts a Genesis process. It takes a single positional argument:
 
-`<process name>` and an optional argument '--dump', to ensure console output is shown on screen (useful for debugging).
+`<process name>` and an optional argument `--dump`, to ensure output is shown on screen (useful for debugging).
 
 ### Syntax
 
@@ -147,7 +147,7 @@ startProcess processName [--hostname <[host names]>] [--dump]
 
 | Argument                   | Argument long name                          | Mandatory | Description                                                                                                                                                                                         | Restricted values |
 |----------------------------|---------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | No        | where   the application is running on more than one node, this identifies the node   where you want to start the process (so you can start a process on a   different node). Specify the Host Name. | No                |
+| -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | No        | where   the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | No                |
 | -c                         | --cluster                                   | No        | starts  the process on every node in the cluster                                                                                                                                                   | No                |
 |                            | --dump                                      | No        | displays progress of the process, which is useful for debugging                                                                                                                          | No                |	
 
@@ -187,7 +187,7 @@ startServer [--hostname <[host names]>] [--ignoreDaemon]
 
 | Argument                    | Argument long name                   | Mandatory | Description                                                                                                                                                                                | Restricted values |
 |-----------------------------|--------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-|  -s HOSTNAME [HOSTNAME ...] | --hostname   HOSTNAME [HOSTNAME ...] | No        | If the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node. Specify the Host Name. | No                |
+|  -s HOSTNAME [HOSTNAME ...] | --hostname   HOSTNAME [HOSTNAME ...] | No        | If the application is running on more than one node, this identifies the node where you want to start the server (so you can start a server on a different node. Specify the Host Name | No                |
 |  -c                         | --cluster                            | No        | Starts the process on every node in the cluster,                                                                                                                                           | No                |
 |  -i                         | --ignoreDaemon                       | No        | avoids killing/starting the daemon                                                                                                                                                         | No                |
 
@@ -223,15 +223,15 @@ The **processes.xml** file looks like this:
 
 Each process property is defined in here, including JAVA arguments, configuration files, and scripts.
 
-The dependency tag defines the processes that the current process is dependent on. In the above example, the GENESIS_AUTH_PERMS process will start after all its dependencies have started.
+The `dependency` tag defines the processes that the current process is dependent on. In the above example, the GENESIS_AUTH_PERMS process will start after all its dependencies have started.
 
-The 'loggingLevel' tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to declare explicitly that you would like to log all the received/sent network messages.
+The `loggingLevel` tag defines the default log level for the process, which is based on slf4j levels. It also accepts DATADUMP_ON/DATADUMP_OFF to declare explicitly that you would like to log all the received/sent network messages.
 
-The 'classpath' tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated; they need to exist within a lib folder for one of the genesis products in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.
+The `classpath` tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated; they need to exist within a lib folder for one of the genesis products in the environment. A use case would be to use the **quickfixj** library to parse a fix message within a query definition.
 
 ## killServer script
 
-This script reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt for confirmation ('Are you sure you want to kill server? (y/n):'), unless you specify '--force'.
+This script reads the **$GC/processes.xml** file to determine which processes to kill. It will prompt for confirmation (`Are you sure you want to kill server? (y/n):`), unless you specify `--force`.
 
 ### Syntax
 
@@ -243,7 +243,7 @@ killServer [--hostname <[hosts names]>] [--force]
 | Argument                     | Argument long name                            | Mandatory | Description                                                                                                                                                                                                                          | Restricted values |
 |------------------------------|-----------------------------------------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
 | -s   HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME   [HOSTNAME ...] | No        | Where the application is running  on more than one node, this identifies the node where you want to kill the server (so you can kill a server on a different node). Specify the Host Name, Host Names or "cluster" for all hosts | No                |
-| -f                           | --force                                       | No        | forcefully kills a process   (using kill -9)                                                                                                                                                                                         | No                |
+| -f                           | --force                                       | No        | forcefully kills a process (using kill -9)                                                                                                                                                                                         | No                |
 |                              | --all                                         | No        | kills all processes, including   GENESIS_CLUSTER                                                                                                                                                                                     | No                |
 | -c                           | --cluster                                     | No        | kills the server on all the nodes in the cluster                                                                                                                                                                                   | No                |    
 
@@ -254,7 +254,7 @@ This script enables you to navigate through the database tables from the command
 Once inside `DbMon`, you can run the command 'help', which shows all the available DbMon commands. 
 To get help on a specific command, run `help _command_`.
 
-'DbMon --quietMode' performs database changes without triggering real-time updates in the update queue layer.
+`DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
 
 ### Syntax
 
@@ -334,7 +334,7 @@ To modify records you, need to specify the key that will be used to identify the
 SendIt -t FUND -m FUND_BY_ID
 ```
 
-Modify fields ('-mf') is a special parameter that can be added to '-m' operations. SendTable will only attempt to modify the record fields specified in this comma-separated list parameter.
+Modify fields (`-mf`) is a special parameter that can be added to `-m` operations. SendTable will only attempt to modify the record fields specified in this comma-separated list parameter.
 
 To delete records, specify `-d` (or `--delete`)
 
@@ -406,8 +406,8 @@ LogLevel -p <process-name> -l <log level> -t <time> [-optional params] -c <class
 |                                        |  -DATADUMP_ON                        | No        | changes the log level to trace for Genesis messages                                   | No                |
 | -h                                     |  --help                              | No        | show usage information                                                                | No                |
 | -l                                     |  --level `<log level>`               | No        | log level - if log level is not correct it will be set automatically to   DEBUG level | No                |
-| -p `<process-name>,..,<process-name>`  |                                      | No        | attaches processes to the command                                                     | No                |
-| -r `<process-name>,..,<process-name>`  |                                      | No        | remove processes                                                                      | No                |
+| -p _process-name_,..,_process-name_  |                                      | No        | attaches processes to the command                                                     | No                |
+| -r _process-name_,..,_process-name_`  |                                      | No        | remove processes                                                                      | No                |
 |                                        | -STATUSDUMP_OFF                      | No        | changes the log level to info for status updates                                      | No                |
 |                                        | -STATUSDUMP_ON                       | No        | changes the log level to trace for status updates                                     | No                |
 | -t `<time>`                            |                                      | No        | duration of log level change in min/sec Eg: 1m, 1000s                                 | No                |
@@ -463,16 +463,16 @@ Options
 
 ## DropTable
 
-To remove database tables and all corresponding records instantly, use the DropTable command.
+To remove database tables and all corresponding records instantly, use the `DropTable` command.
 
 ### Syntax 
-The command takes a flag of '-t', followed by a list of space-separated table names, for example:
+The command takes a flag of `-t`, followed by a list of space-separated table names, for example:
 
 ```bash
 DropTable -t TABLE_NAME1 TABLE_NAME2 TABLE_NAME3
 ```
 
-The command will ask you to confirm the removal of each table explicitly.
+The command will ask you to confirm the removal of each table.
 
 ## PopulateHolidays
 
@@ -531,7 +531,8 @@ MigrateAliases DATABASE
 
 Aerospike and FDB implementations use internal aliases for fields and tables. Migrating these aliases from database to a file will help to debug problems in the data storage.
 
-It is recommended to use a file store if you are running Genesis in a single node and database mode if you are running Genesis in more than one node.
+- If you are running Genesis on a single node, use a file store 
+- If you are running Genesis on more than one node, use database mode .
 
 The "remap" operation will update the alias store, so if you are running a Genesis cluster it is better to use a database storage mode, as it is less error-prone and you won't have to copy the alias storage file to the remaining nodes manually.
 
@@ -545,9 +546,9 @@ This migrates the Genesis dictionary from the Database Dictionary Store to the F
 MigrateDictionary
 ```
 
-The script uses the system definition file to get the **DictionarySource** property.
+The script uses the system definition file to get the `DictionarySource` property.
 
-If the property is **DB** (the server uses a Database Dictionary Store), then the **MigrateDictionary** script saves a dictionary to a file.
+If the property is `DB`, the server uses a Database Dictionary Store), then the `MigrateDictionary` script saves a dictionary to a file.
 
 If the `DictionarySource` is `FILE` (the server uses a File Dictionary Store), then the dictionary is saved to a database. The target database type - `DbLayer` - is retrieved from the system definitions file.
 
@@ -558,11 +559,11 @@ Here is a recommendation:
 
 The `remap` operation will update the dictionary, so if you are running a Genesis cluster, it is better to use a Database Dictionary Store, as it is less error-prone and the user won't have to copy the dictionary file to the remaining nodes manually.
 
-It is potentially dangerous to switch the `DictionarySource` property. If you run 'remap` (which modifies the  dictionary) after `MigrateDictionary` and before switching the `DictionarySource` property, the file store and database store could contain different dictionaries and it is not safe to switch between them.
+It is potentially dangerous to switch the `DictionarySource` property. If you run `remap` (which modifies the  dictionary) after `MigrateDictionary` and before switching the `DictionarySource` property, the file store and database store could contain different dictionaries and it is not safe to switch between them.
 
 ## GetNextSequenceNumbers
 
-This finds all the dictionary sequences and prints the next sequence number for each one of them. It displays the results on screen in csv format, so it is easy to redirect the output and reuse it with the **SetSequence** script (see below).
+This finds all the dictionary sequences and prints the next sequence number for each one of them. It displays the results on screen in csv format, so it is easy to redirect the output and reuse it with the `SetSequence` script (see below).
 
 ### Syntax
 
@@ -572,9 +573,9 @@ GetNextSequenceNumbers
 
 ## GetSequenceCount
 
-This gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by the "SetSequence" script (see below)
+This gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by the `SetSequence` script (see below)
 
-Usage:
+### Syntax
 
 ```bash
 GetSequenceCount
@@ -588,9 +589,9 @@ GetSequenceCount
 
 ## GetAutoIncrementCount
 
-This works like the **GetSequenceCount**, but for auto increment INT values defined in dictionaries.
+This works similarly to `GetSequenceCount`, but for auto increment INT values defined in dictionaries.
 
-Usage
+### Syntax
 
 ```bash
 GetAutoIncrementCount
@@ -623,7 +624,7 @@ Options:
 
 ## SetAutoIncrement
 
-This works like **SetSequence** but for auto increment INT values.
+This works in a smilar way to `SetSequence` but for auto increment INT values.
 
 ### Syntax
 
@@ -643,29 +644,29 @@ SetAutoIncrement
 
 This is a python script wrapper for Genesis scripts.
 
-GenesisRun will attempt to find a script to execute within the genesis folder structure (site-specific or scripts).
+'GenesisRun` will attempt to find a script to execute within the Genesis folder structure (site-specific or scripts).
 
 There are two environment variables that can be used to configure how much RAM the scripts will use:
 
 * SCRIPT_MAX_HEAP
 * REMAP_MAX_HEAP
 
-**GenesisRun** can execute code in two different modes: Groovy script and GPAL Kotlin script. **GenesisRun** builds the necessary classpath, so you don't need to build it in each script.
+`GenesisRun` can execute code in two different modes: Groovy script and GPAL Kotlin script. **GenesisRun** builds the necessary classpath, so you don't need to build it in each script.
 
 * Groovy script: GenesisRun SetLogLevelScript.groovy
 * GPAL Kotlin script: GenesisRun customPurger-script.kts
 
-There is a separate wrapper, **JvmRun** for Java main class scripts.
+There is a separate wrapper, `JvmRun` for Java main class scripts.
 
 ## DictionaryBuilder
 
-This is a groovy script; it can be executed with **GenesisRun** or **JVMRun**.
+This is a groovy script; it can be executed with `GenesisRun` or `VMRun`.
 
-DictionaryBuilder parses RDBMS schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases.
+`DictionaryBuilder` parses RDBMS schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases.
 
 The script accepts a series of arguments to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc).
 
-### Arguments
+### Syntax
 
 | Argument | Argument long name | Mandatory | Description | Restricted Values |
 | -- | -- | -- | -- | -- |
@@ -703,13 +704,13 @@ There are a few considerations you should be aware of:
 * Every time a table is successfully parsed, the script will give feedback: "TABLE USERS complete".
 * VIEWS are not parsed.
 
-#### Keys and indexes.
-Primary keys will be parsed as primary keys in Genesis, whether they are single column based or multiple-column-based.
+#### Keys and indexes
+Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based.
 Only unique indexes will be parsed as secondary keys.
 There is no concept of foreign keys in Genesis, so these are ignored.
-Strings parsed in lower camel-case format (camelCase) will be transformed to upper underscore format (UPPER_UNDERSCORE).
+Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE).
 
-### Types mapping
+### Type mapping
 
 | Genesis Type | JDBC Types |   |   |   |   |   |   |
 | -- | -- | -- | -- | -- |
@@ -731,7 +732,7 @@ Typically, this would be used to reconcile tables that are being kept in sync by
 
 The local DB's details (host, port, user, etc) are read from the system definition file in the local environment. The remote DB's details are specified as options to the command.
 
-The tables to check are specified in the `genesis-sync-definition.xml` file. Here is a simple example that specifies two tables:
+The tables to check are specified in the **genesis-sync-definition.xml** file. Here is a simple example that specifies two tables:
 
 ```xml
 <sync>
@@ -781,21 +782,23 @@ ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p db
 
 AppGen can be used to generate a fully working application from a dictionary file.
 
-Usually when creating a application, you would start with a schema; you then build data servers, request servers and event handlers on top to create your product.  AppGen automates all of this, and will generate the following:
+Usually when creating a application, you would start with a schema; you then build data servers, request servers and event handlers on top to create your application.  AppGen automates all this, and will generate the following new files:
 
-### Data server and Request Server
+- Data server: _application_**-dataserver.kts**
+- Request server: _application_**-requestserver.kts**
+- Event handler: _application_**-event-handler.kts**
+- Sytem processes: _application_**-processes.xml**
+- Service definitions: _application_**-service-definitions.xml
 
-One block will be generated per table, complete with meta data (all fields on the table) and a field block (returning all fields on the table).  For request servers, the inbound meta data will be based on the primary key.
+### Data server and request server
+
+One block will be generated for each table in the database, complete with metadata (all fields on the table) and a field block that returns all fields on the table.  Forrequest servers, the inbound metadata will be based on the primary key.
 
 ### Event handler
 
-Event handler, complete with insert, amend and delete transactions.  All transactions support validation and meta data.  If a field is marked as a sequence in the dictionary (i.e. generated ID) then the field is not specified on the meta data for inserts, but will be specified on modifies/deletes.
+The file for the event handler contains insert, amend and delete transactions for every table in the database.  All transactions support validation and meta data. If a field is marked as a sequence in the dictionary (i.e. generated ID) then the field is not specified on the metadata for inserts, but it will be specified on modifies and deletes.
 
-Deletes will have reduced metadata, as we only require the columns to satisfy the primary key to do the delete.
-
-### Static files
-
-Two essential Genesis files will be generated: **processes.xml** and **service-definitions.xml**.
+Deletes will have reduced metadata, as it is only necessary for the columns to satisfy the primary key to perform the delete.
 
 ### Parameters
 
@@ -808,7 +811,7 @@ Two essential Genesis files will be generated: **processes.xml** and **service-d
 
 ### Examples
 
-This example has no **-t** option.
+This example has no `-t` option.
 
 ```bash
 AppGen -d tas-dictionary.xml -p 4000 -pn tas
@@ -829,7 +832,7 @@ tas/
     /scripts/tas-tnHandler.gy
 ```
 
-This example has a **-t** option, which specifies that only the table ORDER USER should be read from the source dictionary.
+This example has a `-t` option, which specifies that only the table ORDER USER should be read from the source dictionary.
 
 ```bash
 AppGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
