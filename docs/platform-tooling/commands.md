@@ -624,7 +624,7 @@ Options:
 
 ## SetAutoIncrement
 
-This works like **SetSequence** but for auto increment INT values.
+This works in a smilar way to `SetSequence` but for auto increment INT values.
 
 ### Syntax
 
@@ -644,29 +644,29 @@ SetAutoIncrement
 
 This is a python script wrapper for Genesis scripts.
 
-GenesisRun will attempt to find a script to execute within the genesis folder structure (site-specific or scripts).
+'GenesisRun` will attempt to find a script to execute within the Genesis folder structure (site-specific or scripts).
 
 There are two environment variables that can be used to configure how much RAM the scripts will use:
 
 * SCRIPT_MAX_HEAP
 * REMAP_MAX_HEAP
 
-**GenesisRun** can execute code in two different modes: Groovy script and GPAL Kotlin script. **GenesisRun** builds the necessary classpath, so you don't need to build it in each script.
+`GenesisRun` can execute code in two different modes: Groovy script and GPAL Kotlin script. **GenesisRun** builds the necessary classpath, so you don't need to build it in each script.
 
 * Groovy script: GenesisRun SetLogLevelScript.groovy
 * GPAL Kotlin script: GenesisRun customPurger-script.kts
 
-There is a separate wrapper, **JvmRun** for Java main class scripts.
+There is a separate wrapper, `JvmRun` for Java main class scripts.
 
 ## DictionaryBuilder
 
-This is a groovy script; it can be executed with **GenesisRun** or **JVMRun**.
+This is a groovy script; it can be executed with `GenesisRun` or `VMRun`.
 
-DictionaryBuilder parses RDBMS schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases.
+`DictionaryBuilder` parses RDBMS schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases.
 
 The script accepts a series of arguments to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc).
 
-### Arguments
+### Syntax
 
 | Argument | Argument long name | Mandatory | Description | Restricted Values |
 | -- | -- | -- | -- | -- |
@@ -704,13 +704,13 @@ There are a few considerations you should be aware of:
 * Every time a table is successfully parsed, the script will give feedback: "TABLE USERS complete".
 * VIEWS are not parsed.
 
-#### Keys and indexes.
-Primary keys will be parsed as primary keys in Genesis, whether they are single column based or multiple-column-based.
+#### Keys and indexes
+Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based.
 Only unique indexes will be parsed as secondary keys.
 There is no concept of foreign keys in Genesis, so these are ignored.
-Strings parsed in lower camel-case format (camelCase) will be transformed to upper underscore format (UPPER_UNDERSCORE).
+Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE).
 
-### Types mapping
+### Type mapping
 
 | Genesis Type | JDBC Types |   |   |   |   |   |   |
 | -- | -- | -- | -- | -- |
@@ -732,7 +732,7 @@ Typically, this would be used to reconcile tables that are being kept in sync by
 
 The local DB's details (host, port, user, etc) are read from the system definition file in the local environment. The remote DB's details are specified as options to the command.
 
-The tables to check are specified in the `genesis-sync-definition.xml` file. Here is a simple example that specifies two tables:
+The tables to check are specified in the **genesis-sync-definition.xml** file. Here is a simple example that specifies two tables:
 
 ```xml
 <sync>
@@ -782,21 +782,23 @@ ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p db
 
 AppGen can be used to generate a fully working application from a dictionary file.
 
-Usually when creating a application, you would start with a schema; you then build data servers, request servers and event handlers on top to create your product.  AppGen automates all of this, and will generate the following:
+Usually when creating a application, you would start with a schema; you then build data servers, request servers and event handlers on top to create your application.  AppGen automates all this, and will generate the following new files:
 
-### Data server and Request Server
+- Data server: _application_**-dataserver.kts**
+- Request server: _application_**-requestserver.kts**
+- Event handler: _application_**-event-handler.kts**
+- Sytem processes: _application_**-processes.xml**
+- Service definitions: _application_**-service-definitions.xml
 
-One block will be generated per table, complete with meta data (all fields on the table) and a field block (returning all fields on the table).  For request servers, the inbound meta data will be based on the primary key.
+### Data server and request server
+
+One block will be generated for each table in the database, complete with metadata (all fields on the table) and a field block that returns all fields on the table.  Forrequest servers, the inbound metadata will be based on the primary key.
 
 ### Event handler
 
-Event handler, complete with insert, amend and delete transactions.  All transactions support validation and meta data.  If a field is marked as a sequence in the dictionary (i.e. generated ID) then the field is not specified on the meta data for inserts, but will be specified on modifies/deletes.
+The file for the event handler contains insert, amend and delete transactions for every table in the database.  All transactions support validation and meta data. If a field is marked as a sequence in the dictionary (i.e. generated ID) then the field is not specified on the metadata for inserts, but it will be specified on modifies and deletes.
 
-Deletes will have reduced metadata, as we only require the columns to satisfy the primary key to do the delete.
-
-### Static files
-
-Two essential Genesis files will be generated: **processes.xml** and **service-definitions.xml**.
+Deletes will have reduced metadata, as it is only necessary for the columns to satisfy the primary key to perform the delete.
 
 ### Parameters
 
@@ -809,7 +811,7 @@ Two essential Genesis files will be generated: **processes.xml** and **service-d
 
 ### Examples
 
-This example has no **-t** option.
+This example has no `-t` option.
 
 ```bash
 AppGen -d tas-dictionary.xml -p 4000 -pn tas
@@ -830,7 +832,7 @@ tas/
     /scripts/tas-tnHandler.gy
 ```
 
-This example has a **-t** option, which specifies that only the table ORDER USER should be read from the source dictionary.
+This example has a `-t` option, which specifies that only the table ORDER USER should be read from the source dictionary.
 
 ```bash
 AppGen -d tas-dictionary.xml -t ORDER USER -p 4000 -pn tas
