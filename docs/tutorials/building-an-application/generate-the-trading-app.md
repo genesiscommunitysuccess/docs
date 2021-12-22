@@ -43,14 +43,16 @@ This will fail because we have duplicate fields with the different field types.
 
 ![](/img/fail-duplicate-fields-and-tables.png)
 
-Edit the file **trading_app-fields-dictionary.kts**. Remove the following duplicated fields:
+The point here is that this application and the ref_data_ app that you created in the previous tutorial will share the same data model. These fields have been marked as duplicates because there is a field of the same name in the existing data model - which was created when you made the ref_data_app. Note that fields of the same name and type have caused no probems at all.
+
+So, edit the file **trading_app-fields-dictionary.kts** that you have just generated from the Excel workbook. Remove the following duplicated fields:
 
 * COUNTERPARTY_ID
 * INSTRUMENT_ID
 
 ![](/img/remove-two-fields.png)
 
-Edit the file **trading_app-tables-dictionary.kts**. Remove the following duplicated tables:
+There is a similar issue with tables. So edit the file **trading_app-tables-dictionary.kts**. Remove the following duplicated tables:
 
 * COUNTERPARTY
 * INSTRUMENT
