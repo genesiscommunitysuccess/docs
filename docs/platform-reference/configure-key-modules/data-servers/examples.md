@@ -79,9 +79,16 @@ Below, we shall examine the settings that are available for your `config` statem
 
 ### Global settings
 
-**Top-level-only settings**
+Global settings can be applied at two levels:
 
-**lmdbAllocateSize**. This sets the size of the memory-mapped file where the in-memory cache stores the data server query rows. This configuration setting can only be applied at the top level. It affects the whole data server. 
+- Top level
+- Query level
+
+The following global setting applies at the top level only.
+
+
+#### lmdbAllocateSize
+This sets the size of the memory-mapped file where the in-memory cache stores the data server query rows. This configuration setting can only be applied at the top level. It affects the whole data server. 
 
 By default, the size is defined in bytes. To use MB or GB, use the `MEGA_BYTE` or `GIGA_BYTE` functions. You can see these in the example below. The default is 2 GB.
 
@@ -91,32 +98,44 @@ lmdbAllocateSize = 2.GIGA_BYTE()
 lmdbAllocateSize = 512.MEGA_BYTE()
 ```
 
-**Top-level and query-level settings** 
+The following seetings apply at top-level and query-level.
 
-**compression**. If this is set to `true`, it will compress the query row data before writing it to the in-memory cache. Defaults to `false`.
+#### compression
+If this is set to `true`, it will compress the query row data before writing it to the in-memory cache. Defaults to `false`.
 
-**chunkLargeMessages**. If this is set to true, it will split large updates into smaller ones. Defaults to `false`.
+#### chunkLargeMessages
+If this is set to true, it will split large updates into smaller ones. Defaults to `false`.
 
-**defaultStringSize**. This is the size to be used for string storage in the data server in-memory cache. Higher values lead to higher memory use and lower values lead to truncation. Defaults to `40`.
+#### defaultStringSize
+This is the size to be used for string storage in the data server in-memory cache. Higher values lead to higher memory use and lower values lead to truncation. Defaults to `40`.
 
-**batchingPeriod**. This is the delay in milliseconds to wait before sending new data to data-server clients. Defaults to `500ms`.
+#### batchingPeriod
+This is the delay in milliseconds to wait before sending new data to data-server clients. Defaults to `500ms`.
 
-**linearScan**. This enables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes. Defaults to `true`.
+#### linearScan
+This enables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes. Defaults to `true`.
 
-**excludedEmitters**. This enables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored. Defaults to an empty list.
+#### excludedEmitters
+This enables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored. Defaults to an empty list.
 
-**enableTypeAwareCriteriaEvaluator**. This enables the type-aware criteria evaluator at the data-server level. Defaults to `false`. [Click here to read more](
+#### enableTypeAwareCriteriaEvaluator
+This enables the type-aware criteria evaluator at the data-server level. Defaults to `false`. [Click here to read more](
     /platform-reference/configure-key-modules/data-servers/examples/#enabletypeawarecriteriaevaluator)
 
 ### Query settings
+The following settings only apply at query-level. 
 
-**defaultCriteria**. This represents the default criteria for the query. Defaults to `null`.
+#### defaultCriteria
+This represents the default criteria for the query. Defaults to `null`.
 
-**disableAuthUpdates**. This disables real-time auth updates in order to improve the overall data responsiveness and performance of the server. Defaults to `false`.
+#### disableAuthUpdates
+This disables real-time auth updates in order to improve the overall data responsiveness and performance of the server. Defaults to `false`.
 
-**backJoins**. This is deprecated, to be replaced by the setting below. It is functionally the same.
+#### backJoins
+Seen in older versions of the platform, this has been replaced by the setting below. It is functionally the same.
 
-**backwardsJoins**. This enables backwards joins on a view query, these need to be configured at the join level of the query in order to work correctly. Defaults to `true`.
+#### backwardsJoins
+This enables backwards joins on a view query. Backwards joins ensure real-time updates on the fields that have been joined. These need to be configured at the join level of the query in order to work correctly. Defaults to `true`.
 
 #### enableTypeAwareCriteriaEvaluator
 
@@ -129,7 +148,7 @@ The type-aware evaluator can transform strings to integers, and any other sensib
 By contrast, the traditional criteria evaluator needs the field types to match the query fields in the data server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our [common date expressions](/platform-reference/configure-key-modules/data-servers/examples/#common-datedatetime-criteria-expressions) to handle date searches.
 
 
-### Backwards joins
+## Backwards joins
 
 As we have seen, each query to a data server creates what is effectively an open connection between each requesting user and the data server. After the initial send of all the data, the data server only sends modifications, deletes and inserts in real time.
 
@@ -184,11 +203,11 @@ dataServer {
 ```
 
 ### Index definition
-The **indices** (optional) block defines additional indexing at the query level. When an index is used, it will order all query rows by the "fields" specified, in ascending order. This definition is identical to the one defined in data modelling for dictionary tables.
+The **indices** (optional) block defines additional indexing at the query level. When an index is used, it will order all query rows by the fields specified, in ascending order. This definition is identical to the one defined in data modelling for dictionary tables.
 
 There are two scenarios in which an index can be used:
 * Optimising query criteria search. If a data server client specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, the data server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means we don't need to scan all the query rows stored in the data server memory-mapped file cache; instead, we perform a very efficient indexed search.
-* Index specifed in thhe data server client. If an `ORDER_BY` value is received as part of the `DATA_LOGON` process, the data server will use a specific index to query the data. The data will be returned to the client in ascending order, based on the index field definition. See more at [Client side (runtime) options](#client-side-runtime-options).
+* Index specifed in the data server client. If an `ORDER_BY` value is received as part of the `DATA_LOGON` process, the data server will use a specific index to query the data. The data will be returned to the client in ascending order, based on the index field definition. See more at [Client side (runtime) options](#client-side-runtime-options).
 
 *Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add SIMPLE_ID to the index definition to ensure we maintain uniqueness.
 
