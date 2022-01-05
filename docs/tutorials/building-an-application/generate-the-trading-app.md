@@ -54,6 +54,7 @@ So, edit the file **trading_app-fields-dictionary.kts** that you have just gener
 
 There is a similar issue with tables. So edit the file **trading_app-tables-dictionary.kts**. Remove the following duplicated tables:
 
+
 * COUNTERPARTY
 * INSTRUMENT
 
