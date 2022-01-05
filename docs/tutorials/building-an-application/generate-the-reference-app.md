@@ -7,7 +7,7 @@ sidebar_position: 1
 ---
 In this first exercise, we shall generate the reference application with its database of reference data. We shall create this from the existing RDBMS of reference data.
 
-Before you start. Make sure you have the platform and all the relevant tools [installed](/getting-started/get-ready-to-develop/install/).The Genesis LCNC must be installed on a server, local vm, wsl or cloud instance (genesis and auth).
+Before you start. Make sure you have the platform and all the relevant tools [installed](/getting-started/get-ready-to-develop/install/). The Genesis LCNC must be installed on a server, local vm, wsl or cloud instance (genesis and auth).
 
 Ideally, Maven should be installed in the server instance. It should be configured so that you can retrieve Ggenesis binaries.
 
@@ -47,9 +47,11 @@ In some cases, the process translates the `ENABLED` field as an `INT` type.
     field(name = "ENABLED", type = INT)
 ```
 We need this field to be type `BOOLEAN`. If necessary, edit the field to make it `BOOLEAN` type.
+
 ```kotlin
     field(name = "ENABLED", type = BOOLEAN)
-``
+```
+
 ## 2. Copy files and run genesisInstall
 
 Create a **new ref_data_app** folder inside **GENESIS_HOME**, including **cfg** and **scripts** folders.
