@@ -79,9 +79,16 @@ Below, we shall examine the settings that are available for your `config` statem
 
 ### Global settings
 
-**Top-level-only settings**
+Global settings can be applied at two levels:
 
-**lmdbAllocateSize**. This sets the size of the memory-mapped file where the in-memory cache stores the data server query rows. This configuration setting can only be applied at the top level. It affects the whole data server. 
+- Top level
+- Query level
+
+The following global setting applies at the top level only.
+
+
+#### lmdbAllocateSize
+This sets the size of the memory-mapped file where the in-memory cache stores the data server query rows. This configuration setting can only be applied at the top level. It affects the whole data server. 
 
 By default, the size is defined in bytes. To use MB or GB, use the `MEGA_BYTE` or `GIGA_BYTE` functions. You can see these in the example below. The default is 2 GB.
 
@@ -91,32 +98,44 @@ lmdbAllocateSize = 2.GIGA_BYTE()
 lmdbAllocateSize = 512.MEGA_BYTE()
 ```
 
-**Top-level and query-level settings** 
+The following seetings apply at top-level and query-level.
 
-**compression**. If this is set to `true`, it will compress the query row data before writing it to the in-memory cache. Defaults to `false`.
+#### compression
+If this is set to `true`, it will compress the query row data before writing it to the in-memory cache. Defaults to `false`.
 
-**chunkLargeMessages**. If this is set to true, it will split large updates into smaller ones. Defaults to `false`.
+#### chunkLargeMessages
+If this is set to true, it will split large updates into smaller ones. Defaults to `false`.
 
-**defaultStringSize**. This is the size to be used for string storage in the data server in-memory cache. Higher values lead to higher memory use and lower values lead to truncation. Defaults to `40`.
+#### defaultStringSize
+This is the size to be used for string storage in the data server in-memory cache. Higher values lead to higher memory use and lower values lead to truncation. Defaults to `40`.
 
-**batchingPeriod**. This is the delay in milliseconds to wait before sending new data to data-server clients. Defaults to `500ms`.
+#### batchingPeriod
+This is the delay in milliseconds to wait before sending new data to data-server clients. Defaults to `500ms`.
 
-**linearScan**. This enables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes. Defaults to `true`.
+#### linearScan
+This enables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes. Defaults to `true`.
 
-**excludedEmitters**. This enables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored. Defaults to an empty list.
+#### excludedEmitters
+This enables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored. Defaults to an empty list.
 
-**enableTypeAwareCriteriaEvaluator**. This enables the type-aware criteria evaluator at the data-server level. Defaults to `false`. [Click here to read more](
+#### enableTypeAwareCriteriaEvaluator
+This enables the type-aware criteria evaluator at the data-server level. Defaults to `false`. [Click here to read more](
     /platform-reference/configure-key-modules/data-servers/examples/#enabletypeawarecriteriaevaluator)
 
 ### Query settings
+The following settings only apply at query-level. 
 
-**defaultCriteria**. This represents the default criteria for the query. Defaults to `null`.
+#### defaultCriteria
+This represents the default criteria for the query. Defaults to `null`.
 
-**disableAuthUpdates**. This disables real-time auth updates in order to improve the overall data responsiveness and performance of the server. Defaults to `false`.
+#### disableAuthUpdates
+This disables real-time auth updates in order to improve the overall data responsiveness and performance of the server. Defaults to `false`.
 
-**backJoins**. This is deprecated, to be replaced by the setting below. It is functionally the same.
+#### backJoins
+Seen in older versions of the platform, this has been replaced by the setting below. It is functionally the same.
 
-**backwardsJoins**. This enables backwards joins on a view query, these need to be configured at the join level of the query in order to work correctly. Defaults to `true`.
+#### backwardsJoins
+This enables backwards joins on a view query. Backwards joins ensure real-time updates on the fields that have been joined. These need to be configured at the join level of the query in order to work correctly. Defaults to `true`.
 
 #### enableTypeAwareCriteriaEvaluator
 
@@ -129,24 +148,24 @@ The type-aware evaluator can transform strings to integers, and any other sensib
 By contrast, the traditional criteria evaluator needs the field types to match the query fields in the data server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our [common date expressions](/platform-reference/configure-key-modules/data-servers/examples/#common-datedatetime-criteria-expressions) to handle date searches.
 
 
-### Backwards joins
+## Backwards joins
 
-As we have seen, each query to a data server creates what is effectively an open connection between each requesting user and the data server. After the initial send of all the data, the data server only sends modifications, deletes and inserts in real time.
+Each query in a data server creates what is effectively an open connection between each requesting user and the data server. After the initial send of all the data, the data server only sends modifications, deletes and inserts in real time.
 
 By default, the primary table and all joined tables and views with a backward join flag are monitored. Any changes to these are sent automatically.
 
-Queries that do not have **backwardsJoins = false** will use any backwards joins in any view included in the query. The monitoring of these backward joins can come at a cost, as it can cause significant extra processing. Do not use backwards joins unless there is a need for the data in question to be updated in real time. Counterparty data, if changed, can wait until overnight, for example. The rule of thumb is that you should only use backwards joins where the underlying data is being updated intraday.
+Queries that do not have `backwardsJoins = false` will use any backwards joins in any view included in the query. The monitoring of these backward joins can come at a cost, as it can cause significant extra processing. Do not use backwards joins unless there is a need for the data in question to be updated in real time. Counterparty data, if changed, can wait until overnight, for example. The rule of thumb is that you should only use backwards joins where the underlying data is being updated intraday.
 
 
 ## Where clauses
 
-These are server-side criteria. If you include a **where** clause, the request is only processed if the criteria specified in the clause are met. For example, If you have an application that deals with derivatives that have parent and child trades, you can use a **where** clause to confine the query only to parent trades.
+If you include a `where` clause in a query, the request is only processed if the criteria specified in the clause are met. For example, If you have an application that deals with derivatives that have parent and child trades, you can use a `where` clause to confine the query to parent trades only.
 
-Also, you can use these clauses to focus on a specific set of fields or a single field. You can then use Java syntax, such as **contains**, or string/numeric operations.
+Also, you can use these clauses to focus on a specific set of fields or a single field. You can then use Java syntax, such as `contains`*, or string/numeric operations.
 
-Finally, note that **where** clauses can also be used for permissioning. If you want only users with a specific ID to have access to this data, you could permission them here.
+Finally, note that `where` clauses can also be used for permissioning. If you want only users with a specific ID to have access to this data, you could permission them here.
 
-In the example below, we have a data server query based on the existing ENHANCED_TRADE_VIEW, which filters trades so that only those whose value is larger than 1 million are permissioned.
+In the example below, we have a data server query based on the existing `ENHANCED_TRADE_VIEW`, which filters trades so that only those whose value is larger than 1 million are permissioned.
 
 ```kotlin
 dataServer {
@@ -168,7 +187,7 @@ dataServer {
 
 ## Indices
 
-Index sample:
+Here is an an example of a simple index:
 
 ```kotlin
 dataServer {
@@ -184,11 +203,11 @@ dataServer {
 ```
 
 ### Index definition
-The **indices** (optional) block defines additional indexing at the query level. When an index is used, it will order all query rows by the "fields" specified, in ascending order. This definition is identical to the one defined in data modelling for dictionary tables.
+The `indices` (optional) block defines additional indexing at the query level. When an index is used, it will order all query rows by the fields specified, in ascending order. This definition is identical to the one defined in data modelling for dictionary tables.
 
 There are two scenarios in which an index can be used:
 * Optimising query criteria search. If a data server client specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, the data server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means we don't need to scan all the query rows stored in the data server memory-mapped file cache; instead, we perform a very efficient indexed search.
-* Index specifed in thhe data server client. If an `ORDER_BY` value is received as part of the `DATA_LOGON` process, the data server will use a specific index to query the data. The data will be returned to the client in ascending order, based on the index field definition. See more at [Client side (runtime) options](#client-side-runtime-options).
+* Index specifed in the data server client. If an `ORDER_BY` value is received as part of the `DATA_LOGON` process, the data server will use a specific index to query the data. The data will be returned to the client in ascending order, based on the index field definition. See more at [Client side (runtime) options](#client-side-runtime-options).
 
 *Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add SIMPLE_ID to the index definition to ensure we maintain uniqueness.
 
@@ -365,21 +384,23 @@ query("TRADE_RANGED_LAST_2_HOURS", TRADE) {
 
 With refresh queries, rows that move out of the filter range will be removed from the cache, while rows that move into the filter will be added.
 
-When using **numKeyFields** that is less than the number of fields in the index, dummy values need to be passed into the index constructor.
+When using `numKeyFields` that is less than the number of fields in the index, dummy values need to be passed into the index constructor.
 
 ## Client-side (runtime) options
 
-When a client initiates a subscription to a data server by sending a **DATA_LOGON** message, there are several options that can be specified. It is important to note that all them are **optional**, and therefore they are not required to initiate a subscription. See the table below for a detailed explanation of all its features:
+When a client initiates a subscription to a data server by sending a **DATA_LOGON** message, there are several options that can be specified. All the options are **optional**; you don't have to specify any to initiate a subscription. 
+The features of the options are ex[lained below.
+
 
 | Option         | Default   | Description                                                  |
 | -------------- | --------- | ------------------------------------------------------------ |
 | MAX_ROWS       | 250       | Maximum number of rows to be returned as part of the initial message, and as part of any additional **MORE_ROWS** messages |
-| MAX_VIEW       | 1000      | Maximum number of rows to track as part of a client "view"   |
-| MOVING_VIEW    | **true**  | Defines the behaviour of the client "view" when new rows are received in real time. If **MOVING_VIEW** is set to true, and **MAX_VIEW** is reached, any new rows arriving to the query will start replacing the oldest rows in the view. This guarantees that only the most recent rows are shown by default |
+| MAX_VIEW       | 1000      | Maximum number of rows to track as part of a client "view   |
+| MOVING_VIEW    | **true**  | Defines the behaviour of the client view when new rows are received in real time. If `MOVING_VIEW` is set to `true`, and `MAX_VIEW` is reached, any new rows arriving to the query will start replacing the oldest rows in the view. This guarantees that only the most recent rows are shown by default |
 | CRITERIA_MATCH |           | Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: `Expr.dateIsBefore(TRADE_DATE,'20150518')` or `QUANTITY > 10000` |
-| FIELDS         |           | This optional parameter enables you to select a subset of fields from the query if the client is not interested in receiving all of them. Example: "TRADE_ID QUANTITY PRICE INSTRUMENT_ID". By default all fields are returned if this option is not specified |
+| FIELDS         |           | This optional parameter enables you to select a subset of fields from the query if the client is not interested in receiving all of them. Example: `TRADE_ID QUANTITY PRICE INSTRUMENT_ID`. By default, all fields are returned if this option is not specified |
 | ORDER_BY       |           | This option can be used to select a data server index (defined in xml), which is especially useful if you want the data to be sorted in a specific way. By default, data server rows will be returned in order of creation (from oldest database record to newest) |
-| REVERSE        | **false** | This option changes the data server index iteration. For example, if you are using the default index, they query will return rows from newest database records to oldest |
+| REVERSE        | **false** | This option changes the data server index iteration. For example, if you are using the default index, the query will return rows from newest database records to oldest |
 
 ## Common Date/DateTime criteria expressions
 
@@ -404,20 +425,20 @@ The allowed String formats are:
 ### Date operations
 
 #### dateIsBefore(date as DateTime|String|Long, String)
-This returns true when the date in the given field is before the date specified
+This returns true when the date in the given field is before the date specified.
 
 For example:
 `Expr.dateIsBefore(TRADE_DATE,'20150518')`
 
 #### dateIsAfter(date as DateTime|String|Long, String)
-This returns true when the date in the given field is after the date specified
+This returns true when the date in the given field is after the date specified.
 
 For example:
 `Expr.dateIsAfter(TRADE_DATE,'20150518')`
 
 #### dateIsGreaterEqual(date as DateTime|String|Long, String)
 
-This returns true when the date in the given field is greater or equal to the date specified
+This returns `true` when the date in the given field is greater or equal to the date specified.
 
 For example:
 
@@ -425,20 +446,20 @@ For example:
 
 #### dateIsLessEqual(date as DateTime|String|Long, String)
 
-This returns true when the date in the given field is less or equal to the date specified
+This returns `true` when the date in the given field is less or equal to the date specified.
 
 For example:
 
 `Expr.dateIsLessEqual(TRADE_DATE,'20150518')`
 
 #### dateIsEqual(date as DateTime|String|Long, String)
-This returns true when the date in the given field is equal to the date specified
+This returns `true` when the date in the given field is equal to the date specified
 
 For example:
 `Expr.dateIsEqual(TRADE_DATE,'20150518')`
 
 #### dateIsToday(date as DateTime|String|Long)
-This returns true when the data in the given field is equal to today's date (using system local time).
+This returns `true` when the data in the given field is equal to today's date (using system local time).
 
 For example:
 `Expr.dateIsToday(TRADE_DATE)`
@@ -447,7 +468,7 @@ For example:
 
 #### dateTimeIsBefore(datetime as DateTime|String|Long, String)
 
-This returns true when the datetime in the given field is before the datetime specified.
+This returns `true` when the datetime in the given field is before the datetime specified.
 
 For example:
 
@@ -455,7 +476,7 @@ For example:
 
 #### dateTimeIsAfter(datetime as DateTime|String|Long, String)
 
-This returns true when the datetime in the given field is after the datetime specified.
+This returns `true` when the datetime in the given field is after the datetime specified.
 
 For example:
 
@@ -463,7 +484,7 @@ For example:
 
 #### dateTimeIsGreaterEqual(datetime as DateTime|String|Long, String)
 
-This returns true when the datetime in the given field is greater or equal to the datetime specified.
+This returns `true` when the datetime in the given field is greater or equal to the datetime specified.
 
 For example:
 
@@ -473,7 +494,7 @@ For example:
 #### dateTimeIsLessEqual(datetime as DateTime|String|Long, String)
 
 
-This returns true when the datetime in the given field is less or equal to the datetime specified.
+This returns `true` when the datetime in the given field is less or equal to the datetime specified.
 
 For example:
 

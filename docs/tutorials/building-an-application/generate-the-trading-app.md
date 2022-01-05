@@ -52,7 +52,8 @@ So, edit the file **trading_app-fields-dictionary.kts** that you have just gener
 
 ![](/img/remove-two-fields.png)
 
-There is a similar issue over tables. Edit the file **trading_app-tables-dictionary.kts**. Remove the following duplicated tables:
+There is a similar issue with tables. So edit the file **trading_app-tables-dictionary.kts**. Remove the following duplicated tables:
+
 
 * COUNTERPARTY
 * INSTRUMENT
