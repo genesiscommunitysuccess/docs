@@ -62,6 +62,8 @@ systems {
     }
 ```
 
+For Aerospike you may also want to update the **DbNamespace** and **DbMode** properties. Details of those can be found [here](/platform-reference/essential-information/system_definitions-latest).
+
 ### 2. Activate the new configuration
 
 Run `genesisInstall`.
