@@ -54,7 +54,7 @@ We need this field to be type `BOOLEAN`. If necessary, edit the field to make it
 
 ## 2. Copy files and run genesisInstall
 
-Create a **new ref_data_app** folder inside **GENESIS_HOME**, including **cfg** and **scripts** folders.
+Create a **new ref_data_app** folder inside the working folder that you created before starting, including **cfg** and **scripts** folders.
 
 Copy the output files from the dictionary build to the **ref_data_app/cfg** folder inside the run directory.
 
@@ -93,7 +93,7 @@ But for this example application, we are going to go into the pro code, to add s
 
 First, you need to build a Maven project so that you can use an IDE to build the app.
 
-You can run the `mvn` command either locally (in the server, local vm, wsl or cloud instance where the LCNC Platform is installed) or a separate local dev machine. In our example below, we are using the same machine as before for consistency. Note that we are version 5.5.0; adjust the command to match the version of the Genesis LCNC Platform that you are using.
+You can run the `mvn` command either locally (in the server, local vm, wsl or cloud instance where the LCNC Platform is installed) or a separate local dev machine. In our example below, we are using the same machine as before for consistency. Note that we are using version 5.5.0; adjust the command to match the version of the Genesis LCNC Platform that you are using.
 
 Run the `mvn` command:
 
