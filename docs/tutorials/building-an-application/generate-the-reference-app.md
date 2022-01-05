@@ -118,7 +118,7 @@ Locate the generated files for the request server, data server and event handler
 [trading@dev-trading1 ref_data_app]$ cp /home/trading/run/ref_data_app/scripts/* ref_data_app-script-config/src/main/resources/scripts/
 ```
 
-### Install the maven project
+### Install the Maven project
 
 Now run `mvn install`.
 
@@ -130,7 +130,7 @@ Move the generated **ref_data_app/cfg** files (from the previous DictionaryBuild
 
 Locate the generated files for the request server, data server and event handler. These are in the  **ref_data_app/scripts** folder. Move these to the **ref_data_app-script-config/src/main/resources/scripts** folder.
 
-### Install the maven project in intellij
+### Install the Maven project in intellij
 
 In intellij, run `mvn install`.
 
