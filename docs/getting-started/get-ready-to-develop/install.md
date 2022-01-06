@@ -7,12 +7,12 @@ title: Install in three easy steps
 ---
 To install the Genesis LCNC Platform on your server, go through the following steps.
 
-* Make sure you have the correct infrastructure for installing the platform.
-* Install the Genesis platform.
+1. Make sure you have the [correct infrastructure for installing the platform](/getting-started/get-ready-to-develop/requirements/).
+2. Install the Genesis platform.
 
 That is it. Once you have an installed platform in the correct environment, you are ready to start developing.
 
-We  describe the recommended steps below, but you can also see the process in a neat 10-minute video.
+We describe the recommended steps below, but you can also see the process in a neat 10-minute video.
 
 <iframe src="https://player.vimeo.com/video/590505594?h=5a99336928" width="640" height="360" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture" allowFullScreen></iframe>
 
@@ -24,10 +24,10 @@ In our example, the rpm is called **genesis-platform-5.1.0-1.x86_64.rpm**.
 
 ### 1. Give the user account a name
 
-By default, the installation creates an application user account called **genesis**. You can change this change this before you start by editing the file **genesis_install.conf**. For example, to change the user account to be created to octopus, edit it as follows:
+By default, the installation creates an application user account called **genesis**. You can change this before you start by editing the file **genesis_install.conf**. For example, to change the user account to be created to foxtrot, edit it as follows:
 
 ```bash
-echo "genesis_user=octopus" >> /tmp/genesis_install.conf
+echo "genesis_user=foxtrot" >> /tmp/genesis_install.conf
 ```
 
 ### 2. Install the rpm
@@ -40,7 +40,7 @@ sudo yum --nogpgcheck localinstall genesis-platform-5.1.0-1.x86.rpm
 
 This creates the user account and makes all the recommended security settings. Additionally, it creates the required directory structure and unpacks all the zipped files.
 
-When the process has finished, you can go to the root directory and see the user that has been created (octopus, in our example).
+When the process has finished, you can go to the root directory and see the user that has been created (foxtrot, in our example).
 
 ```bash
 Installed:
@@ -50,28 +50,28 @@ Complete!
 [centos@genesisserv1 tmp]$ cd
 [centos@genesisserv1 ~]$ cd ..
 [centos@genesisserv1 home]$ ls
-centos  octopus
+centos  foxtrot
 ```
 
 
 You can switch to that user and view the run directory for the newly installed platform, where you can find **auth** and **genesis** ready to be initialized.
 
 ```bash
-[centos@genesisserv1 home]$ sudo su - octopus
+[centos@genesisserv1 home]$ sudo su - foxtrot
 [octopus@genesisserv1 ~]$ ls
 run
-[octopus@genesisserv1 ~]$ ls -ls
+[foxtrot@genesisserv1 ~]$ ls -ls
 total 12
-drwx------.  2 octopus octopus  73  Aug21 13:54 .
+drwx------.  2 foxtrot foxtrot  73  Aug21 13:54 .
 drwxr-xr-x.  4 root    root     35  Aug21 13:54 ..
--rw-r--r--.  1 octopus octopus  18  Apr  1 2020 .bash_logout
--rw-r--r--.  1 octopus octopus 193  Apr  1 2020 .bash_profile
--rw-r--r--.  1 octopus octopus 351  Aug 21 13:54 .bashrc
-lrwxrwxrwx.  1 root    root     34  Aug 21 13:54 run -> /data/octopus/server/20210821/run/
-[octopus@genesisserv1 ~]$ cd run/
-[octopus@genesisserv1 run]$ ls
+-rw-r--r--.  1 foxtrot foxtrot  18  Apr  1 2020 .bash_logout
+-rw-r--r--.  1 foxtrot foxtrot 193  Apr  1 2020 .bash_profile
+-rw-r--r--.  1 foxtrot foxtrot 351  Aug 21 13:54 .bashrc
+lrwxrwxrwx.  1 root    root     34  Aug 21 13:54 run -> /data/foxtrot/server/20210821/run/
+[foxtrot@genesisserv1 ~]$ cd run/
+[foxtrot@genesisserv1 run]$ ls
 auth    genesis
-[octopus@genesisserv1 run]$
+[foxtrot@genesisserv1 run]$
 ```
 
 

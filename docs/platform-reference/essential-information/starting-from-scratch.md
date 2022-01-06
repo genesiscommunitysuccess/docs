@@ -78,7 +78,7 @@ So that was easy. Now you know what your fields file looks like.
 
 Now look at **trade-101-dictionary-cache**. It depends on **trade-101-config** and contains the generated code based on the configuration. To explore the generated code, navigate to **trade-101-dictionary-cache/target/generated/sources/fields/global/genesis/gen/config/fields/Fields.kts**. 
 
-Here, you will find a Fields object with pre-generated literals - these are fields that are commonly used in trading applications; they get generated out-of-the box to help you develop faster . To see the fields you have just added, you need to build the project again:
+Here, you will find a Fields object with pre-generated literals - these are fields that are commonly used in trading applications; they have been generated out-of-the box to help you develop faster. To see the fields you have just added, you need to build the project again:
 
 ```bash
 mvn package
