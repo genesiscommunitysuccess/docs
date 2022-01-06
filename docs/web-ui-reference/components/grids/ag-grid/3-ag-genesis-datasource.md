@@ -26,7 +26,7 @@ Used in [Connected Data](/web-ui-reference/components/grids/ag-grid/ag-grid-conn
 
 - **`reverse: boolean`**: This option changes the data server index iteration. For example, if you are using the default index, they query will return rows from newest database records to oldest.
 
-## Usage (0.0.17+)
+## Usage (0.0.18+)
 
 ```html title="Streaming data from ALL_PROCESS_STATUS data server"
 <alpha-card>
