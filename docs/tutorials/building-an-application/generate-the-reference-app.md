@@ -12,6 +12,7 @@ Before you start. Make sure you have the platform and all the relevant tools [in
 Ideally, Maven should be installed in the server instance. It should be configured so that you can retrieve Ggenesis binaries.
 
 Otherwise, the Maven installation and configuration must be available in a local development environment.
+Finally, before you start, create a new folder as a working area for the project under the GENESIS HOME folder. Call this folder **RefTradingApp**. This makes sure that all the files for this application will be separate from any other work you are doing. 
 
 ## The source database
 
