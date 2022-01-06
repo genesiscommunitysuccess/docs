@@ -1,0 +1,32 @@
+---
+sidebar_position: 0 
+title: APIs 
+sidebar_label: Overview 
+id: overview
+
+---
+
+Genesis supports different ways of interacting with the database. Regardless of the interface used, the operations 
+remain the same. For an overview of the operations, see [here](../../operations/overview). The preferred way of 
+accessing the database is via the EntityDb. 
+
+|                                                                                              | [EntityDb](../entity-db)                                                        | [Generated Repositories](../generated)                                          | [RxDb](../rxdb)                                                        |
+|----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|---------------------------------------------------------------------------------|------------------------------------------------------------------------|
+| [Supports tables](../../data-structure/tables)                                               | ✔️                                                                              | ✔️                                                                              | ❌                                                                      |
+| [Supports views](../../data-structure/views)                                                 | ✔️                                                                              | ✔️                                                                              | ❌                                                                      |
+| Supports any data type                                                                       | ✔️                                                                              | ❌                                                                               | ✔️                                                                     |
+| Class to import                                                                              | `AsyncEntityDb` <br/> `RxEntityDb`                                              | `[TableName]AsyncRepository` <br/> `[TableName]Rx3Repository`                   | `RxDb`                                                                 |
+| Type safe read and write                                                                     | ✔️                                                                              | ✔️                                                                              | ❌                                                                      | 
+| Type safe write result                                                                       | ✔️                                                                              | ❌                                                                               | ❌                                                                      | 
+| Returns data as                                                                              | [table](../../entity-types/tables) or [view](../../entity-types/views) entities | [table](../../entity-types/tables) or [view](../../entity-types/views) entities | [DbRecord](../../data/dbrecord)                                        |
+| Writes data as                                                                               | [table](../../entity-types/tables) or [view](../../entity-types/views) entities | [table](../../entity-types/tables) or [view](../../entity-types/views) entities | [DbRecord](../../data/dbrecord)                                        |
+| References indexes as                                                                        | [index entities](../../entity-types/indices)                                    | Generated methods                                                               | [DbRecord](../../data/dbrecord) and `String`                           |
+| Programming interface                                                                        | [Async](../../reference/async) or [RxJava](../../reference/rxjava)      | [Async](../../reference/async) or [RxJava](../../reference/rxjava)      | [RxJava](../../reference/rxjava)                                   |
+| Write (input)                                                                                | [Generic Modify Details](../../helper/modify/generic)                           | Generated                                                                       | [Legacy Modify Details](../../helper/modify/legacy)                    |
+| Write (output)                                                                               | [Generic Write Result](../../helper/write-result/generic)                       | [Legacy Write Result](../../helper/write-result/legacy)                         | [Legacy Write result](../../helper/write-result/legacy)                |
+| Subscribe                                                                                    | [Record Update](../../helper/subscription/record-update) of entity              | [Record Update](../../helper/subscription/record-update) of entity              | [Record Update](../../helper/subscription/record-update) of `DbRecord` |
+| Bulk or Range Subscribe                                                                      | [Bulk](../../helper/subscription/bulk) of entity                                | [Bulk](../../helper/subscription/bulk) of entity                                | [Bulk](../../helper/subscription/bulk) of `DbRecord`                   |
+| Available in [event-handlers](../../../configure-key-modules/event-handlers/configure)       | ✔️                                                                              | ❌                                                                               | ❌                                                                      |
+| Available in [custom request replies](../../../configure-key-modules/request-servers/custom) | ✔️                                                                              | ❌                                                                               | ❌                                                                      |
+
+️helper/write-result/generic
