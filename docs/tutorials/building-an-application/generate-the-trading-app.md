@@ -5,9 +5,11 @@ sidebar_label: Generate the trading app
 sidebar_position: 2
 
 ---
-Previously, we have created a reference data application from our original RDBMS database. This has a schema that we can use here.
+Previously, we have created a reference data application from our original RDBMS database. 
 
-Now we are going to create a trading application, based on the source spreadsheet.
+Now we are going to create a trading application, based on a source spreadsheet.
+
+The two applications will share the same data model, as we shall see. They will effectively become modules of a single trade and positions application.
 
 ## The source spreadsheet
 
@@ -17,7 +19,7 @@ Here is a look at the trades workbook that will form the basis of our trading ap
 
 ## 1. Convert the spreadsheet
 
-Using the instance in which the platform is installed, run **ExcelToGenesis**.
+Using the instance in which the platform is installed, run `ExcelToGenesis`.
 
 ```bash
 ExcelToGenesis -f Trades.xlsx -n trading_app -t 11000
@@ -29,17 +31,17 @@ This generates the **fields-dictionary.kts** and **-tables-dictionary.kts** for 
 
 Check and adjust the fields and tables
 
-The fields and tables can be adjusted to suit your new app. For example, we can remove INSTRUMENT_ID and COUNTERPARTY_ID LATER ON when we add them to intellij, as our intellij project will be importing them from ref_data_app. Additionally we can tweak TRADE_ID to be a STRING and use a “sequence” definition to generate the fields
+The fields and tables can be adjusted to suit your new application. For example, we can remove INSTRUMENT_ID and COUNTERPARTY_ID LATER ON when we add them to intellij, as our intellij project will be importing them from the ref_data_app. Additionally we can tweak TRADE_ID to be a STRING and use a `sequence` definition to generate the fields
 
 ## 2. Run genesisInstall
 
-The next step is to run **genesisInstall**, which will run checks and highlight any issues.
+The next step is to run `genesisInstall`, which will run checks and highlight any issues.
 
 ### Example of a fail (duplicated fields)
 
-Let’s be practical here. Without changing the application, run **genesisInstall**.
+Let’s be practical here. Without changing the application, run `genesisInstall`.
 
-This will fail because we have duplicate fields with the different field types.
+This will fail because we have duplicate field names with the different field types.
 
 ![](/img/fail-duplicate-fields-and-tables.png)
 
@@ -63,7 +65,7 @@ With these corrections, you are now ready to install again.
 
 ### A successful install
 
-Run **genesisInstall** again.
+Run `genesisInstall` again.
 
 ![](/img/trading_app-creation-run-genesisinstall-again-5.png)
 
@@ -73,9 +75,9 @@ This time, we can see the files for the Genesis processes being created.
 
 ## 3. Remap
 
-The remap script creates the database schema from the dictionary files.
+The `remap` script creates the database schema from the dictionary files.
 
-Run **remap --commit**.
+Run `remap --commit`.
 
 ![](/img/trading_app-creation-run-remap-commit-1-6.png)
 
@@ -83,25 +85,27 @@ Run **remap --commit**.
 
 ## 4. Run AppGen
 
-**AppGen** creates three important modules for the application:
+[The `AppGen` script](/platform-tooling/commands/#appgen) creates three important modules for the application:
 
 * Event Handler
-* request Server
+* Rquest Server
 * Data Server
 
-Run **AppGen**:
+Run `AppGen`. Here we include the `-p` parameter, which numbers the port outputs from 11000 (in this case):
 
-**AppGen -n trading_app -p 11000**
+```bash
+AppGen -n trading_app -p 11000**
+```
 
 ![](/img/trading_app-creation-run-appgen-7.png)
 
-## 3. Load the trade data
+
 
 To progress from here, we need to prepare a  pro-code setup, in this case a maven project. This will enable us to use an IDE to work at speed.
 
-## 4. Build a maven project
+## 4. Build a Maven project
 
-The **mvn** command can be run in either the server/local vm/wsl/cloud instance containing the genesis platform installation or a separate local dev machine. We will use the same machine as before for consistency.
+The `mvn` command can be run in either the server/local vm/wsl/cloud instance containing the genesis platform installation or on a separate local dev machine. We will use the same machine as before for consistency.
 
 Run
 
@@ -117,17 +121,17 @@ This gives you the following structure:
 
 ### Move the files to the correct location
 
-Move the files that have been generated so far from the **trading_app/cfg** folder to **trading_app-con_ig/src/main/resources/cfg**.
+Move the files that have been generated so far from the **trading_app/cfg** folder to **trading_app-config/src/main/resources/cfg**.
 
 Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the **trading_app-script-config/src/main/resources/scripts** folder.
 
-### Build a maven project with mvn install
+### Install the  Maven project
 
 Now run `mvn install`.
 
 Again, you need to move the script and config files. Have these to hand, so you can copy them easily:
 
-Move the files that have been generated so far from the **trading_app/cfg** folder to **trading_app-con_ig/src/main/resources/cfg**.
+Move the files that have been generated so far from the **trading_app/cfg** folder to **trading_app-config/src/main/resources/cfg**.
 
 Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the **trading_app-script-config/src/main/resources/scripts** folder.
 

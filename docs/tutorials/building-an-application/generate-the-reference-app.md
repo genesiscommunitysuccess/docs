@@ -15,18 +15,18 @@ Otherwise, the Maven installation and configuration must be available in a local
 
 :::important
 
-Before you start, create a new folder as a working area for the project under the GENESIS HOME folder(**~**). Call this folder **TradePosApp**. This makes sure that all the files for this application will be separate from any other work you are doing. Change directory to this folder so that you are ready to start.
+Before you start, create a new folder as a working area for the project under the GENESIS HOME folder (**~**). Call this folder **TradePosApp**. This makes sure that all the files for this application will be separate from any other work you are doing. Change directory to this folder so that you are ready to start.
 
 :::
 
 
 ## The source database
 
-There are four tables in the source relational database. If you want to look at them closely, you can use a tool such as [DBeaver](https://dbeaver.com/).
+There are four tables in the source relational database. In this exercise, we are going to convert the contents of these tables so that we have a single data model of fields, tables and views. From this data model, we can build our Genesis application. And we shall generate a server with basic functions.
+
+If you want to look at the source database in more detail, you can use a tool such as [DBeaver](https://dbeaver.com/).
 
 ![](/img/dbeaver-screenshot.png)
-
-In this exercise, we are going to convert the contents of that database so that we have fields, tables and views. From this data model, we can build our Genesis application. And we shall generate a server with basic functions.
 
 ## 1. Generate the dictionary files
 
