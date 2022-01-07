@@ -25,13 +25,13 @@ Using the instance in which the platform is installed, run `ExcelToGenesis`.
 ExcelToGenesis -f Trades.xlsx -n trading_app -t 11000
 ```
 
-This generates the **fields-dictionary.kts** and **-tables-dictionary.kts** for the data model.
+This generates the **-fields-dictionary.kts** and **-tables-dictionary.kts** for the data model.
 
 ![](/img/trading_app-creation-run-exceltogenesis-2.png)
 
 Check and adjust the fields and tables
 
-The fields and tables can be adjusted to suit your new application. For example, we can remove INSTRUMENT_ID and COUNTERPARTY_ID LATER ON when we add them to intellij, as our intellij project will be importing them from the ref_data_app. Additionally we can tweak TRADE_ID to be a STRING and use a `sequence` definition to generate the fields
+The fields and tables can be adjusted to suit your new application. For example, we can remove `INSTRUMENT_ID` and `COUNTERPARTY_ID` later on when we add them to intellij, as our intellij project will be importing them from the ref_data_app. Additionally, we can change `TRADE_ID` to be a `STRING` and use a `sequence` definition to generate the fields.
 
 ## 2. Run genesisInstall
 
@@ -41,11 +41,13 @@ The next step is to run `genesisInstall`, which will run checks and highlight an
 
 Let’s be practical here. Without changing the application, run `genesisInstall`.
 
-This will fail because we have duplicate field names with the different field types.
+This will fail because, as you will see, we have some field names that conflict with field names in the existing schema (from the ref-data-app).
 
 ![](/img/fail-duplicate-fields-and-tables.png)
 
-The point here is that this application and the ref_data_ app that you created in the previous tutorial will share the same data model. These fields have been marked as duplicates because there is a field of the same name in the existing data model - which was created when you made the ref_data_app. Note that fields of the same name and type have caused no probems at all.
+The point here is that this application and the ref_data_app that you created in the previous tutorial will share the same data model. 
+
+You can't have two fields with the same name and a different type in a data model. Here, two fields from the workbook have been marked as duplicates, because there is already a field of the same name in the existing data model - which was created when you made the ref_data_app - but the field has a different type. Note that fields of the same name and type have caused no probems at all.
 
 So, edit the file **trading_app-fields-dictionary.kts** that you have just generated from the Excel workbook. Remove the following duplicated fields:
 
