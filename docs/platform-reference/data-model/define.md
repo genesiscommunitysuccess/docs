@@ -25,7 +25,7 @@ Each of these must be specified in a separate file on the filesytem:
 
 Field definitions are separate from table definitions because there are many fields that are common to more than one table.
 
-By default, you have access to all the field definitions in the Genesis framework. You also have access to all the fields in the modules that you specified in the Dictionary Cache.
+By default, you have access to all the field definitions in the Genesis LCNC Platform. You also have access to all the fields in the modules that you specified in the Dictionary Cache.
 
 But you can also define your own fields.
 
@@ -57,7 +57,7 @@ fields {
 
 Fields are defined in file under `<application-name>-config/src/main/resources/cfg` having the following name convention `<application-name>-fields-dictionary.kts`. For example for the `trade` application that file name would be `trade-fields-dictionary.kts`
 
-When you define a new field, it is good practice to run **codegen:generateSysDef**. This will generate code based on the fields definition and you will be able to use intellisense to pick this new field within table definitions.
+When you define a new field, it is good practice to run `codegen:generateSysDef`. This will generate code based on the fields definition and you will be able to use intellisense to pick this new field within table definitions.
 
 ### Naming fields
 
@@ -79,7 +79,7 @@ Technically, it is possible to duplicate field names. When you build, this gener
 
 To define a table, you need to specify a name, a unique ID, a list of unique fields, and a primary key.
 
-You can also specify one or more indices onto the table. These can be defined as **unique** (where it will contain a unique constraint on the table) and **nonUnique,** where it is typically just defined to create an index for efficient ranged lookups.
+You can also specify one or more indices onto the table. These can be defined as `unique` (where it contains a unique constraint on the table) and `nonUnique` where it is typically just defined to create an index for efficient ranged lookups.
 
 When you define a table, it is good to give it a clear name that describes the key - so it is well worth planning these in advance. If you don’t define a name for the primary key, the default name will be:
 
@@ -87,15 +87,15 @@ When you define a table, it is good to give it a clear name that describes the k
     <TABLE>_BY_<PK_FIELD_1>_<PK_FIELD_2>
 ```
 
-Primary key and index definitions are used in the various “lego brick” configurations, as well as any custom Db operations when you build and create the DAO Objects. This covers, for example, the ability to retrieve a single record based on the primary key values, and the ability to get a list of records part matching the first key field value (**getRange**).
+Primary key and index definitions are used in the various “lego brick” configurations, as well as any custom Db operations when you build and create the DAO Objects. This covers, for example, the ability to retrieve a single record based on the primary key values, and the ability to get a list of records part matching the first key field value (`getRange`).
 
-Tables are defined in file under `<application-name>-config/src/main/resources/cfg` having the following name convention `<application-name>-tables-dictionary.kts`. For example for the `trade` application that file name would be `trade-tables-dictionary.kts`
+Tables are defined in the folder  _application_**-config/src/main/resources/cfg**. The file name is _application_**-tables-dictionary.kts**. For example, for an application called Echo, the file name would be **echo-tables-dictionary.kts**.
 
 ### Derived fields
 
-Derived fields are read-only fields calculated during runtime (i.e. not stored in database), but they can be retrieved when using generated table entities in a “getter” fashion. You can define these in your table definition. You have to specify the logic that creates the content, which must be based on the other fields in the table. For example, if your fields include **quantity** and **price** , you can create a derived field **quantity x price**, where the value is calculated on the fly.
+Derived fields are read-only fields calculated during runtime (i.e. not stored in database), but they can be retrieved when using generated table entities in a “getter” fashion. You can define these in your table definition. You have to specify the logic that creates the content, which must be based on the other fields in the table. For example, if your fields include `quantity` and `price`, you can create a derived field `quantity x price`, where the value is calculated on the fly.
 
-See example below for USER table:
+See the example below for USER table:
 
 ```kotlin
 table(name = "USER", id = 1000, audit = details(1050, "UA")) {
@@ -126,9 +126,9 @@ table(name = "USER", id = 1000, audit = details(1050, "UA")) {
 }
 ```
 
-The functionality provided in the previous examples should satisfy most use cases. It also has the advantage of providing a type safe calculation which will guarantee no type errors between different field types, including nullability checks for nullable fields.
+The functionality provided in the previous examples should satisfy most use cases. It also has the advantage of providing a type-safe calculation, which guarantees no type errors between different field types, including nullability checks for nullable fields.
 
-However, we still offer full flexibility (at the expense of less type safety and easy of use) by using the following approach:
+However, we still offer full flexibility (at the expense of less type-safety and easy of use) by using the following approach:
 
 ```kotlin
     derivedField("TIMES_TWO_COUNTER_PLUS_VERSION"){
@@ -136,13 +136,13 @@ However, we still offer full flexibility (at the expense of less type safety and
     }
 ```
 
-In this case it is not clear what the output type will be (we haven’t specified it) as full flexibility is provided, so the user needs to explicitly define the output type (in this case it will be an INT type as both APPROVED_COUNTER and VERSION are INT types).
+In this case, it is not clear what the output type will be (we haven’t specified it) as full flexibility is provided. So, you need to explicitly define the output type (in this case it will be an `INT` type, as both `APPROVED_COUNTER` and `VERSION` are `INT` types).
 
 ### Auditable tables
 
-To make a table auditable, you need to add **audit = details** to the definition. You have to specify a unique ID, sequence ID (more later) and, optionally, a flag to generate a unique index based on the record timestamp (**tsKey**).
+To make a table auditable, you need to add `audit = details` to the definition. You have to specify a unique `ID`, `sequence ID` (more later) and, optionally, a flag to generate a unique index based on the record timestamp (`tsKey`).
 
-For example, this may look like:
+For example:
 
 ```kotlin
 tables {
@@ -167,13 +167,13 @@ tables {
 }
 ```
 
-This automatically creates another table with all the fields of the table that is being audited. It has the same name as the table it audits, plus the suffix **_AUDIT**. In the previous example, this would be the **TRADE_AUDIT** table.
+This automatically creates another table with all the fields of the table that is being audited. It has the same name as the table it audits, plus the suffix `_AUDIT`. In the previous example, this would be the `TRADE_AUDIT` table.
 
 When using GPAL event handlers, the auditing is performed automatically, so each update on a record in the table immediately creates a new record in the audit table.
 
 ### Overriding nullable fields
 
-You can override the **null = true** setting within a specific table if you need to do so,
+You can override the `null = true` setting within a specific table if you need to do so,
 
 ```kotlin
 table(name = "PROFILE", id = 1002) {
@@ -200,7 +200,7 @@ For example:
     field(name = "TRADE_STATUS", type = ENUM("DRAFT", "CANCELLED", "OPEN", "CLOSED", default = "DRAFT"))
 ```
 
-Essentially, every state machine needs to be based on a specific table. The table should include all the fields required to , as well as the field you created to control the state of the trade. In our example above, this is TRADE_STATUS. Below is an example of a table that can be used by a state machine. It includes the set of fields that are relevant to a trade (QUANTITY, PRICE, etc.)
+Essentially, every state machine needs to be based on a specific table. The table should include all the fields required, as well as the field you created to control the state of the trade. In our example above, this is `TRADE_STATUS`. Below is an example of a table that can be used by a state machine. It includes the set of fields that are relevant to a trade (`QUANTITY`, `PRICE`, etc.)
 
 ```kotlin
 table("TRADE", 102) {
@@ -228,7 +228,7 @@ table("TRADE", 102) {
 
 To create a view, you must specify a name for the view and the identity of the primary table. Following that, you can specify the fields in the view, including derived fields.
 
-Views are defined in file under `<application-name>-config/src/main/resources/cfg` having the following name convention `<application-name>-view-dictionary.kts`. For example for the `trade` application that file name would be `trade-view-dictionary.kts`
+Views are defined in the folder _application_**-config/src/main/resources/cfg**. The file name will be  _application_**-view-dictionary.kts**. For example, for an application called Echo, the file name would be **echo-view-dictionary.kts**.
 
 ### Joins
 
@@ -241,11 +241,13 @@ Use the view statement to define a view. This must include:
 #### Simple joins
 An example of a simple join is where you add reference data to price data.
 To define a join, add a join statement to your view definition; for this, you need to specify:
-- the second table (the one yu are joining to)
+- the second table (the one you are joining to)
 - the fields that are being viewed in each table
 
-In the example below, we define the view ENHANCED_TRADE_VIEW, which has the root table TRADE.
-In the view, we join the TRADE table to the COUNTERPARTY table. The join is made between the TRADE.COUNTERPARTY_ID (the COUNTERPARTY_ID field from TRADE) and the COUNTERPARTY.COUNTERPARTY_ID (the COUNTERPARTY_ID field from COUNTERPARTY). 
+In the example below, we define the view `ENHANCED_TRADE_VIEW`, which has the root table `TRADE`.
+
+In the view, we join the `TRADE` table to the `COUNTERPARTY` table. The join is made between the `TRADE.COUNTERPARTY_ID` (the `COUNTERPARTY_ID` field from `TRADE`) and the `COUNTERPARTY.COUNTERPARTY_ID` (the `COUNTERPARTY_ID` field from `COUNTERPARTY`). 
+
 The view returns all fields from both tables.
 
 ```kotlin
@@ -264,13 +266,16 @@ view ("ENHANCED_TRADE_VIEW", TRADE) {
 
 #### Double joins
 
-Sometimes, you need to join to the same table in two places - for example, if you want to fetch the nam of both the buying counterparty and the selling counterparty.
-In the example below, the root table is again TRADE. We want to join it to the 
-on the second example we are joining to the same table twice, 
-To achieve this, we first define two aliases for the COUNTERPARTY table: "buyerCpty" and "sellerCpty". 
-Then we make two joins, one to each aliased table. The first join is between the BUYER_COUNTERPARTY_ID field on the TRADE table and the COUNTERPARTY_ID field on the alias buyerCpty.
-The second join is between the SELLER_COUNTERPARTY_ID field on the TRADE table and the COUNTERPARTY_ID field on the alias sellerCpty.
-Finally, note that all fields are treurned from the TRADE table and only the buyer and seller names (aloased) are taken from the second table.
+Sometimes, you need to join to the same table in two places - for example, if you want to fetch the name of both the buying counterparty and the selling counterparty.
+
+In the example below, the root table is again `TRADE`. We want to join it to the `COUNTERPARTY` table twice, 
+
+To achieve this, we first define two aliases for the `COUNTERPARTY` table: `buyerCpty` and `sellerCpty`. 
+
+Then we make two joins, one to each aliased table. The first join is between the `BUYER_COUNTERPARTY_ID` field on the `TRADE` table and the `COUNTERPARTY_ID` field on the alias `buyerCpty`.
+The second join is between the `SELLER_COUNTERPARTY_ID` field on the `TRADE` table and the `COUNTERPARTY_ID` field on the alias `sellerCpty`.
+
+Finally, note that all fields are returned from the `TRADE` table and only the buyer and seller names (aliased) are taken from the second table.
 
 ```kotlin
 view ("ENHANCED_TRADE_VIEW", TRADE) {
@@ -298,11 +303,12 @@ view ("ENHANCED_TRADE_VIEW", TRADE) {
 
 #### Backwards joins
 By default, the fields in the second table are not monitored in real time when you make a join. This is because, in most cases, the second table is providing some form of static data.
+
 If you need to join to a table where there is real-time data, then you need to specify a backwards join. 
-This requires the statement **backwardsJoin = true** when you are specifying the join.
+This requires the statement `backwardsJoins = true` when you are specifying the join.
 
 When you refer to a table that has a backwards join in any of your [data servers](/platform-reference/configure-key-modules/data-servers/configure), 
-you must include a similar statement in order to enable the feature: **backwardsJoins = true**. Don’t forget to add this!
+you must include a similar statement in order to enable the feature: `backwardsJoins = true`. Don’t forget to add this!
 
 Note that `backwardsJoins` can be expensive in terms of computation and cost, so they should be used surgically rather than by default.
 

@@ -29,22 +29,22 @@ If the `--commit` option is not specified, the application will not be installed
 
 This is how the script behaves:
 
-First, it gets the **productname-product-details.xml** information from the application zip file, and it verifies the correctness of this file.
+First, it gets the _application_**-product-details.xml** information from the application zip file, and it verifies the correctness of this file.
 
-It checks if a previous installation of the application is present. (Is there a version of the same application installed by `installRelease` in the system?) This always happens, whether you use the `--commit` option or not. If you have an installation under way, the installation will stop at this point. If you want to force the installation, delete the **new** folder in GENESIS_HOME/releases/(productname)v.(version)/. There is more information on this folder below.
+It checks if a previous installation of the application is present. (Is there a version of the same application installed by `installRelease` in the system?) This always happens, whether you use the `--commit` option or not. If you have an installation under way, the installation will stop at this point. If you want to force the installation, delete the **new** folder in GENESIS_HOME/releases/_application_v._version_/. There is more information on this folder below.
 
-At this point, dependencies will be checked. If any dependency is not met (missing products, or old versions) the product will not be installed. If any installed dependency has a higher version than the dependency version specified in the product details, the script will ask you for confirmation.
+At this point, dependencies will be checked. If any dependency is not met (missing applications, or old versions) the application will not be installed. If any installed dependency has a higher version than the dependency version specified in the product details, the script will ask you for confirmation.
 
-The script will also check for overridden configuration and script files, whether the product you are installing is currently installed or not. If the product is already installed, be sure to merge every overridden configuration and script file with the new product before committing the new installation.
+The script will also check for overridden configuration and script files, whether the application you are installing is currently installed or not. If the application is already installed, be sure to merge every overridden configuration and script file with the new application before committing the new installation.
 
-- If the product is not currently installed and the `--commit` option is specified, the application will be installed. A new back-up folder is created in GENESIS_HOME/releases/(_applicationname_)v.(version)/ with all the installation files.
-- If the product is already installed in any version, the script will perform a reinstall, upgrade or downgrade. In the case of a downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up folders will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the `--commit` option was specified, the application will be installed in the system.
+- If the application is not currently installed and the `--commit` option is specified, the application will be installed. A new back-up folder is created in GENESIS_HOME/releases/(_application_)v._version_/ with all the installation files.
+- If the application is already installed in any version, the script will perform a reinstall, upgrade or downgrade. In the case of a downgrade, a warning message will be displayed, asking for extra confirmation. Two back-up folders will be created inside GENESIS_HOME/releases/, one for the old installation and one for the new installation. If the `--commit` option was specified, the application will be installed in the system.
 
 Details to take into account:
 
-`installRelease` uses the **global-product-details.xml** file in **GENESIS_HOME/generated/cfg/** as its first information source. This file is generated when the 'genesisInstall' script is executed, (the script gathers information from each installed product and stores it inside this global file). If this file does not exist, `installRelease` searches for independent _application_**-product-details.xml** files in every installed application. If no information is found, the installation will be cancelled.
+`installRelease` uses the **global-product-details.xml** file in **GENESIS_HOME/generated/cfg/** as its first information source. This file is generated when the `genesisInstall` script is executed, (the script gathers information from each installed product and stores it inside this global file). If this file does not exist, `installRelease` searches for independent _application_**-product-details.xml** files in every installed application. If no information is found, the installation will be cancelled.
 
-Execute `genesisInstall` after installing an application, so that the application details are stored in global-product-details.xml for future product installations.
+Execute `genesisInstall` after installing an application, so that the application details are stored in **global-product-details.xml** for future installations.
 
 ## genesisInstall script
 
@@ -75,7 +75,7 @@ Once complete, all configuration files will be copied and, where necessary, merg
 
 If any problems are found in the generated configuration files, they will be deleted. This forces you to correct the errors in the original configuration files.
 
-To ignore errors in the configuration files, use the '--ignore' argument. This leaves the configuration files undeleted, even if errors are found.
+To ignore errors in the configuration files, use the `--ignore` argument. This leaves the configuration files undeleted, even if errors are found.
 
 All process configuration is stored within **$GC**.
 
@@ -91,7 +91,7 @@ The Aerospike DB layer needs UDFs (user defined functions) to work correctly, an
 
 When you run `remap`, the database is automatically locked to ensure that no other `remap` can run concurrently. 
 
-If the database crashes during a `remap` and the database remains locked (or if the database is locked for any other reason), run `remap --force --commit` to run `remap` and unlock the database.
+If the database crashes during a `remap` and the database remains locked (or if the database is locked for any other reason), run `remap --force --commit` to unlock the database.
 
 ### Syntax
 
