@@ -18,7 +18,7 @@ Before you follow this exercise, you need to have the LCNC Platform and your dev
 In short, you need to understand:
 
 * The [overall architecture of a Genesis application](/getting-started/application/)
-* How to [create a new project](/platform-reference/essential-information/starting-from-scratch/)
+* How to [create a new project](/platform-reference/essential-information/starting-new-project/starting-from-scratch/)
 
 ## The scenario
 

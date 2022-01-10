@@ -2,7 +2,7 @@
 id: starting-from-scratch
 title: Starting from scratch
 sidebar_label: Starting from scratch
-sidebar_position: 4
+sidebar_position: 10
 
 ---
 

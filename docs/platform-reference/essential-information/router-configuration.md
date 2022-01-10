@@ -1,12 +1,12 @@
 ---
-title: Genesis router
+title: Genesis Router
 sidebar_label: Genesis Router
 sidebar_position: 6
 id: genesis-router
 
 ---
 
-Genesis Router is responsible for communication between front-end and back-end. This is configured in file called genesis-router.xml file
+Genesis Router is responsible for communication between front-end and back-end. This is configured in a file called **genesis-router.xml**.
 
 Here is an example:
 
@@ -55,8 +55,8 @@ Here is an example:
 
 **Netty configuration**:
 
-`httpServerCodecDefinition`: A combination of HttpRequestDecoder and HttpResponseEncoder which enables easier server side HTTP implementation.
-For more information follow this [link](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpServerCodec.html).
+`httpServerCodecDefinition`: A combination of HttpRequestDecoder and HttpResponseEncoder, which enables easier server-side HTTP implementation.
+For more information, follow this [link](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpServerCodec.html).
 
 Different decoder options
   * maxInitialLineLength : default value: 4096
@@ -70,7 +70,7 @@ For more information follow this [link](https://netty.io/4.1/api/io/netty/handle
   * maxContentLength - the maximum length of the aggregated content in bytes. Default value 262144
   * closeOnExpectationFailed - If a 100-continue response is detected but the content length is too large then true means close the connection. Otherwise the connection will remain open and data will be consumed and discarded until the next request is received. Default value false
 
-**Allowed Resources**: It is possible to limit the resources to be exposed by the genesis router by using the `whitelist` tag (see example above). It is important to note that the following message types will always be allowed by default regardless of the whitelist definition:
+**Allowed Resources**: You can limit the resources to be exposed by the Genesis router by using the `whitelist` tag (see example above). It is important to note that the following message types will always be allowed by default, regardless of the whitelist definition:
 EVENT_LOGIN_AUTH, EVENT_LOGOUT, MORE_ROWS, MORE_COLUMNS, DATA_LOGOFF, DATA_GET
 
-**Message Routes**: You can redirect some microservice messages to particular processes using tag `routes.route` as shown above
+**Message Routes**: You can redirect some microservice messages to particular processes using the tag `routes.route`, as shown above
