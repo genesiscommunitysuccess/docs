@@ -389,7 +389,7 @@ When using `numKeyFields` that is less than the number of fields in the index, d
 ## Client-side (runtime) options
 
 When a client initiates a subscription to a data server by sending a **DATA_LOGON** message, there are several options that can be specified. All the options are **optional**; you don't have to specify any to initiate a subscription. 
-The features of the options are ex[lained below.
+The features of the options are explained below.
 
 
 | Option         | Default   | Description                                                  |
