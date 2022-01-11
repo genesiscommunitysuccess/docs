@@ -7,9 +7,9 @@ sidebar_position: 20
 ---
 
 
-If you want to include dictionaries from other Genesis applications or modules in your application, you must include these when you create your Maven pom files - both the root pom and the pom for the dictionary cache.
+If you want to include dictionaries from other Genesis applications or modules in your application, you must include these when you create your _application_**-dictionary-cache/pom.xml** file. 
 
-Many applications need to use the Genesis AUTH module, for example. The example below shows the dictionary cache pom for an application called echo, which is adding a dependency on AUTH. This must be specified in the pom in two separate places:
+Many applications need to use the Genesis AUTH module, for example. The example below shows the dictionary cache pom for an application called Echo, which is adding a dependency on AUTH. This must be specified in the pom in two separate places:
 
 - The **auth-config** folder is identifed in the `Project` block. This ensures that the tables and fields kts files for auth are accessible.
 - The **auth-dictionary-cache** is identified in the `Build` block. This sub-module is responsible for most of the DAO generation. 
@@ -65,6 +65,7 @@ Many applications need to use the Genesis AUTH module, for example. The example 
                         <version>${genesis.version}</version>
                     </dependency>
                     <dependency>
+                        <!-- auth.version must also be declared in the project's main pom.xml -->
                         <groupId>global.genesis</groupId>
                         <artifactId>auth-dictionary-cache</artifactId>
                         <version>${auth.version}</version>
@@ -75,7 +76,7 @@ Many applications need to use the Genesis AUTH module, for example. The example 
     </build>
 </project>
 ```
-You can include multiple dependencies, of course. If our application Echo wants to add a dependency on anoter application, called Foxtrot, we would add these two code blocks in the relevant places. 
+You can include multiple dependencies, of course. If our application Echo wants to add a dependency on another application, called Foxtrot, we would add these two code blocks in the relevant places. 
 
 In the `Project` codebloack:
 
@@ -93,26 +94,28 @@ In the `Build` codeblock:
 
 ```xml
                     <dependency>
+                        <!-- auth.version must also be declared in the project's main pom.xml -->
                         <groupId>global.genesis</groupId>
                         <artifactId>foxtrot-dictionary-cache</artifactId>
                         <version>${foxtrot.version}</version>
                     </dependency>
 
 ```
-
-Now, when you run Maven CodeGen for Echo, it will look inside the dictionary caches for AUTH and Foxtrot, and pull the relevant information. When you run remap on Echo, all the relevant dictionaries are included.
+When you run remap on Echo, all the relevant dictionaries will be included.
 
 ### Dependency scenarios
-Deoendencies on ther Genesis applications requires a little care. The Genesis application you are depending on might itself have dependencies. If this is the case, then you must include those dependencies in the pom.
+Dependencies on other Genesis applications require a little care. The Genesis application you are depending on might itself have dependencies. If this is the case, then you must also include those dependencies in the pom.
 
 Note that you (obviously) cannot have cirular dependencies.
 
 #### Scenario 1: simple hierarchy
+The following scenarios assume you are specifying the dependencies for an applicatio called Foxtrot.
+
 FOXTROT depends on ECHO 
 
 ECHO has no Genesis dependencies 
 
-Foxtrot must specify Echo as adependency.
+Foxtrot must specify Echo as a dependency.
 
 #### Scenario 2: simple hierarchy with multiple dependencies
 FOXTROT depends on ECHO and DELTA
@@ -136,4 +139,10 @@ ECHO depends on FOXTROT
 This will not succeed.
 
 ## Changes to the dependencies
-If you make any changes to the dictionary of one of these dependencies, it is important to publish the changes or install them locally in your Maven repository. This ensures that the relevant updates are loaded to the application.
+If you make any changes to the dictionary of one of these dependencies, you must make sure the dependent applications have access to any dictionary changes. Either:
+
+- publish the changes and make them available as a new release version
+
+or
+
+- run a Maven install to add them them to your local Maven repository
