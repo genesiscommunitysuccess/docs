@@ -34,13 +34,13 @@ notify {
 
 ```
 
-Where you have configured a Symphony Gateway for handling incoming messages, any attachments to incoming messages will be dropped on the server to the following configured directory parameter `DOCUMENT_STORE_BASEDIR` . For example:
+Where you have configured a Symphony Gateway for handling incoming messages, any attachments to incoming messages will be dropped on the server to the following configured directory parameter: `DOCUMENT_STORE_BASEDIR`. For example:
 
 ```kotlin
 item(name = "DOCUMENT_STORE_BASEDIR", value = "/home/trading/run/site-specific/incoming-docs")
 ```
 
-Also, if the incoming message is configured to publish to a topic, the filename of any attachment will be sent to the DOCUMENT_ID field for the topic (showing its file location on the server). In the event of clashing file names, the incoming attachment's file name will have the suffix _1, _2 added, as appropriate.
+Also, if the incoming message is configured to publish to a topic, the file name of any attachment will be sent to the `DOCUMENT_ID` field for the topic (showing its file location on the server). In the event of clashing file names, the incoming attachment's file name will have the suffix _1, _2 added, as appropriate.
 
 ### Database configuration
 
@@ -49,11 +49,11 @@ Also, if the incoming message is configured to publish to a topic, the filename 
 
 | Field Name | Usage |
 | --- | --- |
-| GATEWAY_ID | A Unique name for the gateway which can be referenced in the NOTIFY_ROUTE table  |
+| GATEWAY_ID | A unique name for the gateway, which can be referenced in the `NOTIFY_ROUTE` table  |
 | GATEWAY_TYPE | For Symphony connection this might be SymphonyRoom, SymphonyByUserEmail, SymphonyRoomReqRep|
 | GATEWAY_VALUE | This is the room name specified as Symphony Conversation Id Or [Stream Id](https://docs.developers.symphony.com/building-bots-on-symphony/datafeed/overview-of-streams).|
-| INCOMING_TOPIC | When the GATEWAY_TYPE is specified as SymphonyRoom, then Incoming messages are directed to this TOPIC. <br />  When the GATEWAY_TYPE is specified as SymphonyRoomReqRep then it's treated as colon-separated string specifying the PROCESS_NAME:EVENT_HANDLER_NAME, such that incoming messages will be directed to the named Event Handler running in the named process |
-| CONNECTION_ID | This should reference the connection `id` specified in the ```notify.kts``` file. Note if not id is specified in the connection, then you should use the default id of `Symphony`
+| INCOMING_TOPIC | When the `GATEWAY_TYPE` is specified as SymphonyRoom, then incoming messages are directed to this `TOPIC`. <br />  When the `GATEWAY_TYPE` is specified as SymphonyRoomReqRep then it's treated as colon-separated string specifying the `PROCESS_NAME:EVENT_HANDLER_NAME`, such that incoming messages will be directed to the named Event Handler running in the named process |
+| CONNECTION_ID | This should reference the connection `id` specified in the ```notify.kts``` file. Note if no id is specified in the connection, then you should use the default id of `Symphony`
 
 #### NOTIFY
 | Field Name | Usage |
@@ -63,17 +63,17 @@ Also, if the incoming message is configured to publish to a topic, the filename 
 | HEADER | Header that appended to beginning of every message |
 | NOTIFY_SEVERITY |  An ENUM of either, "Information", "Warning", "Serious", "Critical", which defaults to "Information". This is simply appended to a Symphony Message Header.
 | BODY | Message as Symphony [MessageML](https://docs.developers.symphony.com/building-bots-on-symphony/messages/overview-of-messageml/message-format-messageml) Format |
-| NOTIFY_COMPRESSION_TYPE | Do not set. This is used internally by Genesis, indicates if the body of the message is compressed and by which compression type |
-| DOCUMENT_ID | If set, this should refer to a server-side path and filename. This file will be attached to the outgoing message that is destined for a symphony gateway
+| NOTIFY_COMPRESSION_TYPE | Do not set. This is used internally by Genesis; it indicates if the body of the message is compressed and by which compression type |
+| DOCUMENT_ID | If set, this should refer to a server-side path and file name. This file will be attached to the outgoing message that is destined for a symphony gateway
 
 ### Additional Genesis Notify service for symphony
 
 The Genesis Notify service currently provides additional Symphony operations, exposed as event handlers.
 
-* GATEWAY_CREATE_CHANNEL creates a channel (to allow external users to be added to a channel, a channel should be created with external set to true amd public to false)
-* GATEWAY_ADD_MEMBER_TO_CHANNEL adds a user to a channel (note if the user is not a member of the host POD then a connection request will be sent to that user)
-* GATEWAY_REMOVE_MEMBER_FROM_CHANNEL removes a user from a channel
-* GATEWAY_ACTION_ON_CHANNEL allows a channel to be reactivated or deactivated
+* `GATEWAY_CREATE_CHANNEL` creates a channel (to allow external users to be added to a channel, a channel should be created with external set to true amd public to false)
+* `GATEWAY_ADD_MEMBER_TO_CHANNEL` adds a user to a channel (note if the user is not a member of the host POD, then a connection request will be sent to that user)
+* `GATEWAY_REMOVE_MEMBER_FROM_CHANNEL` removes a user from a channel
+* `GATEWAY_ACTION_ON_CHANNEL` allows a channel to be reactivated or deactivated
 
 - note: where there is more than one symphony connection defined, these operations act upon the first listed.
 
