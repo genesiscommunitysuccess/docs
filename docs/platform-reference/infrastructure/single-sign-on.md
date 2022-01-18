@@ -1,7 +1,7 @@
 ---
 id: sso
-title: Single Sign-on
-sidebar_label: Single Sign-on
+title: Single Sign-On
+sidebar_label: Single Sign-On
 sidebar_position: 2
 
 ---

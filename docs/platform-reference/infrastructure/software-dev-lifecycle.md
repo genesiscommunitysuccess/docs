@@ -1,13 +1,13 @@
 ---
 id: sdlc
-title: Software Development Lifecycle
-sidebar_label: Software Development Lifecycle
+title: Software development lLifecycle
+sidebar_label: Software development lifecycle
 sidebar_position: 3
 
 ---
 This area looks at the software development lifecycle of a Genesis project, and the approach to Continuous Improvement/Continuous Development.
 
-## Source Control management – Git Workflow
+## Source control management – Git Workflow
 
 At Genesis we use a hybrid of the Gitflow workflow based on Github Enterprise. The only difference is that genesis uses release branches to encapsulate the changes for each Jira Epic -  i.e. each parallel stream of work on a given product.
 
@@ -73,7 +73,7 @@ At Genesis Development, QA, UAT and Production environments are completely segre
 
 UAT is an exact mirrored set-up of Production, but with its own separated database and with no redundancy.
 
-## Protection of System test Data
+## Protection of system test data
 
 Personal information or any other sensitive information is never stored in test databases unless specific authorisation has been given. All sensitive details and content will be removed or modified beyond recognition before use in testing environments.
 

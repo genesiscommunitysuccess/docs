@@ -1,10 +1,10 @@
 ---
 id: data-binding
-sidebar_label: Data Binding
+sidebar_label: Data binding
 sidebar_position: 70
-title: Data Binding
+title: Data binding
 ---
 
-# Data Binding
+# Data binding
 
-Data Binding in Genesis Studio...
+We shall provide more information about Data binding in Genesis Studio as soon as possible.

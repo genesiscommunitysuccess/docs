@@ -1,10 +1,11 @@
 ---
 id: design-systems
-sidebar_label: Design Systems
+sidebar_label: Design systems
 sidebar_position: 60
-title: Design Systems
+title: Design systems
 ---
 
-# Design Systems
+# Design systems
 
-Design Systems in Genesis Studio...
+We shall bring some information on design systems in Genesis Studio as soon as possible.
+.

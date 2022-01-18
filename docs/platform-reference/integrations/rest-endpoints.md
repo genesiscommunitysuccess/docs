@@ -1,7 +1,7 @@
 ---
 id: rest-endpoints
-title: REST Endpoints
-sidebar_label: REST Endpoints
+title: REST endpoints
+sidebar_label: REST endpoints
 sidebar_position: 10
 
 ---

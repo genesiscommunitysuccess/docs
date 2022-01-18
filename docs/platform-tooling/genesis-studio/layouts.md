@@ -7,4 +7,4 @@ title: Layouts
 
 # Layouts
 
-Layouts in Genesis Studio...
+We shall provide information about layouts in Genesis Studio as soon as possible.

@@ -12,4 +12,5 @@ tags:
 
 # Genesis IDE
 
-The Genesis IDE is a browser based IDE designed to work seamlessly with Genesis Studio or standalone.
+The Genesis IDE is a browser-based IDE that is designed to work either on its own or seamlessly with Genesis Studio. 
+We shall provide more information about this as soon as possible.
