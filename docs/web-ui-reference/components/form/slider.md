@@ -4,9 +4,9 @@ title: Slider
 sidebar_position: 110
 ---
 
-An implementation of a [range slider](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/range) as a form-connected web-component. 
+An implementation of a [range slider](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/range) as a form-connected Web Component. 
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaSlider, alphaSliderLabel } from '@genesislcap/alpha-design-system';

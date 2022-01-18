@@ -4,9 +4,9 @@ title: Skeleton
 sidebar_position: 120
 ---
 
-The `skeleton` component is used as a visual placeholder for an element while it is in a loading state and usually presents itself as a simplified wireframe-like version of the UI it is representing.
+The `skeleton` component is used as a visual placeholder for an element while it is in a loading state. It usually presents itself as a simplified wireframe-like version of the UI it is representing.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaSkeleton } from '@genesislcap/alpha-design-system';
@@ -30,7 +30,7 @@ provideDesignSystem().register(alphaSkeleton());
 
 ### Pattern
 
-A URL for an image asset may be passed to the `pattern` attribute. In this mode, the `alpha-skeleton` component is used as a container for a transparent SVG that may express a more complex placeholder
+A URL for an image asset may be passed to the `pattern` attribute. In this mode, the `alpha-skeleton` component is used as a container for a transparent SVG that may express a more complex placeholder.
 
 ```html
 <alpha-skeleton shape="rect" pattern="/svg/skeleton-test-pattern.svg"></alpha-skeleton>
@@ -72,9 +72,9 @@ An inline SVG can also be inserted into the slot of the `alpha-skeleton`.
 </alpha-skeleton>
 ```
 
-### Further Customizations
+### Further customisation
 
-The following CSS variables can be used to customize the appearance.
+The following CSS variables can be used to customise the appearance.
 
 | CSS Variable                    | Expected value  |
 | ------------------------------- | --------------- |

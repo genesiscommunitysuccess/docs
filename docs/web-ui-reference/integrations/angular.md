@@ -9,7 +9,7 @@ Genesis Foundation integrates nicely with Angular. Let's take a look at how you 
 
 ## Setting up the Angular project
 
-First, you'll need to make sure that you have Node.js installed. You can learn more and download that [on the official site](https://nodejs.org/).
+First, you'll need to make sure that you have [Node.js](https://nodejs.org/) installed. 
 
 With Node.js installed, you can run the following command to install the Angular CLI:
 
@@ -23,7 +23,7 @@ With the CLI installed, you have access to the `ng` command-line interface. This
 ng new alpha-angular
 ```
 
-Follow the prompts, answering each question in turn. When the CLI completes, you should have a basic runnable Angular application.
+Follow the prompts, answering each question in turn. At the end, you should have a basic runnable Angular application.
 
 ## Configuring packages
 
@@ -110,7 +110,7 @@ alpha-card > alpha-button {
 
 :::note
 
-Third party controls require a ControlValueAccessor for writing a value and listening to changes on input elements. Add ngDefaultControl attribute to your component to have two-way binding working with FormControlDirective, FormControlName, or NgModel directives:
+Third-party controls require a ControlValueAccessor for writing a value and listening to changes on input elements. Add ngDefaultControl attribute to your component to have two-way binding working with FormControlDirective, FormControlName, or NgModel directives:
 
 :::
 

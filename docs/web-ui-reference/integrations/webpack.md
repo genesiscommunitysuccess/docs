@@ -5,7 +5,7 @@ sidebar_label: Webpack
 sidebar_position: 50
 ---
 
-Genesis Foundation works great with TypeScript and Webpack, using a fairly standard setup. Let's take a look at how you can set up such a project, starting from scratch.
+Genesis Foundation works great with TypeScript and Webpack, using a fairly standard set-up. Let's take a look at how you can set up such a project, starting from scratch.
 
 ## Setting up the package
 
@@ -43,7 +43,7 @@ npm install --save-dev clean-webpack-plugin ts-loader typescript webpack webpack
 
 ## Adding configuration and source
 
-Now that we've got our basic package and dependencies set up, let's create some source files and get things configured. Since we're going to be writing a bit of code, now is a great time to involve a code editor in the process. If you're looking for a great editor for TypeScript and front-end in general, we highly recommend [VS Code](https://code.visualstudio.com/).
+Now that we've got our basic package and dependencies set up, let's create some source files and get things configured. Since we're going to be writing a bit of code, now is a great time to involve a code editor in the process. If you're looking for a great editor for TypeScript and front end in general, we highly recommend [VS Code](https://code.visualstudio.com/).
 
 Open the `alpha-webpack` folder in your favorite editor. You should see your `package.json` along with a `package-lock.json` and a `node_modules` folder.
 
@@ -127,7 +127,7 @@ module.exports = function(env, { mode }) {
 }
 ```
 
-This setup uses `ts-loader` to process TypeScript. It will also enable both a production mode and a development mode that watches your source, recompiling and refreshing your browser as things change. You can read more about Webpack configuration in [the official Webpack documentation](https://webpack.js.org/).
+This set-up uses `ts-loader` to process TypeScript. It will also enable both a production mode and a development mode that watches your source, recompiling and refreshing your browser as things change. You can read more about Webpack configuration in [the official Webpack documentation](https://webpack.js.org/).
 
 To enable easy execution of both our production and development builds, let's add some script commands to our `package.json` file. Find the `scripts` section of your `package.json` file and add the following two scripts:
 
@@ -138,9 +138,9 @@ To enable easy execution of both our production and development builds, let's ad
 }
 ```
 
-The `build` script will build your TypeScript for production deployment while the `dev` script will run the development web server so you can write code and see the results in your browser. You can run these scripts with `npm run build` and `npm run dev` respectively.
+The `build` script will build your TypeScript for production deployment.  The `dev` script will run the development web server so you can write code and see the results in your browser. You can run these scripts with `npm run build` and `npm run dev` respectively.
 
-To complete our setup, we need to add an `index.html` file to the root of our project. We'll start with some basic content as follows:
+To complete our set-up, we need to add an `index.html` file to the root of our project. We'll start with some basic content as follows:
 
 ```html
 <!DOCTYPE html>
@@ -155,7 +155,7 @@ To complete our setup, we need to add an `index.html` file to the root of our pr
 </html>
 ```
 
-There's nothing special about the HTML yet other than the `script` tag in the `body` that references the `bundle.js` file that our Webpack build will produce.
+There's nothing special about the HTML yet, other than the `script` tag in the `body` that references the `bundle.js` file that our Webpack build will produce.
 
 ## Using the components
 

@@ -7,7 +7,7 @@ sidebar_position: 10
 
 An accordion is a vertically stacked set of interactive headings representing a section of content. The headings function as controls that enable users to reveal or hide their associated sections of content. Accordions are commonly used to reduce the need to scroll when presenting multiple sections of content on a single page.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaAccordion, alphaAccordionItem } from '@genesislcap/alpha-design-system';

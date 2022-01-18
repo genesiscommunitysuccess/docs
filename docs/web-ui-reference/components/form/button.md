@@ -8,7 +8,7 @@ sidebar_position: 10
 
 Button component enables users to trigger actions, such as submitting a form or opening a dialog.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaButton } from '@genesislcap/alpha-design-system';
@@ -22,7 +22,7 @@ provideDesignSystem().register(alphaButton());
 <alpha-button>Button</alpha-button>
 ```
 
-## Apperance
+## Appearance
 
 Button supports several visual appearances (accent, lightweight, neutral, outline, stealth):
 
@@ -38,7 +38,7 @@ Button supports several visual appearances (accent, lightweight, neutral, outlin
 
 ## Disabled
 
-Disabled buttons prevent user interaction: they cannot be pressed or focused.
+Disabled buttons prevent user interaction; they cannot be pressed or focused.
 
 ```html live
 <>

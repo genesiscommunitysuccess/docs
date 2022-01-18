@@ -4,9 +4,9 @@ title: Checkbox
 sidebar_position: 20
 ---
 
-An implementation of a [checkbox](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/checkbox) as a form-connected web-component.
+An implementation of a [checkbox](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/checkbox) as a form-connected Web Component.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaCheckbox } from '@genesislcap/alpha-design-system';

@@ -1,14 +1,14 @@
 ---
 id: text-field
-title: Textfield
+title: Text field
 sidebar_position: 140
 ---
 
-An implementation of a [text field](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/text) as a form-connected web-component. The `alpha-text-field` supports two visual appearances, outline and filled, with the control defaulting to the outline appearance.
+An implementation of a [text field](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/text) as a form-connected Web Component. The `alpha-text-field` supports two visual appearances: outline and filled, with the control defaulting to the outline appearance.
 
-This component filters out slotted _text_ nodes that are only white space to properly hide the label when the label is not in use.
+This component filters out slotted _text_ nodes that are only white space to hide the label when it is not in use.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaTextField } from '@genesislcap/alpha-design-system';

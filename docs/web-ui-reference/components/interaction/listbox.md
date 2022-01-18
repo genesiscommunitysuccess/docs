@@ -8,7 +8,7 @@ An implementation of a [listbox](https://w3c.github.io/aria-practices/#Listbox).
 
 The `listbox` component has no internals related to form association. For a form-associated `listbox`, see the [`alpha-select` component](/web-ui-reference/components/form/select/).
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaListbox, alphaOption } from '@genesislcap/alpha-design-system';

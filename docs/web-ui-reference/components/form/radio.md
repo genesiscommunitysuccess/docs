@@ -4,7 +4,7 @@ title: Radio
 sidebar_position: 90
 ---
 
-An implementation of a [radio](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio) as a form-connected web-component.
+An implementation of a [radio](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio) as a form-connected WebComponent.
 
 ## Usage
 

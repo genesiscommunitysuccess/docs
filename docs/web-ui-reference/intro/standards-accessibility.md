@@ -1,8 +1,8 @@
 ---
 id: standards-accessibility
-sidebar_label: Standards and Accessibility
+sidebar_label: Standards and accessibility
 sidebar_position: 30
-title: Standards and Accessibility
+title: Standards and accessibility
 tags:
   - web
   - frontend
@@ -12,7 +12,9 @@ tags:
 ---
 
 Adhering to web standards and accessibility guidelines is really important for us here at Genesis. By building
-applications with our platform and component sets much of this is covered for you out of the box. Various committees and
+applications with our platform and component sets, much of this is covered for you out of the box. 
+
+Various committees and
 working groups define the standards web components adhere to ensure browser support, adoption, and ultimately to improve
 the web platform itself. These include:
 

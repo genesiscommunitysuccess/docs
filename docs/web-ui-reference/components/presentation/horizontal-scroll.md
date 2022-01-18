@@ -1,12 +1,12 @@
 ---
 id: horizontal-scroll
-title: Horizontall Scroll
+title: Horizontall scroll
 sidebar_position: 90
 ---
 
-An implementation of a content scroller as a web-component.
+An implementation of a content scroller as a Web Component.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaHorizontalScroll, alphaFlipper } from '@genesislcap/alpha-design-system';

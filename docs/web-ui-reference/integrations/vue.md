@@ -9,7 +9,7 @@ Genesis Foundation works great with Vue. Let's take a look at how you can set up
 
 ## Setting up the Vue project
 
-First, you'll need to make sure that you have Node.js installed. You can learn more and download that [on the official site](https://nodejs.org/).
+First, you'll need to make sure that you have [Node.js](https://nodejs.org/) installed.
 
 With Node.js installed, you can run the following command to install the Vue CLI:
 
@@ -23,9 +23,9 @@ With the CLI installed, you have access to the `vue` command-line interface. Thi
 vue create alpha-vue
 ```
 
-When prompted to select options, choose "Manually select features". Follow the prompts, answering each question in turn. It is recommended that you select "TypeScript" when prompted.
+When prompted to select options, choose **anually select features**. Follow the prompts, answering each question in turn. It is recommended that you select **TypeScript** when prompted.
 
-When the CLI completes, you should have a basic runnable Vue application.
+When you have completed the prompts, you should have a basic runnable Vue application.
 
 ## Configuring packages
 
