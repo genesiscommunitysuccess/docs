@@ -12,7 +12,7 @@ As defined by the [W3C](https://w3c.github.io/aria-practices/#toolbar):
 >
 > When a set of controls is visually presented as a group, the toolbar role can be used to communicate the presence and purpose of the grouping to screen reader users. Grouping controls into toolbars can also be an effective way of reducing the number of tab stops in the keyboard interface.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaToolbar } from '@genesislcap/alpha-design-system';

@@ -6,7 +6,7 @@ sidebar_position: 70
 
 A selection input with support for selection of multiple options.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaPicker } from '@genesislcap/alpha-design-system';

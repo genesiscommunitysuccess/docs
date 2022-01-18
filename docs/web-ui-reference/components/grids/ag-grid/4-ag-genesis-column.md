@@ -49,7 +49,7 @@ public myOtherSingleCustomColumnConfigObj: ColDef = [
 ];
 ```
 
-When using `ColDef` objects, it's up to the application developer to decide the approach (array of definitions + repeat or one by one; there's no right or wrong here, as the goal is flexibility):
+When using `ColDef` objects, it's up to you to decide the approach (array of definitions + repeat or one by one; there's no right or wrong here, as the goal is flexibility):
 
 ```html title="Using the ColDef array of objects with an extra single object"
 <foundation-ag-grid>

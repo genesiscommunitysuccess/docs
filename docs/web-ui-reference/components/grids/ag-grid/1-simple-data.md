@@ -1,15 +1,15 @@
 ---
 id: ag-grid-simple
-title: Simple Data
+title: Simple data
 sidebar_position: 11
 ---
 
-The examples below are using JSX syntax, real-world scenarions might be different depending on the client application tooling & structure.
+The examples below use JSX syntax. Real-world scenarions might be different, depending on the client application tooling and structure.
 
-## Setup
+## Set-up
 
 :::info
-In the examples below we refer to a sample `@genesislcap/alpha-design-system` design system with an `alpha` prefix. Your design system would likely have a different name/prefix while still exposing the same API.
+In the examples below, we refer to a sample `@genesislcap/alpha-design-system` design system with an `alpha` prefix. Your design system would probably have a different name/prefix while still exposing the same API.
 :::
 
 ```ts

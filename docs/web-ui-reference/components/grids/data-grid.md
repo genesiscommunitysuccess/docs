@@ -1,6 +1,6 @@
 ---
 id: data-grid
-title: Data Grid
+title: Data grid
 sidebar_position: 20
 ---
 

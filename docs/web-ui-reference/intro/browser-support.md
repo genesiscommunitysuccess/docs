@@ -1,6 +1,6 @@
 ---
 id: browser-support
-sidebar_label: Browser Support
+sidebar_label: Browser support
 sidebar_position: 40
 title: Browser Support
 tags:
@@ -11,7 +11,7 @@ tags:
   - support
 ---
 
-Below is a list of browsers that provide native support for Web Component out of the box.
+Below is a list of browsers that provide native support for Web Component.
 
 **Desktop**
 - Firefox (63+)

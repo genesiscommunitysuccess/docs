@@ -6,7 +6,7 @@ sidebar_position: 40
 
 A dialog component presents content to the user. Unlike [modal](/web-ui-reference/components/interaction/modal/) it doesn't prevent the user from interacting with other content on the page.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaDialog } from '@genesislcap/alpha-design-system';

@@ -1,21 +1,21 @@
 ---
 id: ag-grid-connected
-title: Connected Data
+title: Connected data
 sidebar_position: 12
 ---
 
-The examples below use JSX syntax. Real-world scenarions might be different, depending on the client application tooling & structure.
+The examples below use JSX syntax. Real-world scenarions might be different, depending on the client application tooling and structure.
 
 For `foundation-ui` versions after **0.0.17** the [Genesis Datasource](/web-ui-reference/components/grids/ag-grid/ag-genesis-datasource/) has its own slotted component. The documentation should be valid for both usages (current vs. previous), since attributes/props are the same.
 
-## Setup
+## Se-tup
 
 :::info
 In the examples below, we refer to a sample `@genesislcap/alpha-design-system` design system with an `alpha` prefix. Your design system would probably have a different name/prefix, while still exposing the same API.
 :::
 
 :::warning
-Make sure you check which version is currently being used in your application. The examples below are reflecting the available scenarios for each version.
+Make sure you check which version is currently being used in your application. The examples below reflec the available scenarios for each version.
 :::
 
 ```ts

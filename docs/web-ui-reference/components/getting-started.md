@@ -1,8 +1,8 @@
 ---
 id: getting-started
-sidebar_label: Getting Started
+sidebar_label: Getting started
 sidebar_position: 10
-title: Getting Started
+title: Getting started
 tags:
   - components
   - frontend
@@ -17,7 +17,7 @@ A [design system](/web-ui-reference/design-systems/intro/) package provides the 
 * configuration files which allow you to control colours, typography, sizing and various other aspects
 * building blocks for creating your own custom components on top of the design system
 
-Each workspace gets an instance of a design system by default. You can also reuse design systems across workspaces to ensure consistency.
+Each workspace gets an instance of a design system by default. You can also re-use design systems across workspaces to ensure consistency.
 
 import DSNameMessage from '../_includes/_ds-name-message.md'
 
@@ -57,7 +57,7 @@ Once you have registered the components as shown above, they are available to us
 
 ## Hide undefined elements
 
-Custom Elements that have not been [upgraded](https://developers.google.com/web/fundamentals/web-components/customelements#upgrades) and don't have styles attached can still be rendered by the browser but they likely do not look how they are supposed to. To avoid a *flash of un-styled content* (FOUC), visually hide Custom Elements that are not yet defined:
+Custom llements that have not been [upgraded](https://developers.google.com/web/fundamentals/web-components/customelements#upgrades) and don't have styles attached can still be rendered by the browser,  but they probably will not look the way they are supposed to. To avoid a *flash of un-styled content* (FOUC), visually hide any custom elements that are not yet defined:
 
 ```css
 :not(:defined) {
@@ -72,7 +72,7 @@ The consuming application must apply this, as the components themselves do not.
 
 ## Explore the available components
 
-There are over 40 components provided out of the box with a Genesis Foundation UI design system. You can explore them by category:
+Genesis Foundation UI design system provides over 40 components. You can explore them by category:
 
 * [Form](/web-ui-reference/components/form/button/), such as button, checkbox, text field etc.
 * [Grids](/web-ui-reference/components/grids/ag-grid/ag-grid-intro) such as AG Grid and Data Grid

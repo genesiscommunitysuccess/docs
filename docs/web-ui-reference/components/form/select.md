@@ -6,9 +6,9 @@ sidebar_position: 100
 
 <div class="select-examples">
 
-An implementation of an [HTML select element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) as a form-connected web-component.
+An implementation of an [HTML select element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) as a form-connected Web Component.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaSelect, alphaOption } from '@genesislcap/alpha-design-system';

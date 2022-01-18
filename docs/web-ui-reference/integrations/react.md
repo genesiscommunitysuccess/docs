@@ -101,7 +101,7 @@ alpha-card > alpha-button {
 
 Congratulations! You're now set up to use Genesis Foundation and React!
 
-## Additional Notes
+## Additional notes
 
 ### create-react-app
 
@@ -150,11 +150,13 @@ The `definition` can also be separated from the class and passed into the `defin
 :::
 
 
-### Data Binding
+### Data binding
 
-#### HTML Attributes
+#### HTML attributes
 
-React is capable of rendering custom HTML elements and binding data to them, but it is beneficial to understand *how* React does this. React will apply all *props* to a custom HTML element as *HTML attributes* - including non-primitive types such as arrays and objects. Where some UI libraries provide binding syntaxes to distinguish setting properties, attributes, and events, React does not. This means that it can be very easy to end up with `my-prop="[object Object]"` in your HTML. React is exploring solutions [in this issue](https://github.com/facebook/react/issues/11347). See the section on [interop layers](#interop-layers-skatejsval-and-reactify-wc) for a work-around for this issue.
+React is capable of rendering custom HTML elements and binding data to them, but it is beneficial to understand *how* React does this. 
+
+React will apply all *props* to a custom HTML element as *HTML attributes* - including non-primitive types such as arrays and objects. Where some UI libraries provide binding syntaxes to distinguish setting properties, attributes, and events, React does not. This means that it can be very easy to end up with `my-prop="[object Object]"` in your HTML. React is exploring solutions [to this issue](https://github.com/facebook/react/issues/11347). See the section on [interop layers](#interop-layers-skatejsval-and-reactify-wc) for a work-around for this issue.
 
 #### Custom events
 

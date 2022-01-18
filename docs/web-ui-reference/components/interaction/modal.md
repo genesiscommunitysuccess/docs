@@ -12,7 +12,7 @@ As defined by the [W3C](https://w3c.github.io/aria-practices/#dialog_modal):
 >
 > Like non-modal dialogs, modal dialogs contain their tab sequence. That is, Tab and Shift + Tab do not move focus outside the dialog. However, unlike most non-modal dialogs, modal dialogs do not provide means for moving keyboard focus outside the dialog window without closing the dialog.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaModal } from '@genesislcap/alpha-design-system';

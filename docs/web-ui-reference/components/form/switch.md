@@ -4,9 +4,9 @@ title: Switch
 sidebar_position: 120
 ---
 
-An implementation of a [switch](https://w3c.github.io/aria/#switch) as a form-connected web-component.
+An implementation of a [switch](https://w3c.github.io/aria/#switch) as a form-connected Web Component.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaSwitch } from '@genesislcap/alpha-design-system';

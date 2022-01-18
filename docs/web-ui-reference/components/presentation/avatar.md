@@ -6,7 +6,7 @@ sidebar_position: 20
 
 The `alpha-avatar` component is used to graphically represent a user or an object.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaAvatar } from '@genesislcap/alpha-design-system';
@@ -16,7 +16,7 @@ provideDesignSystem().register(alphaAvatar());
 
 ## Usage
 
-### Basic Usage
+### Basic usage
 
 ```html live
 <alpha-avatar alt="User profile image" link="#" name="John Doe" shape="circle" fill="accent-primary"></alpha-avatar>
@@ -28,7 +28,7 @@ provideDesignSystem().register(alphaAvatar());
 <alpha-avatar alt="User profile image" link="#" name="John Doe" shape="circle" fill="accent-primary" shape="square"></alpha-avatar>
 ```
 
-### Filled, Colored, and Shaped
+### Filled, coloured, and shaped
 
 The `fill` and `color` attributes of the _avatar_ create CSS custom properties which can be used to style the control.
 

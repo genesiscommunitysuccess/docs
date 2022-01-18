@@ -4,11 +4,11 @@ title: Progress
 sidebar_position: 110
 ---
 
-_Progress_ and _progress ring_ are used to display the length of time a process will take or to visualize percentage value (referred to as a **determinate** state) and to represent an unspecified wait time (referred to as an **indeterminate** state). _Progress_ components are typically visually represented by a circular or linear animation. When the `value` attribute is passed the state is **determinate**, otherwise it is **indeterminate**.
+_Progress_ and _progress ring_ are used to display the length of time a process will take, or to visualize percentage value (referred to as a **determinate** state) and to represent an unspecified wait time (referred to as an **indeterminate** state). _Progress_ components are typically visually represented by a circular or linear animation. When the `value` attribute is passed the state is **determinate**, otherwise it is **indeterminate**.
 
-For progress components which have a linear visual appearance, use `alpha-progress`. For progress implementations which are circular, use [`alpha-progress-ring`](/web-ui-reference/components/presentation/progress-ring/).
+For progress components that have a linear visual appearance, use `alpha-progress`. For progress implementations which are circular, use [`alpha-progress-ring`](/web-ui-reference/components/presentation/progress-ring/).
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaProgress } from '@genesislcap/alpha-design-system';

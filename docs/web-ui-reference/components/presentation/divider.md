@@ -4,9 +4,9 @@ title: Divider
 sidebar_position: 80
 ---
 
-A web component implementation of a [horizontal rule](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr).
+A Web Component implementation of a [horizontal rule](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr).
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaDivider } from '@genesislcap/alpha-design-system';

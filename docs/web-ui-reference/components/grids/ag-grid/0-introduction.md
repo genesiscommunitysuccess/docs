@@ -6,11 +6,11 @@ sidebar_position: 10
 
 A feature-rich grid for scenarios where you need the full power of [AG Grid](https://www.ag-grid.com/).
 
-This is our Web Component wrapper for that, allowing both **simple data** and **connected data** scenarios.
+This is our Web Component wrapper for AG Grid.
 
 ## Use cases
 
-As mentioned before, there will be two main use cases for our AG Grid component: **simple data** and **connected data** cases:
+There are two main use cases for our AG Grid component: **simple data** and **connected data** cases:
 
 #### Simple data
 
@@ -22,7 +22,7 @@ A good scenario for this is when there's no need for streams or you're using a n
 This is also a scenario where our [DataGrid](/web-ui-reference/components/grids/data-grid) could be used if the business requirements allow something more limited in features. 
 :::
 
-The **simple data** use case is when you have your own data model & flow (JSON, external/custom REST APIS, etc) but still want to use a rich data grid (AG Grid) component with all of its rich features (filtering, sorting, custom cell renderers, etc). 
+The **simple data** use case is when you have your own data model and flow (JSON, external/custom REST APIS, etc) but still want to use a rich data grid (AG Grid) component with all  its features (filtering, sorting, custom cell renderers, etc). 
 
 This use case requires the client app to handle all the data transformations/updates/deletes/cell renderers in the grid.
 
@@ -33,14 +33,14 @@ This is the most common use case for our AG Grid component. When connecting to a
 :::
 
 :::warning
-For this use case a separate `ag-genesis-datasource` component is required with a valid `resourceName`. More details [here](/web-ui-reference/components/grids/ag-grid/ag-genesis-datasource/).
+For this use case, a separate `ag-genesis-datasource` component is required with a valid `resourceName`. More details [here](/web-ui-reference/components/grids/ag-grid/ag-genesis-datasource/).
 :::
 
-The **connected data** use case is when you have a [Data Server](/platform-reference/configure-key-modules/data-servers/configure) or [Request Server](/platform-reference/configure-key-modules/request-servers/configure) available/ready to use and don't want to worry about handling data transformations/updates/deletes/cell renderers in the grid (for cell renders it's flexible so you can use any component you want or the ones provided by default).
+The **connected data** use case is when you have a [data server](/platform-reference/configure-key-modules/data-servers/configure) or [request server](/platform-reference/configure-key-modules/request-servers/configure) available/ready to use and don't want to worry about handling data transformations/updates/deletes/cell renderers in the grid (for cell renders it's flexible so you can use any component you want or the ones provided by default).
 
 `ag-genesis-datasource`
 
-## Attributes & props
+## Attributes and props
 
 - **`agGridFontFace: string`**: The font face to be used in the the grid. <br /> *Defaults to **'agGridAlpine'** but is replaced with **'Roboto'** font family when using `<zero-ag-grid>`.*
 

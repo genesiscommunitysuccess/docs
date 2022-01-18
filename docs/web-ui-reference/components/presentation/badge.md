@@ -4,9 +4,9 @@ title: Badge
 sidebar_position: 30
 ---
 
-The `alpha-badge` component is used to highlight an item and attract attention or flag status.
+The `alpha-badge` component is used to highlight an item and attract attention or flag its status.
 
-## Setup
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaBadge } from '@genesislcap/alpha-design-system';

@@ -1,12 +1,12 @@
 ---
 id: ag-genesis-datasource
-title: Genesis Datasource
+title: Genesis data-source
 sidebar_position: 13
 ---
 
-Used in [Connected Data](/web-ui-reference/components/grids/ag-grid/ag-grid-connected/) scenarios, will fetch data from a Genesis server (or any other server that implements the Genesis protocol). <br /> <br /> *Available Attributes & Props may change in the future and are open for feedback but are reflecting the [DATA_LOGON message options](/platform-reference/configure-key-modules/data-servers/examples/#client-side-runtime-options)*
+Used in [Connected Data](/web-ui-reference/components/grids/ag-grid/ag-grid-connected/) scenarios, this will fetch data from a Genesis server (or any other server that implements the Genesis protocol). <br /> <br /> *Available attributes and props may change in the future and are open for feedback but are reflecting the [DATA_LOGON message options](/platform-reference/configure-key-modules/data-servers/examples/#client-side-runtime-options)*
 
-## Attributes & Props
+## Attributes and props
 
 - **`criteria: string`**: Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: Expr.dateIsBefore(TRADE_DATE,'20150518') or QUANTITY > 10000.
 
