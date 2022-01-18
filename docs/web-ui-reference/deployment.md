@@ -11,4 +11,4 @@ tags:
 
 # Deploying the front end
 
-You can deploy the front end of a Genesis Application in various ways, including... TODO
+You can deploy the front end of a Genesis application in various ways. We shall provide more information as soon as possible.

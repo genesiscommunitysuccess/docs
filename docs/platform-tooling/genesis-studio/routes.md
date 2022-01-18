@@ -7,4 +7,6 @@ title: Routes
 
 # Routes
 
-Routes in Genesis Studio...
+Routes enable you to specify how the user can navigate between pages on the website. 
+
+We shall provide more information as soon as possible.

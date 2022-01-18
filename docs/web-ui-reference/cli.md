@@ -2,7 +2,7 @@
 id: cli
 sidebar_label: CLI
 sidebar_position: 50
-title: CLI Overview and Command Reference
+title: CLI overview and command reference
 tags:
   - cli
   - genx
@@ -78,7 +78,7 @@ genx
 
 TODO:
 
-## Workspaces and Application filesystem
+## Workspaces and application filesystem
 
 After you have created a workspace, your workspace filesystem should look something like this (depending on the seed).
 

@@ -1,7 +1,7 @@
 ---
 id: dependency-injection
-title: Dependency Injection
-sidebar_label: Dependency Injection
+title: Dependency injection
+sidebar_label: Dependency injection
 sidebar_position: 20
 
 ---
