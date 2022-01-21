@@ -1,19 +1,19 @@
 ---
 id: fix-gateway
-title: Integrate a FIX Gateway
-sidebar_label: Integrate a FIX Gateway
+title: Integrate a FIX gateway
+sidebar_label: Integrate a FIX gateway
 sidebar_position: 11
 
 ---
-Now we have the backend of a working trade application, but in many scenarios we will need to integrate the genesis running application with other systems in order to report events. 
+Now we have the back end of a working trade application, but in many scenarios we will need to integrate our Genesis application with other systems in order to report events. 
 
 In order to achieve this, we can use the Genesis Gateway and Streamer components to construct a data flow that reports to another system running outside of Genesis.
 
 ## The objective
 
-The objective is to use the FIX Gateway, Streamer and Streamer-Client moduels to construct a real-time, configurable data stream that will send a drop copy FIX execution report each time a trade is entered in our system.
+The objective is to use the FIX Gateway, Streamer and Streamer-Client modules to construct a real-time, configurable data stream that will send a drop copy FIX execution report each time a trade is entered in our system.
 
-## Configuring the Gateway
+## Configuring the gateway
 
 ### 1. Configure the FIX gateway
 Create the FIX server configuration by adding the following XML to the trading_app-processes.xml file
@@ -36,7 +36,7 @@ Add the service definition to the trading_app-service-definitions.xml file
 <service host="localhost" name="TRADING_APP_FGW" port ="11004"/>
 ```
 
-Create a config file for the FIX gateway under trading_app-config/src/main/resources/cfg/trading_app-fgw.xml. 
+Create a config file for the FIX gateway under **trading_app-config/src/main/resources/cfg/trading_app-fgw.xml**. 
 
 The file below has commented out sections to change the connection type between CLIENT and SERVER. 
 A SERVER configuration will open a socket listener on the specified port and wait for incoming connections.
@@ -273,13 +273,13 @@ streamerClients {
 }
 ```
 
-## Testing the Gateway
+## Testing the gateway
 
-### 1. Install the Genesis FIX Module Distribution
+### 1. Install the Genesis FIX module distribution
 Download and unzip genesisproduct-fix-5.2.0-bin.zip in the run directory with the other distributions.
 
 ### 2. Connect a FIX client
 Connect a FIX client to the server port you have specified.
 
-### 3. Enter a TRADE_INSERT Event
-Using REST or a front-end app like genesis console, send an EVENT_TRADE_INSERT message with a trade state of NEW. You should see that your fix client receives an execution report message.
+### 3. Enter a TRADE_INSERT event
+Using REST or a front-end app, such as Genesis Console, send an EVENT_TRADE_INSERT message with a trade state of NEW. You should see that your fix client receives an execution report message.

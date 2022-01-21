@@ -1,6 +1,6 @@
 ---
 id: progress-ring
-title: Progress Ring
+title: Progress ring
 sidebar_position: 100
 ---
 
