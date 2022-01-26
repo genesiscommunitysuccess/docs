@@ -1,7 +1,7 @@
 ---
 id: fields-from-scratch
 sidebar_label: Generate fields from scratch
-sidebar_position: 1
+sidebar_position: 10
 title: Generate fields from scratch
 
 ---
