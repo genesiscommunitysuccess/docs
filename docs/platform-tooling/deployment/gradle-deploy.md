@@ -7,7 +7,7 @@ sidebar_position: 10
 # Deploying from the IDE using Gradle
 The Genesis LCNC platform provides a gradle plugin that allows you to easily perform all of the installation tasks to deploy your own genesis project on to your local workstation, from your IDE.
 
-The plugin is designed to work on workstations running Linux or on WSL if using Windows. If you are yet to set up your WSL environment to work with Genesis, please see our WSL setup guide [here.](/getting-started/get-ready-to-develop/setup-wsl/)
+The plugin is designed to work on workstations running Linux or on WSL if using Windows. If you are yet to set up your WSL environment to work with Genesis, please see our WSL setup guide here. **LINK**
 
 ## Adding the deployment plugin to your project
 The Genesis Gradle Deploy Plugin uses the project classpath to resolve dependent resources, so in order not to interfere with any of your other project modules it is best to add a ${projectName}-deploy module to your project.
