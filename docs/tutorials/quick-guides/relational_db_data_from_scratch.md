@@ -1,7 +1,7 @@
 ---
 id: relational-db-data-from-scratch
 sidebar_label: Generate fields and tables from relational database
-sidebar_position: 2
+sidebar_position: 20
 title: Generate fields and tables from a relational database
 
 ---
