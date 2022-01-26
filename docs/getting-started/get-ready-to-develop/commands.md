@@ -1,7 +1,7 @@
 ---
 id: commands
 sidebar_label: The most important commands
-sidebar_position: 60
+sidebar_position: 80
 title: The most important commands
 
 ---

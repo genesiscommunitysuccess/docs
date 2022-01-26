@@ -1,7 +1,7 @@
 ---
 id: install
 sidebar_label: Install in three easy steps
-sidebar_position: 20
+sidebar_position: 30
 title: Install in three easy steps
 
 ---
