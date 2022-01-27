@@ -6,7 +6,7 @@ title: How to load feed data into an application
 
 ---
 
-Somed feeds provide static sets of data that you can doenlaod for processing by your application. A good example is traded dat from an exchange. This exercise shows you how to load these data files. in the case, we shall use Bloomberg issuanc data. We shall load this, parse it to reformat it Genesis format, then place it in a staging table in a Genesis application. Once it is in the staging table, the data can be passed to other tables within the application.
+Some feeds provide static sets of data that you can download for processing by your application. A good example is traded data from an exchange. This exercise shows you how to load these data files. in the case, we shall use Bloomberg issuance data. We shall load this, parse it to reformat it to Genesis format, then place it in a staging table in a Genesis application. Once it is in the staging table, the data can be passed to other tables within the application.
 
 
 
@@ -84,7 +84,7 @@ The code does three things:
 The code includes parameters, such as **move**.  There is a [huge range of other parameters]( https://camel.apache.org/components/2.x/file-component.html#_query_parameters_87_parameters
 ) that can be used.
 
-## Finding the generated messages
+### Finding the generated messages
 
 In the example below, we have used the Genesis file processor class, and some camel URI. The URI specifies:
 -	the location of the files to be loaded (in this case any file found in /bbg)
