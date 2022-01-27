@@ -6,7 +6,7 @@ title: How to load feed data into an application
 
 ---
 
-Some feeds provide static sets of data that you can download for processing by your application. A good example is traded data from an exchange. This exercise shows you how to load these data files. in the case, we shall use Bloomberg issuance data. We shall load this, parse it to reformat it to Genesis format, then place it in a staging table in a Genesis application. Once it is in the staging table, the data can be passed to other tables within the application.
+Some feeds provide static sets of data that you can download for processing by your application. A good example is traded data from an exchange. This exercise shows you how to load these data files. In this case, we shall use Bloomberg issuance data. We shall load this, parse it to reformat it to Genesis format, then place it in a staging table in a Genesis application. Once it is in the staging table, the data can be passed to other tables within the application.
 
 
 
@@ -59,7 +59,7 @@ Once you know this format, you need to create code that maps the fields so that 
 You need to decide how to retrieve the data from the feed and write it to a staging area for your application. For example:
 
 
--	scheduled SFTP download every 15 minutes from the Bloomberg feed, writing the source files to a folder called /runtime/inbound/bbg
+-	scheduled SFTP download every 15 minutes from the Bloomberg feed, writing the source files to a folder called **/runtime/inbound/bbg**
 -	a camel job created to do the same thing
 -	simple copy and paste
 
