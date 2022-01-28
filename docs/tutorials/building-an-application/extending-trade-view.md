@@ -1,29 +1,61 @@
 ---
-id: add-view
-title: Adding a view
-sidebar_label: Adding a view
+id: extend-trade-view
+title: Extending our trade view
+sidebar_label: Extending our trade view
 sidebar_position: 3
 
 ---
-At this stage, you have
 
-* a ref_data_app (with all its tables). The schema can be imported into the trading_app.
-* a trading_app that contains the schema for the TRADE table. This table will be used to generate the event handlers, data servers and request server.
+## Extend the new view
 
-## Create the new view
+The positions app already has a view from running AppGen. Let's now extend this to join reference tables and supply joined fields.
 
-You need to create a view that can display relevant information about the trades table.
+We'll join to the INSTRUMENT and COUNTERPARTY tables so our view can serve up their fields as needed.
 
-The trading app already has a view created by the **ExcelToGenesis** script called TRADE_VIEW. You are now going to add a new view called ENHANCED_TRADE_VIEW. This new view makes it possible to display relevant information about the trades table and enhance with data from other tables.
+Firstly add the joins section within the TRADE_VIEW's block, which will add the joined tables and the fields to join them on:
 
-The view will have the TRADE table as root and will be joined to the COUNTERPARTY and INSTRUMENT tables. 
+```kotlin
+  view ("TRADE_VIEW", TRADE) {
 
-The view will display all the TRADE fields except INSTRUMENT_ID, COUNTERPARTY_ID, COUNTERPARTY_NAME and INSTRUMENT_SYMBOL. These fields will be replaced with the NAME field extracted from the INSTRUMENT table join and the COUNTERPARTY table join.
+    joins {
+      joining(COUNTERPARTY) {
+        on(TRADE.COUNTERPARTY_ID to COUNTERPARTY { COUNTERPARTY_ID })
+      }
+      joining(INSTRUMENT) {
+        on(TRADE.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
+      }
+    }
+```
+
+Now lets add joined table fields, note here we're using withPrefix to give the field a unique name:
+
+<!-- TODO check output of AppGen has fields like this, else a line that we add it in as there are joined trades now -->
+```kotlin
+  view ("TRADE_VIEW", TRADE) {
+
+    joins {
+      joining(COUNTERPARTY) {
+        on(TRADE.COUNTERPARTY_ID to COUNTERPARTY { COUNTERPARTY_ID })
+      }
+      joining(INSTRUMENT) {
+        on(TRADE.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
+      }
+    }
+
+    fields {
+      TRADE.allFields()
+
+      COUNTERPARTY.NAME withPrefix COUNTERPARTY
+      INSTRUMENT.NAME withPrefix INSTRUMENT
+      
+    }
+  }
+```
 
 In short, you will add INSTRUMENT_NAME and COUNTERPARTY_NAME to enhance the view with human readable values.
 
 ```kotlin
-  view ("ENHANCED_TRADE_VIEW", TRADE) {
+  view ("TRADE_VIEW", TRADE) {
 
     joins {
       joining(COUNTERPARTY) {

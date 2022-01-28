@@ -5,7 +5,7 @@ sidebar_label: Add calculated data
 sidebar_position: 4
 
 ---
-At this point, we have a data model that serves both the reference database and the trading database, Our trading application has  a schema for the TRADE table, and it has event handlers, data servers and request servers.
+At this point, we have a data model that serves both the reference database and the trading database, Our positions application has a schema for the TRADE table, and it has event handlers, data servers and request servers.
 
 Now we want to add calculations to add position-keeping. In brief you need to:
 

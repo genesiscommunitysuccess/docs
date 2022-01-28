@@ -9,8 +9,8 @@ sidebar_position: 5
 
 It's time to look at your event handlers. At this stage, you have:
 
-* a Reference Data application. This has tables, so you can import the schema to the Trading application
-* a Trading application. This contains the schema for the TRADE table, event handlers, data servers and request servers
+* a Reference Data application. This has tables, so you can import the schema to the positions application
+* a Positions application. This contains the schema for the TRADE table, event handlers, data servers and request servers
 
 Now we are going to change the code in the event handler so that it checks that:
 

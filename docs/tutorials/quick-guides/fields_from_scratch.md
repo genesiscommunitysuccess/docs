@@ -111,7 +111,7 @@ While coding, note that autocompletion helps with the configuration and its argu
 ### Generate the Fields
 
 Now look at the `trade-101-dictionary-cache`. This depends on `trade-101-config` and contains the generated code based on the configuration. 
-To explore the generated code, navigate to `trade-101-dictionary-cache/target/generated/sources/fields/global/genesis/gen/config/fields/Fields.kt`. You will find the `Fields` object with pre-generated literals. These are fields that are commonly used in trading application,s so they get generated out-of-the-box for faster development. To see the fields you have just added, you will have to build the project again:
+To explore the generated code, navigate to `trade-101-dictionary-cache/target/generated/sources/fields/global/genesis/gen/config/fields/Fields.kt`. You will find the `Fields` object with pre-generated literals. These are fields that are commonly used in trading applications, so they get generated out-of-the-box for faster development. To see the fields you have just added, you will have to build the project again:
 
 ```bash
 mvn package
