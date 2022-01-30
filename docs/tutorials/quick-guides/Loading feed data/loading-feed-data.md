@@ -1,14 +1,18 @@
 ---
 id: uploading-feed-data
 sidebar_label: Loading feed data
-sidebar_position: 30
+sidebar_position: 10
 title: How to load feed data into an application
 
 ---
 
-Some feeds provide static sets of data that you can download for processing by your application. A good example is traded data from an exchange. This exercise shows you how to load these data files. In this case, we shall use Bloomberg issuance data. We shall load this, parse it to reformat it to Genesis format, then place it in a staging table in a Genesis application. Once it is in the staging table, the data can be passed to other tables within the application.
+Some feeds provide static sets of data that you can download for processing by your application. A good example is traded data from an exchange. This exercise shows you the key points for loading these data files. In this case, we shall use Bloomberg issuance data. We shall load this, parse it to reformat it to Genesis format, then place it in a staging table in a Genesis application. Once it is in the staging table, the data can be passed to other tables within the application.
 
-
+:::note
+This guide is intended for:
+- users who alrady have experience of creating a Genesis application
+- users with a working knowledge of [camel](https://docs.genesis.global/secure/glossary/glossary/#camel-apache-camel)
+:::
 
 
 ## Prerequisites ##
@@ -23,9 +27,6 @@ Versions used while writing this guide:
  - IntelliJ IDEA 2021.2.1
  - Genesis Platform 5.2
 
-:::note
-You will need access to a Maven repository that provides the Genesis LCNC Platform
-:::
 
 ## Steps ##
 
@@ -51,7 +52,7 @@ GBP3M=135000,S,13387,150121
 ### A real example
 Reality is rarely that convenient. For this example, the incoming data is issuance data from Bloomberg, and its format is considerably more complex. 
 
-You can examine the [format of that data](https://genesisglobal.atlassian.net/wiki/spaces/PROD/pages/2674622465/Bloomberg+Issuance+BBG) here. Note that some sections of the data are pipe-delimited. 
+Here is an [example of the data](/tutorials/quick-guides/Loading%20feed%20data/feed-example-data/) you can download from the Bloomberg Issuance feed. 
 
 Once you know this format, you need to create code that maps the fields so that they can be written to a table in your application.
 
@@ -128,7 +129,7 @@ In the event handler, there are two code blocks that you need to specify:
 
 - `onValidate`. This is where you validate the message before processing; return an **ACK** or **NAK**. If you do not want to add any validation, simply return an **ACK**.
 
-- `onCommit`. This is where you specify the parsing that converts the raw data to Genesis format and sends it a staging table for use in the application.
+- `onCommit`. This is where you specify the parsing that converts the raw data to Genesis format and sends it to a staging table for use in the application.
 
 You also need to define a construct that passes the details to the parent class. This must identify the `EventManager`, the `EventType`, and `MetaData`, as well as any additional modules that are required to perform the work, such as a data table repository. 
 
@@ -171,7 +172,7 @@ https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1454833665/The+N
 
 For this handler, we are interested in the `DETAILS.FILE` property of the GenesisSet, which is the content of the file as a string. 
 
-- Here we split it by any EOLN convention and then use a helper `BbgFileImportReader` class to parse the complex BBG structure and generate a list of fields and data elements. 
+- Here we split it by any end-of-line (EOLN) convention and then use a helper `BbgFileImportReader` class to parse the complex BBG structure and generate a list of fields and data elements. 
 
 - Each data row then calls the mapRow method to convert them one at a time into the `IssuanceData` object, and add them to a collection. 
 
@@ -254,7 +255,51 @@ It is wise to create some tests around the event handler.
 
 Due to the complexity of the Bloomberg feed, we create unit tests around the parsing of the feed file (the `BbgFileImportReader` class). Again, we use the `onCommit` block of the `BbgIssuanceFileImport` class.
 
-Code snippet missing here?
+```kotlin
+@Test
+    @SuppressWarnings("unchecked")
+    public void testPrelOnCommitSuccess() throws IOException {
+        EventManager eventManager = Mockito.mock(EventManager.class);
+        IssuanceDataRx3Repository issuanceDataRx3Repository = Mockito.mock(IssuanceDataRx3Repository.class);
+        IssuanceKeyMapRx3Repository issuanceKeyMapRx3Repository = Mockito.mock(IssuanceKeyMapRx3Repository.class);
+        DatatypeMapRx3Repository datatypeMapRx3Repository = Mockito.mock(DatatypeMapRx3Repository.class);
+        Mockito.when(issuanceKeyMapRx3Repository.getByIssuanceDataKey(Mockito.any(String.class))).thenReturn(Maybe.empty());
+        Mockito.when(datatypeMapRx3Repository.getRangeByDatasourceIdDatasourceFieldDatasourceFromValue("BBG")).thenReturn(Flowable.empty());
+        BbgIssuanceFileImport processor =
+                new BbgIssuanceFileImport(eventManager, issuanceDataRx3Repository, issuanceKeyMapRx3Repository, datatypeMapRx3Repository);
+        Message message = Mockito.mock(Message.class);
+        GenesisSet genesisSet = Mockito.mock(GenesisSet.class);
+        GenesisSet detailsGenesisSet = Mockito.mock(GenesisSet.class);
+        Mockito.when(message.getGenesisSet()).thenReturn(genesisSet);
+        Mockito.when(genesisSet.getGenesisSet(DETAILS)).thenReturn(detailsGenesisSet);
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(Objects.requireNonNull(classLoader.getResource("inbound/PREL_sample.out.20211021")).getFile());
+        String content = Files.readString(file.toPath(), StandardCharsets.UTF_8);
+        Mockito.when(detailsGenesisSet.getString("FILE_NAME")).thenReturn(file.toString());
+        Mockito.when(genesisSet.getString("DETAILS.FILE")).thenReturn(content);
+        WriteResult writeResult = Mockito.mock(WriteResult.class);
+        Single<WriteResult> singleWriteResult = Mockito.mock(Single.class);
+        Mockito.when(writeResult.isError()).thenReturn(false);
+        Mockito.when(singleWriteResult.blockingGet()).thenReturn(writeResult);
+        Mockito.when(issuanceDataRx3Repository.insertAll(Mockito.any(List.class))).thenReturn(singleWriteResult);
+        ArgumentCaptor<List<IssuanceData>> captor = ArgumentCaptor.forClass(List.class);
+        processor.onCommit(message, false);
+        Mockito.verify(issuanceDataRx3Repository).insertAll(captor.capture());
+        List<IssuanceData> issuanceDataLists = captor.getValue();
+        Assertions.assertEquals(426, issuanceDataLists.size());
+        IssuanceData issuanceData0 = issuanceDataLists.get(0);
+        IssuanceData issuanceDataN = issuanceDataLists.get(issuanceDataLists.size() - 1);
+        Assertions.assertEquals("SDIPRO 1e-06 12/31/24 1001", issuanceData0.getIssuanceDataKey());
+        Assertions.assertEquals("TWD", issuanceData0.getCurrencyCode());
+        Assertions.assertNull(issuanceData0.getMaturityDate());
+        Assertions.assertTrue(Objects.requireNonNull(issuanceData0.getMessageUrl()).endsWith("PREL_sample.out.20211021#123"));
+        //Assertions.assertEquals("file://C:\\Workspace\\briss-server\\primary-issuance-event-handler\\target\\test-classes\\inbound\\PREL_sample.out.20211021#123", issuanceData0.getMessageUrl());
+        Assertions.assertEquals("MINEMK 0 12/31/26 ICPS", issuanceDataN.getIssuanceDataKey());
+        Assertions.assertEquals( new DateTime(2026,12, 31, 0, 0), issuanceDataN.getMaturityDate());
+        Assertions.assertEquals("file://PREL_sample.out.20211021#562", issuanceDataN.getMessageUrl());
+        Mockito.verify(eventManager, Mockito.times(1)).sendAck(Mockito.any(Message.class));
+    }Collapse
+```
 
 ### Troubleshooting
 
@@ -285,4 +330,4 @@ SOURCE_REF = 1
 -	Finally, use DbMon to check the related staging table in the DATA_SERVER for the relevant rows – in this case, the ISSUANCE_DATA table.
 
 ## Conclusion ##
-That's it. You've seen hw files can be fetched, parsed and placed on a staging table in an application.
+That's it. You've seen how files can be fetched, parsed and placed on a staging table in an application.
