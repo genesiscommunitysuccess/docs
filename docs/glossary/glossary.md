@@ -89,6 +89,8 @@ You can define routing and mediation rules in a variety of domain-specific langu
 
 Apache Camel uses Uniform Resource Identifiers (URIs) to work directly with the Transport or messaging model. This can be HTTP, ActiveMQ, JMS, JBI, SCA, MINA or CXF, as well as pluggable Components and Data Format options.
 
+There is a lot of information at the [official Apache Camel website](https://camel.apache.org/).
+
 ## DBeaver
 
 [DBeaver](https://dbeaver.com/docs/wiki/) is a desktop application written in Java and based on the Eclipse platform.
