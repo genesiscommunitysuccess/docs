@@ -1,36 +1,39 @@
 ---
 id: gradle
 title: Using the Gradle Deploy Plugin
-sidebar_label: Gradle Deply plugin
+sidebar_label: Gradle Deploy plugin
 sidebar_position: 10
 ---
 # Deploying from the IDE using Gradle
-The Genesis LCNC platform provides a gradle plugin that allows you to easily perform all of the installation tasks to deploy your own genesis project on to your local workstation, from your IDE.
+The Genesis LCNC platform provides a Gradle plugin that makes it easy to perform all the installation tasks that are necessary to deploy your own Genesis project on to your local workstation, from your IDE.
 
-The plugin is designed to work on workstations running Linux or on WSL if using Windows. If you are yet to set up your WSL environment to work with Genesis, please see our [WSL setup guide](/getting-started/get-ready-to-develop/wsl-setup/).
+The plugin is designed to work on workstations running Linux, or on WSL if using Windows. If you are yet to set up your WSL environment to work with Genesis, see our [WSL setup guide](/getting-started/get-ready-to-develop/wsl-setup/).
 
 ## Adding the deployment plugin to your project
-The Genesis Gradle Deploy Plugin uses the project classpath to resolve dependent resources, so in order not to interfere with any of your other project modules it is best to add a ${projectName}-deploy module to your project.
+The Genesis Gradle Deploy Plugin uses the project classpath to resolve dependent resources. So, in order not to interfere with any of your other project modules, it is best to add a ${projectName}-deploy module to your project.
 
-If you are using one of the Genesis application seeds then this module will be provided for you as part of the project template. 
+If you are using one of the Genesis application seeds, then this module will be provided for you as part of the project template. 
 
-If you want to add this module to an existing project, then it is easy to do so. The contents need only be two files, a gradle properties file and a gradle build script.
+If you want to add this module to an existing project, then it is easy to do so. The contents need only be two files;
+
+-  a Gradle properties file
+-  a Gradle build script
 
 ### Properties
 The properties file defines a few key properties in order for the plugin to function correctly.
 
-`genesis-home` is the location on the Linux or WSL file system where the platform and application distributions will be installed.
-`wsl-distro` is the name of the WSL distribution in which to install the platform (when using WSL)
-`wsl-user` is the user that owns the directory in which to install the platform (when using WSL)
+- `genesis-home` is the location on the Linux or WSL file system where the platform and application distributions will be installed.
+- `wsl-distro` is the name of the WSL distribution in which to install the platform (when using WSL).
+- `wsl-user` is the user that owns the directory in which to install the platform (when using WSL).
 ```
 genesis-home=/home/product/run #required
 wsl-distro=CentOS #wsl only
 wsl-user=product #wsl only
 ```
 
-The WSL properties are required in order to pass to the Windows WSL wrapper command. Path conversion happens automatically. The absence of any WSL distribution will cause the plugin to assume it is running directly on Linux.
+The WSL properties are required in order to pass to the Windows WSL wrapper command. Path conversion happens automatically. In the absence of any WSL distribution, the plugin assumes it is running directly on Linux.
 
-### Build Script
+### Build script
 The build script simply defines dependencies on distributions both internal and external to the project so they can be resolved and deployed.
 ```kotlin
 plugins {
@@ -73,14 +76,14 @@ artifacts {
     }
 }
 ```
-This special piece of gradle DSL makes the zip file of the distribution available on the class path so it can be resolved by the deploy plugin.
+This special piece of Gradle DSL makes the zip file of the distribution available on the class path so it can be resolved by the deploy plugin.
 
-### Invoking Tasks
-Once all the distributions are available on the classpath of the deploy module, the gradle import process will create tasks to deploy all the relevant files, as well as control the server.
+### Invoking tasks
+Once all the distributions are available on the classpath of the deploy module, the Gradle import process will create tasks to deploy all the relevant files, as well as control the server.
 
 Gradle tasks are split into three sections.
 
 * genesissetup - contains tasks to deploy each external distribution, as well as site specific configuration
-* genesisdeploy - allows the deployment of the full project, single jars for each project module or just configuration files
-* genesisscripts - allows the invocation of any genesis platform command via gradle. See [the commands list](platform-tooling/commands/) for more information.
+* genesisdeploy - enables the deployment of the full project: single jars for each project module or just configuration files
+* genesisscripts - enables the invocation of any Genesis platform command via Gradle. See [the commands list](platform-tooling/commands/) for more information
 
