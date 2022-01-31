@@ -8,7 +8,7 @@ title: Setting up WSL
 ## The Windows Subsystem for Linux
 Many corporate workstations are Windows based, due to the centralised governance and security that the enterprise editions offer.
 
-The Windows Subsystem for Linux lets developers run a GNU/Linux environment -- including most command-line tools, utilities, and applications -- directly on Windows, unmodified, without the overhead of a traditional virtual machine or dualboot setup.
+The Windows Subsystem for Linux enables developers to run a GNU/Linux environment -- including most command-line tools, utilities, and applications -- directly on Windows, unmodified, without the overhead of a traditional virtual machine or dualboot setup.
 
 The Genesis LCNC platform provides several ease-of-development tools that are designed to work seamlessly on Linux or WSL. If your development environment is Windows, we recommend installing WSL.
 
@@ -16,9 +16,9 @@ The Genesis LCNC platform provides several ease-of-development tools that are de
 If you haven’t already - please install Windows terminal. This provides a tabbed single Window from which you can open different command line tools, [link here](https://www.microsoft.com/store/productId/9N0DX20HK701).
 
 ## Install WSL2
-Firstly; your Windows install needs to be 2004+ (2020 May feature release or higher) and you will need to install the Windows Subsystem for Linux. For details see this [link](https://docs.microsoft.com/en-us/windows/wsl/install-win10). 
+Your Windows install must be 2004+ (2020 May feature release or higher) and you will need to install the Windows Subsystem for Linux. For details see this [link](https://docs.microsoft.com/en-us/windows/wsl/install-win10). 
 
-If you have previously enabled WSL, you will need to set the default version to 2 and (optionally) convert existing distros:
+If you have previously enabled WSL, you need to set the default version to 2 and (optionally) convert existing distros:
 
 ```
 PS C:\Users\user.name> wsl -l -v
@@ -36,23 +36,28 @@ PS C:\Users\user.name> wsl -l -v
 ```
 
 ## Install CentOS for WSL2
-WSL distrubtions can be found easily at various locations on the web. For expedience, you can use this article from microsoft in order to easily built a centos distro from a docker image:
+WSL distrubtions can be found easily at various locations on the web. For expedience, you can use this article from Microsoft in order to build a CentOS distro from a Docker image:
 
 [https://docs.microsoft.com/en-us/windows/wsl/use-custom-distro#export-the-tar-from-a-container](https://docs.microsoft.com/en-us/windows/wsl/use-custom-distro#export-the-tar-from-a-container)
 
-(Note that this approach requires docker to be installed, so if necessary, jump ahead to the docker installation section).
+(Note that this approach requires Docker to be installed. So, if necessary, jump ahead to the Docker installation section).
 
-At this point CentOS should be available from Windows Terminal. Note the new entry in the drop-down menu:
+At this point, CentOS should be available from Windows Terminal. Note the new entry in the drop-down menu:
 
-Next, you will probably want to update CentOS by running:
+![](/img/wsl-menu.png)
 
-yum check-update
+Next, update CentOS by running:
 
-yum update
+`yum check-update`
+
+`yum update`
 
 ## Prepare CentOS for Genesis
-- Install package group: **yum groupinstall base**
-- Install Java 11 or scp jdk from local binaries folder and install:
+1. Install package group: 
+
+`yum groupinstall base`
+
+2. Install Java 11 or scp jdk from local binaries folder and install:
     
 ```
 sudo yum update
@@ -61,7 +66,7 @@ sudo alternatives --config java    # select the option that corresponds to JDK 1
 sudo alternatives --config javac   # select the option that corresponds to JDK 11
 ```
     
-- Create a soft link to your maven settings.xml file:
+3. Create a soft link to your Maven **settings.xml** file:
     
 ```
 [root@machine user.name]# cd ~
@@ -79,31 +84,31 @@ total 0
 lrwxrwxrwx 1 root root 43 Aug 14 09:28 settings.xml -> /mnt/c/Users/user.name/.m2/settings.xml
 ``` 
 
-Once you have set this up, it might be a good idea to export the distribution. You can then import it again under a different name. This allows you have multiple distributions, for different projects for example or for running Intellij:
+Once you have set this up, it is a good idea to export the distribution. You can then import it again under a different name. This allows you to have multiple distributions for different projects, for example, or for running Intellij:
 
 ```
 wsl --export CentOS7 centos.backup
 ```
 
 ## Install Docker Desktop for Windows
-Next you will need a database. One solution would be to run Aerospike or Postgres in Docker, using Docker for Windows integration with WSL2. For instructions please [check here](https://docs.docker.com/docker-for-windows/). For download [click here](https://hub.docker.com/editions/community/docker-ce-desktop-windows/).
+For your database, you could run Aerospike or Postgres in Docker, using Docker for Windows integration with WSL2. For instructions, [check here](https://docs.docker.com/docker-for-windows/). For a download, [click here](https://hub.docker.com/editions/community/docker-ce-desktop-windows/).
 
-Please ensure that you have the WSL2 integration enabled and that you have enabled integration with your CentOS distribution:
+Ensure that you have the WSL2 integration enabled and that you have enabled integration with your CentOS distribution:
 
-This will allow you access the docker command; as well as any docker container from any of the integrated distros, as well as from windows.
+This allows you to access the docker command; as well as any docker container from any of the integrated distros, as well as from Windows.
 
-This setting can be accessed by opening Docker Desktop, then navigating to Settings > Resources > WSL Integration.
+This setting can be accessed by opening Docker Desktop, then navigating to **Settings** > **Resources** > **WSL Integration**.
 
 ## Running Aerospike from Docker
-You can run Aerospike with the following docker command:
+You can run Aerospike with the following Docker command:
 
 ```
 docker run --name aerospike -tid -p 3000:3000 -p 3001:3001 -p 3002:3002 -p 3003:3003 aerospike/aerospike-server:3.15.1.4
 ```
 
-This will create download and run Aerospike in a docker container.
+This creates a download and runs Aerospike in a Docker container.
 
-To check if the container is running, use the docker ps -all command. It will show the id and name of the Aerospike container. You will need these to interact with the container.
+To check if the container is running, use the Docker `ps -all` command. It will show the id and name of the Aerospike container. You will need these to interact with the container.
 
 ```
 [root@machine wsl]# docker ps -all
@@ -111,7 +116,7 @@ CONTAINER ID        IMAGE                                 COMMAND               
 c3468768d9c9        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   2 minutes ago       Exited (0) 32 seconds ago                       priceless_bardeen
 ```
 
-To start or stop the container, use docker start|stop {container name}:
+To start or stop the container, use `docker start|stop _container name_:
 
 ```
 [root@machine wsl]# docker stop priceless_bardeen
@@ -128,7 +133,7 @@ CONTAINER ID        IMAGE                                 COMMAND               
 c3468768d9c9        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   5 minutes ago       Up 4 seconds        0.0.0.0:3000-3003->3000-3003/tcp   priceless_bardeen
 ```
 
-To remove the container, use docker rm {container name}:
+To remove the container, use `docker rm container name`:
 
 ```
 [root@machine wsl]# docker rm priceless_bardeen
@@ -138,7 +143,7 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 NAMES
 ```
 
-After removing, you can create a fresh container using the same command as mentioned above:
+After removing, you can create a fresh container using the same command as above:
 
 ```
 [root@machine wsl]# docker run -tid -p 3000:3000 -p 3001:3001 -p 3002:3002 -p 3003:3003 aerospike/aerospike-server:3.15.1.4
@@ -149,25 +154,25 @@ CONTAINER ID        IMAGE                                 COMMAND               
 41e9aee4246c        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   6 seconds ago       Up 5 seconds        0.0.0.0:3000-3003->3000-3003/tcp   sweet_sinoussi
 ```
 
-By default the aerospike docker database only has the test namespace, so you will need to change the namespace in the genesis-system-definition.kts.
+By default, the Aerospike Docker database only has the **test** namespace, so you need to change the namespace in the file **genesis-system-definition.kts**.
 
 ## Running Postgres from Docker
-Running Postgres from docker is very similar to running Aerospike:
+Running Postgres from Docker is very similar to running Aerospike:
 
 ```
 docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c shared_buffers=80MB -c max_connections=250
 ```
 
-This will download and run a postgres image for version 12.6; other versions are available, for more details [see here](https://hub.docker.com/_/postgres/). For version 10; change 12.6-alpine to 10.16-alpine.
+This downloads and runs a Postgres image for version 12.6. Other versions are available; for more details [see here](https://hub.docker.com/_/postgres/). For version 10, change `12.6-alpine` to `10.16-alpine`.
 
-To connect, now use this JDBC URL:
+To connect, use this JDBC URL:
 
 ```
 jdbc:postgresql://localhost:5432/?user=postgres&password=docker
 ```
 
 ## Copying files between Windows and WSL
-From WSL your Windows drives are available from /mnt/{drive letter here}:
+From WSL, your Windows drives are available from `/mnt/_drive letter_`:
 
 ```
 [root@LONPC24 mnt]# pwd
@@ -180,10 +185,10 @@ drwxrwxrwt 5 root root  100 Aug 14 10:16 wsl
 [root@LONPC24 mnt]#
 ```
 
-From Windows, your wsl distros are accessible from \\wsl$\ in windows explorer.
+From Windows, your WSL distros are accessible from **\\wsl$\** in windows explorer.
 
-## Windows Firewall setup
-If you are using Windows Firewall, you will need to allow smooth network communication between your WSL distros and Windows. First, get the network range for your WSL network switch, by running ipconfig.exe from powershell and look for WSL:
+## Windows Firewall set-up
+If you are using Windows Firewall, you need to allow smooth network communication between your WSL distros and Windows. First, get the network range for your WSL network switch; run `ipconfig.exe` from powershell and look for WSL:
 
 ```
 Ethernet adapter vEthernet (WSL):
