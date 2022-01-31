@@ -118,3 +118,25 @@ Once you have done this you should see the following message in your terminal:
 ```
 You should now be able to see the positons-example application in the apps diectory:
 ![](/img/positions-example.png)
+
+<br>
+
+# <a name="#partThree"></a> Running the application locally
+
+From the workspace root you'll need to run:
+```
+$ npm run bootstrap
+```
+
+Next, change into the positions app directory and spin up the dev server
+```
+$ cd ./packages/apps/positions/client/web
+$ npm run dev
+```
+
+The application will open at `http://localhost:6060/login`.
+![](/img/positions-example--login.png)
+
+Providing your API_HOST has been configured correctly you can login to the application
+![](/img/positions-example--home.png)
+
