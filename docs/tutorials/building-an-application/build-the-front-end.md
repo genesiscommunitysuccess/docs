@@ -145,7 +145,7 @@ Providing your API_HOST has been configured correctly you can login to the appli
 ### Positions Grid
 The template for the home page is located in the application routes directory `./src/routes/home/home.template.ts`.
 
-In this template we define the `positionColumnDefs`:
+In this template we define the `positionColumnDefs`, this is where we can apply column specific configurations such as sorting and cell change flashing.
 ![](/img/positions-example--column-defs.png)
 
 These column definitions are used in the `HomeTemplate` where we configure the `ag-genesis-datasource` to use the `ALL_POSITIONS` resource and then map over the columns via the `repeat()` template directive.
