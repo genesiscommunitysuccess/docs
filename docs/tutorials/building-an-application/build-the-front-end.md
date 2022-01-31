@@ -121,8 +121,8 @@ You should now be able to see the positons-example application in the apps diect
 
 <br>
 
-# <a name="#partThree"></a> Running the application locally
-
+### Running the application locally
+---
 From the workspace root you'll need to run:
 ```
 $ npm run bootstrap
@@ -139,4 +139,29 @@ The application will open at `http://localhost:6060/login`.
 
 Providing your API_HOST has been configured correctly you can login to the application
 ![](/img/positions-example--home.png)
+
+<br>
+
+### Positions Grid
+The template for the home page is located in the application routes directory `./src/routes/home/home.template.ts`.
+
+In this template we define the `positionColumnDefs`:
+![](/img/positions-example--column-defs.png)
+
+These column definitions are used in the `HomeTemplate` where we configure the `ag-genesis-datasource` to use the `ALL_POSITIONS` resource and then map over the columns via the `repeat()` template directive.
+![](/img/positions-example--grid-template.png)
+
+
+<br>
+
+### Application structure
+---
+The positions web application is broken down into the following directories:
+- components - application specific components focused on building out functionality and with minimal styling applied.
+- design-system - used to align components to your brand or product, you can create multiple design systems that each utilise various components.
+- main
+- routes
+- services
+- utils
+
 
