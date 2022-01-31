@@ -143,7 +143,9 @@ Providing your API_HOST has been configured correctly you can login to the appli
 <br>
 
 ### Positions Grid
-The template for the home page is located in the application routes directory `./src/routes/home/home.template.ts`.
+The template for the home page is located in the application routes directory.
+![](/img/positions-example--home-template.png)
+<sup>`./src/routes/home/home.template.ts`<sup>
 
 In this template we define the `positionColumnDefs`, this is where we can apply column specific configurations such as sorting and cell change flashing.
 ![](/img/positions-example--column-defs.png)
