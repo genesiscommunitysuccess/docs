@@ -45,7 +45,9 @@ For the purposes of this guide, we have set up a database with four tables:
  - `instrument`
 
 You can see these using Dbeaver:
+<!-- TODO: reinstate missing image causing build to break
 ![Database Tables](/img/dbeaver-screenshot.png)
+-->
 
 ### Generate the dictionary files ###
 :::note

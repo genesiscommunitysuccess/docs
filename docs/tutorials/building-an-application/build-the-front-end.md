@@ -65,9 +65,10 @@ Once you have done this you should see the following message in your terminal:
 ℹ Workspace created successfully! 🎉 Please open the workspace and follow the README to complete setup.
 ```
 Your example-workspace directory should looks something like this:
+
 ![](/img/example-workspace.png)
 
-<br>
+<br />
 
 # <a name="#partTwo"></a> Generating an application
 
@@ -116,10 +117,11 @@ Once you have done this you should see the following message in your terminal:
 ```
 ℹ Application created successfully! 🎉 Please open the application and follow the README to complete setup.
 ```
-You should now be able to see the positons-example application in the apps diectory:
+You should now be able to see the positons-example application in the apps directory:
+
 ![](/img/positions-example.png)
 
-<br>
+<br />
 
 ### Running the application locally
 ---
@@ -135,17 +137,19 @@ $ npm run dev
 ```
 
 The application will open at `http://localhost:6060/login`.
+
 ![](/img/positions-example--login.png)
 
 Providing your API_HOST has been configured correctly you can login to the application
+
 ![](/img/positions-example--home.png)
 
-<br>
+<br />
 
 ### Positions Grid
-The template for the home page is located in the application routes directory.
+The template for the home page is located in the application routes directory `positions/client/web/src/routes/home/home.template.ts`.
+
 ![](/img/positions-example--home-template.png)
-<sup>`./src/routes/home/home.template.ts`<sup>
 
 In this template we define the `positionColumnDefs`, this is where we can apply column specific configurations such as sorting and cell change flashing.
 ![](/img/positions-example--column-defs.png)
@@ -154,7 +158,7 @@ These column definitions are used in the `HomeTemplate` where we configure the `
 ![](/img/positions-example--grid-template.png)
 
 
-<br>
+<br />
 
 ### Application structure
 ---
@@ -165,5 +169,3 @@ The positions web application is broken down into the following directories:
 - routes
 - services
 - utils
-
-
