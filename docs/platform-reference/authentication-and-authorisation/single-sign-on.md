@@ -27,7 +27,7 @@ The IT infrastructure/security team at your organisation is usually responsible 
 
 ### Configuration details
 
-The following data points need to be shared with Genesis to complete the solution. These data points are stored in the database of Your Genesis application.
+The following data points need to be shared with Genesis to complete the solution. These data points are stored in the database of your Genesis application.
 
 - The public key of the JWT RSA key pair, (the private key is used to sign the JWT at the internal authentication service)
 
@@ -42,7 +42,7 @@ The  SSO workflow depends on whether CORS is configured on your internal authent
 If CORS is enabled, the SSO workflow is:
 
 1. An unauthenticated user navigates to the Genesis application.  
-   Example: [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/")
+   Example: **https://your-subdomain.genesisapplication.com/**
 2. The Genesis web platform recognises that SSO is enabled from the subdomain and that the user is not authenticated.
 3. A request is made to the Genesis back end to request the URL for the specific authentication service.
 4. The Genesis web platform makes an http request to your organisation's authentication service, which will include the end user’s internal authentication parameters.
@@ -55,7 +55,7 @@ This setup uses the browser’s redirect functionality, so the user experience m
 
 If CORS is not enabled, the SSO workflow is:
 
-1. An unauthenticated user navigates to the Genesis application. Example: [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/")
+1. An unauthenticated user navigates to the Genesis application. Example: **https://your-subdomain.genesisapplication.com/**
 2. The Genesis web platform recognises that SSO is enabled from the subdomain and that the user is not authenticated.
 3. A request is made to the Genesis back end framework to request the URL for the specific authentication service.
 4. A redirect is triggered for the browser to the internal authentication service which will include the end user’s internal authentication parameters. A return parameter to [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/") is also part of the request.
