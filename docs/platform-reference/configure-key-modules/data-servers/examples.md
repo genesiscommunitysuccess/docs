@@ -28,7 +28,9 @@ dataServer {
 ```
 
 ### Specifying fields
-By default, all table or view fields in a query definition will be exposed. If you don't want them all to be available, you must define the fields that are required. In the example below, we specify eight fields:
+By default, all table or view fields in a query definition will be exposed. If you don't want them all to be available, you must define the fields that are required. 
+You can also define derived fields here where the input for the derived field is the dataserver query row.
+In the example below, we specify nine fields where one of them is a derived field:
 
 ```kotlin
 dataServer {
@@ -42,6 +44,9 @@ dataServer {
             SPREAD
             TRADED_CURRENCY
             EXCHANGE_ID
+            derivedField("IS_USD", BOOLEAN) { row ->
+                row.tradedCurrency == "USD"
+            }
         }
     }
 }
