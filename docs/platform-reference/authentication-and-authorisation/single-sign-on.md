@@ -41,8 +41,7 @@ The  SSO workflow depends on whether CORS is configured on your internal authent
 
 If CORS is enabled, the SSO workflow is:
 
-1. An unauthenticated user navigates to the Genesis application.  
-   Example: **https://your-subdomain.genesisapplication.com/**
+1. An unauthenticated user navigates to the Genesis application. For example: **https://your-subdomain.genesisapplication.com/**  
 2. The Genesis web platform recognises that SSO is enabled from the subdomain and that the user is not authenticated.
 3. A request is made to the Genesis back end to request the URL for the specific authentication service.
 4. The Genesis web platform makes an http request to your organisation's authentication service, which will include the end user’s internal authentication parameters.
@@ -51,16 +50,16 @@ If CORS is enabled, the SSO workflow is:
 
 #### CORS not configured
 
-This setup uses the browser’s redirect functionality, so the user experience might not be as seamless.
+This set-up uses the browser’s redirect functionality, so the user experience might not be as seamless.
 
 If CORS is not enabled, the SSO workflow is:
 
-1. An unauthenticated user navigates to the Genesis application. Example: **https://your-subdomain.genesisapplication.com/**
+1. An unauthenticated user navigates to the Genesis application. For example: **https://your-subdomain.genesisapplication.com/**
 2. The Genesis web platform recognises that SSO is enabled from the subdomain and that the user is not authenticated.
 3. A request is made to the Genesis back end framework to request the URL for the specific authentication service.
-4. A redirect is triggered for the browser to the internal authentication service which will include the end user’s internal authentication parameters. A return parameter to [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/") is also part of the request.
-5. The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends a redirect trigger to the browser for [https://your-subdomain.genesisapplication.com/](https://your-subdomain.genesisapplication.com/ "https://your-subdomain.genesisapplication.com/") which includes the JWT as a request parameter.
-6. The Genesis platform is reloaded, recognises SSO is enabled but now with the JWT as a parameter. The platform sends an SSO authentication request with the JWT for the specific organisation. If this is successful, an active Session token is returned.
+4. A redirect is triggered for the browser to the internal authentication service which will include the end user’s internal authentication parameters. A return parameter to **https://your-subdomain.genesisapplication.com/** is also part of the request.
+5. The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends a redirect trigger to the browser for **https://your-subdomain.genesisapplication.com/**, which includes the JWT as a request parameter.
+6. The Genesis platform is reloaded. It recognises that SSO is enabled, but now with the JWT as a parameter. The platform sends an SSO authentication request with the JWT for the specific organisation. If this is successful, an active Session token is returned.
 
 ## SAML SSO
 
