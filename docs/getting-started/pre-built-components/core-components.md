@@ -12,7 +12,7 @@ These core components are part of the Genesis LCNC Platform. They run automatica
 | [Auth](platform-reference/authentication-and-authorisation/authentic-over/)            | Industrial-strength authentication handler. Integrations with LDAP, SSO and more        |
 | [Perms](/platform-reference/authentication-and-authorisation/authorisation-over/#generic-permissions)                    | Enforces permissions and entitlements application-wide|
 | [Cluster](/platform-reference/infrastructure/clusters/)                             |  Manages node communication for high-availability and horizontal scaling         |
-| [Router]()                               | UI websocket/http connectivity handler and proxy to underlying component/service            | 
+| [Router](/secure/platform-reference/essential-information/genesis-router/)                               | UI websocket/http connectivity handler and proxy to underlying component/service            | 
 | Connect                           | Server connectivity via websocket/http communications            |
 | [Database API](/platform-reference/data-model/entity-db/)                               | High-performance persistence service. Abstracts away underlying database technology for consistent API usage          | 
 | Orchestration | Inter-process communication of database record updates           | 
