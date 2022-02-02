@@ -1,12 +1,12 @@
 ---
-title: Type safe messages
+title: Type-safe messages
 sidebar_label: Type-safe messages
 id: type-safe-messages
-sidebar_position: 2
+sidebar_position: 30
 ---
 # Type-safe messages
 
-The Genesis LCNC platform uses type-safe messages to perform message serialization and deserialization. In additio to this, they automatically extract relevant metadata information to expose this to the front end. These type-safe messages are most commonly used in custom request servers, GPAL event handlers and custom event handlers.
+The Genesis LCNC platform uses type-safe messages to perform message serialization and deserialization. In addition to this, it automatically extracts relevant metadata information to expose this to the front end. These type-safe messages are most commonly used in custom request servers, GPAL event handlers and custom event handlers.
 
 ## Input messages
 
@@ -27,11 +27,18 @@ data class SetLogLevel(
 )
 ```
 
-In this example, the `SetLogLevel` data class has a single constructor that also defines the data class properties. We can see that `processName` does not have a default value associated with it; therefore it is implicitly mandatory in order to construct this message. As such, it will exposed as a *mandatory* metadata field. However, `logLevel`, `datadump` and `expiration` all have default values, and will therefore be exposed as optional metadata fields.
+In this example, the `SetLogLevel` data class has a single constructor that also defines the data class properties. We can see that `processName` does not have a default value associated with it; therefore, it is implicitly mandatory in order to construct this message. As such, it will exposed as a *mandatory* metadata field. However, `logLevel`, `datadump` and `expiration` all have default values, and will therefore be exposed as optional metadata fields.
 
-In terms of metadata fields types, we are free to use our metadata field basic types (Boolean, Short, Int, Long, Double, String, BigDecimal or Joda DateTime), basic collection types (List, Set and Map), enumerated types (as ypu can see defined in `LogLevel` above) and other Kotlin data classes as long as they are composed using the same elements. All these different types will be understood by the metadata system and exposed accordingly. Kotlin also has nullable and non-nullable types, and the metadata system will expose this information too.
+In terms of metadata field types, we are free to use our metadata field basic types (Boolean, Short, Int, Long, Double, String, BigDecimal or Joda DateTime), basic collection types (List, Set and Map), enumerated types (as you can see defined in `LogLevel` above) and other Kotlin data classes, as long as they are composed using the same elements. All these different types will be understood by the metadata system and exposed accordingly. Kotlin also has nullable and non-nullable types, and the metadata system will expose this information too.
 
-Annotations such as `@Title` and `@Description` can be used to provide extra information to the front end. For example, `@Title` could be used to provide a “human readable name” for a metadata field to be displayed in a grid column, and `@Description` could be used to provide tooltip information when hovering over that column header. Please see all supported metadata annotations [here](metadata-annotations.md).
+Annotations such as `@Title` and `@Description` can be used to provide extra information to the front end. 
+
+For example:
+
+-	`@Title` could be used to provide a human-readable name for a metadata field to be displayed in a grid column
+-	`@Description` could be used to provide tooltip information when hovering over that column header. 
+
+Please see all supported metadata annotations [here](metadata-annotations.md).
 
 Read-only values can be exposed inside a Kotlin companion object and can be as complex as any other metadata field definition. In the example below, the enhanced `SetLogLevel` class provides information about the default LogLevel:
 
@@ -81,3 +88,4 @@ Custom reply types are powerful, as they allow a predetermined number of customi
 :::warning
 IMPORTANT! The success message should always end in `Ack` in order for the internal event handler logic to handle validation correctly.
 :::
+
