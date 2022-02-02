@@ -5,7 +5,7 @@ sidebar_label: Clusters
 sidebar_position: 1
 
 ---
-The genesis platform is highly resilient and easy to cluster for a High Availability (HA) setup. This area takes you through the steps required to establish a HOT-HOT setup.
+The Genesis LCNC latform is highly resilient and easy to cluster for a High Availability (HA) setup. This area takes you through the steps required to establish a HOT-HOT setup.
 
 ## Pre-requisites
 
@@ -153,4 +153,4 @@ Genesis recommends using a local reverse proxy with SSL termination to provide e
 
 ## Independent processes
 
-Every Genesis process is an independent Java process running on a dedicated JVM. This  enables segregation of data classification. account privileges & service tiering.
+Every Genesis process is an independent Java process running on a dedicated JVM. This ensures segregation of data classification. account privileges and service tiering.
