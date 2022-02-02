@@ -57,7 +57,7 @@ If CORS is not enabled, the SSO workflow is:
 1. An unauthenticated user navigates to the Genesis application. For example: **https://your-subdomain.genesisapplication.com/**
 2. The Genesis web platform recognises that SSO is enabled from the subdomain and that the user is not authenticated.
 3. A request is made to the Genesis back end framework to request the URL for the specific authentication service.
-4. A redirect is triggered for the browser to the internal authentication service which will include the end user’s internal authentication parameters. A return parameter to **https://your-subdomain.genesisapplication.com/** is also part of the request.
+4. A redirect is triggered for the browser to the internal authentication service, which will include the end user’s internal authentication parameters. A return parameter to **https://your-subdomain.genesisapplication.com/** is also part of the request.
 5. The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends a redirect trigger to the browser for **https://your-subdomain.genesisapplication.com/**, which includes the JWT as a request parameter.
 6. The Genesis platform is reloaded. It recognises that SSO is enabled, but now with the JWT as a parameter. The platform sends an SSO authentication request with the JWT for the specific organisation. If this is successful, an active Session token is returned.
 
@@ -73,7 +73,7 @@ The workflow is:
 4. The user is redirected to the IDP, with the authn request as a query parameter.
 5. The user identifies him or herself to the IDP.
 6. The user is redirected back to the Genesis SAML endpoint, with a response as a query parameter.
-7. The response is validated, and the user is redirected back to the Genesis logon endpoint with a token.
+7. The response is validated, and the user is redirected back to the Genesis login endpoint with a token.
 8. The front end starts the login process into Genesis using this token.
 
 For more information, see [wikipedia](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language).
