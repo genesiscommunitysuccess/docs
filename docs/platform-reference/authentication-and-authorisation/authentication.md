@@ -353,4 +353,4 @@ PASSWORD_RESET should do the same but the server expects a blank "current passwo
     MESSAGE_TYPE = EVENT_DELETE_USER_ACK
 
 ## Single Sign On (SSO)
-You can read about SSO [here](../infrastructure/single-sign-on.md).
+You can read about SSO [here](/platform-reference/authentication-and-authorisation/single-sign-on.md).
