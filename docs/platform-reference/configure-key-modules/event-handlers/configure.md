@@ -50,9 +50,10 @@ eventHandler {
 }
 ```
 
-### Configure in processes.xml
+### Configuration in processes.xml
 
-Event handler service configuration is added in processes.xml like below example, for more information of each tag in below config follow this [link](/platform-reference/essential-information/processes-xml)
+The event handler has a service configuration in your application's **processes.xml** file. Here is an example:
+ For more information about the tags in this example, see [system processes](/platform-reference/essential-information/processes-xml).
 
 ```xml
 <process name="TRADING_APP_EVENT_HANDLER">

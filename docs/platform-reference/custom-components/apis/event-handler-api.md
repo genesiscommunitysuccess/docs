@@ -12,7 +12,7 @@ Custom event handlers provide a way of implementing business logic in Java or Ko
  - RxJava3. These event handlers use the RxJava3 library, which is a popular option for composing asynchronous event-based programs.
 - Sync. This creates synchronous event handlers.
 
-Each custom event handler must define an input message type `I` and an output message type `O` (like GPAL event handlers do). Please see the [type-safe messages](../../Inter-process%20messages/type-safe-messages.md) section for more information. 
+Each custom event handler must define an input message type `I` and an output message type `O` (as GPAL event handlers do). See [type-safe messages](/platform-reference/inter-process-messages/type-safe-messages/) section for more information. 
 
 ## Event handler interface
 
@@ -31,7 +31,7 @@ The event handler interface is the common supertype of AsyncEventHandler, Rx3Eve
 This is the most basic definition of an async event handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface, which is defined as:
 `interface AsyncEventHandler<I : Any, O : Outbound> : AsyncEventWorkflowProcessor<I, O>, EventHandler`
 
-The only mandatory method to implement in this interface case is:
+The only mandatory method to implement this in the interface is:
 
 | Name | Signature |
 |---|---|
