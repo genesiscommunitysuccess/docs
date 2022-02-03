@@ -28,8 +28,8 @@ dataServer {
 ```
 
 ### Specifying fields
-By default, all table or view fields in a query definition will be exposed. If you don't want them all to be available, you must define the fields that are required. 
-You can also define derived fields here where the input for the derived field is the dataserver query row.
+By default, all table or view fields in a query definition will be exposed. If you don't want them all to be available, you must define the fields that are required.
+You can also define additional derived fields in a dataserver, to supplement all the fields supplied by the table or view. The input for the derived field is the dataserver query row and all fields are available for use.
 In the example below, we specify nine fields where one of them is a derived field:
 
 ```kotlin
