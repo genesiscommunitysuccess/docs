@@ -44,8 +44,8 @@ dataServer {
             SPREAD
             TRADED_CURRENCY
             EXCHANGE_ID
-            derivedField("IS_USD", BOOLEAN) { row ->
-                row.tradedCurrency == "USD"
+            derivedField("IS_USD", BOOLEAN) {
+                tradedCurrency == "USD"
             }
         }
     }
