@@ -47,7 +47,7 @@ requestReplies {
 
 ### Specify fields on request and reply
 
-You can specify which fields are on the request and which fields are on the response. Here is an example:
+You can specify which fields are on the request and which fields are on the response. You can also define derived fields on the reply where the input for the derived field is the reply entity. Here is an example:
 
 ```kotlin
 requestReplies {
@@ -67,6 +67,9 @@ requestReplies {
             SPREAD
             TRADED_CURRENCY
             EXCHANGE_ID
+            derivedField("IS_USD", BOOLEAN) { reply ->
+                reply.tradedCurrency == "USD"
+            }
         }
     }
 }
