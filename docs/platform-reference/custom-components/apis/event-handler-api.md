@@ -12,7 +12,7 @@ Custom event handlers provide a way of implementing business logic in Java or Ko
  - RxJava3. These event handlers use the RxJava3 library, which is a popular option for composing asynchronous event-based programs.
 - Sync. This creates synchronous event handlers.
 
-Each custom event handler must define an input message type `I` and an output message type `O` (as GPAL event handlers do). See [type-safe messages](/platform-reference/inter-process-messages/type-safe-messages/) section for more information. 
+Each custom event handler must define an input message type `I` and an output message type `O` (as GPAL event handlers do). 
 
 ## Event handler interface
 
