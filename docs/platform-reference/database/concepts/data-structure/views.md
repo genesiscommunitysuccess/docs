@@ -6,7 +6,7 @@ id: views
 
 ---
 
-Views are defined in the `-view-dictionary.kts` files as discussed [here](../../../data-model/define#views).
+Views are defined in the `-view-dictionary.kts` files as discussed [here](../../../../data-model/define#views).
 
 Views are the genesis equivalent of SQL select queries. Unlike [tables](../tables), views do not have any data of 
 their own, but present a view based on one or more tables. A view always starts with a single table, the root table.
@@ -58,4 +58,4 @@ root table will only be unique if all fields are included.
 
 ## Entities
 
-During code generation, [view](../../entity-types/view) and [index entities](../../entity-types/index) will  
+During code generation, [view](../../../how-to/data-types/views) and [index entities](../../../how-to/data-types/index) will

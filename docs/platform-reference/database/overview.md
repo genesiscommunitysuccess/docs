@@ -13,35 +13,23 @@ these constituent parts:
 
 These first topics discuss database concepts in general terms.
 
-* [Data Structures](../data-structure/overview) discusses how views and tables are represented in the database. 
-* [Operations](../operations/overview) discusses the different type of database operations that the genesis platform
+* [Data Structures](../concepts/data-structure/overview) discusses how views and tables are represented in the database. 
+* [Operations](../concepts/operations/overview) discusses the different type of database operations that the genesis platform
 supports.
 
-## Database in code
+## Database in code/ how to
 
 These following topics discuss how the database and the data within is exposed in code.
 
-* [Entity Types](../entity-types/overview) discusses how table and view records are represented in code.
-* [APIs](../apis/overview) discusses different ways in which database operations are exposed to developers.
+* [Data Types](../how-to/entity-types/overview) discusses how table and view records are represented in code.
+* [Interface](../how-to/interface/overview) discusses different ways in which database operations are exposed to developers.
+* [Helper Classes](../how-to/helper/overview) discusses 
 
 ## [Reference](../reference/overview)
 
-[Reference](../reference/overview) provides reference data.
-
-## Helper Classes 
-
-:::info
-
-We are still working on this section
-
-:::
-
-## [Supported Databases](../supported-databases/overview)
-
-[Supported Databases](../supported-databases/overview) provides a reference for the various databases that the 
+* [APIs](../reference/apis/overview) provides a generic reference for the rxjava and kotlin async apis used throughout the 
+database
+* [Supported Databases](../reference/supported-databases/overview) provides a reference for the various databases that the
 genesis platform supports.
-
-## [Frequently Asked Questions](../faq)
-
-[Frequently Asked Questions](../faq) provides the answers to frequently asked questions
-genesis platform supports.
+* [Cache](../reference/cache) provides reference for database caching.
+* [Frequently Asked Questions](../reference/faq) provides reference data.

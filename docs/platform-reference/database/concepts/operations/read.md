@@ -7,7 +7,7 @@ id: read
 ---
 
 Genesis supports a number of different read operations. Although the specifics vary between the different 
-[APIs](../../apis/overview), the underlying principles remain the same. This document will explain these,
+[APIs](docs/platform-reference/database/how-to/apis/overview), the underlying principles remain the same. This document will explain these,
 without going into specific calls. 
 
 ## Fields

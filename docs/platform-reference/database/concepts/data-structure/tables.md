@@ -6,14 +6,14 @@ id: tables
 
 ---
 
-Tables are defined in the `-tables-dictionary.kts` files as discussed [here](../../../data-model/define#tables). Table 
-records can be represented as a [table entity](../../entity-types/tables), or as a [`DbRecord`](../../entity-types/dbrecord)
+Tables are defined in the `-tables-dictionary.kts` files as discussed [here](../../../../data-model/define#tables). Table 
+records can be represented as a [table entity](../../../how-to/data-types/tables/), or as a [`DbRecord`](../../../how-to/data-types/dbrecord)
 
 ## Fields 
 
 Fields will be nullable unless:
 1. They are part of a unique index
-2. They are [overwritten as not null](../../../data-model/define#overriding-nullable-fields)
+2. They are [overwritten as not null](../../../../data-model/define#overriding-nullable-fields)
 3. They have a default value
 4. They are generated (`sequence`/`autoIncrement`)
 

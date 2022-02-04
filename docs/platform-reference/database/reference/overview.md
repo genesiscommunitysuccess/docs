@@ -1,24 +1,18 @@
 ---
 sidebar_position: 0
-title: Overview
-sidebar_label: Database Reference
-id: overview
+title: Reference
+sidebar_label: Reference
+id: reference
 
 ---
 
+This section provides database reference information
 
-## Different types of APIs
+## [Reference](../overview)
 
-The Genesis database comes in two flavours:  
-
-|                              | [Async API](../async), for kotlin             | [RxJava API](../rxjava), for java |
-|------------------------------|-----------------------------------------------|-----------------------------------|
-| Return type for 0..1 records | [nullable suspend](../async#nullable-suspend) | [Maybe](../rxjava#maybe)          |
-| Return type for 1 record     | [suspend](../async#suspend)                   | [Single](../rxjava#single)        |
-| Return type for 0..∞ records | [Flow](../async#flow)                         | [Flowable](../rxjava#flowable)    |
-| Preferred for                | kotlin                                        | java                              |
-| Works in                     | kotlin                                        | kotlin and java                   |
-
-## Caching 
-
-Genesisn 
+* [APIs](../apis/overview) provides a generic reference for the rxjava and kotlin async apis used throughout the
+  database
+* [Supported Databases](../supported-databases/overview) provides a reference for the various databases that the
+  genesis platform supports.
+* [Cache](../cache) provides reference for database caching.
+* [Frequently Asked Questions](../faq) provides reference data.

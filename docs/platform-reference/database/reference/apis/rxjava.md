@@ -36,7 +36,7 @@ In the RxJava API, a `Single` represents an asynchronous operation, that has two
 
 For example, on the database, `delete` returns a `Single`, with the following possible outcomes:
 
-1. the record was deleted, it provides a [write result](../helper/write-result/overview)
+1. the record was deleted, it provides a [write result](../../../how-to/helper/write-result/overview)
 2. the operation was not successful, for example the record was not found 
 
 ### Maybe
