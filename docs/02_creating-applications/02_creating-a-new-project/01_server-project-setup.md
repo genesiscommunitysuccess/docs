@@ -30,6 +30,17 @@ Here, we use  **sample.trade** for **groupId** and **trade-101** for **artifactI
 ```
 mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=sample.trade" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.2.0" "-DartifactId=trade-101"
 ```
+This should be run as a single line command; the new line is there to make it easier to read. Also, the parameters on the second row are the only ones you should change.
+
+| Parameter      | Description |
+| ----------- | ----------- |
+| `-DinteractiveMode`      | If true will ask to confirm input       |
+| `-DarchetypeVersion`   | This will be the framework version used in the new project  |
+| `-DartifactId`   | This will be the new project name  |
+
+Make sure to replace _productName_ with the name of the product, and genesis.version with the version of the Genesis platform.
+
+Running this will create a new folder with the specified _productNam_e and you should be able to open the project in intellij.
 
 ## 2. Build the project
 
