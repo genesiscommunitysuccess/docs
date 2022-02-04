@@ -1,7 +1,7 @@
 ---
 id: excel-tut-3
 sidebar_label: 'Check the files'
-sidebar_position: 30
+sidebar_position: 3
 title: 'Check the files and load the data'
 ---
 

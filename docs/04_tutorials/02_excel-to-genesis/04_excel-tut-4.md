@@ -1,7 +1,7 @@
 ---
 id: excel-tut-4
 sidebar_label: 'Generate the app'
-sidebar_position: 40
+sidebar_position: 4
 title: 'Generate the application'
 ---
 

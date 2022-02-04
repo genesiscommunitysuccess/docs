@@ -1,7 +1,7 @@
 ---
 id: excel-tut-2
 sidebar_label: 'Analyse, adjust & run'
-sidebar_position: 20
+sidebar_position: 2
 title: 'Analyse, adjust and run'
 ---
 

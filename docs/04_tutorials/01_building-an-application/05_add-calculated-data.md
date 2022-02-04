@@ -2,7 +2,7 @@
 id: add-calculated-data
 title: Add calculated data
 sidebar_label: Add calculated data
-sidebar_position: 4
+sidebar_position: 5
 
 ---
 At this point, we have a data model that serves both the reference database and the trading database, Our trading application has  a schema for the TRADE table, and it has event handlers, data servers and request servers.

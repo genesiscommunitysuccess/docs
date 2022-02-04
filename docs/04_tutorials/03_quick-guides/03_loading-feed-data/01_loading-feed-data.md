@@ -1,5 +1,5 @@
 ---
-id: uploading-feed-data
+id: loading-feed-data
 sidebar_label: Loading feed data
 sidebar_position: 10
 title: How to load feed data into an application

@@ -2,7 +2,7 @@
 id: add-event-handler
 title: Add logic to the event handler
 sidebar_label: Add logic to the event handler
-sidebar_position: 5
+sidebar_position: 6
 
 ---
 

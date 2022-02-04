@@ -2,7 +2,7 @@
 id: add-state-machine
 title: Workflow - add a state machine
 sidebar_label: Workflow - add a state machine
-sidebar_position: 6
+sidebar_position: 7
 
 ---
 Now we are going to configure state machine to control the workflow of trades.

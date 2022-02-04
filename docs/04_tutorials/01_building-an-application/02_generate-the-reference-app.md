@@ -2,7 +2,7 @@
 id: reference-app
 title: Generate the reference app
 sidebar_label: Generate the reference app
-sidebar_position: 1
+sidebar_position: 2
 
 ---
 In this first exercise, we shall generate the reference application with its database of reference data. We shall create this from the existing RDBMS of reference data.

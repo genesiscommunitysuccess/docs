@@ -2,7 +2,7 @@
 id: intro
 title: Introduction
 sidebar_label: Introduction
-sidebar_position: 0
+sidebar_position: 1
 
 ---
 # Building an application – start to finish

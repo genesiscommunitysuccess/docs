@@ -1,7 +1,7 @@
 ---
 id: overview
 sidebar_label: 'Overview'
-sidebar_position: 10
+sidebar_position: 1
 title: 'Excel to Genesis - at speed'
 ---
 

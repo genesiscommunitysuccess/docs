@@ -2,7 +2,7 @@
 id: trading-app
 title: Generate the trading app
 sidebar_label: Generate the trading app
-sidebar_position: 2
+sidebar_position: 3
 
 ---
 Previously, we have created a reference data application from our original RDBMS database. 
