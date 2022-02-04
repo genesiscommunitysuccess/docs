@@ -8,22 +8,22 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: <>Get started quickly</>,
+    title: <>Find out more</>,
     description: (url) => (
       <p>
         Our platform enables you to build quickly, but you need to get oriented before you can start. <Link to={url}>So start here.</Link>
       </p>
     ),
-    url: '/getting-started/platform/'
+    url: '/getting-started/what-is-the-genesis-lcnc-platform/'
   },
   {
-    title: <>Platform reference</>,
+    title: <>Creating applications</>,
     description: (url) => (
       <p>
-        The server of a Genesis application can be as simple or complex as your needs. <Link to={url}>Take a look at the modules</Link> and the way they can be configured.
+        Genesis applications can be as simple or complex as your needs. <Link to={url}>Take a look at the components</Link> and the way they can be configured.
       </p>
     ),
-    url: '/platform-reference/intro/'
+    url: '/creating-applications/basic-elements-of-genesis-applications/component-architecture-overview/'
   },
   {
     title: <>Tutorials</>,
