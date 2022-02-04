@@ -5,7 +5,9 @@ sidebar_position: 1
 id: what-is-the-genesis-lcnc-platform
 ---
 
-The Genesis LCNC Platform is an environment for developing robust, high-performance financial applications at speed and running them efficiently.
+The Genesis LCNC Platform is the only Low-Code/No-Code platform designed to build and run core, mission-critical systems for the financial markets.
+
+![](/img/genesis_platform_component_overview.png)
 
 There are many tools and resources to help you work quickly and efficiently, but to get the full benefit of the platform, you should be a developer familiar with Linux, Java, IDEs and the project-building tool Maven.
 

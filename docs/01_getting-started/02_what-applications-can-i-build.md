@@ -5,9 +5,7 @@ sidebar_position: 2
 id: what-applications-can-i-build
 ---
 
-The Genesis LCNC Platform is the only Low-Code/No-Code platform designed to build core, mission-critical systems for the financial markets.
-
-It enables you to develop and deploy your own applications at speed, from the simplest of internal systems to complete exchanges.
+You can develop and deploy your own applications at speed, from the simplest of internal systems to complete exchanges.
 
 For example:
 
