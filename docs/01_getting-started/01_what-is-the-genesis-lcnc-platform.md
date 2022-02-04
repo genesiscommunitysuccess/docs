@@ -1,8 +1,8 @@
 ---
-title: 'What you get'
-sidebar_label: 'What you get'
-sidebar_position: 2
-id: what-you-get
+title: 'What is the Genesis LCNC Platform?'
+sidebar_label: 'What is the Genesis LCNC Platform?'
+sidebar_position: 1
+id: what-is-the-genesis-lcnc-platform
 ---
 
 The Genesis LCNC Platform is an environment for developing robust, high-performance financial applications at speed and running them efficiently.
