@@ -21,11 +21,11 @@ supports.
 
 These following topics discuss how the database and the data within is exposed in code.
 
-* [Data Types](../how-to/entity-types/overview) discusses how table and view records are represented in code.
+* [Data Types](../how-to/data-types/overview) discusses how table and view records are represented in code.
 * [Interface](../how-to/interface/overview) discusses different ways in which database operations are exposed to developers.
 * [Helper Classes](../how-to/helper/overview) discusses 
 
-## [Reference](../reference/overview)
+## Reference
 
 * [APIs](../reference/apis/overview) provides a generic reference for the rxjava and kotlin async apis used throughout the 
 database

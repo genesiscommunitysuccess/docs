@@ -7,7 +7,7 @@ id: overview
 ---
 
 Genesis supports different ways of interacting with the database. Regardless of the interface used, the operations 
-remain the same. For an overview of the operations, see [here](../../operations/overview). The preferred way of 
+remain the same. For an overview of the operations, see [here](../../../concepts/operations/overview). The preferred way of 
 accessing the database is via the EntityDb. 
 
 |                                                                                                 | [EntityDb](../entity-db)                                                           | [Generated Repositories](../generated)                                             | [RxDb](../rxdb)                                                        |

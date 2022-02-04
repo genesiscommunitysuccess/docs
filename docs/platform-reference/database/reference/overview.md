@@ -8,8 +8,6 @@ id: reference
 
 This section provides database reference information
 
-## [Reference](../overview)
-
 * [APIs](../apis/overview) provides a generic reference for the rxjava and kotlin async apis used throughout the
   database
 * [Supported Databases](../supported-databases/overview) provides a reference for the various databases that the

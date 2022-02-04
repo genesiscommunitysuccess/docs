@@ -58,4 +58,5 @@ root table will only be unique if all fields are included.
 
 ## Entities
 
-During code generation, [view](../../../how-to/data-types/views) and [index entities](../../../how-to/data-types/index) will
+During code generation, [view](../../../how-to/data-types/views) and [index entities](../../../how-to/data-types/indices) will
+ 

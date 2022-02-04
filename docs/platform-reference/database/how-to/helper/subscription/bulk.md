@@ -7,7 +7,7 @@ id: bulk
 ---
 
 Bulk objects are published to listeners of mixed read/subscribe operations. Like 
-[Generic Record Update](../generic-record-update), `Bulk` is a 
+[Record Update](../record-update), `Bulk` is a 
 [sealed kotlin class](https://kotlinlang.org/docs/sealed-classes.html). It has the following class hierachy: 
 
 1. `Bulk`
