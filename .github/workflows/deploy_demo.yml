@@ -1,4 +1,4 @@
-name: Deploy To Preview Env
+name: Deploy To Demo Env
 
 # Triggered on new pushes to demo
 on:
