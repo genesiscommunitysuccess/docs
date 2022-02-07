@@ -35,7 +35,7 @@ jobs:
     - name: Build
       run: npm run build
       env:
-        BASE_URL: /secure/DemoSite
+        BASE_URL: /secure/DemoSite/
 
     - uses: jakejarvis/s3-sync-action@master
       with:
