@@ -11,7 +11,7 @@ Some feeds provide static sets of data that you can download for processing by y
 :::note
 This guide is intended for:
 - users who alrady have experience of creating a Genesis application
-- users with a working knowledge of [camel](/refererence/glossary/#camel-apache-camel)
+- users with a working knowledge of [camel](/reference/glossary#camel-apache-camel)
 :::
 
 
@@ -52,7 +52,7 @@ GBP3M=135000,S,13387,150121
 ### A real example
 Reality is rarely that convenient. For this example, the incoming data is issuance data from Bloomberg, and its format is considerably more complex. 
 
-Here is an [example of the data](/tutorials/quick-guides/Loading%20feed%20data/feed-example-data/) you can download from the Bloomberg Issuance feed. 
+Here is an [example of the data](/tutorials/quick-guides/loading-feed-data/loading-feed-data/) you can download from the Bloomberg Issuance feed. 
 
 Once you know this format, you need to create code that maps the fields so that they can be written to a table in your application.
 

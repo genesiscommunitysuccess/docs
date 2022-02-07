@@ -23,9 +23,7 @@ Take a tour of [Genesis Studio](#) in a sand-boxed environment. [^1]
 - [Data Binding](data-binding.md)
 - [Events](events.md)
 - [Authentication](authentication.md)
-- [App Settings](settings/app.md)
-- [Source Control Settings](settings/source-control.md)
-- [Deployment Settings](settings/deployment.md)
+
 
 [^1]: Live Genesis Studio Sandbox is coming soon. [Register to get notified](https://genesis.global/contact-us/) 
 
@@ -115,7 +113,7 @@ In this area, you can configure the pages that you created in the Routes area.
 
 ![](/img/s.png)
 
-On the right are the page properties that were set in the [Routes](/platform-tooling/genesis-studio/intro/#routes) area when the page was created.
+On the right are the page properties that were set in the [Routes](/needs_new_home/genesis-studio/routes/#routes) area when the page was created.
 
 ### Adding components
 All you need to do is select the component from the list on the left and then configure it as required.
