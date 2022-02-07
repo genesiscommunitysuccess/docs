@@ -8,22 +8,22 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: <>Get started quickly</>,
+    title: <>Find out more</>,
     description: (url) => (
       <p>
         Our platform enables you to build quickly, but you need to get oriented before you can start. <Link to={url}>So start here.</Link>
       </p>
     ),
-    url: '/getting-started/platform/'
+    url: '/getting-started/what-is-the-genesis-lcnc-platform/'
   },
   {
-    title: <>Platform reference</>,
+    title: <>Creating applications</>,
     description: (url) => (
       <p>
-        The server of a Genesis application can be as simple or complex as your needs. <Link to={url}>Take a look at the modules</Link> and the way they can be configured.
+        Genesis applications can be as simple or complex as your needs. <Link to={url}>Take a look at the components</Link> and the way they can be configured.
       </p>
     ),
-    url: '/platform-reference/intro/'
+    url: '/creating-applications/basic-elements-of-genesis-applications/component-architecture-overview/'
   },
   {
     title: <>Tutorials</>,
@@ -66,7 +66,7 @@ const Home = () => {
             <div>
               <Link
                 className='button button--secondary button--outline button--lg button--getting-started'
-                to={useBaseUrl('getting-started/platform/')}>
+                to={useBaseUrl('/getting-started/what-is-the-genesis-lcnc-platform/')}>
                 Get Started
               </Link>
             </div>
@@ -92,7 +92,7 @@ const Home = () => {
                   <p><strong>The Genesis LCNC Platform is the only Low-Code/No-Code platform designed to build core, mission-critical systems for the financial markets.</strong></p>
                   <p>It enables you to develop and deploy your own applications at speed, from the simplest of internal systems to complete exchanges.</p>
                   <p>
-                    <a href={useBaseUrl('getting-started/platform/')}>Read more...</a>
+                    <a href={useBaseUrl('/getting-started/what-is-the-genesis-lcnc-platform/')}>Read more...</a>
                   </p>
                   <Link
                     className='navbar__item navbar__link demo'
