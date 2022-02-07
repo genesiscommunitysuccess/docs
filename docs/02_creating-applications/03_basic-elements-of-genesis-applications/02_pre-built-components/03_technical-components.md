@@ -9,11 +9,11 @@ These technical components enable you to create working event-driven application
 
 | Name| Description|
 |------------------------------------|--------------------|
-| [Event Handler](/platform-reference/configure-key-modules/event-handlers/configure/) | Executes business logic in response to system events     |
-| [Data Server](/platform-reference/configure-key-modules/data-servers/configure/) | Real-time data distribution |
-| [Request Server](/platform-reference/configure-key-modules/request-servers/configure/) |  Snapshot data requests         |
-| [Consolidator](/platform-reference/configure-key-modules/consolidators/configure/) | Real-time data aggregation and calculation            | 
-| [Evaluator](/platform-reference/configure-key-modules/evaluators/configure/) | Rule evaluation (time or condition-based)           |
+| [Event Handler](/creating-applications/defining-your-application/business-logic/event-handlers/configure/) | Executes business logic in response to system events     |
+| [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/configure/) | Real-time data distribution |
+| [Request Server](/creating-applications/defining-your-application/user-interface/request-servers/configure/) |  Snapshot data requests         |
+| [Consolidator](/creating-applications/defining-your-application/business-logic/consolidators/configure/) | Real-time data aggregation and calculation            | 
+| [Evaluator](/creating-applications/defining-your-application/business-logic/evaluators/configure/) | Rule evaluation (time or condition-based)           |
 | R Component | R language integration for querying data         | 
 | Apache Camel | Bidirectional integration across a range of connected systems          | 
 | Streamer | Streaming to and from internal and external services            | 

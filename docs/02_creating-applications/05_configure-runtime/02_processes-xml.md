@@ -5,7 +5,7 @@ id: processes-xml
 sidebar_position: 2
 
 ---
-Each application must have a **-processes.xml** file. This contains the configuration of each microservice (data server, request server and event-handler etc). It is generated automatically when you [create a new Genesis project using maven](/platform-reference/essential-information/starting-new-project/starting-from-scratch/).
+Each application must have a **-processes.xml** file. This contains the configuration of each microservice (data server, request server and event-handler etc). It is generated automatically when you [create a new Genesis project using maven](/creating-applications/creating-a-new-project/server-project-setup/).
 
 If you add new processes, you need to add their details to the _application_**-processes.xml** file
 

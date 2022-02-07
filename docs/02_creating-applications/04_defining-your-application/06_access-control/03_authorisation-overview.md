@@ -95,7 +95,7 @@ Where this is defined, it allows for further fine-grained control of what data, 
 
 If it is not defined, then all data is returned for the enclosing resource, assuming permissionCodes are not restricting.
 
-- The mapName refers to a specific Permission "entity" defined on the server via the [auth-permission.xml](/platform-reference/authentication-and-authorisation/authorisation#defining-a-permission-rule) file.
+- The mapName refers to a specific Permission "entity" defined on the server via the [auth-permission.xml](/creating-applications/defining-your-application/access-control/authorisation/#defining-a-permission-rule) file.
 
   **eg auth-permission.xml entity entry snippet**
 ```xml

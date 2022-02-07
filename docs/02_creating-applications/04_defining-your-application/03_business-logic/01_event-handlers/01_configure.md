@@ -53,7 +53,7 @@ eventHandler {
 ### Configuration in processes.xml
 
 The event handler has a service configuration in your application's **processes.xml** file. Here is an example:
- For more information about the tags in this example, see [system processes](/platform-reference/essential-information/processes-xml).
+ For more information about the tags in this example, see [system processes](/creating-applications/configure-runtime/processes-xml).
 
 ```xml
 <process name="TRADING_APP_EVENT_HANDLER">
@@ -75,4 +75,4 @@ A more complex example will follow shortly.
 
 ## Defining state machines
 
-State machines, which define the conditions for moving from one state to another, are defined within your event handler files. See more details about these in the section on [Defining your state machines](/platform-reference/configure-key-modules/state-machines/define/),
+State machines, which define the conditions for moving from one state to another, are defined within your event handler files. See more details about these in the section on [Defining your state machines](/creating-applications/defining-your-application/business-logic/state-machines/define//),

@@ -24,7 +24,7 @@ By default, the conversion process will convert each separate worksheet into a t
 
 ### Functions
 
-The conversion script will turn the Excel functions in the workbook into kotlin code. for use by your application. The most [common Excel functions](/platform-reference/integrations/external-systems/exceltogenesis/excel-functions/) are all covered. 
+The conversion script will turn the Excel functions in the workbook into kotlin code. for use by your application. The most [common Excel functions](/creating-applications/defining-your-application/integrations/external-systems/exceltogenesis/excel-functions/) are all covered. 
 
 
 ### Column headings

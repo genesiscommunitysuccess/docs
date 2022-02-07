@@ -56,7 +56,7 @@ If the code has already been generated - typically, if you are making changes to
 
 Technically, it is possible to duplicate field names. When you build, this generates a duplication warning if the fields are defined in the same way, or an error if they are defined differently. If the duplication is between your own field and one you have inherited from another module, make sure you change the name of your own field, not the one from the other module.
 
-[Sample field definitions](/platform-reference/data-model/field-example/) generated from GPAL.
+[Sample field definitions](/creating-applications/defining-your-application/data-model/field-example/) generated from GPAL.
 
 ## Tables
 
@@ -205,7 +205,7 @@ table("TRADE", 102) {
 }
 ```
 
-[Sample table definitions](/platform-reference/data-model/table-example/) generated from GPAL.
+[Sample table definitions](/creating-applications/defining-your-application/data-model/table-example/) generated from GPAL.
 
 ## Views
 

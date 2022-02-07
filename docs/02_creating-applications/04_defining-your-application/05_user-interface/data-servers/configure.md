@@ -13,7 +13,7 @@ You need to define queries to handle each event in the required way. You can def
 
 The initial run of the query serves all the data that is defined by the table or view. From then on, it automatically monitors the user who has requested the data. Whenever a value in the underlying table or view changes, that change is sent to the user. In this way, the user’s data is maintained up to date in real time, without the unnecessary burden of sending the whole data set each time there is a change.
 
-Note that any table or view that you are monitoring might contain a join. By default, the fields that are joined are not monitored for updates - typically these are used for reference data that does not change intraday. If you need these fields to be monitored in real time along with the fields in the primary table, then you need to use a [backwards join](/platform-reference/configure-key-modules/data-servers/examples/#backwards-joins) (see below).
+Note that any table or view that you are monitoring might contain a join. By default, the fields that are joined are not monitored for updates - typically these are used for reference data that does not change intraday. If you need these fields to be monitored in real time along with the fields in the primary table, then you need to use a [backwards join](/creating-applications/defining-your-application/user-interface/data-servers/examples/#backwards-joins) (see below).
 
 Typically in Genesis, each module has its own data server process, which points at this configuration.
 
@@ -21,7 +21,7 @@ Typically in Genesis, each module has its own data server process, which points 
 
 Make sure that your data server is correctly configured in your application's **processes.xml** file.
 In the example below, we have added a data server that we have called TRADING_APP_DATASERVER.
-For information on the tags you can use in this configuration, see the page on the [processes.xml](/platform-reference/essential-information/processes-xml) file.
+For information on the tags you can use in this configuration, see the page on the [processes.xml](/creating-applications/configure-runtime/processes-xml) file.
 
 ```xml
 <process name="TRADING_APP_DATASERVER">

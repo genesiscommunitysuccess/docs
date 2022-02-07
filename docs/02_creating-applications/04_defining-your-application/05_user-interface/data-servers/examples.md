@@ -120,7 +120,7 @@ This enables update filtering for a list of process names. Any database updates 
 
 #### enableTypeAwareCriteriaEvaluator
 This enables the type-aware criteria evaluator at the data-server level. Defaults to `false`. [Click here to read more](
-    /platform-reference/configure-key-modules/data-servers/examples/#enabletypeawarecriteriaevaluator)
+    /creating-applications/defining-your-application/user-interface/data-servers/examples/#enabletypeawarecriteriaevaluator)
 
 ### Query settings
 The following settings only apply at query-level. 
@@ -145,7 +145,7 @@ For example, you might want a front-end client to perform a criteria search on a
 This search  can be  translated automatically to the right field types internally (even though `TRADE_DATE` is a field of type `DateTime`). The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimised experience. 
 The type-aware evaluator can transform strings to integers, and any other sensible and possible conversion (e.g `TRADE_ID == '1'`). As a side note, this type-aware evaluator is also available in `DbMon` for operations like `search` and `qsearch`.
 
-By contrast, the traditional criteria evaluator needs the field types to match the query fields in the data server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our [common date expressions](/platform-reference/configure-key-modules/data-servers/examples/#common-datedatetime-criteria-expressions) to handle date searches.
+By contrast, the traditional criteria evaluator needs the field types to match the query fields in the data server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our [common date expressions](/creating-applications/defining-your-application/user-interface/data-servers/examples/#common-datedatetime-criteria-expressions) to handle date searches.
 
 
 ## Backwards joins

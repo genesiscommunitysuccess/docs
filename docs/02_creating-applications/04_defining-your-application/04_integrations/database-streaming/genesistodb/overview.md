@@ -145,9 +145,9 @@ _The stored procedures for insert, modify and delete should also be created befo
 
 Even though Genesis cannot modify these triggers/procedures and they can potentially be implemented in any desired way as long as they behave as expected, it is always useful to have some simple working examples.
 
-* [Oracle sample](/platform-reference/integrations/database-streaming/genesistodb/genesistodb-oracle/)
-* [MSSQL sample](/platform-reference/integrations/database-streaming/genesistodb/genesistodb-mssql/)
-* [PostgreSQL sample](/platform-reference/integrations/database-streaming/genesistodb/genesistodb-postgres/)
+* [Oracle sample](/creating-applications/defining-your-application/integrations/database-streaming/genesistodb/genesistodb-oracle/)
+* [MSSQL sample](/creating-applications/defining-your-application/integrations/database-streaming/genesistodb/genesistodb-mssql/)
+* [PostgreSQL sample](/creating-applications/defining-your-application/integrations/database-streaming/genesistodb/genesistodb-postgres/)
 
 ### Encrypting user and passwords
 

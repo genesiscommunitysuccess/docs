@@ -67,7 +67,7 @@ Local values can be specified in the this block. **These values override the glo
 
 **MqLayer**: This setting defines the type of Message queue technology. You can choose between `ZeroMQ` and `Aeron` message queues
 
-**DbLayer**: Default value is set to FDB. If you want to use PostgreSQL or Aerospike then you need to change value of DbHost item, for more information follow this [link](/getting-started/get-ready-to-develop/database/#changing-to-postgresql-or-aerospike)
+**DbLayer**: Default value is set to FDB. If you want to use PostgreSQL or Aerospike then you need to change value of DbHost item
 
 **DbHost**: Contains information of the hostname/JDBC connection string pointing to local database. For example:
 
@@ -91,7 +91,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **AliasSource**: This setting defines where you want to store dictionary alias schema. The alias schema maps aliases to fields and to tables, and it is updated every time we change the data schema. You can choose between DB alias source and FILE alias source using this setting. Accepted values `DB` and `FILE`. DB alias source is preferred because if you are running a cluster all nodes will refer to the same alias dictionary. FILE alias source has the problem of being only available on each node
 
-**MetricsEnabled**: Default value is false. For more information, go to the page on [Metrics](/platform-tooling/metrics/metrics).
+**MetricsEnabled**: Default value is false. For more information, go to the page on [Metrics](/managing-applications/monitor/metrics/metrics/).
 
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...)
 
@@ -121,4 +121,4 @@ then the generated ID will be `000000000001TRLO1` where "LO" represents Location
 
 **LogFrameworkConfig**: Contains name of the log framework configuration file.
 
-If you want to enable SSL for your process communication, this is done in the [service definition](/platform-reference/essential-information/service-definitions/#enable-ssl-for-processes).
+If you want to enable SSL for your process communication, this is done in the [service definition](/creating-applications/configure-runtime/service-definitions/#enable-ssl-for-processes).

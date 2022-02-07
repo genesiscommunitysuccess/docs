@@ -13,7 +13,7 @@ We support the following database technology:
 
 Because we abstract from the underlying technology, you can easily toggle between any of these three.
 
-There are also tools that enable you to [stream real-time data reliably to and from any classic Oracle/SQL database](/platform-reference/integrations/database-streaming/dbtogenesis/overview).
+There are also tools that enable you to [stream real-time data reliably to and from any classic Oracle/SQL database](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/overview/).
 
 By default, FoundationDB is installed on the platform. If you need to use a PostgreSQL or Aerospike database, follow the steps below.
 
@@ -62,7 +62,7 @@ systems {
     }
 ```
 
-For Aerospike you may also want to update the **DbNamespace** and **DbMode** properties. Details of those can be found [here](/platform-reference/essential-information/system_definitions-latest).
+For Aerospike you may also want to update the **DbNamespace** and **DbMode** properties. Details of those can be found [here](/creating-applications/configure-runtime/system-definitions/).
 
 ### 2. Activate the new configuration
 

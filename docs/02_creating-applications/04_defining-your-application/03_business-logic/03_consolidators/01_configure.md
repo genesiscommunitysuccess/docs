@@ -21,13 +21,13 @@ This is what a consolidator does:
 
 A consolidator does not do anything else. It is a self-contained box in the server. It reads from the database, it crunches data when triggered. It writes to the database. That’s it. It has no interaction with any other service on the server or the user interface.
 
-So what you do with the results of the Consolidator is your problem. If you need to publish the data it writes to the database, you'll need a [data server](/platform-reference/configure-key-modules/data-servers/configure/) or [request server](/platform-reference/configure-key-modules/request-servers/configure/).
+So what you do with the results of the Consolidator is your problem. If you need to publish the data it writes to the database, you'll need a [data server](/creating-applications/defining-your-application/user-interface/data-servers/configure/) or [request server](/creating-applications/defining-your-application/user-interface/request-servers/configure/).
 
-There is one important operational consideration if you have a consolidator in your application. If you stop the process, you need to use the `--coldStart` parameter when you restart. In short, you need to do a [cold start](/platform-reference/configure-key-modules/consolidators/coldstart/).
+There is one important operational consideration if you have a consolidator in your application. If you stop the process, you need to use the `--coldStart` parameter when you restart. In short, you need to do a [cold start](/creating-applications/defining-your-application/business-logic/consolidators/coldstart/).
 
 ### Adding the consolidator to processes.xml
 
-If you are going to use the Consolidator process, you must ensure that it is included in the  **processes.xml** file for the application. This is located in the .cfg folder for the application. The file contains tags that define key characteristics of the Consolidator - for example, dependencies and logging level. Here is an example configuration (the tags are explained in the page on the [processes.xml file](/platform-reference/essential-information/processes-xml)):
+If you are going to use the Consolidator process, you must ensure that it is included in the  **processes.xml** file for the application. This is located in the .cfg folder for the application. The file contains tags that define key characteristics of the Consolidator - for example, dependencies and logging level. Here is an example configuration (the tags are explained in the page on the [processes.xml file](/creating-applications/configure-runtime/processes-xml/)):
  
 
 ```xml
