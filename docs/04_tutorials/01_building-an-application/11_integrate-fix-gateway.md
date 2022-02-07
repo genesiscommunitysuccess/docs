@@ -163,7 +163,7 @@ streams {
 ### 3. Configure FIX-XLator Plugin for the Streamer Client
 The FIX-Xlator plugin allows you to use a number of extension functions designed to make working with QuickFIX message classes in your streamer and streamer client scripts much easier. 
 It also allows you to generate type safe accessors for custom message fields based on a custom dictionary.
-The reference documentation including how to structure the FIX messages module in your project can be found [here](../../platform-reference/integrations/external-systems/fix-xlator.md)
+The reference documentation including how to structure the FIX messages module in your project can be found [here](../../creating-applications/defining-your-application/integrations/external-systems/fix-xlator/.md)
 
 ### 4. Configure the Streamer Client
 In order to complete our FIX drop copy workflow, we need a Streamer Client to listen to the stream, convert any TRADE objects to a FIX message format and forward them on to the Gateway.

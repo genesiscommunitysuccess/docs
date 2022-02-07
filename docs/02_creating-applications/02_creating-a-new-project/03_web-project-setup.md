@@ -38,7 +38,7 @@ The first thing you will want to do is generate a workspace for your Genesis bas
 
 Run 'genx' to get started.
 
-For further information see the docs: (https://docs.genesis.global/secure/creating-applications/defining-your-application/user-interface/web-ui-reference/cli/)
+For further information see the [docs](/creating-applications/creating-a-new-project/web-project-setup/)
 ```
 
 ## Available generators

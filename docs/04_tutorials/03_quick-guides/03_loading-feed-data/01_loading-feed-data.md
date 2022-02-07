@@ -11,7 +11,7 @@ Some feeds provide static sets of data that you can download for processing by y
 :::note
 This guide is intended for:
 - users who alrady have experience of creating a Genesis application
-- users with a working knowledge of [camel](https://docs.genesis.global/secure/glossary/glossary/#camel-apache-camel)
+- users with a working knowledge of [camel](/refererence/glossary/#camel-apache-camel)
 :::
 
 

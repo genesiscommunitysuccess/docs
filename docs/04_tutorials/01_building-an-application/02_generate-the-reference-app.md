@@ -7,7 +7,7 @@ sidebar_position: 2
 ---
 In this first exercise, we shall generate the reference application with its database of reference data. We shall create this from the existing RDBMS of reference data.
 
-Before you start. Make sure you have the platform and all the relevant tools [installed](/getting-started/get-ready-to-develop/install/). The Genesis LCNC must be installed on a server, local vm, wsl or cloud instance (genesis and auth).
+Before you start. Make sure you have the platform and all the relevant tools [installed](/creating-applications/getting-ready-to-develop/Running%20applications/install-in-three-steps/). The Genesis LCNC must be installed on a server, local vm, wsl or cloud instance (genesis and auth).
 
 Ideally, Maven should be installed in the server instance. It should be configured so that you can retrieve Ggenesis binaries.
 

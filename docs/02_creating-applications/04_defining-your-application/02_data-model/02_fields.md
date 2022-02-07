@@ -290,7 +290,7 @@ By default, the fields in the second table are not monitored in real time when y
 If you need to join to a table where there is real-time data, then you need to specify a backwards join. 
 This requires the statement `backwardsJoins = true` when you are specifying the join.
 
-When you refer to a table that has a backwards join in any of your [data servers](/platform-reference/configure-key-modules/data-servers/configure), 
+When you refer to a table that has a backwards join in any of your [data servers](/creating-applications/defining-your-application/user-interface/data-servers/configure/), 
 you must include a similar statement in order to enable the feature: `backwardsJoins = true`. Don’t forget to add this!
 
 Note that `backwardsJoins` can be expensive in terms of computation and cost, so they should be used surgically rather than by default.
@@ -304,6 +304,6 @@ query("ALL_RFQ_BROKER_QUOTES_VIEW", RFQ_BROKER_QUOTES_VIEW) {
 }
 ```
 #### Complex joins
-There is a range of [more complex joins](/platform-reference/data-model/view-complex-joins/) that give you extended flexibility.
+There is a range of [more complex joins](/creating-applications/defining-your-application/data-model/views/#dynamic-joins) that give you extended flexibility.
 
 

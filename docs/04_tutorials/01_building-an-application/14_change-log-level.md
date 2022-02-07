@@ -46,7 +46,7 @@ cp ~/run/trading_app/cfg/trading_app-processes.xml site-specific/cfg/
 
 #### Change process log level dynamically
 
-To change process log level dynamically,  use the [LogLevel](/platform-tooling/commands/#loglevel-script) command.
+To change process log level dynamically,  use the [LogLevel](//managing-applications/operate/on-the-host/helpful-commands/#loglevel-script) command.
 With this command you will be able to change the log level for specified/indefinite period of time.
 Below are some examples of its usage
 

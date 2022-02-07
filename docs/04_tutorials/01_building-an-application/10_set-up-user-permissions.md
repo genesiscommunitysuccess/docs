@@ -18,7 +18,7 @@ The objective is to use dynamic permissions and permission codes so that specifi
 
 First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field part of the generic permissions system.
 
-You can read more about it [here](../../platform-reference/authentication-and-authorisation/authorisation.md).
+You can read more about it [here](/creating-applications/defining-your-application/access-control/authorisation/).
 
 Starting with the server, set up two USER and USER_ATTRIBUTES records: JohnDoe and JaneDoe.
 

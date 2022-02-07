@@ -76,7 +76,7 @@ The steps to follow are:
 
 1. Generate a GENESIS_KEY key for each of the environments (specially for PROD and UAT).
 2. Pass the GENESIS_KEY to each instance as an environment variable.
-3. Using the GENESIS_KEY, encrypt the `username` and `password` with the [`encryptUserPassWithKey` command](/platform-reference/integrations/database-streaming/dbtogenesis/overview/#encrypting-user-and-passwords) in the Genesis instance.
+3. Using the GENESIS_KEY, encrypt the `username` and `password` with the [`encryptUserPassWithKey` command](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/overview/#encrypting-user-and-passwords) in the Genesis instance.
 4. Add the encrypted `username` and `password` to the relevant section (**DEV**, **UAT**, etc...) of the _application_**-system-definition.kts** file.  
  5. Finally, because your password is encrypted in the script/configuration you are changing, you need to pull it out from the System definition object, which automatically decrypts it. Here is an example:
 

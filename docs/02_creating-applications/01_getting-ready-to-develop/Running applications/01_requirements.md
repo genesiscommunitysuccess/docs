@@ -57,4 +57,4 @@ If using WSL, we recommend running a version of CentOS in order to match the rec
 
 # Next Steps
 
-Once you have a server/workstation with the correct operating system, you are ready to install the Genesis platform. By default, this installs FoundationDB as the database. If you need to [use a different database](/getting-started/get-ready-to-develop/database) (such as PostgreSQL), it is easy to change this after the installation process.
+Once you have a server/workstation with the correct operating system, you are ready to install the Genesis platform. By default, this installs FoundationDB as the database. If you need to [use a different database](/creating-applications/configure-runtime/database/) (such as PostgreSQL), it is easy to change this after the installation process.

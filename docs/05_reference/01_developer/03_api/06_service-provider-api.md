@@ -5,7 +5,7 @@ sidebar_label: Service provider API
 sidebar_position: 6
 ---
 
-In this page, we look at details of the functions that enable you to interact with the Genesis services that can be specified in the [**service-definition.xml**](/platform-reference/essential-information/service-definitions/) file.
+In this page, we look at details of the functions that enable you to interact with the Genesis services that can be specified in the [**service-definition.xml**](/creating-applications/configure-runtime/service-definitions//) file.
 
 ## Functions
 
