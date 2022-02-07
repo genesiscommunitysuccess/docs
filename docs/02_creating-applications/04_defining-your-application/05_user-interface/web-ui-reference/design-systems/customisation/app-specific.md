@@ -7,7 +7,7 @@ sidebar_position: 20
 
 When performing design system customisations you can control the scope as follows:
 
-* [General](/web-ui-reference/design-systems/customisation/general/) - applied to all applications using the system.
+* [General](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/customisation/general/) - applied to all applications using the system.
 * Application-specific - only applied to a single application. Described below.
 
 You can also choose to customise either all or only individual components.

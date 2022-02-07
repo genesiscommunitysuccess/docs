@@ -4,7 +4,7 @@ title: Modal
 sidebar_position: 70
 ---
 
-A modal component will prevent the user from interacting with other content on the page. An alternative is the [dialog](/web-ui-reference/components/interaction/dialog/) component.
+A modal component will prevent the user from interacting with other content on the page. An alternative is the [dialog](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/interaction/dialog/) component.
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#dialog_modal):
 

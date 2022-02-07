@@ -4,9 +4,9 @@ title: Listbox
 sidebar_position: 55
 ---
 
-An implementation of a [listbox](https://w3c.github.io/aria-practices/#Listbox). While any DOM content is permissible as a child of the listbox, only [`alpha-option`](/web-ui-reference/components/form/option/) elements, `option` elements, and slotted items with `role="option"` will be treated as options and receive keyboard support.
+An implementation of a [listbox](https://w3c.github.io/aria-practices/#Listbox). While any DOM content is permissible as a child of the listbox, only [`alpha-option`](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/form/option/) elements, `option` elements, and slotted items with `role="option"` will be treated as options and receive keyboard support.
 
-The `listbox` component has no internals related to form association. For a form-associated `listbox`, see the [`alpha-select` component](/web-ui-reference/components/form/select/).
+The `listbox` component has no internals related to form association. For a form-associated `listbox`, see the [`alpha-select` component](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/form/select/).
 
 ## Set-up
 

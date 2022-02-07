@@ -8,7 +8,7 @@ An implementation of a [radio](https://developer.mozilla.org/en-US/docs/Web/HTML
 
 ## Usage
 
-See [`alpha-radio-group`](/web-ui-reference/components/form/radio-group/).
+See [`alpha-radio-group`](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/form/radio-group/).
 
 ## Use cases
 

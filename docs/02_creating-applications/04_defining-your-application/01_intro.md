@@ -13,6 +13,6 @@ We'll offer explanations of what each component can achieve, and we'll show you 
 
 If you are not sure where something fits in, it's probably worth looking at the [architecture](/creating-applications/basic-elements-of-genesis-applications/component-architecture-overview/) section of our Getting Started section.
 
-Once you have a working server, you can check out the information on the [Web User Interface](/creating-applications/defining-your-application/user-interface/web-ui-reference/intro/web-strategy/).
+Once you have a working server, you can check out the information on the [Web User Interface](/creating-applications/defining-your-application/user-interface/creating-applications/defining-your-application/user-interface/web-ui-reference/intro/web-strategy/).
 
 For information on how to build a server, go to our [Tutorials](/tutorials/building-an-application/intro/) section.

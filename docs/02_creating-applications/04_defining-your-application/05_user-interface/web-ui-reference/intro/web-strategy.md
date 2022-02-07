@@ -33,6 +33,6 @@ For more information about our web strategy, see the following subsections:
 - [Web Components](web-components/intro.md)
 - [Standards & Accessibility](standards-accessibility.md)
 - [Browser Support](browser-support.md)
-- [Design Systems](/web-ui-reference/design-systems/intro/)
+- [Design Systems](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/intro/)
 - [Micro Frontends](micro-frontends.md)
 - [Interoperability](interoperability.md)

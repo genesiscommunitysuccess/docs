@@ -4,7 +4,7 @@ title: Genesis data-source
 sidebar_position: 13
 ---
 
-Used in [Connected Data](/web-ui-reference/components/grids/ag-grid/ag-grid-connected/) scenarios, this will fetch data from a Genesis server (or any other server that implements the Genesis protocol). <br /> <br /> *Available attributes and props may change in the future and are open for feedback but are reflecting the [DATA_LOGON message options](/creating-applications/defining-your-application/user-interface/data-servers/examples/#client-side-runtime-options)*
+Used in [Connected Data](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/grids/ag-grid/ag-grid-connected/) scenarios, this will fetch data from a Genesis server (or any other server that implements the Genesis protocol). <br /> <br /> *Available attributes and props may change in the future and are open for feedback but are reflecting the [DATA_LOGON message options](/creating-applications/defining-your-application/user-interface/data-servers/examples/#client-side-runtime-options)*
 
 ## Attributes and props
 
