@@ -30,3 +30,12 @@ We are still working on this page
 | Bulk or Range Subscribe                                                                         | [Bulk](../../helper/subscription/bulk) of entity                                   |
 | Available in [event-handlers](../../../../configure-key-modules/event-handlers/configure)       | ❌                                                                                  |
 | Available in [custom request replies](../../../../configure-key-modules/request-servers/custom) | ❌                                                                                  |
+
+During the code generation phase repository classes are generated for every table and view in the system. These 
+repositories provide a type-safe way of accessing the database. 
+
+The main differences between the generated repositories and the [Entity Db](../entity-db):
+
+1. the entity db can handle any database entity, each repository can only handle a single entity
+2. the generated repositories have specific methods for every index, whereas the entity db is fully generic
+

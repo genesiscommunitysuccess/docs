@@ -9,6 +9,25 @@ id: entity-db
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+|                                                                                                 | [EntityDb](../entity-db)                                                           |
+|-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
+| [Supports tables](../../../concepts/data-structure/tables)                                      | ✔️                                                                                 |
+| [Supports views](../../../concepts/data-structure/views)                                        | ✔️                                                                                 |
+| Supports any data type                                                                          | ✔️                                                                                 |
+| Class to import                                                                                 | `AsyncEntityDb` <br/> `RxEntityDb`                                                 |
+| Type safe read and write                                                                        | ✔️                                                                                 |
+| Type safe write result                                                                          | ✔️                                                                                 |
+| Returns data as                                                                                 | [table](../../data-types/tables) or [view](../../data-types/views) entities        |
+| Writes data as                                                                                  | [table](../../data-types/tables) or [view](../../data-types/views) entities        |
+| References indexes as                                                                           | [index entities](../../data-types/indices)                                         |
+| Programming interface                                                                           | [Async](../../../reference/apis/async) or [RxJava](../../../reference/apis/rxjava) |
+| Write (input)                                                                                   | [Generic Modify Details](../../helper/modify/generic)                              |
+| Write (output)                                                                                  | [Generic Write Result](../../helper/write-result/generic)                          |
+| Subscribe                                                                                       | [Record Update](../../helper/subscription/record-update) of entity                 |
+| Bulk or Range Subscribe                                                                         | [Bulk](../../helper/subscription/bulk) of entity                                   |
+| Available in [event-handlers](../../../../configure-key-modules/event-handlers/configure)       | ✔️                                                                                 |
+| Available in [custom request replies](../../../../configure-key-modules/request-servers/custom) | ✔️                                                                                 |
+
 The entity db enables developers to interact with the database layer; you can use any generated type-safe entities for
 tables and views. The interface supports the same operations as the generated repositories, but will accept any
 entity. It supports read operations for views and tables and write operations for tables only.
