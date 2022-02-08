@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-title: Entity Classes Overview
+title: Write Result Overview
 sidebar_label: Overview
 id: overview
 
