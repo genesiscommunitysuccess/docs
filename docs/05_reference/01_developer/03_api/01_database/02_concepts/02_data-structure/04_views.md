@@ -6,7 +6,8 @@ id: views
 
 ---
 
-Views are defined in the `-view-dictionary.kts` files as discussed [here](/defining-your-application/data-model/views).
+Views are defined in the `-view-dictionary.kts` files as discussed 
+[here](/creating-applications/defining-your-application/data-model/views).
 
 Views are the genesis equivalent of SQL select queries. Unlike [tables](../tables), views do not have any data of 
 their own, but present a view based on one or more tables. A view always starts with a single table, the root table.

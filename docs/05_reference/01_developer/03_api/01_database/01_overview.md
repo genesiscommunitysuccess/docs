@@ -31,5 +31,4 @@ These following topics discuss how the database and the data within is exposed i
 database
 * [Supported Databases](../reference/supported-databases/overview) provides a reference for the various databases that the
 genesis platform supports.
-* [Cache](../reference/cache) provides reference for database caching.
 * [Frequently Asked Questions](../reference/faq) provides reference data.
