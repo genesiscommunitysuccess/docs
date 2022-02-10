@@ -1,11 +1,11 @@
 ---
 id: common-config
-title: Common Adaptor Configuration
-sidebar_label: Common Adaptor Configuration
+title: Common adaptor configuration
+sidebar_label: Common ddaptor configuration
 sidebar_position: 10
 ---
 
-## Process Definition
+## Process definition
 Every market data adaptor is configured using an XML file. This page details the common elements between adaptors for all vendors. The XML filename must be specified in the config element process definition in the processes.xml file:
 ```xml
 <process name="ELEKTRON_ADAPTOR">
@@ -24,12 +24,12 @@ When defining the process definiton for a market data adaptor, it is important t
 
 This is because the bulk of the functionality is provided by the market data engine. When the service is initialised by dependency injection, the core of the service is initialised from the engine, and the adaptor provides vendor specific components in order for the adaptor to function.
 
-## Config File
+## Config file
 The market data adaptors themselves are configured with an XML file. There are common elements to all the adaptor configurations.
 
 The majority of customisable logic is specified within the XML file as groovy code snippets elements prefixed with a CDATA block, similar to the configuration for Consolidators.
 
-### Pre-Expression
+### Pre-expression
 The pre expression is a groovy code block executed before any other code block specified in the file. You can use this expression to define any utility functions you wish to use within your other code.
 ```xml
 <preExpression>

@@ -11,12 +11,15 @@ Get it right, and you will find all the other steps are much easier and more log
 
 In Genesis, we structure our data in the following way:
 
-* Fields
-* Tables
-* Views (a view can draw data from more than one table)
+* [Fields](/creating-applications/defining-your-application/data-model/fields/)
+* [Tables](/creating-applications/defining-your-application/data-model/tables/)
+* [Views](/creating-applications/defining-your-application/data-model/views/) (a view can draw data from more than one table)
 
 Each of these must be specified in a separate file on the filesytem:
 
 * _application_**-fields-dictionary.kts**
 * _application_**-tables-dictionary.kts**
 * _application_**-view-dictionary.kts**
+
+In this section, we look in more detail at how you define your fields, tables and views.
+

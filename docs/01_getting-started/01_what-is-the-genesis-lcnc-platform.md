@@ -5,38 +5,13 @@ sidebar_position: 1
 id: what-is-the-genesis-lcnc-platform
 ---
 
-The Genesis LCNC Platform is the only Low-Code/No-Code platform designed to build and run core, mission-critical systems for the financial markets.
+The Genesis LCNC Platform is the only Low-Code/No-Code platform designed to build and run core, mission-critical systems for the financial markets. It provides a set of tools and components that save you time when you define and manage applications.
 
-![](/img/genesis_platform_component_overview.png)
+![](/img/component-architecture.png)
 
-There are many tools and resources to help you work quickly and efficiently, but to get the full benefit of the platform, you should be a developer familiar with Linux, Java, IDEs and the project-building tool Maven.
+The core server application infrastructure provides integrated components that enable an application to handle events in real time and distribute data to the front end. To create an application, you need to configure some of these; others are non-configurable. But it means that much of the fundamental material for creating a performant, available application exists from the start. You don't have to worry at all, for example, how the different processes communicate with each other.
 
-At the highest possible level, let's start by looking at what you get.
+Surrounding the core, operational tools enable you to run and monitor the application, while cluster services enable you to run across multiple nodes. Auth and permissions enable you control access and build sophisticated and granular access to data and functions. Technical and business integrations ensure that you can quickly integrate messages and date from external sources int your application at speed. 
 
-## The ability to create
+Finally, you can develop a front end from a wide range of components to create a rich display environment for users. Each one can be connected to the relevant data resources provided by the server.
 
-**Genesis Studio**. This enables you to create data models and user interfaces via a graphical interface. Thus, you have a choice between No Code or Low Code to create your application. With the visual tools, you can get more done in less time. With the code, you can add sophistication and handle complexity.
-
-**Genesis SDK**. This enables you to create applications via our Low Code language (GPAL - Genesis Platform Abstraction Language) or a choice of Java, R or Groovy. GPAL makes use of IntelliSense to provide intelligent access to existing definitions as you code to speed up creation, prevent errors as you code and cut down runtime errors.
-
-## Tools to migrate
-
-**Excelerator - Excel migration**. This takes an Excel spreadsheet then imports the data so that you can create a working Genesis database model at speed.
-
-**DB migration**. This transforms the data model of an existing relational database into a Genesis application, and imports the data.
-
-## The ability to integrate
-
-**Excel Add-in**. This synchronises data between Excel cells and a Genesis application, so you can re-use existing calculations and logic from Excel where required.
-
-**DB integration**. This performs real-time data synchronisation between a relational database and a Genesis application. The DbToGenesis function streams data from an external database to the Genesis database. The GenesisToDb function synchronises data in the other direction.
-
-## An effective operating environment
-
-**GEM**. This is the Genesis Environment Manager, a cloud-agnostic tool for managing, monitoring and auditing environments and server instances.
-
-**Console**. This monitors the status of applications, exploring log files, querying application data and user management/entitlements. Use it to identify and diagnose issues in any environment, without needing development skills.
-
-**Mon**. This is a command-line utility for managing and monitoring services in a Genesis application, an alternative to Console.
-
-**DbMon**. This is a command-line utility for inspecting, importing, modifying and exporting data with a Genesis application.
