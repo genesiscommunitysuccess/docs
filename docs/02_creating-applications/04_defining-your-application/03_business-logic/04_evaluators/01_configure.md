@@ -15,9 +15,9 @@ In system terms, evaluators enable you to connect event handlers to two differen
 In both cases, you define the rule in a table in the database: DYNAMIC_RULES for dynamic rules and CRON_RULES for static rules. 
 
 ## Enabling the evaluator
-The evaluator process is not enables by default. Before you can use the GENESIS_EVALUATOR, you must enable it in your _application_**-genesis-processes.xml** file.
+The evaluator process is not enabled by default. Before you can use the GENESIS_EVALUATOR, you must enable it in your _application_**-genesis-processes.xml** file.
 
-The example below is for a standard genesis file for controlling `/home/trading/run/site-specific/cfg/genesis-processes.xml`. You  simply switch, `start` from `false` to `true`. Then run 
+The example below is for a standard Genesis file for controlling `/home/trading/run/site-specific/cfg/genesis-processes.xml`. You  simply switch, `start` from `false` to `true`. Then run 
 "`genesisInstall` -> `killServer` -> `startServers`", so that the configuration takes effect.
 
 ```xml {2}

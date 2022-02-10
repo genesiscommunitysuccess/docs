@@ -1,7 +1,7 @@
 ---
 id: market-data
-title: Market Data
-sidebar_label: Market Data
+title: Market data
+sidebar_label: Market sata
 sidebar_position: 10
 
 ---
@@ -11,7 +11,7 @@ The market data distribution includes field and table definitions to facilitate 
 
 In order to integrate market data to your Genesis project, you will need to install the Genesis Market Data distribution, and the vendor specific adaptor distribution for the vendor from whom you wish to consume data.
 
-## Provided Data Model
+## Provided dData model
 The market data distribution comes with the fields and tables required to get start started subscribing to market data immediately. However, like field definitions and stock tables provided by any Genesis Distribution, these can be extended or modified as you see fit in order to fit your data model.
 
 The tables provided are detailed below:
@@ -29,10 +29,10 @@ The market data system functions by having the relevant vendor adaptors scan the
 
 It is also worth noting that the price tables can be configured as Genesis HFT memory mapped tables for low latency rather than using the standard database mechanism. This configuration will be explained in a later section.
 
-## Provided Services
+## Provided services
 
-### Event Handler
+### Event handler
 The market data event handler provides two events to allow the front end and other services to easily subscribe to prices, EVENT_SUBSCRIBE_TO_PRICE and EVENT_UNSUBSCRIBE_FROM_PRICE.
 
-### DataServer
-The market data dataserver provides a kotlin script configurable mechanism for delivering market data from the price tables to the front end.
+### Data server
+The market data data server provides a kotlin script configurable mechanism for delivering market data from the price tables to the front end.
