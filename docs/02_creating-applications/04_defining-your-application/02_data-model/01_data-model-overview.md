@@ -23,5 +23,5 @@ Each of these must be specified in a separate file on the filesytem:
 
 In this section, we look in more detail at how you define your fields, tables and views.
 
-These pages assume you are creating a data model from scratch. You can also create a data model from an existing Excel spreadsheet or RDBMS database. You can see this in practice in our tutorial covering the [Excel](/tutorials/building-an-application/trading-app/) and [RDBMS](tutorials/building-an-application/reference-app/) routes.
+These pages assume you are creating a data model from scratch. You can also create a data model from an existing Excel spreadsheet or RDBMS database. You can see this in practice in our tutorial covering the [Excel](/tutorials/building-an-application/trading-app/) and [RDBMS](/tutorials/building-an-application/reference-app/) routes.
 
