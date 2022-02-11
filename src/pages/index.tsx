@@ -62,7 +62,7 @@ const Home = () => {
           <div className="container">
             <h1 className="hero__title">{siteConfig.title}</h1>
             <p className="hero__subtitle">{siteConfig.tagline}</p>
-            <img src={heroImage} alt="" />
+            <img src={heroImage} alt="" height="350" width="600"/>
             <div>
               <Link
                 className='button button--secondary button--outline button--lg button--getting-started'
