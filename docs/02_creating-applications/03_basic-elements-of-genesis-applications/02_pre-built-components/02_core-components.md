@@ -13,6 +13,6 @@ These core components are part of the Genesis LCNC Platform. They run automatica
 | [Database API](/reference/developer/api/entity-db/)  | Access control | High-performance persistence service providing an abstracted interface to Postgres, FoundationDB or Aerospike databases  |
 | [Perms](/creating-applications/defining-your-application/access-control/authentic-over/#generic-permissions) | Access control | Enforces permissions and entitlements to data visibility & events, application-wide  |
 | [Cluster](/managing-applications/operate/clustering/clusters/)  | Orchestration  | Manages node communication for high availability and horizontal scaling in clustered applications    |
-| Connect  | Orchestration  | Front end-to-server connectivity via high-performance, secure Websocket / http communications  |
+| Connect  | Orchestration  | Front-end-to-server connectivity via high-performance, secure Websocket / http communications  |
 | Orchestration   | Orchestration  | Inter-process communication of database record updates |
 | [Router](/creating-applications/configure-runtime/genesis-router/) | Orchestration  | UI connectivity and load balancing to server services   |
