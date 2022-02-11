@@ -5,10 +5,14 @@ sidebar_position: 3
 id: streamer
 ---
 
+This page shows you how to create a streamer.
+
+You can see an example of a streamer in practice in our [tutorial](/tutorials/building-an-application/fix-gateway/).
+
 ### Create streamer
 To create a streamer:
 
-1. Add streamer process configuration to the {applicationName}-processes.xml file. for example:
+1. Add streamer process configuration to the {applicationName}-processes.xml file. For example:
 
 ```xml
 <process name="TRADING_APP_STREAMER">
@@ -21,7 +25,7 @@ To create a streamer:
 </process>
 ```
 
-For more information on above process tags follow this [link](/creating-applications/configure-runtime/processes-xml)
+For more information on above process tags, see the page on [configuring runtime processes](/creating-applications/configure-runtime/processes-xml).
 
 2. Create a kotlin script file named {applicationName}-streamer.kts. Add the following information:
     * A stream name 
@@ -36,6 +40,7 @@ streams {
 
 This creates a stream called “ORDER_OUT”, based on the ORDERS_OUT table (or view). The data will be streamed, ordered by timestamp.
 
+#### Parameters
 You can also specify the following optional parameters in a stream block:
 
 `batchSize` - default value 100

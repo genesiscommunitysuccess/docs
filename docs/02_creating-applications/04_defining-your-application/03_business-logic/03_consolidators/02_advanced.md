@@ -152,3 +152,4 @@ Here is an example file that defines two consolidators:
     </consolidation>
 </consolidations>
 ```
+You can find an example of a consolidator being configured in our [tutorial](/tutorials/building-an-application/add-calculated-data/).

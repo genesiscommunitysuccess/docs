@@ -5,6 +5,13 @@ sidebar_position: 4
 id: streamer-client
 ---
 
+This page shows you how to create a streamer client. It also looks at the syntax of the two types of stremaer client that are available: 
+
+* table or view entity
+* GenesisSet
+
+Also, you can see an example of a streamer client in practice in our [tutorial](/tutorials/building-an-application/fix-gateway/).
+
 ### Create streamer client
 To create a streamer client:
 
@@ -42,7 +49,8 @@ streamerClients {
 
 This will take a message from a streamer and send the message to QUOTE_EVENT_HANDLER as a QUOTE_UPDATE_EVENT.
 
-You can also the following properties in a streamer client:
+#### Properties
+You can set the following properties in a streamer client:
 
 `isReplayable`. This flag determines if the stream is replayable. Default value is `false`
 
