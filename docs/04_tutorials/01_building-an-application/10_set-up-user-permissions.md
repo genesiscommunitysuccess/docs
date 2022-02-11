@@ -5,7 +5,7 @@ sidebar_label: Set up user permissions
 sidebar_position: 10
 
 ---
-At this stage, you have a working server with a Ref_data_app and a Trading_app. The Trading_app has a consolidator to calculate the positions, event handlers to control changes to the database and data server and request servers to publish the data to the front end.
+At this stage, the Trading_app has a consolidator to calculate the positions, event handlers to control changes to the database and data server and request servers to distribute the data to the front end.
 
 For this part of the tutorial,  you want to permission users so that each one has access to the correct parts of the system.
 
@@ -16,9 +16,7 @@ The objective is to use dynamic permissions and permission codes so that specifi
 
 ## Set up generic permissions
 
-First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field part of the generic permissions system.
-
-You can read more about it [here](/creating-applications/defining-your-application/access-control/authorisation/).
+First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field part of the [generic permissions](/creating-applications/defining-your-application/access-control/authorisation/) system.
 
 Starting with the server, set up two USER and USER_ATTRIBUTES records: JohnDoe and JaneDoe.
 
@@ -35,28 +33,30 @@ item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
 ```
 
 :::tip
-Take a look inside the **auth-permissions.auto.xml** file in generated/cfg. You are about to run  `genesisInstall`, which will create a new version of this file with your changes in it. If you copy the contents of the file, you will be able to compare the old and new versions and see the effect of your changes.
+Take a look inside the **auth-permissions.auto.xml** file in the folder **generated/cfg**. You are about to run  `genesisInstall`, which will create a new version of this file with your changes in it. If you copy the contents of the file, you will be able to compare the old and new versions and see the effect of your changes.
 :::
+
+Run `killServer --all` to stop any processes that are currently running. (`remap` won’t work if any server processes are running.)
 
 Run `genesisInstall`
 
 Run `remap --commit`
 
-As *remap** runs, it shows you the details of the changed tables. You will be prompted to confirm the changes.
+As `remap` runs, it shows you the details of the changed tables. You will be prompted to confirm the changes.
 
 ![](/img/remap-table-changes.png)
 
 Input **y** to confirm.
- Note: remap won’t work if any server processes are currently running.
 
-After this, go to the USER_ATTRIBUTES table and run **DbMon** to set the ACCESS_TYPE field for JaneDoe to be ENTITY (instead of ALL).
+
+After this, go to the USER_ATTRIBUTES table and run `DbMon` to set the ACCESS_TYPE field for JaneDoe to be ENTITY (instead of ALL).
 To do this, run `DBMON`, then:
 
 1. Set the table to `USER_ATTRIBUTES`.
 2. Find JaneDoe with the command `qsearch USER_NAME--"JaneDoe"`
 This finds the record for Jane Doe.
 ![](/img/find-janedoe.png)
-3. Run the following **DbMon**commands:
+3. Run the following `DbMon` commands:
 `set ACCESS_TYPE ENTITY"`
 `writeMode`
 `update USER_ATTRIBUTES_BY_USER_NAME`
@@ -193,7 +193,7 @@ fun `test insert trade`(): Unit = runBlocking {
 }
 ```
 
-4. Create test showing where the user cannot complete action successfully due to permissions. JaneDoe is not authorised due to not having an entry in the auth cache map ENTITY_VISIBILITY for Counterparty with ID 1 (In fact, at the moment user JaneDoe has no entries at all in the ENTITY_VISIBILITY map).
+4. Create a test showing where the user cannot complete an action successfully due to permissions. JaneDoe has no entry in the auth cache map ENTITY_VISIBILITY for Counterparty with ID 1 (In fact, at the moment user JaneDoe has no entries at all in the ENTITY_VISIBILITY map). Therefore, she should be refused permission to complete the action.
 
 ```kotlin
 @Test
@@ -220,7 +220,7 @@ fun `test trade insert without permission`(): Unit = runBlocking {
 }
 ```
 
-## Permission Codes
+## Permission codes
 
 Now you need to look at RIGHT_SUMMARY permission codes.
 
@@ -230,7 +230,7 @@ For the purpose of this script, we can keep things simple. In reality, you would
 
 
 
-In our trading app example we can set two types of rights:
+In our trading app example we can set two types of right:
 
 * TRADER (enables the trader to read and write trades - but only for their own related counterparties)
 * SUPPORT (enables support to have read-only access to everything)
@@ -263,9 +263,9 @@ In terms of definitions, you can add the codes as part of the permissions block 
 
 This means only users with the TRADER permission code will be able to use that event handler. 
 
-You can add similar code to the request servers and data servers, as below. In these examples, you also  add the SUPPORT code to allow SUPPORT users to have read-only access to trades.
+You can add similar code to the request servers and data servers, as below. In these examples, you also add the SUPPORT code to give SUPPORT users read-only access to trades.
 
-Request Server:
+Request server:
 
 ```kotlin
 requestReplies {
@@ -281,7 +281,7 @@ requestReplies {
 }
 ```
 
-Data Server:
+Data server:
 
 ```kotlin
 dataServer {
@@ -301,7 +301,7 @@ dataServer {
 
 The permission mechanism is driven by the RIGHT_SUMMARY table, which contains an association between a user and a right-code.
 
-Now you need to write unit tests for this. As an example, test the Event Handler.
+Now you need to write unit tests for this. As an example, test the event handler.
 
 1. Modify the setup function. We are adding another entry to the ENTITY_VISIBILITY auth cache map for user JamieDoe. Also we are adding all of our users to the RIGHT_SUMMARY table.
 
@@ -362,4 +362,4 @@ fun `test trade insert due to incorrect permission code`(): Unit = runBlocking {
 }
 ```
 
-User JamieDoe has the correct entry in the ENTITY_VISIBILITY auth cache map for Counterparty with ID = 1. But JamieDoe's RIGHT_CODE is SUPPORT, so they are not authorised to enter a trade -  because the event handler requires the RIGHT_CODE to be TRADER.
+User JamieDoe has the correct entry in the ENTITY_VISIBILITY auth cache map for Counterparty with ID = 1. But JamieDoe's RIGHT_CODE is SUPPORT, so he is not authorised to enter a trade. Only users whose RIGHT_CODE is TRADER can use this event handler.

@@ -6,7 +6,7 @@ id: access-overview
 
 ---
 
-In this section, we look at components that enable you to contrl access to the application, and permission to access specific data and functions.
+In this section, we look at components that enable you to control access to the application, and which configure permission to access specific data and functions.
 
 [Authentication](/creating-applications/defining-your-application/access-control/authentic-over/) covers configuration that controls who has access to the application.
 
