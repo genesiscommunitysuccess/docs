@@ -48,6 +48,8 @@ modifyEvent {
 
 You can click to view the [whole file for this example state machine](/creating-applications/defining-your-application/business-logic/state-machines/examples/) and see how each of the events is handled.
 
+You can also see a state machine being created in practice in our [tutorial](/tutorials/building-an-application/add-state-machine/).
+
 
 
 
