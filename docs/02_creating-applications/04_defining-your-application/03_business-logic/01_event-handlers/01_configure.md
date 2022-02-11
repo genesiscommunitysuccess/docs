@@ -69,6 +69,8 @@ The event handler has a service configuration in your application's **processes.
 </process>
 ```
 
+There is a nice simple example of some logic being added to an event handler in our [tutorial](/tutorials/building-an-application/add-event-handler/).
+
 ## A more complex event handler
 
 A more complex example will follow shortly.
