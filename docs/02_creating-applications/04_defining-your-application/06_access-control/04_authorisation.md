@@ -635,3 +635,5 @@ requestReplies {
   }
 }
 ```
+
+You can see an example of permissioning in practice in our [tutorial](/tutorials/building-an-application/permissions/).

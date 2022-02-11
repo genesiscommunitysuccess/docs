@@ -7,7 +7,7 @@ id: authorisation-over
 
 ## Authorisation
 Authorisation is the process by which you offer specific permissions to resources for authenticated users. 
-The Genesis Server presents three main types of resource entry points for clients to instigate events or query data.
+The Genesis Server presents three main types of resource entry points for clients to instigate events or to query data.
 
 - Data servers  
 - Event handlers  
@@ -147,11 +147,13 @@ an order management system auth implementation, and it will be read by AUTH_PERM
 
 There are two kinds of permission entitiy defined by Generic Permissions in ```auth-permission.templt.xml``` file.
 
-- **USER_VISIBILITY** - An AuthCache which determines which user is visible to which user, this is driven by which users associated for the entity. Using our example, if two users are both in the same counterparty then they should be viewable to each other.
+- **USER_VISIBILITY** - An AuthCache that determines which user is visible to which user, this is driven by which users associated for the entity. Using our example, if two users are both in the same counterparty then they should be viewable to each other.
 
-- **ENTITY_VISIBILITY** - An AuthCache which determine if a user has access to particular entity, in our example, if the user permissioned for a particular counterparty, then it will be able to see the associated row data for that counterparty.
+- **ENTITY_VISIBILITY** - An AuthCache that determines if a user has access to particular entity, in our example, if the user permissioned for a particular counterparty, then it will be able to see the associated row data for that counterparty.
 
 
 :::note
 Synonym: Dynamic Permission, Permission Entity, Entity, AuthMap, AuthCache
 :::
+
+You can see an example of permissioning in practice in our [tutorial](/tutorials/building-an-application/permissions/).
