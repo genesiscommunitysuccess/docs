@@ -24,5 +24,6 @@
   background-position: top right;
   background-repeat: no-repeat;
   background-image: var(--platform-bg);
+  background-size: 22% auto;
 }
 
