@@ -10,7 +10,7 @@ In this section, we look at components that enable you to contrl access to the a
 
 [Authentication](/creating-applications/defining-your-application/access-control/authentic-over/) covers configuration that controls who has access to the application.
 
-[Authorisation](/creating-applications/defining-your-application/access-control/authorisation-over//) explains how you can control individual access (by group) to particular functions and items of data.
+[Authorisation](/creating-applications/defining-your-application/access-control/authorisation-over/) explains how you can control individual access (by group) to particular functions and items of data.
 
 
 
