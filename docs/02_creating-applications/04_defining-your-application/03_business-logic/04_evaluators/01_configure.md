@@ -102,6 +102,7 @@ eventHandler<PositionCancel> {
 
 ```
 
+You can see an example of a dynamic rule being configured in our [tutorial](/tutorials/building-an-application/events/dynamic-events/.
 
 ### Defining a static rule
 To define a scheduled event, you need to insert a row into the `CRON_RULE` table. This row must specify the CRON schedule that triggers the event. The table is defined as follows:
@@ -119,3 +120,5 @@ To define a scheduled event, you need to insert a row into the `CRON_RULE` table
 | PROCESS_NAME | Process Name to send the Event  eg TRADING_APP_EVENT_HANDLER |
 | MESSAGE_TYPE | The Message Type that will be defined  |
 | RESULT_EXPRESSION | this is a [groovy expression](https://groovy-lang.org/syntax.html) which should set on the MESSAGE Object that is defined in MESSAGE_TYPE |
+
+You can see an example of a static rule being configured in our [tutorial](/tutorials/building-an-application/events/static-events/).

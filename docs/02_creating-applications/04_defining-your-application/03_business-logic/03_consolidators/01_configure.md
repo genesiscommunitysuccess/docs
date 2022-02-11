@@ -42,3 +42,4 @@ If you are going to use the Consolidator process, you must ensure that it is inc
     <dependency>TRADING_APP_EVENT_HANDLER</dependency>
 </process>
 ```
+The next page shows you how to [configure the consoildator](/creating-applications/defining-your-application/business-logic/consolidators/advanced/) file itself. Also note that there is an example of using a consolidator in our [tutorial](/tutorials/building-an-application/add-calculated-data/).

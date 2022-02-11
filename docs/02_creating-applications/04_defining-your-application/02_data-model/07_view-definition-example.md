@@ -202,3 +202,4 @@ views {
 }
 
 ```
+You can also see a simplen example of a new view being created in our [tutorial](/tutorials/building-an-application/add-view/).
