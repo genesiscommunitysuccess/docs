@@ -8,7 +8,7 @@ id: configure
 ## Overview
 
 The Genesis Notify module enables you to configure an application to send and receive messages to and from various messaging services.
-The growing list of currently supported services is:
+The growing list of currently supported services is shown below.
 
 ### Sending:
 
@@ -48,3 +48,6 @@ The notify route table provides linkage between NOTIFY, so that it can be picked
 
 * Topic based multi-service messages
 * Retry mechanisms
+ 
+
+Our tutorial has practical examples of configuring notify for [static](tutorials/building-an-application/events/static-events/) and [dynamic](/tutorials/building-an-application/events/dynamic-events/) events.
