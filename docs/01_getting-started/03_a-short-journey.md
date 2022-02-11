@@ -19,5 +19,5 @@ You define your [data model](/creating-applications/defining-your-application/da
 
 Creating the [user interface](/creating-applications/defining-your-application/user-interface/ui-overview/) involves configuring the data distribution components so that information from specific tables and views is made available to the front end. And you need to configure pages to display that information in the most usaboe and visibly effectove way for your users.
 
-You need to [control access](/creating-applications/defining-your-application/access-control/authentic-over/) to the application and permission for users to access specific functions and pieces of data. Do this by configuring our Auth and Perms components.
+You need to [control access](/creating-applications/defining-your-application/access-control/access-overview/) to the application and permission for users to access specific functions and pieces of data. Do this by configuring our Auth and Perms components.
 
