@@ -9,15 +9,15 @@ Most financial applications have to interact with other systems to exchange info
 
 | Name| Category | Description|
 |------------------------------------|----------------|------------------|
-| DbToGenesis | Database | RDB integration - data streaming from RDB into Genesis DB |
-| GenesisToDb | Database | RDB integration - data streaming from Genesis DB to RDB |
+| [DbToGenesis](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/overview/#dbtogenesis) | Database | RDB integration - data streaming from RDB into Genesis DB |
+| [GenesisToDb](/creating-applications/defining-your-application/integrations/database-streaming/genesistodb/overview/#genesistodb) | Database | RDB integration - data streaming from Genesis DB to RDB |
 | Oracle | Database | Integration to Oracle for request/response-based data retrieval and persistence |
 | Glue42 | Desktop interoperability | Web and desktop interoperability |
 | OpenFin | Desktop interoperability | Web and desktop interoperability |
 | Apache Camel | General integration | Bidirectional integration across a range of connected systems using Enterprise Integration Patterns |
-| Streamer	 | General integration | Streaming to and from internal and external services with reliable / guaranteed delivery |
-| Streamer Client | General integration | Streaming to and from internal and external services |
-| Genesis Notify | Messaging & email | Notify external systems in response to system events (Symphony, Email & Microsoft Teams) |
+| [Streamer](/creating-applications/defining-your-application/integrations/external-systems/streamer/#create-streamer)	 | General integration | Streaming to and from internal and external services with reliable / guaranteed delivery |
+| [Streamer Client](/creating-applications/defining-your-application/integrations/external-systems/streamer-client/#create-streamer-client) | General integration | Streaming to and from internal and external services |
+| [Genesis Notify](/creating-applications/defining-your-application/integrations/notify/configure/) | Messaging & email | Notify external systems in response to system events (Symphony, Email & Microsoft Teams) |
 | Symphony | Messaging & email | Integration for compliant and secure messaging from applications |
 | Grafana	 | Monitor | Real-time integration for application statistics into Grafana |
 | ITRS Geneos | Monitor | Real-time integration for application monitoring & system management |
@@ -29,7 +29,7 @@ Most financial applications have to interact with other systems to exchange info
 | SS&C Geneva | Order & trade lifecycle | Integration for trades, positions, balances and margin uploads, integrations and workflows |
 | Traiana	 | Order & trade lifecycle | Integration for trade lifecycle data |
 | Bloomberg TOMS | Order entry & execution | Real-time integration for order routing, execution, management, and post-trade processing |
-| FIX | Order entry & execution | FIX messaging for incoming/outgoing messages, supporting multiple protocols and customizable dictionaries |
+| [FIX](/creating-applications/defining-your-application/integrations/external-systems/configure/) | Order entry & execution | FIX messaging for incoming/outgoing messages, supporting multiple protocols and customizable dictionaries |
 | Interactive Brokers | Order entry & execution | Integration for order routing, execution, management, and post-trade processing |
 | ION Trading - Fidessa | Order entry & execution | Integration to the Fidessa OMS for order routing, execution, management, and post-trade processing |
 | Iress	 | Order entry & execution | Integration for order routing, execution, management, and post-trade processing |
@@ -45,29 +45,3 @@ Most financial applications have to interact with other systems to exchange info
 | Zoho	 | Static data | Online productivity tools and SaaS applications |
 
 
-OLD TABLE - TO BE DELETED
-
-| Name| Description|
-|------------------------------------|--------------------|
-| Refinitiv |  Market data        | 
-| Activ | Market data          | 
-| Exegy | Market data      |
-| Bloomberg TOMS  | Bloomberg (Treasury) |
-| Murex |  Murex         |
-| ION Trading | Fidessa OMS            | 
-| Pershing | Nexus           |
-| SS&C Geneva | Trades, positions, balances & margins        | 
-| Morningstar  | Investment analysis |
-| Datascope |  Non-real-time pricing & reference data|
-| Iress | Financial planning            | 
-| Coppclerk | Market holiday data           |
-| Zoho | Enterprise platform         | 
-| Interactive Brokers | Market access           |
-| DTCC | Digital Securities Management        | 
-| Trading Technologies | Trading platforms, infrastructure, & data |
-| CTM |  Middle-office matching |
-| Trafix | OEMS            | 
-| itiviti/UIlink | Order routing, execution, management, and post-trade processing          |
-| Calypso | Cloud-enabled financial solutions         |
-| Traiana  | Trade lifecycle processing          |
-| FIX | FIX gateway for external system integration via the FIX protocol/API         |
