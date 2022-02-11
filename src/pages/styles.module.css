@@ -20,7 +20,7 @@
   display: flex;
   align-items: center;
   padding: 10rem 0 20rem 0;
-  width: 100%;
+  max-width: 100%;
   background-position: top right;
   background-repeat: no-repeat;
   background-image: var(--platform-bg);
