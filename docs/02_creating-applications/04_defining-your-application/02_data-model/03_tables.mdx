@@ -1,0 +1,265 @@
+---
+title: Tables
+sidebar_label: Tables
+id: tables
+sidebar_position: 3
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Tables are used to store the underlying data. They are made up of [fields](/creating-applications/defining-your-application/data-model/fields/) and must also at least define a `primaryKey` which tells the underlying database how to index the table's data
+
+When defining the data model, we define all of the individual tables needed to make up the data model in your application.
+
+```kotlin
+tables {
+
+  table( name= "POSITION", id = 11002) {
+    sequence(POSITION_ID, "PS")
+    INSTRUMENT_ID
+    QUANTITY
+    NOTIONAL
+
+    primaryKey {
+     POSITION_ID
+    }
+  }
+
+}
+```
+
+<Tabs defaultValue="whereToDefine" 
+        values={[{ label: 'Where to define', value: 'whereToDefine', }, 
+                 { label: 'Technical details', value: 'techDetails', }, 
+                 { label: 'Advanced Technical Details', value: 'advTechDetails', },
+                 { label: 'Examples', value: 'examples', }]}>
+<TabItem value="whereToDefine">
+
+Tables are defined in `<application-name>-tables-dictionary.kts`. 
+
+For example for the `position` application that file name would be `position-tables-dictionary.kts`
+
+</TabItem>
+<TabItem value="techDetails">
+
+### Give the table a name
+
+All tables must be specified with a name, it must be a unique table name to the application
+
+```kotlin
+  table( name= "POSITION")
+```
+
+### Table ID
+
+Tables must also be given a unique (to the application) ID. 
+
+This is required so that renaming of tables is possible, and it does not instead remove a table (old table name - full of data) and insert a new one (new table  name - empty)
+
+```kotlin
+  table( name= "POSITION", id = 11002)
+```
+
+### Fields
+Each field may only be defined once
+
+Each field's type and other attributes are inherited from the field definition
+
+You may only, where using intelliJ IDE it will auto-suggest fields avaialble and also show in red any referenced which are not know to the application
+
+```kotlin
+
+  table( name= "POSITION", id = 11002) {
+    sequence(POSITION_ID, "PS")
+    INSTRUMENT_ID
+    QUANTITY
+    NOTIONAL
+
+  }
+
+```
+
+### Primary key
+
+Each table must have one and only one primaryKey defined
+
+It is common to use a single sequenced/autoIncrement field defined in the table as a priamryKey
+
+The primaryKey needs to contain one or more fields defined in the table. Where using more, the order of the fields matters in the case of wanting to performantly search based on a partial key.
+
+```kotlin
+tables {
+
+  table( name= "POSITION", id = 11002) {
+    sequence(POSITION_ID, "PS")
+    INSTRUMENT_ID
+    QUANTITY
+    NOTIONAL
+
+    primaryKey {
+     POSITION_ID
+    }
+  }
+
+}
+```
+
+### Indices
+
+Indices can be defined on a given table in a similar fashiong to primaryKey. They are needed for the following scenarios:
+
+1. Create additional unique constraints to the table's primary key
+2. Provide a performant record lookup (`unique` index)
+3. Provide index for a performant ranged lookup (`nonUnique` index, else `unique` index but searching on part of the key)
+
+As with key's they are made up of one or more fields from the table and where made up of multiple fields, the order of the fields matters in the case of wanting to performantly search based on a partial index.
+
+```kotlin
+    indices {
+        unique {
+            SESSION_AUTH_TOKEN
+        }
+        nonUnique {
+            USER_NAME
+        }
+    }
+```
+
+When defining an index, we cannot supply exactly the same fields in exactly the same order as the primary Key or another index, on any given table.
+
+### Primary key and index names
+
+Unless specified name of a primaryKey/index will be inferred - `[TABLE_NAME]_BY_[FIELD_1](_[FIELD_N])` where FIELD_1 - FIELD_N are all the fields which make up the key/index in the order specified.
+
+One exception is the common use case primaryKey is made up of a single field with a name of format `[TABLE_NAME]_[ID]` in which case the inferred name is `[TABLE_NAME]_BY_ID`
+
+#### Examples with comment showing inferred names
+
+Assuming table name is POSITION
+
+```kotlin
+    
+    //POSITION_BY_ID
+    primaryKey { 
+        POSITION_ID
+    }
+
+    //POSITION_BY_OTHER_FIELD
+    primaryKey { 
+        OTHER_FIELD
+    }
+    
+    //POSITION_BY_POSITION_ID_OTHER_FIELD_ANOTHER_FIELD
+    primaryKey { 
+        OTHER_FIELD
+        ANOTHER_FIELD
+    }
+```
+
+Alternatively we can explicitly specify the name of the key/index by adding a name parameter.
+
+```kotlin
+    primaryKey(name = "POSITION_PRIMARY_KEY" ) {
+     POSITION_ID
+    }
+```
+
+</TabItem>
+<TabItem value="advTechDetails">
+
+### Subtables
+
+A subtable and provides a unique point of view on the data schema modelling which goes further than a simple join relationship. It gives extra functionality to a main table.
+
+For example, a financial instrument can be modelled as an INSTRUMENT table, but this table won’t be enough to represent all the possible symbologies. So, we use a subtable called ALT_INSTRUMENT_ID, in which the relationship is one to many from INSTRUMENT to ALT_INSTRUMENT_ID.
+
+ALT_INSTRUMENT_ID is likely to inherit key fields from the INSTRUMENT table, and it simply acts as a lookup table for INSTRUMENT records.
+
+This requirement occurs for different tables (e.g. COUNTERPARTY → ALT_COUNTERPARTY_ID, GENESIS_PROCESS → GENESIS_PROCESS_MONITOR, etc.
+
+Subtables are defined within the body of the table definition. The example below shows the GENESIS_PROCESS monitoring table:
+
+```kotlin
+table(name = "GENESIS_PROCESS", id = 12) {
+    PROCESS_NAME
+    PROCESS_STATUS
+    PROCESS_STATUS_MESSAGE
+    PROCESS_STATE_TEXT
+    PROCESS_RESOURCES
+    PROCESS_HOSTNAME
+    PROCESS_CPU_USAGE
+    PROCESS_MEM_USAGE
+    PROCESS_SECURE
+    PROCESS_PORT
+    LOG_LEVEL
+    DATADUMP
+    START_TIME
+    RESOURCE_TYPES
+    primaryKey {
+        PROCESS_NAME
+        PROCESS_HOSTNAME
+    }
+    subTables {
+        fields(PROCESS_HOSTNAME, PROCESS_NAME)
+            .joiningNewTable(name = "GENESIS_PROCESS_MONITOR", id = 20) {
+                MONITOR_NAME
+                MONITOR_MESSAGE
+                MONITOR_STATE
+
+            primaryKey(name = "GENESIS_PROCESS_MONITOR_BY_HOSTNAME", id = 1) {
+                    PROCESS_HOSTNAME
+                    PROCESS_NAME
+                    MONITOR_NAME
+                }
+            }
+    }
+}
+```
+
+In this example, the subtable GENESIS_PROCESS_MONITOR is defined within the GENESIS_PROCESS table. This is shown after the fields and the primary key have been defined.
+In the subtable, we first define the fields that are used to generate the join operation. These fields are inherited by the subtable automatically. Then we can define additional fields and keys.
+
+</TabItem>
+<TabItem value="examples">
+
+```kotlin
+tables {
+  table (name = "TRADE", id = 11000, audit = details(id = 11001, sequence = "TR", tsKey = true)) {
+    // Source: Trade
+    sequence(TRADE_ID, "TR")
+    INSTRUMENT_ID not null
+    COUNTERPARTY_ID not null
+    QUANTITY not null
+    SIDE not null
+    PRICE not null
+    TRADE_DATETIME
+    ENTERED_BY
+    TRADE_STATUS
+
+    primaryKey {
+      TRADE_ID
+    }
+
+    indices {
+      nonUnique {
+        TRADE_DATETIME
+      }
+    }
+  }
+
+  table( name= "POSITION", id = 11002) {
+    sequence(POSITION_ID, "PS")
+    INSTRUMENT_ID
+    QUANTITY
+    NOTIONAL
+
+    primaryKey {
+     POSITION_ID
+    }
+  }
+
+}
+```
+
+</TabItem>
+</Tabs>
