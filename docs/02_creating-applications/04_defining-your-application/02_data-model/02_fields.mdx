@@ -23,10 +23,17 @@ fields {
 Fields are kept separately from tables, so that they, and their meta-data, can be re-used across multiple tables and show linkage.
 
 <Tabs defaultValue="whereToDefine" 
-        values={[{ label: 'Technical details', value: 'techDetails', }, 
-                 { label: 'Where to define', value: 'whereToDefine', }, 
-                 { label: 'Examples', value: 'examples', },
-                 { label: 'Advanced Technical Details', value: 'advTechDetails', }]}>
+        values={[{ label: 'Where to define', value: 'whereToDefine', }, 
+                 { label: 'Technical details', value: 'techDetails', }, 
+                 { label: 'Advanced Technical Details', value: 'advTechDetails', },
+                 { label: 'Examples', value: 'examples', }]}>
+<TabItem value="whereToDefine">
+
+Fields are defined in `<application-name>-fields-dictionary.kts`. 
+
+For example for the `position` application that file name would be `position-fields-dictionary.kts`
+
+</TabItem>
 <TabItem value="techDetails">
 
 ### Field Types
@@ -86,12 +93,25 @@ Technically, it is possible to duplicate field names. When you build, this gener
 When you define a new field, it is good practice to run `codegen:generateSysDef`. This will generate code based on the fields definition and you will be able to use intellisense to pick this new field within table definitions.
 
 </TabItem>
-<TabItem value="whereToDefine">
+<TabItem value="advTechDetails">
 
-Fields are defined in `<application-name>-fields-dictionary.kts`. 
+### Modularity
 
-For example for the `position` application that file name would be `position-fields-dictionary.kts`
+Genesis is modular, so if you have a dependency on another module (e.g. AUTH) your project will naturally inherit all of the fields and have them available in the project. 
 
+As such we need to ensure we either re-use fields available in dependent modules, else define unique field names between all modules and the project itself
+
+### Scripting
+
+GPAL is a scripting language which gives engineers plenty of advantages especially when it comes to repetition. 
+For example tasks where needing to create large number of table fields, say `ALGO_PARAM_1` through to `ALGO_PARAM_50`, we can introduce for loops:
+
+```kotlin
+  val algoParamPrefix = "ALGO_PARAM_"
+  for(i in 1..51) {
+    field(name = algoParamPrefix + i, type = STRING)
+  }
+```
 </TabItem>
 <TabItem value="examples">
 
@@ -184,26 +204,5 @@ fields {
     field(name = "MONITOR_STATE", type = STRING)
 }
 ```
-</TabItem>
-<TabItem value="advTechDetails">
-
-### Modularity
-
-Genesis is modular, so if you have a dependency on another module (e.g. AUTH) your project will naturally inherit all of the fields and have them available in the project. 
-
-As such we need to ensure we either re-use fields available in dependent modules, else define unique field names between all modules and the project itself
-
-### Scripting
-
-GPAL is a scripting language which gives engineers plenty of advantages especially when it comes to repetition. 
-For example tasks where needing to create large number of table fields, say `ALGO_PARAM_1` through to `ALGO_PARAM_50`, we can introduce for loops:
-
-```kotlin
-  val algoParamPrefix = "ALGO_PARAM_"
-  for(i in 1..51) {
-    field(name = algoParamPrefix + i, type = STRING)
-  }
-```
-
 </TabItem>
 </Tabs>
