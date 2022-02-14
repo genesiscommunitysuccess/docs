@@ -46,6 +46,32 @@ dataServer {
     }
 }
 ```
+## Derived fields
+You can also define derived fields in a data server, to supplement the fields supplied by the table or view. The input for the derived field is the dataserver query row.  All fields are available for use.
+
+In the example below, we add a ninth field to our data server from the previous example. The new field is a derived field:
+
+```kotlin
+dataServer {
+    query(INSTRUMENT_DETAILS) {
+        fields {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+            derivedField("IS_USD", BOOLEAN) {
+                tradedCurrency == "USD"
+            }
+        }
+    }
+}
+```
+
+
 
 ## Configuration settings
 

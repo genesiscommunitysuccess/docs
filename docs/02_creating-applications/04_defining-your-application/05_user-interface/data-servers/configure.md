@@ -21,7 +21,7 @@ Typically in Genesis, each module has its own data server process, which points 
 
 Make sure that your data server is correctly configured in your application's **processes.xml** file.
 In the example below, we have added a data server that we have called TRADING_APP_DATASERVER.
-For information on the tags you can use in this configuration, see the page on the [processes.xml](/creating-applications/configure-runtime/processes-xml) file.
+For information on the tags you can use in this configuration, see the page on the [**processes.xml**](/creating-applications/configure-runtime/processes-xml) file.
 
 ```xml
 <process name="TRADING_APP_DATASERVER">
