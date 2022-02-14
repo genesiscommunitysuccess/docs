@@ -1,6 +1,6 @@
 ---
-title: Web UI overview
-sidebar_label: Web UI overview
+title: UI overview
+sidebar_label: UI overview
 sidebar_position: 1
 id: ui-overview
 
