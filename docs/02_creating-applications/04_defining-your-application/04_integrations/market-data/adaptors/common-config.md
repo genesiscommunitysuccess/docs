@@ -9,7 +9,7 @@ sidebar_position: 10
 This page gives details of the configuration requirements common to adaptors for all vendors. 
 
 ## Adding the process to processes.xml
-You configure the details of an adaptor in an xml file. Before you go into detail in this file, go to the **processes.xml** file for your application and specify the XML file name in the config element process definition. Here is an example of such a definition for an Elektron adaptor. We have called the process file for this process **elektron-adaptor.xml**:
+You configure the details of an adaptor in an xml file. Before you go into detail in this file, go to the **processes.xml** file for your application and specify the xml file name in the config element process definition. Here is an example of such a definition for an Elektron adaptor. We have called the process file for this process **elektron-adaptor.xml**:
 
 ```xml
 <process name="ELEKTRON_ADAPTOR">
@@ -30,9 +30,9 @@ This is because the bulk of the functionality is provided by the market data eng
 
 
 ## The config file
-The market data adaptors themselves are configured with an XML file. There are common elements to all the adaptor configurations.
+The market data adaptors themselves are configured with an xml file. There are common elements to all the adaptor configurations.
 
-The majority of customisable logic is specified within the XML file as groovy code snippets elements prefixed with a CDATA block, similar to the configuration for consolidators.
+The majority of customisable logic is specified within the xml file as groovy code snippets elements prefixed with a CDATA block, similar to the configuration for consolidators.
 
 ### Pre-expression
 The pre expression is a groovy code block executed before any other code block specified in the file. You can use this expression to define any utility functions you wish to use within your other code.
