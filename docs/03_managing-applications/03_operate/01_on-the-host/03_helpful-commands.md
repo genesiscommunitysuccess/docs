@@ -686,7 +686,7 @@ The script accepts a series of arguments to establish a connection to the databa
 | -o outputPath | -output outputPath | No | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created. | No |
 | -h hostName | -host hostName | Yes | The database hostname. | No |
 | -port port |   | Yes | The database port. | No |
-| -sid sid |   | No | The Oracle System ID. | To be used with -t ora |
+| -sid sid |   | No | The Oracle System ID if using oracle, or the schema ID if using MSSQL. | No |
 | -db databaseName | -databaseName databaseName | No | The database name. | To be used with -t mssql |
 | -help |   | No | Prints the usage message | No |
 | -tNames TABLE1,ETC | -tableNames TABLE1,ETC   | No | Tables to copy from RDBMS | No |

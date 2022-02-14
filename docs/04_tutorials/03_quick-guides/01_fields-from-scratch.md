@@ -7,7 +7,7 @@ title: Generate fields from scratch
 ---
 ## Introduction
 
-This exercise walks you though how to set up a Genesis project using a [Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html). At the end, you will have generated fields that can be  used later in tables and views.
+This exercise walks you though how to set up a Genesis project using a [Maven archetype](https://maven.apache.org/guides/introduction/introduction-to-archetypes.html). At the end, you will have generated fields that can be used later in tables and views.
 
 ## Prerequisites
 
@@ -46,7 +46,7 @@ Genesis provides a [Maven archetype](https://maven.apache.org/guides/introductio
 mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=<group_id> -Dversion=1.0.0-SNAPSHOT -DinteractiveMode=true -DarchetypeVersion=5.2.0 -DartifactId=<artifact_id>
 ```
 
-Note that if your terminal is PowerShell you will have to wrap the arguments in quotes, like this:
+Note that if your terminal is PowerShell, you will have to wrap the arguments in quotes, like this:
 
 ```powershell
 mvn archetype:generate "-DarchetypeArtifactId=genesis-archetype" "-DarchetypeGroupId=global.genesis" "-DgroupId=<group_id>" "-Dversion=1.0.0-SNAPSHOT" "-DinteractiveMode=true" "-DarchetypeVersion=5.2.0" "-DartifactId=<artifact_id>"
@@ -67,19 +67,19 @@ cd trade-101
 mvn package
 ```
 
-This will download all the necessary dependencies and generate the Genesis files that are required for development
+This downloads all the necessary dependencies and generates the Genesis files that are required for development.
 
 :::note
-Make sure you have access to the Maven repository that provides the Genesis Platform;  otherwise, this step will fail
+Make sure you have access to the Maven repository that provides the Genesis Platform;  otherwise, this step will fail.
 :::
 
 ![Build Project](/img/built_project.png)
 
 ### Open the project in IntelliJ IDEA
 
-Once the project is built, you can open it in IntelliJ IDEA. The DSL that is used is based on Kotlin and IntelliJ IDEA is the recommended IDE. If a different IDE is used, you win't have access to the autocompletion and type safety during development, unless additional plugins are installed.
+Once the project is built, you can open it in IntelliJ IDEA. The DSL that is used is based on Kotlin and IntelliJ IDEA is the recommended IDE. If a different IDE is used, you won't have access to autocompletion and type-safety during development - unless additional plugins are installed.
 
-Once the project is open, you will notice that it is a [multi module maven project](https://maven.apache.org/guides/mini/guide-multiple-modules.html). The `README.md` contains a high-level overview of the generated projects.
+Once the project is open, note that it is a [multi module maven project](https://maven.apache.org/guides/mini/guide-multiple-modules.html). The `README.md` contains a high-level overview of the generated project.
 
 ![Project in Intellij IDEA](/img/open_generated_project.png)
 
@@ -111,13 +111,13 @@ While coding, note that autocompletion helps with the configuration and its argu
 ### Generate the Fields
 
 Now look at the `trade-101-dictionary-cache`. This depends on `trade-101-config` and contains the generated code based on the configuration. 
-To explore the generated code, navigate to `trade-101-dictionary-cache/target/generated/sources/fields/global/genesis/gen/config/fields/Fields.kt`. You will find the `Fields` object with pre-generated literals. These are fields that are commonly used in trading application,s so they get generated out-of-the-box for faster development. To see the fields you have just added, you will have to build the project again:
+To explore the generated code, navigate to `trade-101-dictionary-cache/target/generated/sources/fields/global/genesis/gen/config/fields/Fields.kt`. You will find the `Fields` object with pre-generated literals. These are fields that are commonly used in trading applications, so they get generated out-of-the-box for faster development. To see the fields you have just added, you need to build the project again:
 
 ```bash
 mvn package
 ```
 
-Going back to the `Fields` object, you will now see the new generated fields at the bottom of the file.
+Going back to the `Fields` object, you can now see the new generated fields at the bottom of the file.
 
 ![New Generated Fields](/img/the_new_generated_fields.png)
 

@@ -1,7 +1,7 @@
 ---
 id: market-data
 title: Market data
-sidebar_label: Market sata
+sidebar_label: Market data
 sidebar_position: 10
 
 ---

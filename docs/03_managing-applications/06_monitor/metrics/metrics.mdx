@@ -67,7 +67,9 @@ implementation("global.genesis:genesis-metrics")
 </TabItem>
 </Tabs>
 
-You can use the method `MetricUtils.getInstance()` repeatedly in your code to get an instance of MetricUtils and make appropriate metrics calls, against the various metric types. Below are some examples.
+The object MetricService is available via the dependency injection mechanism. Simply mark a constructor with the `@Inject` annotation and the parameters will be resolved automatically.
+
+Once the MetricService object is in scope, you can invoke methods on it to retrieve the appropriate metric objects. Below are some examples.
 
 Metrics names are defined at two levels. When a metric is updated, another metric with the qualifier name is also updated.
 For instance, if we have two metrics of type `counter`:
