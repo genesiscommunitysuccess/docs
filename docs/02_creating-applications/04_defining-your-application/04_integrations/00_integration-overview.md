@@ -17,6 +17,6 @@ In this section, we look at components that enable you to integrate data from ot
 
 [Market-data adaptors](/creating-applications/defining-your-application/integrations/market-data/adaptors/common-config/) enables you to parse incoming market data and reformat it for use in your application's database.
 
-
+[Notify](/creating-applications/defining-your-application/integrations/notify/configure/) enables you to configure your application to send and receive messages to and from various messaging services.
 
 
