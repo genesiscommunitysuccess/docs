@@ -1,11 +1,32 @@
 ---
-title: 'EntityDb API reference'
-sidebar_label: 'EntityDb API reference'
-sidebar_position: 1
+sidebar_position: 2
+title: EntityDb
+sidebar_label: EntityDb
 id: entity-db
+
 ---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
+|                                                                                                 | [EntityDb](../entity-db)                                                           |
+|-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
+| [Supports tables](../../../concepts/data-structure/tables)                                      | ✔️                                                                                 |
+| [Supports views](../../../concepts/data-structure/views)                                        | ✔️                                                                                 |
+| Supports any data type                                                                          | ✔️                                                                                 |
+| Class to import                                                                                 | `AsyncEntityDb` <br/> `RxEntityDb`                                                 |
+| Type safe read and write                                                                        | ✔️                                                                                 |
+| Type safe write result                                                                          | ✔️                                                                                 |
+| Returns data as                                                                                 | [table](../../data-types/tables) or [view](../../data-types/views) entities        |
+| Writes data as                                                                                  | [table](../../data-types/tables) or [view](../../data-types/views) entities        |
+| References indexes as                                                                           | [index entities](../../data-types/indices)                                         |
+| Programming interface                                                                           | [Async](../../../reference/apis/async) or [RxJava](../../../reference/apis/rxjava) |
+| Write (input)                                                                                   | [Generic Modify Details](../../helper/modify/generic)                              |
+| Write (output)                                                                                  | [Generic Write Result](../../helper/write-result/generic)                          |
+| Subscribe                                                                                       | [Record Update](../../helper/subscription/record-update) of entity                 |
+| Bulk or Range Subscribe                                                                         | [Bulk](../../helper/subscription/bulk) of entity                                   |
+| Available in [event-handlers](/creating-applications/defining-your-application/business-logic/event-handlers/configure/)       | ✔️                                                                                 |
+| Available in [custom request replies](/creating-applications/defining-your-application/user-interface/request-servers/custom/) | ✔️                                                                                 |
 
 The entity db enables developers to interact with the database layer; you can use any generated type-safe entities for
 tables and views. The interface supports the same operations as the generated repositories, but will accept any
@@ -14,94 +35,17 @@ entity. It supports read operations for views and tables and write operations fo
 The entity db differs from the generated repositories in that it can handle any table and most view entities and
 it differs from `RxDb` in that all operations are type-safe.
 
-As with the generated repositories, there are two flavours of the entity db: 
+As with the generated repositories, there are two flavours of the entity db:
 
-* One supports RxJava signatures, where return types are either `Maybe`, `Single` or `Flowable`, this will be the entity db to use from Java.
+* One has a [RxJava API](../../../reference/apis/rxjava) signatures, for use from Java.
 
-* The other flavour supports Kotlin coroutines. Instead of `Maybe` and `Single` there are `suspend` functions that
-return either nullable or non-nullable values, depending on the operation. Instead of `Flowable` this implementation
-returns kotlin native `Flow`.
+* The other flavour has an [Async API](../../../reference/apis/async), for use from Kotlin.
 
 The entity db is available in the kotlin event handler. Like `RxDb` it can also be injected in java and kotlin
 classes using `AsyncEntityDb` or `RxEntityDb`.
 
 When referring to indices in the database operations, the database accepts _index classes_ or _entity class_
 in combination with _index references_. For comparison:
-
-```kotlin
-db.get(trade, Trade.ById)
-//vs 
-db.get(Trade.ById("TR_123"))
-```
-
-## Supported operations
-
-* Read Operations:
-    * `get`
-    * `getAll`
-    * `getAllAsList`
-    * `getBulk` / `getBulkFromEnd`
-    * `getRange` / `getRangeFromEnd`
-* Write operations
-    * `insert` / `insertAll`
-    * `modify` / `modifyAll`
-    * `upsert` / `upsertAll`
-    * `delete` / `deleteAll`
-    * `update` / `updateAll` / `updateByRange`
-* Transactions
-    * readTransaction
-    * writeTransaction
-* Subscribe operation
-    * `subscribe`
-    * `bulkSubscribe`
-    * `rangeSubscribe`
-
-## Entity types
-
-The entity database uses generated table and view entity types and indexes to perform type-safe operations on the
-database.
-
-On views, the indices of the root table will become indices if:
-
-* the index is the primary key
-* the first field of the index used in the view
-
-If a view has any one-to-many joins, then all unique indices, including the primary key, will be downgraded to a
-non-unique index.
-
-In the examples below, kotlin will use the `AsyncEntityDb`, whereas the java examples will use
-the `RxEntityDb` type. The `AsyncEntityDb` is only available through kotlin, but the `RxEntityDb` can be
-used in both java and kotlin.
-
-We shall use the following table definition as our base:
-
-```kotlin
-tables {
-    table("TRADE", 1100) {
-        TRADE_ID
-        TRADE_TYPE
-        TRADE_DATE
-        primaryKey {
-            TRADE_ID
-        }
-        indices {
-            unique {
-                TRADE_TYPE
-                TRADE_ID
-            }
-            nonUnique {
-                TRADE_DATE
-            }
-        }
-    }
-}
-```
-
-This will have the following index types:
-
-* Trade.ById
-* Trade.ByTypeId
-* Trade.ByDate
 
 ## Type convention
 
@@ -119,6 +63,7 @@ This will have the following index types:
 | `F<E>`                             | The full table /view name for E   | `TRADE`        |
 | `Class<E>`                         | The class reference for E         | `Trade.class`  |
 | `KClass<E>`                        | The kotlin class reference for E  | `Trade::class` |
+
 
 ## Read Operations
 
@@ -344,7 +289,7 @@ only accept table entities.
 
 ### Default and generated values
 
-When writing a record to the database, typically all non null properties should be set on the entity. An entity property
+When writing a record to the database, typically all non-null properties should be set on the entity. An entity property
 becomes non-nullable if:
 
 * It has a default value
@@ -722,184 +667,3 @@ within the last 2 hours). The dynamic range will be updated on a schedule, eithe
 * `rangeSubscribe(EntityIndex<E>, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
 * `rangeSubscribe(rangeProvider, rangeProvider, updateFrequency, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
 * `rangeSubscribe(rangeProvider, updateFrequency, numKeyFields*, delay*, fields*, subscribeLocally*, backwardJoins*): Flow<Bulk<E>>`
-
-## Entity reference
-
-### Generated entity class
-
-Generated _entity classes_ are classes that represent a single row in table or a view. In our example, `Trade`. Instances
-of these classes can be used in some database operations as inputs, and most often included in the output. _Entity
-classes_ have associated index types.
-
-Entity classes will have properties for all the fields associated with the table, as well as helper methods to get index
-classes. The entity classes also have builders that help build the entities.
-
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-<TabItem value="kotlin">
-
-```kotlin
-val trade = Trade {
-    tradeId = "TR_123"
-    tradeType = "SWAP"
-    tradeDate = now()
-}
-
-val id = trade.tradeId
-val newTrade = trade.copy(tradeType = "NDS_SWAP")
-val tradeById = trade.byId()
-```
-
-</TabItem>
-<TabItem value="java">
-
-```java
-final var trade = Trade.builder()
-        .setTradeId("TR_123")
-        .setTradeType("SWAP")
-        .setTradeDate(now())
-        .build();
-
-final var id=trade.getTradeId();
-
-final var newTrade = trade.toBuilder()
-        .setTradeType("NDS_SWAP")
-        .build();
-
-final var byId = trade.byId();
-```
-</TabItem>
-</Tabs>
-
-### Generated index class
-
-Generated _index classes_ are nested inside the _entity classes_; for each index, a class is generated. In our
-`TRADE` example we have `Trade.ById`, `Trade.ByTypeId` and `Trade.ByDate`. Instances of these classes can be used as
-input in some database operations. The database distinguishes between _unique_ and _non-unique_
-indices. In some cases, the database only accepts _unique_ indices, and in other cases it will accept either.
-
-When building index classes, you do not have to provide all fields. However, the fields you provide must always be listed in order.
-A unique index will turn into a non-unique index if not all fields are provided.
-
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-<TabItem value="kotlin">
-
-```kotlin
-val byId = Trade.byId("TR_123")
-val byDate = Trade.byDate(now())
-val byTypeId = Trade.byTypeId("SWAP", "TR_123")
-val byType = Trade.byTypeId("SWAP")
-```
-
-</TabItem>
-<TabItem value="java">
-
-```java
-final var byId = Trade.byId("TR_123");
-final var byDate = Trade.byDate(now());
-final var byTypeId = Trade.byTypeId("SWAP","TR_123");
-final var swap = Trade.byTypeId("SWAP");
-```
-</TabItem>
-</Tabs>
-
-### Generated index reference
-
-Generated _index references_ have the same name as the _index classes_, but are used as a reference to a specific index,
-rather than an index row. As with the _index classes_ the database distinguishes between
-_unique_ and _non-unique_ index references.
-
-## Write result reference
-
-The entity database will return type-safe results for write operations. There are four main write results, one for each type of write operation. In all cases, the records in the result will be a generated entity that matches the
-input. So, for inserting a `Trade` instance, the database will return a result of type `InsertResult<Trade>` where the
-property `record` will be of type `Trade`.
-
-* `InsertResult`
-* `DeleteResult`
-* `ModifyResult`
-* `UpsertResult`; either a `InsertResult` or a `ModifyResult`
-
-### InsertResult
-
-The `InsertResult` has a single property `record` which is the inserted record. This includes any generated values.
-
-### DeleteResult
-
-The `DeleteResult` has a single property `record` which is the record as it was in the database before it was deleted.
-
-### ModifyResult
-
-The `ModifyResult` is slightly more complex, it has a `record` property, which is the record in the database after
-the modify operation. There is also a `previous` property, which is the record as it was *before* the modify operation.
-Finally, there is a `modifiedFieds` property, which holds a `Set<String>` of the fields that were changed in the modify.
-
-## Record update reference
-
-When subscribing to database updates using the entity db, updates are provided in a type-safe manner. All update types
-have the same super class, `GenericRecordUpdate<E>`, where `E` is the entity type. Using the entity db, you can
-subscribe to table and view updates. There are three different update subtypes, which match the update operations:
-
-* `GenericRecordUpdate.Insert`
-* `GenericRecordUpdate.Delete`
-* `GenericRecordUpdate.Modify`
-
-Each one of these has the following properties:
-
-* `tableName`: `String`
-* `recordId`: `Long`
-* `timestamp`: `Long`
-* `emitter`: `String?`
-
-When subscribing to view updates, the update listener listens to updates on the root table. The update type is based on whether the record is shown in the view or not. For example, if after a modify operation a row is no
-longer visible in the view due to a inner join, the view subscriber will receive the update as a delete, rather than a modify.
-
-## Bulk reference
-
-Bulk objects are returned to `bulkSubscribe` and `rangeSubscribe` listeners and are a concatenation of a read and a
-normal `subscribe` operation. The bulk type has the following hierarchy, where every instance is one of the subtypes,
-so `Bulk` is either `Bulk.Prime` or `Bulk.Update` and `Bulk.Prime` is either `Bulk.Prime.Record`
-or `Bulk.Prime.Complete`.
-
-1. `Bulk`
-    1. `Bulk.Prime`
-        1. `Bulk.Prime.Record`
-        2. `Bulk.Prime.Complete`
-    2. `Bulk.Update`
-        1. `Bulk.Update.Insert`
-        2. `Bulk.Update.Delete`
-        3. `Bulk.Update.Modify`
-
-A bulk flow will always follow this sequence:
-
-1. 0 or more `Bulk.Prime.Record`
-2. 1 `Bulk.Prime.Complete`
-3. 0 or more `Bulk.Update` subtypes
-
-## EntityModifyDetails reference
-
-When performing modify and upsert operations, you must specify the index to use. This identifies the record to
-modify and the fields to modify. For this, there is the `EntityModifyDetails` class.
-
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-<TabItem value="kotlin">
-
-```kotlin
-val modifyDetails = EntityModifyDetails(trade)
-// or
-val modifyDetails = EntityModifyDetails(trade, Trade.ByTypeId)
-// or
-val modifyDetails = EntityModifyDetails(trade, Trade.ByTypeId, listOf("TRADE_ID"))
-```
-
-</TabItem>
-<TabItem value="java">
-
-```java
-final var modifyDetails = EntityModifyDetails.newInstance(trade)
-// or
-final var modifyDetails = EntityModifyDetails.newInstance(trade, Trade.ByTypeId.Instance)
-// or
-final var modifyDetails = EntityModifyDetails.newInstance(trade, Trade.ByTypeIdInstance, listOf("TRADE_ID"))
-```
-</TabItem>
-</Tabs>
