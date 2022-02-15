@@ -7,11 +7,11 @@ sidebar_position: 2
 ---
 We've now have created a reference data module from our original RDBMS database, which will handle all reference data for instruments and counterparties. #
 
-Now lets move on to the positions app, starting by building out the trade table.
+Now lets move on to the Positions app, starting by building out the trade table.
 
 ## The source spreadsheet
 
-Here is a look at the trades workbook that will form the basis of our positions application. The main sheet shows a list of trades:
+Here is a look at the trades workbook that will form the basis of our Positions application. The main sheet shows a list of trades:
 
 ![](/img/source-table.png)
 

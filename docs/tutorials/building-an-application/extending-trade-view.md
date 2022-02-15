@@ -8,7 +8,7 @@ sidebar_position: 3
 
 ## Extend the new view
 
-The positions app already has a view from running AppGen. Let's now extend this to join reference tables and supply joined fields.
+The Positions app already has a view from running AppGen. Let's now extend this to join reference tables and supply joined fields.
 
 We'll join to the INSTRUMENT and COUNTERPARTY tables so our view can serve up their fields as needed.
 
@@ -27,7 +27,7 @@ Firstly add the joins section within the TRADE_VIEW's block, which will add the 
     }
 ```
 
-Now lets add joined table fields, note here we're using withPrefix to give the field a unique name:
+Now let's add joined table fields, note here we're using withPrefix to give the field a unique name:
 
 <!-- TODO check output of AppGen has fields like this, else a line that we add it in as there are joined trades now -->
 ```kotlin
