@@ -7,11 +7,13 @@ id: views
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-When we set up our data model, it will imply relationships between tables. For example, a TRADE has a COUNTERPARTY_ID and an INSTRUMENT_ID and so link to the COUNTERPARTY and INSTRUMENTS tables.
+When you set up a data model, it implies relationships between tables. For example, a TRADE has a COUNTERPARTY_ID and an INSTRUMENT_ID. That means it has a relationship with the COUNTERPARTY and INSTRUMENTS tables.
 
-Views allow us to join related tables for a holistic single view.
+Views enable you join related tables to create a single holistic view.
 
-They are a lot more powerful than this in practice, and underpin many Genesis components which need to read data from the database either in real-time or ad-hoc querys.
+They are a lot more powerful than this in practice; they underpin many Genesis components that read data from the database in real time or in static form.
+
+The example below creates a view called TRADE_VIEW, which joins the TRADE table to the INSTRUMENT table.
 
 ```kotlin
 views {
@@ -51,9 +53,9 @@ views {
                  { label: 'Examples', value: 'examples', }]}>
 <TabItem value="whereToDefine">
 
-Views are defined in `<application-name>-view-dictionary.kts`. 
+Views are defined in the file _application-name-**-view-dictionary.kts**. 
 
-For example for the `position` application that file name would be `position-view-dictionary.kts`
+For example, if your application is called **position**, then the file name will be **position-view-dictionary.kts**.
 
 </TabItem>
 <TabItem value="techDetails">
