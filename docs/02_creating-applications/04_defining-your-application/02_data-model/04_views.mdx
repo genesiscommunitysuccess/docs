@@ -13,7 +13,7 @@ Views enable you join related tables to create a single holistic view.
 
 They are a lot more powerful than this in practice; they underpin many Genesis components that read data from the database in real time or in static form.
 
-The example below creates a view called TRADE_VIEW, which joins the TRADE table to the INSTRUMENT table.
+The example below creates a view called `TRADE_VIEW`, which joins the `TRADE` table to the `INSTRUMENT` table.
 
 ```kotlin
 views {
@@ -53,9 +53,9 @@ views {
                  { label: 'Examples', value: 'examples', }]}>
 <TabItem value="whereToDefine">
 
-Views are defined in the file _application-name-**-view-dictionary.kts**. 
+Views are defined in the file _application-name_**-view-dictionary.kts**. 
 
-For example, if your application is called **position**, then the file name will be **position-view-dictionary.kts**.
+So, if your application is called **position**, then the file name will be **position-view-dictionary.kts**.
 
 </TabItem>
 <TabItem value="techDetails">
@@ -64,9 +64,9 @@ Views are made up of joins and fields.
 
 ### Joins
 
-Joins allow us to bring other related tables into a view so we can serve up their fields in a single query row.
+Joins enable you to bring other related tables into a view so we can serve up their fields in a single query row.
 
-For example you might want to join a TRADE to an INSTRUMENT in order to pull in INSTRUMENT fields such as it's NAME or CURRENCY to serve up to a grid.
+For example, you might want to join a `TRADE` to an `INSTRUMENT` in order to pull in `INSTRUMENT` fields such as the `NAME` or `CURRENCY` to serve up to a grid.
 
 ```kotlin
 views {
@@ -89,13 +89,17 @@ views {
 }
 ```
 
-You can define multiple joins onto any given table, you can also add nested joins (join to a joined table), and so on...
+You can define multiple joins onto any given table.
 
-The following joins POSITION onto ALT_INSTRUMENT_ID on a 2 field key. One of the join values (ALTERNATE_TYPE) uses a literal value as opposed to stemming from a field in POSITION.
+You can also add nested joins (join to a joined table), and so on...
 
-We also see a nested join, from ALT_INSTRUMENT_ID onto INSTRUMENT_L1_PRICE
+The following example shows three key things:
 
-Finally there is a join from POSITION onto the INSTRUMENT table
+- it joins the table `POSITION` onto `ALT_INSTRUMENT_ID` on a 2-field key. One of the join values (`ALTERNATE_TYPE`) uses a literal value as opposed to stemming from a field in `POSITION`.
+
+- there is also a nested join, from `ALT_INSTRUMENT_ID` onto `INSTRUMENT_L1_PRICE`.
+
+- finally, there is a join from `POSITION` onto the `INSTRUMENT` table.
 
 ```kotlin
 
@@ -116,16 +120,16 @@ Finally there is a join from POSITION onto the INSTRUMENT table
 
 ```
 
-Joins can be one-to-one (key field match) or one-to-many (part key field match)
+Joins can be one-to-one (key field match) or one-to-many (part-key-field match).
 
 :::warning
-views with one-to-many joins cannot be used with certain Genesis components, e.g. dataservers.
+Views with one-to-many joins cannot be used with data servers.
 :::
 
 
 ### Fields
 
-Adding a field is as simple as typing it in the `fields` section of the view
+Adding a field is as simple as typing it in the `fields` section of the view.
 
 ```kotlin
     fields {
@@ -133,7 +137,7 @@ Adding a field is as simple as typing it in the `fields` section of the view
     }
 ```
 
-We can add all the fields from a given table to a view by using the allFields accessor
+You can add all the fields from a given table to a view using the `allFields` accessor.
 
 ```kotlin
     fields {
@@ -141,10 +145,10 @@ We can add all the fields from a given table to a view by using the allFields ac
     }
 ```
 
-We can also override the name of a field by using various operators
+You can also override the name of a field using various operators:
 
-- withAlias - give the field an alternative name on the view
-- withPrefix - add a prefix to the standard field name. Handy if we have a clash (e.g. COUNTERPARTY and INSTRUMENT both have a NAME field)
+- `withAlias` - gives the field an alternative name on the view
+- `withPrefix` - adds a prefix to the standard field name (handy if you have a clash (e.g. COUNTERPARTY and INSTRUMENT both have a NAME field)
 
 ```kotlin
       COUNTERPARTY.NAME withPrefix COUNTERPARTY
@@ -159,12 +163,12 @@ We can also override the name of a field by using various operators
 
 #### Derived Fields
 
-Derived fields are used to server up fields which are not part of the tables which make up a given view. Their values are typically derived from fields in the tables.
+Derived fields are used to serve up fields that are not part of the tables that make up a given view. Their values are typically derived from fields in the tables.
 
 It is possible to specify field inputs for derived fields as well as being able to specify a single entity as input. This has a number of advantages:
 
-- When a derived field has multiple inputs from a single table, only one input is required
-- Non-null fields on the entity will be non-null
+- when a derived field has multiple inputs from a single table, only one input is required
+- non-null fields on the entity will be non-null
 
 Syntax:
 ```kotlin
@@ -193,7 +197,7 @@ derivedField("SPREAD", DOUBLE) {
     }
 }
 ```
-By default, all fields are populated in the entity. For larger tables, this might have a performance impact if many fields are loaded that will not be used in the calculation or the final view. To mitigate this, you can specify to either only load non-null fields, or specify fields to be populated. Non-null fields will always be populated.
+By default, all fields are populated in the entity. For larger tables, this might have a performance impact if many fields are loaded that are not used in the calculation or the final view. To mitigate this, you can specify to either only load non-null fields, or specify fields to be populated. Non-null fields will always be populated.
 
 Only load non-null fields:
 
@@ -218,10 +222,10 @@ derivedField("SPREAD", DOUBLE) {
 
 #### INNER vs OUTER joins
 
-Available join types are INNER and OUTER. The default if OUTER where not supplied
+Available join types are INNER and OUTER. If you do not specify the type, it defaults to OUTER.
 
-- INNER joins require that all joins match exactly, if one join fails to match this row will be discarded.
-- OUTER joins provide null references for failed joins and will still allow the row to be built.
+- `INNER` joins require that all joins match exactly; if one single join fails to match, the row will be discarded.
+- `OUTER` joins provide null references for failed joins and will still allow the row to be built.
 
 ```kotlin
 joining(INSTRUMENT, JoinType.INNER) {
@@ -244,10 +248,9 @@ joining(TRADE.JOIN_TRADE_TO_SIDE)
 ```
 
 #### Parameterised joins
-Some join operations require external parameters that are not available in the context of the table-join definition,
-but will be available when the view repository is access (e.g. client enriched definitions), so an option exists to create parametrised joins.
+Some join operations require external parameters that are not available in the context of the table-join definition, but will be available when the view repository is access (e.g. client enriched definitions), so an option exists to create parametrised joins.
 
-These are typically used in requestServer queries:
+These are typically used in request server queries:
 
 ```kotlin
 view("INSTRUMENT_PARAMETERS", INSTRUMENT) {
@@ -268,7 +271,7 @@ view("INSTRUMENT_PARAMETERS", INSTRUMENT) {
 }
 ```
 
-So for the above, if we had a requestReply using the view, it would make ALTERNATE_TYPE available as a field input parameter.
+So for the above, if we had a request server using the view, it would make `ALTERNATE_TYPE` available as a field input parameter.
 
 #### Dynamic joins
 This has a shared syntax with derived fields. However, rather than specifying a field name and type, it should always return an entity index type of the table you’re joining on.
