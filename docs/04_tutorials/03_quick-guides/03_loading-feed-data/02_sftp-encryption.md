@@ -68,9 +68,7 @@ Lastly, back to the **{{..}}** variables used in the template, and defined in th
  
 ## Encryption
 
-In higher environments, you need to encrypt sensitive values in the _application_**-system-definition.kts** file.  A detailed discussion on genesis encryption can be found at the following link:
-
-https://genesisglobal.atlassian.net/wiki/spaces/ON/pages/1004634113/Setting+up+an+Encrypted+Username+and+Password+for+an+external+System+4.1.0+onwards
+In higher environments, you need to encrypt sensitive values in the _application_**-system-definition.kts** file.  
 
 The steps to follow are:
 

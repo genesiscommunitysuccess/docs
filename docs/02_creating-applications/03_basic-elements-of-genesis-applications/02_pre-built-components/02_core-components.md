@@ -14,5 +14,5 @@ These core components are part of the Genesis LCNC Platform. They run automatica
 | [Perms](/creating-applications/defining-your-application/access-control/authentic-over/#generic-permissions) | Access control | Enforces permissions and entitlements to data visibility & events, application-wide  |
 | [Cluster](/managing-applications/operate/clustering/clusters/)  | Orchestration  | Manages node communication for high availability and horizontal scaling in clustered applications    |
 | Connect  | Orchestration  | Front-end-to-server connectivity via high-performance, secure Websocket / http communications  |
-| Orchestration   | Orchestration  | Inter-process communication of database record updates |
+| [Orchestration](/managing-applications/operate/inter-process-messages/internal-messaging/)   | Orchestration  | Inter-process communication of database record updates |
 | [Router](/creating-applications/configure-runtime/genesis-router/) | Orchestration  | UI connectivity and load balancing to server services   |
