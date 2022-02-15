@@ -7,9 +7,9 @@ id: views
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-When we set up our data model, it will typically imply relationships. For example, a Trade has a Counterparty and an Instrument.
+When we set up our data model, it will imply relationships between tables. For example, a TRADE has a COUNTERPARTY_ID and an INSTRUMENT_ID and so link to the COUNTERPARTY and INSTRUMENTS tables.
 
-Views allow us to join related data for a holistic single view.
+Views allow us to join related tables for a holistic single view.
 
 They are a lot more powerful than this in practice, and underpin many Genesis components which need to read data from the database either in real-time or ad-hoc querys.
 
@@ -141,8 +141,8 @@ We can add all the fields from a given table to a view by using the allFields ac
 
 We can also override the name of a field by using various operators
 
-# withAlias - give the field an alternative name on the view
-# withPrefix - add a prefix to the standard field name. Handy if we have a clash (e.g. COUNTERPARTY and INSTRUMENT both have a NAME field)
+- withAlias - give the field an alternative name on the view
+- withPrefix - add a prefix to the standard field name. Handy if we have a clash (e.g. COUNTERPARTY and INSTRUMENT both have a NAME field)
 
 ```kotlin
       COUNTERPARTY.NAME withPrefix COUNTERPARTY
@@ -161,8 +161,8 @@ Derived fields are used to server up fields which are not part of the tables whi
 
 It is possible to specify field inputs for derived fields as well as being able to specify a single entity as input. This has a number of advantages:
 
-# When a derived field has multiple inputs from a single table, only one input is required
-# Non-null fields on the entity will be non-null
+- When a derived field has multiple inputs from a single table, only one input is required
+- Non-null fields on the entity will be non-null
 
 Syntax:
 ```kotlin
@@ -218,8 +218,8 @@ derivedField("SPREAD", DOUBLE) {
 
 Available join types are INNER and OUTER. The default if OUTER where not supplied
 
-# INNER joins require that all joins match exactly, if one join fails to match this row will be discarded.
-# OUTER joins provide null references for failed joins and will still allow the row to be built.
+- INNER joins require that all joins match exactly, if one join fails to match this row will be discarded.
+- OUTER joins provide null references for failed joins and will still allow the row to be built.
 
 ```kotlin
 joining(INSTRUMENT, JoinType.INNER) {
@@ -245,8 +245,28 @@ joining(TRADE.JOIN_TRADE_TO_SIDE)
 Some join operations require external parameters that are not available in the context of the table-join definition,
 but will be available when the view repository is access (e.g. client enriched definitions), so an option exists to create parametrised joins.
 
+These are typically used in requestServer queries:
 
-//TODO sample
+```kotlin
+view("INSTRUMENT_PARAMETERS", INSTRUMENT) {
+    joins {
+        joining(ALT_INSTRUMENT_ID, JoinType.INNER) {
+            on(INSTRUMENT.ID to ALT_INSTRUMENT_ID.INSTRUMENT_ID)
+                .and(ALT_INSTRUMENT_ID.ALTERNATE_TYPE.asParameter())
+        }
+    }
+    fields {
+        ALT_INSTRUMENT_ID {
+            ALTERNATE_CODE withAlias "INSTRUMENT_CODE"
+        }
+        INSTRUMENT {
+            NAME withPrefix INSTRUMENT
+        }
+    }
+}
+```
+
+So for the above, if we had a requestReply using the view, it would make ALTERNATE_TYPE available as a field input parameter.
 
 #### Dynamic joins
 This has a shared syntax with derived fields. However, rather than specifying a field name and type, it should always return an entity index type of the table you’re joining on.
@@ -280,10 +300,10 @@ joining({usual join syntax}) {
    }
 }
 ```
-Examples
+##### Examples
 
+###### Example 1
 Before:
-
 ```kotlin
 joining(fix, backwardsJoin = true) {
    on(TRADE_TO_SIDE { FIX_ID } to fix { SIDE_ID })
@@ -293,7 +313,6 @@ joining(fix, backwardsJoin = true) {
       }
 ```
 After:
-
 ```kotlin
 joining(fix, backwardsJoin = true) {
    on {
@@ -305,15 +324,14 @@ joining(fix, backwardsJoin = true) {
    .joining(fixCal, JoinType.INNER, backwardsJoin = true)
 ```
 
-Before
-
+###### Example 2
+Before:
 ```kotlin
 joining(fixCal, JoinType.INNER, backwardsJoin = true) {
     on(fix { CALENDAR_ID } to fixCal { CALENDAR_ID })
 }
 ```
-After
-
+After:
 ```kotlin
 .joining(fixCal, JoinType.INNER, backwardsJoin = true) {
    on {
@@ -326,9 +344,6 @@ After
    }
 }
 ```
-
-
-
 </TabItem>
 <TabItem value="examples">
 
