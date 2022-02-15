@@ -5,15 +5,14 @@ sidebar_label: Build the front end
 sidebar_position: 12
 
 ---
-# <a name="#partOne"></a> Generating a workspace
-_Note_: If you have a workspace configured please proceed to the [generating an applicaton](#partTwo) section. 
+## Generating a workspace {#part-one}
+_Note_: If you have a workspace configured please proceed to the [generating an applicaton](#part-two) section. 
 
-This tutorial assumes that you have an access token for the `@genesislcap` package registry ([see here](https://docs.genesis.global/secure/web-ui-reference/cli/#pre-flight-steps)).
+This tutorial assumes that you have an access token for the `@genesislcap` package registry ([see here](/web-ui-reference/cli/#pre-flight-steps)).
 
 GenesisX CLI
 ---
-
-If you haven't alread, you'll want to install the Genesis CLI tool:
+If you haven't already, you'll want to install the Genesis CLI tool:
 ```
 $ npm install -g @genesislcap/foundation-cli
 ```
@@ -25,6 +24,7 @@ $ genx
 You should see the following in your terminal:
 
 import CliBanner from './_includes/_cli_banner.md'
+
 <CliBanner />
 
 We'll now use the GenesisX CLI tool to generate a workspace that will host our positions application by selecting `❯ create workspace` and answering the ensuing questions as follows:
@@ -52,7 +52,7 @@ For the purpose of this tutorial we will opt out of producing a custom design sy
 ? Create design system (Y/n): n
 ```
 
-Finally, we'll set the API Host and NPM Token for the `@genesislcap`
+Finally, we'll set the API Host and NPM Token for the `@genesislcap` scope
 <!-- TODO: what will the user set the API Host to? -->
 ```
 ? Set API Host (Y/n): y
@@ -68,11 +68,9 @@ Your example-workspace directory should looks something like this:
 
 ![](/img/example-workspace.png)
 
-<br />
+## Generating an application {#part-two}
 
-# <a name="#partTwo"></a> Generating an application
-
-This tutorial follows on from the [generating a workspace](#partOne) tutorial and assumes that you are currently in the workspace root.
+This tutorial follows on from the [generating a workspace](#part-one) tutorial and assumes that you are currently in the workspace root.
 
 Navigate to the apps directory in your terminal and start the CLI tool:
 ```
@@ -105,7 +103,7 @@ We don't want to produce a design system at this time:
 ? Create design system (Y/n): n
 ```
 
-Finally, we'll set the API Host and NPM Token for the `@genesislcap`
+Finally, we'll set the API Host and NPM Token for the `@genesislcap` scope
 <!-- TODO: what will the user set the API Host to? -->
 ```
 ? Set API Host (Y/n): y
@@ -120,8 +118,6 @@ Once you have done this you should see the following message in your terminal:
 You should now be able to see the positons-example application in the apps directory:
 
 ![](/img/positions-example.png)
-
-<br />
 
 ### Running the application locally
 ---
@@ -144,25 +140,22 @@ Providing your API_HOST has been configured correctly you can login to the appli
 
 ![](/img/positions-example--home.png)
 
-<br />
-
 ### Positions Grid
 The template for the home page is located in the application routes directory `positions/client/web/src/routes/home/home.template.ts`.
 
 ![](/img/positions-example--home-template.png)
 
-In this template we define the `positionColumnDefs`, this is where we can apply column specific configurations such as sorting and cell change flashing.
+In the template we define the `positionColumnDefs`for the Genesis AG Grid, this is where we can apply column specific configurations such as sorting and cell change flashing. You can find more information on column definitions in the [Genesis AG Column](/web-ui-reference/components/grids/ag-grid/ag-genesis-column/) documentation.
+
 ![](/img/positions-example--column-defs.png)
 
-These column definitions are used in the `HomeTemplate` where we configure the `ag-genesis-datasource` to use the `ALL_POSITIONS` resource and then map over the columns via the `repeat()` template directive.
+These column definitions are used in the `HomeTemplate` where we configure the [ag-genesis-datasource](/web-ui-reference/components/grids/ag-grid/ag-genesis-datasource/) to use the `ALL_POSITIONS` resource and then map over the columns via the `repeat()` template directive.
+
 ![](/img/positions-example--grid-template.png)
-
-
-<br />
 
 ### Application structure
 ---
-The positions web application is broken down into the following directories:
+The Positions Web Client is broken down into the following directories:
 - components - application specific components focused on building out functionality and with minimal styling applied.
 - design-system - used to align components to your brand or product, you can create multiple design systems that each utilise various components.
 - main
