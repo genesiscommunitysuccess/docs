@@ -5,13 +5,11 @@ sidebar_label: Build the front end
 sidebar_position: 12
 
 ---
+_Note_: If you have a workspace configured please proceed to the [generating an application](#part-two) section. 
 ## Generating a workspace {#part-one}
-_Note_: If you have a workspace configured please proceed to the [generating an applicaton](#part-two) section. 
-
 This tutorial assumes that you have an access token for the `@genesislcap` package registry ([see here](/web-ui-reference/cli/#pre-flight-steps)).
 
-GenesisX CLI
----
+### GenesisX CLI
 If you haven't already, you'll want to install the Genesis CLI tool:
 ```
 $ npm install -g @genesislcap/foundation-cli
@@ -64,9 +62,9 @@ Once you have done this you should see the following message in your terminal:
 ```
 ℹ Workspace created successfully! 🎉 Please open the workspace and follow the README to complete setup.
 ```
-Your example-workspace directory should looks something like this:
+Your example-workspace directory should look like this:
 
-![](/img/example-workspace.png)
+![](/img/btfe--example-workspace--dir.png)
 
 ## Generating an application {#part-two}
 
@@ -115,12 +113,13 @@ Once you have done this you should see the following message in your terminal:
 ```
 ℹ Application created successfully! 🎉 Please open the application and follow the README to complete setup.
 ```
-You should now be able to see the positons-example application in the apps directory:
+You should now be able to see the positions-example application in the apps directory:
 
-![](/img/positions-example.png)
+![](/img/btfe--positions-exampleb--dir.png)
+
 
 ### Running the application locally
----
+
 From the workspace root you'll need to run:
 ```
 $ npm run bootstrap
@@ -133,26 +132,25 @@ $ npm run dev
 ```
 
 The application will open at `http://localhost:6060/login`.
+![](/img/btfe--positions-example--login.png)
 
-![](/img/positions-example--login.png)
-
-Providing your API_HOST has been configured correctly you can login to the application
-
-![](/img/positions-example--home.png)
+Providing your `API_HOST` has been configured correctly you'll be able to login and view the following screen:
+![](/img/btfe--positions-example--home.png)
 
 ### Positions Grid
 The template for the home page is located in the application routes directory `positions/client/web/src/routes/home/home.template.ts`.
 
-![](/img/positions-example--home-template.png)
+![](/img/btfe--positions-example--home-route.png)
 
 In the template we define the `positionColumnDefs`for the Genesis AG Grid, this is where we can apply column specific configurations such as sorting and cell change flashing. You can find more information on column definitions in the [Genesis AG Column](/web-ui-reference/components/grids/ag-grid/ag-genesis-column/) documentation.
 
-![](/img/positions-example--column-defs.png)
+![](/img/btfe--positions-example--column-defs-b.png)
 
 These column definitions are used in the `HomeTemplate` where we configure the [ag-genesis-datasource](/web-ui-reference/components/grids/ag-grid/ag-genesis-datasource/) to use the `ALL_POSITIONS` resource and then map over the columns via the `repeat()` template directive.
 
-![](/img/positions-example--grid-template.png)
+![](/img/btfe--positions-example--grid-template-b.png)
 
+<!-- TODO: we may want to move this to the WEB UI reference section? -->
 ### Application structure
 ---
 The Positions Web Client is broken down into the following directories:
