@@ -92,7 +92,7 @@ Run `remap --commit`.
 
 ## 4. Run AppGen
 
-[The `AppGen` script](/platform-tooling/commands/#appgen) creates three important modules for the application:
+[The `AppGen` script](/managing-applications/operate/on-the-host/helpful-commands/#appgen) creates three important modules for the application:
 
 * Event Handler
 * Rquest Server
