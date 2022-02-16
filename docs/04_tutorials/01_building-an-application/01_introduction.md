@@ -22,7 +22,7 @@ In short, you need to understand:
 
 ## The scenario
 
-The start point for the scenario is that you want a real-time trading application that maintains positions.
+The start point for the scenario is that you want a real-time trading application that maintains positions. We shall call this the Positions application.
 
 You have:
 
@@ -31,13 +31,13 @@ You have:
 
 We are going to build the rest at speed.
 
-here is a high-level view of what we are going to build:
+Here is a high-level view of what we are going to build:
 
 
 ![](/img/positions-app-arch-overview.png)
 
 
-Note straightaway that our overall application contains two separate applications, each with its own database. One application provides reference data, such as counterparty IDs, while the other provides details of trades done. You will see that a single data model can be used to set up both these applications.
+Note straightaway that our Positions application contains two separate modules (which are potential applications in their own right), each with its own database. One module provides reference data, such as counterparty IDs, while the other provides details of trades done. You will see that a single data model can be used to set up both these applications.
 
 In itself, this is not a very useful application, but it is a valuable learning tool. As you work through each part,  it will introduce you to many of the features you’ll be working with when you create your own applications:
 
