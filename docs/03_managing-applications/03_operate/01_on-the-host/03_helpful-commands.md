@@ -1,7 +1,7 @@
 ---
 id: helpful-commands
-title: Helpful Commands
-sidebar_label: Helpful Commands
+title: Commands reference
+sidebar_label: Commands reference
 sidebar_position: 3
 
 ---
