@@ -7,7 +7,7 @@ title: Install in three easy steps
 ---
 To install the Genesis LCNC Platform on your server, go through the following steps.
 
-1. Make sure you have the [correct infrastructure for installing the platform](/creating-applications/getting-ready-to-develop/running-applications/requirements/).
+1. Make sure you have the correct infrastructure for installing the platform.
 2. Install the Genesis platform.
 
 That is it. Once you have an installed platform in the correct environment, you are ready to start developing.
