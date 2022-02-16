@@ -145,6 +145,14 @@ You can add all the fields from a given table to a view using the `allFields` ac
     }
 ```
 
+You can also access derived fields that were defined in the tables dictionary like any other field. For example, if table TRADE had a derived field named FAVOURITE it could be used like below.
+
+```kotlin
+    fields {
+      TRADE.FAVOURITE
+    }
+```
+
 You can also override the name of a field using various operators:
 
 - `withAlias` - gives the field an alternative name on the view
