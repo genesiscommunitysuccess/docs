@@ -1,0 +1,209 @@
+---
+title: Fields
+sidebar_label: Fields
+sidebar_position: 2
+id: fields
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Fields are the individual elements that make up any given table in a system's database, and you can think of them as ultimately holding your data.
+
+When defining the data model, you define all the individual fields needed to make up all the tables in your application.
+
+```kotlin
+fields {
+    field(name = "ORDER_ID", type = STRING)
+    field(name = "DESCRIPTION", type = STRING, nullable = true)
+    field(name = "PRICE", type = DOUBLE, nullable = false)
+    ...
+}
+```
+
+Fields are kept separately from tables, so that they, and their meta-data, can be re-used across multiple tables and show linkage.
+
+<Tabs defaultValue="whereToDefine" 
+        values={[{ label: 'Where to define', value: 'whereToDefine', }, 
+                 { label: 'Technical details', value: 'techDetails', }, 
+                 { label: 'Advanced Technical Details', value: 'advTechDetails', },
+                 { label: 'Examples', value: 'examples', }]}>
+<TabItem value="whereToDefine">
+
+The fields for your data model are defined in the file **_application-name_**-fields-dictionary.kts**. 
+
+So, if your application is called  **position**,  then the file name would be **position-fields-dictionary.kts**.
+
+</TabItem>
+<TabItem value="techDetails">
+
+### Field Types
+
+By default, you have access to all the field definitions in the Genesis LCNC Platform. You also have access to all the fields in the modules that you specified in the Dictionary Cache.
+
+But you can also define your own fields.
+
+The following field types are available:
+
+* STRING
+* DATE
+* DATETIME
+* ENUM
+* LONG
+* INT
+* SHORT
+* DOUBLE
+* BIGDECIMAL
+* NANO_TIMESTAMP
+* RAW
+
+Fields are easily defined with a unique `name` and `type`. There are also a few other options, such as default value and non-nullable. Some options are only relevant only for certain types).
+
+For example, here we define two `STRING` fields. (The second is nullable; the first is not nullable):
+
+```kotlin
+fields {
+    field(name = "ORDER_ID", type = STRING)
+    field(name = "DESCRIPTION", type = STRING, nullable = true)
+}
+```
+### Field type parameters
+
+| Parameter | Default value | Sample Usage | Value Type | Description |
+|---|---|---|---|
+| default | null | `field(name = "AGE", type = INT, default=20)` | The same type as the field | Set a default value for the field where not supplied on a database insert. Manadatory for `ENUM` |
+| maxSize | 64 (unlimited for non sql DB) | `field(name = "DESCRIPTION", type = STRING, maxSize=1000)` | integer | Set the maxSize of a field. Applicable for `STRING`, `ENUM`, `RAW`. Needed for HFT and SQL Data Structures |
+| format | N/A | `field(name = "DESCRIPTION", type = BIG_DECIMALS, format="#,##0.000")` | Dependent on type | Set the maxSize of a field. Applicable for `STRING`, `RAW`  |
+| sensitive | false | `field(name = "PASSWORD", type = STRING, sensitive=true)` | boolean | true if the field should be masked on its toString() output  |
+| nullable | true | `field(name = "USER_NAME", type = STRING, sensitive=true)` | boolean | true if the field should be masked on its toString() output  |
+
+### Naming fields
+
+As is always the case, it is worth being careful with the names you give fields. Clear names help.
+
+If you create a field name that already exists, there are no consequences - as long as the field type is also the same. In effect, the second definition is simply ignored.
+
+However, if you create a field name that matches an existing name and you give it a different field type, this generates a duplication error.
+
+The error is shown when you generate the code using Maven.
+
+If the code has already been generated - typically, if you are making changes to an existing server - the error is generated when you run `genesisInstall` after the change.
+
+Technically, it is possible to duplicate field names. When you build, this generates a duplication warning if the fields are defined in the same way, or an error if they are defined differently. If the duplication is between your own field and one you have inherited from another module, make sure you change the name of your own field, not the one from the other module.
+
+When you define a new field, it is good practice to run `codegen:generateSysDef`. This will generate code based on the fields definition and you will be able to use intellisense to pick this new field within table definitions.
+
+</TabItem>
+<TabItem value="advTechDetails">
+
+### Modularity
+
+Genesis is modular, so if you have a dependency on another module (e.g. AUTH), your project will naturally inherit all the fields from that module and have them available in the project. 
+
+So, you should ensure you re-use fields available in dependent modules if at all possible; otherwise, you must define field names that are unique across all modules and the project itself.
+
+### Scripting
+
+GPAL is a scripting language that gives engineers plenty of advantages, especially when it comes to repetition. 
+
+For example, where you need to create a large number of table fields, say `ALGO_PARAM_1` through to `ALGO_PARAM_50`, you can introduce `for` loops:
+
+```kotlin
+  val algoParamPrefix = "ALGO_PARAM_"
+  for(i in 1..51) {
+    field(name = algoParamPrefix + i, type = STRING)
+  }
+```
+</TabItem>
+<TabItem value="examples">
+
+```kotlin
+fields {
+    field(name = "ACTIVE", type = BOOLEAN)
+    field(name = "ALERT_ID", type = STRING)
+    field(name = "ATTRIBUTES", type = STRING)
+    field(name = "AUDIT_CODE", type = STRING)
+    field(name = "AUDIT_TEXT", type = STRING)
+    field(name = "CLIENT_ORDER_ID", type = STRING)
+    field(name = "RIGHT_CODE", type = STRING)
+    field(name = "CREATED_AT", type = DATETIME)
+    field(name = "CREATED_BY", type = STRING)
+    field(name = "DESCRIPTION", type = STRING, maxSize = 255)
+    field(name = "ENTITY_ID", type = STRING)
+    field(name = "EVENT_DATETIME", type = DATETIME)
+    field(name = "EVENT_TYPE", type = STRING)
+    field(name = "EXTERNAL_ID", type = STRING)
+    field(name = "FIELD_NAME", type = STRING)
+    field(name = "FIELD_VALUE", type = STRING)
+    field(name = "HOST", type = STRING)
+    field(name = "LAST_ACCESS_TIME", type = DATETIME)
+    field(name = "MESSAGE_TYPE", type = STRING)
+    field(name = "NAME", type = STRING)
+    field(name = "NODE", type = STRING)
+    field(name = "NOTIFICATION_CODE", type = STRING)
+    field(name = "NOTIFICATION_ID", type = STRING)
+    field(name = "NOTIFICATION_TIMESTAMP", type = DATETIME)
+    field(name = "QUERY_NAME", type = STRING)
+    field(name = "REF", type = STRING)
+    field(name = "REJECT_REASON", type = STRING)
+    field(name = "RESULT_EXPRESSION", type = STRING)
+    field(name = "RULE_EXPRESSION", type = STRING)
+    field(name = "RULE_STATUS", type = ENUM("ENABLED", "DISABLED", default = "DISABLED"))
+    field(name = "RULE_TABLE", type = STRING)
+    field(name = "RX_SEQUENCE", type = LONG)
+    field(name = "SESSION_AUTH_TOKEN", type = STRING)
+    field(name = "SESSION_ID", type = STRING)
+    field(name = "SOURCE_ID", type = STRING)
+    field(name = "RULE_START_TIME", type = STRING)
+    field(name = "RULE_END_TIME", type = STRING)
+    field(name = "START_TIMESTAMP", type = DATETIME)
+    field(name = "SYSTEM_KEY", type = STRING)
+    field(name = "SYSTEM_VALUE", type = STRING)
+    field(name = "TEXT", type = STRING)
+    field(name = "TIMEOUT", type = LONG)
+    field(name = "USER_NAME", type = STRING)
+    field(name = "VERSION", type = INT)
+    field(name = "TABLE_OPERATION", type = STRING, default = "INSERT")
+    field(name = "PROCESS", type = STRING)
+    field(name = "PROCESS_NAME", type = STRING)
+    field(name = "PROCESS_STATUS", type = BOOLEAN)
+    field(name = "PROCESS_STATUS_MESSAGE", type = STRING)
+    field(name = "PROCESS_STATE_TEXT", type = ENUM("DOWN", "ERROR", "WARNING", "STANDBY", "UP", default = "DOWN"))
+    field(name = "PROCESS_RESOURCES", type = STRING, maxSize = 5000)
+    field(name = "PROCESS_HOSTNAME", type = STRING)
+    field(name = "PROCESS_CPU_USAGE", type = DOUBLE)
+    field(name = "PROCESS_MEM_USAGE", type = DOUBLE)
+    field(name = "PROCESS_SECURE", type = BOOLEAN)
+    field(name = "PROCESS_PORT", type = INT)
+    field(name = "RESOURCE_TYPES", type = STRING)
+    field(name = "LOG_LEVEL", type = STRING)
+    field(name = "DATADUMP", type = BOOLEAN)
+    field(name = "START_TIME", type = DATETIME)
+    field(name = "HOST_NAME", type = STRING)
+    field(name = "SYSTEM_CPU_LOAD", type = DOUBLE)
+    field(name = "TOTAL_PHYSICAL_MEMORY_SIZE", type = LONG)
+    field(name = "FREE_PHYSICAL_MEMORY_SIZE", type = LONG)
+    field(name = "CRON_EXPRESSION", type = STRING)
+    field(name = "TIME_ZONE", type = STRING)
+    field(name = "APPROVAL_ID", type = STRING)
+    field(name = "APPROVAL_KEY", type = STRING)
+    field(
+        name = "APPROVAL_STATUS",
+        type = ENUM("PENDING", "APPROVED", "CANCELLED", "REJECTED_BY_USER", "REJECTED_BY_SERVICE", default = "PENDING")
+    )
+    field(name = "APPROVAL_MESSAGE", type = STRING)
+    field(name = "DESTINATION", type = STRING)
+    field(name = "EVENT_MESSAGE", type = STRING)
+    field(name = "EVENT_DETAILS", type = STRING)
+    field(name = "ENTITY_TABLE", type = STRING)
+    field(name = "AWAITING_COUNTER", type = INT)
+    field(name = "APPROVED_COUNTER", type = INT)
+    field(name = "CANCELLED_COUNTER", type = INT)
+    field(name = "REJECTED_BY_USER_COUNTER", type = INT)
+    field(name = "REJECTED_BY_SERVER_COUNTER", type = INT)
+    field(name = "MONITOR_NAME", type = STRING)
+    field(name = "MONITOR_MESSAGE", type = STRING)
+    field(name = "MONITOR_STATE", type = STRING)
+}
+```
+</TabItem>
+</Tabs>

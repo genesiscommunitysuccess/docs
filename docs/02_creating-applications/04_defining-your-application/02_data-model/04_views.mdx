@@ -1,0 +1,456 @@
+---
+title: 'Views'
+sidebar_label: 'Views'
+sidebar_position: 4
+id: views
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+When you set up a data model, it implies relationships between tables. For example, a TRADE has a COUNTERPARTY_ID and an INSTRUMENT_ID. That means it has a relationship with the COUNTERPARTY and INSTRUMENTS tables.
+
+Views enable you join related tables to create a single holistic view.
+
+They are a lot more powerful than this in practice; they underpin many Genesis components that read data from the database in real time or in static form.
+
+The example below creates a view called `TRADE_VIEW`, which joins the `TRADE` table to the `INSTRUMENT` table.
+
+```kotlin
+views {
+
+  view("TRADE_VIEW", TRADE) {
+
+    joins {
+      joining(COUNTERPARTY) {
+        on(TRADE.COUNTERPARTY_ID to COUNTERPARTY { COUNTERPARTY_ID })
+      }
+      joining(INSTRUMENT) {
+        on(TRADE.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
+      }
+    }
+
+    fields {
+      TRADE.allFields()
+
+      COUNTERPARTY.NAME withPrefix COUNTERPARTY
+      INSTRUMENT.NAME withPrefix INSTRUMENT
+      INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
+
+      derivedField("CONSIDERATION", DOUBLE) {
+        withInput(TRADE.QUANTITY, TRADE.PRICE) { QUANTITY, PRICE ->
+          QUANTITY * PRICE
+        }
+      }
+    }
+  }
+}
+```
+
+<Tabs defaultValue="whereToDefine" 
+        values={[{ label: 'Where to define', value: 'whereToDefine', }, 
+                 { label: 'Technical details', value: 'techDetails', }, 
+                 { label: 'Advanced Technical Details', value: 'advTechDetails', },
+                 { label: 'Examples', value: 'examples', }]}>
+<TabItem value="whereToDefine">
+
+Views are defined in the file _application-name_**-view-dictionary.kts**. 
+
+So, if your application is called **position**, then the file name will be **position-view-dictionary.kts**.
+
+</TabItem>
+<TabItem value="techDetails">
+
+Views are made up of joins and fields.
+
+### Joins
+
+Joins enable you to bring other related tables into a view so we can serve up their fields in a single query row.
+
+For example, you might want to join a `TRADE` to an `INSTRUMENT` in order to pull in `INSTRUMENT` fields such as the `NAME` or `CURRENCY` to serve up to a grid.
+
+```kotlin
+views {
+
+  view("TRADE_VIEW", TRADE) {
+
+    joins {
+      joining(INSTRUMENT) {
+        on(TRADE.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
+      }
+    }
+
+    fields {
+      TRADE.allFields()
+
+      INSTRUMENT.NAME withPrefix INSTRUMENT
+      INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
+    }
+  }
+}
+```
+
+You can define multiple joins onto any given table.
+
+You can also add nested joins (join to a joined table), and so on...
+
+The following example shows three key things:
+
+- it joins the table `POSITION` onto `ALT_INSTRUMENT_ID` on a 2-field key. One of the join values (`ALTERNATE_TYPE`) uses a literal value as opposed to stemming from a field in `POSITION`.
+
+- there is also a nested join, from `ALT_INSTRUMENT_ID` onto `INSTRUMENT_L1_PRICE`.
+
+- finally, there is a join from `POSITION` onto the `INSTRUMENT` table.
+
+```kotlin
+
+    joins {
+      joining(ALT_INSTRUMENT_ID) {
+        on(POSITION.INSTRUMENT_ID to ALT_INSTRUMENT_ID { INSTRUMENT_ID })
+          .and(ALT_INSTRUMENT_ID { ALTERNATE_TYPE } to "REFINITIV")                            
+
+          .joining(INSTRUMENT_L1_PRICE) {
+            on(ALT_INSTRUMENT_ID.INSTRUMENT_CODE to INSTRUMENT_L1_PRICE { INSTRUMENT_CODE }) 
+          }
+      }
+
+      joining(INSTRUMENT) {
+        on(POSITION.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
+      }
+    }
+
+```
+
+Joins can be one-to-one (key field match) or one-to-many (part-key-field match).
+
+:::warning
+Views with one-to-many joins cannot be used with data servers.
+:::
+
+
+### Fields
+
+Adding a field is as simple as typing it in the `fields` section of the view.
+
+```kotlin
+    fields {
+      INSTRUMENT.CURRENCY_ID 
+    }
+```
+
+You can add all the fields from a given table to a view using the `allFields` accessor.
+
+```kotlin
+    fields {
+      TRADE.allFields()
+    }
+```
+
+You can also override the name of a field using various operators:
+
+- `withAlias` - gives the field an alternative name on the view
+- `withPrefix` - adds a prefix to the standard field name (handy if you have a clash (e.g. COUNTERPARTY and INSTRUMENT both have a NAME field)
+
+```kotlin
+      COUNTERPARTY.NAME withPrefix COUNTERPARTY
+      INSTRUMENT.NAME withPrefix INSTRUMENT
+      INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
+```
+
+</TabItem>
+<TabItem value="advTechDetails">
+
+### Fields
+
+#### Derived Fields
+
+Derived fields are used to serve up fields that are not part of the tables that make up a given view. Their values are typically derived from fields in the tables.
+
+It is possible to specify field inputs for derived fields as well as being able to specify a single entity as input. This has a number of advantages:
+
+- when a derived field has multiple inputs from a single table, only one input is required
+- non-null fields on the entity will be non-null
+
+Syntax:
+```kotlin
+derivedField("{field name}", FIELD_TYPE) {
+    withEntity(TABLE_NAME) { {optional parameter name} ->
+        {code}
+    }
+}
+```
+
+With field input:
+```kotlin
+derivedField("SPREAD", DOUBLE) {
+  withInput(INSTRUMENT_PRICE.BID_PRICE, INSTRUMENT_PRICE.ASK_PRICE) { bid, ask ->
+    if (ask == null || bid == null) null
+      else ask - bid
+    }
+}
+```
+
+With entity input:
+```kotlin
+derivedField("SPREAD", DOUBLE) {
+    withEntity(INSTRUMENT_PRICE) { price ->
+        price.askPrice - price.bidPrice
+    }
+}
+```
+By default, all fields are populated in the entity. For larger tables, this might have a performance impact if many fields are loaded that are not used in the calculation or the final view. To mitigate this, you can specify to either only load non-null fields, or specify fields to be populated. Non-null fields will always be populated.
+
+Only load non-null fields:
+
+```kotlin
+derivedField("SPREAD", DOUBLE) {
+    withEntity(INSTRUMENT_PRICE, onlyNonNullFields = true) { price ->
+        price.askPrice - price.bidPrice
+    }
+}
+```
+Specify list of fields:
+
+```kotlin
+derivedField("SPREAD", DOUBLE) {
+    withEntity(INSTRUMENT_PRICE, fields = listOf(INSTRUMENT_PRICE.ASK_PRICE, INSTRUMENT_PRICE.BID_PRICE)) { price ->
+        price.askPrice - price.bidPrice
+    }
+}
+```
+
+### Joins
+
+#### INNER vs OUTER joins
+
+Available join types are INNER and OUTER. If you do not specify the type, it defaults to OUTER.
+
+- `INNER` joins require that all joins match exactly; if one single join fails to match, the row will be discarded.
+- `OUTER` joins provide null references for failed joins and will still allow the row to be built.
+
+```kotlin
+joining(INSTRUMENT, JoinType.INNER) {
+    on(TRADE { INSTRUMENT_ID } to INSTRUMENT { INSTRUMENT_ID })
+```
+
+### Dictionary-joined tables
+When tables are joined in the dictionary, you are able to join to those tables in views directly, without having to specify the fields on which to join. This does not currently work with aliased tables.
+
+Joining on fields:
+
+```kotlin
+joining(TRADE_TO_SIDE) {
+    on(TRADE { TRADE_ID } to TRADE_TO_SIDE { TRADE_ID })
+```
+Joining using join:
+
+```kotlin
+joining(TRADE.JOIN_TRADE_TO_SIDE)
+```
+
+#### Parameterised joins
+Some join operations require external parameters that are not available in the context of the table-join definition, but will be available when the view repository is access (e.g. client enriched definitions), so an option exists to create parametrised joins.
+
+These are typically used in request server queries:
+
+```kotlin
+view("INSTRUMENT_PARAMETERS", INSTRUMENT) {
+    joins {
+        joining(ALT_INSTRUMENT_ID, JoinType.INNER) {
+            on(INSTRUMENT.ID to ALT_INSTRUMENT_ID.INSTRUMENT_ID)
+                .and(ALT_INSTRUMENT_ID.ALTERNATE_TYPE.asParameter())
+        }
+    }
+    fields {
+        ALT_INSTRUMENT_ID {
+            ALTERNATE_CODE withAlias "INSTRUMENT_CODE"
+        }
+        INSTRUMENT {
+            NAME withPrefix INSTRUMENT
+        }
+    }
+}
+```
+
+So for the above, if we had a request server using the view, it would make `ALTERNATE_TYPE` available as a field input parameter.
+
+#### Dynamic joins
+This has a shared syntax with derived fields. However, rather than specifying a field name and type, it should always return an entity index type of the table you’re joining on.
+
+:::warning
+When using dynamic joins on aliased tables, the alias name should match the alias variable name. E.g.: ```val fixCal = TRADE_CALENDAR withAlias "fixCal"```, here it is ```fixCal``` in both cases.
+:::
+
+| Object Type | Name |
+| ----------- | ---- |
+|Table | TRADE
+|Entity | Trade
+| Index | TRADE_BY_ID
+| Entity Index | Trade.ById
+
+As with derived fields, you can use the `withEntity` and the `withInput` syntax. However, the lambda should always return an entity index object or null. Also, it should always return the same type. It is not possible to switch dynamically between indices, so it should ways return the same type or null. It is possible to add further `and` clauses afterwards.
+
+Syntax:
+
+```kotlin
+joining({usual join syntax}) {
+   on {  
+      // either
+      withEntity({table name}) {
+        // build index entity here
+      }
+      // or
+      withInput({field 1}, {field 2}, .., {field 9}) { a, b, .. ->
+        // build index entity here
+      }
+   }
+}
+```
+##### Examples
+
+###### Example 1
+Before:
+```kotlin
+joining(fix, backwardsJoin = true) {
+   on(TRADE_TO_SIDE { FIX_ID } to fix { SIDE_ID })
+      .and(fix { SIDE_TYPE } to SideType.FIX)
+      .joining(fixCal, JoinType.INNER, backwardsJoin = true) {
+        on(fix { CALENDAR_ID } to fixCal { CALENDAR_ID })
+      }
+```
+After:
+```kotlin
+joining(fix, backwardsJoin = true) {
+   on {
+      withEntity(TRADE_TO_SIDE) { tradeToSide ->
+        TradeSide.BySideId(tradeToSide.fixId)
+      }
+   }
+   .and(fix { SIDE_TYPE } to SideType.FIX)
+   .joining(fixCal, JoinType.INNER, backwardsJoin = true)
+```
+
+###### Example 2
+Before:
+```kotlin
+joining(fixCal, JoinType.INNER, backwardsJoin = true) {
+    on(fix { CALENDAR_ID } to fixCal { CALENDAR_ID })
+}
+```
+After:
+```kotlin
+.joining(fixCal, JoinType.INNER, backwardsJoin = true) {
+   on {
+      withInput(fix { CALENDAR_ID }) { calendarId ->
+         when (calendarId) {
+            null -> null
+            else -> TradeCalendar.ByCalendarId(calendarId)
+         }
+      }
+   }
+}
+```
+</TabItem>
+<TabItem value="examples">
+
+```kotlin
+views {
+
+  view("TRADE_VIEW", TRADE) {
+
+    joins {
+      joining(COUNTERPARTY) {
+        on(TRADE.COUNTERPARTY_ID to COUNTERPARTY { COUNTERPARTY_ID })
+      }
+      joining(INSTRUMENT) {
+        on(TRADE.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
+      }
+    }
+
+    fields {
+      TRADE.allFields()
+
+      COUNTERPARTY.NAME withPrefix COUNTERPARTY
+      INSTRUMENT.NAME withPrefix INSTRUMENT
+      INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
+
+      derivedField("CONSIDERATION", DOUBLE) {
+        // I: F2*H2
+        withInput(TRADE.QUANTITY, TRADE.PRICE) { QUANTITY, PRICE ->
+          QUANTITY * PRICE
+        }
+      }
+    }
+  }
+
+  view("POSITION_VIEW", POSITION) {
+
+    joins {
+      joining(ALT_INSTRUMENT_ID, backwardsJoin = true) {
+        on(POSITION.INSTRUMENT_ID to ALT_INSTRUMENT_ID { INSTRUMENT_ID })
+          .and(ALT_INSTRUMENT_ID { ALTERNATE_TYPE } to "REFINITIV")
+
+          .joining(INSTRUMENT_L1_PRICE, backwardsJoin = true) {
+            on(ALT_INSTRUMENT_ID.INSTRUMENT_CODE to INSTRUMENT_L1_PRICE { INSTRUMENT_CODE })
+          }
+      }
+
+      joining(INSTRUMENT) {
+        on(POSITION.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
+      }
+    }
+
+    fields {
+      POSITION.allFields()
+
+      INSTRUMENT.NAME withPrefix INSTRUMENT
+      INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
+
+      derivedField("VALUE", DOUBLE) {
+        withInput(
+          POSITION.QUANTITY,
+          INSTRUMENT_L1_PRICE.EMS_BID_PRICE,
+          INSTRUMENT_L1_PRICE.EMS_ASK_PRICE
+        ) { quantity, bid, ask ->
+          val quant = quantity ?: 0
+          //Use BID if positive position, else ask if negative
+          val price = when {
+              quant > 0 -> bid ?: 0.0
+              quant < 0 -> ask ?: 0.0
+              else -> 0.0
+          }
+          price * 1000 * quant
+        }
+      }
+
+      derivedField("PNL", DOUBLE) {
+        withInput(
+          POSITION.QUANTITY,
+          POSITION.NOTIONAL,
+          INSTRUMENT_L1_PRICE.EMS_BID_PRICE,
+          INSTRUMENT_L1_PRICE.EMS_ASK_PRICE
+        ) { quantity, notional, bid, ask ->
+          val quant = quantity ?: 0
+          //Use BID if positive position, else ask if negative
+          val price = when {
+            quant > 0 -> bid ?: 0.0
+            quant < 0 -> ask ?: 0.0
+            else -> 0.0
+          }
+          val marketVal = price * 1000 * quant
+          marketVal - notional
+        }
+      }
+    }
+  }
+}
+
+```
+
+</TabItem>
+</Tabs>
+
+
+
+
+
+
