@@ -5,7 +5,7 @@ sidebar_label: Generate the positions app
 sidebar_position: 3
 
 ---
-We now have created a Reference Data module from our original RDBMS database, which will handle all reference data for instruments and counterparties. 
+We have already created a Reference Data module from our original RDBMS database, which will handle all reference data for instruments and counterparties. 
 
 Now let's move on to the Market Data module, starting by building the trade table.
 
