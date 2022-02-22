@@ -152,12 +152,11 @@ The template for the home page is located in the application's **routes** direct
 
 ![](/img/btfe--positions-example--home-route.png)
 
-In the template, we define the `positionColumnDefs`for the Genesis AG Grid. This is where we can apply column-specific configurations, such as sorting and cell-change flashing. You can find more information on column definitions in the Genesis AG Column documentation.
+In the template, we define the `positionColumnDefs`for the Genesis AG Grid. This is where we can apply column-specific configurations, such as sorting and cell-change flashing. You can find more information on column definitions in the [Genesis AG Column](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/grids/ag-grid/ag-genesis-column/) documentation.
 
 ![](/img/btfe--positions-example--column-defs-b.png)
 
-These column definitions are used in the `HomeTemplate`,
- where we configure the ag-genesis-datasource template directive.
+These column definitions are used in the `HomeTemplate`, where we configure the [ag-genesis-datasource](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/grids/ag-grid/ag-genesis-datasource/) template directive.
 
 ![](/img/btfe--positions-example--grid-template-b.png)
 
