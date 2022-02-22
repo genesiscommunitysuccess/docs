@@ -33,7 +33,7 @@ router {
         route(messageType = "ALL_ORDER_AUDITS", process = "OEMS_DATASERVER")
     }
 
-    whiteList {
+    allowList {
         entry("ALL_ORDERS")
         entry("ALL_TRADES")
         entry("ALL_ORDER_AUDITS")
@@ -79,7 +79,7 @@ For more information follow this [link](https://netty.io/4.1/api/io/netty/handle
 
 **Allowed Resources**:
 
-`whiteList`:  You can limit the resources exposed by the genesis router. Without at least one `entry` block every resource wil be available. It is important to note that the following message types will always be allowed by default, regardless of the whitelist definition:
+`allowList`:  You can limit the resources exposed by the genesis router. Without at least one `entry` block every resource wil be available. It is important to note that the following message types will always be allowed by default, regardless of the allowList definition:
 EVENT_LOGIN_AUTH, EVENT_LOGOUT, MORE_ROWS, MORE_COLUMNS, DATA_LOGOFF, DATA_GET
 
 `entry:` Is the additional accepted `messageType`.
