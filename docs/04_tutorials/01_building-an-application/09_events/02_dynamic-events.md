@@ -7,7 +7,7 @@ sidebar_position: 2
 ---
 We have now set up the evaluator so that our application creates reports daily.
 
-Now you are going to use the evaluator again to set up dynamic events. In this case, you want to send an email automatically of a certain limit has been breached.
+Now you are going to use the evaluator again to set up dynamic events. In this case, you want to send an email automatically if a certain limit has been breached.
 
 ## Preparation
 
@@ -24,7 +24,7 @@ The first is the file with your rule in the correct format, as you saw with the 
     500),JohnDoe,TRADING_APP_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) &&
     (POSITION_ID = POSITION_ID))
 
-The second is a csvfile that enables you to test the rule. Create a file called POSITION.csv with the following data:
+The second is a csv file that enables you to test the rule. Create a file called POSITION.csv with the following data:
 
     POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
     ,2,2,600,1100000
@@ -77,7 +77,7 @@ data class PositionCancel(
 
 ## 4. Set up the Notify module and start the process
 
-The module GENESIS_NOTIFY does not run by default. To change this, open the edit the file **genesis-process.xml**.
+The module GENESIS_NOTIFY does not run by default. To change this, open and edit the file **genesis-process.xml**.
 
 Change `GENESIS_NOTIFY` to `true`.
 
@@ -86,7 +86,7 @@ Now you need to run `genesisInstall` to update the configuration.
 After that, you need to restart the server so that Notify runs along with the other processes.
 Run `killServer`to stop the application. When that has been completed, run `startServer` to restart it.
 
-When that has finished, you can run  `mon` at which point, you will see  GENESIS_NOTIFY as one of the processes that are runing.
+When that has finished, you can run  `mon`. At this  point, you will see  GENESIS_NOTIFY as one of the processes that are running.
 
 ## 5. Set up GENESIS_NOTIFY in the database
 
@@ -107,7 +107,7 @@ Insert the following:
 
 ## 6. Add connection details to the system definition
 
-Open the genesis-system-definitions.kts file and add the details of the connection for the SMTP server:
+Open the **genesis-system-definitions.kts** file and add the details of the connection for the SMTP server:
 
     item(name = "SYSTEM_DEFAULT_USER_NAME", value =
     "GenesisGlobal" )
@@ -136,9 +136,9 @@ LogLevel -p GENESIS_NOTIFY -DATADUMP_ON
 
 ## 8. Trigger the event to test the rule
 
-So, let's see i fthat has worked.
+So, let's see if that has worked.
 
-Insert the file POSITION.csv into the database. This is the file that you prepared earlier, and it contains a value that breaches a limit that shoud trigger our event.
+Insert the file POSITION.csv into the database. This is the file that you prepared earlier; it contains a value that breaches a limit,so it should trigger our event.
 
 You can see that when the limit is breached, you receive an email automatically:
 
