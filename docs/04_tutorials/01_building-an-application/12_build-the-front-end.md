@@ -8,14 +8,14 @@ sidebar_position: 12
 ---
 
 :::note
-If you have a workspace configured,  go straight to the [generating an application](#part-two) section. 
+If you have a workspace configured, go straight to the [generating an application](#part-two) section. 
 :::
 
 ## Generating a workspace {#part-one}
-This tutorial assumes that you have an access token for the `@genesislcap` package registry ([see here](/web-ui-reference/cli/#pre-flight-steps)).
+This tutorial assumes that you have an access token for the `@genesislcap` package registry.
 
 ### GenesisX CLI
-If you haven't already done this, you'll want to install the Genesis CLI tool:
+If you haven't already installed the Genesis CLI tool, do it now:
 
 ```
 $ npm install -g @genesislcap/foundation-cli
@@ -31,7 +31,7 @@ import CliBanner from './_includes/_cli_banner.md'
 
 <CliBanner />
 
-We'll now use the GenesisX CLI tool to generate a workspace that will host our Positions application by selecting `❯ create workspace` and answering the ensuing questions as follows:
+Now use the GenesisX CLI tool to generate a workspace that will host our Positions application by selecting `❯ create workspace` and answering the ensuing questions as follows:
 
 ```
 ❯ create workspace - Generates a local workspace to use for your Genesis based apps.
@@ -49,13 +49,13 @@ With the workspace built, we'll now configure the scope and package name `@genes
 ? Package name: foundation-ui
 ```
 
-For the purpose of this tutorial, we will opt out of producing a custom design system:
+For the purposes of this tutorial, we will opt out of producing a custom design system:
 
 ```
 ? Create design system (Y/n): n
 ```
 
-Finally, we'll set the API Host and NPM Token for the `@genesislcap` scope
+Finally, set the API Host and NPM Token for the `@genesislcap` scope:
 <!-- TODO: what will the user set the API Host to? -->
 ```
 ? Set API Host (Y/n): y
@@ -73,15 +73,15 @@ Your example-workspace directory should look like this:
 
 ## Generating an application {#part-two}
 
-This tutorial follows on from the [generating a workspace](#part-one) tutorial and assumes that you are currently in the workspace root.
+This section follows on from the [generating a workspace](#part-one) tutorial and assumes that you are currently in the workspace root.
 
-Navigate to the apps directory in your terminal and start the CLI tool:
+Navigate to the **apps** directory in your terminal and start the CLI tool:
 ```
 $ cd ./packages/apps
 $ genx
 ```
 
-We'll now use the GenesisX CLI to generate an application using a Genesis app seed by selecting `❯ create application` and answering the ensuing questions as follows:
+Use the GenesisX CLI to generate an application using a Genesis app seed by selecting `❯ create application` and answering the questions that follow:
 
 ```
 ❯ create application - Generates a local application.
@@ -92,7 +92,7 @@ We'll now use the GenesisX CLI to generate an application using a Genesis app se
 ? Overwrite existing files (y/N): N
 ```
 
-Next, we configure the package scope and package name:
+Next, configure the package scope and package name:
 <!-- TODO: this package name need to be foundation-ui? -->
 ```
 ? Package scope (without the @): genesislcap
@@ -104,7 +104,7 @@ We don't want to produce a design system at this time:
 ? Create design system (Y/n): n
 ```
 
-Finally, we'll set the API Host and NPM Token for the `@genesislcap` scope
+Finally, set the API Host and NPM Token for the `@genesislcap` scope
 <!-- TODO: what will the user set the API Host to? -->
 ```
 ? Set API Host (Y/n): y
@@ -112,7 +112,7 @@ Finally, we'll set the API Host and NPM Token for the `@genesislcap` scope
 ? NPM Token (for the @genesislcap scope): YOUR_TOKEN
 ```
 
-Once you have done this you should see the following message in your terminal:
+Once you have done this, you should see the following message in your terminal:
 ```
 ℹ Application created successfully! 🎉 Please open the application and follow the README to complete setup.
 ```
@@ -123,12 +123,12 @@ You should now be able to see the positions-example application in the apps dire
 
 ### Running the application locally
 
-From the workspace root you'll need to run:
+From the workspace root, run:
 ```
 $ npm run bootstrap
 ```
 
-Next, change to the positions app directory and spin up the dev server:
+Next, change to the **positions** directory and spin up the dev server:
 
 ```
 $ cd ./packages/apps/positions/client/web
@@ -143,17 +143,17 @@ Providing your `API_HOST` has been configured correctly, you'll be able to log i
 ![](/img/btfe--positions-example--home.png)
 
 ### Positions Grid
-The template for the home page is located in the application routes directory `positions/client/web/src/routes/home/home.template.ts`.
+The template for the home page is located in the application's **routes** directory `positions/client/web/src/routes/home/home.template.ts`.
 
 
 ![](/img/btfe--positions-example--home-route.png)
 
-In the template, we define the `positionColumnDefs`for the Genesis AG Grid, this is where we can apply column specific configurations such as sorting and cell change flashing. You can find more information on column definitions in the [Genesis AG Column](/web-ui-reference/components/grids/ag-grid/ag-genesis-column/) documentation.
+In the template, we define the `positionColumnDefs`for the Genesis AG Grid. This is where we can apply column-specific configurations, such as sorting and cell-change flashing. You can find more information on column definitions in the Genesis AG Column documentation.
 
 ![](/img/btfe--positions-example--column-defs-b.png)
 
 These column definitions are used in the `HomeTemplate`,
- where we configure the [ag-genesis-datasource](/web-ui-reference/components/grids/ag-grid/ag-genesis-datasource/) to use the `ALL_POSITIONS` resource and then map over the columns via the `repeat()` template directive.
+ where we configure the ag-genesis-datasource template directive.
 
 ![](/img/btfe--positions-example--grid-template-b.png)
 
@@ -162,8 +162,8 @@ These column definitions are used in the `HomeTemplate`,
 ---
 The Positions Web Client is broken down into the following directories:
 
-- components - application-specific components focused on building out functionality and with minimal styling applied
-- design-system - used to align components to your brand or product; you can create multiple design systems that each utilise various components
+- components - application-specific components focused on building functionality, with minimal styling applied
+- design-system - used to align components to your brand or product; you can create multiple design systems that each uses a different set of components
 - main
 - routes
 - services
