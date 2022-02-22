@@ -5,13 +5,13 @@ sidebar_label: Generate the positions app
 sidebar_position: 3
 
 ---
-We now have created a Reference Data module from our original RDBMS database, which will handle all reference data for instruments and counterparties. #
+We now have created a Reference Data module from our original RDBMS database, which will handle all reference data for instruments and counterparties. 
 
-Now lets move on to the Market Data module, starting by building out the trade table.
+Now let's move on to the Market Data module, starting by building the trade table.
 
 ## The source spreadsheet
 
-Here is a look at the trades workbook that will form the basis of our Positions application. The main sheet shows a list of trades:
+Here is a look at the trades workbook that will form the basis of our Positions module. The main sheet shows a list of trades:
 
 ![](/img/source-table.png)
 
@@ -32,7 +32,7 @@ This generates the **-fields-dictionary.kts** and **-tables-dictionary.kts** for
 
 ![](/img/trading_app-creation-run-exceltogenesis-2.png)
 
-Check and adjust the fields and tables
+Check and adjust the fields and tables.
 
 The fields and tables can be adjusted to suit your new application. For example, we can remove `INSTRUMENT_ID` and `COUNTERPARTY_ID` later on when we add them to intellij, as our intellij project will be importing them from the ref_data_app. Additionally, we can change `TRADE_ID` to be a `STRING` and use a `sequence` definition to generate the fields.
 
@@ -112,7 +112,7 @@ To progress from here, we need to prepare a  pro-code setup, in this case a mave
 
 ## 4. Build a Maven project
 
-The `mvn` command can be run in either the server/local vm/wsl/cloud instance containing the genesis platform installation or on a separate local dev machine. We will use the same machine as before for consistency.
+The `mvn` command can be run in either the server/local vm/wsl/cloud instance containing the Genesis platform, or on a separate local dev machine. For consistency, we shall use the same machine as before.
 
 Run
 
@@ -138,9 +138,9 @@ Now run `mvn install`.
 
 Again, you need to move the script and config files. Have these to hand, so you can copy them easily:
 
-Move the files that have been generated so far from the **trading_app/cfg** folder to **trading_app-config/src/main/resources/cfg**.
+1. Move the files that have been generated so far from the **trading_app/cfg** folder to **trading_app-config/src/main/resources/cfg**.
 
-Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the **trading_app-script-config/src/main/resources/scripts** folder.
+2. Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the **trading_app-script-config/src/main/resources/scripts** folder.
 
 ### Install the maven project in intellij
 
