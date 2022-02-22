@@ -110,7 +110,7 @@ eventHandler {
 
 ## 4. Update the process.xml file for the event handler
 
-Update the trading app processes xml and change the tag for TRADING_APP_EVENT_HANDLER:
+Update the **processes.xml** file for the Positions application and change the tag for TRADING_APP_EVENT_HANDLER:
 ```xml
 <process name="TRADING_APP_EVENT_HANDLER">
 <groupId>TRADING_APP</groupId>

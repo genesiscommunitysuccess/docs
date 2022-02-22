@@ -1,24 +1,27 @@
 ---
-id: trading-app
-title: Generate the trading app
-sidebar_label: Generate the trading app
+id: positions-app
+title: Generate the positions app
+sidebar_label: Generate the positions app
 sidebar_position: 3
 
 ---
-Previously, we have created a reference data application from our original RDBMS database. 
+We now have created a Reference Data module from our original RDBMS database, which will handle all reference data for instruments and counterparties. #
 
-Now we are going to create a trading application, based on a source spreadsheet.
-
-The two applications will share the same data model, as we shall see. They will effectively become modules of a single trade and positions application.
+Now lets move on to the Market Data module, starting by building out the trade table.
 
 ## The source spreadsheet
 
-Here is a look at the trades workbook that will form the basis of our trading application. The main sheet shows a list of trades:
+Here is a look at the trades workbook that will form the basis of our Positions application. The main sheet shows a list of trades:
 
 ![](/img/source-table.png)
 
+<!-- TODO link to the xlsx file download, docs or artifactory? -->
+
+
 ## 1. Convert the spreadsheet
 
+<!-- TODO - run from intellij -->
+<!-- TODO link to branch and repo -->
 Using the instance in which the platform is installed, run `ExcelToGenesis`.
 
 ```bash
@@ -37,6 +40,7 @@ The fields and tables can be adjusted to suit your new application. For example,
 
 The next step is to run `genesisInstall`, which will run checks and highlight any issues.
 
+<!-- We should remove all this, too much info, move to run in intelliJ -->
 ### Example of a fail (duplicated fields)
 
 Let’s be practical here. Without changing the application, run `genesisInstall`.
@@ -45,7 +49,7 @@ This will fail because, as you will see, we have some field names that conflict 
 
 ![](/img/fail-duplicate-fields-and-tables.png)
 
-The point here is that this application and the ref_data_app that you created in the previous tutorial will share the same data model. 
+The point here is that this application and the Reference Data module that you created in the previous tutorial will share the same data model. 
 
 You can't have two fields with the same name and a different type in a data model. Here, two fields from the workbook have been marked as duplicates, because there is already a field of the same name in the existing data model - which was created when you made the ref_data_app - but the field has a different type. Note that fields of the same name and type have caused no probems at all.
 
@@ -88,7 +92,7 @@ Run `remap --commit`.
 
 ## 4. Run AppGen
 
-[The `AppGen` script](//managing-applications/operate/on-the-host/helpful-commands/#appgen) creates three important modules for the application:
+[The `AppGen` script](/managing-applications/operate/on-the-host/helpful-commands/#appgen) creates three important modules for the application:
 
 * Event Handler
 * Rquest Server
@@ -143,3 +147,7 @@ Move the files from the **trading_app/scripts** folder (request server, data ser
 In intellij, run `mvn install`.
 
 That's it. You have all the files in a project, ready for you to work in your IDE. In the following steps, you'll be working here to add key functionality to the application.
+
+<!-- TODO link to branch and repo -->
+
+<!-- TODO - do we need to explain adding to dictionary-cache? -->

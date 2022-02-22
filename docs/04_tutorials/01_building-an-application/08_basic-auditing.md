@@ -9,8 +9,8 @@ Now we are going to add basic auditing to the TRADE table in order to keep a rec
 
 At this stage, you have:
 
-* a Reference Data application. This has tables, so you can import the schema to the Trading application
-* a Trading application. This contains the schema for the TRADE table, plus handlers, a state machine, data servers and request servers.
+* a Reference Data module. This has tables, so you can import the schema to the Positions application
+* a Market Data module. This contains the schema for the TRADE table, plus handlers, a state machine, data servers and request servers.
 
 ## The objective
 

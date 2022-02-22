@@ -5,11 +5,10 @@ sidebar_label: Generate the reference app
 sidebar_position: 2
 
 ---
-In this first exercise, we shall generate the reference application with its database of reference data. We shall create this from the existing RDBMS of reference data.
+In this first exercise, we shall generate the reference module with its database of reference data. We shall create these from the existing RDBMS of reference data.
 
-Before you start. Make sure you have the platform and all the relevant tools [installed](/creating-applications/getting-ready-to-develop/running-applications/install-in-three-steps/). The Genesis LCNC must be installed on a server, local vm, wsl or cloud instance (genesis and auth).
-
-Ideally, Maven should be installed in the server instance. It should be configured so that you can retrieve Ggenesis binaries.
+<!-- TODO - run from CLI tool instead, should be elsewhere in docs and reference-->
+Ideally, Maven should be installed in the server instance. It should be configured so that you can retrieve Genesis binaries.
 
 Otherwise, the Maven installation and configuration must be available in a local development environment.
 
@@ -19,14 +18,24 @@ Before you start, create a new folder as a working area for the project under th
 
 :::
 
+<!--TODO Rename to ref-data-app throughout - 5.6.2 when CLI tool ready-->
+
 
 ## The source database
 
-There are four tables in the source relational database. In this exercise, we are going to convert the contents of these tables so that we have a single data model of fields, tables and views. From this data model, we can build our Genesis application. And we shall generate a server with basic functions.
+There are four tables in the source relational database. 
 
+1. Counterparty - containing Counterparties
+2. Alt Counterparty ID - containing alternative IDs for counterparties (a simple table and common paradigm for systems integrating with external systems, to lookup and normalise IDs)
+3. Instrument - containing Market instruments
+4. Alt Instrument ID - containing alternative IDs for instruments
+<!-- TODO move this to refer to branching model -->
+<!-- TODO link to docker image for running it as an option -->
 If you want to look at the source database in more detail, you can use a tool such as [DBeaver](https://dbeaver.com/).
 
-![](/img/dbeaver-screenshot.png)
+![](/img/reference-data-dbeaver.png)
+
+In this exercise, we are going to convert the contents of these tables so that we have a single data model of fields, tables and views. 
 
 ## 1. Generate the dictionary files
 
@@ -39,15 +48,17 @@ We shall call the product that we create **ref_data_app**. All the files we crea
 
 Using the instance in which the platform is installed, run
 
+<!--TODO - rethink this. Speak TOM and JOSE do not show the password we have here and make sure not admin user -->
 `DictionaryBuilder -t MSSQL -U admin -P Password11* -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d tradingapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument`
 
-Note that we specified the names of the four source tables in the `--tables` argument of the command.
+Note that we specified the names of the four source tables in the `--tables` argument of the command. So you can include just a subset of your source database if you wish.
 
 The `dictionaryBuilder` script generates the **fields-dictionary.kts** and **tables-dictionary.kts** files for the data model.
 
+<!-- TODO move below to IntelliJ / local running or leave?-->
 ![](/img/dictionary-builder-output.png)
 
-Check these files and adjust them to suit your application. For example, look inside the **fields-dictionary.kts** file to see the field definitions.
+Next, we should check these files and adjust them to suit your application. For example, look inside the **fields-dictionary.kts** file to see the field definitions.
 
 In some cases, the process translates the `ENABLED` field as an `INT` type.
 ```kotlin
@@ -59,17 +70,9 @@ We need this field to be type `BOOLEAN`. If necessary, edit the field to make it
     field(name = "ENABLED", type = BOOLEAN)
 ```
 
-## 2. Copy files and run genesisInstall
+See here <!--TODO we need to merge all this with the Generate fields and tables from relational database --> for more helpful tips using the DictionaryBuilder tool.
 
-Create a **new ref_data_app** folder inside the working folder that you created before starting, including **cfg** and **scripts** folders.
-
-Copy the output files from the dictionary build to the **ref_data_app/cfg** folder inside the run directory.
-
-Run `genesisInstall` to verify everything is ok.
-
-![](/img/genesisinstall.png)
-
-## 3. Run AppGen to build microservices
+## 2. Run AppGen to build microservices
 
 Run `AppGen` to build your three modules (event handler, request server and data server):
 
@@ -93,6 +96,17 @@ And it generates xml files for service definitions and processes:
 Optionally, you could now run `remap`, which would give you CRUD operations for all the tables and request replies (static data from the request server), as well as for real-time data retrieval (via the data server).
 
 But for this example application, we are going to go into the pro code, to add some sophistication.
+
+## 3. Copy files and run genesisInstall
+
+Create a **new ref_data_app** folder inside the working folder that you created before starting, including **cfg** and **scripts** folders.
+
+Copy the output files from the dictionary build to the **ref_data_app/cfg** folder inside the run directory.
+
+Run `genesisInstall` to verify everything is ok.
+
+![](/img/genesisinstall.png)
+
 
 ## 4. Prepare for pro code
 
@@ -146,3 +160,5 @@ In intellij, run `mvn install`.
 ![](/img/run-maven-install-in-intellij.png)
 
 That's it. You have all the files in a project, ready for you to work in your IDE. In the following steps, you'll be working here to add key functionality to the application.
+
+<!-- TODO note skip to end via branching model -->
