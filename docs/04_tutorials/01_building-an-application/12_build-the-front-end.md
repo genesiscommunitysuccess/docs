@@ -8,7 +8,7 @@ sidebar_position: 12
 ---
 
 :::note
-If you have a workspace configured, go straight to the [generating an application](#part-two) section. 
+If you already have a workspace configured, go straight to the section on [generating an application](#part-two). 
 :::
 
 ## Generating a workspace {#part-one}
@@ -31,7 +31,9 @@ import CliBanner from './_includes/_cli_banner.md'
 
 <CliBanner />
 
-Now use the GenesisX CLI tool to generate a workspace that will host our Positions application by selecting `❯ create workspace` and answering the ensuing questions as follows:
+Now use the GenesisX CLI tool to generate a workspace that will host our Positions application. 
+
+Select `❯ create workspace` and answer the questions as follows:
 
 ```
 ❯ create workspace - Generates a local workspace to use for your Genesis based apps.
@@ -42,7 +44,7 @@ Now use the GenesisX CLI tool to generate a workspace that will host our Positio
 ? Overwrite existing files (y/N): N
 ```
 
-With the workspace built, we'll now configure the scope and package name `@genesislcap/foundation-ui` package.
+With the workspace built, we'll now configure the scope and package name of the  `@genesislcap/foundation-ui` package.
 
 ```
 ? Package scope (without the @): genesislcap
@@ -81,7 +83,9 @@ $ cd ./packages/apps
 $ genx
 ```
 
-Use the GenesisX CLI to generate an application using a Genesis app seed by selecting `❯ create application` and answering the questions that follow:
+Use the GenesisX CLI to generate an application using a Genesis app seed. 
+
+Select `❯ create application` and answering the questions that follow:
 
 ```
 ❯ create application - Generates a local application.
@@ -159,7 +163,7 @@ These column definitions are used in the `HomeTemplate`,
 
 <!-- TODO: we may want to move this to the WEB UI reference section? -->
 ### Application structure
----
+
 The Positions Web Client is broken down into the following directories:
 
 - components - application-specific components focused on building functionality, with minimal styling applied
