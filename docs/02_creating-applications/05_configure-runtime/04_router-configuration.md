@@ -6,52 +6,52 @@ id: genesis-router
 
 ---
 
-Genesis Router is responsible for communication between front-end and back-end. This is configured in a file called **genesis-router.xml**.
+Genesis Router is responsible for communication between front-end and back-end. This is configured in a file called **genesis-router.kts**.
 
 Here is an example:
 
-```xml
-<router>
-    <webPort>9064</webPort>
-    <socketPort>9065</socketPort>
+```kts
+router {
+    webPort = 9064
+    socketPort = 9065
 
-    <http>
-        <handlers>
-            <httpServerCodec>
-                <maxInitialLineLength>4096</maxInitialLineLength>
-                <maxHeaderSize>8192</maxHeaderSize>
-                <maxChunkSize>8192</maxChunkSize>
-                <validateHeaders>true</validateHeaders>
-                <initialBufferSize>128</initialBufferSize>
-            </httpServerCodec>
-            <httpObjectAggregator>
-                <maxContentLength>262144</maxContentLength>
-                <closeOnExpectationFailed>false</closeOnExpectationFailed>
-            </httpObjectAggregator>
-        </handlers>
-    </http>
-    <routes>
-        <route msgType="ALL_ORDERS" process="OEMS_DATASERVER"/>
-        <route msgType="ALL_TRADES" process="OEMS_DATASERVER"/>
-        <route msgType="ALL_ORDER_AUDITS" process="OEMS_DATASERVER"/>
-    </routes>
-    <whiteList name="ALL_ORDERS"/>
-    <whiteList name="ALL_TRADES"/>
-    <whiteList name="ALL_ORDER_AUDITS"/>
-</router>
+    httpServerCodec {
+        maxInitialLineLength = 4096
+        maxHeaderSize = 8192
+        maxChunkSize = 8192
+        validateHeaders = true
+        initialBufferSize = 128
+    }
+    httpObjectAggregator {
+        maxContentLength = 262144
+        closeOnExpectationFailed = false
+    }
+
+    routes {
+        route(messageType = "ALL_ORDERS", process = "OEMS_DATASERVER")
+        route(messageType = "ALL_TRADES", process = "OEMS_DATASERVER")
+        route(messageType = "ALL_ORDER_AUDITS", process = "OEMS_DATASERVER")
+    }
+
+    allowList {
+        entry("ALL_ORDERS")
+        entry("ALL_TRADES")
+        entry("ALL_ORDER_AUDITS")
+    }
+}
 ```
 
-### Router configuration tags 
+### Router configuration 
 
-`socketPort`: This port is used for http/websockets
+`socketPort`: This port is used for http/websockets. You must declare a port, and it cannot be below 1024.
 
-`webPort`: This port is used for tcp/ip socket
+`webPort`: This port is used for tcp/ip socket. You must declare a port, and it cannot be below 1024.
 
-`dataserverPollingTimeout`: This setting contains the timeout for polling the data-server resources in the system. Dafult value is 60s
+`dataserverPollingTimeout`: This setting contains the timeout for polling the data-server resources in the system in seconds. Default value is 60 seconds.
 
-`authDisabled`: This tag if set to true, disables all authentication and is used for development mode. Default value is false
+`authDisabled`: This setting if set to true, disables all authentication and is used for development mode. Default value is false.
 
-`nettyLoggingEnabled`: This tag if set to true, enables internal netty logging. Default value false
+`nettyLoggingEnabled`: This setting if set to true, enables internal netty logging. Default value false.
 
 **Netty configuration**:
 
@@ -59,18 +59,27 @@ Here is an example:
 For more information, follow this [link](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpServerCodec.html).
 
 Different decoder options
-  * maxInitialLineLength : default value: 4096
-  * maxHeaderSize : default value 8192
-  * maxChunkSize : default value 8192
-  * validateHeaders : default value true
-  * initialBufferSize : default value 128
+  * `maxInitialLineLength`: default value: 4096
+  * `maxHeaderSize`: default value 8192
+  * `maxChunkSize`: default value 8192
+  * `validateHeaders`: default value true
+  * `initialBufferSize`: default value 128
 
 `httpObjectAggregatorDefinition`: A ChannelHandler that aggregates an HttpMessage and its following HttpContents into a single FullHttpRequest or FullHttpResponse (depending on if it used to handle requests or responses) with no following HttpContents.
 For more information follow this [link](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpObjectAggregator.html)
-  * maxContentLength - the maximum length of the aggregated content in bytes. Default value 262144
-  * closeOnExpectationFailed - If a 100-continue response is detected but the content length is too large then true means close the connection. Otherwise the connection will remain open and data will be consumed and discarded until the next request is received. Default value false
 
-**Allowed Resources**: You can limit the resources to be exposed by the Genesis router by using the `whitelist` tag (see example above). It is important to note that the following message types will always be allowed by default, regardless of the whitelist definition:
+  * `maxContentLength`: the maximum length of the aggregated content in bytes. Default value 262144
+  * `closeOnExpectationFailed`: If a 100-continue response is detected but the content length is too large then true means close the connection. Otherwise, the connection will remain open and data will be consumed and discarded until the next request is received. Default value false
+
+**Message Routes**: 
+
+`routes`: You can redirect some microservice messages to particular processes by declaring new `route` blocks within this one.
+
+`route`: Is the defined route taking both a `messageType` and a specific `process`.
+
+**Allowed Resources**:
+
+`allowList`:  You can limit the resources exposed by the genesis router. Without at least one `entry` block every resource wil be available. It is important to note that the following message types will always be allowed by default, regardless of the allowList definition:
 EVENT_LOGIN_AUTH, EVENT_LOGOUT, MORE_ROWS, MORE_COLUMNS, DATA_LOGOFF, DATA_GET
 
-**Message Routes**: You can redirect some microservice messages to particular processes using the tag `routes.route`, as shown above
+`entry:` Is the additional accepted `messageType`.
