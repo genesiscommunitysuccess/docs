@@ -1,11 +1,11 @@
 ---
 id: reference-app
-title: Generate the reference app
-sidebar_label: Generate the reference app
+title: Generate the Reference module
+sidebar_label: Generate the Reference module
 sidebar_position: 2
 
 ---
-In this first exercise, we shall generate the reference module with its database of reference data. We shall create these from the existing RDBMS of reference data.
+In this first exercise, we shall generate the Reference module with its database of reference data. We shall create these from the existing RDBMS of reference data.
 
 <!-- TODO - run from CLI tool instead, should be elsewhere in docs and reference-->
 Ideally, Maven should be installed in the server instance. It should be configured so that you can retrieve Genesis binaries.
@@ -51,14 +51,14 @@ Using the instance in which the platform is installed, run
 <!--TODO - rethink this. Speak TOM and JOSE do not show the password we have here and make sure not admin user -->
 `DictionaryBuilder -t MSSQL -U admin -P Password11* -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d tradingapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument`
 
-Note that we specified the names of the four source tables in the `--tables` argument of the command. So you can include just a subset of your source database if you wish.
+Note that we specified the names of the four source tables in the `--tables` argument of the command. So you could include just a subset of your source database if you wish.
 
 The `dictionaryBuilder` script generates the **fields-dictionary.kts** and **tables-dictionary.kts** files for the data model.
 
 <!-- TODO move below to IntelliJ / local running or leave?-->
 ![](/img/dictionary-builder-output.png)
 
-Next, we should check these files and adjust them to suit your application. For example, look inside the **fields-dictionary.kts** file to see the field definitions.
+Next, you should check these files and adjust them to suit your application. For example, look inside the **fields-dictionary.kts** file to see the field definitions.
 
 In some cases, the process translates the `ENABLED` field as an `INT` type.
 ```kotlin
@@ -70,11 +70,11 @@ We need this field to be type `BOOLEAN`. If necessary, edit the field to make it
     field(name = "ENABLED", type = BOOLEAN)
 ```
 
-See here <!--TODO we need to merge all this with the Generate fields and tables from relational database --> for more helpful tips using the DictionaryBuilder tool.
+See [here](/managing-applications/operate/on-the-host/helpful-commands/#dictionarybuilder) <!--TODO we need to merge all this with the Generate fields and tables from relational database --> for more helpful tips using the DictionaryBuilder tool.
 
 ## 2. Run AppGen to build microservices
 
-Run `AppGen` to build your three modules (event handler, request server and data server):
+Run `AppGen` to build your three services (modules) (event handler, request server and data server):
 
 ```bash
 AppGen -n ref_data_app -p 10000
@@ -112,7 +112,7 @@ Run `genesisInstall` to verify everything is ok.
 
 ### Build a Maven project
 
-First, you need to build a Maven project so that you can use an IDE to build the app.
+First, build a Maven project so that you can use an IDE to build the app.
 
 You can run the `mvn` command either locally (in the server, local vm, wsl or cloud instance where the LCNC Platform is installed) or a separate local dev machine. In our example below, we are using the same machine as before for consistency. Note that we are using version 5.5.0; adjust the command to match the version of the Genesis LCNC Platform that you are using.
 
@@ -159,6 +159,6 @@ In intellij, run `mvn install`.
 
 ![](/img/run-maven-install-in-intellij.png)
 
-That's it. You have all the files in a project, ready for you to work in your IDE. In the following steps, you'll be working here to add key functionality to the application.
+That's it. You have all the files in a project, ready for you to work in your IDE. In the steps that following, you'll be working here to add key functionality to the application.
 
 <!-- TODO note skip to end via branching model -->
