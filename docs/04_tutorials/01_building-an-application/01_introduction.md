@@ -24,9 +24,9 @@ If you want to access the project as you follow, or make changes, you'll also ne
 
 * Access to the genesisclient repo <!--TODO Link to page explaining credentials from your administration team>
 * Access to the genesis 5.6.1 binaries <!--TODO Link to page explaining in house artifactory else direct, details from your infra team>
-<!-- TODO - add installation bits here [installed](/getting-started/get-ready-to-develop/install/)-->
+<!-- TODO - add installation bits here [installed](/creating-applications/getting-ready-to-develop/running-applications/install-in-three-steps/)-->
 
-Before you start, make sure you have the platform and all the relevant tools [installed](/getting-started/get-ready-to-develop/install/). The Genesis LCNC must be installed on a server, local vm, wsl or cloud instance (genesis and auth).
+Before you start, make sure you have the platform and all the relevant tools [installed](/creating-applications/getting-ready-to-develop/running-applications/install-in-three-steps/). The Genesis LCNC must be installed on a server, local vm, wsl or cloud instance (genesis and auth).
 
 ## The scenario
 
