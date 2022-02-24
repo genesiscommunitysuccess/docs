@@ -7,7 +7,7 @@ sidebar_position: 8
 ---
 Now we are going to add basic auditing to the TRADE table in order to keep a record of the changing states of the trades.
 
-At this stage, you have:
+At this stage, your Positions app has:
 
 * a Reference Data module. This has tables, so you can import the schema to the Positions application
 * a Market Data module. This contains the schema for the TRADE table, plus handlers, a state machine, data servers and request servers.
@@ -85,7 +85,7 @@ Next you need to change the insert, and modify methods in the **TradeStateMachin
 
 ### Update the event handlers to use auditing
 
-Now you must update the **trading_app-eventhandler.kts** in order to pass the `entityDb` object into the updated methods of the state machine, as the **syncMultiEntityReadWriteGenericSuppor**t parameter. This should resemble the example below:
+Now you must update the **trading_app-eventhandler.kts** in order to pass the `entityDb` object into the updated methods of the state machine, as the **syncMultiEntityReadWriteGenericSupport** parameter. This should resemble the example below:
 
 ```kotlin {12,19,26,35}
     eventHandler<Trade>(name = "TRADE_INSERT") {
