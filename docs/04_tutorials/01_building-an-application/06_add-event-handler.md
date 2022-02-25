@@ -7,7 +7,7 @@ sidebar_position: 6
 ---
 
 
-It's time to look at your event handlers. At this stage, you have:
+It's time to look at your event handlers. At this stage, you have Positions app with:
 
 * a Reference Data module. This has tables, so you can import the schema to the Positions application
 * a Market Data module. This contains the schema for the TRADE table, event handlers, data servers and request servers

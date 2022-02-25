@@ -1,7 +1,7 @@
 ---
 id: positions-app
-title: Generate the positions app
-sidebar_label: Generate the positions app
+title: Generate the Positions app
+sidebar_label: Generate the Positions app
 sidebar_position: 3
 
 ---
@@ -9,9 +9,11 @@ We have already created a Reference Data module from our original RDBMS database
 
 Now let's move on to the Market Data module, starting by building the trade table.
 
+Once we created bth these modules, we will have a Positions app.
+
 ## The source spreadsheet
 
-Here is a look at the trades workbook that will form the basis of our Positions module. The main sheet shows a list of trades:
+Here is a look at the trades workbook that will form the basis of our Market Data module. The main sheet shows a list of trades:
 
 ![](/img/source-table.png)
 
@@ -34,7 +36,7 @@ This generates the **-fields-dictionary.kts** and **-tables-dictionary.kts** for
 
 Check and adjust the fields and tables.
 
-The fields and tables can be adjusted to suit your new application. For example, we can remove `INSTRUMENT_ID` and `COUNTERPARTY_ID` later on when we add them to intellij, as our intellij project will be importing them from the ref_data_app. Additionally, we can change `TRADE_ID` to be a `STRING` and use a `sequence` definition to generate the fields.
+The fields and tables can be adjusted to suit your new application. For example, we can remove `INSTRUMENT_ID` and `COUNTERPARTY_ID` later on when we add them to Intellij, as our Intellij project will be importing them from the Reference Data module. Additionally, we can change `TRADE_ID` to be a `STRING` and use a `sequence` definition to generate the fields.
 
 ## 2. Run genesisInstall
 
@@ -45,13 +47,13 @@ The next step is to run `genesisInstall`, which will run checks and highlight an
 
 Let’s be practical here. Without changing the application, run `genesisInstall`.
 
-This will fail because, as you will see, we have some field names that conflict with field names in the existing schema (from the ref-data-app).
+This will fail because, as you will see, we have some field names that conflict with field names in the existing schema (from the Reference Data module).
 
 ![](/img/fail-duplicate-fields-and-tables.png)
 
 The point here is that this application and the Reference Data module that you created in the previous tutorial will share the same data model. 
 
-You can't have two fields with the same name and a different type in a data model. Here, two fields from the workbook have been marked as duplicates, because there is already a field of the same name in the existing data model - which was created when you made the ref_data_app - but the field has a different type. Note that fields of the same name and type have caused no probems at all.
+You can't have two fields with the same name and a different type in a data model. Here, two fields from the workbook have been marked as duplicates, because there is already a field of the same name in the existing data model - which was created when you made the Reference Data module - but the field has a different type. Note that fields of the same name and type have caused no problems at all.
 
 So, edit the file **trading_app-fields-dictionary.kts** that you have just generated from the Excel workbook. Remove the following duplicated fields:
 
@@ -95,7 +97,7 @@ Run `remap --commit`.
 [The `AppGen` script](/managing-applications/operate/on-the-host/helpful-commands/#appgen) creates three important modules for the application:
 
 * Event Handler
-* Rquest Server
+* Request Server
 * Data Server
 
 Run `AppGen`. Here we include the `-p` parameter, which numbers the port outputs from 11000 (in this case):
@@ -108,7 +110,7 @@ AppGen -n trading_app -p 11000**
 
 
 
-To progress from here, we need to prepare a  pro-code setup, in this case a maven project. This will enable us to use an IDE to work at speed.
+To progress from here, we need to prepare a pro-code setup, in this case a Maven project. This will enable us to use an IDE to work at speed.
 
 ## 4. Build a Maven project
 
@@ -132,7 +134,7 @@ Move the files that have been generated so far from the **trading_app/cfg** fold
 
 Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the **trading_app-script-config/src/main/resources/scripts** folder.
 
-### Install the  Maven project
+### Install the Maven project
 
 Now run `mvn install`.
 
@@ -142,7 +144,7 @@ Again, you need to move the script and config files. Have these to hand, so you 
 
 2. Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the **trading_app-script-config/src/main/resources/scripts** folder.
 
-### Install the maven project in intellij
+### Install the Maven project in Intellij
 
 In intellij, run `mvn install`.
 

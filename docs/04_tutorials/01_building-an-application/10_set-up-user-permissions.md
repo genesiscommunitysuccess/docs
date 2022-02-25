@@ -230,7 +230,7 @@ For the purpose of this script, we can keep things simple. In reality, you would
 
 
 
-In our trading app example we can set two types of right:
+In our example Positions app, we can set two types of right:
 
 * TRADER (enables the trader to read and write trades - but only for their own related counterparties)
 * SUPPORT (enables support to have read-only access to everything)

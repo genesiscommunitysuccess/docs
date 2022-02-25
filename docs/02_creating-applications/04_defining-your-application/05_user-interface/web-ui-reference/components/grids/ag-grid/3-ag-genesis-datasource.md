@@ -10,7 +10,7 @@ Used in [Connected Data](/creating-applications/defining-your-application/user-i
 
 - **`criteria: string`**: Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: Expr.dateIsBefore(TRADE_DATE,'20150518') or QUANTITY > 10000.
 
-- **`fields: boolean`**: Smilar to `request` but for [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/configure/) scenarios. This optional parameter allows you to select a subset of fields from the query if the client is not interested in receiving all of them. Example: "TRADE_ID QUANTITY PRICE INSTRUMENT_ID". By default all fields are returned if this option is not specified.
+- **`fields: boolean`**: Smilar to `request` but for [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/) scenarios. This optional parameter allows you to select a subset of fields from the query if the client is not interested in receiving all of them. Example: "TRADE_ID QUANTITY PRICE INSTRUMENT_ID". By default all fields are returned if this option is not specified.
 
 - **`isSnapshot: boolean`**: Defaults to false. 
 
@@ -20,9 +20,9 @@ Used in [Connected Data](/creating-applications/defining-your-application/user-i
 
 - **`orderBy: string`**: This option can be used to select a data server index (defined in xml), which is especially useful if you want the data to be sorted in a specific way. By default, data server rows will be returned in order of creation (from oldest database record to newest).
 
-- **`request: any`**: Similar to `fields` but for [Request Server](/creating-applications/defining-your-application/user-interface/request-servers/configure/) scenarios. This optional parameter allow you to specify request fields which can include wildcards. Example: you could request all RIC Codes for example, or all RIC Codes beginning with "V" for example.
+- **`request: any`**: Similar to `fields` but for [Request Server](/creating-applications/defining-your-application/user-interface/request-servers/) scenarios. This optional parameter allow you to specify request fields which can include wildcards. Example: you could request all RIC Codes for example, or all RIC Codes beginning with "V" for example.
 
-- **`resourceName: string`**: The target [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/configure/) or [Request Server](/creating-applications/defining-your-application/user-interface/request-servers/configure/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
+- **`resourceName: string`**: The target [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/) or [Request Server](/creating-applications/defining-your-application/user-interface/request-servers/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
 
 - **`reverse: boolean`**: This option changes the data server index iteration. For example, if you are using the default index, they query will return rows from newest database records to oldest.
 

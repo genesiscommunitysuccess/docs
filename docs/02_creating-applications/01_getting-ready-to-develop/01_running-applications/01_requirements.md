@@ -8,7 +8,7 @@ title: Requirements
 
 # Options for running a development environment
 
-Developers often want to run the full application they are building to test out funcionality developed.
+Developers often want to run the full application they are building to test the functionality they have developed.
 
 The Genesis LCNC Platform needs to run in a linux based environment. Typically CentOS or RedHat
 
@@ -46,7 +46,7 @@ The following additional packages are required:
 * **firewalld**	Firewall
 * **unoconv**	Universal Office Convertor. This is a dependent of the installed Genesis modules
 
-# Local requirements (Devlopment Only)
+# Local requirements (development only)
 
 The specifications here are required for setting up the Genesis LCNC platform on a local machine. It applies to development only, as these are not the recommended settings to run Genesis in Production. UAT environments should match Production where possible.
 
