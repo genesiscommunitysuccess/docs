@@ -1,0 +1,547 @@
+---
+title: 'Request servers'
+sidebar_label: 'Request servers'
+sidebar_position: 10
+id: configure
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Request servers, (otherwise known as request/replies or reqreps) retrieve snapshot data from a table or a view on demand and serve it up to the requesting client. They are predomenantly used for serving the UI.
+
+They serve up what can be considered a "snap shot" of data, that is to say that after a reply is given the transation is over (unlike their [dataserver](/creating-applications/defining-your-application/user-interface/data-server) counterpart which stay connected to the client and push updates)
+
+They have other features distinct from a dataserver too such as allowing one to many joins, and even completely custom reqreps for serving up non linear data (e.g. sets of disjointed data to serve up to a report)
+
+```kotlin
+requestReplies {
+    requestReply("TRADE", TRADE_VIEW) 
+}
+```
+
+<Tabs defaultValue="whereToDefine" 
+        values={[{ label: 'Where to define', value: 'whereToDefine', }, 
+                 { label: 'Technical details', value: 'techDetails', }, 
+                 { label: 'Advanced technical details', value: 'advTechDetails', },
+                 { label: 'Additional Examples', value: 'examples', },
+                 { label: 'Runtime', value: 'runtimeDetails', }
+                 ]}>
+<TabItem value="whereToDefine">
+
+Request servers are conventionally defined in the file _application-name_**-reqrep.kts**. 
+
+So, if your application is called **position**, then the file would conventionally be named **position-reqrep.kts**.
+
+</TabItem>
+<TabItem value="techDetails">
+
+Within a request server file, there are one  more `requestReply` code blocks. Each code block defines a set of `request` fields (essentially criteria), and the set of `reply` fields. The most [basic `requestReply`code block](/creating-applications/defining-your-application/user-interface/request-servers/reference/#basic-definition) simply specifies a table that can be reqested and returned.
+
+By default, a request server file is generated automatically when you use AppGen. This uses the metadata of each view or table in the data model to create an individual `requestReply` code block for each one. The request will be the primary key, and the response provides every field in the table or view.
+
+However, you can build your request server file manually (or edit the ones that were generated automatically).
+
+That means you can specify both the request fields and the response fields as part of the requestReply codeblock. Request fields can include wildcards, so you could request all TRADES with an INSTRUMENT_NAME beginning with "A" for example.
+
+### Basic definition
+
+Here is the definition of a simple request server. You need to specify either a table or a view. In this example, we are using the table INSTRUMENT_DETAILS.
+
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS)
+}
+```
+
+### Multiple request servers
+
+You can include multiple request servers in a single file.
+
+```kotlin
+requestReplies {
+    requestReply(COUNTERPARTY)
+
+    requestReply(INSTRUMENT_DETAILS)
+}
+```
+
+### Specify fields on request and reply
+
+You can specify which fields are on the request and which fields are on the response. Here is an example:
+
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS) {
+
+        request {
+            ALTERNATE_TYPE
+            INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
+        }
+
+        reply {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+
+
+### Using an index
+
+You can use an index for the request definition.
+
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS) {
+
+        request(INSTRUMENT_DETAILS.BY_ALTERNATE_TYPE_ALTERNATE_CODE)
+
+        reply {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+
+### Where block
+
+The `where` block enables you to specify the conditions for running the particular code block. The where block can take two optional parameters:
+    * instrumentDetails - this represents a row from the table or view
+    * parameters - this a GenesisSet which holds the parameters that are passed on the request. The parameters can be accessed by using the GenesisSet getters to access named parameters.
+
+In this contrived example below, the where block filters rows whose instrumentCode is not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG". 
+The row parameter represents the rows returned from the table or view defined at the top of the requestReply definition, in this case INSTRUMENT_DETAILS.
+
+
+
+```kotlin
+requestReplies {
+    requestReply("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS) {
+
+        request {
+            ALTERNATE_TYPE
+        }
+
+        reply {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+
+        where { row, parameters ->
+            "ALLL3" == row.instrumentCode &&                         
+             parameters.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
+        }
+    }
+}
+```
+
+</TabItem>
+<TabItem value="advTechDetails">
+
+### Pre-processing the request
+
+Request server scripts can optionally transform a request parameter’s value using `withTransformation`. This takes two inputs:
+* the request parameter’s value (which is nullable)
+* the full request message
+
+In the example  below, `withTransformation` is used twice.
+
+* If the ALTERNATE_TYPE parameter value is null, then the request server will use "UNKNOWN" by default.
+* If the ALTERNATE_TYPE parameter has the value "RIC", then the transformation block will use the value of INSTRUMENT_CODE from the request. Otherwise, it will assign it the value "NOT_RIC" before making the database lookup. 
+
+```kotlin
+requestReplies {
+    requestReply("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS) {
+
+        request {
+            ALTERNATE_TYPE withTransformation { type, _ ->
+                type?.toUpperCase() ?: "UNKNOWN"
+            }
+            INSTRUMENT_CODE withTransformation { type, set ->
+                val value = if (set.fields["ALTERNATE_TYPE"].toString().toUpperCase() == "RIC") {
+                    type
+                } else {
+                    "NOT_RIC"
+                }
+                value
+            } withAlias "ALTERNATE_CODE"
+        }
+
+        reply {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+
+### Limit the number of rows returned
+
+You can limit the number of rows returned using the property `rowReturnLimit`. In this example, we limit it to 2.
+
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS) {
+
+        rowReturnLimit = 2
+
+        request {
+            ALTERNATE_TYPE
+            INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
+        }
+
+        reply {
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+
+### Timeout
+
+You can specify a timeout (in seconds) for a request server using the property `timeout`. In this example, we set a timeout of 10 seconds.
+
+```kotlin
+requestReplies {
+    requestReply("QUICK_INSTRUMENT", INSTRUMENT_DETAILS) {
+
+        timeout = 10
+
+        request {
+            ALTERNATE_TYPE
+            INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
+        }
+
+        reply {
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+
+### Ranges
+
+You can specify ranges from the client of the requestReply server by postfixing the request parameter names with _FROM and _TO. The example below shows a client building a GenesisSet request based upon
+the requestReplies defined from previous example. This examples stipulates a price range between 1,000 and 10,000. Leaving out FROM will define a top end range, leaving out TO will define a bottom end range. 
+In addition, ranges which are not based on indexes will perform slower.
+
+```kotlin
+
+    // client building request  
+    val request = genesisSet {
+    
+        "DETAILS" with genesisSet {
+            "LAST_TRADED_PRICE_FROM" to 1_000
+            "LAST_TRADED_PRICE_TO" to 10_000
+        }
+    }
+
+    sendRequest(request) // details of sending request hidden for brevity
+```
+</TabItem>
+<TabItem value="examples">
+
+```kotlin
+views {
+
+  view("TRADE_VIEW", TRADE) {
+
+    joins {
+      joining(COUNTERPARTY) {
+        on(TRADE.COUNTERPARTY_ID to COUNTERPARTY { COUNTERPARTY_ID })
+      }
+      joining(INSTRUMENT) {
+        on(TRADE.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
+      }
+    }
+
+    fields {
+      TRADE.allFields()
+
+      COUNTERPARTY.NAME withPrefix COUNTERPARTY
+      INSTRUMENT.NAME withPrefix INSTRUMENT
+      INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
+
+      derivedField("CONSIDERATION", DOUBLE) {
+        // I: F2*H2
+        withInput(TRADE.QUANTITY, TRADE.PRICE) { QUANTITY, PRICE ->
+          QUANTITY * PRICE
+        }
+      }
+    }
+  }
+
+  view("POSITION_VIEW", POSITION) {
+
+    joins {
+      joining(ALT_INSTRUMENT_ID, backwardsJoin = true) {
+        on(POSITION.INSTRUMENT_ID to ALT_INSTRUMENT_ID { INSTRUMENT_ID })
+          .and(ALT_INSTRUMENT_ID { ALTERNATE_TYPE } to "REFINITIV")
+
+          .joining(INSTRUMENT_L1_PRICE, backwardsJoin = true) {
+            on(ALT_INSTRUMENT_ID.INSTRUMENT_CODE to INSTRUMENT_L1_PRICE { INSTRUMENT_CODE })
+          }
+      }
+
+      joining(INSTRUMENT) {
+        on(POSITION.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
+      }
+    }
+
+    fields {
+      POSITION.allFields()
+
+      INSTRUMENT.NAME withPrefix INSTRUMENT
+      INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
+
+      derivedField("VALUE", DOUBLE) {
+        withInput(
+          POSITION.QUANTITY,
+          INSTRUMENT_L1_PRICE.EMS_BID_PRICE,
+          INSTRUMENT_L1_PRICE.EMS_ASK_PRICE
+        ) { quantity, bid, ask ->
+          val quant = quantity ?: 0
+          //Use BID if positive position, else ask if negative
+          val price = when {
+              quant > 0 -> bid ?: 0.0
+              quant < 0 -> ask ?: 0.0
+              else -> 0.0
+          }
+          price * 1000 * quant
+        }
+      }
+
+      derivedField("PNL", DOUBLE) {
+        withInput(
+          POSITION.QUANTITY,
+          POSITION.NOTIONAL,
+          INSTRUMENT_L1_PRICE.EMS_BID_PRICE,
+          INSTRUMENT_L1_PRICE.EMS_ASK_PRICE
+        ) { quantity, notional, bid, ask ->
+          val quant = quantity ?: 0
+          //Use BID if positive position, else ask if negative
+          val price = when {
+            quant > 0 -> bid ?: 0.0
+            quant < 0 -> ask ?: 0.0
+            else -> 0.0
+          }
+          val marketVal = price * 1000 * quant
+          marketVal - notional
+        }
+      }
+    }
+  }
+}
+```
+
+## Custom request servers
+
+By defining your own request servers, you have maximum flexibility. You can specify any class for the input and output, similar to event handlers. For the request, optional fields should have a default value in the primary constructor.
+
+The `requestReply` code blocks in can be as simple or complex as your requirements. They are useful, for example, if you want to request data from a number of different tables and views that are not related. By nesting and joining all the relevant data in your `requestReply` statement, you create your own metadata for the request server, so it can then be used anywhere in the module.
+
+### Syntax
+
+```kotlin
+// the name is optional, if none is provide, then request will be based on the 
+// output class, e.g. REQ_OUTPUT_CLASS
+requestReply<[input class], [output class]> ("{optional name}") {
+  // permissioning is optional
+  permissioning {
+    // multiple auth blocks can be conbined with the and operator and the or operator
+    auth("{map name}") {
+        // use a single field
+        field { fieldName }
+        // or use multiple fields
+        fields { listof(fieldNameA, fieldNameB) }
+        
+        // hide fields are supported
+        hideFields { userName ->
+            listOf("FIELD_NAME_A")
+        }
+        
+        // predicates are supported
+        where {
+        }
+    }
+  }
+  
+  // a reply tag is required; there are three types.
+  // the reply tag will have a single parameter, the request, which will be of type 
+  // [input class]
+  // all three have these fields available:
+  // 1. db          - readonly entity database 
+  // 2. userName    - the name of the user who made the request
+  // 3. LOG         - logger with name: global.genesis.requestreply.pal.{request name}
+  
+  // either:
+  reply { request -> 
+  }
+  
+  // or: 
+  replySingle { request -> 
+  }
+  
+  // or:
+  replyList { request ->
+  }
+}
+```
+
+</TabItem>
+<TabItem value="examples">
+
+In this example, we define two data classes; Hello and World. We use these to create a Hello World request:
+
+```kotlin
+data class Hello(val name: String)
+data class World(val message: String)
+
+requestReply<Hello, World>("HELLO_WORLD") {
+    replySingle { hello: Hello ->
+        World("Hello ${hello.name}")
+    }
+}
+```
+
+We can also check who made the request by accessing the `userName` property:
+
+```kotlin
+requestReply<Hello, World>("HELLO_WORLD_CHECK") {
+    replySingle { hello: Hello ->
+        when (userName) {
+            hello.name -> World("Hello ${hello.name}")
+            else -> World("You're not ${hello.name}!")
+        }
+    }
+}
+```
+
+In this next example, we are using the generated dao classes to get a single record from the INSTRUMENT table using the INSTRUMENT_BY_ID index. We use the `db` property to access the entity db.
+
+```kotlin
+requestReply<Instrument.ById, Instrument> {
+    replySingle { byId->
+        db.get(byId)
+    }
+}
+```
+
+Next is a more complex example. 
+The first block checks that the user is authorised to view the instrument.
+The second block uses the ALT_INSTRUMENT_ID table. The index is used as the input, but we return either a `getBulk`, a `getRange` or a `get`, depending on the input. 
+
+```kotlin
+requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId> {
+    permissioning {
+        auth("INSTRUMENT") {
+            field { instrumentId }
+        }
+    }
+    
+    reply { byAlternateTypeAlternateCode ->
+        when {
+            byAlternateTypeAlternateCode.alternateType == "*" ->
+                db.getBulk(ALT_INSTRUMENT_ID)
+            byAlternateTypeAlternateCode.alternateCode == "*" ->
+                db.getRange(byAlternateTypeAlternateCode, 1)
+            else -> db.get(byAlternateTypeAlternateCode).flow()
+        }
+    }
+}
+```
+
+In the example below, we have defined a more complicated auth logic:
+
+```kotlin
+requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId>("FANCY_INSTRUMENT") {
+    permissioning {
+        auth("INSTRUMENT") {
+            field { instrumentId }
+            where {
+                alternateType == "FOO"
+            }
+        } or auth("ALTERNATE_CODE") {
+            field { alternateCode }
+            where {
+                alternateType == "BAR"
+            }
+        }
+    }
+    reply { byAlternateTypeAlternateCode ->
+        db.getRange(byAlternateTypeAlternateCode, 1)
+    }
+}
+```
+</TabItem>
+<TabItem value="runtimeDetails">
+
+### Configure in _application-name_**-processes.xml**
+
+Request-Reply process configuration is added, for example in the positions app, in position-processes.xml as below.
+
+```xml
+  <process name="POSITION_REQUEST_SERVER">
+    <groupId>POSITION</groupId>
+    <start>true</start>
+    <options>-Xmx256m -DXSD_VALIDATE=false</options>
+    <module>genesis-pal-requestserver</module>
+    <package>global.genesis.requestreply.pal</package>
+    <script>position-reqrep.kts</script>
+    <description>Server one-shot requests for details</description>
+    <language>pal</language>
+  </process>
+```
+
+For more information of each tag in the process config follow this [link](/creating-applications/configure-runtime/processes-xml)
+
+### Configure in _application-name_**-service-definitions.xml**
+
+Request-Reply service configuration is added, for example in the positions app, in position-service-definitions.xml as below.
+
+```xml
+  <service host="localhost" name="POSITION_REQUEST_SERVER" port="11001"/>
+```
+
+For more information of each attribute in the service definition config follow this [link](/creating-applications/configure-runtime/service-definitions-xml)
+
+</TabItem>
+</Tabs>
