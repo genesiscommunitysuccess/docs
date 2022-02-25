@@ -16,7 +16,6 @@ fields {
     field(name = "ORDER_ID", type = STRING)
     field(name = "DESCRIPTION", type = STRING, nullable = true)
     field(name = "PRICE", type = DOUBLE, nullable = false)
-    ...
 }
 ```
 
@@ -26,7 +25,7 @@ Fields are kept separately from tables, so that they, and their meta-data, can b
         values={[{ label: 'Where to define', value: 'whereToDefine', }, 
                  { label: 'Technical details', value: 'techDetails', }, 
                  { label: 'Advanced technical details', value: 'advTechDetails', },
-                 { label: 'Additional examples', value: 'examples', }]}>
+                 { label: 'More examples', value: 'examples', }]}>
 <TabItem value="whereToDefine">
 
 The fields for your data model are defined in the file **_application-name_**-fields-dictionary.kts**. 
