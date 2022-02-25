@@ -1,0 +1,604 @@
+---
+title: 'Event handlers'
+sidebar_label: 'Event handlers'
+sidebar_position: 1
+id: event-handlers
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+The Genesis Platform has a real-time event-driven architecture.
+
+Applications built on the system must respond immediately to different types of input:  inputs from users, messages from other systems, market-data updates and internally calculated analytic signals.  These inputs are events.
+
+All the business logic for applications built on the platform is structured around these events. When an event occurs, the business logic immediately fires into action.
+
+The vast majority of applications include business workflow.
+
+That could be a simple linear workflow, such as a deal being enriched and approved, or a margin call payment – or it could be a more complex set of steps.
+
+Most applications built on the platform include the typical financial product **business entities**, such as orders, trades, bids, allocations and positions. These business entities have a lifecycle where they go through various **states**. The transition from one state to another is an event that needs to be handled. The paths through those states are workflows, and to assist the workflows, we use state machines.
+
+## A simple example of an event handler
+
+Here is a simple example of an event handler file. It defines an event handler called Hello and then has a contextEventHandler that checks for a name and sends an acknowledgement.
+```kotlin
+eventHandler {
+
+    eventHandler<Hello> {
+
+        permissions {
+            auth("NAMES") {
+                field { name }
+            }
+        }
+
+        onCommit {
+            ack()
+        }
+    }
+
+    contextEventHandler<Hello, String>("CONTEXT_HELLO") {
+        permissions {
+            auth("NAMES") {
+                field { name }
+            }
+        }
+
+        onValidate {
+            validationAck(validationContext = it.details.name)
+        }
+    }
+}
+```
+
+<Tabs defaultValue="whereToDefine" 
+        values={[{ label: 'Where to define', value: 'whereToDefine', }, 
+                 { label: 'Technical details', value: 'techDetails', }, 
+                 { label: 'Advanced technical details', value: 'advTechDetails', },
+                 { label: 'More examples', value: 'examples', },
+                 { label: 'Runtime', value: 'runtimeDetails', }]}>
+<TabItem value="whereToDefine">
+
+Event handlers are conventionally defined in the file _application-name_**-eventhandler.kts**. 
+
+So, if your application is called **position**, then the file would conventionally be named **position-eventhandler.kts**.
+
+</TabItem>
+<TabItem value="techDetails">
+
+## Defining an event handler in GPAL
+
+The following imports are automatically available inside GPAL event handlers:
+
+
+import CodeBlock from '@theme/CodeBlock';
+import Imports from '!!raw-loader!/examples/server/java/event-handlers/imports.java';
+
+<CodeBlock className="language-java">{Imports}</CodeBlock>
+
+
+### Automatic import
+
+The following properties are automatically available inside GPAL event handlers:
+
+```kotlin
+val systemDefinition: SystemDefinitionService
+val rxDb: RxDb
+val entityDb: AsyncEntityDb
+val metaData: MetaDataRegistry
+val evaluatorPool: EvaluatorPool
+val messageDelegator: MessageDelegator
+val serviceDetailProvider: ServiceDetailProvider
+val genesisHFT: GenesisHFT
+val clientConnectionsManager: ClientConnectionsManager
+```
+
+### The eventHandler code block
+
+You can define an event handler by creating an **eventHandler** code block. This needs:
+
+* **Inbound and outbound message types**. An event handler requires one inbound message type (e.g. a generated dao entity or a custom defined message) and optionally an outbound message type. If a message type is not defined, the default _EventReply_ message type will apply. For example, `eventHandler<TradeInsert>` and `eventHandler<TradeInsert,TradeInsertReply>`.
+* **Optionally, a name**. The prefix `EVENT_` will always be added to this automatically. The default name will be `EVENT_<message type name>`. So, for a message type declared as `OrderInsert`, declaring an event handler block as `eventHandler<OrderInsert>{}` automatically registers the event with the name `EVENT_ORDER_INSERT`.
+* **Optionally, a boolean to define if the event handler is transactional or not**. This enables the platform to run the whole **onValidate/onCommit** **blocks in a single ACID transaction if the database engine supports it.
+
+Inside each event handler you can define additional blocks and properties.
+
+### onValidate
+
+You can declare an **onValidate** block to perform validation on each received message. The last value of the code block always needs to be the return message type.
+
+This validation step will be executed whether the event is **validate=true** or **validate=false**.
+
+The **onValidate** block is optional if you are using the default reply message type (**EventReply***)* and will automatically be successful if not defined.
+
+However, it is mandatory when using custom reply message types, and the script will not compile if it is not defined. See the simple example below:
+
+```kotlin
+   eventHandler<Company>(name = "COMPANY_INSERT") {
+        onValidate { event ->
+            val company = event.details
+            require(company.companyName != "MY_COMPANY") {
+                "We don't accept your company"
+            }
+            ack()
+        }
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("COMPANY_ID" to result.record.companyId)))
+        }
+    }
+```
+
+Kotlin’s _require_ method throws an exception with a message if the boolean expression is not what is expected, and the event handler automatically converts that exception into a corresponding **EventNack**.
+
+In order to optimise database lookup operations, you might want to reuse some data obtained within the **onValidate** block inside your **onCommit** block. To do this, you can use context event handlers, as shown below:
+
+```kotlin
+    contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {
+        onValidate {
+            val company = it.details
+            if(company.companyName == "MY_COMPANY"){
+                validationAck(validationContext = "Best company in the world")
+            } else {
+                validationAck()
+            }
+        }
+        onCommit { event, context ->
+            val parsedContext = context ?: "Missing context"
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to parsedContext)))
+        }
+    }
+```
+
+As the  example shows, there is an additional type defined for the context event handler. This is a _String._ This enables us to optionally return a _String_ value from our **onValidate** block (see _validationAck_ logic) and then capture it in our **onCommit** block (see _context_ lambda parameter).
+
+Because we are creating validation context, we need to use the function **validationAck()** and not just **ack()**
+
+If you use a custom reply message type, you won’t be able to use the default **ack()** or **validationAck()** functions.  The custom message type needs to be returned from the method.
+
+For a custom message type called **TradeEvent** defined as:
+
+```kotlin
+data class TradeEvent(
+    val price: Double,
+    val quantity: Int,
+){
+    init{
+        require(price > 0) { "Price cannot be negative "}
+        require(quantity > 0) { "Quantity cannot be negative "}
+    }
+}
+```
+
+With a custom message reply type called **CustomTradeEventReply** defined as:
+
+```kotlin
+sealed class CustomTradeEventReply : Outbound() {
+    class TradeEventValidateAck : CustomTradeEventReply()
+    data class TradeEventAck(val tradeId: String) : CustomTradeEventReply()
+    data class TradeEventNack(val error: String) : CustomTradeEventReply()
+}
+```
+
+Please see example event handler below:
+
+```kotlin
+    eventHandler<TradeEvent, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
+        onException { event, throwable ->
+            TradeEventNack(throwable.message!!)
+        }
+        onValidate {
+            val tradeEvent = it.details
+            require((tradeEvent.price * tradeEvent.quantity.toDouble()) < 1_000_000) { "Trade notional is too high" }
+            TradeEventValidateAck()
+        }
+        onCommit {
+            TradeEventAck("Trade1")
+        }
+    }
+```
+
+### onCommit
+
+The **onCommit** block will be called when an event message is received with “validate = false” and has successfully passed the **onValidate** block. This is the place where you perform the real changes to the system, whether it is a database update or uploading a report to a third party. The last value of the code block always needs to be the return message type.
+
+### onException
+
+The **onException** block can capture any exceptions thrown by the **onValidate** and **onCommit** blocks and returns the expected reply message type (as shown in the last example). This function is particularly useful if you are using a custom message type, as by default EventHandlers will attempt to translate exceptions automatically to an **EventNack** message, which might cause compatibility problems if you are using custom replies.
+
+### permissions and permissionCodes
+
+As with other GPAL files (e.g. request server and data server), you can use a **permissions** block to define both dynamic permissions (AUTH) and fixed permissions (based on RIGHT_SUMMARY rights) if the event message type is a generated database entity. See the example below:
+
+```kotlin
+    eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
+        permissions {
+            auth(mapName = "COMPANY"){
+                COMPANY.COMPANY_NAME
+            }
+        }
+
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to result.record.companyId)))
+        }
+    }
+```
+
+If your message type is not a database-generated entity,  you can still define fixed **permissionCodes** outside the permissions block:
+
+```kotlin
+    eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
+        permissionCodes = listOf("INSERT_TRADE")
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to result.record.companyId)))
+        }
+    }
+```
+
+</TabItem>
+<TabItem value="advTechDetails">
+
+## ACID guaranteed
+
+Any event handlers can be declared as **transactional = true** to ensure that the whole **onValidate** and **onCommit** blocks are executed in a single ACID-guaranteed transaction. This is especially useful when the database changes for each operation need to read and modify multiple table records in a consistent way.
+
+For example, if we need to insert a new record and create an audit record for this operation, you want to guarantee that both operations succeed - or that both operations are rolled back if something goes wrong.
+
+See the example below for defining an event handler this way (a transactional event handler):
+
+```kotlin
+    eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
+        onValidate {
+            ack()
+        }
+        onCommit { event ->
+            val company = event.details
+            entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to "SUCCESS!")))
+        }
+    }
+```
+
+## AutoAuditing
+
+If the event handler message type is a database-generated entity that is auditable, Genesis automatically creates an audit record to the corresponding audit table for each database write operation. The audit fields are filled with the following values:
+
+AUDIT_EVENT_TYPE → Event name
+AUDIT_EVENT_DATETIME → Autogenerated
+AUDIT_EVENT_TEXT → Optional “REASON” value sent as part of the event message
+AUDIT_EVENT_USER → Extracted from the event message
+
+## Defining state machines
+
+State machines, which define the conditions for moving from one state to another, are defined within your event handler files. See more details about these in the section on [Defining your state machines](/creating-applications/defining-your-application/business-logic/state-machines/define/)
+
+## Pending approvals
+
+The Genesis LCNC Platform has an in-built pending approval mechanism that can be used with event handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check". 
+
+### Set an event to require approval
+
+Any event can be marked to "require approval" as long as the `REQUIRES_APPROVAL` flag is set to `true` in the incoming message. 
+
+To configure an event for a mandatory `REQUIRES_APPROVAL` flag check:
+
+1. Override the `requiresPendingApproval` method to `true` in the custom event handler definitions. 
+2. Set the `requiresPendingAproval` property to `true` in a GPAL event handler. 
+
+Here is an example of a custom event handler definition:
+
+ 
+```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.eventhandler.typed.async.AsyncValidatingEventHandler
+import global.genesis.message.core.event.Event
+import global.genesis.message.core.event.EventReply
+
+@Module
+class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply> {
+    // Override requiresPendingApproval here to make the "pending approval" flow mandatory.
+    override fun requiresPendingApproval(): Boolean = true
+    
+    override suspend fun onValidate(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return ack()
+    }
+
+    override suspend fun onCommit(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return ack()
+    }
+}
+```
+
+or in a GPAL definition:
+
+```kotlin
+
+eventHandler {
+    eventHandler<Company> {
+        requiresPendingApproval = true
+        onCommit { event ->
+            val company = event.details
+            // custom code block..
+            ack()
+        }
+    }
+}
+```
+
+Events submitted with a "REQUIRES_APPROVAL" flag set to true are validated as usual (i.e. the onValidate method is run) and, if the validation is successful, the “delayed” event is stored in the APPROVAL table in a json format. 
+
+
+Assuming the event is inserting, updating or deleting a target database record, it is possible to have multiple APPROVAL records associated with a single database entity. Use the event `onValidate` method to check for pre-existing approvals against the entities related to the event if you need to ensure there is only one pending approval per record. 
+
+The validate method can also be used to determine if the incoming event needs approval e.g. checking if a particular field has been amended, or checking the tier on an incoming EVENT_ADD_CLIENT. If it does, then you can add the REQUIRES_APPROVAL flag to the event message.
+
+The APPROVAL record is keyed on an auto-generated APPROVAL_ID and does not have a direct link to the original record. You have to create a link by adding “approval entity” details to the payload returned on an event ack in the `onValidate` method. These details include the ENTITY_TABLE and ENTITY_KEY. This allows you to decide how to identify the original record (e.g. creating a compound key in the case of multi-field keys). When the approval entity details are provided, the platform creates a record in the APPROVAL_ENTITY table and populates it with the details provided, and the APPROVAL_ID of the APPROVAL record. There is also an APPROVAL_ENTITY_COUNTER, which is populated by the AUTH_CONSOLIDATOR process by default; this can be handy in order to easily know how many approvals are pending for a given entity.
+
+
+```kotlin
+    override suspend fun onValidate(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return ack(listOf(mapOf("ENTITY_TABLE" to "COMPANY", "ENTITY_ID" to company.companyId)))
+    }
+```
+
+
+In order to display pending approvals against the original record in the GUI, you can use the APPROVAL_ENTITY table to join to the APPROVAL records in a view. You can then display the information using a data server or request server. The details of the pending event are stored in json format.
+
+
+**Example APPROVAL DB record**
+
+
+```DbM
+TIMESTAMP          2018-09-19 09:29:51.111951844            NANO_TIMESTAMP
+APPROVAL_ID        000000000000002APLO1                     STRING
+APPROVAL_KEY       8a178f41-24c6-4cb3-b4e0-1996ae59bcddA... STRING
+APPROVAL_MESSAGE   Please approve this amendment            STRING
+APPROVAL_STATUS    PENDING                                  ENUM[PENDING APPROVED CANCELLED REJECTED_BY_USER REJECTED_BY_SERVICE]
+DESTINATION        EEP_INTENT_SERVICE                       STRING
+MESSAGE_TYPE       EVENT_OPS_INTENT                           STRING
+EVENT_DETAILS        TRADE_ID = LCH20180917.18500000098 DE... STRING
+EVENT_MESSAGE        {"MESSAGE_TYPE":"EVENT_OPS_INTENT","VAL... STRING
+USER_NAME          CdsTest                                  STRING
+```
+
+### Configuring allowed approvers
+
+Once in the APPROVAL table, the pending event can be cancelled, rejected or accepted by sending the following event messages to GENESIS_CLUSTER: 
+
+- EVENT_PENDING_APPROVAL_ACCEPT
+- EVENT_PENDING_APPROVAL_CANCEL
+- EVENT_PENDING_APPROVAL_REJECT
+
+All messages accept a REASON_CODE in their metadata.
+
+The platform ensures that users cannot approve their own events. Additional levels of control (e.g. based on user groups) can be added to the front end, to the event validate method, or can be specified in server-side configuration.
+
+To configure the allowed approvers in a server-side configuration, you need to create a new xml file with the following content.  You need to add the filename to the GENESIS_CLUSTER `<config></config>` element in the site-specific version of the genesis-processes.xml:
+
+```xml
+<genesisCluster>
+    <preExpression>
+        <![CDATA[
+
+        ]]>
+    </preExpression>
+
+    <pendingApproval>
+        <insertPendingApproval>
+            <![CDATA[
+               true
+            ]]>
+        </insertPendingApproval>
+        <acceptPendingApproval>
+            <![CDATA[
+               true
+            ]]>
+        </acceptPendingApproval>
+        <rejectPendingApproval>
+            <![CDATA[
+               true
+            ]]>
+        </rejectPendingApproval>
+        <cancelPendingApproval>
+            <![CDATA[
+               true
+            ]]>
+        </cancelPendingApproval>
+    </pendingApproval>
+</genesisCluster>
+```
+
+You can replace the "true" return value with Groovy code in each `pendingApproval` block. The platform makes the following objects accessible to your code:
+
+- `userName` - a string property containing the user name who triggered the event (insert, accept, reject or cancel).
+- `db` - an RxDb property so you can access the database layer and do appropriate checks.
+- `pendingApproval` - the pending approval record stored in the database (only available in accept, reject or cancel events).
+
+Using this xml configuration, you can look up the user's rights in the database and return `true` only if the necessary rights are in place. For example, if your system has the concept of internal and external users and you only want to allow internal users to accept pending events, then you could check your custom user "ACCESS_TYPE" field as follows:
+
+```xml
+        ...
+        <acceptPendingApproval>
+            <![CDATA[
+               def searchRecord = new DbRecord("USER_ATTRIBUTES")
+               def userAttributes = db.get(searchRecord, "USER_ATTRIBUTES_BY_USER_NAME")
+               userAttributes?.getString("ACCESS_TYPE") == "INTERNAL"
+            ]]>
+        </acceptPendingApproval>
+        ...
+```
+
+
+</TabItem>
+<TabItem value="examples">
+
+There is a nice simple example of some logic being added to an event handler in our [tutorial](/tutorials/building-an-application/add-event-handler/).
+
+```kotlin
+eventHandler {
+
+    eventHandler<Hello> {
+
+        permissions {
+            auth("NAMES") {
+                field { name }
+            }
+        }
+
+        onCommit {
+            ack()
+        }
+    }
+
+    contextEventHandler<Hello, String>("CONTEXT_HELLO") {
+        permissions {
+            auth("NAMES") {
+                field { name }
+            }
+        }
+
+        onValidate {
+            validationAck(validationContext = it.details.name)
+        }
+    }
+}
+```
+
+```kotlin
+   eventHandler<Company>(name = "COMPANY_INSERT") {
+        onValidate { event ->
+            val company = event.details
+            require(company.companyName != "MY_COMPANY") {
+                "We don't accept your company"
+            }
+            ack()
+        }
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("COMPANY_ID" to result.record.companyId)))
+        }
+    }
+```
+
+```kotlin
+    contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {
+        onValidate {
+            val company = it.details
+            if(company.companyName == "MY_COMPANY"){
+                validationAck(validationContext = "Best company in the world")
+            } else {
+                validationAck()
+            }
+        }
+        onCommit { event, context ->
+            val parsedContext = context ?: "Missing context"
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to parsedContext)))
+        }
+    }
+```
+
+```kotlin
+    eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
+        permissions {
+            auth(mapName = "COMPANY"){
+                COMPANY.COMPANY_NAME
+            }
+        }
+
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to result.record.companyId)))
+        }
+    }
+```
+
+```kotlin
+    eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
+        permissionCodes = listOf("INSERT_TRADE")
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to result.record.companyId)))
+        }
+    }
+```
+
+```kotlin
+    eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
+        onValidate {
+            ack()
+        }
+        onCommit { event ->
+            val company = event.details
+            entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to "SUCCESS!")))
+        }
+    }
+```
+
+```kotlin
+
+eventHandler {
+    eventHandler<Company> {
+        requiresPendingApproval = true
+        onCommit { event ->
+            val company = event.details
+            // custom code block..
+            ack()
+        }
+    }
+}
+```
+</TabItem>
+<TabItem value="runtimeDetails">
+
+### Configure in _application-name_**-processes.xml**
+
+Event handler process configuration is added, for example in the positions app, in position-processes.xml as below.
+
+```xml
+  <process name="POSITION_EVENT_HANDLER">
+    <groupId>POSITION</groupId>
+    <start>true</start>
+    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
+    <module>genesis-pal-eventhandler</module>
+    <package>global.genesis.eventhandler.pal</package>
+    <script>position-eventhandler.kts</script>
+    <description>Handles events</description>
+    <classpath>position-messages*,position-eventhandler*</classpath>
+    <language>pal</language>
+  </process>
+```
+
+For more information of each tag in the process config follow this [link](/creating-applications/configure-runtime/processes-xml)
+
+### Configure in _application-name_**-service-definitions.xml**
+
+Event handler service configuration is added, for example in the positions app, in position-service-definitions.xml as below.
+
+```xml
+  <service host="localhost" name="POSITION_EVENT_HANDLER" port="11002"/>
+```
+
+For more information of each attribute in the service definition config follow this [link](/creating-applications/configure-runtime/service-definitions)
+
+</TabItem>
+</Tabs>
