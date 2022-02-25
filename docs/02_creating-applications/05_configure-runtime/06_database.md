@@ -9,23 +9,24 @@ We support the following database technology:
 
 * FoundationDB
 * PostgreSQL
+* MSSQL
 * Aerospike
 
 Because we abstract from the underlying technology, you can easily toggle between any of these three.
 
 There are also tools that enable you to [stream real-time data reliably to and from any classic Oracle/SQL database](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/overview/).
 
-By default, FoundationDB is installed on the platform. If you need to use a PostgreSQL or Aerospike database, follow the steps below.
+By default, FoundationDB is installed on the platform. If you need to use another supported database, follow the steps below.
 
-## Changing to PostgreSQL or Aerospike
+## Changing the database technology
 
 ### 1. Edit the system configuration file
 
-Edit the file **\~/run/site-specific/cfg/genesis-system-definition.kts**. Before you start, make sure you know the JDBC connection string for the database, which specifies the host, the user name and password.
+Edit the file **\~/run/site-specific/cfg/genesis-system-definition.kts**. Before you start, make sure you know the JDBC connection string for the database, which specifies the host, the username and password.
 
 You need to make two changes.
 
-First, go to the line item for **DbLayer** and change the **value** from **FDB** to **SQL** (for PostgreSQL) or **AEROSPIKE**.
+First, go to the line item for **DbLayer** and change the **value** from **FDB** to **SQL** (for PostgreSQL and MSSQL) or **AEROSPIKE**.
 
 ```kotlin
 systemDefinition {
@@ -37,10 +38,10 @@ systemDefinition {
 ```
 
 
-Then, insert a line in the **hosts** block to identify the JDBC connection string for the database. This points the system to the local PostgreSQL or Aerospike server. For example:
+Then, insert a line in the **hosts** block to identify the JDBC connection string for the database. This points the system to the local PostgreSQL, MSSQL or Aerospike server. For example:
 
 ```kotlin
-item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432”)
+item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432")
 ```
 
 Here is the example in place:
@@ -52,7 +53,7 @@ systems {
                 host(name = "genesis-serv")
             }
 
-            item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432”)
+            item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432")
             item(name = "DbNamespace", value = "genesis")
             item(name = "ClusterPort", value = "6000")
             item(name = "Location", value = "LO")

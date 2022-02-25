@@ -171,6 +171,20 @@ To connect, use this JDBC URL:
 jdbc:postgresql://localhost:5432/?user=postgres&password=docker
 ```
 
+## Running MSSQL from Docker
+
+```
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=docker" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+```
+
+This downloads and runs a MSSQL image for version 2019-latest. Other versions are available; for more details [see here](https://hub.docker.com/_/microsoft-mssql-server).
+
+To connect, use this JDBC URL:
+
+```
+jdbc:sqlserver://localhost:1433;database=master;user=sa;password=docker
+```
+
 ## Copying files between Windows and WSL
 From WSL, your Windows drives are available from `/mnt/_drive letter_`:
 
