@@ -9,15 +9,15 @@ These user-interface components give you the ability to create clear and usable 
 
 | Name| Category | Description|
 |------------------------------------|--------------------|----------------|
-| Button| Form | Enables users to trigger actions, such as submitting a form or opening a dialog |
-| Checkbox	| Form | An implementation of a checkbox as a form-connected Web Component |
-| Combobox | Form | A combobox is an input with an associated pop-up that enables users to select a value from a collection of possible values (auto-complete) |
-| Number field	| Form | A text field for numeric entry |
-| Option	| Form | An implementation of an option |
-| Picker | Form | A selection input with support for selection of multiple options |
-| Radio		| Form | An implementation of a radio as a form-connected Web Component |
-| Radio group	| Form  | A set of radio buttons where no more than one of the buttons can be checked at a time |
-| Select | Form  | An implementation of an HTML select element as a form-connected Web Component |
+| [Button](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/form/button/) | Form | Enables users to trigger actions, such as submitting a form or opening a dialog |
+| [Checkbox](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/form/checkbox/)	| Form | An implementation of a checkbox as a form-connected Web Component |
+| [Combobox](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/form/combobox/) | Form | A combobox is an input with an associated pop-up that enables users to select a value from a collection of possible values (auto-complete) |
+| [Number field](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/form/number-field/)	| Form | A text field for numeric entry |
+| [Option](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/form/option/)	| Form | An implementation of an option |
+| [Picker](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/form/picker/) | Form | A selection input with support for selection of multiple options |
+| [Radio](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/form/radio/)		| Form | An implementation of a radio as a form-connected Web Component |
+| [Radio group](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/form/radio-group/)	| Form  | A set of radio buttons where no more than one of the buttons can be checked at a time |
+| [Select](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/form/select/) | Form  | An implementation of an HTML select element as a form-connected Web Component |
 | Slider		| Form | An implementation of a range slider as a form-connected Web Component |
 | Switch		| Form | An implementation of a switch as a form-connected Web Component |
 | Text area	| Form | An implementation of an HTML textarea element as a form-connected Web Component |
