@@ -2,7 +2,7 @@
 title: 'Request servers'
 sidebar_label: 'Request servers'
 sidebar_position: 2
-id: configure
+id: request-servers
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -40,7 +40,7 @@ So, if your application is called **position**, then the file would conventional
 </TabItem>
 <TabItem value="techDetails">
 
-Within a request server file, there are one  more `requestReply` code blocks. Each code block defines a set of `request` fields (essentially criteria), and the set of `reply` fields. The most [basic `requestReply`code block](/creating-applications/defining-your-application/user-interface/request-servers/reference/#basic-definition) simply specifies a table that can be reqested and returned.
+Within a request server file, there are one  more `requestReply` code blocks. Each code block defines a set of `request` fields (essentially criteria), and the set of `reply` fields. The most [basic `requestReply`code block](/creating-applications/defining-your-application/user-interface/request-servers/) simply specifies a table that can be reqested and returned.
 
 By default, a request server file is generated automatically when you use AppGen. This uses the metadata of each view or table in the data model to create an individual `requestReply` code block for each one. The request will be the primary key, and the response provides every field in the table or view.
 
