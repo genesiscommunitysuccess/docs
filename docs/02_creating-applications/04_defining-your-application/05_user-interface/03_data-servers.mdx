@@ -1,9 +1,56 @@
 ---
-title: Reference
-sidebar_label: Reference
-sidebar_position: 20
-id: examples
+title: 'Data servers'
+sidebar_label: 'Data servers'
+sidebar_position: 3
+id: data-servers
 ---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Data servers monitor specific tables or views in the database. When a change in data occurs, the data server makes the changed data available to the User Interface.
+
+```kotlin
+  query("ALL_TRADES", TRADE_VIEW) {
+    permissioning {
+      permissionCodes = listOf("TRADER", "SUPPORT")
+      auth(mapName = "ENTITY_VISIBILITY") {
+        TRADE_VIEW.COUNTERPARTY_ID
+      }
+    }
+    indices {
+      unique {
+        QUANTITY
+        TRADE_ID
+      }
+    }
+  }
+```
+
+The data server configuration is refreshingly light, because all the hard work is done by the table or views.
+
+You need to define queries to handle each event in the required way. You can define any number of queries. A query can be on to an individual table or view. All the details of the table or view are inherited from the definition, so you don’t need to supply any further details.
+
+The initial run of the query serves all the data that is defined by the table or view. From then on, it automatically monitors the user who has requested the data. Whenever a value in the underlying table or view changes, that change is sent to the user. In this way, the user’s data is maintained up to date in real time, without the unnecessary burden of sending the whole data set each time there is a change.
+
+Note that any table or view that you are monitoring might contain a join. By default, the fields that are joined are not monitored for updates - typically these are used for reference data that does not change intraday. If you need these fields to be monitored in real time along with the fields in the primary table, then you need to use a 
+backwards join (more at Technical details).
+
+Typically in Genesis, each module has its own data server process, which points at this configuration.
+
+<Tabs defaultValue="whereToDefine" 
+        values={[{ label: 'Where to define', value: 'whereToDefine', }, 
+                 { label: 'Technical details', value: 'techDetails', }, 
+                 { label: 'Advanced technical details', value: 'advTechDetails', },
+                 { label: 'More examples', value: 'examples', },
+                 { label: 'Runtime', value: 'runtimeDetails', }]}>
+<TabItem value="whereToDefine">
+
+Data servers are conventionally defined in the file _application-name_**-dataserver.kts**. 
+
+So, if your application is called **position**, then the file would conventionally be named **position-dataserver.kts**.
+
+</TabItem>
+<TabItem value="techDetails">
 
 ## The simplest possible definition
 
@@ -146,7 +193,7 @@ This enables update filtering for a list of process names. Any database updates 
 
 #### enableTypeAwareCriteriaEvaluator
 This enables the type-aware criteria evaluator at the data-server level. Defaults to `false`. [Click here to read more](
-    /creating-applications/defining-your-application/user-interface/data-servers/examples/#enabletypeawarecriteriaevaluator)
+    /creating-applications/defining-your-application/user-interface/data-servers/#enabletypeawarecriteriaevaluator)
 
 ### Query settings
 The following settings only apply at query-level. 
@@ -171,7 +218,7 @@ For example, you might want a front-end client to perform a criteria search on a
 This search  can be  translated automatically to the right field types internally (even though `TRADE_DATE` is a field of type `DateTime`). The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimised experience. 
 The type-aware evaluator can transform strings to integers, and any other sensible and possible conversion (e.g `TRADE_ID == '1'`). As a side note, this type-aware evaluator is also available in `DbMon` for operations like `search` and `qsearch`.
 
-By contrast, the traditional criteria evaluator needs the field types to match the query fields in the data server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our [common date expressions](/creating-applications/defining-your-application/user-interface/data-servers/examples/#common-datedatetime-criteria-expressions) to handle date searches.
+By contrast, the traditional criteria evaluator needs the field types to match the query fields in the data server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our common date expressions(more at Advanced technical details) to handle date searches.
 
 
 ## Backwards joins
@@ -233,13 +280,13 @@ The `indices` (optional) block defines additional indexing at the query level. W
 
 There are two scenarios in which an index can be used:
 * Optimising query criteria search. If a data server client specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, the data server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means we don't need to scan all the query rows stored in the data server memory-mapped file cache; instead, we perform a very efficient indexed search.
-* Index specifed in the data server client. If an `ORDER_BY` value is received as part of the `DATA_LOGON` process, the data server will use a specific index to query the data. The data will be returned to the client in ascending order, based on the index field definition. See more at [Client side (runtime) options](#client-side-runtime-options).
+* Index specifed in the data server client. If an `ORDER_BY` value is received as part of the `DATA_LOGON` process, the data server will use a specific index to query the data. The data will be returned to the client in ascending order, based on the index field definition. See more at Advanced technical details.
 
 *Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add SIMPLE_ID to the index definition to ensure we maintain uniqueness.
 
 
-
-## Advanced features
+</TabItem>
+<TabItem value="advTechDetails">
 
 ### Client-enriched data
 
@@ -527,3 +574,135 @@ For example:
 
 `Expr.dateTimeIsLessEqual(TRADE_DATETIME,'20150518-10:50:24')`
 
+
+
+</TabItem>
+<TabItem value="examples">
+
+```kotlin
+dataServer {
+    query(INSTRUMENT_DETAILS)
+}
+```
+
+```kotlin
+dataServer {
+    query(INSTRUMENT_DETAILS)
+
+    query(COUNTERPARTY)
+}
+```
+
+```kotlin
+dataServer {
+    query(INSTRUMENT_DETAILS) {
+        fields {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+
+```kotlin
+dataServer {
+    query(INSTRUMENT_DETAILS) {
+        fields {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+            derivedField("IS_USD", BOOLEAN) {
+                tradedCurrency == "USD"
+            }
+        }
+    }
+}
+```
+
+```kotlin
+dataServer {
+    query("SIMPLE_QUERY", SIMPLE_TABLE) {
+        config {
+            // Items below only available in query level config
+            defaultCriteria = "SIMPLE_PRICE > 0"
+            backwardsJoins = false
+            disableAuthUpdates = false
+        }
+    }
+}
+```
+
+```kotlin
+dataServer {
+
+    query("ALL_TRADES_LARGE_POSITION", ENHANCED_TRADE_VIEW) {
+        permissioning {
+            permissionCodes = listOf("TRADER", "SUPPORT")
+            auth(mapName = "ENTITY_VISIBILITY") {
+                ENHANCED_TRADE_VIEW.COUNTERPARTY_ID
+            }
+        }
+        where { trade -> 
+            (trade.quantity * trade.price) > 1000000 
+        }
+    }
+}
+```
+
+```kotlin
+dataServer {
+    query("SIMPLE_QUERY", SIMPLE_TABLE) {
+        indices {
+            unique("SIMPLE_QUERY_BY_QUANTITY") {
+                QUANTITY
+                SIMPLE_ID
+            }
+        }
+    }
+}
+```
+</TabItem>
+<TabItem value="runtimeDetails">
+
+### Configure in _application-name_**-processes.xml**
+
+Data server process configuration is added, for example in the positions app, in position-processes.xml as below.
+
+```xml
+  <process name="POSITION_DATASERVER">
+    <groupId>POSITION</groupId>
+    <start>true</start>
+    <options>-Xmx1024m -DXSD_VALIDATE=false</options>
+    <module>genesis-pal-dataserver</module>
+    <package>global.genesis.dataserver.pal</package>
+    <script>position-dataserver.kts</script>
+    <description>Displays real-time details</description>
+    <language>pal</language>
+  </process>
+```
+
+For more information of each tag in the process config follow this [link](/creating-applications/configure-runtime/processes-xml)
+
+### Configure in _application-name_**-service-definitions.xml**
+
+Data server service configuration is added, for example in the positions app, in position-service-definitions.xml as below.
+
+```xml
+  <service host="localhost" name="POSITION_DATASERVER" port="11000"/>
+```
+
+For more information of each attribute in the service definition config follow this [link](/creating-applications/configure-runtime/service-definitions/)
+
+</TabItem>
+</Tabs>
