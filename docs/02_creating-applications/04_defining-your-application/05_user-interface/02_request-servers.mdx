@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 Request servers, (otherwise known as request/replies or reqreps) retrieve snapshot data from a table or a view on demand and serve it up to the requesting client. They are predomenantly used for serving the UI.
 
-They serve up what can be considered a "snap shot" of data, that is to say that after a reply is given the transation is over (unlike their [dataserver](/creating-applications/defining-your-application/user-interface/data-server) counterpart which stay connected to the client and push updates)
+They serve up what can be considered a "snap shot" of data, that is to say that after a reply is given the transation is over (unlike their [dataserver](/creating-applications/defining-your-application/user-interface/data-servers) counterpart which stay connected to the client and push updates)
 
 They have other features distinct from a dataserver too such as allowing one to many joins, and even completely custom reqreps for serving up non linear data (e.g. sets of disjointed data to serve up to a report)
 
@@ -545,7 +545,7 @@ Request-Reply service configuration is added, for example in the positions app, 
   <service host="localhost" name="POSITION_REQUEST_SERVER" port="11001"/>
 ```
 
-For more information of each attribute in the service definition config follow this [link](/creating-applications/configure-runtime/service-definitions-xml)
+For more information of each attribute in the service definition config follow this [link](/creating-applications/configure-runtime/service-definitions)
 
 </TabItem>
 </Tabs>
