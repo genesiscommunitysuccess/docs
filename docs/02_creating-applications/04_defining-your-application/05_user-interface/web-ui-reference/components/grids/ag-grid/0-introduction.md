@@ -36,7 +36,7 @@ This is the most common use case for our AG Grid component. When connecting to a
 For this use case, a separate `ag-genesis-datasource` component is required with a valid `resourceName`. More details [here](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/grids/ag-grid/ag-genesis-datasource/).
 :::
 
-The **connected data** use case is when you have a [data server](/creating-applications/defining-your-application/user-interface/data-servers/) or [request server](/creating-applications/defining-your-application/user-interface/request-servers/configure) available/ready to use and don't want to worry about handling data transformations/updates/deletes/cell renderers in the grid (for cell renders it's flexible so you can use any component you want or the ones provided by default).
+The **connected data** use case is when you have a [data server](/creating-applications/defining-your-application/user-interface/data-servers/) or [request server](/creating-applications/defining-your-application/user-interface/request-servers/) available/ready to use and don't want to worry about handling data transformations/updates/deletes/cell renderers in the grid (for cell renders it's flexible so you can use any component you want or the ones provided by default).
 
 `ag-genesis-datasource`
 
