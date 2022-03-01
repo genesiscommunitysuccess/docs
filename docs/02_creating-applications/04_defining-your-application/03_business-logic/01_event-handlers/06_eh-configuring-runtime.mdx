@@ -1,0 +1,42 @@
+---
+title: 'Configuring runtime'
+sidebar_label: 'Configuring runtime'
+sidebar_position: 6
+id: eh-configuring-runtime
+---
+
+
+
+
+
+
+### Configure in _application-name_**-processes.xml**
+
+Event handler process configuration is added, for example in the positions app, in position-processes.xml as below.
+
+```xml
+  <process name="POSITION_EVENT_HANDLER">
+    <groupId>POSITION</groupId>
+    <start>true</start>
+    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
+    <module>genesis-pal-eventhandler</module>
+    <package>global.genesis.eventhandler.pal</package>
+    <script>position-eventhandler.kts</script>
+    <description>Handles events</description>
+    <classpath>position-messages*,position-eventhandler*</classpath>
+    <language>pal</language>
+  </process>
+```
+
+For more information of each tag in the process config, follow this [link](/creating-applications/configure-runtime/processes-xml)
+
+### Configure in _application-name_**-service-definitions.xml**
+
+Event handler service configuration is added, for example in the positions app, in position-service-definitions.xml as below.
+
+```xml
+  <service host="localhost" name="POSITION_EVENT_HANDLER" port="11002"/>
+```
+
+For more information of each attribute in the service definition config, follow this [link](/creating-applications/configure-runtime/service-definitions)
+
