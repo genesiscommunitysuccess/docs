@@ -1,0 +1,40 @@
+---
+title: 'Configure runtime'
+sidebar_label: 'Configure runtime'
+sidebar_position: 6
+id: rs-configure-runtime
+---
+
+
+
+
+
+### Configure in _application-name_**-processes.xml**
+
+Request-Reply process configuration is added, for example in the positions app, in position-processes.xml as below.
+
+```xml
+  <process name="POSITION_REQUEST_SERVER">
+    <groupId>POSITION</groupId>
+    <start>true</start>
+    <options>-Xmx256m -DXSD_VALIDATE=false</options>
+    <module>genesis-pal-requestserver</module>
+    <package>global.genesis.requestreply.pal</package>
+    <script>position-reqrep.kts</script>
+    <description>Server one-shot requests for details</description>
+    <language>pal</language>
+  </process>
+```
+
+For more information of each tag in the process config follow this [link](/creating-applications/configure-runtime/processes-xml)
+
+### Configure in _application-name_**-service-definitions.xml**
+
+Request-Reply service configuration is added, for example in the positions app, in position-service-definitions.xml as below.
+
+```xml
+  <service host="localhost" name="POSITION_REQUEST_SERVER" port="11001"/>
+```
+
+For more information of each attribute in the service definition config follow this [link](/creating-applications/configure-runtime/service-definitions)
+

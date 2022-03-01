@@ -20,9 +20,9 @@ Used in [Connected Data](/creating-applications/defining-your-application/user-i
 
 - **`orderBy: string`**: This option can be used to select a data server index (defined in xml), which is especially useful if you want the data to be sorted in a specific way. By default, data server rows will be returned in order of creation (from oldest database record to newest).
 
-- **`request: any`**: Similar to `fields` but for [Request Server](/creating-applications/defining-your-application/user-interface/request-servers/) scenarios. This optional parameter allow you to specify request fields which can include wildcards. Example: you could request all RIC Codes for example, or all RIC Codes beginning with "V" for example.
+- **`request: any`**: Similar to `fields` but for [Request Server](/creating-applications/defining-your-application/user-interface/web-ui-reference/request-servers/request-servers/) scenarios. This optional parameter allow you to specify request fields which can include wildcards. Example: you could request all RIC Codes for example, or all RIC Codes beginning with "V" for example.
 
-- **`resourceName: string`**: The target [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/) or [Request Server](/creating-applications/defining-your-application/user-interface/request-servers/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
+- **`resourceName: string`**: The target [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/) or [Request Server](/creating-applications/defining-your-application/user-interface/web-ui-reference/request-servers/request-servers) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
 
 - **`reverse: boolean`**: This option changes the data server index iteration. For example, if you are using the default index, they query will return rows from newest database records to oldest.
 
