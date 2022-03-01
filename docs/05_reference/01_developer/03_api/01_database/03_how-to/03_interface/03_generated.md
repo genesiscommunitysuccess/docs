@@ -28,7 +28,8 @@ We are still working on this page
 | Write (output)                                                                                                                 | [Legacy Write Result](../../helper/write-result/legacy)                            |
 | Subscribe                                                                                                                      | [Record Update](../../helper/subscription/record-update) of entity                 |
 | Bulk or Range Subscribe                                                                                                        | [Bulk](../../helper/subscription/bulk) of entity                                   |
-| Available in [event-handlers](/creating-applications/defining-your-application/business-logic/event-handlers/)       | ❌                                                                                  |
+| Available in 
+    [event handlers](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/)       | ❌                                                                                  |
 | Available in [custom request replies](/creating-applications/defining-your-application/user-interface/request-servers/) | ❌                                                                                  |
 
 During the code generation phase repository classes are generated for every table and view in the system. These 

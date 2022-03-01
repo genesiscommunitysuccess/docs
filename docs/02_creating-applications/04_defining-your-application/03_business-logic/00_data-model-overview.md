@@ -8,7 +8,7 @@ id: business-logic
 
 In this section, we look at components that you can configure in order translate your business logic into actionable events that drive the application.
 
-[Event handlers](/creating-applications/defining-your-application/business-logic/event-handlers/) enable you to configure events that react to change and trigger further action.
+[Event handlers](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/) enable you to configure events that react to change and trigger further action.
 
 [State machines](/creating-applications/defining-your-application/business-logic/state-machines/define/) are particular types of event handler designed to handle the transition of an item from one state to another.
 
