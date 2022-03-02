@@ -7,12 +7,17 @@ id: eh-configuring-runtime
 
 
 
+There are two important files in your application that contain configuration information: 
+-  _application-name_**-processes.xml**
+- _application-name_**-service-definitions.xml
 
 
 
-### Configure in _application-name_**-processes.xml**
+### Configuring in processes.xml
 
-Event handler process configuration is added, for example in the positions app, in position-processes.xml as below.
+The event handler process configuration is in the application's **processes.xml** file.
+
+Here is a example configuration:
 
 ```xml
   <process name="POSITION_EVENT_HANDLER">
@@ -28,15 +33,15 @@ Event handler process configuration is added, for example in the positions app, 
   </process>
 ```
 
-For more information of each tag in the process config, follow this [link](/creating-applications/configure-runtime/processes-xml)
+For more information on the tags that can be set within the configuration for your application, follow this [link](/creating-applications/configure-runtime/processes-xml).
 
-### Configure in _application-name_**-service-definitions.xml**
+### Configuring in **-service-definitions.xml**
 
-Event handler service configuration is added, for example in the positions app, in position-service-definitions.xml as below.
+Here is an example of the event handler service configuration:
 
 ```xml
   <service host="localhost" name="POSITION_EVENT_HANDLER" port="11002"/>
 ```
 
-For more information of each attribute in the service definition config, follow this [link](/creating-applications/configure-runtime/service-definitions)
+For more information on the attributes that can be set in the service definition config, follow this [link](/creating-applications/configure-runtime/service-definitions).
 
