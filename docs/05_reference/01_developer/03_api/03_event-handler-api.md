@@ -24,7 +24,7 @@ The event handler interface is the common supertype of AsyncEventHandler, Rx3Eve
 | includeMetadataFields | `fun includeMetadataFields(): Set<String>` | emptySet() | Contains a list of metadata fields that need to be included in the event metadata; this must be available in input `I`. A non-empty list will exclude the other fields. |
 | messageType | `fun messageType(): String?` | null | Contains the name of the event handler. If undefined, the event handler name will become `EVENT_*INPUT_CLASS_NAME*`. So, for an event handler using an input type called `TradeInsert`, the message type will become `EVENT_TRADE_INSERT`. |
 | overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I` |
-| requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them in order to take effect ([see pending approval documentation](/creating-applications/defining-your-application/business-logic/event-handlers/))|
+| requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them in order to take effect ([see pending approval documentation](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals))|
 
 ## Async
 ### AsyncEventHandler
