@@ -15,13 +15,11 @@ A data-server file consists of a number of queries that handle each event in the
 The initial run of the query serves all the data that is defined by the table or view. From then on, it automatically monitors the user who has requested the data. Whenever a value in the underlying table or view changes, that change is sent to the user. In this way, the user’s data is maintained up to date in real time, without the unnecessary burden of sending the whole data set each time there is a change.
 
 
+## More details
+[Where to define](/creating-applications/defining-your-application/user-interface/data-servers/ds-where-to-define/) | [Technical details](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/) |  [Advanced technical details](/creating-applications/defining-your-application/user-interface/data-servers/ds-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/user-interface/data-servers/ds-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/user-interface/data-servers/ds-configure-runtime/) | Testing
 
 
 
-Note that any table or view that you are monitoring might contain a join. By default, the fields that are joined are not monitored for updates - typically these are used for reference data that does not change intraday. If you need these fields to be monitored in real time along with the fields in the primary table, then you need to use a 
-backwards join (more at Technical details).
-
-Typically in Genesis, each module has its own data server process, which points at this configuration.
 
 
 

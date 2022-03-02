@@ -15,9 +15,7 @@ There are two important files in your application that contain configuration inf
 
 ### Configuring in processes.xml
 
-The event handler process configuration is in the application's **processes.xml** file.
-
-Here is a example configuration:
+Here is an example of a request reply configuration in an application's **processes.xml** file:
 
 ```xml
   <process name="POSITION_EVENT_HANDLER">
@@ -35,7 +33,7 @@ Here is a example configuration:
 
 For more information on the tags that can be set within the configuration for your application, follow this [link](/creating-applications/configure-runtime/processes-xml).
 
-### Configuring in **-service-definitions.xml**
+### Configuring in service-definitions.xml
 
 Here is an example of the event handler service configuration:
 
@@ -43,5 +41,5 @@ Here is an example of the event handler service configuration:
   <service host="localhost" name="POSITION_EVENT_HANDLER" port="11002"/>
 ```
 
-For more information on the attributes that can be set in the service definition config, follow this [link](/creating-applications/configure-runtime/service-definitions).
+For more information on the attributes that can be set in the service definition configuration, follow this [link](/creating-applications/configure-runtime/service-definitions).
 
