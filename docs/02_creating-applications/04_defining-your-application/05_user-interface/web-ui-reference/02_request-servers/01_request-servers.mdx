@@ -1,0 +1,25 @@
+---
+title: 'Request servers'
+sidebar_label: 'Introduction'
+sidebar_position: 1
+id: request-servers
+---
+
+
+Request servers, (otherwise known as request/replies or reqreps) retrieve snapshot data from a table or a view on demand and serve it up to the requesting client. They are predomenantly used for serving the UI.
+
+They serve up what can be considered a "snap shot" of data, that is to say that after a reply is given the transation is over (unlike their dataserver](/creating-applications/defining-your-application/user-interface/data-servers) counterpart which stay connected to the client and push updates)
+
+They have other features distinct from a data server,  such as allowing one-to-many joins, and even completely custom request servers for serving up non-linear data (e.g. sets of disjointed data to serve up to a report)
+
+```kotlin
+  requestReply("TRADE", TRADE_VIEW) {
+    permissioning {
+      permissionCodes = listOf("TRADER", "SUPPORT")
+      auth(mapName = "ENTITY_VISIBILITY") {
+        TRADE_VIEW.COUNTERPARTY_ID
+      }
+    }
+  }
+```
+
