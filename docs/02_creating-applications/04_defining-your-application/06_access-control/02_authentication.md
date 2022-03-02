@@ -64,7 +64,7 @@ This has two options:
 This defines the maximum number of active sessions any one user can maintain. Once this limit has been reached, then the user cannot login again until another session has been logged out. If the specified value is zero, is not defined or is not a positive integer, then any number of sessions is permitted.
 
 #### loginAckFields
-This is an optional xml block that enables you to define additional values to be sent back to the client as part of the LOGIN_ACK message. It follows a classic *join* xml definition similar to the ones used in [request server](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/) and data server](/creating-applications/defining-your-application/user-interface/data-servers/) modules.
+This is an optional xml block that enables you to define additional values to be sent back to the client as part of the LOGIN_ACK message. It follows a classic *join* xml definition similar to the ones used in [request server](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/) and [data server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers/) modules.
 
 #### mfa
 This is a set of parameters that enable you to configure Multi-factor Authentication (MFA).
