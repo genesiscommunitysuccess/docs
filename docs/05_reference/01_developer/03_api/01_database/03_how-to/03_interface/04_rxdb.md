@@ -36,6 +36,8 @@ We are still working on this page
 | Write (output)                                                                                  | [Legacy Write result](../../helper/write-result/legacy)                |
 | Subscribe                                                                                       | [Record Update](../../helper/subscription/record-update) of `DbRecord` |
 | Bulk or Range Subscribe                                                                         | [Bulk](../../helper/subscription/bulk) of `DbRecord`                   |
-| Available in [event handlers](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/)       | ❌                                                                      |
-| Available in [custom request replies](/creating-applications/defining-your-application/user-interface/request-servers/) | ❌                                                                      |
+
+| Available in [event handlers](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/)        | ❌                                                                      |
+| Available in [custom request servers](/creating-applications/defining-your-application/user-interface/web-ui-reference/request-servers/rs-advanced-technical-details/#custom-request-servers) | ❌                                                                      |
+
 
