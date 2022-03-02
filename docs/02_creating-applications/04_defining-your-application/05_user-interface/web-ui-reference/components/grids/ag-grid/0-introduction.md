@@ -29,14 +29,14 @@ This use case requires the client app to handle all the data transformations/upd
 #### Connected data
 
 :::tip 
-This is the most common use case for our AG Grid component. When connecting to a [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/) or [Request Server](/creating-applications/defining-your-application/user-interface/request-servers/). 
+This is the most common use case for our AG Grid component. When connecting to a [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/) or [Request Server](/creating-applications/defining-your-application/user-interface/web-ui-reference/request-servers/request-servers/). 
 :::
 
 :::warning
 For this use case, a separate `ag-genesis-datasource` component is required with a valid `resourceName`. More details [here](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/grids/ag-grid/ag-genesis-datasource/).
 :::
 
-The **connected data** use case is when you have a [data server](/creating-applications/defining-your-application/user-interface/data-servers/) or [request server](/creating-applications/defining-your-application/user-interface/request-servers/) available/ready to use and don't want to worry about handling data transformations/updates/deletes/cell renderers in the grid (for cell renders it's flexible so you can use any component you want or the ones provided by default).
+The **connected data** use case is when you have a [data server](/creating-applications/defining-your-application/user-interface/data-servers/) or [request server](/creating-applications/defining-your-application/user-interface/web-ui-reference/request-servers/request-servers/) available/ready to use and don't want to worry about handling data transformations/updates/deletes/cell renderers in the grid (for cell renders it's flexible so you can use any component you want or the ones provided by default).
 
 `ag-genesis-datasource`
 
@@ -56,7 +56,7 @@ The **connected data** use case is when you have a [data server](/creating-appli
 
 - **`rowHeight: number`**: The height of a row in pixels. <br /> *Defaults to **'32'** when using `<zero-ag-grid>`*
 
-- **`rowNodeId: string`**: The id to be used in AG Grid's own [getRowNodeId](https://www.ag-grid.com/javascript-data-grid/accessing-data/#accessing-rownode-by-id/). <br /> Defaults to *'ROW_REF'* but can be set to any string (e.g. *'MY_UNIQUE_ID'*  from a [Request Server](/creating-applications/defining-your-application/user-interface/request-servers/) query) <br /> **This will only work for [Connected Data](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/grids/ag-grid/ag-grid-connected/) scenarios.** 
+- **`rowNodeId: string`**: The id to be used in AG Grid's own [getRowNodeId](https://www.ag-grid.com/javascript-data-grid/accessing-data/#accessing-rownode-by-id/). <br /> Defaults to *'ROW_REF'* but can be set to any string (e.g. *'MY_UNIQUE_ID'*  from a [Request Server](/creating-applications/defining-your-application/user-interface/web-ui-reference/request-servers/request-servers/) query) <br /> **This will only work for [Connected Data](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/grids/ag-grid/ag-grid-connected/) scenarios.** 
 
 - **`theme`**: The theme to use for the grid. <br /> *Defaults to **'ag-theme-rapid'** when using `<zero-ag-grid>` and to **'ag-theme-alpine'** when using `<foundation-ag-grid>`.*
 
