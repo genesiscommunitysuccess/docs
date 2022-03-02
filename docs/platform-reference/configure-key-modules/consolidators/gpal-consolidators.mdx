@@ -11,7 +11,7 @@ GPAL Consolidators services:
 
 
 Consolidators allow developers to aggregate data from a table or a view into another table. They have a syntax that is
-similar to a sql group by query, in that there is allows developers to select fields, and apply aggregation functions
+similar to a sql group by query, in that it allows developers to select fields, and apply aggregation functions
 to these, e.g. SUM, COUNT or MIN. Group by certain fields, and have a where statement. However, they are also different,
 in that they are defined in genesis GPAL, which lets developers leverage kotlin and also, that the output is saved to the
 genesis database.
@@ -85,7 +85,7 @@ sum { feeAmount ?: otherAmount }    // sum FEE_AMOUNT or OTHER_AMOUNT if FEE_AMO
 ```
 ### assigning functions to fields
 
-After a function is defined, it's output can be directed to an output field. To do this use the `into` keyword.
+After a function is defined, its output can be directed to an output field. To do this use the `into` keyword.
 Please note that functions can only be applied to fields that match in type. You can only assign `Double` value
 to a `DOUBLE` field.
 
@@ -229,7 +229,7 @@ properties, and consolidator properties will overwrite both.
 | Property             | Description                                   | Supports Values                    | Default Value |
 |----------------------|-----------------------------------------------|------------------------------------|---------------|
 | defaultLogLevel      | the default log level for the consolidator    | TRACE, DEBUG, INFO, WARN, ERROR    | TBC           |
-| onNotFound           | what to do if an output record i not found    | BUILD, WARN, IGNORE, FAIL, DEFAULT | TBC           |
+| onNotFound           | what to do if an output record is not found   | BUILD, WARN, IGNORE, FAIL, DEFAULT | TBC           |
 | batchingPeriod       | the time in ms before writing to the database |                                    | TBC           |
 | ignoreIndexScan      | disables index scans                          |                                    | TBC           |
 | defaultErrorHandling | what to do if an exception is thrown          | IGNORE, WARN, FAIL                 | TBC           |
@@ -271,7 +271,7 @@ select {
 
 #### logging
 For debugging purposes, the `select` block also supports logging. By default, the consolidator will by default
-log all event with debug level TBC, but this can be overwritten with a custom messages. To do this, use the `logJoin`,
+log all events with debug level TBC, but this can be overwritten with custom messages. To do this, use the `logJoin`,
 `logLeave` and `logNoop` blocks:
 
 ```kotlin
@@ -287,8 +287,8 @@ select {
 
 This block is optional. In the onCommit block, a developer can amend the output row, after all functions have been
 applied, but before it is written to the database. In the `onCommit` block the developer has access to both the `input`
-and the `output` objects. The `input` property can be of the input rows picked up during the consolidation, so this
-should be handled with care.
+and the `output` objects. The `input` property can be any one of the input rows picked up during the consolidation,
+so this should be handled with care.
 
 This block can be useful to do further calculations based on the consolidated values, for example:
 
@@ -317,7 +317,7 @@ The `groupBy`-`into` syntax determines:
 1. how records are grouped `groupBy { ... } `
 2. how the consolidator interacts with the database `into { ... }`
     1. how output records are loaded from the database `into { lookup { ... } }`
-    2. how output record are build when no record is fround in the database `into { build { ... } }`
+    2. how output records are build when no record is found in the database `into { build { ... } }`
     3. how to look up records after an index scan `into { indexScan { ... } }`
 
 Syntax:
