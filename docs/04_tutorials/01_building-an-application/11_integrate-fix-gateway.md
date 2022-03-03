@@ -6,6 +6,7 @@ sidebar_position: 11
 
 ---
 We now have the back end of a working trade application.
+
 In many cases, you will need to integrate other systems into your Genesis application - to report events, for example. 
 
 In this exercise, we shall use the Genesis Gateway and Streamer components to construct a data flow that reports to another system running outside Genesis.
@@ -166,7 +167,9 @@ Add the service definition to the **trading_app-service-definitions.xml** file:
 <service host="localhost" name="TRADING_APP_FGW" port ="11004"/>
 ```
  
-Create a config file for the stream at trading_app-script-config/src/main/resources/scripts/trading-app-fgw-streamer.xml. We will define two filtered streams, one for NEW trades and one for ALLOCATED trades.
+Create a config file for the stream at **trading_app-script-config/src/main/resources/scripts/trading-app-fgw-streamer.xml**. 
+
+We shall define two filtered streams, one for NEW trades and one for ALLOCATED trades.
 ```kotlin
 streams {
     stream("NEW_TRADES", TRADE.BY_ID) {
@@ -190,13 +193,14 @@ streams {
 ```
 ### 3. Configure FIX-XLator Plugin for the Streamer Client
 The FIX-Xlator plugin enables you to use a number of extension functions that make it easier to work with QuickFIX message classes in your streamer and streamer client scripts. 
+
 It also enables you to generate type-safe accessors for custom message fields based on a custom dictionary.
+
 For details of how to structure the FIX messages module in your project, check our [FIX-Xlator](/creating-applications/defining-your-application/integrations/external-systems/fix-xlator/) documentation.
 
 ### 4. Configure the Streamer Client
 To complete our FIX drop copy workflow, we need a Streamer Client. This will listen to the stream, convert any TRADE objects to a FIX message format, and forward them on to the Gateway.
 
-#### Genesis process and service definitions
 As you did earlier, you need to update the two key configuration files for the application:
 
 - **trading_app-processes.xml**
