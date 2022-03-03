@@ -5,18 +5,32 @@ sidebar_label: Integrate a FIX gateway
 sidebar_position: 11
 
 ---
-Now we have the back end of a working trade application, but in many scenarios we will need to integrate our Genesis application with other systems in order to report events. 
+We now have the back end of a working trade application.
+In many cases, you will need to integrate other systems into your Genesis application - to report events, for example. 
 
-In order to achieve this, we can use the Genesis Gateway and Streamer components to construct a data flow that reports to another system running outside of Genesis.
+In this exercise, we shall use the Genesis Gateway and Streamer components to construct a data flow that reports to another system running outside Genesis.
 
 ## The objective
 
-The objective is to use the FIX Gateway, Streamer and Streamer-Client modules to construct a real-time, configurable data stream that will send a drop copy FIX execution report each time a trade is entered in our system.
+The objective is to use the FIX Gateway, Streamer and Streamer-Client modules to construct a real-time, configurable data stream that sends a drop-copy FIX execution report each time a trade is entered in our system.
 
 ## Configuring the gateway
 
 ### 1. Configure the FIX gateway
-Create the FIX server configuration by adding the following XML to the trading_app-processes.xml file
+Let's tackle this configuration exercise in three parts:
+
+1. Configure in the Genesis process and service-definition files by adding some xml.
+2. Create a [configuration file for the FIX capabilities](/tutorials/building-an-application/fix-gateway/#configure-fix-capabilities).
+3. Create a [QFIXJ configuration](/tutorials/building-an-application/fix-gateway/#create-a-qfixj-config).
+
+#### Genesis process and service definitions
+In this step, you are going to update the two key configuration files for the application:
+
+- **trading_app-processes.xml**
+- **trading_app-service-definitions.xml**
+
+
+First, add the FIX server configuration to the **trading_app-processes.xml** file. Here is the xml you need to add:
 
 ```xml
 <process name="TRADING_APP_FGW">
@@ -31,19 +45,28 @@ Create the FIX server configuration by adding the following XML to the trading_a
 </process>
 ```
 
-Add the service definition to the trading_app-service-definitions.xml file
+Next , add the service definition to the **trading_app-service-definitions.xml** file:
+
 ```xml
 <service host="localhost" name="TRADING_APP_FGW" port ="11004"/>
 ```
 
-Create a config file for the FIX gateway under **trading_app-config/src/main/resources/cfg/trading_app-fgw.xml**. 
+#### Configure FIX capabilities
+For this step, create a config file for the FIX gateway under **trading_app-config/src/main/resources/cfg/trading_app-fgw.xml** using the code below.
 
-The file below has commented out sections to change the connection type between CLIENT and SERVER. 
-A SERVER configuration will open a socket listener on the specified port and wait for incoming connections.
-A CLIENT configuration will initiate a TCP connection to the specified target address.
+The code has commented-out sections to change the connection type between CLIENT and SERVER:
 
-There are additional properties in this file to configure additional FIX session parameters, SenderId and TargetId (FIX header tag 49 and 56) CompId values, session schedules for scheduled uptime and downtime and FIX protocol version.
-The customFieldsOutbound tag allows you to define a code block that will set static fields on any outbound FIX message.
+- A SERVER configuration opens a socket listener on the specified port and wait for incoming connections.
+- A CLIENT configuration initiates a TCP connection to the specified target address.
+
+The code includes additional properties to configure additional FIX session parameters:
+- `senderId` and `targetId` (FIX header tag 49 and 56)
+- CompId values
+- session schedules for scheduled uptime and downtime
+- FIX protocol version
+
+The `customFieldsOutbound` tag enables you to define a code block that sets static fields on any outbound FIX message.
+
 ```xml
 <fixConnection>
     <quickFixConfig path="/home/trading/run/generated/cfg/trading_app-quickfix.cfg" />
@@ -84,8 +107,10 @@ The customFieldsOutbound tag allows you to define a code block that will set sta
     </customFieldsOutbound>
 </fixConnection>
 ```
+#### Create a QFiXJ config
 
-Create a QFIXJ config for the FIX gateway. This file is used to configure the QuickFIXJ library directly and uses a properties file format. For more details on QuickFIXJ configuration, refer to the library documentation [here](https://www.quickfixj.org/usermanual/2.3.0/usage/configuration.html).
+Create a QFIXJ config for the FIX gateway. This file is used to configure the QuickFIXJ library directly and uses a properties file format. For more details on QuickFIXJ configuration, refer to the [library documentation](https://www.quickfixj.org/usermanual/2.3.0/usage/configuration.html).
+
 ```text
 [SESSION]
 BeginString=FIX.4.4
@@ -118,9 +143,11 @@ AllowUnknownMsgFields=Y
 ```
 
 ### 2. Configure the Streamer
-Now we have the configuration for a FIX gateway, we need to configure the Streamer and Streamer-Client components to allow us to route messages to it. Let's begin with the Streamer.
+Now you have the configuration for a FIX gateway.
+Next, you need to configure the Streamer and Streamer-Client components so that the application can route messages to it. Let's begin with the Streamer.
 
-Create the FIX Streamer configuration by adding the following XML to the trading_app-processes.xml file
+Create the FIX Streamer configuration by adding the following XML to the **trading_app-processes.xml** file:
+
 ```xml
 <process name="TRADING_APP_FGW_STREAMER">
     <groupId>TRADING_APP</groupId>
@@ -133,7 +160,8 @@ Create the FIX Streamer configuration by adding the following XML to the trading
     <language>pal</language>
 </process>
 ```
-Add the service definition to the trading_app-service-definitions.xml file
+Add the service definition to the **trading_app-service-definitions.xml** file:
+
 ```xml
 <service host="localhost" name="TRADING_APP_FGW" port ="11004"/>
 ```
@@ -161,14 +189,20 @@ streams {
 } 
 ```
 ### 3. Configure FIX-XLator Plugin for the Streamer Client
-The FIX-Xlator plugin allows you to use a number of extension functions designed to make working with QuickFIX message classes in your streamer and streamer client scripts much easier. 
-It also allows you to generate type safe accessors for custom message fields based on a custom dictionary.
-The reference documentation including how to structure the FIX messages module in your project can be found [here](/creating-applications/defining-your-application/integrations/external-systems/fix-xlator/)
+The FIX-Xlator plugin enables you to use a number of extension functions that make it easier to work with QuickFIX message classes in your streamer and streamer client scripts. 
+It also enables you to generate type-safe accessors for custom message fields based on a custom dictionary.
+For details of how to structure the FIX messages module in your project, check our [FIX-Xlator](/creating-applications/defining-your-application/integrations/external-systems/fix-xlator/) documentation.
 
 ### 4. Configure the Streamer Client
-In order to complete our FIX drop copy workflow, we need a Streamer Client to listen to the stream, convert any TRADE objects to a FIX message format and forward them on to the Gateway.
+To complete our FIX drop copy workflow, we need a Streamer Client. This will listen to the stream, convert any TRADE objects to a FIX message format, and forward them on to the Gateway.
 
-Create the FIX Streamer-Client configuration by adding the following XML to the trading_app-processes.xml file
+#### Genesis process and service definitions
+As you did earlier, you need to update the two key configuration files for the application:
+
+- **trading_app-processes.xml**
+- **trading_app-service-definitions.xml**
+
+Create the FIX Streamer-Client configuration by adding the following XML to the **trading_app-processes.xml** file:
 ```xml
 <process name="TRADING_APP_FGW_STREAMER_CLIENT">
     <groupId>TRADING_APP</groupId>
@@ -183,7 +217,7 @@ Create the FIX Streamer-Client configuration by adding the following XML to the 
   </process>
 ```
 
-Add the service definition to the trading_app-service-definitions.xml file
+Add the service definition to the **trading_app-service-definitions.xml** file:
 ```xml
 <service host="localhost" name="TRADING_APP_FGW_STREAMER_CLIENT" port ="11006"/>
 ```
@@ -272,14 +306,18 @@ streamerClients {
     }
 }
 ```
+Once you have these pieces of code in place, you have completed the exercise. You are now ready to test the results.
+
 
 ## Testing the gateway
 
 ### 1. Install the Genesis FIX module distribution
-Download and unzip genesisproduct-fix-5.2.0-bin.zip in the run directory with the other distributions.
+Download and unzip **genesisproduct-fix-5.2.0-bin.zip** in the run directory with the other distributions.
 
 ### 2. Connect a FIX client
 Connect a FIX client to the server port you have specified.
 
 ### 3. Enter a TRADE_INSERT event
-Using REST or a front-end app, such as Genesis Console, send an EVENT_TRADE_INSERT message with a trade state of NEW. You should see that your fix client receives an execution report message.
+Using REST or a front-end app, such as Genesis Console, send an EVENT_TRADE_INSERT message with a trade state of NEW. 
+
+You should see that your fix client receives an execution report message.
