@@ -33,6 +33,13 @@ module.exports = {
           routeBasePath,
           sidebarPath: require.resolve('./sidebars.json'),
           remarkPlugins: [require('mdx-mermaid')],
+          lastVersion: "current",
+          versions: {
+            current: {
+              label: "5.x.x",
+              path: ""
+            }
+          }
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -53,6 +60,12 @@ module.exports = {
         src: 'img/logo.png',
       },
       items: [
+        {
+          type: 'docsVersionDropdown',
+          position: 'right',
+          // dropdownItemsAfter: [{to: '/versions', label: 'All versions'}],
+          dropdownActiveClassDisabled: true,
+          },
         {to: 'https://genesis.global/contact-us/', label: 'Register for a Demo', position: 'right', className: 'demo'}
       ]
     },

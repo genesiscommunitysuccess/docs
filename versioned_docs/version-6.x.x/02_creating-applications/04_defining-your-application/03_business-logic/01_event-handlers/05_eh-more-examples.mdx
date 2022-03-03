@@ -1,0 +1,131 @@
+---
+title: 'More examples'
+sidebar_label: 'More examples'
+sidebar_position: 5
+id: eh-more-examples
+---
+
+
+
+
+There is a nice simple example of some logic being added to an event handler in our [tutorial](/tutorials/building-an-application/add-event-handler/).
+
+```kotlin
+eventHandler {
+
+    eventHandler<Hello> {
+
+        permissions {
+            auth("NAMES") {
+                field { name }
+            }
+        }
+
+        onCommit {
+            ack()
+        }
+    }
+
+    contextEventHandler<Hello, String>("CONTEXT_HELLO") {
+        permissions {
+            auth("NAMES") {
+                field { name }
+            }
+        }
+
+        onValidate {
+            validationAck(validationContext = it.details.name)
+        }
+    }
+}
+```
+
+```kotlin
+   eventHandler<Company>(name = "COMPANY_INSERT") {
+        onValidate { event ->
+            val company = event.details
+            require(company.companyName != "MY_COMPANY") {
+                "We don't accept your company"
+            }
+            ack()
+        }
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("COMPANY_ID" to result.record.companyId)))
+        }
+    }
+```
+
+```kotlin
+    contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {
+        onValidate {
+            val company = it.details
+            if(company.companyName == "MY_COMPANY"){
+                validationAck(validationContext = "Best company in the world")
+            } else {
+                validationAck()
+            }
+        }
+        onCommit { event, context ->
+            val parsedContext = context ?: "Missing context"
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to parsedContext)))
+        }
+    }
+```
+
+```kotlin
+    eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
+        permissions {
+            auth(mapName = "COMPANY"){
+                COMPANY.COMPANY_NAME
+            }
+        }
+
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to result.record.companyId)))
+        }
+    }
+```
+
+```kotlin
+    eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
+        permissionCodes = listOf("INSERT_TRADE")
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to result.record.companyId)))
+        }
+    }
+```
+
+```kotlin
+    eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
+        onValidate {
+            ack()
+        }
+        onCommit { event ->
+            val company = event.details
+            entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to "SUCCESS!")))
+        }
+    }
+```
+
+```kotlin
+
+eventHandler {
+    eventHandler<Company> {
+        requiresPendingApproval = true
+        onCommit { event ->
+            val company = event.details
+            // custom code block..
+            ack()
+        }
+    }
+}
+```

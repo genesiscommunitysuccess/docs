@@ -1,0 +1,106 @@
+---
+title: 'More examples'
+sidebar_label: 'More examples'
+sidebar_position: 5
+id: ds-more-examples
+---
+
+
+[Introduction](/creating-applications/defining-your-application/user-interface/data-servers/data-servers/) | [Where to define](/creating-applications/defining-your-application/user-interface/data-servers/ds-where-to-define/) | [Basics](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/) |  [Advanced](/creating-applications/defining-your-application/user-interface/data-servers/ds-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/user-interface/data-servers/ds-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/user-interface/data-servers/ds-configure-runtime/) | Testing
+
+
+
+
+```kotlin
+dataServer {
+    query(INSTRUMENT_DETAILS)
+}
+```
+
+```kotlin
+dataServer {
+    query(INSTRUMENT_DETAILS)
+
+    query(COUNTERPARTY)
+}
+```
+
+```kotlin
+dataServer {
+    query(INSTRUMENT_DETAILS) {
+        fields {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+
+```kotlin
+dataServer {
+    query(INSTRUMENT_DETAILS) {
+        fields {
+            INSTRUMENT_CODE
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+            derivedField("IS_USD", BOOLEAN) {
+                tradedCurrency == "USD"
+            }
+        }
+    }
+}
+```
+
+```kotlin
+dataServer {
+    query("SIMPLE_QUERY", SIMPLE_TABLE) {
+        config {
+            // Items below only available in query level config
+            defaultCriteria = "SIMPLE_PRICE > 0"
+            backwardsJoins = false
+            disableAuthUpdates = false
+        }
+    }
+}
+```
+
+```kotlin
+dataServer {
+
+    query("ALL_TRADES_LARGE_POSITION", ENHANCED_TRADE_VIEW) {
+        permissioning {
+            permissionCodes = listOf("TRADER", "SUPPORT")
+            auth(mapName = "ENTITY_VISIBILITY") {
+                ENHANCED_TRADE_VIEW.COUNTERPARTY_ID
+            }
+        }
+        where { trade -> 
+            (trade.quantity * trade.price) > 1000000 
+        }
+    }
+}
+```
+
+```kotlin
+dataServer {
+    query("SIMPLE_QUERY", SIMPLE_TABLE) {
+        indices {
+            unique("SIMPLE_QUERY_BY_QUANTITY") {
+                QUANTITY
+                SIMPLE_ID
+            }
+        }
+    }
+}
+```
