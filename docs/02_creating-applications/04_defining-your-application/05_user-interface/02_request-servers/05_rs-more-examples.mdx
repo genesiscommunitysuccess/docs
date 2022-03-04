@@ -9,7 +9,7 @@ id: rs-more-examples
 [Introduction](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/) | [Where to define](/creating-applications/defining-your-application/user-interface/request-servers/rs-where-to-define/) | [Basics](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/) |  [Advanced](/creating-applications/defining-your-application/user-interface/request-servers/rs-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/user-interface/request-servers/rs-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/user-interface/request-servers/rs-configure-runtime/) | [Testing](/creating-applications/defining-your-application/user-interface/request-servers/rs-testing/)
 
 
-A request server is defined in your _application_**reqrep.kts** file.  It consists of one or more `requestReplies` that return data from the database. The examples on this page should help you get started quickly.
+A request server is defined in your _application_**-reqrep.kts** file.  It consists of one or more `requestReplies` that return data from the database. The examples on this page should help you get started quickly.
 
 The example below is the [simplest request server you could have](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#the-simplest-possible-definition). It has a single `requestReplies` statement that will return all the fields in the specified table.
 
@@ -63,6 +63,7 @@ requestReplies {
 &nbsp;  
 &nbsp; 
 The example below uses an [index](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/#using-an-index) as the request definition. This provides additional indexing at the request level.
+
 ```kotlin
 requestReplies {
     requestReply(INSTRUMENT_DETAILS) {
@@ -86,6 +87,7 @@ requestReplies {
 
 &nbsp; 
 &nbsp; 
+
 The example below has a [`where` block](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/#where-block) that controls access to the request in two ways (not the code ALLL3 and an ALTERNATE_TYPE listing of either RIC or BLOOMBERG).
 ```kotlin
 requestReplies {
@@ -115,5 +117,3 @@ requestReplies {
 ```
 &nbsp; 
 &nbsp; 
-
-A `requestReplies` statement can include specific [configuration settings](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#configuration-settings).
