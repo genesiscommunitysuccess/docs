@@ -34,7 +34,7 @@ to validate input and insert a record in the database.
 &nbsp;  
 &nbsp;  
 
-This is an example on how to reuse data between 
+This is an example of how to reuse data between 
 [onValidate](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onvalidate) 
 and [onCommit](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#oncommit).
 ```kotlin
@@ -58,7 +58,7 @@ and [onCommit](/creating-applications/defining-your-application/business-logic/e
 &nbsp;  
 &nbsp;  
 
-This is an example on how to add [authorization](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#permissions-and-permissioncodes)
+This is an example of how to add [authorisation](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#permissions-and-permissioncodes)
 to an event handler.
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
@@ -92,7 +92,7 @@ And now an example with [fixed permissions](/creating-applications/defining-your
 &nbsp;  
 &nbsp;  
 
-Below is an example on how to make an event handler [transactional](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#acid-guaranteed)
+Below is an example of how to make an event handler [transactional](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#acid-guaranteed)
 ```kotlin
     eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
         onValidate {

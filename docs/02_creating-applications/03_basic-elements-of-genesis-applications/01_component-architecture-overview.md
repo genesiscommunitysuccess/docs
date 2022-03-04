@@ -9,7 +9,7 @@ Every Genesis application is different, but all Genesis applications share a com
 
 The diagram below shows what an example application looks like. Get to know the components of the server and front end right away; this diagram is the foundation that every developer needs to know.
 
-![](/img/this-is-what-a-genesis-application.png)
+![](/img/component-architecture-02.png)
 
 The User Interface is at the top. The server sits below. 
 
