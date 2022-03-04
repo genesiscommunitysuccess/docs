@@ -8,6 +8,9 @@ id: ds-more-examples
 
 [Introduction](/creating-applications/defining-your-application/user-interface/data-servers/data-servers/) | [Where to define](/creating-applications/defining-your-application/user-interface/data-servers/ds-where-to-define/) | [Basics](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/) |  [Advanced](/creating-applications/defining-your-application/user-interface/data-servers/ds-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/user-interface/data-servers/ds-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/user-interface/data-servers/ds-configure-runtime/) | Testing
 
+A data server is defined in your _application_**dataserver.kts** file.  It consists of one or more queries that return data from the database. The examples on this page should help you get started quickly.
+
+The example below is the [simplest data server you could have](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#the-simplest-possible-definition). It has a single query that will return all the fields in the specified table.
 
 
 ```kotlin
@@ -16,11 +19,12 @@ dataServer {
 }
 
 ```
-[Explanation](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#the-simplest-possible-definition) 
+
+
 &nbsp;  
 &nbsp;  
-&nbsp;  
-&nbsp;  
+The example below has two queries queries. Each will return all the fields in the specified tables. 
+
 ```kotlin
 dataServer {
     query(INSTRUMENT_DETAILS)
@@ -28,11 +32,13 @@ dataServer {
     query(COUNTERPARTY)
 }
 ```
-[Explanation](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#the-simplest-possible-definition) 
+
+
 &nbsp;  
 &nbsp;  
-&nbsp;  
-&nbsp;  
+
+The example below has a single query. In this case, it [specifies the fields that are to be returned](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#specifying-fields). So, you don't get all the fields in the table.
+
 ```kotlin
 dataServer {
     query(INSTRUMENT_DETAILS) {
@@ -49,11 +55,11 @@ dataServer {
     }
 }
 ```
-[Explanation](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#specifying-fields) 
+
+ 
 &nbsp;  
 &nbsp;  
-&nbsp;  
-&nbsp;  
+Below, we have added a [derived field](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#derived-fields) to the example above.  
 ```kotlin
 dataServer {
     query(INSTRUMENT_DETAILS) {
@@ -73,11 +79,10 @@ dataServer {
     }
 }
 ```
-[Explanation](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#derived-fields) 
 &nbsp;  
 &nbsp;  
-&nbsp;  
-&nbsp;  
+A query can include specific [configuration settings](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#configuration-settings).
+
 
 ```kotlin
 dataServer {
@@ -91,11 +96,11 @@ dataServer {
     }
 }
 ```
-[Explanation](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#configuration-settings) 
+
+
 &nbsp;  
 &nbsp;  
-&nbsp;  
-&nbsp;  
+Below, a [where clause](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#where-clauses) has been used to control access to the query. 
 ```kotlin
 dataServer {
 
@@ -112,11 +117,12 @@ dataServer {
     }
 }
 ```
-[Explanation](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#where-clauses) 
+
+
 &nbsp;  
 &nbsp;  
-&nbsp;  
-&nbsp;  
+An [indices block](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#indices), as seen in the example below, enables you to define additional indexing at the query level.
+
 ```kotlin
 dataServer {
     query("SIMPLE_QUERY", SIMPLE_TABLE) {
@@ -129,8 +135,5 @@ dataServer {
     }
 }
 ```
-[Explanation](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/#indices) 
 &nbsp;  
-&nbsp;  
-&nbsp;  
-&nbsp;  
+
