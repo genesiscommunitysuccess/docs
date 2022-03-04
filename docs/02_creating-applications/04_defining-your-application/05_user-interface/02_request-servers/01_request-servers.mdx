@@ -5,12 +5,13 @@ sidebar_position: 1
 id: request-servers
 ---
 
+[Introduction](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/)  | [Where to define](/creating-applications/defining-your-application/user-interface/request-servers/rs-where-to-define/) | [Basics](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/) |  [Advanced](/creating-applications/defining-your-application/user-interface/request-servers/rs-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/user-interface/request-servers/rs-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/user-interface/request-servers/rs-configure-runtime/) | [Testing](/creating-applications/defining-your-application/user-interface/request-servers/rs-testing/)
 
-Request servers, (otherwise known as request/replies or reqreps) retrieve snapshot data from a table or a view on demand and serve it up to the requesting client. They are predomenantly used for serving the UI.
+Request servers, (otherwise known as request/replies or reqreps) retrieve snapshot data from a table or a view on demand and serve it up to the requesting client. They are predominantly used for serving the UI.
 
-They serve up what can be considered a "snap shot" of data, that is to say that after a reply is given the transation is over (unlike their dataserver](/creating-applications/defining-your-application/user-interface/data-servers) counterpart which stay connected to the client and push updates)
+They serve up what can be considered a "snap shot" of data; after a reply is given, the transaction is over (unlike a [dataserver](/creating-applications/defining-your-application/user-interface/data-servers/data-servers/), which stays connected to the client and pushes updates).
 
-They have other features distinct from a data server,  such as allowing one-to-many joins, and even completely custom request servers for serving up non-linear data (e.g. sets of disjointed data to serve up to a report)
+Request servers have other features distinct from a data server,  such as allowing one-to-many joins, and even completely custom request servers for serving up non-linear data (e.g. sets of disjointed data to serve up to a report).
 
 ```kotlin
   requestReply("TRADE", TRADE_VIEW) {
@@ -23,5 +24,3 @@ They have other features distinct from a data server,  such as allowing one-to-m
   }
 ```
 
-## More details
-[Where to define](/creating-applications/defining-your-application/user-interface/request-servers/rs-where-to-define/) | [Technical details](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/) |  [Advanced technical details](/creating-applications/defining-your-application/user-interface/request-servers/rs-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/user-interface/request-servers/rs-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/user-interface/request-servers/rs-configure-runtime/) | Testing
