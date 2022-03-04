@@ -9,37 +9,12 @@ id: eh-more-examples
 
 
 There is a nice simple example of some logic being added to an event handler in our [tutorial](/tutorials/building-an-application/add-event-handler/).
+&nbsp;  
+&nbsp;  
+&nbsp;  
 
-```kotlin
-eventHandler {
-
-    eventHandler<Hello> {
-
-        permissions {
-            auth("NAMES") {
-                field { name }
-            }
-        }
-
-        onCommit {
-            ack()
-        }
-    }
-
-    contextEventHandler<Hello, String>("CONTEXT_HELLO") {
-        permissions {
-            auth("NAMES") {
-                field { name }
-            }
-        }
-
-        onValidate {
-            validationAck(validationContext = it.details.name)
-        }
-    }
-}
-```
-
+The example below is a [simple event handler](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onvalidate) 
+to validate input and insert a record in the database.
 ```kotlin
    eventHandler<Company>(name = "COMPANY_INSERT") {
         onValidate { event ->
@@ -56,7 +31,12 @@ eventHandler {
         }
     }
 ```
+&nbsp;  
+&nbsp;  
 
+This is an example on how to reuse data between 
+[onValidate](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onvalidate) 
+and [onCommit](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#oncommit).
 ```kotlin
     contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {
         onValidate {
@@ -75,7 +55,11 @@ eventHandler {
         }
     }
 ```
+&nbsp;  
+&nbsp;  
 
+This is an example on how to add [authorization](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#permissions-and-permissioncodes)
+to an event handler.
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
         permissions {
@@ -91,7 +75,10 @@ eventHandler {
         }
     }
 ```
+&nbsp;  
+&nbsp;  
 
+And now an example with [fixed permissions](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#permissions-and-permissioncodes).
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
         permissionCodes = listOf("INSERT_TRADE")
@@ -102,7 +89,10 @@ eventHandler {
         }
     }
 ```
+&nbsp;  
+&nbsp;  
 
+Below is an example on how to make an event handler [transactional](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#acid-guaranteed)
 ```kotlin
     eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
         onValidate {
@@ -115,7 +105,10 @@ eventHandler {
         }
     }
 ```
+&nbsp;  
+&nbsp;  
 
+The example below is a simple event handler that [requires approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals).
 ```kotlin
 
 eventHandler {
