@@ -1,16 +1,17 @@
 ---
-title: 'Advanced technical details'
-sidebar_label: 'Advanced technical details'
+title: 'Advanced'
+sidebar_label: 'Advanced'
 sidebar_position: 4
 id: eh-advanced-technical-details
 ---
 
 
+[Introduction](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/)  | [Where to define](/creating-applications/defining-your-application/business-logic/event-handlers/event-handler-define/) | [Basics](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/) |  [Advanced](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/business-logic/event-handlers/eh-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/business-logic/event-handlers/eh-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/business-logic/event-handlers/eh-testing/)
 
 
 
 
-## ACID guaranteed
+## Transactional event-handlers
 
 Any event handler can be declared as `transactional = true` to ensure that the whole `onValidate` and `onCommit` blocks is executed in a single ACID-guaranteed transaction. This is especially useful when the database changes for each operation needs to read and modify multiple table records in a consistent way.
 
