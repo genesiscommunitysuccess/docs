@@ -16,7 +16,8 @@ There are two easy ways of testing components in your application.
 - using an API client
 
 ### Before you start
-Before you start, make sure your server is running. Then run mon to check that your particular component’s process is running. For example, if you want to test your request server, check that the _application_**REQUEST_SERVER** process is running.
+Before you start, make sure your server is running. Then run `mon` to check that your particular component’s process is running. For example, if you want to test your request server, check that the _application_**_REQUEST_SERVER** process is running.
+
 For any testing, you need to know the IP address of name of your server, plus user name and password that will enable you to login and authenticate yourself.
 
 ### Testing with Genesis Console
@@ -36,6 +37,7 @@ This type of software offers an easy way of testing each of your resources.
 Two clients that Genesis uses for component testing are:
 - [Postman](https://www.postman.com/downloads/)
 - [Insomnia](https://insomnia.rest/download)
+
 Broadly speaking, Postman offers more features, but Insomnia is also good and is simpler to use.
 
 #### Logging on 
@@ -44,11 +46,11 @@ Whichever client you are using, you need to log in before you can send test requ
 - retrieving a SESSION_AUTH_TOKEN, which you can copy and use to authorise all your test requests
 
 For example, to login using Insomnia:
-Start Insomnia.
-In front of the url, set the call to **POST**.
-For the url, you need to supply your server instance, followed by event-login-auth. For example:
+1. Start Insomnia.
+2. In front of the url, set the call to **POST**.
+3. For the url, you need to supply your server instance, followed by event-login-auth. For example:
 https://test-mynewapp/event-login-auth
-Insert the message below (substituting your correct user name and password) in the main body. 
+4. Insert the message below (substituting your correct user name and password) in the main body. 
 
 ```
 {
@@ -61,13 +63,14 @@ Insert the message below (substituting your correct user name and password) in t
 }
 
 ```
-At the top left of the Insomnia window, click on the arrow at the end of the query name to set the header. Insert a SOURCE_REF in the header. This can be any string that identifies you (in effect).
-When you have done this, click on the **Send** button.
+5. At the top left of the Insomnia window, click on the arrow at the end of the query name to set the header. Insert a SOURCE_REF in the header. This can be any string that identifies you (in effect). In the example below, we have set SOURCE_REF to BAUDOIN1 (for no particular reason).
+![](/img/insomnia-header.png)
+6. When you have done this, click on the **Send** button.
 
 This returns a set of details in the right side of the Insomnia window, where you can copy the SESSION_AUTH_TOKEN, which you will need for your test requests.
 
 
-### Database and service tests
+## Database and service tests
 
 This section examines two types of test that you can develop:
 
