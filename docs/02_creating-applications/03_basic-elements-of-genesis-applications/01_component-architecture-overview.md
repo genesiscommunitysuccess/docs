@@ -27,12 +27,13 @@ You bring your application to life by creating a skeleton project and then confi
 
 **Consolidators** monitor key data in real time, perform calculations (analytics) and feed that information back to a separate area to provide the information in real time.
 
-**Interface handlers** handle integration with external systems, such as FIX Gateways for order routing or external relational databases.
+**Integration components** handle integration with external systems, such as FIX Gateways for order routing or external relational databases.
 
-**Data Servers** make real-time information available to the UI. The first request provides all the information being monitored. After that, only changed fields are passed back to the UI in real time.
+**Data servers** make real-time information available to the UI. The first request provides all the information being monitored. After that, only changed fields are passed back to the UI in real time.
 
-**Request/Reply** (Request Servers) provide snapshot (non-real-time) information to the UI.
+**Request servers** provide snapshot (non-real-time) information to the UI.
 
 ## The User Interface
 
-You can define all the elements you want to see in the Web User Interface using the Genesis Studio. It is easy to select these, configure them, then connect them to the relevant resource in the server (data server or request server) to provide the relevant permissioned data.
+Using our tools, you can define pages, install grids, charts and other visual components, then connect these to the resources in the server. And now permissioned users can log in. You can assign user groups with rights to view specific data and have access to specific functions.
+ 
