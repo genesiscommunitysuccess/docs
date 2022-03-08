@@ -65,6 +65,11 @@ systems {
 
 For Aerospike you may also want to update the **DbNamespace** and **DbMode** properties. Details of those can be found [here](/creating-applications/configure-runtime/system-definitions/).
 
+If you are using SQL and want to use reserved keywords as column names, then you will need to add the below to your system definition file to enable Quoted Identifiers support:
+```kotlin
+item(name = "DbQuotedIdentifiers", value = "true")
+```
+
 ### 2. Activate the new configuration
 
 Run `genesisInstall`.
