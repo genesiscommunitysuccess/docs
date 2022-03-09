@@ -15,7 +15,7 @@ There is a nice simple example of some logic being added to an event handler in 
 &nbsp;  
 
 The example below is a [simple event handler](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onvalidate) 
-to validate input and insert a record in the database.
+to validate input and insert a record in the database. There is an `onValidate` block that defines the validation and an [`onCommit`](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#oncommit) block that specifies the action that is to be taken.
 ```kotlin
    eventHandler<Company>(name = "COMPANY_INSERT") {
         onValidate { event ->
