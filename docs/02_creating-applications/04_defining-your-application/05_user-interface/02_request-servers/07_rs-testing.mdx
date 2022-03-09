@@ -9,4 +9,62 @@ id: rs-testing
 [Introduction](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/)  | [Where to define](/creating-applications/defining-your-application/user-interface/request-servers/rs-where-to-define/) | [Basics](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/) |  [Advanced](/creating-applications/defining-your-application/user-interface/request-servers/rs-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/user-interface/request-servers/rs-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/user-interface/request-servers/rs-configure-runtime/) | [Testing](/creating-applications/defining-your-application/user-interface/request-servers/rs-testing/)
 
 
-We shall post details of testing here.
+## Component testing
+
+
+### Testing with Console
+If you use Genesis Console, this gives you a simple way of testing components.
+
+1. In your browser, go to http://genesislcap.com/console/console-next2/.
+2. Enter the IP address of your sever.
+3. Log in with your user name and password.
+4. Click on the **RESOURCES** tab.
+5. Filter the **Resource type** to show only request servers.
+For example:
+![](/img/test-console-rs-filter.png)
+
+Note that the request servers that you have defined yourself are listed at the top here. There are other request servers that have been generated automatically by the platform, such as the **PROFILE** listed here.
+
+6. In the list, click on the request server you want to test. This displays the request and reply fields for that request server. 
+
+7. Click on the arrow beside the request server that you want to test. This displays the current contents of the table or view that provides the data for that request server. If you can see that content, you have connected successfully to the resource.
+
+![](/img/test-console-rs-success.png)
+
+You can refine this test using the reply fields presented above the contents of the rquest server.
+
+In the example below, we have refined the list to show only entries where the INSTRUMENT_ID is **LLOY**.
+
+![](/img/test-console-rs-single-field.png)
+
+### Testing with an API client
+
+An API client is useful way of testing components. As a client, it is effectively a front end seeking information from the server,
+
+The API client enables you to create calls to the resources in your server - data servers, request servers and event handlers. Then yu can just click to run a call an see what response you get.
+
+Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/managing-applications/test/testing/#using-an-api-client) page.
+
+Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
+
+In the example below, we are using Insomnia as the client API.
+
+![](/img/test-rs-instrument-success.png)
+
+There is no need for any information in the body, as this is a GET request.
+
+In the header, you need to supply:
+
+- a SOURCE_REF (always), which identifies you; you can use any string value that suits you
+- the SESSION_AUTH_TOKEN that permissions you to access the server
+
+In front of the url, this has been set to a **GET** call.
+
+The url consists of:
+
+- the address or hostname of the server
+- if necessary, some extra routing; in this case **sm** uses a proxy to access the server
+- the name of the request server, preceded by **_REQ**
+
+When you have this in place, click on **Send** to make the call. You can see on the right that the fields for instruments have been returned on the left of the screen.
+
