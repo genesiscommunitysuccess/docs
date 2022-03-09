@@ -12,7 +12,7 @@ id: authentication
 You can set the authentication preferences for your application in the **auth-preferences.kts** file. This is configured through the `security` function, and the following functions called within it:
 
 * authentication
-* passwordStrength
+* passwordValidation
 * passwordRetry
 * sso
 * mfa
@@ -29,9 +29,6 @@ The `security` function is the top-level function from which the subsequent func
 * **sessionTimeoutMins** specifies the time to wait before timing out an idle session with a user client. A user client may very well be answering heartbeats but at the same time being idle (i.e. not using the platform). This timeout represents the number of minutes a user needs to be idle to be logged out of the platform. Default: 30.
 * **expiryCheckMins** specifies the time interval (in minutes) used to check for idle sessions in the system. Default 5.
 * **maxSimultaneousUserLogins** defines the maximum number of active sessions a user can maintain. Once this limit has been reached, the user cannot log in again until another session has been logged out. If the specified value is zero, is not defined, or is not a positive integer, then any number of sessions is permitted. Default 0.
-* **daysToKeepUserLoginAudit** Default 30.
-* **passwordSalt** Default empty string.
-* **passwordValidation** Default false.
 
 #### authentication
 The `autentication` function can be used to represent the method of authentication to be used by the platform. Within this function the following variables can be set:
@@ -45,7 +42,7 @@ The following variables are only used when the authentication type is either `LD
 * **searchBase** is used to define the location(s) in the directory from which the LDAP search begins. Default: is a list with a single entry of `ou=temp,dc=temp`.
   * This is set by the `searchBases` function, and repeated `searchBase` function invocations within it.
 * **userGroups** is used to define the group(s) that the user will need to belong to in order to log in. Default: is an empty list.
-  * This is set by the `userGroups` function, and repeated `userGroip` function invocations within it. 
+  * This is set by the `userGroups` function, and repeated `userGroup` function invocations within it. 
 * **userPrefix** is used to add an optional prefix to every username received from login requests in your authentication server. Default: empty string.
 * **bindDn** is an optional, distinguished name which acts as a first LDAP login; it is normally required to perform a search. If this field is not specified, no bindings will be used. Default: `null`.
 * **bindPassword** is the password associated with the **bindDn** account. Default: `null`.
@@ -56,8 +53,14 @@ The following variables are only used when the authentication type is either `LD
 
 For more information on the various authentication types, please see the [Authentication overview](/creating-applications/defining-your-application/access-control/authentic-over/)
 
-#### passwordStrength
-The `passwordStrength` function has many variables. These enable you to specify in detail the mandatory characteristics for the password. Within this function the following variables can be set:
+#### passwordValidation
+The `passwordValidation` function enables password validation, and allows you to set variable relating to this validation. The `passwordValidation` settings are only used in the case of the `INTERNAL`, or `HYBRID` authentication types. It has the following variables and functions:
+
+* **passwordSalt** defines a system specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different Genesis systems are stored as different hashes. Default empty string.
+
+##### passwordStrength
+
+The `passwordStrength` function can be called within `passwordValidation` and has many variables to be set. These enable you to specify in detail the mandatory characteristics for the password. Within this function the following variables can be set:
 
 * **minimumLength** this represents the minimum length of password. Default: null.
 * **maximumLength** this represents the maximum length of password. Default: null.
@@ -79,101 +82,130 @@ The `passwordStrength` function has many variables. These enable you to specify 
 * **passwordExpiryNotificationDays** if present, a user shall be notified by the specified number of days before their password expires. Default: null.
 
 #### passwordRetry
-This has two options:
-- **maxAttempts** defines the maximum number of attempts allowed if a user enters a wrong password. 
-- **waitTimeMins** specifies the time to wait when the maximum number of incorrect attempts is reached. Default: maxAttempts="3" and waitTimeMins="5".
+The `passwordRetry` function allows the following variables to be set. This has two options:
+* **maxAttempts** defines the maximum number of attempts allowed if a user enters a wrong password. Default: 3
+* **waitTimeMins** specifies the time to wait when the maximum number of incorrect attempts is reached. Default: 5.
 
-#### loginAckFields
-This is an optional xml block that enables you to define additional values to be sent back to the client as part of the LOGIN_ACK message. It follows a classic *join* xml definition similar to the ones used in [request server](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/) and [data server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers/) modules.
+#### sso
+The `sso` function allows you to configure and enable Single Sign-On (SSO) options. It has the following variables to set:
+* **enabled** is a boolean value that defines whether the SSO functionality is enabled. Default: true when the `sso` function is invoked, otherwise false.
+* **newUserMode** defines behaviour for processing users the first time they log in with SSO. This can take the values of `NewUserMode.REJECT`, `NewUserMode.CREATE_ENABLED`, `NewUserMode.CREATE_DISABLED`. Default `NewUserMode.REJECT`.
+  * In the case of `NewUserMode.REJECT`, when a user logs in for the first time with SSO, if they do not already have a user account, they are rejected.
+  * In the case of `NewUserMode.CREATE_ENABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, an active account is created for them.
+  * In the case of `NewUserMode.CREATE_DISABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, a disabled account is created for them. This will be need to be activated before it can be used.
+
 
 #### mfa
-This is a set of parameters that enable you to configure Multi-factor Authentication (MFA).
-* **codePeriodSeconds** How long a Time-based One-time Password (TOTP) remains valid. Default: 30.
-* **codePeriodDiscrepancy** Discrepancy to the above allowed. 1 means a block of each codePeriodSeconds either side of the time window. Default: 1.
-* **codeDigits** Number of digits used in the TOTP. Default: 6.
-* **hashingAlgorithm** Choice of Hashing Algorithm: SHA1, SHA256 or SHA512. Default: SHA1.
-* **issuer** A reference to the Organsition or Entity issuing the MFA. Default: Genesis.
-* **label** A label, typcally an email address of the issuing Entity or Organisation. Default: genesis.global.
-* **confirmWaitPeriodSecs** The period of time before a secret has to be confirmed. Default: 300.
-* **secretEncryptKey** If present, the Secrets will be encrypted in the database. Default: null.
-* **usernameTableLookUpSalt** If present, the username will be hashed using the configured key in the database. Default: null.
+The `mfa` function allows you to configure Multi-factor Authentication (MFA). It has the following variables to set:
+
+* **codePeriodSeconds** defines how long a Time-based One-time Password (TOTP) remains valid. Default: 30.
+* **codePeriodDiscrepancy** defines the allows discrepancy to the TOTP allowed. 1 means a block of each codePeriodSeconds either side of the time window. Default: 1.
+* **codeDigits** defines the number of digits used in the TOTP. Default: 6.
+* **hashingAlgorithm** specifies which choice of Hashing Algorithm to use. Available choices are: `HashingFunction.SHA1`, `HashingFunction.SHA256` or `HashingFunction.SHA512`. Default: ``HashingFunction.SHA1`.
+* **issuer** provides a reference to the Organisation or Entity issuing the MFA. Default: Genesis.
+* **label** provides a label for the MFA. This is typically an email address of the issuing Entity or Organisation. Default: genesis.global.
+* **confirmWaitPeriodSecs** defines the period of time before a secret has to be confirmed. Default: 300.
+* **secretEncryptKey** defines a key with which Secrets will be encrypted in the database. Default: null.
+* **usernameTableLookUpSalt** defines if usernames will be hashed using the configured key in the database. Default: null.
+
+#### loginAck
+The `loginAck` function allows you to define additional values to be sent back to the client as part of the LOGIN_ACK message. When you call the `loginAck` function you have to supply a table or view as a parameter. This is the table or view upon which the following functions will be invoked.
+
+##### loadRecord
+The `loadRecord` function can be invoked within the `loginAck` function to load a single record from the previously supplied table or view.
+
+##### fields
+The `fields` function can be invoked within the `loginAck` function to specify which additional fields should be sent back to the client as part of the LOGIN_ACK message.
 
 
 Example configuration:
 
-```xml
-<security>
+```kotlin
+import global.genesis.auth.manager.AuthType
+import global.genesis.auth.manager.data.HashingFunction
+import global.genesis.auth.manager.security.sso.jwt.NewUserMode
+import global.genesis.db.entity.DbEntity
+import global.genesis.dictionary.pal.view.IndexedDataStructure
+import global.genesis.gen.config.tables.USER_ATTRIBUTES.ACCESS_TYPE
+import global.genesis.gen.config.tables.USER_ATTRIBUTES.ADDRESS_LINE1
+import global.genesis.gen.config.tables.USER_ATTRIBUTES.USER_TYPE
 
-    <authentication type="INTERNAL"></authentication>
+security {
+    heartbeatIntervalSecs = null
+    sessionTimeoutMins = 30
+    expiryCheckMins = 5
+    maxSimultaneousUserLogins = 0
 
-    <passwordStrength>
-        <minimumLength value="5" />
-        <maximumLength value="10" />
-        <minDigits value="1" />
-        <maxRepeatCharacters value="5" />
-        <minUppercaseCharacters value="1" />
-        <minLowercaseCharacters value="2" />
-        <minNonAlphaNumericCharacters value="1" />
+    authentication {
+        type = AuthType.LDAP
+        url = "localhost"
+        port = 389
+        searchBase {
+            searchBase("ou=temp,dc=temp")
+        }
+        userGroups {
+        }
+        userPrefix = ""
+        bindDn = null
+        bindPassword = null
+        userIdType = "cn"
+    }
 
-        <restrictWhitespace value="true"/>
-        <restrictAlphaSequences value="false"/>
-        <restrictQWERTY value="true"/>
-        <restrictNumericalSequences value="true"/>
+    passwordValidation {
+        passwordSalt = ""
+        passwordStrength {
+            minimumLength = null
+            maximumLength = null
+            minDigits = null
+            maxRepeatCharacters = null
+            minUppercaseCharacters = null
+            minLowercaseCharacters = null
+            minNonAlphaNumericCharacters = null
+            restrictWhiteSpace = true
+            restrictAlphaSequences = false
+            restrictQWERTY = true
+            restrictNumericalSequences = true
+            illegalCharacters = ""
+            historicalCheck = null
+            dictionaryWordSize = null
+            restrictUserName = false
+            repeatCharacterRestrictSize = null
+            passwordExpiryDays = null
+            passwordExpiryNotificationDays = null
+        }
+    }
 
-        <illegalCharacters>
-            <![CDATA[ $£^ ]]>
-        </illegalCharacters>
+    passwordRetry {
+        maxAttempts = 3
+        waitTimeMins = 5
+    }
 
-    </passwordStrength>
+    sso {
+        enabled = false
+        newUserMode = NewUserMode.REJECT
+    }
 
-    <mfa>
-      <codePeriodSeconds value ="30"/>
-      <codePeriodDiscrepancy value ="1"/>
-      <codeDigits value ="6"/>
-      <hashingAlgorithm value ="SHA512"/>
-      <issuer value ="Genesis"/>
-      <label value ="admin@genesis.global"/>
-      <confirmWaitPeriodSecs value="60"/>
-      <secretEncryptKey value="abc"/>
-      <usernameTableLookUpSalt value="xyz"/>
-    </mfa>
+    mfa {
+        codePeriodSeconds = 30
+        codePeriodDiscrepency = 1
+        codeDigits = 6
+        usernameTableLookUpSalt = null
+        secretEncryptKey = null
+        hashingAlgorithm = HashingFunction.SHA1
+        issuer = "Genesis"
+        label = "genesis.global"
+        confirmWaitPeriodSecs = 300
+    }
 
-    <heartbeat>
-        <intervalSecs value="30" />
-    </heartbeat>
-
-    <sessionTimeoutMins>20</sessionTimeoutMins>
-    <expiryCheckMins>5</expiryCheckMins>
-
-    <passwordRetry maxAttempts="3" waitTimeMins="5" />
-    
-    <!-- Optional -->
-    <loginAckFields>
-        <tables>
-            <table name="COLOUR" alias="c">
-                <join key="COLOUR_BY_USER_ID">
-                    <![CDATA[
-                    c.setString('USER_ID', user.getString('USER_ID'))
-                    ]]>
-                </join>
-            </table>
-            <table name="PET" alias="p">
-                <join key="PET_BY_USER_ID">
-                    <![CDATA[
-                    p.setString('USER_ID', user.getString('USER_ID'))
-                    ]]>
-                </join>
-            </table>
-        </tables>
-
-        <fields>
-            row.setString("COLOUR", c.getString("COLOUR_NAME"))
-            row.setString("PET", p.getString("PET_NAME"))
-        </fields>
-    </loginAckFields>
-
-</security>
-
+    loginAck(USER_ATTRIBUTES) {
+        loadRecord { UserAttributes.byUserName(userName) }
+        fields {
+            USER_TYPE
+            ACCESS_TYPE withPrefix "USER"
+            ADDRESS_LINE1
+        }
+    }
+}
 ```
 
 ## Message flows
@@ -284,8 +316,8 @@ In the Genesis LCNC Platform, there are profiles, users and rights.  A profile i
 
 Note the following:
 
-* 2-phase validation is not curren;y supported
-* meta data is not supported on the following transactions.
+* 2-phase validation is not currency supported
+* metadata is not supported on the following transactions.
 User/profile STATUS field can be ENABLED/DISABLED/PASSWORD_EXPIRED/PASSWORD_RESET.
 PASSWORD_EXPIRED should prompt the user to enter a new password.
 PASSWORD_RESET should do the same but the server expects a blank "current password" field.
