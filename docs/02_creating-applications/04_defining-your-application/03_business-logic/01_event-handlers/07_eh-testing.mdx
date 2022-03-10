@@ -8,4 +8,42 @@ id: eh-testing
 [Introduction](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/)  | [Where to define](/creating-applications/defining-your-application/business-logic/event-handlers/event-handler-define/) | [Basics](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/) |  [Advanced](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/business-logic/event-handlers/eh-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/business-logic/event-handlers/eh-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/business-logic/event-handlers/eh-testing/)
 
 
-We shall provide details of testing here shortly.
+## Component testing
+
+
+### Testing with Console
+If you use Genesis Console, this gives you a simple way of testing components.
+
+1. In your browser, go to http://genesislcap.com/console/console-next2/.
+2. Enter the IP address of your sever.
+3. Log in with your user name and password. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
+4. Click on the **RESOURCES** tab.
+5. Filter the **Resource type** to show only event handlers.
+For example:
+
+![](/img/test-console-eh-filter.png)
+
+As well as the event handlers that you have defined yourself, you will also see other event handlers that have been generated automatically by the platform, anything that is a **GENESIS_CLUSTER** service, for example.
+
+If you click on any event handler in the list, the fields relevant to the event are displayed to the right.
+
+![](/img/test-console-eh-fields.png)
+
+Now you need to pick the event handler you want to test. in this example, it is called EVENT_INSTRUMENT_INSERT.
+
+1. Find the event handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional- depending on how the event handler was set up.
+
+![](/img/test-console-eh-insert-instrument.png)
+
+2. Enter the details of the new instrument in the field; for example:
+
+![](/img/test-console-eh-insert-instrument-2.png)
+
+If the event handler is working correctly, you will receive an **ACK**.
+
+![](/img/test-console-eh-insert-instrument-ack.png)
+
+You can go on to check the INSTRUMENT table to see if you insert is there.
+
+1. 
+
