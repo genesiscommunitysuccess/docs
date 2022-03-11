@@ -1,0 +1,165 @@
+---
+title: 'Quick Start'
+sidebar_label: 'Quick Start'
+sidebar_position: 4
+id: quick-start
+---
+
+This short guide will enable you to see the basics of the Genesis LCNC Platform by building a very simple application. It is designed simply to get from start to finish as quickly as possible.
+
+### Pre-requisites
+
+Before you start, you need to have:
+
+- An IDE (preferably IntelliJ)
+- Download and install the Genesis LCNC Platform
+
+### What you will build
+
+The very simple application you will build will look like this:
+
+- a simple table with 5 fields
+- components to display and insert data
+
+That’s it. Just enough to get you up and running. Obviously, there is much more you could do, but that can wait for another day.
+
+With a lack of imagination we hope you will find trustworthy, we are going to call this example application **alpha**. You will see this reflected in the file names throughout.
+
+## Create a new project
+((Link to CLI tool instructions creating a new skeleton project))
+
+## Define the [Data Model](/creating-applications/defining-your-application/data-model/data-model-overview)  
+Now you are ready to define the fields and tables that make up your data model. This structured information in a simple way that can be viewed by users and processed by the application. 
+
+### Add [fields](/creating-applications/defining-your-application/data-model/fields)  
+You define your fields in the file **alpha-fields-dictionary.kts**.
+
+:::tip
+
+With your intelliJ project open hit the **shift** key twice and type in the name of the file you are looking for to quickly find and open it
+
+:::
+
+For our simple example, we will add five fields
+
+```kotlin
+fields {
+
+    field("TRADE_ID", type = STRING)
+    field("QUANTITY", type = INT)
+    field("PRICE", type = DOUBLE)
+    field("SYMBOL", type = STRING)
+    field("DIRECTION", type = ENUM("BUY", "SELL", default = "BUY"))
+
+}
+```
+
+((Show how to run generateFields, link to page explaining in ore depth what generateFields is doing))
+
+### Add a [table](/creating-applications/defining-your-application/data-model/tables) 
+Now we have our fields, lets define a table in the file **alpha-tables-dictionary.kts**.
+
+We are defining one single table, containing all of our fields.
+
+TRADE_ID is the primaryKey, and is to be auto-generated
+
+```kotlin
+tables {
+
+    table (name = "TRADE", id = 2000) {
+        sequence(TRADE_ID, "TR")
+        QUANTITY
+        PRICE
+        SYMBOL
+        DIRECTION
+
+        primaryKey {
+            TRADE_ID
+        }
+    }
+    
+}
+```
+
+((Show how to run generateDao, link to page explaining in ore depth what generateDao is doing))
+
+## Add business logic
+We have a table, now we want to be able to see its content and create new entries
+
+### [Data server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers) 
+Data server allows for reading of real-time data, we define in **alpha-dataserver.kts**.
+
+```kotlin
+dataServer {
+    query("ALL_TRADES", TRADE)
+}
+```
+
+### [Event handler](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/)
+Next we want to be able to insert rows into our table, for this we define an [event handler](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/) in **alpha-event-handler.kts**.
+
+```kotlin
+eventHandler {
+
+    eventHandler<Trade>(name = "TRADE_INSERT") {
+        onCommit { event ->
+            entityDb.insert(event.details)
+            ack()
+        }
+    }
+
+}
+```
+
+## Create a user interface
+
+Now let's create a single page with a grid and a form for entering data.
+
+### Grid
+Define a grid to view the dataserver data ((defined here))
+
+((Link to relevant web docs section))
+((Precise details needed))
+
+### Form
+Define an input form to add a trade here ((defined here))
+
+((Link to relevant web docs section))
+((Precise details needed))
+
+### Button
+Now we add a button to open the form ((defined here))
+
+((Link to relevant web docs section))
+((Precise details needed))
+
+## Run the application
+
+Now you can run the application from the front end, view the table of data and add the details of a new trade.
+To run the application:
+
+((Precise details needed))
+((How best to have processes/service defs set up? maybe we have a quick start seed that has dataserver + event handler only?))
+((How best to load a user they can log in with? or can we disable Auth???))
+
+
+### Test
+You should see an empty grid
+
+Now you can add a new trade:
+((Screenshot of filled in form))
+
+The trade appears in the grid
+
+Try adding more...
+
+Refresh the page, you'll see your trades are persisted
+
+## Conclusion
+That’s it. You have quickly built a very simple application using some of the fundamental Genesis components
+
+There's obviously a lot more to building enterprise ready applications, please read through the [Defining your application](/creating-applications/defining-your-application/intro) for details of all the genesis components and their features.
+
+We touch on components and their features in our more advanced tutorials. 
+
+((Link to intro page on tutorials section))
