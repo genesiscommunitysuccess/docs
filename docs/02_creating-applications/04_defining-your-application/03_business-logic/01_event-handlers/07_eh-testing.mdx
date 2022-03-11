@@ -31,12 +31,12 @@ If you click on any event handler in the list, the fields relevant to the event 
 
 Now you need to pick the event handler you want to test. in this example, it is called EVENT_INSTRUMENT_INSERT.
 
-1. Find the event handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional- depending on how the event handler was set up.
+1. Find the event handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the event handler was set up.
 
 ![](/img/test-console-eh-insert-instrument.png)
 
 2. Enter the details of the new instrument in the field. In our example, we are going to add the spot rate for trading the British Pound against the Euro. The code for this is GBPEUR=.
-example:
+In the example below, we have added the INSTRUMENT_ID (mandatory), plus the ASSET_CLASS and NAME. Then we click on **COMMIT**:
 
 ![](/img/test-console-eh-insert-instrument-2.png)
 
@@ -44,6 +44,7 @@ If the event handler is working correctly, you will receive an **ACK**.
 
 ![](/img/test-console-eh-insert-instrument-ack.png)
 
+#### Checking the insertion
 You can go on to check the INSTRUMENT table to see if your insert is there.
 
 1. Filter the list of services to show only request servers (these are the components that distribute the data).
