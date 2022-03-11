@@ -124,18 +124,18 @@ Additionally, you will need a `{product}-saml-config.kts` file, as below:
         strictMode = false
         debugMode = true
         // this should be the extrenally facing genesis url:
-        loginEndpoint = "https://octosso.genesislab.global" 
+        loginEndpoint = "https://sso.genesislab.global" 
         tokenLifeInSeconds = 3000
     
         serviceProvider {
             // this should be the url for accessing the router
-            entityId = "https://octosso.genesislab.global/gwf" 
+            entityId = "https://sso.genesislab.global/gwf" 
         }
     
         // for every identity provider we support we need one of these
-        identityProvider("citi") {
+        identityProvider("genesis") {
             // we need the idp meta data, either a file:
-            metadataUrl = "citimetadata.xml" 
+            metadataUrl = "genesismetadata.xml" 
             // or a url (idp should be accessible from genesis box):
             metadataUrl = "http://localhost:8080/simplesaml/saml2/idp/metadata.php?output=xml" // idp meta data endpoint
     
