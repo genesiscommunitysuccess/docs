@@ -116,19 +116,121 @@ eventHandler {
 Now let's create a single page with a grid and a form for entering data.
 
 ### Grid
-Define a grid to view the dataserver data ((defined here))
+We want to be able to insert grid with data into our page, for this we define tutorialColumnDefs in **home.template.ts**.
+
+```ts
+export const tutorialColumnDefs: ColDef[] = [
+  {field: 'TRADE_ID', headerName: 'TRADE_ID'},
+  {field: 'SYMBOL', headerName: 'SYMBOL'},
+  {field: 'QUANTITY', headerName: 'QUANTITY'},
+  {field: 'PRICE', headerName: 'PRICE'},
+  {field: 'DIRECTION', headerName: 'DIRECTION'},
+];
+```
+
+After that we can create our zero-ag-grid in HomeTemplate const.
+
+```ts
+export const HomeTemplate = html<Home>`
+<zero-card class="trade-card">
+    <zero-ag-grid rowHeight="45" only-template-col-defs>
+    <ag-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_ID"}/>
+    ${repeat(() => tutorialColumnDefs, html`
+        <ag-grid-column :definition="${x => x}" />
+    `)}
+    </zero-ag-grid>
+</zero-card>
+```
+
+In **home.styles.ts** we need add styles to see our changes.
+
+```css
+zero-ag-grid {
+  width: 100%;
+  height: 50%;
+}
+
+.trade-card {
+  width: 100%;
+  heigth: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+```
 
 ((Link to relevant web docs section))
 ((Precise details needed))
 
 ### Form
-Define an input form to add a trade here ((defined here))
+Now we need form with four inputs to insert our trades to database.
+First, we need variables that will hold the values that are entered.
+We define them in **home.ts**, more precisely in the class: Home.
+
+```ts
+@observable public quantity: string;
+@observable public price: string;
+@observable public tradeSymbol: string;
+@observable public tradeSide: string = 'BUY';
+```
+Now we can create our form with sync values in **home.template.ts** (add in zero-card after zero-ag-grid).
+
+```ts
+<span>Add Trade</span>
+<zero-text-field type="number" :value=${sync(x=> x.quantity)}>
+  <span>Quantity</span>
+</zero-text-field>
+<zero-text-field type="number" :value=${sync(x=> x.price)}>
+  <span>Price</span>
+</zero-text-field>
+<zero-text-field type="text" :value=${sync(x=> x.tradeSymbol)}>
+  <span>Symbol</span>
+</zero-text-field>
+<span>Side</span>
+<zero-select @change=${((x, c)=> x.tradeSideChange(c.event.target as Select))}>
+  <zero-option value='BUY'>BUY</zero-option>
+  <zero-option value='SELL'>SELL</zero-option>
+</zero-select>
+```
+
+To handle the value in zero-select we need to create a function in **home.ts**. 
+```ts
+public tradeSideChange(target: Select) {
+  this.tradeSide = target.selectedOptions[0]?.value;
+}
+```
+
 
 ((Link to relevant web docs section))
 ((Precise details needed))
 
 ### Button
-Now we add a button to open the form ((defined here))
+Now we add a button to insert data from form to grid.
+
+In **home.template.ts** (after zero-select).
+```ts
+<zero-button @click=${x=> x.insertTradeData()}>Add Trade</zero-button>
+```
+
+In **home.ts** we create a function to handle connection to the server.
+```ts
+public async insertTradeData() {
+  const tradeDataEvent = await this.connection.commitEvent('EVENT_TRADE_INSERT', {
+    DETAILS: {
+      SYMBOL: this.tradeSymbol,
+      QUANTITY: this.quantity,
+      PRICE: this.price,
+      DIRECTION: this.tradeSide,
+    },
+    IGNORE_WARNINGS: true,
+    VALIDATE: false,
+  });
+
+  logger.debug('EVENT_TRADE_INSERT result -> ', tradeDataEvent);
+}
+```
+
+With all this, we are now able to view and add data.
 
 ((Link to relevant web docs section))
 ((Precise details needed))
