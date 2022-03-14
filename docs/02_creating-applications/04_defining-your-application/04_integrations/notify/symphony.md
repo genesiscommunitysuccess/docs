@@ -103,7 +103,7 @@ In addition, the NotifyService offers the following ReqRep resource.
 
 `USER_EMAIL`
 
-`USER_ID`  - Sysmphony User Id
+`USER_ID`  - Symphony User Id
 
 ## Configuring Symphony On-Behalf-Of (OBO) for outgoing messages 
 
