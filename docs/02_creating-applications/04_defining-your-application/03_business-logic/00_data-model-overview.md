@@ -12,7 +12,7 @@ In this section, we look at components that you can configure in order translate
 
 [State machines](/creating-applications/defining-your-application/business-logic/state-machines/define/) are particular types of event handler designed to handle the transition of an item from one state to another.
 
-[Consolidators](/creating-applications/defining-your-application/business-logic/consolidators/configure/) enable you to aggregate data and perform calculations on items of data within the database.
+[Consolidators](/creating-applications/defining-your-application/business-logic/consolidators/consolidators/) enable you to aggregate data and perform calculations on items of data within the database.
 
 [Evaluators](/creating-applications/defining-your-application/business-logic/evaluators/configure/) enable you to define dynamic and static (cron rules) events. Dynamic events are triggered by rules that you define (for example, it can send an email if a limit has been breached). Static events are simply run at the times you schedule (so you can schedule an End-of-Day report to be prepared and sent, for example).
 

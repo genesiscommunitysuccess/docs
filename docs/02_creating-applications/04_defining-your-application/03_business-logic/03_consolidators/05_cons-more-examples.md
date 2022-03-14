@@ -1,48 +1,15 @@
 ---
-title: Consolidator reference
-sidebar_label: Consolidator reference
-id: advanced
-sidebar_position: 2
+title: More examples
+sidebar_label: More examples
+id: cons-more-examples
+sidebar_position: 5
 
 ---
 
-A consolidator listens to a table in the database, performs a calculation using that data, then writes the result to another table in the database.
 
-Using consolidators, you can group, summarize and aggregate sets of records in real time. For example, a consolidator can be used to calculate the residual quantity of all the orders within an order basket.
+[Introduction](/creating-applications/defining-your-application/business-logic/consolidators/consolidators/)  | [Where to define](/creating-applications/defining-your-application/business-logic/consolidators/cons-where-to-define/) | [Basics](/creating-applications/defining-your-application/business-logic/consolidators/cons-technical-details/) |  [Advanced](/creating-applications/defining-your-application/business-logic/consolidators/cons-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/business-logic/consolidators/cons-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/business-logic/consolidators/cons-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/business-logic/consolidators/cons-testing/)
 
-
-## Configuration
-You define consolidators in an xml file with the name **_application_-consolidator.xml**. 
-If your application is called *Tiresias*, your configuration file is **tiresias-consolidator.xml**.
-Within your file, you can define as many consolidators as you like. 
-Each consolidator definition is a code block with the following elements:
-
-
-* **name** to identify the consolidation block.
-
-* **start** which can be set to true or false and will enable or disable the consolidation on startup.
-
-* **group** is optional and causes consolidations to be thread-safe between each other. This is useful to make sure numbers are correct if you need records to be consolidated based on different root tables. For example, TRADE -> ORDER and ORDER -> ORDER consolidations should be in the the same group.
-
-* **tables** which are the table joins used to get the data, in a similar way to the dataserver. A table has a name, and an alias used to bind the results of queries to variables and, optionally, the list of field names that will be used for numeric calculations in the node (`consolidationFields` attribute). 
-* If you don't define a `consolidationFields` attribute, the consolidation manager will attempt to set all numeric values to **0** for each consolidation to avoid any potential null pointer exceptions (not efficient with large tables). Backward joins are also supported (only one per consolidation).
-
-* **groupBy** represents the unique `group` key to define where each event belongs. This is a Groovy expression that needs to return a string, and all the aliases from `<tables>` are available as bindings. For convenience, there is a helper method called "group", that accepts multiple input values and concatenates them using the "|" symbol.
-
-IMPORTANT: Do not supply null values  to the group method. If you are using a nullable field,  use the elvis operator: 
-
-```kotlin
-group(trade.getString("DEAL_ID") ?: "NULL")
-```
- 
-* **consolidateTable** which represents the table in which the consolidation rows are fetched and modified. They have a name and an alias which will be used to reference this record in the `<calculation>` and `<consolidationTarget>` nodes. They can also be set as transient or non-transient (the default). consolidationFields attribute is also (optionally) present in this table.
-
-* **consolidateTarget** which contains the join expression used to fetch the "consolidated" row relative to this specific consolidation event using the key defined in the "key" attribute. If the consolidation record is not found, it will be created with all numeric fields zeroed representing an initial row. Additionally, the computed string in the `groupBy` Groovy expression is available as a binding called `groupId`.
-
-* **calculation** is groovy code where the actual computation of the consolidation is performed.
-
-### Example
-Here is an example file that defines two consolidators:
+Here is an example consolidator file that defines two consolidators:
 
 * CON_ORDER_FROM_TRADES. This consolidator totals the order quantity across the ```TRADE``` table, grouping by field ```TRADE.ORDER_ID```
                           into a table called ```ORDER_CONSOLIDATED_VOLUME```.
