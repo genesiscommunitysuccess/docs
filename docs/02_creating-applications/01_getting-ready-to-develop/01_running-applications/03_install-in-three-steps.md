@@ -58,7 +58,7 @@ You can switch to that user and view the run directory for the newly installed p
 
 ```bash
 [centos@genesisserv1 home]$ sudo su - foxtrot
-[octopus@genesisserv1 ~]$ ls
+[gnosis@genesisserv1 ~]$ ls
 run
 [foxtrot@genesisserv1 ~]$ ls -ls
 total 12
