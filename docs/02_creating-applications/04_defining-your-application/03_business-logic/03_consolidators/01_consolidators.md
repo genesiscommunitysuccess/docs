@@ -26,5 +26,4 @@ A consolidator does not do anything else. It is a self-contained box in the serv
 So what you do with the results of the consolidator is your problem. If you need to publish the data it writes to the database, you'll need a [data server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers/) or [request server](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/).
 
 
-There is one important operational consideration if you have a consolidator in your application. If you stop the process, you need to use the `--coldStart` parameter when you restart. In short, you need to do a [cold start](/creating-applications/defining-your-application/business-logic/consolidators/coldstart/).
 
