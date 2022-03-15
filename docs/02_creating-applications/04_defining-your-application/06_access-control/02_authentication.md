@@ -166,7 +166,7 @@ security {
             restrictQWERTY = true
             restrictNumericalSequences = true
             illegalCharacters = ""
-            historicalCheck = null
+            historicalCheck = 0
             dictionaryWordSize = null
             restrictUserName = false
             repeatCharacterRestrictSize = null
