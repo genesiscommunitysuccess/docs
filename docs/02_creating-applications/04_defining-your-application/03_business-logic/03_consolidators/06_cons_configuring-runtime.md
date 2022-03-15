@@ -10,7 +10,9 @@ id: cons-configuring-runtime
 
 ## Adding the consolidator to processes.xml
 
-before you use the Consolidator process, you must ensure that it is included in the  **processes.xml** file for the application. This is located in the **.cfg** folder for the application. The file contains tags that define key characteristics of the Consolidator - for example, dependencies and logging level. Here is an example configuration (the tags are explained in the page on the [processes.xml file](/creating-applications/configure-runtime/processes-xml/)):
+Before you can use the consolidator you have created, you must add its details to the  **processes.xml** file for the application. This is located in the **.cfg** folder for the application. The file contains tags that define key characteristics of the consolidator - for example, dependencies and logging level. 
+
+Here is an example configuration (the tags are explained in the page on the [processes.xml file](/creating-applications/configure-runtime/processes-xml/)):
  
 
 ```xml

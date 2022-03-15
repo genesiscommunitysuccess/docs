@@ -71,3 +71,4 @@ This  consolidates all records in the system before starting the real-time event
 At the beginning of a cold start, all fields in `consolidationFields` of the consolidation table are zeroed (or deleted, if transient) before initiating the re-consolidation of all the records in the database.
 
 
+

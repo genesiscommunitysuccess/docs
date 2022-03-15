@@ -119,4 +119,86 @@ Here is an example consolidator file that defines two consolidators:
     </consolidation>
 </consolidations>
 ```
-You can find an example of a consolidator being configured in our [tutorial](/tutorials/building-an-application/add-calculated-data/).
+
+
+The example below comes from the consolidator exercise in our [tutorial](/tutorials/building-an-application/add-calculated-data/). It has a single consolidator, called `CONSOLIDATE_POSITIONS`. 
+
+To give you some basic pointers to the content, the main code blocks in this consolidator are:
+
+- The `tables` block contains two tables: `TRADE` and `INSTRUMENT_PRICE`, which are given aliases.
+- The `groupBy` block groups by `INSTRUMENT_ID` and `COUNTERPARTY_ID`.
+- The `consolidateTable` block contains the `consolidationTarget` block and the `calculation` block. 
+
+```xml
+<consolidations>
+
+    <consolidation name="CONSOLIDATE_POSITIONS" start="true">
+        <tables>
+            <table name="TRADE" alias="t" seedKey="TRADE_BY_ID" consolidationFields="QUANTITY PRICE"/>
+
+            <table name="INSTRUMENT_PRICE" alias="ip" >
+                <join key="INSTRUMENT_PRICE_BY_INSTRUMENT_ID">
+                    <![CDATA[
+                    ip.setString("INSTRUMENT_ID", t.getString("INSTRUMENT_ID"))
+                    ]]>
+                </join>
+            </table>
+        </tables>
+
+        <groupBy>
+            <![CDATA[
+                group(t.getString("INSTRUMENT_ID"), t.getString("COUNTERPARTY_ID"))
+            ]]>
+        </groupBy>
+
+        <consolidateTable name="POSITION" alias="p" consolidationFields="QUANTITY NOTIONAL"
+                          transient="true">
+            <consolidationTarget key="POSITION_BY_INSTRUMENT_ID_COUNTERPARTY_ID">
+                <![CDATA[
+                p.setString("COUNTERPARTY_ID", t?.getString("COUNTERPARTY_ID"))
+                p.setString("INSTRUMENT_ID", t?.getString("INSTRUMENT_ID"))
+                ]]>
+            </consolidationTarget>
+            <calculation>
+                <![CDATA[
+                    long quantity = t.getLong("QUANTITY")
+                    long previousQuantity = previous_t.getLong("QUANTITY")
+                    long quantityDelta = quantity - previousQuantity
+                    String tradeStatus = t.getString("TRADE_STATUS")
+                    long newQuantity = p.getLong("QUANTITY")
+                    switch(tradeStatus) {
+                      case "NEW":
+                      case "ALLOCATED":
+                        String side = t.getString("TRADE_STATUS")
+                        switch(side) {
+                          case "BUY":
+                            newQuantity += quantityDelta
+                            break
+                          case "SELL":
+                            newQuantity -=quantityDelta
+                            break
+                          }
+                        break
+                      case "CANCELLED":
+                        String previousSide = previous_t.getString("TRADE_STATUS")
+                        switch(previousSide) {
+                          case "BUY":
+                            newQuantity -= quantityDelta
+                            break
+                          case "SELL":
+                            newQuantity +=quantityDelta
+                            break
+                          }
+                        break
+                    }
+                    p.setLong("QUANTITY", newQuantity)
+                    Double lastPrice = ip?.getDouble("LAST_PRICE")
+                    if (lastPrice != null) {
+                        p.setDouble("NOTIONAL", newQuantity * lastPrice )
+                    }
+                ]]>
+            </calculation>
+        </consolidateTable>
+    </consolidation>
+</consolidations>
+```
