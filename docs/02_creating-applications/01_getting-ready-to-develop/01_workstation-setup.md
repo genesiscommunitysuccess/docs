@@ -32,8 +32,8 @@ Note that you can use a range of IDEs (for example, Eclipse) with the LCNC Platf
 
 ## Requirements
 
-* NodeJS (14 LTS+) - https://nodejs.org/en/
-* npm 6+ (installed with NodeJS)
+* NodeJS (16 LTS+) - https://nodejs.org/en/
+* npm 8 (installed with NodeJS)
 
 ## .npmrc token
 
