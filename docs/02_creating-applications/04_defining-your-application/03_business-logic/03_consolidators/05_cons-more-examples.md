@@ -14,7 +14,7 @@ Here is an example consolidator file that defines two consolidators:
 * CON_ORDER_FROM_TRADES. This consolidator totals the order quantity across the ```TRADE``` table, grouping by field ```TRADE.ORDER_ID```
                           into a table called ```ORDER_CONSOLIDATED_VOLUME```.
                
-* CON_BASKET_FROM_ORDERS.  This consolidator counts the number of orders and the order quantity, grouped by the field ```BASKET_ORDER_DETAILS.BASKET_ID``` from the ```ORDERS``` table. Note that in the table ```BASKET_ORDER_DETAILS``` thre is a ```backwardJoin``` that ensures that real-time data from the table and the table it joins are reflected in the calculation.  
+* CON_BASKET_FROM_ORDERS.  This consolidator counts the number of orders and the order quantity, grouped by the field ```BASKET_ORDER_DETAILS.BASKET_ID``` from the ```ORDERS``` table. Note that in the table ```BASKET_ORDER_DETAILS``` there is a ```backwardJoin``` that ensures that real-time data from the table and the table it joins are reflected in the calculation.  
 
 
 ```xml
