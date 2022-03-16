@@ -58,9 +58,8 @@ The `passwordValidation` function enables password validation, and allows you to
 
 * **passwordSalt** defines a system specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different Genesis systems are stored as different hashes. Default empty string.
 
-##### passwordStrength
-
-The `passwordStrength` function can be called within `passwordValidation` and has many variables to be set. These enable you to specify in detail the mandatory characteristics for the password. Within this function the following variables can be set:
+#### passwordStrength
+The `passwordStrength` function can be called within `passwordValidation` and has many variables. These enable you to specify in detail the mandatory characteristics for the password. Within this function, the following variables can be set:
 
 * **minimumLength** this represents the minimum length of password. Default: null.
 * **maximumLength** this represents the maximum length of password. Default: null.
@@ -111,7 +110,7 @@ The `mfa` function allows you to configure Multi-factor Authentication (MFA). It
 #### loginAck
 The `loginAck` function allows you to define additional values to be sent back to the client as part of the LOGIN_ACK message. When you call the `loginAck` function you have to supply a table or view as a parameter. This is the table or view upon which the following functions will be invoked.
 
-##### loadRecord
+#### loadRecord
 The `loadRecord` function can be invoked within the `loginAck` function to load a single record from the previously supplied table or view.
 
 ##### fields
@@ -220,7 +219,7 @@ All requests below are capable of returning an error with a code of INTERNAL_ERR
 ### Pre-authentication
 Pre-authentication messages can be sent by a client without the user being logged in
 #### Login preferences
-You need make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knws this before any user logs in.
+You need make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knows this before any user logs in.
 Currently, this is the only preference published.
 ##### Request
     MESSAGE_TYPE = EVENT_LOGIN_PREFS
