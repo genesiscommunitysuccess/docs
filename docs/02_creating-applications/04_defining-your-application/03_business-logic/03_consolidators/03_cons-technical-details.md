@@ -9,19 +9,11 @@ sidebar_position: 3
 
 [Introduction](/creating-applications/defining-your-application/business-logic/consolidators/consolidators/)  | [Where to define](/creating-applications/defining-your-application/business-logic/consolidators/cons-where-to-define/) | [Basics](/creating-applications/defining-your-application/business-logic/consolidators/cons-technical-details/) |  [Advanced](/creating-applications/defining-your-application/business-logic/consolidators/cons-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/business-logic/consolidators/cons-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/business-logic/consolidators/cons-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/business-logic/consolidators/cons-testing/)
 
-## A very simple consolidator
+
 Within your **_application_-consolidator.xml**, you can define as many consolidators as you like. Each one is a `<consolidation>` block of code that performs a calculation or aggregation.
 
-Here is an example of a very simple consolidator file that has just one single simple consolidator. 
+A working consolidator has a number of elements, so before we show you a simple example, check the syntax below to see those elements.
 
-```xml
-<consolidations>
-    <consolidation name="SIMPLE_CALC" start="false" group="ORDER">
-// Substance needed!!!
-    </consolidation>
-</consolidations>   
-
-```
 
 ### Syntax for the definitions
 
@@ -51,6 +43,46 @@ group(trade.getString("DEAL_ID") ?: "NULL")
 
 * **calculation** is groovy code where the actual computation of the consolidation is performed.
 
+### A simple example
+OK - after that, you deserve a simple example.
+
+Which is bad luck, because here is the simplest one we can give you at the moment. But at least it shows you the key code blocks that were described above.
+
+```xml
+<consolidations>
+    <consolidation name="CON_ORDER_FROM_TRADES" start="false" group="ORDER">
+        <tables>
+            <table name="TRADE" alias="tr" seedKey="TRADE_BY_ID" consolidationFields="QUANTITY"/>
+        </tables>
+
+        <groupBy>
+            <![CDATA[
+            tr.getString("ORDER_ID")
+            ]]>
+        </groupBy>
+
+        <consolidateTable name="ORDER_CONSOLIDATED_VOLUME" alias="ov" consolidationFields="CONSOLIDATED_VOLUME" transient="false">
+            <consolidationTarget key="ORDER_BY_ID">
+                <![CDATA[
+                ov.setString("ORDER_ID", groupId)
+                ]]>
+            </consolidationTarget>
+
+            <calculation>
+                <![CDATA[
+                    int deltaVolume = tr.getInteger("QUANTITY") - previous_tr.getInteger("QUANTITY")
+                    int oldConsolidatedVolume = ov.getInteger("CONSOLIDATED_VOLUME")
+                    int newConsolidatedVolume = oldConsolidatedVolume + deltaVolume
+                    ov.setInteger("CONSOLIDATED_VOLUME", newConsolidatedVolume)
+                ]]>
+            </calculation>
+
+        </consolidateTable>
+    </consolidation>
+</consolidations>
+```
+
+
 ## Starting and killing the process
 
 All Genesis processes can be started or killed using the `startServer` and `killServer` commands. But here's the thing. If you turn off the consolidator process for any reason, you should almost certainly perform a cold start when you restart the process. This ensures that any changes to data while the process was not running are properly recalculated before any real-time calculations are triggered.
@@ -66,7 +98,7 @@ A cold start avoids the danger of losing your calculated data. To make a cold st
 
 `startProcess --coldStart`
 
-This  consolidates all records in the system before starting the real-time event-driven consolidations. 
+This consolidates all records in the system before starting the real-time event-driven consolidations. 
 
 At the beginning of a cold start, all fields in `consolidationFields` of the consolidation table are zeroed (or deleted, if transient) before initiating the re-consolidation of all the records in the database.
 
