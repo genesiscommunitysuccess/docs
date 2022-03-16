@@ -91,6 +91,19 @@ data class AddUserToChannel(val channelName: String, val userId: String)
 data class RemoveUserFromChannel(val channelName: String, val userId: String)
 data class ActionOnChannel(val roomId: String, val activate: Boolean)
 ```
+In addition, the NotifyService offers the following ReqRep resource.
+
+* `LIST_MEMBERS_OF_CHANNEL` list members of a channels
+
+* Inputs (Request)
+
+`ChannelName` - Symphony Stream Id
+
+* Outputs (Response)
+
+`USER_EMAIL`
+
+`USER_ID`  - Symphony User Id
 
 ## Configuring Symphony On-Behalf-Of (OBO) for outgoing messages 
 
