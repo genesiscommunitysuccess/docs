@@ -17,19 +17,15 @@ import TabItem from '@theme/TabItem';
 
 
 
-
-
-
-
 ## Using Consolidators
 
-Consolidators listen to updates on an underlying database object, either a view or a table. The consolidator aggregate the changes,
+Consolidators listen to updates on an underlying database object: either a view or a table. The consolidator aggregates any changes to that object,
 and then outputs the aggregated data to a specified type, the output type.
 
 There are two ways to use GPAL consolidators:
 
-- as a service. Here, the output type must always be a table entity. The consolidator service listens to table updates, and updates the target table. 
-- as a consolidator object. This can be used in code to perform on-demand consolidations and what-if analysis. The output is not saved in your application's database.
+- as a service: in this case, the output type must always be a table entity. The consolidator service listens to table updates, and updates the target table. 
+- as a consolidator object: this can be used in code to perform on-demand consolidations and what-if analysis. The output is not saved in your application's database.
 
 ### Consolidator services
 
@@ -43,10 +39,10 @@ multiple times.
 This is the primary method of using consolidators. The consolidator runs a service and automatically updates the
 output table. 
 
-These services can be started in two modes, firstly, by default, they will listen for changes and update
-on the basis of that. 
+These services can be started in two modes:
+- first, by default, they listen for changes and update on the basis of those changes
 
-Secondly, they support cold-start. A cold-start will firstly rerun the aggregation over existing
+- second, they support cold-start. A cold-start will firstly rerun the aggregation over existing
 data, before continuing in normal mode. This can be useful to deal with changes in the consolidator definition, or if
 there has been a problem aggregating data.
 
@@ -72,7 +68,7 @@ val result = tradeConsolidator.whatIf(Trade.ByOrderId("2"), trade1, trade2)
 
 Functions are the base building blocks of the select statement.
 
-The  `count` function is exceptional, in that it can have an input or no input. All other functions require input. 
+All functions except for for `count` require an input. With `count` input is optional. 
 For the required input, use the syntax `sum { feeAmount }`.
 Within the curly brackets of the function, you can access all fields on the row, and you can use any kotlin operation on the row. The function will be applied over the result, unless the result is null, in which case it will be ignored.
 
@@ -176,7 +172,7 @@ in order to calculate the correct value.
 
 
 ## Defining a consolidator
-You define a consolidator service in a `consolidator.kts` file. Ijn this file, you need to provide:
+You define a consolidator service in a `consolidator.kts` file. In this file, you need to provide:
 
 - a name
 - an input table or view
@@ -233,7 +229,7 @@ properties, and consolidator properties will overwrite both.
 
 ### select block
 
-In the select block the developer can specify functions and outputs, for example:
+In the select block, you can specify functions and outputs, for example:
 
 
 <Tabs defaultValue="tables" values={[{ label: 'Tables', value: 'tables', }, { label: 'Classes', value: 'classes', }]}>
@@ -266,7 +262,7 @@ select {
 </Tabs>
 
 #### logging
-For debugging purposes, the `select` block also supports logging. By default, the consolidator logs all events with debug level TBC, but this can be overwritten with custom messages. To do this, use the `logJoin`,
+For debugging purposes, the `select` block also supports logging. By default, the consolidator logs all events with debug level **TBC**, but this can be overwritten with custom messages. To do this, use the `logJoin`,
 `logLeave` and `logNoop` blocks:
 
 ```kotlin
@@ -456,6 +452,6 @@ of data.
 
 ## Troubleshooting
 
-To help developers troubleshoot consolidator issues, consolidators will progress data to the logfile when the service
-log level is set to debug or trace. Furthermore, specific operations can be debugged by using the provided `LOG`
-property in the consolidator. This is available in all contexts of the consolidator.
+To help developers troubleshoot consolidator issues, consolidators will pass data to the logfile when the service
+log level is set to **debug** or **trace**. Specific operations can be debugged using the  `LOG`
+property provided in the consolidator. This is available in all contexts of the consolidator.
