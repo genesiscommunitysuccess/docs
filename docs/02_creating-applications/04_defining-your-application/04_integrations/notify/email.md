@@ -24,10 +24,12 @@ notify {
             smtpPort = 25
             smtpUser = "notifications@genesis.global"
             smtpPw = ""
-            smtpProtocol = "SMTP"
+            smtpProtocol = SMTP_TLS
+            systemDefaultUserName = "Genesis System"
+            systemDefaultEmail = "system@genesis.global"
     }
 
-    // optionally include additional connections, including additional Symphony, Email or Microsoft Teams connections
+    // optionally include additional connections, including additional Symphony, Email
 }
 ```
 
