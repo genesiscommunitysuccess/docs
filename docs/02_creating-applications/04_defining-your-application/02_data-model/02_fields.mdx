@@ -69,12 +69,26 @@ fields {
 ### Field type parameters
 
 | Parameter | Default value | Sample Usage | Value Type | Description |
-|---|---|---|---|
-| default | null | `field(name = "AGE", type = INT, default=20)` | The same type as the field | Set a default value for the field where not supplied on a database insert. Manadatory for `ENUM` |
+|---|---|---|---|---|
+| default | null | `field(name = "AGE", type = INT, default=20)` | The same type as the field | Set a default value for the field where not supplied on a database insert. Mandatory for `ENUM` |
 | maxSize | 64 (unlimited for non sql DB) | `field(name = "DESCRIPTION", type = STRING, maxSize=1000)` | integer | Set the maxSize of a field. Applicable for `STRING`, `ENUM`, `RAW`. Needed for HFT and SQL Data Structures |
 | format | N/A | `field(name = "DESCRIPTION", type = BIG_DECIMALS, format="#,##0.000")` | Dependent on type | Set the maxSize of a field. Applicable for `STRING`, `RAW`  |
 | sensitive | false | `field(name = "PASSWORD", type = STRING, sensitive=true)` | boolean | true if the field should be masked on its toString() output  |
 | nullable | true | `field(name = "USER_NAME", type = STRING, sensitive=true)` | boolean | true if the field should be masked on its toString() output  |
+
+#### Extra notes on max size
+
+When using a SQL DB and wanting a field's max size to be the same as what the underlying SQL DB supports, you can use the helper function `dbMaxSize()`.
+For example, if using Postgres and wanting a `STRING` field's size to be equal to the max size Postgres supports, then you would define the field as:
+```kotlin
+field(name = "DESCRIPTION", type = STRING, maxSize = dbMaxSize())
+```
+Optionally you can also specify a target max size. This is useful for when you want to limit a field's size to a particular length but want to be flexible enough to support different SQL DBs.
+For example you could define a field like so:
+```kotlin
+field(name = "DESCRIPTION", type = STRING, maxSize = dbMaxSize(target = 9000))
+```
+If using Postgres this would set the field's max size to 9000 because Postgres can support up to 65535. But if using MS SQL then this field's max size would be set to 8000 because that is the max supported size for MS SQL.
 
 ### Naming fields
 
@@ -168,7 +182,7 @@ fields {
     field(name = "PROCESS_STATUS", type = BOOLEAN)
     field(name = "PROCESS_STATUS_MESSAGE", type = STRING)
     field(name = "PROCESS_STATE_TEXT", type = ENUM("DOWN", "ERROR", "WARNING", "STANDBY", "UP", default = "DOWN"))
-    field(name = "PROCESS_RESOURCES", type = STRING, maxSize = 5000)
+    field(name = "PROCESS_RESOURCES", type = STRING, maxSize = dbMaxSize(target = 5000))
     field(name = "PROCESS_HOSTNAME", type = STRING)
     field(name = "PROCESS_CPU_USAGE", type = DOUBLE)
     field(name = "PROCESS_MEM_USAGE", type = DOUBLE)
