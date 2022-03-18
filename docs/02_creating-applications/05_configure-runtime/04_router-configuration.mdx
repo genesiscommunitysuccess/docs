@@ -86,33 +86,42 @@ EVENT_LOGIN_AUTH, EVENT_LOGOUT, MORE_ROWS, MORE_COLUMNS, DATA_LOGOFF, DATA_GET
 
 `entry:` Is the additional accepted `messageType`.
 
-###Custom Endpoints
+### Custom Endpoints
 
 To create a custom endpoint using the Genesis-Router simply implement the `WebEndpoint` interface provided by Genesis-Router, call upon the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
 
 In the following examples, a `FileEndpointCommon` class has also been created to methods that may be needed across multiple endpoints:
 
-####FileEndpointCommon
+#### FileEndpointCommon
+
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
+
 ```kotlin
-object FileEndpointCommon {
-    const val ENDPOINT_NAME = "file-handler"\
+public class FileEndpointCommon {
+    companion object {
+        const val ENDPOINT_NAME = "file-handler"
+   }
 }
 ```
+
 </TabItem>
 <TabItem value="java">
+
 ```java
 public class FileEndpointCommon {
     static final String ENDPOINT_NAME = "file-handler";
 }
 ```
+
 </TabItem>
 </Tabs>
 
-####FileProcessor
+#### FileProcessor
+
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
+
 ```kotlin
 @Module
 class FileProcessorKotlin @Inject constructor(
@@ -160,8 +169,10 @@ class FileProcessorKotlin @Inject constructor(
     }
 }
 ```
+
 </TabItem>
 <TabItem value="java">
+
 ```java
 @Module
 public class FileProcessor implements WebEndpoint {
@@ -220,10 +231,11 @@ public class FileProcessor implements WebEndpoint {
 
 }
 ```
+
 </TabItem>
 </Tabs>
 
-###Testing the Router
+### Testing the Genesis Router
 
 To create unit tests for Genesis router, you can extend the `AbstractGenesisTestSupport` class and specify the `genesis-router.kts` as the Script File Name. Examples of how you would initialise a test extending this class are provided below.
 
@@ -287,6 +299,3 @@ public class TestEndpoint extends AbstractGenesisTestSupport<GenesisSet> {
 
 </TabItem>
 </Tabs>
-
-
-####Testing Endpoints
