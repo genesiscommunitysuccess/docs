@@ -8,7 +8,7 @@ id: genesis-router
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Genesis Router is responsible for communication between front end and back end. This is configured in the file **genesis-router.kts**.
+Genesis router is responsible for communication between front end and back end. This is configured in the file **genesis-router.kts**.
 
 Here is an example:
 
@@ -74,20 +74,20 @@ For more information, follow this [link](https://netty.io/4.1/api/io/netty/handl
   * `maxContentLength`: the maximum length of the aggregated content in bytes. Default value: 262144
   * `closeOnExpectationFailed`: If a 100-continue response is detected but the content length is too large, then true means close the connection. Otherwise, the connection will remain open and data will be consumed and discarded until the next request is received. Default value: false
 
-**Message Routes**: 
+**Message routes**: 
 
 `routes`: You can redirect some microservice messages to particular processes by declaring new `route` blocks within this one.
 
 `route`: Is the defined route taking both a `messageType` and a specific `process`.
 
-**Allowed Resources**:
+**Allowed resources**:
 
 `allowList`:  You can limit the resources exposed by the Genesis router. Without at least one `entry` block, every resource will be available. It is important to note that the following message types will always be allowed by default, regardless of the allowList definition:
 EVENT_LOGIN_AUTH, EVENT_LOGOUT, MORE_ROWS, MORE_COLUMNS, DATA_LOGOFF, DATA_GET
 
 `entry:` Is the additional accepted `messageType`.
 
-### Custom Endpoints
+### Custom endpoints
 
 To create a custom endpoint using the Genesis router, simply implement the `WebEndpoint` interface provided by Genesis router. Call upon the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
 
