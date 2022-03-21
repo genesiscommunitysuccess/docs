@@ -8,7 +8,7 @@ id: genesis-router
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Genesis Router is responsible for communication between front-end and back-end. This is configured in a file called **genesis-router.kts**.
+Genesis Router is responsible for communication between front end and back end. This is configured in the file **genesis-router.kts**.
 
 Here is an example:
 
@@ -43,15 +43,16 @@ router {
 }
 ```
 
-### Router configuration 
-
-`socketPort`: This port is used for http/websockets. You must declare a port, and it cannot be below 1024.
+## Router configuration 
+Let's have a look at the different options for configuring this file. You have seen some, but not all of these in the example above.
 
 `webPort`: This port is used for tcp/ip socket. You must declare a port, and it cannot be below 1024.
 
+`socketPort`: This port is used for http/websockets. You must declare a port, and it cannot be below 1024.
+
 `dataserverPollingTimeout`: This setting contains the timeout for polling the data-server resources in the system in seconds. Default value is 60 seconds.
 
-`authDisabled`: This setting if set to true, disables all authentication and is used for development mode. Default value is false.
+`authDisabled`: If set to true, this setting disables all authentication, and is used for development mode. Default value is false.
 
 `nettyLoggingEnabled`: This setting if set to true, enables internal netty logging. Default value false.
 
@@ -62,16 +63,16 @@ For more information, follow this [link](https://netty.io/4.1/api/io/netty/handl
 
 Different decoder options
   * `maxInitialLineLength`: default value: 4096
-  * `maxHeaderSize`: default value 8192
-  * `maxChunkSize`: default value 8192
-  * `validateHeaders`: default value true
-  * `initialBufferSize`: default value 128
+  * `maxHeaderSize`: default value: 8192
+  * `maxChunkSize`: default value: 8192
+  * `validateHeaders`: default value: true
+  * `initialBufferSize`: default value: 128
 
 `httpObjectAggregatorDefinition`: A ChannelHandler that aggregates an HttpMessage and its following HttpContents into a single FullHttpRequest or FullHttpResponse (depending on if it used to handle requests or responses) with no following HttpContents.
-For more information follow this [link](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpObjectAggregator.html)
+For more information, follow this [link](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpObjectAggregator.html)
 
-  * `maxContentLength`: the maximum length of the aggregated content in bytes. Default value 262144
-  * `closeOnExpectationFailed`: If a 100-continue response is detected but the content length is too large, then true means close the connection. Otherwise, the connection will remain open and data will be consumed and discarded until the next request is received. Default value false
+  * `maxContentLength`: the maximum length of the aggregated content in bytes. Default value: 262144
+  * `closeOnExpectationFailed`: If a 100-continue response is detected but the content length is too large, then true means close the connection. Otherwise, the connection will remain open and data will be consumed and discarded until the next request is received. Default value: false
 
 **Message Routes**: 
 
@@ -81,16 +82,16 @@ For more information follow this [link](https://netty.io/4.1/api/io/netty/handle
 
 **Allowed Resources**:
 
-`allowList`:  You can limit the resources exposed by the genesis router. Without at least one `entry` block every resource wil be available. It is important to note that the following message types will always be allowed by default, regardless of the allowList definition:
+`allowList`:  You can limit the resources exposed by the Genesis router. Without at least one `entry` block, every resource will be available. It is important to note that the following message types will always be allowed by default, regardless of the allowList definition:
 EVENT_LOGIN_AUTH, EVENT_LOGOUT, MORE_ROWS, MORE_COLUMNS, DATA_LOGOFF, DATA_GET
 
 `entry:` Is the additional accepted `messageType`.
 
 ### Custom Endpoints
 
-To create a custom endpoint using the Genesis-Router simply implement the `WebEndpoint` interface provided by Genesis-Router, call upon the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
+To create a custom endpoint using the Genesis router, simply implement the `WebEndpoint` interface provided by Genesis router. Call upon the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
 
-In the following examples, a `FileEndpointCommon` class has also been created to methods that may be needed across multiple endpoints:
+In the following examples, a `FileEndpointCommon` class has also been created to hold utility methods that may be needed across multiple endpoints:
 
 #### FileEndpointCommon
 
@@ -235,7 +236,7 @@ public class FileProcessor implements WebEndpoint {
 </TabItem>
 </Tabs>
 
-### Testing the Genesis Router
+### Testing the Genesis router
 
 To create unit tests for Genesis router, you can extend the `AbstractGenesisTestSupport` class and specify the `genesis-router.kts` as the Script File Name. Examples of how you would initialise a test extending this class are provided below.
 
