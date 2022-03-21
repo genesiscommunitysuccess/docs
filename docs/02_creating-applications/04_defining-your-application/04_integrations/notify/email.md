@@ -21,10 +21,10 @@ notify {
     
             // Default Linux Email SMTP Server
             smtpHost = "localhost"
-            smtpPort = 25
+            smtpPort = 587
             smtpUser = "notifications@genesis.global"
             smtpPw = ""
-            smtpProtocol = SMTP_TLS
+            smtpProtocol = "SMTP_TLS"
             systemDefaultUserName = "Genesis System"
             systemDefaultEmail = "system@genesis.global"
     }
