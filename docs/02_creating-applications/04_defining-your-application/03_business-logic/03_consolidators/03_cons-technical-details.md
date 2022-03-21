@@ -10,7 +10,11 @@ sidebar_position: 3
 [Introduction](/creating-applications/defining-your-application/business-logic/consolidators/consolidators/)  | [Where to define](/creating-applications/defining-your-application/business-logic/consolidators/cons-where-to-define/) | [Basics](/creating-applications/defining-your-application/business-logic/consolidators/cons-technical-details/) |  [Advanced](/creating-applications/defining-your-application/business-logic/consolidators/cons-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/business-logic/consolidators/cons-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/business-logic/consolidators/cons-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/business-logic/consolidators/cons-testing/)
 
 
-You define a consolidator service in a `consolidator.kts` file. Within the file, you can define as many consolidators as you like. Each one is specified in a `<consolidation>` block of code. In each block, you must at least provide:
+
+
+
+
+You define a consolidator service in a **consolidator.kts** file. Within the file, you can define as many consolidators as you like. Each one is specified in a `<consolidation>` block of code. In each block, you must at least provide:
 
 - a name
 - an input table or view
@@ -22,7 +26,7 @@ Comments are included to provide further information:
 ```kotlin
 consolidators {
     config {
-        // optional file level configuration
+        // optional file-level configuration
     }
     // define a consolidation
     consolidator("NAME", INPUT_TABLE_OR_VIEW, OUTPUT_TABLE) {
@@ -433,8 +437,26 @@ At the beginning of a cold start, all fields in `consolidationFields` of the con
 
 ## Troubleshooting
 
-You can set the logging level for each individual consolidator that you have defined in your _-_application_**consolidator.kts** file. 
+You can set the default logging level for all the consolidators in your _-_application_**consolidator.kts** file using a config statement at the beginning. 
+However, within any individual consolidator, you can also set a logging level that overrides this setting.
 If a consolidator is not functioning as expected, raise its logging level to INFO, or even higher.
+Let's see a very simple example. Here the default logging level has been set to INFO. However, consolidator B has its own loglevel, DEBUG, which overrides the file-level setting:
 
+```kotlin
+consolidators {
+    config {
+        logLevel = INFO
+    }
+    consolidator ("A", ...) {
+        ...     
+    }
+    consolidator ("B", ...) {
+        config {
+            logLevel = DEBUG
+        }
+        ...
+    }
+}
+```
 
 

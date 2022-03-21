@@ -15,15 +15,49 @@ Typical use cases are:
 - Calculate snapshot report of number of trades per day
 - Calculate snapshot numbers for a chart
 
-This is what a consolidator does:
+Consolidators listen to updates on an underlying database object: either a view or a table. When there are changes to that object, the consolidator aggregates those changes and then outputs the aggregated data to a specified type: the output type.
 
-1. It listens to a specific table or view, for example, TRADES.
-2. Every time there is an update on that table, it performs an aggregation or calculation that you specify.
-3. It inputs the result to a different table in the database, for example, TRADE_STATS.
+There are two ways to use GPAL consolidators:
 
-A consolidator does not do anything else. It is a self-contained box in the server. It reads from the database, it crunches data when triggered. It writes to the database. That’s it. It has no interaction with any other service on the server or the user interface.
+- as a service: in this case, the output type must always be a table entity. The consolidator service listens to table updates, and updates a target table. 
+- as a consolidator object: the object can then be used in code in other parts of your application to perform on-demand consolidations and what-if analysis. The output is not saved in your application's database.
 
-So what you do with the results of the consolidator is your problem. If you need to publish the data it writes to the database, you'll need a [data server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers/) or [request server](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/).
+### Consolidator as a service
 
+This is the standard method of using consolidators. The consolidator runs a service and automatically updates the output table. 
 
+These services can be started in two modes:
 
+- First, they listen for changes in specified tables or views, and update the database on the basis of those changes (this is the default mode)
+
+- Second, they support cold-start. A cold-start will firstly rerun the aggregation over existing
+data, before continuing in normal mode. This can be useful to deal with changes in the consolidator definition, or if there has been a problem aggregating data.
+
+:::important
+
+In a multi-node environment, consolidator services should be set to primary only; otherwise, the changes will be applied
+multiple times.
+
+:::
+
+### Consolidator objects
+
+You can create consolidators as classes that can be used in code elsewhere in your application. This means they can be used in custom services, as well as in request servers and event handlers. They perform on-demand consolidations where the input can be read directly from the database, provided at runtime, or a combination. Effectively that gives you three types of consolidator object, which we shall consider after the following simple example:
+
+For example:
+```kotlin
+// consolidate database records:
+val order: Order? = tradeConsolidator.get(Trade.ById("A"))
+val orders: List<Order> = tradeConsolidator.getRange(Trade.ByOrderId("A"), 1).toList()
+// consolidate runtime instances:
+val order: Order? = tradeConsolidator.consolidate(trade)
+val orders: List<Order> = tradeConsolidator.consolidate(trade1, trade2, trade3)
+// what-if analysis, combine both database records and runtime instances:
+val result = tradeConsolidator.whatIf(Trade.ByOrderId("2"), trade1, trade2)
+```
+#### Three types of consolidator object
+You can consider the following types of consolidator object as different use cases.
+
+- **input-output**. This type of consolidator object simply reads an input table and creates an output that can be used elsewhere in your application. For example, it could read a table of trades and create the sum of all trade values.
+- **read input table**. This type of consolidator reads a table where data is input and then creates the effect of adding the new information to another table. For example, it could read updates to a table of orders and check the table of trades to find other trades that match that order (by order number or by counterparty, for example).
+- **read output table**. This type of consolidator reads an output table and checks the effect on another table. For example, it could read the output from a trade table (a new trade), and compare to an order in the order table. It could then calculate the effect of the change in terms of how much is outstanding and fulfilled in the order.
