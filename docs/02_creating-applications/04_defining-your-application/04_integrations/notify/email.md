@@ -33,6 +33,39 @@ notify {
 }
 ```
 
+# Using System Definition in the notify.kts script
+
+filename: ```genesis-system-definition.kts```
+```kotlin
+systemDefinition {
+    global {
+    
+            //Email Notify Details
+            item(name = "EMAIL_SYSTEM_DEFAULT_USER_NAME", value = "System Genesis" )
+            item(name = "EMAIL_SYSTEM_DEFAULT", value = "system@genesis.com" )
+            item(name = "EMAIL_SMTP_HOST", value = "localhost" )
+            item(name = "EMAIL_SMTP_PORT", value = "587" )
+            item(name = "EMAIL_SMTP_USER", value = "access@genesis.com" )
+            item(name = "EMAIL_SMTP_PW", "")
+        }
+}
+```
+
+Here we can refer to the item name directly in our kts script, without import or qualifier.
+filename: ```notify.kts```
+```Kotlin
+email(id = "email1") {
+
+	smtpHost = EMAIL_SMTP_HOST
+	smtpPort = EMAIL_SMTP_PORT
+	smtpUser = MAIL_SMTP_USER
+	smtpPw = EMAIL_SMTP_PW
+	smtpProtocol = "SMTP_TLS"
+	systemDefaultUserName = EMAIL_SYSTEM_DEFAULT_USER_NAME
+	systemDefaultEmail = EMAIL_SYSTEM_DEFAULT
+}
+```
+
 ### Database configuration
 
 ### GATEWAY
