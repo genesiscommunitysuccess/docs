@@ -14,8 +14,8 @@ There is a nice simple example of some logic being added to an event handler in 
 &nbsp;  
 &nbsp;  
 
-The example below is a [simple event handler](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onvalidate) 
-to validate input and insert a record in the database. There is an `onValidate` block that defines the validation and an [`onCommit`](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#oncommit) block that specifies the action that is to be taken.
+The example below is a simple event handler
+to validate input and insert a record in the database. There is an [`onValidate`](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onvalidate)  block that defines the validation and an [`onCommit`](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#oncommit) block that specifies the action that is to be taken.
 ```kotlin
    eventHandler<Company>(name = "COMPANY_INSERT") {
         onValidate { event ->
@@ -37,11 +37,11 @@ to validate input and insert a record in the database. There is an `onValidate` 
 
 This is an example of how to reuse data between 
 [onValidate](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onvalidate) 
-and [onCommit](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#oncommit).
+and [onCommit](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#oncommit) using a `contextEventHandler`.
 ```kotlin
     contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {
-        onValidate {
-            val company = it.details
+        onValidate { event ->
+            val company = event.details
             if(company.companyName == "MY_COMPANY"){
                 validationAck(validationContext = "Best company in the world")
             } else {
@@ -93,7 +93,7 @@ And now an example with [fixed permissions](/creating-applications/defining-your
 &nbsp;  
 &nbsp;  
 
-Below is an example of how to make an event handler [transactional](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#acid-guaranteed)
+Below is an example of how to make an event handler [transactional](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#acid-guaranteed).
 ```kotlin
     eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
         onValidate {

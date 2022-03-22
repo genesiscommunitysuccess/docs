@@ -11,7 +11,7 @@ The Genesis Server presents three main types of resource entry points for client
 
 - Data servers  
 - Event handlers  
-- Request serverx
+- Request servers
 
 All these services can be optionally permissioned using a permissioning GPAL syntax block in the GPAL configuration associated with the service. 
 
