@@ -1,7 +1,7 @@
 ---
-id: testing
-title: Testing
-sidebar_label: Testing
+id: integration-testing
+title: Integration testing
+sidebar_label: Integration testing
 sidebar_position: 2
 
 ---
@@ -11,12 +11,12 @@ import TabItem from '@theme/TabItem';
 
 ## Database and service tests
 
-This section examines two types of test that you can develop:
+Two types of test are included in the platform:
 
-* database test
-* service test
+* database test (AbstractDatabaseTest)
+* service test (AbstractGenesisTestSupport and GenesisTestSupport)
 
-For both types, you will need to start with a dictionary. This section will guide you through using GPAL dictionaries in Genesis tests.
+For both types, you need to start with a dictionary. This section will guide you through using GPAL dictionaries in Genesis tests.
 
 :::note
 As of Genesis 5.2, a sample test case that uses production dictionary will be created automatically when a new project is generated.
@@ -221,9 +221,9 @@ public class SampleJavaTest extends AbstractDatabaseTest {
 </TabItem>
 </Tabs>
 
-In this test the dictionary is read from an external file
+In this test, the dictionary is read from an external file
 
-In all other regards, the database tests are a normal JUnit test. If you need additioal components, you will need to construct them or mock them. You won’t be able to specify a `GENESIS_HOME` folder for additional configuration.
+In all other regards, the database tests are a normal JUnit test. If you need additional components, you will need to construct them or mock them. You won’t be able to specify a `GENESIS_HOME` folder for additional configuration.
 
 If you add the `genesis-generated-dao` jar to your classpath, you will be able to use repository classes as normal.
 
