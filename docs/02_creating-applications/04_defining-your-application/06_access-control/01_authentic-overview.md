@@ -74,7 +74,7 @@ First, an internal authentication is performed. If the outcome is successful, an
 
 This enables you to take advantage of all the available functionality of internal mode (locked accounts, expiring passwords, reset/change passwords). However, if passwords are changed or expired, they need to be changed manually in LDAP too, because authentication always happens in both services.
 
-The configuration file takes the same fields as LDAP. You can see this in the example below, where the authentication type has been set to HYBRID.
+The configuration file takes the same fields as LDAP. You can see this in the example below, where the authentication type has been set to `HYBRID`.
 
 ```kotlin
     authentication {

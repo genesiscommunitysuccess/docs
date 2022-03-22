@@ -9,7 +9,7 @@ id: authentication
 
 ## Authentication preferences
 
-You can set the authentication preferences for your application in the **auth-preferences.kts** file. This is configured through the `security` function, and the following functions called within it:
+You can set the authentication preferences for your application in the **auth-preferences.kts** file. This is configured through the `security` function, and the following functions can be called within it:
 
 * authentication
 * passwordValidation
@@ -31,7 +31,7 @@ The `security` function is the top-level function from which the subsequent func
 * **maxSimultaneousUserLogins** defines the maximum number of active sessions a user can maintain. Once this limit has been reached, the user cannot log in again until another session has been logged out. If the specified value is zero, is not defined, or is not a positive integer, then any number of sessions is permitted. Default 0.
 
 #### authentication
-The `autentication` function can be used to represent the method of authentication to be used by the platform. Within this function the following variables can be set:
+The `authentication` function can be used to represent the method of authentication to be used by the platform. Within this function, the following variables can be set:
 
 * **type** which indicates which of the following forms of authentication to be used: `INTERNAL`, `LDAP`, or `HYBRID`. Default: `AuthType.INTERNAL`.
 
@@ -39,11 +39,11 @@ The following variables are only used when the authentication type is either `LD
 
 * **url** is used to set the LDAP server hostname. Default: localhost
 * **port** is used to set the LDAP server port. Default: 389 
-* **searchBase** is used to define the location(s) in the directory from which the LDAP search begins. Default: is a list with a single entry of `ou=temp,dc=temp`.
+* **searchBase** is used to define the location(s) in the directory from which the LDAP search begins. Default: a list with a single entry of `ou=temp,dc=temp`.
   * This is set by the `searchBases` function, and repeated `searchBase` function invocations within it.
-* **userGroups** is used to define the group(s) that the user will need to belong to in order to log in. Default: is an empty list.
+* **userGroups** is used to define the group(s) that the user needs to belong to in order to log in. Default: an empty list.
   * This is set by the `userGroups` function, and repeated `userGroup` function invocations within it. 
-* **userPrefix** is used to add an optional prefix to every username received from login requests in your authentication server. Default: empty string.
+* **userPrefix** is used to add an optional prefix to every username received from login requests in your authentication server. Default: an empty string.
 * **bindDn** is an optional, distinguished name which acts as a first LDAP login; it is normally required to perform a search. If this field is not specified, no bindings will be used. Default: `null`.
 * **bindPassword** is the password associated with the **bindDn** account. Default: `null`.
 * **userIdType** defines the attribute to match in the directory search against the provided username. Default: `cn`. Amongst the most common LDAP implementations, you can find three main ways of configuring usernames:
@@ -56,7 +56,7 @@ For more information on the various authentication types, please see the [Authen
 #### passwordValidation
 The `passwordValidation` function enables password validation, and allows you to set variable relating to this validation. The `passwordValidation` settings are only used in the case of the `INTERNAL`, or `HYBRID` authentication types. It has the following variables and functions:
 
-* **passwordSalt** defines a system specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different Genesis systems are stored as different hashes. Default empty string.
+* **passwordSalt** defines a system specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different Genesis systems are stored as different hashes. Default: empty string.
 
 #### passwordStrength
 The `passwordStrength` function can be called within `passwordValidation` and has many variables. These enable you to specify in detail the mandatory characteristics for the password. Within this function, the following variables can be set:
@@ -108,7 +108,7 @@ The `mfa` function allows you to configure Multi-factor Authentication (MFA). It
 * **usernameTableLookUpSalt** defines if usernames will be hashed using the configured key in the database. Default: null.
 
 #### loginAck
-The `loginAck` function allows you to define additional values to be sent back to the client as part of the LOGIN_ACK message. When you call the `loginAck` function you have to supply a table or view as a parameter. This is the table or view upon which the following functions will be invoked.
+The `loginAck` function allows you to define additional values to be sent back to the client as part of the LOGIN_ACK message. When you call the `loginAck` function, you have to supply a table or view as a parameter. This is the table or view upon which the following functions will be invoked.
 
 #### loadRecord
 The `loadRecord` function can be invoked within the `loginAck` function to load a single record from the previously supplied table or view.
@@ -315,7 +315,7 @@ In the Genesis LCNC Platform, there are profiles, users and rights.  A profile i
 
 Note the following:
 
-* 2-phase validation is not currency supported
+* 2-phase validation is not currently supported
 * metadata is not supported on the following transactions.
 User/profile STATUS field can be ENABLED/DISABLED/PASSWORD_EXPIRED/PASSWORD_RESET.
 PASSWORD_EXPIRED should prompt the user to enter a new password.
