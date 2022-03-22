@@ -34,7 +34,7 @@ So, what was going on there?
 - The Consolidator is listening to the `TRADE` table.
 - It is publishing its aggregation to the `ORDER` table.
 - It is grouping its aggregation by the field `orderID`.
-- It is counting the number of trades into `TRADE_COUNT) and calculating price x quantity into `TOTAL_NOTIONAL`. 
+- It is counting the number of trades into `TRADE_COUNT` and calculating price x quantity into `TOTAL_NOTIONAL`. 
 
 ## Elements of a Consolidator
 In each `consolidator` block, you must at least provide:
