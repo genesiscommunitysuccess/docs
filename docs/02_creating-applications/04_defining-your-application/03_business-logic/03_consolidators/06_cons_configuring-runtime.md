@@ -30,4 +30,9 @@ Here is an example configuration (the tags are explained in the page on the [pro
     </process>
 </process>
 ```
+:::important
 
+In a multi-node environment, Consolidator services should be set to primary only; otherwise, the changes will be applied
+multiple times.
+
+:::

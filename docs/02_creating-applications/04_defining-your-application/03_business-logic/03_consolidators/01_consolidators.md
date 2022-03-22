@@ -20,23 +20,15 @@ Consolidators listen to updates on an underlying database object: either a view 
 There are two ways to use GPAL Consolidators:
 
 - as a service: in this case, the output type must always be a table entity. The Consolidator service listens to table updates, and updates a target table. 
-- as a Consolidator object: the object can then be used in code in other parts of your application to perform on-demand consolidations and what-if analysis. The output is not saved in your application's database.
+- on demand (as a Consolidator object): the object can be used in code in other parts of your application to perform on-demand consolidations and what-if analysis. The output is not saved in your application's database.
 
-### Consolidator as a service
+## Consolidator as a service
 
 This is the standard method of using Consolidators. The Consolidator runs as a process (service) that you can monitor using the `mon` command. An individual Consolidator in your **consolidator.kts** file listens to a specific table and automatically updates an output table. 
 
-If you are running a service, it is vital to note that if you turn off the Consolidator process for any reason, you need to perform a cold start when you restart the process. This ensures that any changes to data while the process was not running are properly recalculated before any real-time calculations are triggered. This can be useful to deal with changes in the Consolidator definition, or if there has been a problem aggregating data.
 
 
-:::important
-
-In a multi-node environment, Consolidator services should be set to primary only; otherwise, the changes will be applied
-multiple times.
-
-:::
-
-### Consolidator objects
+## Consolidator on-demand (objects)
 
 Consolidators objects are classes that can be used in code elsewhere in your application. They can be used in custom services, as well as in Request Servers and Event Handlers. 
 
@@ -46,9 +38,8 @@ These Consolidators perform on-demand consolidations where the input can be one 
 - it can be provided at runtime
 - it can be a combination of both of these. 
 
-Effectively that gives you three types of Consolidator object, which we shall consider after the following simple example:
+Effectively, that gives you three types of Consolidator object, which we shall introduce after the following simple example:
 
-For example:
 ```kotlin
 // consolidate database records:
 val order: Order? = tradeConsolidator.get(Trade.ById("A"))
@@ -59,7 +50,7 @@ val orders: List<Order> = tradeConsolidator.consolidate(trade1, trade2, trade3)
 // what-if analysis, combine both database records and runtime instances:
 val result = tradeConsolidator.whatIf(Trade.ByOrderId("2"), trade1, trade2)
 ```
-#### Three types of Consolidator object
+### Three types of Consolidator object
 You can consider the following types of Consolidator object as different use cases.
 
 - **input-output**. This type of Consolidator is not limited to tables. It takes any input and produces any output; the output it creates can be used elsewhere in your application. For example, it could read a table of trades and create the sum of all trade values.

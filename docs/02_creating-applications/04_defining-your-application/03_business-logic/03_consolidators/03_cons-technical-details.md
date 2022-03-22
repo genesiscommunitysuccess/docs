@@ -16,6 +16,8 @@ sidebar_position: 3
 
 You define a Consolidator service in a **consolidator.kts** file. Within the file, you can define as many Consolidators as you like. Each one is specified in a `<consolidator>` block of code. 
 
+
+
 Here is an example of the simplest Consolidator you could define:
 
 ```kotlin
@@ -43,7 +45,7 @@ In each `consolidator` block, you must at least provide:
 - an input table or view
 - an output table
 
-In most cases, you will need a lot more than that. Let us look at the elements you can use to create sophisticated, effective Consolidator.
+In most cases, you will need a lot more than that. Let us look at the elements you can use to create a sophisticated, effective Consolidator.
 
 The empty structure below shows the optional and mandatory code blocks in a single `consolidator` block.  
 Comments are included to provide further information:
@@ -81,6 +83,7 @@ consolidators {
     }
 }
 ```
+Now we shall look at each of the possible code blocks in more detail.
 
 ### config block (optional)
 
@@ -236,7 +239,7 @@ The `into` statement is different for standard and object Consolidators:
 #### lookup
 
 The `lookup` block is optional when grouping by a unique index on the output table. In all other cases, the lookup
-should be defined. In this block, the developer has access to the `input` and `groupId` properties.
+should be defined. In this block, you have access to the `input` and `groupId` properties.
 
 Example:
 ```kotlin
@@ -313,7 +316,7 @@ where(ignore = true) {
 
 ### reprocessSchedule block (optional)
 
-Some consolidations might require periodic reprocessing of data. This will trigger a cold start (see below) on a selected range
+Some consolidations might require periodic reprocessing of data. This will trigger a [cold start](/creating-applications/defining-your-application/business-logic/consolidators/cons-technical-details/#the-startprocess-command-cold-start) on a selected range
 of data.
 
 

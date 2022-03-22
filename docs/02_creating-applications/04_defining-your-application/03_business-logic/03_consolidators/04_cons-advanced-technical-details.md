@@ -77,7 +77,7 @@ etc.
 
 ### using
 
-In the example below, the `sum` function ise defined as a custom function. It uses `feeAmount` as the input, and applies three operations:
+In the example below, the `sum` function is defined as a custom function. It uses `feeAmount` as the input, and applies three operations:
 
 ```kotlin
 using { feeAmount } withOperations {
@@ -89,10 +89,12 @@ using { feeAmount } withOperations {
 
 ### usingRow
 
-There are types of inputs for custom functions: `using` and `usingRow`. `using` will take an input from a row like
-any other function, whereas `usingRow` will take the whole row as input. With `using` the return type will determine
-the type of the function, with `usingRow` the type will have to be specified. The function above can also be implemented
-with `usingRow` as below:
+There are two types of input for custom functions: 
+
+- `using` and `usingRow`. `using` will take an input from a row, like any other function. The return type determines the type of the function.
+- `usingRow` will take the whole row as input. The type of function must be specified. 
+
+The function in the example above can also be implemented with `usingRow`, as shown below:
 
 ```koltin
 usingRow(DOUBLE) withOperations {
@@ -103,11 +105,11 @@ usingRow(DOUBLE) withOperations {
 ```
 
 
-This shows the benefit of `using`, as it will handle `null` values. The `orZero()` call will take any nullable number and return the value or `0` if it is null.
+This shows the benefit of `using`, as it handles `null` values. The `orZero()` call will take any nullable number and return the value or `0` if it is null.
 
 ### withOperations
 
-This block enables developers to specify the behaviour on the different consolidation operations (including the previous example). 
+This block enables you to specify the behaviour of the different consolidation operations (including the previous example). 
 
 In that example:
 
@@ -117,13 +119,13 @@ In that example:
 
 Each operation has access to the operation context as follows:
 
-1. `onJoin`
+- `onJoin`
     1. `previousValue`
     2. `input`
-1. `onLeave`
+- `onLeave`
     1. `previousValue`
     2. `input`
-1. `onNoop`
+- `onNoop`
     1. `previousValue`
     2. `newInput`
     2. `oldInput`
@@ -155,10 +157,9 @@ using { feeAmount } withAggregation {
 }
 ```
 
-The `asUpdate()` call at the end is required, as `withAggregation` also supports additional return values of `Noop` and
+In that example, the `asUpdate()` call at the end is required, as `withAggregation` also supports additional return values of `Noop` and
 `IndexScan`. The `Noop` value will cause the function to ignore the input for this particular field, and there will
-be no change written to the database. Conversely, returning `IndexScan` will cause the consolidator to re-evaluate
-every database value for that key.
+be no change written to the database. Conversely, returning `IndexScan` will cause the Consolidator to re-evaluate every database value for that key.
 
 A similar example to the above would be to use the `max` function. 
 - If the new maximum value is less than the current maximum, then no data needs to be written to the database.
