@@ -24,11 +24,8 @@ There are two ways to use GPAL consolidators:
 
 ### Consolidator as a service
 
-This is the standard method of using consolidators. The consolidator runs a service and automatically updates the output table. 
+This is the standard method of using consolidators. The consolidator runs a service and automatically updates an output table. 
 
-These services can be started in two modes:
-
-- First, they listen for changes in specified tables or views, and update the database on the basis of those changes (this is the default mode)
 
 - Second, they support cold-start. A cold-start will firstly rerun the aggregation over existing
 data, before continuing in normal mode. This can be useful to deal with changes in the consolidator definition, or if there has been a problem aggregating data.
