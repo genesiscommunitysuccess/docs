@@ -14,13 +14,38 @@ sidebar_position: 3
 
 
 
-You define a consolidator service in a **consolidator.kts** file. Within the file, you can define as many consolidators as you like. Each one is specified in a `<consolidation>` block of code. In each block, you must at least provide:
+You define a Consolidator service in a **consolidator.kts** file. Within the file, you can define as many Consolidators as you like. Each one is specified in a `<consolidator>` block of code. 
+
+Here is an example of the simplest Consolidator you could define:
+
+```kotlin
+consolidator(TRADE, ORDER) {
+    select {
+        ORDER {
+            sum { price * quantity } into TOTAL_NOTIONAL
+            count() into TRADE_COUNT
+        }
+    }
+    groupBy { Order.ById(orderId) } 
+}
+```
+So, what was going on there?
+
+- The Consolidator is listening to the `TRADE` table.
+- It is publishing its aggregation to the `ORDER` table.
+- It is grouping its aggregation by the field `orderID`.
+- It is counting the number of trades into `TRADE_COUNT) and calculating price x quantity into `TOTAL_NOTIONAL`. 
+
+## Elements of a Consolidator
+In each `consolidator` block, you must at least provide:
 
 - a name
 - an input table or view
 - an output table
 
-The empty structure below shows the optional and mandatory code blocks in a single consolidator block.  
+In most cases, you will need a lot more than that. Let us look at the elements you can use to create sophisticated, effective Consolidator.
+
+The empty structure below shows the optional and mandatory code blocks in a single `consolidator` block.  
 Comments are included to provide further information:
 
 ```kotlin
@@ -56,33 +81,15 @@ consolidators {
     }
 }
 ```
-We shall look in detail at each of the blocks within the main block shortly. 
-
-## A very simple consolidator
-
-
-Now you have seen all those possibilities, let's go back to basics. Here is an example of a very simple consolidator block. 
-
-```kotlin
-consolidator(TRADE, ORDER) {
-    select {
-        ORDER {
-            sum { price * quantity } into TOTAL_NOTIONAL
-            count() into TRADE_COUNT
-        }
-    }
-    groupBy { Order.ById(orderId) } 
-}
-```
 
 ### config block (optional)
 
-The config block is available at both the file and consolidator level. File-level configuration will overwrite default
-properties, and consolidator properties will overwrite both.
+The config block is available at both the file and Consolidator level. File-level configuration will overwrite default
+properties, and Consolidator properties will overwrite both.
 
 | Property             | Description                                   | Supports Values                    | Default Value |
 |----------------------|-----------------------------------------------|------------------------------------|---------------|
-| defaultLogLevel      | the default log level for the consolidator    | TRACE, DEBUG, INFO, WARN, ERROR    | TRACE           |
+| defaultLogLevel      | the default log level for the Consolidator    | TRACE, DEBUG, INFO, WARN, ERROR    | TRACE           |
 | onNotFound           | what to do if an output record is not found   | BUILD, WARN, IGNORE, FAIL, DEFAULT | TBC           |
 | batchingPeriod       | the time in ms before writing to the database |                                    | TBC           |
 | ignoreIndexScan      | disables index scans                          |                                    | TBC           |
@@ -123,7 +130,7 @@ select {
 </Tabs>
 
 ### logging
-For debugging purposes, the `select` block also supports logging. By default, the consolidator logs all events with debug level **TRACE**, but this can be overwritten with custom messages. To do this, use the `logJoin`, `logLeave` and `logNoop` blocks:
+For debugging purposes, the `select` block also supports logging. By default, the Consolidator logs all events with debug level **TRACE**, but this can be overwritten with custom messages. To do this, use the `logJoin`, `logLeave` and `logNoop` blocks:
 
 ```kotlin
 select {
@@ -156,8 +163,8 @@ onCommit {
 
 ### groupBy into syntax
 
-There are significant differences in the `groupBy` syntax, depending on whether you are consolidating into a table or into
-a class. Table syntax is more complex, as records need to be loaded and created. Also, the table syntax supports
+The syntax of `groupBy` is significantly different for standard Consolidators and object Consolidators.
+For object Consolidators, table syntax is more complex, as records need to be loaded and created. Also, the table syntax supports
 index scans, which need to be configured.
 
 <Tabs defaultValue="tables" values={[{ label: 'Tables', value: 'tables', }, { label: 'Classes', value: 'classes', }]}>
@@ -165,7 +172,7 @@ index scans, which need to be configured.
 
 The `groupBy`-`into` syntax determines:
 - how records are grouped `groupBy { ... } `
-- how the consolidator interacts with the database `into { ... }`
+- how the Consolidator interacts with the database `into { ... }`
     * how output records are loaded from the database `into { lookup { ... } }`
     * how output records are built when no record is found in the database `into { build { ... } }`
     * how to look up records after an index scan `into { indexScan { ... } }`
@@ -221,7 +228,7 @@ Consolidations support single or multiple groupings. Multiple groupings are usef
 
 #### into
 
-The `into` statement is different for table and class consolidators:
+The `into` statement is different for standard and object Consolidators:
 
 <Tabs defaultValue="tables" values={[{ label: 'Tables', value: 'tables', }, { label: 'Classes', value: 'classes', }]}>
 <TabItem value="tables">
@@ -257,8 +264,8 @@ groupBy { Trade.ById(tradeId) } into {
 
 ### indexScan
 
-If any of the functions triggers an index scan, the consolidator needs to know which records are affected. `indexScan` will
-tell the consolidator how to do that. For example:
+If any of the functions triggers an index scan, the Consolidator needs to know which records are affected. `indexScan` will
+tell the Consolidator how to do that. For example:
 
 ```kotlin
 groupBy { Order.ById(orderid) } into {
@@ -269,7 +276,7 @@ groupBy { Order.ById(orderid) } into {
 </TabItem>
 <TabItem value="classes">
 
-Class consolidators simply need to be able to build output objects on demand. There is no need to interact with the
+Consolidator objects need to be able to build output objects on demand. There is no need to interact with the
 database at this point.
 
 ```kotlin
@@ -356,7 +363,7 @@ sum { splitFeeAmount } into Order::splitFeeAmount
 
 ### Transformations on functions
 
-The consolidator also supports higher-level functions; this is where you can apply a transformation on the function,
+The Consolidator also supports higher-level functions; this is where you can apply a transformation on the function,
 before it is assigned.
 
 ### onlyIf
@@ -409,7 +416,7 @@ feeSum onlyIf { feeGroup == FeeGroup.COMMISSION } into TOTAL_COMMISSION
 
 ### index scans
 
-Functions can sometimes trigger an index scan. This is when a consolidator needs to re-read previously consolidated rows
+Functions can sometimes trigger an index scan. This is when a Consolidator needs to re-read previously consolidated rows
 in order to calculate the correct value. 
 - For some functions, this is never required: for example, `sum` and `count`.
 - For some functions, it is required sometimes: for example, `min` and `max`.
@@ -418,10 +425,10 @@ in order to calculate the correct value.
 
 ## Starting and killing the process
 
-All Genesis processes can be started or killed using the `startServer` and `killServer` commands. But here's the thing; if the consolidator process stops for any reason, you should almost certainly perform a cold start when you restart the process. This ensures that any changes to data while the process was not running are properly recalculated before any real-time calculations are triggered.
+All Genesis processes can be started or killed using the `startServer` and `killServer` commands. But here's the thing; if the Consolidator process stops for any reason, you should almost certainly perform a cold start when you restart the process. This ensures that any changes to data while the process was not running are properly recalculated before any real-time calculations are triggered.
 
 :::warning
-If you simply restart the consolidator process, then any changes to data that occurred while the process was not running will not be recalculated. Got that? The changed data will not be recalculated.
+If you simply restart the Consolidator process, then any changes to data that occurred while the process was not running will not be recalculated. Got that? The changed data will not be recalculated.
 :::
 
 
@@ -437,10 +444,10 @@ At the beginning of a cold start, all fields in `consolidationFields` of the con
 
 ## Troubleshooting
 
-You can set the default logging level for all the consolidators in your _-_application_**consolidator.kts** file using a config statement at the beginning. 
-However, within any individual consolidator, you can also set a logging level that overrides this setting.
-If a consolidator is not functioning as expected, raise its logging level to INFO, or even higher.
-Let's see a very simple example. Here the default logging level has been set to INFO. However, consolidator B has its own loglevel, DEBUG, which overrides the file-level setting:
+You can set the default logging level for all the Consolidators in your _-_application_**consolidator.kts** file using a config statement at the beginning. 
+However, within any individual Consolidator, you can also set a logging level that overrides this setting.
+If a Consolidator is not functioning as expected, raise its logging level to INFO, or even higher.
+Let's see a very simple example. Here the default logging level has been set to INFO. However, Consolidator B has its own loglevel, `DEBUG`, which overrides the file-level setting:
 
 ```kotlin
 consolidators {

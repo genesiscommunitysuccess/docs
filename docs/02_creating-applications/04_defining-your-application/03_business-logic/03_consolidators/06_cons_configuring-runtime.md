@@ -8,9 +8,9 @@ id: cons-configuring-runtime
 [Introduction](/creating-applications/defining-your-application/business-logic/consolidators/consolidators/)  | [Where to define](/creating-applications/defining-your-application/business-logic/consolidators/cons-where-to-define/) | [Basics](/creating-applications/defining-your-application/business-logic/consolidators/cons-technical-details/) |  [Advanced](/creating-applications/defining-your-application/business-logic/consolidators/cons-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/business-logic/consolidators/cons-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/business-logic/consolidators/cons-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/business-logic/consolidators/cons-testing/)
 
 
-## Adding the consolidator to processes.xml
+## Adding the Consolidator to processes.xml
 
-Before you can use the consolidator you have created, you must add its details to the  **processes.xml** file for the application. This is located in the **.cfg** folder for the application. The file contains tags that define key characteristics of the consolidator - for example, dependencies and logging level. 
+Before you can use the Consolidator you have created, you must add its details to the  **processes.xml** file for the application. This is located in the **.cfg** folder for the application. The file contains tags that define key characteristics of the Consolidator - for example, dependencies and logging level. 
 
 Here is an example configuration (the tags are explained in the page on the [processes.xml file](/creating-applications/configure-runtime/processes-xml/)):
  

@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 [Introduction](/creating-applications/defining-your-application/business-logic/consolidators/consolidators/)  | [Where to define](/creating-applications/defining-your-application/business-logic/consolidators/cons-where-to-define/) | [Basics](/creating-applications/defining-your-application/business-logic/consolidators/cons-technical-details/) |  [Advanced](/creating-applications/defining-your-application/business-logic/consolidators/cons-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/business-logic/consolidators/cons-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/business-logic/consolidators/cons-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/business-logic/consolidators/cons-testing/)
 
-In this page, we look in more detail at the functions that are the building blocks of the select statement in a consolidator specification.
+In this page, we look in more detail at the functions that are the building blocks of the select statement in a `consolidator` specification.
 
 ## Standard functions
 
@@ -162,5 +162,5 @@ every database value for that key.
 
 A similar example to the above would be to use the `max` function. 
 - If the new maximum value is less than the current maximum, then no data needs to be written to the database.
-- If the current maximum value leaves the consolidator group, then all values should be evaluated to determine the new maximum value.
+- If the current maximum value leaves the `consolidator` group, then all values should be evaluated to determine the new maximum value.
 
