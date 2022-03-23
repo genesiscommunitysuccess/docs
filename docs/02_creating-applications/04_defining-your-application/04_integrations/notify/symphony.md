@@ -34,6 +34,51 @@ notify {
 
 ```
 
+another example, but where the private key is sourced from the DB. 
+To store private key in a DB you will need to use the`SYSTEM` table with `SYSTEM_VALUE` set to the contents of the private key and the associated `SYSTEM_KEY` set to `SymphonyRsaKey` 
+
+```kotlin
+notify {
+
+    symphony(id = "symphony1") {
+
+        sessionAuthHost = "76680.p.symphony.com"
+        botUsername = "botusergenesis@genesis.global"
+        botPrivateKeyFromDb = true
+    }
+    
+}
+
+```
+
+# Using System Definition in the notify.kts script
+
+filename: ```genesis-system-definition.kts```
+```kotlin
+systemDefinition {
+    global {
+        
+            item(name = "SESSION_AUTH_HOST", value = "76680.p.symphony.com" )
+            item(name = "BOT_USER_NAME", value = "botusergenesis@genesis.global" )         
+        }
+}
+```
+
+Here we can refer to the item name directly in our kts script, without import or qualifier.
+filename: ```notify.kts```
+```Kotlin
+notify {
+
+    symphony(id = "symphony1") {
+
+        sessionAuthHost = SESSION_AUTH_HOST
+        botUsername = BOT_USER_NAME
+        botPrivateKeyFromDb = true
+    }
+    
+}
+```
+
 Where you have configured a Symphony Gateway for handling incoming messages, any attachments to incoming messages will be dropped on the server to the following configured directory parameter: `DOCUMENT_STORE_BASEDIR`. For example:
 
 ```kotlin

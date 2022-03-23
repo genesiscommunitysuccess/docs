@@ -5,7 +5,7 @@ sidebar_label: Clusters
 sidebar_position: 1
 
 ---
-The Genesis LCNC latform is highly resilient and easy to cluster for a High Availability (HA) setup. This area takes you through the steps required to establish a HOT-HOT setup.
+The Genesis LCNC Platform is highly resilient and easy to cluster for a High Availability (HA) setup. This area takes you through the steps required to establish a HOT-HOT setup.
 
 ## Pre-requisites
 
@@ -82,7 +82,7 @@ In a clustered Genesis setup, all session data is shared amongst all nodes. Foll
 
 ![](/img/cluster-4-disaster-a.png)
 
-If you decide that the Primary node will not to come back online within an acceptable timeframe, you can then set the Secondary node to Primary.
+If you decide that the Primary node will not to come back online within an acceptable time frame, you can then set the Secondary node to Primary.
 
 To do this, run **SetPrimary** on NodeB. This means that any of those processes where **primaryOnly** is defined as **true** will now start running on NodeB.
 
