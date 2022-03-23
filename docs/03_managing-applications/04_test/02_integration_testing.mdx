@@ -34,7 +34,7 @@ There are three types of dictionary you can use:
 
 Use this type of dictionary if you want to test against the production dictionary. This is the preferred way of using a dictionary in product tests, as production and test dictionaries are always in sync.
 
-This dictionary type is easiest to use, and it is supported in both Java and Kotlin. When writing a test extending `AbstractGenesisTestSupport`, the production dictionary is used by default. To use it from an `AbstractDatabseTest` class, is a couple of lines of code:
+This dictionary type is easiest to use, and it is supported in both Java and Kotlin. When writing a test extending `AbstractGenesisTestSupport`, the production dictionary is used by default. To use it from an `AbstractDatabaseTest` class, is a couple of lines of code:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -448,7 +448,7 @@ Below is an example of writing a type safe req rep test using a `RequestReplyWor
 
 ##### Overriding the system definition
 
-You can override system definition properties in your test class by overriding the `systemDefintion()` function.
+You can override system definition properties in your test class by overriding the `systemDefinition()` function.
 
 ##### assertedCast
 
