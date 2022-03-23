@@ -14,4 +14,4 @@ The Genesis LCNC Platform offers you more than 50 components that provide proven
 - [User-interface components](/creating-applications/basic-elements-of-genesis-applications/pre-built-components/ui-components/)
 - [Tools - components](/creating-applications/basic-elements-of-genesis-applications/pre-built-components/tools-components/)
 
-
+![](/img/component-architecture-02.png)
