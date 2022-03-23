@@ -8,7 +8,7 @@ id: symphony
 [Symphony](http://symphony.com) is a secure instant messaging service focused on financial companies. 
 To make Symphony services available to Genesis, including the sending and receiving of messages, you need to provision [symphony service](https://symphony.com/participate) and configure a [symphony bot](https://docs.developers.symphony.com/developer-tools/developer-tools/bdk-2.0).
 
-### Symphony Configuration
+## Symphony Configuration
 
 The following configuration details are an example of Genesis Symphony connection details. Genesis requires the use of Symphony POD, Symphony Bot and the generation of private/public key pairs. 
 This is covered extensively in the Symphony Documentation.  
@@ -42,10 +42,10 @@ item(name = "DOCUMENT_STORE_BASEDIR", value = "/home/trading/run/site-specific/i
 
 Also, if the incoming message is configured to publish to a topic, the file name of any attachment will be sent to the `DOCUMENT_ID` field for the topic (showing its file location on the server). In the event of clashing file names, the incoming attachment's file name will have the suffix _1, _2 added, as appropriate.
 
-### Database configuration
+## Database configuration
 
 
-#### GATEWAY
+### GATEWAY
 
 | Field Name | Usage |
 | --- | --- |
@@ -55,7 +55,8 @@ Also, if the incoming message is configured to publish to a topic, the file name
 | INCOMING_TOPIC | When the `GATEWAY_TYPE` is specified as SymphonyRoom, then incoming messages are directed to this `TOPIC`. <br />  When the `GATEWAY_TYPE` is specified as SymphonyRoomReqRep then it's treated as colon-separated string specifying the `PROCESS_NAME:EVENT_HANDLER_NAME`, such that incoming messages will be directed to the named Event Handler running in the named process |
 | CONNECTION_ID | This should reference the connection `id` specified in the ```notify.kts``` file. Note if no id is specified in the connection, then you should use the default id of `Symphony`
 
-#### NOTIFY
+### NOTIFY
+
 | Field Name | Usage |
 | --- | --- |
 | SENDER | Genesis User sending message, if Symphony OBO is activated then this message will be sent 'On Behalf Of' of this user |
@@ -66,7 +67,7 @@ Also, if the incoming message is configured to publish to a topic, the file name
 | NOTIFY_COMPRESSION_TYPE | Do not set. This is used internally by Genesis; it indicates if the body of the message is compressed and by which compression type |
 | DOCUMENT_ID | If set, this should refer to a server-side path and file name. This file will be attached to the outgoing message that is destined for a symphony gateway
 
-### Additional Genesis Notify service for symphony
+## Additional Genesis Notify service for symphony
 
 The Genesis Notify service currently provides additional Symphony operations, exposed as event handlers.
 
