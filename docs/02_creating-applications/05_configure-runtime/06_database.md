@@ -12,7 +12,7 @@ We support the following database technology:
 * MSSQL
 * Aerospike
 
-Because we abstract from the underlying technology, you can easily toggle between any of these three.
+Because we abstract from the underlying technology, you can easily toggle between any of these four.
 
 There are also tools that enable you to [stream real-time data reliably to and from any classic Oracle/SQL database](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/overview/).
 
@@ -65,7 +65,7 @@ systems {
 
 For Aerospike you may also want to update the **DbNamespace** and **DbMode** properties. Details of those can be found [here](/creating-applications/configure-runtime/system-definitions/).
 
-If you are using SQL and want to use reserved keywords as column names, then you will need to add the below to your system definition file to enable Quoted Identifiers support:
+If you are using Postgres and want to use reserved keywords as column names, then you will need to add the below to your system definition file to enable Quoted Identifiers support:
 ```kotlin
 item(name = "DbQuotedIdentifiers", value = "true")
 ```
