@@ -13,7 +13,7 @@ The FIX gateway is highly customisable allowing the addition of custom logon aut
 
 The gateway also provides a number of out-of-the-box implementations that can be configured without providing custom code.
 
-### Customisation Through Injectio
+### Customisation Through Injection
 Custom components are injected through the Dependency Injection mechanism that is in standard use throughout the platform. 
 
 The process bootstrap will scan packages specified in the package block of the process definition in the processes.xml file.
