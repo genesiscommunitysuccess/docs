@@ -10,7 +10,7 @@ id: eh-testing
 ## Integration testing
 
 
-Genesis Platform provides the AbstractGenesisTestSupport abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Event Handler configuration is used to create our Event Handler. We also need to add the required packages, genesis home and separately set the "IS_SCRIPT" System Definition property to true (This is required as part of the event handler initialisation).
+The Genesis Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Event Handler configuration is used to create our Event Handler. We also need to add the required packages, genesis home and separately set the "IS_SCRIPT" System Definition property to true (This is required as part of the Event Handler initialisation).
 
 ```kotlin
 class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
@@ -26,7 +26,8 @@ class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
     ...
 }
 ```
-For more information about `AbstractGenesisTestSupport`, please see the [testing docs](/managing-applications/test/testing/).
+
+For more information about `AbstractGenesisTestSupport`, see the [testing docs](/managing-applications/test/integration-testing/).
 
 Once you have set up your configuration, we can start writing tests against our Event Handler.
 
@@ -75,11 +76,11 @@ We first create our `Event` object, setting the event details and specifying the
 
 We then send a message to our Event Handler using `messageClient.suspendRequest(message)`. The result is first verified to be an `EventAck` and then we check that the inserted trade can be retrieved from the database.
 
-Remember to add the `runBlocking` coroutine scope to the test as the Genesis Platform uses Kotlin Coroutines.
+Remember to add the `runBlocking` coroutine scope to the test, as the Genesis Platform uses Kotlin coroutines.
 
 #### Error response test
 
-We may also want to test a negative case of when we expect to receive an error as a response. In the example below we expect the response to be of type `EventNack` which has a property `error` containing a list of errors.
+We may also want to test a negative case of when we expect to receive an error as a response. In the example below, we expect the response to be of type `EventNack` which has a property `error` containing a list of errors.
 
 ```kotlin
     @Test
@@ -110,9 +111,15 @@ We may also want to test a negative case of when we expect to receive an error a
 
 #### Testing with authorisation
 
-##### Setup
+##### Set-up
 
-We can also test that the event handler authorisation works correctly. Let's modify our above example event handler so only authorised users can insert trades.
+To test that the Event Handler authorisation works correctly, we need to do some setting up.
+
+First, make sure that your authorisation set-up is designed to behave as follows:
+- A user who enters a trade must have an entry in the "ENTITY_VISIBILITY" auth map; the entity code for this user must match the `counterpartyId` of the trade.
+- The user must have an entry in the "RIGHT_SUMMARY" table with "RIGHT_CODE" as "TRADER".
+
+Second, you need to modify the previous example Event Handler so that only authorised users can insert trades.
 
 ```kotlin
     eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -130,7 +137,7 @@ We can also test that the event handler authorisation works correctly. Let's mod
     }
 ```
 
-Next we need to specify the auth cache override in the `GenesisTestConfig` like below.
+Third, we need to specify the auth cache override in the `GenesisTestConfig`: 
 
 ```kotlin
 class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
@@ -147,7 +154,7 @@ class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 }
 ```
 
-Now, in our test setup, let's authorise a user to be able to insert trades and another that cannot.
+Fourth, in our test set-up, let's authorise one user to be able to insert trades and another who is not.
 
 ```kotlin
     @Before
@@ -167,15 +174,13 @@ Now, in our test setup, let's authorise a user to be able to insert trades and a
     }
 ```
 
-The above authorisation setup means the following:
-1. The User who entered the trade must have an entry in the "ENTITY_VISIBILITY" auth map whose entity code matches the `counterpartyId` of the trade.
-2. The User must have an entry in the "RIGHT_SUMMARY" table with "RIGHT_CODE" as "TRADER".
-
 For more information on authorisation, please see the [authorisation docs](/creating-applications/defining-your-application/access-control/authorisation-over/).
 
 ##### Tests
 
-The below is a test that verifies only Traders can enter trades:
+After you have set things up. Now you can create the tests themselves.
+
+Below is a test that verifies only Traders can enter trades:
 
 ```kotlin
     @Test
@@ -201,7 +206,7 @@ The below is a test that verifies only Traders can enter trades:
     }
 ```
 
-And a test to verify that a trade cannot be entered if the user is _not_ a Trader:
+Following that, we have a test to verify that a trade cannot be entered if the user is _not_ a Trader:
 
 ```kotlin
     @Test
@@ -247,15 +252,15 @@ For example:
 
 ![](/img/test-console-eh-filter.png)
 
-As well as the event handlers that you have defined yourself, you will also see other event handlers that have been generated automatically by the platform, anything that is a **GENESIS_CLUSTER** service, for example.
+As well as the Event Handlers that you have defined yourself, you will also see other Event Handlers that have been generated automatically by the platform: anything that is a **GENESIS_CLUSTER** service, for example.
 
-If you click on any event handler in the list, the fields relevant to the event are displayed to the right.
+If you click on any Event Handler in the list, the fields relevant to the event are displayed to the right.
 
 ![](/img/test-console-eh-fields.png)
 
-Now you need to pick the event handler you want to test. in this example, it is called EVENT_INSTRUMENT_INSERT.
+Now you need to pick the Event Handler you want to test. in this example, it is called EVENT_INSTRUMENT_INSERT.
 
-1. Find the event handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the event handler was set up.
+1. Find the Event Handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the event handler was set up.
 
 ![](/img/test-console-eh-insert-instrument.png)
 
@@ -264,7 +269,7 @@ In the example below, we have added the INSTRUMENT_ID (mandatory), plus the ASSE
 
 ![](/img/test-console-eh-insert-instrument-2.png)
 
-If the event handler is working correctly, you will receive an **ACK**.
+If the Event Handler is working correctly, you will receive an **ACK**.
 
 ![](/img/test-console-eh-insert-instrument-ack.png)
 
@@ -285,13 +290,13 @@ You can go on to check the INSTRUMENT table to see if your insert is there.
 
 An API client is useful way of testing components. As a client, it is effectively a front end seeking information from the server.
 
-The API client enables you to create calls to the resources in your server - data servers, request servers and event handlers. Then you can just click to run a call and see what response you get.
+The API client enables you to create calls to the resources in your server - Data Servers, Request Servers and Event Handlers. Then you can just click to run a call and see what response you get.
 
 Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/managing-applications/test/testing/#using-an-api-client) page.
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 
-In the example below, we are using Insomnia as the client API. We are going to test the EVENT_COUNTERPARTY_INSERT event handler by adding a new counterparty.
+In the example below, we are using Insomnia as the client API. We are going to test the EVENT_COUNTERPARTY_INSERT Event Handler by adding a new counterparty.
 
 #### url and Body
 In front of the url, set the call to **POST**.
@@ -318,7 +323,7 @@ When you have all these elements in place, click on **Send** to make the call. I
 ![](/img/test-eh-header.png)
 
 #### Checking the insertion
-Now you can check that the new counterparty you inserted is in the correct table of the database. The resource you need to check is the request server called ALL_COUNTERPARTYS.
+Now you can check that the new counterparty you inserted is in the correct table of the database. The resource you need to check is the Request Server called ALL_COUNTERPARTYS.
 
 In front of the url, this has been set the call to **GET**.
 
