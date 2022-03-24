@@ -667,9 +667,7 @@ There is a separate wrapper, `JvmRun` for Java main class scripts.
 
 ## DictionaryBuilder
 
-This is a groovy script; it can be executed with `GenesisRun` or `VMRun`.
-
-`DictionaryBuilder` parses RDBMS schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases.
+`DictionaryBuilder` connects to an RDBMS, parses schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases.
 
 The script accepts a series of arguments to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc).
 
@@ -677,26 +675,25 @@ The script accepts a series of arguments to establish a connection to the databa
 
 | Argument | Argument long name | Mandatory | Description | Restricted Values |
 | -- | -- | -- | -- | -- |
-|  -t  type | -type type | Yes | This argument represents the database type (Oracle or MSSQL). | Yes: ora or mssql |
-|  -t  type | -type type | Yes | This argument represents the database type (Oracle or MSSQL). | Yes: ora or mssql |
-| -u user | -username user | Yes | The database username. | No |
-| -p pass | -password pass | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively  | No |
-| -product name |   | Yes |  Represents the product name and affects the output file. For example: "tas-dictionary.xml" | No |
+| -t `TYPE` | -type `TYPE` | Yes | This argument represents the database type (Oracle or MSSQL). | Yes: `ora` or `mssql` |
+| -U `USER` | -username `USER` | Yes | The database username. | No |
+| -P `PASSWORD` | -password `PASSWORD` | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively  | No |
+| -product `NAME` |   | Yes |  Represents the product name and affects the output file. For example: "tas-dictionary.xml" | No |
 | -singleFile |   | No | If this argument is passed the generated dictionary will be written into a single file, instead of having a separate file for just the fields. | No |
-| -o outputPath | -output outputPath | No | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created. | No |
-| -h hostName | -host hostName | Yes | The database hostname. | No |
-| -port port |   | Yes | The database port. | No |
-| -sid sid |   | No | The Oracle System ID if using oracle, or the schema ID if using MSSQL. | No |
-| -db databaseName | -databaseName databaseName | No | The database name. | To be used with -t mssql |
+| -o `OUTPUT_PATH` | -output `OUTPUT_PATH` | No | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created. | No |
+| -h `HOST_NAME` | -host `HOST_NAME` | Yes | The database hostname. | No |
+| -port `PORT`|   | Yes | The database port. | No |
+| -sid `SYSTEM_ID` |   | No | The Oracle System ID if using oracle, or the schema ID if using MSSQL. | Yes for MSSQL or ORACLE interaction |
+| -db `DATABASE_NAME` | -databaseName `DATABASE_NAME` | No | The database name. | To be used with -t MSSQL |
 | -help |   | No | Prints the usage message | No |
-| -tNames TABLE1,ETC | -tableNames TABLE1,ETC   | No | Tables to copy from RDBMS | No |
+| -tNames `TABLE1,ETC` | -tableNames `TABLE1,ETC`   | No | Tables to copy from RDBMS | No |
 
-You can use double-dash notation for any argument. Arguments `-sid` or `-db` are not mandatory (as they can change from one database to another), but they should be passed accordingly when necessary.
+You can use double-dash notation for any argument.
 
 ### Example
 
 ```bash
-DtaRun DictionaryBuilder.groovy -u TAS -p fght123 -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
+DictionaryBuilder -u TAS -p my_password -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
 ```
 
 ### How the script behaves
