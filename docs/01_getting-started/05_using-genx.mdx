@@ -5,16 +5,16 @@ sidebar_position: 5
 id: using-genx
 ---
 
-GenX is a CLI tool that helps you create skeleton projects that adhere to best practices for development on the Genesis Platform
+GenX is a CLI tool that enables you to create skeleton projects that adhere to best practices for development on the Genesis Platform.
 
 ### Using GenX
 
-For the purpose of this tutorial select `create application`
+For this tutorial, select `create application`.
 ```shell
 ? Please select an option: create application - Generates a local application. 
 ```
 
-and then give it appropriate name (e.g. **alpha**)
+... and then give it an appropriate name (e.g. **alpha**):
 ```shell
 ? App name alpha 
 ```
@@ -26,49 +26,49 @@ Select `Genesis Blank Appliction` for **App seed**.
 > Genesis Blank Application 
 ```
 
-Choose whether to overwrite existing files. Default is __No__
+Choose whether to overwrite existing files. The default is **No**.
 ```shell
 ? Overwrite existing files (yes/No)
 ```
 
-This will start download of dependencies. Once it's done you will be prompted for configuration for the frontend part of the project.
+This will start the download of dependencies. Once that is done, you will be prompted for configuration for the front-end part of the project.
 
-The first one is the package [scope](https://docs.npmjs.com/cli/v8/using-npm/scope). The default one is __genesislcap__
+The first prompt is the package [scope](https://docs.npmjs.com/cli/v8/using-npm/scope). The default is **genesislcap**.
 ```shell
 ? Package scope (without the @) genesislcap 
 ```
 
-The next question is about the package name. You can use **alpha**
+The next question is about the package name. You can use **alpha**.
 ```shell
 ? Package name alpha 
 ```
 
-The next question is whether you want to create design system. Default is __Yes__
+The next is whether you want to create a design system. The default is **Yes**.
 ```shell
 ? Create design system (Yes/no)
 ```
 
-and then whether you want to set API host. Default is __Yes__
+... and then whether you want to set an API host. The default is **Yes**.
 ```shell
 ? Set API Host (Yes/no) 
 ```
 
-and the last frontend related prompt is to specify the NPM token
+Finally, for these front-end prompts, you need to specify the NPM token:
 ```shell
 ? NPM Token (for the @genesislcap scope) <secure-token-goes-here> 
 ```
 
-The next prompts are around the backend part of the application.
+The next prompts concern the back-end part of the application.
 
-The first one is which Genesis Server version to be used
+The first one is which Genesis Server version to be used:
 ```shell
 ? Genesis Server version 5.6.1 
 ```
 
-followed by the Gradle deploy plugin version.
+... followed by the Gradle deploy plugin version.
 :::note
 
-At the time of writing the same version as the Genesis Server must be used.
+At the time of writing, the same version as the Genesis Server must be used.
 
 :::
 
@@ -76,19 +76,19 @@ At the time of writing the same version as the Genesis Server must be used.
 ? Genesis Deploy plugin version 5.6.1 
 ```
 
-Then specify the kotlin version. The latest tested version is 1.6.10
+Then specify the kotlin version. The latest tested version is 1.6.10:
 ```shell
 ? Kotlin version 1.6.10 
 ```
 
-Followed by the [group id](https://maven.apache.org/guides/mini/guide-naming-conventions.html)
+... followed by the [group id](https://maven.apache.org/guides/mini/guide-naming-conventions.html)
 ```shell
 ? Group Id global.genesis 
 ```
 
-and the application version
+... and the application version:
 ```shell
 ? Application Version 1.0.0-SNAPSHOT 
 ```
 
-hit Enter and you should be greeted by a message saying that the application was created successfully
+Press Enter and you should be greeted by a message saying that the application was created successfully.
