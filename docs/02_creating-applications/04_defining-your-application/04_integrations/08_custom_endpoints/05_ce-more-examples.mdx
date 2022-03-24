@@ -1,0 +1,124 @@
+---
+title: 'More examples'
+sidebar_label: 'More examples'
+sidebar_position: 5
+id: ce-more-examples
+---
+
+[Introduction](/creating-applications/defining-your-application/integrations/custom_endpoints/custom-endpoints/)  | [Where to define](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-define/) | [Basics](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-technical-details/) |  [Advanced](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-testing/)
+
+
+There is a nice simple example of some logic being added to an event handler in our [tutorial](/tutorials/building-an-application/add-event-handler/).
+&nbsp;  
+&nbsp;  
+&nbsp;  
+
+The example below is a [simple event handler](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onvalidate) 
+to validate input and insert a record in the database. There is an `onValidate` block that defines the validation and an [`onCommit`](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#oncommit) block that specifies the action that is to be taken.
+```kotlin
+   eventHandler<Company>(name = "COMPANY_INSERT") {
+        onValidate { event ->
+            val company = event.details
+            require(company.companyName != "MY_COMPANY") {
+                "We don't accept your company"
+            }
+            ack()
+        }
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("COMPANY_ID" to result.record.companyId)))
+        }
+    }
+```
+&nbsp;  
+&nbsp;  
+
+This is an example of how to reuse data between 
+[onValidate](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onvalidate) 
+and [onCommit](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#oncommit).
+```kotlin
+    contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {
+        onValidate {
+            val company = it.details
+            if(company.companyName == "MY_COMPANY"){
+                validationAck(validationContext = "Best company in the world")
+            } else {
+                validationAck()
+            }
+        }
+        onCommit { event, context ->
+            val parsedContext = context ?: "Missing context"
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to parsedContext)))
+        }
+    }
+```
+&nbsp;  
+&nbsp;  
+
+This is an example of how to add [authorisation](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#permissions-and-permissioncodes)
+to an event handler.
+```kotlin
+    eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
+        permissions {
+            auth(mapName = "COMPANY"){
+                COMPANY.COMPANY_NAME
+            }
+        }
+
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to result.record.companyId)))
+        }
+    }
+```
+&nbsp;  
+&nbsp;  
+
+And now an example with [fixed permissions](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#permissions-and-permissioncodes).
+```kotlin
+    eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
+        permissionCodes = listOf("INSERT_TRADE")
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to result.record.companyId)))
+        }
+    }
+```
+&nbsp;  
+&nbsp;  
+
+Below is an example of how to make an event handler [transactional](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#acid-guaranteed)
+```kotlin
+    eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
+        onValidate {
+            ack()
+        }
+        onCommit { event ->
+            val company = event.details
+            entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to "SUCCESS!")))
+        }
+    }
+```
+&nbsp;  
+&nbsp;  
+
+The example below is a simple event handler that [requires approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals).
+```kotlin
+
+eventHandler {
+    eventHandler<Company> {
+        requiresPendingApproval = true
+        onCommit { event ->
+            val company = event.details
+            // custom code block..
+            ack()
+        }
+    }
+}
+```

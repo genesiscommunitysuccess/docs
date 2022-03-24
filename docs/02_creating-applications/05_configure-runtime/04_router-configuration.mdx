@@ -43,7 +43,7 @@ router {
 }
 ```
 
-## Router configuration 
+## Router configuration
 Let's have a look at the different options for configuring this file. You have seen some, but not all of these in the example above.
 
 `webPort`: This port is used for tcp/ip socket. You must declare a port, and it cannot be below 1024.
@@ -74,7 +74,7 @@ For more information, follow this [link](https://netty.io/4.1/api/io/netty/handl
   * `maxContentLength`: the maximum length of the aggregated content in bytes. Default value: 262144
   * `closeOnExpectationFailed`: If a 100-continue response is detected but the content length is too large, then true means close the connection. Otherwise, the connection will remain open and data will be consumed and discarded until the next request is received. Default value: false
 
-**Message routes**: 
+**Message routes**:
 
 `routes`: You can redirect some microservice messages to particular processes by declaring new `route` blocks within this one.
 
@@ -237,6 +237,7 @@ public class FileProcessor implements WebEndpoint {
 </Tabs>
 
 ### Testing the Genesis router
+### Testing the Genesis Router
 
 To create unit tests for Genesis router, you can extend the `AbstractGenesisTestSupport` class and specify the `genesis-router.kts` as the Script File Name. Examples of how you would initialise a test extending this class are provided below.
 

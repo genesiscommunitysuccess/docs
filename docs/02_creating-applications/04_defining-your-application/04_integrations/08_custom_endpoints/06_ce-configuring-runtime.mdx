@@ -1,0 +1,26 @@
+---
+title: 'Configuring runtime'
+sidebar_label: 'Configuring runtime'
+sidebar_position: 6
+id: ce-configuring-runtime
+---
+
+[Introduction](/creating-applications/defining-your-application/integrations/custom_endpoints/custom-endpoints/)  | [Where to define](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-define/) | [Basics](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-technical-details/) |  [Advanced](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-testing/)
+
+The Genesis Router is an important file in your application to configure for your custom endpoints as it determines you web ports, your http handling 
+
+```xml
+  <process name="POSITION_EVENT_HANDLER">
+    <groupId>POSITION</groupId>
+    <start>true</start>
+    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
+    <module>genesis-pal-eventhandler</module>
+    <package>global.genesis.eventhandler.pal</package>
+    <script>position-eventhandler.kts</script>
+    <description>Handles events</description>
+    <classpath>position-messages*,position-eventhandler*</classpath>
+    <language>pal</language>
+  </process>
+```
+
+For more information on the configuration of Genesis Router, follow this [link](/creating-applications/configure-runtime/genesis-router).
