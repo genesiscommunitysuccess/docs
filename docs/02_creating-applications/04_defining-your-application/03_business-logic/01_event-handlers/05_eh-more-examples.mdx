@@ -9,12 +9,14 @@ id: eh-more-examples
 
 
 
-There is a nice simple example of some logic being added to an event handler in our [tutorial](/tutorials/building-an-application/add-event-handler/), and below we have some other examples of different ways to use an event handler.
+There is a nice simple example of some logic being added to an Event Handler in our [tutorial](/tutorials/building-an-application/add-event-handler/).
+
+Below we have some other examples of different ways to use an Event Handler.
 &nbsp;  
 &nbsp;  
 &nbsp;  
 
-The example below is a simple event handler
+The example below is a simple Event Handler
 to validate input and insert a record in the database. There is an [`onValidate`](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onvalidate)  block that defines the validation and an [`onCommit`](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#oncommit) block that specifies the action that is to be taken.
 ```kotlin
    eventHandler<Company>(name = "COMPANY_INSERT") {
@@ -35,9 +37,10 @@ to validate input and insert a record in the database. There is an [`onValidate`
 &nbsp;  
 &nbsp;  
 
-This is an example of how to reuse data between 
+This next snippet is an example of how to reuse data between 
 [onValidate](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onvalidate) 
-and [onCommit](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#oncommit) using a `contextEventHandler`. In the onValidate block we check to see if a trade exists in the database, and we pass it as _context_ to the onCommit block so we don't have to do another database lookup.
+and [onCommit](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#oncommit) using a `contextEventHandler`. In the `onValidate` block we check to see if a trade exists in the database, and we pass it as _context_ to the `onCommit` block so we don't have to do another database lookup.
+
 ```kotlin
     contextEventHandler<TradeAlertAck, Trade>(name = "TRADE_ALERT_ACK") {
         onValidate { event ->
@@ -61,8 +64,8 @@ and [onCommit](/creating-applications/defining-your-application/business-logic/e
 &nbsp;  
 &nbsp;
 
-This is an example of how to use [onException](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onexception)
-in an event handler.
+This is an example of how to use [`onException`](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onexception)
+in an Event Handler.
 ```kotlin
     eventHandler<Company>(name = "COMPANY_INSERT") {
         onException { event, throwable ->
@@ -81,7 +84,8 @@ in an event handler.
 &nbsp;
 
 This is an example of how to add [authorisation](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#permissioning-and-permissioncodes)
-to an event handler.
+to an Event Handler.
+
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
         permissioning {
@@ -101,6 +105,7 @@ to an event handler.
 &nbsp;  
 
 And now an example with [fixed permissions](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#permissioning-and-permissioncodes).
+
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
         permissionCodes = listOf("INSERT_TRADE")
@@ -114,7 +119,8 @@ And now an example with [fixed permissions](/creating-applications/defining-your
 &nbsp;  
 &nbsp;  
 
-Below is an example of how to make an event handler [transactional](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#acid-guaranteed).
+Below is an example of how to make an Event Handler [transactional](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#acid-guaranteed).
+
 ```kotlin
     eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
         onValidate {
@@ -130,7 +136,7 @@ Below is an example of how to make an event handler [transactional](/creating-ap
 &nbsp;  
 &nbsp;  
 
-The example below is a simple event handler that [requires approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals).
+The example below is a simple Event Handler that [requires approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals).
 ```kotlin
 
 eventHandler {
