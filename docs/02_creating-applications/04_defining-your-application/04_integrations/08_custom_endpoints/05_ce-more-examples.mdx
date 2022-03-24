@@ -27,17 +27,14 @@ class IdpListEndpoint @Inject constructor(
     override fun name(): String = "list"
 
     override fun process(method: String, request: FullHttpRequest, conn: Channel): Any {
-        val converter = GenesisJsonConverter.instance()
-
-        val message = genesisSet {
+        val responseJson = genesisSet {
             "IDPS" with samlConfig.idpSettings.map { (name, idp) ->
                 genesisSet {
                     "ID" with name
                     "DESCRIPTION" with name
                 }
             }
-        }
-        val responseJson = converter.toJson(message).toByteArray()
+        }.toJsonBytes()
         val responseBuffer = Unpooled.wrappedBuffer(responseJson)
         val response = DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, responseBuffer)
         response.headers().add(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)

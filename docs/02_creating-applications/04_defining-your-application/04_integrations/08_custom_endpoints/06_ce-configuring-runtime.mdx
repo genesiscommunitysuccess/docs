@@ -9,18 +9,23 @@ id: ce-configuring-runtime
 
 The Genesis Router is an important file in your application to configure for your custom endpoints.
 
-```xml
-  <process name="POSITION_EVENT_HANDLER">
-    <groupId>POSITION</groupId>
-    <start>true</start>
-    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
-    <module>genesis-pal-eventhandler</module>
-    <package>global.genesis.eventhandler.pal</package>
-    <script>position-eventhandler.kts</script>
-    <description>Handles events</description>
-    <classpath>position-messages*,position-eventhandler*</classpath>
-    <language>pal</language>
-  </process>
+```kts
+router {
+    webPort = 9064
+    socketPort = 9065
+
+    httpServerCodec {
+        maxInitialLineLength = 4096
+        maxHeaderSize = 8192
+        maxChunkSize = 8192
+        validateHeaders = true
+        initialBufferSize = 128
+    }
+    httpObjectAggregator {
+        maxContentLength = 262144
+        closeOnExpectationFailed = false
+    }
+}
 ```
 
 For more information on the configuration of Genesis Router, follow this [link](/creating-applications/configure-runtime/genesis-router).
