@@ -7,118 +7,221 @@ id: ce-more-examples
 
 [Introduction](/creating-applications/defining-your-application/integrations/custom_endpoints/custom-endpoints/)  | [Where to define](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-define/) | [Basics](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-technical-details/) |  [Advanced](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/integrations/custom_endpoints/ce-testing/)
 
+The example below is a collection of custom endpoints supporting SAML authentication. The `LoginPostEndPoint`, `LoginUrlRequestEndPoint`, `LogoutEndPoint`, and `MetadataEndPoint` all extend this `AbstractSamlEndPoint`.
 
-There is a nice simple example of some logic being added to an event handler in our [tutorial](/tutorials/building-an-application/add-event-handler/).
-&nbsp;  
-&nbsp;  
-&nbsp;  
-
-The example below is a [simple event handler](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onvalidate) 
-to validate input and insert a record in the database. There is an `onValidate` block that defines the validation and an [`onCommit`](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#oncommit) block that specifies the action that is to be taken.
+## IdpListEndpoint
 ```kotlin
-   eventHandler<Company>(name = "COMPANY_INSERT") {
-        onValidate { event ->
-            val company = event.details
-            require(company.companyName != "MY_COMPANY") {
-                "We don't accept your company"
-            }
-            ack()
-        }
-        onCommit { event ->
-            val company = event.details
-            val result = entityDb.insert(company)
-            ack(listOf(mapOf("COMPANY_ID" to result.record.companyId)))
-        }
+@Module
+class IdpListEndpoint @Inject constructor(
+    private val registry: WebEndpointRegistry,
+    private val samlConfig: SamlConfig
+) : WebEndpoint {
+
+    @PostConstruct
+    fun init() {
+        registry.registerEndpoint("saml", this)
     }
-```
-&nbsp;  
-&nbsp;  
 
-This is an example of how to reuse data between 
-[onValidate](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#onvalidate) 
-and [onCommit](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#oncommit).
-```kotlin
-    contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {
-        onValidate {
-            val company = it.details
-            if(company.companyName == "MY_COMPANY"){
-                validationAck(validationContext = "Best company in the world")
-            } else {
-                validationAck()
+    override fun allowedMethods(): Set<RequestType> = setOf(RequestType.GET)
+
+    override fun name(): String = "list"
+
+    override fun process(method: String, request: FullHttpRequest, conn: Channel): Any {
+        val converter = GenesisJsonConverter.instance()
+
+        val message = genesisSet {
+            "IDPS" with samlConfig.idpSettings.map { (name, idp) ->
+                genesisSet {
+                    "ID" with name
+                    "DESCRIPTION" with name
+                }
             }
         }
-        onCommit { event, context ->
-            val parsedContext = context ?: "Missing context"
-            val company = event.details
-            val result = entityDb.insert(company)
-            ack(listOf(mapOf("VALUE" to parsedContext)))
+        val responseJson = converter.toJson(message).toByteArray()
+        val responseBuffer = Unpooled.wrappedBuffer(responseJson)
+        val response = DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, responseBuffer)
+        response.headers().add(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
+        response.headers().add(HttpHeaderNames.CONTENT_LENGTH, responseJson.size)
+        return response
+    }
+
+    override fun requiresAuth(): Boolean = false
+}
+```
+
+## AbstractSamlEndPoint
+```kotlin
+abstract class AbstractSamlEndPoint(
+    private val name: String,
+    private val registry: WebEndpointRegistry,
+    private val allowedMethods: Set<RequestType>
+) : WebEndpoint {
+
+    constructor(
+        name: String,
+        registry: WebEndpointRegistry,
+        vararg requestTypes: RequestType
+    ) : this(name, registry, requestTypes.toSet())
+
+    @PostConstruct
+    fun init() {
+        LOG.info("Initiating Genesis SAML endpoint")
+        registry.registerEndpoint("saml", this)
+    }
+
+    final override fun requiresAuth(): Boolean = false
+
+    final override fun allowedMethods(): Set<RequestType> = allowedMethods
+    final override fun name(): String = name
+
+    final override fun process(
+        method: String,
+        request: FullHttpRequest,
+        conn: Channel
+    ): Single<HttpResponse> {
+        val decoder = QueryStringDecoder(request.uri())
+        val hostName = conn.remoteAddress().toString().substringBefore(":")
+        return when (val idp = decoder.parameters()["idp"]?.firstOrNull()) {
+            null -> Single.just(unauthorised())
+            else -> process(idp, request, hostName)
         }
     }
-```
-&nbsp;  
-&nbsp;  
 
-This is an example of how to add [authorisation](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#permissions-and-permissioncodes)
-to an event handler.
-```kotlin
-    eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
-        permissions {
-            auth(mapName = "COMPANY"){
-                COMPANY.COMPANY_NAME
-            }
-        }
+    abstract fun process(
+        idp: String,
+        request: FullHttpRequest,
+        hostName: String
+    ): Single<HttpResponse>
 
-        onCommit { event ->
-            val company = event.details
-            val result = entityDb.insert(company)
-            ack(listOf(mapOf("VALUE" to result.record.companyId)))
-        }
+    protected fun unauthorised(): DefaultHttpResponse {
+        val httpResponse = DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.UNAUTHORIZED)
+        HttpUtil.setContentLength(httpResponse, 0)
+        return httpResponse
     }
-```
-&nbsp;  
-&nbsp;  
 
-And now an example with [fixed permissions](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#permissions-and-permissioncodes).
-```kotlin
-    eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
-        permissionCodes = listOf("INSERT_TRADE")
-        onCommit { event ->
-            val company = event.details
-            val result = entityDb.insert(company)
-            ack(listOf(mapOf("VALUE" to result.record.companyId)))
-        }
+    companion object {
+        private val LOG = LoggerFactory.getLogger(AbstractSamlEndPoint::class.java)
     }
+}
 ```
-&nbsp;  
-&nbsp;  
 
-Below is an example of how to make an event handler [transactional](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#acid-guaranteed)
+### LoginPostEndPoint
 ```kotlin
-    eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
-        onValidate {
-            ack()
-        }
-        onCommit { event ->
-            val company = event.details
-            entityDb.insert(company)
-            ack(listOf(mapOf("VALUE" to "SUCCESS!")))
-        }
+@Module
+class LoginPostEndPoint @Inject constructor(
+    registry: WebEndpointRegistry,
+    private val authService: SamlAuthService,
+    private val samlConfig: SamlConfig
+) : AbstractSamlEndPoint("logon", registry, RequestType.POST) {
+    private val factory = DefaultHttpDataFactory(true)
+
+    override fun process(
+        idp: String,
+        request: FullHttpRequest,
+        hostName: String
+    ): Single<HttpResponse> = rxSingle<HttpResponse> {
+        val decoder = HttpPostRequestDecoder(factory, request)
+        val paramsAsList = decoder.bodyHttpDatas
+            .filterIsInstance<Attribute>()
+            .groupBy { it.name }
+            .mapValues { (_, value) -> value.map { it.getString(it.charset) } }
+
+        val uri = request.uri()
+        val httpRequest = HttpRequest(uri, paramsAsList, uri)
+
+        val token = authService.logon(idp, hostName, httpRequest)
+
+        val response = DefaultFullHttpResponse(
+            HttpVersion.HTTP_1_1,
+            HttpResponseStatus.FOUND
+        )
+
+        val enc = QueryStringEncoder(samlConfig.loginEndpoint)
+        enc.addParam("SSO_TOKEN", token)
+
+        response.headers()[HttpHeaderNames.LOCATION] = enc.toUri().toString()
+        HttpUtil.setContentLength(response, 0)
+        response
+    }.onErrorReturn { throwable ->
+        if (throwable !is Exception) throw throwable
+        LOG.warn("Error while processing saml request", throwable)
+        unauthorised()
     }
+
+    companion object {
+        private val LOG = LoggerFactory.getLogger(LoginPostEndPoint::class.java)
+    }
+}
 ```
-&nbsp;  
-&nbsp;  
 
-The example below is a simple event handler that [requires approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals).
+### LoginUrlRequestEndPoint
 ```kotlin
+@Module
+class LoginUrlRequestEndPoint @Inject constructor(
+    registry: WebEndpointRegistry,
+    private val authService: SamlAuthService
+) : AbstractSamlEndPoint("login", registry, RequestType.GET) {
 
-eventHandler {
-    eventHandler<Company> {
-        requiresPendingApproval = true
-        onCommit { event ->
-            val company = event.details
-            // custom code block..
-            ack()
-        }
+    override fun process(
+        idp: String,
+        request: FullHttpRequest,
+        hostName: String
+    ): Single<HttpResponse> = rxSingle {
+        val response = DefaultFullHttpResponse(
+            HttpVersion.HTTP_1_1,
+            HttpResponseStatus.FOUND
+        )
+        val url = authService.buildRequest(idp)
+        response.headers()[HttpHeaderNames.LOCATION] = url.toString()
+        HttpUtil.setContentLength(response, 0)
+        response
+    }
+}
+```
+
+### LogoutEndPoint
+```kotlin
+@Module
+class LogoutEndPoint @Inject constructor(
+    registry: WebEndpointRegistry
+) : AbstractSamlEndPoint("logout", registry, RequestType.POST, RequestType.GET) {
+    override fun process(
+        idp: String,
+        request: FullHttpRequest,
+        hostName: String
+    ): Single<HttpResponse> {
+        LOG.debug("LOGOUT request {}", request.content())
+
+        return Single.just(unauthorised())
+    }
+
+    companion object {
+        private val LOG = LoggerFactory.getLogger(LogoutEndPoint::class.java)
+    }
+}
+```
+
+### MetadataEndPoint
+```kotlin
+@Module
+class MetadataEndPoint @Inject constructor(
+    registry: WebEndpointRegistry,
+    private val authService: SamlAuthService
+) : AbstractSamlEndPoint("metadata", registry, RequestType.GET) {
+
+    override fun process(
+        idp: String,
+        request: FullHttpRequest,
+        hostName: String
+    ): Single<HttpResponse> = rxSingle {
+        val response = DefaultFullHttpResponse(
+            HttpVersion.HTTP_1_1,
+            HttpResponseStatus.OK
+        )
+        val body = authService.metadata(idp).toByteArray()
+        response.content().writeBytes(body)
+        HttpUtil.setContentLength(response, body.size.toLong())
+        response
     }
 }
 ```

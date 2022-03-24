@@ -237,9 +237,8 @@ public class FileProcessor implements WebEndpoint {
 </Tabs>
 
 ### Testing the Genesis router
-### Testing the Genesis Router
 
-To create unit tests for Genesis router, you can extend the `AbstractGenesisTestSupport` class and specify the `genesis-router.kts` as the Script File Name. Examples of how you would initialise a test extending this class are provided below.
+To create unit tests for Genesis router, you can extend the `AbstractGenesisTestSupport` class and specify the `genesis-router.kts` as the Script file name. Examples of how you would initialise a test extending this class are provided below.
 
 More information on how testing works in Genesis is available [here](/managing-applications/test/integration-testing).
 
@@ -261,7 +260,7 @@ class TestEndpoint : AbstractGenesisTestSupport<GenesisSet>(
     fun testRouterEndPoint() {
         val client = HttpClient.newHttpClient()
         val request = HttpRequest
-            .newBuilder(URI("http://localhost:9064/file-handler/upload")) //the second package name should refer to the package of your custom endpoints
+            .newBuilder(URI("http://localhost:9064/file-handler/upload"))
             .version(HttpClient.Version.HTTP_1_1)
             .POST(HttpRequest.BodyPublishers.ofString("TEXT"))
             .build()
@@ -277,7 +276,7 @@ class TestEndpoint : AbstractGenesisTestSupport<GenesisSet>(
 public class TestEndpoint extends AbstractGenesisTestSupport<GenesisSet> {
     public TestEndpoint () {
         super(GenesisTestConfig.builder()
-            .setPackageNames(List.of("global.genesis.router", "org.file.processor")) //the second package name should refer to the package of your custom endpoints
+            .setPackageNames(List.of("global.genesis.router", "org.file.processor"))
             .setGenesisHome("/genesisHome")
             .setScriptFileName("genesis-router.kts")
             .setParser(e -> e)
@@ -288,7 +287,7 @@ public class TestEndpoint extends AbstractGenesisTestSupport<GenesisSet> {
     public void testRouterEndpoint() throws URISyntaxException, IOException, InterruptedException {
         var client = HttpClient.newHttpClient();
         var request = HttpRequest
-                .newBuilder(new URI("http://localhost:9064/file-handler/upload")) //This localhost, using the webPort specified in genesis-router.kts, and then the registered endpoint name
+                .newBuilder(new URI("http://localhost:9064/file-handler/upload"))
                 .version(HttpClient.Version.HTTP_1_1)
                 .POST(HttpRequest.BodyPublishers.ofString("TEXT"))
                 .build();
