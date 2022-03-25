@@ -11,7 +11,7 @@ id: dbtogenesis-advanced
 
 ## Encrypting user and passwords
 
-A script called **encryptUserPass** is provided with Genesis so you can encrypt the user and password before using it in **DbToGenesis**.
+A script called `encryptUserPass` is provided with Genesis so you can encrypt the user and password before using it in `DbToGenesis`.
 
 ### How To
 
@@ -26,7 +26,7 @@ The example shows two different ways of using key values imported from Oracle.
     ![](/img/createupdatequeuetable.png)
  2. Create the ClearUpdateQueue procedure.  
     ![](/img/createclearupdatequeueprocedure.png)
- 3. Create the **QueryUpdateQueue** procedure.  
+ 3. Create the QueryUpdateQueue procedure.  
     ![](/img/createqueryupdatequeueprocedure.png)
  4. Create the INSTRUMENT table.  
     ![](/img/createinstrumenttable.png)
@@ -43,7 +43,7 @@ The example shows two different ways of using key values imported from Oracle.
     ![](/img/createretrievecounterpartyrecordprocedure.png)
 11. Create the COUNTERPARTY retrieve table procedure.  
     ![](/img/createretrievecounterpartyrecordprocedure.png)
-12. Create the dictionary.xml tables.
+12. Create the **dictionary.xml** tables.
 
 ```xml
 <table name="INSTRUMENT">
@@ -198,11 +198,11 @@ The example shows two different ways of using key values imported from Oracle.
 
 ## generateSQLFromRDB
 
-The **generateSQLFromRDB** script is a tool that generates ".sql" files to create tables, triggers and procedures in the RDBMS system by reading the current Genesis dictionary. It also adds the pertinent **genesisStream** configuration to the specified **dbtogenesis.xml** configuration file.
+The `generateSQLFromRDB` script is a tool that generates **.sql** files to create tables, triggers and procedures in the RDBMS system by reading the current Genesis dictionary. It also adds the pertinent `genesisStream` configuration to the specified **dbtogenesis.xml** configuration file.
 
 * It is by no means mandatory, but it provides a generic, quick and working example that can be further modified or extended with ease. However, the Genesis dictionary must be appropriately configured beforehand:
   EXTERNAL_ID field and TABLENAME_BY_EXTERNAL_ID key must exist (as shown in the examples in the previous section) inside the table
-* You also need the CREATED_AT and CREATED_BY fields in the table if you want to use the **generateCreatedInfo** option in the **dbtogenesis.xml** configuration.
+* You also need the CREATED_AT and CREATED_BY fields in the table if you want to use the `generateCreatedInfo` option in the **dbtogenesis.xml** configuration.
 
 #### generateSQLFromRDB
   
