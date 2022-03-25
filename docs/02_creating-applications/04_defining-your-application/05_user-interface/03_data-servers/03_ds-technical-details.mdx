@@ -12,7 +12,7 @@ id: ds-technical-details
 
 ## The simplest possible definition
 
-A data server consists of one or more queries. Each query listens to a specified table or view, and publishes that data whenever it changes. In this simple example, there is one query, which publishes changes to the table INSTRUMENT_DETAILS.
+A Data Server consists of one or more queries. Each query listens to a specified table or view, and publishes that data whenever it changes. In this simple example, there is one query, which publishes changes to the table INSTRUMENT_DETAILS.
 
 
 ```kotlin
@@ -23,6 +23,7 @@ dataServer {
 
 And here is a simple example that has two queries:
 
+Note that each query is subscribed to separately.
 
 ```kotlin
 dataServer {
@@ -33,6 +34,7 @@ dataServer {
 ```
 
 ### Specifying fields
+
 By default, all table or view fields in a query definition will be exposed. If you don't want them all to be available, you must define the fields that are required. In the example below, we specify eight fields:
 
 ```kotlin
@@ -51,10 +53,12 @@ dataServer {
     }
 }
 ```
-## Derived fields
-You can also define derived fields in a data server, to supplement the fields supplied by the table or view. The input for the derived field is the dataserver query row.  All fields are available for use.
 
-In the example below, we add a ninth field to our data server from the previous example. The new field is a derived field:
+## Derived fields
+
+You can also define derived fields in a Data Server, to supplement the fields supplied by the table or view. The input for the derived field is the Data Server query row.  All fields are available for use.
+
+In the example below, we add a ninth field to our Data Server from the previous example. The new field is a derived field:
 
 ```kotlin
 dataServer {
@@ -76,11 +80,10 @@ dataServer {
 }
 ```
 
-
-
 ## Configuration settings
 
-Before you define any queries, you can make configuration settings for the data server. These control the overall behaviour of the data server. Use the `config` statement.
+Before you define any queries, you can make configuration settings for the Data Server within the `config` block. These control the overall behaviour of the Data Server.
+
 Here is an example of some configuration settings: 
 
 ```kotlin
@@ -106,6 +109,7 @@ dataServer {
     }
 }
 ```
+
 Below, we shall examine the settings that are available for your `config` statement.
 
 ### Global settings
@@ -117,9 +121,10 @@ Global settings can be applied at two levels:
 
 The following global setting applies at the top level only.
 
+#### Top level only settings
 
-#### lmdbAllocateSize
-This sets the size of the memory-mapped file where the in-memory cache stores the data server query rows. This configuration setting can only be applied at the top level. It affects the whole data server. 
+##### lmdbAllocateSize
+This sets the size of the memory-mapped file where the in-memory cache stores the Data Server query rows. This configuration setting can only be applied at the top level. It affects the whole Data Server. 
 
 By default, the size is defined in bytes. To use MB or GB, use the `MEGA_BYTE` or `GIGA_BYTE` functions. You can see these in the example below. The default is 2 GB.
 
@@ -129,74 +134,69 @@ lmdbAllocateSize = 2.GIGA_BYTE()
 lmdbAllocateSize = 512.MEGA_BYTE()
 ```
 
-The following settings apply at top-level and query-level.
+#### Query only settings
+The following settings can be applied at a query-level
 
-#### compression
-If this is set to `true`, it will compress the query row data before writing it to the in-memory cache. Defaults to `false`.
-
-#### chunkLargeMessages
-If this is set to true, it will split large updates into smaller ones. Defaults to `false`.
-
-#### defaultStringSize
-This is the size to be used for string storage in the data server in-memory cache. Higher values lead to higher memory use and lower values lead to truncation. Defaults to `40`.
-
-#### batchingPeriod
-This is the delay in milliseconds to wait before sending new data to data-server clients. Defaults to `500ms`.
-
-#### linearScan
-This enables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes. Defaults to `true`.
-
-#### excludedEmitters
-This enables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored. Defaults to an empty list.
-
-#### enableTypeAwareCriteriaEvaluator
-This enables the type-aware criteria evaluator at the data-server level. Defaults to `false`. Click here to read more](
-    /creating-applications/defining-your-application/user-interface/data-servers/#enabletypeawarecriteriaevaluator)
-
-### Query settings
-The following settings only apply at query-level. 
-
-#### defaultCriteria
+##### defaultCriteria
 This represents the default criteria for the query. Defaults to `null`.
 
-#### disableAuthUpdates
+##### disableAuthUpdates
 This disables real-time auth updates in order to improve the overall data responsiveness and performance of the server. Defaults to `false`.
 
-#### backJoins
-Seen in older versions of the platform, this has been replaced by the setting below. It is functionally the same.
+##### backJoins
+Seen in older versions of the platform, this has been replaced by `backwardsJoins`. It is functionally the same.
 
-#### backwardsJoins
+##### backwardsJoins
 This enables backwards joins on a view query. Backwards joins ensure real-time updates on the fields that have been joined. These need to be configured at the join level of the query in order to work correctly. Defaults to `true`.
 
-#### enableTypeAwareCriteriaEvaluator
+#### Shared settings
 
-The type-aware criteria evaluator can automatically convert criteria comparisons that don't match the original type of the data server field; these can still be useful to end users. 
+##### compression
+If this is set to `true`, it will compress the query row data before writing it to the in-memory cache. Defaults to `false`.
+
+##### chunkLargeMessages
+If this is set to true, it will split large updates into smaller ones. Defaults to `false`.
+
+##### defaultStringSize
+This is the size to be used for string storage in the Data Server in-memory cache. Higher values lead to higher memory use and lower values lead to truncation. Defaults to `40`.
+
+##### batchingPeriod
+This is the delay in milliseconds to wait before sending new data to data-server clients. Defaults to `500ms`.
+
+##### linearScan
+This enables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes. Defaults to `true`.
+
+##### excludedEmitters
+This enables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored. Defaults to an empty list.
+
+##### enableTypeAwareCriteriaEvaluator
+This enables the type-aware criteria evaluator. Defaults to `false`. [Click here to read more](/creating-applications/defining-your-application/user-interface/data-servers/#enabletypeawarecriteriaevaluator)
+
+The type-aware criteria evaluator can automatically convert criteria comparisons that don't match the original type of the Data Server field; these can still be useful to end users.
 
 For example, you might want a front-end client to perform a criteria search on a `TRADE_DATE` field like this: `TRADE_DATE > '2015-03-01' && TRADE_DATE < '2015-03-02'`. 
-This search  can be  translated automatically to the right field types internally (even though `TRADE_DATE` is a field of type `DateTime`). The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimised experience. 
+This search can be translated automatically to the right field types internally (even though `TRADE_DATE` is a field of type `DateTime`). The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimised experience.
 The type-aware evaluator can transform strings to integers, and any other sensible and possible conversion (e.g `TRADE_ID == '1'`). As a side note, this type-aware evaluator is also available in `DbMon` for operations like `search` and `qsearch`.
 
-By contrast, the traditional criteria evaluator needs the field types to match the query fields in the data server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our common date expressions(more at Advanced technical details) to handle date searches.
-
+By contrast, the traditional criteria evaluator needs the field types to match the query fields in the Data Server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our common date expressions(more at Advanced technical details) to handle date searches.
 
 ## Backwards joins
 
-Each query in a data server creates what is effectively an open connection between each requesting user and the data server. After the initial send of all the data, the data server only sends modifications, deletes and inserts in real time.
+Each query in a Data Server creates, what is effectively, an open connection between each requesting user and the Data Server. After the initial send of all the data, the Data Server only sends modifications, deletions and insertions in real time.
 
-By default, the primary table and all joined tables and views with a backward join flag are monitored. Any changes to these are sent automatically.
+For queries with backwards joins enabled, the primary table and all joined tables and views are actively monitored. Any changes to these tables and views are sent automatically.
 
-Queries that do not have `backwardsJoins = false` will use any backwards joins in any view included in the query. The monitoring of these backward joins can come at a cost, as it can cause significant extra processing. Do not use backwards joins unless there is a need for the data in question to be updated in real time. Counterparty data, if changed, can wait until overnight, for example. The rule of thumb is that you should only use backwards joins where the underlying data is being updated intraday.
+Monitoring of backwards joins can come at a cost, as it can cause significant extra processing. Do not use backwards joins unless there is a need for the data in question to be updated in real time. For example, counterparty data, if changed, can wait until overnight. The rule of thumb is that you should only use backwards joins where the underlying data is being updated intraday.
 
+The backwards join flag is true by default. You must explicitly set `backwardsJoins = false` if you wish to turn backwards joins off for your query.
 
 ## Where clauses
 
 If you include a `where` clause in a query, the request is only processed if the criteria specified in the clause are met. For example, If you have an application that deals with derivatives that have parent and child trades, you can use a `where` clause to confine the query to parent trades only.
 
-Also, you can use these clauses to focus on a specific set of fields or a single field. You can then use Java syntax, such as `contains`*, or string/numeric operations.
+Also, you can use these clauses to focus on a specific set of fields or a single field.
 
-Finally, note that `where` clauses can also be used for permissioning. If you want only users with a specific ID to have access to this data, you could permission them here.
-
-In the example below, we have a data server query based on the existing `ENHANCED_TRADE_VIEW`, which filters trades so that only those whose value is larger than 1 million are permissioned.
+Finally, note that `where` clauses can also be used for permissioning. In the below example, users that have the TRADER or SUPPORT permission code are able to see all trades that meet the where condition.
 
 ```kotlin
 dataServer {
@@ -214,7 +214,6 @@ dataServer {
     }
 }
 ```
-
 
 ## Indices
 
@@ -237,9 +236,7 @@ dataServer {
 The `indices` (optional) block defines additional indexing at the query level. When an index is used, it will order all query rows by the fields specified, in ascending order. This definition is identical to the one defined in data modelling for dictionary tables.
 
 There are two scenarios in which an index can be used:
-* Optimising query criteria search. If a data server client specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, the data server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means we don't need to scan all the query rows stored in the data server memory-mapped file cache; instead, we perform a very efficient indexed search.
-* Index specifed in the data server client. If an `ORDER_BY` value is received as part of the `DATA_LOGON` process, the data server will use a specific index to query the data. The data will be returned to the client in ascending order, based on the index field definition. See more at Advanced technical details.
+* Optimising query criteria search. If a Data Server client specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, the Data Server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means we don't need to scan all the query rows stored in the Data Server memory-mapped file cache; instead, we perform a very efficient indexed search.
+* Index specifed in the Data Server client. If an `ORDER_BY` value is received as part of the `DATA_LOGON` process, the Data Server will use a specific index to query the data. The data will be returned to the client in ascending order, based on the index field definition. See more at Advanced technical details.
 
 *Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add SIMPLE_ID to the index definition to ensure we maintain uniqueness.
-
-
