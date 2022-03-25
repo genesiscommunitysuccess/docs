@@ -7,6 +7,27 @@ id: using-genx
 
 GenX is a CLI tool that enables you to create skeleton projects that adhere to best practices for development on the Genesis Platform.
 
+### Pre-requisites
+
+[Node.js](https://nodejs.org/en/download/) version 16
+
+### Installing GenX
+
+Before installing GenX you will need to configure repository access to our repository.
+
+ - Using your credentials login to the repository web site 
+ - Click on the `Welcome <username>` on the top right corner 
+ - From the menu select `Set Me Up`
+ - A window will open with `Package Type` and `Repository` dropdowns. Select `npm` for package type and the appropriate repository
+ - The same window will show instructions how to setup that repository in your local `~/.npmrc` file
+
+Once the repository is configured open a terminal and execute
+```shell
+npm install -g genesislcap/genx
+```
+
+This will install GenX globally.
+
 ### Using GenX
 
 For this tutorial, select `create application`.
