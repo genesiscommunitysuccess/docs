@@ -9,9 +9,9 @@ import TabItem from '@theme/TabItem';
 
 [Introduction](/creating-applications/defining-your-application/integrations/custom-endpoints/custom-endpoints/)  | [Where to define](/creating-applications/defining-your-application/integrations/custom-endpoints/ce-define/) | [Basics](/creating-applications/defining-your-application/integrations/custom-endpoints/ce-technical-details/) |  [Advanced](/creating-applications/defining-your-application/integrations/custom-endpoints/ce-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/integrations/custom-endpoints/ce-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/integrations/custom-endpoints/ce-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/integrations/custom-endpoints/ce-testing/)
 
-Custom endpoints are defined within their own submodule of the project, using classes implementing the the `WebEndpoint` interface provided by Genesis-Router.endpoints
+Custom endpoints are defined within their own submodule of the project, using classes implementing the the `WebEndpoint` interface provided by Genesis-Router.endpoints.
 
-The classes will need to call upon the `registerEndpoint` method of an injected `WebEndpointRegistry` object in their initialisation.
+In their initialisation, the classes need to call upon the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
 
 ### FileProcessor class
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
