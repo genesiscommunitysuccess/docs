@@ -95,8 +95,8 @@ tables {
 ## Add business logic
 We have a table, now we want to be able to see its content and create new entries.
 
-### Data server
-A [Data server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers)  allows for reading of real-time data. You must define the Data Server in the file **alpha-dataserver.kts**.
+### Data Server
+A [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers) allows for reading of real-time data. You must define the Data Server in the file **alpha-dataserver.kts**.
 
 ```kotlin
 dataServer {
@@ -104,7 +104,7 @@ dataServer {
 }
 ```
 
-### Event handler
+### Event Handler
 Next, we want to be able to insert rows into our table. For this you need to define an [Event Handler](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/) in the file **alpha-event-handler.kts**.
 
 ```kotlin
@@ -298,7 +298,7 @@ public async insertTradeData() {
 }
 ```
 
-To see if we added a new trade successfully in home.template.ts, add (before Add trade span):
+To see if the new trade was added successfully in home.template.ts, add (before Add trade span):
 
 ```ts
 ${when(x => x.serverResponse, html`
@@ -337,9 +337,9 @@ Try adding more...
 Refresh the page; you'll see your trades have persisted.
 
 ## Conclusion
-That’s it. You have quickly built a very simple application using some of the fundamental Genesis components
+That’s it. You have quickly built a very simple application using some of the fundamental Genesis components.
 
-There's obviously a lot more to building enterprise ready applications, please read through the [Defining your application](/creating-applications/defining-your-application/intro) for details of all the Genesis components and their features.
+There's obviously a lot more to building enterprise-ready applications. We suggest you read through the [Defining your application](/creating-applications/defining-your-application/intro) for details of all the Genesis components and their features.
 
 We touch on components and their features in our more advanced [tutorials](https://docs.genesis.global/secure/tutorials/building-an-application/intro/0. 
 
