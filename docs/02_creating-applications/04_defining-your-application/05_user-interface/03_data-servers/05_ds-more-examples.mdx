@@ -12,7 +12,7 @@ id: ds-more-examples
 
 Enriching data using the calling users context is a great way to build rich experiences. Below, we have the positions table and the favourite trades table. We are able to derive a field on our query by bringing the user's favourite trades into the context.
 
-Note the casing of `FAVOURITE_TRADE` and `FavouriteTrade`. The all caps version denotes the table definition, whereas the camel case version denotes the generated data access object (DAO).
+Note the casing of `FAVOURITE_TRADE` and `FavouriteTrade`. The all-caps version denotes the table definition, whereas the camel case version denotes the generated data access object (DAO).
 
 ```kotlin
 query(POSITION) {
@@ -27,7 +27,7 @@ query(POSITION) {
 }
 ```
 
-To be able to use the `byUserName` function over the FavouriteTrade DAO, you must add an index over the USER_NAME (a platform level field).
+To be able to use the `byUserName` function over the FavouriteTrade DAO, you must add an index over the USER_NAME (a platform-level field).
 
 ```kotlin
 table(name = "POSITION", id = 1600) {
