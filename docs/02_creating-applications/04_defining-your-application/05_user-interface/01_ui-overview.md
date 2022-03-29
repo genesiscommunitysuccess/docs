@@ -10,7 +10,7 @@ In this section, we shall look at the various aspects of configuring the user in
 
 * For data distribution to the front end, there are [request servers](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/) for static (reference) data and [data servers](/creating-applications/defining-your-application/user-interface/data-servers/data-servers/) for streaming real-time data. 
 
-* [Web UI](/creating-applications/defining-your-application/user-interface/web-ui-reference/intro/web-strategy/) covers every aspect of creating the pages and the components (grids, buttons, charts, etc) that fill each page, plus how you connect them to the data servers and request servers that distribute the data.
+* [Front-end basics](/creating-applications/defining-your-application/user-interface/front-end-basics/front-end-basics) summarises how to go about building a front end.  Web UI](/creating-applications/defining-your-application/user-interface/web-ui-reference/intro/web-strategy/) covers all the components (grids, buttons, charts, etc) that fill each page, along with a store of useful reference information.
 
 
 
