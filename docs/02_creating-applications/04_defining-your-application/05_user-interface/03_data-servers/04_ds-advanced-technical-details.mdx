@@ -333,6 +333,8 @@ QUANTITY < 100 || QUANTITY >= 500
 Expr.dateIsToday(TRADE_DATE) && QUANTITY > 100
 ```
 
+Note - When using logical OR in your filter, you will lose the ability to use indexing for searches.
+
 Should you wish to use more advanced boolean logic, you can pass brackets to ensure each part of your filter is checked in line with your business needs.
 
 The following complex example defines:
