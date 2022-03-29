@@ -23,7 +23,7 @@ const features = [
         Genesis applications can be as simple or complex as your needs. <Link to={url}>Take a look at the components</Link> and the way they can be configured.
       </p>
     ),
-    url: '/creating-applications/basic-elements-of-genesis-applications/pre-built-components/components/'
+    url: '/creating-applications/pre-built-components/components/'
   },
   {
     title: <>Tutorials</>,
