@@ -13,8 +13,8 @@ These application components enable you to create working event-driven applicati
 | [Event Handler](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/) | Data & distribution  | Processes business logic in response to system events |
 | [Request Server](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/) | Data & distribution  | Request / reply-based data distribution exposed over REST|
 | [Consolidation Manager](/creating-applications/defining-your-application/business-logic/consolidators/consolidators/) | Data processing & analytics  | Efficient, real-time data aggregation and analytics |
-| Custom | Data processing & analytics  | Custom logic to listen / react to data updates |
+| [Custom](/reference/developer/custom-components/) | Data processing & analytics  | Custom logic to listen / react to data updates |
 | [Evaluator](/creating-applications/defining-your-application/business-logic/evaluators/configure/) | Data processing & analytics  |Triggering events based on time or rule-based conditions  |
-| R Analytics | Data processing & analytics  | R language support for high-performance querying and processing data |
+| [R Analytics](/managing-applications/operate/on-the-host/folders/#data-analytics-processes) | Data processing & analytics  | R language support for high-performance querying and processing data |
 
 
