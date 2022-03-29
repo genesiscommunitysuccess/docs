@@ -57,7 +57,7 @@ Next, update CentOS by running:
 
 `yum groupinstall base`
 
-2. Install Java 11 or scp jdk from local binaries folder and install:
+2. Install Java 11 or scp jdk from the local binaries folder and install:
     
 ```
 sudo yum update
@@ -116,7 +116,7 @@ CONTAINER ID        IMAGE                                 COMMAND               
 c3468768d9c9        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   2 minutes ago       Exited (0) 32 seconds ago                       priceless_bardeen
 ```
 
-To start or stop the container, use `docker start|stop _container name_:
+To start or stop the container, use `docker start|stop _container name_`:
 
 ```
 [root@machine wsl]# docker stop priceless_bardeen
@@ -177,7 +177,7 @@ jdbc:postgresql://localhost:5432/?user=postgres&password=docker
 docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=docker" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 ```
 
-This downloads and runs a MSSQL image for version 2019-latest. Other versions are available; for more details [see here](https://hub.docker.com/_/microsoft-mssql-server).
+This downloads and runs an MSSQL image for version 2019-latest. Other versions are available; for more details [see here](https://hub.docker.com/_/microsoft-mssql-server).
 
 To connect, use this JDBC URL:
 
