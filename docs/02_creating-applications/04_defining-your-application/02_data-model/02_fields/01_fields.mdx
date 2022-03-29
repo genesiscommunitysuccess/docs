@@ -1,0 +1,25 @@
+---
+title: Introduction
+sidebar_label: Introduction
+sidebar_position: 1
+id: fields
+---
+
+
+[Introduction](/creating-applications/defining-your-application/data-model/fields/fields)  | [Where to define](/creating-applications/defining-your-application/data-model/fields/fields-where-to-define/) | [Basics](/creating-applications/defining-your-application/data-model/fields/fields-basics/) |  [Advanced](/creating-applications/defining-your-application/data-model/fields/fields-advanced/) | [More examples](/creating-applications/defining-your-application/data-model/fields/fields-examples/) 
+
+
+Fields are the individual elements that make up any given table in a system's database, and you can think of them as ultimately holding your data.
+
+When defining the data model, you define all the individual fields needed to make up all the tables in your application.
+
+```kotlin
+fields {
+    field(name = "ORDER_ID", type = STRING)
+    field(name = "DESCRIPTION", type = STRING, nullable = true)
+    field(name = "PRICE", type = DOUBLE, nullable = false)
+}
+```kotlin
+Fields are kept separately from tables, so that they, and their meta-data, can be re-used across multiple tables and show linkage.
+
+
