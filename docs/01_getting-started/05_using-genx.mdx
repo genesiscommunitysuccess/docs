@@ -9,17 +9,18 @@ GenX is a CLI tool that enables you to create skeleton projects that adhere to b
 
 ### Pre-requisites
 
-[Node.js](https://nodejs.org/en/download/) version 16
+- [Node.js](https://nodejs.org/en/download/) version 16
+- a valid NPM token
 
 ### Installing GenX
 
-Before installing GenX you will need to configure repository access to our repository.
+Before installing GenX. you need to configure access to our repository.
 
- - Using your credentials login to the repository web site 
- - Click on the `Welcome <username>` on the top right corner 
- - From the menu select `Set Me Up`
- - A window will open with `Package Type` and `Repository` dropdowns. Select `npm` for package type and the appropriate repository
- - The same window will show instructions how to setup that repository in your local `~/.npmrc` file
+ 1. Using your credentials, login to the repository web site.
+ 2. Click on the `Welcome <username>` on the top right corner.
+ 3. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
+ 4. Select `npm` for package type, and the appropriate repository.
+ 5. The same window will show instructions on how to set up that repository in your local `~/.npmrc` file.
 
 Once the repository is configured, open a terminal and execute
 
@@ -27,11 +28,11 @@ Once the repository is configured, open a terminal and execute
 npm install -g @genesislcap/foundation-cli
 ```
 
-This will install GenX globally.
+This command presents you with a sequence of choices so that GenX can be installed globally.
 
 ### Using GenX
 
-For this tutorial, select `create application`.
+To respond to the first question, for this tutorial, select `create application`.
 ```shell
 ? Please select an option: create application - Generates a local application. 
 ```
@@ -41,7 +42,7 @@ For this tutorial, select `create application`.
 ? App name alpha 
 ```
 
-Select `Genesis Quick Start Appliction` for **App seed**.
+Next, select `Genesis Quick Start Appliction` for **App seed**.
 ```shell
 ? App seed 
 
@@ -53,7 +54,10 @@ Choose whether to overwrite existing files. The default is **No**.
 ? Overwrite existing files (yes/No)
 ```
 
-This will start the download of dependencies. Once that is done, you will be prompted for configuration for the front-end part of the project.
+This will start the download of dependencies. 
+
+#### Front-end prompts
+Once that is done, you will be prompted for configuring the front-end part of the project.
 
 The first prompt is the package [scope](https://docs.npmjs.com/cli/v8/using-npm/scope). The default is **genesislcap**.
 ```shell
@@ -80,9 +84,10 @@ Finally, for these front-end prompts, you need to specify the NPM token:
 ? NPM Token (for the @genesislcap scope) <secure-token-goes-here> 
 ```
 
+#### Back-end prompts
 The next prompts concern the back-end part of the application.
 
-The first one is which Genesis Server version to be used:
+The first prompt is for which Genesis Server version is to be used:
 ```shell
 ? Genesis Server version 5.6.1 
 ```
