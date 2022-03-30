@@ -32,9 +32,9 @@ The GenX CLI tool enables you to generate a blank application that will contain 
 genx
 ```
 
-and follow the on screen instructions. 
+and follow the on-screen instructions. 
 
-For step by step instructions on how to install and use the tool, follow the guide on [GenX](/getting-started/using-genx).
+For step-by-step instructions on how to install and use the tool, follow the guide on [GenX](/getting-started/using-genx).
 
 
 ## Define the [Data Model](/creating-applications/defining-your-application/data-model/data-model-overview)  
@@ -63,7 +63,10 @@ fields {
 }
 ```
 
-((Show how to run generateFields, link to page explaining in more depth what generateFields is doing))
+After you have saved this file, you need to generate the fields:
+
+1. If necessary, change directory to the server project; run `cd server/jvm`.
+2. Run the command `gradle generateFields`. 
 
 ### Add a table 
 Now we have our fields, let's define a [table](/creating-applications/defining-your-application/data-model/tables) in the file **alpha-tables-dictionary.kts**.
@@ -90,7 +93,10 @@ tables {
 }
 ```
 
-((Show how to run generateDao, link to page explaining in ore depth what generateDao is doing))
+After you have saved this file, you need to generate the Data Access Objects:
+
+1. If necessary, change directory to the server project; run `cd server/jvm`.
+2. Run the command `gradle generateDao`. 
 
 ## Add business logic
 We have a table, now we want to be able to see its content and create new entries.
