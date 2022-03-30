@@ -18,7 +18,7 @@ Genesis Application Developers need to access on-premise workstations through re
 
 | Package	| Minimum Version| 
 |--------------|:-----:|
-| IntelliJ	| 2020.2.4|
+| IntelliJ	| 2021.1.3|
 |Visual Studio Code	| 1.52.1|
 |Java SDK| 11|
 | Putty	| 0.74|
