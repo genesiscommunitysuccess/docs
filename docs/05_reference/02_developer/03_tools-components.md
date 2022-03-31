@@ -1,7 +1,7 @@
 ---
-title: 'Tools - components'
-sidebar_label: 'Tools - components'
-sidebar_position: 6
+title: 'Tools'
+sidebar_label: 'Tools'
+sidebar_position: 3
 id: tools-components
 ---
 
