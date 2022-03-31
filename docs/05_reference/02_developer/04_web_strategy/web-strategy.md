@@ -1,8 +1,8 @@
 ---
 id: web-strategy
-sidebar_label: Web strategy
+sidebar_label: Intro
 sidebar_position: 10
-title: Web strategy
+title: Web Strategy
 tags:
   - web
   - frontend
@@ -11,7 +11,7 @@ tags:
 ---
   
 Genesis provides a future-proofed web stack. [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
-are at the very heart of our strategy, which is based onnative browsers and a standards-based component model.
+are at the very heart of our strategy, which is based on native browsers and a standards-based component model.
 No more Angular vs React vs Vue, dealing with version clashes and upgrades, or needing to onboard web framework
 specialists.
 

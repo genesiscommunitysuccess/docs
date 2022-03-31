@@ -16,7 +16,7 @@ Web Components are custom html elements that completely encapsulate their logic 
 components, that do not clash or interfere with the rest of application. They are future-proof and interoperable with
 traditional web frameworks.
 
-At Genesis we currently offer over [40 web components](../../components/getting-started.md) that are ready to go, but
+At Genesis we currently offer over [40 web components](/defining-your-application/user-interface/web-ui-reference/components/getting-started/) that are ready to go, but
 that number is growing and we can also work with our clients to create bespoke web components for their specific needs.
 Frameworks like React, Angular, Vue and so on, have traditionally offered component models to developers, however
 Web Components are *literally*, the standard component model of the web, written into the HTML specification. We believe
