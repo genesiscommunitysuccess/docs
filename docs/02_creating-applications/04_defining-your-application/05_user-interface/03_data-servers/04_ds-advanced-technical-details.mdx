@@ -198,11 +198,11 @@ The features of the options are explained below.
 ## Criteria Matching
 
 Used to perform filters on the server, you can send a Groovy expression as part of your Data Server request for client-side filtering. Criteria matching supports Groovy expressions and some common expressions. All expressions must return a boolean value (`true` or `false`).
-You can mix and match both common expressions and custom groovy expressions using the && (logical AND) and || (logical OR) boolean operators. These will be explained in more detail below.
+You can mix and match both common expressions and custom groovy expressions using the && (logical AND) and || (logical OR) boolean operators. These are explained in more detail below.
 
 ### Common expressions
 
-Genesis Platform provides common expressions that are especially helpful for `Date` and `DateTime` client-side filtering. Common expressions are called using the `Expr` binding and take one or two parameters:
+The Genesis Platform provides common expressions that are especially helpful for `Date` and `DateTime` client-side filtering. Common expressions are called using the `Expr` binding and take one or two parameters:
 
 - The first parameter is always a query field. In the case of date/datetime, this can either represent the epoch time in milliseconds or a `String` value representing the actual `Date` and `DateTime` in the supported formats.
 - The second parameter (if applicable) is a predefined `String` value
@@ -210,13 +210,13 @@ Genesis Platform provides common expressions that are especially helpful for `Da
 #### String operations
 
 ##### containsIgnoreCase(String, String)
-This returns true when our field contains the string. Casing is ignored.
+This returns `true` when our field contains the string. Casing is ignored.
 
 For example:
 `Expr.containsIgnoreCase(EXCHANGE_NAME, 'oves')`
 
 ##### containsWordsStartingWithIgnoreCase(String, String)
-This returns true when our field starts with the string. Casing is ignored.
+This returns `true` when our field starts with the string. Casing is ignored.
 
 #### Date operations
 
@@ -227,7 +227,7 @@ The allowed String formats are:
 - DateTime as Date: _yyyyMMdd_
 
 ##### dateIsBefore(date as DateTime|String|Long, String)
-This returns true when the date in the given field is before the date specified.
+This returns `true` when the date in the given field is before the date specified.
 
 For example:
 `Expr.dateIsBefore(TRADE_DATE,'20150518')`
