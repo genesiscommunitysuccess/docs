@@ -683,7 +683,7 @@ The script accepts a series of arguments to establish a connection to the databa
 | -l | --tables=\<tables\>\[,\<tables\>...\] |  | table list to include, default is all tables |
 | -o | --output=\<outputDirectory\> |  | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created.  |
 | -p | --port=\<port\> | Yes | The database port. |
-| -P | --password\[=<password>\] | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively |
+| -P | --password\[=\<password\>\] | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively |
 | -R | --product=\<productName\> | Yes | Represents the product name and affects the output file. |
 | -s | --sid=\<oracleSidId\> |  | The Oracle System ID if using oracle, or the schema ID if using MSSQL. |
 | -t | --type=\<databaseType\> | Yes | Database type, valid values: MSSQL, Oracle, Postgres |
