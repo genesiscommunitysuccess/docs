@@ -674,7 +674,7 @@ The script accepts a series of arguments to establish a connection to the databa
 ### Syntax
 
 | Short | Long Argument | Mandatory | Description |
-| -- | -- | -- | -- | -- |
+| -- | -- | -- | -- |
 | -c | --comments |  | Include original SQL in Comments defaults to true |
 | -d | --databaseName=\<databaseName\> | Yes | Database name |
 | -h | --help |  | Show this help message and exit. |
