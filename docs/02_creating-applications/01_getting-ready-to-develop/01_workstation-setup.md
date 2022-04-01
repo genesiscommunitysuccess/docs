@@ -26,7 +26,7 @@ Genesis Application Developers need to access on-premise workstations through re
 | Maven	| 3.6.3|
 | Postman	| 8|
 | Gradle  | 6.8|
-| Nodejs  |14|
+| NodeJS  |16 LTS+|
 
 Note that you can use a range of IDEs (for example, Eclipse) with the LCNC Platform, but only IntelliJ enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
 
@@ -35,31 +35,36 @@ Note that you can use a range of IDEs (for example, Eclipse) with the LCNC Platf
 * NodeJS (16 LTS+) - https://nodejs.org/en/
 * npm 8 (installed with NodeJS)
 
-## .npmrc token
+## .npmrc setup
 
-Access to the Genesis packages on Github requires you to configure the `@genesislcap` scope of `npm` to use our
-registry. You will need to obtain a token to access these, and this may be a per developer token or one that is assigned
-to your company as a whole. [Request a token](https://genesis.global/contact-us/).
+Access to the Genesis packages requires you to configure the `@genesislcap` scope of `npm` to use our jfrog registry.
+You will be provided access details during your on-boarding.
 
-Once you have a token you have a couple of options on how to configure the `@genesislcap` scope to use our registry:
+1. Create a `.npmrc` file in or above your intended project directory, likely your user home directory.
 
-**Global Set Up** - Globally set these values, so it works in any project:
-
-```shell
-npm config set "@genesislcap:registry" https://npm.pkg.github.com/
-```
-
-```shell
-npm config set "//npm.pkg.github.com/:_authToken" TOKEN
-```
-
-**Localised / Per-Project** - If you’d prefer a more localised or per-project setup, simply create a `.npmrc` file in or
-above your intended workspace directory and run the npm commands from within this directory structure. This way npm will
-find and apply these settings to allow you to install our packages.
-
-If you already have a project, you can ultimately place this `.npmrc` file alongside the project's `package.json` file.
+2. Login to [JFrog](http://genesisglobal.jfrog.io), click your name in the top right, and
+click 'Set Me Up'. Enter `npm` and `npm` in the `Package Type` and `Repository` input fields respectively. 
+Next type the same password you used to login into the `Type password to insert your credentials to the code snippets`
+input and hit enter. Scroll down to the bottom of the page and copy and paste the .npmrc sample into the file you
+created in the previous step. This should look something like this:
 
 ```shell
-@genesislcap:registry=https://npm.pkg.github.com/
-//npm.pkg.github.com/:_authToken=TOKEN
+@<SCOPE>:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/
+//genesisglobal.jfrog.io/artifactory/api/npm/npm/:_password=AAAbbbCCCdddEEEfffGGGhhhIIIjjj111222333444555666777=
+//genesisglobal.jfrog.io/artifactory/api/npm/npm/:username=john.doe
+//genesisglobal.jfrog.io/artifactory/api/npm/npm/:email=john.doe@company.com
+//genesisglobal.jfrog.io/artifactory/api/npm/npm/:always-auth=true
 ```
+
+3. Replace `<SCOPE>` with `genesislcap`, so that the line reads:
+`@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
+
+4. Save the file and open a terminal under the directory path of this `.npmrc` file and type:
+`npm info @genesislcap/foundation-ui`. If setup was successful, you should see a response like:
+
+```shell
+@genesislcap/foundation-ui@0.0.26 | UNLICENSED | deps: 23 | versions: 111
+Genesis Foundation UI
+```
+
+Please [contact us](https://genesis.global/contact-us/) if you run into any problems.
