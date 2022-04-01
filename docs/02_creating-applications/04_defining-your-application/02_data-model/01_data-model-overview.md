@@ -12,7 +12,7 @@ Get it right, and you will find all the other steps are much easier and more log
 In Genesis, we structure our data in the following way:
 
 * [Fields](/creating-applications/defining-your-application/data-model/fields/fields)
-* [Tables](/creating-applications/defining-your-application/data-model/tables/)
+* [Tables](/creating-applications/defining-your-application/data-model/tables/tables/)
 * [Views](/creating-applications/defining-your-application/data-model/views/) (a view can draw data from more than one table)
 
 Each of these must be specified in a separate file on the file system:
