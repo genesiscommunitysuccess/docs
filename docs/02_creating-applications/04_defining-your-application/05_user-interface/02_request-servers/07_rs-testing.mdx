@@ -64,7 +64,7 @@ In the above example, we are asserting that there are five rows within the respo
 
 For custom Request Servers, we must declare a workflow object that matches the custom Request Server that we have declared. This should match the same input and output types for the custom Request Server.
 
-Given a custom Request Server that takes an input of type `Hello` and returns type `World`, we pass the same types into the requestReplyWorkflow. We cam optionally pass the name of the Request Server to the builder.
+Given a custom Request Server that takes an input of type `Hello` and returns type `World`, we pass the same types into the requestReplyWorkflow. We can optionally pass the name of the Request Server to the builder.
 
 ```kotlin
 object HelloWorldFlow : RequestReplyWorkflow<Hello, World> by requestReplyWorkflowBuilder("HELLO_WORLD")
@@ -77,7 +77,7 @@ fun `can get hello world`() = runBlocking {
 }
 ```
 
-Should you wish to reuse a workflow with the same input and output types, you can use the unary plus overload to change the name of the Request Server being pointed towards. In the below example, we reuse `HelloWorldFlow` and change the Request Server to "HELLO_WORLD_CAPS", a variant of the same Request Server which returns a string in all caps.
+If you want to reuse a workflow with the same input and output types, you can use the unary plus overload to change the name of the Request Server being pointed to. In the  example below, we reuse `HelloWorldFlow` and change the Request Server to "HELLO_WORLD_CAPS", a variant of the same Request Server which returns a string in all caps.
 
 ```kotlin
 @Test
@@ -93,7 +93,7 @@ fun `can get hello world`() = runBlocking {
 ### Testing with Console
 
 In Genesis Console, select your Request Sever in the resources tab.
-Once you click into your Request Server, you will see the current response from the Request Server and any input fields that you have defined. You can change the inputs and verify the correct behaviour is being seen. Make sure that your database has some data for you to search through.
+Once you click into your Request Server, you will see the current response from the Request Server and any input fields that you have defined. You can change the inputs and verify that the correct behaviour is being seen. Make sure that your database has some data for you to search through.
 
 ![](/img/test-console-rs-success.png)
 
