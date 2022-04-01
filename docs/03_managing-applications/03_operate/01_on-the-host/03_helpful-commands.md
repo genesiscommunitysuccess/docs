@@ -676,18 +676,18 @@ The script accepts a series of arguments to establish a connection to the databa
 | Short | Long Argument | Mandatory | Description |
 | -- | -- | -- | -- | -- |
 | -c | --comments |  | Include original SQL in Comments defaults to true |
-| -d | --databaseName=<databaseName> | Yes | Database name |
+| -d | --databaseName=\<databaseName\> | Yes | Database name |
 | -h | --help |  | Show this help message and exit. |
-| -H | --host=<hostname> | Yes | The database hostname. |
-| -i | --tableid=<tableIdStart> |  | Table Id start number, defaults = 0 |
-| -l | --tables=<tables>\[,<tables>...\] |  | table list to include, default is all tables |
-| -o | --output=<outputDirectory> |  | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created.  |
+| -H | --host=\<hostname\> | Yes | The database hostname. |
+| -i | --tableid=\<tableIdStart\> |  | Table Id start number, defaults = 0 |
+| -l | --tables=\<tables\>\[,\<tables\>...\] |  | table list to include, default is all tables |
+| -o | --output=\<outputDirectory\> |  | Specifies the output directory for the dictionary files. If the directory does not exist, it will be created.  |
 | -p | --port=<port> | Yes | The database port. |
 | -P | --password\[=<password>\] | Yes | The database password for the previous username. If no password is provided, the password will be requested interactively |
-| -R | --product=<productName> | Yes | Represents the product name and affects the output file. |
-| -s | --sid=<oracleSidId> |  | The Oracle System ID if using oracle, or the schema ID if using MSSQL. |
-| -t | --type=<databaseType> | Yes | Database type, valid values: MSSQL, Oracle, Postgres |
-| -U | --username=<username> | Yes | Username |
+| -R | --product=\<productName\> | Yes | Represents the product name and affects the output file. |
+| -s | --sid=\<oracleSidId\> |  | The Oracle System ID if using oracle, or the schema ID if using MSSQL. |
+| -t | --type=\<databaseType\> | Yes | Database type, valid values: MSSQL, Oracle, Postgres |
+| -U | --username=\<username\> | Yes | Username |
 | -V | --version |  | Print version information and exit. |
 
 You can use double-dash notation for any argument.
