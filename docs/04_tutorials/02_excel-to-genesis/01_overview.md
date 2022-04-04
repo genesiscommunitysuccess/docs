@@ -8,7 +8,7 @@ title: 'Excel to Genesis - at speed'
 ![](/img/intro3-xtg.png)
 All across the financial sector, you can find operational functions sitting in Excel workbooks. And this sometimes includes functions that are mission-critical.
 
-The Genesis LCNC Platform gives you a way of turning these into applications that can be audited and maintained in a standard and controlled manner. Along the way, you can build in better workflow and usability without heavy IT development effort.
+The Genesis Low Code Platform gives you a way of turning these into applications that can be audited and maintained in a standard and controlled manner. Along the way, you can build in better workflow and usability without heavy IT development effort.
 
 
 Take a look at this quick exercise. We start with an Excel workbook. We finish with a simple but effective server that you can add a front end to.
@@ -23,7 +23,7 @@ That’s it. If you follow those steps, you'll have a working server, ready to b
 
 [Would you like to see that in detail](/tutorials/excel-to-genesis/excel-tut-2/)?
 
-If you already have a Genesis LCNC Platform, you can download the workbook and try this for yourself.
+If you already have a Genesis Low Code Platform, you can download the workbook and try this for yourself.
 
 
 

@@ -162,7 +162,7 @@ table(name = "USER_ATTRIBUTES", id = 1007, audit = details(1052, "AA")) {
 ```
 The permissions field will be added dynamically to USER_ATTRIBUTES, so it can be used in auth transactions to control entitlements.
 
-The following table will be created as well (ignore MULTI_ENTITY setup for now; this is in development). It is used by the Genesis LCNC Platform to manage AUTH_PERMS results.
+The following table will be created as well (ignore MULTI_ENTITY setup for now; this is in development). It is used by the Genesis Low Code Platform to manage AUTH_PERMS results.
 
 ```kotlin
 val permissionsTable = SysDef.systemDefinition["ADMIN_PERMISSION_ENTITY_TABLE"].orElse(null)

@@ -5,7 +5,7 @@ sidebar_label: Glossary
 id: glossary
 
 ---
-There is a lot of technology embedded in the Genesis LCNC Platform. So, inevitably, we have to refer to it in this documentation.
+There is a lot of technology embedded in the Genesis Low Code Platform. So, inevitably, we have to refer to it in this documentation.
 
 Here, we list many of the technical terms that appear in these pages. For each one, we give you a thumbnail description. We hope that helps you to put the information in context and gives you a useful start if you want to explore further.
 
@@ -276,7 +276,7 @@ There are 4 basic HTTP verbs used in REST:
 
 A command that can be run from the command line of the server.
 
-In the Genesis LCNC platform, you are provided with a set of scripts to enable you to do simple things, such as start or stop a process, or more complex things, such as create a schema from an existing database or spreadsheet.
+In the Genesis Low Code Platform, you are provided with a set of scripts to enable you to do simple things, such as start or stop a process, or more complex things, such as create a schema from an existing database or spreadsheet.
 
 ## Service
 
@@ -284,7 +284,7 @@ A vital component of the server in an application. A service performs critical a
 
 Each service is configured in a processes.xml file.
 
-In the Genesis LCNC many of these services are included automatically when you create an application. Some of these are locked because they are essential to the running of the platform (for example, AUTH). Others can be configured to suit the exact requirements of the application (most obviously, the event handler).
+In the Genesis Low Code Platform many of these services are included automatically when you create an application. Some of these are locked because they are essential to the running of the platform (for example, AUTH). Others can be configured to suit the exact requirements of the application (most obviously, the event handler).
 
 And finally, you can create your own service if you want to do something particularly clever that isn't already provided by one of the standard Genesis processes. You will be able to use that service in any further applications you develop on the platform.
 

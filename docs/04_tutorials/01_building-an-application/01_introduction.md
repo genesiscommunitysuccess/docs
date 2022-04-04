@@ -7,20 +7,20 @@ sidebar_position: 1
 ---
 # Building an application – start to finish
 
-The easiest way to learn how the LCNC Platform works is to follow the creation of an application from start to finish. That’s what we shall do here.
+The easiest way to learn how the Genesis Low Code Platform works is to follow the creation of an application from start to finish. That’s what we shall do here.
 
 Along the way, you’ll see the tools that accelerate development, and you can take a look at the code that is produced.
 
 Sound good?
 
-Before you follow this exercise, you need to have the LCNC Platform and your development environment fully installed, and you need to be familiar with the key information in Getting Started.
+Before you follow this exercise, you need to have the Genesis Low Code Platform and your development environment fully installed, and you need to be familiar with the key information in Getting Started.
 
 In short, you need to understand:
 
-* The [overall architecture of a Genesis application](/getting-started/what-is-the-genesis-lcnc-platform/)
+* The [overall architecture of a Genesis application](/getting-started/what-is-the-genesis-low-code-platform/)
 * How to [create a new project](/creating-applications/creating-a-new-project/server-project-setup/)
 
-Before you start, make sure you have the platform and all the relevant tools [installed](/creating-applications/getting-ready-to-develop/running-applications/install-in-three-steps/). The Genesis LCNC must be installed on a server, local vm, wsl or cloud instance (genesis and auth).
+Before you start, make sure you have the platform and all the relevant tools [installed](/creating-applications/getting-ready-to-develop/running-applications/install-in-three-steps/). The Genesis Low Code Platform must be installed on a server, local vm, wsl or cloud instance (genesis and auth).
 
 
 ## The scenario

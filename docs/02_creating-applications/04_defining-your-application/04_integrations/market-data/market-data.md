@@ -5,7 +5,7 @@ sidebar_label: Market data
 sidebar_position: 10
 
 ---
-The Genesis LCNC Platform provides a separate distribution for connecting to external vendors for market data. 
+The Genesis Low Code Platform provides a separate distribution for connecting to external vendors for market data. 
 
 This distribution includes:
 
