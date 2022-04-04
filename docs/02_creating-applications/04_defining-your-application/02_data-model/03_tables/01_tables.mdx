@@ -8,11 +8,14 @@ sidebar_position: 1
 
 [Introduction](/creating-applications/defining-your-application/data-model/tables/tables/)  | [Where to define](/creating-applications/defining-your-application/data-model/tables/tables-define/) | [Basics](/creating-applications/defining-your-application/data-model/tables/tables-basics/) |  [Advanced](/creating-applications/defining-your-application/data-model/tables/tables-advanced/) | [More examples](/creating-applications/defining-your-application/data-model/tables/tables-examples/) 
 
-Tables are used to store the underlying data in your application. A table is made up of [fields](/creating-applications/defining-your-application/data-model/fields/fields). It must have a `primaryKey`, which tells the underlying database how to index the table's data.
+Tables are used to store the underlying data in your application. A table is made up of [fields](/creating-applications/defining-your-application/data-model/fields/fields). For example:
 
-Your application might want to display a grid of trades, or your users might want to select a counterparty from a dropdown list. In each case, you would have a table to hold the information. 
+- Your application might want to display a grid of trades. For those trades, you will want to see the instruments traded, the trade price and the quantity. That means you want a table, probably called TRADES, with three fields (and almost certainly other fields, as well).
+- Your users might want to select a counterparty from a dropdown list. So, you would have a table of counterparties; this could include your internal ID for the counterparty, the counterparty short name and the counterparty's full business name. Again, it's easy to see what you would call your table and what fields you would include in it.
 
-So, really, fields are just useful groupings of fields: users, trades, orders or even types of citrus fruit (you never know).
+So, really, a table is just a useful grouping of fields: users, trades, orders or even types of citrus fruit (you never know).
+
+Finally (for now), note that every table must have a `primaryKey`; this tells the underlying database how to index the table's data.
 
 Here below is a very simple file containing one table and three fields. You can see that one of these fields has been specified as the primary key.
 
