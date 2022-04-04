@@ -195,7 +195,7 @@ The features of the options are explained below.
 | ORDER_BY       |           | This option can be used to select a Data Server index (defined in xml), which is especially useful if you want the data to be sorted in a specific way. By default, Data Server rows will be returned in order of creation (from oldest database record to newest) |
 | REVERSE        | **false** | This option changes the Data Server index iteration. For example, if you are using the default index, the query will return rows from newest database records to oldest |
 
-## Criteria Matching
+## Criteria matching
 
 Used to perform filters on the server, you can send a Groovy expression as part of your Data Server request for client-side filtering. Criteria matching supports Groovy expressions and some common expressions. All expressions must return a boolean value (`true` or `false`).
 You can mix and match both common expressions and custom groovy expressions using the && (logical AND) and || (logical OR) boolean operators. These are explained in more detail below.
