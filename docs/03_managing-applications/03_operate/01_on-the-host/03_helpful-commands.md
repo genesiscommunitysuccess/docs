@@ -5,7 +5,7 @@ sidebar_label: Commands reference
 sidebar_position: 3
 
 ---
-Once an application has been built and zipped, you can install it in any another system that contains the Genesis LCNC platform.
+Once an application has been built and zipped, you can install it in any another system that contains the Genesis Low Code Platform.
 
 To ensure a correct installation, you must follow the product installation procedure.
 

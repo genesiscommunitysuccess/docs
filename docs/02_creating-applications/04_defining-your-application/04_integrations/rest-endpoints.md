@@ -5,7 +5,7 @@ sidebar_label: REST endpoints
 sidebar_position: 10
 
 ---
-The Genesis LCNC Platform automatically exposes all configured resources as HTTP endpoints via the GENESIS_ROUTER service.
+The Genesis Low Code Platform automatically exposes all configured resources as HTTP endpoints via the GENESIS_ROUTER service.
 
 All requests and responses that contain a body are represented in JSON format.
 

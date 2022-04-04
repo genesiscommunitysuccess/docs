@@ -12,7 +12,7 @@ The current supported Gradle project templates are:
 
 - GRADLE_PRO_CODE: Generates a backend multi-module project with .kts files (sysdef, fields, tables and views) for configuration. This follow the traditional server development approach,
 
-- GRADLE_NO_CODE: Generates a backend multi-module project with .json files  (module-config, fields, tables and views) for configuration. The .json files are compatible with the format Genesis Studio expects, and hence could be used in a project that uses the Genesis no-code tooling.
+- GRADLE_NO_CODE: Generates a backend multi-module project with .json files  (module-config, fields, tables and views) for configuration. The .json files are compatible with the format Genesis Studio expects, and hence could be used in a project that uses the Genesis Low Code Platform tooling.
 
 - GRADLE_SITE_SPECIFIC: Generates a server side simplified site-specific project
 

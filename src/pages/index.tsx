@@ -14,7 +14,7 @@ const features = [
         Our platform enables you to build quickly, but you need to get oriented before you can start. <Link to={url}>So start here.</Link>
       </p>
     ),
-    url: '/getting-started/what-is-the-genesis-lcnc-platform/'
+    url: '/getting-started/what-is-the-genesis-low-code-platform/'
   },
   {
     title: <>Creating applications</>,
@@ -66,7 +66,7 @@ const Home = () => {
             <div>
               <Link
                 className='button button--secondary button--outline button--lg button--getting-started'
-                to={useBaseUrl('/getting-started/what-is-the-genesis-lcnc-platform/')}>
+                to={useBaseUrl('/getting-started/what-is-the-genesis-low-code-platform/')}>
                 Get Started
               </Link>
             </div>
@@ -89,10 +89,10 @@ const Home = () => {
               <div className="row">
                 <div className="col col--8">
                   <h2>Getting to know the platform</h2>
-                  <p><strong>The Genesis LCNC Platform is the only Low-Code/No-Code platform designed to build core, mission-critical systems for the financial markets.</strong></p>
+                  <p><strong>The Genesis Low Code Platform is the only Low Code platform designed to build core, mission-critical systems for the financial markets.</strong></p>
                   <p>It enables you to develop and deploy your own applications at speed, from the simplest of internal systems to complete exchanges.</p>
                   <p>
-                    <a href={useBaseUrl('/getting-started/what-is-the-genesis-lcnc-platform/')}>Read more...</a>
+                    <a href={useBaseUrl('/getting-started/what-is-the-genesis-low-code-platform/')}>Read more...</a>
                   </p>
                   <Link
                     className='navbar__item navbar__link demo'

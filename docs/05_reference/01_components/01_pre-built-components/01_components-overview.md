@@ -6,7 +6,7 @@ id: components
 ---
 
 
-The Genesis LCNC Platform offers you more than 50 components that provide proven quality code - and which seriously speed up your development, testing and deployment.
+The Genesis Low Code Platform offers you more than 50 components that provide proven quality code - and which seriously speed up your development, testing and deployment.
 
 - [Core components](/reference/components/pre-built-components/core-components/) 
 - [Application components](/reference/components/pre-built-components/application-components/)

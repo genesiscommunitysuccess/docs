@@ -15,7 +15,7 @@ Single sign-on is a mechanism that enables you to authenticate a user in your ow
 
 If you use single sign-on with [JWT (JSON Web Token)](https://jwt.io/introduction), a user is automatically verified with the identity provider when they sign in. The user then has access to your Genesis application.
 
-The Genesis LCNC Platform only grants access to users who have been authenticated by your internal [Microsoft Azure AD](https://azure.microsoft.com/en-gb/services/active-directory/#overview) component.
+The Genesis Low Code Platform only grants access to users who have been authenticated by your internal [Microsoft Azure AD](https://azure.microsoft.com/en-gb/services/active-directory/#overview) component.
 
 ## JWT SSO
 

@@ -7,7 +7,7 @@ title: 'Introduction'
 
 # Genesis Studio
 
-Genesis Studio is a browser based Low Code / No Code [WYSIWYG](https://en.wikipedia.org/wiki/WYSIWYG) 
+Genesis Studio is a browser based no code [WYSIWYG](https://en.wikipedia.org/wiki/WYSIWYG) 
 application builder for the Genesis platform.
 
 ![masthead-slice](/img/genesis-studio-banner.png "Gensis Studio")

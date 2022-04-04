@@ -2,7 +2,7 @@ const baseUrl = process.env.BASE_URL || '/';
 const routeBasePath = '/';
 
 module.exports = {
-  title: 'Low-Code / No-Code For Financial Markets',
+  title: 'Low Code Platform For Financial Markets',
   tagline: 'The Platform with 50+ Modern Building Blocks to Accelerate App Development.',
   url: 'https://genesis.global/',
   baseUrl,

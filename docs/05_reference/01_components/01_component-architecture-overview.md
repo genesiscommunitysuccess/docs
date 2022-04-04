@@ -13,7 +13,7 @@ The diagram below shows what an example application looks like. Get to know the 
 
 The User Interface is at the top. The server sits below. 
 
-Both of these include system microservices that are part of the LCNC platform (these are the red boxes in the diagram). They control key aspects of the platform that run automatically, such as data persistence and inter-process messaging. You do not need to provide these essential functions. They have been done for you, and you can concentrate on configuring the services that make your application unique.
+Both of these include system microservices that are part of the Genesis Low Code Platform (these are the red boxes in the diagram). They control key aspects of the platform that run automatically, such as data persistence and inter-process messaging. You do not need to provide these essential functions. They have been done for you, and you can concentrate on configuring the services that make your application unique.
 
 ## The server
 
