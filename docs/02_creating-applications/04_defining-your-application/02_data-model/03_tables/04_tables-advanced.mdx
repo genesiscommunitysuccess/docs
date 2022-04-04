@@ -16,7 +16,7 @@ sidebar_position: 4
 
 A subtable provides a unique point of view on the data schema, which goes further than a simple join relationship. It gives extra functionality to a main table.
 
-For example, a financial instrument can be modelled as an INSTRUMENT table, but this table on its own isn’t enough to represent all the possible symbologies. So, we could add a subtable called ALT_INSTRUMENT_ID, in which the relationship is one-to-many from INSTRUMENT to ALT_INSTRUMENT_ID.
+For example, a financial instrument can be modelled as an INSTRUMENT table, but this table on its own isn’t enough to represent all the possible symbologies for an instrument. So, we could add a subtable called ALT_INSTRUMENT_ID, in which the relationship is one-to-many from INSTRUMENT to ALT_INSTRUMENT_ID.
 
 ALT_INSTRUMENT_ID is likely to inherit key fields from the INSTRUMENT table, and it simply acts as a lookup table for INSTRUMENT records.
 
