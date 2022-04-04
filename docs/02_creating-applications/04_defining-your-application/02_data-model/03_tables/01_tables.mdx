@@ -1,0 +1,34 @@
+---
+title: Introduction
+sidebar_label: Introduction
+id: tables
+sidebar_position: 1
+---
+
+
+[Introduction](/creating-applications/defining-your-application/data-model/tables/tables/)  | [Where to define](/creating-applications/defining-your-application/data-model/tables/tables-define/) | [Basics](/creating-applications/defining-your-application/data-model/tables/tables-basics/) |  [Advanced](/creating-applications/defining-your-application/data-model/tables/tables-advanced/) | [More examples](/creating-applications/defining-your-application/data-model/tables/tables-examples/) 
+
+Tables are used to store the underlying data in your application. A table is made up of [fields](/creating-applications/defining-your-application/data-model/fields/fields). It must have a `primaryKey`, which tells the underlying database how to index the table's data.
+
+Your application might want to display a grid of trades, or your users might want to select a counterparty from a dropdown list. In each case, you would have a table to hold the information. 
+
+So, really, fields are just useful groupings of fields: users, trades, orders or even types of citrus fruit (you never know).
+
+Here below is a very simple file containing one table and three fields. You can see that one of these fields has been specified as the primary key.
+
+```kotlin
+tables {
+
+  table( name= "POSITION", id = 11002) {
+    sequence(POSITION_ID, "PS")
+    INSTRUMENT_ID
+    QUANTITY
+    NOTIONAL
+
+    primaryKey {
+     POSITION_ID
+    }
+  }
+
+}
+```
