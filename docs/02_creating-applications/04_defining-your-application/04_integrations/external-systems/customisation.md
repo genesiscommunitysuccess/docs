@@ -50,7 +50,7 @@ The default implementation is disabled by default. In order to enable it, add th
 
 
 
-## Message Listeners
+## Message listeners
 The interface for custom message receivers is `QuickFixMessageListener`:
 
 ```kotlin
@@ -74,7 +74,7 @@ Additional callbacks are invoked when events are received from the FIX engine.
 
 It is important that any code in your implementation of this interface does not block the calling thread.
 
-## Message Publishers
+## Message publishers
 The interface for custom message receivers is `QuickFixMessagePublisher`:
 
 ```kotlin
@@ -140,7 +140,7 @@ public class SampleMessagePublisher implements QuickFixMessagePublisher {
 
 It is important that any code in your implementation of this interface does not block the calling thread.
 
-## Message Stores
+## Message stores
 In order to provide custom code for FIX session state persistence and message recovery, the interface required is `MessageStoreFactory`.
 
 ```java
