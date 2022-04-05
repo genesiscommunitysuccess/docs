@@ -9,21 +9,24 @@ While the standard architecture of the FIX gateway is more than sufficient for m
 
 Systems requiring high throughput or low latency may not want to persist messages and session states to an out-of-process database. 
 
-The FIX gateway is highly customisable allowing the addition of custom logon authenticators, inbound and outbound message handlers, and session state persistence stores.
+The FIX gateway is highly customisable,  allowing the addition of custom logon authenticators, inbound and outbound message handlers, and session state persistence stores.
 
 The gateway also provides a number of out-of-the-box implementations that can be configured without providing custom code.
 
-### Customisation Through Injection
-Custom components are injected through the Dependency Injection mechanism that is in standard use throughout the platform. 
+## Customisation through injection
+Custom components are injected through the standard dependency-injection mechanism for the platform. 
 
-The process bootstrap will scan packages specified in the package block of the process definition in the processes.xml file.
+The process bootstrap will scan packages specified in the package block of the process definition in the **processes.xml** file.
 
 If no implementations of certain interfaces are found, it will provide default implementations.
 
-To inject a custom interface, all you need to do is create a class that implements the appropriate interface, make sure the package is scanned by specifying it in the package block of the process definition and annotate your class with the @Module annotation that the framework provides.
+To inject a custom interface, all you need to do is:
+1. Create a class that implements the appropriate interface
+2. Make sure the package is scanned by specifying it in the package block of the process definition.
+3. Annotate your class with the @Module annotation that the framework provides.
 
-### Authentication
-The interface for authentication of logon messages is AuthenticationStrategy:
+## Authentication
+The interface for authentication of logon messages is `AuthenticationStrategy`:
 
 ```kotlin
 interface AuthenticationStrategy {
@@ -31,22 +34,24 @@ interface AuthenticationStrategy {
 }
 ```
 
-The interface is called on receipt of an admin FIX message from a session (which includes Logon messages). 
-If the method call returns, the Logon is accepted.
-If the method throws a RejectLogon exception, the Logon is rejected.
+The interface is called on receipt of an admin FIX message from a session (which includes logon messages). 
+- If the method call returns, the logon is accepted.
+- If the method throws a RejectLogon exception, the logon is rejected.
 
-The default implementation authenticates username and password provided in standard FIX tags 553 and 554 of the Logon message. 
+The default implementation authenticates the username and password provided in standard FIX tags 553 and 554 of the Logon message. 
+
 It will validate these and the CompId fields against an entry in the FIX_SESSION_AUTH table, which is provided as part of the FIX product distribution.
 
-The default implementation is disabled by default. In order to enable it, add 
+The default implementation is disabled by default. In order to enable it, add the following to the FIX Gateway process configuration file:
+
 ```xml
 <authenticateLogonCredentials>true</authenticateLogonCredentials> 
 ```
 
-to the FIX Gateway process configuration file.
 
-### Message Listeners
-The interface for custom message receivers is QuickFixMessageListener:
+
+## Message Listeners
+The interface for custom message receivers is `QuickFixMessageListener`:
 
 ```kotlin
 interface QuickFixMessageListener {
@@ -61,14 +66,16 @@ interface QuickFixMessageListener {
 }
 ```
 
-The onInit() method is called after process bootstrapping is complete. 
-At this stage you can be confident that all of the configured FIX sessions have been registered and any socket connectors have been started.
+The `onInit()` method is called after process bootstrapping is complete. 
+
+At this stage, you can be confident that all the configured FIX sessions have been registered and any socket connectors have been started.
+
 Additional callbacks are invoked when events are received from the FIX engine.
 
 It is important that any code in your implementation of this interface does not block the calling thread.
 
-### Message Publishers
-The interface for custom message receivers is QuickFixMessagePublisher:
+## Message Publishers
+The interface for custom message receivers is `QuickFixMessagePublisher`:
 
 ```kotlin
 interface QuickFixMessagePublisher {
@@ -81,11 +88,14 @@ interface QuickFixMessagePublisher {
 }
 ```
 
-The onInit() method is called after process bootstrapping is complete. 
-At this stage you can be confident that all of the configured FIX sessions have been registered and any socket connectors have been started.
+The `onInit()` method is called after process bootstrapping is complete. 
+
+At this stage, you can be confident that all the configured FIX sessions have been registered and any socket connectors have been started.
+
 Additional callbacks are invoked when events are received from the FIX engine.
 
-In order to send FIX messages from with this implementation, separate classes called FixSessionRegistry and FixMessageSender can be used to lookup active sessions and send FIX messages respectively:
+In order to send FIX messages from within this implementation, separate classes called `FixSessionRegistry` and `FixMessageSender` can be used to look up active sessions and send FIX messages respectively:
+
 ```java
 @Module
 public class SampleMessagePublisher implements QuickFixMessagePublisher {
@@ -130,15 +140,16 @@ public class SampleMessagePublisher implements QuickFixMessagePublisher {
 
 It is important that any code in your implementation of this interface does not block the calling thread.
 
-### Message Stores
-In order to provide custom code for FIX session state persistence and message recovery, the interface required is MessageStoreFactory
+## Message Stores
+In order to provide custom code for FIX session state persistence and message recovery, the interface required is `MessageStoreFactory`.
+
 ```java
 public interface MessageStoreFactory {
     MessageStore create(SessionID sessionID);
 }
 ```
 
-Which is closely linked to the MessageStore: 
+Which is closely linked to the `MessageStore`: 
 ```java
 public interface MessageStore {
     boolean set(int sequence, String message) throws IOException;
