@@ -10,7 +10,7 @@ id: rs-technical-details
 
 
 A reqrep file (Request Server configuration file) is the configuration for a single Request Server component. Within this Request Server component, we have one or more request reply operations declared using one or more `requestReply` code blocks. 
-Each code block defines a set of `request` fields (essentially criteria), and the set of `reply` fields. The most [basic `requestReply`code block](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/#basic-definition) simply specifies a [table](/creating-applications/defining-your-application/data-model/tables/) or [view](/creating-applications/defining-your-application/data-model/views/) that can be requested and returned.
+Each code block defines a set of `request` fields (essentially criteria), and the set of `reply` fields. The most [basic `requestReply`code block](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/#basic-definition) simply specifies a [table](/creating-applications/defining-your-application/data-model/tables/tables/) or [view](/creating-applications/defining-your-application/data-model/views/views/) that can be requested and returned.
 
 When starting with a dictionary, you can use AppGen to generate a Request Server for you. AppGen uses the metadata of each view or table in the data model to create an individual `requestReply` code block for each one. The request will be the primary key, and the response provides every field in the table or view.
 
