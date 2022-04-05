@@ -5,7 +5,7 @@ sidebar_label: Clusters
 sidebar_position: 1
 
 ---
-The Genesis Low Code Platform is highly resilient and easy to cluster for a High Availability (HA) setup. This area takes you through the steps required to establish a HOT-HOT setup.
+The Genesis low-code platform is highly resilient and easy to cluster for a High Availability (HA) setup. This area takes you through the steps required to establish a HOT-HOT setup.
 
 ## Pre-requisites
 
@@ -101,7 +101,7 @@ You can see CPU and memory usage across an application using the mon command. Th
 
 You can customise our metrics to output information such as the number of transactions per event handler, for example. You can then choose how to store and report on the data points.
 
-Additionally, the Genesis Low Code Platform is compatible with all major monitoring and planning tools for the Linux environment, such as [Nagios](https://nagios.com), [ITRS Geneos](https://www.itrsgroup.com/products/capacity-planner) or [Prometheus](https://prometheus.io/blog/2019/10/10/remote-read-meets-streaming/#summary). 
+Additionally, the Genesis low-code platform is compatible with all major monitoring and planning tools for the Linux environment, such as [Nagios](https://nagios.com), [ITRS Geneos](https://www.itrsgroup.com/products/capacity-planner) or [Prometheus](https://prometheus.io/blog/2019/10/10/remote-read-meets-streaming/#summary). 
 
 
 ## Vertical and horizontal scaling
@@ -135,7 +135,7 @@ Example:
 
 ## Environment variables
 
-The Genesis Low Code Platform supports extraction of system-level variables to populate solution-specific settings. The system-level variables can be derived from enterprise configuration management system and the platform supports encrypted settings.
+The Genesis low-code platform supports extraction of system-level variables to populate solution-specific settings. The system-level variables can be derived from enterprise configuration management system and the platform supports encrypted settings.
 
 ```kotlin
 item(name = "DbUsername", value = System.getenv("DBUSERNAME"), encrypted = true)

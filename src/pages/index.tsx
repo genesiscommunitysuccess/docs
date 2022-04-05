@@ -89,7 +89,7 @@ const Home = () => {
               <div className="row">
                 <div className="col col--8">
                   <h2>Getting to know the platform</h2>
-                  <p><strong>The Genesis Low Code Platform is the only Low Code platform designed to build core, mission-critical systems for the financial markets.</strong></p>
+                  <p><strong>The Genesis low-code platform is the only <low-code></low-code> platform designed to build core, mission-critical systems for the financial markets.</strong></p>
                   <p>It enables you to develop and deploy your own applications at speed, from the simplest of internal systems to complete exchanges.</p>
                   <p>
                     <a href={useBaseUrl('/getting-started/what-is-the-genesis-low-code-platform/')}>Read more...</a>

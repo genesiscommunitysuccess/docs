@@ -9,7 +9,7 @@ These tools are components that give you power and control all along the life cy
 
 | Name| Category | Description|
 |------------------------------------|--------------------|----------------|
-|Genesis SDK	|Create |	Framework for building Genesis applications in Low Code with the Genesis Platform Language |
+|Genesis SDK	|Create |	Framework for building Genesis applications in low code with the Genesis Platform Language |
 |Genesis Studio |	Create |	Graphical environment for building Genesis applications with no code |
 |[GEM](/managing-applications/operate/genesis-environment-manager/intro/)  |	Manage	 | Cloud-agnostic management and auditing of Genesis environments |
 | [DictionaryBuilder](/managing-applications/operate/on-the-host/helpful-commands/#dictionarybuilder) |	Migrate |	Creates Genesis schema from external sources (e.g. relational databases) |

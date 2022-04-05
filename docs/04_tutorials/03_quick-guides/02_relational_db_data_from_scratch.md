@@ -25,7 +25,7 @@ Versions used while writing this guide:
  - Genesis Platform 5.2
 
 :::note
-You will need access to a Maven repository that provides the Genesis Low Code Platform
+You will need access to a Maven repository that provides the Genesis low-code platform
 :::
 
 ## Steps ##
