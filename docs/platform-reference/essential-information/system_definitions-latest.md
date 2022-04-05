@@ -116,17 +116,19 @@ then the generated ID will be `000000000001TRLO1` where "LO" represents Location
 
 If you want to enable SSL for your process communication, this is done in the [service definition](/platform-reference/essential-information/service-definitions/#enable-ssl-for-processes).
 
-## HashiCorp Vault Support
+## HashiCorp Vault support
 
 :::important
 
-This is an unreleased feature, supported from version 6.0
+This feature is supported from version 6.0
 
 :::
 
 Services can also load their configuration from HashiCorp vault. 
 This can be done by adding a `vault` tag in the `global`, `system` or `host`
-tags. The vault tag has three sub tags, `config`, `sslConfig` and `readSecrets`. Of
+tags. 
+
+The `vault` tag has three sub tags, `config`, `sslConfig` and `readSecrets`. Of
 these three, `config` and `readSecrets` are required:
 
 ```kotlin
@@ -181,20 +183,21 @@ which is the path to the secrets.
 
 Please note that secrets are always provided as `String`
 
-## Linked properties Support
+## Linked properties support
 
 :::important
 
-This is an unreleased feature, supported from version 6.0
+This feature is supported from version 6.0
 
 :::
 
 When reading secrets from external systems, the keys to these secrets might 
-not map directly to the required properties in genesis. To help with this
-genesis supports the linking of properties. This is supporting in the `global`, 
-`system` and `host` tags. 
+not map directly to the required properties in Genesis. To help with this, the platform supports the linking of properties. 
 
-To create a link use `link`, as per below, where we link `DbHost` to `secret.db.host`:
+The links can be applied as tags at `global`, 
+`system` or `host` level. 
+
+To create a link, use `link`, as per below, where we link `DbHost` to `secret.db.host`:
 
 ```kotlin
 systemDefinition {
@@ -205,6 +208,6 @@ systemDefinition {
 }
 ```
 
-Please note that multiple levels of linking are supported. However `genesisInstall`
+Multiple levels of linking are supported. However, `genesisInstall`
 will fail if a circular link is detected, or if the `source` of a link is not 
 found. 
