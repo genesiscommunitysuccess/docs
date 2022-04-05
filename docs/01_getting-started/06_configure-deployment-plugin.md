@@ -23,7 +23,7 @@ The Genesis deploy plugin provides several tasks that help to set up the Genesis
 
 #### Configuration
 
-##### Local Linux Host 
+##### Local Linux host 
 This is the easiest set-up, and applies if your development workstation is on a Linux machine.
 
 To configure this, open `gradle.properties` from the server root folder and add the following entry:
@@ -83,7 +83,7 @@ ssh-port=22
 
 The Genesis deploy plugin comes with several tasks. They are grouped under `genesisdeploy` and `genesissetup`.
 
-##### Genesis Setup Tasks
+##### Genesis set-up tasks
 
 `install-genesis-distribution` - this task copies and unzips the Genesis distribution specified as a dependency.
 `setupEnvironment` - this task executes `install-genesis-distribution` and then configures the installed distribution.
@@ -93,7 +93,7 @@ Usage:
 ./gradlew setupEnvironment
 ```
 
-##### Genesis Deploy Tasks
+##### Genesis deploy tasks
 
 `deploy-<project-name>-project.zip` - this task deploys the current project to the Genesis environment specified for `genesis-home`. Note that `<project-name>` must be replaced with the actual project name. For example, if the project you work on is called `alpha`, then this task will be `deploy-alpha-project.zip`
 
