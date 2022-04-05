@@ -114,7 +114,7 @@ Run `genesisInstall` to verify everything is ok.
 
 First, build a Maven project so that you can use an IDE to build the app.
 
-You can run the `mvn` command either locally (in the server, local vm, wsl or cloud instance where the Genesis Low Code Platform is installed) or a separate local dev machine. In our example below, we are using the same machine as before for consistency. Note that we are using version 5.5.0; adjust the command to match the version of the Genesis Low Code Platform that you are using.
+You can run the `mvn` command either locally (in the server, local vm, wsl or cloud instance where the Genesis low-code platform is installed) or a separate local dev machine. In our example below, we are using the same machine as before for consistency. Note that we are using version 5.5.0; adjust the command to match the version of the Genesis low-code platform that you are using.
 
 Run the `mvn` command:
 

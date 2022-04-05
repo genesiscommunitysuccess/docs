@@ -5,7 +5,7 @@ sidebar_label: Gradle Deploy plugin
 sidebar_position: 5
 ---
 # Deploying from the IDE using Gradle
-The Genesis Low Code Platform provides a Gradle plugin that makes it easy to perform all the installation tasks that are necessary to deploy your own Genesis project on to your local workstation, from your IDE.
+The Genesis low-code platform provides a Gradle plugin that makes it easy to perform all the installation tasks that are necessary to deploy your own Genesis project on to your local workstation, from your IDE.
 
 The plugin is designed to work on workstations running Linux, or on WSL if using Windows. If you are yet to set up your WSL environment to work with Genesis, see our [WSL setup guide](/creating-applications/getting-ready-to-develop/running-applications/wsl-setup//).
 

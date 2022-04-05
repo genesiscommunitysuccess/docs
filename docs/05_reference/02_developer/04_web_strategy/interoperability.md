@@ -12,7 +12,7 @@ tags:
   - frameworks
 ---
 
-Building a brand-new application is a great opportunity to make the app itself the Genesis Low Code Platform and its Web Components to augment an existing app.
+Building a brand-new application is a great opportunity to make the app itself the Genesis low-code platform and its Web Components to augment an existing app.
 
 Web Components play well with existing web frameworks, most have first-class support, and those that aren't quite there
 yet natively will still work with some config in place. See [custom-elements-everywhere.com](https://custom-elements-everywhere.com).

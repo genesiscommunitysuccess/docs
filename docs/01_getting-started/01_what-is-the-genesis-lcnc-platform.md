@@ -1,11 +1,11 @@
 ---
-title: 'What is the Genesis Low Code Platform?'
-sidebar_label: 'What is the Genesis Low Code Platform?'
+title: 'What is the Genesis low-code platform?'
+sidebar_label: 'What is the Genesis low-code platform?'
 sidebar_position: 1
 id: what-is-the-genesis-low-code-platform
 ---
 
-The Genesis Low Code Platform is the only Low Code platform designed to build and run core, mission-critical systems for the financial markets. It provides a set of tools and components that save you time when you define and manage applications.
+The Genesis low-code platform is the only low-code platform designed to build and run core, mission-critical systems for the financial markets. It provides a set of tools and components that save you time when you define and manage applications.
 
 ![](/img/component-architecture.png)
 

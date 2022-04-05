@@ -8,7 +8,7 @@ sidebar_position: 16
 ---
 That's it.
 
-With a range of tools, you have been able to use the Genesis Low Code Platform to build a complete application with two databases at speed.
+With a range of tools, you have been able to use the Genesis low-code platform to build a complete application with two databases at speed.
 
 You have successfully:
 

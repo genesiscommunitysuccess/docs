@@ -5,7 +5,7 @@ sidebar_position: 4
 id: integration-components
 ---
 
-Most financial applications have to interact with other systems to exchange information and create smooth workflows. The Genesis Low Code Platform has a growing list of components that enable you to connect quickly to market-leading services. You don't need to create interfaces from scratch; you just select your component, enable it, and configure.
+Most financial applications have to interact with other systems to exchange information and create smooth workflows. The Genesis low-code platform has a growing list of components that enable you to connect quickly to market-leading services. You don't need to create interfaces from scratch; you just select your component, enable it, and configure.
 
 | Name| Category | Description|
 |------------------------------------|----------------|------------------|

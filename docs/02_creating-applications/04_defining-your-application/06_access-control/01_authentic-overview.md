@@ -7,7 +7,7 @@ id: authentic-over
 ---
 
 
-There are three types of authentication that you can specify with the Genesis Low Code Platform: INTERNAL, LDAP and HYBRID.
+There are three types of authentication that you can specify with the Genesis low-code platform: INTERNAL, LDAP and HYBRID.
 
 To specify which one to use, just edit the application's **auth-preferences.kts** file and change the `type` variable in the `authentication` block. For example:
 

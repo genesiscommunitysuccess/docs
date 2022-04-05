@@ -5,7 +5,7 @@ sidebar_position: 1
 title: 'Introduction'
 ---
 
-This area enables you to look in detail at the features that enable you to build an application on the Genesis Low Code Platform. 
+This area enables you to look in detail at the features that enable you to build an application on the Genesis low-code platform. 
 
 This reference section starts with the data model - the heart of any application - and then covers the components that can be enabled and configured to add business logic and sophisticated processing to your application. Then we look at building a front end to view and interact with the application.
 

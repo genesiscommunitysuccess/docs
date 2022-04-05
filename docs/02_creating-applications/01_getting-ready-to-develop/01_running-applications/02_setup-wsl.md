@@ -10,7 +10,7 @@ Many corporate workstations are Windows based, due to the centralised governance
 
 The Windows Subsystem for Linux enables developers to run a GNU/Linux environment -- including most command-line tools, utilities, and applications -- directly on Windows, unmodified, without the overhead of a traditional virtual machine or dualboot setup.
 
-The Genesis Low Code Platform provides several ease-of-development tools that are designed to work seamlessly on Linux or WSL. If your development environment is Windows, we recommend installing WSL.
+The Genesis low-code platform provides several ease-of-development tools that are designed to work seamlessly on Linux or WSL. If your development environment is Windows, we recommend installing WSL.
 
 ## Install Windows Terminal
 If you haven’t already - please install Windows terminal. This provides a tabbed single Window from which you can open different command line tools, [link here](https://www.microsoft.com/store/productId/9N0DX20HK701).

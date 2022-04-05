@@ -28,7 +28,7 @@ Genesis Application Developers need to access on-premise workstations through re
 | Gradle  | 6.8|
 | Nodejs  |14|
 
-Note that you can use a range of IDEs (for example, Eclipse) with the Genesis Low Code Platform, but only IntelliJ enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
+Note that you can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
 
 ## Requirements
 
