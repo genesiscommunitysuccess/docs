@@ -13,7 +13,7 @@ id: dbtogenesis-where-to-define
 
 You can configure `DbToGenesis` in an xml file called _application_**-dbtogenesis.xml**. This must be located in your application's **CFG** directory.
 
-There are two well defined sections: 
+There are two clear sections: 
 
 - process definition
 - database stream configuration
@@ -45,6 +45,7 @@ _preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add
 * `password` password from RDBMS. Encrypted by the command line tool `encryptUserPass`.
 * `dbMinConnections` represents the minimum number of RDBMS connections that will be created on start-up inside each pool partition. Default: 10.
 * `dbMaxConnections` sets the maximum number of connections to be created by the RDBMS connection pool. Default: 10.
+
 ### Database stream definition
 In this section, you define the precise details of the incoming stream or streams.
 
@@ -124,16 +125,16 @@ The source table must necessarily have at least as many fields as the **configur
 
 In addition, each database needs to have a table that is able to store table modifications as soon as they happen (insertions, updates and deletions). This enables **DbToGenesis** to keep track and replicate the changes into Genesis.
 
-This table has no name requirement (although it is referred as UPDATEQUEUE for simplicity), as the **queryQueue** and **clearQueue** stored procedures will call it internally. However the structure has to be fixed in order to retrieve data from it. The basic structure is defined in a later section.
+This table has no name requirement (although it is referred as UPDATEQUEUE for simplicity), as the **queryQueue** and **clearQueue** stored procedures will call it internally. However, the structure has to be fixed in order to retrieve data from it. The basic structure is defined in a later section.
 
-Therefore, you have to implement a trigger (or more) for each required table so it inserts new events in the UPDATEQUEUE for each inserted, modified and deleted row.
+Therefore, you have to implement a trigger (or, if necessary, more than one) for each required table so it inserts new events in the UPDATEQUEUE for each inserted, modified and deleted row.
 
 \*_The stored procedures for queryQueue, clearQueue, loadTable and retrieveRecord should also be created beforehand_*.
 
 This process does not create any stored procedures and it just attempts to call already existing ones. Therefore:
 
 * **loadTable** should read rows from the chosen table ('TRADE')
-* **queryQueue** should read from the so called UPDATEQUEUE table a trade into its correspondent TRADE table, and likewise for the rest of the stored procedures.
+* **queryQueue** should read a trade from the so-called UPDATEQUEUE table into its correspondent TRADE table, and likewise for the rest of the stored procedures.
 
 ## Basic workflow
 

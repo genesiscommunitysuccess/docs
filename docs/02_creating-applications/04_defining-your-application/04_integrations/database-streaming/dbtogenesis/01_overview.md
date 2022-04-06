@@ -12,12 +12,14 @@ id: overview
 
 The `DbToGenesis` component provides a way of streaming data from a classic RDBMS database, such as Oracle or MSSQL, to a Genesis database.
 
-The process listens to changes in the SQL tables (insert, modify and delete) using a predefined system (triggers for each table to be streamed, procedures and a table to represent an update queue) and reproduces them immediately in the selected Genesis table.
+The process listens to changes in the SQL tables (insert, modify and delete) using a predefined system (triggers for each table to be streamed, procedures and a table to represent an update queue). It then reproduces the changes immediately in the selected Genesis table.
 
-First, you need to configure DbToGenesis so that it has the relevant field and table structures to accept the incoming data.
+Broadly, you need to do the following things to make `DbToGenesis` work:
 
-You need to set up one or more streams, each of which defines a source table and a destination table in Genesis.
+1. Configure `DbToGenesis` so that it has the relevant field and table structures to accept the incoming data.
 
-You also need to include routines for handling the relevant, insert, modify and delete actions.
+2. Set up one or more streams, each of which defines a source table and a destination table in Genesis.
 
-Once you have done this, you can run the DbToGenesis command to start the process.
+3. Include routines for handling the relevant insert, modify and delete actions.
+
+Once you have done this, you can run the `DbToGenesis` command to start the process.

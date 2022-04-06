@@ -13,9 +13,9 @@ id: dbtogenesis-advanced
 
 A script called `encryptUserPass` is provided with Genesis so you can encrypt the user and password before using it in `DbToGenesis`.
 
-### How To
+### Step by step
 
-Here is an example step-by-step of how to get an Oracle database up and running with **DbToGenesis**. It shows how to create tables, stored procedures and triggers, and also the **dbtogenesis.xml** configuration for Genesis.
+Here is an example step-by-step of how to get an Oracle database up and running with `DbToGenesis`. It shows how to create tables, stored procedures and triggers, and also shows the **dbtogenesis.xml** configuration for Genesis.
 
 The example shows two different ways of using key values imported from Oracle.
 
