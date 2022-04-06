@@ -114,7 +114,7 @@ then the generated ID will be `000000000001TRLO1` where "LO" represents Location
 
 **LogFrameworkConfig**: Contains name of the log framework configuration file.
 
-If you want to enable SSL for your process communication, this is done in the [service definition](/platform-reference/essential-information/service-definitions/#enable-ssl-for-processes).
+If you want to enable SSL for your process communication, this is done in the [service definition](/creating-applications/configure-runtime/service-definitions/#enable-ssl-for-processes).
 
 ## HashiCorp Vault support
 
