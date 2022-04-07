@@ -7,6 +7,6 @@ id: mssql
 ---
 :::note
 
-We are still working on this page
+We are still working on this page.Please be patient.
 
 :::
