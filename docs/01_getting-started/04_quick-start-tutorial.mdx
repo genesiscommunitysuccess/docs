@@ -145,19 +145,7 @@ You are going to update these files so that the application displays a single pa
 ### Grid
 We want to insert a grid with data into our page. 
 
-First, import the following code to **home.template.ts**: 
-
-```ts
-import {html, when} from '@microsoft/fast-element';
-import type {Home} from './home';
-import {repeat, ref} from '@microsoft/fast-element';
-import {ColDef} from '@ag-grid-community/core';
-import {Select} from '@microsoft/fast-foundation';
-import {sync} from '@genesislcap/foundation-utils';
-import {formatNumber} from '../../utils/formatting';
-```
-
-Then define `tutorialColumnDefs`:
+First, define `tutorialColumnDefs`:
 
 ```ts
 export const tutorialColumnDefs: ColDef[] = [
@@ -186,7 +174,7 @@ export const HomeTemplate = html<Home>`
 `;
 ```
 
-Now go to the file **home.ts**. Import `AgGrid` to this file. Then define a reference to `zero-ag-grid`; in class `home`, add:
+Now go to the file **home.ts**. Then define a reference to `zero-ag-grid`; in class `home`, add:
 
 ```ts
 public tradesGrid!: AgGrid;
@@ -257,7 +245,7 @@ Now you can create the form with sync values in **home.template.ts** (add `zero-
 </zero-select>
 ```
 
-To handle the value in `zero-select`, import `Select` to **home.ts** and create a function:
+To handle the value in `zero-select` create a function:
 
 ```ts
 public tradeSideChange(target: Select) {
