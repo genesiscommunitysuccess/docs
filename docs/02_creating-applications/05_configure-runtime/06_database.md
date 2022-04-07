@@ -14,7 +14,7 @@ We support the following database technology:
 
 Because we abstract from the underlying technology, you can easily toggle between any of these four.
 
-There are also tools that enable you to [stream real-time data reliably to and from any classic Oracle/SQL database](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/overview/).
+There are also tools that enable you to stream real-time data reliably to and from any classic Oracle/SQL database](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/overview/).
 
 By default, FoundationDB is installed on the platform. If you need to use another supported database, follow the steps below.
 
@@ -65,7 +65,8 @@ systems {
 
 For Aerospike, you may also want to update the **DbNamespace** and **DbMode** properties. Details of those can be found [here](/creating-applications/configure-runtime/system-definitions/).
 
-If you are using Postgres and want to use a reserved keyword as column names, then you will need to add the setting below to your system definition file. This enables Quoted Identifiers to be used:
+If you are using Postgres and you want to use a reserved keyword as a column name, then you will need to add the setting below to your system definition file. This enables Quoted Identifiers to be used:
+
 ```kotlin
 item(name = "DbQuotedIdentifiers", value = "true")
 ```
