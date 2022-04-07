@@ -65,7 +65,7 @@ systems {
 
 For Aerospike, you may also want to update the **DbNamespace** and **DbMode** properties. Details of those can be found [here](/creating-applications/configure-runtime/system-definitions/).
 
-If you are using Postgres and want to use reserved keywords as column names, then you will need to add the below to your system definition file to enable Quoted Identifiers support:
+If you are using Postgres and want to use a reserved keyword as column names, then you will need to add the setting below to your system definition file. This enables Quoted Identifiers to be used:
 ```kotlin
 item(name = "DbQuotedIdentifiers", value = "true")
 ```
