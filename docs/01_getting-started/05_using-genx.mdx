@@ -1,0 +1,121 @@
+---
+title: 'Using GenX'
+sidebar_label: 'Using GenX'
+sidebar_position: 5
+id: using-genx
+---
+
+GenX is a CLI tool that enables you to create skeleton projects that adhere to best practices for development on the Genesis Platform.
+
+### Pre-requisites
+
+- [Node.js](https://nodejs.org/en/download/) version 16
+- a valid NPM token
+
+### Installing GenX
+
+Before installing GenX. you need to configure access to our repository.
+
+ 1. Using your credentials, login to the repository web site.
+ 2. Click on the `Welcome <username>` on the top right corner.
+ 3. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
+ 4. Select `npm` for package type, and the appropriate repository.
+ 5. The same window will show instructions on how to set up that repository in your local `~/.npmrc` file.
+
+Once the repository is configured, open a terminal and execute
+
+```shell
+npm install -g @genesislcap/foundation-cli
+```
+
+This command presents you with a sequence of choices so that GenX can be installed globally.
+
+### Using GenX
+
+To respond to the first question, for this tutorial, select `create application`.
+```shell
+? Please select an option: create application - Generates a local application. 
+```
+
+... and then give it an appropriate name (e.g. **alpha**):
+```shell
+? App name alpha 
+```
+
+Next, select `Genesis Quick Start Appliction` for **App seed**.
+```shell
+? App seed 
+
+> Genesis Quick Start Application 
+```
+
+Choose whether to overwrite existing files. The default is **No**.
+```shell
+? Overwrite existing files (yes/No)
+```
+
+This will start the download of dependencies. 
+
+#### Front-end prompts
+Once that is done, you will be prompted for configuring the front-end part of the project.
+
+The first prompt is the package [scope](https://docs.npmjs.com/cli/v8/using-npm/scope). The default is **genesislcap**.
+```shell
+? Package scope (without the @) genesislcap 
+```
+
+The next question is about the package name. You can use **alpha**.
+```shell
+? Package name alpha 
+```
+
+The next is whether you want to create a design system. The default is **Yes**.
+```shell
+? Create design system (Yes/no)
+```
+
+... and then whether you want to set an API host. The default is **Yes**.
+```shell
+? Set API Host (Yes/no) 
+```
+
+Finally, for these front-end prompts, you need to specify the NPM token:
+```shell
+? NPM Token (for the @genesislcap scope) <secure-token-goes-here> 
+```
+
+#### Back-end prompts
+The next prompts concern the back-end part of the application.
+
+The first prompt is for which Genesis Server version is to be used:
+```shell
+? Genesis Server version 5.6.1 
+```
+
+... followed by the Gradle deploy plugin version.
+:::note
+
+At the time of writing, the same version as the Genesis Server must be used.
+
+:::
+
+```shell
+? Genesis Deploy plugin version 5.6.1 
+```
+
+Then specify the kotlin version. The latest tested version is 1.6.10:
+```shell
+? Kotlin version 1.6.10 
+```
+
+... followed by the [group id](https://maven.apache.org/guides/mini/guide-naming-conventions.html)
+```shell
+? Group Id global.genesis 
+```
+
+... and the application version:
+```shell
+? Application Version 1.0.0-SNAPSHOT 
+```
+
+Press **Enter** and you should be greeted by a message saying that the application was created successfully.

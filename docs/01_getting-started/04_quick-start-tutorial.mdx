@@ -12,31 +12,40 @@ This short guide will enable you to see the basics of the Genesis LCNC Platform 
 Before you start, you need to have:
 
 - An IDE (preferably IntelliJ)
-- Download and install the Genesis LCNC Platform
+- the Genesis LCNC Platform, downloaded and installed on your linux box
 
 ### What you will build
 
 The very simple application you will build will look like this:
 
 - a simple table with 5 fields
-- components to display and insert data
+- two front-end components: one to display data and one to insert data
 
 That’s it. Just enough to get you up and running. Obviously, there is much more you could do, but that can wait for another day.
 
 With a lack of imagination we hope you will find trustworthy, we are going to call this example application **alpha**. You will see this reflected in the file names throughout.
 
 ## Create a new project
-((Link to CLI tool instructions creating a new skeleton project))
+The GenX CLI tool enables you to generate a blank application that will contain the front-end and back-end code. From the terminal, run:
 
-## Define the [Data Model](/creating-applications/defining-your-application/data-model/data-model-overview)  
-Now you are ready to define the fields and tables that make up your data model. This structured information in a simple way that can be viewed by users and processed by the application. 
+```shell
+genx
+```
 
-### Add [fields](/creating-applications/defining-your-application/data-model/fields)  
-You define your fields in the file **alpha-fields-dictionary.kts**.
+and follow the on-screen instructions. 
+
+For step-by-step instructions on how to install and use the tool, follow the guide on [GenX](/getting-started/using-genx).
+
+
+## Define the Data Model  
+Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application. 
+
+### Add fields  
+You define your [fields](/creating-applications/defining-your-application/data-model/fields) in the file **alpha-fields-dictionary.kts**.
 
 :::tip
 
-With your intelliJ project open hit the **shift** key twice and type in the name of the file you are looking for to quickly find and open it
+With your intelliJ project open hit the **shift** key twice and type in the name of the file you are looking for to find and open it quickly.
 
 :::
 
@@ -54,14 +63,17 @@ fields {
 }
 ```
 
-((Show how to run generateFields, link to page explaining in ore depth what generateFields is doing))
+After you have saved this file, you need to generate the fields:
 
-### Add a [table](/creating-applications/defining-your-application/data-model/tables) 
-Now we have our fields, lets define a table in the file **alpha-tables-dictionary.kts**.
+1. If necessary, change directory to the server project; run `cd server/jvm`.
+2. Run the command `gradle generateFields`. 
+
+### Add a table 
+Now we have our fields, let's define a [table](/creating-applications/defining-your-application/data-model/tables) in the file **alpha-tables-dictionary.kts**.
 
 We are defining one single table, containing all of our fields.
 
-TRADE_ID is the primaryKey, and is to be auto-generated
+TRADE_ID is the primaryKey, which will be auto-generated.
 
 ```kotlin
 tables {
@@ -81,13 +93,17 @@ tables {
 }
 ```
 
-((Show how to run generateDao, link to page explaining in ore depth what generateDao is doing))
+After you have saved this file, you need to generate the Data Access Objects:
+
+1. If necessary, change directory to the server project; run `cd server/jvm`.
+2. Run the command `gradle generateDao`. 
 
 ## Add business logic
-We have a table, now we want to be able to see its content and create new entries
+We have a table; now we want to be able to see its content and create new entries.
 
-### [Data server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers) 
-Data server allows for reading of real-time data, we define in **alpha-dataserver.kts**.
+
+### Data Server
+A [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers) allows for reading of real-time data. You must define the Data Server in the file **alpha-dataserver.kts**.
 
 ```kotlin
 dataServer {
@@ -95,8 +111,8 @@ dataServer {
 }
 ```
 
-### [Event handler](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/)
-Next we want to be able to insert rows into our table, for this we define an [event handler](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/) in **alpha-event-handler.kts**.
+### Event Handler
+Next, we want to be able to insert rows into our table. For this you need to define an [Event Handler](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/) in the file **alpha-event-handler.kts**.
 
 ```kotlin
 eventHandler {
@@ -114,12 +130,22 @@ eventHandler {
 ## Create a user interface
 
 Now let's create a single page with a grid and a form for entering data.
-After creating hello-world-application check if you have set good API_HOST in **client/web/package.json**.
+
+Before you start, check if you have set a valid API_HOST in **client/web/package.json**.
+
+For your user interface, the `genx` process has generated the following files:
+
+- **home.template.ts**
+- **home.ts**
+- **home.styles.ts**
+
+You are going to update these files so that the application displays a single page and enables you to insert a new trade.
+
 
 ### Grid
-We want to be able to insert grid with data into our page, for this we define tutorialColumnDefs in **home.template.ts**.
+We want to insert a grid with data into our page. 
 
-First import: 
+First, import the following code to **home.template.ts**: 
 
 ```ts
 import {html, when} from '@microsoft/fast-element';
@@ -131,7 +157,7 @@ import {sync} from '@genesislcap/foundation-utils';
 import {formatNumber} from '../../utils/formatting';
 ```
 
-after that add:
+Then define `tutorialColumnDefs`:
 
 ```ts
 export const tutorialColumnDefs: ColDef[] = [
@@ -143,7 +169,7 @@ export const tutorialColumnDefs: ColDef[] = [
 ];
 ```
 
-Now we can create our zero-ag-grid in HomeTemplate const.
+Next, create a zero-ag-grid in `HomeTemplate const`.
 
 ```ts
 export const HomeTemplate = html<Home>`
@@ -160,13 +186,13 @@ export const HomeTemplate = html<Home>`
 `;
 ```
 
-In **home.ts** we need define referance to zero-ag-grid (Remeber to import AgGrid). In class home add:
+Now go to the file **home.ts**. Import `AgGrid` to this file. Then define a reference to `zero-ag-grid`; in class `home`, add:
 
 ```ts
 public tradesGrid!: AgGrid;
 ```
 
-and in ConnectedCallback add:
+and in `ConnectedCallback`, add:
 ```ts
 this.tradesGrid.addEventListener('onGridReady', () => {
   this.tradesGrid.gridApi.addEventListener('firstDataRendered', () => {
@@ -175,9 +201,9 @@ this.tradesGrid.addEventListener('onGridReady', () => {
 });
 ```
 
-to our grid took a full width.
+This ensures that the grid takes the full width.
 
-In **home.styles.ts** we need add styles to see our changes.
+Now you need to add styles to the  file **home.styles.ts**, using the code below.
 
 ```css
 zero-ag-grid {
@@ -198,9 +224,12 @@ zero-ag-grid {
 ((Precise details needed))
 
 ### Form
-Now we need form with four inputs to insert our trades to database.
-First, we need variables that will hold the values that are entered.
-We define them in **home.ts**, more precisely in the class: Home.
+Here, you are going to create a form with four inputs, so a user can input details of a new trade.
+
+First, we define the variables that will hold the values that are entered.
+
+We define them in **home.ts**, in the class: `Home`:
+
 
 ```ts
 @observable public quantity: string;
@@ -208,7 +237,7 @@ We define them in **home.ts**, more precisely in the class: Home.
 @observable public tradeSymbol: string;
 @observable public tradeSide: string = 'BUY';
 ```
-Now we can create our form with sync values in **home.template.ts** (add in zero-card after zero-ag-grid).
+Now you can create the form with sync values in **home.template.ts** (add `zero-card` after `zero-ag-grid`).
 
 ```ts
 <span>Add Trade</span>
@@ -228,14 +257,15 @@ Now we can create our form with sync values in **home.template.ts** (add in zero
 </zero-select>
 ```
 
-To handle the value in zero-select we need to create a function in **home.ts** (Remeber to import Select). 
+To handle the value in `zero-select`, import `Select` to **home.ts** and create a function:
+
 ```ts
 public tradeSideChange(target: Select) {
   this.tradeSide = target.selectedOptions[0]?.value;
 }
 ```
 
-In **home.styles.ts** we need add styles to see our changes.
+In **home.styles.ts**, add styles to see your changes:
 
 ```css
 zero-text-field, zero-select {
@@ -251,22 +281,23 @@ span:first-of-type, zero-button {
 ((Precise details needed))
 
 ### Button
-Now we add a button to insert data from form to grid.
+Now add a button.  The purpose of this is to insert the data from the form into the database (and the grid). 
 
-In **home.template.ts** (after zero-select).
+In **home.template.ts** add the following code after `zero-select`.
+
 ```ts
 <zero-button @click=${x=> x.insertTradeData()}>Add Trade</zero-button>
 ```
 
-In **home.ts** we create a function to handle connection to the server.
+In **home.ts**, create a function to handle connection to the server.
 
-first, add just like before:
+First, add just like before:
 
 ```ts
 @observable public serverResponse;
 ```
 
-then, at the very end of the class, add:
+Then, at the very end of the class, add:
 
 ```ts
 public async insertTradeData() {
@@ -288,7 +319,7 @@ public async insertTradeData() {
 }
 ```
 
-To see if we added successfully new trade in home.template.ts add (before Add trade span):
+To check that the new trade was added successfully, add the following code to **home.template.ts**, before the `Add trade` span:
 
 ```ts
 ${when(x => x.serverResponse, html`
@@ -298,40 +329,34 @@ ${when(x => x.serverResponse, html`
 `)}
 ```
 
-With all this, we are now able to view and add data.
+At this point, the application is now able to display and receive data.
 
-((Link to relevant web docs section))
-((Precise details needed))
 
 ## Run the application
 
 See [here](/getting-started/configure-deployment-plugin) details on how to configure the Genesis deploy plugin
 
 Now you can run the application from the front end, view the table of data and add the details of a new trade.
+
 To run the application:
+
+From **client/package.json**:
+- Run **bootstrap** script
+
+After that:
+- Run **dev** script
+
+Now you have fully running application.
 
 ((Precise details needed))
 ((How best to have processes/service defs set up? maybe we have a quick start seed that has dataserver + event handler only?))
 ((How best to load a user they can log in with? or can we disable Auth???))
 
 
-### Test
-You should see an empty grid
-
-Now you can add a new trade:
-((Screenshot of filled in form))
-
-The trade appears in the grid
-
-Try adding more...
-
-Refresh the page, you'll see your trades are persisted
-
 ## Conclusion
-That’s it. You have quickly built a very simple application using some of the fundamental Genesis components
+That’s it. You have quickly built a very simple application using some of the fundamental Genesis components.
 
-There's obviously a lot more to building enterprise ready applications, please read through the [Defining your application](/creating-applications/defining-your-application/intro) for details of all the genesis components and their features.
+There's obviously a lot more to building enterprise-ready applications. We suggest you read through the [Defining your application](/creating-applications/defining-your-application/intro) for details of all the Genesis components and their features.
 
-We touch on components and their features in our more advanced tutorials. 
+We touch on components and their features in our more advanced [tutorials](https://docs.genesis.global/secure/tutorials/building-an-application/intro/0. 
 
-((Link to intro page on tutorials section))
