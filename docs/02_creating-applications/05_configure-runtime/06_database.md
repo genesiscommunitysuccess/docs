@@ -8,7 +8,7 @@ title: Setting the database technology
 We support the following database technology:
 
 * FoundationDB
-* PostgreSQL
+* Postgres (PostgreSQL)
 * MSSQL
 * Aerospike
 
@@ -26,7 +26,7 @@ Edit the file **\~/run/site-specific/cfg/genesis-system-definition.kts**. Before
 
 You need to make two changes.
 
-First, go to the line item for **DbLayer** and change the **value** from **FDB** to **SQL** (for PostgreSQL and MSSQL) or **AEROSPIKE**.
+First, go to the line item for **DbLayer** and change the **value** from **FDB** to **SQL** (for Postgres and MSSQL) or **AEROSPIKE**.
 
 ```kotlin
 systemDefinition {
@@ -38,7 +38,7 @@ systemDefinition {
 ```
 
 
-Then, insert a line in the **hosts** block to identify the JDBC connection string for the database. This points the system to the local PostgreSQL, MSSQL or Aerospike server. For example:
+Then, insert a line in the **hosts** block to identify the JDBC connection string for the database. This points the system to the local Postgres, MSSQL or Aerospike server. For example:
 
 ```kotlin
 item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432")
@@ -63,7 +63,7 @@ systems {
     }
 ```
 
-For Aerospike you may also want to update the **DbNamespace** and **DbMode** properties. Details of those can be found [here](/creating-applications/configure-runtime/system-definitions/).
+For Aerospike, you may also want to update the **DbNamespace** and **DbMode** properties. Details of those can be found [here](/creating-applications/configure-runtime/system-definitions/).
 
 If you are using Postgres and want to use reserved keywords as column names, then you will need to add the below to your system definition file to enable Quoted Identifiers support:
 ```kotlin
