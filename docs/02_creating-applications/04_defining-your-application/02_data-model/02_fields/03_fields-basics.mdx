@@ -41,9 +41,9 @@ fields {
 ## Field type parameters
 
 | Parameter | Default value | Sample Usage | Value Type | Description |
-|---|---|---|---|
-| default | null | `field(name = "AGE", type = INT, default=20)` | The same type as the field | Set a default value for the field where not supplied on a database insert. Manadatory for `ENUM` |
-| maxSize | 64 (unlimited for non sql DB) | `field(name = "DESCRIPTION", type = STRING, maxSize=1000)` | integer | Set the maxSize of a field. Applicable for `STRING`, `ENUM`, `RAW`. Needed for HFT and SQL Data Structures |
+|---|---|---|---|---|
+| default | null | `field(name = "AGE", type = INT, default=20)` | The same type as the field | Set a default value for the field where not supplied on a database insert. Mandatory for `ENUM` |
+| maxSize | 64 (unlimited for non sql DB) | `field(name = "DESCRIPTION", type = STRING, maxSize=1000)` | integer | Set the maxSize of a field. Applicable for `STRING`, `ENUM`, `RAW`. Needed for HFT and SQL data structures. see below for more details |
 | format | N/A | `field(name = "DESCRIPTION", type = BIG_DECIMALS, format="#,##0.000")` | Dependent on type | Set the maxSize of a field. Applicable for `STRING`, `RAW`  |
 | sensitive | false | `field(name = "PASSWORD", type = STRING, sensitive=true)` | boolean | true if the field should be masked on its toString() output  |
 | nullable | true | `field(name = "USER_NAME", type = STRING, sensitive=true)` | boolean | true if the field should be masked on its toString() output  |
@@ -64,3 +64,18 @@ Technically, it is possible to duplicate field names. When you build, this gener
 
 When you define a new field, it is good practice to run `codegen:generateSysDef`. This will generate code based on the fields definition and you will be able to use intellisense to pick this new field within table definitions.
 
+### Using the maxSize parameter
+When using an SQL DB and you want a field's max size to be the same as that supported by the underlying DB, you can use the helper function `dbMaxSize()`.
+
+For example, if using Postgres and wanting a `STRING` field's size to be equal to the max size Postgres supports, then you would define the field as:
+```kotlin
+field(name = "DESCRIPTION", type = STRING, maxSize = dbMaxSize())
+```
+
+You can also specify a target max size. This is useful for when you want to limit a field's size to a particular length, but you want to be flexible enough to support different SQL DBs.
+
+For example:
+```kotlin
+field(name = "DESCRIPTION", type = STRING, maxSize = dbMaxSize(target = 9000))
+```
+If the underlying database is Postgres, this sets the field's max size to 9000, because Postgres can support up to 65535. But if using MS SQL then the max size is be set to 8000, the max supported size for MS SQL.

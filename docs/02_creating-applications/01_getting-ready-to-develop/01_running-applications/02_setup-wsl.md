@@ -108,7 +108,7 @@ docker run --name aerospike -tid -p 3000:3000 -p 3001:3001 -p 3002:3002 -p 3003:
 
 This creates a download and runs Aerospike in a Docker container.
 
-To check if the container is running, use the Docker `ps -all` command. It will show the id and name of the Aerospike container. You will need these to interact with the container.
+To check if the container is running, use the `Docker ps -all` command. It will show the id and name of the Aerospike container. You will need these to interact with the container.
 
 ```
 [root@machine wsl]# docker ps -all
@@ -116,7 +116,7 @@ CONTAINER ID        IMAGE                                 COMMAND               
 c3468768d9c9        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   2 minutes ago       Exited (0) 32 seconds ago                       priceless_bardeen
 ```
 
-To start or stop the container, use `docker start|stop _container name_:
+To start or stop the container, use `docker start|stop _container name_`:
 
 ```
 [root@machine wsl]# docker stop priceless_bardeen
@@ -171,6 +171,20 @@ To connect, use this JDBC URL:
 jdbc:postgresql://localhost:5432/?user=postgres&password=docker
 ```
 
+## Running MSSQL from Docker
+
+```
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=docker" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+```
+
+This downloads and runs an MSSQL image for version 2019-latest. Other versions are available; for more details [see here](https://hub.docker.com/_/microsoft-mssql-server).
+
+To connect, use this JDBC URL:
+
+```
+jdbc:sqlserver://localhost:1433;database=master;user=sa;password=docker
+```
+
 ## Copying files between Windows and WSL
 From WSL, your Windows drives are available from `/mnt/_drive letter_`:
 
@@ -185,7 +199,7 @@ drwxrwxrwt 5 root root  100 Aug 14 10:16 wsl
 [root@LONPC24 mnt]#
 ```
 
-From Windows, your WSL distros are accessible from **\\wsl$\** in windows explorer.
+From Windows, your WSL distros are accessible from ** \\wsl$\ ** in windows explorer.
 
 ## Windows Firewall set-up
 If you are using Windows Firewall, you need to allow smooth network communication between your WSL distros and Windows. First, get the network range for your WSL network switch; run `ipconfig.exe` from powershell and look for WSL:

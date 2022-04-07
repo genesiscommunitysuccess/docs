@@ -64,7 +64,7 @@ fields {
     field(name = "PROCESS_STATUS", type = BOOLEAN)
     field(name = "PROCESS_STATUS_MESSAGE", type = STRING)
     field(name = "PROCESS_STATE_TEXT", type = ENUM("DOWN", "ERROR", "WARNING", "STANDBY", "UP", default = "DOWN"))
-    field(name = "PROCESS_RESOURCES", type = STRING, maxSize = 5000)
+    field(name = "PROCESS_RESOURCES", type = STRING, maxSize = dbMaxSize(target = 5000))
     field(name = "PROCESS_HOSTNAME", type = STRING)
     field(name = "PROCESS_CPU_USAGE", type = DOUBLE)
     field(name = "PROCESS_MEM_USAGE", type = DOUBLE)
