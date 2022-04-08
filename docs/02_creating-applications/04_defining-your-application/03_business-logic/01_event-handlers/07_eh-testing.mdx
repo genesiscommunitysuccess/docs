@@ -8,4 +8,113 @@ id: eh-testing
 [Introduction](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/)  | [Where to define](/creating-applications/defining-your-application/business-logic/event-handlers/event-handler-define/) | [Basics](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/) |  [Advanced](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/business-logic/event-handlers/eh-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/business-logic/event-handlers/eh-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/business-logic/event-handlers/eh-testing/)
 
 
-We shall provide details of testing here shortly.
+## Component testing
+
+
+### Testing with Console
+If you use Genesis Console, this gives you a simple way of testing components.
+
+1. In your browser, go to http://genesislcap.com/console/console-next2/.
+2. Enter the IP address of your server.
+3. Log in with your user name and password. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
+4. Click on the **RESOURCES** tab.
+5. Filter the **Resource type** to show only event handlers.
+
+For example:
+
+![](/img/test-console-eh-filter.png)
+
+As well as the event handlers that you have defined yourself, you will also see other event handlers that have been generated automatically by the platform, anything that is a **GENESIS_CLUSTER** service, for example.
+
+If you click on any event handler in the list, the fields relevant to the event are displayed to the right.
+
+![](/img/test-console-eh-fields.png)
+
+Now you need to pick the event handler you want to test. in this example, it is called EVENT_INSTRUMENT_INSERT.
+
+1. Find the event handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the event handler was set up.
+
+![](/img/test-console-eh-insert-instrument.png)
+
+2. Enter the details of the new instrument in the field. In our example, we are going to add the spot rate for trading the British Pound against the Euro. The code for this is GBPEUR=.
+In the example below, we have added the INSTRUMENT_ID (mandatory), plus the ASSET_CLASS and NAME. Then we click on **COMMIT**:
+
+![](/img/test-console-eh-insert-instrument-2.png)
+
+If the event handler is working correctly, you will receive an **ACK**.
+
+![](/img/test-console-eh-insert-instrument-ack.png)
+
+#### Checking the insertion
+You can go on to check the INSTRUMENT table to see if your insert is there.
+
+1. Filter the list of services to show only request servers (these are the components that distribute the data).
+
+2. Search for the relevant resource - in our case INSTRUMENT.
+
+![](/img/test-console-eh-confirm-1.png)
+
+3. Click on the arrow beside the relevant resource. You should now see the new instrument in the list displayed on the right.
+
+![](/img/test-console-eh-confirm-2.png)
+
+### Testing with an API client
+
+An API client is useful way of testing components. As a client, it is effectively a front end seeking information from the server.
+
+The API client enables you to create calls to the resources in your server - data servers, request servers and event handlers. Then you can just click to run a call and see what response you get.
+
+Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/managing-applications/test/component-testing/#using-an-api-client) page.
+
+Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
+
+In the example below, we are using Insomnia as the client API. We are going to test the EVENT_COUNTERPARTY_INSERT event handler by adding a new counterparty.
+
+#### url and Body
+In front of the url, set the call to **POST**.
+
+The url consists of:
+
+- the address or hostname of the server
+- if necessary, some extra routing; in this case **sm** uses a proxy to access the server
+- the name of the event handler
+
+
+Set the body to **JSON**. In the body, you need to insert the details of the fields for the new counterparty, as seen below:
+
+![](/img/test-eh-url-body.png)
+
+#### Header
+In the header, you need to supply:
+
+- a SOURCE_REF (always), which identifies you; you can use any string value that suits you
+- the SESSION_AUTH_TOKEN that permissions you to access the server
+
+When you have all these elements in place, click on **Send** to make the call. If the event is a success, you will receive an **ACK** message.
+
+![](/img/test-eh-header.png)
+
+#### Checking the insertion
+Now you can check that the new counterparty you inserted is in the correct table of the database. The resource you need to check is the request server called ALL_COUNTERPARTYS.
+
+In front of the url, set the call to **POST**.
+
+The url consists of:
+
+- the address or hostname of the server
+- if necessary, some extra routing; in this case **sm** uses a proxy to access the server
+- the name of the request server
+
+Set the body to **JSON**. There is no need for any information in the body. Simply insert a pair of curly brackets **{}**. 
+
+![](/img/test-eh-check-insertion.png)
+
+In the header, you need to supply:
+
+- a SOURCE_REF (always), which identifies you; you can use any string value that suits you
+- the SESSION_AUTH_TOKEN that permissions you to access the server
+
+When you have this in place, click on **Send** to make the call. You can see that the fields for the instruments have been returned on the right of the screen.
+
+![](/img/test-eh-insert-success.png)
+

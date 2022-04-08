@@ -1,7 +1,7 @@
 ---
 title: FIX Xlator
 sidebar_label: FIX-Xlator
-sidebar_position: 3
+sidebar_position: 5
 id: fix-xlator
 ---
 

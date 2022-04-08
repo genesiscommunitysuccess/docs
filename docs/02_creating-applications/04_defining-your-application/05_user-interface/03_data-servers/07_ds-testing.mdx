@@ -7,25 +7,114 @@ id: ds-testing
 
 [Introduction](/creating-applications/defining-your-application/user-interface/data-servers/data-servers/) | [Where to define](/creating-applications/defining-your-application/user-interface/data-servers/ds-where-to-define/) | [Basics](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/) |  [Advanced](/creating-applications/defining-your-application/user-interface/data-servers/ds-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/user-interface/data-servers/ds-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/user-interface/data-servers/ds-configure-runtime/) | [Testing](/creating-applications/defining-your-application/user-interface/data-servers/ds-testing/)
 
+## Integration testing
 
-We shall provide details of testing here shortly.
-## Component testing
+Genesis Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. 
 
+In this case, we want to ensure that we have a database seeded with information. And we want to check that our Data Server configuration is used to create our Data Server. We also need to add the required packages and genesis home.
+
+```kotlin
+class DataServerTests : AbstractGenesisTestSupport<Reply<*>>(
+    GenesisTestConfig {
+        addPackageName("global.genesis.dataserver.pal")
+        genesisHome = "/GenesisHome/"
+        scriptFileName = "trade-101-dataserver.kts"
+        initialDataFile = "seed-data.csv"
+    }
+) {
+    override fun createDictionary(): GenesisDictionary = prodDictionary()
+
+    private var ackReceived = false
+    private var initialData: GenesisSet = GenesisSet()
+    private var updateData: GenesisSet = GenesisSet()
+
+    @Before
+    fun before() {
+        ackReceived = false
+        initialData = GenesisSet()
+        updateData = GenesisSet()
+
+        messageClient.handler.addListener { set, _ ->
+            println(set)
+            if ("LOGON_ACK" == set.getString(MessageType.MESSAGE_TYPE)) {
+                ackReceived = true
+            }
+            if ("QUERY_UPDATE" == set.getString(MessageType.MESSAGE_TYPE)) {
+                if (initialData.isEmpty) {
+                    initialData = set
+                } else {
+                    updateData = set
+                }
+            }
+        }
+    }
+}
+```
+
+There is more information about `AbstractGenesisTestSupport` in the section on [Integration testing](/managing-applications/test/integration-testing/).
+
+We are now ready to begin writing tests for our Data Server.
+
+Firstly, we send a DATA_LOGON message to our Data Sever, our Data Sever should then respond with the current snapshot of data. Any changes will then be automatically sent to us as a consumer.
+
+We then need to trigger a change on the database. Our Data Server will see this change and send the update to us.
+
+```kotlin
+@Test
+fun `data server passes update`(): Unit = runBlocking {
+    messageClient.sendMessage(
+        GenesisSet.genesisSet {
+            MessageType.MESSAGE_TYPE with "DATA_LOGON"
+            MessageType.DETAILS with GenesisSet.genesisSet {
+                MessageType.DATASOURCE_NAME with "POSITION"
+            }
+        }
+    )
+    Awaitility.waitAtMost(30, TimeUnit.SECONDS).until(ackAndDataReceived())
+
+    // We pull out the initial data
+    val rows = initialData.getArray<GenesisSet>("ROW")!!.sortedBy { it?.getString("POSITION_ID") }
+    val firstRow = rows.first() ?: fail("Missing first row in initial data")
+    val firstRowRef = firstRow.getGenesisSet("DETAILS")!!.getString("ROW_REF")!!
+    assertEquals(3, rows.size)
+    assertEquals("000000000000001PSLO1", firstRow.getString("POSITION_ID")!!)
+    assertEquals(999.0, firstRow.getDouble("PRICE")!!)
+
+    // We update the database to trigger our Data Server into action
+    entityDb.updateBy(Position.byId("000000000000001PSLO1")) {
+        price = 1234.56
+    }
+    Awaitility.await().until(ackDataAndUpdateReceived())
+
+    // We consume the update
+    val updateRows = updateData.getArray<GenesisSet>("ROW")!!
+    val updateRow = updateRows.first()!!
+
+    assertEquals(1, updateRows.size)
+    val updateRowRef = firstRow.getGenesisSet("DETAILS")?.getString("ROW_REF")!!
+    assertEquals(firstRowRef, updateRowRef)
+    assertEquals(1234.56, updateRow.getDouble("PRICE")!!)
+}
+```
+
+## Manual testing
 
 ### Testing with Console
 If you use Genesis Console, this gives you a simple way of testing components.
 
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
-2. Enter the IP address of your sever.
+2. Enter the IP address of your server.
 3. Log in with your user name and password. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES** tab.
 5. Filter the **Resource type** to show only data servers.
+
 For example:
+
 ![](/img/test-console-ds-filter.png)
 
 As well as the data servers that you have defined yourself, you will also see other data servers that have been generated automatically by the platform, anything that is a **GENESIS_AUTH** service, for example.
 
-6. In the list, click on the data server you want to test. This displays the request and reply fields for that data server. 
+6. In the list, click on the data server you want to test. This displays the fields for that data server. 
 
 7. Click on the arrow beside the data server that you want to test. This displays the current contents of the table or view that provides the data for that data server. If you can see that content, you have connected successfully to the resource.
 
@@ -36,29 +125,36 @@ As well as the data servers that you have defined yourself, you will also see ot
 
 An API client is useful way of testing components. As a client, it is effectively a front end seeking information from the server.
 
-The API client enables you to create calls to the resources in your server - data servers, request servers and event handlers. Then you can just click to run a call an see what response you get.
+The API client enables you to create calls to the resources in your server - data servers, request servers and event handlers. Then you can just click to run a call and see what response you get.
 
-Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/managing-applications/test/testing/#using-an-api-client) page.
+Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/managing-applications/test/integration-testing/#using-an-api-client) page.
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 
 In the example below, we are using Insomnia as the client API.
 
-![](/img/test-ds-instrument-success.png)
-
-There is no need for any information in the body, as this is a GET request.
-
-In the header, you need to supply:
-
-- a SOURCE_REF (always), which identifies you; you can use any string value that suits you
-- the SESSION_AUTH_TOKEN that permissions you to access the server
-
-In front of the url, this has been set to a **GET** call.
+#### url and Body
+In front of the url, set the call to **POST**.
 
 The url consists of:
 
 - the address or hostname of the server
 - if necessary, some extra routing; in this case **sm** uses a proxy to access the server
-- the name of the request server, preceded by **REQ_**
+- the name of the data server
 
-When you have this in place, click on **Send** to make the call. You can see that the fields for the instruments have been returned on the right of the screen.
+
+Set the body to **JSON**. In the body, simply insert opening and closing curly brackets **{}** - nothing else. 
+
+![](/img/test-ds-url-body.png)
+
+#### Header
+In the header, you need to supply:
+
+- a SOURCE_REF (always), which identifies you; you can use any string value that suits you
+- the SESSION_AUTH_TOKEN that permissions you to access the server
+
+![](/img/test-ds-header.png)
+
+When you have all these elements in place, click on **Send** to make the call. You can see that the fields for the instruments have been returned on the right of the screen.
+
+![](/img/test-ds-instrument-success.png)

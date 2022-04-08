@@ -9,18 +9,16 @@ id: rs-technical-details
 [Introduction](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/)  | [Where to define](/creating-applications/defining-your-application/user-interface/request-servers/rs-where-to-define/) | [Basics](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/) |  [Advanced](/creating-applications/defining-your-application/user-interface/request-servers/rs-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/user-interface/request-servers/rs-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/user-interface/request-servers/rs-configure-runtime/) | [Testing](/creating-applications/defining-your-application/user-interface/request-servers/rs-testing/)
 
 
+A reqrep file (Request Server configuration file) is the configuration for a single Request Server component. Within this Request Server component, we have one or more request reply operations declared using one or more `requestReply` code blocks. 
+Each code block defines a set of `request` fields (essentially criteria), and the set of `reply` fields. The most [basic `requestReply`code block](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/#basic-definition) simply specifies a [table](/creating-applications/defining-your-application/data-model/tables/tables/) or [view](/creating-applications/defining-your-application/data-model/views/views/) that can be requested and returned.
 
-Within a request server file, there are one or more `requestReply` code blocks. Each code block defines a set of `request` fields (essentially criteria), and the set of `reply` fields. The most [basic `requestReply`code block](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/#basic-definition) simply specifies a table that can be requested and returned.
+When starting with a dictionary, you can use AppGen to generate a Request Server for you. AppGen uses the metadata of each view or table in the data model to create an individual `requestReply` code block for each one. The request will be the primary key, and the response provides every field in the table or view.
 
-By default, a request server file is generated automatically when you use AppGen. This uses the metadata of each view or table in the data model to create an individual `requestReply` code block for each one. The request will be the primary key, and the response provides every field in the table or view.
-
-However, you can build your request server file manually (or edit the ones that were generated automatically).
-
-That means you can specify both the request fields and the response fields as part of the requestReply codeblock. Request fields can include wildcards, so you could request all TRADES with an INSTRUMENT_NAME beginning with "A" for example.
+However, you can build your Request Server file manually (or edit the ones that were generated automatically).
 
 ### Basic definition
 
-Here is the definition of a simple request server. You need to specify either a table or a view. In this example, we are using the table INSTRUMENT_DETAILS.
+Here is the definition of a simple Request Server. You need to specify either a table or a view. In this example, we are using the table INSTRUMENT_DETAILS.
 
 ```kotlin
 requestReplies {
@@ -28,9 +26,9 @@ requestReplies {
 }
 ```
 
-### Multiple request servers
+### Multiple Request Servers
 
-You can include multiple request servers in a single file.
+You can include multiple Request Server definitions in a single file.
 
 ```kotlin
 requestReplies {
@@ -42,12 +40,14 @@ requestReplies {
 
 ### Specify fields on request and reply
 
-You can specify which fields are on the request and which fields are on the response. Here is an example:
+You can specify which fields are on the request and which fields are on the response. when defining a request block, you must define at least one primary key or index.
+
+When you do not define a request block, the primary key is the defualt request field.
+When you do not define a reply block, all the fields will be returned.
 
 ```kotlin
 requestReplies {
     requestReply(INSTRUMENT_DETAILS) {
-
         request {
             ALTERNATE_TYPE
             INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
@@ -67,41 +67,44 @@ requestReplies {
 }
 ```
 
+### Specifiying derived fields
 
-### Using an index
+You can define derived fields which will be included on the reply, where the input for the derived field is the reply entity. 
 
-You can use an index for the request definition.
+Derived fields cannot be used within a where block.
 
 ```kotlin
 requestReplies {
     requestReply(INSTRUMENT_DETAILS) {
-
-        request(INSTRUMENT_DETAILS.BY_ALTERNATE_TYPE_ALTERNATE_CODE)
-
-        reply {
-            INSTRUMENT_CODE
-            INSTRUMENT_ID
-            INSTRUMENT_NAME
-            LAST_TRADED_PRICE
-            VWAP
-            SPREAD
-            TRADED_CURRENCY
-            EXCHANGE_ID
+        derivedFields {
+            derivedField("IS_USD", BOOLEAN) {
+                tradedCurrency == "USD"
+            }
         }
+    }
+}
+```
+
+### Using an index
+
+The example below uses an [index](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/#using-an-index) as the request definition. This provides additional indexing at the request level.
+
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS) {
+        request(INSTRUMENT_DETAILS.BY_ALTERNATE_TYPE_ALTERNATE_CODE)
     }
 }
 ```
 
 ### Where block
 
-The `where` block enables you to specify the conditions for running the particular code block. The where block can take two optional parameters:
-    * instrumentDetails - this represents a row from the table or view
-    * parameters - this a GenesisSet which holds the parameters that are passed on the request. The parameters can be accessed by using the GenesisSet getters to access named parameters.
+The `where` block enables you to specify the conditions for which data should be returned. The where block can take two optional parameters:
+* instrumentDetails - this represents a row from the table or view
+* parameters - this a GenesisSet which holds the parameters that are passed on the request. The parameters can be accessed by using the GenesisSet getters to access named parameters.
 
 In this contrived example below, the where block filters rows whose instrumentCode is not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG". 
 The row parameter represents the rows returned from the table or view defined at the top of the requestReply definition, in this case INSTRUMENT_DETAILS.
-
-
 
 ```kotlin
 requestReplies {
@@ -109,17 +112,6 @@ requestReplies {
 
         request {
             ALTERNATE_TYPE
-        }
-
-        reply {
-            INSTRUMENT_CODE
-            INSTRUMENT_ID
-            INSTRUMENT_NAME
-            LAST_TRADED_PRICE
-            VWAP
-            SPREAD
-            TRADED_CURRENCY
-            EXCHANGE_ID
         }
 
         where { row, parameters ->
@@ -130,3 +122,4 @@ requestReplies {
 }
 ```
 
+Note - You cannot use derived fields within a where block.

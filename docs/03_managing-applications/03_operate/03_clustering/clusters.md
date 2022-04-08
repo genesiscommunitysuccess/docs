@@ -5,7 +5,7 @@ sidebar_label: Clusters
 sidebar_position: 1
 
 ---
-The Genesis LCNC latform is highly resilient and easy to cluster for a High Availability (HA) setup. This area takes you through the steps required to establish a HOT-HOT setup.
+The Genesis low-code platform is highly resilient and easy to cluster for a High Availability (HA) setup. This area takes you through the steps required to establish a HOT-HOT setup.
 
 ## Pre-requisites
 
@@ -82,7 +82,7 @@ In a clustered Genesis setup, all session data is shared amongst all nodes. Foll
 
 ![](/img/cluster-4-disaster-a.png)
 
-If you decide that the Primary node will not to come back online within an acceptable timeframe, you can then set the Secondary node to Primary.
+If you decide that the Primary node will not to come back online within an acceptable time frame, you can then set the Secondary node to Primary.
 
 To do this, run **SetPrimary** on NodeB. This means that any of those processes where **primaryOnly** is defined as **true** will now start running on NodeB.
 
@@ -101,7 +101,7 @@ You can see CPU and memory usage across an application using the mon command. Th
 
 You can customise our metrics to output information such as the number of transactions per event handler, for example. You can then choose how to store and report on the data points.
 
-Additionally, the Genesis LCNC Platform is compatible with all major monitoring and planning tools for the Linux environment, such as [Nagios](https://nagios.com), [ITRS Geneos](https://www.itrsgroup.com/products/capacity-planner) or [Prometheus](https://prometheus.io/blog/2019/10/10/remote-read-meets-streaming/#summary). 
+Additionally, the Genesis low-code platform is compatible with all major monitoring and planning tools for the Linux environment, such as [Nagios](https://nagios.com), [ITRS Geneos](https://www.itrsgroup.com/products/capacity-planner) or [Prometheus](https://prometheus.io/blog/2019/10/10/remote-read-meets-streaming/#summary). 
 
 
 ## Vertical and horizontal scaling
@@ -135,7 +135,7 @@ Example:
 
 ## Environment variables
 
-The Genesis LCNC Platform supports extraction of system-level variables to populate solution-specific settings. The system-level variables can be derived from enterprise configuration management system and the platform supports encrypted settings.
+The Genesis low-code platform supports extraction of system-level variables to populate solution-specific settings. The system-level variables can be derived from enterprise configuration management system and the platform supports encrypted settings.
 
 ```kotlin
 item(name = "DbUsername", value = System.getenv("DBUSERNAME"), encrypted = true)

@@ -5,7 +5,7 @@ sidebar_position: 3
 title: Install in three easy steps
 
 ---
-To install the Genesis LCNC Platform on your server, go through the following steps.
+To install the Genesis low-code platform on your server, go through the following steps.
 
 1. Make sure you have the [correct infrastructure for installing the platform](/creating-applications/getting-ready-to-develop/running-applications/requirements/).
 2. Install the Genesis platform.
@@ -58,7 +58,7 @@ You can switch to that user and view the run directory for the newly installed p
 
 ```bash
 [centos@genesisserv1 home]$ sudo su - foxtrot
-[octopus@genesisserv1 ~]$ ls
+[gnosis@genesisserv1 ~]$ ls
 run
 [foxtrot@genesisserv1 ~]$ ls -ls
 total 12

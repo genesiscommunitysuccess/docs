@@ -162,7 +162,7 @@ table(name = "USER_ATTRIBUTES", id = 1007, audit = details(1052, "AA")) {
 ```
 The permissions field will be added dynamically to USER_ATTRIBUTES, so it can be used in auth transactions to control entitlements.
 
-The following table will be created as well (ignore MULTI_ENTITY setup for now; this is in development). It is used by the Genesis LCNC Platform to manage AUTH_PERMS results.
+The following table will be created as well (ignore MULTI_ENTITY setup for now; this is in development). It is used by the Genesis low-code platform to manage AUTH_PERMS results.
 
 ```kotlin
 val permissionsTable = SysDef.systemDefinition["ADMIN_PERMISSION_ENTITY_TABLE"].orElse(null)
@@ -484,7 +484,7 @@ We also define several items on the entity element:
 * **idField** - The account ID
 * **updateOn** xml block - We want to re-evaluate the auth entries (entities and users) when the TAG table is updated, just in case we make a user sales officer/asset manager.
 
-As mentioned above, we will also refresh when either the entity or user table is updated.
+As mentioned above, we will also refresh when either the entity, user or user_attributes tables are updated. (Please note that the `user` handle readily available will contain all fields and their values from the `USER` and `USER_ATTRIBUTES` tables, meaning if you add a custom string field `FOO` to `USER_ATTRIBUTES`, `user.getString("FOO")` can be used to access it.). You will need to define `updateOnUserFields` (see further down) to ensure user data updates are triggered.
 
 ### Full example file
 ```groovy
@@ -573,11 +573,13 @@ As mentioned above, we will also refresh when either the entity or user table is
 
 </dynamicPermissions>
 ```
+
+
 ## Defining a permission rule
 
 All permission rules are held in the file **auth-permissions.xml**.  In this file, you define rules against a specific entity, and each entity is defined against a database table.
 
-We have a preExpression block inside our file, which is applied to all entities. This makes the definition `isUserEnabled`  available to all entities.
+We have a preExpression block inside our file, which is applied to all entities. This makes the definition `isUserEnabled` available to all entities.
 
 
     <preExpression>
@@ -596,17 +598,17 @@ We can now call `isUserEnabled` from any entity block.
 
 You must define an entity block for every entity you want to authorise.  Each block can have the following attributes:
 
-| Name                 | Description                                                                                                                                                                                                   | Mandatory                              |   |   |
-|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|---|---|
-| name                 | The name of the entity you want to authorise.                                                                                                                                                                 | Yes                                    |   |   |
-| maxEntries           | The maximum number of entries that the authorisation map will contain.                                                                                                                                        | No. Default  =5,000.                   |   |   |
-| tableName            | The root table to you are giving access to.                                                                                                                                                                   | No. Default = the same value as name.  |   |   |
-| idField              | Field(s) to use for keying internal collection (should be unique). Multiple fields must be separated with the \| symbol.                                                                                      | Yes                                    |   |   |
-| updateOnUserFields   | If the USER table is extended with extra fields, add a \| separated list here to specify the fields that trigger an update.                                                                                   | No                                     |   |   |
-| averageUserNameChars | Average number of characters in each username. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                          | No. Default = 20                       |   |   |
-| averageEntityChars   | Average number of characters of each entity. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                            | No. Default = 7                        |   |   |
-| averageUsers         | Average number of users on the system. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                                  | No. Default = 1,000                    |   |   |
-| updateOn             | Custom logic to trigger authorisation updates in specific scenarios. When tables defined in this section are modified, the authorisation map is refreshed following the configuration logic. See the example. | No                                     |   |   |
+| Name                 | Description                                                                                                                                                                                                   | Mandatory                              |
+|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|
+| name                 | The name of the entity you want to authorise.                                                                                                                                                                 | Yes                                    |
+| maxEntries           | The maximum number of entries that the authorisation map will contain.                                                                                                                                        | No. Default  =5,000.                   |
+| tableName            | The root table to you are giving access to.                                                                                                                                                                   | No. Default = the same value as name.  |
+| idField              | Field(s) to use for keying internal collection (should be unique). Multiple fields must be separated with the \| symbol.                                                                                      | Yes                                    |
+| updateOnUserFields   | Specify the list of USER and USER_ATTRIBUTE fields to which an update to the field should trigger a re-check of this entities permissions | No. Left undefined permissions checks will only be re-triggered on updates to USER.STATUS field, and no others. As such STATUS does not need to be included in this field list, it is assumed. |
+| averageUserNameChars | Average number of characters in each username. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                          | No. Default = 20                       |
+| averageEntityChars   | Average number of characters of each entity. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                            | No. Default = 7                        |
+| averageUsers         | Average number of users on the system. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                                  | No. Default = 1,000                    |
+| updateOn             | Custom logic to trigger authorisation updates in specific scenarios. When tables defined in this section are modified, the authorisation map is refreshed following the configuration logic. See the example. | No                                     |
 
 ### Data server snippet
 ```kotlin

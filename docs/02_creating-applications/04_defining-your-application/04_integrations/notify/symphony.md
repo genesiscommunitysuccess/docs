@@ -8,7 +8,7 @@ id: symphony
 [Symphony](http://symphony.com) is a secure instant messaging service focused on financial companies. 
 To make Symphony services available to Genesis, including the sending and receiving of messages, you need to provision [symphony service](https://symphony.com/participate) and configure a [symphony bot](https://docs.developers.symphony.com/developer-tools/developer-tools/bdk-2.0).
 
-### Symphony Configuration
+## Symphony Configuration
 
 The following configuration details are an example of Genesis Symphony connection details. Genesis requires the use of Symphony POD, Symphony Bot and the generation of private/public key pairs. 
 This is covered extensively in the Symphony Documentation.  
@@ -34,6 +34,51 @@ notify {
 
 ```
 
+another example, but where the private key is sourced from the DB. 
+To store private key in a DB you will need to use the`SYSTEM` table with `SYSTEM_VALUE` set to the contents of the private key and the associated `SYSTEM_KEY` set to `SymphonyRsaKey` 
+
+```kotlin
+notify {
+
+    symphony(id = "symphony1") {
+
+        sessionAuthHost = "76680.p.symphony.com"
+        botUsername = "botusergenesis@genesis.global"
+        botPrivateKeyFromDb = true
+    }
+    
+}
+
+```
+
+# Using System Definition in the notify.kts script
+
+filename: ```genesis-system-definition.kts```
+```kotlin
+systemDefinition {
+    global {
+        
+            item(name = "SESSION_AUTH_HOST", value = "76680.p.symphony.com" )
+            item(name = "BOT_USER_NAME", value = "botusergenesis@genesis.global" )         
+        }
+}
+```
+
+Here we can refer to the item name directly in our kts script, without import or qualifier.
+filename: ```notify.kts```
+```Kotlin
+notify {
+
+    symphony(id = "symphony1") {
+
+        sessionAuthHost = SESSION_AUTH_HOST
+        botUsername = BOT_USER_NAME
+        botPrivateKeyFromDb = true
+    }
+    
+}
+```
+
 Where you have configured a Symphony Gateway for handling incoming messages, any attachments to incoming messages will be dropped on the server to the following configured directory parameter: `DOCUMENT_STORE_BASEDIR`. For example:
 
 ```kotlin
@@ -42,10 +87,10 @@ item(name = "DOCUMENT_STORE_BASEDIR", value = "/home/trading/run/site-specific/i
 
 Also, if the incoming message is configured to publish to a topic, the file name of any attachment will be sent to the `DOCUMENT_ID` field for the topic (showing its file location on the server). In the event of clashing file names, the incoming attachment's file name will have the suffix _1, _2 added, as appropriate.
 
-### Database configuration
+## Database configuration
 
 
-#### GATEWAY
+### GATEWAY
 
 | Field Name | Usage |
 | --- | --- |
@@ -55,7 +100,8 @@ Also, if the incoming message is configured to publish to a topic, the file name
 | INCOMING_TOPIC | When the `GATEWAY_TYPE` is specified as SymphonyRoom, then incoming messages are directed to this `TOPIC`. <br />  When the `GATEWAY_TYPE` is specified as SymphonyRoomReqRep then it's treated as colon-separated string specifying the `PROCESS_NAME:EVENT_HANDLER_NAME`, such that incoming messages will be directed to the named Event Handler running in the named process |
 | CONNECTION_ID | This should reference the connection `id` specified in the ```notify.kts``` file. Note if no id is specified in the connection, then you should use the default id of `Symphony`
 
-#### NOTIFY
+### NOTIFY
+
 | Field Name | Usage |
 | --- | --- |
 | SENDER | Genesis User sending message, if Symphony OBO is activated then this message will be sent 'On Behalf Of' of this user |
@@ -66,7 +112,7 @@ Also, if the incoming message is configured to publish to a topic, the file name
 | NOTIFY_COMPRESSION_TYPE | Do not set. This is used internally by Genesis; it indicates if the body of the message is compressed and by which compression type |
 | DOCUMENT_ID | If set, this should refer to a server-side path and file name. This file will be attached to the outgoing message that is destined for a symphony gateway
 
-### Additional Genesis Notify service for symphony
+## Additional Genesis Notify service for symphony
 
 The Genesis Notify service currently provides additional Symphony operations, exposed as event handlers.
 
@@ -91,6 +137,19 @@ data class AddUserToChannel(val channelName: String, val userId: String)
 data class RemoveUserFromChannel(val channelName: String, val userId: String)
 data class ActionOnChannel(val roomId: String, val activate: Boolean)
 ```
+In addition, the NotifyService offers the following ReqRep resource.
+
+* `LIST_MEMBERS_OF_CHANNEL` list members of a channels
+
+* Inputs (Request)
+
+`ChannelName` - Symphony Stream Id
+
+* Outputs (Response)
+
+`USER_EMAIL`
+
+`USER_ID`  - Symphony User Id
 
 ## Configuring Symphony On-Behalf-Of (OBO) for outgoing messages 
 

@@ -109,7 +109,7 @@ This tag defines additional jar files that might be needed by the microservices.
 You can use wild cards in your specification. This can be seen in the **classpath** for the **TRADING_APP_DATASERVER** configuration in the example above.
 
 When you are defining the process in your application's **process.xml**, this tag is optional.
-## start
+### start
 
 This tag defines whether the process needs to be started when startServer command is executed and whether to show this process in the mon command display. Default value is true
 
@@ -140,7 +140,7 @@ This tag defines which script file the process should refer to.
 
 When you are defining the process in its **process.xml**, if the process uses scripts, then you have to specify the script file using this tag. In the example above, the **TRADING_APP_REQEST_SERVER** has a script tag identifying **trading_app-reqrep.kts**, which is where the configuration of the request server exists. If you are not using scripts for the process, then this tag is not needed.
 
-### langauge
+### language
 
 This tag defines what language the script is using. The default value is Groovy. Accepted values are \[pal, groovy, R\].
 
