@@ -64,7 +64,7 @@ genesis-distribution<version>-bin.zip
 
 ## Connecting to the front end
 ### Web server – reverse proxy
-On the Genesis LCNC platform, the front end connects to the back end through HTTPS or secure Websockets via a reverse proxy. This must run on the same instance as the back end.
+On the Genesis low-code platform, the front end connects to the back end through HTTPS or secure Websockets via a reverse proxy. This must run on the same instance as the back end.
 
 The reverse proxy rule should be set for the specific path  **/gwf/**. The `GENESIS_ROUTER` service on the server acts as the endpoint for all API calls and listens to port `9064`. The following configuration snippet for nginx shows the proxy rule:
 

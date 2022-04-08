@@ -19,7 +19,8 @@
 
   --ifm-container-width-xl: 1140px;
 
-  --ifm-link-color: #5C6FF2;
+  --ifm-link-color: #0000FF;
+  --ifm-menu-color-active: #0000FF;
   
   --ifm-heading-font-family: Roboto-Medium, Roboto Medium, Roboto, sans-serif;
   --ifm-heading-color: #555;

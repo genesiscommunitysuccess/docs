@@ -6,7 +6,7 @@ sidebar_position: 30
 ---
 # Type-safe messages
 
-The Genesis LCNC platform uses type-safe messages to perform message serialization and deserialization. In addition to this, it automatically extracts relevant metadata information to expose this to the front end. These type-safe messages are most commonly used in custom request servers, GPAL event handlers and custom event handlers.
+The Genesis low-code platform uses type-safe messages to perform message serialization and deserialization. In addition to this, it automatically extracts relevant metadata information to expose this to the front end. These type-safe messages are most commonly used in custom request servers, GPAL event handlers and custom event handlers.
 
 ## Input messages
 
@@ -59,7 +59,7 @@ data class SetLogLevel(
 
 ## Output messages
 
-The output message type `O` can be defined as a single Kotlin data class or as a Kotlin sealed class with multiple Kotlin data classes defined as subtypes. For multiple subtypes, the Genesis LCNC Platform is able to extract information for all the possible messages and expose it as metadata.
+The output message type `O` can be defined as a single Kotlin data class or as a Kotlin sealed class with multiple Kotlin data classes defined as subtypes. For multiple subtypes, the Genesis low-code platform is able to extract information for all the possible messages and expose it as metadata.
 
 As an example, we shall look at `EventReply` and how event handlers work with output types in real life.
 

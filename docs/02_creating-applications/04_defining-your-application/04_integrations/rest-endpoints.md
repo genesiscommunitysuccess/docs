@@ -5,7 +5,7 @@ sidebar_label: REST endpoints
 sidebar_position: 10
 
 ---
-The Genesis LCNC Platform automatically exposes all configured resources as HTTP endpoints via the GENESIS_ROUTER service.
+The Genesis low-code platform automatically exposes all configured resources as HTTP endpoints via the GENESIS_ROUTER service.
 
 All requests and responses that contain a body are represented in JSON format.
 
@@ -51,7 +51,7 @@ Sample response:
 }
 ```
 
-## Request server
+## Request Server
 
 Request Servers are accessed via a GET request to
 `[host]:[genesis_router_port]/[request_reply_name]`.
@@ -89,20 +89,20 @@ Sample response:
 }
 ```
 
-## Data server
+## Data Server
 
-Data servers are slightly more complex; HTTP requests can only have a single response, but the data server enables you to publish a continuous stream of data to a subscribing client.
+Data Servers are slightly more complex; HTTP requests can only have a single response, but the Data Server enables you to publish a continuous stream of data to a subscribing client.
 
-For all data server requests, a `SOURCE_REF` header is mandatory, as it is used to match requests to the correct client subscription. This in turn allows for multiple subscriptions to the same query for the same session (think multiple grids in the UI using the same query with different filters).
+For all Data Server requests, a `SOURCE_REF` header is mandatory, as it is used to match requests to the correct client subscription. This in turn allows for multiple subscriptions to the same query for the same session (think multiple grids in the UI using the same query with different filters).
 
-Following is a list of data server messages mapped to HTTP endpoints.
+There follows a list of Data Server messages mapped to HTTP endpoints.
 
 ### DATA_LOGON
 
-To initiate a data server query, a DATA_LOGON message is required to create the subscription. This is requested via a POST request to 
+To initiate a Data Server query, a DATA_LOGON message is required to create the subscription. This is requested via a POST request to 
 `[host]:[genesis_router_port]/[data_server_query_name]`.
 
-A body is optional; if provided, it can contain data server parameters, such as `MAX_ROWS` and `FIELDS`
+A body is optional; if provided, it can contain Data Server parameters, such as `MAX_ROWS` and `FIELDS`
 
 The response contains the initial set of data for the subscription. The `ROW_REF` is a unique handle to each row returned and will be present on all QUERY_UPDATE requests where the given row has changed (e.g. modify/delete).
 
@@ -190,7 +190,7 @@ Sample response:
 
 ### QUERY_UPDATE
 
-To poll for updates to the given subscription to a DataServer query, you need to send a QUERY_UPDATE message. This is requested via a GET request to 
+To poll for updates to the given subscription to a Data Server query, you need to send a QUERY_UPDATE message. This is requested via a GET request to 
 `[host]:[genesis_router_port]/[data_server_query_name]`.
 
 
@@ -245,12 +245,12 @@ Sample response:
 
 ### CHANGE_COLUMNS
 
-It is possible to change the columns supplied on updates to the given subscription to a data server query.
+It is possible to change the columns supplied on updates to the given subscription to a Data Server query.
 
 This is requested via a PUT request to 
 `[host]:[genesis_router_port]/[data_server_query_name]`.
 
-This particular message is slightly different from other data server messages; specifically, the `SOURCE_REF` should be unique. A `SUBSCRIPTION_REF` is also needed and must match that `SOURCE_REF` value used in the original DATA_LOGON (subscription). The reason for the change in this message is that the response is a simple ACK/NACK, and the client should use this to know if it was successful or not. If an ACK is received, a further GET for the original `SOURCE_REF` (this request's `SUBSCRIPTION_REF`) will provide the added columns for each row the client has received, but nothing regarding the deleted columns. So the ACK is a means of telling the client it is OK to remove the deleted columns from the UI.
+This particular message is slightly different from other Data Server messages; specifically, the `SOURCE_REF` should be unique. A `SUBSCRIPTION_REF` is also needed and must match that `SOURCE_REF` value used in the original DATA_LOGON (subscription). The reason for the change in this message is that the response is a simple ACK/NACK, and the client should use this to know if it was successful or not. If an ACK is received, a further GET for the original `SOURCE_REF` (this request's `SUBSCRIPTION_REF`) will provide the added columns for each row the client has received, but nothing regarding the deleted columns. So the ACK is a means of telling the client it is OK to remove the deleted columns from the UI.
 
 The body of this request should contain a `DETAILS` object with `ADD_COLUMNS` (further replies should include these columns) and/or `DROP_COLUMNS` (further replies should not include these columns)
 
@@ -544,11 +544,11 @@ This request will return all the metadata associated with a given resource.
 Metadata can be accessed with a GET request to 
 `[host]:[genesis_router_port]/meta-request?DETAILS[FEATURE]=[resource_name]`.
 
-* Request server resources will return the request and reply fields available to the resource and their associated metadata.
+* Request Server resources will return the request and reply fields available to the resource and their associated metadata.
 
-* Data server resources will return the fields available to the resource and their associated metadata.
+* Data Server resources will return the fields available to the resource and their associated metadata.
 
-* Event handler resources will return the transaction fields available to the resource and their associated metadata.
+* Event Handler resources will return the transaction fields available to the resource and their associated metadata.
 
 Sample request:
 

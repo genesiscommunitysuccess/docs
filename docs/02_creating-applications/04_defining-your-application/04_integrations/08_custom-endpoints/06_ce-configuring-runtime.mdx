@@ -1,0 +1,31 @@
+---
+title: 'Configuring runtime'
+sidebar_label: 'Configuring runtime'
+sidebar_position: 6
+id: ce-configuring-runtime
+---
+
+[Introduction](/creating-applications/defining-your-application/integrations/custom-endpoints/custom-endpoints/)  | [Where to define](/creating-applications/defining-your-application/integrations/custom-endpoints/ce-define/) | [Basics](/creating-applications/defining-your-application/integrations/custom-endpoints/ce-technical-details/) |  [Advanced](/creating-applications/defining-your-application/integrations/custom-endpoints/ce-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/integrations/custom-endpoints/ce-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/integrations/custom-endpoints/ce-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/integrations/custom-endpoints/ce-testing/)
+
+If you are going to use custom endpoints, it is essential that you configure the [Genesis Router](/creating-applications/configure-runtime/genesis-router).
+
+Here is an example configuration:
+
+```kts
+router {
+    webPort = 9064
+    socketPort = 9065
+
+    httpServerCodec {
+        maxInitialLineLength = 4096
+        maxHeaderSize = 8192
+        maxChunkSize = 8192
+        validateHeaders = true
+        initialBufferSize = 128
+    }
+    httpObjectAggregator {
+        maxContentLength = 262144
+        closeOnExpectationFailed = false
+    }
+}
+```

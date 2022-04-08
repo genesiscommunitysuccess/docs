@@ -12,19 +12,15 @@ id: rs-advanced-technical-details
 
 
 
-
-
-
-
 ### Pre-processing the request
 
-Request server scripts can optionally transform a request parameter’s value using `withTransformation`. This takes two inputs:
+Request Server scripts can optionally transform a request parameter’s value using `withTransformation`. This takes two inputs:
 * the request parameter’s value (which is nullable)
 * the full request message
 
 In the example below, `withTransformation` is used twice.
 
-* If the ALTERNATE_TYPE parameter value is null, then the request server will use "UNKNOWN" by default.
+* If the ALTERNATE_TYPE parameter value is null, then the Request Server will use "UNKNOWN" by default.
 * If the ALTERNATE_TYPE parameter has the value "RIC", then the transformation block will use the value of INSTRUMENT_CODE from the request. Otherwise, it will assign it the value "NOT_RIC" before making the database lookup. 
 
 ```kotlin
@@ -89,7 +85,7 @@ requestReplies {
 
 ### Timeout
 
-You can specify a timeout (in seconds) for a request server using the property `timeout`. In this example, we set a timeout of 10 seconds.
+You can specify a timeout (in seconds) for a Request Server using the property `timeout`. In this example, we set a timeout of 10 seconds.
 
 ```kotlin
 requestReplies {
@@ -136,11 +132,22 @@ In addition, ranges which are not based on indexes will perform slower.
 ```
 
 
-## Custom request servers
+## Custom Request Servers
 
-By defining your own request servers, you have maximum flexibility. You can specify any class for the input and output, similar to event handlers. For the request, optional fields should have a default value in the primary constructor.
+By defining your own Request Servers, you have maximum flexibility. You can specify any class for the input and output, similar to event handlers. For the request, optional fields should have a default value in the primary constructor. You cannot use native Kotlin classes. You should wrap these in custom input and output classes.
 
-The `requestReply` code blocks in can be as simple or complex as your requirements. They are useful, for example, if you want to request data from a number of different tables and views that are not related. By nesting and joining all the relevant data in your `requestReply` statement, you create your own metadata for the request server, so it can then be used anywhere in the module.
+It is recommended to locate your classes within the messages module of your application. Here, we place all the custom message types for our application. You will need to ensure that the script-config module has a dependency on the messages module.
+
+```xml
+<dependency>
+    <groupId>your.group</groupId>
+    <artifactId>your-artifact</artifactId>
+    <version>${project.version}</version>
+    <scope>provided</scope>
+</dependency>
+```
+
+The `requestReply` code blocks in can be as simple or complex as your requirements. They are useful, for example, if you want to request data from a number of different tables and views that are not related. By nesting and joining all the relevant data in your `requestReply` statement, you create your own metadata for the Request Server, so it can then be used anywhere in the module.
 
 ### Syntax
 
@@ -228,7 +235,7 @@ requestReply<Instrument.ById, Instrument> {
 
 Next is a more complex example. 
 The first block checks that the user is authorised to view the instrument.
-The second block uses the ALT_INSTRUMENT_ID table. The index is used as the input, but we return either a `getBulk`, a `getRange` or a `get`, depending on the input. 
+The second block uses the ALT_INSTRUMENT_ID table. The index is used as the input, but we return either a `getBulk`, a `getRange` or a `get`, depending on the input.
 
 ```kotlin
 requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId> {
@@ -273,3 +280,9 @@ requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId>("FAN
 }
 ```
 
+Helpers exist to assist interacting with the Kotlin Flow type, which is the return type within the reply block. These helpers are:
+* T.flow() - Converts to the Flow type
+* T.distinct() - Returns a Flow of all distinct values
+* T.distinctBy(selector: (T) -> K?) - Returns a Flow of all distinct values given a selector
+* T.sorted() - Returns a Flow of all sorted values
+* T.sortedBy(selector: (T) -> K?) - Returns a Flow of all sorted values given a selector

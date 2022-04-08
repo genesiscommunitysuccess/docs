@@ -17,7 +17,7 @@ applications directly from a terminal based on best practices. It provides:
 - [Workspace](#workspaces) scaffolding.
 - [App](#apps) scaffolding. [^1]
 
-To complement the CLI, we are developing a graphical user interface to suit users who prefer to scaffold the above using a No Code workflow.
+To complement the CLI, we are developing a graphical user interface to suit users who prefer to scaffold the above using a no code workflow.
 
 ## Installing the CLI
 

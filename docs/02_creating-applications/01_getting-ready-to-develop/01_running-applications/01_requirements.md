@@ -10,7 +10,7 @@ title: Requirements
 
 Developers often want to run the full application they are building to test the functionality they have developed.
 
-The Genesis LCNC Platform needs to run in a linux based environment. Typically CentOS or RedHat
+The Genesis low-code platform needs to run in a linux based environment. Typically CentOS or RedHat
 
 The options we have for doing this are:
 
@@ -20,7 +20,7 @@ The options we have for doing this are:
 
 # Requirements
 
-The specifications here are required for setting up the Genesis LCNC platform to run.
+The specifications here are required for setting up the Genesis low-code platform to run.
 
 ## Minimum hardware requirements
 
@@ -48,7 +48,7 @@ The following additional packages are required:
 
 # Local requirements (development only)
 
-The specifications here are required for setting up the Genesis LCNC platform on a local machine. It applies to development only, as these are not the recommended settings to run Genesis in Production. UAT environments should match Production where possible.
+The specifications here are required for setting up the Genesis low-code platform on a local machine. It applies to development only, as these are not the recommended settings to run Genesis in Production. UAT environments should match Production where possible.
 
 ## Operating system and packages
 
