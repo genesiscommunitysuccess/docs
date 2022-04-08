@@ -9,12 +9,12 @@ sidebar_position: 5
 
 [Introduction](/creating-applications/defining-your-application/business-logic/consolidators/consolidators/)  | [Where to define](/creating-applications/defining-your-application/business-logic/consolidators/cons-where-to-define/) | [Basics](/creating-applications/defining-your-application/business-logic/consolidators/cons-technical-details/) |  [Advanced](/creating-applications/defining-your-application/business-logic/consolidators/cons-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/business-logic/consolidators/cons-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/business-logic/consolidators/cons-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/business-logic/consolidators/cons-testing/)
 
-Here is an example consolidator file that defines two consolidators:
+Here is an example Consolidator file that defines two Consolidators:
 
-* CON_ORDER_FROM_TRADES. This consolidator totals the order quantity across the ```TRADE``` table, grouping by field ```TRADE.ORDER_ID```
+* CON_ORDER_FROM_TRADES. This Consolidator totals the order quantity across the ```TRADE``` table, grouping by field ```TRADE.ORDER_ID```
                           into a table called ```ORDER_CONSOLIDATED_VOLUME```.
                
-* CON_BASKET_FROM_ORDERS.  This consolidator counts the number of orders and the order quantity, grouped by the field ```BASKET_ORDER_DETAILS.BASKET_ID``` from the ```ORDERS``` table. Note that in the table ```BASKET_ORDER_DETAILS``` there is a ```backwardJoin``` that ensures that real-time data from the table and the table it joins are reflected in the calculation.  
+* CON_BASKET_FROM_ORDERS.  This Consolidator counts the number of orders and the order quantity, grouped by the field ```BASKET_ORDER_DETAILS.BASKET_ID``` from the ```ORDERS``` table. Note that in the table ```BASKET_ORDER_DETAILS``` there is a ```backwardJoin``` that ensures that real-time data from the table and the table it joins are reflected in the calculation.  
 
 
 ```xml
@@ -121,9 +121,9 @@ Here is an example consolidator file that defines two consolidators:
 ```
 
 
-The example below comes from the consolidator exercise in our [tutorial](/tutorials/building-an-application/add-calculated-data/). It has a single consolidator, called `CONSOLIDATE_POSITIONS`. 
+The example below comes from the Consolidator exercise in our [tutorial](/tutorials/building-an-application/add-calculated-data/). It has a single consolidator, called `CONSOLIDATE_POSITIONS`. 
 
-To give you some basic pointers to the content, the main code blocks in this consolidator are:
+To give you some basic pointers to the content, the main code blocks in this Consolidator are:
 
 - The `tables` block contains two tables: `TRADE` and `INSTRUMENT_PRICE`, which are given aliases.
 - The `groupBy` block groups by `INSTRUMENT_ID` and `COUNTERPARTY_ID`.

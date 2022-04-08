@@ -8,25 +8,25 @@ Microsoft Teams provides a mechanism for exposing its channels to a remote syste
 
 The most important thing to gather from the teams channel webhook setup is the "WebHook URL"
 
-### System configuration
+## System configuration
 
-None required for Teams integration, we simply need to know the WebHook URL which is used in Database entries outlined in the section below
+None required for Teams integration, we simply need to know the WebHook URL which is used in database entries outlined in the section below
 
-### Database configuration
+## Database configuration
 
-#### GATEWAY
+### GATEWAY
 
 You'll need to set up a GATEWAY entry for each of the channels the app needs to send messages to.
 
 | Field Name | Usage |
 | --- | --- |
-| GATEWAY_ID | A Unique identifier for this gateway, which will be referenced in the NOTIFY_ROUTE table when sending a message to the channel, for example the Channel name could be used |
+| GATEWAY_ID | A unique identifier for this gateway, which will be referenced in the NOTIFY_ROUTE table when sending a message to the channel: for example, the Channel name could be used |
 | GATEWAY_TYPE | should be set to `MsTeamsChannel`|
 | GATEWAY_VALUE | The teams WebHook Url from your channel (see [here](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook)) |
-| INCOMING_TOPIC | N/A - notify does not currently support inbound messages from the channel |
+| INCOMING_TOPIC | N/A - Notify does not currently support inbound messages from the channel |
 | CONNECTION_ID | N/A |
 
-##### Example
+#### Example
 
 ```
 ==================================
@@ -43,7 +43,7 @@ INCOMING_TOPIC                                                                  
 -------------------------------------------------------------------------------------------
 ```
 
-#### NOTIFY_ROUTE
+### NOTIFY_ROUTE
 
 You will also need at least one NOTIFY_ROUTE entry set up to point to the GATEWAY record to route NOTIFY records as messages
 
@@ -55,7 +55,7 @@ You will also need at least one NOTIFY_ROUTE entry set up to point to the GATEWA
 | NOTIFY_ROUTE_ID | This will be auto generated if left blank, else be sure to give it a unique value with respect to other records |
 | TOPIC_MATCH | This can be anything, NOTIFY records will target this via the TOPIC field, and messages will be routed to all gateways with a matching TOPIC_MATCH value. In a simple/typical setup we make it match the GATEWAY_ID in the corresponding GATEWAY record |
 
-##### Example
+#### Example
 
 ```
 ==================================
@@ -72,7 +72,7 @@ TOPIC_MATCH                              TestAlerts                             
 -------------------------------------------------------------------------------------------
 ```
 
-#### NOTIFY
+### NOTIFY
 
 Writing a record to this table which correctly points to a TOPIC, will result in a message being sent to the teams channel the GATEWAY record is pointed to.
 
@@ -91,7 +91,7 @@ Equally, EVENT_NOTIFY_INSERT can be used as opposed to a direct table write (and
 | SENDER | N/A |
 | TOPIC | The TOPIC_MATCH value on the NOTIFY_ROUTE record you wish to target |
 
-##### Example
+#### Example
 
 ```
 ==================================
