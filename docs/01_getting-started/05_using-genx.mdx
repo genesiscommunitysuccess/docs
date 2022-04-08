@@ -10,27 +10,27 @@ GenX is a CLI tool that enables you to create skeleton projects that adhere to b
 ### Pre-requisites
 
 - [Node.js](https://nodejs.org/en/download/) version 16
+- a valid jfrog account
 - a valid NPM token
 
 ### Installing GenX
 
-Before installing GenX. you need to configure access to our repository.
+Before installing GenX, you need to configure access to our repository. Follow the instructions for [workstation set-up](/creating-applications/getting-ready-to-develop/workstation-setup/#npmrc-setup).
 
- 1. Using your credentials, login to the repository web site.
- 2. Click on the `Welcome <username>` on the top right corner.
- 3. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
- 4. Select `npm` for package type, and the appropriate repository.
- 5. The same window will show instructions on how to set up that repository in your local `~/.npmrc` file.
-
-Once the repository is configured, open a terminal and execute
+Once the repository is configured, open a terminal and execute:
 
 ```shell
 npm install -g @genesislcap/foundation-cli
 ```
 
-This command presents you with a sequence of choices so that GenX can be installed globally.
+
 
 ### Using GenX
+Now run the command
+```shell
+genx
+```
+This presents you with a sequence of choices so that GenX can be installed globally.
 
 To respond to the first question, for this tutorial, select `create application`.
 ```shell
