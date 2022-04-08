@@ -1,6 +1,6 @@
 ---
-title: ' GPAL Consolidator functions'
-sidebar_label: 'Functions'
+title: ' Advanced (GPAL functions) '
+sidebar_label: 'Advanced'
 sidebar_position: 3
 id: cons-advanced-technical-details
 ---
