@@ -10,42 +10,24 @@ id: eh-technical-details
 
 
 
-## A simple example of an event handler
+## A simple example of an Event Handler
 
-Here is a simple example of an event handler file. It defines an event handler called `Hello` and then has a `contextEventHandler` that checks for a name and sends an acknowledgement.
+Here is a simple example of an Event Handler file. It defines an Event Handler called `COUNTERPARTY_INSERT`, which inserts a counterparty into the database.
 ```kotlin
 eventHandler {
-
-    eventHandler<Hello> {
-
-        permissions {
-            auth("NAMES") {
-                field { name }
-            }
-        }
-
-        onCommit {
+    eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
+        onCommit { event ->
+            val counterparty = event.details
+            entityDb.insert(counterparty)
             ack()
-        }
-    }
-
-    contextEventHandler<Hello, String>("CONTEXT_HELLO") {
-        permissions {
-            auth("NAMES") {
-                field { name }
-            }
-        }
-
-        onValidate {
-            validationAck(validationContext = it.details.name)
         }
     }
 }
 ```
 
-## Defining an event handler in GPAL
+## Defining an Event Handler in GPAL
 
-The following imports are automatically available inside GPAL event handlers:
+The following imports are automatically available inside GPAL Event Handlers:
 
 
 import CodeBlock from '@theme/CodeBlock';
@@ -56,7 +38,7 @@ import Imports from '!!raw-loader!/examples/server/java/event-handlers/imports.j
 
 ### Automatic import
 
-The following properties are automatically available inside GPAL event handlers:
+The following properties are automatically available inside GPAL Event Handlers:
 
 ```kotlin
 val systemDefinition: SystemDefinitionService
@@ -65,26 +47,37 @@ val entityDb: AsyncEntityDb
 val metaData: MetaDataRegistry
 val evaluatorPool: EvaluatorPool
 val messageDelegator: MessageDelegator
+val networkConfiguration: NetworkConfiguration
 val serviceDetailProvider: ServiceDetailProvider
 val genesisHFT: GenesisHFT
+val injector: Injector
 val clientConnectionsManager: ClientConnectionsManager
+val typedEventManager: TypedEventManager
 ```
 
-### The eventHandler code block
+## The eventHandler code block
 
-To define an event handler, you create an `eventHandler` code block. This must have:
+To define an Event Handler, you create an `eventHandler` code block. This must have:
 
-* **Inbound and outbound message types**. An event handler requires one inbound message type (e.g. a generated dao entity or a custom defined message) and optionally an outbound message type. If a message type is not defined, the default _EventReply_ message type will apply. For example, `eventHandler<TradeInsert>` and `eventHandler<TradeInsert,TradeInsertReply>`.
-* **Optionally, a name**. The prefix `EVENT_` will always be added to this automatically. The default name will be `EVENT_<message type name>`. So, for a message type declared as `OrderInsert`, declaring an event handler block as `eventHandler<OrderInsert>{}` automatically registers the event with the name `EVENT_ORDER_INSERT`.
-* **Optionally, a boolean to define if the event handler is transactional or not**. This enables the platform to run the whole `onValidate/onCommit` block in a single ACID transaction if the database engine supports it.
+* **Inbound and outbound message types**. An Event Handler requires one inbound message type (e.g. a generated dao entity or a custom-defined message), and optionally, an outbound message type. If a message type is not defined, the default `EventReply` message type will apply. For example, `eventHandler<TradeInsert>` and `eventHandler<TradeInsert, TradeInsertReply>`.
+* **Optionally, a name**. The prefix `EVENT_` is automatically added to this name. The default name will be `EVENT_<message type name>`. So, for a message type declared as `OrderInsert`, declaring an Event Handler block as `eventHandler<OrderInsert>{}` automatically registers the event with the name `EVENT_ORDER_INSERT`.
+* **Optionally, a boolean to define if the Event Handler is transactional or not**. This enables the platform to run the whole `onValidate/onCommit` block in a single ACID transaction if the database engine supports it.
 
-Inside each event handler, you can define additional blocks and properties.
+Inside each Event Handler, you can define additional blocks and properties.
+
+### Default reply types
+
+The default reply types of an Event Handler are:
+
+* `ack`: used to signify a successful result. `ack` takes an optional parameter of `List<Map<String, Any>>`. For example, `ack(listOf(mapOf("TRADE_ID", "1")))`.
+* `nack`: used to signify an unsuccessful result. `nack` accepts either a `String` parameter or a `Throwable`. For example, `nack("Error!")` or `nack(myThrowable)`.
+* `warningNack`: used to warn the client. `warningNack`, like `nack`, accepts either a `String` parameter or a `Throwable`. For example, `warningNack("Provided User alias $userAlias will override Username $username.")` or `warningNack(myThrowable)`.
 
 ### onValidate
 
 You can declare an `onValidate` block to perform validation on each received message. The last value of the code block always needs to be the return message type.
 
-This validation step will be executed whether the event is `validate=true` or `*validate=false`.
+This validation step will be executed whether the event is `validate=true` or `validate=false`.
 
 The `onValidate` block is optional if you are using the default reply message type (`EventReply`) and will automatically be successful if not defined.
 
@@ -107,10 +100,10 @@ However, it is mandatory when using custom reply message types, and the script w
     }
 ```
 
-Kotlin’s _require_ method throws an exception with a message if the boolean expression is not what is expected, and the event handler automatically converts that exception into a corresponding `EventNack`.
+Kotlin’s `require` method throws an exception with a message if the boolean expression is not what is expected, and the event handler automatically converts that exception into a corresponding `EventNack`.
 
 In order to optimise database lookup operations, you might want to reuse some data obtained within the `onValidate` block inside your `onCommit` block. To do this, 
-use context event handlers, as shown below:
+use context Event Handlers, as shown below:
 
 ```kotlin
     contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {
@@ -131,10 +124,11 @@ use context event handlers, as shown below:
     }
 ```
 
-As the  example shows, there is an additional type defined for the context event handler. This is a _String._ This enables us to optionally return a _String_ value from our `onValidate` block (see _validationAck_ logic) and then capture it in our `onCommit` block (see _context_ lambda parameter).
+As the  example shows, there is an additional type defined for the context Event Handler. This is a `String`. It gives you the option of returning a `String` value from the `onValidate` block (see _validationAck_ logic), which can then be captured it in the `onCommit` block (see _context_ lambda parameter).
 
-Because we are creating validation context, we need to use the function `validationAck()` and not just `ack()`
+Because the example creates a validation context, the function `validationAck()` is used at the end of the `onValidate` block, and not just `ack()`.
 
+### Custom reply message type
 If you use a custom reply message type, you won’t be able to use the default `ack()` or `validationAck()` functions.  The custom message type needs to be returned from the method.
 
 For a custom message type called `TradeEvent` defined as:
@@ -151,7 +145,7 @@ data class TradeEvent(
 }
 ```
 
-With a custom message reply type called `CustomTradeEventReply` defined as:
+... and  a custom message reply type called `CustomTradeEventReply` defined as:
 
 ```kotlin
 sealed class CustomTradeEventReply : Outbound() {
@@ -161,7 +155,7 @@ sealed class CustomTradeEventReply : Outbound() {
 }
 ```
 
-you could use the example event handler below:
+... you could use the example Event Handler below:
 
 ```kotlin
     eventHandler<TradeEvent, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
@@ -173,8 +167,10 @@ you could use the example event handler below:
             require((tradeEvent.price * tradeEvent.quantity.toDouble()) < 1_000_000) { "Trade notional is too high" }
             TradeEventValidateAck()
         }
-        onCommit {
-            TradeEventAck("Trade1")
+        onCommit { event ->
+            val trade = event.details
+            val result = entityDb.insert(trade)
+            TradeEventAck(result.record.tradeId)
         }
     }
 ```
@@ -183,17 +179,17 @@ you could use the example event handler below:
 
 The `onCommit` block will be called when an event message is received with `validate = false` and has successfully passed the `onValidate` block. This is the place where you perform the real changes to the system, whether it is a database update or uploading a report to a third party. The last value of the code block always needs to be the return message type.
 
-### onException
+## onException
 
-The **onException** block can capture any exceptions thrown by the `onValidate` and `onCommit` blocks and returns the expected reply message type (as shown in the last example). This function is particularly useful if you are using a custom message type, as by default EventHandlers will attempt to translate exceptions automatically to an **EventNack** message, which might cause compatibility problems if you are using custom replies.
+The `onException` block can capture any exceptions thrown by the `onValidate` and `onCommit` blocks and returns the expected reply message type (as shown in the last example). This function is particularly useful if you are using a custom message type; by default, Event Handlers will attempt to translate exceptions automatically to an **EventNack** message, which might cause compatibility problems if you are using custom replies.
 
-### permissions and permissionCodes
+## Permissioning and permissionCodes
 
-As with other GPAL files (e.g. request server and data server), you can use a `permissions` block to define both dynamic permissions (AUTH) and fixed permissions (based on RIGHT_SUMMARY rights) if the event message type is a generated database entity. See the example below:
+As with other GPAL files (e.g. Request Server and Data Server), you can use a `permissioning` block to define both dynamic permissions (AUTH) and fixed permissions (based on RIGHT_SUMMARY rights) if the event message type is a generated database entity. See the example below:
 
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
-        permissions {
+        permissioning {
             auth(mapName = "COMPANY"){
                 COMPANY.COMPANY_NAME
             }
@@ -207,7 +203,7 @@ As with other GPAL files (e.g. request server and data server), you can use a `p
     }
 ```
 
-If your message type is not a database-generated entity,  you can still define fixed `permissionCodes` outside the permissions block:
+If your message type is not a database-generated entity,  you can still define fixed `permissionCodes` outside the permissioning block:
 
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
@@ -219,4 +215,6 @@ If your message type is not a database-generated entity,  you can still define f
         }
     }
 ```
+
+See [here](/creating-applications/defining-your-application/access-control/authorisation-over/) for more details.
 
