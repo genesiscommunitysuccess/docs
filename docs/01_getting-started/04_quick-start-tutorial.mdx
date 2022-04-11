@@ -5,14 +5,14 @@ sidebar_position: 4
 id: quick-start
 ---
 
-This short guide will enable you to see the basics of the Genesis LCNC Platform by building a very simple application. It is designed simply to get from start to finish as quickly as possible.
+This short guide will enable you to see the basics of the Genesis low-code platform by building a very simple application. It is designed simply to get from start to finish as quickly as possible.
 
 ### Pre-requisites
 
 Before you start, you need to have:
 
 - An IDE (preferably IntelliJ)
-- Credentials for accessing Genesis Atrtifactory. Contact your administrator else [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login)
+- Credentials for accessing Genesis Atrtifactory. Contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login)
 - A local or cloud linux environment for runtime 
 
 
@@ -38,7 +38,7 @@ Once installed, from the terminal, run:
 genx
 ```
 
-The following options were used for this tutorial:
+In the `genx` script, there is a series of questions; the following responses are used for this tutorial:
 
 ```shell
 ? Please select an option: create application - Generates a local application.
@@ -60,7 +60,7 @@ The following options were used for this tutorial:
 ? Application Version 1.0.0-SNAPSHOT
 ```
 
-## Define the Data Model  
+## Define the data model  
 Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application. 
 
 ### Add fields  
@@ -209,7 +209,7 @@ this.tradesGrid.addEventListener('onGridReady', () => {
 
 This ensures that the grid takes the full width.
 
-Now you need to add styles to the  file **home.styles.ts**, using the code below.
+Now you need to add styles to the  file [**home.styles.ts**](/creating-applications/defining-your-application/user-interface/front-end-basics/front-end-basics/#starting-materials), using the code below.
 
 ```css
 zero-ag-grid {
@@ -226,8 +226,7 @@ zero-ag-grid {
 }
 ```
 
-((Link to relevant web docs section))
-((Precise details needed))
+
 
 ### Form
 Here, you are going to create a form with four inputs, so a user can input details of a new trade.
@@ -270,7 +269,7 @@ public tradeSideChange(target: Select) {
 }
 ```
 
-In **home.styles.ts**, add styles to see your changes:
+In **home.styles.ts**, add [styles](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/customisation/app-specific/#styles) to see your changes:
 
 ```css
 zero-text-field, zero-select {
@@ -282,8 +281,7 @@ span:first-of-type, zero-button {
 }
 ```
 
-((Link to relevant web docs section))
-((Precise details needed))
+
 
 ### Button
 Now add a button.  The purpose of this is to insert the data from the form into the database (and the grid). 
@@ -352,6 +350,6 @@ After that:
 Now you have fully running application.
 
 ## Conclusion
-That’s it. You have quickly built a very simple application using some of the fundamental Genesis components.
+That’s it. You have quickly built a very simple application using some of the fundamental Genesis components. You can see a grid of trades. Try adding a new one.
 
 There's obviously a lot more to building enterprise-ready applications. We suggest you read through the [Defining your application](/creating-applications/defining-your-application/intro) for details of all the Genesis components and their features.
