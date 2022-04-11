@@ -1,6 +1,6 @@
 ---
-title: 'Quick Start'
-sidebar_label: 'Quick Start'
+title: 'Quick start'
+sidebar_label: 'Quick start'
 sidebar_position: 4
 id: quick-start
 ---
@@ -12,7 +12,9 @@ This short guide will enable you to see the basics of the Genesis LCNC Platform 
 Before you start, you need to have:
 
 - An IDE (preferably IntelliJ)
-- the Genesis LCNC Platform, downloaded and installed on your linux box
+- Credentials for accessing Genesis Atrtifactory. Contact your administrator else [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login)
+- A local or cloud linux environment for runtime 
+
 
 ### What you will build
 
@@ -26,16 +28,37 @@ That’s it. Just enough to get you up and running. Obviously, there is much mor
 With a lack of imagination we hope you will find trustworthy, we are going to call this example application **alpha**. You will see this reflected in the file names throughout.
 
 ## Create a new project
-The GenX CLI tool enables you to generate a blank application that will contain the front-end and back-end code. From the terminal, run:
+The GenX CLI tool enables you to seed projects, in this case we just want to generate a blank full-stack application project.
+
+For step-by-step instructions on how to install and use the tool, follow the guide on [GenX](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/using-genx/).
+
+Once installed, from the terminal, run:
 
 ```shell
 genx
 ```
 
-and follow the on-screen instructions. 
+The following options were used for this tutorial:
 
-For step-by-step instructions on how to install and use the tool, follow the guide on [GenX](/getting-started/using-genx).
-
+```shell
+? Please select an option: create application - Generates a local application.
+? Create a app in current directory Yes
+? App name alpha
+? App seed Quick Start Application
+? Overwrite existing files Yes
+? Package scope (without the @) genesislcap
+? Package name alpha
+? Create design system Yes
+? Design system name alpha
+? Base design system package (@latest will be used) @genesislcap/foundation-ui
+? Set API Host No
+? NPM Token (for the @genesislcap scope) #YOUR_TOKEN
+? Genesis Server version 6.0.0
+? Genesis Deploy plugin version 6.0.0
+? Kotlin version 1.6.10
+? Group Id global.genesis
+? Application Version 1.0.0-SNAPSHOT
+```
 
 ## Define the Data Model  
 Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application. 
@@ -63,10 +86,7 @@ fields {
 }
 ```
 
-After you have saved this file, you need to generate the fields:
-
-1. If necessary, change directory to the server project; run `cd server/jvm`.
-2. Run the command `gradle generateFields`. 
+After you have saved this file, [run genesis-generated-fields](/reference/developer/genesis-dao/#dao-generation-commands)
 
 ### Add a table 
 Now we have our fields, let's define a [table](/creating-applications/defining-your-application/data-model/tables/tables) in the file **alpha-tables-dictionary.kts**.
@@ -93,10 +113,7 @@ tables {
 }
 ```
 
-After you have saved this file, you need to generate the Data Access Objects:
-
-1. If necessary, change directory to the server project; run `cd server/jvm`.
-2. Run the command `gradle generateDao`. 
+After you have saved this file, [run genesis-generated-dao](/reference/developer/genesis-dao/#dao-generation-commands)
 
 ## Add business logic
 We have a table; now we want to be able to see its content and create new entries.

@@ -1,40 +1,53 @@
 ---
-title: 'Using GenX'
-sidebar_label: 'Using GenX'
-sidebar_position: 5
+title: 'Create project using GenX'
+sidebar_label: 'Create project using GenX'
+sidebar_position: 1
 id: using-genx
 ---
 
-GenX is a CLI tool that enables you to create skeleton projects that adhere to best practices for development on the Genesis Platform.
+GenX is a CLI tool that enables you to pull seed projects that adhere to best practices for development on the Genesis Platform.
+
+Seed projects available are from bare-bones skeleton projects to example applications
 
 ### Pre-requisites
 
 - [Node.js](https://nodejs.org/en/download/) version 16
-- a valid jfrog account
-- a valid NPM token
+- [Configure the Genesis repository](/creating-applications/getting-ready-to-develop/workstation-setup/#npmrc-setup)
 
 ### Installing GenX
 
-Before installing GenX, you need to configure access to our repository. Follow the instructions for [workstation set-up](/creating-applications/getting-ready-to-develop/workstation-setup/#npmrc-setup).
+Before installing GenX. you need to [configure the Genesis repository](/creating-applications/getting-ready-to-develop/workstation-setup/#npmrc-setup)
 
-Once the repository is configured, open a terminal and execute:
+Once the repository is configured, open a terminal and install the cli tool using this:
 
 ```shell
 npm install -g @genesislcap/foundation-cli
 ```
 
+Now we're ready to use the tool, simply type genx to start:
 
-
-### Using GenX
-Now run the command
 ```shell
 genx
 ```
-This presents you with a sequence of choices so that GenX can be installed globally.
 
-To respond to the first question, for this tutorial, select `create application`.
+This command presents you with a sequence of choices so that GenX can be installed globally.
+
+### Using GenX
+
+First up you'll be prompted to supply your Genesis artifactory credentials [used when setting up your .npmrc](/creating-applications/getting-ready-to-develop/workstation-setup/#npmrc-setup)
+
+Next, follow the instructions according to the task you're wishing to carry out. 
+
+The following is the most typical example, creating a new application:
+
 ```shell
 ? Please select an option: create application - Generates a local application. 
+```
+
+Enter the local directory you want to create the app in (uppercase letter is the default choice if nothing entered)
+
+```shell
+? Create a app in current directory (Y/n)
 ```
 
 ... and then give it an appropriate name (e.g. **alpha**):
@@ -42,7 +55,7 @@ To respond to the first question, for this tutorial, select `create application`
 ? App name alpha 
 ```
 
-Next, select `Genesis Quick Start Appliction` for **App seed**.
+Next, select Seed application you wish to base your project on:
 ```shell
 ? App seed 
 
@@ -51,7 +64,7 @@ Next, select `Genesis Quick Start Appliction` for **App seed**.
 
 Choose whether to overwrite existing files. The default is **No**.
 ```shell
-? Overwrite existing files (yes/No)
+? Overwrite existing files (y/N)
 ```
 
 This will start the download of dependencies. 
@@ -89,7 +102,7 @@ The next prompts concern the back-end part of the application.
 
 The first prompt is for which Genesis Server version is to be used:
 ```shell
-? Genesis Server version 5.6.1 
+? Genesis Server version 6.0.0
 ```
 
 ... followed by the Gradle deploy plugin version.
@@ -100,7 +113,7 @@ At the time of writing, the same version as the Genesis Server must be used.
 :::
 
 ```shell
-? Genesis Deploy plugin version 5.6.1 
+? Genesis Deploy plugin version 6.0.0
 ```
 
 Then specify the kotlin version. The latest tested version is 1.6.10:
@@ -119,3 +132,5 @@ Then specify the kotlin version. The latest tested version is 1.6.10:
 ```
 
 Press **Enter** and you should be greeted by a message saying that the application was created successfully.
+
+Open the project in IntelliJ to start building!

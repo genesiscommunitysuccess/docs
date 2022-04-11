@@ -1,7 +1,7 @@
 ---
 id: server-project-setup
-title: Server project setup
-sidebar_label: Server project setup
+title: Maven server project setup
+sidebar_label: Maven server project setup
 sidebar_position: 1
 
 ---

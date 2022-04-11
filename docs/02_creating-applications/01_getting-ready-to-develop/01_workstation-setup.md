@@ -42,11 +42,13 @@ You will be provided access details during your on-boarding.
 
 1. Create a `.npmrc` file in or above your intended project directory, likely your user home directory.
 
-2. Login to [JFrog](http://genesisglobal.jfrog.io), click your name in the top right, and
-click 'Set Me Up'. Enter `npm` and `npm` in the `Package Type` and `Repository` input fields respectively. 
-Next type the same password you used to login into the `Type password to insert your credentials to the code snippets`
-input and hit enter. Scroll down to the bottom of the page and copy and paste the .npmrc sample into the file you
-created in the previous step. This should look something like this:
+
+ 2. Using your credentials, login to the [Genesis repository website](http://genesisglobal.jfrog.io).
+ 3. Click on the `Welcome <username>` on the top right corner.
+ 4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
+ 5. Select `npm` for package type, and the appropriate repository.
+ 6. Next type the same password you used to login into the `Type password to insert your credentials to the code snippets` input and hit enter. 
+ 7. Scroll down to the bottom of the page and copy and paste the .npmrc sample into the file you created in the previous step. This should look something like this:
 
 ```shell
 @<SCOPE>:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/
@@ -56,10 +58,10 @@ created in the previous step. This should look something like this:
 //genesisglobal.jfrog.io/artifactory/api/npm/npm/:always-auth=true
 ```
 
-3. Replace `<SCOPE>` with `genesislcap`, so that the line reads:
+8. Replace `<SCOPE>` with `genesislcap`, so that the line reads:
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
 
-4. Save the file and open a terminal under the directory path of this `.npmrc` file and type:
+9. Save the file and open a terminal under the directory path of this `.npmrc` file and type:
 `npm info @genesislcap/foundation-ui`. If setup was successful, you should see a response like:
 
 ```shell
@@ -67,4 +69,5 @@ created in the previous step. This should look something like this:
 Genesis Foundation UI
 ```
 
-Please [contact us](https://genesis.global/contact-us/) if you run into any problems.
+Please  [reach out to us](mailto:support@genesis.global?subject=.npmrc%20Setup) if you run into any problems.
+
