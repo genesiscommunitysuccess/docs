@@ -5,7 +5,7 @@ sidebar_position: 1
 title: 'Workstation setup'
 ---
 
-Genesis Application Developers need to access on-premise workstations through remote technologies like Citrix, VMware etc.
+Genesis application developers need to access on-premise workstations through remote technologies like Citrix, VMware etc.
 
 ## Recommended hardware and operating system
 
@@ -38,17 +38,16 @@ Note that you can use a range of IDEs (for example, Eclipse) with the Genesis lo
 ## .npmrc setup
 
 Access to the Genesis packages requires you to configure the `@genesislcap` scope of `npm` to use our jfrog registry.
-You will be provided access details during your on-boarding.
+You will be provided with access details during your on-boarding.
 
-1. Create a `.npmrc` file in or above your intended project directory, likely your user home directory.
-
-
- 2. Using your credentials, login to the [Genesis repository website](http://genesisglobal.jfrog.io).
+1. Create an `.npmrc` file in or above your intended project directory; in most cases, this will be your user home directory.
+ 2. Using your credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
  3. Click on the `Welcome <username>` on the top right corner.
  4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
  5. Select `npm` for package type, and the appropriate repository.
- 6. Next type the same password you used to login into the `Type password to insert your credentials to the code snippets` input and hit enter. 
- 7. Scroll down to the bottom of the page and copy and paste the .npmrc sample into the file you created in the previous step. This should look something like this:
+ 6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in into theGenesis repository on jfrog.) Then press Enter. 
+ ![](/img/set-me-up.png)
+ 7. Scroll down to the bottom of the page, where a code sample for .nppmrc is displayed. Copy this and paste it into the file you created in the previous step. This should look something like this:
 
 ```shell
 @<SCOPE>:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/
@@ -62,7 +61,7 @@ You will be provided access details during your on-boarding.
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
 
 9. Save the file and open a terminal under the directory path of this `.npmrc` file and type:
-`npm info @genesislcap/foundation-ui`. If setup was successful, you should see a response like:
+`npm info @genesislcap/foundation-ui`. If set-up was successful, you should see a response like:
 
 ```shell
 @genesislcap/foundation-ui@0.0.26 | UNLICENSED | deps: 23 | versions: 111
