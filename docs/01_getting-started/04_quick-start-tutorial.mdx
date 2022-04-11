@@ -91,7 +91,7 @@ After you have saved this file, [run genesis-generated-fields](/reference/develo
 ### Add a table 
 Now we have our fields, let's define a [table](/creating-applications/defining-your-application/data-model/tables/tables) in the file **alpha-tables-dictionary.kts**.
 
-We are defining one single table, containing all of our fields.
+We are defining one single table, containing all our fields.
 
 TRADE_ID is the primaryKey, which will be auto-generated.
 
@@ -161,7 +161,7 @@ You are going to update these files so that the application displays a single pa
 
 ### Grid
 
-We want to be able to insert grid with data into our page, for this we define tutorialColumnDefs in **home.template.ts**.
+We want to be able to insert a grid with data into our page. For this, define `tutorialColumnDefs` in **home.template.ts**.
 
 First, define `tutorialColumnDefs`:
 
@@ -209,7 +209,7 @@ this.tradesGrid.addEventListener('onGridReady', () => {
 
 This ensures that the grid takes the full width.
 
-Now you need to add styles to the  file [**home.styles.ts**](/creating-applications/defining-your-application/user-interface/front-end-basics/front-end-basics/#starting-materials), using the code below.
+Now you need to add [styles](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/customisation/app-specific/#styles) to the  file [**home.styles.ts**](/creating-applications/defining-your-application/user-interface/front-end-basics/front-end-basics/#starting-materials), using the code below.
 
 ```css
 zero-ag-grid {
@@ -335,7 +335,7 @@ At this point, the application is now able to display and receive data.
 
 ## Run the application
 
-See [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/configure-deployment-plugin/) details on how to configure the Genesis deploy plugin.
+See [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/configure-deployment-plugin/) for details on how to configure the Genesis deploy plugin.
 
 Now you can run the application from the front end, view the table of data and add the details of a new trade.
 
