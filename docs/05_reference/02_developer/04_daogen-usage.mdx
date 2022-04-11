@@ -10,25 +10,25 @@ Genesis platform development is best served using DAO (Database Access Objects).
 There are five hierarchical levels:
 
 1. System Definition
-    - Firstly system definition items, used for common system overrides. It is important that these are first, as we can then make the rest configurable, based on their se-tup (e.g. turn fields/tables on and off with a boolean system definition item)
+    - Firstly, system definition items, used for common system overrides. It is important that these are first, as we can then make the rest configurable, based on their set-up (e.g. turn fields/tables on and off with a boolean system definition item)
 2. Fields
-    - Fields are the top level of the dao, they can be shared amongst tables and so are built ahead of tables
+    - Fields are the top level of the dao; they can be shared amongst tables and so are built ahead of tables
 3. Tables
     - Create the Daos for all of the system tables
 4. HFT
-    - The HFT layer is a cache sitting above the database for rapid access, it is used for rapid update data such us price
+    - The HFT layer is a cache sitting above the database for rapid access; it is used for rapid update data such us price
 5. Views
-    - Views are the final layer and used in many genesis components. They enable us to take fields from more than one table to create a coherent view of information 
+    - Views are the final layer and are used in many Genesis components. They enable us to take fields from more than one table to create a coherent view of information 
 
 Each layer uses the layers above in the hierarchy, so `fields` can use `system definitions` and `views` can use all the other four.
 
 ## Running the commands
 
-Using intelliJ's gradle option, you will have a project with  a [project_name]-dictionary-cache submodule, which contains the genesis dao generate tasks.
+Using intelliJ's gradle option, you will have a project with  a _project_name_-dictionary-cache submodule, which contains the genesis dao generate tasks.
 
 ![](/img/gradle-intellij-menu.png)
 
-For each of the following has a sub-menu that takes you to the `assemble` build task:
+Each of the following has a sub-menu that takes you to the `assemble` build task:
 
 ![](/img/gradle-intellij-assemble.png)
 
