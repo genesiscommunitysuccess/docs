@@ -25,7 +25,7 @@ Take a tour of [Genesis Studio](#) in a sand-boxed environment. [^1]
 - [Authentication](authentication.md)
 
 
-[^1]: Live Genesis Studio Sandbox is coming soon. [Register to get notified](https://genesis.global/contact-us/) 
+[^1]: Live Genesis Studio Sandbox is coming soon. [Register to get notified](mailto:support@genesis.global?subject=Genesis%20Studio%20Sandbox)
 
 ## Introducing Genesis Studio
 The Genesis Studio enables you to create key parts of your application at speed with simple visual tools.

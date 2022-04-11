@@ -1,0 +1,43 @@
+---
+title: 'Genesis Dao'
+sidebar_label: 'Genesis Dao'
+sidebar_position: 4
+id: genesis-dao
+---
+
+Genesis platform development is best served using DAO (Database Access Objects) 
+
+There are 5 hierarchical levels:
+
+1. System Definition
+    - Firstly system definition items, used for common system overrides. Important these are first as we can then make the rest configurable based on their setup (e.g. turn fields/table on and off with a boolean system defintiion item)
+1. Fields
+    - Fields are the top level of the dao, they can be shared amongst tables and so are built ahead of tables
+1. Tables
+    - Create the Daos for all of the system tables
+1. HFT
+    - The HFT layer is a cache sitting above the database for rapid access, it is used for rapid update data such us price
+1. Views
+    - Views are the final layer and utilised in many genesis components. They allow us to 
+
+Each utilizes the layers above in the hierarchy, so `fields` can use `system definitions` and `views` can utilise all of the other four.
+
+## Running the commands
+
+Using intelliJ's gradle option, you will have a project with [project_name]-dictionary-cache submodule which contains the genesis dao generate tasks
+
+![](/img/gradle-intellij-menu.png)
+
+For each of the following will have a sub-menu taking you to the `assemble` build task
+
+![](/img/gradle-intellij-assemble.png)
+
+### DAO Generation Commands
+
+|Dao Type|Gradle Task|
+|--|--|
+|System Definition|`genesis-generated-sysdef`|
+|Fields|`genesis-generated-fields`|
+|Tables|`genesis-generated-dao`|
+|HFT|`genesis-generated-hft`|
+|Views|`genesis-generated-view`|

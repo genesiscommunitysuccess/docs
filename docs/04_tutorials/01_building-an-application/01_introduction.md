@@ -18,7 +18,7 @@ Before you follow this exercise, you need to have the Genesis low-code platform 
 In short, you need to understand:
 
 * The [overall architecture of a Genesis application](/getting-started/what-is-the-genesis-low-code-platform/)
-* How to [create a new project](/creating-applications/creating-a-new-project/server-project-setup/)
+* How to [create a new project](/creating-applications/creating-a-new-project/alternative_options_supported/server-project-setup/)
 
 Before you start, make sure you have the platform and all the relevant tools [installed](/creating-applications/getting-ready-to-develop/running-applications/install-in-three-steps/). The Genesis low-code platform must be installed on a server, local vm, wsl or cloud instance (genesis and auth).
 
