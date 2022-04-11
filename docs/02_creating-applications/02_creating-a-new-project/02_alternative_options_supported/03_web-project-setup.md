@@ -104,4 +104,4 @@ Boolean options have two forms:
 
 If neither option is supplied, the flag remains in its default state, as listed [above](#cli-commands).
 
-[^1]: Application scaffolding is coming soon. [Register to get notified](https://genesis.global/contact-us/)
+[^1]: Application scaffolding is coming soon. [Register to get notified](mailto:support@genesis.global?subject=Web%20Project%20Setup-%20Application%20Scaffolding)
