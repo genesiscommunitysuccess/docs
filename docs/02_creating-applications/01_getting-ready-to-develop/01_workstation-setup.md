@@ -45,8 +45,10 @@ You will be provided with access details during your on-boarding.
  3. Click on the `Welcome <username>` on the top right corner.
  4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
  5. Select `npm` for package type, and the appropriate repository.
- 6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in into theGenesis repository on jfrog.) Then press Enter. 
+ 6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in into the Genesis repository on jfrog.) Then press Enter. 
+
  ![](/img/set-me-up.png)
+
  7. Scroll down to the bottom of the page, where a code sample for .nppmrc is displayed. Copy this and paste it into the file you created in the previous step. This should look something like this:
 
 ```shell
