@@ -55,7 +55,7 @@ There is more information about `AbstractGenesisTestSupport` in the section on [
 
 We are now ready to begin writing tests for our Data Server.
 
-Firstly, we send a DATA_LOGON message to our Data Sever, our Data Sever should then respond with the current snapshot of data. Any changes will then be automatically sent to us as a consumer.
+Firstly, we send a DATA_LOGON message to our Data Sever; our Data Sever should then respond with the current snapshot of data. Any changes will then be automatically sent to us as a consumer.
 
 We then need to trigger a change on the database. Our Data Server will see this change and send the update to us.
 
