@@ -9,9 +9,9 @@ id: request-servers
 
 Request Servers, (otherwise known as request/replies and often shortened to reqrep) retrieve a snapshot of data from a table or a view on demand and serve it up to the requesting client. They are predominantly used for serving the UI.
 
-Request Servers will reply with a single response. Once the response is received, the transaction is over (unlike a [data server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers/), which stays connected to the client and pushes updates).
+Request Servers will reply with a single response. Once the response is received, the transaction is over (unlike a [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers/), which stays connected to the client and pushes updates).
 
-Request servers have other features distinct from a data server, such as allowing one-to-many joins, and even completely custom request servers for serving up non-linear data (e.g. sets of disjointed data to serve up to a report).
+Request Servers have other features distinct from a Data Server, such as allowing one-to-many joins, and even completely custom request servers for serving up non-linear data (e.g. sets of disjointed data to serve up to a report).
 
 ```kotlin
   requestReply("TRADE", TRADE_VIEW) {

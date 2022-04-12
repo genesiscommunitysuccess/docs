@@ -34,7 +34,7 @@ Below is an example of a transactional Event Handler that does this. For this ex
 ```
 
 
-## Auto Auditing
+## Auto auditing
 
 If the Event Handler message type is a database-generated entity that is auditable, Genesis automatically creates an audit record to the corresponding audit table for each database write operation. The audit fields are filled with the following values:
 
@@ -211,5 +211,33 @@ With this xml configuration, you can look up the user's rights in the database a
         </acceptPendingApproval>
         ...
 ```
+## Defining an Event Handler in GPAL
 
+The following imports are automatically available inside GPAL Event Handlers:
+
+
+import CodeBlock from '@theme/CodeBlock';
+import Imports from '!!raw-loader!/examples/server/java/event-handlers/imports.java';
+
+<CodeBlock className="language-java">{Imports}</CodeBlock>
+
+
+### Automatic import
+
+The following properties are automatically available inside GPAL Event Handlers:
+
+```kotlin
+val systemDefinition: SystemDefinitionService
+val rxDb: RxDb
+val entityDb: AsyncEntityDb
+val metaData: MetaDataRegistry
+val evaluatorPool: EvaluatorPool
+val messageDelegator: MessageDelegator
+val networkConfiguration: NetworkConfiguration
+val serviceDetailProvider: ServiceDetailProvider
+val genesisHFT: GenesisHFT
+val injector: Injector
+val clientConnectionsManager: ClientConnectionsManager
+val typedEventManager: TypedEventManager
+```
 

@@ -9,10 +9,20 @@ id: ds-technical-details
 
 [Introduction](/creating-applications/defining-your-application/user-interface/data-servers/data-servers/) | [Where to define](/creating-applications/defining-your-application/user-interface/data-servers/ds-where-to-define/) | [Basics](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/) |  [Advanced](/creating-applications/defining-your-application/user-interface/data-servers/ds-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/user-interface/data-servers/ds-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/user-interface/data-servers/ds-configure-runtime/) | [Testing](/creating-applications/defining-your-application/user-interface/data-servers/ds-testing/)
 
+Let's make things really simple.
+- A Data Server is a component that supplies streaming real-time data to the front end of your application.
+- You define your application's Data Server in a kotlin script file.
+- In this file, you define specific `query` codeblocks, each of which is designed to supply different sets of data.
+- Each `query` listens to a specified table or view; when data on that source changes, it publishes the changes. 
+- A `query` can include a number of other subtleties, such as `where` clauses or ranges, so that you can create code that matches your precise requirements.
+- If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, covering all the tables and views in your data model. You can edit this file to add sophistication to the component.
+- Otherwise, you can build your kts by defining each `query` codeblock from scratch. 
+
 
 ## The simplest possible definition
 
-A Data Server consists of one or more queries. Each query listens to a specified table or view, and publishes that data whenever it changes. In this simple example, there is one query, which publishes changes to the table INSTRUMENT_DETAILS.
+Your kotlin script file contains all the queries you create. These are wrapped in a single `dataServer` statement.
+Our example below shows a file with a single query, which publishes changes to the table INSTRUMENT_DETAILS.
 
 
 ```kotlin
@@ -182,7 +192,7 @@ By contrast, the traditional criteria evaluator needs the field types to match t
 
 ## Backwards joins
 
-Each query in a Data Server creates, what is effectively, an open connection between each requesting user and the Data Server. After the initial send of all the data, the Data Server only sends modifications, deletions and insertions in real time.
+Each query in a Data Server creates what is effectively an open connection between each requesting user and the Data Server. After the initial send of all the data, the Data Server only sends modifications, deletions and insertions in real time.
 
 For queries with backwards joins enabled, the primary table and all joined tables and views are actively monitored. Any changes to these tables and views are sent automatically.
 
@@ -217,7 +227,7 @@ dataServer {
 
 ## Indices
 
-Here is an an example of a simple index:
+Here is an example of a simple index:
 
 ```kotlin
 dataServer {
@@ -237,6 +247,6 @@ The `indices` (optional) block defines additional indexing at the query level. W
 
 There are two scenarios in which an index can be used:
 * Optimising query criteria search. If a Data Server client specifies criteria such as `QUANTITY > 1000 && QUANTITY < 5000`, the Data Server will automatically select the best matching index. In our example, it would be `SIMPLE_QUERY_BY_QUANTITY`. This means we don't need to scan all the query rows stored in the Data Server memory-mapped file cache; instead, we perform a very efficient indexed search.
-* Index specifed in the Data Server client. If an `ORDER_BY` value is received as part of the `DATA_LOGON` process, the Data Server will use a specific index to query the data. The data will be returned to the client in ascending order, based on the index field definition. See more at Advanced technical details.
+* Index specified in the Data Server client. If an `ORDER_BY` value is received as part of the `DATA_LOGON` process, the Data Server will use a specific index to query the data. The data will be returned to the client in ascending order, based on the index field definition. See more at Advanced technical details.
 
 *Important*: Index definitions are currently limited to *unique* indices. As quantity does not have a unique constraint in the example definition shown above, we need to add SIMPLE_ID to the index definition to ensure we maintain uniqueness.

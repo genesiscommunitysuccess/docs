@@ -8,7 +8,14 @@ id: eh-technical-details
 [Introduction](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/)  | [Where to define](/creating-applications/defining-your-application/business-logic/event-handlers/event-handler-define/) | [Basics](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/) |  [Advanced](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/business-logic/event-handlers/eh-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/business-logic/event-handlers/eh-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/business-logic/event-handlers/eh-testing/)
 
 
-
+Let's make things really simple.
+- The Event Handler is the component that enables the application to write to the database.
+- You define your application's Event Handler in a kotlin script file.
+- In this file, you define specific `eventHandler` codeblocks, each of which has full access to the database. 
+- Each `eventHandler` can be invoked from the front end, from other `eventHandler` codeblocks, or from custom components in the application.
+of the code.
+- If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, creating basic insert, modify and delete `eventHandler` code blocks for all the tables and views in your data model. You can edit this file to add sophistication to the component.
+- Otherwise, you can build your kts by defining each `eventHandler` codeblock from scratch. 
 
 ## A simple example of an Event Handler
 
@@ -25,57 +32,32 @@ eventHandler {
 }
 ```
 
-## Defining an Event Handler in GPAL
-
-The following imports are automatically available inside GPAL Event Handlers:
-
-
-import CodeBlock from '@theme/CodeBlock';
-import Imports from '!!raw-loader!/examples/server/java/event-handlers/imports.java';
-
-<CodeBlock className="language-java">{Imports}</CodeBlock>
-
-
-### Automatic import
-
-The following properties are automatically available inside GPAL Event Handlers:
-
-```kotlin
-val systemDefinition: SystemDefinitionService
-val rxDb: RxDb
-val entityDb: AsyncEntityDb
-val metaData: MetaDataRegistry
-val evaluatorPool: EvaluatorPool
-val messageDelegator: MessageDelegator
-val networkConfiguration: NetworkConfiguration
-val serviceDetailProvider: ServiceDetailProvider
-val genesisHFT: GenesisHFT
-val injector: Injector
-val clientConnectionsManager: ClientConnectionsManager
-val typedEventManager: TypedEventManager
-```
 
 ## The eventHandler code block
 
-To define an Event Handler, you create an `eventHandler` code block. This must have:
+Each individual `eventHandler` code block must have:
 
 * **Inbound and outbound message types**. An Event Handler requires one inbound message type (e.g. a generated dao entity or a custom-defined message), and optionally, an outbound message type. If a message type is not defined, the default `EventReply` message type will apply. For example, `eventHandler<TradeInsert>` and `eventHandler<TradeInsert, TradeInsertReply>`.
 * **Optionally, a name**. The prefix `EVENT_` is automatically added to this name. The default name will be `EVENT_<message type name>`. So, for a message type declared as `OrderInsert`, declaring an Event Handler block as `eventHandler<OrderInsert>{}` automatically registers the event with the name `EVENT_ORDER_INSERT`.
 * **Optionally, a boolean to define if the Event Handler is transactional or not**. This enables the platform to run the whole `onValidate/onCommit` block in a single ACID transaction if the database engine supports it.
 
-Inside each Event Handler, you can define additional blocks and properties.
+Inside each `eventHandler`, you can define additional blocks and properties.
 
 ### Default reply types
 
-The default reply types of an Event Handler are:
+The default reply types of an `eventHandler` are:
 
 * `ack`: used to signify a successful result. `ack` takes an optional parameter of `List<Map<String, Any>>`. For example, `ack(listOf(mapOf("TRADE_ID", "1")))`.
 * `nack`: used to signify an unsuccessful result. `nack` accepts either a `String` parameter or a `Throwable`. For example, `nack("Error!")` or `nack(myThrowable)`.
 * `warningNack`: used to warn the client. `warningNack`, like `nack`, accepts either a `String` parameter or a `Throwable`. For example, `warningNack("Provided User alias $userAlias will override Username $username.")` or `warningNack(myThrowable)`.
 
+### onCommit
+
+The `onCommit` block is the place where you perform the real changes to the system, whether it is a database update or uploading a report to a third party. It will be called when an event message is received with `validate = false` and has successfully passed the `onValidate` block. The last value of the code block always needs to be the return message type.
+
 ### onValidate
 
-You can declare an `onValidate` block to perform validation on each received message. The last value of the code block always needs to be the return message type.
+Before your `onCommit`, you can declare an `onValidate` block to perform validation on each received message. The last value of the code block always needs to be the return message type.
 
 This validation step will be executed whether the event is `validate=true` or `validate=false`.
 
@@ -175,11 +157,7 @@ sealed class CustomTradeEventReply : Outbound() {
     }
 ```
 
-### onCommit
-
-The `onCommit` block will be called when an event message is received with `validate = false` and has successfully passed the `onValidate` block. This is the place where you perform the real changes to the system, whether it is a database update or uploading a report to a third party. The last value of the code block always needs to be the return message type.
-
-## onException
+### onException
 
 The `onException` block can capture any exceptions thrown by the `onValidate` and `onCommit` blocks and returns the expected reply message type (as shown in the last example). This function is particularly useful if you are using a custom message type; by default, Event Handlers will attempt to translate exceptions automatically to an **EventNack** message, which might cause compatibility problems if you are using custom replies.
 
@@ -216,5 +194,5 @@ If your message type is not a database-generated entity,  you can still define f
     }
 ```
 
-See [here](/creating-applications/defining-your-application/access-control/authorisation-over/) for more details.
+See [here](/creating-applications/defining-your-application/access-control/authorisation-over/) for more details on authorisation.
 

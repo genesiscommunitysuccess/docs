@@ -36,3 +36,51 @@ requestReplies {
     }
 }
 ```
+
+In the example below, we have modified the example above to include two restrictions:
+- The maximum number of rows to be returned is 5.
+- The process will time out if no response is received for 15 seconds.
+
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT_DETAILS) {
+
+        rowReturnLimit = 5
+        timeout = 15
+
+        request {
+            ALTERNATE_TYPE
+            INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
+        }
+
+        reply {
+            INSTRUMENT_ID
+            INSTRUMENT_NAME
+            LAST_TRADED_PRICE
+            VWAP
+            SPREAD
+            TRADED_CURRENCY
+            EXCHANGE_ID
+        }
+    }
+}
+```
+
+Below is an example of a file where the single `eventHandler` code block includes a `where` clause. You can find out more about this example on the [Basics](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/#where-block) page.
+
+```kotlin
+requestReplies {
+    requestReply("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS) {
+
+        request {
+            ALTERNATE_TYPE
+        }
+
+        where { row, parameters ->
+            "ALLL3" == row.instrumentCode &&                         
+             parameters.getString("ALTERNATE_TYPE") in listOf("RIC", "BLOOMBERG") 
+        }
+    }
+}
+```
+

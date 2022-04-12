@@ -10,7 +10,7 @@ id: rs-technical-details
 
 
 Let's make things really simple.
-- A Request Reply is a component that supplies static data to the front end of your application.
+- A Request Server is a component that supplies static data to the front end of your application.
 - You define your application's Request Reply in a kotlin script file.
 - In this file, you define specific `requestReply` codeblocks, each of which is designed to supply different sets of data; this could be a table or view, or just a subset of the fields in a table or view.
 - A `requestReply` can include a number of other subtleties, such as `where` clauses or ranges, so that you can create code that matches your precise requirements.
@@ -49,7 +49,7 @@ With all those basic `requestReply` codeblocks we have seen so far, all the fiel
 
 We can add some precision using `request` and `reply` blocks within a `requestReply` statement.
 
-When defining a `request` block, you must define at least one primary key or index.
+When defining a `request` block, you must define at least one primary key or index. In the example below, the fields `ALTERNATE_TYPE` AND `INSTRUMENT_CODE` together form the primary key.
 
 
 ```kotlin
@@ -74,7 +74,7 @@ requestReplies {
 }
 ```
 Note the following:
-- When you do not define a `request` block, the primary key is the default request field.
+- When you do not define a `request` block, the primary key for the table or view is used as the default request field.
 - When you do not define a `reply block`, all the fields will be returned.
 
 ### Specifying derived fields
@@ -109,7 +109,7 @@ requestReplies {
 
 ### Where block
 
-The `where` block enables you to specify the conditions for which data should be returned. The where block can take two optional parameters:
+The `where` block enables you to specify the conditions for which data should be returned. The `where` block can take two optional parameters:
 * instrumentDetails - this represents a row from the table or view
 * parameters - this a GenesisSet that holds the parameters that are passed on the request; the parameters can be accessed by using the GenesisSet getters to access named parameters
 

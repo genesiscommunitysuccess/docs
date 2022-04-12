@@ -181,7 +181,7 @@ are always selected in the order they are specified in the index.
 
 ## Client-side (runtime) options
 
-When a client initiates a subscription to a Data Server by sending a **DATA_LOGON** message, there are several options that can be specified. All the options are **optional**; you don't have to specify any to initiate a subscription. 
+When a client initiates a subscription to a Data Server by sending a **DATA_LOGON** message, there are several options that can be specified. None of these options is mandatory; you don't have to specify any to initiate a subscription. 
 The features of the options are explained below.
 
 
@@ -202,7 +202,7 @@ You can mix and match both common expressions and custom groovy expressions usin
 
 ### Common expressions
 
-The Genesis Platform provides common expressions that are especially helpful for `Date` and `DateTime` client-side filtering. Common expressions are called using the `Expr` binding and take one or two parameters:
+The platform provides common expressions that are especially helpful for `Date` and `DateTime` client-side filtering. Common expressions are called using the `Expr` binding and take one or two parameters:
 
 - The first parameter is always a query field. In the case of date/datetime, this can either represent the epoch time in milliseconds or a `String` value representing the actual `Date` and `DateTime` in the supported formats.
 - The second parameter (if applicable) is a predefined `String` value

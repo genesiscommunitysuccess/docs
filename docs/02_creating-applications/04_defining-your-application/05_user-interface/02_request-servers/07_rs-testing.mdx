@@ -11,7 +11,7 @@ id: rs-testing
 
 It is good practice to test your Request Servers. This is the best way to prevent any unexpected side effects of changes to your application over time.
 
-Genesis Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Request Server configuration is used to create our Request Server. We also need to add the required packages and genesis home. 
+The Genesis platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Request Server configuration is used to create our Request Server. We also need to add the required packages and genesis home. 
 
 ```kotlin
 class ReqRepTests : AbstractGenesisTestSupport<Reply<*>>(
@@ -26,9 +26,9 @@ class ReqRepTests : AbstractGenesisTestSupport<Reply<*>>(
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, please see the [testing docs](/creating-applications/defining-your-application/user-interface/request-servers/rs-testing/).
+For more information about `AbstractGenesisTestSupport`, see the [testing docs](/creating-applications/defining-your-application/user-interface/request-servers/rs-testing/).
 
-Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different depending on if you are using the standard approach to Request Servers or using [custom Request Servers](/creating-applications/defining-your-application/user-interface/request-servers/rs-advanced-technical-details/#custom-request-servers).
+Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](/creating-applications/defining-your-application/user-interface/request-servers/rs-advanced-technical-details/#custom-request-servers).
 
 ### Standard Request Servers
 
