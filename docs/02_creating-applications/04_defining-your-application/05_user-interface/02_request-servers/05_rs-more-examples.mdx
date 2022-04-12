@@ -9,7 +9,7 @@ id: rs-more-examples
 [Introduction](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/) | [Where to define](/creating-applications/defining-your-application/user-interface/request-servers/rs-where-to-define/) | [Basics](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/) |  [Advanced](/creating-applications/defining-your-application/user-interface/request-servers/rs-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/user-interface/request-servers/rs-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/user-interface/request-servers/rs-configure-runtime/) | [Testing](/creating-applications/defining-your-application/user-interface/request-servers/rs-testing/)
 
 
-The [`where` block](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/#where-block) below filters out any data that does not meet the conditions. All data that is returned will have an instrumentCode equal to the request parameter INSTRUMENT_CODE. 
+Below is a fairly simple `requestReply` codeblock with standard `request` and `reply` statements. The [`where` block](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/#where-block) below filters out any data that does not meet the conditions. All data that is returned will have an instrumentCode equal to the request parameter INSTRUMENT_CODE. 
 
 ```kotlin
 requestReplies {

@@ -32,7 +32,7 @@ requestReplies {
 
 ### Multiple Request Servers
 
-Almost certainly, your application will need to have more than one `requestReply`. So, let us state the obvious and show you a file with two `requestReply` codeblocks. Again each is the simplest kind you could possibly have.
+Almost certainly, your application will need to have more than one `requestReply`. So, let us state the obvious and show you a file with two `requestReply` codeblocks. Again, each is the simplest kind you could possibly have.
 
 ```kotlin
 requestReplies {
@@ -111,10 +111,10 @@ requestReplies {
 
 The `where` block enables you to specify the conditions for which data should be returned. The where block can take two optional parameters:
 * instrumentDetails - this represents a row from the table or view
-* parameters - this a GenesisSet that holds the parameters that are passed on the request. The parameters can be accessed by using the GenesisSet getters to access named parameters.
+* parameters - this a GenesisSet that holds the parameters that are passed on the request; the parameters can be accessed by using the GenesisSet getters to access named parameters
 
-In this contrived example below, the where block filters rows whose instrumentCode is not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG". 
-The row parameter represents the rows returned from the table or view defined at the top of the requestReply definition, in this case INSTRUMENT_DETAILS.
+In this contrived example below, the `where` block filters rows whose instrumentCode is not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG". 
+The row parameter represents the rows returned from the table or view defined at the top of the `requestReply` definition, in this case INSTRUMENT_DETAILS.
 
 ```kotlin
 requestReplies {
