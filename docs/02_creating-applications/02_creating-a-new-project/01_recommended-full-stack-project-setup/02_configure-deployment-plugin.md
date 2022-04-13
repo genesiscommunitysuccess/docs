@@ -1,6 +1,6 @@
 ---
-title: 'Configure Deployment Plugin'
-sidebar_label: 'Configure Deployment Plugin'
+title: 'Configure Deployment plugin'
+sidebar_label: 'Configure Deployment plugin'
 sidebar_position: 2
 id: configure-deployment-plugin
 ---
@@ -24,9 +24,9 @@ plugins {
 ```
 
 ## Introduction
-The Genesis deploy plugin provides several tasks that help to set up the Genesis environment so that you can deploy a project to it. It can be used on Linux machines (local and over SSH) or Windows machines with WSL support.
+The Genesis Deploy plugin provides several tasks that help to set up the Genesis environment so that you can deploy a project to it. It can be used on Linux machines (local and over SSH) or Windows machines with WSL support.
 
-## Configuration
+## Configurations
 
 ### Local Linux host 
 This is the easiest set-up, and applies if your development workstation is on a Linux machine.
@@ -50,11 +50,11 @@ wsl-distro=<name-of-the-wsl-distro>
 wsl-user=<wsl-username>
 ```
 
-`genesis-home` - This is a mandatory property that is a path on the WSL distribution. Example: `/home/user1/genesis560`
-
-`wsl-distro` - This is a mandatory property that is the name of the WSL distribution. Example: `CentOS7`
-
-`wsl-user` - This is an optional property. If omitted, the default WSL user will be used. Example: `user1` 
+| Entry  |  Description | 
+|---|---|
+|`genesis-home`|  This is a mandatory property that is a path on the WSL distribution. Example: `/home/user1/genesis560` |
+|`wsl-distro`|  This is a mandatory property that is the name of the WSL distribution. Example: `CentOS7` |
+|`wsl-user`|  This is an optional property. If omitted, the default WSL user will be used. Example: `user1` |
 
 Sample configuration:
 ```properties
@@ -92,8 +92,10 @@ The Genesis deploy plugin comes with several tasks. They are grouped under `gene
 
 ### Genesis set-up tasks
 
-`install-genesis-distribution` - this task copies and unzips the Genesis distribution specified as a dependency.
-`setupEnvironment` - this task executes `install-genesis-distribution` and then configures the installed distribution.
+| Task  |  Description | 
+|---|---|
+|`install-genesis-distribution`|  This task copies and unzips the Genesis distribution specified as a dependency. |
+|`setupEnvironment`|  This task executes `install-genesis-distribution` and then configures the installed distribution. |
 
 Usage:
 ```shell
@@ -102,7 +104,10 @@ Usage:
 
 ### Genesis deploy tasks
 
-`deploy-<project-name>-project.zip` - this task deploys the current project to the Genesis environment specified for `genesis-home`. Note that `<project-name>` must be replaced with the actual project name. For example, if the project you work on is called `alpha`, then this task will be `deploy-alpha-project.zip`
+| Task  |  Description | 
+|---|---|
+|`deploy-<project-name>-project.zip`|  This task deploys the current project to the Genesis environment specified for `genesis-home`. Note that `<project-name>` must be replaced with the actual project name. For example, if the project you work on is called `alpha`, then this task will be `deploy-alpha-project.zip` |
+
 
 Usage:
 ```shell
