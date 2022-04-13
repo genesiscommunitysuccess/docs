@@ -13,16 +13,16 @@ Let's make things really simple.
 - You define your application's Event Handler in a kotlin script file.
 - In this file, you define specific `eventHandler` codeblocks, each of which has full access to the database. 
 - Each `eventHandler` can be invoked from the front end, from other `eventHandler` codeblocks, or from custom components in the application.
-of the code.
-- If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, creating basic insert, modify and delete `eventHandler` code blocks for all the tables and views in your data model. You can edit this file to add sophistication to the component.
+- If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, creating basic insert, modify and delete `eventHandler` code blocks for all the tables and views in your data model. You can edit this file to customise the component.
 - Otherwise, you can build your kts by defining each `eventHandler` codeblock from scratch. 
 
 ## A simple example of an Event Handler
 
-Here is a simple example of an Event Handler file. It defines an Event Handler called `COUNTERPARTY_INSERT`, which inserts a counterparty into the database.
+Here is a simple example of an Event Handler file. It defines an Event Handler of type `<Counterparty>`, which inserts a counterparty into the database, using the [entityDb](/reference/developer/api/database/how-to/interface/entity-db/).
+
 ```kotlin
 eventHandler {
-    eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
+    eventHandler<Counterparty> {
         onCommit { event ->
             val counterparty = event.details
             entityDb.insert(counterparty)
@@ -33,15 +33,25 @@ eventHandler {
 ```
 
 
+
 ## The eventHandler code block
 
 Each individual `eventHandler` code block must have:
 
-* **Inbound and outbound message types**. An Event Handler requires one inbound message type (e.g. a generated dao entity or a custom-defined message), and optionally, an outbound message type. If a message type is not defined, the default `EventReply` message type will apply. For example, `eventHandler<TradeInsert>` and `eventHandler<TradeInsert, TradeInsertReply>`.
-* **Optionally, a name**. The prefix `EVENT_` is automatically added to this name. The default name will be `EVENT_<message type name>`. So, for a message type declared as `OrderInsert`, declaring an Event Handler block as `eventHandler<OrderInsert>{}` automatically registers the event with the name `EVENT_ORDER_INSERT`.
-* **Optionally, a boolean to define if the Event Handler is transactional or not**. This enables the platform to run the whole `onValidate/onCommit` block in a single ACID transaction if the database engine supports it.
+- an input type
+- an `onCommit` block, which is where you specify the actions the Event Handler is to perform
+The `onCommit` block must return either an `ack()` or `nack(...)`.
 
-Inside each `eventHandler`, you can define additional blocks and properties.
+Now let's build on our simple example and look at some of the most useful options you can add.
+
+## Adding useful options
+
+### Name
+Every `eventHandler` in your **.kts** must have a unique name. If you do not provide one, it will be allocated automatically. In this case, the Event Handler will automatically be named EVENT_COUNTERPARTY.
+
+You can define a name for the `eventHandler`. Note that the prefix `EVENT_` is automatically added to this name. 
+
+If you do not define a name, a default name will be allocated automatically. The default name will be `EVENT_<message type name>`. So, for a message type declared as `OrderInsert`, declaring an Event Handler block as `eventHandler<OrderInsert>{}` automatically registers the event with the name `EVENT_ORDER_INSERT`.
 
 ### Default reply types
 
