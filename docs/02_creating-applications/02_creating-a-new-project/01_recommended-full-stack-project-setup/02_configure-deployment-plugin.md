@@ -5,7 +5,7 @@ sidebar_position: 2
 id: configure-deployment-plugin
 ---
 
-This guide will show you how to configure the Genesis deploy plugin so you can easily set up a Genesis environment and deploy to it.
+This page shows you how to configure the Genesis deploy plugin so you can easily set up a Genesis environment and deploy to it.
 
 ### Pre-requisites
 

@@ -7,7 +7,17 @@ id: quick-start
 
 This short guide will enable you to see the basics of the Genesis low-code platform by building a very simple application. It is designed simply to get from start to finish as quickly as possible.
 
-### Pre-requisites
+The exercise is in five main steps:
+
+1. [Create a new project](/getting-started/quick-start/#create-a-new-project).
+2. [Define the data model](/getting-started/quick-start/#define-the-data-model).
+3. [Add business logic](/getting-started/quick-start/#add-business-logic).
+4. [Create a user interface](/getting-started/quick-start/#create-a-user-interface).
+5. [Run the application](/getting-started/quick-start/#run-the-application). 
+
+You can get through this in about 30 minutes - but don't be afraid to take more time.
+
+## Pre-requisites
 
 Before you start, you need to have:
 
@@ -16,7 +26,7 @@ Before you start, you need to have:
 - A local or cloud linux environment for runtime 
 
 
-### What you will build
+## What you will build
 
 The very simple application you will build will look like this:
 
@@ -27,7 +37,7 @@ That’s it. Just enough to get you up and running. Obviously, there is much mor
 
 With a lack of imagination we hope you will find trustworthy, we are going to call this example application **alpha**. You will see this reflected in the file names throughout.
 
-## Create a new project
+## 1. Create a new project
 The GenX CLI tool enables you to seed projects, in this case we just want to generate a blank full-stack application project.
 
 For step-by-step instructions on how to install and use the tool, follow the guide on [GenX](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/using-genx/).
@@ -60,7 +70,7 @@ In the `genx` script, there is a series of questions; the following responses ar
 ? Application Version 1.0.0-SNAPSHOT
 ```
 
-## Define the data model  
+## 2. Define the data model  
 Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application. 
 
 ### Add fields  
@@ -115,7 +125,7 @@ tables {
 
 After you have saved this file, [run genesis-generated-dao](/reference/developer/genesis-dao/#dao-generation-commands)
 
-## Add business logic
+## 3. Add business logic
 We have a table; now we want to be able to see its content and create new entries.
 
 
@@ -144,7 +154,7 @@ eventHandler {
 }
 ```
 
-## Create a user interface
+## 4. Create a user interface
 
 Now let's create a single page with a grid and a form for entering data.
 
@@ -326,14 +336,14 @@ To check that the new trade was added successfully, add the following code to **
 ```ts
 ${when(x => x.serverResponse, html`
 <span>${x=> x.serverResponse.MESSAGE_TYPE == 'EVENT_ACK' ? 
-  'Succesfully added trade' : 'Something went wrong'}
+  'Successfully added trade' : 'Something went wrong'}
 </span>
 `)}
 ```
 
 At this point, the application is now able to display and receive data.
 
-## Run the application
+## 5. Run the application
 
 See [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/configure-deployment-plugin/) for details on how to configure the Genesis deploy plugin.
 

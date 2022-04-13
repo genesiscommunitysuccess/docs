@@ -5,7 +5,10 @@ sidebar_position: 1
 title: 'Workstation setup'
 ---
 
-Genesis application developers need to access on-premise workstations through remote technologies like Citrix, VMware etc.
+To develop Genesis applications, you need to access on-premise workstations through remote technologies like Citrix, VMware etc.
+
+This page gives you the hardware and software requirements. It also give you instructions on accessing the Genesis repository and configuring the Genesis packages.
+
 
 ## Recommended hardware and operating system
 
@@ -28,16 +31,16 @@ Genesis application developers need to access on-premise workstations through re
 | Gradle  | 6.8|
 | NodeJS  |16 LTS+|
 
-Note that you can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
+You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
 
 ## Requirements
 
 * NodeJS (16 LTS+) - https://nodejs.org/en/
 * npm 8 (installed with NodeJS)
 
-## .npmrc setup
+## .npmrc set-up
 
-Access to the Genesis packages requires you to configure the `@genesislcap` scope of `npm` to use our jfrog registry.
+For access to Genesis packages, you need to configure the `@genesislcap` scope of `npm` to use our jfrog registry.
 You will be provided with access details during your on-boarding.
 
 1. Create an `.npmrc` file in or above your intended project directory; in most cases, this will be your user home directory.
@@ -45,7 +48,7 @@ You will be provided with access details during your on-boarding.
  3. Click on the `Welcome <username>` on the top right corner.
  4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
  5. Select `npm` for package type, and the appropriate repository.
- 6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in into the Genesis repository on jfrog.) Then press Enter. 
+ 6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in to the Genesis repository on jfrog.) Then press **Enter**. 
 
  ![](/img/set-me-up.png)
 
@@ -63,7 +66,7 @@ You will be provided with access details during your on-boarding.
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
 
 9. Save the file and open a terminal under the directory path of this `.npmrc` file and type:
-`npm info @genesislcap/foundation-ui`. If set-up was successful, you should see a response like:
+`npm info @genesislcap/foundation-ui`. If set-up was successful, you should see a response like this:
 
 ```shell
 @genesislcap/foundation-ui@0.0.26 | UNLICENSED | deps: 23 | versions: 111
