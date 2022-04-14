@@ -18,7 +18,14 @@ Let's make things really simple.
 
 ## A simple example of an Event Handler
 
-Here is a simple example of an Event Handler file. It defines an Event Handler of type `<Counterparty>`, which inserts a counterparty into the database, using the [entityDb](/reference/developer/api/database/how-to/interface/entity-db/).
+Here is a simple example of an Event Handler file. It defines a single `eventHandler. which inserts a counterparty into the database, using the [entityDb](/reference/developer/api/database/how-to/interface/entity-db/).
+
+
+
+
+- First, note that there is an `eventHandler` statement for containing all your `eventHandler`codeblocks. This is necessary whether the file contains one `eventHandler`, or hundreds.
+- The single `eventHandler` is of type `<Counterparty>`, which has been created in advance for the COUNTERPARTY table. It defines a single Event Handler of type `<Counterparty>`.
+- The `eventHandler` inserts a counterparty into the database, using the [entityDb](/reference/developer/api/database/how-to/interface/entity-db/).
 
 ```kotlin
 eventHandler {
