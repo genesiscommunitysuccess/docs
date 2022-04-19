@@ -1,21 +1,27 @@
 ---
-id: wsl-setup
-sidebar_label: Setting up WSL
-sidebar_position: 2
-title: Setting up WSL
+id: using-wsl-setup
+sidebar_label: Using WSL
+sidebar_position: 1
+title: Using WSL
 ---
 
-## The Windows Subsystem for Linux
+You can use WSL2 to install a linux environment on your windows machine.
+
+The recommended Linux OS is CentOS7, and the following instructions show how to set this up.
+
+## Overview of WSL - the Windows Subsystem for Linux
 Many corporate workstations are Windows based, due to the centralised governance and security that the enterprise editions offer.
 
 The Windows Subsystem for Linux enables developers to run a GNU/Linux environment -- including most command-line tools, utilities, and applications -- directly on Windows, unmodified, without the overhead of a traditional virtual machine or dualboot setup.
 
 The Genesis low-code platform provides several ease-of-development tools that are designed to work seamlessly on Linux or WSL. If your development environment is Windows, we recommend installing WSL.
 
-## Install Windows Terminal
+## Setting up
+
+### Install Windows Terminal
 If you haven’t already - please install Windows terminal. This provides a tabbed single Window from which you can open different command line tools, [link here](https://www.microsoft.com/store/productId/9N0DX20HK701).
 
-## Install WSL2
+### Install WSL2
 Your Windows install must be 2004+ (2020 May feature release or higher) and you will need to install the Windows Subsystem for Linux. For details see this [link](https://docs.microsoft.com/en-us/windows/wsl/install-win10). 
 
 If you have previously enabled WSL, you need to set the default version to 2 and (optionally) convert existing distros:
@@ -35,8 +41,16 @@ PS C:\Users\user.name> wsl -l -v
 * Ubuntu    Stopped         2
 ```
 
-## Install CentOS for WSL2
-WSL distrubtions can be found easily at various locations on the web. For expedience, you can use this article from Microsoft in order to build a CentOS distro from a Docker image:
+### Install Ubuntu 
+
+Available in the Microsoft App store, the [Ubuntu app](https://www.microsoft.com/store/productId/9PDXGNCFSCZV) utilises WSL2 and allows you to quickly open an Ubuntu terminal which helps with Microsoft's guide on installing CentOS7 (section below)
+
+### Install CentOS7 for WSL2
+WSL distrubtions can be found easily at various locations on the web. For expedience, you can use this article from Microsoft in order to build a CentOS distro from a Docker image.
+
+
+#### Important Note
+Before you continue, We recommend using CentOS7, where as the guide below guides on centOS latest. Replace `docker run -t centos bash ls/` with `docker run -t centos:centos7 bash ls/` in the instructions on the page.
 
 [https://docs.microsoft.com/en-us/windows/wsl/use-custom-distro#export-the-tar-from-a-container](https://docs.microsoft.com/en-us/windows/wsl/use-custom-distro#export-the-tar-from-a-container)
 
@@ -52,7 +66,7 @@ Next, update CentOS by running:
 
 `yum update`
 
-## Prepare CentOS for Genesis
+### Prepare CentOS for Genesis
 1. Install package group: 
 
 `yum groupinstall base`
@@ -90,7 +104,70 @@ Once you have set this up, it is a good idea to export the distribution. You can
 wsl --export CentOS7 centos.backup
 ```
 
-## Install Docker Desktop for Windows
+### Copying files between Windows and WSL
+From WSL, your Windows drives are available from `/mnt/_drive letter_`:
+
+```
+[root@LONPC24 mnt]# pwd
+/mnt
+[root@LONPC24 mnt]# ll
+total 0
+drwxrwxrwx 1 root root  512 Aug  8 12:48 c
+drwxrwxrwx 1 root root 4096 Aug 14 08:50 d
+drwxrwxrwt 5 root root  100 Aug 14 10:16 wsl
+[root@LONPC24 mnt]#
+```
+
+From Windows, your WSL distros are accessible from ** \\wsl$\ ** in windows explorer.
+
+### Windows Firewall set-up
+If you are using Windows Firewall, you need to allow smooth network communication between your WSL distros and Windows. First, get the network range for your WSL network switch; run `ipconfig.exe` from powershell and look for WSL:
+
+```
+Ethernet adapter vEthernet (WSL):
+
+   Connection-specific DNS Suffix  . :
+   Link-local IPv6 Address . . . . . : fe80::6928:38ea:1eb7:84bc%43
+   IPv4 Address. . . . . . . . . . . : 172.28.224.1
+   Subnet Mask . . . . . . . . . . . : 255.255.240.0
+   Default Gateway . . . . . . . . . :
+```
+
+Run this powershell command in Windows so your firewall will not block inbound traffic from your WSL instances:
+
+```
+New-NetFirewallRule -DisplayName "WSL" -Direction Inbound  -InterfaceAlias "vEthernet (WSL)"  -Action Allow
+```
+
+## Setting up a Database
+
+### Installing FDB (recommended for development environments)
+
+Download foundationdb-server-6.3.23-1.el7.x86_64.rpm and foundationdb-clients-6.3.23-1.el7.x86_64.rpm files from https://github.com/apple/foundationdb/releases/tag/6.3.23
+
+[Transfer them onto your CentOS7 system](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/#copying-files-between-windows-and-wsl)
+
+As root (note, replace `alpha` with the application user set up)
+
+```bash
+usermod -aG wheel alpha
+```
+
+Then...
+
+```bash
+rpm -Uvh foundationdb-clients-6.3.23-1.el7.x86_64.rpm foundationdb-server-6.3.23-1.el7.x86_64.rpm
+mv /usr/bin/systemctl /usr/bin/systemctl.old
+curl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py > /usr/bin/systemctl
+chmod +x /usr/bin/systemctl
+usermod -aG wheel alpha
+fdbcli --exec "configure new single memory ; status"
+systemctl enable foundationdb
+```
+
+Then to run it we can utilise systemctl: `systemctl status foundationdb`
+
+### Install Docker Desktop for Windows
 For your database, you could run Aerospike or Postgres in Docker, using Docker for Windows integration with WSL2. For instructions, [check here](https://docs.docker.com/docker-for-windows/). For a download, [click here](https://hub.docker.com/editions/community/docker-ce-desktop-windows/).
 
 Ensure that you have the WSL2 integration enabled and that you have enabled integration with your CentOS distribution:
@@ -99,7 +176,7 @@ This allows you to access the docker command; as well as any docker container fr
 
 This setting can be accessed by opening Docker Desktop, then navigating to **Settings** > **Resources** > **WSL Integration**.
 
-## Running Aerospike from Docker
+### Running Aerospike from Docker
 You can run Aerospike with the following Docker command:
 
 ```
@@ -156,7 +233,7 @@ CONTAINER ID        IMAGE                                 COMMAND               
 
 By default, the Aerospike Docker database only has the **test** namespace, so you need to change the namespace in the file **genesis-system-definition.kts**.
 
-## Running Postgres from Docker
+### Running Postgres from Docker
 Running Postgres from Docker is very similar to running Aerospike:
 
 ```
@@ -171,7 +248,7 @@ To connect, use this JDBC URL:
 jdbc:postgresql://localhost:5432/?user=postgres&password=docker
 ```
 
-## Running MSSQL from Docker
+### Running MSSQL from Docker
 
 ```
 docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=docker" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
@@ -185,37 +262,3 @@ To connect, use this JDBC URL:
 jdbc:sqlserver://localhost:1433;database=master;user=sa;password=docker
 ```
 
-## Copying files between Windows and WSL
-From WSL, your Windows drives are available from `/mnt/_drive letter_`:
-
-```
-[root@LONPC24 mnt]# pwd
-/mnt
-[root@LONPC24 mnt]# ll
-total 0
-drwxrwxrwx 1 root root  512 Aug  8 12:48 c
-drwxrwxrwx 1 root root 4096 Aug 14 08:50 d
-drwxrwxrwt 5 root root  100 Aug 14 10:16 wsl
-[root@LONPC24 mnt]#
-```
-
-From Windows, your WSL distros are accessible from ** \\wsl$\ ** in windows explorer.
-
-## Windows Firewall set-up
-If you are using Windows Firewall, you need to allow smooth network communication between your WSL distros and Windows. First, get the network range for your WSL network switch; run `ipconfig.exe` from powershell and look for WSL:
-
-```
-Ethernet adapter vEthernet (WSL):
-
-   Connection-specific DNS Suffix  . :
-   Link-local IPv6 Address . . . . . : fe80::6928:38ea:1eb7:84bc%43
-   IPv4 Address. . . . . . . . . . . : 172.28.224.1
-   Subnet Mask . . . . . . . . . . . : 255.255.240.0
-   Default Gateway . . . . . . . . . :
-```
-
-Run this powershell command in Windows so your firewall will not block inbound traffic from your WSL instances:
-
-```
-New-NetFirewallRule -DisplayName "WSL" -Direction Inbound  -InterfaceAlias "vEthernet (WSL)"  -Action Allow
-```
