@@ -109,6 +109,7 @@ This tag defines additional jar files that might be needed by the microservices.
 You can use wild cards in your specification. This can be seen in the **classpath** for the **TRADING_APP_DATASERVER** configuration in the example above.
 
 When you are defining the process in your application's **process.xml**, this tag is optional.
+
 ### start
 
 This tag defines whether the process needs to be started when startServer command is executed and whether to show this process in the mon command display. Default value is true
@@ -122,6 +123,7 @@ When you are defining the process in your application's **process.xml**, this ta
 ### package
 
 This tag defines which package the process should refer to. All Genesis source code is contained in packages. So, in the example above, the configuration for the **TRADING_APP_STREAMER** process points to the source code in the package **global.genesis.streamer.pal**.
+Multiple package scans needs to be comma separated.
 
 ### module
 This tag defines where in the package (see above) the process should look for its binaries - base jar files. In the above example, the configuration of the **TRADING_APP_EVENT_HANDLER** has a **module** tag that points to **genesis-pal-eventhandler**.  This finds every jar file with the text **genesis-pal-eventhandler** and gets all the relevant classpath dependencies.
