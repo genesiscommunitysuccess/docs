@@ -11,27 +11,91 @@ id: eh-advanced-technical-details
 
 
 
-## Transactional Event Handlers
+### Custom reply message type
+If you use a custom reply message type, you won’t be able to use the default `ack()` or `validationAck()` functions.  The custom message type needs to be returned from the method.
 
-Any Event Handler can be declared as transactional, by setting `transactional = true`; this ensures that the `onValidate` and `onCommit` blocks are executed in a single ACID-guaranteed transaction. This is especially useful when the database changes in each operation, and needs to read and modify multiple table records in a consistent way.
-
-For example, if you need to insert a new record and create an audit record for this operation, you want to guarantee that both operations succeed - or that both operations are rolled back if something goes wrong. 
-
-Below is an example of a transactional Event Handler that does this. For this example, it is assumed that the `COMPANY` table has been set up as auditable):
-
+For a custom message type called `TradeEvent` defined as:
 
 ```kotlin
-    eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
+data class TradeEvent(
+    val price: Double,
+    val quantity: Int,
+){
+    init{
+        require(price > 0) { "Price cannot be negative "}
+        require(quantity > 0) { "Quantity cannot be negative "}
+    }
+}
+```
+
+... and  a custom message reply type called `CustomTradeEventReply` defined as:
+
+```kotlin
+sealed class CustomTradeEventReply : Outbound() {
+    class TradeEventValidateAck : CustomTradeEventReply()
+    data class TradeEventAck(val tradeId: String) : CustomTradeEventReply()
+    data class TradeEventNack(val error: String) : CustomTradeEventReply()
+}
+```
+
+... you could use the example Event Handler below:
+
+```kotlin
+    eventHandler<TradeEvent, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
+        onException { event, throwable ->
+            TradeEventNack(throwable.message!!)
+        }
         onValidate {
-            ack()
+            val tradeEvent = it.details
+            require((tradeEvent.price * tradeEvent.quantity.toDouble()) < 1_000_000) { "Trade notional is too high" }
+            TradeEventValidateAck()
         }
         onCommit { event ->
-            val company = event.details
-            entityDb.insert(company)
-            ack(listOf(mapOf("VALUE" to "SUCCESS!")))
+            val trade = event.details
+            val result = entityDb.insert(trade)
+            TradeEventAck(result.record.tradeId)
         }
     }
 ```
+
+### onException
+
+The `onException` block can capture any exceptions thrown by the `onValidate` and `onCommit` blocks and returns the expected reply message type (as shown in the last example). This function is particularly useful if you are using a custom message type; by default, Event Handlers will attempt to translate exceptions automatically to an **EventNack** message, which might cause compatibility problems if you are using custom replies.
+
+## Permissioning and permissionCodes
+
+As with other GPAL files (e.g. Request Server and Data Server), you can use a `permissioning` block to define both dynamic permissions (AUTH) and fixed permissions (based on RIGHT_SUMMARY rights) if the event message type is a generated database entity. See the example below:
+
+```kotlin
+    eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
+        permissioning {
+            auth(mapName = "COMPANY"){
+                COMPANY.COMPANY_NAME
+            }
+        }
+
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to result.record.companyId)))
+        }
+    }
+```
+
+If your message type is not a database-generated entity,  you can still define fixed `permissionCodes` outside the permissioning block:
+
+```kotlin
+    eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
+        permissionCodes = listOf("INSERT_TRADE")
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to result.record.companyId)))
+        }
+    }
+```
+
+See [here](/creating-applications/defining-your-application/access-control/authorisation-over/) for more details on authorisation.
 
 
 ## Auto auditing
