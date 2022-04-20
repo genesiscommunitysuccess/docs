@@ -41,19 +41,19 @@ The event handler interface is the common supertype of AsyncEventHandler, Rx3Eve
 Each custom event handler must define an input message type `I` and an output message type `O` (these needs to be data classes as GPAL event handlers do). In below examples Company is input message and EventReply is output message.
 The `message` object contains event message and has below properties :
 
-| Name | Default value | Description                                |
-|---|---|--------------------------------------------|
-| details |   | It has input information, example: Company |
-| messageType |   | Name of the event handler                  |
-| userName |   | Name of logged-in user                     |
-| ignoreWarnings | false |                                            |
-| requiresApproval | false |                                            |
-| approvalKey | null |                                            |
-| approvalMessage | null |                                            |
-| reason | null |                                            |
+| Name | Default value | Description                                                                                                                                                                                                                                      |
+|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| details |   | It has input information, example: Company                                                                                                                                                                                                       |
+| messageType |   | Name of the event handler                                                                                                                                                                                                                        |
+| userName |   | Name of logged-in user                                                                                                                                                                                                                           |
+| ignoreWarnings | false | If set to false events will not be processed if there are any warnings and you will get EventNack with warning message. If set to true warning messages will be ignored and processing of events will be stopped only if there are any errors    |
+| requiresApproval | false | Particular event needs approval from second user if set to true. For more details check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals) |
+| approvalKey | null | Auto-generated key ID for particular approval request. For more details check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals)           |
+| approvalMessage | null | Optional message for approval request. For more details check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals)                           |
+| reason | null | Optional reason sent as part of event message                                                                                                                                                                                                    |
 
 ### Inject objects
-Use [@Inject](/reference/developer/dependency-injection/#inject) to inject any objects which will inject an object of matching type during the dependency injection stage
+Use [@Inject](/reference/developer/dependency-injection/#inject) to provide instances for any objects needed as part of the dependency injection stage
 
 ## Async
 ### AsyncEventHandler
@@ -211,7 +211,7 @@ The mechanism explained in [Async](#async) can be recycled and reapplied in Rx3 
 
 ### Rx3EventHandler
 
-In a similar fashion to `AsyncEventHandler`, there is a Rx3 implementation flavour. It works in a very similar way to [`AsyncEventHandler`](#asynceventhandler), but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
+In a similar fashion to `AsyncEventHandler`, there is an Rx3 implementation flavour. It works in a very similar way to [`AsyncEventHandler`](#asynceventhandler), but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
 
 See the interface definition below:
 `interface Rx3EventHandler<I : Any, O : Outbound> : Rx3EventWorkflowProcessor<I, O>, EventHandler`
