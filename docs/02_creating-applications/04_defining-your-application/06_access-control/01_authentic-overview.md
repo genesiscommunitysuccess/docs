@@ -39,8 +39,8 @@ To set up LDAP authentication, the following variables will need to be set in th
 
 * **url** represents the LDAP server hostname. Default: localhost.
 * **port** defines the LDAP server port to connect to. Default: 389.
-* **searchBases** defines the location(s) in the directory from which the LDAP search begins. This is set by the `searchBases` function, and repeated `searchBase` function invocations within it. Default: ou=temp,dc=temp
-* **userGroups** defines the group(s) that the user will need to belong to in order to log in. This is set by the `userGroups` function, and repeated `userGroip` function invocations within it. Default: none
+* **searchBases** defines the location(s) in the directory from which the LDAP search begins. This is set by the `searchBase` tag, and any repeated `searchBase` tags that are referenced from within the enclosing tag. Default: ou=temp,dc=temp
+* **userGroups** defines the group(s) that the user will need to belong to in order to log in. This is set by the `userGroup` tag, and any repeated `userGroup` tags that are referenced from within the enclosing tag. Default: none
 * **userPrefix** is an optional prefix you can add to every username received from login requests in your authentication server. Default: empty string.
 * **bindDn** is an optional, distinguished name which acts as a first LDAP login; it is normally required to perform a search. If this field is not specified, no bindings will be used. Default: null
 * **bindPassword** represents the password associated with the **bindDn** account. Default: null.
