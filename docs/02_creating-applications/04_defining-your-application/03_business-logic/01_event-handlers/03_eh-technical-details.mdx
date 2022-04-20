@@ -13,15 +13,21 @@ Let's make things really simple.
 - You define your application's Event Handler in a kotlin script file.
 - In this file, you define specific `eventHandler` codeblocks, each of which has full access to the database. 
 - Each `eventHandler` can be invoked from the front end, from other `eventHandler` codeblocks, or from custom components in the application.
-- If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, creating basic insert, modify and delete `eventHandler` code blocks for all the tables and views in your data model. You can edit this file to customise the component.
-- Otherwise, you can build your kts by defining each `eventHandler` codeblock from scratch. 
+- If you use AppGen to build from your dictionary, then a basic **.kts** file will be built automatically for you, creating basic insert, modify and delete `eventHandler` code blocks for all the tables and views in your data model. You can edit this file to customise the component.
+- Otherwise, you can build your **.kts** by defining each `eventHandler` codeblock from scratch. 
 
-## The incoming message
-The incoming message that triggers an Event Handler can have `validate` set to `true` or `false`. This controls whether the Event Handler simply performs some validation or it executes its complete set of processing. 
+On this page, we'll take you through the basics of creating an Event Handler in simple stages:
 
-That's a useful piece of knowledge you can keep in the back of your mind. It is explained in more detail in the section on [Processing onValidate and onCommit](#processing-onvalidate-and-oncommit)
+- [a very simple example file](#a-simple-example-of-an-event-handler)
+- [giving each `eventHandler` codeblock a name](#adding-a-name)
+- [adding validation](#adding-validation)
+- [returning a nack](#returning-a-nack)
+- [transactional `eventHandler` codeblocks](#transactional-event-handlers-acid)
+- [the process flow for `eventHandler` codeblocks](#processing-onvalidate-and-oncommit)
+- [more information on validation](#more-information-about-onvalidate)
+- [context Event Handlers](#context-event-handlers)
 
-Before that, let's look at a few very basic things.
+By the end of that, you'll have some very useful knowledge, and you'll be ready to move on to the [advanced](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/) page.
 
 ## A simple example of an Event Handler
 
@@ -136,14 +142,16 @@ eventHandler<Counterparty>(transactional = true) {
  whether it is a database update or uploading a report to a third party. It will be called when an event message is received with `validate = false` and has successfully passed the `onValidate` block. The last value of the code block must always be the return message type.
 
 ## Processing onValidate and onCommit
-As we said earlier on this page, the incoming message that triggers the `eventHandler` code block must a have `validate=true` or `validate=false` statement. This setting determines how the eventHandler executes its instructions.
+The incoming message that triggers an Event Handler can have `validate` set to `true` or `false`. This controls whether the Event Handler simply performs some validation or it executes its complete set of processing. 
 
 ### validate = true
-The key thing about this setting is that it means that only the `onValidation` block is executed, not the `onCommit` block.
+The key thing about this setting is that it means that only the `onValidation` block is executed, not the `onCommit` block. Here is the precise process flow:
 
+![](/img/eh-validate-true.png)
 ### validate = false
-With this setting, both the `onValidation` codeblock and the `onCommit` codeblock will be executed.
+With this setting, both the `onValidation` codeblock and the `onCommit` codeblock will be executed. Here is the precise process flow:
 
+![](/img/eh-validate-false.png)
 ## More information about onValidate
 As you will have seen above, an `onValidation` codeblock will be executed whether the incoming message has `validate=true` or `validate=false`.The `onValidate` block is optional if you are using the default reply message type (`EventReply`) and will automatically be successful if not defined.
 
