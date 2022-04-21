@@ -1,11 +1,11 @@
 ---
 id: event-handler-api
 title: Event handler API
-sidebar_label: Event handler API
+sidebar_label: Event Handler API
 sidebar_position: 3
 ---
 
-# Custom event handlers
+# Custom Event Handlers
 
 Custom event handlers provide a way of implementing business logic in Java or Kotlin outside the Genesis GPAL Event Handler definition, in a more traditional and flexible development approach. Genesis has 3 different flavours of custom event handlers:
 - Async. This event handler uses the Kotlin coroutines API to simplify asynchronous development. This is the underlying implementation used in GPAL event handlers.
@@ -13,7 +13,7 @@ Custom event handlers provide a way of implementing business logic in Java or Ko
 - Sync. This creates synchronous event handlers.
 
 ### Configure in processes.xml file
-You need to add `global.genesis.eventhandler` package in the package tag of process, this tag defines which package the process should refer to
+You need to add `global.genesis.eventhandler` package in the package tag of process; this tag defines which package the process should refer to
 
 ```xml
   <process name="POSITION_NEW_PROCESS">
@@ -26,7 +26,7 @@ You need to add `global.genesis.eventhandler` package in the package tag of proc
   </process>
 ```
 
-## Event handler interface
+## Event Handler interface
 
 The event handler interface is the common supertype of AsyncEventHandler, Rx3EventHandler and SyncEventHandler, but it is not meant to be used on its own. It provides basic options for each event handler definition, which can be overriden. See the Kotlin methods explanation below:
 
@@ -46,10 +46,10 @@ The `message` object contains event message and has below properties :
 | details |   | It has input information, example: Company                                                                                                                                                                                                       |
 | messageType |   | Name of the event handler                                                                                                                                                                                                                        |
 | userName |   | Name of logged-in user                                                                                                                                                                                                                           |
-| ignoreWarnings | false | If set to false events will not be processed if there are any warnings and you will get EventNack with warning message. If set to true warning messages will be ignored and processing of events will be stopped only if there are any errors    |
+| ignoreWarnings | false | If set to false, events will not be processed if there are any warnings and you will get EventNack with warning message. If set to true, warning messages will be ignored and processing of events will be stopped only if there are any errors    |
 | requiresApproval | false | Particular event needs approval from second user if set to true. For more details check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals) |
-| approvalKey | null | Auto-generated key ID for particular approval request. For more details check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals)           |
-| approvalMessage | null | Optional message for approval request. For more details check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals)                           |
+| approvalKey | null | Auto-generated key ID for particular approval request. For more details, check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals)           |
+| approvalMessage | null | Optional message for approval request. For more details, check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals)                           |
 | reason | null | Optional reason sent as part of event message                                                                                                                                                                                                    |
 
 ### Inject objects
