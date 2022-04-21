@@ -12,7 +12,21 @@ Custom Event Handlers provide a way of implementing business logic in Java or Ko
 - RxJava3. These use the RxJava3 library, which is a popular option for composing asynchronous event-based programs.
 - Sync. This creates synchronous Event Hndlers.
 
-Each custom Event Handler must define an input message type `I` and an output message type `O` (as GPAL Event Handlers do). 
+
+### Configure in processes.xml file
+You need to add `global.genesis.eventhandler` package in the package tag of process; this tag defines which package the process should refer to
+
+```xml
+  <process name="POSITION_NEW_PROCESS">
+    <groupId>POSITION</groupId>
+    <start>true</start>
+    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
+    <module>position-new-process</module>
+    <package>global.genesis.eventhandler,position.company.manager</package>
+    <description>Handles events</description>
+  </process>
+```
+
 
 ## Event Handler interface
 
@@ -26,6 +40,23 @@ The Event Handler interface is the common supertype of AsyncEventHandler, Rx3Eve
 | overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I` |
 | requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them in order to take effect ([see pending approval documentation](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals))|
 
+Each custom event handler must define an input message type `I` and an output message type `O` (these needs to be data classes as GPAL event handlers do). In below examples Company is input message and EventReply is output message.
+The `message` object contains event message and has below properties :
+
+| Name | Default value | Description                                                                                                                                                                                                                                      |
+|---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| details |   | It has input information, example: Company                                                                                                                                                                                                       |
+| messageType |   | Name of the event handler                                                                                                                                                                                                                        |
+| userName |   | Name of logged-in user                                                                                                                                                                                                                           |
+| ignoreWarnings | false | If set to false, events will not be processed if there are any warnings and you will get EventNack with warning message. If set to true, warning messages will be ignored and processing of events will be stopped only if there are any errors    |
+| requiresApproval | false | Particular event needs approval from second user if set to true. For more details check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals) |
+| approvalKey | null | Auto-generated key ID for particular approval request. For more details, check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals)           |
+| approvalMessage | null | Optional message for approval request. For more details, check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals)                           |
+| reason | null | Optional reason sent as part of event message                                                                                                                                                                                                    |
+
+### Inject objects
+Use [@Inject](/reference/developer/dependency-injection/#inject) to provide instances for any objects needed as part of the dependency injection stage
+
 ## Async
 ### AsyncEventHandler
 This is the most basic definition of an async Event Handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface, which is defined as:
@@ -37,7 +68,7 @@ The only mandatory method to implement this in the interface is:
 |---|---|
 | process | `fun suspend process(message: Event<I>) : O` |
 
-This method passes the input message type `I` as a parameter and expects the output message type `O` to be returned. The `message` object contains information about the event message, including the flags for `validate`, `requiresApproval` and `ignoreWarnings`.
+This method passes the input message type `I` as a parameter and expects the output message type `O` to be returned.
 
 #### Example
 
@@ -48,7 +79,10 @@ import global.genesis.message.core.event.Event
 import global.genesis.message.core.event.EventReply
 
 @Module
-class EventCompanyHandlerAsync : AsyncEventHandler<Company, EventReply> {
+class EventCompanyHandlerAsync @Inject constructor(
+        private val entityDb: AsyncEntityDb,
+        private val companyService: CompanyService
+) : AsyncEventHandler<Company, EventReply> {
     override suspend fun process(message: Event<Company>): EventReply {
         val company = message.details
         // custom code block..
@@ -97,7 +131,6 @@ Using this interface, you don't need to override the `process` method; you can s
 |---|---|
 | onValidate | `suspend fun onValidate(message: Event<I>): O` |
 | onCommit | `suspend fun onCommit(message: Event<I>): O` |
-
 
 #### Example
 
@@ -343,7 +376,7 @@ class TestCompanyHandlerSync : SyncEventHandler<Company, EventReply> {
 }
 ```
 
-#### SyncValidatingEventHandler
+### SyncValidatingEventHandler
 
 `interface SyncValidatingEventHandler<I : Any, O : Outbound> : SyncEventHandler<I, O>`
 
@@ -377,7 +410,7 @@ class TestCompanyHandlerSync : SyncValidatingEventHandler<Company, EventReply> {
 ```
 
 
-#### SyncContextValidatingEventHandler
+### SyncContextValidatingEventHandler
 `interface SyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : SyncEventHandler<I, O>`
 
 #### Implementation
@@ -389,6 +422,8 @@ class TestCompanyHandlerSync : SyncValidatingEventHandler<Company, EventReply> {
 
 #### Helper methods
 
+| Name | Signature |
+|---|---|
 | validationResult | `fun validationResult(result: O): ValidationResult<O, C>` |
 | validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
 

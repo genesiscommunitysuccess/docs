@@ -7,7 +7,7 @@ sidebar_position: 2
 ---
 Each application must have a **-processes.xml** file. This contains the configuration of each microservice (data server, request server and event-handler etc). It is generated automatically when you [create a new Genesis project using maven](/creating-applications/creating-a-new-project/alternative_options_supported/server-project-setup/).
 
-If you add new processes, you need to add their details to the _application_**-processes.xml** file
+If you add new processes, you need to add their details to the _application_**-processes.xml** file.
 
 When you run the command `genesisInstall`, the details of this file are aggregated along with details from internal Genesis files (for example, **auth-processes.xml**) into a single newly-generated **processes.xml** file in the **generated** folder.
 
@@ -109,6 +109,7 @@ This tag defines additional jar files that might be needed by the microservices.
 You can use wild cards in your specification. This can be seen in the **classpath** for the **TRADING_APP_DATASERVER** configuration in the example above.
 
 When you are defining the process in your application's **process.xml**, this tag is optional.
+
 ### start
 
 This tag defines whether the process needs to be started when startServer command is executed and whether to show this process in the mon command display. Default value is true
@@ -122,6 +123,7 @@ When you are defining the process in your application's **process.xml**, this ta
 ### package
 
 This tag defines which package the process should refer to. All Genesis source code is contained in packages. So, in the example above, the configuration for the **TRADING_APP_STREAMER** process points to the source code in the package **global.genesis.streamer.pal**.
+Multiple package scans needs to be comma-separated.
 
 ### module
 This tag defines where in the package (see above) the process should look for its binaries - base jar files. In the above example, the configuration of the **TRADING_APP_EVENT_HANDLER** has a **module** tag that points to **genesis-pal-eventhandler**.  This finds every jar file with the text **genesis-pal-eventhandler** and gets all the relevant classpath dependencies.
