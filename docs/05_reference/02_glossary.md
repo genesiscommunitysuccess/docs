@@ -14,7 +14,7 @@ Here, we list many of the technical terms that appear in these pages. For each o
 A design principle for database transactions. The ACID properties were created to ensure that transaction-oriented databases can recover in the event of a failure in a transaction.
 
 * Atomicity (All the transaction or none)
-* Consitency (all data abides by the rules)
+* Consistency (all data abides by the rules)
 * Isolation (Every transaction is a separate entity)
 * Durability (Once completed, the data is changed and stored)
 
@@ -44,7 +44,7 @@ Akka is a set of open-source libraries for designing scalable, resilient systems
 Akka provides low-level code to deliver reliable behaviour, fault tolerance, and high performance.
 
 Aeron addresses important challenges inherent in designing distributed systems. To be successful, they must cope in an environment where components crash without responding, messages get lost without a trace on the wire, and network latency fluctuates.
-These are regular problems in carefully managed intra-datacenter environments - even more so in virtualized architectures.
+These are regular problems in carefully managed intra-data-centre environments - even more so in virtualized architectures.
 
 ## Amazon Elastic Compute Cloud
 
@@ -143,21 +143,16 @@ It means that you have access to autocompletion Help and error highlighting as y
 
 A binary object is a wrapper over the binary representation of an entry stored in a cache. Each binary object has the `field (name)` method, which returns the value of the given field, and the `type ()` method, which extracts the information about the type of the object. Binary objects are useful when you want to work only with some fields of the objects and do not need to deserialize the entire content set.
 
-## MarkitWire
-
-An electronic trade capture and confirmation platform.
-
-## MQ (IBM MQ)
-
-IBM protocol which has an API so it can interact with JMS.
-Message queues provide an asynchronous communications protocol, meaning that the sender and receiver of the message do not need to interact with the message queue at the same time. Messages placed onto the queue are stored until the recipient retrieves them. Message queues have implicit or explicit limits on the size of data that may be transmitted in a single message and the number of messages that may remain outstanding on the queue.
-
 ## LDAP
 
-Lightweight Directory Access Protocol
+[Lightweight Directory Access Protocol](https://ldap.com/basic-ldap-concepts/)
 Industry-standard application protocol for accessing and maintaining distributed directory information services over an Internet Protocol (IP) network.
 
 A common use of LDAP is to provide a central store of usernames and passwords. This allows many different applications and services to connect to the LDAP server to validate users.
+
+## MarkitWire
+
+An electronic trade capture and confirmation platform.
 
 ## Maven
 
@@ -183,6 +178,11 @@ Maven local repository is a folder location on your machine. It is created when 
 When you run a Maven build, Maven automatically downloads all the dependency jars into the local repository. It helps to avoid references to dependencies stored on remote machine every time a project is built.
 
 By default, a local repository is created by Maven in the %USER_HOME% directory. To override the default location, specify a different path in the Maven settings.xml file available at %M2_HOME%\\conf directory.
+
+## MQ (IBM MQ)
+
+IBM protocol which has an API so it can interact with JMS.
+Message queues provide an asynchronous communications protocol, meaning that the sender and receiver of the message do not need to interact with the message queue at the same time. Messages placed onto the queue are stored until the recipient retrieves them. Message queues have implicit or explicit limits on the size of data that may be transmitted in a single message and the number of messages that may remain outstanding on the queue.
 
 ## Netty
 
@@ -211,7 +211,7 @@ The APIs give access to low-level I/O operations in operating systems. So you ha
 
 As a general rule, any project that uses Node.js will need a package.json file. This is the control centre for NPM, where you tell NPM which libraries you want to import, provide information about source control, project metadata, and more.
 
-Whenever you run npm install, NPM will look at your package.json file and importa the relevant libraries.
+Whenever you run npm install, NPM will look at your package.json file and import the relevant libraries.
 
 ## POJO
 
@@ -246,7 +246,7 @@ Genesis applications provide three types of resource:
 * data server, which provides real-time data, such as price information
 * event handler, which handles interaction from the front end (such as user clicks), responses to internal database changes and messages to and from external services
 
-In most cases, you can generate these resources automticall (via the AppGen command). You can then configure these beasic resources to add sophisticatuon to the application.
+In most cases, you can generate these resources automatically (via the AppGen command). You can then configure these basic resources to add sophistication to the application.
 
 ## REST
 
@@ -305,13 +305,13 @@ SSH is generally used to access Unix-like operating systems, but it can also be 
 
 A tool for building, changing, and versioning infrastructure safely and efficiently.
 
-TerraformConfiguration files describe the components needed to run a single application or a datacenter. Terraform generates an execution plan describing what it will do to reach the desired state, and then executes it to build the described infrastructure.
+TerraformConfiguration files describe the components needed to run a single application or a complete data centre. Terraform generates an execution plan describing what it will do to reach the desired state, and then executes it to build the described infrastructure.
 
 As the configuration changes, Terraform is able to determine what changed. It  creates incremental execution plans that can be applied when you are ready.
 
-The infrastructure Terraform can manage includes low-level components, such as compute instances, storage, and networking, as well as high-level components, such as DNS entries, SaaS features, etc.
+Terraform can manage includes low-level components, such as compute instances, storage, and networking, as well as high-level components, such as DNS entries, SaaS features, etc.
 
-You describe your infrastructure using a high-level configuration syntax to create a blueprint of your datacenter. This can be versioned and treated as you would any other code. Additionally, infrastructure can be shared and re-used.
+You describe your infrastructure using a high-level configuration syntax to create a blueprint of your data centre. This can be versioned and treated as you would with any other code. Additionally, infrastructure can be shared and re-used.
 
 Terraform has a planning step that generates an execution plan. This shows what Terraform will do when you call apply - so you can avoid any nasty surprises.
 
@@ -328,9 +328,9 @@ The main difference is that UDP doesn’t require the recipient to acknowledge t
 
 A Virtual Local Area Network (VLAN) is a logical grouping of different hosts in a similar broadcast domain.
 
-Virtual LANs provide mechanisms for aking logical groups of end devices, even where  they are on different networks. They increase the number of broadcast domains possible in a LAN by grouping various hosts with similar functions. Being virtual, there no issues plugging or unplugging cables.
+Virtual LANs provide mechanisms for creating logical groups of end devices, even where they are on different networks. They increase the number of broadcast domains possible in a LAN by grouping various hosts with similar functions - without needing to plug or unplug any cables.
 
-Implementing VLANs reduces the security risks significantly, as the number of hosts connected on a broadcast domain decreases. This is done by configuring a separate VLAN for only the hosts with the relevant access permissions. So you control  which devices have local access to each other.
+Implementing VLANs reduces the security risks significantly, as the number of hosts connected on a broadcast domain decreases. This is done by configuring a separate VLAN for only the hosts with the relevant access permissions. So you control which devices have local access to each other.
 
 VLANs offer flexible networking models which groups different users based on their departments (jobs/function), rather than just physical locations of that network.
 
