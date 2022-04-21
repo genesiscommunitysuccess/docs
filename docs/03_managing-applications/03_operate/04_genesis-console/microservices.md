@@ -31,7 +31,7 @@ To the right of this, you can do two things:
 
 * **View a system log**. This displays the log for the whole application in the lower right of the screen. You can search through the log, clear it (remove all log entries) or stop logging. The button on the right enables you to download the current log contents.
 
-* **View the system definition**. This is displayed in the lower right of the screen. It includes information such as the database technology (FDB, Aerospike or Postgres).
+* **View the system definition**. This is displayed in the lower right of the screen. It includes information such as the database technology (FDB, Aerospike, MSSQL or Postgres).
 
 ## Viewing a log
 You can click on a process in the list to see more details of it in the main panel.
