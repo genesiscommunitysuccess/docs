@@ -10,11 +10,11 @@ sidebar_position: 3
 Custom Event Handlers provide a way of implementing business logic in Java or Kotlin outside the Genesis GPAL Event Handler definition, in a more traditional and flexible development approach. Genesis has 3 different flavours of custom Event Handler:
 - Async. This uses the Kotlin coroutines API to simplify asynchronous development. This is the underlying implementation used in GPAL event handlers.
 - RxJava3. These use the RxJava3 library, which is a popular option for composing asynchronous event-based programs.
-- Sync. This creates synchronous Event Hndlers.
+- Sync. This creates synchronous Event Handlers.
 
 
 ### Configure in processes.xml file
-You need to add `global.genesis.eventhandler` package in the package tag of process; this tag defines which package the process should refer to
+You need to add the `global.genesis.eventhandler` package in the package tag of the process; this tag defines which package the process should refer to. For example:
 
 ```xml
   <process name="POSITION_NEW_PROCESS">
@@ -40,16 +40,16 @@ The Event Handler interface is the common supertype of AsyncEventHandler, Rx3Eve
 | overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I` |
 | requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them in order to take effect ([see pending approval documentation](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals))|
 
-Each custom event handler must define an input message type `I` and an output message type `O` (these needs to be data classes as GPAL event handlers do). In below examples Company is input message and EventReply is output message.
-The `message` object contains event message and has below properties :
+Each custom event handler must define an input message type `I` and an output message type `O` (these need to be data classes), as GPAL Event Handlers do). In the examples below, `Company` is the input message and `EventReply` is the output message.
+The `message` object contains event message and has the following properties :
 
 | Name | Default value | Description                                                                                                                                                                                                                                      |
 |---|---|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| details |   | It has input information, example: Company                                                                                                                                                                                                       |
+| details |   | This has input information, example: Company                                                                                                                                                                                                       |
 | messageType |   | Name of the event handler                                                                                                                                                                                                                        |
 | userName |   | Name of logged-in user                                                                                                                                                                                                                           |
-| ignoreWarnings | false | If set to false, events will not be processed if there are any warnings and you will get EventNack with warning message. If set to true, warning messages will be ignored and processing of events will be stopped only if there are any errors    |
-| requiresApproval | false | Particular event needs approval from second user if set to true. For more details check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals) |
+| ignoreWarnings | false | If set to false, events will not be processed if there are any warnings; you will get EventNack with warning message. If set to true, warning messages will be ignored; processing of events will be stopped only if there are any errors    |
+| requiresApproval | false | This particular event needs approval from a second user if set to true. For more details, check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals) |
 | approvalKey | null | Auto-generated key ID for particular approval request. For more details, check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals)           |
 | approvalMessage | null | Optional message for approval request. For more details, check this [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals)                           |
 | reason | null | Optional reason sent as part of event message                                                                                                                                                                                                    |
