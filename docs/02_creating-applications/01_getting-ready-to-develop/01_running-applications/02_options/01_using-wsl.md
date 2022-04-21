@@ -74,29 +74,10 @@ Next, update CentOS by running:
 2. Install Java 11 or scp jdk from local binaries folder and install:
     
 ```
-sudo yum update
 sudo yum install java-11-openjdk-devel
-sudo alternatives --config java    # select the option that corresponds to JDK 11
-sudo alternatives --config javac   # select the option that corresponds to JDK 11
 ```
     
-3. Create a soft link to your Maven **settings.xml** file:
-    
-```
-[root@machine user.name]# cd ~
-[root@machine ~]# ll
-total 16
--rw------- 1 root root 6921 Aug  8  2019 anaconda-ks.cfg
--rw------- 1 root root 6577 Aug  8  2019 original-ks.cfg
-[root@machine ~]# mkdir .m2
-[root@machine ~]# cd .m2/
-[root@machine .m2]# ll
-total 0
-[root@machine .m2]# ln -s /mnt/c/Users/user.name/.m2/settings.xml
-[root@machine .m2]# ll
-total 0
-lrwxrwxrwx 1 root root 43 Aug 14 09:28 settings.xml -> /mnt/c/Users/user.name/.m2/settings.xml
-``` 
+
 
 Once you have set this up, it is a good idea to export the distribution. You can then import it again under a different name. This allows you to have multiple distributions for different projects, for example, or for running Intellij:
 
@@ -160,7 +141,6 @@ rpm -Uvh foundationdb-clients-6.3.23-1.el7.x86_64.rpm foundationdb-server-6.3.23
 mv /usr/bin/systemctl /usr/bin/systemctl.old
 curl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py > /usr/bin/systemctl
 chmod +x /usr/bin/systemctl
-usermod -aG wheel alpha
 fdbcli --exec "configure new single memory ; status"
 systemctl enable foundationdb
 ```
