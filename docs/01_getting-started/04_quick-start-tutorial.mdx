@@ -48,10 +48,25 @@ Once installed, from the terminal, run:
 genx
 ```
 
-In the `genx` script, there is a series of questions; the following responses are used for this tutorial:
+In the `genx` script, there is a series of questions. 
+
+First, you are asked to provide your password.
+
+Then you are asked to select from a short list of seed applications. Select `create application`:
+
 
 ```shell
-? Please select an option: create application - Generates a local application.
+? Genesis Password **************
+√ Logged into Genesis
+? Please select an option: (Use arrow keys)
+> create workspace - Generates a local workspace to use for your Genesis based apps.
+  configure workspace - Configure a local workspace.
+  create application - Generates a local application.
+  configure application - Configure a local app.
+```
+Now you can proceed using the following responses:
+
+```shell
 ? Create a app in current directory Yes
 ? App name alpha
 ? App seed Quick Start Application
@@ -59,30 +74,51 @@ In the `genx` script, there is a series of questions; the following responses ar
 ? Package scope (without the @) genesislcap
 ? Package name alpha
 ? Create design system Yes
+```
+At this point, the seed application is created and the genx dependencies are installed.
+
+Then there are more questions, which you can respond to as follows:
+
+```shell
+? Package scope (without the @) genesislcap
+? Package name alpha
+? Create design system Yes
 ? Design system name alpha
 ? Base design system package (@latest will be used) @genesislcap/foundation-ui
 ? Set API Host No
-? NPM Token (for the @genesislcap scope) #YOUR_TOKEN
-? Genesis Server version 6.0.0
-? Genesis Deploy plugin version 6.0.0
+? NPM Token (for the @genesislcap scope) *YOUR_TOKEN*
+? Genesis Server version 6.1.0
+? Genesis Deploy plugin version 6.1.0
 ? Kotlin version 1.6.10
 ? Group Id global.genesis
 ? Application Version 1.0.0-SNAPSHOT
 ```
+At this point, the application will be configured. Assuming it is successful, you will see the following text:
 
+```shell
+i Application created successfully! 🎉 Please open the application and follow the README to complete setup.
+```
 ## 2. Define the data model  
 Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application. 
+
+Open Intellij (or your chosen IDE). In the alpha project, you will see the **readme** file for the project.
 
 ### Add fields  
 You define your [fields](/creating-applications/defining-your-application/data-model/fields/fields/) in the file **alpha-fields-dictionary.kts**.
 
+![](/img/find-fields-dictionary2.png)
+
 :::tip
 
-With your intelliJ project open hit the **shift** key twice and type in the name of the file you are looking for to find and open it quickly.
+Once the project is open, there are two easy ways to find this file quickly in Intellij:
+
+- Press the **Shift** key twice, then type the name of the file you are looking for.
+- Press **Shift** + **Ctrl** + **N**, then type the name of the file you are looking for.
 
 :::
 
-For our simple example, we will add five fields
+
+For our simple example, we will add five fields:
 
 ```kotlin
 fields {
@@ -96,7 +132,9 @@ fields {
 }
 ```
 
-After you have saved this file, [run genesis-generated-fields](/reference/developer/genesis-dao/#dao-generation-commands)
+After you have saved this file, run [genesis-generated-fields](/reference/developer/genesis-dao/#dao-generation-commands)
+
+![](/img/build-gradle-kts-fields.png)
 
 ### Add a table 
 Now we have our fields, let's define a [table](/creating-applications/defining-your-application/data-model/tables/tables) in the file **alpha-tables-dictionary.kts**.
