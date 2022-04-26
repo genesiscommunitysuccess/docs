@@ -37,7 +37,7 @@ We are still working on this page
 | Subscribe                                                                                       | [Record Update](../../helper/subscription/record-update) of `DbRecord` |
 | Bulk or Range Subscribe                                                                         | [Bulk](../../helper/subscription/bulk) of `DbRecord`                   |
 
-| Available in [event handlers](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/)        | ❌                                                                      |
+| Available in [event handlers](/creating-applications/defining-your-application/business-logic/event-handlers/)        | ❌                                                                      |
 | Available in [custom request servers](/creating-applications/defining-your-application/user-interface/request-servers/rs-advanced-technical-details/#custom-request-servers) | ❌                                                                      |
 
 
