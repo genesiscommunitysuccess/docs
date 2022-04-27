@@ -1,12 +1,12 @@
 ---
 id: installhooks
-sidebar_label: 'Install Hook'
-sidebar_position: 3
-title: 'Install Hook'
+sidebar_label: 'Install Hooks'
+sidebar_position: 6
+title: 'Install hooks'
 ---
 
 ## Install hook
-Install hooks run as part of genesisInstall. If you want to run any scripts as part of genesisInstall then add those scripts to the file  *applicationName*_**config/resources/scripts/installHooks**, where *applicationName* is the name of application you are developing. 
+Install hooks run as part of `genesisInstall`. If you want to run any scripts as part of genesisInstall then add those scripts to the file  *applicationName*_**config/resources/scripts/installHooks**, where *applicationName* is the name of application you are developing. 
 
 The scripts (hooks) you add will only run once, unless their execution fails. If you run `genesisInstall`again, previously successful executions of installHook scripts will not be run as part of the install. 
 
