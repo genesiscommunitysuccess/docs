@@ -15,9 +15,10 @@ The scripts must be implemented to work in an idempotent way, and the end result
 On the server, it is located in the GENESIS_HOME/*applicationName*/**scripts/installHooks** directory. Logs are located in **GENESIS_HOME/runtime/installHooks**
 
 Install hook file-name conventions:
+- We only use shell script for install hooks and inside the shell script you can call a python script or a kotlin script or whatever is necessary
 - The install hook name must be unique.
 - It needs to contain a priority number at the beginning of the file name. This number should be unique.
-Example: 1_migrateLogFiles.sh, 2_migrateDictionary.sh
+- Example names: 1_migrateLogFiles.sh, 2_migrateDictionary.sh
 - If you need to create a new install hook that has to execute before priority number 1 or number 2, you can increase the numbers for all the other scripts (e.g. rename 1_migrateLogFiles.sh to be 9_migrateLogFiles.sh)
 
 ## Example
