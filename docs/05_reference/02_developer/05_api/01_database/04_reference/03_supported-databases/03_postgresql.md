@@ -2,7 +2,7 @@
 sidebar_position: 3
 title: SQL
 sidebar_label: SQL
-id: postgresql
+id: sql
 
 ---
 
