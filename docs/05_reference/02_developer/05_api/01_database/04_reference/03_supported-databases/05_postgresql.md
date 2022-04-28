@@ -65,7 +65,7 @@ systemDefinition {
     global {
         ...
         item(name = "DbLayer", value = "SQL")
-        item(name = "DbHost", value = "jdbc:postgresql://pdb:6060/trades")
+        item(name = "DbHost", value = "jdbc:postgresql://pdb:6060/trades?user=dbuser&password=dbpassword")
         ...
     }
 
@@ -81,7 +81,7 @@ systemDefinition {
     global {
         ...
         item(name = "DbLayer", value = "SQL")
-        item(name = "DbHost", value = "jdbc:postgresql://pdb:6060/trades?user=dbuser&password=dbpassword")
+        item(name = "DbHost", value = "jdbc:postgresql://pdb:6060/trades")
         item(name = "DbUsername", value = "dbuser")
         item(name = "DbPassword", value = "dbpassword")
         ...
