@@ -6,6 +6,7 @@ id: foundationdb
 
 ---
 
+Genesis provides two databases built on FoundationDB.
 
 FDB and FDB2 are equivalent in terms of configuration, but they store data using a different data model. 
 
@@ -20,10 +21,10 @@ Therefore, for applications using small table records, FDB2 will be more efficie
 For FDB and FDB2 layers, there are additional system definition items that you can apply in the [**genesis-system-definitions.kts**](/creating-applications/configure-runtime/system-definitions/) file:
 
 
-| Setting   | Description   |  
+| Setting   | Description   |
 |----------|-------------|
-| `FdbClusterFile` | This can be a path to an **fdb.cluster**. If this item is not defined, the default **fdb.cluster** file will be used. This file is located in  /_etc_/**foundationdb/fdb.cluster**. |
+| `FdbClusterFile` | A path to an **fdb.cluster** file. If this item is not defined, the default **fdb.cluster** file will be used. This file is located in  /_etc_/**foundationdb/fdb.cluster**. |
 | `DbNamespace` | This provides a name for the internal FDB directory to use. |  
-| `DbThreadsMin` | This sets the minimum number of threads to be created in the FDB layer thread pool.|
-|`DbThreadsMax`.| This sets the maximum number of threads to be created in the FDB layer thread pool. |  
-| `DbThreadKeepAliveSeconds` | This sets how many seconds a thread created over the `DbThreadsMin` value can live. If a thread is idle for a total of `DbThreadKeepAliveSeconds` and it was created as an additional thread (i.e. outside the `DbThreadsMin` threshold), it will be destroyed. |  
+| `DbThreadsMin` | This sets the minimum number of threads to be created in the FDB layer thread pool. |
+| `DbThreadsMax` | This sets the maximum number of threads to be created in the FDB layer thread pool. |  
+| `DbThreadKeepAliveSeconds` | This sets how many seconds a thread created over the `DbThreadsMin` value can live. If a thread is idle for a total of `DbThreadKeepAliveSeconds` and it was created as an additional thread (i.e. outside the `DbThreadsMin` threshold), it will be destroyed. |
