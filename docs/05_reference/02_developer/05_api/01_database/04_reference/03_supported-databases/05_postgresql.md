@@ -39,10 +39,10 @@ Following are sample values with their explanation:
 More information on connection configuration can be found [here](https://jdbc.postgresql.org/documentation/head/connect.html)
 
 ### DbUsername
-Instead of specifying the database username as part of the URL it can be specified in this property
+Instead of specifying the database username as part of the URL it can be specified in this property. It also supports encrypted values. This is practically useful when plain text credentials should not appear in any configurations. See [Database username and password encryption](/creating-applications/configure-runtime/system-definitions/#items-defined) section for more information.
 
 ### DbPassword
-Instead of specifying the database password as part of the URL it can be specified in this property
+Instead of specifying the database password as part of the URL it can be specified in this property. It also supports encrypted values. This is practically useful when plain text credentials should not appear in any configurations. See [Database username and password encryption](/creating-applications/configure-runtime/system-definitions/#items-defined) section for more information.
 
 ### DbSqlConnectionPoolSize
 This sets the maximum number of SQL connections to be held by the SQL connection pool
@@ -84,6 +84,24 @@ systemDefinition {
         item(name = "DbHost", value = "jdbc:postgresql://pdb:6060/trades")
         item(name = "DbUsername", value = "dbuser")
         item(name = "DbPassword", value = "dbpassword")
+        ...
+    }
+
+    ...
+}
+```
+
+### Username and password as encrypted system environment variables
+
+```kotlin
+
+systemDefinition {
+    global {
+        ...
+        item(name = "DbLayer", value = "SQL")
+        item(name = "DbHost", value = "jdbc:postgresql://pdb:6060/trades")
+        item(name = "DbUsername", value = System.getenv("DBUSERNAME"), encrypted = true)
+        item(name = "DbPassword",  value = System.getenv("DBPASSWORD"), encrypted = true)
         ...
     }
 
