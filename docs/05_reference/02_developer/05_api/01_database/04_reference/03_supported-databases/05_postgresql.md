@@ -7,7 +7,7 @@ id: postgresql
 ---
 
 
-[PostgreSQL](https://www.postgresql.org/) is one of the support databases by Genesis. To connect to it you can use the [common SQL](../sql) configuration properties
+[PostgreSQL](https://www.postgresql.org/) is one of the databases supported by Genesis. To connect to it, use the [common SQL](../sql) configuration properties.
 
 ## System definitions
 Take note of the following system definition items in the [**genesis-system-definitions.kts**](/creating-applications/configure-runtime/system-definitions/) file:
@@ -16,18 +16,18 @@ Take note of the following system definition items in the [**genesis-system-defi
 
 This must be the JDBC URL needed to connect to the PostgreSQL database. 
 
-It takes the following form `jdbc:postgresql://host:port/database`. Where `host` and `port` are optional. 
+It takes the following form: `jdbc:postgresql://host:port/database`. 
 
-The default value for `host` is `localhost`. 
+- `host` and `port` are optional. 
+- The default value for `host` is `localhost`. 
+- The default value for `port` is `5432`. 
 
-The default value for `port` is `5432`. 
-
-In addition to the standard connection parameters the URL accepts several additional parameters:
+In addition to the standard connection parameters, the URL accepts several additional parameters:
 - **user** - the database user
 - **password** - the database user password
-- **ssl** - whether to use SSL. The mere presence of this parameter specifies a SSL connection. More information on SSL configuration can be found [here](https://jdbc.postgresql.org/documentation/head/ssl-client.html)
+- **ssl** - whether to use SSL. The mere presence of this parameter specifies an SSL connection. More information on SSL configuration can be found [here](https://jdbc.postgresql.org/documentation/head/ssl-client.html)
 
-Following are sample values with their explanation:
+Here are some sample values with explanations:
 
 
 | Value   | Description   |
@@ -39,25 +39,25 @@ Following are sample values with their explanation:
 More information on connection configuration can be found [here](https://jdbc.postgresql.org/documentation/head/connect.html)
 
 ### DbUsername
-Instead of specifying the database username as part of the URL it can be specified in this property. It also supports encrypted values. This is practically useful when plain text credentials should not appear in any configurations. See [Database username and password encryption](/creating-applications/configure-runtime/system-definitions/#items-defined) section for more information.
+Instead of specifying the database username as part of the URL it can be specified in this property. It also supports encrypted values. This is useful when plain text credentials are not allowed in any configurations. See [Database username and password encryption](/creating-applications/configure-runtime/system-definitions/#items-defined) section for more information.
 
 ### DbPassword
-Instead of specifying the database password as part of the URL it can be specified in this property. It also supports encrypted values. This is practically useful when plain text credentials should not appear in any configurations. See [Database username and password encryption](/creating-applications/configure-runtime/system-definitions/#items-defined) section for more information.
+Instead of specifying the database password as part of the URL, it can be specified in this property. It also supports encrypted values. This is useful when plain text credentials are not allowed in any configurations. See [Database username and password encryption](/creating-applications/configure-runtime/system-definitions/#items-defined) section for more information.
 
 ### DbSqlConnectionPoolSize
-This sets the maximum number of SQL connections to be held by the SQL connection pool
+This sets the maximum number of SQL connections to be held by the SQL connection pool.
 
 ### DbQuotedIdentifiers
 
-If set to true, all SQL tables and fields will be queried using quotes for each identifier to avoid potential name clashes. 
+If set to true, all SQL tables and fields will be queried using quotes for each identifier (in order to avoid name clashes). 
 
 For example, when the db layer queries the TRADE table with a particular TRADE_ID for all fields, it will do something like `SELECT t_trade WHERE "TRADE_ID" = 1`. However, if set to false, it will use `SELECT t_trade WHERE TRADE_ID = 1`.
 
 
-## Sample Configuration
+## Sample configurations
 
 
-### Username and password as part of the Connection URL
+### User name and password as part of the Connection URL
 
 ```kotlin
 
@@ -73,7 +73,7 @@ systemDefinition {
 }
 ```
 
-### Username and password as system definition items
+### User name and password as system definition items
 
 ```kotlin
 
@@ -91,7 +91,7 @@ systemDefinition {
 }
 ```
 
-### Username and password as encrypted system environment variables
+### User name and password as encrypted system environment variables
 
 ```kotlin
 
