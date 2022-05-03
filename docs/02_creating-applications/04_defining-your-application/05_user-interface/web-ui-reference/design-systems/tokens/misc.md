@@ -8,7 +8,7 @@ sidebar_position: 40
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Contains a number of tokens and options which are hard to classify. You can adjust any of the defaults in the `src/_config/value` folder of your design system.
+Contains a number of tokens and options which are hard to classify. You can adjust any of the defaults in the `src/_config/values` folder of your design system.
 
 * `prefix`: Web component name prefix
 * `direction`: The primary document direction (LTR or RTL)
