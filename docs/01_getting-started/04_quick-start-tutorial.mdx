@@ -210,7 +210,7 @@ Add the following content to the **alpha-system-processes.xml** file.
         <options>-Xmx1024m -DXSD_VALIDATE=false</options>
         <module>genesis-pal-dataserver</module>
         <package>global.genesis.dataserver.pal</package>
-        <script>quickstart-dataserver.kts</script>
+        <script>alpha-dataserver.kts</script>
         <description>Displays real-time details</description>
         <language>pal</language>
         <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
@@ -221,9 +221,9 @@ Add the following content to the **alpha-system-processes.xml** file.
         <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
         <module>genesis-pal-eventhandler</module>
         <package>global.genesis.eventhandler.pal</package>
-        <script>quickstart-eventhandler.kts</script>
+        <script>alpha-eventhandler.kts</script>
         <description>Handles events</description>
-        <classpath>quickstart-messages*,quickstart-eventhandler*</classpath>
+        <classpath>alpha-messages*,alpha-eventhandler*</classpath>
         <language>pal</language>
     </process>
 </processes>
