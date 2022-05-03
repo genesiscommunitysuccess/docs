@@ -26,6 +26,7 @@ In addition to the standard connection parameters, the URL accepts several addit
 - **user** - the database user
 - **password** - the database user password
 - **databaseName** - the name of the database to connect to. If not stated, a connection is made to the default database.
+- **trustServerCertificate** - set to "true" to specify that the driver doesn't validate the server TLS/SSL certificate. Useful for first time run and development purposes. Detailed information about the property can be found [here](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15) and information on encryption [here](https://docs.microsoft.com/en-us/sql/connect/jdbc/understanding-ssl-support?view=sql-server-ver15)
 
 For a full list of connection properties including encryption and certificate authentication properties check [here](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15)
 
@@ -36,7 +37,7 @@ Here are some sample values with explanations:
 
 | Value   | Description   |
 |----------|-------------|
-| `jdbc:sqlserver://localhost;user=MyUserName;password=*****;` | Connects to the default MSSQL database on localhost using username and password |
+| `jdbc:sqlserver://localhost;user=MyUserName;password=*****;trustServerCertificate=true;` | Connects to the default MSSQL database running on localhost using username and password and trusting the server certificate |
 | `jdbc:sqlserver://pdb:6060;databaseName=trades;user=MyUserName;password=*****;` | Connects to MSSQL database named `trades` running on host `pdb` on port `6060` using username and password |
 | `jdbc:sqlserver://pdb:6060;databaseName=trades;integratedSecurity=true;` | Connects to MSSQL database named `trades` running on host `pdb` on port `6060` using [integrated security](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15) |
 
