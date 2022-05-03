@@ -7,7 +7,7 @@ id: quick-start
 
 This short guide will enable you to see the basics of the Genesis low-code platform by building a very simple application. It is designed simply to get from start to finish as quickly as possible.
 
-The exercise is in five main steps:
+The exercise is in six main steps:
 
 1. [Create a new project](#1-create-a-new-project).
 2. [Define the data model](#2-define-the-data-model).
@@ -198,7 +198,7 @@ The application has two files that contain vital configuration information:
 - **alpha-system-processess.xml** 
 - **alpha-service-definitions.xml**
 
-At present, they are empty. You need to insert the details of the Data Server and Event Handler you have just created.
+At present, they are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
 
 Add the following content to the **alpha-system-processes.xml** file.
 
@@ -210,7 +210,7 @@ Add the following content to the **alpha-system-processes.xml** file.
         <options>-Xmx1024m -DXSD_VALIDATE=false</options>
         <module>genesis-pal-dataserver</module>
         <package>global.genesis.dataserver.pal</package>
-        <script>quickstart-dataserver.kts</script>
+        <script>alpha-dataserver.kts</script>
         <description>Displays real-time details</description>
         <language>pal</language>
         <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
@@ -221,9 +221,9 @@ Add the following content to the **alpha-system-processes.xml** file.
         <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
         <module>genesis-pal-eventhandler</module>
         <package>global.genesis.eventhandler.pal</package>
-        <script>quickstart-eventhandler.kts</script>
+        <script>alpha-eventhandler.kts</script>
         <description>Handles events</description>
-        <classpath>quickstart-messages*,quickstart-eventhandler*</classpath>
+        <classpath>alpha-messages*,alpha-eventhandler*</classpath>
         <language>pal</language>
     </process>
 </processes>
