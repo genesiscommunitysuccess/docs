@@ -24,10 +24,10 @@ For FDB and FDB2 layers, there are additional system definition items that you c
 | Setting   | Description   |
 |----------|-------------|
 | `FdbClusterFile` | A path to an **fdb.cluster** file. If this item is not defined, the default **fdb.cluster** file will be used. This file is located in  /_etc_/**foundationdb/fdb.cluster**. |
-| `DbNamespace` | This provides a name for the internal FDB directory to use. |
-| `DbThreadsMin` | This sets the minimum number of threads to be created in the FDB layer thread pool. Defaults to the minimum of number of processing units or 4 |
-| `DbThreadsMax` | This sets the maximum number of threads to be created in the FDB layer thread pool. Defaults to the maximum of the number of processing units multiplied by 2 or 4 |
-| `DbThreadKeepAliveSeconds` | This sets how many seconds a thread created over the `DbThreadsMin` value can live. If a thread is idle for a total of `DbThreadKeepAliveSeconds` and it was created as an additional thread (i.e. outside the `DbThreadsMin` threshold), it will be destroyed. Defaults to 5 minutes |
+| `DbNamespace` | A name for the internal FDB directory to use. |
+| `DbThreadsMin` | The minimum number of threads to be created in the FDB layer thread pool. Defaults to the minimum of 4 or the number of processing units |
+| `DbThreadsMax` | The maximum number of threads to be created in the FDB layer thread pool. Defaults to the maximum of 4 or the number of processing units multiplied by 2 |
+| `DbThreadKeepAliveSeconds` | Sets how many seconds a thread created over the `DbThreadsMin` value can live. If a thread is idle for a total of `DbThreadKeepAliveSeconds` and it was created as an additional thread (i.e. outside the `DbThreadsMin` threshold), it will be destroyed. Defaults to 5 minutes |
 
 ## Sample configurations
 
@@ -64,7 +64,7 @@ systemDefinition {
 systemDefinition {
     global {
         ...
-        item(name = "FdbClusterFile", value = "C:\\SomePathToFile\fdb.cluster")
+        item(name = "FdbClusterFile", value = "C:\\Genesis\fdb\fdb.cluster")
         ...
     }
     ...
