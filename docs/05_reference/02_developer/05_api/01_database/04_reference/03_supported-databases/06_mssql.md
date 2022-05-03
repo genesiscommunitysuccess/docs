@@ -19,7 +19,7 @@ This must be the JDBC URL needed to connect to the MSSQL database.
 It takes the following form: `jdbc:sqlserver://serverName[\instanceName][:port]][;property=value[;property=value]`. 
 
 - `instanceName` and `port` are optional. 
-- If no `instanceName` is specified a connection to the default instance is made.
+- If no `instanceName` is specified, a connection to the default instance is made.
 - The default value for `port` is `1433`. 
 
 In addition to the standard connection parameters, the URL accepts several additional parameters:
@@ -28,26 +28,33 @@ In addition to the standard connection parameters, the URL accepts several addit
 - **databaseName** - the name of the database to connect to. If not stated, a connection is made to the default database.
 - **trustServerCertificate** - set to `true` to specify that the driver doesn't validate the server TLS/SSL certificate. Useful for first time run and development purposes. Detailed information about the property can be found [here](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15) and information on encryption [here](https://docs.microsoft.com/en-us/sql/connect/jdbc/understanding-ssl-support?view=sql-server-ver15)
 
-For a full list of connection properties including encryption and certificate authentication properties check [here](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15)
+For a full list of connection properties, including encryption and certificate authentication properties, check [here](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15).
 
-SSL documentation for MSSQL JDBC driver documentation can be found [here](https://github.com/Microsoft/mssql-jdbc/wiki/SSLProtocol)
+SSL documentation for MSSQL JDBC driver documentation can be found [here](https://github.com/Microsoft/mssql-jdbc/wiki/SSLProtocol).
 
 Here are some sample values with explanations:
 
 
-| Value   | Description   |
-|----------|-------------|
-| `jdbc:sqlserver://localhost;user=MyUserName;password=*****;trustServerCertificate=true;` | Connects to the default MSSQL database running on localhost using username and password and trusting the server certificate |
-| `jdbc:sqlserver://pdb:6060;databaseName=trades;user=MyUserName;password=*****;` | Connects to MSSQL database named `trades` running on host `pdb` on port `6060` using username and password |
-| `jdbc:sqlserver://pdb:6060;databaseName=trades;integratedSecurity=true;` | Connects to MSSQL database named `trades` running on host `pdb` on port `6060` using [integrated security](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15) |
 
-More information on connection configuration can be found [here](https://docs.microsoft.com/en-us/sql/connect/jdbc/building-the-connection-url?view=sql-server-ver15)
+`jdbc:sqlserver://localhost;user=MyUserName;password=*****;trustServerCertificate=true;`
+
+- This connects to the default MSSQL database running on localhost using username and password and trusting the server certificate.
+
+`jdbc:sqlserver://pdb:6060;databaseName=trades;user=MyUserName;password=*****;` 
+
+- This connects to an MSSQL database named `trades` running on host `pdb` on port `6060` using username and password. 
+
+`jdbc:sqlserver://pdb:6060;databaseName=trades;integratedSecurity=true;` 
+
+- This connects to an MSSQL database named `trades` running on host `pdb` on port `6060` using [integrated security](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15).
+
+More information on connection configuration can be found [here](https://docs.microsoft.com/en-us/sql/connect/jdbc/building-the-connection-url?view=sql-server-ver15).
 
 ### DbUsername
-Instead of specifying the database username as part of the URL it can be specified in this property. It also supports encrypted values. This is useful when plain text credentials are not allowed in any configurations. See [Database username and password encryption](/creating-applications/configure-runtime/system-definitions/#items-defined) section for more information.
+Instead of specifying the database username as part of the URL, you can specify it in this property. It supports encrypted values. This is useful when plain text credentials are not allowed in any configurations. See [Database username and password encryption](/creating-applications/configure-runtime/system-definitions/#items-defined) section for more information.
 
 ### DbPassword
-Instead of specifying the database password as part of the URL, it can be specified in this property. It also supports encrypted values. This is useful when plain text credentials are not allowed in any configurations. See [Database username and password encryption](/creating-applications/configure-runtime/system-definitions/#items-defined) section for more information.
+Instead of specifying the database password as part of the URL, you can specify it in this property. It supports encrypted values. This is useful when plain text credentials are not allowed in any configurations. See [Database username and password encryption](/creating-applications/configure-runtime/system-definitions/#items-defined) section for more information.
 
 ### DbSqlConnectionPoolSize
 This sets the maximum number of SQL connections to be held by the SQL connection pool.
