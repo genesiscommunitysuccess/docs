@@ -26,7 +26,7 @@ In addition to the standard connection parameters, the URL accepts several addit
 - **user** - the database user
 - **password** - the database user password
 - **databaseName** - the name of the database to connect to. If not stated, a connection is made to the default database.
-- **trustServerCertificate** - set to "true" to specify that the driver doesn't validate the server TLS/SSL certificate. Useful for first time run and development purposes. Detailed information about the property can be found [here](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15) and information on encryption [here](https://docs.microsoft.com/en-us/sql/connect/jdbc/understanding-ssl-support?view=sql-server-ver15)
+- **trustServerCertificate** - set to `true` to specify that the driver doesn't validate the server TLS/SSL certificate. Useful for first time run and development purposes. Detailed information about the property can be found [here](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15) and information on encryption [here](https://docs.microsoft.com/en-us/sql/connect/jdbc/understanding-ssl-support?view=sql-server-ver15)
 
 For a full list of connection properties including encryption and certificate authentication properties check [here](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15)
 
