@@ -8,7 +8,7 @@ id: integration-overview
 
 In this section, we look at components that enable you to integrate data from other internal and external systems into your application.
 
-[Apache Camel integrations](/creating-applications/defining-your-application/integrations/apache-camel/) enables the system to integrate with external systems reading in information.
+[Apache Camel integrations](/creating-applications/defining-your-application/integrations/apache-camel/apache-camel/) enables the system to integrate with external systems reading in information.
 
 [REST endpoints](/creating-applications/defining-your-application/integrations/rest-endpoints/) enable systems to interact with your application's resources via http endpoints.
 
