@@ -10,8 +10,8 @@ Some feeds provide static sets of data that you can download for processing by y
 
 :::note
 This guide is intended for:
-- users who alrady have experience of creating a Genesis application
-- users with a working knowledge of [camel](/reference/glossary#camel-apache-camel)
+- users who already have experience of creating a Genesis application
+- users with a working knowledge of [Camel](/reference/glossary#camel-apache-camel)
 :::
 
 
@@ -32,8 +32,8 @@ Versions used while writing this guide:
 
 The main steps in loading the data are:
 
-1.	Examine the format of the source data. You need to able to map the data into a table in Genesis format. 
-2.	Define a camel config (in the CFG module) to listen to a staging directory and push the file as a new event.
+1.	Examine the format of the source data. You need to be able to map the data into a table in Genesis format. 
+2.	Define a Camel config (in the CFG module) to listen to a staging directory and push the file as a new event.
 3.	Create a new event handler to process the event and push the data to the data server.
 4.	Create some unit tests around the event handler to verify the load process. 
 
@@ -61,20 +61,22 @@ You need to decide how to retrieve the data from the feed and write it to a stag
 
 
 -	scheduled SFTP download every 15 minutes from the Bloomberg feed, writing the source files to a folder called **/runtime/inbound/bbg**
--	a camel job created to do the same thing
+-	a Camel job created to do the same thing
 -	simple copy and paste
 
 
 ## Configuration
 
-Go to your application’s _application_**-config** project in the **resources/cfg** directory. Edit this file so that the existing camel XML configuration file has the new route definition. 
-You can use the following code, for example:
+Under your applications's _application_**-config** project in the **resources/scripts** directory, you will find the _application_**-camel.kts** file. You will need to edit this file to contain the following route definition.
 
-```bash
-//Handles BBG issuance files
-from('file:' + pathStr + '/bbg/?move=.camel/${date:now:yyyyMMdd-HHmmssSSS}-${headers.CamelFileName}&initialDelay=5000&readLock=changed&readLockCheckInterval=5000&readLockTimeout=60000').
-process(new FileEventHandlerProcessor("ISSUANCE_EVENT_HANDLER", "EVENT_FILE_IMPORT_BBG_ISSUANCE", "FILE", "SOURCE_NAME"))
-
+```kotlin
+camel {
+    routeHandler {
+        val pathStr = "${GenesisPaths.genesisHome()}/runtime/inbound/"
+        from("file:${pathStr}/bbg/?move=.camel/\${date:now:yyyyMMdd-HHmmssSSS}-\${headers.CamelFileName}&initialDelay=5000&readLock=changed&readLockCheckInterval=5000&readLockTimeout=60000")
+            .process(fileEventProcessorProvider.createProcessor("ISSUANCE_EVENT_HANDLER", "EVENT_FILE_IMPORT_BBG_ISSUANCE", "FILE", "SOURCE_NAME"))
+    }
+}
 ```
 
 The code does three things:
@@ -87,11 +89,11 @@ The code includes parameters, such as **move**.  There is a [huge range of other
 
 ### Finding the generated messages
 
-In the example below, we have used the Genesis file processor class, and some camel URI. The URI specifies:
+In the example below, we have used the Genesis file processor class, and some Camel URI. The URI specifies:
 -	the location of the files to be loaded (in this case any file found in /bbg)
 -	configuration attributes (I.e. where the files will be archived)
 
-Note that the first ** ls** of the files in the **bbg** folder does not show the downloaded file – because it has automatically been moved to the **.camel** folder. Running ** ls -al .camel** then shows the downloaded file.
+Note that the first **ls** of the files in the **bbg** folder does not show the downloaded file – because it has automatically been moved to the **.camel** folder. Running **ls -al .camel** then shows the downloaded file.
 
 ```bash
 [briss@dev-abc-briss1 inbound]$ cd bbg/
@@ -118,7 +120,7 @@ Bloomberg has a very specific file structure. It would be possible to perform al
 
 An event handler handles a specific single event. In this case, the event handler inherits from the **AbstractEventHandler** class.
 
-```kotlin
+```java
 @Module
 public class BbgIssuanceFileImport extends AbstractEventHandler {
 
@@ -136,8 +138,7 @@ You also need to define a construct that passes the details to the parent class.
 In the following example, we have left the metadata empty (this has to be passed).
 
 
-```kotlin
-@Inject
+```java
 
 public BbgIssuanceFileImport(final EventManager eventManager,
 
@@ -159,14 +160,14 @@ Annotations of @Module and @Inject are required for Genesis Dependency Injection
 
 If you don’t want to perform any validation, then you can set up the **onValidate** block to ensure that the event manager returns an ACK in every case.  
 
-```kotlin
+```java
 @Override
 public void onValidate(Message message, boolean b) {
     eventManager.sendAck(message);
 }
 ```
 
-All the work is performed in the `onCommit block. The details can be found with the message. This contains the GenesisSet to get message details.
+All the work is performed in the `onCommit` block. The details can be found with the message. This contains the GenesisSet to get message details.
 
 https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/1454833665/The+Notify+Microservice+Concepts
 
@@ -182,7 +183,7 @@ For this handler, we are interested in the `DETAILS.FILE` property of the Genesi
 
 - If there are no exceptions, then the `IssuanceData` elements generated are inserted into the ISSUANCE_DATA table using the associated repository.
 
-```kotlin
+```java
 @Override
 public void onCommit(final Message message, boolean b) {
     LOG.info("New file received");
@@ -244,7 +245,7 @@ public void onCommit(final Message message, boolean b) {
 ```
 Other examples of event handlers that load files probably have a different **onCommit** block. For example, the **CSVEventHandlerProcessor** processor discussed in the configuration section has already performed part of the processing, so within the GenesisSet there is a DETAILS.ROW that is a collection of rows, each being a GenesisSet (field/value pairs). For this reason, the **for** loops look something like this:
 
-```kotlin
+```java
 for (GenesisSet row : Objects.requireNonNull(Objects.requireNonNull(details).getArray("ROW", GenesisSet.class))) {
 ```
 
@@ -255,7 +256,7 @@ It is wise to create some tests around the event handler.
 
 Due to the complexity of the Bloomberg feed, we create unit tests around the parsing of the feed file (the `BbgFileImportReader` class). Again, we use the `onCommit` block of the `BbgIssuanceFileImport` class.
 
-```kotlin
+```java
 @Test
     @SuppressWarnings("unchecked")
     public void testPrelOnCommitSuccess() throws IOException {
@@ -306,9 +307,9 @@ Due to the complexity of the Bloomberg feed, we create unit tests around the par
 Once you have deployed the new build, if it does not work first time, here is a check list to help identify common mistakes:
 
 -	On start-up, look at the **Logs** directory for errors in **ISSUANCE_CAMEL.log** and **ISSUANCE_EVENT_HANDLER.log**.
--	Check that the camel log has registered your route.
+-	Check that the Camel log has registered your route.
 -	Check in the event handler log file that your new event has been registered.
--	Drop a test file into the staging directory and see the logs consume the file in the camel log and log the contents with the event hander logs. In the BBG example below, the handler log shows the file contents and then an NACK error. In this example, we can see **^M** characters are causing parse failures on dates. Copying between email attachments and downloads, DOS and LINUX copies, we have introduced a EOLN issue on split-line file contents. 
+-	Drop a test file into the staging directory and see the logs consume the file in the Camel log and log the contents with the event handler logs. In the BBG example below, the handler log shows the file contents and then an NACK error. In this example, we can see **^M** characters are causing parse failures on dates. Copying between email attachments and downloads, DOS and LINUX copies, we have introduced a EOLN issue on split-line file contents. 
 
 ```bash
 |60.71| |N.S.|200000000.00|;2;3;3;13;200000.00;1; ;5;10/21/2021;13;150000.00;1; ;5;10/21/2021;13;100000.00;1; ;5;10/21/2021;|N.D.| |MIDSWAPS|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|^M

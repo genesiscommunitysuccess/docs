@@ -1,0 +1,55 @@
+---
+title: 'Advanced'
+sidebar_label: 'Advanced'
+sidebar_position: 4
+id: ac-advanced-technical-details
+---
+
+[Introduction](/creating-applications/defining-your-application/integrations/apache-camel/apache-camel/)  | [Where to define](/creating-applications/defining-your-application/integrations/apache-camel/ac-define/) | [Basics](/creating-applications/defining-your-application/integrations/apache-camel/ac-technical-details/) |  [Advanced](/creating-applications/defining-your-application/integrations/apache-camel/ac-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/integrations/apache-camel/ac-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/integrations/apache-camel/ac-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/integrations/apache-camel/ac-testing/)
+
+## A more advanced example camel configuration
+
+Here is a more advanced example of a **\*-camel.kts** file. It defines an 2 routes, and has an `onCommit` block, similar to those seen in [event handlers](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/). This is due to `camel` block in Genesis functioning as a type of Event Handler, reacting to `EVENT_CAMEL_SEND` message types.
+
+```kotlin
+import global.genesis.jackson.core.GenesisJacksonMapper.Companion.csvIterator
+
+camel {
+    onCommit {
+        LOG.info("Received: {}", it)
+        val properties = it.details.properties
+        when(val targetExtension = properties["TARGET_EXTENSION"].toString()){
+            "CSV" -> DefaultCamelSendToCSV.handle(it.details, producer)
+            "XML" -> DefaultCamelSendToXml.handle(it.details, producer)
+        }
+        EventReply.EventAck()
+    }
+    routeHandler {
+        from("seda:PROFILE_USER")
+            .process { exchange ->
+                LOG.info("seda:PROFILE_USER")
+                val body = exchange.message.body.toString()
+                val profileUsers = body.csvIterator(ProfileUser::class.java)
+                for(profileUser in profileUsers){
+                    rxEntityDb.insert(profileUser).blockingGet()
+                }
+            }
+        from("seda:MOVIES")
+            .process { exchange ->
+                LOG.info("seda:MOVIES")
+                val body = exchange.message.body.toString()
+                val movie = Movies {
+                    id = "1"
+                    name = body
+                }
+                rxEntityDb.insert(movie).blockingGet()
+            }
+    }
+}
+```
+
+### onCommit
+In the above example, the `onCommit` block reads from the properties from the received event, and uses the inbuilt `DefaultCamelSendTo*` classes to send the event message to an appropriate `seda:` endpoint.
+
+### routeHandler
+In the above example, we have 2 defined routes. In both of these routes we are receiving data from the `seda:` endpoints and then processing it, using a inline defined processor. This can be useful for quickly defining a processor that isn't used elsewhere. Compared to the previous example, the results of the SEDA endpoint are directly persisted as entities in the Database, rather than being passed onto a reqrep.
