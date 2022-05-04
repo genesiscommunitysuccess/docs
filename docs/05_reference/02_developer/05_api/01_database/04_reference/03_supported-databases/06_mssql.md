@@ -7,7 +7,7 @@ id: mssql
 ---
 
 
-[MSSQL](https://www.microsoft.com/en-gb/sql-server/sql-server-2019) is one of the databases supported by Genesis. To connect to it, use the [common SQL](../sql) configuration properties.
+The Genesis low-code platform supports [MSSQL](https://www.microsoft.com/en-gb/sql-server/sql-server-2019). To connect to it, use the [common SQL](../sql) configuration properties.
 
 ## System definitions
 Take note of the following system definition items in the [**genesis-system-definitions.kts**](/creating-applications/configure-runtime/system-definitions/) file:

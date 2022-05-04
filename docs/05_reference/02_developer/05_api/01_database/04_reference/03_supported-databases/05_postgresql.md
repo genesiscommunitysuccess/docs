@@ -7,7 +7,7 @@ id: postgresql
 ---
 
 
-[PostgreSQL](https://www.postgresql.org/) is one of the databases supported by Genesis. To connect to it, use the [common SQL](../sql) configuration properties.
+The Genesis low-code platform supports [PostgreSQL](https://www.postgresql.org/). To connect to it, use the [common SQL](../sql) configuration properties.
 
 ## System definitions
 Take note of the following system definition items in the [**genesis-system-definitions.kts**](/creating-applications/configure-runtime/system-definitions/) file:
