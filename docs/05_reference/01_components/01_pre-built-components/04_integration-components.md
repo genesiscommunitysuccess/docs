@@ -29,7 +29,7 @@ Most financial applications have to interact with other systems to exchange info
 | SS&C Geneva | Order & trade lifecycle | Integration for trades, positions, balances and margin uploads, integrations and workflows |
 | Traiana	 | Order & trade lifecycle | Integration for trade lifecycle data |
 | Bloomberg TOMS | Order entry & execution | Real-time integration for order routing, execution, management, and post-trade processing |
-| [FIX](/creating-applications/defining-your-application/integrations/external-systems/configure/) | Order entry & execution | FIX messaging for incoming/outgoing messages, supporting multiple protocols and customizable dictionaries |
+| [FIX](/creating-applications/defining-your-application/integrations/external-systems/) | Order entry & execution | FIX messaging for incoming/outgoing messages, supporting multiple protocols and customizable dictionaries |
 | Interactive Brokers | Order entry & execution | Integration for order routing, execution, management, and post-trade processing |
 | ION Trading - Fidessa | Order entry & execution | Integration to the Fidessa OMS for order routing, execution, management, and post-trade processing |
 | Iress	 | Order entry & execution | Integration for order routing, execution, management, and post-trade processing |
