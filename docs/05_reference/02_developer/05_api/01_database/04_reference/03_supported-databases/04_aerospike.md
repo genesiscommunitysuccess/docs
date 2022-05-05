@@ -30,10 +30,16 @@ systemDefinition {
         item(name = "DbHost", value = "192.168.10.10")
         item(name = "DbPort", value = "4333")
         item(name = "DbMode", value = "VANILLA")
-        item(name = "DbNamespace", value = "trade")
         item(name = "DbUsername", value = "aerospike_user")
         item(name = "DbPassword", value = "aerospike_password")
         ...
+    }
+    systems {
+        system(name = "DEV") {
+            ...
+            item(name = "DbNamespace", value = "trades")
+            ...
+        }
     }
 
     ...
@@ -51,10 +57,16 @@ systemDefinition {
         item(name = "DbHost", value = "192.168.10.10")
         item(name = "DbPort", value = "4333")
         item(name = "DbMode", value = "VANILLA")
-        item(name = "DbNamespace", value = "trade")
         item(name = "DbUsername", value = System.getenv("AEROSPIKE_USERNAME"), encrypted = true)
         item(name = "DbPassword", value = value = System.getenv("AEROSPIKE_PASSWORD"), encrypted = true)
         ...
+    }
+    systems {
+        system(name = "DEV") {
+            ...
+            item(name = "DbNamespace", value = "trades")
+            ...
+        }
     }
 
     ...
