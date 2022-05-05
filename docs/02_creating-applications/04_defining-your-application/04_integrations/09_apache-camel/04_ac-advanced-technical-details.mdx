@@ -29,7 +29,7 @@ val LOG: Logger
 
 Here is a more advanced example of a **\*-camel.kts** file. It defines an 2 routes, and has an `onCommit` block, similar to those seen in [event handlers](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/). This is due to `camel` block in Genesis functioning as a type of Event Handler, reacting to `EVENT_CAMEL_SEND` message types. These events can be raised as normal with Genesis, allowing this event handler to be invoked from other `eventHandler` codeblocks, from the front end, or from custom components in the application. The Event Handler aspect of this example, allows these events to be easily access from the Apache Camel route builder via the `seda:` endpoint.
 
-You can find more information on [event handlers here.](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/).
+You can find more information on [event handlers here](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/).
 
 ```kotlin
 import global.genesis.jackson.core.GenesisJacksonMapper.Companion.csvIterator
