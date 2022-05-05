@@ -67,7 +67,7 @@ You need to decide how to retrieve the data from the feed and write it to a stag
 
 ## Configuration
 
-Under your applications's _application_**-config** project in the **resources/scripts** directory, you will find the _application_**-camel.kts** file. You will need to edit this file to contain the following route definition.
+Under your application's _application_**-script-config** project in the **resources/scripts** directory, you will find the _application_**-camel.kts** file. You will need to edit this file to contain the following route definition.
 
 ```kotlin
 camel {

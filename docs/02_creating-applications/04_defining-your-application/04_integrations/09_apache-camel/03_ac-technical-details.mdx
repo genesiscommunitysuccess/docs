@@ -34,6 +34,26 @@ In this instance, the File component ([defined in the Apache documentation here]
 * `initialDelay=5000` is the **initialDelay** query parameter. This is the time in milliseconds before the system first polls the path directory.
 * `readLock=changed` is the **readLock** query parameter. This sets the strategy to ensure the file being polled isn't in use.
 * `readLockCheckInterval=5000` is the **readLockCheckInterval** query parameter. This sets the time between checks of the readlock.
-* `readLockTimeout=60000` is the **readLockTimeout** query parameter. This sets the maximum time that Apache Camel will wait when trying to acquire a Readlock before timing out.
+* `readLockTimeout=60000` is the **readLockTimeout** query parameter. This sets the maximum time that Apache Camel will wait when trying to acquire a readlock before timing out.
 
-The route then processes the file using the `FileEventHandlerProcessor` invoked by the `fileEventProcessorProvider`. A similar method and class exists also for handling the processing of [Kafka](https://kafka.apache.org/) messages, and CSV files.
+The route then processes the file using the `FileEventHandlerProcessor` created by the `createProcessor` method through the `fileEventProcessorProvider`. A similar method and class exists also for handling the processing of [Kafka](https://kafka.apache.org/) messages, and CSV files.
+
+This processing will then send a "EVENT_FILE_IMPORT_BBG_ISSUANCE" message to the "ISSUANCE_EVENT_HANDLER" process, with a `dataFieldName` of "FILE", expecting it to be handled by an appropriate [request reply server](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/).
+
+The `createProcessor` on both the `FileEventProcessorProvider` and `KafkaEventProcessorProvider` have the same following parameters:
+
+* `processName` is the name of the process to which you are attempting to send a request to.
+* `messageType` is the type of message sent to the above process. This is important for ensuring the correct [request reply server](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/) handles this request.
+* `dataFieldName` is the name of the parameter that contains the data of the file or kafka events, when sent to the reqrep.
+* `sourceId` is the source of this request.
+* `replyCallback` is an optional parameter. It allows you to define a custom `Consumer` and behaviour on the response of the reqrep. By default, without setting this parameter, a consumer is constructed that logs `EVENT_NACK` messages from the reqrep, with the request set.
+
+The `createProcessor` of the `CSVEventProcessorProvider` has slightly different parameters:
+
+* `processName` is the name of the process to which you are attempting to send a request to.
+* `messageType` is the type of message sent to the above process. This is important for ensuring the correct [request reply server](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/) handles this request.
+* `sourceId` is the source of this request.
+* `separator` allows you to define which character is used as a separator.
+* `ignoreHeaders` is an optional Boolean parameter, defaulting to false. If set to true, the first row of the csv will be ignored, and not parsed as part of the CSV.
+* `replyCallback` is an optional parameter. It allows you to define a custom `Consumer` and behaviour on the response of the reqrep. By default, without setting this parameter, a consumer is constructed that logs `EVENT_NACK` messages from the reqrep, with the request set.
+* `charset` is an optional parameter defaulting to UTF 8. This defines which character set the CSV is using.
