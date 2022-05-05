@@ -6,7 +6,7 @@ id: aerospike
 
 ---
 
-[Aerospike](https://aerospike.com/) is one of the databases supported by Genesis. To connect to it, use the [system definition items](/creating-applications/configure-runtime/system-definitions/) listed below.
+Genesis supports [Aerospike](https://aerospike.com/). To connect to Aerospike, use the [system definition items](/creating-applications/configure-runtime/system-definitions/) listed below.
 
 | Setting   | Description   |  
 |----------|-------------|
