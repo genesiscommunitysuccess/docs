@@ -71,7 +71,7 @@ For example, when the db layer queries the TRADE table with a particular TRADE_I
 ## Sample configurations
 
 
-### User name and password as part of the Connection URL
+### User name and password as part of the connection URL
 
 ```kotlin
 
