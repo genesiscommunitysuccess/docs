@@ -16,7 +16,9 @@ Take note of the following system definition items in the [**genesis-system-defi
 
 This must be the JDBC URL needed to connect to the MSSQL database. 
 
-It takes the following form: `jdbc:sqlserver://serverName[\instanceName][:port]][;property=value[;property=value]`. 
+It takes the following form: 
+
+`jdbc:sqlserver://serverName[\instanceName][:port]][;property=value[;property=value]`
 
 - `instanceName` and `port` are optional. 
 - If no `instanceName` is specified, a connection to the default instance is made.
