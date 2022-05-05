@@ -23,11 +23,20 @@ alpha-design-system
 ├── node_modules
 ├── src
 │   ├── _config
-│   │   ├── color.ts
-│   │   ├── index.ts
-│   │   ├── misc.ts
-│   │   ├── sizing.ts
-│   │   └── typography.ts
+│   │   ├── styles
+│   │   │   ├── colors.ts
+│   │   │   └── index.ts
+│   │   ├── tokens
+│   │   │   ├── custom.ts
+│   │   │   ├── default.ts
+│   │   │   └── index.ts
+│   │   ├── values
+│   │   │   ├── color.ts
+│   │   │   ├── index.ts
+│   │   │   ├── misc.ts
+│   │   │   ├── sizing.ts
+│   │   │   └── typography.ts
+│   │   └── index.ts
 ```
 
 It contains configuration files that set default values for various design tokens, as well as a few other settings.

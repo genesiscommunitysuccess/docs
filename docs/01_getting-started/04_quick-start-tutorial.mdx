@@ -7,13 +7,14 @@ id: quick-start
 
 This short guide will enable you to see the basics of the Genesis low-code platform by building a very simple application. It is designed simply to get from start to finish as quickly as possible.
 
-The exercise is in five main steps:
+The exercise is in six main steps:
 
 1. [Create a new project](#1-create-a-new-project).
 2. [Define the data model](#2-define-the-data-model).
 3. [Add business logic](#3-add-business-logic).
-4. [Create a user interface](#4-create-a-user-interface).
-5. [Run the application](#5-run-the-application). 
+4. [Prepare the server and build](#4-prepare-the-server-and-build).
+5. [Create a user interface](#5-create-a-user-interface).
+6. [Run the application](#6-run-the-application). 
 
 You can get through this in about 30 minutes - but don't be afraid to take more time.
 
@@ -48,10 +49,25 @@ Once installed, from the terminal, run:
 genx
 ```
 
-In the `genx` script, there is a series of questions; the following responses are used for this tutorial:
+In the `genx` script, there is a series of questions. 
+
+First, you are asked to provide your password. (Note: at present, this will not accept passwords that contain the **£** character.)
+
+Then you are asked to select from a short list of seed applications. Select `create application`:
+
 
 ```shell
-? Please select an option: create application - Generates a local application.
+? Genesis Password **************
+√ Logged into Genesis
+? Please select an option: (Use arrow keys)
+> create workspace - Generates a local workspace to use for your Genesis based apps.
+  configure workspace - Configure a local workspace.
+  create application - Generates a local application.
+  configure application - Configure a local app.
+```
+Now you can proceed using the following responses:
+
+```shell
 ? Create a app in current directory Yes
 ? App name alpha
 ? App seed Quick Start Application
@@ -59,30 +75,51 @@ In the `genx` script, there is a series of questions; the following responses ar
 ? Package scope (without the @) genesislcap
 ? Package name alpha
 ? Create design system Yes
+```
+At this point, the seed application is created and the genx dependencies are installed.
+
+Then there are more questions, which you can respond to as follows:
+
+```shell
+? Package scope (without the @) genesislcap
+? Package name alpha
+? Create design system Yes
 ? Design system name alpha
 ? Base design system package (@latest will be used) @genesislcap/foundation-ui
 ? Set API Host No
-? NPM Token (for the @genesislcap scope) #YOUR_TOKEN
-? Genesis Server version 6.0.0
-? Genesis Deploy plugin version 6.0.0
+? NPM Token (for the @genesislcap scope) *YOUR_TOKEN*
+? Genesis Server version 6.1.0
+? Genesis Deploy plugin version 6.1.0
 ? Kotlin version 1.6.10
 ? Group Id global.genesis
 ? Application Version 1.0.0-SNAPSHOT
 ```
+At this point, the application will be configured. Assuming it is successful, you will see the following text:
 
+```shell
+i Application created successfully! 🎉 Please open the application and follow the README to complete setup.
+```
 ## 2. Define the data model  
 Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application. 
+
+Open Intellij (or your chosen IDE). In the alpha project, you will see the **readme** file for the project.
 
 ### Add fields  
 You define your [fields](/creating-applications/defining-your-application/data-model/fields/fields/) in the file **alpha-fields-dictionary.kts**.
 
+
+
 :::tip
 
-With your intelliJ project open hit the **shift** key twice and type in the name of the file you are looking for to find and open it quickly.
+Once the project is open, there are two easy ways to find this file quickly in Intellij:
+
+- Press the **Shift** key twice, then type the name of the file you are looking for.
+- Press **Shift** + **Ctrl** + **N**, then type the name of the file you are looking for.
 
 :::
 
-For our simple example, we will add five fields
+
+For our simple example, we will add five fields:
 
 ```kotlin
 fields {
@@ -96,7 +133,9 @@ fields {
 }
 ```
 
-After you have saved this file, [run genesis-generated-fields](/reference/developer/genesis-dao/#dao-generation-commands)
+After you have saved this file, run [genesis-generated-fields](/reference/developer/genesis-dao/#dao-generation-commands)
+
+![](/img/build-gradle-kts-fields.png)
 
 ### Add a table 
 Now we have our fields, let's define a [table](/creating-applications/defining-your-application/data-model/tables/tables) in the file **alpha-tables-dictionary.kts**.
@@ -139,7 +178,7 @@ dataServer {
 ```
 
 ### Event Handler
-Next, we want to be able to insert rows into our table. For this you need to define an [Event Handler](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/) in the file **alpha-event-handler.kts**.
+Next, we want to be able to insert rows into our table. For this you need to define an [Event Handler](/creating-applications/defining-your-application/business-logic/event-handlers/) in the file **alpha-eventhandler.kts**.
 
 ```kotlin
 eventHandler {
@@ -153,12 +192,71 @@ eventHandler {
 
 }
 ```
+## 4. Prepare the server and build
+The application has two files that contain vital configuration information:
 
-## 4. Create a user interface
+- **alpha-processess.xml** 
+- **alpha-service-definitions.xml**
+
+At present, they are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
+
+Add the following content to the **alpha-system-processes.xml** file.
+
+```xml
+<processes>
+    <process name="ALPHA_DATASERVER">
+        <groupId>ALPHA</groupId>
+        <start>true</start>
+        <options>-Xmx1024m -DXSD_VALIDATE=false</options>
+        <module>genesis-pal-dataserver</module>
+        <package>global.genesis.dataserver.pal</package>
+        <script>alpha-dataserver.kts</script>
+        <description>Displays real-time details</description>
+        <language>pal</language>
+        <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
+    </process>
+    <process name="ALPHA_EVENT_HANDLER">
+        <groupId>ALPHA</groupId>
+        <start>true</start>
+        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
+        <module>genesis-pal-eventhandler</module>
+        <package>global.genesis.eventhandler.pal</package>
+        <script>alpha-eventhandler.kts</script>
+        <description>Handles events</description>
+        <classpath>alpha-messages*,alpha-eventhandler*</classpath>
+        <language>pal</language>
+    </process>
+</processes>
+```
+Add the following content to the **alpha-service-definitions.xml** file.
+
+```xml
+<configuration>
+    <service host="localhost" name="ALPHA_DATASERVER" port="11000"/>
+    <service host="localhost" name="ALPHA_EVENT_HANDLER" port="11001"/>
+</configuration>
+```
+Finally, you can build the server.
+
+In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha/Tasks/Build/Assemble**. (In the example below, our project is called **gamma**.)
+
+![](/img/assemble-server.png)
+
+## 5. Create a user interface
 
 Now let's create a single page with a grid and a form for entering data.
 
 Before you start, check if you have set a valid API_HOST in **client/web/package.json**.
+
+The syntax for the API_HOST is:
+- protocol (followed by a colon delimiter)
+- secure websocketshost (followed by a colon delimiter)
+- port (443 is the port assigned for secure HTTP traffic)
+- /gwf/ (this is the standard path for Genesis platform)
+
+for example: wss://localhost:443/gwf/
+
+
 
 For your user interface, the `genx` process has generated the following files:
 
@@ -171,7 +269,7 @@ You are going to update these files so that the application displays a single pa
 
 ### Grid
 
-We want to be able to insert a grid with data into our page. For this, define `tutorialColumnDefs` in **home.template.ts**.
+We want to be able to insert a grid with data into our page. For this, open the file **home.template.ts** and define `tutorialColumnDefs`.
 
 First, define `tutorialColumnDefs`:
 
@@ -202,7 +300,7 @@ export const HomeTemplate = html<Home>`
 `;
 ```
 
-Now make another change to **home.ts**. Define a reference to `zero-ag-grid`; in class `home`, add:
+Now open the file **home.ts**. Define a reference to `zero-ag-grid`; in class `home`, add:
 
 ```ts
 public tradesGrid!: AgGrid;
@@ -219,7 +317,9 @@ this.tradesGrid.addEventListener('onGridReady', () => {
 
 This ensures that the grid takes the full width.
 
-Now you need to add [styles](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/customisation/app-specific/#styles) to the  file [**home.styles.ts**](/creating-applications/defining-your-application/user-interface/front-end-basics/front-end-basics/#starting-materials), using the code below.
+Now you need to add [styles](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/customisation/app-specific/#styles).
+
+Open the file [**home.styles.ts**](/creating-applications/defining-your-application/user-interface/front-end-basics/front-end-basics/#starting-materials), and add the code below.
 
 ```css
 zero-ag-grid {
@@ -229,7 +329,7 @@ zero-ag-grid {
 
 .trade-card {
   width: 100%;
-  heigth: fit-content;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -241,9 +341,9 @@ zero-ag-grid {
 ### Form
 Here, you are going to create a form with four inputs, so a user can input details of a new trade.
 
-First, we define the variables that will hold the values that are entered.
+First, define the variables that will hold the values that are entered.
 
-We define them in **home.ts**, in the class: `Home`:
+In the file**home.ts**, add the following code to the class: `Home`:
 
 ```ts
 @observable public quantity: string;
@@ -252,7 +352,7 @@ We define them in **home.ts**, in the class: `Home`:
 @observable public tradeSide: string = 'BUY';
 ```
 
-Now you can create the form with sync values in **home.template.ts** (add `zero-card` after `zero-ag-grid`).
+Now go to the file **home.template.ts**. Add the following code after `zero-ag-grid`.
 
 ```ts
 <span>Add Trade</span>
@@ -272,14 +372,15 @@ Now you can create the form with sync values in **home.template.ts** (add `zero-
 </zero-select>
 ```
 
-To handle the value in zero-select we need to create a function in **home.ts**. 
+To handle the value in `zero-select`, create a function in the file **home.ts**. 
+
 ```ts
 public tradeSideChange(target: Select) {
   this.tradeSide = target.selectedOptions[0]?.value;
 }
 ```
 
-In **home.styles.ts**, add [styles](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/customisation/app-specific/#styles) to see your changes:
+In the file **home.styles.ts**, add [styles](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/customisation/app-specific/#styles) to see your changes:
 
 ```css
 zero-text-field, zero-select {
@@ -296,13 +397,13 @@ span:first-of-type, zero-button {
 ### Button
 Now add a button.  The purpose of this is to insert the data from the form into the database (and the grid). 
 
-In **home.template.ts** add the following code after `zero-select`.
+In the file **home.template.ts**, add the following code after `zero-select`.
 
 ```ts
 <zero-button @click=${x=> x.insertTradeData()}>Add Trade</zero-button>
 ```
 
-In **home.ts**, create a function to handle connection to the server.
+In the file **home.ts**, create a function to handle the connection to the server.
 
 First, add just like before:
 
@@ -331,7 +432,7 @@ public async insertTradeData() {
 }
 ```
 
-To check that the new trade was added successfully, add the following code to **home.template.ts**, before the `Add trade` span:
+To check that the new trade was added successfully, go to the file **home.template.ts**; add the following code before the `Add trade` span:
 
 ```ts
 ${when(x => x.serverResponse, html`
@@ -343,7 +444,7 @@ ${when(x => x.serverResponse, html`
 
 At this point, the application is now able to display and receive data.
 
-## 5. Run the application
+## 6. Run the application
 
 See [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/configure-deployment-plugin/) for details on how to configure the Genesis deploy plugin.
 

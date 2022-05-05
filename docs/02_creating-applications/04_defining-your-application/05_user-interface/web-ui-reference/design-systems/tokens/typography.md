@@ -9,7 +9,7 @@ hide_table_of_contents: true
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-You can adjust any of the defaults in the `src/_config` folder of your design system.
+You can adjust any of the defaults in the `src/_config/values` folder of your design system.
 
 ## Body font
 

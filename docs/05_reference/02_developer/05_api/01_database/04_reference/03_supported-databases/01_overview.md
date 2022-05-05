@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1 
-title: Supported Databases 
+title: Supported databases 
 sidebar_label: Overview 
 id: overview
 

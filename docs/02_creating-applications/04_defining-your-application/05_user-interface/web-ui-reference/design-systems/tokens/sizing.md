@@ -8,7 +8,7 @@ sidebar_position: 30
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-You can adjust any of the defaults in the `src/_config` folder of your design system.
+You can adjust any of the defaults in the `src/_config/values` file of your design system.
 
 - `baseHeightMultiplier`: This value, multiplied by `designUnit`, sets the base height of most controls. Works with adaptive `density` values.
 - `baseHorizontalSpacingMultiplier`: This value, multiplied by `designUnit`, sets the internal horizontal padding of most controls. Works with adaptive `density` values.

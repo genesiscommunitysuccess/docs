@@ -43,7 +43,7 @@ You can use a range of IDEs (for example, Eclipse) with the Genesis low-code pla
 For access to Genesis packages, you need to configure the `@genesislcap` scope of `npm` to use our jfrog registry.
 You will be provided with access details during your on-boarding.
 
-1. Create an `.npmrc` file in or above your intended project directory; in most cases, this will be your user home directory.
+1. Create an `.npmrc` file in your user home directory.
  2. Using your credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
  3. Click on the `Welcome <username>` on the top right corner.
  4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
