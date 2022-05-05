@@ -42,7 +42,7 @@ WSL distrubtions can be found easily at various locations on the web. For expedi
 
 (Note that this approach requires Docker to be installed. So, if necessary, jump ahead to the Docker installation section).
 
-At this point, CentOS should be available from Windows Terminal. Note the new entry in the drop-down menu:
+Once CentOS has been installed, close your Windows Terminal then reopen it. Note the new entry in the drop-down menu:
 
 ![](/img/wsl-menu.png)
 

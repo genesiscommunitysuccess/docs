@@ -51,7 +51,7 @@ genx
 
 In the `genx` script, there is a series of questions. 
 
-First, you are asked to provide your password.
+First, you are asked to provide your password. (Note: at present, this will not accept passwords that contain the **£** character.)
 
 Then you are asked to select from a short list of seed applications. Select `create application`:
 
@@ -178,7 +178,7 @@ dataServer {
 ```
 
 ### Event Handler
-Next, we want to be able to insert rows into our table. For this you need to define an [Event Handler](/creating-applications/defining-your-application/business-logic/event-handlers/) in the file **alpha-event-handler.kts**.
+Next, we want to be able to insert rows into our table. For this you need to define an [Event Handler](/creating-applications/defining-your-application/business-logic/event-handlers/) in the file **alpha-eventhandler.kts**.
 
 ```kotlin
 eventHandler {
@@ -195,7 +195,7 @@ eventHandler {
 ## 4. Prepare the server and build
 The application has two files that contain vital configuration information:
 
-- **alpha-system-processess.xml** 
+- **alpha-processess.xml** 
 - **alpha-service-definitions.xml**
 
 At present, they are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
