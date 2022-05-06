@@ -77,6 +77,8 @@ Local values can be specified in this block. **These values override the global 
 item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432”)
 ```
 
+More information on how to configure a specific database can be found [here](/reference/developer/api/database/reference/supported-databases/overview)
+
 **Database username and password encryption**
 You can add an encrypted username and password for the database system.
 Run the command `encryptUserPassWithKey`, which will ask you to supply the plain username, password and Genesis Key. Genesis Key is 32 characters long.
@@ -96,7 +98,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...)
 
-**DbMode**: This setting is only needed if you use the Aerospike database. Accepted values are "VANILLA" and "DURABLE_DELETE". Default is "VANILLA". (Note: Durable Delete requires Aerospike Server Enterprise Edition 3.10+)
+**DbMode**: This setting is only needed if you use the [Aerospike](/reference/developer/api/database/reference/supported-databases/aerospike) database.
 
 **ResourcePollerTimeout**: This setting controls how often the genesis daemon process keeps the processes and their metadata up to date.
 
@@ -108,10 +110,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **JVM_OPTIONS**: This defines common JVM options to be applied to all processes defined in the environment
 
-**DbNamespace**: This item defines different things, depending on the databases in use: 
-* For an FDB database, it is used when creating internal directory layers.
-* For an Aerospike database it will represent its namespace.
-* For an SQL database, you can ignore this item.
+**DbNamespace**: This item defines different things, depending on the databases in use and is applicable for [FoundationDB](/reference/developer/api/database/reference/supported-databases/foundationdb) and [Aerospike](/reference/developer/api/database/reference/supported-databases/aerospike) only
 
 **ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes
 
