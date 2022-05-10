@@ -14,26 +14,7 @@ const features = [
         Our platform enables you to build quickly, but you need to get oriented before you can start. <Link to={url}>So start here.</Link>
       </p>
     ),
-    url: '/getting-started/what-is-the-genesis-low-code-platform/'
-  },
-  {
-    title: <>Creating applications</>,
-    description: (url) => (
-      <p>
-        Genesis applications can be as simple or complex as your needs. <Link to={url}>Take a look at the components</Link> and the way they can be configured.
-      </p>
-    ),
-    url: '/reference/components/pre-built-components/components/'
-  },
-  {
-    title: <>Tutorials</>,
-    imageUrl: '',
-    description: (url) => (
-      <p>
-        Want to know how to build a Genesis app? <Link to={url}>We'll take you from start to finish.</Link>
-      </p>
-    ),
-    url: '/tutorials/building-an-application/intro/'
+    url: '/getting-started/page-one/'
   },
 ];
 
