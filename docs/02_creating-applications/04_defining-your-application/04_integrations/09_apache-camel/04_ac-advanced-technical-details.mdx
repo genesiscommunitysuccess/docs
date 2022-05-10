@@ -27,7 +27,12 @@ val LOG: Logger
 
 ## A more advanced example camel configuration
 
-Here is a more advanced example of a **\*-camel.kts** file. It defines an 2 routes, and has an `onCommit` block, similar to those seen in event handlers](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/). This is due to `camel` block in Genesis functioning as a type of Event Handler, reacting to `EVENT_CAMEL_SEND` message types. These events can be raised as normal with Genesis, allowing this event handler to be invoked from other `eventHandler` codeblocks, from the front end, or from custom components in the application. The Event Handler aspect of this example, allows these events to be easily access from the Apache Camel route builder via the `seda:` endpoint.
+Here is a more advanced example of a **\*-camel.kts** file. It defines 2 routes, and has an `onCommit` block, similar to those seen in event handlers](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/). This is because the `camel` block in Genesis is functioning as a type of Event Handler, reacting to `EVENT_CAMEL_SEND` message types. These events can be raised as normal with Genesis, allowing this event handler to be invoked from:
+- other `eventHandler` codeblocks
+- the front end
+- custom components in the application. 
+- 
+- The Event Handler aspect of this example allows these events to be accessed easily from the Apache Camel route builder via the `seda:` endpoint.
 
 You can find more information on event handlers here](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/).
 
@@ -69,7 +74,7 @@ camel {
 ```
 
 ### onCommit
-In the above example, the `onCommit` block reads from the properties from the received event, and uses the inbuilt `DefaultCamelSendTo*` classes to send the event message to an appropriate `seda:` endpoint. Details on the SEDA endpoint within Apache Camel can be found [here.](https://camel.apache.org/components/3.16.x/seda-component.html)
+In the above example, the `onCommit` block reads from the properties in the received event, and uses the inbuilt `DefaultCamelSendTo*` classes to send the event message to an appropriate `seda:` endpoint. Details on the SEDA endpoint within Apache Camel can be found [here.](https://camel.apache.org/components/3.16.x/seda-component.html)
 
 ### routeHandler
-In the above example, we have 2 defined routes. In both of these routes we are receiving data from the `seda:` endpoints and then processing it, using a inline defined processor. This can be useful for quickly defining a processor that isn't used elsewhere. Compared to the previous example, the results of the SEDA endpoint are directly persisted as entities in the Database, rather than being passed onto a reqrep.
+In the above example, we have 2 defined routes. In both of these, we are receiving data from the `seda:` endpoints and then processing it, using an inline-defined processor. This can be useful for quickly defining a processor that isn't used elsewhere. Compared to the previous example, the results of the SEDA endpoint are directly persisted as entities in the Database, rather than being passed onto a Request Server.
