@@ -1,0 +1,36 @@
+---
+title: 'More examples'
+sidebar_label: 'More examples'
+sidebar_position: 5
+id: ac-more-examples
+---
+
+[Introduction](/creating-applications/defining-your-application/integrations/apache-camel/apache-camel/)  | [Where to define](/creating-applications/defining-your-application/integrations/apache-camel/ac-define/) | [Basics](/creating-applications/defining-your-application/integrations/apache-camel/ac-technical-details/) |  [Advanced](/creating-applications/defining-your-application/integrations/apache-camel/ac-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/integrations/apache-camel/ac-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/integrations/apache-camel/ac-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/integrations/apache-camel/ac-testing/)
+
+The example below is an SFTP connection, and shows how you can use properties set in the _application_**-camel.kts** allowing you to have site-specific variables for each instance.
+
+```kotlin
+camel {
+    routeHandler {
+        //Handles sFTP BBG file transfer
+        val bbgEndPointPath = systemDefinition.getItem("BBG_SERVER_SFTP")
+        val bbgUserName = systemDefinition.getItem("BBG_SERVER_USERNAME")
+        val bbgPassword = systemDefinition.getItem("BBG_SERVER_PASSWORD")
+        val bbgFileName = systemDefinition.getItem("BBG_SERVER_FILENAME")
+        // String bbgFileName = "GEN_(PREL|PRICED)_[0-9]{4}\\.out\\.[0-9]{8}"
+        val pathStr = "${GenesisPaths.genesisHome()}/runtime/inbound/IDEMPOTENT_CONSUMER.DATA"
+        val bbgConsumerRepo = "${pathStr}IDEMPOTENT_CONSUMER.DATA"
+
+        from("sftp:${bbgEndPointPath}?username=${bbgUserName}&password=${bbgPassword}&include=$${bbgFileName}" +
+            "&delay=1000&sortBy=file:modified&delete=false&bridgeErrorHandler=true" +
+            "&knownHostsFile=/home/priss/.ssh/known_hosts&throwExceptionOnConnectFailed=true&stepwise=false")
+            .idempotentConsumer(header("CamelFileName"),
+                FileIdempotentRepository.fileIdempotentRepository(File(bbgConsumerRepo), 300000, 15000000))
+            .process { exchange ->
+                LOG.debug("SFTP copy CamelFileName = ${exchange.`in`.getHeader("CamelFileNameOnly").toString()}")
+            }
+            .log("BBG file transfer: \${headers.CamelFileName}")
+            .to("file:${pathStr}/bbg")
+    }
+}
+```
