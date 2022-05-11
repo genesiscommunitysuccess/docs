@@ -9,7 +9,7 @@ id: ac-technical-details
 
 ## A simple Camel configuration
 
-Here is a simple example of a** *-camel.kts** file. It defines a single route, that takes
+Here is a simple example of a** *-camel.kts** file. It defines a single route, which we shall explore in a little more detail below.
 ```kotlin
 camel {
     routeHandler {
@@ -25,9 +25,7 @@ The `routeHandler` defines the possible routes for information to flow into our 
 
 - First, it defines the `pathStr` using the `GenesisPaths` class to find the `GENESIS_HOME` system environment variable. 
 
-- Next it defines the route itself.
-
-The route defined comes from the filesystem determined by the `file:` start to the endpoint URI. This could be any [Apache Camel component](https://camel.apache.org/components/3.16.x/index.html) that has support for a consumer.
+- Next it defines the route itself. The route in the example comes from the filesystem determined by the `file:` start to the endpoint URI. This could be any [Apache Camel component](https://camel.apache.org/components/3.16.x/index.html) that has support for a consumer.
 
 In this instance, the File component (defined in the [Apache documentation](https://camel.apache.org/components/3.16.x/file-component.html)) can take several path and query parameters, some of which we are using.
 
