@@ -9,7 +9,7 @@ id: ac-technical-details
 
 ## A simple Camel configuration
 
-Here is a simple example of a *-camel.kts file. It defines a single route, that takes
+Here is a simple example of a** *-camel.kts** file. It defines a single route, that takes
 ```kotlin
 camel {
     routeHandler {
@@ -42,7 +42,7 @@ In this instance, the File component (defined in the [Apache documentation](http
 
 The route then processes the file using the `FileEventHandlerProcessor` created by the `createProcessor` method through the `fileEventProcessorProvider`. A similar method and class exists for handling the processing of [Kafka](https://kafka.apache.org/) messages and CSV files.
 
-This processing will then send a "EVENT_FILE_IMPORT_BBG_ISSUANCE" message to the "ISSUANCE_EVENT_HANDLER" process, with a `dataFieldName` of "FILE", expecting it to be handled by an appropriate `requestReply` in your [Request Server](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/).
+This processing will then send an "EVENT_FILE_IMPORT_BBG_ISSUANCE" message to the "ISSUANCE_EVENT_HANDLER" process, with a `dataFieldName` of "FILE", expecting it to be handled by an appropriate `requestReply` in your [Request Server](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/).
 
 ### createProcessor
 The `createProcessor` on both the `FileEventProcessorProvider` and `KafkaEventProcessorProvider` has the same parameters. However, the `createProcessor` of the `CSVEventProcessorProvider` has slightly different parameters.
