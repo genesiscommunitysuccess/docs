@@ -9,7 +9,7 @@ We have already created a Reference Data module from our original RDBMS database
 
 Now let's move on to the Market Data module, starting by building the trade table.
 
-Once we created bth these modules, we will have a Positions app.
+Once you have created both these modules, you will have a Positions app.
 
 ## The source spreadsheet
 
@@ -119,7 +119,7 @@ The `mvn` command can be run in either the server/local vm/wsl/cloud instance co
 Run
 
 ```bash
-mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.2.0 -DartifactId=trading_app -B
+mvn archetype:generate -DarchetypeArtifactId=genesis-archetype -DarchetypeGroupId=global.genesis -DgroupId=global.genesis -Dversion=1.0.0-SNAPSHOT -DarchetypeVersion=5.5.0 -DartifactId=trading_app -B
 ```
 
 ![](/img/trading_app-creation-prepare-maven-project-10-11-12.png)
