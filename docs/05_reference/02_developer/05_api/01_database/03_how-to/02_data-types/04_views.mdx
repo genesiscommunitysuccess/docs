@@ -24,155 +24,61 @@ Some of the useful methods/properties described below
 
 |  Name  | Signature | Description |
 |---------------|-------------|-------------|
+| byPrimaryKey | `fun byPrimaryKey(): UniqueEntityIndex<*, *>` | gets entity by primaryKey |
+| by{indexField} | `fun by{indexField}(): By{indexField}` | gets entity by index fields |
+| toString | fun toString(): String | gets the string representation of view with sensitive fields(Ex: Password) masked |
+| toStringWithSensitivesUnmasked | `fun toStringWithSensitivesUnmasked(): String` | gets the string representation of view with sensitive fields(Ex: Password) unmasked |
 | toDbRecord | `fun toDbRecord(entity: E): DbRecord` | Converts entity to [DbRecord](/reference/developer/api/database/how-to/data-types/dbrecord/) |
 | toGenesisSetFormatted | `fun toGenesisSetFormatted(entity: E, configs: Collection<ColumnConfig>? = null): GenesisSet` | Converts view to [GenesisSet](/managing-applications/operate/inter-process-messages/genesis-set/) and applies any formatter/aliases assigned to the fields |
 | toGenesisSet | `fun toGenesisSet(entity: E, columns: Collection<String>): GenesisSet` | Converts view to [GenesisSet](/managing-applications/operate/inter-process-messages/genesis-set/). This is the plain representation of view fields |
+| get | `operator fun get(field: String): Any?` | gets provided field value |
 | fieldToPropertyMap | `val fieldToPropertyMap: Map<String, KProperty1<V, Any?>>` | This is a class property which maps field name to its property |
 
-Example: Lets use the Trade table defined here to create view
+## Examples
 
+Using following a table and view for example:
 ```kotlin
-views {
-  view (name = "TRADE_VIEW", rootTable = TRADE) {
-
-    fields {
-      TRADE.allFields()
-  }
-}
-```
-
-TradeView is converted to:
-```kotlin
-public data class TradeView(
-  public val tradeId: String,
-  public val tradeType: String? = null,
-  public val tradeDate: DateTime? = null,
-  public val currencyId: String? = null,
-  public val quantity: Int,
-  public val price: Double,
-  @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-  public override var recordId: Long = 0,
-  @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-  public override var timestamp: Long = 0
-) : SingleCardinalityViewEntity {
-  public override fun toDbRecord(): DbRecord {
-    val record = DbRecord("TRADE")
-    record.setObject("TRADE_ID", tradeId)
-    record.setObject("TRADE_TYPE", tradeType)
-    record.setObject("TRADE_DATE", tradeDate)
-    record.setObject("CURRENCY_ID", currencyId)
-    record.setObject("QUANTITY", quantity)
-    record.setObject("PRICE", price)
-    record.setObject("RECORD_ID", recordId)
-    record.setObject("TIMESTAMP", timestamp)
-    return record
-  }
-
-  public override fun toGenesisSetFormatted(configs: Collection<ColumnConfig>?): GenesisSet =
-      buildGenesisSet(this, fieldToPropertyMap, configs)
-
-  public override fun toGenesisSet(columns: Collection<String>): GenesisSet = buildGenesisSet(this,
-      fieldToPropertyMap, columns)
-
-  public override fun diffToGenesisSet(other: DbEntity, configs: Collection<ColumnConfig>?):
-      GenesisSet = diffToGenesisSet(this, other as TradeView, fieldToPropertyMap, configs)
-
-  public override fun toString(): String =
-      "global.genesis.gen.view.entity.TradeView{serialVersionUID='1', " +
-  	"tradeId=${this.tradeId}, " +
-  	"tradeType=${this.tradeType}, " +
-  	"tradeDate=${this.tradeDate}, " +
-  	"currencyId=${this.currencyId}, " +
-  	"quantity=${this.quantity}, " +
-  	"price=${this.price}, " +
-  	"recordId=${if(recordId == 0L) "{not-set}" else recordId}, " +
-  	"timestamp=${if(timestamp == 0L) "{not-set}" else timestamp}" +
-  	"}"
-
-  public fun toStringWithSensitivesUnmasked(): String = toString()
-
-  public override fun `get`(`field`: String): Any? = fieldToPropertyMap[field]?.get(this)
-
-  public fun byId(): ById = global.genesis.gen.view.entity.TradeView.ById(
-  tradeId = this.tradeId)
-
-  public override fun byPrimaryKey(): ById = this.byId()
-
-  public data class ById(
-    public val tradeId: String
-  ) : Comparable<ById>, UniqueEntityIndex<TradeView, ById.Companion> {
-    public override val reference: ById.Companion
-      @JsonIgnore
-      get() = ById.Companion
-
-    public override fun toDbRecord(): DbRecord = buildRequest(tradeId)
-
-    public override fun toDbRecord(numKeyFields: Int): DbRecord = toDbRecord()
-
-    public override operator fun compareTo(other: ById): Int = compareValuesBy(this, other,
-    	{ it.tradeId })
-
-    public companion object : UniqueEntityIndexReference1<TradeView, String>,
-        RequestProvider1<String> {
-      public override val entityType: KClass<TradeView> = TradeView::class
-
-      public override val tableName: String = "TRADE"
-
-      public override val indexName: String = "TRADE_BY_ID"
-
-      public override val uniqueEntityIndexClass: KClass<ById> = ById::class
-
-      public override val indexFields: Int = 1
-
-      public override fun compare(first: TradeView, second: TradeView): Int = compareValuesBy(first,
-          second,
-      { it.tradeId })
-
-      public override fun buildRequest(param1: String): DbRecord {
-        val request = DbRecord("TRADE")
-        request.columns["TRADE_ID"] = param1
-        return request
+  // table definition
+    table(name="CUSTOMER", id = 11002) {
+      CUSTOMER_NAME
+      CUSTOMER_ADDRESS
+      COUNTRY
+      CUSTOMER_PASSWORD sensitive "XXXXXX"
+      primaryKey {
+        CUSTOMER_NAME
       }
-
-      public override fun buildIndexRequest(entity: TradeView): DbRecord =
-          buildRequest(entity.tradeId)
-
-      public override fun buildIndexEntity(entity: TradeView): ById = entity.byId()
     }
-  }
 
-  public class RowMapper<I>(
-    public val valueReader: ValueReader<I>
-  ) : global.genesis.db.query.api.rowmapper.RowMapper<I, TradeView> {
-    public override fun mapRow(input: I): TradeView = TradeView(
-    tradeId = valueReader.value(input, "TRADE_ID"),
-    	tradeType = valueReader.nullableValue(input, "TRADE_TYPE"),
-    	tradeDate = valueReader.nullableValue(input, "TRADE_DATE"),
-    	currencyId = valueReader.nullableValue(input, "CURRENCY_ID"),
-    	quantity = valueReader.value(input, "QUANTITY"),
-    	price = valueReader.value(input, "PRICE"),
-    	recordId = valueReader.nullableValue(input, "RECORD_ID") ?: -1,
-    	timestamp = valueReader.nullableValue(input, "TIMESTAMP") ?: -1
-    )
-  }
+  // view definition
+     view("CUSTOMER_VIEW", CUSTOMER) {
+       fields {
+         CUSTOMER.CUSTOMER_NAME
+         CUSTOMER.CUSTOMER_PASSWORD
+         CUSTOMER.CUSTOMER_ADDRESS
+         CUSTOMER.COUNTRY
+       }
+     }
 
-  public companion object : ViewCompanion<TradeView> {
-    public override val fieldToPropertyMap: Map<String, KProperty1<TradeView, Any?>> =
-        mapOf("TRADE_ID" to TradeView::tradeId,
-        "TRADE_TYPE" to TradeView::tradeType,
-        "TRADE_DATE" to TradeView::tradeDate,
-        "CURRENCY_ID" to TradeView::currencyId,
-        "QUANTITY" to TradeView::quantity,
-        "PRICE" to TradeView::price,
-        "RECORD_ID" to TradeView::recordId,
-        "TIMESTAMP" to TradeView::timestamp)
+  // Examples
+  val customerView = CustomerView("Customer_1", "PASSWORD", "London", "UK")
 
-    public override fun <I> buildRowMapper(valueReader: ValueReader<I>):
-        global.genesis.db.query.api.rowmapper.RowMapper<I, TradeView> = RowMapper(valueReader)
+  // toGenesisSet
+  customerView.toGenesisSet(listOf("CUSTOMER_NAME"))
+  // Output: CUSTOMER_NAME = Customer_1
 
-    @JvmStatic
-    public fun byId(tradeId: String): ById = ById(tradeId, )
-  }
-}
+  // toGenesisSetFormatted
+  customerView.toGenesisSetFormatted(listOf(ColumnConfig.Field.Aliased("COUNTRY", "CUSTOMER_COUNTRY")))
+  // Output: CUSTOMER_COUNTRY = UK
 
+  // toString
+  customerView.toString()
+  // Output: global.genesis.gen.view.entity.CustomerView{serialVersionUID='1', customerName=Customer_1, customerPassword=XXXXXX, customerAddress=London, country=UK, recordId={not-set}, timestamp={not-set}}
+
+  // toStringWithSensitivesUnmasked
+  customerView.toStringWithSensitivesUnmasked()
+  // Output: global.genesis.gen.view.entity.CustomerView{serialVersionUID='1', customerName=Customer_1, customerPassword=PASSWORD, customerAddress=London, country=UK, recordId={not-set}, timestamp={not-set}}
+
+  // get
+  customerView.get("CUSTOMER_NAME")
+  // Output: Customer_1
 ```
