@@ -455,7 +455,61 @@ At this point, the application is now able to display and receive data.
 
 ## 6. Run the application
 
-First, you must deploy the server. See [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/configure-deployment-plugin/) for details on how to configure the Genesis deploy plugin.
+First, you must deploy the server.
+
+## Deploying to the server
+
+We will run `setupEnvironment` - this task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
+
+Usage:
+```shell
+./gradlew :jvm:alpha-deploy:setupEnvironment
+```
+
+After this command is completed we will have a basic genesis server running
+
+## Deploying the auth module
+
+Usage:
+```shell
+./gradlew :jvm:alpha-deploy:install-auth-distribution.zip
+```
+
+## Deploying the alpha product
+
+Now we have to deploy the alpha product
+
+Usage:
+```shell
+./gradlew :jvm:alpha-deploy:deploy-genesisproduct-alpha.zip
+```
+
+## Adding a user to login
+
+Next let´s create a user.
+
+:::tip
+The following details will be your login details:
+Username: JohnDoe
+Password: Password11* (This is encrypted in the USER.csv file.)
+:::
+
+We wil run the task loadInitialData. This adds the data in USER.csv to the USER table in your
+database. To do that we will call
+
+```shell
+./gradlew :jvm:alpha-deploy:loadInitialData"
+```
+
+Now we can check that the user has been created by running "DbMon", either from the Gradle dropdown menu or by running:
+
+```shell
+./gradlew :jvm:alpha-deploy:DbMon
+```
+Once we are inside the console we can type 'table USER' and after 'search 1'. If imported correctly the user JohnDoe should be listed.
+
+
+See [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/configure-deployment-plugin/) for extra details on how to configure the Genesis deploy plugin.
 
 Now you can run the application's front end. From there, you can view the table of data and add the details of a new trade.
 
