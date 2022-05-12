@@ -25,16 +25,14 @@ private val typedEventManager: TypedEventManager,
 val LOG: Logger
 ```
 
-## A more advanced example camel configuration
+## A more advanced example Camel configuration
 
-Here is a more advanced example of a **\*-camel.kts** file. It defines 2 routes, and has an `onCommit` block, similar to those seen in event handlers](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/). This is because the `camel` block in Genesis is functioning as a type of Event Handler, reacting to `EVENT_CAMEL_SEND` message types. These events can be raised as normal with Genesis, allowing this event handler to be invoked from:
+Here is a more advanced example of a **\*-camel.kts** file. It defines 2 routes, and has an `onCommit` block, similar to those seen in Event Handlers. This is because the `camel` block in Genesis is functioning as a type of Event Handler, reacting to `EVENT_CAMEL_SEND` message types. These events can be raised as normal with Genesis, allowing the Event Handler to be invoked from:
 - other `eventHandler` codeblocks
 - the front end
 - custom components in the application. 
-- 
-- The Event Handler aspect of this example allows these events to be accessed easily from the Apache Camel route builder via the `seda:` endpoint.
 
-You can find more information on event handlers here](/creating-applications/defining-your-application/business-logic/event-handlers/event-handlers/).
+The Event Handler aspect of this example allows these events to be accessed easily from the Apache Camel route builder via the `seda:` endpoint.
 
 ```kotlin
 import global.genesis.jackson.core.GenesisJacksonMapper.Companion.csvIterator
