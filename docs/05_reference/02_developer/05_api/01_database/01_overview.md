@@ -6,7 +6,7 @@ id: overview
 
 ---
 
-The genesis database plays a large part in the platform. This is the documentation for it. It is broken down into 
+The Genesis database plays a large part in the platform. This is the documentation for it. It is broken down into 
 these constituent parts:
 
 ## Database Concepts

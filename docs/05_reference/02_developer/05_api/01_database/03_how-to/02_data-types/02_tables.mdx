@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
-title: Tables Entities
-sidebar_label: Tables Entities
+title: Table entities
+sidebar_label: Table entities
 id: tables
 
 ---
@@ -21,10 +21,10 @@ index, there will be a `by...()` call with the index name.
 ## Builder
 
 All table entities come with builders to help construct these objects. In kotlin, the builder works as a lambda in 
-which the field values are set, and the object is build after th lambda call completes. In java, the builder is a fluent 
-interface, where fields are set and the object is build in a final `build` call. 
+which the field values are set, and the object is built after th lambda call completes. In java, the builder is a fluent 
+interface, where fields are set and the object is built in a final `build` call. 
 
-Just before the object is build, the object is validated to make sure all [required fields](../../../concepts/data-structure/tables/#fields) have been
+Just before the object is built, the object is validated to make sure all [required fields](../../../concepts/data-structure/tables/#fields) have been
 set.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -58,7 +58,7 @@ Trade trade = Trade.builder()
 
 ## Auditable tables
 
-When a table is audited, the table entity can be easily converted to it's audited counterpart by calling the
+When a table is audited, the table entity can be easily converted to its audited counterpart by calling the
 `toAuditEntity` function.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>

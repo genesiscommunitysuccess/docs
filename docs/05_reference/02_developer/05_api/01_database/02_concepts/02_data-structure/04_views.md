@@ -18,7 +18,7 @@ Other tables can be joined onto the root table to present composite data.
 Due to their composite nature, views are inherently read-only. You cannot modify a record in a view. The only way
 to change the data is to change the underlying table(s). 
 
-## Root Table
+## Root table
 
 A view always has a root table, this is the most important table in the view. It is the starting point of the join
 operations and the view will derive its indices from the root table.
@@ -44,9 +44,9 @@ cardinality, all others will be multi cardinality
 | Supports database subscribe operations | ✔️                             | ❌                           |
 | Supports backwards joins               | ✔️                             | ❌                           |
 
-### Parameterised Views
+### Parameterised views
 
-For some views, the join are defined as input parameters, rather than on a field in another table or a constant. When 
+For some views, the joins are defined as input parameters, rather than on a field in another table or a constant. When 
 that happens a view is considered to be parameterised. Parameterised views can not be accessed without these parameters.
 Parameterised views can be both single and multi cardinality.
 
