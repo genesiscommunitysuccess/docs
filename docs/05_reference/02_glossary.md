@@ -161,7 +161,7 @@ There is a very useful [Maven tutorial](https://www.tutorialspoint.com/maven/mav
 
 Maven provides  default behavior for projects. When a Maven project is created, Maven creates a default project structure. As a developer, all you have to do is put the files in the right places. There is no need to define any configuration in pom.xml.
 
-Maven pPlugins are generally used to:
+Maven plugins are generally used to:
 
 * create jar and war files
 * compile code files
@@ -342,4 +342,4 @@ Custom components and widgets build on the Web Component standards. They are des
 
 ## WSL
 
-Windows Subsystem for Linux
+Windows Subsystem for Linux. This enables you to run a Linux environment on a Windows machine.
