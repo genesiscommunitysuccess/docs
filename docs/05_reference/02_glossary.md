@@ -24,7 +24,7 @@ If a transaction like this fails halfway through, it could have major consequenc
 
 This is where the ACID principles should apply.
 
-According to the ACID definition, a database is consistent if, and only if ,it contains the results of successful transactions. Any database that is ACID-compliant will ensure that only successful transactions are processed. If a failure occurs before a transaction has been completed, no data will be changed.
+According to the ACID definition, a database is consistent if, and only if, it contains the results of successful transactions. Any database that is ACID-compliant will ensure that only successful transactions are processed. If a failure occurs before a transaction has been completed, no data will be changed.
 
 ## Aeron
 
@@ -307,7 +307,7 @@ A tool for building, changing, and versioning infrastructure safely and efficien
 
 TerraformConfiguration files describe the components needed to run a single application or a complete data centre. Terraform generates an execution plan describing what it will do to reach the desired state, and then executes it to build the described infrastructure.
 
-As the configuration changes, Terraform is able to determine what changed. It  creates incremental execution plans that can be applied when you are ready.
+As the configuration changes, Terraform is able to determine what changed. It creates incremental execution plans that can be applied when you are ready.
 
 Terraform can manage includes low-level components, such as compute instances, storage, and networking, as well as high-level components, such as DNS entries, SaaS features, etc.
 
