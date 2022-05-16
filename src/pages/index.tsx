@@ -47,7 +47,7 @@ const Home = () => {
             <div>
               <Link
                 className='button button--secondary button--outline button--lg button--getting-started'
-                to={useBaseUrl('/getting-started/what-is-the-genesis-low-code-platform/')}>
+                to={useBaseUrl('/getting-started/page-one/')}>
                 Get Started
               </Link>
             </div>
@@ -73,7 +73,7 @@ const Home = () => {
                   <p><strong>The Genesis low-code platform is the only <low-code></low-code> platform designed to build core, mission-critical systems for the financial markets.</strong></p>
                   <p>It enables you to develop and deploy your own applications at speed, from the simplest of internal systems to complete exchanges.</p>
                   <p>
-                    <a href={useBaseUrl('/getting-started/what-is-the-genesis-low-code-platform/')}>Read more...</a>
+                    <a href={useBaseUrl('/getting-started/page-one/')}>Read more...</a>
                   </p>
                   <Link
                     className='navbar__item navbar__link demo'
