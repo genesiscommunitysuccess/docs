@@ -29,8 +29,8 @@ Depending on the view definition a different type of view will be created.
 
 ### Cardinality
 
-A view's cardinality tells us how many view records will be returned for every record in the root table. If a view will 
-at most return 1 record for each record in the root table, the view is said to have single cardinality. If a view can 
+A view's cardinality tells us how many view records will be returned for every record in the root table. If a view can 
+return a maximum of 1 record for each record in the root table, the view is said to have single cardinality. If a view can 
 return multiple records for each record in the root table, the view is said to have multi cardinality. 
 
 In other words, the cardinality depends on the joins; a view with no joins, or only one to one joins will be single 

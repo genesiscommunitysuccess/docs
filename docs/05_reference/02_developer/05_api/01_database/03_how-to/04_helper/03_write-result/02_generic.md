@@ -26,7 +26,10 @@ The `DeleteResult` has a single property `record` which is the record as it was 
 
 ## ModifyResult
 
-The `ModifyResult` is slightly more complex, it has a `record` property, which is the record in the database after
-the modify operation. There is also a `previous` property, which is the record as it was *before* the modify operation.
-Finally, there is a `modifiedFieds` property, which holds a `Set<String>` of the fields that were changed in the modify.
+The `ModifyResult` is slightly more complex. It has three properties:
+
+- a `record` property, which is the record in the database after
+the modify operation
+- a `previous` property, which is the record as it was *before* the modify operation
+- a `modifiedFields` property, which holds a `Set<String>` of the fields that were changed in the modify
 

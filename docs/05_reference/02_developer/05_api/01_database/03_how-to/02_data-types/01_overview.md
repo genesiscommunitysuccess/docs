@@ -6,7 +6,7 @@ id: overview
 
 ---
 
-The genesis database has different ways of representing data. Depending on the [interface](../../interface/overview):
+The Genesis database has different ways of representing data, depending on the [interface](../../interface/overview):
 
 | [Data Structure](../../../concepts/data-structure/overview) | [Entity Db](../../interface/entity-db) <br/> [Generated Repos](../../interface/generated) | [RxDb](../../interface/rxdb) |
 |-------------------------------------------------------------|-------------------------------------------------------------------------------------------|------------------------------|
@@ -16,7 +16,7 @@ The genesis database has different ways of representing data. Depending on the [
 | [Index Name](../../../concepts/data-structure/indices)      | [Index Entity](../indices)                                                                | `String`                     |
 
 
-## Type Safe Entity Types
+## Type-safe entity types
 
 The table and view entities are the preferred way of accessing the database. The main benefits are: type-safety and 
 compile time validation. 
