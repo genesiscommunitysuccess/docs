@@ -6,8 +6,6 @@ id: overview
 
 ---
 
-The database supports different types of operations; here you will find the description 
-of the different operation types, which further details below. 
 
 Database operations are grouped by category:
 
