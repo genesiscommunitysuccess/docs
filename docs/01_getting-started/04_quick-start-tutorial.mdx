@@ -25,6 +25,11 @@ Before you start, you need to have:
 - An IDE (preferably IntelliJ)
 - NodeJS (see our [recommended software packages](/creating-applications/getting-ready-to-develop/workstation-setup/#recommended-software-packages) for versioning information)
 - Credentials for accessing Genesis Artifactory. If necessary, contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login)
+- A gradle.properties file inside a .gradle folder on your user directory with the following content (password in clear text)
+```shell
+genesisArtifactoryUser=<your-actifactory-user>
+genesisArtifactoryPassword=<your-actifactory-password>
+```
 - A local or cloud Linux environment for runtime, e.g. [setup and host on wsl](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/)
 
 
@@ -79,12 +84,18 @@ Now you can proceed using the following responses:
 ```shell
 ? Create a app in current directory Yes
 ? App name alpha
+```
+
+In the next prompt we will select "Quick Start Application" from the list
+
+```shell
 ? App seed Quick Start Application
 ? Overwrite existing files Yes
 ? Package scope (without the @) genesislcap
 ? Package name alpha
 ? Create design system Yes
 ```
+
 At this point, the seed application is created and the genx dependencies are installed.
 
 Then there are more questions, which you can respond to as follows:
@@ -95,10 +106,9 @@ Then there are more questions, which you can respond to as follows:
 ? Create design system Yes
 ? Design system name alpha
 ? Base design system package (@latest will be used) @genesislcap/foundation-ui
-? Set API Host No
-? NPM Token (for the @genesislcap scope) *YOUR_TOKEN*
-? Genesis Server version 6.0.1
-? Genesis Deploy plugin version 6.0.1
+? Set API Host Yes (wss://localhost/gsf)
+? Genesis Server version 6.0.2
+? Genesis Deploy plugin version 6.0.2
 ? Kotlin version 1.6.10
 ? Group Id global.genesis
 ? Application Version 1.0.0-SNAPSHOT
@@ -111,7 +121,7 @@ i Application created successfully! 🎉 Please open the application and follow 
 ## 2. Define the data model
 Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application. 
 
-Open Intellij (or your chosen IDE). In the alpha project, you will see the **readme** file for the project.
+Open Intellij (or your chosen IDE). In the alpha project, you will see the **readme** file for the project. After importing and indexing, you should see the fol
 
 ### Add fields
 You define your [fields](/creating-applications/defining-your-application/data-model/fields/fields/) in the file **alpha-fields-dictionary.kts**.
@@ -172,6 +182,8 @@ tables {
 ```
 
 After you have saved this file, [run genesis-generated-dao](/reference/developer/genesis-dao/#dao-generation-commands)
+
+![](/img/build-gradle-kts-generated-dao.png)
 
 ## 3. Add business logic
 We have a table; now we want to be able to see its content and create new entries.
@@ -247,7 +259,7 @@ Add the following content to the **alpha-service-definitions.xml** file.
 ```
 Finally, you can build the server.
 
-In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha/Tasks/Build/Assemble**. (In the example below, our project is called **gamma**.)
+In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha/Tasks/Build/Assemble**.
 
 ![](/img/assemble-server.png)
 
@@ -338,7 +350,6 @@ zero-ag-grid {
 
 .trade-card {
   width: 100%;
-  height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -457,7 +468,7 @@ At this point, the application is now able to display and receive data.
 
 First, you must deploy the server.
 
-## Deploying to the server
+### Deploying to the server
 
 We will run `setupEnvironment` - this task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
 
@@ -468,14 +479,14 @@ Usage:
 
 After this command is completed we will have a basic genesis server running
 
-## Deploying the auth module
+### Deploying the auth module
 
 Usage:
 ```shell
 ./gradlew :jvm:alpha-deploy:install-auth-distribution.zip
 ```
 
-## Deploying the alpha product
+### Deploying the alpha product
 
 Now we have to deploy the alpha product
 
@@ -484,7 +495,7 @@ Usage:
 ./gradlew :jvm:alpha-deploy:deploy-genesisproduct-alpha.zip
 ```
 
-## Adding a user to login
+### Adding a user to login
 
 Next let´s create a user.
 
@@ -508,6 +519,22 @@ Now we can check that the user has been created by running "DbMon", either from 
 ```
 Once we are inside the console we can type 'table USER' and after 'search 1'. If imported correctly the user JohnDoe should be listed.
 
+### Connecting backend with frontend
+
+With this next step we will configure a nginx working as a reverse proxy.
+
+```shell
+docker login genesisglobal-docker-internal.jfrog.io
+#...
+# You will need to enter your artifactory credentials at this point
+#...
+docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
+#...
+# You can run this command from within WSL or from your workstation. If you run it from the CentOS shell you can use the following command.
+#...
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+
+```
 
 See [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/configure-deployment-plugin/) for extra details on how to configure the Genesis deploy plugin.
 
