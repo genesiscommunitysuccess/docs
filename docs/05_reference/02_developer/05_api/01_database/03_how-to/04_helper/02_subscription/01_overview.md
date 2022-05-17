@@ -1,14 +1,12 @@
 ---
 sidebar_position: 1
-title: Update Classes Overview
+title: Update classes overview
 sidebar_label: Overview
 id: overview
 
 ---
 
-When database updates are distributed, they are wrapped in these helper classes to help dealing with them.
+When database updates are distributed, they are wrapped in helper classes: 
 
-We have: 
-
-1. [Record Updates](../record-update), for type safe `subscribe` operations
-2. [Bulk](../bulk), for mixed read and subscribe operations
+- [Record Updates](../record-update), for type-safe `subscribe` operations
+- [Bulk](../bulk), for mixed read and subscribe operations
