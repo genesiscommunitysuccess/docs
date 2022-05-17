@@ -12,7 +12,7 @@ This page shows you how to create a Streamer Client. It also looks at the syntax
 
 Also, you can see an example of a Streamer Client in practice in our [tutorial](/tutorials/building-an-application/fix-gateway/).
 
-### Creating a Streamer Client
+## Creating a Streamer Client
 To create a Streamer Client:
 
 1. Add the configuration for the Streamer Client process to the {applicationName}-processes.xml file:
@@ -49,7 +49,7 @@ streamerClients {
 
 This example takes a message from a Streamer and sends it to `QUOTE_EVENT_HANDLER` as a `QUOTE_UPDATE_EVENT`.
 
-#### Properties
+### Properties
 You can set the following properties in a Streamer Client:
 
 `isReplayable`. This flag determines if the stream is replayable. Default value is `false`
@@ -60,7 +60,7 @@ You can set the following properties in a Streamer Client:
 
 `receiveWarndingRange`. Specifies a range that controls the status of the Streamer process.  If an Event Handler takes too long to respond, the process status will go to either warning or error.  
 
-### Types of streamer client
+## Types of streamer client
 
 There are two types of Streamer Client:
 
@@ -99,7 +99,7 @@ streamerClient(clientName = "CLIENT", selectionField = "SYMBOL", type = INTEGER)
 streamerClient(clientName = "CLIENT", selectionField = "SYMBOL") { ... }
 ```
 
-### The `onMessage` block
+## The `onMessage` block
 The `onMessage` tag defines what the Streamer Client does with your message. It has two operations:
 
 * where
