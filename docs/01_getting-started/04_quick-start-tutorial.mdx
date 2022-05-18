@@ -119,7 +119,7 @@ At this point, the application will be configured. Assuming it is successful, yo
 i Application created successfully! 🎉 Please open the application and follow the README to complete setup.
 ```
 ## 2. Define the data model
-Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application. 
+Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application.
 
 Open Intellij (or your chosen IDE). In the alpha project, you will see the **readme** file for the project. After importing and indexing, you should see the fol
 
@@ -156,7 +156,7 @@ After you have saved this file, run [genesis-generated-fields](/reference/develo
 
 ![](/img/build-gradle-kts-fields.png)
 
-### Add a table 
+### Add a table
 Now we have our fields, let's define a [table](/creating-applications/defining-your-application/data-model/tables/tables) in the file **alpha-tables-dictionary.kts**.
 
 We are defining one single table, containing all our fields.
@@ -415,7 +415,7 @@ span:first-of-type, zero-button {
 
 
 ### Button
-Now add a button.  The purpose of this is to insert the data from the form into the database (and the grid). 
+Now add a button.  The purpose of this is to insert the data from the form into the database (and the grid).
 
 In the file **home.template.ts**, add the following code after `zero-select`.
 
@@ -470,13 +470,21 @@ First, you must deploy the server.
 
 ### Deploying to the server
 
+First we need to configure our genesis home, distribution and user. We will do that by adding the following fields to the **gradle.properties** under **alpha/server/jvm**
+
+```shell
+genesis-home=/home/alpha/run
+wsl-distro=CentOS7
+wsl-user=alpha
+```
+
 We will run `setupEnvironment` - this task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
 
 Usage :
 ```shell
 ./gradlew :jvm:alpha-deploy:setupEnvironment #On the IntelliJ terminal
 ```
-or
+or from the dropdown menu:
 
 ![](/img/setup-environment.png)
 
@@ -489,7 +497,7 @@ Usage:
 ./gradlew :jvm:alpha-deploy:install-auth-distribution.zip #On the IntelliJ terminal
 ```
 
-or
+or from the dropdown menu:
 
 ![](/img/install-auth.png)
 
@@ -502,7 +510,7 @@ Usage:
 ./gradlew :jvm:alpha-deploy:deploy-genesisproduct-alpha.zip #On the IntelliJ terminal
 ```
 
-or
+or from the dropdown menu:
 
 ![](/img/deploy-alpha-product.png)
 
@@ -525,17 +533,17 @@ database. To do that we will call
 ./gradlew :jvm:alpha-deploy:loadInitialData #On the IntelliJ terminal
 ```
 
-or
+or from the dropdown menu:
 
 ![](/img/load-initial-data.png)
 
-Now we can check that the user has been created by running "DbMon", either from the Gradle dropdown menu or by running:
+Now we can check that the user has been created by running "DbMon" by running:
 
 ```shell
 ./gradlew :jvm:alpha-deploy:DbMon #On the IntelliJ terminal
 ```
 
-or
+or from the dropdown menu:
 
 ![](/img/using-DbMon.png)
 
@@ -546,7 +554,7 @@ After running
 ```shell
 ./gradlew :jvm:alpha-deploy:mon #On the IntelliJ terminal
 ```
-or
+or from the dropdown menu:
 
 ![](/img/using-mon.png)
 
