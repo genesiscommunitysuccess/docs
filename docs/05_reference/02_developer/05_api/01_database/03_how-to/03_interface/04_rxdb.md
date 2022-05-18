@@ -26,8 +26,8 @@ We are still working on this page
 | [Supports views](../../../concepts/data-structure/views)                                        | ❌                                                                      |
 | Supports any data type                                                                          | ✔️                                                                     |
 | Class to import                                                                                 | `RxDb`                                                                 |
-| Type safe read and write                                                                        | ❌                                                                      | 
-| Type safe write result                                                                          | ❌                                                                      | 
+| Type-safe read and write                                                                        | ❌                                                                      | 
+| Type-safe write result                                                                          | ❌                                                                      | 
 | Returns data as                                                                                 | [DbRecord](../../data-types/dbrecord)                                  |
 | Writes data as                                                                                  | [DbRecord](../../data-types/dbrecord)                                  |
 | References indexes as                                                                           | [DbRecord](../../data-types/dbrecord) and `String`                     |

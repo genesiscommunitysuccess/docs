@@ -13,48 +13,49 @@ Genesis supports the following database operations:
 4. `delete`
 5. `recover`
 
-All of these operations also have a `...All` version, e.g. `insertAll` that accepts multiple records.
+All of these operations also have an `...All` version, e.g. `insertAll` that accepts multiple records.
 
-## Index Clash
+## Index clash
 
 For the purpose of this document, an index clash means that the record to be written has the same fields on a 
 unique index as an existing record. 
 
 ## Inserting
 
-This operation will write a new record to the database. As part of the insert, any generated fields, e.g. sequence or 
-auto-increment fields will be populated. This operation will fail if a record with the same unique indices already 
+This operation writes a new record to the database. As part of the insert, any generated fields, such as sequence or 
+auto-increment fields, will be populated. This operation will fail if a record with the same unique indices already 
 exists. 
 
 The following insert operations are supported:
-1. `insert` 
-2. `insertAll`
+- `insert` 
+- `insertAll`
 
 ## Modifying
 
-This operation will modify an existing record. By default, the record will be looked up by the primary key, but 
+This operation modifies an existing record. By default, the record will be looked up by the primary key, but 
 developers can provide another key. The operation will fail if the record does not exist, or if the change will result
 in a key clash.
 
 The following insert operations are supported:
-1. `modify`
-2. `modifyAll`
+- `modify`
+- `modifyAll`
 
 ## Upsert
 
-The upsert operation will modify an existing record, or insert it if it doesn't exist. It will fail if the operation
+The upsert operation modifies an existing record, or inserts it if it doesn't exist. It will fail if the operation
 would result in a index clash.
 
 The following insert operations are supported:
-1. `upsert`
-2. `upsertAll`
+- `upsert`
+- `upsertAll`
 
 ## Deleting
 
-The delete operation will remove a record from the database. The operation will fail if the record is not found. 
+The delete operation removes a record from the database. The operation will fail if the record is not found. 
 
 The following insert operations are supported:
-1. `delete`
-2. `deleteAll`
+- `delete`
+- `deleteAll`
 
 ## Recover
+We shall provide details here as soon as we can. Thank you for your patience.
