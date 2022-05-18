@@ -18,22 +18,25 @@ Other tables can be joined onto the root table to present composite data.
 Due to their composite nature, views are inherently read-only. You cannot modify a record in a view. The only way
 to change the data is to change the underlying table(s). 
 
-## Root Table
+## Root table
 
 A view always has a root table, this is the most important table in the view. It is the starting point of the join
 operations and the view will derive its indices from the root table.
 
 ## Types of view
 
-Depending on the view definition a different type of view will be created.
+Depending on the view definition, a different type of view will be created.
 
 ### Cardinality
 
-A view's cardinality tells us how many view records will be returned for every record in the root table. If a view will 
-at most return 1 record for each record in the root table, the view is said to have single cardinality. If a view can 
-return multiple records for each record in the root table, the view is said to have multi cardinality. 
+A view's cardinality tells us how many view records will be returned for every record in the root table. 
 
-In other words, the cardinality depends on the joins; a view with no joins, or only one to one joins will be single 
+- If a view can 
+return a maximum of 1 record for each record in the root table, the view has single cardinality. 
+- If a view can 
+return multiple records for each record in the root table, the view has multi cardinality. 
+
+The cardinality depends on the joins; a view with no joins, or only one-to-one joins, will be single 
 cardinality, all others will be multi cardinality
 
 |                                        | Single Cardinality <br/>  View | Multi Cardinality<br/> View |
@@ -44,9 +47,9 @@ cardinality, all others will be multi cardinality
 | Supports database subscribe operations | ✔️                             | ❌                           |
 | Supports backwards joins               | ✔️                             | ❌                           |
 
-### Parameterised Views
+### Parameterised views
 
-For some views, the join are defined as input parameters, rather than on a field in another table or a constant. When 
+For some views, the joins are defined as input parameters, rather than on a field in another table or a constant. When 
 that happens a view is considered to be parameterised. Parameterised views can not be accessed without these parameters.
 Parameterised views can be both single and multi cardinality.
 
