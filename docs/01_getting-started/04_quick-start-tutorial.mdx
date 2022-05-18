@@ -30,7 +30,7 @@ Before you start, you need to have:
 genesisArtifactoryUser=<your-actifactory-user>
 genesisArtifactoryPassword=<your-actifactory-password>
 ```
-- A local or cloud Linux environment for runtime, e.g. [setup and host on wsl](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/)
+- A local or cloud Linux environment for runtime that has a user created with the name of the application, e.g. [setup and host on wsl](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/)
 
 
 ## What you will build
@@ -472,10 +472,13 @@ First, you must deploy the server.
 
 We will run `setupEnvironment` - this task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
 
-Usage:
+Usage :
 ```shell
-./gradlew :jvm:alpha-deploy:setupEnvironment
+./gradlew :jvm:alpha-deploy:setupEnvironment #On the IntelliJ terminal
 ```
+or
+
+![](/img/setup-environment.png)
 
 After this command is completed we will have a basic genesis server running
 
@@ -483,8 +486,12 @@ After this command is completed we will have a basic genesis server running
 
 Usage:
 ```shell
-./gradlew :jvm:alpha-deploy:install-auth-distribution.zip
+./gradlew :jvm:alpha-deploy:install-auth-distribution.zip #On the IntelliJ terminal
 ```
+
+or
+
+![](/img/install-auth.png)
 
 ### Deploying the alpha product
 
@@ -492,8 +499,13 @@ Now we have to deploy the alpha product
 
 Usage:
 ```shell
-./gradlew :jvm:alpha-deploy:deploy-genesisproduct-alpha.zip
+./gradlew :jvm:alpha-deploy:deploy-genesisproduct-alpha.zip #On the IntelliJ terminal
 ```
+
+or
+
+![](/img/deploy-alpha-product.png)
+
 
 ### Adding a user to login
 
@@ -509,15 +521,51 @@ We wil run the task loadInitialData. This adds the data in USER.csv to the USER 
 database. To do that we will call
 
 ```shell
-./gradlew :jvm:alpha-deploy:loadInitialData"
+./gradlew :jvm:alpha-deploy:loadInitialData #On the IntelliJ terminal
 ```
+
+or
+
+![](/img/load-initial-data.png)
 
 Now we can check that the user has been created by running "DbMon", either from the Gradle dropdown menu or by running:
 
 ```shell
-./gradlew :jvm:alpha-deploy:DbMon
+./gradlew :jvm:alpha-deploy:DbMon #On the IntelliJ terminal
 ```
+
+or
+
+![](/img/using-DbMon.png)
+
 Once we are inside the console we can type 'table USER' and after 'search 1'. If imported correctly the user JohnDoe should be listed.
+
+After running
+
+```shell
+./gradlew :jvm:alpha-deploy:mon #On the IntelliJ terminal
+```
+or
+
+![](/img/using-mon.png)
+
+we should see something like this
+
+```shell
+PID     Process Name                  Port        Status         CPU       Memory    Message
+===============================================================================================
+426     GENESIS_AUTH_CONSOLIDATOR     8005        STANDBY        36.30     1.30
+350     GENESIS_AUTH_DATASERVER       8002        RUNNING        56.70     1.70
+334     GENESIS_AUTH_MANAGER          8001        RUNNING        61.50     1.70
+368     GENESIS_AUTH_PERMS            8003        RUNNING        65.70     1.90
+403     GENESIS_AUTH_REQUEST_SERVER   8004        RUNNING        56.80     1.60
+490     GENESIS_CLUSTER               9000        RUNNING        84.30     2.50
+570     GENESIS_ROUTER                9017        RUNNING        54.70     2.00
+534     GENESIS_WEBMON                9011        RUNNING        51.30     2.50
+===============================================================================================
+664     ALPHA_DATASERVER              11000       RUNNING        58.10     1.50
+703     ALPHA_EVENT_HANDLER           11001       RUNNING        71.30     2.20
+```
 
 ### Connecting backend with frontend
 

@@ -172,7 +172,7 @@ Then to run it we can utilise systemctl: `systemctl status foundationdb`
 
 ### Install Docker Desktop for Windows
 
-For your database, you could run Aerospike or Postgres in Docker, using Docker for Windows integration with WSL2. For
+For your database, you could also run Aerospike or Postgres in Docker, using Docker for Windows integration with WSL2. For
 instructions, [check here](https://docs.docker.com/docker-for-windows/). For a
 download, [click here](https://hub.docker.com/editions/community/docker-ce-desktop-windows/).
 
