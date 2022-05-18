@@ -47,7 +47,7 @@ You will be provided with access details during your on-boarding.
  2. Using your credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
  3. Click on the `Welcome <username>` on the top right corner.
  4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
- 5. Select `npm` for package type, and the appropriate repository.
+ 5. Select `npm` for both **Package Type** and **Repository**.
  6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in to the Genesis repository on jfrog.) Then press **Enter**. 
 
  ![](/img/set-me-up.png)
