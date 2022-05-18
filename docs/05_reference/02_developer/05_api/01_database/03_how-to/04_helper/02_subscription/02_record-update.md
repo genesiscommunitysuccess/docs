@@ -6,7 +6,7 @@ id: record-update
 
 ---
 
-Generic record provide a generic way of publishing updates by the database. All updates have the same super type 
+Generic records provide a generic way of publishing updates by the database. All updates have the same super type, 
 `GenericRecordUpdate`, which is a [sealed kotlin class](https://kotlinlang.org/docs/sealed-classes.html). This means
 that all instances are guaranteed to be one of the implementation types:
 
@@ -14,7 +14,7 @@ that all instances are guaranteed to be one of the implementation types:
 * `GenericRecordUpdate.Delete`
 * `GenericRecordUpdate.Modify`
 
-Each one of these has the following properties:
+All these types have the following properties:
 
 * `tableName`: `String`
 * `recordId`: `Long`

@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 title: Overview
-sidebar_label: Database Reference
+sidebar_label: Database reference
 id: overview
 
 ---
@@ -21,3 +21,4 @@ The Genesis database comes in two types:
 
 ## Caching 
 
+Details to follow. Please bear with us. 

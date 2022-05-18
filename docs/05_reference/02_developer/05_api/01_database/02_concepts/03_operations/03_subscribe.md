@@ -1,14 +1,14 @@
 ---
 sidebar_position: 3
-title: Subscribe Operations
+title: Subscribe operations
 sidebar_label: Subscribe
 id: subscribe
 
 ---
 
-Subscribe operations allows code to react to database changes, rather than polling for changes. Code can either 
-just listen to changes, or combine use a combined read/subscribe operation. These mixed read/subscribe operations 
-are useful 
+Subscribe operations allow code to react to database changes, rather than polling for changes. Code can either 
+just listen to changes, or use a combined read/subscribe operation. These mixed read/subscribe operations 
+are useful.
 
 Subscriptions are limited to a single table or view. 
 
@@ -19,17 +19,17 @@ There are 3 categories of changes:
 2. Delete - an existing row is deleted
 3. Modify - an existing row is changed
 
-Please note that when subscribing to a view and or a range, that the change will reflect the change to the subscription, 
+When subscribing to a view and or a range, the change will reflect the change to the subscription -  
 rather than directly correlate to a database operation. A database insert or delete update will only be published to the 
-subscriber if the insert appears in the range and or view. Similarly, a database modify update might not show at all or 
+subscriber if the insert appears in the range and/or view. Similarly, a database modify update might not show at all, or 
 be transformed into an insert or delete update, if it moves into or out of the subscription.
 
-### Backward Joins
+### Backward joins
 
 By default, subscriptions on views will only publish updates on database changes to the root table. However, in view 
-definitions, a join to a child table can be defined as `backwardsJoin = true`. For those joins, the subscription will 
+definitions, a join to a child table can be defined as `backwardsJoin = true`. For these joins, the subscription will 
 also publish changes to child tables as modify updates. Please note that this is only supported for combined 
-read/subscribe operations, as the subscription needs to cache the joins. Further, this cache will require extra memory 
+read/subscribe operations, as the subscription needs to cache the joins. This cache will require extra memory 
 and cpu cycles to maintain. 
 
 ## Subscribing to updates
@@ -44,15 +44,15 @@ When subscribing to updates, there are a number of different parameters:
 | subscribeLocally | ❌        | When in a cluster, only listen to local updates | false                |
 
 
-## Mixed read/ subscribe operations
+## Mixed read/subscribe operations
 
-Mixed read and subscribe operations are useful in custom components when needed to read a whole or part of a table 
-and needed to keep in the loop of changes. 
+Mixed read and subscribe operations are useful in custom components when you need to read a whole or part of a table 
+and need to keep in the loop of changes. 
 
-For this purpose the database exposes two types of operations:
+For this purpose, the database exposes two types of operation:
 
-1. `bulkSubscribe` - combines `subscribe` and `getBulk`
-2. `rangeSubscribe` - combines `subscribe` and `getRange`
+- `bulkSubscribe` - combines `subscribe` and `getBulk`
+- `rangeSubscribe` - combines `subscribe` and `getRange`
 
 ### `bulkSubscribe`
 
