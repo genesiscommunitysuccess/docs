@@ -24,5 +24,5 @@ compile time validation.
 ## DbRecord
 
 `DbRecord` is the most generic way to deal with the database, as any table can be represented in a single class. 
-However, this is also its biggest drawback, due to the generic nature there is no compile-time validation, which means 
-accessing or setting data incorrectly would lead to runtime failures rather than compile time failures.  
+However, this is also its biggest drawback; due to the generic nature, there is no compile-time validation, which means 
+accessing or setting data incorrectly leads to runtime failures rather than compile-time failures.  
