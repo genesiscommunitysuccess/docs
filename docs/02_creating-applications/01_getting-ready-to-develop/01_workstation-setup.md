@@ -52,7 +52,7 @@ You will be provided with access details during your on-boarding.
 
  ![](/img/set-me-up.png)
 
- 7. Scroll down inside the Set Me Up dialog. At the bottom of the page, you will find a code sample for .npmrc, which contains your scope information, including user name an encrypted password. Copy this and paste it into the file you created in the previous step. For reference, the snippet should look something like this (but don't copy the one below - because it contains dummy information!):
+ 7. Scroll down _inside_ the Set Me Up dialog. At the bottom of the page, you will find a code sample for .npmrc, which contains your scope information, including user name an encrypted password. Copy this and paste it into the file you created in the previous step. For reference, the snippet should look something like this (but **don't** copy the one below - because it contains dummy information!):
 
 ```shell
 @<SCOPE>:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/
