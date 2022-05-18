@@ -1,0 +1,105 @@
+---
+title: 'How to add a new empty page'
+sidebar_label: 'How to add a new empty page'
+sidebar_position: 2
+id: new-empty-page
+---
+
+# How to add a new empty page.
+
+Overview of the process:
+- Create a new component to represend your new page.
+- Configure a new route to point to your new component.
+- Add a new button/link to the navigation bar for your new page.
+
+## Creating a new component.
+
+Step 1: pick a **name**! In this example we'll go with **TestPage**.
+
+Step 2: Create a new appropriately named directory, in this case: `test-page`
+
+Step 3: Create 3 new files under our new directory, for the component itself, its layout and styles/css.
+
+New components will typically extend [FastElement](https://www.fast.design/docs/fast-element/defining-elements)
+
+Our file structure might look something like this:
+
+- src/routes/test-page/test-page.styles.ts
+```javascript
+import {css} from '@microsoft/fast-element';
+import {mixinScreen} from '../../styles';
+
+export const TestPageStyles = css`
+  :host {
+    ${mixinScreen('flex')}
+
+    align-items: center;
+    justify-content: center;
+  }
+`;
+```
+
+- src/routes/test-page/test-page.template.ts
+```javascript
+import {html} from '@microsoft/fast-element';
+import type {TestPage} from './test-page';
+
+export const TestPageTemplate = html<TestPage>`
+  <h1>Hello from Test Page</h1>
+`;
+```
+
+- src/routes/test-page/test-page.ts
+```javascript
+import {customElement, FASTElement} from '@microsoft/fast-element';
+import {TestPageTemplate as template} from './test-page.template';
+import {TestPageStyles as styles} from './test-page.styles';
+import {logger} from '../../utils';
+
+const name = 'test-page';
+
+@customElement({
+  name,
+  template,
+  styles,
+})
+export class TestPage extends FASTElement {
+  public connectedCallback() {
+    super.connectedCallback();
+    logger.debug(`${name} is now connected to the DOM`);
+  }
+}
+```
+
+## Configuring a new route to point to your new component.
+
+We need to add a new mapping to our router's configuration, typically in `src/routes/config.ts`
+
+```javascript
+export class MainRouterConfig extends RouterConfiguration<RouteSettings> {
+    ...
+    public configure() {
+        ...
+        this.routes.map(
+            ...,
+            {path: 'test-page', element: TestPage, title: 'Test Page', name: 'test'},
+        );
+        ...
+    }
+}
+```
+
+##  Adding a new navigation item.
+
+We need to add a new `fast-option` to the existing `fast-listbox` of our nav template.
+Typically in `src/routes/.layouts/nav/nav.template.ts`.
+
+```javascript
+<fast-option value="4" @click=${x => x.navigateTo('test-page')}>
+    <zero-icon variant="solid" name="toolbox"></zero-icon> Test Page
+</fast-option>
+```
+
+## Final result:
+
+![](/img/new-page-preview.png)
