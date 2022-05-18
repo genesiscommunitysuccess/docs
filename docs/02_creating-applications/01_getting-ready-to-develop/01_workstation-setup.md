@@ -46,13 +46,13 @@ You will be provided with access details during your on-boarding.
 1. Create an `.npmrc` file in your user home directory.
  2. Using your credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
  3. Click on the `Welcome <username>` on the top right corner.
- 4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
+ 4. From the menu, select `Set Me Up`. This opens a dialog with `Package Type` and `Repository` dropdowns. 
  5. Select `npm` for package type, and the appropriate repository.
  6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in to the Genesis repository on jfrog.) Then press **Enter**. 
 
  ![](/img/set-me-up.png)
 
- 7. Scroll down to the bottom of the page, where a code sample for .nppmrc is displayed. Copy this and paste it into the file you created in the previous step. This should look something like this:
+ 7. Scroll down inside the Set Me Up dialog. At the bottom of the page, you will find a code sample for .npmrc, which contains your scope information, including user name an encrypted password. Copy this and paste it into the file you created in the previous step. For reference, the snippet should look something like this (but don't copy the one below - because it contains dummy information!):
 
 ```shell
 @<SCOPE>:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/
