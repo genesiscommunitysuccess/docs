@@ -62,7 +62,7 @@ WSL distributions can be found easily at various locations on the web. For insta
 distro in the following [link](https://github.com/mishamosher/CentOS-WSL/releases/download/7.9-2111/CentOS7.zip).
 To install this distro, unzip and execute the .exe
 
-For an alternative and expedient way to install CentOS7, you can also use this article from Microsoft in order to build
+For an alternative and expedient way to install CentOS7, you can also use the following article from Microsoft in order to build
 a CentOS distro from a Docker image.
 
 #### Important Note
