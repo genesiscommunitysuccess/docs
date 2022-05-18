@@ -513,8 +513,9 @@ Next let´s create a user.
 
 :::tip
 The following details will be your login details:
-Username: JohnDoe
-Password: Password11* (This is encrypted in the USER.csv file.)
+
+- Username: JohnDoe
+- Password: Password11* (This is encrypted in the USER.csv file.)
 :::
 
 We wil run the task loadInitialData. This adds the data in USER.csv to the USER table in your
@@ -567,6 +568,8 @@ PID     Process Name                  Port        Status         CPU       Memor
 703     ALPHA_EVENT_HANDLER           11001       RUNNING        71.30     2.20
 ```
 
+See [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/configure-deployment-plugin/) for extra details on how to configure the Genesis deploy plugin.
+
 ### Connecting backend with frontend
 
 With this next step we will configure a nginx working as a reverse proxy.
@@ -584,7 +587,8 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-ho
 
 ```
 
-See [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/configure-deployment-plugin/) for extra details on how to configure the Genesis deploy plugin.
+### Running the frontend
+
 
 Now you can run the application's front end. From there, you can view the table of data and add the details of a new trade.
 
@@ -596,9 +600,18 @@ From **client/package.json**:
 After that:
 - Run **dev** script
 
-Now you have fully running application.
+Now you have fully running application. If not opened automatically, you can navigate to http://localhost:6060/login, and you should see the following
+
+![](/img/login-screen-quickstart.png)
+
+:::tip
+If the blue button to login is not clickable most likely want to revisit the previous section.
+
+::::
 
 ## Conclusion
-That’s it. You have quickly built a very simple application using some of the fundamental Genesis components. You can see a grid of trades. Try adding a new one.
+That’s it. You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.
+
+![](/img/quickstart-app-final.png)
 
 There's obviously a lot more to building enterprise-ready applications. We suggest you read through the [Defining your application](/creating-applications/defining-your-application/intro) for details of all the Genesis components and their features.
