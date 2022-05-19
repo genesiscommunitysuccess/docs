@@ -146,11 +146,6 @@ New-NetFirewallRule -DisplayName "WSL" -Direction Inbound  -InterfaceAlias "vEth
 
 ### Installing FDB (recommended for development environments)
 
-Download foundationdb-server-6.3.23-1.el7.x86_64.rpm and foundationdb-clients-6.3.23-1.el7.x86_64.rpm files
-from https://github.com/apple/foundationdb/releases/tag/6.3.23
-
-[Transfer them onto your CentOS7 system](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/#copying-files-between-windows-and-wsl)
-
 As root (note, replace `alpha` with the application user set up)
 
 ```bash
@@ -161,7 +156,8 @@ usermod -aG wheel alpha
 Then...
 
 ```bash
-rpm -Uvh foundationdb-clients-6.3.23-1.el7.x86_64.rpm foundationdb-server-6.3.23-1.el7.x86_64.rpm
+rpm -Uvhi https://github.com/apple/foundationdb/releases/download/6.3.23/foundationdb-clients-6.3.23-1.el7.x86_64.rpm
+rpm -Uvhi https://github.com/apple/foundationdb/releases/download/6.3.23/foundationdb-server-6.3.23-1.el7.x86_64.rpm
 mv /usr/bin/systemctl /usr/bin/systemctl.old
 curl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py > /usr/bin/systemctl
 chmod +x /usr/bin/systemctl
