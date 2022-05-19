@@ -577,9 +577,9 @@ PID     Process Name                  Port        Status         CPU       Memor
 
 See [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/configure-deployment-plugin/) for extra details on how to configure the Genesis deploy plugin.
 
-### Connecting backend with frontend
+### Connecting the back end and front end
 
-With this next step we will configure a nginx working as a reverse proxy.
+With this next step, we will configure a nginx working as a reverse proxy.
 
 ```shell
 docker login genesisglobal-docker-internal.jfrog.io
@@ -588,13 +588,13 @@ docker login genesisglobal-docker-internal.jfrog.io
 #...
 docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
 #...
-# You can run this command from within WSL or from your workstation. If you run it from the CentOS shell you can use the following command.
+# You can run this command from within WSL or from your workstation. If you run it from the CentOS shell, you can use the following command:
 #...
 docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
 
 ```
 
-### Running the frontend
+### Running the front end
 
 
 Now you can run the application's front end. From there, you can view the table of data and add the details of a new trade.
@@ -607,12 +607,12 @@ From **client/package.json**:
 After that:
 - Run **dev** script
 
-Now you have fully running application. If not opened automatically, you can navigate to http://localhost:6060/login, and you should see the following
+Now you have a fully running application. If not opened automatically, you can navigate to http://localhost:6060/login, and you should see the following:
 
 ![](/img/login-screen-quickstart.png)
 
 :::tip
-If the blue button to login is not clickable most likely want to revisit the previous section.
+If the blue button to login is not clickable, most likely want to revisit the previous section.
 
 ::::
 
@@ -621,4 +621,4 @@ That’s it. You have quickly built a very simple application using some fundame
 
 ![](/img/quickstart-app-final.png)
 
-There's obviously a lot more to building enterprise-ready applications. We suggest you read through the [Defining your application](/creating-applications/defining-your-application/intro) for details of all the Genesis components and their features.
+There's obviously a lot more to building enterprise-ready applications. We suggest you read through [Defining your application](/creating-applications/defining-your-application/intro) for details of all the Genesis components and their features.
