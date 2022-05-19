@@ -23,6 +23,7 @@ You can get through this in about 30 minutes - but don't be afraid to take more 
 Before you start, you need to have:
 
 - An IDE (preferably IntelliJ)
+- NodeJS (see our [recommended software packages](/creating-applications/getting-ready-to-develop/workstation-setup/#recommended-software-packages) for versioning information)
 - Credentials for accessing Genesis Artifactory. If necessary, contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login)
 - A local or cloud Linux environment for runtime 
 
@@ -41,7 +42,9 @@ With a lack of imagination we hope you will find trustworthy, we are going to ca
 ## 1. Create a new project
 The GenX CLI tool enables you to seed projects, in this case we just want to generate a blank full-stack application project.
 
-First, install the genx tool using the following command:
+For step-by-step instructions on how to install and use this tool, follow the guide on [GenX](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/using-genx/).
+
+Once configured, install genx using the following command:
 
 ```shell
 npm install -g @genesislcap/foundation-cli
@@ -52,16 +55,17 @@ Once installed, from the terminal, run:
 ```shell
 genx
 ```
-For step-by-step instructions on how to install and use this tool, follow the guide on [GenX](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/using-genx/).
 
 In the `genx` script, there is a series of questions. 
 
-First, you are asked to provide your password. (Note: at present, this will not accept passwords that contain the **£** character.)
+First, you are asked to provide your username and password - these are the credentials you use to access Genesis Artifactory.
+(Note: at present, this will not accept passwords that contain the **£** character.)
 
 Then you are asked to select from a short list of seed applications. Select `create application`:
 
 
 ```shell
+? Genesis Username example.username
 ? Genesis Password **************
 √ Logged into Genesis
 ? Please select an option: (Use arrow keys)
