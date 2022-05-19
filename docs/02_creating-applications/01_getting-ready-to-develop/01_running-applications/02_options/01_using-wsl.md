@@ -154,6 +154,7 @@ from https://github.com/apple/foundationdb/releases/tag/6.3.23
 As root (note, replace `alpha` with the application user set up)
 
 ```bash
+useradd alpha
 usermod -aG wheel alpha
 ```
 
