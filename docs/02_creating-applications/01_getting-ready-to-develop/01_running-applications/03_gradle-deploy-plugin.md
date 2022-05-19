@@ -1,4 +1,4 @@
-n---
+---
 id: gradle-deploy
 title: Using the gradle deploy plugin
 sidebar_label: Using the gradle deploy plugin
@@ -156,23 +156,23 @@ The Genesis deploy plugin comes with several tasks. They are grouped under `gene
 
 contains tasks to deploy each external distribution, as well as site specific configuration
 
-| Task                                                                           | Description                                                                                                                                       | 
-|--------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| `createGenesisHome`                                                            | This task creates the genesis home.                                                                                                               |
-| `install-genesis-distribution.zip`                                             | This task copies and unzips the Genesis distribution specified as a dependency.                                                                   |
-| `install-auth-distribution.zip`                                                | This task copies and unzips the auth distribution specified as a dependency.                                                                      |
-| `install-<project-name>-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip` | This task copies and unzips the <project-name>-site-specific> distribution specified as a dependency.                                             |
-| `loadInitialData`                                                              | This task executes `install-<project-name>-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip` and then calls all the SendIt-<file>.csv tasks. |
-| `setupEnvironment`                                                             | This task executes `createGenesisHome` then `install-genesis-distribution` and then configures the installed distribution.                        |
-| `SendIt-<file>.csv`                                                            | This task executes the script command `SendIt` with the parameters -t <file-name (in Uppercase)> and -f <file-location>.                          |
+| Task                                                                           | Description                                                                                                                                         | 
+|--------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| `createGenesisHome`                                                            | This task creates the genesis home.                                                                                                                 |
+| `install-genesis-distribution.zip`                                             | This task copies and unzips the Genesis distribution specified as a dependency.                                                                     |
+| `install-auth-distribution.zip`                                                | This task copies and unzips the auth distribution specified as a dependency.                                                                        |
+| `install-<project-name>-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip` | This task copies and unzips the `<project-name>-site-specific>` distribution specified as a dependency.                                             |
+| `loadInitialData`                                                              | This task executes `install-<project-name>-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip` and then calls all the `SendIt-<file>.csv` tasks. |
+| `setupEnvironment`                                                             | This task executes `createGenesisHome` then `install-genesis-distribution` and then configures the installed distribution.                          |
+| `SendIt-<file>.csv`                                                            | This task executes the script command `SendIt` with the parameters -t `<file-name (in Uppercase)>` and -f `<file-location>`.                        |
 
 ## Genesis deploy tasks
 
 Enables the deployment of the full project: single jars for each project module or just configuration files.
 
-This task deploys the event handler to the Genesis environment specified for genesis-home. Note that <project-name> must
+This task deploys the event handler to the Genesis environment specified for genesis-home. Note that `<project-name>` must
 be replaced with the actual project name. For example, if the project you work on is called alpha, you could call
-deploy-genesisproduct-alpha.zip
+`deploy-genesisproduct-alpha.zip`
 
 | Task                                       | Description                                                                                      | 
 |--------------------------------------------|--------------------------------------------------------------------------------------------------|
