@@ -40,10 +40,10 @@ project to it. It can be used on Linux machines (local and over SSH) or Windows 
 # Deploy target configurations
 
 ### WSL
-If your development workstation is a Windows machine, then [use WSL](/creating-applications/getting-ready-to-develop/running-applications/wsl-setup/) to have Genesis set-up locally.
 
 If your development workstation is a Windows machine, then you
-can [use WSL](/creating-applications/getting-ready-to-develop/running-applications/wsl-setup/) to have Genesis set-up
+can [use WSL](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/) to have
+Genesis set-up
 locally.
 
 To configure this, open `gradle.properties` from the server/jvm folder and add the following entries:
