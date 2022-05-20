@@ -28,7 +28,7 @@ If you want to add this module to an existing project, then it is easy to do so.
 
 ### Build script
 
-The build script simply defines dependencies on distributions both internal and external to the project so they can be
+The build script simply defines dependencies on distributions (both internal and external to the project), so they can be
 resolved and deployed.
 
 ```kotlin
@@ -60,7 +60,7 @@ dependencies {
 ```
 
 Note the special configuration option on the internal modules. If adding this configuration to a project, you will need
-to add the following code to the build script of the internal module you wish to make available for deployment:
+to add the following code to the build script of the internal module that you wish to make available for deployment:
 
 ```kotlin
 val distribution by configurations.creating {
@@ -79,7 +79,7 @@ artifacts {
 This special piece of Gradle DSL makes the zip file of the distribution available on the class path so it can be
 resolved by the deploy plugin.
 
-## Deploy Target Configurations
+## Deploy target configurations
 
 ### WSL
 
@@ -121,7 +121,7 @@ genesis-home=<path-to-genesis-distribution>
 
 The set-up task will create the folder (if it doesn't exist) and set up the Genesis platform there.
 
-## Remote Linux Host (via SSH)
+## Remote Linux host (via SSH)
 
 This configuration is usable when using a remote host for the Genesis environment. Currently, only Linux hosts are
 supported.
@@ -154,7 +154,7 @@ The Genesis deploy plugin comes with several tasks. They are grouped under `gene
 
 ## Genesis set-up tasks
 
-contains tasks to deploy each external distribution, as well as site specific configuration
+contains tasks to deploy each external distribution, as well as site-specific configuration
 
 | Task                                                                           | Description                                                                                                                                         | 
 |--------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -184,7 +184,7 @@ be replaced with the actual project name. For example, if the project you work o
 | `deployScripts`                            | This task deploys the scripts to the Genesis environment specified for `genesis-home`.           |
 
 Note, this will take the last built distribution and does not run a project build as part of the task... so do that
-first
+first.
 
 ## Genesis Script tasks
 
