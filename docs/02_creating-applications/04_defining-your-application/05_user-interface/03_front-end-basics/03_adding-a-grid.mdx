@@ -1,0 +1,227 @@
+---
+title: 'Adding a grid'
+sidebar_label: 'Adding a grid'
+sidebar_position: 3
+id: adding-a-grid
+---
+
+# Adding a grid
+
+In this example we will be adding a grid to our new page and using it to display data coming from a DATASERVER resource on the server. We will be using the ALL_TRADES resource but the logic would be the same for any other.
+
+More specifically, we will be adding:
+- A simple wrapper div for styling / sizing purposes.
+- A `zero-ag-grid` component, which is our Web Component wrapper for AG Grid. A feature-rich high-performance data grid optimised for real-time, fast-moving data.
+- An `ag-genesis-datasource` component, which will facilitate the actual connection to the server resource and provide data to the grid.
+
+ 
+
+:::info
+For static data, the lightweight [DataGrid](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/grids/data-grid) is recommended instead. 
+:::
+
+## The wrapper class
+
+Keeping this one simple, we just need to add a `div` with class `wrapper` in our template.  
+In: `src/routes/test-page/test-page.template.ts`
+
+```javascript
+  <div class="wrapper">
+    <!-- The grid will go in here. -->
+  </div>
+```
+
+And just make it full size.  
+In `src/routes/test-page/test-page.styles.ts`:
+
+```css
+  .wrapper {
+    height: 100%;
+    width: 100%;
+  }
+```
+
+## Adding the grid component inside our wrapper div:
+```javascript
+  <div class="wrapper">
+    <zero-ag-grid>
+      <!-- The datasource will go in here. -->
+    </zero-ag-grid>
+  </div>
+```
+
+## Finally, adding the datasource:
+```javascript
+  <div class="wrapper">
+    <zero-ag-grid>
+      <ag-genesis-datasource resourceName="ALL_TRADES" />
+    </zero-ag-grid>
+  </div>
+```
+
+## With these few lines of code we already have a fully functional grid:
+![](/img/all-trades-grid-01.png)
+
+## Configuring the datasource and customizing the grid:  
+
+Let's say we want the incoming data from the server ordered by a specific column and also want a custom height for our rows.  
+This is as simple as setting a few properties on our grid and datasource components:
+```javascript
+  <div class="wrapper">
+    <zero-ag-grid rowHeight="45">
+      <ag-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
+    </zero-ag-grid>
+  </div>
+```
+
+We might want to customize our grid further:
+- Maybe we are only interested in a subset of the columns.  
+- Let's say we also want to provide custom headers and value formatters.
+- Or maybe we want to enable flashing on updates.
+
+Luckily all this (and more) is possible by providing our own custom column definitions.
+
+Our template might now look something like this:
+
+```javascript
+import {ColDef} from '@ag-grid-community/core';
+import {html, repeat} from '@microsoft/fast-element';
+import {formatDateLong, formatNumber} from '../../utils/formatting';
+import type {TestPage} from './test-page';
+
+export const tradeColumnDefs: ColDef[] = [
+  {field: 'INSTRUMENT_NAME', headerName: 'Instrument', enableCellChangeFlash: true, flex: 3},
+  {field: 'SIDE', headerName: 'Side', cellClass: 'status-cell', enableCellChangeFlash: true, flex: 1},
+  {field: 'QUANTITY', headerName: 'Quantity', valueFormatter: formatNumber(0), type: 'rightAligned', enableCellChangeFlash: true, flex: 1},
+  {field: 'CURRENCY', headerName: 'Ccy', enableCellChangeFlash: true, flex: 1},
+  {field: 'PRICE', headerName: 'Price', valueFormatter: formatNumber(2), type: 'rightAligned', enableCellChangeFlash: true, flex: 2},
+  {field: 'CONSIDERATION', headerName: 'Consideration', valueFormatter: formatNumber(2), type: 'rightAligned', enableCellChangeFlash: true, flex: 2},
+  {field: 'TRADE_DATETIME', headerName: 'Date', valueFormatter: rowData => formatDateLong(rowData.data.TRADE_DATETIME), sort: 'desc', enableCellChangeFlash: true, flex: 2},
+  {field: 'COUNTERPARTY_NAME', headerName: 'Counterparty', enableCellChangeFlash: true, flex: 2},
+  {field: 'TRADE_STATUS', headerName: 'Trade State', cellClass: 'status-cell', enableCellChangeFlash: true, flex: 2},
+  {field: 'ENTERED_BY', headerName: 'Entered By', enableCellChangeFlash: true, flex: 2},
+];
+
+export const TestPageTemplate = html<TestPage>`
+  <div class="wrapper">
+    <zero-ag-grid rowHeight="45" only-template-col-defs enabledRowFlashing >
+      <ag-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
+      ${repeat(() => tradeColumnDefs, html`
+        <ag-grid-column :definition="${x => x}" />
+      `)}
+    </zero-ag-grid>
+  </div>
+`;
+```
+
+## And with that we have:
+![](/img/all-trades-grid-02.png)
+
+
+
+:::tip
+It is also possible to **create our own grid component**, similarly to how we created our `TestPage` component, and in doing so **provide custom styles**.
+Please note in this case will be extending `zero-ag-grid` instead of `fast-element`.
+:::
+
+
+```javascript
+import {AgGrid as AgGridZero, zeroAgGridTemplate} from '@genesislcap/foundation-zero';
+import {customElement} from '@microsoft/fast-element';
+import {positionsAgGridStyles} from './ag-grid.styles';
+
+@customElement({
+  name: 'positions-ag-grid',
+  template: zeroAgGridTemplate,
+  styles: positionsAgGridStyles,
+})
+export class PositionsAgGrid extends AgGridZero {
+}
+```
+
+```javascript
+import {zeroAgGridStyles} from '@genesislcap/foundation-zero';
+import {css, ElementStyles} from '@microsoft/fast-element';
+import {BUY_SIDE, SELL_SIDE, NEW_TRADE_STATUS, CANCELLED_TRADE_STATUS} from './colors';
+
+export const positionsAgGridStyles: ElementStyles = css`
+  ${zeroAgGridStyles}
+
+  .status-cell {
+    display:flex;
+    align-items: center;
+    margin-left: 6px;
+  }
+  
+  .status-cell::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    height: 100%;
+    width: 3px;
+  }
+
+  .buy-side-trade.status-cell::after {
+    background-color: ${BUY_SIDE};
+  }
+
+  .buy-side-trade {
+    color: ${BUY_SIDE};
+  }
+
+  .sell-side-trade.status-cell::after {
+    background-color: ${SELL_SIDE};
+  }
+
+  .sell-side-trade {
+    color: ${SELL_SIDE};
+  }
+
+  .new-status-trade.status-cell::after {
+    background-color: ${NEW_TRADE_STATUS};
+  }
+
+  .new-status-trade {
+    color: ${NEW_TRADE_STATUS};
+  }
+
+  .cancel-status-trade.status-cell::after {
+    background-color: ${CANCELLED_TRADE_STATUS};
+  }
+
+  .cancel-status-trade {
+    color: ${CANCELLED_TRADE_STATUS};
+  }
+`;
+```
+
+This allows us to enhance our column definitions by adding conditional classes
+
+```javascript
+const tradeCellClassRules = {
+  'buy-side-trade': params => params.value === 'BUY',
+  'sell-side-trade': params => params.value === 'SELL',
+  'new-status-trade': params => params.value === 'NEW',
+  'cancel-status-trade': params => params.value === 'CANCELLED',
+};
+
+export const tradeColumnDefs: ColDef[] = [
+  {field: 'INSTRUMENT_NAME', headerName: 'Instrument', enableCellChangeFlash: true, flex: 3},
+  {field: 'SIDE', headerName: 'Side', cellClass: 'status-cell', cellClassRules: tradeCellClassRules, enableCellChangeFlash: true, flex: 1},
+  {field: 'QUANTITY', headerName: 'Quantity', valueFormatter: formatNumber(0), type: 'rightAligned', enableCellChangeFlash: true, flex: 1},
+  {field: 'CURRENCY', headerName: 'Ccy', enableCellChangeFlash: true, flex: 1},
+  {field: 'PRICE', headerName: 'Price', valueFormatter: formatNumber(2), type: 'rightAligned', enableCellChangeFlash: true, flex: 2},
+  {field: 'CONSIDERATION', headerName: 'Consideration', valueFormatter: formatNumber(2), type: 'rightAligned', enableCellChangeFlash: true, flex: 2},
+  {field: 'TRADE_DATETIME', headerName: 'Date', valueFormatter: rowData => formatDateLong(rowData.data.TRADE_DATETIME), sort: 'desc', enableCellChangeFlash: true, flex: 2},
+  {field: 'COUNTERPARTY_NAME', headerName: 'Counterparty', enableCellChangeFlash: true, flex: 2},
+  {field: 'TRADE_STATUS', headerName: 'Trade State', cellClass: 'status-cell', cellClassRules: tradeCellClassRules, enableCellChangeFlash: true, flex: 2},
+  {field: 'ENTERED_BY', headerName: 'Entered By', enableCellChangeFlash: true, flex: 2},
+];
+```
+
+## Final result:
+![](/img/all-trades-grid-03.png)
+
+:::info
+You can read more about our grid components and configuration options them under the ['Web UI reference' for grids.](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/grids/ag-grid/ag-grid-intro/)
+:::
