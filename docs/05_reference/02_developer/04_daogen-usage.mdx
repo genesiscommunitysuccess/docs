@@ -41,3 +41,13 @@ Each of the following has a sub-menu that takes you to the `assemble` build task
 |Tables|`genesis-generated-dao`|
 |HFT|`genesis-generated-hft`|
 |Views|`genesis-generated-view`|
+
+### Troubleshooting
+
+#### Gradle build errors in project and no gradle commands listed in intelliJ 
+
+If you don't see any menu options per the guide above, and see gradle errors trying to build or on opening a project, a common cause is gradle jvm settings.
+
+In IntelliJ go to `File` -> `Settings` and search for the Build Gradle page. Make sure Gradle JVM is set to 11 per the example screenshot below:
+
+![](/img/gradle-jvm-version.png)

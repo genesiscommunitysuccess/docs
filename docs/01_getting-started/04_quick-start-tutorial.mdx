@@ -14,7 +14,7 @@ The exercise is in six main steps:
 3. [Add business logic](#3-add-business-logic).
 4. [Prepare the server and build](#4-prepare-the-server-and-build).
 5. [Create a user interface](#5-create-a-user-interface).
-6. [Run the application](#6-run-the-application). 
+6. [Run the application](#6-run-the-application).
 
 You can get through this in about 30 minutes - but don't be afraid to take more time.
 
@@ -25,7 +25,13 @@ Before you start, you need to have:
 - An IDE (preferably IntelliJ)
 - NodeJS (see our [recommended software packages](/creating-applications/getting-ready-to-develop/workstation-setup/#recommended-software-packages) for versioning information)
 - Credentials for accessing Genesis Artifactory. If necessary, contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login)
-- A local or cloud Linux environment for runtime 
+- A gradle.properties file inside a **.gradle** folder on your user directory; this file must contain your password in clear text:
+
+```shell
+genesisArtifactoryUser=<your-actifactory-user>
+genesisArtifactoryPassword=<your-actifactory-password>
+```
+- A local or cloud Linux environment for runtime that has a user created with the name of the application, e.g. [setup and host on wsl](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/)
 
 
 ## What you will build
@@ -56,10 +62,9 @@ Once installed, from the terminal, run:
 genx
 ```
 
-In the `genx` script, there is a series of questions. 
+In the `genx` script, there is a series of questions.
 
 First, you are asked to provide your username and password - these are the credentials you use to access Genesis Artifactory.
-(Note: at present, this will not accept passwords that contain the **£** character.)
 
 Then you are asked to select from a short list of seed applications. Select `create application`:
 
@@ -79,12 +84,18 @@ Now you can proceed using the following responses:
 ```shell
 ? Create a app in current directory Yes
 ? App name alpha
+```
+
+In the next prompt we will select "Quick Start Application" from the list
+
+```shell
 ? App seed Quick Start Application
 ? Overwrite existing files Yes
 ? Package scope (without the @) genesislcap
 ? Package name alpha
 ? Create design system Yes
 ```
+
 At this point, the seed application is created and the genx dependencies are installed.
 
 Then there are more questions, which you can respond to as follows:
@@ -95,10 +106,9 @@ Then there are more questions, which you can respond to as follows:
 ? Create design system Yes
 ? Design system name alpha
 ? Base design system package (@latest will be used) @genesislcap/foundation-ui
-? Set API Host No
-? NPM Token (for the @genesislcap scope) *YOUR_TOKEN*
-? Genesis Server version 6.0.1
-? Genesis Deploy plugin version 6.0.1
+? Set API Host Yes (wss://localhost/gsf)
+? Genesis Server version 6.0.2
+? Genesis Deploy plugin version 6.0.2
 ? Kotlin version 1.6.10
 ? Group Id global.genesis
 ? Application Version 1.0.0-SNAPSHOT
@@ -108,12 +118,12 @@ At this point, the application will be configured. Assuming it is successful, yo
 ```shell
 i Application created successfully! 🎉 Please open the application and follow the README to complete setup.
 ```
-## 2. Define the data model  
-Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application. 
+## 2. Define the data model
+Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application.
 
-Open Intellij (or your chosen IDE). In the alpha project, you will see the **readme** file for the project.
+Open Intellij (or your chosen IDE). In the alpha project, you will see the **readme** file for the project. After importing and indexing, you should see the fol
 
-### Add fields  
+### Add fields
 You define your [fields](/creating-applications/defining-your-application/data-model/fields/fields/) in the file **alpha-fields-dictionary.kts**.
 
 
@@ -146,7 +156,7 @@ After you have saved this file, run [genesis-generated-fields](/reference/develo
 
 ![](/img/build-gradle-kts-fields.png)
 
-### Add a table 
+### Add a table
 Now we have our fields, let's define a [table](/creating-applications/defining-your-application/data-model/tables/tables) in the file **alpha-tables-dictionary.kts**.
 
 We are defining one single table, containing all our fields.
@@ -172,6 +182,8 @@ tables {
 ```
 
 After you have saved this file, [run genesis-generated-dao](/reference/developer/genesis-dao/#dao-generation-commands)
+
+![](/img/build-gradle-kts-generated-dao.png)
 
 ## 3. Add business logic
 We have a table; now we want to be able to see its content and create new entries.
@@ -204,12 +216,12 @@ eventHandler {
 ## 4. Prepare the server and build
 The application has two files that contain vital configuration information:
 
-- **alpha-processess.xml** 
+- **alpha-processes.xml**
 - **alpha-service-definitions.xml**
 
 At present, they are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
 
-Add the following content to the **alpha-system-processes.xml** file.
+Add the following content to the **alpha-processes.xml** file.
 
 ```xml
 <processes>
@@ -247,7 +259,7 @@ Add the following content to the **alpha-service-definitions.xml** file.
 ```
 Finally, you can build the server.
 
-In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha/Tasks/Build/Assemble**. (In the example below, our project is called **gamma**.)
+In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha/Tasks/Build/Assemble**.
 
 ![](/img/assemble-server.png)
 
@@ -338,7 +350,6 @@ zero-ag-grid {
 
 .trade-card {
   width: 100%;
-  height: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -381,7 +392,7 @@ Now go to the file **home.template.ts**. Add the following code after `zero-ag-g
 </zero-select>
 ```
 
-To handle the value in `zero-select`, create a function in the file **home.ts**. 
+To handle the value in `zero-select`, create a function in the file **home.ts**.
 
 ```ts
 public tradeSideChange(target: Select) {
@@ -404,7 +415,7 @@ span:first-of-type, zero-button {
 
 
 ### Button
-Now add a button.  The purpose of this is to insert the data from the form into the database (and the grid). 
+Now add a button.  The purpose of this is to insert the data from the form into the database (and the grid).
 
 In the file **home.template.ts**, add the following code after `zero-select`.
 
@@ -455,7 +466,137 @@ At this point, the application is now able to display and receive data.
 
 ## 6. Run the application
 
-First, you must deploy the server. See [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/configure-deployment-plugin/) for details on how to configure the Genesis deploy plugin.
+First, you must deploy the server.
+
+### Deploying to the server
+
+First we need to configure our genesis home, distribution and user. We will do that by adding the following fields to the **gradle.properties** under **alpha/server/jvm**
+
+```shell
+genesis-home=/home/alpha/run
+wsl-distro=CentOS7
+wsl-user=alpha
+```
+
+We will run `setupEnvironment` - this task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
+
+Usage :
+```shell
+./gradlew :jvm:alpha-deploy:setupEnvironment #On the IntelliJ terminal
+```
+or from the dropdown menu:
+
+![](/img/setup-environment.png)
+
+After this command is completed we will have a basic genesis server running
+
+### Deploying the auth module
+
+Usage:
+```shell
+./gradlew :jvm:alpha-deploy:install-auth-distribution.zip #On the IntelliJ terminal
+```
+
+or from the dropdown menu:
+
+![](/img/install-auth.png)
+
+### Deploying the alpha product
+
+Now we have to deploy the alpha product
+
+Usage:
+```shell
+./gradlew :jvm:alpha-deploy:deploy-genesisproduct-alpha.zip #On the IntelliJ terminal
+```
+
+or from the dropdown menu:
+
+![](/img/deploy-alpha-product.png)
+
+
+### Adding a user to login
+
+Next let´s create a user.
+
+:::tip
+The following details will be your login details:
+
+- Username: JohnDoe
+- Password: Password11* (This is encrypted in the USER.csv file.)
+:::
+
+We wil run the task loadInitialData. This adds the data in USER.csv to the USER table in your
+database. To do that we will call
+
+```shell
+./gradlew :jvm:alpha-deploy:loadInitialData #On the IntelliJ terminal
+```
+
+or from the dropdown menu:
+
+![](/img/load-initial-data.png)
+
+Now we can check that the user has been created by running "DbMon" by running:
+
+```shell
+./gradlew :jvm:alpha-deploy:DbMon #On the IntelliJ terminal
+```
+
+or from the dropdown menu:
+
+![](/img/using-DbMon.png)
+
+Once we are inside the console we can type 'table USER' and after 'search 1'. If imported correctly the user JohnDoe should be listed.
+
+After running
+
+```shell
+./gradlew :jvm:alpha-deploy:mon #On the IntelliJ terminal
+```
+or from the dropdown menu:
+
+![](/img/using-mon.png)
+
+we should see something like this
+
+```shell
+PID     Process Name                  Port        Status         CPU       Memory    Message
+===============================================================================================
+426     GENESIS_AUTH_CONSOLIDATOR     8005        STANDBY        36.30     1.30
+350     GENESIS_AUTH_DATASERVER       8002        RUNNING        56.70     1.70
+334     GENESIS_AUTH_MANAGER          8001        RUNNING        61.50     1.70
+368     GENESIS_AUTH_PERMS            8003        RUNNING        65.70     1.90
+403     GENESIS_AUTH_REQUEST_SERVER   8004        RUNNING        56.80     1.60
+490     GENESIS_CLUSTER               9000        RUNNING        84.30     2.50
+570     GENESIS_ROUTER                9017        RUNNING        54.70     2.00
+534     GENESIS_WEBMON                9011        RUNNING        51.30     2.50
+===============================================================================================
+664     ALPHA_DATASERVER              11000       RUNNING        58.10     1.50
+703     ALPHA_EVENT_HANDLER           11001       RUNNING        71.30     2.20
+```
+
+See [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/configure-deployment-plugin/) for extra details on how to configure the Genesis deploy plugin.
+
+### Connecting the back end and front end
+
+With this next step, we will configure a nginx working as a reverse proxy.
+
+```shell
+docker login genesisglobal-docker-internal.jfrog.io
+#...
+# You will need to enter your artifactory credentials at this point
+#...
+docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
+#...
+# You can run this command from within WSL or from your workstation. If you run it from the CentOS shell, you can use the following command:
+#...
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+
+```
+
+### Running the front end
+
 
 Now you can run the application's front end. From there, you can view the table of data and add the details of a new trade.
 
@@ -467,9 +608,18 @@ From **client/package.json**:
 After that:
 - Run **dev** script
 
-Now you have fully running application.
+Now you have a fully running application. If not opened automatically, you can navigate to http://localhost:6060/login, and you should see the following:
+
+![](/img/login-screen-quickstart.png)
+
+:::tip
+If the blue button to login is not clickable, most likely want to revisit the previous section.
+
+::::
 
 ## Conclusion
-That’s it. You have quickly built a very simple application using some of the fundamental Genesis components. You can see a grid of trades. Try adding a new one.
+That’s it. You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.
 
-There's obviously a lot more to building enterprise-ready applications. We suggest you read through the [Defining your application](/creating-applications/defining-your-application/intro) for details of all the Genesis components and their features.
+![](/img/quickstart-app-final.png)
+
+There's obviously a lot more to building enterprise-ready applications. We suggest you read through [Defining your application](/creating-applications/defining-your-application/intro) for details of all the Genesis components and their features.
