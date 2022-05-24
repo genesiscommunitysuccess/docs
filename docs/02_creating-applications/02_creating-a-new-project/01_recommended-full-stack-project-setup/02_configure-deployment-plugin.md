@@ -5,7 +5,7 @@ sidebar_position: 2
 id: configure-deployment-plugin
 ---
 
-# Introduction
+
 
 The Genesis deploy plugin provides several tasks that help to set up the Genesis environment so that you can deploy a
 project to it. It can be used on Linux machines (local and over SSH) or Windows machines with WSL support.
@@ -21,10 +21,10 @@ It covers three different possible configurations:
 
 ## Pre-requisites
 
-If not already in place in your gradle project, add a sub-module called `<application_name>-deploy`
-under `<application_name>/server/jvm/`
+If not already in place in your gradle project, add a sub-module called _application_**-deploy**
+under _application_**/server/jvm/**
 
-Ensure the build.gradle.kts in this sub-module has the following entry
+Ensure the **build.gradle.kts** in this sub-module has the following entry
 
 ```kotlin
 plugins {
@@ -32,19 +32,14 @@ plugins {
 }
 ```
 
-## Introduction
 
-The Genesis Deploy plugin provides several tasks that help to set up the Genesis environment so that you can deploy a
-project to it. It can be used on Linux machines (local and over SSH) or Windows machines with WSL support.
-
-# Deploy target configurations
+## Deploy target configurations
 
 ### WSL
 
 If your development workstation is a Windows machine, then you
 can [use WSL](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/) to have
-Genesis set-up
-locally.
+Genesis set up locally.
 
 To configure this, open `gradle.properties` from the server/jvm folder and add the following entries:
 
@@ -68,7 +63,7 @@ wsl-distro=CentOS7
 wsl-user=alpha
 ```
 
-## Local Linux host
+### Local Linux host
 
 This is the easiest set-up, and applies if your development workstation is on a Linux machine.
 
@@ -80,7 +75,7 @@ genesis-home=<path-to-genesis-distribution>
 
 The set-up task will create the folder (if it doesn't exist) and set up the Genesis platform there.
 
-## Remote Linux host (via SSH)
+### Remote Linux host (via SSH)
 
 This configuration is usable when using a remote host for the Genesis environment. Currently, only Linux hosts are
 supported.
@@ -107,11 +102,11 @@ ssh-host=user1-remotehost
 ssh-port=22
 ```
 
-# Deployment tasks
+## Deployment tasks
 
 The Genesis deploy plugin comes with several tasks. They are grouped under `genesisdeploy` and `genesissetup`.
 
-## Genesis set-up tasks
+### Genesis set-up tasks
 
 | Task  |  Description | 
 |---|---|
@@ -124,7 +119,7 @@ Usage:
 ./gradlew setupEnvironment
 ```
 
-## Genesis deploy tasks
+### Genesis deploy tasks
 
 | Task  |  Description | 
 |---|---|
@@ -136,5 +131,5 @@ Usage:
 ./gradlew deploy-alpha-project.zip
 ```
 
-Note, this will take the last built distribution and does not run a project build as part of the task... **so do that
+Note, this will take the last built distribution and does not run a project build as part of the task... **so do it
 first**.

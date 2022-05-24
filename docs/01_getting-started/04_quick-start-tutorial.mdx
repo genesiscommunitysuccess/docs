@@ -16,7 +16,7 @@ The exercise is in six main steps:
 5. [Create a user interface](#5-create-a-user-interface).
 6. [Run the application](#6-run-the-application).
 
-You can get through this in about 30 minutes - but don't be afraid to take more time.
+You can get through this in about 40 minutes - but don't be afraid to take more time.
 
 ## Pre-requisites
 
@@ -28,11 +28,11 @@ Before you start, you need to have:
 - A gradle.properties file inside a **.gradle** folder on your user directory; this file must contain your password in clear text:
 
 ```shell
-genesisArtifactoryUser=<your-actifactory-user>
-genesisArtifactoryPassword=<your-actifactory-password>
+genesisArtifactoryUser=<your-artifactory-user>
+genesisArtifactoryPassword=<your-artifactory-password>
 ```
-- A local or cloud Linux environment for runtime that has a user created with the name of the application, e.g. [setup and host on wsl](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/)
-
+- A local or cloud Linux environment for runtime, which has a user created with the name of the application, e.g. [setup and host on wsl](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/)
+- foundationdb must be running on this environment
 
 ## What you will build
 
@@ -86,7 +86,7 @@ Now you can proceed using the following responses:
 ? App name alpha
 ```
 
-In the next prompt we will select "Quick Start Application" from the list
+In the next prompt, select `Quick Start Application` from the list.
 
 ```shell
 ? App seed Quick Start Application
@@ -106,7 +106,7 @@ Then there are more questions, which you can respond to as follows:
 ? Create design system Yes
 ? Design system name alpha
 ? Base design system package (@latest will be used) @genesislcap/foundation-ui
-? Set API Host Yes (wss://localhost/gsf)
+? Set API Host Yes (wss://localhost/gwf)
 ? Genesis Server version 6.0.2
 ? Genesis Deploy plugin version 6.0.2
 ? Kotlin version 1.6.10
@@ -292,7 +292,7 @@ You are going to update these files so that the application displays a single pa
 
 We want to be able to insert a grid with data into our page. For this, open the file **home.template.ts** and define `tutorialColumnDefs`.
 
-First, define `tutorialColumnDefs`:
+First, define `tutorialColumnDefs` after the `import` block using the snippet below:
 
 ```ts
 export const tutorialColumnDefs: ColDef[] = [
@@ -327,7 +327,7 @@ Now open the file **home.ts**. Define a reference to `zero-ag-grid`; in class `h
 public tradesGrid!: AgGrid;
 ```
 
-and in `ConnectedCallback`, add:
+and at the end of the `connectedCallback()` function, add:
 ```ts
 this.tradesGrid.addEventListener('onGridReady', () => {
   this.tradesGrid.gridApi.addEventListener('firstDataRendered', () => {
@@ -363,7 +363,7 @@ Here, you are going to create a form with four inputs, so a user can input detai
 
 First, define the variables that will hold the values that are entered.
 
-In the file**home.ts**, add the following code to the class: `Home`:
+In the file **home.ts**, add the following properties to the class: `Home`:
 
 ```ts
 @observable public quantity: string;
@@ -466,11 +466,16 @@ At this point, the application is now able to display and receive data.
 
 ## 6. Run the application
 
-First, you must deploy the server.
+before you start this, make sure that:
+
+- you have a user with name of the application (alpha)
+- foundationdb is running (if it is not, run `systemctl start foundationdb` from Centos07
+
+If that's OK, you can deploy the server.
 
 ### Deploying to the server
 
-First we need to configure our genesis home, distribution and user. We will do that by adding the following fields to the **gradle.properties** under **alpha/server/jvm**
+First, we need to configure our genesis home, distribution and user. We will do that by adding the following fields to the **gradle.properties** under **alpha/server/jvm**
 
 ```shell
 genesis-home=/home/alpha/run
@@ -537,7 +542,7 @@ or from the dropdown menu:
 
 ![](/img/load-initial-data.png)
 
-Now we can check that the user has been created by running "DbMon" by running:
+Now  run `DbMon` to check that the user has been created:
 
 ```shell
 ./gradlew :jvm:alpha-deploy:DbMon #On the IntelliJ terminal
@@ -547,7 +552,7 @@ or from the dropdown menu:
 
 ![](/img/using-DbMon.png)
 
-Once we are inside the console we can type 'table USER' and after 'search 1'. If imported correctly the user JohnDoe should be listed.
+Once you are inside the console, type 'table USER' and after 'search 1'. If imported correctly, the user JohnDoe should be listed.
 
 After running
 
@@ -580,16 +585,21 @@ See [here](/creating-applications/creating-a-new-project/recommended-full-stack-
 
 ### Connecting the back end and front end
 
-With this next step, we will configure a nginx working as a reverse proxy.
+With this next step, we will configure an nginx working as a reverse proxy.
 
+In your CentOS terminal, enter:
 ```shell
 docker login genesisglobal-docker-internal.jfrog.io
-#...
-# You will need to enter your artifactory credentials at this point
-#...
+...
+
+You need to enter your artifactory credentials at this point
+
+The enter
+...
 docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
 #...
-# You can run this command from within WSL or from your workstation. If you run it from the CentOS shell, you can use the following command:
+
+You can run this command from within WSL or from your workstation. If you run it from the CentOS shell, you can use the following command:
 #...
 docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
 
@@ -613,7 +623,7 @@ Now you have a fully running application. If not opened automatically, you can n
 ![](/img/login-screen-quickstart.png)
 
 :::tip
-If the blue button to login is not clickable, most likely want to revisit the previous section.
+If the blue button to login is not clickable, go through the previous section again; this is the most likely location of a problem.
 
 ::::
 
