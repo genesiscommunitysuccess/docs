@@ -5,7 +5,7 @@ sidebar_label: Using the gradle deploy plugin
 sidebar_position: 3
 ---
 
-# Deploying from the IDE using Gradle
+## Deploying from the IDE using Gradle
 
 The Genesis low-code platform provides a Gradle plugin that makes it easy to perform all the installation tasks that are
 necessary to deploy your own Genesis project on to your local workstation, from your IDE.
@@ -13,10 +13,10 @@ necessary to deploy your own Genesis project on to your local workstation, from 
 The plugin is designed to work on workstations running Linux, or
 on [WSL](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/).
 
-## Adding the deployment plugin to your project
+### Adding the deployment plugin to your project
 
-The Genesis Gradle Deploy Plugin uses the project classpath to resolve dependent resources. So, in order not to
-interfere with any of your other project modules, it is best to add a ${projectName}-deploy module to your project.
+The Genesis Gradle deploy plugin uses the project classpath to resolve dependent resources. So, in order not to
+interfere with any of your other project modules, it is best to add a **${projectName}-deploy** module to your project.
 
 If you are using one of the Genesis application seeds, then this module will be provided for you as part of the project
 template.
@@ -26,7 +26,7 @@ If you want to add this module to an existing project, then it is easy to do so.
 - a Gradle properties file
 - a Gradle build script
 
-### Build script
+#### Build script
 
 The build script simply defines dependencies on distributions (both internal and external to the project), so they can be
 resolved and deployed.
@@ -79,9 +79,9 @@ artifacts {
 This special piece of Gradle DSL makes the zip file of the distribution available on the class path so it can be
 resolved by the deploy plugin.
 
-## Deploy target configurations
+### Deploy target configurations
 
-### WSL
+#### WSL
 
 If your development workstation is a Windows machine, then you
 can [use WSL](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/) to have Genesis set-up
@@ -109,7 +109,7 @@ wsl-distro=CentOS7
 wsl-user=alpha
 ```
 
-## Local Linux host
+#### Local Linux host
 
 This is the easiest set-up, and applies if your development workstation is on a Linux machine.
 
@@ -121,7 +121,7 @@ genesis-home=<path-to-genesis-distribution>
 
 The set-up task will create the folder (if it doesn't exist) and set up the Genesis platform there.
 
-## Remote Linux host (via SSH)
+#### Remote Linux host (via SSH)
 
 This configuration is usable when using a remote host for the Genesis environment. Currently, only Linux hosts are
 supported.
@@ -148,13 +148,13 @@ ssh-host=user1-remotehost
 ssh-port=22
 ```
 
-# Plugin Tasks
+## Plugin Tasks
 
 The Genesis deploy plugin comes with several tasks. They are grouped under `genesisdeploy` and `genesissetup`.
 
-## Genesis set-up tasks
+### Genesis set-up tasks
 
-contains tasks to deploy each external distribution, as well as site-specific configuration
+These tasks deploy each external distribution, as well as site-specific configuration.
 
 | Task                                                                           | Description                                                                                                                                         | 
 |--------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -166,29 +166,27 @@ contains tasks to deploy each external distribution, as well as site-specific co
 | `setupEnvironment`                                                             | This task executes `createGenesisHome` then `install-genesis-distribution` and then configures the installed distribution.                          |
 | `SendIt-<file>.csv`                                                            | This task executes the script command `SendIt` with the parameters -t `<file-name (in Uppercase)>` and -f `<file-location>`.                        |
 
-## Genesis deploy tasks
+### Genesis deploy tasks
 
-Enables the deployment of the full project: single jars for each project module or just configuration files.
+These tasks enable the deployment of the full project: single jars for each project module or just configuration files.
 
-This task deploys the event handler to the Genesis environment specified for genesis-home. Note that `<project-name>` must
-be replaced with the actual project name. For example, if the project you work on is called alpha, you could call
-`deploy-genesisproduct-alpha.zip`
+Below, note that `<project-name>` must be replaced with the actual project name. For example, if the project you work on is called alpha, you would call it `deploy-genesisproduct-alpha.zip`
 
 | Task                                       | Description                                                                                      | 
 |--------------------------------------------|--------------------------------------------------------------------------------------------------|
 | `deploy-genesisproduct-<project-name>.zip` | This task deploys the current project to the Genesis environment specified for `genesis-home`.`  |
-| `deploy-<project-name>-eventhandler.jar`   | This task deploys the event handler jar to the Genesis environment specified for `genesis-home`. |
+| `deploy-<project-name>-eventhandler.jar`   | This task deploys the Event Handler jar to the Genesis environment specified for `genesis-home`. |
 | `deploy-<project-name>-messages.jar`       | This task deploys the messages jar to the Genesis environment specified for `genesis-home`.      |
 | `deployConfig`                             | This task deploys the config to the Genesis environment specified for `genesis-home`.            |
 | `deployDictionary`                         | This task deploys the dictionary to the Genesis environment specified for `genesis-home`.        |
 | `deployScripts`                            | This task deploys the scripts to the Genesis environment specified for `genesis-home`.           |
 
-Note, this will take the last built distribution and does not run a project build as part of the task... so do that
-first.
+Note, this will take the last built distribution and does not run a project build as part of the task... **so do that
+first**.
 
-## Genesis Script tasks
+### Genesis script tasks
 
-Enables the invocation of any Genesis platform command via Gradle.
+These tasks enable the invocation of any Genesis platform command via Gradle.
 See [the commands list](/managing-applications/operate/on-the-host/helpful-commands/) for more information
 
 | Task                       | 
