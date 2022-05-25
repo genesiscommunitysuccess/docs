@@ -5,14 +5,14 @@ sidebar_position: 3
 id: adding-a-grid
 ---
 
-# Adding a grid
 
-In this example we will be adding a grid to our new page and using it to display data coming from a DATASERVER resource on the server. We will be using the ALL_TRADES resource but the logic would be the same for any other.
+In this example, we shall add a grid to our new page. This grid will display data from a Data Server resource on the server. In this case, the resource is called ALL_TRADES. The logic would be the same for any other.
 
 More specifically, we will be adding:
-- A simple wrapper div for styling / sizing purposes.
-- A `zero-ag-grid` component, which is our Web Component wrapper for AG Grid. A feature-rich high-performance data grid optimised for real-time, fast-moving data.
-- An `ag-genesis-datasource` component, which will facilitate the actual connection to the server resource and provide data to the grid.
+
+- a simple wrapper div for styling/sizing purposes
+- a `zero-ag-grid` component, which is our Web Component wrapper for AG Grid (a feature-rich high-performance data grid optimised for real-time, fast-moving data)
+- an `ag-genesis-datasource` component, which makes the actual connection to the server resource and provide data to the grid
 
  
 
@@ -22,8 +22,7 @@ For static data, the lightweight [DataGrid](/creating-applications/defining-your
 
 ## The wrapper class
 
-Keeping this one simple, we just need to add a `div` with class `wrapper` in our template.  
-In: `src/routes/test-page/test-page.template.ts`
+Keeping this one simple, we just need to add a `div` with class `wrapper` in our template:  **src/routes/test-page/test-page.template.ts**
 
 ```javascript
   <div class="wrapper">
@@ -41,7 +40,9 @@ In `src/routes/test-page/test-page.styles.ts`:
   }
 ```
 
-## Adding the grid component inside our wrapper div:
+## Adding the grid component
+Now, we need to add the grid component inside the wrapper div. In this example, we have left a comment to show where the data source will be added:
+
 ```javascript
   <div class="wrapper">
     <zero-ag-grid>
@@ -50,8 +51,8 @@ In `src/routes/test-page/test-page.styles.ts`:
   </div>
 ```
 
-## Finally, adding the datasource:
-```javascript
+## Adding the data source
+Finally, we add the ```javascript
   <div class="wrapper">
     <zero-ag-grid>
       <ag-genesis-datasource resourceName="ALL_TRADES" />
@@ -59,12 +60,12 @@ In `src/routes/test-page/test-page.styles.ts`:
   </div>
 ```
 
-## With these few lines of code we already have a fully functional grid:
+With these few lines of code, we already have a fully functional grid:
 ![](/img/all-trades-grid-01.png)
 
-## Configuring the datasource and customizing the grid:  
+## Configuring the datasource and customising the grid  
 
-Let's say we want the incoming data from the server ordered by a specific column and also want a custom height for our rows.  
+Let's say we want the incoming data from the server ordered by a specific column, and we also want a custom height for our rows.  
 This is as simple as setting a few properties on our grid and datasource components:
 ```javascript
   <div class="wrapper">
@@ -74,10 +75,11 @@ This is as simple as setting a few properties on our grid and datasource compone
   </div>
 ```
 
-We might want to customize our grid further:
-- Maybe we are only interested in a subset of the columns.  
-- Let's say we also want to provide custom headers and value formatters.
-- Or maybe we want to enable flashing on updates.
+## Custom column definitions
+We can customise our grid further:
+- show only a subset of the columns 
+- provide custom headers and value formatters
+- enable flashing on updates
 
 Luckily all this (and more) is possible by providing our own custom column definitions.
 
@@ -114,13 +116,14 @@ export const TestPageTemplate = html<TestPage>`
 `;
 ```
 
-## And with that we have:
+Here is the result:
+
 ![](/img/all-trades-grid-02.png)
 
 
 
 :::tip
-It is also possible to **create our own grid component**, similarly to how we created our `TestPage` component, and in doing so **provide custom styles**.
+It is also possible to **create our own grid component**, similarly to how we created our `TestPage` component, and in doing so, **provide custom styles**.
 Please note in this case will be extending `zero-ag-grid` instead of `fast-element`.
 :::
 
@@ -195,7 +198,7 @@ export const positionsAgGridStyles: ElementStyles = css`
 `;
 ```
 
-This allows us to enhance our column definitions by adding conditional classes
+This allows us to enhance our column definitions by adding conditional classes:
 
 ```javascript
 const tradeCellClassRules = {
