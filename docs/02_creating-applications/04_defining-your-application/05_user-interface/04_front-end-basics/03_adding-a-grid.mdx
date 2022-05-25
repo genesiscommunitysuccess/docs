@@ -90,7 +90,7 @@ We can achieve this by providing our own custom column definitions.
 
 In this case, we have defined custom definitions for ten fields. For each of these, we have specified  a value for `headerName` and we have set `enableCellChangeFlash: true`.
 
-Then, in the export, we have added the line `${repeat(() => tradeColumnDefs, html` `
+Then, in the export, we have added the line `${repeat(() => tradeColumnDefs, html` `, which takes in all the definitions.
 
 ```javascript
 import {ColDef} from '@ag-grid-community/core';
@@ -130,9 +130,10 @@ Here is the result:
 
 ## Going further
 
-You can also create our own grid component, similarly to how we created our `TestPage` component, and in doing so, **provide custom styles**.
+You can also create your own grid component, similarly to the way you created the `TestPage` component. In the example below, the component is called `positions-ag-grid`. 
+
+, and in doing so, **provide custom styles**.
 Please note in this case will be extending `zero-ag-grid` instead of `fast-element`.
-:::
 
 
 ```javascript
@@ -148,6 +149,8 @@ import {positionsAgGridStyles} from './ag-grid.styles';
 export class PositionsAgGrid extends AgGridZero {
 }
 ```
+
+Now you need to provide custom styles for the custom component:
 
 ```javascript
 import {zeroAgGridStyles} from '@genesislcap/foundation-zero';
