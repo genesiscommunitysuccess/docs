@@ -1,26 +1,26 @@
 ---
 title: 'How to add a new empty page'
-sidebar_label: 'How to add a new empty page'
+sidebar_label: 'Adding a new empty page'
 sidebar_position: 2
 id: new-empty-page
 ---
 
-# How to add a new empty page.
 
-Overview of the process:
+
+Broadly speaking, the process can be summarised as follows:
 - Create a new component to represend your new page.
 - Configure a new route to point to your new component.
 - Add a new button/link to the navigation bar for your new page.
 
-## Creating a new component.
+## Creating a new component
 
-Step 1: pick a **name**! In this example we'll go with **TestPage**.
+Step 1: pick a **name**! In this example, we'll go with **TestPage**.
 
 Step 2: Create a new appropriately named directory, in this case: `test-page`
 
-Step 3: Create 3 new files under our new directory, for the component itself, its layout and styles/css.
+Step 3: Create three new files under our new directory, for the component itself, its layout and styles/css.
 
-New components will typically extend [FastElement](https://www.fast.design/docs/fast-element/defining-elements)
+New components will typically extend [FastElement](https://www.fast.design/docs/fast-element/defining-elements).
 
 Our file structure might look something like this:
 
@@ -71,9 +71,9 @@ export class TestPage extends FASTElement {
 }
 ```
 
-## Configuring a new route to point to your new component.
+## Configuring a new route to point to your new component
 
-We need to add a new mapping to our router's configuration, typically in `src/routes/config.ts`
+We need to add a new mapping to our router's configuration. Typically this is done in **src/routes/config.ts**.
 
 ```javascript
 export class MainRouterConfig extends RouterConfiguration<RouteSettings> {
@@ -89,10 +89,10 @@ export class MainRouterConfig extends RouterConfiguration<RouteSettings> {
 }
 ```
 
-##  Adding a new navigation item.
+##  Adding a new navigation item
 
-We need to add a new `fast-option` to the existing `fast-listbox` of our nav template.
-Typically in `src/routes/.layouts/nav/nav.template.ts`.
+We need to add a new `fast-option` to the existing `fast-listbox` of our nav template: 
+typically in **src/routes/.layouts/nav/nav.template.ts**.
 
 ```javascript
 <fast-option value="4" @click=${x => x.navigateTo('test-page')}>
@@ -100,6 +100,6 @@ Typically in `src/routes/.layouts/nav/nav.template.ts`.
 </fast-option>
 ```
 
-## Final result:
+## Final result
 
 ![](/img/new-page-preview.png)
