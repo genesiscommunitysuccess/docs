@@ -69,7 +69,7 @@ With these few lines of code, we already have a fully functional grid:
 
 Let's say we want the incoming data from the server ordered by a specific column, and we also want a custom height for our rows.  
 
-We just need to set a few properties on our grid and datasource components. In this case, we add a rowHeight to our grid and specify orderBy in our connection to the resource:
+We just need to set a few properties on our grid and datasource components. In this case, we add a `rowHeight` to our grid and specify `orderBy` in our connection to the resource:
 
 ```javascript
   <div class="wrapper">
@@ -207,7 +207,7 @@ export const positionsAgGridStyles: ElementStyles = css`
 `;
 ```
 
-This allows us to enhance our column definitions by adding conditional classes:
+This allows us to enhance the column definitions by adding conditional classes:
 
 ```javascript
 const tradeCellClassRules = {
