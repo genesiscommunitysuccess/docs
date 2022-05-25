@@ -12,7 +12,7 @@ More specifically, we will be adding:
 
 - a simple wrapper div for styling/sizing purposes
 - a `zero-ag-grid` component, which is our Web Component wrapper for AG Grid (a feature-rich high-performance data grid optimised for real-time, fast-moving data)
-- an `ag-genesis-datasource` component, which makes the actual connection to the server resource and provide data to the grid
+- an `ag-genesis-datasource` component, which makes the actual connection to the server resource and provides data to the grid
 
  
 
@@ -22,7 +22,7 @@ For static data, the lightweight [DataGrid](/creating-applications/defining-your
 
 ## The wrapper class
 
-Keeping this one simple, we just need to add a `div` with class `wrapper` in our template:  **src/routes/test-page/test-page.template.ts**
+Keeping this one simple, we just need to add a `div` with class `wrapper` in our template:  **src/routes/test-page/test-page.template.ts**.
 
 ```javascript
   <div class="wrapper">
@@ -30,8 +30,7 @@ Keeping this one simple, we just need to add a `div` with class `wrapper` in our
   </div>
 ```
 
-And just make it full size.  
-In `src/routes/test-page/test-page.styles.ts`:
+And just make it full size, add some code to the file **src/routes/test-page/test-page.styles.ts**:
 
 ```css
   .wrapper {
@@ -52,7 +51,10 @@ Now, we need to add the grid component inside the wrapper div. In this example, 
 ```
 
 ## Adding the data source
-Finally, we add the ```javascript
+Now we can see the same code snippet when the data source (ALL_TRADES) has been added:
+ 
+
+```javascript
   <div class="wrapper">
     <zero-ag-grid>
       <ag-genesis-datasource resourceName="ALL_TRADES" />
@@ -66,7 +68,9 @@ With these few lines of code, we already have a fully functional grid:
 ## Configuring the datasource and customising the grid  
 
 Let's say we want the incoming data from the server ordered by a specific column, and we also want a custom height for our rows.  
-This is as simple as setting a few properties on our grid and datasource components:
+
+We just need to set a few properties on our grid and datasource components. In this case, we add a rowHeight to our grid and specify orderBy in our connection to the resource:
+
 ```javascript
   <div class="wrapper">
     <zero-ag-grid rowHeight="45">
@@ -76,14 +80,17 @@ This is as simple as setting a few properties on our grid and datasource compone
 ```
 
 ## Custom column definitions
-We can customise our grid further:
+Here are some more ways to customise the grid:
+
 - show only a subset of the columns 
 - provide custom headers and value formatters
 - enable flashing on updates
 
-Luckily all this (and more) is possible by providing our own custom column definitions.
+We can achieve this by providing our own custom column definitions.
 
-Our template might now look something like this:
+In this case, we have defined custom definitions for ten fields. For each of these, we have specified  a value for `headerName` and we have set `enableCellChangeFlash: true`.
+
+Then, in the export, we have added the line `${repeat(() => tradeColumnDefs, html` `
 
 ```javascript
 import {ColDef} from '@ag-grid-community/core';
@@ -121,9 +128,9 @@ Here is the result:
 ![](/img/all-trades-grid-02.png)
 
 
+## Going further
 
-:::tip
-It is also possible to **create our own grid component**, similarly to how we created our `TestPage` component, and in doing so, **provide custom styles**.
+You can also create our own grid component, similarly to how we created our `TestPage` component, and in doing so, **provide custom styles**.
 Please note in this case will be extending `zero-ag-grid` instead of `fast-element`.
 :::
 
