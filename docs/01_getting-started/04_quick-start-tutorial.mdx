@@ -152,7 +152,11 @@ fields {
 }
 ```
 
-After you have saved this file, run [genesis-generated-fields](/reference/developer/genesis-dao/#dao-generation-commands)
+After you have saved this file, run [genesis-generated-fields](/reference/developer/genesis-dao/#dao-generation-commands).
+
+From the Gradle menu on the right of Intellij, this is:
+
+ **genesisproduct-alpha**/**alpha-dictionary-cache**/**Tasks**/**genesis-generated-fields**/**Tasks**/**generateFields**
 
 ![](/img/build-gradle-kts-fields.png)
 
@@ -181,7 +185,11 @@ tables {
 }
 ```
 
-After you have saved this file, [run genesis-generated-dao](/reference/developer/genesis-dao/#dao-generation-commands)
+After you have saved this file, run [genesis-generated-dao](/reference/developer/genesis-dao/#dao-generation-commands).
+
+From the Gradle menu, this is:
+
+**genesisproduct-alpha**/**alpha-dictionary-cache**/**Tasks**/**genesis-generated-dao**/**Tasks**/**generateDAO**
 
 ![](/img/build-gradle-kts-generated-dao.png)
 
@@ -199,7 +207,7 @@ dataServer {
 ```
 
 ### Event Handler
-Next, we want to be able to insert rows into our table. For this you need to define an [Event Handler](/creating-applications/defining-your-application/business-logic/event-handlers/) in the file **alpha-eventhandler.kts**.
+Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](/creating-applications/defining-your-application/business-logic/event-handlers/) in the file **alpha-eventhandler.kts**.
 
 ```kotlin
 eventHandler {
@@ -259,7 +267,7 @@ Add the following content to the **alpha-service-definitions.xml** file.
 ```
 Finally, you can build the server.
 
-In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha/Tasks/Build/Assemble**.
+In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha**/**Tasks**/**Build/Assemble**.
 
 ![](/img/assemble-server.png)
 

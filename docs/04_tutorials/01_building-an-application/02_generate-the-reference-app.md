@@ -49,7 +49,7 @@ We shall call the product that we create **ref_data_app**. All the files we crea
 Using the instance in which the platform is installed, run
 
 <!--TODO - rethink this. Speak TOM and JOSE do not show the password we have here and make sure not admin user -->
-`DictionaryBuilder -t MSSQL -U admin -P Password11* -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d tradingapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument`
+`DictionaryBuilder -t MSSQL -U admin -P beONneON*74 -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d tradingapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument`
 
 Note that we specified the names of the four source tables in the `--tables` argument of the command. So you could include just a subset of your source database if you wish.
 
@@ -74,7 +74,7 @@ See [here](/managing-applications/operate/on-the-host/helpful-commands/#dictiona
 
 ## 2. Run AppGen to build microservices
 
-Run `AppGen` to build your three services (modules) (event handler, request server and data server):
+Run `AppGen` to build your three services (modules) (Event Handler, Request Server and Data Server):
 
 ```bash
 AppGen -n ref_data_app -p 10000
@@ -134,7 +134,7 @@ Move the generated **ref_data_app/cfg** files (from the previous DictionaryBuild
 [trading@dev-trading1 ref_data_app]$ cp /home/trading/run/ref_data_app/cfg/* ref_data_app-config/src/main/resources/cfg/
 ```
 
-Locate the generated files for the request server, data server and event handler. These are in the **ref_data_app/scripts** folder. Move these to the **ref_data_app-script-config/src/main/resources/scripts** folder.
+Locate the generated files for the Request Server, Data Server and Event Handler. These are in the **ref_data_app/scripts** folder. Move these to the **ref_data_app-script-config/src/main/resources/scripts** folder.
 
 
 ```bash
@@ -151,7 +151,7 @@ Again, you need to move the script and config files. Have these to hand, so you 
 
 Move the generated **ref_data_app/cfg** files (from the previous DictionaryBuilder and AppGen steps) to the **ref_data_app-config/src/main/resources/cfg** folder.
 
-Locate the generated files for the request server, data server and event handler. These are in the  **ref_data_app/scripts** folder. Move these to the **ref_data_app-script-config/src/main/resources/scripts** folder.
+Locate the generated files for the Request Server, Data Server and Event Handler. These are in the  **ref_data_app/scripts** folder. Move these to the **ref_data_app-script-config/src/main/resources/scripts** folder.
 
 ### Install the Maven project in intellij
 

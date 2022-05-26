@@ -221,9 +221,9 @@ public class SampleJavaTest extends AbstractDatabaseTest {
 </TabItem>
 </Tabs>
 
-In this test, the dictionary is read from an external file
+In this test, the dictionary is read from an external file.
 
-In all other regards, the database tests are a normal JUnit test. If you need additional components, you will need to construct them or mock them. You won’t be able to specify a `GENESIS_HOME` folder for additional configuration.
+In all other regards, the database tests are normal JUnit tests. If you need additional components, you need to construct them or mock them. You won’t be able to specify a `GENESIS_HOME` folder for additional configuration.
 
 If you add the `genesis-generated-dao` jar to your classpath, you will be able to use repository classes as normal.
 
@@ -385,7 +385,7 @@ private fun buildLoginSet(overrides: GenesisSet.() -> Unit = {}): GenesisSet {
     val set = GenesisSet()
     set.setString("MESSAGE_TYPE", "EVENT_LOGIN_AUTH")
     set.setDirect("DETAILS.USER_NAME", USER_NAME)
-    set.setDirect("DETAILS.PASSWORD", "Password11*")
+    set.setDirect("DETAILS.PASSWORD", "beONneON*74")
     set.overrides()
     return set
 }
