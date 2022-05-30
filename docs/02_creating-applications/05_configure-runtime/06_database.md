@@ -5,7 +5,7 @@ sidebar_position: 6
 title: Setting the database technology
 
 ---
-We support the following database technology:
+The Genesis low-code platform supports the following database technology:
 
 * FoundationDB
 * Postegres (PostgreSQL)
@@ -22,7 +22,7 @@ By default, FoundationDB is installed on the platform. If you need to use anothe
 
 ### 1. Edit the system configuration file
 
-Edit the file **\~/run/site-specific/cfg/genesis-system-definition.kts**. Before you start, make sure you know the JDBC connection string for the database, which specifies the host, the username and password.
+Edit the [system definition file](/creating-applications/configure-runtime/system-definitions/): **\~/run/site-specific/cfg/genesis-system-definition.kts**. Before you start, make sure you know the JDBC connection string for the database, which specifies the host, the username and password.
 
 You need to make two changes.
 
@@ -63,9 +63,9 @@ systems {
     }
 ```
 
-For Aerospike, you may also want to update the **DbNamespace** and **DbMode** properties. Details of those can be found [here](/creating-applications/configure-runtime/system-definitions/).
+For Aerospike, you might also want to update the **DbNamespace** and **DbMode** properties in the [system definition file](/creating-applications/configure-runtime/system-definitions/). 
 
-If you are using Postgres and you want to use a reserved keyword as a column name, then you will need to add the setting below to your system definition file. This enables Quoted Identifiers to be used:
+If you are using Postgres and you want to use a reserved keyword as a column name, then you need to add the setting below to your system definition file. This enables Quoted Identifiers to be used:
 
 ```kotlin
 item(name = "DbQuotedIdentifiers", value = "true")
@@ -79,7 +79,7 @@ Run `genesisInstall`.
 
 Run `remap --commit`. This populates the database server with table structures.
 
-### Start the server and check
+### 4. Start the server and check
 
 When those three steps have been completed, run `startServer` to start all the processes.
 

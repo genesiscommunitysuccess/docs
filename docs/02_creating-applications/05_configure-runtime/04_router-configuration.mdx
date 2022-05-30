@@ -8,7 +8,7 @@ id: genesis-router
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Genesis router is responsible for communication between front end and back end. This is configured in the file **genesis-router.kts**.
+Genesis Router is responsible for communication between front end and back end. This is configured in the file **genesis-router.kts**.
 
 Here is an example:
 
@@ -82,14 +82,14 @@ For more information, follow this [link](https://netty.io/4.1/api/io/netty/handl
 
 **Allowed resources**:
 
-`allowList`:  You can limit the resources exposed by the Genesis router. Without at least one `entry` block, every resource will be available. It is important to note that the following message types will always be allowed by default, regardless of the allowList definition:
+`allowList`:  You can limit the resources exposed by the Genesis Router. Without at least one `entry` block, every resource will be available. It is important to note that the following message types will always be allowed by default, regardless of the allowList definition:
 EVENT_LOGIN_AUTH, EVENT_LOGOUT, MORE_ROWS, MORE_COLUMNS, DATA_LOGOFF, DATA_GET
 
 `entry:` Is the additional accepted `messageType`.
 
 ### Custom endpoints
 
-To create a custom endpoint using the Genesis router, simply implement the `WebEndpoint` interface provided by Genesis router. Call upon the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
+To create a custom endpoint using the Genesis Router, simply implement the `WebEndpoint` interface provided by Genesis Router. Call upon the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
 
 In the following examples, a `FileEndpointCommon` class has also been created to hold utility methods that may be needed across multiple endpoints:
 
@@ -236,9 +236,9 @@ public class FileProcessor implements WebEndpoint {
 </TabItem>
 </Tabs>
 
-### Testing the Genesis router
+### Testing the Genesis Router
 
-To create unit tests for Genesis router, you can extend the `AbstractGenesisTestSupport` class and specify the `genesis-router.kts` as the Script file name. Examples of how you would initialise a test extending this class are provided below.
+To create unit tests for Genesis Router, you can extend the `AbstractGenesisTestSupport` class and specify the `genesis-router.kts` as the Script file name. Examples of how you would initialise a test extending this class are provided below.
 
 More information on how testing works in Genesis is available [here](/managing-applications/test/integration-testing).
 

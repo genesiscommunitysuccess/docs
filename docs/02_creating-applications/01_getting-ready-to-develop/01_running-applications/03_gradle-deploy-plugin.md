@@ -23,7 +23,7 @@ template.
 
 If you want to add this module to an existing project, then it is easy to do so. The contents need only be two files;
 
-- a Gradle properties file
+- a Gradle properties file (the contents of this file depend on your target deployment, as you shall see below)
 - a Gradle build script
 
 #### Build script
@@ -79,12 +79,18 @@ artifacts {
 This special piece of Gradle DSL makes the zip file of the distribution available on the class path so it can be
 resolved by the deploy plugin.
 
-### Deploy target configurations
+### Target deployments
+There are several possible configurations for your deployment. For each one, you need to set up your gradle.properties file in a specific way:
+
+- Windows Subsystem for Linux (WSL)
+- a local Linux host
+- a remote Linux host (via SSL)
+
 
 #### WSL
 
 If your development workstation is a Windows machine, then you
-can [use WSL](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/) to have Genesis set-up
+can use [WSL](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/) to have Genesis set-up
 locally.
 
 To configure this, open `gradle.properties` from the server/jvm folder and add the following entries:
