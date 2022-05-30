@@ -5,7 +5,6 @@ sidebar_position: 1
 id: system-definitions
 
 ---
-# System definitions
 
 The system-definition file **genesis-system-definition.kts** is the basis of all configurations, scripts, data model, etc. This section explains all the different items that are contained in the file.
 
@@ -77,7 +76,7 @@ Local values can be specified in this block. **These values override the global 
 item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432”)
 ```
 
-More information on how to configure a specific database can be found [here](/reference/developer/api/database/reference/supported-databases/overview)
+See our pages on [databases](/reference/developer/api/database/reference/supported-databases/overview) for more information on how to configure a specific database.
 
 **Database username and password encryption**
 You can add an encrypted username and password for the database system.
@@ -190,7 +189,7 @@ which is the path to the secrets.
 
 Secrets are always provided as `String`
 
-## Linked properties support
+### Linked properties support
 
 :::important
 

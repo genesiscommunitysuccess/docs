@@ -9,12 +9,12 @@ Database caching on local microservices is supported out of the box. You can con
 
 ## Configuration
 
-The caching mechanism applies to single-record database look-up operations across the whole microservice runtime.
+The caching mechanism applies to single-record database-look-up operations across the whole microservice runtime.
 
 There two ways of defining the cache for a module:
 
 * in XML format, inside the config file of the process.
-* in GPAL format. The GPAL format is generally used for microservices using a GPAL script (defined in the **script** attribute in **processes.xm**l). The cache file is defined in the **config** attribute of the process definition. The GPAL file naming convention is: _application_**-process-config.kts**
+* in GPAL format. The GPAL format is generally used for microservices using a GPAL script (defined in the **script** attribute in **processes.xml**). The cache file is defined in the **config** attribute of the process definition. The GPAL file naming convention is: _application_**-process-config.kts**
 
 The options for both XML and GPAL are:
 
@@ -78,7 +78,7 @@ The options for both XML and GPAL are:
     }
 ```
 
-As the example above shows, the GPAL process-config file can override system definition values on a per microservice basis as well.
+As the example above shows, the GPAL **process-config** file can override system definition values on a per microservice basis as well.
 
 ### GPAL processes.xml example
 ```xml
@@ -95,4 +95,4 @@ As the example above shows, the GPAL process-config file can override system def
     </process>
 ```
 
-Note: If no configuration is found at all for a process, or some fields are missing, the internal cache configuration will be filled with default values for every missing parameter. You can still use the database cache programmatically by adding tables manually in the code base using \`\`\`db.getCache().addTable("TABLE")\`\`\`.
+Note: If no configuration is found at all for a process, or if some fields are missing, the internal cache configuration will be filled with default values for every missing parameter. You can still use the database cache programmatically by adding tables manually in the code base using \`\`\`db.getCache().addTable("TABLE")\`\`\`.
