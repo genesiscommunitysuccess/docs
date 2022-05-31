@@ -89,6 +89,24 @@ So, use the code below as you final definition of the two joins.
     }
   }
 ```
+
+Let's add a new view for the consolidator to use.
+
+```kotlin
+  view("TRADE_PRICE_VIEW", TRADE) {
+    joins {
+      joining(INSTRUMENT_L1_PRICE, backwardsJoin = true) {
+        on(TRADE.INSTRUMENT_ID to INSTRUMENT_L1_PRICE { INSTRUMENT_CODE })
+      }
+    }
+    fields {
+      TRADE.allFields()
+
+      INSTRUMENT_L1_PRICE.EMS_BID_PRICE
+      INSTRUMENT_L1_PRICE.EMS_ASK_PRICE
+    }
+  }
+```
 Run `codegen:generateView` to make the new view ready for use (See below).
 ![](/img/generateView.png)
 
