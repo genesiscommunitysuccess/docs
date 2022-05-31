@@ -103,7 +103,7 @@ If you need to clear out the entries by hand, simply delete everything in that d
 
 More than one permission map per table can be created.
 
-## Generic Permissions
+## Generic permissions
 
 The generic permissions model available in auth automatically builds “auth-perms” maps and also ensures all the admin transactions, dataservers and request reply resources are authorised correctly on a multi-tenant basis. This generic approach might not work for every use case, but it should be good enough for many development scenarios and therefore should cover all the basics out of the box.
 

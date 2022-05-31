@@ -6,14 +6,15 @@ id: authorisation-over
 ---
 
 ## Authorisation
-Authorisation is the process by which you offer specific permissions to resources for authenticated users. 
-The Genesis Server presents three main types of resource entry points for clients to instigate events or to query data.
+Authorisation is the process by which you apply specific permissions to resources. Only users who pass the permission criteria for the resource have access.  
+
+The server of a Genesis application provides three main types of resource entry point for clients to instigate events or to query data.
 
 - Data Servers  
 - Event Handlers  
 - Request Servers
 
-All these services can be optionally permissioned using a permissioning GPAL syntax block in the GPAL configuration associated with the service. 
+All these services can be permissioned using a permissioning GPAL syntax block in the GPAL configuration associated with the service. 
 
 **Permissioning block snippet**
 ```kotlin
@@ -30,9 +31,15 @@ permissioning {
 }
 ```
 
-This permissioning block can exist inside a resource (`reqrep`, `query` or `eventhandler`) definition, or it can be specified globally within the file.
+### Global and specific permissioning
+Here's what you need to know:
 
-In this example, the block applies to a specific `requestReply` within a Request Server:
+- A permissioning block can exist inside a resource (`reqrep`, `query` or `eventhandler`) definition. In this case, it applies only to that resource definition. This is specific permissioning.
+- Alternatively, you can specify a permissioning block outside any resource in the file. This is global permissioning. If you do this, the permissioning applies by default to all the resources in the file. **However, any permissioning block inside a specific resource overrides this default**.
+- The permissioning block at the global level can only contain `permissionCodes`, as the `auth` block is based on each individual resource definition. 
+- Every request that comes into a Genesis server will include the username of an authenticated user. Non-authenticated users will not have access to or visibility of the Genesis services.
+
+In the example below, the block applies to a specific `requestReply` within a Request Server:
 
 ```kotlin
 requestReplies {
@@ -44,35 +51,41 @@ requestReplies {
 }
 ```
 
-In this example, the permissioning applies at a global level, so it will apply to all `requestReply` blocks in the Request Server:
+In the example below, the global permissioning applies by default to the first three `requestReply` blocks in the Request Server. However, the fourth `requestReply` block has a specific permissioning block requiring the user to be in the list SUPER.
 
 ```kotlin
 requestReplies {
     permissioning {
         permissionCodes = listOf("TRADER")
     }
-    requestReply("MARKET_INSTRUMENTS", INSTRUMENT_DETAILS)
+    requestReply("ALLOCATION CODES", ALLOCATION CODES)
+
+    requestReply("ALL_COUNTERPARTIES", ALL_COUNTERPARTIES)
+
+    requestReply("ALL_BROKERS", ALL_BROKERS)
+
+    requestReply("ALL_TRADES", INSTRUMENT_DETAILS) {
+        permissioning {
+            permissionCodes = listOf("SUPER")
+        }
+    }
 }
 ```
 
-It is important to know that the permissioning block at the global level can only contain `permissionCodes`, as the `auth` block is based on each individual resource definition. The global permissioning block can be overriden at the resource level.
+### Permissioning sub-blocks
 
-For every request that comes into a Genesis server, it will include the username of an authenticated user. 
-Non-authenticated users will not have access or visibility to the Genesis services.
-
-
-There are two main optional sub-blocks to the permissioning block.
+There are two main sub-blocks to the permissioning block that can be applied to suit your needs:
 - `PermissionCodes` list
 - `auth` sub-block
 
-### PermissionCodes list
+#### PermissionCodes list
 Here is a simple example:
 
 ```kotlin
 permissionCodes = listOf("TRADER", "SUPPORT")
 ```
 
-  Where this is defined, the user will need to have one of the listed permission codes to access the GPAL enclosed resource. 
+  Where a `PermissionCodes`list is defined, the user must have one of the listed permission codes to access the GPAL enclosed resource. 
   If the user does not belong to one of the listed permission codes, the subsequent auth block will essentially be ignored.
 
   To enable a user to have access to a specific `permissionCode`:
@@ -92,7 +105,7 @@ permissionCodes = listOf("TRADER", "SUPPORT")
   Synonyms: Profile, Role, Group
 :::
 
-### Auth sub-block
+#### Auth sub-block
 Here is an example:
 
  
@@ -102,7 +115,7 @@ Here is an example:
         }
 ```
 
-Where this is defined, it provides further fine-grained control of what data, at the row level, is returned to a specific user. 
+Where an `auth` sub-block is defined, you can provide further fine-grained control of what data, at the row level, is returned to a specific user. 
 
 If it is not defined, then all data is returned for the enclosing resource, assuming `permissionCodes` are not restricting access.
 
