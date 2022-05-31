@@ -180,13 +180,13 @@ consolidators {
 To complete the configuration of the consolidator, add a new entry to **trading_app-processes.xml** with the consolidator2 process definition.
 
 ```xml
-<process name="POSITION_CONSOLIDATOR">
-    <groupId>POSITION</groupId>
+<process name="TRADING_APP_CONSOLIDATOR">
+    <groupId>TRADING_APP</groupId>
     <start>true</start>
     <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
     <module>genesis-pal-consolidator</module>
     <package>global.genesis.pal.consolidator</package>
-    <script>position-consolidator.kts</script>
+    <script>trading_app-consolidator.kts</script>
     <description>Consolidates trades to calculate positions</description>
     <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
     <language>pal</language>
