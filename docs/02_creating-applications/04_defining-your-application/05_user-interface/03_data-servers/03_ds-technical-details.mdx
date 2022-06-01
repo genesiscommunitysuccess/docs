@@ -43,7 +43,7 @@ dataServer {
 }
 ```
 
-### Specifying fields
+## Specifying fields
 
 By default, all table or view fields in a query definition will be exposed. If you don't want them all to be available, you must define the fields that are required. In the example below, we specify eight fields:
 
@@ -129,11 +129,10 @@ Global settings can be applied at two levels:
 - Top level
 - Query level
 
-The following global setting applies at the top level only.
 
-#### Top-level-only settings
+### Top-level global setting
 
-##### lmdbAllocateSize
+`lmdbAllocateSize`
 This sets the size of the memory-mapped file where the in-memory cache stores the Data Server query rows. This configuration setting can only be applied at the top level. It affects the whole Data Server. 
 
 By default, the size is defined in bytes. To use MB or GB, use the `MEGA_BYTE` or `GIGA_BYTE` functions. You can see these in the example below. The default is 2 GB.
@@ -144,42 +143,42 @@ lmdbAllocateSize = 2.GIGA_BYTE()
 lmdbAllocateSize = 512.MEGA_BYTE()
 ```
 
-#### Query-only settings
+### Query-level global settings
 The following settings can be applied at a query-level
 
-##### defaultCriteria
+`defaultCriteria`
 This represents the default criteria for the query. Defaults to `null`.
 
-##### disableAuthUpdates
+ `disableAuthUpdates`
 This disables real-time auth updates in order to improve the overall data responsiveness and performance of the server. Defaults to `false`.
 
-##### backJoins
+`backJoins`
 Seen in older versions of the platform, this has been replaced by `backwardsJoins`. It is functionally the same.
 
-##### backwardsJoins
+`backwardsJoins`
 This enables backwards joins on a view query. Backwards joins ensure real-time updates on the fields that have been joined. These need to be configured at the join level of the query in order to work correctly. Defaults to `true`.
 
-#### Shared settings
+### Shared settings
 
-##### compression
+`compression`
 If this is set to `true`, it will compress the query row data before writing it to the in-memory cache. Defaults to `false`.
 
-##### chunkLargeMessages
+`chunkLargeMessages`
 If this is set to true, it will split large updates into smaller ones. Defaults to `false`.
 
-##### defaultStringSize
+`defaultStringSize`
 This is the size to be used for string storage in the Data Server in-memory cache. Higher values lead to higher memory use and lower values lead to truncation. Defaults to `40`.
 
-##### batchingPeriod
+`batchingPeriod`
 This is the delay in milliseconds to wait before sending new data to data-server clients. Defaults to `500ms`.
 
-##### linearScan
+`linearScan`
 This enables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes. Defaults to `true`.
 
-##### excludedEmitters
+`excludedEmitters`
 This enables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored. Defaults to an empty list.
 
-##### enableTypeAwareCriteriaEvaluator
+`enableTypeAwareCriteriaEvaluator`
 This enables the type-aware criteria evaluator. Defaults to `false`. 
 
 The type-aware criteria evaluator can automatically convert criteria comparisons that don't match the original type of the Data Server field; these can still be useful to end users.
