@@ -70,6 +70,9 @@ table(name = "POSITION", id = 11001) {
   COUNTERPARTY_ID
   QUANTITY
   NOTIONAL
+  VALUE
+  PNL  
+    
   primaryKey {
     POSITION_ID
   }
@@ -101,77 +104,74 @@ Because we previously generated the fields, autocompletion helps you to define m
 
 ## 3. Define the position-keeping logic in the consolidator
 
-Now define a **trading_app-consolidator2.xml** file inside **trading_app-config/src/main/resources/cfg**. This is where you define the consolidator logic.
+Now define a **trading_app-consolidator.kts** file inside **trading_app-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
 
 The consolidator is going to increase or decrease the quantity for POSITION records, based on the TRADE table updates. It also needs to calculate the new notional.
-```xml
-<consolidations>
-    <consolidation name="CONSOLIDATE_POSITIONS" start="true">
-        <tables>
-            <table name="TRADE" alias="t" seedKey="TRADE_BY_ID" consolidationFields="QUANTITY PRICE"/>
-            <table name="INSTRUMENT_PRICE" alias="ip" >
-                <join key="INSTRUMENT_PRICE_BY_INSTRUMENT_ID">
-                    <![CDATA[
-                    ip.setString("INSTRUMENT_ID", t.getString("INSTRUMENT_ID"))
-                    ]]>
-                </join>
-            </table>
-        </tables>
-        <groupBy>
-            <![CDATA[
-                group(t.getString("INSTRUMENT_ID"), t.getString("COUNTERPARTY_ID"))
-            ]]>
-        </groupBy>
-        <consolidateTable name="POSITION" alias="p" consolidationFields="QUANTITY NOTIONAL"
-                          transient="true">
-            <consolidationTarget key="POSITION_BY_INSTRUMENT_ID_COUNTERPARTY_ID">
-                <![CDATA[
-                p.setString("COUNTERPARTY_ID", t?.getString("COUNTERPARTY_ID"))
-                p.setString("INSTRUMENT_ID", t?.getString("INSTRUMENT_ID"))
-                ]]>
-            </consolidationTarget>
-            <calculation>
-                <![CDATA[
-                    long quantity = t.getLong("QUANTITY")
-                    long previousQuantity = previous_t.getLong("QUANTITY")
-                    long quantityDelta = quantity - previousQuantity
-                    String tradeStatus = t.getString("TRADE_STATUS")
-                    long newQuantity = p.getLong("QUANTITY")
-                    switch(tradeStatus) {
-                      case "NEW":
-                      case "ALLOCATED":
-                        String side = t.getString("SIDE")
-                        switch(side) {
-                          case "BUY":
-                            newQuantity += quantityDelta
-                            break
-                          case "SELL":
-                            newQuantity -=quantityDelta
-                            break
-                          }
-                        break
-                      case "CANCELLED":
-                        String previousSide = previous_t.getString("SIDE")
-                        switch(previousSide) {
-                          case "BUY":
-                            newQuantity -= quantityDelta
-                            break
-                          case "SELL":
-                            newQuantity +=quantityDelta
-                            break
-                          }
-                        break
+```kotlin
+import global.genesis.gen.config.tables.POSITION.NOTIONAL
+import global.genesis.gen.config.tables.POSITION.QUANTITY
+import global.genesis.gen.config.tables.POSITION.VALUE
+
+consolidators {
+    config {}
+    consolidator("CONSOLIDATE_POSITIONS", TRADE_PRICE_VIEW, POSITION) {
+        config {
+            logLevel = DEBUG
+            logFunctions = true
+        }
+        select {
+            sum {
+                when(side) {
+                    "BUY" -> when(tradeStatus) {
+                        TradeStatus.NEW -> quantity
+                        TradeStatus.ALLOCATED -> quantity
+                        TradeStatus.CANCELLED -> 0
                     }
-                    p.setLong("QUANTITY", newQuantity)
-                    Double lastPrice = ip?.getDouble("LAST_PRICE")
-                    if (lastPrice != null) {
-                        p.setDouble("NOTIONAL", newQuantity * lastPrice )
+                    "SELL" -> when(tradeStatus) {
+                        TradeStatus.NEW -> -quantity
+                        TradeStatus.ALLOCATED -> -quantity
+                        TradeStatus.CANCELLED -> 0
                     }
-                ]]>
-            </calculation>
-        </consolidateTable>
-    </consolidation>
-</consolidations>
+                    else -> null
+                }
+            } into QUANTITY
+            sum {
+                val quantity = when(side) {
+                    "BUY" -> quantity
+                    "SELL" -> -quantity
+                    else -> 0
+                }
+                quantity * price
+            } into VALUE
+        }
+        onCommit {
+            val quantity = output.quantity ?: 0
+            val marketPrice = when {
+                quantity > 0 -> input.emsBidPrice ?: 0.0
+                quantity < 0 -> input.emsAskPrice ?: 0.0
+                else -> 0.0
+            }
+            output.notional = marketPrice * quantity
+            output.pnl = output.value - output.notional
+        }
+        groupBy {
+            instrumentId
+        } into {
+            lookup {
+                Position.ByInstrumentId(groupId)
+            }
+            build {
+                Position {
+                    instrumentId = groupId
+                    quantity = 0
+                    value = 0.0
+                    pnl = 0.0
+                    notional = 0.0
+                }
+            }
+        }
+    }
+}
 ```
 ## 4. Update the system files
 
@@ -181,13 +181,15 @@ To complete the configuration of the consolidator, add a new entry to **trading_
 
 ```xml
 <process name="TRADING_APP_CONSOLIDATOR">
-  <groupId>TRADING_APP</groupId>
-  <start>true</start>
-  <options>-Xmx256m -DRedirectStreamToLog=true</options>
-  <module>consolidator2</module>
-  <package>global.genesis.consolidator2</package>
-  <config>trading_app-consolidator2.xml</config>
-  <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
+    <groupId>TRADING_APP</groupId>
+    <start>true</start>
+    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
+    <module>genesis-pal-consolidator</module>
+    <package>global.genesis.pal.consolidator</package>
+    <script>trading_app-consolidator.kts</script>
+    <description>Consolidates trades to calculate positions</description>
+    <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
+    <language>pal</language>
 </process>
 ```
 ### Update the service-definitions.xml file

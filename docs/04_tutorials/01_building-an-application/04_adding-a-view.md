@@ -58,7 +58,7 @@ Now look at another example, where we are going to add more complexity.
 - Instead of taking all fields from the `TRADE` table, we have identified five specific fields.
 - We have created a derived field called `CONSIDERATION`, which contains the overall value (QUANTITY * PRICE) of the trade. Derived fields are a useful way of providing calculated data, but note that you must only use fields that are in the view.
 
-So, use the code below as you final definition of the two joins.
+So, use the code below as your final definition of the two joins.
 
 ```kotlin
   view ("TRADE_VIEW", TRADE) {
@@ -89,12 +89,30 @@ So, use the code below as you final definition of the two joins.
     }
   }
 ```
+
+Let's add a new view for the Consolidator to use.
+
+```kotlin
+  view("TRADE_PRICE_VIEW", TRADE) {
+    joins {
+      joining(INSTRUMENT_L1_PRICE, backwardsJoin = true) {
+        on(TRADE.INSTRUMENT_ID to INSTRUMENT_L1_PRICE { INSTRUMENT_CODE })
+      }
+    }
+    fields {
+      TRADE.allFields()
+
+      INSTRUMENT_L1_PRICE.EMS_BID_PRICE
+      INSTRUMENT_L1_PRICE.EMS_ASK_PRICE
+    }
+  }
+```
 Run `codegen:generateView` to make the new view ready for use (See below).
 ![](/img/generateView.png)
 
 ## Add the new view to the data server
 
-Now go to the data server definition (inside the **-script-config** module). Replace the `ALL_TRADES` query in the data server with the new `TRADE_VIEW`.
+Now go to the Data Server definition (inside the **-script-config** module). Replace the `ALL_TRADES` query in the Data Server with the new `TRADE_VIEW`.
 
 ```kotlin
 dataServer {
@@ -115,7 +133,7 @@ First, you need to do the following:
     <scope>test</scope>
 </dependency>
 ```
-2. Add a dependency on the **ref_data_app-config module** in pom file
+2. Add a dependency on the **ref_data_app-config module** in the pom file.
 ```xml
 <dependency>
     <groupId>global.genesis</groupId>
