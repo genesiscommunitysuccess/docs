@@ -13,12 +13,13 @@ You can install everything you need to run Windows Subsystem for Linux (WSL) by 
 ```
 wsl --install
 ```
-Requires Windows 10 version 2004 or higher. More [details](https://docs.microsoft.com/en-us/windows/wsl/install).
+Requires Windows 10 version 2004 or higher. More details [here](https://docs.microsoft.com/en-us/windows/wsl/install).
 
-Then download the [training distro](https://netorg209792-my.sharepoint.com/:u:/g/personal/genesis_files_genesis_global/EahiR5AJ7-BKvTzh3TBWmTgBFVCoW6jOG-4dh4vkZFtJtg?e=ehUShp).
+Then download the [training distro](https://netorg209792-my.sharepoint.com/:u:/g/personal/genesis_files_genesis_global/EahiR5AJ7-BKvTzh3TBWmTgBFVCoW6jOG-4dh4vkZFtJtg?e=ehUShp). This distro contains everything you need to start, including: 
+CentOS 7 base, Java SDK, genesis user, nginx, postgres.
 
-and create a local folder where you want to run the distro, e.g., "C:\wsl\distros\". Unzip the package downloaded there and 
-from that folder run:
+
+Now create a local folder where you want to run the distro, e.g., "C:\wsl\distros\". Unzip the package downloaded there and from that folder run:
 ```
 wsl --import TrainingCentOS . training-wsl.backup
 ```
@@ -31,7 +32,5 @@ Start the required services:
 ```
 nginx
 su - postgres
-cd /usr/pgsql-11/bin
-./initdb
-./postgres &
+/usr/pgsql-11/bin/postgres &
 ```
