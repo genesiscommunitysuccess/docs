@@ -8,12 +8,13 @@ id: symphony
 [Symphony](http://symphony.com) is a secure instant messaging service focused on financial companies. 
 To make Symphony services available to Genesis, including the sending and receiving of messages, you need to provision [symphony service](https://symphony.com/participate) and configure a [symphony bot](https://docs.developers.symphony.com/developer-tools/developer-tools/bdk-2.0).
 
-## Symphony Configuration
+## Symphony configuration
 
-The following configuration details are an example of Genesis Symphony connection details. Genesis requires the use of Symphony POD, Symphony Bot and the generation of private/public key pairs. 
-This is covered extensively in the Symphony Documentation.  
+Genesis requires the use of Symphony POD, Symphony Bot and the generation of private/public key pairs. This is covered extensively in the Symphony Documentation.  
 
-filename: ```notify.kts```
+Symphony must be configured in your **notify.kts** file. Here is an example configuration with connection details. 
+
+
 
 ```kotlin
 notify {
@@ -34,8 +35,9 @@ notify {
 
 ```
 
-another example, but where the private key is sourced from the DB. 
-To store private key in a DB you will need to use the`SYSTEM` table with `SYSTEM_VALUE` set to the contents of the private key and the associated `SYSTEM_KEY` set to `SymphonyRsaKey` 
+Now consider another example. For this, the private key is sourced from the DB. 
+
+To store the private key in a DB, you need to use the`SYSTEM` table with `SYSTEM_VALUE` set to the contents of the private key and the associated `SYSTEM_KEY` set to `SymphonyRsaKey`.
 
 ```kotlin
 notify {
@@ -51,9 +53,9 @@ notify {
 
 ```
 
-# Using System Definition in the notify.kts script
+## Using System Definition in the notify.kts script
+You must configure Notify in your application's **genesis-system-definition.kts** file.
 
-filename: ```genesis-system-definition.kts```
 ```kotlin
 systemDefinition {
     global {
@@ -64,8 +66,9 @@ systemDefinition {
 }
 ```
 
-Here we can refer to the item name directly in our kts script, without import or qualifier.
-filename: ```notify.kts```
+Once that is configured, you can refer to the item name directly in your **notify.kts** script, without import or qualifier.
+
+
 ```Kotlin
 notify {
 
@@ -79,13 +82,15 @@ notify {
 }
 ```
 
-Where you have configured a Symphony Gateway for handling incoming messages, any attachments to incoming messages will be dropped on the server to the following configured directory parameter: `DOCUMENT_STORE_BASEDIR`. For example:
+Where you have configured a Symphony Gateway for handling incoming messages, any attachments to incoming messages will be dropped on the server to the following configured directory parameter: `DOCUMENT_STORE_BASEDIR`. 
+
+For example:
 
 ```kotlin
 item(name = "DOCUMENT_STORE_BASEDIR", value = "/home/trading/run/site-specific/incoming-docs")
 ```
 
-Also, if the incoming message is configured to publish to a topic, the file name of any attachment will be sent to the `DOCUMENT_ID` field for the topic (showing its file location on the server). In the event of clashing file names, the incoming attachment's file name will have the suffix _1, _2 added, as appropriate.
+If the incoming message is configured to publish to a topic, the file name of any attachment will be sent to the `DOCUMENT_ID` field for the topic (showing its file location on the server). In the event of clashing file names, the incoming attachment's file name will have the suffix _1, _2 added, as appropriate.
 
 ## Database configuration
 
@@ -112,16 +117,16 @@ Also, if the incoming message is configured to publish to a topic, the file name
 | NOTIFY_COMPRESSION_TYPE | Do not set. This is used internally by Genesis; it indicates if the body of the message is compressed and by which compression type |
 | DOCUMENT_ID | If set, this should refer to a server-side path and file name. This file will be attached to the outgoing message that is destined for a symphony gateway
 
-## Additional Genesis Notify service for symphony
+## Genesis Notify operations for Symphony
 
-The Genesis Notify service currently provides additional Symphony operations, exposed as event handlers.
+The Notify service currently provides additional Symphony operations; these are exposed as Event Handlers.
 
-* `GATEWAY_CREATE_CHANNEL` creates a channel (to allow external users to be added to a channel, a channel should be created with external set to true amd public to false)
-* `GATEWAY_ADD_MEMBER_TO_CHANNEL` adds a user to a channel (note if the user is not a member of the host POD, then a connection request will be sent to that user)
-* `GATEWAY_REMOVE_MEMBER_FROM_CHANNEL` removes a user from a channel
-* `GATEWAY_ACTION_ON_CHANNEL` allows a channel to be reactivated or deactivated
+* `GATEWAY_CREATE_CHANNEL` creates a channel (to allow external users to be added to a channel, a channel should be created with `external` set to `true` and `public` to `false`).
+* `GATEWAY_ADD_MEMBER_TO_CHANNEL` adds a user to a channel (if the user is not a member of the host POD, then a connection request will be sent to that user).
+* `GATEWAY_REMOVE_MEMBER_FROM_CHANNEL` removes a user from a channel.
+* `GATEWAY_ACTION_ON_CHANNEL` allows a channel to be either reactivated or deactivated.
 
-- note: where there is more than one symphony connection defined, these operations act upon the first listed.
+Where there is more than one Symphony connection defined, these operations act upon the first listed.
 
 ```kotlin
 package global.genesis.message.core.event.notify
@@ -137,25 +142,23 @@ data class AddUserToChannel(val channelName: String, val userId: String)
 data class RemoveUserFromChannel(val channelName: String, val userId: String)
 data class ActionOnChannel(val roomId: String, val activate: Boolean)
 ```
-In addition, the NotifyService offers the following ReqRep resource.
-
-* `LIST_MEMBERS_OF_CHANNEL` list members of a channels
+The Notify service also offers the following Request Server resource `LIST_MEMBERS_OF_CHANNEL`, which, unsurprisingly, lists members of a channel.
 
 * Inputs (Request)
 
-`ChannelName` - Symphony Stream Id
+    `ChannelName` - Symphony Stream Id
 
 * Outputs (Response)
 
-`USER_EMAIL`
+    `USER_EMAIL`
 
-`USER_ID`  - Symphony User Id
+    `USER_ID`  - Symphony User Id
 
 ## Configuring Symphony On-Behalf-Of (OBO) for outgoing messages 
 
-To use the Symphony OBO feature, which enables messages to be sent through a configured symphony robot as a particular user, you need to configure your application to point to the required symphony extension app. 
+To use the Symphony OBO feature, which enables messages to be sent through a configured Symphony robot as a particular user, you need to configure your application to point to the required Symphony extension app. 
 
-Documentation on how to set this up in Symphony is covered [here](https://docs.developers.symphony.com/building-extension-applications-on-symphony/app-authentication/obo-authentication)
+You can find out how set this up in the [Symphony Documentation](https://docs.developers.symphony.com/building-extension-applications-on-symphony/app-authentication/obo-authentication)
 
 ```kotlin
 item(name = "SYMPHONY_APP_ID", value = "GENESIS_EXTENSION_APP")

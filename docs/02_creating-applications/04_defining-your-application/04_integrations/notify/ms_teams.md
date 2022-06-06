@@ -10,7 +10,7 @@ The most important thing to gather from the teams channel webhook setup is the "
 
 ## System configuration
 
-None required for Teams integration, we simply need to know the WebHook URL which is used in database entries outlined in the section below
+No configuration is required for Teams integration; you simply need to know the WebHook URL which is used in database entries outlined in the section below
 
 ## Database configuration
 
@@ -26,7 +26,7 @@ You'll need to set up a GATEWAY entry for each of the channels the app needs to 
 | INCOMING_TOPIC | N/A - Notify does not currently support inbound messages from the channel |
 | CONNECTION_ID | N/A |
 
-#### Example
+Here is an example GATEWAY entry:
 
 ```
 ==================================
@@ -45,7 +45,7 @@ INCOMING_TOPIC                                                                  
 
 ### NOTIFY_ROUTE
 
-You will also need at least one NOTIFY_ROUTE entry set up to point to the GATEWAY record to route NOTIFY records as messages
+You need at least one NOTIFY_ROUTE entry set up to point to the GATEWAY record, so that NOTIFY records are routed as messages.
 
 | Field Name | Usage |
 | --- | --- |
@@ -55,7 +55,7 @@ You will also need at least one NOTIFY_ROUTE entry set up to point to the GATEWA
 | NOTIFY_ROUTE_ID | This will be auto generated if left blank, else be sure to give it a unique value with respect to other records |
 | TOPIC_MATCH | This can be anything, NOTIFY records will target this via the TOPIC field, and messages will be routed to all gateways with a matching TOPIC_MATCH value. In a simple/typical setup we make it match the GATEWAY_ID in the corresponding GATEWAY record |
 
-#### Example
+Here is an example NOTIFY_ROUTE entry:
 
 ```
 ==================================
@@ -74,9 +74,9 @@ TOPIC_MATCH                              TestAlerts                             
 
 ### NOTIFY
 
-Writing a record to this table which correctly points to a TOPIC, will result in a message being sent to the teams channel the GATEWAY record is pointed to.
+Writing a record to this table which correctly points to a TOPIC, will result in a message being sent to the Teams channel the GATEWAY record is pointed to.
 
-Equally, EVENT_NOTIFY_INSERT can be used as opposed to a direct table write (and is the encouraged form of interaction), this event allows for the same set of fields as the DbRecord, so the input fields detailed below caters for either approach.
+Equally, EVENT_NOTIFY_INSERT can be used, as opposed to a direct table write (and is the encouraged form of interaction), this event allows for the same set of fields as the DbRecord. The input fields detailed below cater for either approach.
 
 | Field Name | Usage |
 | --- | --- |
@@ -91,7 +91,7 @@ Equally, EVENT_NOTIFY_INSERT can be used as opposed to a direct table write (and
 | SENDER | N/A |
 | TOPIC | The TOPIC_MATCH value on the NOTIFY_ROUTE record you wish to target |
 
-#### Example
+Here is an example of using NOTIFY:
 
 ```
 ==================================
@@ -113,6 +113,6 @@ TOPIC                                    TestAlerts                             
 -------------------------------------------------------------------------------------------
 ```
 
-Results in a teams channel message such as:
+This example results in a Teams channel message, such as:
 
 ![](/img/notify-teams-example.png)
