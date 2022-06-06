@@ -10,7 +10,7 @@ id: email
 
 You can define the following configuration items in order to provide SMTP server connection details, and to configure email service-related features.
 
-filename: ```notify.kts```
+Include the following in your application's **notify.kts** file:
 
 ```kotlin
 notify {
@@ -33,9 +33,10 @@ notify {
 }
 ```
 
-# Using System Definition in the notify.kts script
+## Using System Definition in the notify.kts script
 
-filename: ```genesis-system-definition.kts```
+Include the following in your aplication's **genesis-system-definition.kts** file:
+
 ```kotlin
 systemDefinition {
     global {
@@ -51,8 +52,9 @@ systemDefinition {
 }
 ```
 
-Here we can refer to the item name directly in our kts script, without import or qualifier.
-filename: ```notify.kts```
+In the application's **notify.kts** file, you can refer to the item name directly, without import or qualifier:
+
+
 ```Kotlin
 email(id = "email1") {
 
@@ -81,6 +83,10 @@ email(id = "email1") {
 
 ### GATEWAY_VALUE JSON structure
 
+Any of the `to`, `cc`, or `bcc` fields in the structure below can be omitted if they are empty arrays. 
+
+If they are all empty, you can omit the entire `emailDistribution` JSON object. 
+
 ```json
 {
   "emailDistribution": {
@@ -89,7 +95,7 @@ email(id = "email1") {
     "bcc": []
 } 
 ```
-Any of the `to`, `cc`, or `bcc` fields in the structure above can be omitted if they are empty arrays. If they are all empty, you can instead omit the entire `emailDistribution` JSON object. In this instance, all three are present to show you all the potential fields, `bcc` could be omitted to no functional difference.
+
 
 When you use [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script) to send data to the database, keep two things in mind:
 
@@ -100,7 +106,7 @@ For example, here we are going to run `SendIt` to send an empty distribution lis
 
 The command is:  `SendIt -t GATEWAY.CSV`
 
-And we have set up the data file GATEWAY.CSV in the following way.
+We have set up the data file GATEWAY.CSV in the following way.
 
 ```text
 GATEWAY_ID,GATEWAY_TYPE,GATEWAY_VALUE,INCOMING_TOPIC
@@ -147,5 +153,5 @@ Here is an example in Kotlin:
 htmlMailMessage.replaceAll("\"", "&quot;").replaceAll("\\R", "\\\\n");
 ```
 
-The final outgoing emailDistribution will be the merger of the distribution list specified on the Notify message and the statically defined distribution list specified for any Gateway which messages may be routed to.
+The final outgoing emailDistribution will a merge of the distribution list specified on the Notify message and the statically defined distribution list specified for any Gateway which messages may be routed to.
 
