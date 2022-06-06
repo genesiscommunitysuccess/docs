@@ -21,15 +21,17 @@
 
   --ifm-link-color: #0000FF;
   --ifm-menu-color-active: #0000FF;
-  
+
   --ifm-heading-font-family: Roboto-Medium, Roboto Medium, Roboto, sans-serif;
   --ifm-heading-color: #555;
   --ifm-heading-font-weight: 500;
   --ifm-heading-line-height: normal;
 
   --ifm-hero-background-color: transparent;
- 
-  --ifm-navbar-height: 64px;
+
+  --ifm-navbar-background-color: #1200DE;
+  --ifm-navbar-link-color: #FFFFFF;
+  --ifm-navbar-height: 88px;
   --ifm-navbar-shadow: -5px 3px 16px 0px rgba(0, 0, 0, 0.15);
 
   --ifm-pre-background: #2B2B2B;
@@ -39,29 +41,30 @@
   background-color: #f5f5f5 !important;
 }
 
-.markdown header > h1:first-child {
+.markdown header>h1:first-child {
   --ifm-h1-font-size: 36px;
-  margin-bottom:12px;
+  margin-bottom: 12px;
   --ifm-link-color: #555;
 }
 
-.markdown > h2 {
+.markdown>h2 {
   --ifm-h2-font-size: 24px;
-  margin-bottom:0px;
+  margin-bottom: 0px;
   --ifm-link-color: #555;
 }
 
-.markdown > h3 {
+.markdown>h3 {
   --ifm-h3-font-size: 20px;
   --ifm-link-color: #555;
-  margin-bottom:0px;
+  margin-bottom: 0px;
 }
 
-.markdown > h4 {
+.markdown>h4 {
   --ifm-h4-font-size: 16px;
   --ifm-link-color: #555;
-  margin-bottom:0px;
+  margin-bottom: 0px;
 }
+
 button.aa-DetachedSearchButton {
   --aa-font-family: 'Roboto-Medium', 'Roboto Medium', 'Roboto', sans-serif;
   --aa-font-size: 12px;
@@ -92,8 +95,18 @@ div.aa-DetachedSearchButtonIcon {
 }
 
 .navbar__logo {
-  width: 146px;
-  height: 54px;
+  border-right: 1px solid var(--ifm-navbar-link-color);
+  height: 40px;
+  margin-right: 1rem;
+  padding-right: 1rem;
+}
+
+.navbar__title {
+  font-weight: normal;
+}
+
+.navbar__brand+.navbar__item {
+  margin-left: 32px;
 }
 
 .hero {
@@ -119,8 +132,7 @@ main {
 }
 
 .button--getting-started,
-.button--getting-started.button--secondary.button--outline:not(.button--active):not(:hover)
- {
+.button--getting-started.button--secondary.button--outline:not(.button--active):not(:hover) {
   width: 187px;
   height: 48px;
   border-radius: 4px;
@@ -135,8 +147,7 @@ main {
   margin-top: 10px;
 }
 
-.button--getting-started.button--secondary.button--outline:not(.button--active):hover
-{
+.button--getting-started.button--secondary.button--outline:not(.button--active):hover {
   background-image: linear-gradient(-109.67161755518993deg, #47bce0 0%, #654df9 100%);
   color: #fff;
 }
@@ -204,7 +215,7 @@ img[alt^="masthead-fade"] {
 }
 
 img[alt^="masthead-cut"] {
-  clip-path: polygon(0% 0%,100.00% 0.00%,100.00% 80.00%,95.00% 100.00%,90.00% 80.00%,85.00% 100.00%,80.00% 80.00%,75.00% 100.00%,70.00% 80.00%,65.00% 100.00%,60.00% 80.00%,55.00% 100.00%,50.00% 80.00%,45.00% 100.00%,40.00% 80.00%,35.00% 100.00%,30.00% 80.00%,25.00% 100.00%,20.00% 80.00%,15.00% 100.00%,10.00% 80.00%,5.00% 100.00%,0.00% 80.00%);
+  clip-path: polygon(0% 0%, 100.00% 0.00%, 100.00% 80.00%, 95.00% 100.00%, 90.00% 80.00%, 85.00% 100.00%, 80.00% 80.00%, 75.00% 100.00%, 70.00% 80.00%, 65.00% 100.00%, 60.00% 80.00%, 55.00% 100.00%, 50.00% 80.00%, 45.00% 100.00%, 40.00% 80.00%, 35.00% 100.00%, 30.00% 80.00%, 25.00% 100.00%, 20.00% 80.00%, 15.00% 100.00%, 10.00% 80.00%, 5.00% 100.00%, 0.00% 80.00%);
 }
 
 alpha-avatar {
@@ -252,21 +263,21 @@ alpha-button .icon {
   color: var(--neutral-foreground-rest);
 }
 
-[class^="playgroundPreview"] alpha-anchored-region  {
+[class^="playgroundPreview"] alpha-anchored-region {
   color: var(--neutral-foreground-rest);
   background: var(--accent-fill-rest);
   padding: 10px;
 }
 
-.combobox-examples [class^="playgroundPreview"]{
+.combobox-examples [class^="playgroundPreview"] {
   min-height: 300px;
 }
 
 .select-examples [class^="playgroundPreview"],
-.toolbar-examples [class^="playgroundPreview"]{
+.toolbar-examples [class^="playgroundPreview"] {
   min-height: 250px;
 }
 
-.tooltip-examples [class^="playgroundPreview"]{
+.tooltip-examples [class^="playgroundPreview"] {
   min-height: 110px;
 }

@@ -12,10 +12,11 @@ module.exports = {
   trailingSlash: true,
   scripts: [
     {
-        src: `${baseUrl}js/docs.iife.min.js`,
-        async: true,
+      src: `${baseUrl}js/docs.iife.min.js`,
+      async: true,
     }
   ],
+
 
   plugins: [
     [require.resolve('@cmfcmf/docusaurus-search-local'), {
@@ -48,13 +49,18 @@ module.exports = {
       disableSwitch: true
     },
     navbar: {
+      items: [
+        { to: '#', label: 'Server Modules' },
+        { to: '#', label: 'Frontend' },
+        { to: '#', label: 'Database' },
+      ],
       logo: {
         alt: 'Genesis Logo',
-        src: 'img/logo.png',
+        src: 'img/logo-icon--light.svg',
+        width: 25,
+        height: 25,
       },
-      items: [
-        {to: 'https://genesis.global/contact-us/', label: 'Register for a Demo', position: 'right', className: 'demo'}
-      ]
+      title: 'DOCUMENTATION'
     },
     footer: {
       style: 'dark',
@@ -65,5 +71,5 @@ module.exports = {
       additionalLanguages: ['java', 'kotlin', 'powershell', 'groovy'],
     },
   },
-  
+
 };
