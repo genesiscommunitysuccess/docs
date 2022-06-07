@@ -1,0 +1,16 @@
+---
+title: 'Improved workflow'
+sidebar_label: 'Improved workflow'
+sidebar_position: 3
+id: workflow
+---
+
+
+## Draft text
+
+By connecting your legacy systems, you can get a lot more out of them. Genesis can be configured to integrate with virtually any system in the financial world. So you can build a single system that uses those existing systems and provides a clear user interface and workflow. And if you need to integrate with external systems as well, that isn't a problem; there are pre-built modules and the tools to create your own adaptors.
+
+For example, you could capture deals and then apply calculations from your internal quant libraries. The trades can be booked through the system's workflow, rather manually into a legacy system.
+
+
+
