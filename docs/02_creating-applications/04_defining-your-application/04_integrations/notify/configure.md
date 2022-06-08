@@ -5,7 +5,6 @@ sidebar_position: 1
 id: configure
 
 ---
-## Overview
 
 The Genesis Notify module enables you to configure an application to send and receive messages to and from various messaging services.
 You can send messages to:
@@ -18,15 +17,12 @@ You can receive messages from:
 
 * Symphony
 
-## Configuration overview
 
-Genesis Notify is a generic service; it has various configuration requirements across system definition and the database. Here, we shall give you a high-level view of those configuration items and why they are needed. 
+Genesis Notify is a generic service; it has various configuration requirements across system definition and the database. Here, we shall give you a high-level view of the configuration items and why they are needed. There are separate configuration details for each service that you connect to (email, Teams and Symphony), along with useful examples.
 
-There are separate configuration details for each service that you connect to (email, Teams and Symphony), along with useful examples.
+## System definition
 
-### System definition
-
-This is used to store high-level connection details to the given, for example SMTP server configuration, Symphony/Teams server configurations.
+This is used to store high-level connection details to the required server, for example SMTP server, or Symphony/Teams server configurations.
 
 ### Database
 Here we describe the records and table to be used.

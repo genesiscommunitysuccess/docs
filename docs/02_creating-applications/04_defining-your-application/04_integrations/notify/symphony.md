@@ -10,7 +10,7 @@ To make Symphony services available to Genesis, including the sending and receiv
 
 ## Symphony configuration
 
-Genesis requires the use of Symphony POD, Symphony Bot and the generation of private/public key pairs. This is covered extensively in the Symphony Documentation.  
+Genesis requires the use of Symphony POD, Symphony Bot and the generation of private/public key pairs. This is covered extensively in the Symphony [documentation](https://docs.developers.symphony.com/building-bots-on-symphony/overview-of-rest-api/pod-api).  
 
 Symphony must be configured in your **notify.kts** file. Here is an example configuration with connection details. 
 
@@ -37,7 +37,7 @@ notify {
 
 Now consider another example. For this, the private key is sourced from the DB. 
 
-To store the private key in a DB, you need to use the`SYSTEM` table with `SYSTEM_VALUE` set to the contents of the private key and the associated `SYSTEM_KEY` set to `SymphonyRsaKey`.
+To store the private key in a DB, you need to use the `SYSTEM` table with `SYSTEM_VALUE` set to the contents of the private key and the associated `SYSTEM_KEY` set to `SymphonyRsaKey`.
 
 ```kotlin
 notify {
