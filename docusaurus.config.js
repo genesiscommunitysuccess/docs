@@ -37,6 +37,11 @@ module.exports = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
+        // https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-google-gtag
+        gtag: {
+          trackingID: 'GTM-5GTR43J',
+          anonymizeIP: true,
+        },
       }
     ],
   ],
