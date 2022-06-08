@@ -52,9 +52,9 @@ module.exports = {
     navbar: {
       items: [
         { to: 'getting-started/learn-the-basics/', label: 'Getting Started' },
-        { to: 'frontend', label: 'Frontend' },
+        { to: 'frontend/creating-a-new-page/', label: 'Frontend' },
         { to: 'database', label: 'Database' },
-        { to: 'operations', label: 'Operations' },
+        { to: 'operations/commands/server-commands/', label: 'Operations' },
       ],
       logo: {
         alt: 'Genesis Logo',
