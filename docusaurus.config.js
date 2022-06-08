@@ -12,10 +12,11 @@ module.exports = {
   trailingSlash: true,
   scripts: [
     {
-        src: `${baseUrl}js/docs.iife.min.js`,
-        async: true,
+      src: `${baseUrl}js/docs.iife.min.js`,
+      async: true,
     }
   ],
+
 
   plugins: [
     [require.resolve('@cmfcmf/docusaurus-search-local'), {
@@ -30,8 +31,9 @@ module.exports = {
       {
         // https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs
         docs: {
+          breadcrumbs: false,
           routeBasePath,
-          sidebarPath: require.resolve('./sidebars.json'),
+          sidebarPath: require.resolve('./sidebars.js'),
           remarkPlugins: [require('mdx-mermaid')],
         },
         theme: {
@@ -53,16 +55,21 @@ module.exports = {
       disableSwitch: true
     },
     navbar: {
+      items: [
+        { to: 'getting-started/learn-the-basics/', label: 'Getting Started' },
+        { to: 'frontend/creating-a-new-page/', label: 'Frontend' },
+        { to: 'database', label: 'Database' },
+        { to: 'operations/commands/server-commands/', label: 'Operations' },
+      ],
       logo: {
         alt: 'Genesis Logo',
-        src: 'img/logo.png',
+        src: 'img/logo-icon--light.svg',
+        width: 25,
+        height: 25,
       },
-      items: [
-        {to: 'https://genesis.global/contact-us/', label: 'Register for a Demo', position: 'right', className: 'demo'}
-      ]
+      title: 'DOCUMENTATION'
     },
     footer: {
-      style: 'dark',
       links: [],
       copyright: `© genesis global ${new Date().getFullYear()}. All rights reserved.`,
     },
@@ -70,5 +77,5 @@ module.exports = {
       additionalLanguages: ['java', 'kotlin', 'powershell', 'groovy'],
     },
   },
-  
+
 };

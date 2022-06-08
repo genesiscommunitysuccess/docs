@@ -5,6 +5,7 @@
   "scripts": {
     "build": "docusaurus build",
     "build:base_url": "BASE_URL=/secure/ docusaurus build",
+    "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve",
     "start": "docusaurus start --port 8080 --host 0.0.0.0",
@@ -12,10 +13,10 @@
   },
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^0.10.0",
-    "@docusaurus/core": "^2.0.0-beta.18",
-    "@docusaurus/plugin-google-gtag": "^2.0.0-beta.21",
-    "@docusaurus/preset-classic": "^2.0.0-beta.18",
-    "@docusaurus/theme-live-codeblock": "^2.0.0-beta.18",
+    "@docusaurus/core": "2.0.0-beta.18",
+    "@docusaurus/plugin-google-gtag": "2.0.0-beta.21",
+    "@docusaurus/preset-classic": "2.0.0-beta.18",
+    "@docusaurus/theme-live-codeblock": "2.0.0-beta.18",
     "classnames": "^2.3.1",
     "mdx-mermaid": "1.2.2",
     "mermaid": "8.11.0",
