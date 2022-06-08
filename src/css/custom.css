@@ -19,8 +19,9 @@
 
   --ifm-container-width-xl: 1140px;
 
-  --ifm-link-color: #0000FF;
-  --ifm-menu-color-active: #0000FF;
+  --ifm-link-color: #1200DE;
+  --ifm-menu-color-active: #1200DE;
+  --ifm-menu-color-background-active: inherit;
 
   --ifm-heading-font-family: Roboto-Medium, Roboto Medium, Roboto, sans-serif;
   --ifm-heading-color: #555;
@@ -35,10 +36,6 @@
   --ifm-navbar-shadow: -5px 3px 16px 0px rgba(0, 0, 0, 0.15);
 
   --ifm-pre-background: #2B2B2B;
-}
-
-.docs-doc-page main {
-  background-color: #f5f5f5 !important;
 }
 
 .markdown header>h1:first-child {
@@ -118,6 +115,12 @@ div.aa-DetachedSearchButtonIcon {
 
 main {
   position: relative;
+  padding-left: 1.5rem;
+  padding-top: 1rem;
+}
+
+main .container {
+  margin: 0;
 }
 
 .hero__title {
@@ -176,8 +179,25 @@ main {
   color: #fff;
 }
 
+/* side menu */
 nav.menu {
+  --side-nav-color-background: #F6F5F4;
   padding: 1rem 0.5rem;
+  background-color: var(--side-nav-color-background);
+}
+
+nav .menu__link--sublist.menu__link--active {
+  color: #808387
+}
+
+.menu__link:not(.menu__link--active) {
+  color: #161412;
+}
+
+.menu__nested-category .menu__list {
+  border-left: 1px solid grey;
+  margin-left: 2rem;
+  padding-left: unset;
 }
 
 .docusaurus-highlight-code-line {

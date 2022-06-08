@@ -31,8 +31,9 @@ module.exports = {
       {
         // https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs
         docs: {
+          breadcrumbs: false,
           routeBasePath,
-          sidebarPath: require.resolve('./sidebars.json'),
+          sidebarPath: require.resolve('./sidebars.js'),
           remarkPlugins: [require('mdx-mermaid')],
         },
         theme: {
@@ -50,9 +51,10 @@ module.exports = {
     },
     navbar: {
       items: [
-        { to: '#', label: 'Server Modules' },
-        { to: '#', label: 'Frontend' },
-        { to: '#', label: 'Database' },
+        { to: 'learn-the-basics/introduction', label: 'Getting Started' },
+        { to: 'frontend', label: 'Frontend' },
+        { to: 'database', label: 'Database' },
+        { to: 'operations', label: 'Operations' },
       ],
       logo: {
         alt: 'Genesis Logo',
@@ -63,7 +65,6 @@ module.exports = {
       title: 'DOCUMENTATION'
     },
     footer: {
-      style: 'dark',
       links: [],
       copyright: `© genesis global ${new Date().getFullYear()}. All rights reserved.`,
     },
