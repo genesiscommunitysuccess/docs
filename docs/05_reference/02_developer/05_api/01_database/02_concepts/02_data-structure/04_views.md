@@ -62,5 +62,7 @@ root table will only be unique if all fields are included.
 
 ## Entities
 
-During code generation, [view](../../../how-to/data-types/views) and [index entities](../../../how-to/data-types/indices) will
+During code generation, [view](../../../how-to/data-types/views) and [index](../../../how-to/data-types/indices) entities will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
+
+The generated entities are kotlin data classes and can be built using the primary constructor. Just before the object is built, it is validated to make sure all required fields have been set.
  
