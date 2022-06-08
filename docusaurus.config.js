@@ -51,7 +51,7 @@ module.exports = {
     },
     navbar: {
       items: [
-        { to: 'learn-the-basics/introduction', label: 'Getting Started' },
+        { to: 'getting-started/learn-the-basics/', label: 'Getting Started' },
         { to: 'frontend', label: 'Frontend' },
         { to: 'database', label: 'Database' },
         { to: 'operations', label: 'Operations' },
