@@ -1,8 +1,8 @@
 ---
 title: 'Learn the basics'
-sidebar_label: 'LEARN THE BASICS'
+sidebar_label: 'Introduction'
 sidebar_position: 1
-id: page-one
+id: introduction
 ---
 
 Welcome to the Learning area for the Genesis low-code platform.
@@ -14,4 +14,3 @@ You can take the slow road or quick road through this area.
 -	If you want to whizz through things, be our guest. Just read the Very simple introduction. Then you can check the Prerequisites and head straight to the Quick Start for hands-on experience. 
 
 Either way, you should have enough knowledge after that to start developing an application and to use our reference documentation to help you through.
-
