@@ -17,13 +17,13 @@ Custom Event Handlers provide a way of implementing business logic in **Java** o
 
 :::note
 
-**Java** event handlers can be implemented using [**RxJava3**](#rx3) and [**Sync**](#sync) event handlers only. Async event handlers cannot be used as there is no implementation for kotlin coroutines in java.
+**Java** event handlers can be implemented using [**RxJava3**](#rx3) and [**Sync**](#sync) event handlers only. Async event handlers cannot be used, as there is no implementation for kotlin coroutines in java.
 
-We recommend using **Kotlin** to implement event handlers
+We recommend using **kotlin** to implement event handlers
 
 :::
 
-### Configure in processes.xml file
+## Configure in processes.xml file
 You need to add the `global.genesis.eventhandler` package in the package tag of the process; this tag defines which package the process should refer to. For example:
 
 ```xml
@@ -63,7 +63,7 @@ The `message` object contains event message and has the following properties :
 | approvalMessage | null | Optional message for approval request. For more details, check [Pending Approval](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals)                           |
 | reason | null | Optional reason sent as part of event message                                                                                                                                                                                                    |
 
-### Inject objects
+## Inject objects
 Use [@Inject](/reference/developer/dependency-injection/#inject) to provide instances for any objects needed as part of the dependency injection stage
 
 ## Async
@@ -79,7 +79,7 @@ The only mandatory method to implement this in the interface is:
 
 This method passes the input message type `I` as a parameter and expects the output message type `O` to be returned.
 
-#### Example
+Here is an example:
 
 ```kotlin
 import com.google.inject.Inject
@@ -136,7 +136,7 @@ In the previous example, there was no distinction between validation and commit 
 
 `interface AsyncValidatingEventHandler<I : Any, O : Outbound> : AsyncEventHandler<I, O>`
 
-#### Implementation
+### Implementation
 Using this interface, you don't need to override the `process` method; you can split your logic into validation and commit stages. There are various methods of implementing this, which are described below:
 
 | Name | Signature |
@@ -144,7 +144,7 @@ Using this interface, you don't need to override the `process` method; you can s
 | onValidate | `suspend fun onValidate(message: Event<I>): O` |
 | onCommit | `suspend fun onCommit(message: Event<I>): O` |
 
-#### Example
+Here is an example:
 
 ```kotlin
 import global.genesis.commons.annotation.Module
@@ -175,7 +175,7 @@ If the `validate` flag is received as `true`, only the `onValidate` code block w
 In some cases, you might want to carry information from the `onValidate` code block to the `onCommit` code block for efficiency purposes. (For example, if several database look-ups happen in `onValidate` and you want to reuse that information.) Using the `AsyncContextValidatingEventHandler` interface, you can provide this context information from the validation stage to the commit stage. See the interface below:
 `interface AsyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : AsyncEventHandler<I, O>`
 
-#### Implementation
+### Implementation
 As with the previous example, when using this interface, you don't need to override the `process` method. The different methods for implementing this are described below:
 
 | Name | Signature |
@@ -223,21 +223,21 @@ class TestCompanyHandlerAsync : AsyncContextValidatingEventHandler<Company, Even
 
 The mechanism explained in [Async](#async) can be recycled and reapplied in Rx3 Event Handlers. 
 
-### Rx3EventHandler
+## Rx3EventHandler
 
 In a similar fashion to `AsyncEventHandler`, there is an Rx3 implementation flavour. It works in a very similar way to [`AsyncEventHandler`](#asynceventhandler), but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
 
 See the interface definition below:
 `interface Rx3EventHandler<I : Any, O : Outbound> : Rx3EventWorkflowProcessor<I, O>, EventHandler`
 
-#### Implementation
+### Implementation
 The mandatory method for implementing this is:
 
 | Name | Signature |
 |---|---|
 | process | `fun process(message: Event<I>) : Single<O>` |
 
-#### Helper methods
+### Helper methods
 
 | Name | Signature |
 |---|---|
@@ -246,7 +246,7 @@ The mandatory method for implementing this is:
 | nack | `fun <I : Any> Rx3EventHandler<I, EventReply>.nack(throwable: Throwable): Single<EventReply>` |
 | nack | `fun <I : Any> Rx3EventHandler<I, EventReply>.nack(error: String): Single<EventReply>` |
 
-#### Example
+Here is an example:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -296,14 +296,14 @@ The same applies to an Rx3ValidatingEventHandler. It is similar to [AsyncValidat
 
 `interface Rx3ValidatingEventHandler<I : Any, O : Outbound> : Rx3EventHandler<I, O>`
 
-#### Implementation
+### Implementation
 
 | Name | Signature |
 |---|---|
 | onValidate | `fun onValidate(message: Event<I>): Single<O>` |
 | onCommit | `fun onCommit(message: Event<I>): Single<O>` |
 
-#### Example
+Here is an example:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -373,14 +373,14 @@ And the same goes for `Rx3ContextValidatingEventHandler` in relation to [AsyncCo
 
 `interface Rx3ContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : Rx3EventHandler<I, O>`
 
-#### Implementation
+### Implementation
 
 | Name | Signature |
 |---|---|
 | onValidate | `fun onValidate(message: Event<I>): Single<ValidationResult<O, C>>` |
 | onCommit | `fun onCommit(message: Event<I>, context: C?): Single<O>` |
 
-#### Helper methods
+### Helper methods
 
 | Name | Signature |
 |---|---|
@@ -388,7 +388,7 @@ And the same goes for `Rx3ContextValidatingEventHandler` in relation to [AsyncCo
 | validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
 
 
-#### Example
+Here is an example:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -471,13 +471,13 @@ Sync works similarly to [Async](#async) and [Rx3](#rx3), but in this case, there
 
 `interface SyncEventHandler<I : Any, O : Outbound> : SyncEventWorkflowProcessor<I, O>, EventHandler`
 
-#### Implementation
+### Implementation
 
 | Name | Signature |
 |---|---|
 | process | `fun process(message: Event<I>) : O` |
 
-#### Helper methods
+### Helper methods
 
 | Name | Signature |
 |---|---|
@@ -486,7 +486,7 @@ Sync works similarly to [Async](#async) and [Rx3](#rx3), but in this case, there
 | nack | `fun <I : Any> SyncEventHandler<I, EventReply>.nack(throwable: Throwable): EventReply` |
 | nack | `fun <I : Any> SyncEventHandler<I, EventReply>.nack(error: String): EventReply` |
 
-#### Example
+Here is an example:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -533,14 +533,14 @@ Sync works similarly to [Async](#async) and [Rx3](#rx3), but in this case, there
 
 `interface SyncValidatingEventHandler<I : Any, O : Outbound> : SyncEventHandler<I, O>`
 
-#### Implementation
+### Implementation
 
 | Name | Signature |
 |---|---|
 | onValidate | `fun onValidate(message: Event<I>): O` |
 | onCommit | `fun onCommit(message: Event<I>): O` |
 
-#### Example
+Here is an example:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -603,21 +603,21 @@ Sync works similarly to [Async](#async) and [Rx3](#rx3), but in this case, there
 ### SyncContextValidatingEventHandler
 `interface SyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : SyncEventHandler<I, O>`
 
-#### Implementation
+### Implementation
 
 | Name | Signature |
 |---|---|
 | onValidate | `fun onValidate(message: Event<I>): ValidationResult<O, C>` |
 | onCommit | `fun onCommit(message: Event<I>, context: C?): O` |
 
-#### Helper methods
+### Helper methods
 
 | Name | Signature |
 |---|---|
 | validationResult | `fun validationResult(result: O): ValidationResult<O, C>` |
 | validationResult | `fun validationResult(result: O, context: C): ValidationResult<O, C>` |
 
-#### Example
+Here is an example:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
