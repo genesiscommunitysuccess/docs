@@ -38,11 +38,11 @@ You’ll possibly learn 20% of what is offered ​by the Platform​, which will
 
 This is the agenda for building an app from start to finish​:
 
-- [Day 1](/tutorials/training-resources/training-content/training-content-day1/): [Quick review of the Platform​](/tutorials/training-resources/training-content/training-content-day1/#quick-review-of-the-platform), [Technical stack and assumptions](/tutorials/training-resources/training-content/training-content-day1/), [Environment setup check​](/tutorials/training-resources/training-content/training-content-day1/), [Create a new project​](/tutorials/training-resources/training-content/training-content-day1/).
-- [Day 2](#2-define-the-data-model): Intro to UI​, Create a user interface​, Add more features to the project​, Extend the data model ​.
-- [Day 3](#3-add-business-logic): Views​, Calculated data and consolidators​, Unit testing​, UI data grids​.
-- [Day 4](#4-prepare-the-server-and-build): Adding logic to the event handler​, State management​, Auditing​, Schedulers​.
-- [Day 5](#5-create-a-user-interface): Permissions​, Generating data model from existing sources​, Key server commands​, Navigating the documentation and how to get help​.
+- [Day 1](/tutorials/training-resources/training-content/training-content-day1/): Quick review of the Platform​, Setting up Workstation and Environment, Developing your first application, Testing the backend​​.
+- [Day 2](/tutorials/training-resources/training-content/training-content-day2/): Intro to UI​, Create a user interface​, Add more features to the project​, Extend the data model.
+- [Day 3](/tutorials/training-resources/training-content/training-content-day3/): Views​, Calculated data and consolidators​, Unit testing​, UI data grids​.
+- [Day 4](/tutorials/training-resources/training-content/training-content-day4/): Adding logic to the event handler​, State management​, Auditing​, Schedulers​.
+- [Day 5](#/tutorials/training-resources/training-content/training-content-day5/): Permissions​, Generating data model from existing sources​, Key server commands​, Navigating the documentation and how to get help​.
 
 The complete source code of this training is available 
 [here](https://github.com/ddangelorb/gthbmining) <img src="/img/github-icon.png" width="20" /> 
