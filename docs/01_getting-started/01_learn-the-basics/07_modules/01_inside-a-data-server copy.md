@@ -1,7 +1,7 @@
 ---
-title: 'SERVER COMMANDS'
-sidebar_label: 'SERVER COMMANDS'
-id: server-commands
+title: 'Inside a Data Server'
+sidebar_label: 'Inside a Data Server'
+id: inside-a-data-server
 ---
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry.

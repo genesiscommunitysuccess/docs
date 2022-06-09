@@ -1,6 +1,6 @@
 ---
 title: 'Learn the basics'
-sidebar_label: 'Introduction'
+sidebar_label: 'One-para intro'
 sidebar_position: 1
 id: introduction
 ---

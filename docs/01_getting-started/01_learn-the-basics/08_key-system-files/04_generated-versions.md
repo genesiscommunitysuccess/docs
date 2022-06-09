@@ -1,7 +1,7 @@
 ---
-title: 'CREATING A NEW PAGE'
-sidebar_label: 'CREATING A NEW PAGE'
-id: creating-a-new-page
+title: 'Generated versions'
+sidebar_label: 'Generated versions'
+id: generated-versions
 ---
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry.
