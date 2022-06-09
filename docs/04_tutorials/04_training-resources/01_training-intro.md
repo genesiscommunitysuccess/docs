@@ -39,7 +39,7 @@ You’ll possibly learn 20% of what is offered ​by the Platform​, which will
 This is the agenda for building an app from start to finish​:
 
 - [Day 1](/tutorials/training-resources/training-content/training-content-day1/): Quick review of the Platform​, Setting up Workstation and Environment, Developing your first application, Testing the backend​​.
-- [Day 2](/tutorials/training-resources/training-content/training-content-day2/): Intro to UI​, Create a user interface​, Extend the data model, Add more features to the project​.
+- [Day 2](/tutorials/training-resources/training-content/training-content-day2/): Intro to UI​, Create a user interface​, Extend the data model​.
 - [Day 3](/tutorials/training-resources/training-content/training-content-day3/): Views​, Calculated data and consolidators​, Unit testing​, UI data grids​.
 - [Day 4](/tutorials/training-resources/training-content/training-content-day4/): Adding logic to the event handler​, State management​, Auditing​, Schedulers​.
 - [Day 5](#/tutorials/training-resources/training-content/training-content-day5/): Permissions​, Generating data model from existing sources​, Key server commands​, Navigating the documentation and how to get help​.

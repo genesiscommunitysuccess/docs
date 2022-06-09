@@ -10,7 +10,6 @@ In this day we are covering:
 - [Intro to UI](#intro-to-ui)
 - [Create a user interface](#create-a-user-interface)
 - [Extend the data model](#extend-the-data-model)
-- [Add more features to the project](#add-more-features-to-the-project)
 
 ## Intro to UI
 
@@ -234,6 +233,66 @@ At this point, the application is now able to display and receive data.
 
 ## Extend the data model
 
+We want to build a real-time positions application, where trades can be entered, and will be aggregated to maintain positions.
 
-## Add more features to the project
+![](/img/day2-training-extended-datamodel.png)
+
+### Try yourself
+
+Let's improve the Data model and create a CRUD, adding the tables **counterparty** and **instrument** as per the definition below. Use all the previous knowledge you got.
+
+![](/img/day2_new-tables.png)
+
+:::tip
+Fields are kept separately from tables, so that they, and their meta-data, can be re-used across multiple tables and show linkage.​
+:::
+
+In order to execute this task do the steps:
+- Edit fields and tables to our tables and *​fields-dictionary.kts* files. When you finish, remember to ​run *genesis-generated-fields* AND​ *genesis-generated-dao​*
+- Add data server queries to *dataserver.kts* file
+- Create CRUD events, using event handlers for ​both entities​. When you finish, remember to ​run *deploy*​
+- Build, deploy and test. Test it with Postman or Console, inserting a new counterparty and instrument. Then use them to insert a new Trade as well.​
+
+:::note
+Two clients that Genesis uses for component testing are:
+- [Postman](https://www.postman.com/downloads/)
+- [Insomnia](https://insomnia.rest/download)
+
+Broadly speaking, Postman offers more features, but Insomnia is also good and is simpler to use.
+
+#### Logging on 
+Whichever client you are using, you need to log in before you can send test requests to the server. This involves two things:
+- providing a SOURCE_REF - this can be any string that identifies all your activity while you are logged in
+- retrieving a SESSION_AUTH_TOKEN, which you can copy and use to authorise all your test requests
+
+For example, to login using Insomnia:
+1. Create a new query in Insomnia.
+2. In front of the url, set the call to **POST**.
+3. For the url, you need to supply your server instance, then **:9064** (which sends you to the application's Router), and then **event-login-auth**. For example:
+**https://test-mynewapp:9064/event-login-auth**
+4. Set the Body to JSON and insert the message below (substituting your correct user name and password) in the main body. 
+
+```
+{
+    "MESSAGE_TYPE": "TXN_LOGIN_AUTH",
+    "SERVICE_NAME": "AUTH_MANAGER",
+    "DETAILS": {
+        "USER_NAME": "DonJuan",
+        "PASSWORD": "2BisTODO"
+    }
+}
+```
+5. Click to view the header, then insert SOURCE_REF in the header. For this field, you can use any string that will identify you (in effect). In the example below, we have set SOURCE_REF to BAUDOIN1 (for no particular reason).
+&nbsp
+&nbsp
+![](/img/test-login-result.png)
+
+6. When you have done this, click on the **Send** button.
+
+This returns a set of details in the right side of the Insomnia window, where you can copy the SESSION_AUTH_TOKEN, which you will need for your test requests.
+
+:::
+
+
+
 
