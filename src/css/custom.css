@@ -7,10 +7,10 @@
 
 /* You can override the default Infima variables here. */
 @font-face {
-  font-family: 'Roboto Medium';
+  font-family: 'Aeonik';
   font-style: normal;
-  font-weight: 500;
-  src: local('Roboto Medium'), local('Roboto-Medium'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9fBBc9.ttf) format('truetype');
+  font-weight: 400;
+  src: url(https://new.genesis.global/wp-content/themes/genesis/dist/fonts/Aeonik-Regular.woff2) format('woff2');
 }
 
 :root {
@@ -23,7 +23,7 @@
   --ifm-menu-color-active: #1200DE;
   --ifm-menu-color-background-active: inherit;
 
-  --ifm-heading-font-family: Roboto-Medium, Roboto Medium, Roboto, sans-serif;
+  --ifm-heading-font-family: 'Aeonik', 'Arial', 'Helvetica', 'sans-serif';
   --ifm-heading-color: #555;
   --ifm-heading-font-weight: 500;
   --ifm-heading-line-height: normal;
@@ -36,6 +36,11 @@
   --ifm-navbar-shadow: -5px 3px 16px 0px rgba(0, 0, 0, 0.15);
 
   --ifm-pre-background: #2B2B2B;
+}
+
+body {
+  font-family: var(--ifm-heading-font-family);
+  font-weight: 400;
 }
 
 .markdown header>h1:first-child {
