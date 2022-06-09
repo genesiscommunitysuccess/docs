@@ -106,6 +106,16 @@ div.aa-DetachedSearchButtonIcon {
   margin-left: 32px;
 }
 
+a.navbar__item.navbar__link {
+  color: white;
+  font-weight: 400;
+}
+
+a.navbar__item.navbar__link.navbar__link--active {
+  color: white;
+  font-weight: 700;
+}
+
 .hero {
   text-align: center;
   text-rendering: optimizeLegibility;
