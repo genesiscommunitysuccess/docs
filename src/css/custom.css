@@ -202,7 +202,7 @@ nav.menu {
 }
 
 nav .menu__link--sublist.menu__link--active {
-  color: #808387
+  color: #1200DE
 }
 
 .menu__link:not(.menu__link--active) {
@@ -213,6 +213,11 @@ nav .menu__link--sublist.menu__link--active {
   border-left: 1px solid grey;
   margin-left: 2rem;
   padding-left: unset;
+}
+
+/* gray out collaped sidebar categories */
+li.menu__list-item--collapsed .menu__link {
+  color: #808387;
 }
 
 .docusaurus-highlight-code-line {
