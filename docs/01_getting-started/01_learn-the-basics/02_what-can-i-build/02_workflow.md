@@ -11,4 +11,4 @@ The Genesis low-code platform has proved to be very effective at connecting to t
 Imagine, for example, a deal capture and valuation platform. You could link to your preferred market-data source, your in-house quant libraries and to your database of trades.
 
 
-![](workflow.png)
+![](/img/workflow.png)

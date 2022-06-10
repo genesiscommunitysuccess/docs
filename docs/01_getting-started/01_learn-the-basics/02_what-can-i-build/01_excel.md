@@ -12,6 +12,6 @@ By default, the script creates a separate table for each sheet in the workbook. 
 
 Or, you can choose to do considerably more, and go beyond the limits of the workbook. It depends on how much extra value you want to create. 
 
-![](data-in-the-app.png)
+![](/img/data-in-the-app.png)
 
 
