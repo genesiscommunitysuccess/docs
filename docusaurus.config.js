@@ -60,6 +60,8 @@ module.exports = {
         src: 'img/logo-icon--light.svg',
         width: 25,
         height: 25,
+        href: '/getting-started/learn-the-basics/',
+        target: '_self'
       },
       title: 'DOCUMENTATION'
     },
