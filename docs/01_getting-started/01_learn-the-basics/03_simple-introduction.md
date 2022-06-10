@@ -4,8 +4,21 @@ sidebar_label: 'A very simple introduction'
 id: simple-introduction
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+## What is the Genesis low-code platform?
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+The Genesis low-code platform enables you to design, build and run applications for the financial markets. 
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+The simplest way of thinking about a Genesis application is:
+
+- a database surrounded by a number of modules
+- a front end that provides a user interface
+
+The front end is able to access data through two key modules: Data Server (real-time data) and Request Server (static data).
+
+A third key module - the Event Handler - is able to handle interaction from the front end and other parts of the application in order to make changes to the database.
+These elements on their own can create a complex and effective application, depending on the complexity of the data model for your database, how rich you make the user interface at the front end, and how thoroughly you define the contents of the three key modules.
+
+Our simple application looks like this:
+
+![](/img/data-in-the-app.png)
+
