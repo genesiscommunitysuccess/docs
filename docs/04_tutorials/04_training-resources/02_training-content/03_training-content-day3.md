@@ -437,7 +437,7 @@ To complete the configuration of the consolidator, add a new entry to **alpha-pr
     <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
     <module>genesis-pal-consolidator</module>
     <package>global.genesis.pal.consolidator</package>
-    <script>trading_app-consolidator.kts</script>
+    <script>alpha-consolidator.kts</script>
     <description>Consolidates trades to calculate positions</description>
     <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
     <language>pal</language>
@@ -447,7 +447,7 @@ To complete the configuration of the consolidator, add a new entry to **alpha-pr
 
 This file lists all the active services for the Positions application. You can see entries have been added automatically when the data server, request server and event handler were generated (by AppGen).
 
-Add a new entry to **trading_app-service-definitions.xml** with the consolidator2 details. Remember the ports numbers should be free and, ideally, sequential.
+Add a new entry to **alpha-service-definitions.xml** with the consolidator2 details. Remember the ports numbers should be free and, ideally, sequential.
 
 
 ## UI data grids
