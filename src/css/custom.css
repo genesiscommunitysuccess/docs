@@ -13,10 +13,20 @@
   src: url(https://new.genesis.global/wp-content/themes/genesis/dist/fonts/Aeonik-Regular.woff2) format('woff2');
 }
 
+@font-face {
+  font-family: 'Aeonik Medium';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://new.genesis.global/wp-content/themes/genesis/dist/fonts/Aeonik-Medium.woff2) format('woff2');
+}
+
 :root {
 
   --primary-blue: #1200DE;
   --warm-gray-4: #F6F5F4;
+
+  --primary-font: 'Aeonik', 'Arial', 'Helvetica', 'sans-serif';
+  --medium-font: 'Aeonik Medium', 'Aeonik', 'Arial', 'Helvetica', 'sans-serif';
 
   line-height: 1.5;
   -webkit-font-smoothing: auto;
@@ -27,7 +37,7 @@
   --ifm-menu-color-active: var(--primary-blue);
   --ifm-menu-color-background-active: inherit;
 
-  --ifm-heading-font-family: 'Aeonik', 'Arial', 'Helvetica', 'sans-serif';
+  --ifm-heading-font-family: var(--primary-font);
   --ifm-heading-color: #555;
   --ifm-heading-font-weight: 500;
   --ifm-heading-line-height: normal;
@@ -43,7 +53,7 @@
 }
 
 body {
-  font-family: var(--ifm-heading-font-family);
+  font-family: var(--primary-font);
   font-weight: 400;
 }
 
@@ -72,7 +82,7 @@ body {
 }
 
 button.aa-DetachedSearchButton {
-  --aa-font-family: 'Roboto-Medium', 'Roboto Medium', 'Roboto', sans-serif;
+  --aa-font-family: var(--medium-font);
   --aa-font-size: 12px;
   --aa-font-weight: 500;
   --aa-search-input-height: 36px;
@@ -118,11 +128,13 @@ div.aa-DetachedSearchButtonIcon {
 a.navbar__item.navbar__link {
   color: white;
   font-weight: 400;
+  line-height: 24px;
+  font-size: 16px;
 }
 
 a.navbar__item.navbar__link.navbar__link--active {
-  color: white;
   font-weight: 700;
+  font-family: var(--medium-font);
 }
 
 .hero {
@@ -150,7 +162,7 @@ main .container {
 .hero__subtitle {
   font-size: 18px;
   margin-bottom: 44px;
-  font-family: Roboto-Regular, Roboto, sans-serif;
+  font-family: var(--primary-font);
 }
 
 .button--getting-started,
@@ -180,7 +192,7 @@ main .container {
   border-radius: 4px;
   border: 1px solid #08c3a5;
   box-sizing: border-box;
-  font-family: 'Roboto-Medium', 'Roboto Medium', 'Roboto', sans-serif;
+  font-family: var(--medium-font);
   font-weight: 500;
   color: #08c3a5;
   font-size: 12px;
@@ -206,7 +218,8 @@ nav.menu {
 }
 
 nav .menu__link--sublist.menu__link--active {
-  color: var(--primary-blue)
+  color: var(--primary-blue);
+  font-family: var(--medium-font);
 }
 
 .menu__link:not(.menu__link--active) {
