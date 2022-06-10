@@ -10,14 +10,14 @@
   font-family: 'Aeonik';
   font-style: normal;
   font-weight: 400;
-  src: url(https://new.genesis.global/wp-content/themes/genesis/dist/fonts/Aeonik-Regular.woff2) format('woff2');
+  src: url(/fonts/Aeonik-Regular.woff2) format('woff2');
 }
 
 @font-face {
   font-family: 'Aeonik Medium';
   font-style: normal;
   font-weight: 400;
-  src: url(https://new.genesis.global/wp-content/themes/genesis/dist/fonts/Aeonik-Medium.woff2) format('woff2');
+  src: url(/fonts/Aeonik-Medium.woff2) format('woff2');
 }
 
 :root {
