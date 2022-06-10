@@ -4,14 +4,14 @@ sidebar_label: 'Excel'
 id: excel
 ---
 
-## Lorem Ipsum Colore Vinare  Ipsum Colore Vingare
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+In financial organisations everywhere, there are spreadsheets that are effective tools, but which pose a significant operational and compliance risk.
 
-### Sub section test
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Genesis enables you to take these and replace them with compliant, auditable Genesis applications. In almost every case, this can be achieved very quickly, so you can realistically operate a rolling upgrade process. We even have a script - ExcelToGenesis - which converts an Excel workbook into a Genesis data model while you make a cup of tea or sip a margarita.
 
-## Lorem Ipsum Colore Vingaresdfd tentaree ficare tutore
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+By default, the script creates a separate table for each sheet in the workbook. You can then create a front end that has a separate page for each one, with tabs to make it easy to move from one to the next.
 
-## Lorem Ipsum Colore Vingaresdfd tentaree 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+Or, you can choose to do considerably more, and go beyond the limits of the workbook. It depends on how much extra value you want to create. 
+
+![](/img/data-in-the-app.png)
+
+
