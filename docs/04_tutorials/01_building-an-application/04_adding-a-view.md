@@ -125,26 +125,9 @@ The purpose of the test is to prove you can look up data with the repo and retri
 * look up by keys
 * perform get bulk from the main table
 First, you need to do the following:
-1. Add the **db-test** dependency to the config module
-```xml
-<dependency>
-    <groupId>global.genesis</groupId>
-    <artifactId>genesis-dbtest</artifactId>
-    <scope>test</scope>
-</dependency>
-```
-2. Add a dependency on the **ref_data_app-config module** in the pom file.
-```xml
-<dependency>
-    <groupId>global.genesis</groupId>
-    <artifactId>ref_app_data-config</artifactId>
-    <version>${ref_app_data.version}</version>
-    <scope>test</scope>
-</dependency>
-```
-3. Add a new test class to the config module called `EnhancedTradeViewTest.kt`
-4. Add an empty txt file to the genesis home folder. This folder is needed for unit tests. 
-5. Add TEST_DATA.csv to a data folder
+1. Add a new test class to the *alpha-script-config* module called `EnhancedTradeViewTest.kt`
+2. Add an empty txt file to the genesis home folder. This folder is needed for unit tests. 
+3. Add TEST_DATA.csv to a data folder
 ```csv
 #INSTRUMENT
 INSTRUMENT_ID,NAME
@@ -156,7 +139,6 @@ COUNTERPARTY_ID,COUNTERPARTY_LEI,NAME,
 2,655FG0324Q4LUVJJMS11,Testing AG,
 ```
 Should look like below:
-![](/img/view-test-folder-structure.png)
 ### Test class setup
 ```kotlin
 package global.genesis
@@ -164,8 +146,10 @@ import global.genesis.db.util.AbstractDatabaseTest
 import global.genesis.db.util.TestUtil
 import global.genesis.dictionary.GenesisDictionary
 import global.genesis.gen.dao.Trade
-import global.genesis.gen.view.entity.EnhancedTradeView
-import global.genesis.gen.view.repository.EnhancedTradeViewRepository
+import global.genesis.gen.view.entity.TradeView
+import global.genesis.gen.view.repository.TradeViewAsyncRepository
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.toList
 import org.joda.time.DateTime
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -173,15 +157,15 @@ import org.junit.Test
 import javax.inject.Inject
 class EnhancedTradeViewTest : AbstractDatabaseTest() {
     @Inject
-    lateinit var enhancedTradeViewRepository: EnhancedTradeViewAsyncRepository
+    lateinit var enhancedTradeViewRepository: TradeViewAsyncRepository
     override fun createMockDictionary(): GenesisDictionary = prodDictionary()
     @Before
     fun setup() {
         TestUtil.loadData(resolvePath("data/TEST_DATA.csv"), rxDb)
     }
-    private fun buildTrade(tradeId: Long, now: DateTime = DateTime.now()) =
+    private fun buildTrade(tradeId: String, now: DateTime = DateTime.now()) =
         Trade.builder()
-            .setTradeDatetime(now)
+            .setTradeDate(now)
             .setCounterpartyId("2") // COUNTERPARTY_NAME = "Testing AG"
             .setInstrumentId("1")   // INSTRUMENT_NAME = "FOO.L"
             .setPrice(12.0)

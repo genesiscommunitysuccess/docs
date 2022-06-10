@@ -230,6 +230,25 @@ ${when(x => x.serverResponse, html`
 
 At this point, the application is now able to display and receive data.
 
+### Running the application locally 
+
+Now you are ready to run the application you have created for the front end.
+
+From the workspace root, run:
+```
+$ npm run bootstrap
+```
+
+Next, change to the **positions** directory and spin up the dev server:
+
+```
+$ cd ./packages/apps/positions/client/web
+$ npm run dev
+```
+
+The application will open at `http://localhost:6060/login`.
+![](/img/btfe--positions-example--login.png)
+
 
 ## Extend the data model
 
