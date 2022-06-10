@@ -14,13 +14,17 @@
 }
 
 :root {
+
+  --primary-blue: #1200DE;
+  --warm-gray-4: #F6F5F4;
+
   line-height: 1.5;
   -webkit-font-smoothing: auto;
 
   --ifm-container-width-xl: 1140px;
 
-  --ifm-link-color: #1200DE;
-  --ifm-menu-color-active: #1200DE;
+  --ifm-link-color: var(--primary-blue);
+  --ifm-menu-color-active: var(--primary-blue);
   --ifm-menu-color-background-active: inherit;
 
   --ifm-heading-font-family: 'Aeonik', 'Arial', 'Helvetica', 'sans-serif';
@@ -30,7 +34,7 @@
 
   --ifm-hero-background-color: transparent;
 
-  --ifm-navbar-background-color: #1200DE;
+  --ifm-navbar-background-color: var(--primary-blue);
   --ifm-navbar-link-color: #FFFFFF;
   --ifm-navbar-height: 88px;
   --ifm-navbar-shadow: -5px 3px 16px 0px rgba(0, 0, 0, 0.15);
@@ -196,13 +200,13 @@ main .container {
 
 /* side menu */
 nav.menu {
-  --side-nav-color-background: #F6F5F4;
+  --side-nav-color-background: var(--warm-gray-4);
   padding: 1rem 0.5rem;
   background-color: var(--side-nav-color-background);
 }
 
 nav .menu__link--sublist.menu__link--active {
-  color: #1200DE
+  color: var(--primary-blue)
 }
 
 .menu__link:not(.menu__link--active) {
@@ -320,4 +324,15 @@ alpha-button .icon {
 
 .tooltip-examples [class^="playgroundPreview"] {
   min-height: 110px;
+}
+
+/* make the div inside main-wrapper full height, mostly for the sidebar */
+div.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+div.main-wrapper > div {
+  flex: 1;
 }
