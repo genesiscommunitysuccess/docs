@@ -573,18 +573,18 @@ Update the **processes.xml** file for the Positions application and change the t
 ```
 
 #### 5.Load the cron rule on to the database
-Load the cron rule csv into the database. 
+Load the cron rule csv into the database, CRON_RULE Table. 
 Run `SendIt`.
 
 csv:
 ```
-CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSA
-"0 * * ? * *","It’s a rule","Europe/London","ENABLED","A
-rule","JohnDoe","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
+CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
+"0 * * ? * *","It’s a rule","Europe/London","ENABLED","A rule","JohnDoe","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 
 That's it.
 
+<!-- 
 ### Dynamic events​
 
 We have now set up the evaluator so that our application creates reports daily.
@@ -593,9 +593,9 @@ Now you are going to use the evaluator again to set up dynamic events. In this c
 
 #### Preparation
 
-First, check that you have the evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron job](/tutorials/building-an-application/events/static-events).
+First, check that you have the evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron job](#cron-jobs-static-events).
 
-setting up a cron job \[setting up a cron job\](/platform-reference/other-modules/dbtogenesis/dbtogenesis-oracle/).
+setting up a cron job [setting up a cron job](/platform-reference/other-modules/dbtogenesis/dbtogenesis-oracle/).
 
 You need to create two csv files for this exercise.
 
@@ -727,3 +727,4 @@ You can see that when the limit is breached, you receive an email automatically:
 ![](/img/dynamic-email.png)
 
 Well done!
+-->

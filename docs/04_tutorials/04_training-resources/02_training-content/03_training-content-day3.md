@@ -8,7 +8,7 @@ sidebar_position: 3
 In this day we are covering:
 
 - [Views](#views)
-- [Unit testing](#unit-testing​)​
+- [Unit testing](#unit-testing)​
 - [Calculated data and consolidators](#calculated-data-and-consolidators)
 - [UI data grids](#ui-data-grids)
 

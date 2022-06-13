@@ -7,7 +7,7 @@ sidebar_position: 5
 ---
 In this day we are covering:
 
-- [Permissions​](#permissions​)
+- [Permissions​](#permissions)
 - [Generating data model from existing sources](#generating-data-model-from-existing-sources)
 - [Key server commands](#key-server-commands)
 - [Navigating the documentation and how to get help​](#navigating-the-documentation-and-how-to-get-help​)
@@ -39,6 +39,70 @@ Set two new key values in **site-specific/cfg/genesis-system-definition.kts** fi
 item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
 
 item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
+```
+
+Now you should run **assemble** and **deploy-genesisproduct-alpha** tasks again to prepare the database for permission and deploy the new version.
+
+Using the command SentIt, add the permission to the user JaneDee into the table USER_ATTRIBUTES.
+
+```
+USER_NAME,USER_TYPE,ACCESS_TYPE,COUNTERPARTY_ID
+JaneDee,USER,ENTITY,1
+```
+
+### Configure dynamic permissions
+
+You can now configure dynamic permissions for trades in our IDE. You need to make these changes to the code for the request server, data server and event handler.
+For example, here we add permissioning to a query in the data server file - *alpha-dataserver.kts*:
+
+```kotlin
+dataServer {
+    query("ALL_TRADES", TRADE_VIEW) {
+        permissioning {
+            auth(mapName = "ENTITY_VISIBILITY") {
+                TRADE_VIEW.COUNTERPARTY_ID
+            }
+        }
+    }
+}
+```
+
+You can add similar code to the queries in your request servers - *alpha-reqrep.kts*.
+
+```kotlin
+requestReplies {
+    requestReply("TRADE", TRADE_VIEW) {
+        permissioning {
+            auth(mapName = "ENTITY_VISIBILITY") {
+                TRADE_VIEW.COUNTERPARTY_ID
+            }
+        }
+    }
+}
+```
+Event handlers are slightly different, because the input data class can be customised. The code would look like this (taking the TRADE_INSERT event handler as an example):
+
+```kotlin
+  eventHandler<Trade>(name = "TRADE_INSERT") {
+    permissions {
+      auth(mapName = "ENTITY_VISIBILITY") {
+        field { counterpartyId }
+      }
+    }
+    onValidate { event ->
+      val message = event.details
+      verify {
+        entityDb hasEntry Counterparty.ById(message.counterpartyId)
+        entityDb hasEntry Instrument.ById(message.instrumentId)
+      }
+      ack()
+    }
+    onCommit { event ->
+      val trade = event.details
+      stateMachine.insert(trade)
+      ack()
+    }
+  }
 ```
 
 ## Generating data model from existing sources
