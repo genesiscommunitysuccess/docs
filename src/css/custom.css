@@ -137,6 +137,10 @@ a.navbar__item.navbar__link.navbar__link--active {
   font-family: var(--medium-font);
 }
 
+.navbar__toggle > svg {
+  color: white;
+}
+
 .hero {
   text-align: center;
   text-rendering: optimizeLegibility;
