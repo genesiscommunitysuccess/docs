@@ -14,3 +14,18 @@ Event handlers are conventionally defined in the file _application-name_**-event
 
 So, if your application is called **positions**, then the file would conventionally be named **positions-eventhandler.kts**.
 
+You can write custom Event Handlers using our [APIs](/reference/developer/api/event-handler-api/). These can be implemented using kotlin or java.
+
+:::note
+
+We recommend using **kotlin** to implement event handlers.
+
+- **Java** Event Handlers are implemented using [**RxJava3**](#rx3) [**Sync**](#sync) Event Handlers only. 
+- Async Event Handlers cannot be used, as there is no implementation for kotlin coroutines in java.
+
+
+
+:::
+
+
+
