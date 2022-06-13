@@ -45,5 +45,5 @@ This is the agenda for building an app from start to finish​:
 - [Day 5](#/tutorials/training-resources/training-content/training-content-day5/): Permissions​, Generating data model from existing sources​, Key server commands​, Navigating the documentation and how to get help​.
 
 The complete source code of this training is available 
-[here](https://github.com/ddangelorb/gthbmining) <img src="/img/github-icon.png" width="20" /> 
+[here](https://github.com/dbarros1979/alpha) <img src="/img/github-icon.png" width="20" /> 
 &nbsp; 
