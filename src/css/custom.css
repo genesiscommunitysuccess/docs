@@ -142,6 +142,15 @@ a.navbar__item.navbar__link.navbar__link--active {
   color: white;
 }
 
+.navbar-sidebar__close > svg {
+  height: 16px;
+  width: 16px;
+}
+
+.navbar-sidebar__close > svg > g {
+  stroke: white;
+}
+
 div.navbar-sidebar__item {
   background-color: white;
 }
