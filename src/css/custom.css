@@ -24,6 +24,7 @@
 
   --primary-blue: #1200DE;
   --warm-gray-4: #F6F5F4;
+  --warm-gray-3: #E3E0DD;
 
   --primary-font: 'Aeonik', 'Arial', 'Helvetica', 'sans-serif';
   --medium-font: 'Aeonik Medium', 'Aeonik', 'Arial', 'Helvetica', 'sans-serif';
@@ -139,6 +140,14 @@ a.navbar__item.navbar__link.navbar__link--active {
 
 .navbar__toggle > svg {
   color: white;
+}
+
+div.navbar-sidebar__item {
+  background-color: white;
+}
+
+button.navbar-sidebar__back {
+  background-color: var(--warm-gray-3);
 }
 
 .hero {
