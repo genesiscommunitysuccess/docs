@@ -46,6 +46,9 @@ You’ll possibly learn 20% of what is offered ​by the Platform​, which will
 - [Day 4](/tutorials/training-resources/training-content-day4/): Adding logic to the event handler​, state management​, auditing​, schedulers​.
 - [Day 5](#/tutorials/training-resources/training-content-day5/): Permissions​, generating data model from existing sources​, key server commands​, navigating the documentation and how to get help​.
 
+## Genesis low-code Platform version
+6.0.2
+
 ## Source code
 The complete source code of this training is available 
 [here](https://github.com/dbarros1979/alpha) <img src="/img/github-icon.png" width="20" /> 

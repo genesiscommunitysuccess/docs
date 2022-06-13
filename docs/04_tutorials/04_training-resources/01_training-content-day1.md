@@ -15,61 +15,84 @@ In this day we are covering:
 
 ## Quick review of the Platform
 
-The Genesis low-code platform has a real-time event-driven architecture built with microservices​.
+The only low-code platform designed to build and run mission-critical systems for the financial markets based on event-driven and microservices architecture. 
 
+The Genesis low-code platform easily enables your application to handle events and distribute data in real time from the start by using its building blocks such as data servers, request servers and event handlers. These resources are powered by Genesis Platform Abstraction Language (**GPAL**), which plugs into IntelliJ allowing for code autocompletion, compilation and syntax highlighting as you code. 
 
 <b>Genesis Low-Code Platform</b>
 
 ![](/img/genesis-platform.png)
 
+At the heart of the server is the data persistence layer and the **data model**. You model your data by defining fields, then tables, then views.
+
+Once you have a data model defined, you can start bringing your application to life by creating **events** in an event handler process, which have access to the data layer importing auto-generated data repositories, to handle the business logic with code written in languages such as Kotlin and/or Java. 
+
+When it comes to displaying the data, you can configure a **data server** to distribute the data to the front end. The data server is a GPAL component that streams the data in real time to subscribers such as a data grid component in the front end. You can also bind a button in the UI to an event (action) defined in your event handler.
+
+All of this managed by the Genesis low-code platform. You don't need to worry about inter-process communication or even how to connect the front end to the back end - for instance, the Platform handles a web socket connection between the browser and the data server for you. Just defining something as simple as:
+
+Back end
+```kotlin
+dataServer {
+    query("ALL_TRADES", TRADE)
+}
+```
+
+Front end
+```html
+<zero-ag-grid rowHeight="45">
+    <ag-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
+</zero-ag-grid>
+```
+
+Now let's take a closer look at the server architecture.
+
 <b>Server Architecture</b>
 
 ![](/img/server-architecture.png)
 
+Surrounding the core, operational tools enable you to run and monitor the application, while cluster services enable you to run across multiple nodes. Auth and permissions enable you control access and build sophisticated and granular access to data and functions. 
+
+You will get familiar with all these concepts in the next lessons.
 
 ## Setting up Workstation and Environment
 
-So let's get started by setting up [Workstation](#workstation-setup) and [Environment](#environment-setup).
+So let's get started by setting up your [workstation](#workstation-setup) and the development [environment](#environment-setup).
 
 ### Workstation setup
 
-To develop Genesis applications, you need to access on-premise workstations through remote technologies like Citrix, VMware etc.
-
-This page gives you the hardware and software requirements. It also give you instructions on accessing the Genesis repository and configuring the Genesis packages.
-
+Please check hardware and software requirements as follows.
 
 #### Recommended hardware and operating system
 
-* Operating system : Windows 10 Pro
+* Operating system : Windows 10 Pro version 2004 or higher
 * RAM : 16GB minimum, 32GB preferred (if running full applications locally)
 * CPU : 8 Core
 * SSD : 250GB
 
-#### Recommended software packages
+#### Needed software packages
 
 | Package	| Minimum Version| 
 |--------------|:-----:|
 | IntelliJ	| 2021.1.3|
 |Visual Studio Code	| 1.52.1|
 |Java SDK| 11|
-| Putty	| 0.74|
 | Chrome | 88.0|
-| Maven	| 3.6.3|
 | Postman	| 8|
-| Gradle  | 6.8|
 | NodeJS  |16 LTS+|
+| npm | 8 |
+| Gradle | 6.8 |
 
 You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
 
-#### Requirements
-
-* NodeJS (16 LTS+) - https://nodejs.org/en/
-* npm 8 (installed with NodeJS)
-
+####  Accessing the Genesis repository and configuring the Genesis packages
 #### .npmrc set-up
 
-For access to Genesis packages, you need to configure the `@genesislcap` scope of `npm` to use our jfrog registry.
-You will be provided with access details during your on-boarding.
+For access to Genesis packages, you need to configure the `@genesislcap` scope of `npm` to use our jfrog registry. 
+
+:::note
+This requires credentials for accessing Genesis Artifactory. If you have not been provided with the credentials, please contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login).
+:::
 
 1. Create an `.npmrc` file in your user home directory.
  2. Using your credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
@@ -101,40 +124,45 @@ You will be provided with access details during your on-boarding.
 Genesis Foundation UI
 ```
 
+#### Gradle setup
+Make sure you have a gradle.properties file inside a **.gradle** folder on your user directory; this file must contain your password in clear text:
+```shell
+genesisArtifactoryUser=<your-artifactory-user>
+genesisArtifactoryPassword=<your-artifactory-password>
+```
 
 ### Environment setup
 
-Make sure you did the [Workstation setup](#workstation-setup) prior this.
+Make sure you completed the [Workstation setup](#workstation-setup) prior to this.
 
 You can install everything you need to run Windows Subsystem for Linux (WSL) by entering this command in an administrator PowerShell or Windows Command Prompt and then restarting your machine.
 ```
 wsl --install
 ```
-Requires Windows 10 version 2004 or higher. More details [here](https://docs.microsoft.com/en-us/windows/wsl/install).
+If you need help with the WSL installation, please refer to [here](https://docs.microsoft.com/en-us/windows/wsl/install).
 
-Then download the [training distro](https://netorg209792-my.sharepoint.com/:u:/g/personal/genesis_files_genesis_global/EahiR5AJ7-BKvTzh3TBWmTgBFVCoW6jOG-4dh4vkZFtJtg?e=ehUShp). This distro contains everything you need to start, including: 
-CentOS 7 base, Java SDK, genesis user, nginx, postgres.
+Then download the [Genesis WSL training distro](https://netorg209792-my.sharepoint.com/:u:/r/personal/genesis_files_genesis_global/Documents/GENESIS/General/Platform/Training/Developer/training-wsl.zip?csf=1&web=1&e=0Z2OtN). This distro contains everything you need to get started, including: 
+Linux CentOS 7 base, Java 11 SDK, genesis user, nginx, postgres.
 
-
-Now create a local folder where you want to run the distro, e.g., "C:\wsl\distros\". Unzip the package downloaded there and from that folder run:
+Now create a local folder where you want to run the distro, e.g., "C:\wsl\distros\training-distro\". Unzip the package downloaded there and from that folder run:
 ```
 wsl --import TrainingCentOS . training-wsl.backup
 ```
 
-Validate it running:
+Run the distro:
 ```
 wsl -d TrainingCentOS
 ```
-Start the required services:
-```
-nginx
-su - postgres
-/usr/pgsql-11/bin/postgres &
+
+You should see this message:
+```bash
+Welcome to Genesis WSL training distro!
+[root@hostname training-distro]#
 ```
 
 ## Developing your first application​​
 
-This will enable you to see the basics of the Genesis low-code platform by building a very simple application. It is designed simply to get from start to finish as quickly as possible. It is in five main steps:
+This will enable you to see the basics of the Genesis low-code platform by starting with a very simple application. It is designed simply to get from start to finish as quickly as possible. It is in five main steps:
 
 1. [Create a new project](#1-create-a-new-project).
 2. [Define the data model](#2-define-the-data-model).
@@ -142,18 +170,9 @@ This will enable you to see the basics of the Genesis low-code platform by build
 4. [Prepare the server and build](#4-prepare-the-server-and-build).
 5. [Deployment](#5-deployment)
 
-Before you start, you need to have:
-
-- An IDE (preferably IntelliJ)
-- NodeJS (see our [recommended software packages](#requirements) for versioning information)
-- Credentials for accessing Genesis Artifactory. If necessary, contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login)
-- A gradle.properties file inside a **.gradle** folder on your user directory; this file must contain your password in clear text:
-
-```shell
-genesisArtifactoryUser=<your-artifactory-user>
-genesisArtifactoryPassword=<your-artifactory-password>
-```
-- A local or cloud Linux environment for runtime, which has a user created with the name of the application, e.g. [setup and host on wsl](#environment-setup)
+:::info
+Once you finish this lesson, you will extend this initial simple application into a full Trades & Positions app!
+:::
 
 ### What you will build
 
@@ -228,8 +247,8 @@ Then there are more questions, which you can respond to as follows:
 ? Design system name alpha
 ? Base design system package (@latest will be used) @genesislcap/foundation-ui
 ? Set API Host Yes (ws://localhost/gwf)
-? Genesis Server version 6.0.1
-? Genesis Deploy plugin version 6.0.1
+? Genesis Server version 6.0.2
+? Genesis Deploy plugin version 6.0.2
 ? Kotlin version 1.6.10
 ? Group Id global.genesis
 ? Application Version 1.0.0-SNAPSHOT
@@ -244,31 +263,6 @@ i Application created successfully! 🎉 Please open the application and follow 
 Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application.
 
 Open Intellij (or your chosen IDE). In the alpha project, you will see the **readme** file for the project. After importing and indexing, you should see the files and project structure ready.
-
-:::caution
-Before going to the next step, make sure the `gradle.properties` file from the server/jvm folder is properly set with the following entries:
-
-```properties
-genesis-home=<path-to-genesis-distribution>
-wsl-distro=<name-of-the-wsl-distro>
-wsl-user=<wsl-username>
-```
-
-| Entry  |  Description | 
-|---|---|
-|`genesis-home`|  This is a mandatory property that is a path on the WSL distribution. Example: `/home/alpha/run` |
-|`wsl-distro`|  This is a mandatory property that is the name of the WSL distribution. Example: `CentOS7` |
-|`wsl-user`|  This is an optional property. If omitted, the default WSL user will be used. Example: `alpha` |
-
-Sample configuration:
-
-```properties
-genesis-home=/home/alpha/run
-wsl-distro=CentOS7
-wsl-user=alpha
-```
-
-:::
 
 #### Add fields
 You define your [fields](/creating-applications/defining-your-application/data-model/fields/fields/) in the file **alpha-fields-dictionary.kts**.
@@ -434,11 +428,34 @@ Ensure the **build.gradle.kts** in this sub-module has the following entry
 
 ```kotlin
 plugins {
-    id("global.genesis.deploy") version "6.0.0"
+    id("global.genesis.deploy") version "6.0.2"
 }
 ```
 
-Ensure the `gradle.properties` file from server/jvm folder is properly configured as explained [here](#2-define-the-data-model)
+:::caution
+Ensure the `gradle.properties` file from the server/jvm folder is properly set with the following entries:
+
+```properties
+genesis-home=<path-to-genesis-distribution>
+wsl-distro=<name-of-the-wsl-distro>
+wsl-user=<wsl-username>
+```
+
+| Entry  |  Description | 
+|---|---|
+|`genesis-home`|  This is a mandatory property that is a path on the WSL distribution. Example: `/home/alpha/run` |
+|`wsl-distro`|  This is a mandatory property that is the name of the WSL distribution. Example: `CentOS7` |
+|`wsl-user`|  This is an optional property. If omitted, the default WSL user will be used. Example: `alpha` |
+
+Sample configuration:
+
+```properties
+genesis-home=/home/genesis/run
+wsl-distro=TrainingCentOS
+wsl-user=genesis
+```
+
+:::
 
 #### Deploy tasks
 
