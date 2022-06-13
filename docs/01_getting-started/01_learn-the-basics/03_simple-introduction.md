@@ -20,5 +20,36 @@ These elements on their own can create a complex and effective application, depe
 
 Our simple application looks like this:
 
+![](/img/simple-1.png)
+
+### A little more
+
+Let's add some more detail.
+
+**A Router**
+
+There is a configurable Router module for both the front and back ends. This ensures that all traffic between the two reaches its destination securely. 
+
+**Access control**
+
+Importantly, you need to make the application secure. This is done by the Auth module. Configure the Auth module to control access to your application (authentication) and permission to see specific items of data or functions (authorisation); to make authorisation precise, it is coded into each key module (if authorisation = *x* execute *ABC*).
+
+With those things in place, our diagram now looks like this:
+
+![](/img/data-in-the-app.png)
+
+### A lot more
+
+In most cases, you will consider adding further modules to address the scope of your application.
+For example, you can:
+
+- use the Consolidator to aggregate data or perform other calculations
+- integrate with market data or other systems to handle orders, trades, risk and other financial requirements
+- use Notify to integrate with email or professional chatrooms
+
+These are typical examples, but there are more. If there is a special niche that is not covered, you can create your own module from scratch.
+
+We have added these three examples, and our simple diagram is beginning to look a bit  more complex now:
+
 ![](/img/data-in-the-app.png)
 
