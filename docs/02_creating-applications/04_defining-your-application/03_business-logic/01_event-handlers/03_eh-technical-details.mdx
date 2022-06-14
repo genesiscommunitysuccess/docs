@@ -347,8 +347,11 @@ For Java events you need to use RxEntityDb [writeTransaction](reference/develope
     import global.genesis.message.core.event.EventReply;
     import io.reactivex.rxjava3.core.Single;
     import org.jetbrains.annotations.Nullable;
+
     @Module
-    public class EventCounterParty implements Rx3EventHandler<Counterparty, EventReply> {private final RxEntityDb entityDb;@Inject
+    public class EventCounterParty implements Rx3EventHandler<Counterparty, EventReply> {
+
+        private final RxEntityDb entityDb;@Inject
 
         public EventCounterParty(RxEntityDb entityDb) {
             this.entityDb = entityDb;
@@ -363,11 +366,10 @@ For Java events you need to use RxEntityDb [writeTransaction](reference/develope
         @Override
         public Single<EventReply> process(Event<Counterparty> counterpartyEvent) {
             Counterparty counterparty = counterpartyEvent.getDetails();
-            entityDb.writeTransaction(txn -> {
+            return entityDb.writeTransaction(txn -> {
                 txn.insert(counterparty);
                 return ack(this);
-            });
-            return ack(this);
+            }).map(result -> result.getFirst());
         }
     }
 ```
@@ -538,11 +540,7 @@ use context Event Handlers, as shown below:
         @Override
         public Single<EventReply> onCommit(@NotNull Event<Company> event, @Nullable String context) {
             String parsedContext;
-            if (context != null) {
-                parsedContext = context;
-            } else {
-                parsedContext = "Missing context";
-            }
+            parsedContext = Objects.requireNonNullElse(context, "Missing context");
             Company company = event.getDetails();
             return entityDb.insert(company).flatMap(result -> ack(this, List.of(Map.of("VALUE",parsedContext))));
         }
@@ -552,9 +550,9 @@ use context Event Handlers, as shown below:
         public Single<ValidationResult<EventReply, String>> onValidate(@NotNull Event<Company> event) {
             Company company = event.getDetails();
             if(company.getCompanyName().equals("MY_COMPANY")) {
-                return Single.just(validationResult(ack(this).blockingGet(),"Best company in the world"));
+                return ack(this).map(result -> validationResult(result, "Best company in the world"));
             } else {
-                return Single.just(validationResult(ack(this).blockingGet()));
+                return ack(this).map(this::validationResult);
             }
         }
     }
