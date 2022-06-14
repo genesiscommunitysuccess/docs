@@ -22,6 +22,7 @@
 
 :root {
 
+  --black: #161412;
   --primary-blue: #1200DE;
   --warm-gray-4: #F6F5F4;
   --warm-gray-3: #E3E0DD;
@@ -239,13 +240,21 @@ nav.menu {
   background-color: var(--side-nav-color-background);
 }
 
+a.menu__link--sublist-caret::after {
+  min-width: 8px;
+  min-height: 8px;
+  width: 8px;
+  height: 8px;
+  background-size: 16px 16px;
+}
+
 nav .menu__link--sublist.menu__link--active {
   color: var(--primary-blue);
   font-family: var(--medium-font);
 }
 
 .menu__link:not(.menu__link--active) {
-  color: #161412;
+  color: var(--black);
 }
 
 .menu__nested-category .menu__list {
@@ -381,7 +390,7 @@ div.main-wrapper > div {
 ul.table-of-contents {
   line-height: 15.6px;
   font-size: 10px;
-  color: black;
+  color: var(--black);
 }
 
 .table-of-contents__link:hover {
