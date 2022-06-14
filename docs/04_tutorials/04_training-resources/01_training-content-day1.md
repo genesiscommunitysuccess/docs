@@ -55,7 +55,7 @@ Surrounding the core, operational tools enable you to run and monitor the applic
 
 You will get familiar with all these concepts in the next lessons.
 
-## Setting up Workstation and Environment
+## Setting up your workstation and environment
 
 So let's get started by setting up your [workstation](#workstation-setup) and the development [environment](#environment-setup).
 
@@ -135,7 +135,9 @@ genesisArtifactoryPassword=<your-artifactory-password>
 
 Make sure you completed the [Workstation setup](#workstation-setup) prior to this.
 
-You can install everything you need to run Windows Subsystem for Linux (WSL) by entering this command in an administrator PowerShell or Windows Command Prompt and then restarting your machine.
+We are going to setup Windows Subsystem for Linux (WSL) to deploy and run the application locally.
+
+You can install everything you need to run WSL by entering this command in an administrator PowerShell or Windows Command Prompt and then restarting your machine.
 ```
 wsl --install
 ```
