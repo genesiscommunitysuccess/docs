@@ -26,6 +26,7 @@
   --primary-blue: #1200DE;
   --warm-gray-4: #F6F5F4;
   --warm-gray-3: #E3E0DD;
+  --warm-gray-2: #808387;
 
   --primary-font: 'Aeonik', 'Arial', 'Helvetica', 'sans-serif';
   --medium-font: 'Aeonik Medium', 'Aeonik', 'Arial', 'Helvetica', 'sans-serif';
@@ -35,8 +36,10 @@
 
   --ifm-container-width-xl: 1140px;
 
+  --ifm-color-primary: var(--primary-blue);
+
   --ifm-link-color: var(--primary-blue);
-  --ifm-menu-color-active: var(--primary-blue);
+  --ifm-menu-color-active: var(--warm-gray-2);
   --ifm-menu-color-background-active: inherit;
 
   --ifm-heading-font-family: var(--primary-font);
@@ -240,17 +243,14 @@ nav.menu {
   background-color: var(--side-nav-color-background);
 }
 
+/* sidebar carets */
 a.menu__link--sublist-caret::after {
   min-width: 8px;
   min-height: 8px;
   width: 8px;
   height: 8px;
   background-size: 16px 16px;
-}
-
-nav .menu__link--sublist.menu__link--active {
-  color: var(--primary-blue);
-  font-family: var(--medium-font);
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16px\" height=\"16px\" viewBox=\"0 0 24 24\"><path fill=\"rgba(200,194,188,1)\" d=\"M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z\"></path></svg>');
 }
 
 .menu__link:not(.menu__link--active) {
@@ -258,7 +258,7 @@ nav .menu__link--sublist.menu__link--active {
 }
 
 .menu__nested-category .menu__list {
-  border-left: 1px solid grey;
+  border-left: 1px solid var(--warm-gray-3);
   margin-left: 2rem;
   padding-left: unset;
 }
@@ -266,6 +266,18 @@ nav .menu__link--sublist.menu__link--active {
 /* gray out collaped sidebar categories */
 li.menu__list-item--collapsed .menu__link {
   color: #808387;
+}
+
+/* Sidebar nav header  */
+.menu > .menu__list > .menu__list-item > .menu__list-item-collapsible {
+  font-family: var(--medium-font);
+  font-size: 14px;
+  color: var(--warm-gray-2);
+  text-transform: uppercase;
+}
+
+div[class^=sidebar_] .menu__link.menu__link--active:not(.menu__link--sublist) {
+  color: var(--ifm-color-primary);
 }
 
 .docusaurus-highlight-code-line {
