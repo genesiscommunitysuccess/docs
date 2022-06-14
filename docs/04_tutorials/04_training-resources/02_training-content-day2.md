@@ -249,8 +249,15 @@ $ npm run dev
 The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
 
+### CONGRATULATIONS
+You have completed your first application with the Genesis Platform! Take some time to enjoy it!
 
-## Extend the data model
+:::note
+Great things come from great people!
+:::
+
+
+## Extending our initial application
 
 We want to build a real-time positions application, where trades can be entered, and will be aggregated to maintain positions.
 
@@ -258,7 +265,7 @@ We want to build a real-time positions application, where trades can be entered,
 
 ### Try yourself
 
-Let's improve the Data model and create a CRUD, adding the tables **counterparty** and **instrument** as per the definition below. Use all the previous knowledge you got.
+Let's extend the Data model and create a CRUD, adding the tables **counterparty** and **instrument** as per the definition below. Use all the previous knowledge you've got.
 
 ![](/img/day2_new-tables.png)
 
@@ -266,18 +273,16 @@ Let's improve the Data model and create a CRUD, adding the tables **counterparty
 Fields are kept separately from tables, so that they, and their meta-data, can be re-used across multiple tables and show linkage.​
 :::
 
-In order to execute this task do the steps:
+As a reminder, these are the steps needed to complete this task:
 - Edit fields and tables to our tables and *​fields-dictionary.kts* files. When you finish, remember to ​run *genesis-generated-fields* AND​ *genesis-generated-dao​*
 - Add data server queries to *dataserver.kts* file
 - Create CRUD events, using event handlers for ​both entities​. When you finish, remember to ​run *deploy*​
 - Build, deploy and test. Test it with Postman or Console, inserting a new counterparty and instrument. Then use them to insert a new Trade as well.​
 
 :::note
-Two clients that Genesis uses for component testing are:
+As an alternative to Genesis Console, take this opportunity to test your work with an HTTP client such as Postman or Insomnia.
 - [Postman](https://www.postman.com/downloads/)
 - [Insomnia](https://insomnia.rest/download)
-
-Broadly speaking, Postman offers more features, but Insomnia is also good and is simpler to use.
 
 #### Logging on 
 Whichever client you are using, you need to log in before you can send test requests to the server. This involves two things:
@@ -288,16 +293,16 @@ For example, to login using Insomnia:
 1. Create a new query in Insomnia.
 2. In front of the url, set the call to **POST**.
 3. For the url, you need to supply your server instance, then **:9064** (which sends you to the application's Router), and then **event-login-auth**. For example:
-**https://test-mynewapp:9064/event-login-auth**
+**http://localhost:9064/event-login-auth**
 4. Set the Body to JSON and insert the message below (substituting your correct user name and password) in the main body. 
 
 ```
 {
-    "MESSAGE_TYPE": "TXN_LOGIN_AUTH",
+    "MESSAGE_TYPE": "EVENT_LOGIN_AUTH",
     "SERVICE_NAME": "AUTH_MANAGER",
     "DETAILS": {
-        "USER_NAME": "DonJuan",
-        "PASSWORD": "2BisTODO"
+        "USER_NAME": "JaneDee",
+        "PASSWORD": "beONneON*74"
     }
 }
 ```
