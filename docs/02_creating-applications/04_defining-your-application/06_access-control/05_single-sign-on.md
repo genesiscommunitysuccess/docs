@@ -30,6 +30,7 @@ The IT infrastructure/security team at your organisation is usually responsible 
 The following data points need to be shared with Genesis to complete the solution. These data points are stored in the database of your Genesis application.
 
 - The public key of the JWT RSA key pair, (the private key is used to sign the JWT at the internal authentication service)
+  - Alternatively, rather than be supplied with a Public Key directly a URL to obtain the Public Key dynamically should be provided, this is expected to be in, JSON Web Key Sets format.  
 
 - The URL to the internal JWT authentication service
 
@@ -60,6 +61,20 @@ If CORS is not enabled, the SSO workflow is:
 4. A redirect is triggered for the browser to the internal authentication service, which will include the end user’s internal authentication parameters. A return parameter to **https://your-subdomain.genesisapplication.com/** is also part of the request.
 5. The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends a redirect trigger to the browser for **https://your-subdomain.genesisapplication.com/**, which includes the JWT as a request parameter.
 6. The Genesis platform is reloaded. It recognises that SSO is enabled, but now with the JWT as a parameter. The platform sends an SSO authentication request with the JWT for the specific organisation. If this is successful, an active Session token is returned.
+
+#### JWT Revalidation
+
+The Auth services provides an Event Handler to clients to allow for periodic updating and revalidation of a JWT tokens.
+
+The Event Handlers is named ```EVENT_VALIDATE_JWT``` and takes these parameters:-
+
+```kotlin
+data class DomainJWT(
+    val domain: String,
+    val jwt: String
+)
+```
+
 
 ## SAML SSO
 
