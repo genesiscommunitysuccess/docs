@@ -6,12 +6,11 @@ sidebar_position: 1
 
 ---
 # Genesis developer training
-
-Become an effective developer on the Genesis low-code platform.
+<img src="/img/dev-training-book-cover.png" /> 
 
 ## What You'll Learn​
 
-This is a hands-on developer training where we're going to follow the creation ​of an application from start to finish.
+This is a hands-on developer training where we're going to follow the creation ​of an application from start to finish. You will become an effective developer on the Genesis low-code platform.
 
 ## Pre-requisites and assumptions
 

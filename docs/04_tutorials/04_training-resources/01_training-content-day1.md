@@ -408,6 +408,25 @@ Add the following content to the **alpha-service-definitions.xml** file.
     <service host="localhost" name="ALPHA_EVENT_HANDLER" port="11001"/>
 </configuration>
 ```
+
+#### Overriding default configurations
+You can override the standard definitions using the site-specific folder located at ..\alpha\server\jvm\alpha-site-specific\src\main\resources\cfg\
+
+Once deployed into the server, the files from that folder get installed in the runtime folder under a sub-folder called 'site-specific'. This is an area of the run directory, i.e. the Platform installation directory, where you can override the standard definitions found elsewhere in the application. You supply the standard definition name and your own definition. Your application will then only use your definition.
+
+This is useful where you have used standard modules such as Auth, FIX or even the Genesis distribution itself; you should never change these modules. Any files/definitions that are listed in the site-specific area automatically take their places. In our case, the genesis-system-definition.kts must be edited to use postgres database engine instead of the default one (FDB) as follows: 
+
+```kotlin
+...
+item(name = "DbLayer", value = "SQL")
+...
+item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=docker")
+
+```
+:::tip
+If you want to add application specific definitions, use ..\server\jvm\alpha-config\src\main\resources\cfg\alpha-system-definition.kts
+:::
+
 Finally, you can build the server.
 
 In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha**/**Tasks**/**Build/Assemble**.
@@ -625,7 +644,7 @@ You can go on to check the TRADE table to see if your insert is there.
 
 ![](/img/test-console-eh-confirm-trade-alpha.png)
 
-3. Click on the arrow beside the relevant resource. You should now see the new instrument in the list displayed on the right.
+3. Click on the arrow beside the relevant resource. You should now see the new trade in the list displayed on the right.
 
 ![](/img/test-console-eh-confirm-trade-alpha-2.png)
 
