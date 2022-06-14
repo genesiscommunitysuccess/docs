@@ -18,6 +18,61 @@ At this stage, the app has a consolidator to calculate the positions, event hand
 
 For this part of the tutorial, you want to permission users so that each one has access to the correct parts of the system.
 
+### Authorisation 
+
+Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:
+
+* The whole entity
+* Specific rows
+* Specific columns
+
+Effectively, you have two levels of control:
+
+**High-level**
+
+You could hide an entire grid from the UI, for example. So, one group of users could view reference data, but other groups would not see this. Or, you could hide an entire data server. To achieve this, you use RIGHT_CODE. This is like a switch – you can either see it or not, depending on whether the code is TRUE or FALSE.
+
+**Entity-level**
+
+This is row- or column-level access to information. Different users can all view the same grid, but each one sees different data. This is best explained with these simple examples:
+
+* You can have user A, user B and user C all having the RIGHT_CODE to view a specific grid, but each one sees different trades in that grid. This enables you to separate different trading desks, for example.
+* Each user might only have access to trades for specific customers.
+
+By including these permissions in an event handler, user A can only enter a trade on behalf of a specific set of clients and user B can only enter trades on behalf of a different set of clients.
+
+Similarly, you can have different users seeing different columns in the same grid. This could be used for a support function, for example. You can prevent the support team from seeing specific columns of sensitive data, such as who the client for a trade is. This can be specified by using GPAL.
+
+#### Users, profiles and right codes
+
+Genesis has the concept of users, profiles and right codes. For each one, there is a table to store the related entity data:
+
+* USER
+* PROFILE
+* RIGHT
+
+Users gain rights via profiles. So we have tables to determine which users and rights belong to each given profile. Note that you cannot allocate right codes directly to a specific user. However, a user can have multiple profiles.
+
+A profile can have zero or more rights and zero or more users.
+
+These relationships are held in the following tables:
+
+* PROFILE_RIGHT
+* PROFILE_USER
+
+Related to these tables, we have the RIGHT_SUMMARY table, which contains the superset of rights any given user has. These are based on the profiles assigned to them. This is the key table used when checking rights, and it exists to allow the efficient checking of a user's rights.
+
+![](/img/user-profile-rights-setup.png)
+
+The RIGHT_SUMMARY table entries are automatically maintained by the system in real time. In this way, the rights are easily accessible at speed. The GENESIS_AUTH_MANAGER process manages this table's entries automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY table is updated immediately and all the users in that profile receive the new right automatically.
+
+:::warning
+This table is only automatically maintained when profile user/right entries are maintained via GENESIS_AUTH_MANAGER business events. If you update the data in the tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. **DbMon** or **SendIt**) then the RIGHT_SUMMARY table will not be maintained automatically.
+In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in PROFILE_USER and PROFILE_RIGHT and populates RIGHT_SUMMARY withe the correct data.
+:::
+
+Further information as well as a sample system set-up can be found [here](/creating-applications/defining-your-application/access-control/authorisation/#sample-explanation).
+
 ### The objective
 
 The objective is to use dynamic permissions and permission codes so that specific users have access to specific parts of the application – both functions and data.
@@ -27,11 +82,11 @@ The objective is to use dynamic permissions and permission codes so that specifi
 
 First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field part of the [generic permissions](/creating-applications/defining-your-application/access-control/authorisation/) system.
 
-Starting with the server, set up two USER and USER_ATTRIBUTES records: JohnDoe and JaneDoe.
+Starting with the server, set up the USER and USER_ATTRIBUTES records for JaneDee system user.
 
+:::tip
 If you are not sure how to read and write information from the Genesis database, please see the reference for the [`DbMon`](/managing-applications/operate/on-the-host/helpful-commands/#dbmon-script) and [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script) commands.
-
-![](/img/jane-and-john-doe.png)
+:::
 
 Set two new key values in **site-specific/cfg/genesis-system-definition.kts** file. This enables the COUNTERPARTY table and COUNTERPARTY_ID field to become part of the generic permissions system:
 
@@ -39,15 +94,6 @@ Set two new key values in **site-specific/cfg/genesis-system-definition.kts** fi
 item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
 
 item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
-```
-
-Now you should run **assemble** and **deploy-genesisproduct-alpha** tasks again to prepare the database for permission and deploy the new version.
-
-Using the command SentIt, add the permission to the user JaneDee into the table USER_ATTRIBUTES.
-
-```
-USER_NAME,USER_TYPE,ACCESS_TYPE,COUNTERPARTY_ID
-JaneDee,USER,ENTITY,1
 ```
 
 ### Configure dynamic permissions
@@ -104,6 +150,33 @@ Event handlers are slightly different, because the input data class can be custo
     }
   }
 ```
+
+Now you should run **assemble** and **deploy-genesisproduct-alpha** tasks again to prepare the database for permission and deploy the new version.
+
+Using the command [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script) do the following three configurations below.
+
+1. Add the permission to the user JaneDee into the table USER_ATTRIBUTES.
+
+```
+USER_NAME,USER_TYPE,ACCESS_TYPE,COUNTERPARTY_ID
+JaneDee,USER,ENTITY,1
+```
+
+2. Add the association between User and Counterparty into the table USER_COUNTERPARTY_MAP.
+
+```
+USER_NAME,COUNTERPARTY_ID
+JaneDee,1
+```
+
+3. Add the authorization code into the table RIGHT_SUMMARY.
+
+```
+USER_NAME,RIGHT_CODE
+JaneDee,TRADER
+```
+
+That is it! You can now insert some trades and see the permissions happening in the application.
 
 ## Generating data model from existing sources
 
