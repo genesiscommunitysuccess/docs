@@ -22,7 +22,11 @@ module.exports = {
     [require.resolve('@cmfcmf/docusaurus-search-local'), {
       indexBlog: true,
       indexPages: true
-    }]
+    }],
+    [require.resolve('docusaurus-gtm-plugin'),{
+        id: 'GTM-5GTR43J',
+      }
+    ]
   ],
 
   presets: [
@@ -39,11 +43,6 @@ module.exports = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
-        // https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-google-gtag
-        gtag: {
-          trackingID: 'GTM-5GTR43J',
-          anonymizeIP: true,
-        },
       }
     ],
   ],
@@ -56,10 +55,10 @@ module.exports = {
     },
     navbar: {
       items: [
-        { to: 'getting-started/learn-the-basics/', label: 'Getting Started' },
-        { to: 'frontend/creating-a-new-page/', label: 'Frontend' },
-        { to: 'database', label: 'Database' },
-        { to: 'operations/commands/server-commands/', label: 'Operations' },
+        {to: 'getting-started/learn-the-basics/', label: 'Getting Started'},
+        {to: 'frontend/creating-a-new-page/', label: 'Frontend'},
+        {to: 'database', label: 'Database'},
+        {to: 'operations/commands/server-commands/', label: 'Operations'},
       ],
       logo: {
         alt: 'Genesis Logo',
