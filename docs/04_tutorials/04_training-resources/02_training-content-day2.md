@@ -13,21 +13,42 @@ In this day we are covering:
 
 ## Intro to UI
 
-### Web strategy​
+Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](https://www.fast.design/docs/introduction/), which is a lightweight abstraction that enables you to easily ​build performant, memory-efficient, standards-compliant ​Web Components.
 
-Genesis provides a future-proofed web stack. ​[Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) are at the very heart of our strategy, ​which is based on native browsers and a standards-based ​component model.
+### Web components
 
-Our Web Components are built on top of [Microsoft FAST](https://www.fast.design/docs/introduction/), which is a lightweight abstraction that enables you to easily ​build performant, memory-efficient, standards-compliant ​Web Components.
+[Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) are at the very heart of our strategy, based on native browsers and a standards-based ​component model. 
+
+Web Components are custom html elements that completely encapsulate their logic to create self-contained reusable components, that do not clash or interfere with the rest of application. They are future-proof and interoperable with traditional web frameworks.
+
+We currently offer over 40 web components that are ready to go, but that number is growing and we can also work with our clients to create bespoke web components for their specific needs. Frameworks like React, Angular, Vue and so on, have traditionally offered component models to developers, however Web Components are literally, the standard component model of the web, written into the HTML specification. Applications themselves can be fully encapsulated web components too, for example YouTube is a web component, made up of many smaller web components.
 
 ### Genesis packages​
 
-`@genesislcap/foundation-ui`: When you generate a design system using CLI it will automatically extend a base design system that we have provided. ​This highly configurable design system is called Genesis Foundation UI. It is made up of a set of web components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options as necessary for your application.
+Our components are distributed as npm packages, such as:
 
-`@genesislcap/foundation-zero`: The zero design system variant​
+`@genesislcap/foundation-ui` 
+When you generate a design system using CLI it will automatically extend a base design system that we have provided. ​This highly configurable design system is called Genesis Foundation UI. It is made up of a set of web components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options as necessary for your application.
 
-`@genesislcap/foundation-utils​`
+`@genesislcap/foundation-zero` 
+The zero design system variant​.
 
-`@genesislcap/foundation-comms`
+`@genesislcap/foundation-utils​` 
+Useful components to be used mostly in your templates.
+
+`@genesislcap/foundation-comms` 
+Core foundation UI communication system with the server.
+
+:::tip
+Key takeaways
+
+**foundation-ui** will give you the standard components like buttons and data grids, which can be easily integrated with the back end using component attributes such as 'resourceName' that displays and updates data in real-time from a data server resource.
+
+**foundation-comms** will give you, for example, Connection components that you can use to connect to the server and do things like subscribing to data streams, commit events or request data.
+
+There are many more packages, but that's what we need for now to develop our application.
+:::
+
 
 ## Create a user interface
 
@@ -253,7 +274,7 @@ The application will open at `http://localhost:6060/login`.
 You have completed your first application with the Genesis Platform! Take some time to enjoy it!
 
 :::note
-Great things come from great people!
+Great things come from great people.
 :::
 
 
@@ -298,7 +319,7 @@ For example, to login using Postman:
 
 ```
 {
-    "MESSAGE_TYPE": "TXN_LOGIN_AUTH",
+    "MESSAGE_TYPE": "EVENT_LOGIN_AUTH",
     "SERVICE_NAME": "AUTH_MANAGER",
     "DETAILS": {
         "USER_NAME": "JaneDee",
