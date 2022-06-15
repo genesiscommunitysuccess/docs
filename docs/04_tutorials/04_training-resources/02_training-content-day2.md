@@ -289,8 +289,8 @@ Whichever client you are using, you need to log in before you can send test requ
 - providing a SOURCE_REF - this can be any string that identifies all your activity while you are logged in
 - retrieving a SESSION_AUTH_TOKEN, which you can copy and use to authorise all your test requests
 
-For example, to login using Insomnia:
-1. Create a new query in Insomnia.
+For example, to login using Postman:
+1. Create a new query in Postman.
 2. In front of the url, set the call to **POST**.
 3. For the url, you need to supply your server instance, then **:9064** (which sends you to the application's Router), and then **event-login-auth**. For example:
 **http://localhost:9064/event-login-auth**
@@ -298,7 +298,7 @@ For example, to login using Insomnia:
 
 ```
 {
-    "MESSAGE_TYPE": "EVENT_LOGIN_AUTH",
+    "MESSAGE_TYPE": "TXN_LOGIN_AUTH",
     "SERVICE_NAME": "AUTH_MANAGER",
     "DETAILS": {
         "USER_NAME": "JaneDee",
@@ -306,14 +306,66 @@ For example, to login using Insomnia:
     }
 }
 ```
-5. Click to view the header, then insert SOURCE_REF in the header. For this field, you can use any string that will identify you (in effect). In the example below, we have set SOURCE_REF to BAUDOIN1 (for no particular reason).
+5. Click to view the header, then insert SOURCE_REF in the header. For this field, you can use any string that will identify you (in effect). In the example below, we have set SOURCE_REF to *BAUDOIN1* (for no particular reason).
 &nbsp
 &nbsp
-![](/img/test-login-result.png)
+![](/img/test-login-result-alpha.png)
 
 6. When you have done this, click on the **Send** button.
 
-This returns a set of details in the right side of the Insomnia window, where you can copy the SESSION_AUTH_TOKEN, which you will need for your test requests.
+This returns a set of details on the bottom side of the Postman window, where you can copy the SESSION_AUTH_TOKEN, which you will need for your test requests.
+
+Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
+
+In the example below, we are using Postman as the client API. We are going to test the EVENT_COUNTERPARTY_INSERT Event Handler by adding a new counterparty.
+
+##### url and Body
+In front of the url, set the call to **POST**.
+
+The url consists of:
+
+- the address or hostname of the server
+- if necessary, some extra routing; in this case **gwf** uses a proxy to access the server
+- the name of the event handler
+
+
+Set the body to **JSON**. In the body, you need to insert the details of the fields for the new counterparty, as seen below:
+
+![](/img/test-eh-url-body-alpha.png)
+
+##### Header
+In the header, you need to supply:
+
+- a SOURCE_REF (always), which identifies you; you can use any string value that suits you
+- the SESSION_AUTH_TOKEN that permissions you to access the server
+
+When you have all these elements in place, click on **Send** to make the call. If the event is a success, you will receive an **ACK** message.
+
+![](/img/test-eh-header-alpha.png)
+
+##### Checking the insertion
+Now you can check that the new counterparty you inserted is in the correct table of the database. The resource you need to check is the Request Server called ALL_COUNTERPARTIES.
+
+In front of the url, set the call to **POST**.
+
+The url consists of:
+
+- the address or hostname of the server
+- if necessary, some extra routing; in this case **gwf** uses a proxy to access the server
+- the name of the request server
+
+Set the body to **JSON**. There is no need for any information in the body. Simply insert a pair of curly brackets **{}**. 
+
+![](/img/test-eh-check-insertion-alpha.png)
+
+In the header, you need to supply:
+
+- a SOURCE_REF (always), which identifies you; you can use any string value that suits you
+- the SESSION_AUTH_TOKEN that permissions you to access the server
+
+When you have this in place, click on **Send** to make the call. You can see that the fields for the instruments have been returned on the right of the screen.
+
+![](/img/test-eh-insert-success-alpha.png)
 
 :::
 
