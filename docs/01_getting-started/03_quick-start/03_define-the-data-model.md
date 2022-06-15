@@ -23,7 +23,7 @@ Once the project is open, there are two easy ways to find this file quickly in I
 :::
 
 
-For our simple example, we will add five fields:
+For our simple example, we shall add five fields:
 
 ```kotlin
 fields {
@@ -77,3 +77,5 @@ From the Gradle menu, this is:
 **genesisproduct-alpha**/**alpha-dictionary-cache**/**Tasks**/**genesis-generated-dao**/**Tasks**/**generateDAO**
 
 ![](/img/build-gradle-kts-generated-dao.png)
+
+OK. You have now created your data model. You can now create the key modules that surround the database.

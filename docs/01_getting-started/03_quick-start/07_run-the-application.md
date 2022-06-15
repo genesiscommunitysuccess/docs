@@ -4,9 +4,9 @@ sidebar_label: 'Run the application'
 id: run-the-application
 ---
 
-before you start this, make sure that:
+Before you start this, make sure that:
 
-- you have a user with name of the application (alpha)
+- you have a user with the name of the application (alpha)
 - foundationdb is running (if it is not, run `systemctl start foundationdb` from Centos07
 
 If that's OK, you can deploy the server.
@@ -168,4 +168,5 @@ That’s it. You have quickly built a very simple application using some fundame
 
 ![](/img/quickstart-app-final.png)
 
-There's obviously a lot more to building enterprise-ready applications. We suggest you read through 'Defining your application' for details of all the Genesis components and their features.
+There's obviously a lot more to building enterprise-ready applications. However, you now have enough knowledge and experience of the Genesis low-code platform to look at our reference documentation and learn more there. We hope you have a good experience.
+

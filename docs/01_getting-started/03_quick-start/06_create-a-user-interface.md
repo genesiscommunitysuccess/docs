@@ -201,4 +201,4 @@ ${when(x => x.serverResponse, html`
 `)}
 ```
 
-At this point, the application is now able to display and receive data.
+At this point, the application is now able to display data from the server and make changes. You are ready to run the application.
