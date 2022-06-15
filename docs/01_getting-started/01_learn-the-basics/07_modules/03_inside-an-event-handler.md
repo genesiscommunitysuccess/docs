@@ -4,8 +4,29 @@ sidebar_label: 'Inside an Event Handler'
 id: inside-an-event-handler
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Applications must respond immediately to different types of input: inputs from users, messages from other systems, market-data updates and internally calculated analytic signals.  These inputs are events.
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+Your application needs to respond to each event with relevant actions. 
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+As a rough guide, many of the tables you have created need Insert, Modify and Delete events, so that you can specify the actions that these events require.
+
+You specify the actions in a single Kotlin script file. If your application is called bravo, then the file would be called **bravo-eventhandler.kts**.
+
+Here is a simple example of an Event Handler file. It defines a single eventHandler. Within the eventHandler, the onCommit codeblock inserts a counterparty into the database, using our internal API, the entityDb.
+
+
+```kotlin
+eventHandler {
+    eventHandler<Counterparty> {
+        onCommit { event ->
+            val counterparty = event.details
+            entityDb.insert(counterparty)
+            ack()
+        }
+    }
+}
+```
+Your application will certainly have many more eventHandler codeblocks inside the **eventhandler.kts** file. But, you have just seen the basics.
+
+
+

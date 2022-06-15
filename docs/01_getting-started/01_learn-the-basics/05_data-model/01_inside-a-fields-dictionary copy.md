@@ -1,11 +1,26 @@
 ---
-title: 'Inside a fields-dictionary.kts'
-sidebar_label: 'Inside a fields-dictionary.kts'
+title: 'Inside a fields-dictionary'
+sidebar_label: 'Inside a fields dictionary'
 id: inside-a-fields-dictionary
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+The fields dictionary is where you specify all the fields you need for your data model.
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+This is all contained in a single Kotlin script file. If your application is called bravo, then the file would be called **bravo-fields-dictionary.kts**.
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+Within the file, you simply need to specify all the fields that you need - name and type. Here is a short and very simple example:
+
+```kotlin
+fields {
+    field(name = "ORDER_ID", type = STRING)
+    field(name = "DESCRIPTION", type = STRING, nullable = true)
+    field(name = "PRICE", type = DOUBLE, nullable = false)
+}
+```
+OK, you have probably spotted that two of the fields here also have specifications for `nullable`. There are other options that can be specified, but you already know the key information on this.
+
+One more useful item here is that there is a useful Gradle menu on the right of your IntelliJ screen. After you have finished defining all your fields, you can run the following script:
+
+`genesis-generated-fields`
+
+This creates database objects, so that all the fields are available for text completion when you define your tables and views.

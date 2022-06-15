@@ -1,11 +1,42 @@
 ---
-title: 'Inside a tables-dictionary.kts'
-sidebar_label: 'Inside a tables-dictionary.kts'
+title: 'Inside a tables dictionary'
+sidebar_label: 'Inside a tables dictionary'
 id: inside-a-tables-dictionary
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Tables of data will be critical to your application, from simple tables of currencies or locations to more complex ones that contain trade or order information (for example).
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+The tables dictionary is where you specify all the tables you need for your data model.
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+This is all contained in a single Kotlin script file. If your application is called bravo, then the file would be called **bravo-tables-dictionary.kts**.
+
+Within the file, you simply need to specify the details of each table that you need.  The essential things you need to specify are:
+
+- the name of the table
+- a numeric id for the table (very useful, because it means you can change the name later, if necessary)
+- the fields that belong in the table
+- the primary key for the table, which is essentially the field that it will be indexed by
+
+Of course, all the fields you specify must be in your fields dictionary.
+
+Here is a short and very simple example, which simply specifies one single table with four fields: 
+
+```kotlin
+tables {
+
+  table( name= "POSITION", id = 11002) {
+    POSITION_ID
+    INSTRUMENT_ID
+    QUANTITY
+    NOTIONAL
+
+    primaryKey {
+     POSITION_ID
+    }
+  }
+}
+```
+Things can get much more complex than that. Most applications contain a lot of tables to hold their data. And the tables themselves can be more complex. But, you have just seen the basics.
+
+
+
