@@ -20,7 +20,7 @@ Other tables can be joined onto the root table to present composite data.
 
 ### Definition
 
-Views are defined in the `-view-dictionary.kts` files as discussed 
+Views are defined in the `-view-dictionary.kts` files inside the folder *server\jvm\ -config\src\main\resources\cfg* as discussed 
 [here](/creating-applications/defining-your-application/data-model/views/views-define/).
 
 ### Read-only
@@ -216,9 +216,9 @@ Let's create a unit test that inserts and retrieves some data using Genesis' uni
 
 
 So, first, let's do the following:
-1. Add a new test class to the *alpha-script-config* module called `EnhancedTradeViewTest.kt`
-2. Add an empty txt file to the genesis home folder. This folder is needed for unit tests. 
-3. Add TEST_DATA.csv to a data folder
+1. Add a new test class to the *alpha-script-config* module (**alpha\server\jvm\alpha-script-config\src\test\kotlin**) called `EnhancedTradeViewTest.kt`
+2. Add an empty txt file *donotdelete.txt* to the genesis home folder (**alpha\server\jvm\alpha-script-config\src\test\resources\GenesisHome**). This folder is needed for unit tests. 
+3. Add TEST_DATA.csv to a data folder (**alpha\server\jvm\alpha-script-config\src\test\resources\data**)
 ```csv
 #INSTRUMENT
 INSTRUMENT_ID,NAME
@@ -229,7 +229,11 @@ COUNTERPARTY_ID,COUNTERPARTY_LEI,NAME,
 1,335800A8HK6JBITVPA30,Test Ltd,
 2,655FG0324Q4LUVJJMS11,Testing AG,
 ```
-Should look like below:
+The directory tree should like below:
+
+![](/img/dir-tree-alpha.png)
+
+The test class should look like below:
 
 ### Test class setup
 ```kotlin
