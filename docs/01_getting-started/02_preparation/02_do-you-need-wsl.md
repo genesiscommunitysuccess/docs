@@ -1,6 +1,6 @@
 ---
-title: 'Do you need WSL'
-sidebar_label: 'Do you need WSL'
+title: 'Do you need WSL?'
+sidebar_label: 'Do you need WSL?'
 id: do-you-need-wsl
 ---
 
