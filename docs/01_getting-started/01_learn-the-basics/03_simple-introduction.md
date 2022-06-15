@@ -36,7 +36,7 @@ Importantly, you need to make the application secure. This is done by the Auth m
 
 With those things in place, our diagram now looks like this:
 
-![](/img/data-in-the-app.png)
+![](/img/simple-2.png)
 
 ### A lot more
 
@@ -51,5 +51,14 @@ These are typical examples, but there are more. If there is a special niche that
 
 We have added these three examples, and our simple diagram is beginning to look a bit  more complex now:
 
-![](/img/data-in-the-app.png)
+![](/img/simple-3.png)
 
+### What you have learnt so far
+
+So far, this is what we have learnt about Genesis applications:
+
+- A database is at the heart, surrounded by three key modules that serve the front end: Data Server (real-time data), Request Server (static data) and Event Handler (database changes).
+- The Router module ensures messages are routed correctly to and from the front end.
+- The Auth module controls access to the system (authentication) and to specific data and functions (authorisation). Note that the authorisation is defined in the key modules.
+- You can add other modules to cover (for example) aggregated (calculated) data and integrations with internal and external systems.
+- You can also create your own modules to cover specific requirements.

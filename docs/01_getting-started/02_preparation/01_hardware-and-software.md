@@ -4,14 +4,75 @@ sidebar_label: 'Hardware and software'
 id: hardware-and-software
 ---
 
-## Lorem Ipsum Colore Vinare  Ipsum Colore Vingare
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+To develop Genesis applications, you need to access on-premise workstations through remote technologies like Citrix, VMware etc.
 
-### Sub section test
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+This page gives you the hardware and software requirements. It also give you instructions on accessing the Genesis repository and configuring the Genesis packages.
 
-## Lorem Ipsum Colore Vingaresdfd tentaree ficare tutore
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 
-## Lorem Ipsum Colore Vingaresdfd tentaree 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+## Recommended hardware and operating system
+
+* Operating system : Windows 10 Pro
+* RAM : 16GB minimum, 32GB preferred (if running full applications locally)
+* CPU : 8 Core
+* SSD : 250GB
+
+## Recommended software packages
+
+| Package	| Minimum Version| 
+|--------------|:-----:|
+| IntelliJ	| 2021.1.3|
+|Visual Studio Code	| 1.52.1|
+|Java SDK| 11|
+| Putty	| 0.74|
+| Chrome | 88.0|
+| Maven	| 3.6.3|
+| Postman	| 8|
+| Gradle  | 6.8|
+| NodeJS  |16 LTS+|
+
+You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
+
+## Requirements
+
+* NodeJS (16 LTS+) - https://nodejs.org/en/
+* npm 8 (installed with NodeJS)
+
+## Access to the Genesis repository
+
+
+For access to Genesis packages, you need to configure the `@genesislcap` scope of `npm` to use our jfrog registry.
+You will be provided with access details during your on-boarding.
+
+### .npmrc set-up
+
+1. Create an `.npmrc` file in your user home directory.
+ 2. Using your credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
+ 3. Click on the `Welcome <username>` on the top right corner.
+ 4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
+ 5. Select `npm` for both **Package Type** and **Repository**.
+ 6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in to the Genesis repository on jfrog.) Then press **Enter**. 
+
+ ![](/img/set-me-up.png)
+
+ 7. Scroll down _inside_ the Set Me Up dialog. At the bottom of the page, you will find a code sample for .npmrc, which contains your scope information, including user name an encrypted password. Copy this and paste it into the file you created in the previous step. For reference, the snippet should look something like this (but **don't** copy the one below - because it contains dummy information!):
+
+```shell
+@<SCOPE>:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/
+//genesisglobal.jfrog.io/artifactory/api/npm/npm/:_password=AAAbbbCCCdddEEEfffGGGhhhIIIjjj111222333444555666777=
+//genesisglobal.jfrog.io/artifactory/api/npm/npm/:username=john.doe
+//genesisglobal.jfrog.io/artifactory/api/npm/npm/:email=john.doe@company.com
+//genesisglobal.jfrog.io/artifactory/api/npm/npm/:always-auth=true
+```
+
+8. Replace `<SCOPE>` with `genesislcap`, so that the line reads:
+`@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
+
+9. Save the file and open a terminal under the directory path of this `.npmrc` file and type:
+`npm info @genesislcap/foundation-ui`. If set-up was successful, you should see a response like this:
+
+```shell
+@genesislcap/foundation-ui@0.0.26 | UNLICENSED | deps: 23 | versions: 111
+Genesis Foundation UI
+```
+
+Please [contact us](mailto:support@genesis.global?subject=.npmrc%20Setup) if you run into any problems.
