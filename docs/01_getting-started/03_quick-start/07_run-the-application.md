@@ -29,7 +29,7 @@ Usage :
 ```
 or from the dropdown menu:
 
-<!-- ![](/img/setup-environment.png) -->
+![](/img/setup-environment.png)
 
 After this command is completed we will have a basic genesis server running
 
@@ -42,7 +42,7 @@ Usage:
 
 or from the dropdown menu:
 
-<!-- ![](/img/install-auth.png) -->
+![](/img/install-auth.png)
 
 ### Deploying the alpha product
 
@@ -55,7 +55,7 @@ Usage:
 
 or from the dropdown menu:
 
-<!-- ![](/img/deploy-alpha-product.png) -->
+![](/img/deploy-alpha-product.png)
 
 
 ### Adding a user to login
@@ -78,7 +78,7 @@ database. To do that we will call
 
 or from the dropdown menu:
 
-<!-- ![](/img/load-initial-data.png) -->
+![](/img/load-initial-data.png)
 
 Now  run `DbMon` to check that the user has been created:
 
@@ -88,7 +88,7 @@ Now  run `DbMon` to check that the user has been created:
 
 or from the dropdown menu:
 
-<!-- ![](/img/using-DbMon.png) -->
+![](/img/using-DbMon.png)
 
 Once you are inside the console, type 'table USER' and then 'search 1'. If imported correctly, the user JaneDee should be listed.
 
@@ -99,7 +99,7 @@ After running
 ```
 or from the dropdown menu:
 
-<!-- ![](/img/using-mon.png) -->
+![](/img/using-mon.png)
 
 we should see something like this
 
@@ -118,8 +118,6 @@ PID     Process Name                  Port        Status         CPU       Memor
 664     ALPHA_DATASERVER              11000       RUNNING        58.10     1.50
 703     ALPHA_EVENT_HANDLER           11001       RUNNING        71.30     2.20
 ```
-
-See [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/configure-deployment-plugin/) for extra details on how to configure the Genesis deploy plugin.
 
 ### Connecting the back end and front end
 
@@ -158,7 +156,7 @@ After that:
 
 Now you have a fully running application. If not opened automatically, you can navigate to http://localhost:6060/login, and you should see the following:
 
-<!-- ![](/img/login-screen-quickstart.png) -->
+![](/img/login-screen-quickstart.png)
 
 :::tip
 If the blue button to login is not clickable, go through the previous section again; this is the most likely location of a problem.
@@ -168,6 +166,6 @@ If the blue button to login is not clickable, go through the previous section ag
 ## Conclusion
 That’s it. You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.
 
-<!-- ![](/img/quickstart-app-final.png) -->
+![](/img/quickstart-app-final.png)
 
-There's obviously a lot more to building enterprise-ready applications. We suggest you read through [Defining your application](/creating-applications/defining-your-application/intro) for details of all the Genesis components and their features.
+There's obviously a lot more to building enterprise-ready applications. We suggest you read through 'Defining your application' for details of all the Genesis components and their features.

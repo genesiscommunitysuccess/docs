@@ -77,9 +77,9 @@ this.tradesGrid.addEventListener('onGridReady', () => {
 
 This ensures that the grid takes the full width.
 
-Now you need to add [styles](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/customisation/app-specific/#styles).
+Now you need to add styles.
 
-Open the file [**home.styles.ts**](/creating-applications/defining-your-application/user-interface/front-end-basics/front-end-basics/#starting-materials), and add the code below.
+Open the file **home.styles.ts**, and add the code below.
 
 ```css
 zero-ag-grid {
@@ -139,7 +139,7 @@ public tradeSideChange(target: Select) {
 }
 ```
 
-In the file **home.styles.ts**, add [styles](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/customisation/app-specific/#styles) to see your changes:
+In the file **home.styles.ts**, add styles to see your changes:
 
 ```css
 zero-text-field, zero-select {

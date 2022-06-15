@@ -8,7 +8,7 @@ We have a table; now we want to be able to see its content and create new entrie
 
 
 ### Data Server
-A [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers) allows for reading of real-time data. You must define the Data Server in the file **alpha-dataserver.kts**.
+A Data Server allows for reading of real-time data. You must define the Data Server in the file **alpha-dataserver.kts**.
 
 ```kotlin
 dataServer {
@@ -17,7 +17,7 @@ dataServer {
 ```
 
 ### Event Handler
-Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](/creating-applications/defining-your-application/business-logic/event-handlers/) in the file **alpha-eventhandler.kts**.
+Next, we want to be able to insert rows into our table. For this, you need to define an Event Handler in the file **alpha-eventhandler.kts**.
 
 ```kotlin
 eventHandler {
