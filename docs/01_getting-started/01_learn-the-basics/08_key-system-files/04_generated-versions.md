@@ -1,7 +1,7 @@
 ---
-title: 'SERVER COMMANDS'
-sidebar_label: 'SERVER COMMANDS'
-id: server-commands
+title: 'Generated versions'
+sidebar_label: 'Generated versions'
+id: generated-versions
 ---
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry.

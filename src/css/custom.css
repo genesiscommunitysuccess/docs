@@ -7,35 +7,59 @@
 
 /* You can override the default Infima variables here. */
 @font-face {
-  font-family: 'Roboto Medium';
+  font-family: 'Aeonik';
   font-style: normal;
-  font-weight: 500;
-  src: local('Roboto Medium'), local('Roboto-Medium'), url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9fBBc9.ttf) format('truetype');
+  font-weight: 400;
+  src: url(/fonts/Aeonik-Regular.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'Aeonik Medium';
+  font-style: normal;
+  font-weight: 400;
+  src: url(/fonts/Aeonik-Medium.woff2) format('woff2');
 }
 
 :root {
+
+  --black: #161412;
+  --primary-blue: #1200DE;
+  --warm-gray-4: #F6F5F4;
+  --warm-gray-3: #E3E0DD;
+  --warm-gray-2: #808387;
+
+  --primary-font: 'Aeonik', 'Arial', 'Helvetica', 'sans-serif';
+  --medium-font: 'Aeonik Medium', 'Aeonik', 'Arial', 'Helvetica', 'sans-serif';
+
   line-height: 1.5;
   -webkit-font-smoothing: auto;
 
   --ifm-container-width-xl: 1140px;
 
-  --ifm-link-color: #1200DE;
-  --ifm-menu-color-active: #1200DE;
+  --ifm-color-primary: var(--primary-blue);
+
+  --ifm-link-color: var(--primary-blue);
+  --ifm-menu-color-active: var(--warm-gray-2);
   --ifm-menu-color-background-active: inherit;
 
-  --ifm-heading-font-family: Roboto-Medium, Roboto Medium, Roboto, sans-serif;
+  --ifm-heading-font-family: var(--primary-font);
   --ifm-heading-color: #555;
   --ifm-heading-font-weight: 500;
   --ifm-heading-line-height: normal;
 
   --ifm-hero-background-color: transparent;
 
-  --ifm-navbar-background-color: #1200DE;
+  --ifm-navbar-background-color: var(--primary-blue);
   --ifm-navbar-link-color: #FFFFFF;
   --ifm-navbar-height: 88px;
   --ifm-navbar-shadow: -5px 3px 16px 0px rgba(0, 0, 0, 0.15);
 
   --ifm-pre-background: #2B2B2B;
+}
+
+body {
+  font-family: var(--primary-font);
+  font-weight: 400;
 }
 
 .markdown header>h1:first-child {
@@ -63,7 +87,7 @@
 }
 
 button.aa-DetachedSearchButton {
-  --aa-font-family: 'Roboto-Medium', 'Roboto Medium', 'Roboto', sans-serif;
+  --aa-font-family: var(--medium-font);
   --aa-font-size: 12px;
   --aa-font-weight: 500;
   --aa-search-input-height: 36px;
@@ -106,6 +130,39 @@ div.aa-DetachedSearchButtonIcon {
   margin-left: 32px;
 }
 
+a.navbar__item.navbar__link {
+  color: white;
+  font-weight: 400;
+  line-height: 24px;
+  font-size: 16px;
+}
+
+a.navbar__item.navbar__link.navbar__link--active {
+  font-weight: 700;
+  font-family: var(--medium-font);
+}
+
+.navbar__toggle > svg {
+  color: white;
+}
+
+.navbar-sidebar__close > svg {
+  height: 16px;
+  width: 16px;
+}
+
+.navbar-sidebar__close > svg > g {
+  stroke: white;
+}
+
+div.navbar-sidebar__item {
+  background-color: white;
+}
+
+button.navbar-sidebar__back {
+  background-color: var(--warm-gray-3);
+}
+
 .hero {
   text-align: center;
   text-rendering: optimizeLegibility;
@@ -131,7 +188,7 @@ main .container {
 .hero__subtitle {
   font-size: 18px;
   margin-bottom: 44px;
-  font-family: Roboto-Regular, Roboto, sans-serif;
+  font-family: var(--primary-font);
 }
 
 .button--getting-started,
@@ -161,7 +218,7 @@ main .container {
   border-radius: 4px;
   border: 1px solid #08c3a5;
   box-sizing: border-box;
-  font-family: 'Roboto-Medium', 'Roboto Medium', 'Roboto', sans-serif;
+  font-family: var(--medium-font);
   font-weight: 500;
   color: #08c3a5;
   font-size: 12px;
@@ -181,23 +238,46 @@ main .container {
 
 /* side menu */
 nav.menu {
-  --side-nav-color-background: #F6F5F4;
+  --side-nav-color-background: var(--warm-gray-4);
   padding: 1rem 0.5rem;
   background-color: var(--side-nav-color-background);
 }
 
-nav .menu__link--sublist.menu__link--active {
-  color: #808387
+/* sidebar carets */
+a.menu__link--sublist-caret::after {
+  min-width: 8px;
+  min-height: 8px;
+  width: 8px;
+  height: 8px;
+  background-size: 16px 16px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16px\" height=\"16px\" viewBox=\"0 0 24 24\"><path fill=\"rgba(200,194,188,1)\" d=\"M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z\"></path></svg>');
 }
 
 .menu__link:not(.menu__link--active) {
-  color: #161412;
+  color: var(--black);
 }
 
 .menu__nested-category .menu__list {
-  border-left: 1px solid grey;
+  border-left: 1px solid var(--warm-gray-3);
   margin-left: 2rem;
   padding-left: unset;
+}
+
+/* gray out collaped sidebar categories */
+li.menu__list-item--collapsed .menu__link {
+  color: #808387;
+}
+
+/* Sidebar nav header  */
+.menu > .menu__list > .menu__list-item > .menu__list-item-collapsible {
+  font-family: var(--medium-font);
+  font-size: 14px;
+  color: var(--warm-gray-2);
+  text-transform: uppercase;
+}
+
+div[class^=sidebar_] .menu__link.menu__link--active:not(.menu__link--sublist) {
+  color: var(--ifm-color-primary);
 }
 
 .docusaurus-highlight-code-line {
@@ -300,4 +380,37 @@ alpha-button .icon {
 
 .tooltip-examples [class^="playgroundPreview"] {
   min-height: 110px;
+}
+
+/* make the div inside main-wrapper full height, mostly for the sidebar */
+div.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+div.main-wrapper > div {
+  flex: 1;
+}
+
+/* right sidebar (table of contents) */
+.tableOfContents_node_modules-\@docusaurus-theme-classic-lib-next-theme-TOC-styles-module {
+  height: 100%;
+  background-color: white;
+}
+
+ul.table-of-contents {
+  line-height: 15.6px;
+  font-size: 10px;
+  color: var(--black);
+}
+
+.table-of-contents__link:hover {
+  color: var(--primary-blue);
+}
+
+a.table-of-contents__link--active {
+  font-family: var(--medium-font);
+  font-weight: 700;
+  color: var(--primary-blue);
 }

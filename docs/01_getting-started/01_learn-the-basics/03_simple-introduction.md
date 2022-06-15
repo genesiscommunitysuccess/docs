@@ -62,4 +62,3 @@ So far, this is what we have learnt about Genesis applications:
 - The Auth module controls access to the system (authentication) and to specific data and functions (authorisation). Note that the authorisation is defined in the key modules.
 - You can add other modules to cover (for example) aggregated (calculated) data and integrations with internal and external systems.
 - You can also create your own modules to cover specific requirements.
-

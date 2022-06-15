@@ -1,10 +1,8 @@
 ---
 title: 'Hardware and software'
 sidebar_label: 'Hardware and software'
-sidebar_position: 1
 id: hardware-and-software
 ---
-
 
 To develop Genesis applications, you need to access on-premise workstations through remote technologies like Citrix, VMware etc.
 
@@ -78,4 +76,3 @@ Genesis Foundation UI
 ```
 
 Please [contact us](mailto:support@genesis.global?subject=.npmrc%20Setup) if you run into any problems.
-

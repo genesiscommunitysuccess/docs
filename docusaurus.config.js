@@ -52,15 +52,16 @@ module.exports = {
     navbar: {
       items: [
         { to: 'getting-started/learn-the-basics/', label: 'Getting Started' },
-        { to: 'frontend/creating-a-new-page/', label: 'Frontend' },
-        { to: 'database', label: 'Database' },
-        { to: 'operations/commands/server-commands/', label: 'Operations' },
+        { to: 'become-an-expert/', label: 'Become an Expert' },
+        { to: 'tutorials/', label: 'Tutorials' },
       ],
       logo: {
         alt: 'Genesis Logo',
         src: 'img/logo-icon--light.svg',
         width: 25,
         height: 25,
+        href: '/getting-started/learn-the-basics/',
+        target: '_self'
       },
       title: 'DOCUMENTATION'
     },
