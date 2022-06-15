@@ -12,7 +12,7 @@ import TabItem from '@theme/TabItem';
 
 Let's make things really simple.
 - The Event Handler is the component that enables the application to write to the database.
-- You define your application's Event Handler in a kotlin script file.
+- You define your application's Event Handler in a Kotlin script file.
 - In this file, you define specific `eventHandler` codeblocks, each of which has full access to the database.
 - Each `eventHandler` can be invoked from the front end, from other `eventHandler` codeblocks, or from custom components in the application.
 - If you use AppGen to build from your dictionary, then a basic **.kts** file will be built automatically for you, creating basic insert, modify and delete `eventHandler` code blocks for all the tables and views in your data model. You can edit this file to customise the component.
@@ -83,8 +83,7 @@ public class EventCounterParty implements Rx3EventHandler<Counterparty, EventRep
     @Override
     public Single<EventReply> process(Event<Counterparty> counterpartyEvent) {
         Counterparty counterparty = counterpartyEvent.getDetails();
-        entityDb.insert(counterparty);
-        return Single.just(new EventReply.EventAck());
+        return entityDb.insert(counterparty).flatMap(result -> ack(this));
     }
 }
 ```
@@ -149,8 +148,7 @@ eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
         @Override
         public Single<EventReply> process(Event<Counterparty> counterpartyEvent) {
             Counterparty counterparty = counterpartyEvent.getDetails();
-            entityDb.insert(counterparty);
-            return Single.just(new EventReply.EventAck());
+            return entityDb.insert(counterparty).flatMap(result -> ack(this));
         }
     }
 ```
@@ -202,12 +200,12 @@ The `onCommit` block will only be executed if the `counterparty` field is not nu
     import org.jetbrains.annotations.Nullable;
 
     @Module
-    public class EventCounterParty2 implements Rx3ValidatingEventHandler<Counterparty, EventReply> {
+    public class EventCounterParty implements Rx3ValidatingEventHandler<Counterparty, EventReply> {
 
         private final RxEntityDb entityDb;
 
         @Inject
-        public EventCounterParty2(RxEntityDb entityDb) {
+        public EventCounterParty(RxEntityDb entityDb) {
             this.entityDb = entityDb;
         }
 
@@ -221,8 +219,7 @@ The `onCommit` block will only be executed if the `counterparty` field is not nu
         @Override
         public Single<EventReply> onCommit(@NotNull Event<Counterparty> event) {
             Counterparty counterparty = event.getDetails();
-            entityDb.insert(counterparty);
-            return Single.just(new EventReply.EventAck());
+            return entityDb.insert(counterparty) .flatMap(result -> ack(this));
         }
 
         @NotNull
@@ -230,11 +227,9 @@ The `onCommit` block will only be executed if the `counterparty` field is not nu
         public Single<EventReply> onValidate(@NotNull Event<Counterparty> event) {
             Counterparty counterparty = event.getDetails();
             if(counterparty.getName().isEmpty()) {
-                List<GenesisError> genesisErrorList = new ArrayList<>();
-                genesisErrorList.add(new StandardError("Standard Error", "Counterparty should have a name"));
-                return Single.just(new EventReply.EventNack(Collections.emptyList(), genesisErrorList));
+                return nack(this, "Counterparty should have a name");
             }
-            return Single.just(new EventReply.EventAck());
+            return ack(this);
         }
     }
 ```
@@ -302,12 +297,9 @@ eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
     public Single<EventReply> process(Event<Counterparty> counterpartyEvent) {
         Counterparty counterparty = counterpartyEvent.getDetails();
         if(counterparty.getName().isEmpty()) {
-            List<GenesisError> genesisErrorList = new ArrayList<>();
-            genesisErrorList.add(new StandardError("Standard Error", "Counterparty should have a name"));
-            return Single.just(new EventReply.EventNack(Collections.emptyList(), genesisErrorList));
+            return nack(this, "Counterparty should have a name");
         } else {
-            entityDb.insert(counterparty);
-            return Single.just(new EventReply.EventAck());
+            return entityDb.insert(counterparty).flatMap(result -> ack(this));
         }
     }
 }
@@ -359,9 +351,8 @@ For Java events you need to use RxEntityDb [writeTransaction](reference/develope
     @Module
     public class EventCounterParty implements Rx3EventHandler<Counterparty, EventReply> {
 
-        private final RxEntityDb entityDb;
+        private final RxEntityDb entityDb;@Inject
 
-        @Inject
         public EventCounterParty(RxEntityDb entityDb) {
             this.entityDb = entityDb;
         }
@@ -375,11 +366,10 @@ For Java events you need to use RxEntityDb [writeTransaction](reference/develope
         @Override
         public Single<EventReply> process(Event<Counterparty> counterpartyEvent) {
             Counterparty counterparty = counterpartyEvent.getDetails();
-            entityDb.writeTransaction(txn -> {
+            return entityDb.writeTransaction(txn -> {
                 txn.insert(counterparty);
-                return Single.just(true);
-            });
-            return Single.just(new EventReply.EventAck());
+                return ack(this);
+            }).map(result -> result.getFirst());
         }
     }
 ```
@@ -449,38 +439,35 @@ However, note that an `onValidation` codeblock is mandatory when using custom re
     @Module
     public class EventCompany implements Rx3ValidatingEventHandler<Company, EventReply> {
 
-    private final RxEntityDb entityDb;
+        private final RxEntityDb entityDb;
 
-    @Inject
-    public EventCounterParty2(RxEntityDb entityDb) {
-        this.entityDb = entityDb;
-    }
-
-    @Nullable
-    @Override
-    public String messageType() {
-        return "COMPANY_INSERT";
-    }
-
-    @NotNull
-    @Override
-    public Single<EventReply> onCommit(@NotNull Event<Counterparty> event) {
-        Counterparty counterparty = event.getDetails();
-        entityDb.insert(counterparty);
-        return Single.just(new EventReply.EventAck());
-    }
-
-    @NotNull
-    @Override
-    public Single<EventReply> onValidate(@NotNull Event<Counterparty> event) {
-        Counterparty counterparty = event.getDetails();
-        if(!counterparty.getName().equals("MY_COMPANY")) {
-            List<GenesisError> genesisErrorList = new ArrayList<>();
-            genesisErrorList.add(new StandardError("Standard Error", "We don't accept your company"));
-            return Single.just(new EventReply.EventNack(Collections.emptyList(), genesisErrorList));
+        @Inject
+        public EventCounterParty2(RxEntityDb entityDb) {
+            this.entityDb = entityDb;
         }
-        return Single.just(new EventReply.EventAck());
-    }
+
+        @Nullable
+        @Override
+        public String messageType() {
+            return "COMPANY_INSERT";
+        }
+
+        @NotNull
+        @Override
+        public Single<EventReply> onCommit(@NotNull Event<Counterparty> event) {
+            Counterparty counterparty = event.getDetails();
+            return entityDb.insert(counterparty).flatMap(result -> ack(this));
+        }
+
+        @NotNull
+        @Override
+        public Single<EventReply> onValidate(@NotNull Event<Counterparty> event) {
+            Counterparty counterparty = event.getDetails();
+            if(!counterparty.getName().equals("MY_COMPANY")) {
+                return nack(this, "We don't accept your company");
+            }
+            return ack(this);
+        }
     }
 ```
 
@@ -524,9 +511,6 @@ use context Event Handlers, as shown below:
     import global.genesis.db.rx.entity.multi.RxEntityDb;
     import global.genesis.eventhandler.typed.rx3.Rx3ContextValidatingEventHandler;
     import global.genesis.gen.dao.Company;
-    import global.genesis.gen.dao.Counterparty;
-    import global.genesis.message.core.error.GenesisError;
-    import global.genesis.message.core.error.StandardError;
     import global.genesis.message.core.event.Event;
     import global.genesis.message.core.event.EventReply;
     import global.genesis.message.core.event.ValidationResult;
@@ -534,7 +518,8 @@ use context Event Handlers, as shown below:
     import org.jetbrains.annotations.NotNull;
     import org.jetbrains.annotations.Nullable;
 
-    import java.util.*;
+    import java.util.List;
+    import java.util.Map;
 
     @Module
     public class ContextEvent implements Rx3ContextValidatingEventHandler<Company, EventReply, String> {
@@ -555,25 +540,19 @@ use context Event Handlers, as shown below:
         @Override
         public Single<EventReply> onCommit(@NotNull Event<Company> event, @Nullable String context) {
             String parsedContext;
-            if (context != null) {
-                parsedContext = context;
-            } else {
-                parsedContext = "Missing context";
-            }
+            parsedContext = Objects.requireNonNullElse(context, "Missing context");
             Company company = event.getDetails();
-            entityDb.insert(company);
-
-            return Single.just(new EventReply.EventAck(List.of(Map.of("VALUE",parsedContext))));
+            return entityDb.insert(company).flatMap(result -> ack(this, List.of(Map.of("VALUE",parsedContext))));
         }
 
         @NotNull
         @Override
         public Single<ValidationResult<EventReply, String>> onValidate(@NotNull Event<Company> event) {
             Company company = event.getDetails();
-            if(company.getName().equals("MY_COMPANY")) {
-                return Single.just(validationResult(EventReply.EventAck(), "Best company in the world"))
+            if(company.getCompanyName().equals("MY_COMPANY")) {
+                return ack(this).map(result -> validationResult(result, "Best company in the world"));
             } else {
-                return Single.just(validationResult(EventReply.EventAck()))
+                return ack(this).map(this::validationResult);
             }
         }
     }
