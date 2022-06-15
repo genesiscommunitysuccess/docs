@@ -5,8 +5,13 @@ sidebar_position: 1
 id: introduction
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+## What you will build
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+The very simple application you will build will look like this:
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+- a simple table with 5 fields
+- two front-end components: one to display data and one to insert data
+
+That’s it. Just enough to get you up and running. Obviously, there is much more you could do, but that can wait for another day.
+
+With a lack of imagination we hope you will find trustworthy, we are going to call this example application **alpha**. You will see this reflected in the file names throughout.

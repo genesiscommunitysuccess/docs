@@ -4,8 +4,30 @@ sidebar_label: 'Add business logic'
 id: add-business-logic
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+We have a table; now we want to be able to see its content and create new entries.
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+### Data Server
+A [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers) allows for reading of real-time data. You must define the Data Server in the file **alpha-dataserver.kts**.
+
+```kotlin
+dataServer {
+    query("ALL_TRADES", TRADE)
+}
+```
+
+### Event Handler
+Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](/creating-applications/defining-your-application/business-logic/event-handlers/) in the file **alpha-eventhandler.kts**.
+
+```kotlin
+eventHandler {
+
+    eventHandler<Trade>(name = "TRADE_INSERT") {
+        onCommit { event ->
+            entityDb.insert(event.details)
+            ack()
+        }
+    }
+
+}
+```
