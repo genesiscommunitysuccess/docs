@@ -42,7 +42,7 @@ Here is a simple example of an Event Handler file. It defines a single `eventHan
 - The `eventHandler` inserts a counterparty into the database, using the [entityDb](/reference/developer/api/database/how-to/interface/entity-db/).
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-<TabItem value="kotlin">
+<TabItem value="Kotlin">
 
 ```kotlin
     eventHandler {
@@ -57,7 +57,7 @@ Here is a simple example of an Event Handler file. It defines a single `eventHan
 ```
 
 </TabItem>
-<TabItem value="java">
+<TabItem value="Java">
 
 ```java
 import com.google.inject.Inject;
@@ -103,7 +103,7 @@ If you do not define a name, a default name will be allocated automatically. The
 So, below, we modify our previous example by defining the name of the `eventHandler`: COUNTERPARTY_INSERT. This will automatically become EVENT_COUNTERPARTY_INSERT.
 
 <Tabs defaultValue="kotlin" values={[{label: 'Kotlin', value: 'kotlin',}, {label: 'Java', value: 'java',}]}>
-<TabItem value="kotlin">
+<TabItem value="Kotlin">
 
 ```kotlin
 eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
@@ -116,7 +116,7 @@ eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
 ```
 
 </TabItem>
-<TabItem value="java">
+<TabItem value="Java">
 
 ```java
     import com.google.inject.Inject;
@@ -167,7 +167,7 @@ In this case, we have used the kotlin [require](https://kotlinlang.org/api/lates
 The `onCommit` block will only be executed if the `counterparty` field is not null.
 
 <Tabs>
-<TabItem value="kotlin">
+<TabItem value="Kotlin">
 
 ```kotlin
     eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
@@ -185,7 +185,7 @@ The `onCommit` block will only be executed if the `counterparty` field is not nu
 ```
 
 </TabItem>
-<TabItem value="java">
+<TabItem value="Java">
 
 ```java
     import com.google.inject.Inject;
@@ -247,7 +247,7 @@ In the `onCommit` block:
 - if the counterparty field has content, then the `eventHandler` returns an `ack`
 
 <Tabs>
-<TabItem value="kotlin">
+<TabItem value="Kotlin">
 
 ```kotlin
 eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
@@ -264,7 +264,7 @@ eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
 ```
 
 </TabItem>
-<TabItem value="java">
+<TabItem value="Java">
 
 ```java
     import com.google.inject.Inject;
@@ -322,7 +322,7 @@ If you want your  `eventHandler` to comply with ACID, you can declare it to be  
 For Java events you need to use RxEntityDb [writeTransaction](reference/developer/api/database/how-to/interface/entity-db/#write-transactions)
 
 <Tabs>
-<TabItem value="kotlin">
+<TabItem value="Kotlin">
 
 ```kotlin
     eventHandler<Counterparty>(transactional = true) {
@@ -335,7 +335,7 @@ For Java events you need to use RxEntityDb [writeTransaction](reference/develope
 ```
 
 </TabItem>
-<TabItem value="java">
+<TabItem value="Java">
 
 ```java
     import com.google.inject.Inject;
@@ -396,7 +396,7 @@ As you will have seen above, an `onValidation` codeblock will be executed whethe
 However, note that an `onValidation` codeblock is mandatory when using custom reply message types; the script will not compile if there is no `onValidation` codeblock. See the simple example below:
 
 <Tabs>
-<TabItem value="kotlin">
+<TabItem value="Kotlin">
 
 ```kotlin
     eventHandler<Company>(name = "COMPANY_INSERT") {
@@ -416,7 +416,7 @@ However, note that an `onValidation` codeblock is mandatory when using custom re
 ```
 
 </TabItem>
-<TabItem value="java">
+<TabItem value="Java">
 
 ```java
     import com.google.inject.Inject;
@@ -481,7 +481,7 @@ In order to optimise database look-up operations, you might want to use data obt
 use context Event Handlers, as shown below:
 
 <Tabs>
-<TabItem value="kotlin">
+<TabItem value="Kotlin">
 
 ```kotlin
     contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {
@@ -503,7 +503,7 @@ use context Event Handlers, as shown below:
 ```
 
 </TabItem>
-<TabItem value="java">
+<TabItem value="Java">
 
 ```java
     import com.google.inject.Inject;
