@@ -44,13 +44,12 @@ We don't want to produce a design system at this time:
 ? Create design system (Y/n): n
 ```
 
-## Set the API host and token
-Finally, set the API Host and NPM Token for the `@genesislcap` scope
+## Set the API host
+Finally, set the API Host:
 <!-- TODO: what will the user set the API Host to? -->
 ```
 ? Set API Host (Y/n): y
 ? API Host (with websocket prefix and suffix if any) (wss://some-host/gwf/) 
-? NPM Token (for the @genesislcap scope): YOUR_TOKEN
 ```
 
 Once you have done this, you should see the following message in your terminal:
