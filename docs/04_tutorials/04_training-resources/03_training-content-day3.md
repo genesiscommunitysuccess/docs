@@ -366,10 +366,36 @@ view("TRADE_VIEW", TRADE) {
 
 ## Consolidators
 
+Consolidators perform data aggregation and calculations that can either be real-time, when used as a service, or on-demand, when used as objects. 
+
+Consolidators follow a SQL-like syntax: 
+
+```kotlin
+consolidator(TRADE, ORDER) {
+    select {
+        ORDER {
+            sum { price * quantity } into TOTAL_NOTIONAL
+            count() into TRADE_COUNT
+        }
+    }
+    groupBy { Order.ById(orderId) } 
+}
+```
+
+In the above example, we aggregate data from the TRADE table into the ORDER table. We group by orderId and we count the number of trades and sum the notional. For further details, please see [here](https://docs.genesis.global/secure/creating-applications/defining-your-application/business-logic/consolidators/consolidators/).
+
+Some features provided by Consolidators: 
+
+- Type safety
+- Declarative syntax
+- comprehensive built-in logging
+
+In our case, Consolidators are a good fit for consolidating a position table from trades. 
+
 #### Define the position-keeping logic in the consolidator
 
 
-Now define a **alpha-consolidator.kts** file inside **alpha-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
+So, let's define a **alpha-consolidator.kts** file inside **alpha-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
 
 The consolidator is going to increase or decrease the quantity for POSITION records, based on the TRADE table updates. It also needs to calculate the new notional.
 ```kotlin
@@ -442,7 +468,7 @@ consolidators {
 
 ##### Update the processes.xml file
 
-To complete the configuration of the consolidator, add a new entry to **alpha-processes.xml** with the consolidator2 process definition.
+As consolidators run on their own process, we need to add a new entry to **alpha-processes.xml** with the consolidator process definition.
 
 ```xml
 <process name="ALPHA_CONSOLIDATOR">
@@ -459,11 +485,16 @@ To complete the configuration of the consolidator, add a new entry to **alpha-pr
 ```
 ##### Update the service-definitions.xml file
 
-This file lists all the active services for the Positions application. You can see entries have been added automatically when the data server, request server and event handler were generated (by AppGen).
+This file lists all the active services for the Positions application. You can see entries have been added automatically when the data server, request server and event handler were generated.
 
-Add a new entry to **alpha-service-definitions.xml** with the consolidator2 details. Remember the ports numbers should be free and, ideally, sequential.
+Add a new entry to **alpha-service-definitions.xml** with the consolidator details. Remember the ports numbers should be free and, ideally, sequential.
 
 
 ## UI data grids
+### Try yourself
+Add a data grid in the UI to display the Positions.
 
-To be done.
+:::tip
+Remember to add a data server query around the POSITION table and use the ag-genesis-datasource component in the UI.
+
+:::
