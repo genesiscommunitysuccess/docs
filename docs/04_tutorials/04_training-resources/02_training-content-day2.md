@@ -255,15 +255,14 @@ At this point, the application is now able to display and receive data.
 
 Now you are ready to run the application you have created for the front end.
 
-From the workspace root, run:
+From the workspace **alpha/client** folder, run:
 ```
 $ npm run bootstrap
 ```
 
-Next, change to the **positions** directory and spin up the dev server:
+Next, spin up the dev server:
 
 ```
-$ cd ./packages/apps/positions/client/web
 $ npm run dev
 ```
 
