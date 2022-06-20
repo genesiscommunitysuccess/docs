@@ -510,6 +510,7 @@ Remember to add a data server query around the POSITION table and use the ag-gen
 
 Apart from building a front-end, as we did [before](/tutorials/training-resources/training-content-day2/#intro-to-ui) the application user interface can be configured in various aspects such as data distribution, using Request Servers for static (reference) data, and Data Servers for streaming real-time data.
 
+<!-- 
 ### Request Servers
 
 Request Servers, (otherwise known as request/replies and often shortened to reqrep) retrieve a snapshot of data from a table or a view on demand and serve it up to the requesting client. They are predominantly used for serving the UI.
@@ -657,3 +658,4 @@ Let's add a new derivated field in the **alpha** application called *GOOD_USD_TR
 After changing the files remember to run *assemble* and *deploy*
 :::
 
+-->
