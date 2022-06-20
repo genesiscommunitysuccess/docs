@@ -364,6 +364,15 @@ view("TRADE_VIEW", TRADE) {
 }
 ```
 
+#### Try yourself
+
+Let's add a new derivated field in the **alpha** application to your view now. The derivated field should display the asset_class from the INSTRUMENT join, and if this field is null the view should display "UNKNOWN".
+
+:::tip
+After changing the files remember to run *assemble* and *deploy*
+:::
+
+
 ## Consolidators
 
 Consolidators perform data aggregation and calculations that can either be real-time, when used as a service, or on-demand, when used as objects. 
