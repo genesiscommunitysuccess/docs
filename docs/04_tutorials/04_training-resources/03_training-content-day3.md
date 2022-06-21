@@ -502,7 +502,7 @@ Add a new entry to **alpha-service-definitions.xml** with the consolidator detai
 ## UI configuring 
 
 ### Data grids - Try yourself
-Add a data grid in the UI to display the Positions.
+Add a data grid in the UI to display the Positions. Insert some Trades and check whether the Position table is feeding properly, as the Consolidator added should do.
 
 :::tip
 Remember to add a data server query around the POSITION table and use the ag-genesis-datasource component in the UI.
