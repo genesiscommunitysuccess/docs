@@ -366,7 +366,7 @@ view("TRADE_VIEW", TRADE) {
 
 #### Try yourself
 
-Let's add a new derivated field in the **alpha** application to your view now. The derivated field should display the asset_class from the INSTRUMENT join, and if this field is null the view should display "UNKNOWN".
+Let's add a new derived field in the TRADE_VIEW now. The derived field should display ASSET_CLASS from the INSTRUMENT join, and if this field is null or empty the view should display "UNKNOWN".
 
 :::tip
 After changing the files remember to run *assemble* and *deploy*
@@ -501,14 +501,14 @@ Add a new entry to **alpha-service-definitions.xml** with the consolidator detai
 
 ## UI configuring 
 
-### Data grids - Try yourself
-Add a data grid in the UI to display the Positions. Insert some Trades and check whether the Position table is feeding properly, as the Consolidator added should do.
+### Try yourself - add a new data grid
+Add a data grid in the UI to display the Positions. Then insert some trades and check whether the Position grid is being updated accordingly, i.e., automatically updated by the Consolidator process.
 
 :::tip
 Remember to add a data server query around the POSITION table and use the ag-genesis-datasource component in the UI.
 :::
 
-Apart from building a front-end, as we did [before](/tutorials/training-resources/training-content-day2/#intro-to-ui) the application user interface can be configured in various aspects such as data distribution, using Request Servers for static (reference) data, and Data Servers for streaming real-time data.
+<!-- Apart from building a front-end, as we did [before](/tutorials/training-resources/training-content-day2/#intro-to-ui) the application user interface can be configured in various aspects such as data distribution, using Request Servers for static (reference) data, and Data Servers for streaming real-time data. -->
 
 <!-- 
 ### Request Servers
