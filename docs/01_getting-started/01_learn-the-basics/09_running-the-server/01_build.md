@@ -1,7 +1,7 @@
 ---
-title: 'SERVER COMMANDS'
-sidebar_label: 'SERVER COMMANDS'
-id: server-commands
+title: 'Build'
+sidebar_label: 'Build'
+id: build
 ---
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry.

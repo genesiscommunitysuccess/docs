@@ -1,8 +1,8 @@
 ---
-title: 'Overview'
-sidebar_label: 'Overview'
+title: 'Become An Expert'
+sidebar_label: 'Introduction'
 sidebar_position: 1
-id: overview
+id: introduction
 ---
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry.

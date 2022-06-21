@@ -1,7 +1,7 @@
 ---
-title: 'CREATING A NEW PAGE'
-sidebar_label: 'CREATING A NEW PAGE'
-id: creating-a-new-page
+title: 'Next steps'
+sidebar_label: 'Next steps'
+id: next-steps
 ---
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry.

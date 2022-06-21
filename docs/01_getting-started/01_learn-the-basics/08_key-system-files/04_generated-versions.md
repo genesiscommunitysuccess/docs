@@ -1,7 +1,7 @@
 ---
-title: 'Do you need WSL'
-sidebar_label: 'Do you need WSL'
-id: do-you-need-wsl
+title: 'Generated versions'
+sidebar_label: 'Generated versions'
+id: generated-versions
 ---
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry.
