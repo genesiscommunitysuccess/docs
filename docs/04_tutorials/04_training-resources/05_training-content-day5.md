@@ -7,10 +7,282 @@ sidebar_position: 5
 ---
 In this day we are covering:
 
+- [Schedulers](#schedulers)
 - [Permissions​](#permissions)
-- [Generating data model from existing sources](#generating-data-model-from-existing-sources)
 - [Key server commands](#key-server-commands)
 - [Navigating the documentation and how to get help​](#navigating-the-documentation-and-how-to-get-help​)
+
+## Schedulers​
+You can use the evaluator to schedule the production of EOD reports (for example), or to send warnings when a defined limit is breached.
+
+In system terms, evaluators enable you to connect event handlers to two different kinds of event: dynamic and static (cron rules). 
+
+1. __Dynamic Rules__, which are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries, and
+2. __Cron Rules__, which are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
+
+In both cases, you define the rule in a table in the database: DYNAMIC_RULES for dynamic rules and CRON_RULES for static rules. 
+
+### Cron rules (static events)​
+
+In this exercise you are going to create a cron rule that will trigger a batch job that will run once each day.
+
+The batch job will generate a position report as a csv for each counterparty. This wil be stored in **runtime/position-daily-report**. The file name of each report written will have the form COUNTERPARTY_ID-DATE.csv.
+
+#### The rule
+
+Our cron rule takes the following form:
+
+| CRON_EXPRESSION | DESCRIPTION | TIME_ZONE | RULE_STATUS | NAME | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 0 45 7 ? * MON,TUE,WED,THU,FRI * | It’s a rule | Europe/London | ENABLED | A rule | JohnDoe | ALPHA_EVENTHANDLER | EVENT_POSITION_REPORT |  |
+
+Let's look at the most important fields:
+
+* **RULE_STATUS** can be **ENABLED** or **DISABLED**.
+* **CRON_EXPRESSION** determines when the rule is evaluated.
+* **PROCESS_NAME** is the target process for the rule. When the rule is triggered, it will send a message to the process specified here.
+* **MESSAGE_TYPE** is the message that needs to be sent to the specified **PROCESS_NAME**.
+* **RESULT_EXPRESSION** is the values that will be sent as part of the transaction to the target PROCESS_NAME, we can leave RESULT_EXPRESSION empty as we are going to generate a report for all positions anyway.
+
+
+
+#### 1. Configure the Evaluator
+
+The Genesis Evaluator is the process that runs cron jobs. 
+To start, make a copy of **genesis-processes.xml** and place it in **site-specific/cfg**.
+
+In the genesis-processes.xml file,  change the
+tag for **GENESIS_EVALUTATOR** and set the  `<start>` tag to true
+
+```xml
+<process name="GENESIS_EVALUATOR">
+<start>true</start>
+<groupId>GENESIS</groupId>
+<options>-Xmx512m -DXSD_VALIDATE=false</options>
+<module>genesis-evaluator</module>
+<primaryOnly>true</primaryOnly>
+<package>global.genesis.eventhandler,global.genesis_evaluator</package>
+<description>Dynamic/time rules engine</description>
+</process_>
+```
+
+Run **genesisInstall** to verify that the new process works as expected.
+
+Run **mon**.
+You can see that the process is missing.
+So, run **startProcess GENESIS_EVALUATOR**.
+
+You can see that the process is present, but on Standby.
+![](/img/standbysmall.png)
+
+This is because the evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identofy it as the Primary node.
+
+Run **setPrimary**.
+
+#### 2. Create a new class.
+When the eveluator is running, create a PostionReport class to trigger the new event.
+
+```javapackage global.genesis.alpha.message.event
+class PositionReport()
+```
+
+#### 3. Create an event handler
+
+Create an event handler that will write the csv files to the runtime/position-daily-report folder. Call it EVENT_POSITION_REPORT.
+
+Open the file *alpha-eventhandler.kts* and add an event handler to generate the csv file:
+
+```kotlin
+import global.genesis.commons.standards.GenesisPaths
+import global.genesis.jackson.core.GenesisJacksonMapper
+import java.io.File
+import java.time.LocalDate
+
+eventHandler {
+ //... other event handlers removed for clarity
+ eventHandler<PositionReport> {
+  onCommit {
+    val mapper = GenesisJacksonMapper.csvWriter<Trade>()
+    val today = LocalDate.now().toString()
+    val positionReportFolder = File(GenesisPaths.runtime()).resolve("position-da
+    if (!positionReportFolder.exists()) positionReportFolder.mkdirs()
+    entityDb.getBulk(TRADE)
+    .filter { it.counterpartyId != null }
+```
+
+#### 4. Update the process.xml file for the event handler
+
+Update the **processes.xml** file for the Positions application and change the tag for ALPHA_EVENT_HANDLER:
+```xml
+<process name="ALPHA_EVENT_HANDLER">
+<groupId>ALPHA</groupId>
+<start>true</start>
+<options>-Xmx256m -DRedirectStreamsToLog=true</options>
+<module>genesis-pal-eventhandler</module>
+<package>global.genesis.eventhandler.pal</package>
+<script>alpha-eventhandler.kts</script>
+<description>Handles events</description>
+<classpath>alpha-messages*</classpath>
+<language>pal</language>
+</process>
+```
+
+#### 5.Load the cron rule on to the database
+Load the cron rule csv into the database, CRON_RULE Table. 
+Run `SendIt`.
+
+csv:
+```
+CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
+"0 * * ? * *","It’s a rule","Europe/London","ENABLED","A rule","JohnDoe","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
+```
+
+That's it.
+
+### Dynamic events​
+
+We have now set up the evaluator so that our application creates reports daily.
+
+Now you are going to use the evaluator again to set up dynamic events. In this case, you want to send an email automatically if a certain limit has been breached.
+
+#### Preparation
+
+First, check that you have the evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron job](#cron-jobs-static-events).
+
+setting up a cron job [setting up a cron job](/platform-reference/other-modules/dbtogenesis/dbtogenesis-oracle/).
+
+You need to create two csv files for this exercise.
+
+The first is the file with your rule in the correct format, as you saw with the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
+
+    NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSA
+    MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY >
+    500),JohnDoe,ALPHA_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) &&
+    (POSITION_ID = POSITION_ID))
+
+The second is a csv file that enables you to test the rule. Create a file called POSITION.csv with the following data:
+
+    POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
+    ,2,2,600,1100000
+
+Now you are ready to begin setting up your dynamic rule.
+
+#### 1. Set up the dynamic rule
+
+To set up the dynamic rule, go to the DYNAMIC_RULE table and insert a row. Run `SendIt -t DYNAMIC_RULE`
+
+#### 2. Update the event handler
+
+The rule needs to call an event handler, which will be called `<PositionCancel>`.
+We have defined the event handler in the code block below. Open the file **alpha-eventhandler.kts** and insert the code block:
+
+```java
+eventHandler<PositionCancel> {
+   onCommit { event ->
+       val positionId = event.details.positionId
+       entityDb.insert(
+           Notify {
+               topic = "PositionAlert"
+               header = "Position Alert for $positionId"
+               body = mapOf<String, Any?>(
+                   "emailDistribution" to mapOf(
+                       "to" to listOf("dev-training@freesmtpserver.com"),
+                       "cc" to emptyList(),
+                       "bcc" to emptyList(),
+                   ),
+                   "content" to "Position $positionId breached the limit"
+               ).toJsonString(true)
+           }
+       )
+       ack()
+   }
+}
+```
+
+#### 3. Set up the event handler message class
+
+To define the event handler message class, insert the following code:
+
+```kotlin
+package global.genesis.alpha.message.event
+
+data class PositionCancel(
+      val positionId: String,
+)
+```
+
+#### 4. Set up the Notify module and start the process
+
+The module GENESIS_NOTIFY does not run by default. To change this, open and edit the file **genesis-process.xml**.
+
+Change `GENESIS_NOTIFY` to `true`.
+
+Now you need to run `genesisInstall` to update the configuration.
+
+After that, you need to restart the server so that Notify runs along with the other processes.
+Run `killServer`to stop the application. When that has been completed, run `startServer` to restart it.
+
+When that has finished, you can run  `mon`. At this  point, you will see  GENESIS_NOTIFY as one of the processes that are running.
+
+#### 5. Set up GENESIS_NOTIFY in the database
+
+##### Insert Gateway Route
+
+Note that the GATEWAY_VALUE column requires an empty email distribution JSON definition.
+Insert the following:
+
+    EmailDistribution1,EmailDistribution,"{
+    \"emailDistribution\" : { \"to\" : [ ], \"cc\" : [ ], \"bcc\" : [ ] } }"
+
+##### Insert NOTIFY_ROUTE
+
+Insert the following:
+
+    "ENTITY_ID","ENTITY_ID_TYPE","TOPIC_MATCH","GATEWAY_ID"
+    ,"GATEWAY","PositionAlert","EmailDistribution1" 
+
+#### 6. Add connection details to the system definition
+
+Open the **genesis-system-definitions.kts** file and add the details of the connection for the SMTP server:
+
+    item(name = "SYSTEM_DEFAULT_USER_NAME", value =
+    "" )
+    item(name = "SYSTEM_DEFAULT_EMAIL", value =
+    "notifications@freesmtpservers.com" )
+    item(name = "EMAIL_SMTP_HOST", value =
+    "smtp.freesmtpservers.com" )
+    item(name = "EMAIL_SMTP_PORT", value = "25" )
+    item(name = "EMAIL_SMTP_USER", value =
+    "" )
+    item(name = "EMAIL_SMTP_PW", value = "" )
+    item(name = "EMAIL_SMTP_PROTOCOL", value = "SMTP"
+    )
+
+#### 7. Switch on data dumps
+
+Data dumps need to be switched on for both EVALUATOR and NOTIFY.
+
+Run the following commands:
+
+\`
+LogLevel -p GENESIS_EVALUATOR -DATADUMP_ON
+
+LogLevel -p GENESIS_NOTIFY -DATADUMP_ON
+\`
+
+#### 8. Trigger the event to test the rule
+
+So, let's see if that has worked.
+
+Insert the file POSITION.csv into the database. This is the file that you prepared earlier; it contains a value that breaches a limit,so it should trigger our event.
+
+You can see that when the limit is breached, you receive an email automatically.
+
+:::tip
+Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the inbox 'dev-training@freesmtpserver.com'
+:::
+
+Well done!
 
 ## Permissions​
 
@@ -178,7 +450,7 @@ JaneDee,TRADER
 
 That is it! You can now insert some trades and see the permissions happening in the application.
 
-## Generating data model from existing sources
+<!-- ## Generating data model from existing sources
 
 ### Excel to Genesis
 
@@ -218,7 +490,7 @@ DictionaryBuilder -t MSSQL -U admin -P beONneON*74 -p 1433 -H ref-data-rdb.clatr
 ```
 
 Once the command has finished, it will generate the `fields-dictionary.kts` and `tables-dictionary.kts` files for the data model. Keep these files handy, as you will have to copy them over in the next steps.
-
+ -->
 
 ## Key server commands
 
