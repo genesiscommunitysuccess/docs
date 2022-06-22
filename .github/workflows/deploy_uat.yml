@@ -1,9 +1,9 @@
-name: 'Deploy to pre-release (v2 docs)'
+name: Deploy To Preview Env
 
 # Triggered on new pushes to PLAT-155 (should be renamed eventually)
 on:
   push:
-    branches: [ prerelease ]
+    branches: [ uat ]
 
 jobs:
   deploy:
@@ -35,7 +35,7 @@ jobs:
     - name: Build
       run: npm run build
       env:
-        BASE_URL: /prerelease/secure/
+        BASE_URL: /uat/secure/
 
     - uses: jakejarvis/s3-sync-action@master
       with:
@@ -46,6 +46,6 @@ jobs:
         AWS_S3_BUCKET: genesis-internal-web
         AWS_REGION: 'eu-west-2'
         SOURCE_DIR: 'build'
-        DEST_DIR: 'prerelease/secure'
+        DEST_DIR: 'uat/secure'
 
 
