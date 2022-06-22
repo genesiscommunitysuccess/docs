@@ -133,7 +133,7 @@ genesisArtifactoryPassword=<your-artifactory-password>
 
 ### Environment setup
 
-Make sure you completed the [Workstation setup](#workstation-setup) prior to this.
+Make sure you have completed the [Workstation setup](#workstation-setup) prior to this.
 
 We are going to setup Windows Subsystem for Linux (WSL) to deploy and run the application locally.
 
@@ -197,6 +197,9 @@ Once configured, install genx using the following command:
 ```shell
 npm install -g @genesislcap/foundation-cli
 ```
+:::caution
+If you run into trouble running this command, make sure you have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](/tutorials/training-resources/training-content-day1/#needed-software-packages).
+:::
 
 Once installed, from the terminal, run:
 
@@ -364,6 +367,12 @@ eventHandler {
 
 }
 ```
+:::info
+**What is entityDb? **
+
+The entity db enables you to interact with the database layer, it's part of the Genesis Database API and we'll get into more details soon. For now, understand this is the common way to access data from code. Feel free to explore a bit more the methods available from entityDb using the intellisense of your IDE.
+:::
+
 ### 4. Prepare the server and build
 The application has two files that contain vital configuration information:
 
