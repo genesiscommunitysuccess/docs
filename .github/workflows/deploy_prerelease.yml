@@ -3,7 +3,7 @@ name: Deploy To Preview Env
 # Triggered on new pushes to PLAT-155 (should be renamed eventually)
 on:
   push:
-    branches: [ PLAT-155 ]
+    branches: [ prerelease ]
 
 jobs:
   deploy:
