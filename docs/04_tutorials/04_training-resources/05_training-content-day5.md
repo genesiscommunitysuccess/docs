@@ -93,21 +93,35 @@ Create an event handler that will write the csv files to the runtime/position-da
 Open the file *alpha-eventhandler.kts* and add an event handler to generate the csv file:
 
 ```kotlin
-import global.genesis.commons.standards.GenesisPaths
-import global.genesis.jackson.core.GenesisJacksonMapper
 import java.io.File
 import java.time.LocalDate
+import global.genesis.TradeStateMachine
+import global.genesis.commons.standards.GenesisPaths
+import global.genesis.gen.view.repository.TradeViewAsyncRepository
+import global.genesis.jackson.core.GenesisJacksonMapper
 
 eventHandler {
  //... other event handlers removed for clarity
- eventHandler<PositionReport> {
-  onCommit {
-    val mapper = GenesisJacksonMapper.csvWriter<Trade>()
-    val today = LocalDate.now().toString()
-    val positionReportFolder = File(GenesisPaths.runtime()).resolve("position-da
-    if (!positionReportFolder.exists()) positionReportFolder.mkdirs()
-    entityDb.getBulk(TRADE)
-    .filter { it.counterpartyId != null }
+     eventHandler<PositionReport> {
+        onCommit {
+            val mapper = GenesisJacksonMapper.csvWriter<TradeView>()
+            val today = LocalDate.now().toString()
+            val positionReportFolder = File(GenesisPaths.runtime()).resolve("position-daily-report")
+            if (!positionReportFolder.exists()) positionReportFolder.mkdirs()
+
+            tradeViewRepo.getBulk()
+                .toList()
+                .groupBy { it.counterpartyName }
+                .forEach { (counterParty, trades) ->
+                    val file = positionReportFolder.resolve("${counterParty}_$today.csv")
+                    if (file.exists()) file.delete()
+                    mapper.writeValues(file).use { it.writeAll(trades) }
+                }
+
+            ack()
+        }
+    }
+}
 ```
 
 #### 4. Update the process.xml file for the event handler

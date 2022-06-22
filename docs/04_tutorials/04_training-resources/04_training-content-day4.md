@@ -366,7 +366,9 @@ You want to manage the state of the trade, so remove the delete event handler. I
 To test it, you can try to modify a TRADE and see the states changing accordingly. 
 
 #### Try yourself
-Modify the code so that [give an exercise]
+Modify the class TradeStateMachine to keep the trade.price removing the current rule when TradeStatus.NEW, and set the field trade.enteredBy to empty when TradeStatus.CANCELLED.
+
+Remember to run *assemble* and *deploy-genesisproduct-alpha* tasks after the changes, and test it directly in the UI.
 
 ## Auditing​
 
