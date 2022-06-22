@@ -16,15 +16,15 @@ In this day we are covering:
 
 We are going to change the code in the event handler so that:
 
-* it checks the counterparty exists in the database (by checking COUNTERPARTY_ID field)
-* it checks the instrument exists in the database (by checking INSTRUMENT_ID field)
-* it's also able to modify and delete records with the same verification on counterparty and instrument
+* it checks if the counterparty exists in the database (by checking COUNTERPARTY_ID field)
+* it checks if the instrument exists in the database (by checking INSTRUMENT_ID field)
+* it's also able to modify or delete records with the same verification on counterparty and instrument
 
 ### Add the validation code
 
 Go to the **alpha-eventhandler.kts** file for the event handler. 
 
-Add the verification by inserting an **onVerify** block before the **onCommit** block in TRADE_INSERT. We can see this below, with separate lines checking the Counterparty ID and the Instrument ID exist in the database. The new block ends by sending an **ack()**.
+Add the verification by inserting an **verify** inside the **onValidate** block, before the **onCommit** block in TRADE_INSERT. We can see this below, with separate lines checking the Counterparty ID and the Instrument ID exist in the database. The new block ends by sending an **ack()**.
 
 ```
 eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -64,42 +64,64 @@ eventHandler {
             ack()
         }
     }
+    
+    eventHandler<Counterparty>(name = "TRADE_DELETE") {
+        onCommit { event ->
+            entityDb.delete(event.details)
+            ack()
+        }
+    }
 }
 ```
 :::
 
-Implement and test the back end with Console or Postman. Then, add a Delete and a Modify button on the UI.
-:::note
-Example:
+Implement and test the back end with Console or Postman. To do that see the Day 2 example [here](/tutorials/training-resources/training-content-day2/#a-test-alternative-to-genesis-console). Basically, you should create a POST request using the URL *http://localhost/gwf/EVENT_TRADE_MODIFY* or *http://localhost/gwf/EVENT_TRADE_DELETE*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
+
+Regarding the UI, the Delete or Modify buttons can be added using the genesislcap/foundation-ui components as the sample below.
+
+**home.template.ts**
 ```html
-import {getActionsMenuDef} from '@genesislcap/foundation-ui';
-
-const myActionsMenuColDef = getActionsMenuDef(
-  [
-    {
-      name: 'View',
-      callback: rowData => logger.debug('VIEWW!!!', rowData),
-    },
-    {
-      name: 'Delete',
-      callback: rowData => logger.debug('DELETE!!!', rowData),
-    },
-  ],
-  {
-    headerName: 'Test Actions',
-    width: 140,
-  },
-  '+',
-);
-
 ...
+export const HomeTemplate = html<Home>`
+<zero-card class="trade-card">
+    <zero-ag-grid ${ref('tradesGrid')} rowHeight="45" only-template-col-defs>
+    ...
+        <ag-grid-column :definition=${x => x.singleTradeActionDeleteColDef}></ag-grid-column>
+    </zero-ag-grid>
+    ...
+</zero-card>
+```
+**home.ts**
+```kotlin
+...
+export class Home extends FASTElement {
+    ...
+    public singleTradeActionDeleteColDef: ColDef = {
+        headerName: 'Action',
+        minWidth: 110,
+        maxWidth: 110,
+        cellRenderer: 'action', // AgRendererTypes.action
+        cellRendererParams: {
+        actionClick: async (rowData) => {
+            this.tradeData = rowData;
+            const tradeCancelEvent = await this.connection.commitEvent('EVENT_TRADE_DELETE', {
+            DETAILS: {
+                TRADE_ID: this.tradeData.TRADE_ID,
+            },
+            IGNORE_WARNINGS: true,
+            VALIDATE: false,
+            });
 
-<foundation-ag-grid>
-  ...
-  <ag-grid-column :definition=${x => x.myActionsMenuColDef}></ag-grid-column>
-  ...
-</foundation-ag-grid>
-:::
+            logger.debug('EVENT_TRADE_DELETE result -> ', tradeCancelEvent);
+        },
+        actionName: 'Delete',
+        appearance: 'secondary-orange',
+        },
+        pinned: 'right',
+    };
+    ...
+}
+```
 
 ## State management​
 
@@ -113,7 +135,7 @@ State machines enable you to control workflow by defining the transitions from s
 
 Once we have added add a new field to the data model, we will edit the event handler file to add controlled transitions from one state to another.
 
-#### 1. Add the new field to the data model
+### 1. Add the new field to the data model
 
 Add the TRADE_STATUS field to the **alpha-fields-dictionary.kts** file.
 
@@ -163,7 +185,7 @@ tables {
 
 Run *genesis-generated-fields* to generate the fields, AND​ *genesis-generated-dao​* to create the DAOs.
 
-#### 2. Create a new class for the state machine
+### 2. Create a new class for the state machine
 
 Add a main folder in the event handler module *alpha-eventhandler* and create a state machine class called *TradeStateMachine*.
 
@@ -264,7 +286,7 @@ sealed class TradeEffect {
 }
 ```
 
-#### 3. Add the module as a dependency in the *build.gradle.kts* inside **alpha-script-config** module. 
+### 3. Add the module as a dependency in the *build.gradle.kts* inside **alpha-script-config** module. 
 
 ```
 ...
@@ -273,7 +295,7 @@ api("global.genesis:genesis-pal-eventhandler")
 ...
 ```
 
-#### 4. Edit the event handler to add an integrated state machine
+### 4. Edit the event handler to add an integrated state machine
 
 Integrate the state machine in the TRADE_INSERT event.
 
@@ -365,7 +387,7 @@ You want to manage the state of the trade, so remove the delete event handler. I
 
 To test it, you can try to modify a TRADE and see the states changing accordingly. 
 
-#### Try yourself
+### Try yourself
 Modify the class TradeStateMachine to keep the trade.price removing the current rule when TradeStatus.NEW, and set the field trade.enteredBy to empty when TradeStatus.CANCELLED.
 
 Remember to run *assemble* and *deploy-genesisproduct-alpha* tasks after the changes, and test it directly in the UI.

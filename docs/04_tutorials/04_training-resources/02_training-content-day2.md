@@ -299,12 +299,13 @@ As a reminder, these are the steps needed to complete this task:
 - Create CRUD events, using event handlers for ​both entities​. When you finish, remember to ​run *deploy*​
 - Build, deploy and test. Test it with Postman or Console, inserting a new counterparty and instrument. Then use them to insert a new Trade as well.​
 
-:::note
+#### A test alternative to Genesis Console
+
 As an alternative to Genesis Console, take this opportunity to test your work with an HTTP client such as Postman or Insomnia.
 - [Postman](https://www.postman.com/downloads/)
 - [Insomnia](https://insomnia.rest/download)
 
-#### Logging on 
+##### Logging on 
 Whichever client you are using, you need to log in before you can send test requests to the server. This involves two things:
 - providing a SOURCE_REF - this can be any string that identifies all your activity while you are logged in
 - retrieving a SESSION_AUTH_TOKEN, which you can copy and use to authorise all your test requests
@@ -339,7 +340,7 @@ Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each r
 
 In the example below, we are using Postman as the client API. We are going to test the EVENT_COUNTERPARTY_INSERT Event Handler by adding a new counterparty.
 
-##### url and Body
+###### url and Body
 In front of the url, set the call to **POST**.
 
 The url consists of:
@@ -353,7 +354,7 @@ Set the body to **JSON**. In the body, you need to insert the details of the fie
 
 ![](/img/test-eh-url-body-alpha.png)
 
-##### Header
+###### Header
 In the header, you need to supply:
 
 - a SOURCE_REF (always), which identifies you; you can use any string value that suits you
@@ -363,7 +364,7 @@ When you have all these elements in place, click on **Send** to make the call. I
 
 ![](/img/test-eh-header-alpha.png)
 
-##### Checking the insertion
+###### Checking the insertion
 Now you can check that the new counterparty you inserted is in the correct table of the database. The resource you need to check is the Request Server called ALL_COUNTERPARTIES.
 
 In front of the url, set the call to **POST**.
@@ -387,7 +388,6 @@ When you have this in place, click on **Send** to make the call. You can see tha
 
 ![](/img/test-eh-insert-success-alpha.png)
 
-:::
 
 
 
