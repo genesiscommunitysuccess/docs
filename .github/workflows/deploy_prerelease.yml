@@ -35,7 +35,7 @@ jobs:
     - name: Build
       run: npm run build
       env:
-        BASE_URL: /v2/secure/
+        BASE_URL: /prerelease/secure/
 
     - uses: jakejarvis/s3-sync-action@master
       with:
@@ -46,6 +46,6 @@ jobs:
         AWS_S3_BUCKET: genesis-internal-web
         AWS_REGION: 'eu-west-2'
         SOURCE_DIR: 'build'
-        DEST_DIR: 'v2/secure'
+        DEST_DIR: 'prerelease/secure'
 
 
