@@ -256,35 +256,42 @@ You should be able to see the process is present.
 
 ##### Insert Gateway Route
 
-Note that the GATEWAY_VALUE column requires an empty email distribution JSON definition.
-Insert the following:
+Create a file GATEWAY.csv as shown below and insert it in the table GATEWAY using the command `SentIt`.
 
-    EmailDistribution1,EmailDistribution,"{
-    \"emailDistribution\" : { \"to\" : [ ], \"cc\" : [ ], \"bcc\" : [ ] } }"
+```csv
+GATEWAY_ID,GATEWAY_TYPE,GATEWAY_VALUE,INCOMING_TOPIC
+"EmailDistribution1","EmailDistribution","{ \"emailDistribution\" : { \"to\" : [ ], \"cc\" : [ ], \"bcc\" : [ ] } }",
+```
 
 ##### Insert NOTIFY_ROUTE
 
-Insert the following:
+Create a file NOTIFY_ROUTE.csv as shown below and insert it in the table NOTIFY_ROUTE using the command `SentIt`.
 
-    "ENTITY_ID","ENTITY_ID_TYPE","TOPIC_MATCH","GATEWAY_ID"
-    ,"GATEWAY","PositionAlert","EmailDistribution1" 
+```csv
+ENTITY_ID,ENTITY_ID_TYPE,TOPIC_MATCH,GATEWAY_ID
+,"GATEWAY","PositionAlert","EmailDistribution1" 
+```
 
 #### 6. Add connection details to the system definition
 
-Open the **genesis-system-definitions.kts** file and add the details of the connection for the SMTP server:
+Open the **genesis-system-definition.kts** file and add the details of the connection for the SMTP server:
+```kotlin
+package genesis.cfg
 
-    item(name = "SYSTEM_DEFAULT_USER_NAME", value =
-    "" )
-    item(name = "SYSTEM_DEFAULT_EMAIL", value =
-    "notifications@freesmtpservers.com" )
-    item(name = "EMAIL_SMTP_HOST", value =
-    "smtp.freesmtpservers.com" )
-    item(name = "EMAIL_SMTP_PORT", value = "25" )
-    item(name = "EMAIL_SMTP_USER", value =
-    "" )
-    item(name = "EMAIL_SMTP_PW", value = "" )
-    item(name = "EMAIL_SMTP_PROTOCOL", value = "SMTP"
-    )
+systemDefinition {
+    global {
+        ...
+        item(name = "SYSTEM_DEFAULT_USER_NAME", value = "" )
+        item(name = "SYSTEM_DEFAULT_EMAIL", value = "notifications@freesmtpservers.com" )
+        item(name = "EMAIL_SMTP_HOST", value = "smtp.freesmtpservers.com" )
+        item(name = "EMAIL_SMTP_PORT", value = "25" )
+        item(name = "EMAIL_SMTP_USER", value = "" )
+        item(name = "EMAIL_SMTP_PW", value = "" )
+        item(name = "EMAIL_SMTP_PROTOCOL", value = "SMTP")
+    }
+    ...
+}
+```
 
 #### 7. Switch on data dumps
 
@@ -292,25 +299,36 @@ Data dumps need to be switched on for both EVALUATOR and NOTIFY.
 
 Run the following commands:
 
-\`
-LogLevel -p GENESIS_EVALUATOR -DATADUMP_ON
-
-LogLevel -p GENESIS_NOTIFY -DATADUMP_ON
-\`
+```
+LogLevel -p ALPHA_EVALUATOR -DATADUMP_ON
+```
+```
+LogLevel -p ALPHA_NOTIFY -DATADUMP_ON
+```
 
 #### 8. Trigger the event to test the rule
 
 So, let's see if that has worked.
 
-Insert the file POSITION.csv into the database. This is the file that you prepared earlier; it contains a value that breaches a limit,so it should trigger our event.
+Insert the file POSITION.csv into the database. This is the file that you prepared earlier; it contains a value that breaches a limit, so it should trigger our event.
 
 You can see that when the limit is breached, you receive an email automatically.
 
-:::tip
-Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the inbox 'dev-training@freesmtpserver.com'
+:::note
+Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the inbox *dev-training@freesmtpserver.com*
 :::
 
 Well done!
+
+#### Try yourself
+
+Use the evaluator again to set up dynamic rules. Now we want to check when a position lower limit has been reached. The position lower limit is 10, so any position less than 10 should be warned (QUANTITY < 10). In this case, you want to send an email automatically letting the user know.
+
+You can use the same parameter as the exercise we just did (SMTP credentials). Just remember to add the configurations and create a new  class for that, in this case `<PositionLowerLimit>`.
+
+:::tip
+Remember to add the record into the DYNAMIC_RULE table, create a test row in POSITION table, and add a new class defining it in the eventhanlder file.
+:::
 
 ## Permissions​
 
@@ -477,6 +495,16 @@ JaneDee,TRADER
 ```
 
 That is it! You can now insert some trades and see the permissions happening in the application.
+
+### Try yourself
+
+Set up generic permissions using INSTRUMENT table and INSTRUMENT_ID field. The add dynamic permissions in the data server file and request servers files.
+
+::tip
+Remember to change genesis-system-definition.kts as well as the script files. Lastly, insert the records in the three configurations tables.
+
+After the configurations, run **assemble** and **deploy-genesisproduct-alpha** tasks again to prepare the database for permission and deploy the new version.
+:::
 
 <!-- ## Generating data model from existing sources
 
