@@ -152,36 +152,48 @@ Now you are going to use the evaluator again to set up dynamic rules. In this ca
 
 #### Preparation
 
-First, check that you have the evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron job](#cron-jobs-static-events).
-
-setting up a cron job [setting up a cron job](/platform-reference/other-modules/dbtogenesis/dbtogenesis-oracle/).
+First, check that you have the evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron rule](#cron-rules-static-events).
 
 You need to create two csv files for this exercise.
 
 The first is the file with your rule in the correct format, as you saw with the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
 
-    NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSA
-    MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY >
-    500),JohnDoe,ALPHA_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) &&
-    (POSITION_ID = POSITION_ID))
+```csv
+NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
+MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),JaneDee,ALPHA_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
+```
 
 The second is a csv file that enables you to test the rule. Create a file called POSITION.csv with the following data:
 
-    POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
-    ,2,2,600,1100000
+```csv
+POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
+,2,2,600,1100000
+```
 
 Now you are ready to begin setting up your dynamic rule.
 
 #### 1. Set up the dynamic rule
 
-To set up the dynamic rule, go to the DYNAMIC_RULE table and insert a row. Run `SendIt -t DYNAMIC_RULE`
+To set up the dynamic rule, go to the DYNAMIC_RULE table and insert the *DYNAMIC_RULE.csv* file. Run `SendIt -t DYNAMIC_RULE -f DYNAMIC_RULE.csv`
 
-#### 2. Update the event handler
+#### 2. Set up the event handler message class
 
-The rule needs to call an event handler, which will be called `<PositionCancel>`.
+To define the event handler message class, create a Kotlin class called *PositionCancel* in your project folder **server/jvm/alpha-messages/src/main/kotlin/global/genesis/alpha/message/event**, and insert the following code:
+
+```kotlin
+package global.genesis.alpha.message.event
+
+data class PositionCancel(
+      val positionId: String,
+)
+```
+
+#### 3. Update the event handler
+
+The rule needs to call an event handler, which will be called `<PositionCancel>` using the class created in the previous step.
 We have defined the event handler in the code block below. Open the file **alpha-eventhandler.kts** and insert the code block:
 
-```java
+```kotlin
 eventHandler<PositionCancel> {
    onCommit { event ->
        val positionId = event.details.positionId
@@ -204,30 +216,41 @@ eventHandler<PositionCancel> {
 }
 ```
 
-#### 3. Set up the event handler message class
-
-To define the event handler message class, insert the following code:
-
-```kotlin
-package global.genesis.alpha.message.event
-
-data class PositionCancel(
-      val positionId: String,
-)
-```
-
 #### 4. Set up the Notify module and start the process
 
-The module GENESIS_NOTIFY does not run by default. To change this, open and edit the file **genesis-process.xml**.
+The module GENESIS_NOTIFY does not run by default. To change this, we are adding a customized module in our project. To do that, create a process called *ALPHA_NOTIFY* and add it in the file **alpha-processes.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below.
 
-Change `GENESIS_NOTIFY` to `true`.
+```xml
+<processes>
+    ...
+    <process name="ALPHA_NOTIFY">
+        <start>true</start>
+        <groupId>GENESIS</groupId>
+        <options>-Xmx512m -DXSD_VALIDATE=false</options>
+        <module>genesis-notify</module>
+        <package>global.genesis.notify</package>
+        <script>genesis-notify.kts</script>
+        <language>pal</language>
+        <description>Notify Mechanism for sending messages to external systems, such as Email and Symphony</description>
+    </process>
+</processes>
+```
+Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below. 
 
-Now you need to run `genesisInstall` to update the configuration.
+```xml
+<configuration>
+    <service host="localhost" name="ALPHA_DATASERVER" port="11000"/>
+    <service host="localhost" name="ALPHA_EVENT_HANDLER" port="11001"/>
+    <service host="localhost" name="ALPHA_EVALUATOR" port="11002"/>
+    <service host="localhost" name="ALPHA_NOTIFY" port="11003"/>
+</configuration>
+```
 
-After that, you need to restart the server so that Notify runs along with the other processes.
-Run `killServer`to stop the application. When that has been completed, run `startServer` to restart it.
+Run **assemble** and **deploy-genesisproduct-alpha** tasks to verify that the new process works as expected.
 
-When that has finished, you can run  `mon`. At this  point, you will see  GENESIS_NOTIFY as one of the processes that are running.
+Run `mon`.
+You should be able to see the process is present.
+![](/img/standbysmall-alpha-notify.png)
 
 #### 5. Set up GENESIS_NOTIFY in the database
 
