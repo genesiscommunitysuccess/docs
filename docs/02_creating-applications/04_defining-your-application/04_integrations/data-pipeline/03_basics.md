@@ -50,7 +50,7 @@ TRADE_SIDE {
 }
 ```
 
-If the type of the source row is different from the [Field](/creating-applications/defining-your-application/data-model/fields/fields) type then it will converted in best effort. TODO: Do we have best effort strategy already described somewhere?
+If the type of the source row is different from the [Field](/creating-applications/defining-your-application/data-model/fields/fields) type then it will converted in best effort.
 
 #### Mapping function
 There are cases when the [Field](/creating-applications/defining-your-application/data-model/fields/fields) value is not directly mapped to the source row value. For example:
