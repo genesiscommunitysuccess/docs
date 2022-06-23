@@ -17,10 +17,10 @@ You can use the evaluator to schedule the production of EOD reports (for example
 
 In system terms, evaluators enable you to connect event handlers to two different kinds of event: dynamic and static (cron rules). 
 
-1. __Dynamic Rules__, which are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries, and
-2. __Cron Rules__, which are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
+1. __Cron Rules__, which are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
+2. __Dynamic Rules__, also known as Dynamic Events, are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
-In both cases, you define the rule in a table in the database: DYNAMIC_RULES for dynamic rules and CRON_RULES for static rules. 
+In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. 
 
 ### Cron rules (static events)​
 
@@ -34,7 +34,7 @@ Our cron rule takes the following form:
 
 | CRON_EXPRESSION | DESCRIPTION | TIME_ZONE | RULE_STATUS | NAME | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 0 45 7 ? * MON,TUE,WED,THU,FRI * | It’s a rule | Europe/London | ENABLED | A rule | JohnDoe | ALPHA_EVENTHANDLER | EVENT_POSITION_REPORT |  |
+| 0 45 7 ? * MON,TUE,WED,THU,FRI * | It’s a rule | Europe/London | ENABLED | A rule | JaneDee | ALPHA_EVENTHANDLER | EVENT_POSITION_REPORT |  |
 
 Let's look at the most important fields:
 
@@ -48,41 +48,50 @@ Let's look at the most important fields:
 
 #### 1. Configure the Evaluator
 
-The Genesis Evaluator is the process that runs cron jobs. 
-To start, make a copy of **genesis-processes.xml** and place it in **site-specific/cfg**.
-
-In the genesis-processes.xml file,  change the
-tag for **GENESIS_EVALUTATOR** and set the  `<start>` tag to true
+An Evaluator is a process that runs cron jobs. 
+To start, create a process called *ALPHA_EVALUATOR* and add it in the file **alpha-processes.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below.
 
 ```xml
-<process name="GENESIS_EVALUATOR">
-<start>true</start>
-<groupId>GENESIS</groupId>
-<options>-Xmx512m -DXSD_VALIDATE=false</options>
-<module>genesis-evaluator</module>
-<primaryOnly>true</primaryOnly>
-<package>global.genesis.eventhandler,global.genesis_evaluator</package>
-<description>Dynamic/time rules engine</description>
-</process_>
+<processes>
+    ...
+    <process name="ALPHA_EVALUATOR">
+        <start>true</start>
+        <groupId>GENESIS</groupId>
+        <options>-Xmx512m -DXSD_VALIDATE=false</options>
+        <module>genesis-evaluator</module>
+        <primaryOnly>true</primaryOnly>
+        <package>global.genesis.eventhandler,global.genesis.evaluator</package>
+        <description>Dynamic/time rules engine</description>
+    </process>
+</processes>
 ```
 
-Run **genesisInstall** to verify that the new process works as expected.
+Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below. 
 
-Run **mon**.
-You can see that the process is missing.
-So, run **startProcess GENESIS_EVALUATOR**.
+```xml
+<configuration>
+    <service host="localhost" name="ALPHA_DATASERVER" port="11000"/>
+    <service host="localhost" name="ALPHA_EVENT_HANDLER" port="11001"/>
+    <service host="localhost" name="ALPHA_EVALUATOR" port="11002"/>
+</configuration>
+```
 
-You can see that the process is present, but on Standby.
-![](/img/standbysmall.png)
+Run **assemble** and **deploy-genesisproduct-alpha** tasks to verify that the new process works as expected.
 
-This is because the evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identofy it as the Primary node.
+Run `mon`.
+You should be able to see the process is present, but on Standby.
+![](/img/standbysmall-alpha.png)
 
-Run **setPrimary**.
+This is because the evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the Primary node.
+
+Run `SetPrimary` and you should be able to see all processes running.
 
 #### 2. Create a new class.
-When the eveluator is running, create a PostionReport class to trigger the new event.
+When the evaluator is running, create a PostionReport class to trigger the new event. This class should be created inside your project folder **server/jvm/alpha-messages/src/main/kotlin/global/genesis/alpha/message/event** as the code below. 
 
-```javapackage global.genesis.alpha.message.event
+```kotlin
+global.genesis.alpha.message.event
+
 class PositionReport()
 ```
 
@@ -124,40 +133,22 @@ eventHandler {
 }
 ```
 
-#### 4. Update the process.xml file for the event handler
-
-Update the **processes.xml** file for the Positions application and change the tag for ALPHA_EVENT_HANDLER:
-```xml
-<process name="ALPHA_EVENT_HANDLER">
-<groupId>ALPHA</groupId>
-<start>true</start>
-<options>-Xmx256m -DRedirectStreamsToLog=true</options>
-<module>genesis-pal-eventhandler</module>
-<package>global.genesis.eventhandler.pal</package>
-<script>alpha-eventhandler.kts</script>
-<description>Handles events</description>
-<classpath>alpha-messages*</classpath>
-<language>pal</language>
-</process>
-```
-
-#### 5.Load the cron rule on to the database
-Load the cron rule csv into the database, CRON_RULE Table. 
+#### 4.Load the cron rule on to the database
+Load the cron rule csv below into the database, CRON_RULE Table. 
 Run `SendIt`.
 
-csv:
-```
+```csv
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
-"0 * * ? * *","It’s a rule","Europe/London","ENABLED","A rule","JohnDoe","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
+"0 * * ? * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 
 That's it.
 
-### Dynamic events​
+### Dynamic rules
 
 We have now set up the evaluator so that our application creates reports daily.
 
-Now you are going to use the evaluator again to set up dynamic events. In this case, you want to send an email automatically if a certain limit has been breached.
+Now you are going to use the evaluator again to set up dynamic rules. In this case, you want to send an email automatically if a certain limit has been breached.
 
 #### Preparation
 
