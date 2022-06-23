@@ -69,17 +69,22 @@ body {
 }
 
 .markdown h1 {
-  font-size: 36px;
-  line-height: 28px;
+  font-size: 40px;
+  line-height: 35px;
 }
 
 .markdown h2 {
-  font-size: 20px;
-  line-height: 22px;
+  font-size: 32px;
+  line-height: 28px;
 }
 
 .markdown h3 {
-  font-size: 18px;
+  font-size: 20px;
+  line-height: 18px;
+}
+
+.markdown h1, .markdown h2, .markdown h3 {
+  border-bottom: 1px solid var(--warm-gray-3);
 }
 
 .markdown strong {
@@ -112,6 +117,36 @@ body {
   font-family: var(--medium-font);
 }
 /**********************************************/
+
+/* Tables */
+.markdown table th {
+  color: var(--primary-blue);
+  font-family: var(--medium-font);
+  font-weight: 700;
+  background-color: var(--warm-gray-3);
+}
+.markdown table tr:nth-child(2n) {
+  background-color: var(--warm-gray-3);
+}
+.markdown table tr:nth-child(2n+1) {
+  background-color: var(--warm-gray-4);
+}
+/**********************************************/
+
+/* ultra-wide view - restrict and center the main content */
+.main-wrapper main { 
+  transition: all 1s ease-in-out;
+}
+
+@media (min-aspect-ratio: 1/1) and (min-width: 912px) {
+  .main-wrapper main {
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+/**********************************************/
+
 
 button.aa-DetachedSearchButton {
   --aa-font-family: var(--medium-font);

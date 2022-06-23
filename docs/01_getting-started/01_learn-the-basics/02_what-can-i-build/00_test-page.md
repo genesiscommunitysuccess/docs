@@ -19,4 +19,11 @@ Regular text example
 
 - Bullet Points text example
 
-## **Note:** This page should be removed before merging into prerelease.
+| Table	| Example | 
+|--------------|:-----:|
+| John	| Doe |
+| Bob	| Smith |
+| Jimi	| Hendrix |
+| Bill	| Gates |
+
+### **Note:** This page should be removed before merging into prerelease.
