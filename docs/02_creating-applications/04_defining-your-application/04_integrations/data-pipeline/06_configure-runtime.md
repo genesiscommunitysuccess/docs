@@ -28,3 +28,10 @@ Data pipeline is a separate module and requires configuration in __application__
 
 ## System definitions
 It is vital to ensure that any system definition variables that are used by the configuration definition are properly defined in your __application__**-system-definition.kts** file.
+
+## Starting source PostgreSQL as Docker image
+To capture changes from PostgreSQL the Write Ahead Log level has to be set at least to `logical`. By default the postgres docker image have it set at lower level so it has to be explicitly specified when the image is ran
+
+```shell
+docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c wal_level=logical
+```
