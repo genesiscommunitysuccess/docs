@@ -183,3 +183,25 @@ sources {
 
 
 ```
+
+## Starting source PostgreSQL
+
+There are various ways to start PostgreSQL as a test dependency. The following is a list of the few most common ones
+
+### Testcontainers
+You can start PostgreSQL as a test rule using [Testcontainers](https://www.testcontainers.org/). It has [Postgres Module](https://www.testcontainers.org/modules/databases/postgres/) that has pre-configured rule to use out of the box. However, it requires additional configuration for the Write Ahead Log (WAL) level and it has to be set to `logical`. Following is a sample rule configuration:
+
+```kotlin
+PostgreSQLContainer("postgres:12.6-alpine")
+  .withCommand("postgres", "-c", "fsync=off", "-c", "wal_level=logical")
+```
+
+### Docker image
+You can start PostgreSQL as a docker image as part of the test setup or the environment setup. The same requirement for WAL level applies here as well. Following is a sample command to start PostgreSQL image:
+
+```shell
+docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c wal_level=logical
+```
+
+### Standalone process
+You can install and start PostgreSQL during environment setup

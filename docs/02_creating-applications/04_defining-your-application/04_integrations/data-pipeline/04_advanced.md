@@ -85,3 +85,9 @@ sources {
 ```
 
 It is vital to ensure that any system definition variables that are used by the configuration definition are properly defined in your __application__**-system-definition.kts** file.
+
+## PostgreSQL configuration
+To capture changes from PostgreSQL the Write Ahead Log level has to be set at least to `logical` and the plugin used for logical decoding to be `pgoutput` (which is the default plugin PostgreSQL uses).
+
+## Replaying PostgreSQL rows
+Genesis keeps track of the last processed row from the source database in a table called `DEBEZIUM_OFFSET`. If you want to start ingesting the rows from the begining you can delete the row with the name of the source and restart the Genesis server
