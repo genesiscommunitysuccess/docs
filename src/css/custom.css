@@ -43,9 +43,7 @@
   --ifm-menu-color-background-active: inherit;
 
   --ifm-heading-font-family: var(--primary-font);
-  --ifm-heading-color: #555;
-  --ifm-heading-font-weight: 500;
-  --ifm-heading-line-height: normal;
+  --ifm-heading-color: var(--black);
 
   --ifm-hero-background-color: transparent;
 
@@ -62,29 +60,93 @@ body {
   font-weight: 400;
 }
 
-.markdown header>h1:first-child {
-  --ifm-h1-font-size: 36px;
-  margin-bottom: 12px;
-  --ifm-link-color: #555;
+/* global content styles */
+
+.markdown {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400px;
 }
 
-.markdown>h2 {
-  --ifm-h2-font-size: 24px;
-  margin-bottom: 0px;
-  --ifm-link-color: #555;
+.markdown h1 {
+  font-size: 40px;
+  line-height: 35px;
 }
 
-.markdown>h3 {
-  --ifm-h3-font-size: 20px;
-  --ifm-link-color: #555;
-  margin-bottom: 0px;
+.markdown h2 {
+  font-size: 32px;
+  line-height: 28px;
 }
 
-.markdown>h4 {
-  --ifm-h4-font-size: 16px;
-  --ifm-link-color: #555;
-  margin-bottom: 0px;
+.markdown h3 {
+  font-size: 20px;
+  line-height: 18px;
 }
+
+.markdown h1, .markdown h2, .markdown h3 {
+  border-bottom: 1px solid var(--warm-gray-3);
+}
+
+.markdown strong {
+  font-family: var(--medium-font);
+  font-weight: 700;
+}
+
+.markdown li {
+  list-style-type: square;
+}
+/**********************************************/
+
+
+/* Previous / Next (bottom nav) */
+.pagination-nav .pagination-nav__link {
+  border-radius: 0;
+}
+
+.pagination-nav .pagination-nav__sublabel {
+  color: var(--warm-gray-2);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.pagination-nav .pagination-nav__label {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 21px;
+  font-family: var(--medium-font);
+}
+/**********************************************/
+
+/* Tables */
+.markdown table th {
+  color: var(--primary-blue);
+  font-family: var(--medium-font);
+  font-weight: 700;
+  background-color: var(--warm-gray-3);
+}
+.markdown table tr:nth-child(2n) {
+  background-color: var(--warm-gray-3);
+}
+.markdown table tr:nth-child(2n+1) {
+  background-color: var(--warm-gray-4);
+}
+/**********************************************/
+
+/* ultra-wide view - restrict and center the main content */
+.main-wrapper main { 
+  transition: all 1s ease-in-out;
+}
+
+@media (min-aspect-ratio: 1/1) and (min-width: 912px) {
+  .main-wrapper main {
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+/**********************************************/
+
 
 button.aa-DetachedSearchButton {
   --aa-font-family: var(--medium-font);
