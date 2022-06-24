@@ -16,6 +16,7 @@ This is a hands-on developer training where we're going to follow the creation �
 
 - You know how to code, ideally familiar with the Java ecosystem and Kotlin language. Even better if you know some​ TypeScript and some basic Linux commands.​
 - You have taken the [Foundations course](/).
+- You are familiar with basic capital markets concepts such as [orders, trades](https://www.investopedia.com/terms/o/order.asp) and [position](https://www.investopedia.com/terms/p/position.asp).
 
 ## Programme
 

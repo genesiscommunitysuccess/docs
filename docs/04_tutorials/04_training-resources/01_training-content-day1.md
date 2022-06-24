@@ -29,7 +29,7 @@ Once you have a data model defined, you can start bringing your application to l
 
 When it comes to displaying the data, you can configure a **data server** to distribute the data to the front end. The data server is a GPAL component that streams the data in real time to subscribers such as a data grid component in the front end. You can also bind a button in the UI to an event (action) defined in your event handler.
 
-All of this managed by the Genesis low-code platform. You don't need to worry about inter-process communication or even how to connect the front end to the back end - for instance, the Platform handles a web socket connection between the browser and the data server for you. Just defining something as simple as:
+All of this managed by the Genesis low-code platform. You don't need to worry about inter-process communication or even how to connect the front end to the back end as the Platform handles a web socket connection between the browser and the data server for you. Simply defining something as simple as the example below will get you a data grid showing all trades in real time:
 
 Back end
 ```kotlin
@@ -172,10 +172,6 @@ This will enable you to see the basics of the Genesis low-code platform by start
 4. [Prepare the server and build](#4-prepare-the-server-and-build).
 5. [Deployment](#5-deployment)
 
-:::info
-Once you finish this lesson, you will extend this initial simple application into a full Trades & Positions app!
-:::
-
 ### What you will build
 
 The very simple application you will build will look like this:
@@ -183,25 +179,27 @@ The very simple application you will build will look like this:
 - a simple table with 5 fields
 - two front-end components: one to display data and one to insert data
 
-That’s it. Just enough to get you up and running. Obviously, there is much more you could do, but that can wait for another day.
+:::info
+Once you finish this lesson, you will extend this initial simple application into a full Trades & Positions app!
+:::
 
 With a lack of imagination we hope you will find trustworthy, we are going to call this example application **alpha**. You will see this reflected in the file names throughout.
 
 ### 1. Create a new project
 The GenX CLI tool enables you to seed projects, in this case we just want to generate a blank full-stack application project.
 
-For step-by-step instructions on how to install and use this tool, follow the guide on [GenX](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/using-genx/).
-
-Once configured, install genx using the following command:
+Install genx using the following command:
 
 ```shell
 npm install -g @genesislcap/foundation-cli
 ```
 :::caution
 If you run into trouble running this command, make sure you have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](/tutorials/training-resources/training-content-day1/#needed-software-packages).
+
+More details on GenX installation can be found [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/using-genx/).
 :::
 
-Once installed, from the terminal, run:
+Once installed, from the terminal, go to a folder where you want your project to reside, and run:
 
 ```shell
 genx
@@ -267,7 +265,7 @@ i Application created successfully! 🎉 Please open the application and follow 
 ### 2. Define the data model
 Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application.
 
-Open Intellij (or your chosen IDE). In the alpha project, you will see the **readme** file for the project. After importing and indexing, you should see the files and project structure ready.
+Open Intellij (or your chosen IDE) and open the alpha project. After importing and indexing, you should see the files and project structure ready.
 
 #### Add fields
 You define your [fields](/creating-applications/defining-your-application/data-model/fields/fields/) in the file **alpha-fields-dictionary.kts**.
@@ -306,6 +304,13 @@ From the Gradle menu on the right of Intellij, this is:
 
 ![](/img/build-gradle-kts-fields.png)
 
+:::note Why do I have to run this Gradle task?
+
+You are editing a kts file that needs to be compiled and built to be used from other places. In this case, we want the fields to be available to the tables (and with intellisense support from the IDE).
+
+As we go, you'll see we have different Gradle tasks depending on the artifact we want to build.
+:::
+
 #### Add a table
 Now we have our fields, let's define a [table](/creating-applications/defining-your-application/data-model/tables/tables) in the file **alpha-tables-dictionary.kts**.
 
@@ -339,6 +344,8 @@ From the Gradle menu, this is:
 
 ![](/img/build-gradle-kts-generated-dao.png)
 
+After running it, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
+
 ### 3. Add business logic
 We have a table; now we want to be able to see its content and create new entries.
 
@@ -367,8 +374,7 @@ eventHandler {
 
 }
 ```
-:::info
-**What is entityDb? **
+:::info What is entityDb?
 
 The entity db enables you to interact with the database layer, it's part of the Genesis Database API and we'll get into more details soon. For now, understand this is the common way to access data from code. Feel free to explore a bit more the methods available from entityDb using the intellisense of your IDE.
 :::
@@ -433,7 +439,7 @@ item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&p
 
 ```
 :::tip
-If you want to add application specific definitions, use ..\server\jvm\alpha-config\src\main\resources\cfg\alpha-system-definition.kts
+If you had to add application specific definitions, like an API_KEY for example, you'd have to edit ..\server\jvm\alpha-config\src\main\resources\cfg\alpha-system-definition.kts
 :::
 
 Finally, you can build the server.
@@ -445,14 +451,14 @@ In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha**/**
 
 ### 5. Deployment
 
+Now that the back end of our application is built, it's time to deploy it.
+
 The Genesis deploy plugin provides several tasks that help to set up the Genesis environment so that you can deploy a project to it. It can be used on Linux machines (local and over SSH) or Windows machines with WSL support.
 
-This guide will show you how to configure the Genesis deploy plugin so you can easily set up a Genesis environment and deploy to it, covering WSL (Windows Subsystem for Linux) configuration.
 
 #### Pre-requisites
 
-If not already in place in your gradle project, add a sub-module called _application_**-deploy**
-under _application_**/server/jvm/**
+You should hava a sub-module called alpha-deploy under ../server/jvm.
 
 Ensure the **build.gradle.kts** in this sub-module has the following entry
 
@@ -462,28 +468,21 @@ plugins {
 }
 ```
 
-:::caution
+:::caution edit gradle.properties
 Ensure the `gradle.properties` file from the server/jvm folder is properly set with the following entries:
-
-```properties
-genesis-home=<path-to-genesis-distribution>
-wsl-distro=<name-of-the-wsl-distro>
-wsl-user=<wsl-username>
-```
-
-| Entry  |  Description | 
-|---|---|
-|`genesis-home`|  This is a mandatory property that is a path on the WSL distribution. Example: `/home/alpha/run` |
-|`wsl-distro`|  This is a mandatory property that is the name of the WSL distribution. Example: `CentOS7` |
-|`wsl-user`|  This is an optional property. If omitted, the default WSL user will be used. Example: `alpha` |
-
-Sample configuration:
 
 ```properties
 genesis-home=/home/genesis/run
 wsl-distro=TrainingCentOS
 wsl-user=genesis
 ```
+
+| Entry  |  Description | 
+|---|---|
+|`genesis-home`|  This is a mandatory property that is a path on the WSL distribution. |
+|`wsl-distro`|  This is a mandatory property that is the name of the WSL distribution. |
+|`wsl-user`|  This is an optional property. If omitted, the default WSL user will be used. |
+
 
 :::
 
@@ -493,7 +492,12 @@ Now we are going to install the Genesis Platform (i.e. Genesis distribution) on 
 
 ##### Deploying to the server
 
-We will run `setupEnvironment` - this task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
+We will run `install-alpha-site-specific` (because we changed the default configuration) and `setupEnvironment` - this task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
+
+Usage :
+```shell
+./gradlew :jvm:alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip] #On the IntelliJ terminal
+```
 
 Usage :
 ```shell
