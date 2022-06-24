@@ -503,7 +503,7 @@ Set up generic permissions using INSTRUMENT table and INSTRUMENT_ID field. The a
 ::tip
 Remember to change genesis-system-definition.kts as well as the script files. Lastly, insert the records in the three configurations tables.
 
-After the configurations, run **assemble** and **deploy-genesisproduct-alpha** tasks again to prepare the database for permission and deploy the new version.
+After the configurations, you should execute the genesis setup tasks **setupEnvironment** and **install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip** to  prepare the database for permission. Then run **assemble** and **deploy-genesisproduct-alpha** tasks again to deploy the new version.
 :::
 
 <!-- ## Generating data model from existing sources
