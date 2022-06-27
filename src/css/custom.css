@@ -110,12 +110,22 @@ div.aa-DetachedSearchButtonIcon {
   width: 16px;
   color: var(--aa-muted-color-rgb);
 }
+
 div.aa-DetachedSearchButtonIcon:hover {
   cursor: pointer;
 }
 
+.aa-DetachedCancelButton {
+  display: none;
+}
+
 .aa-Form:focus-within {
   --aa-primary-color-rgb: var(--aa-input-border-color-rgb);
+}
+
+.aa-ItemContentBody {
+  margin: auto;
+  padding-bottom: 2%;
 }
 
 .navbar__logo {
