@@ -469,7 +469,43 @@ Event handlers are slightly different, because the input data class can be custo
   }
 ```
 
-After the configurations, you should execute the genesis setup tasks **setupEnvironment** and **install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip** to  prepare the database for permission. Then run **assemble** and **deploy-genesisproduct-alpha** tasks again to deploy the new version.
+### Permissioning and permissionCodes
+
+As with other GPAL files (e.g. Request Server and Data Server), you can use a `permissioning` block to define both dynamic permissions (AUTH) and fixed permissions (based on RIGHT_SUMMARY rights) if the event message type is a generated database entity. See the example below:
+
+```kotlin
+    eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
+        permissioning {
+            auth(mapName = "COMPANY"){
+                COMPANY.COMPANY_NAME
+            }
+        }
+
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to result.record.companyId)))
+        }
+    }
+```
+
+If your message type is not a database-generated entity,  you can still define fixed `permissionCodes` outside the permissioning block:
+
+```kotlin
+    eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
+        permissionCodes = listOf("INSERT_TRADE")
+        onCommit { event ->
+            val company = event.details
+            val result = entityDb.insert(company)
+            ack(listOf(mapOf("VALUE" to result.record.companyId)))
+        }
+    }
+```
+
+See [here](/creating-applications/defining-your-application/access-control/authorisation-over/) for more details on authorisation.
+
+
+After the configurations, you should execute the genesis setup tasks **setupEnvironment**, **install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip** and **install-auth-distribution** to  prepare the database for permission. Then run **assemble** and **deploy-genesisproduct-alpha** tasks again to deploy the new version.
 
 Using the command [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script) do the following three configurations below.
 
@@ -498,12 +534,13 @@ That is it! You can now insert some trades and see the permissions happening in 
 
 ### Try yourself
 
-Set up generic permissions using INSTRUMENT table and INSTRUMENT_ID field. The add dynamic permissions in the data server file and request servers files.
+Set up a permission code for Trade inserting. The permission code should be called *TRADE_INSERT* and be part of the **alpha-eventhandler.kts** file accordingly.
+
 
 :::tip
-Remember to change genesis-system-definition.kts as well as the script files. Lastly, insert the records in the three configurations tables.
+Remember to change the **alpha-eventhandler.kts** file, as well as inserting the record in the configuration table *RIGHT_SUMMARY* too.
 
-After the configurations, you should execute the genesis setup tasks **setupEnvironment** and **install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip** to  prepare the database for permission. Then run **assemble** and **deploy-genesisproduct-alpha** tasks again to deploy the new version.
+After the configurations, you should run **assemble** and **deploy-genesisproduct-alpha** tasks again to deploy the new version.
 :::
 
 <!-- ## Generating data model from existing sources
