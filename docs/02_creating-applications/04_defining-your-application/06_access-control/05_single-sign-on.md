@@ -61,9 +61,9 @@ If CORS is not enabled, the SSO workflow is:
 5. The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends a redirect trigger to the browser for **https://your-subdomain.genesisapplication.com/**, which includes the JWT as a request parameter.
 6. The Genesis platform is reloaded. It recognises that SSO is enabled, but now with the JWT as a parameter. The platform sends an SSO authentication request with the JWT for the specific organisation. If this is successful, an active Session token is returned.
 
-#### JWT Revalidation
+### JWT revalidation
 
-The Auth services provides an Event Handler to clients, which allows for periodic updating and revalidation of a JWT token.
+The Auth service provides an Event Handler to clients, which allows for periodic updating and revalidation of a JWT token.
 
 The Event Handler is named ```EVENT_VALIDATE_JWT``` and takes these parameters:-
 
