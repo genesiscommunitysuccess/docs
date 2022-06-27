@@ -30,8 +30,7 @@ The IT infrastructure/security team at your organisation is usually responsible 
 The following data points need to be shared with Genesis to complete the solution. These data points are stored in the database of your Genesis application.
 
 - The public key of the JWT RSA key pair, (the private key is used to sign the JWT at the internal authentication service)
-  - Alternatively, rather than be supplied with a Public Key directly a URL to obtain the Public Key dynamically should be provided, this is expected to be in, JSON Web Key Sets format.  
-
+- As an alternative to supplying the Public Key directly, you can provide a URL it can be obtained dynamically; this is expected to be in JSON Web Key Sets format  
 - The URL to the internal JWT authentication service
 
 ### How Genesis JWT SSO works
@@ -64,9 +63,9 @@ If CORS is not enabled, the SSO workflow is:
 
 #### JWT Revalidation
 
-The Auth services provides an Event Handler to clients to allow for periodic updating and revalidation of a JWT tokens.
+The Auth services provides an Event Handler to clients, which allows for periodic updating and revalidation of a JWT token.
 
-The Event Handlers is named ```EVENT_VALIDATE_JWT``` and takes these parameters:-
+The Event Handler is named ```EVENT_VALIDATE_JWT``` and takes these parameters:-
 
 ```kotlin
 data class DomainJWT(
