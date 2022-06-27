@@ -151,20 +151,20 @@ body {
 button.aa-DetachedSearchButton {
   --aa-font-family: var(--medium-font);
   --aa-font-size: 12px;
-  --aa-font-weight: 500;
+  --aa-font-weight: 200;
   --aa-search-input-height: 36px;
-  --aa-primary-color-rgb: 8, 195, 165;
+  --aa-primary-color-rgb: 255, 255, 255;
   --aa-icon-size: 5px;
-  --aa-input-border-color-rgb: 8, 195, 165;
-  --aa-muted-color-rgb: 8, 195, 165;
+  --aa-input-border-color-rgb: 27, 6, 222;
+  --aa-muted-color-rgb: 255, 255, 255;
   --aa-input-border-color-alpha: 1;
   --aa-muted-color-alpha: 1;
+  background: rgb(18, 4, 168);
   padding: 0 calc(var(--aa-search-input-height)/2.7);
 }
 
-button.aa-DetachedSearchButton:hover {
-  background: rgb(var(--aa-input-border-color-rgb));
-  color: #fff;
+.aa-DetachedSearchButton:hover {
+  --aa-input-border-color-rgb: 255, 255, 255;
 }
 
 div.aa-DetachedSearchButtonIcon {
@@ -173,8 +173,21 @@ div.aa-DetachedSearchButtonIcon {
   color: var(--aa-muted-color-rgb);
 }
 
+div.aa-DetachedSearchButtonIcon:hover {
+  cursor: pointer;
+}
+
+.aa-DetachedCancelButton {
+  display: none;
+}
+
 .aa-Form:focus-within {
   --aa-primary-color-rgb: var(--aa-input-border-color-rgb);
+}
+
+.aa-ItemContentBody {
+  margin: auto;
+  padding-bottom: 2%;
 }
 
 .navbar__logo {
