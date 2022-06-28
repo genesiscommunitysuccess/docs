@@ -10,7 +10,7 @@ id: datapipeline-basics
 
 A data pipeline is a collection of `sources`. Each source contains configuration how to access the data and a mapper for that data. Currently the supported sources are:
 - PostgreSQL
-- CSV files over FTP, S3
+- CSV files that originate from the local filesystem or over FTP and S3
 
 ### Source of data
 

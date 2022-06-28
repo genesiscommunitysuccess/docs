@@ -58,4 +58,4 @@ Broadly, you need to create new data pipeline script and start the platform. Onc
 
 ## Supported sources
 - PostgreSQL
-- CSV files over FTP, S3
+- CSV files that originate from the local filesystem or over FTP and S3
