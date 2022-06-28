@@ -264,7 +264,7 @@ jdbc:postgresql://localhost:5432/?user=postgres&password=docker
 docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=docker" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 ```
 
-This downloads and runs an MSSQL image for version 2019-latest. Other versions are available; for more
+This download and runs an MSSQL image for version 2019-latest. Other versions are available; for more
 details [see here](https://hub.docker.com/_/microsoft-mssql-server).
 
 To connect, use this JDBC URL:
@@ -275,7 +275,7 @@ jdbc:sqlserver://localhost:1433;database=master;user=sa;password=docker
 
 ### Running Oracle from Docker
 
-To downloads and run the latest Oracle image, use the following command: 
+To download and run the latest Oracle image, use the following command: 
 
 ```
 docker run -tid --name genesis_oracle -p 1521:1521 -p 5500:5500 -e ORACLE_PWD=docker container-registry.oracle.com/database/express:latest
@@ -288,9 +288,9 @@ The Oracle Docker image is ~12GB in size. Ensure that you have enough disk space
 The Docker container for Oracle uses between 2-3GB or RAM at rest. Ensure you have enough RAM to run Oracle locally.
 :::
 
-To set up user accounts for your locally running Oracle instance, follow the steps below:
+To set up a user account for your locally running Oracle instance, follow the steps below:
 
-Firstly, enable SQL*Plus using the following command with the /nolog argument. This will allow us to open a connectionless command-line session.
+First, enable SQL*Plus using the following command with the /nolog argument. This enables you to open a connectionless command-line session:
 
 ```
 docker exec -it genesis_oracle bash -c "source /home/oracle/.bashrc; sqlplus /nolog"
