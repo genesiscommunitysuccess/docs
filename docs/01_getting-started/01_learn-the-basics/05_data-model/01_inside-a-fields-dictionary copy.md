@@ -1,5 +1,5 @@
 ---
-title: 'Inside a fields-dictionary'
+title: 'Inside a fields dictionary'
 sidebar_label: 'Inside a fields dictionary'
 id: inside-a-fields-dictionary
 ---
