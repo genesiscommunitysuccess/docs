@@ -275,24 +275,30 @@ jdbc:sqlserver://localhost:1433;database=master;user=sa;password=docker
 
 ### Running Oracle from Docker
 
+To downloads and run the latest Oracle image, use the following command: 
+
 ```
 docker run -tid --name genesis_oracle -p 1521:1521 -p 5500:5500 -e ORACLE_PWD=docker container-registry.oracle.com/database/express:latest
 ```
 
-This downloads and runs the latest Oracle image. You can find other Oracle images on the [Oracle container registry](https://container-registry.oracle.com/ords/f?p=113:1:104797711976252:::1:P1_BUSINESS_AREA:3&cs=3uRGdpwNnFZIRlaYazsfUdo_1_tog2-i94uJzqg9HztrVE-nWMEZAfgYBPWLL1CVjZXDqQmkSTjJoD7Vi5trxOQ).
+You can find other Oracle images on the [Oracle container registry](https://container-registry.oracle.com/ords/f?p=113:1:104797711976252:::1:P1_BUSINESS_AREA:3&cs=3uRGdpwNnFZIRlaYazsfUdo_1_tog2-i94uJzqg9HztrVE-nWMEZAfgYBPWLL1CVjZXDqQmkSTjJoD7Vi5trxOQ).
 
 :::note
 The Oracle Docker image is ~12GB in size. Ensure that you have enough disk space to download the image.
 The Docker container for Oracle uses between 2-3GB or RAM at rest. Ensure you have enough RAM to run Oracle locally.
 :::
 
-The following steps are required to setup user accounts for your locally running Oracle instance. Firstly, enable SQL*Plus using the following command with the /nolog argument. This will allow us to open a connectionless command-line session.
+To set up user accounts for your locally running Oracle instance, follow the steps below:
+
+Firstly, enable SQL*Plus using the following command with the /nolog argument. This will allow us to open a connectionless command-line session.
 
 ```
 docker exec -it genesis_oracle bash -c "source /home/oracle/.bashrc; sqlplus /nolog"
 ```
 
-We then change the SYSTEM user to have a new password "genesis" which we can use to connect with. We also want to unlock the user.
+Change the SYSTEM user to have a new password "genesis", which you can use to connect with. 
+
+To unlock the user:
 
 ```sql
 CONNECT sys AS sysdba;
@@ -304,7 +310,7 @@ ALTER USER SYSTEM IDENTIFIED BY genesis ACCOUNT UNLOCK;
 EXIT
 ```
 
-To connect, use this JDBC URL:
+You are now able to connect. Use this JDBC URL:
 
 ```
 jdbc:oracle:thin:system/genesis@localhost:1521/XE
