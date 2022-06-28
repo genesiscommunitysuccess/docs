@@ -31,7 +31,7 @@ On this page, we'll take you through the basics of creating an Event Handler in 
 
 By the end of that, you'll have some very useful knowledge, and you'll be ready to move on to the [advanced](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/) page.
 
-For more details on Java examples added below refer this [page](/reference/developer/api/event-handler-api/)
+It is possible to define an Event Handler in Java, and we have included Java examples here. You can find out more about these examples in our page on the [Event Handler API](/reference/developer/api/event-handler-api/#rx3eventhandler). However, we strongly advise you to create your Event Handler using Kotlin; it is a considerably more efficient method. 
 
 ## A simple example of an Event Handler
 
@@ -41,7 +41,7 @@ Here is a simple example of an Event Handler file. It defines a single `eventHan
 - The single `eventHandler` is of type `<Counterparty>`, which has been created in advance for the COUNTERPARTY table. It defines a single `eventHandler` of type `<Counterparty>`.
 - The `eventHandler` inserts a counterparty into the database, using the [entityDb](/reference/developer/api/database/how-to/interface/entity-db/).
 
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<Tabs>
 <TabItem value="Kotlin">
 
 ```kotlin
@@ -102,7 +102,7 @@ If you do not define a name, a default name will be allocated automatically. The
 
 So, below, we modify our previous example by defining the name of the `eventHandler`: COUNTERPARTY_INSERT. This will automatically become EVENT_COUNTERPARTY_INSERT.
 
-<Tabs defaultValue="kotlin" values={[{label: 'Kotlin', value: 'kotlin',}, {label: 'Java', value: 'java',}]}>
+<Tabs>
 <TabItem value="Kotlin">
 
 ```kotlin
