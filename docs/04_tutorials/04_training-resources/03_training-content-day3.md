@@ -9,7 +9,7 @@ In this day we are covering:
 
 - [Views](#views)
 - [Unit testing](#unit-testing)​
-- [Calculated data and consolidators](#calculated-data-and-consolidators)
+- [Calculated data](#calculated-data) and [Consolidators](#consolidators)
 - [UI configuring](#ui-configuring)
 
 ## Views
@@ -414,7 +414,7 @@ import global.genesis.gen.config.tables.POSITION.VALUE
 
 consolidators {
     config {}
-    consolidator("CONSOLIDATE_POSITIONS", TRADE_PRICE_VIEW, POSITION) {
+    consolidator("CONSOLIDATE_POSITIONS", TRADE_VIEW, POSITION) {
         config {
             logLevel = DEBUG
             logFunctions = true
@@ -498,6 +498,14 @@ This file lists all the active services for the Positions application. You can s
 
 Add a new entry to **alpha-service-definitions.xml** with the consolidator details. Remember the ports numbers should be free and, ideally, sequential.
 
+```xml
+<configuration>
+    ...
+    <service host="localhost" name="ALPHA_CONSOLIDATOR" port="11002"/>
+</configuration>
+```
+
+Run **assemble** and **deploy-genesisproduct-alpha** tasks to verify that the new process works as expected.
 
 ## UI configuring 
 

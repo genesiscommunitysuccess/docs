@@ -7,120 +7,9 @@ sidebar_position: 4
 ---
 In this day we are covering:
 
-- [Adding logic to the event handler](#adding-logic-to-the-event-handler)
 - [State management​](#state-management​)
+- [Adding logic to the event handler](#adding-logic-to-the-event-handler)
 - [Auditing​](#auditing​)
-
-## Adding logic to the event handler
-
-We are going to change the code in the event handler so that:
-
-* it checks if the counterparty exists in the database (by checking COUNTERPARTY_ID field)
-* it checks if the instrument exists in the database (by checking INSTRUMENT_ID field)
-* it's also able to modify or delete records with the same verification on counterparty and instrument
-
-### Add the validation code
-
-Go to the **alpha-eventhandler.kts** file for the event handler. 
-
-Add the verification by inserting an **verify** inside the **onValidate** block, before the **onCommit** block in TRADE_INSERT. We can see this below, with separate lines checking the Counterparty ID and the Instrument ID exist in the database. The new block ends by sending an **ack()**.
-
-```
-eventHandler<Trade>(name = "TRADE_INSERT") {
-    onValidate { event ->
-        val message = event.details
-        verify {
-            entityDb hasEntry Counterparty.ById(message.counterpartyId.toString())
-            entityDb hasEntry Instrument.byId(message.instrumentId.toString())
-        }
-        ack()
-    }
-    onCommit { event ->
-        val trade = event.details
-        entityDb.insert(trade)
-        ack()
-    }
-}
-```
-
-#### Try yourself
-Now add separate eventHandler blocks to handle modify and delete. Don't forget to add the same verification as in TRADE_INSERT.
-
-:::tip
-Example on how to add additional blocks in the eventHandler:
-```kotlin
-eventHandler {
-    eventHandler<Trade>(name = "TRADE_INSERT") {
-        onCommit { event ->
-            entityDb.insert(event.details)
-            ack()
-        }
-    }
-
-    eventHandler<Trade>(name = "TRADE_MODIFY") {
-        onCommit { event ->
-            entityDb.modify(event.details)
-            ack()
-        }
-    }
-    
-    eventHandler<Counterparty>(name = "TRADE_DELETE") {
-        onCommit { event ->
-            entityDb.delete(event.details)
-            ack()
-        }
-    }
-}
-```
-:::
-
-Implement and test the back end with Console or Postman. To do that see the Day 2 example [here](/tutorials/training-resources/training-content-day2/#a-test-alternative-to-genesis-console). Basically, you should create a POST request using the URL *http://localhost/gwf/EVENT_TRADE_MODIFY* or *http://localhost/gwf/EVENT_TRADE_DELETE*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
-
-Regarding the UI, the Delete or Modify buttons can be added using the genesislcap/foundation-ui components as the sample below.
-
-**home.template.ts**
-```html
-...
-export const HomeTemplate = html<Home>`
-<zero-card class="trade-card">
-    <zero-ag-grid ${ref('tradesGrid')} rowHeight="45" only-template-col-defs>
-    ...
-        <ag-grid-column :definition=${x => x.singleTradeActionDeleteColDef}></ag-grid-column>
-    </zero-ag-grid>
-    ...
-</zero-card>
-```
-**home.ts**
-```kotlin
-...
-export class Home extends FASTElement {
-    ...
-    public singleTradeActionDeleteColDef: ColDef = {
-        headerName: 'Action',
-        minWidth: 110,
-        maxWidth: 110,
-        cellRenderer: 'action', // AgRendererTypes.action
-        cellRendererParams: {
-        actionClick: async (rowData) => {
-            this.tradeData = rowData;
-            const tradeCancelEvent = await this.connection.commitEvent('EVENT_TRADE_DELETE', {
-            DETAILS: {
-                TRADE_ID: this.tradeData.TRADE_ID,
-            },
-            IGNORE_WARNINGS: true,
-            VALIDATE: false,
-            });
-
-            logger.debug('EVENT_TRADE_DELETE result -> ', tradeCancelEvent);
-        },
-        actionName: 'Delete',
-        appearance: 'secondary-orange',
-        },
-        pinned: 'right',
-    };
-    ...
-}
-```
 
 ## State management​
 
@@ -140,21 +29,8 @@ Add the TRADE_STATUS field to the **alpha-fields-dictionary.kts** file.
 
 ```kotlin {16}
 fields {
-  field(name = "COUNTERPARTY", type = STRING)
-  field(name = "COUNTERPARTY_LEI", type = STRING)
-  field(name = "COUNTERPARTY_NAME", type = STRING)
-  field(name = "ENTERED_BY", type = STRING)
-  field(name = "FIELD_3", type = LONG)
-  field(name = "INSTRUMENT_SYMBOL", type = STRING)
-  field(name = "PRICE", type = DOUBLE)
-  field(name = "QUANTITY", type = LONG)
-  field(name = "REFERENCE_PX", type = STRING)
-  field(name = "REFERENCE_QTY", type = DOUBLE)
-  field(name = "SIDE", type = STRING)
-  field(name = "SYMBOL", type = LONG)
-  field(name = "TRADE_DATETIME", type = DATETIME)
-  field(name = "TRADE_ID", type = LONG)
-  field(name = "TRADE_STATUS", type = ENUM("NEW", "ALLOCATED", "CANCELLED", default = "NEW"))
+    ...
+    field(name = "TRADE_STATUS", type = ENUM("NEW", "ALLOCATED", "CANCELLED", default = "NEW"))
 }
 ```
 
@@ -163,15 +39,7 @@ Add the TRADE_STATUS field to the TRADE table in the **alpha-tables-dictionary.k
 ```kotlin {12}
 tables {
   table (name = "TRADE", id = 11000) {
-    // Source: Trade
-    TRADE_ID            // A
-    INSTRUMENT_ID not null       // B
-    COUNTERPARTY_ID not null     // C
-    QUANTITY            // F
-    SIDE                // G
-    PRICE               // H
-    TRADE_DATETIME      // K
-    ENTERED_BY          // L
+    ...
     TRADE_STATUS
 
     primaryKey {
@@ -343,7 +211,7 @@ data class TradeCancel(val tradeId: String)
 Create a new event handler called TRADE_CANCELLED to handle cancellations. Then integrate the state machine in it.
 
 ```kotlin
-eventHandler<TradeCancel>(transactional = true) {
+eventHandler<TradeCancel>(name = "TRADE_CANCELLED", transactional = true) {
     onCommit { event ->
         val message = event.details
         stateMachine.modify(entityDb, message.tradeId) { trade ->
@@ -357,7 +225,7 @@ eventHandler<TradeCancel>(transactional = true) {
 Create a new event handler called TRADE_ALLOCATED to handle completion. Integrate the state machine in it.
 
 ```kotlin
-eventHandler<TradeAllocated>(transactional = true) {
+eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
     onCommit { event ->
         val message = event.details
         stateMachine.modify(entityDb, message.tradeId) { trade ->
@@ -390,6 +258,118 @@ To test it, you can try to modify a TRADE and see the states changing accordingl
 Modify the class TradeStateMachine to keep the trade.price removing the current rule when TradeStatus.NEW, and set the field trade.enteredBy to empty when TradeStatus.CANCELLED.
 
 Remember to run *assemble* and *deploy-genesisproduct-alpha* tasks after the changes, and test it directly in the UI.
+
+
+## Adding logic to the event handler
+
+We are going to change the code in the event handler so that:
+
+* it checks if the counterparty exists in the database (by checking COUNTERPARTY_ID field)
+* it checks if the instrument exists in the database (by checking INSTRUMENT_ID field)
+* it's also able to modify or delete records with the same verification on counterparty and instrument
+
+### Add the validation code
+
+Go to the **alpha-eventhandler.kts** file for the event handler. 
+
+Add the verification by inserting an **verify** inside the **onValidate** block, before the **onCommit** block in TRADE_INSERT. We can see this below, with separate lines checking the Counterparty ID and the Instrument ID exist in the database. The new block ends by sending an **ack()**.
+
+```kotlin
+eventHandler<Trade>(name = "TRADE_INSERT") {
+    onValidate { event ->
+        val message = event.details
+        verify {
+            entityDb hasEntry Counterparty.ById(message.counterpartyId.toString())
+            entityDb hasEntry Instrument.byId(message.instrumentId.toString())
+        }
+        ack()
+    }
+    onCommit { event ->
+        val trade = event.details
+        entityDb.insert(trade)
+        ack()
+    }
+}
+```
+
+#### Try yourself
+Now add separate eventHandler blocks to handle modify and delete. Don't forget to add the same verification as in TRADE_INSERT.
+
+:::tip
+Example on how to add additional blocks in the eventHandler:
+```kotlin
+eventHandler {
+    eventHandler<Trade>(name = "TRADE_INSERT") {
+        onCommit { event ->
+            entityDb.insert(event.details)
+            ack()
+        }
+    }
+
+    eventHandler<Trade>(name = "TRADE_MODIFY") {
+        onCommit { event ->
+            entityDb.modify(event.details)
+            ack()
+        }
+    }
+    
+    eventHandler<Counterparty>(name = "TRADE_DELETE") {
+        onCommit { event ->
+            entityDb.delete(event.details)
+            ack()
+        }
+    }
+}
+```
+:::
+
+Implement and test the back end with Console or Postman. To do that see the Day 2 example [here](/tutorials/training-resources/training-content-day2/#a-test-alternative-to-genesis-console). Basically, you should create a POST request using the URL *http://localhost/gwf/EVENT_TRADE_MODIFY* or *http://localhost/gwf/EVENT_TRADE_DELETE*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
+
+Regarding the UI, the Delete or Modify buttons can be added using the genesislcap/foundation-ui components as the sample below.
+
+**home.template.ts**
+```html
+...
+export const HomeTemplate = html<Home>`
+<zero-card class="trade-card">
+    <zero-ag-grid ${ref('tradesGrid')} rowHeight="45" only-template-col-defs>
+    ...
+        <ag-grid-column :definition=${x => x.singleTradeActionCancelColDef}></ag-grid-column>
+    </zero-ag-grid>
+    ...
+</zero-card>
+```
+**home.ts**
+```kotlin
+...
+export class Home extends FASTElement {
+    ...
+    public singleTradeActionCancelColDef: ColDef = {
+        headerName: 'Action',
+        minWidth: 110,
+        maxWidth: 110,
+        cellRenderer: 'action', // AgRendererTypes.action
+        cellRendererParams: {
+        actionClick: async (rowData) => {
+            this.tradeData = rowData;
+            const tradeCancelEvent = await this.connection.commitEvent('EVENT_TRADE_CANCELLED', {
+            DETAILS: {
+                TRADE_ID: this.tradeData.TRADE_ID,
+            },
+            IGNORE_WARNINGS: true,
+            VALIDATE: false,
+            });
+
+            logger.debug('EVENT_TRADE_CANCELLED result -> ', tradeCancelEvent);
+        },
+        actionName: 'Cancel',
+        appearance: 'secondary-orange',
+        },
+        pinned: 'right',
+    };
+    ...
+}
+```
 
 ## Auditing​
 

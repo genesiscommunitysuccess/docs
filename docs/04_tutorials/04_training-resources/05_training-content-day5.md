@@ -70,9 +70,8 @@ Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside y
 
 ```xml
 <configuration>
-    <service host="localhost" name="ALPHA_DATASERVER" port="11000"/>
-    <service host="localhost" name="ALPHA_EVENT_HANDLER" port="11001"/>
-    <service host="localhost" name="ALPHA_EVALUATOR" port="11002"/>
+    ...
+    <service host="localhost" name="ALPHA_EVALUATOR" port="11003"/>
 </configuration>
 ```
 
@@ -239,10 +238,8 @@ Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside y
 
 ```xml
 <configuration>
-    <service host="localhost" name="ALPHA_DATASERVER" port="11000"/>
-    <service host="localhost" name="ALPHA_EVENT_HANDLER" port="11001"/>
-    <service host="localhost" name="ALPHA_EVALUATOR" port="11002"/>
-    <service host="localhost" name="ALPHA_NOTIFY" port="11003"/>
+    ...
+    <service host="localhost" name="ALPHA_NOTIFY" port="11004"/>
 </configuration>
 ```
 
@@ -538,7 +535,7 @@ Set up a permission code for Trade inserting. The permission code should be call
 
 
 :::tip
-Remember to change the **alpha-eventhandler.kts** file, as well as inserting the record in the configuration table *RIGHT_SUMMARY* too.
+Remember to change the **alpha-eventhandler.kts** file, as well as inserting the record via `SendIt` command in the configuration table *RIGHT_SUMMARY* too.
 
 After the configurations, you should run **assemble** and **deploy-genesisproduct-alpha** tasks again to deploy the new version.
 :::

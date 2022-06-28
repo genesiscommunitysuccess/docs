@@ -42,9 +42,9 @@ You’ll possibly learn 20% of what is offered ​by the Platform​, which will
 
 - [Day 1](/tutorials/training-resources/training-content-day1/): Quick review of the Platform​, set up the workstation and environment, quick start the application and test the backend​​.
 - [Day 2](/tutorials/training-resources/training-content-day2/): Intro to UI​, create a user interface​ and extend the application.
-- [Day 3](/tutorials/training-resources/training-content-day3/): Views​,  unit testing​, calculated data, consolidators​ and data grids​.
-- [Day 4](/tutorials/training-resources/training-content-day4/): Adding logic to the event handler​, state management​ and auditing​.
-- [Day 5](#/tutorials/training-resources/training-content-day5/): Schedulers, notifications, permissions​, key server commands​, navigating the documentation and how to get help​.
+- [Day 3](/tutorials/training-resources/training-content-day3/): Views​, unit testing​, calculated data, consolidators,​ and data grids​.
+- [Day 4](/tutorials/training-resources/training-content-day4/): State management, adding logic to the event handler​, ​and auditing​.
+- [Day 5](#/tutorials/training-resources/training-content-day5/): Schedulers, notifications, permissions​, key server commands​, navigating the documentation, and how to get help​.
 
 ## Genesis low-code Platform version
 6.0.2
