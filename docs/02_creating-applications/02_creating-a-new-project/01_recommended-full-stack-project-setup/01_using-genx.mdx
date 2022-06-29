@@ -36,12 +36,12 @@ This command presents you with a sequence of choices for creating and configurin
 
 First up you'll be prompted to supply your Genesis artifactory credentials [used when setting up your .npmrc](/creating-applications/getting-ready-to-develop/workstation-setup/#npmrc-set-up)
 
-Next, follow the instructions according to the task you're wishing to carry out. 
+Next, follow the instructions according to the task you're wishing to carry out.
 
 The following is the most typical example, creating a new application:
 
 ```shell
-? Please select an option: create application - Generates a local application. 
+? Please select an option: create application - Generates a local application.
 ```
 
 Enter the local directory you want to create the app in (where relevant, the default for these options is the letter displayed in upper case; this will be applied if nothing is entered):
@@ -52,14 +52,14 @@ Enter the local directory you want to create the app in (where relevant, the def
 
 ... and then give it an appropriate name (e.g. **alpha**):
 ```shell
-? App name alpha 
+? App name alpha
 ```
 
 Next, select Seed application you wish to base your project on:
 ```shell
-? App seed 
+? App seed
 
-> Genesis Quick Start Application 
+> Genesis Quick Start Application
 ```
 
 Choose whether to overwrite existing files. The default is **No**.
@@ -67,19 +67,19 @@ Choose whether to overwrite existing files. The default is **No**.
 ? Overwrite existing files (y/N)
 ```
 
-This will start the download of dependencies. 
+This will start the download of dependencies.
 
 #### Front-end prompts
 Once that is done, you will be prompted for configuring the front-end part of the project.
 
 The first prompt is the package [scope](https://docs.npmjs.com/cli/v8/using-npm/scope). The default is **genesislcap**.
 ```shell
-? Package scope (without the @) genesislcap 
+? Package scope (without the @) genesislcap
 ```
 
 The next question is about the package name. You can use **alpha**.
 ```shell
-? Package name alpha 
+? Package name alpha
 ```
 
 The next is whether you want to create a design system. The default is **Yes**.
@@ -87,14 +87,9 @@ The next is whether you want to create a design system. The default is **Yes**.
 ? Create design system (Yes/no)
 ```
 
-... and then whether you want to set an API host. The default is **Yes**.
+Finally, whether you want to set an API host. The default is **Yes**.
 ```shell
-? Set API Host (Yes/no) 
-```
-
-Finally, for these front-end prompts, you need to specify the NPM token:
-```shell
-? NPM Token (for the @genesislcap scope) <secure-token-goes-here> 
+? Set API Host (Yes/no)
 ```
 
 #### Back-end prompts
@@ -118,17 +113,17 @@ At the time of writing, the same version as the Genesis Server must be used.
 
 Then specify the kotlin version. The latest tested version is 1.6.10:
 ```shell
-? Kotlin version 1.6.10 
+? Kotlin version 1.6.10
 ```
 
 ... followed by the [group id](https://maven.apache.org/guides/mini/guide-naming-conventions.html)
 ```shell
-? Group Id global.genesis 
+? Group Id global.genesis
 ```
 
 ... and the application version:
 ```shell
-? Application Version 1.0.0-SNAPSHOT 
+? Application Version 1.0.0-SNAPSHOT
 ```
 
 Press **Enter** and you should be greeted by a message saying that the application was created successfully.
