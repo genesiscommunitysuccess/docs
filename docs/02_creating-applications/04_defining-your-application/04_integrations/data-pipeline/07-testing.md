@@ -198,7 +198,7 @@ PostgreSQLContainer("postgres:12.6-alpine")
 ```
 
 ### Docker image
-You can start PostgreSQL as a docker image as part of the test set-up or the environment set-up. The requirement for WAL level applies here as well. Below is a sample command to start PostgreSQL image:
+You can start PostgreSQL as a Docker image as part of the test set-up or the environment set-up. The requirement for WAL level applies here as well. Below is a sample command to start PostgreSQL image:
 
 ```shell
 docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c wal_level=logical
