@@ -110,7 +110,7 @@ Run **alpha-config:assemble** to make the view ready for use, then add it to the
 
 Now go to the Data Server definition (inside the **-script-config** module). Replace the `ALL_TRADES` query in the Data Server with the new `TRADE_VIEW`.
 
-```
+```kotlin
 dataServer {​
      query("ALL_TRADES", TRADE_VIEW)​
 }​
@@ -328,7 +328,7 @@ suspend fun `test get multiple trades`() {
 
 Derived fields are a useful way of providing calculated data, but note that you must only use fields that are in the view.
 
-```
+```kotlin
 derivedField("CONSIDERATION", DOUBLE) {
     withInput(TRADE.QUANTITY, TRADE.PRICE) { QUANTITY, PRICE ->
         QUANTITY * PRICE
@@ -337,7 +337,7 @@ derivedField("CONSIDERATION", DOUBLE) {
 ```
 
 Add this derivedField to your view now.​ The final view should be like this.
-```
+```kotlin
 view("TRADE_VIEW", TRADE) {
     joins {
         joining(COUNTERPARTY) {
@@ -403,10 +403,17 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 #### Define the position-keeping logic in the consolidator
 
+Before defining the consolidator, we should insert some data in the *INSTRUMENT_PRICE* table using the command `SendIt`:
+
+```csv
+INSTRUMENT_ID,LAST_PRICE
+1,10
+```
 
 So, let's define a **alpha-consolidator.kts** file inside **alpha-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
 
 The consolidator is going to increase or decrease the quantity for POSITION records, based on the TRADE table updates. It also needs to calculate the new notional.
+
 ```kotlin
 import global.genesis.gen.config.tables.POSITION.NOTIONAL
 import global.genesis.gen.config.tables.POSITION.QUANTITY
@@ -446,12 +453,7 @@ consolidators {
         }
         onCommit {
             val quantity = output.quantity ?: 0
-            val marketPrice = when {
-                quantity > 0 -> input.emsBidPrice ?: 0.0
-                quantity < 0 -> input.emsAskPrice ?: 0.0
-                else -> 0.0
-            }
-            output.notional = marketPrice * quantity
+            output.notional = input.price * quantity
             output.pnl = output.value - output.notional
         }
         groupBy {

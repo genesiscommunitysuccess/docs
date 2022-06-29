@@ -386,8 +386,8 @@ The first step to add basic auditing is to change the relevant table dictionary.
 ```kotlin {2}
 table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
     sequence(TRADE_ID, "TR")
-    COUNTERPARTY_ID
-    INSTRUMENT_ID
+    COUNTERPARTY_ID 
+    INSTRUMENT_ID 
     QUANTITY
     PRICE
     SYMBOL
