@@ -9,9 +9,10 @@ id: datapipeline-testing
 [Introduction](/creating-applications/defining-your-application/integrations/data-pipeline/overview/)  | [Where to define](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-where-to-define/) | [Basics](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-basics/) | [Advanced](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-advanced/) | [More examples](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-examples/) | [Configuring runtime](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-runtime/) | [Testing](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-testing/)
 
 To test a data pipeline you need:
+
 - source data e.g. PostgreSQL
-- data pipeline script
-- test case class that extends `AbstractGenesisTestSupport`
+- a data pipeline script
+- a test case class that extends `AbstractGenesisTestSupport`
 
 This is an example test case that asserts that six trades are ingested from source PostgreSQL:
 
@@ -107,7 +108,7 @@ class DataPipelineTest : AbstractGenesisTestSupport<GenesisSet>(
 }
 ```
 
-and this is the data pipeline configuration that is tested:
+And this is the data pipeline configuration that is tested:
 
 ```kotlin
 sources {
@@ -186,10 +187,10 @@ sources {
 
 ## Starting source PostgreSQL
 
-There are various ways to start PostgreSQL as a test dependency. The following is a list of the few most common ones
+There are various ways to start PostgreSQL as a test dependency. Here is a list of the few most common ones
 
 ### Testcontainers
-You can start PostgreSQL as a test rule using [Testcontainers](https://www.testcontainers.org/). It has [Postgres Module](https://www.testcontainers.org/modules/databases/postgres/) that has pre-configured rule to use out of the box. However, it requires additional configuration for the Write Ahead Log (WAL) level and it has to be set to `logical`. Following is a sample rule configuration:
+You can start PostgreSQL as a test rule using [Testcontainers](https://www.testcontainers.org/). It has a [Postgres Module](https://www.testcontainers.org/modules/databases/postgres/) that has a pre-configured rule to use out of the box. However, it requires additional configuration for the Write Ahead Log (WAL) level, and it has to be set to `logical`. Below is a sample rule configuration:
 
 ```kotlin
 PostgreSQLContainer("postgres:12.6-alpine")
@@ -197,11 +198,11 @@ PostgreSQLContainer("postgres:12.6-alpine")
 ```
 
 ### Docker image
-You can start PostgreSQL as a docker image as part of the test setup or the environment setup. The same requirement for WAL level applies here as well. Following is a sample command to start PostgreSQL image:
+You can start PostgreSQL as a docker image as part of the test set-up or the environment set-up. The requirement for WAL level applies here as well. Below is a sample command to start PostgreSQL image:
 
 ```shell
 docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c wal_level=logical
 ```
 
 ### Standalone process
-You can install and start PostgreSQL during environment setup
+You can install and start PostgreSQL during environment set-up.
