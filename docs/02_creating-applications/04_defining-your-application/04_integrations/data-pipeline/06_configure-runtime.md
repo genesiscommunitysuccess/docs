@@ -9,7 +9,7 @@ id: datapipeline-runtime
 [Introduction](/creating-applications/defining-your-application/integrations/data-pipeline/overview/)  | [Where to define](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-where-to-define/) | [Basics](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-basics/) | [Advanced](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-advanced/) | [More examples](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-examples/) | [Configuring runtime](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-runtime/) | [Testing](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-testing/)
 
 ## Configure processes.xml file
-Data pipeline is a separate module and requires configuration in __application__**-processes.xml** file. The following is a sample configuration:
+Data pipeline is a separate module that must be configured in your __application__**-processes.xml** file. Here is a sample configuration:
 
 ```xml
 <processes>
@@ -30,7 +30,7 @@ Data pipeline is a separate module and requires configuration in __application__
 It is vital to ensure that any system definition variables that are used by the configuration definition are properly defined in your __application__**-system-definition.kts** file.
 
 ## Starting source PostgreSQL as Docker image
-To capture changes from PostgreSQL the Write Ahead Log level has to be set at least to `logical`. By default the postgres docker image have it set at lower level so it has to be explicitly specified when the image is ran
+To capture changes from PostgreSQL, the Write Ahead Log level has to be set at least to `logical`. By default, the postgres docker image is set at lower level, so you must specify it explicitly when the image is run.
 
 ```shell
 docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c wal_level=logical
