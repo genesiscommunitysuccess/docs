@@ -332,7 +332,7 @@ a.menu__link--sublist-caret {
   align-items: center;
 }
 
-.menu__link:not(.menu__link--active) {
+.menu__link:not(.menu__link--active), .menu__link.menu__link--sublist {
   color: var(--black);
 }
 
@@ -342,9 +342,13 @@ a.menu__link--sublist-caret {
   padding-left: unset;
 }
 
-/* gray out collaped sidebar categories */
-li.menu__list-item--collapsed .menu__link {
-  color: #808387;
+/* only top level categories should be gray */
+li.theme-doc-sidebar-item-category-level-1 > div.menu__list-item-collapsible > .menu__link.menu__link--sublist:first-child {
+  color: var(--warm-gray-2);
+}
+
+ul.theme-doc-sidebar-menu.menu__list * {
+  border-radius: 0;
 }
 
 /* Sidebar nav header  */
