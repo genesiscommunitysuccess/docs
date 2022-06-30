@@ -336,7 +336,7 @@ a.menu__link--sublist-caret::after {
   width: 8px;
   height: 8px;
   background-size: 16px 16px;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16px\" height=\"16px\" viewBox=\"0 0 24 24\"><path fill=\"rgba(200,194,188,1)\" d=\"M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z\"></path></svg>');
+  background-image: url('../../static/svg/caret.svg');
 }
 
 a.menu__link--sublist-caret {
