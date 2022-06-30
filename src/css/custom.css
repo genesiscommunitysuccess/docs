@@ -476,8 +476,13 @@ div.main-wrapper > div {
 
 ul.table-of-contents {
   line-height: 15.6px;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--black);
+  padding-left: 0;
+}
+
+ul.table-of-contents ul {
+  padding-left: 0;
 }
 
 .table-of-contents__link:hover {
