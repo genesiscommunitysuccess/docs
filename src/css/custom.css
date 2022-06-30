@@ -239,6 +239,12 @@ div.navbar-sidebar__item {
   background-color: white;
 }
 
+/* search bar */
+div.dsla-search-field {
+  width: 160px;
+  height: 32px;
+}
+
 button.navbar-sidebar__back {
   background-color: var(--warm-gray-3);
 }
