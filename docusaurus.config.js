@@ -21,7 +21,7 @@ module.exports = {
   plugins: [
     [require.resolve('@cmfcmf/docusaurus-search-local'), {
       indexBlog: true,
-      indexPages: true
+      indexPages: true,
     }],
     [require.resolve('docusaurus-gtm-plugin'),{
         id: 'GTM-5GTR43J',
@@ -75,6 +75,16 @@ module.exports = {
     },
     prism: {
       additionalLanguages: ['java', 'kotlin', 'powershell', 'groovy'],
+    },
+  },
+
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+    localeConfigs: {
+      en: {
+        htmlLang: 'en-GB',
+      },
     },
   },
 
