@@ -1,12 +1,12 @@
 ---
-title: 'Main Section Title (h1)'
+title: 'Article Title (h1)'
 sidebar_label: 'Test global styles'
 id: test-global-styles
 ---
 
-## Child Section Title (h2)
+## Main Section Title (h2)
 
-### Child sub section (h3)
+### Child Section Title (h3)
 
 Regular text example
 

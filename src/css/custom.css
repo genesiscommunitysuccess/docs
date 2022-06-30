@@ -68,6 +68,12 @@ body {
   font-weight: 400px;
 }
 
+.markdown h1, .markdown h2 {
+  margin-bottom: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--warm-gray-3);
+}
+
 .markdown h1 {
   font-size: 40px;
   line-height: 35px;
@@ -81,10 +87,6 @@ body {
 .markdown h3 {
   font-size: 20px;
   line-height: 18px;
-}
-
-.markdown h1, .markdown h2, .markdown h3 {
-  border-bottom: 1px solid var(--warm-gray-3);
 }
 
 .markdown strong {
