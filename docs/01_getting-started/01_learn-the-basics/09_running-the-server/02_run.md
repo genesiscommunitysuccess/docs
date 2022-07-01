@@ -4,8 +4,15 @@ sidebar_label: 'Run'
 id: run
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+There are some simple commands that enable you to start and stop your server.
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+`startServer` does exactly what you would expect.
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+After running this, run mon. This shows you ths status of your server, with all the individual services listed:
+
+**replace with correct image**
+![](/img/using-mon.png)
+
+To stop your server, run `killServer --all`.
+
+It's worth noting that you can all start and stop individual processes; for example, if you want to stop the Genesis Router: `killProcess GENESIS_ROUTER` gets the job done. 

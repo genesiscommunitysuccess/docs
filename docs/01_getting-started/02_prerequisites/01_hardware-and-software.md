@@ -4,9 +4,7 @@ sidebar_label: 'Hardware and software'
 id: hardware-and-software
 ---
 
-To develop Genesis applications, you need to access on-premise workstations through remote technologies like Citrix, VMware etc.
-
-This page gives you the hardware and software requirements. It also give you instructions on accessing the Genesis repository and configuring the Genesis packages.
+This page gives you the hardware and software requirement you need in order to run a development workstation for the Genesis low-code platform. It also give you instructions on accessing the Genesis repository and configuring the Genesis packages.
 
 
 ## Recommended hardware and operating system

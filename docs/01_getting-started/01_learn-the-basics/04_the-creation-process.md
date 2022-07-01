@@ -4,8 +4,19 @@ sidebar_label: 'The creation process'
 id: creation-process
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+So how would you go about creating something like that?
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+We shall look briefly at:
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+- how you create files of fields, tables and views to create a data model. 
+- how simple command enables you to generate database objects from those files.
+- how each of your modules must be configured in its own file. This provides the instructions to act in the way your application needs. We shall look at a couple of very simple examples.
+- making sure all your modules are correctly added to the key system files, which we shall look at briefly.
+
+At this point, you have a working server, which you can start and stop as you see fit.
+
+Then you can build a front end. A home, home template and home style file are provided by default for you to work from. We shall look very briefly at how you add the screens and screen components that you need, and how you connect these to the appropriate points in the server.
+
+Then you are ready to start the server, start the front end and use the application.
+
+That's a very broad overview, but you will see a little more as you follow the pages here and learn the basics.
