@@ -28,7 +28,7 @@ You'll see this in action if you go on to our Quick Start. There you will get to
 
 Our Quick Start also enables you to add a grid to the new page, control the sizing and connect it to the relevant resource in the server.
 
-
+![](/img/all-trades-grid-03.png)
 
 ### Configuring package.json
 A `package.json` file is auto-generated for you if you created your project using `genx`.
