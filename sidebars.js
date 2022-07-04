@@ -14,7 +14,7 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'PRE_REQUISITES',
+      label: 'PRE-REQUISITES',
       collapsed: false,
       items: [
         {

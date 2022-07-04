@@ -10,7 +10,7 @@ The Genesis low-code platform provides a Gradle plugin that makes it easy to per
 necessary to deploy your own Genesis project on your local workstation, from your IDE.
 
 The plugin is designed to work on workstations running Linux, or
-on [WSL](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/).
+on WSL.
 
 ### Adding the deployment plugin to your project
 
@@ -88,7 +88,7 @@ There are several possible configurations for your deployment. For each one, you
 #### WSL
 
 If your development workstation is a Windows machine, then you
-can use [WSL](/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/) to have Genesis set-up
+can use WSL to have Genesis set-up
 locally.
 
 To configure this, open `gradle.properties` from the server/jvm folder and add the following entries:
@@ -191,7 +191,7 @@ first**.
 ### Genesis script tasks
 
 These tasks enable the invocation of any Genesis platform command via Gradle.
-See [the commands list](/managing-applications/operate/on-the-host/helpful-commands/) for more information
+
 
 | Task                       | 
 |----------------------------|
