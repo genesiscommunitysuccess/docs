@@ -4,8 +4,9 @@ sidebar_label: 'New apps from scratch'
 id: news-apps-from-scratch
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+You don't have to be bound by your existing systems at all. If you have a need for a new application, which looks too ambitious for now, the Genesis low-code platform could make that a realistic proposition in a realistic timeframe.
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+Perhaps you need to provide a portal fpr Prime Brokerage. You could provide clients with online visibility of margin, cash and stock positions, along with event notifications, interactive reporting, and a summary dashboard.   
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+
