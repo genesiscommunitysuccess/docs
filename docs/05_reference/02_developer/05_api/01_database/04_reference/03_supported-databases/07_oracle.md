@@ -16,7 +16,7 @@ Take note of the following system definition items in the [**genesis-system-defi
 
 This must be the JDBC URL needed to connect to the oracle database. 
 
-It takes one of the following s: 
+It takes one of the following formats: 
 
 `jdbc:oracle:thin:[username/password]@[protocol]//host[:port][/service_name]`
 
