@@ -1,11 +1,11 @@
 ---
-title: 'Complete exchanges'
-sidebar_label: 'Complete exchanges'
+title: 'New e-platforms'
+sidebar_label: 'New e-platforms'
 id: complete-exchanges
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+You can build complete new trading platforms that integrate with multiple internal and external systems. These are applications with clear user interfaces, highly sophisticated features; they can be specified and built to meet exactly the security and regulatory requirements you require. 
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+For example, you could create a multi-dealer trading platform for the secondary trading of CLOs (Collateralized Loan Obligations ) and loans. If you get your user interface right, you can reduce hours of manual work so that users can set up a new auction in a couple of minutes instead of hours.
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+![](/img/trading-platform-example.png)
