@@ -136,10 +136,65 @@ zero-ag-grid {
 }
 
 .trade-card {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    flex: 1;
+    margin: calc(var(--design-unit) * 3px);
+    height: 100%;
+}
+
+zero-text-field, zero-select {
+  width: 250px;
+}
+
+span:first-of-type, zero-button {
+  margin-top: 10px;
+}
+
+.split-layout {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+}
+
+.split-layout zero-divider {
+    margin: 0 calc(var(--design-unit) * 3px);
+}
+
+.top-layout zero-card {
+    margin: calc(var(--design-unit) * 3px);
+    height: 100%;
+}
+
+positions-ag-grid {
+    width: 100%;
+    height: 100%;
+}
+
+.top-layout {
+    height: 90%;
+    display: flex;
+    flex-direction: row;
+}
+
+.positions-card {
+    flex: 1;
+    margin: calc(var(--design-unit) * 3px);
+}
+
+.add-trade-card .content {
+    margin: calc(var(--design-unit) * 3px);
+}
+
+.card-title {
+    padding: calc(var(--design-unit) * 3px);
+    background-color: #22272a;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.counter-container {
+    display: flex;
+    flex-direction: column;
 }
 ```
 

@@ -410,6 +410,26 @@ INSTRUMENT_ID,LAST_PRICE
 1,10
 ```
 
+As well as set the instrument_id field as not nullable in the TRADE and POSITION tables, as the consolidations will use it.
+
+```kotlin
+tables {
+    table (name = "TRADE" ...) {
+        ...
+        INSTRUMENT_ID not null
+        ...
+    }
+
+    table(name = "POSITION" ...) {
+        ...
+        INSTRUMENT_ID not null
+        ...        
+    }
+    ...
+}
+```
+When you finish, remember to run *genesis-generated-dao​* and *genesisproduct-assemble*.​
+
 So, let's define a **alpha-consolidator.kts** file inside **alpha-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
 
 The consolidator is going to increase or decrease the quantity for POSITION records, based on the TRADE table updates. It also needs to calculate the new notional.
@@ -418,6 +438,7 @@ The consolidator is going to increase or decrease the quantity for POSITION reco
 import global.genesis.gen.config.tables.POSITION.NOTIONAL
 import global.genesis.gen.config.tables.POSITION.QUANTITY
 import global.genesis.gen.config.tables.POSITION.VALUE
+import global.genesis.gen.dao.Position
 
 consolidators {
     config {}
@@ -465,6 +486,7 @@ consolidators {
             build {
                 Position {
                     instrumentId = groupId
+                    counterpartyId = "2"
                     quantity = 0
                     value = 0.0
                     pnl = 0.0
