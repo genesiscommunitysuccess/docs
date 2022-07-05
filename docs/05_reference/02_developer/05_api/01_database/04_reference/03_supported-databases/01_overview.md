@@ -9,9 +9,9 @@ id: overview
 Genesis supports different databases.
 
 
-| Database                 | [FoundationDb](../foundationdb) | [Postgresql](../postgresql) | [Aerospike](../aerospike) | [MSSQL](../mssql) |
-|--------------------------|---------------------------------|-----------------------------|---------------------------|---------------------------|
-| Technology               | NOSQL                           | SQL                         | NOSQL                     | SQL                     |
-| Supports transactions    | ✔️                              | ✔️                          | ❌                         | ✔️                        |
-| Returns sorted data      | ✔️                              | ✔️                          | ❌                         | ✔️                        |
-| Unlimited operation size | ❌                               | ✔️                          | ✔️                        | ✔️                        |
+| Database                 | [FoundationDb](../foundationdb) | [Postgresql](../postgresql) | [Aerospike](../aerospike) | [MSSQL](../mssql) | [Oracle](../oracle) |
+|--------------------------|---------------------------------|-----------------------------|---------------------------|-------------------|---------------------|
+| Technology               | NOSQL                           | SQL                         | NOSQL                     | SQL               | SQL                 |
+| Supports transactions    | ✔️                           | ✔️                        | ❌                        | ✔️              | ✔                   |
+| Returns sorted data      | ✔️                           | ✔️                        | ❌                        | ✔️              | ✔                   |
+| Unlimited operation size | ❌                              | ✔️                        | ✔️                     | ✔️              | ✔                   |
