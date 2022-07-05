@@ -13,8 +13,8 @@ genesis-generated-dao
 
 After you have saved this file, run `genesis-generated-dao`.
 
-From the Gradle menu, this is:
+From the Gradle menu, you can find this is in the dictionary cache folder for your product:
 
-**genesisproduct-alpha**/**alpha-dictionary-cache**/**Tasks**/**genesis-generated-dao**/**Tasks**/**generateDAO**
+**Tasks**/**genesis-generated-dao**/**Tasks**/**generateDAO**
 
 ![](/img/build-gradle-kts-generated-dao.png)

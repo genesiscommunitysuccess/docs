@@ -8,10 +8,13 @@ There are some simple commands that enable you to start and stop your server.
 
 `startServer` does exactly what you would expect.
 
-After running this, run mon. This shows you ths status of your server, with all the individual services listed:
+After running this, run mon. 
 
-**replace with correct image**
 ![](/img/using-mon.png)
+
+This shows you ths status of your server, with all the individual services listed:
+
+![](/img/mon.png)
 
 To stop your server, run `killServer --all`.
 

@@ -4,8 +4,14 @@ sidebar_label: 'Next steps'
 id: next-steps
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Now, let's just take stock.
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+You have seen all the main elements of a simple Genesis application:
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+- the fields, tables and views that make up the data model, plus the use of simple commands in the gradle menu to create your database objects
+- the main modules: Event Handler, Request Server and Data Server
+- the key files that you need to configure: **processes.xml**, **system-definition.kts**, **service-definitions.xml** and **genesis.router.kts**
+- the files you get by default for the front end, and the concept of configuring components, such as pages or grids
+
+Now you can check the pre-requisites for running a development workstation and then try our Quick Start. Have fun!
+
