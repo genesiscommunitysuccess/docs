@@ -13,6 +13,7 @@ The details of the two modules need to be added to your application's:
 
 That's it. Once these files have been correctly updated, you can run a simple command to build, which is available from the gradle menu on the right of your intellij:
 
-**replace image below with the correct image
-![](/img/simple-1.png)
+In your project directory, select **Tasks**/**Build/Assemble**.
+
+![](/img/assemble-server.png)
 
