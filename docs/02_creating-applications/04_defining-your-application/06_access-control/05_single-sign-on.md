@@ -209,10 +209,53 @@ In the SSO_USER table:
 
 The Genesis user name should be the user’s email address.
 
+## Front-to-back flow
+This flow assumers the following pre-requisites: 
+
+- `ssoToggle` is set to true in the client-app’s config, this will show the ‘Enable SSO?’ checkbox on the login page
+- ‘Enable SSO’ is checked, either manually in the UI or set to true by default in the config
+- In the front end, the following has been added to `src/routes/config.ts`:
+
+```javascript
+this.routes.map(
+      {path: '', redirect: 'login'},
+      {
+        path: 'login',
+        element: Login,
+        title: 'Login',
+        name: 'login',
+        layout: loginLayout,
+        settings: {
+          ...
+          ssoToggle: true,
+          ssoEnable: true,
+        },
+        childRouters: true,
+      },
+      {path: 'protected', element: Protected, title: 'Protected', name: 'protected', settings: {allowAutoAuth: true}},
+      {path: 'admin', element: Admin, title: 'Admin', name: 'admin', settings: {allowAutoAuth: true}},
+      {path: 'reporting', element: Reporting, title: 'Reporting', name: 'reporting', settings: {allowAutoAuth: true}},
+    );
+
+ ```
+
+
+1. The front end hits **ssoListEndpoint**; by default, this is `gwf/saml/list` (configurable).
+2. **ssoListEndpoint** returns a list of identity providers:
+`[
+  {ID:'provider1', DESCRIPTION:'Description 1'},
+  {ID:'provider2', DESCRIPTION:'Description 2'}
+]`
+3. Identity providers are parsed and the dropdown is populated on the login page.
+4. The user selects an identity provider using the dropdown (or keeps the preselected default). Then the user clicks the **SSO Login** button.
+5. The browser redirects to the **ssoLoginUrl**, which might be, for example: `https://dev-position2/gwf/saml/login?idp=provider1`
+6. The server sends the user to the identity provider’s login page.
+7. The user logs in using their SSO credentials.
+8. The server redirects the client back to the client-app with a new url param: `SSO_TOKEN` .
+9. The front end checks for the presence of an `SSO_TOKEN` url param. If found, it stores it in session storage and uses it to perform an ‘SSO Login’.
+10. The server will respond with an ACK and the user is now logged in (or NACK if something goes wrong).
+
 ## Testing SAML
-
-
-
 
 You need to replace the IP with the address/IP of your Genesis instance, and replace test with the name of the identify provider.
 
