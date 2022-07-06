@@ -191,7 +191,7 @@ For example: https://dev-position2/gwf/saml/login?idp=provider1
 
 **ssoListEndpoint**
 
-By default, this is `saml/list` (configurable)
+By default, this is `gwf/saml/list` (configurable)
 This endpoint returns a list of identity providers:
 `[
   {ID:'provider1', DESCRIPTION:'Description 1'},
@@ -301,10 +301,12 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name **genesis**-console-proxy --ad
 
 Now you can run the front end.
 
+`Test Meta Data File (testMetadata.xml)`
+
 ```bash
-Test Meta Data File (testMetadata.xml_
 docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host
 ```
+
 
 Here is some test metadata you can use:
 
