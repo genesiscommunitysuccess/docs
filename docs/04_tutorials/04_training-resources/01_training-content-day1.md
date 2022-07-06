@@ -435,7 +435,7 @@ This is useful where you have used standard modules such as Auth, FIX or even th
 ...
 item(name = "DbLayer", value = "SQL")
 ...
-item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=docker")
+item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=")
 
 ```
 :::tip
