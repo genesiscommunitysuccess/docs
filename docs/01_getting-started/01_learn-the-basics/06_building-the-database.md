@@ -4,8 +4,17 @@ sidebar_label: 'Building the database'
 id: building-the-database
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Once you are happy with your data model, you can build your database.
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+A simple command enables you to do this.
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+genesis-generated-dao
+
+After you have saved this file, run `genesis-generated-dao`.
+
+From the Gradle menu, you can find this is in the dictionary cache folder for your product:
+
+**Tasks**/**genesis-generated-dao**/**Tasks**/**generateDAO**
+
+![](/img/build-gradle-kts-generated-dao.png)

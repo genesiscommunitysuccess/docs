@@ -1,6 +1,6 @@
 ---
-title: 'Learn the basics'
-sidebar_label: 'Introduction'
+title: 'The Learning area'
+sidebar_label: 'Overview'
 sidebar_position: 1
 id: introduction
 ---
@@ -14,4 +14,4 @@ You can take the slow road or quick road through this area.
 -	We recommend you read all the pages here to learn the basics.
 -	If you want to whizz through things, be our guest. Just read the Very simple introduction. Then you can check the Pre-requisites and head straight to the Quick Start for hands-on experience. 
 
-Either way, you should have enough knowledge after that to start developing an application and to use our reference documentation to help go further.
+Either way, this should give you enough knowledge to take your first steps in developing a real application. You can use our reference documentation to help you go further.

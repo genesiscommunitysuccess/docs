@@ -4,8 +4,16 @@ sidebar_label: 'Build'
 id: build
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+With a database and two modules (Data Server and Event Handler) in place to supply data to the front end, we can now build our server.
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+The details of the two modules need to be added to your application's:
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+- **processes.xml** file: effectively, this registers the module as part of your application and sets things like logging level
+- **service definitions** file: this sets port numbers for internal messaging
+
+That's it. Once these files have been correctly updated, you can run a simple command to build, which is available from the gradle menu on the right of your intellij:
+
+In your project directory, select **Tasks**/**Build/Assemble**.
+
+![](/img/assemble-server.png)
+
