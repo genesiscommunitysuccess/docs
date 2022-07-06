@@ -144,7 +144,7 @@ wsl --install
 If you need help with the WSL installation, please refer to [here](https://docs.microsoft.com/en-us/windows/wsl/install).
 
 Then download the [Genesis WSL training distro](https://netorg209792-my.sharepoint.com/:u:/r/personal/genesis_files_genesis_global/Documents/GENESIS/General/Platform/Training/Developer/training-wsl.zip?csf=1&web=1&e=0Z2OtN). This distro contains everything you need to get started, including: 
-Linux CentOS 7 base, Java 11 SDK, genesis user, nginx, FoundationDB.
+Linux CentOS 7 base, Java 11 SDK, genesis user, nginx, Foundationdb.
 
 Now create a local folder where you want to run the distro, e.g., "C:\wsl\distros\training-distro\". Unzip the package downloaded there and from that folder run:
 ```
@@ -423,6 +423,26 @@ Add the following content to the **alpha-service-definitions.xml** file.
     <service host="localhost" name="ALPHA_EVENT_HANDLER" port="11001"/>
 </configuration>
 ```
+
+<!-- ADD THIS DO DAY 5 AS AN EXERCISE
+#### Overriding default configurations
+You can override the standard definitions using the site-specific folder located at ..\alpha\server\jvm\alpha-site-specific\src\main\resources\cfg\
+
+Once deployed into the server, the files from that folder get installed in the runtime folder under a sub-folder called 'site-specific'. This is an area of the run directory, i.e. the Platform installation directory, where you can override the standard definitions found elsewhere in the application. You supply the standard definition name and your own definition. Your application will then only use your definition.
+
+This is useful where you have used standard modules such as Auth, FIX or even the Genesis distribution itself; you should never change these modules. Any files/definitions that are listed in the site-specific area automatically take their places. In our case, the genesis-system-definition.kts must be edited to use postgres database engine instead of the default one (FDB) as follows: 
+
+```kotlin
+...
+item(name = "DbLayer", value = "SQL")
+...
+item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=docker")
+
+```
+:::tip
+If you had to add application specific definitions, like an API_KEY for example, you'd have to edit ..\server\jvm\alpha-config\src\main\resources\cfg\alpha-system-definition.kts
+:::
+-->
 Finally, you can build the server.
 
 In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha**/**Tasks**/**Build/Assemble**.
@@ -473,12 +493,7 @@ Now we are going to install the Genesis Platform (i.e. Genesis distribution) on 
 
 ##### Deploying to the server
 
-We will run `install-alpha-site-specific` (to allow us database script execution) and `setupEnvironment` - this task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
-
-Usage :
-```shell
-./gradlew :jvm:alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip] #On the IntelliJ terminal
-```
+We will run `setupEnvironment` first (only need to run it once) to setup the Platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
 
 Usage :
 ```shell

@@ -86,7 +86,7 @@ This is because the evaluator process is set to run only on the primary node. Ou
 Run `SetPrimary` and you should be able to see all processes running.
 
 #### 2. Create a new class.
-When the evaluator is running, create a PostionReport class to trigger the new event. This class should be created inside your project folder **server/jvm/alpha-messages/src/main/kotlin/global/genesis/alpha/message/event** as the code below. 
+When the evaluator is running, create a PositionReport class to trigger the new event. This class should be created inside your project folder **server/jvm/alpha-messages/src/main/kotlin/global/genesis/alpha/message/event** as the code below. 
 
 ```kotlin
 global.genesis.alpha.message.event
