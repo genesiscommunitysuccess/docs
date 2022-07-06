@@ -473,7 +473,7 @@ Now we are going to install the Genesis Platform (i.e. Genesis distribution) on 
 
 ##### Deploying to the server
 
-We will run `install-alpha-site-specific` (because we changed the default configuration) and `setupEnvironment` - this task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
+We will run `install-alpha-site-specific` (to allow us database script execution) and `setupEnvironment` - this task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
 
 Usage :
 ```shell
