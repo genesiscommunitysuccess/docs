@@ -1,8 +1,8 @@
 ---
-title: 'Tutorials'
-sidebar_label: 'Introduction'
+title: 'Database'
+sidebar_label: 'Database'
 sidebar_position: 1
-id: introduction
+id: database
 ---
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry.

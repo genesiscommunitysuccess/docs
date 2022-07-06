@@ -55,9 +55,12 @@ module.exports = {
     },
     navbar: {
       items: [
-        { to: 'getting-started/learn-the-basics/', label: 'Getting Started' },
-        { to: 'become-an-expert/', label: 'Become an Expert' },
-        { to: 'tutorials/', label: 'Tutorials' },
+        { to: 'getting-started/learn-the-basics/', label: 'Learning' },
+        { to: 'server-modules', label: 'Server Modules' },
+        { to: 'front-end', label: 'Front End' },
+        { to: 'database', label: 'Database' },
+        { to: 'operations', label: 'Operations' },
+        { to: 'blog', label: 'Blog' },
       ],
       logo: {
         alt: 'Genesis Logo',
