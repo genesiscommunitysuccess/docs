@@ -210,6 +210,8 @@ As we previously generated the fields, autocompletion helps you to define the ta
 So far we have been testing our work manually, using Genesis Console or some HTTP client.
 Now the time has come to start writing some automated tests for our application.
 
+Before doing tests, install the [FoundationDB](https://www.foundationdb.org/) locally to allow a proper database mocking.
+
 Let's create a automated test that inserts and retrieves some data using Genesis' automated test support components, in summary:
 * load data from a CSV file 
 * retrieve data using [Genesis Database API](/reference/developer/api/database/overview/)
