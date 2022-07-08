@@ -345,12 +345,13 @@ Let's extend the Data model and create a CRUD, adding the tables **counterparty*
 ![](/img/day2_new-tables.png)
 
 :::tip
-Fields are kept separately from tables, so that they, and their meta-data, can be re-used across multiple tables and show linkage.​
+Fields are defined separately from tables, so that they, and their meta-data, can be re-used across multiple tables and show linkage.​
 :::
 
 As a reminder, these are the steps needed to complete this task:
-- Edit fields and tables to our tables and *​fields-dictionary.kts* files. When you finish, remember to ​run *genesis-generated-fields* AND​ *genesis-generated-dao​*
-- Add data server queries to *dataserver.kts* file
+- Edit alpha-fields-dictionary.kts first and don't forget to run *generateFields* gradle task when you finish this
+- Then edit alpha-tables-dictionary.kts to add the new tables and their respective fields you created in the previous step. When you finish, remember to ​run *genesis-generated-dao​*
+- Add dataserver queries pointing to the new tables in the alpha-dataserver.kts file
 - Create CRUD events, using event handlers for ​both entities​. When you finish, remember to ​run *deploy*​
 - Build, deploy and test. Test it with Postman or Console, inserting a new counterparty and instrument. Then use them to insert a new Trade as well.​
 
