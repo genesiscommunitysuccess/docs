@@ -23,9 +23,9 @@ module.exports = {
       indexBlog: true,
       indexPages: true,
     }],
-    [require.resolve('docusaurus-gtm-plugin'),{
-        id: 'GTM-5GTR43J',
-      }
+    [require.resolve('docusaurus-gtm-plugin'), {
+      id: 'GTM-5GTR43J',
+    }
     ]
   ],
 
@@ -55,9 +55,18 @@ module.exports = {
     },
     navbar: {
       items: [
-        { to: 'getting-started/learn-the-basics/', label: 'Getting Started' },
-        { to: 'become-an-expert/', label: 'Become an Expert' },
-        { to: 'tutorials/', label: 'Tutorials' },
+        {to: 'getting-started/learn-the-basics/', label: 'Learning'},
+        {to: 'server-modules', label: 'Server Modules'},
+        {to: 'front-end', label: 'Front End'},
+        {to: 'database', label: 'Database'},
+        {to: 'operations', label: 'Operations'},
+        {to: 'blog', label: 'Blog'},
+        {
+          href: "https://stackoverflow.com/",
+          className: "so-icon",
+          "aria-label": "StackOverflow",
+          position: "right"
+        }
       ],
       logo: {
         alt: 'Genesis Logo',
