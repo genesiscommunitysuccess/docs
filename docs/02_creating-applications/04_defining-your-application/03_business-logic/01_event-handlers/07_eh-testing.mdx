@@ -35,8 +35,8 @@ class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 <TabItem value="java">
 
 ```java
-public class TradingEventHandlerTestJava extends AbstractGenesisTestSupport<EventResponse> {
-    public TradingEventHandlerTestJava() {
+public class TradingEventHandlerTest extends AbstractGenesisTestSupport<EventResponse> {
+    public TradingEventHandlerTest() {
         super(GenesisTestConfig.builder()
             .setPackageNames(List.of("global.genesis.eventhandler","global.genesis.position.samples.events.rxjava"))
             .setGenesisHome("/GenesisHome/")
@@ -57,7 +57,7 @@ Once you have set up your configuration, we can start writing tests against our 
 
 ### Writing tests
 
-Let's write some tests for this simple event handler.
+Let's write some tests for this simple event handler defined below. If you are looking for Java event then ignore onValidate method for now
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -110,7 +110,7 @@ Let's write some tests for this simple event handler.
             } else if (entityDb.get(Instrument.byId(trade.getInstrumentId())).blockingGet() == null) {
                 return Single.just(new StandardError("INTERNAL_ERROR", "INSTRUMENT ById(instrumentId=" + trade.getInstrumentId() +") not found in database").toEventNackError());
             }
-        return ack(this);
+            return ack(this);
         }
     }
 ```
@@ -154,9 +154,9 @@ The below is an example of a simple test.
     @Test
     public void testTradeInsert() throws InterruptedException {
         Trade trade = Trade.builder()
-            .setTradeId("40")
-            .setCounterpartyId("1")
-            .setInstrumentId("2")
+            .setTradeId("1")
+            .setCounterpartyId("CP1")
+            .setInstrumentId("I2")
             .setSide("BUY")
             .setPrice(1.123)
             .setQuantity(1000)
@@ -165,8 +165,8 @@ The below is an example of a simple test.
         EventReply reply = getMessageClient().request(event, EventReply.class).blockingGet();
         assertEquals(reply, new EventReply.EventAck(List.of(Map.of("TRADE_ID", trade.getTradeId()))));
 
-        Trade trade2 = getRxDb().entityDb().get(Trade.byId("40")).blockingGet();
-        assertNotNull(trade2);
+        Trade result = getRxDb().entityDb().get(Trade.byId("40")).blockingGet();
+        assertNotNull(result);
     }
 ```
 
@@ -181,7 +181,27 @@ Remember to add the `runBlocking` coroutine scope to the test, as the Genesis Pl
 
 #### Error response test
 
-We may also want to test a negative case of when we expect to receive an error as a response. In the example below, we expect the response to be of type `EventNack` which has a property `error` containing a list of errors.
+We may also want to test a negative case of when we expect to receive an error as a response.
+You need to modify the previous example Event Handler and add onValidate block:
+
+```kotlin
+eventHandler<Trade>(name = "TRADE_INSERT") {
+    onCommit { event ->
+        val trade = event.details
+        val result = entityDb.insert(trade)
+        ack(listOf(mapOf("TRADE_ID" to result.record.tradeId)))
+    }
+    onValidate { event ->
+        val message = event.details
+        verify {
+            entityDb hasEntry Counterparty.ById(message.counterpartyId)
+            entityDb hasEntry Instrument.ById(message.instrumentId)
+        }
+        ack()
+    }
+}
+```
+In the example below, we expect the response to be of type `EventNack` which has a property `error` containing a list of errors.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -221,11 +241,11 @@ We may also want to test a negative case of when we expect to receive an error a
     public void testTradeInsertWrongInstrumentId() throws InterruptedException {
         Trade trade = Trade.builder()
             .setTradeId("1")
-            .setCounterpartyId("1")
+            .setCounterpartyId("CP1")
             .setInstrumentId("DOESNOTEXIST")
             .setSide("BUY")
-            .setPrice(1.0)
-            .setQuantity(1)
+            .setPrice(1.213)
+            .setQuantity(100)
             .build();
         Event event = new Event(trade, "EVENT_TRADE_INSERT_JAVA", "JohnDoe");
         EventReply reply = getMessageClient().request(event, EventReply.class).blockingGet();
@@ -250,6 +270,8 @@ First, make sure that your authorisation set-up is designed to behave as follows
 
 Second, you need to modify the previous example Event Handler so that only authorised users can insert trades.
 
+For Java event example refer this document [Authorization API](/reference/developer/api/authorisation-api)
+
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
@@ -272,67 +294,67 @@ Second, you need to modify the previous example Event Handler so that only autho
 </TabItem>
 <TabItem value="java">
 
-    ```java
-        import com.google.inject.Inject;
-        import global.genesis.commons.annotation.Module;
-        import global.genesis.commons.auth.Authority;
-        import global.genesis.db.rx.RxDb;
-        import global.genesis.db.rx.entity.multi.RxEntityDb;
-        import global.genesis.eventhandler.typed.rx3.Rx3EventHandler;
-        import global.genesis.gen.dao.Trade;
-        import global.genesis.message.core.error.StandardError;
-        import global.genesis.message.core.event.Event;
-        import global.genesis.message.core.event.EventReply;
-        import global.genesis.session.AuthCache;
-        import global.genesis.session.RightSummaryCache;
-        import io.reactivex.rxjava3.core.Single;
-        import org.jetbrains.annotations.Nullable;
+```java
+    import com.google.inject.Inject;
+    import global.genesis.commons.annotation.Module;
+    import global.genesis.commons.auth.Authority;
+    import global.genesis.db.rx.RxDb;
+    import global.genesis.db.rx.entity.multi.RxEntityDb;
+    import global.genesis.eventhandler.typed.rx3.Rx3EventHandler;
+    import global.genesis.gen.dao.Trade;
+    import global.genesis.message.core.error.StandardError;
+    import global.genesis.message.core.event.Event;
+    import global.genesis.message.core.event.EventReply;
+    import global.genesis.session.AuthCache;
+    import global.genesis.session.RightSummaryCache;
+    import io.reactivex.rxjava3.core.Single;
+    import org.jetbrains.annotations.Nullable;
 
-        import java.util.List;
-        import java.util.Map;
+    import java.util.List;
+    import java.util.Map;
 
-        @Module
-        public class EventTrade implements Rx3EventHandler<Trade, EventReply> {
+    @Module
+    public class EventTrade implements Rx3EventHandler<Trade, EventReply> {
 
-            private final RxEntityDb entityDb;
-            private final RxDb rxDb;
-            private final RightSummaryCache rightSummaryCache;
+        private final RxEntityDb entityDb;
+        private final RxDb rxDb;
+        private final RightSummaryCache rightSummaryCache;
 
-            private Authority authCache;
+        private Authority authCache;
 
-            @Inject
-            public EventTrade(RxEntityDb entityDb, RxDb rxDb, RightSummaryCache rightSummaryCache) {
-                this.entityDb = entityDb;
-                this.rightSummaryCache = rightSummaryCache;
-                this.rxDb = rxDb;
-            }
-
-            @Inject
-            public void init() {
-                this.authCache = AuthCache.newReader("ENTITY_VISIBILITY", rxDb.getUpdateQueue());
-            }
-
-            @Nullable
-            @Override
-            public String messageType() {
-                return "TRADE_INSERT_JAVA";
-            }
-
-            @Override
-            public Single<EventReply> process(Event<Trade> tradeEvent) {
-                String userName = tradeEvent.getUserName();
-
-                if(rightSummaryCache.userHasRight(userName, "TRADER")){
-                    Trade trade = tradeEvent.getDetails();
-                    return entityDb.writeTransaction(txn -> {
-                        Trade result = txn.insert(trade).blockingGet().getRecord();
-                        return ack(this, List.of(Map.of("TRADE_ID", result.getTradeId())));
-                    }).map(result -> result.getFirst());
-                }
-                return Single.just(new StandardError("NOT_AUTHORISED", "User " + userName + " lacks sufficient permissions").toEventNackError());
-            }
+        @Inject
+        public EventTrade(RxEntityDb entityDb, RxDb rxDb, RightSummaryCache rightSummaryCache) {
+            this.entityDb = entityDb;
+            this.rightSummaryCache = rightSummaryCache;
+            this.rxDb = rxDb;
         }
-    ```
+
+        @Inject
+        public void init() {
+            this.authCache = AuthCache.newReader("ENTITY_VISIBILITY", rxDb.getUpdateQueue());
+        }
+
+        @Nullable
+        @Override
+        public String messageType() {
+            return "TRADE_INSERT_JAVA";
+        }
+
+        @Override
+        public Single<EventReply> process(Event<Trade> tradeEvent) {
+            String userName = tradeEvent.getUserName();
+
+            if(rightSummaryCache.userHasRight(userName, "TRADER")){
+                Trade trade = tradeEvent.getDetails();
+                return entityDb.writeTransaction(txn -> {
+                    Trade result = txn.insert(trade).blockingGet().getRecord();
+                    return ack(this, List.of(Map.of("TRADE_ID", result.getTradeId())));
+                }).map(result -> result.getFirst());
+            }
+            return Single.just(new StandardError("NOT_AUTHORISED", "User " + userName + " lacks sufficient permissions").toEventNackError());
+        }
+    }
+```
 
 </TabItem>
 </Tabs>
@@ -360,22 +382,22 @@ class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 </TabItem>
 <TabItem value="java">
 
-    ```java
-    public class TradingEventHandlerTestJavaAbstract2 extends AbstractGenesisTestSupport<EventResponse> {
+```java
+public class TradingEventHandlerTest extends AbstractGenesisTestSupport<EventResponse> {
 
-        public TradingEventHandlerTestJavaAbstract2() {
-            super(GenesisTestConfig.builder()
+    public TradingEventHandlerTest() {
+        super(GenesisTestConfig.builder()
             .setPackageNames(List.of("global.genesis.eventhandler","global.genesis.rxjava"))
             .setGenesisHome("/GenesisHome/")
             .setInitialDataFiles("TEST_DATA.csv")
             .setAuthCacheOverride(List.of("ENTITY_VISIBILITY"))
             .setParser(EventResponse.Companion)
             .build()
-            );
-        }
-
+        );
     }
-    ```
+
+}
+```
 
 </TabItem>
 </Tabs>
