@@ -15,11 +15,11 @@ Each data pipeline defines a source for the data and how that data is mapped to 
 
 If the mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a `transform` function whose value will be mapped to the [Field](/creating-applications/defining-your-application/data-model/fields/fields)
 
-The following is a sample configuration:
+The following is a sample configuration that sources data from PostgreSQL:
 ```kotlin
 sources {
 
-    postgresSource("cdc-test") {
+    postgres("cdc-test") {
         hostname = "localhost"
         port = 5432
         username = "postgres"
@@ -60,4 +60,4 @@ Broadly, you need to create new data pipeline script and start the platform. Onc
 
 ## Supported sources
 - PostgreSQL
-- CSV files that originate from the local filesystem or over FTP and S3
+- CSV, XML and JSON files that originate from the local filesystem or over FTP and S3
