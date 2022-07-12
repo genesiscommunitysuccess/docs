@@ -1,0 +1,110 @@
+---
+title: 'R integration'
+sidebar_label: 'R integration'
+sidebar_position: 1
+id: r-introduction
+---
+
+
+The Genesis R integration enables R developers to extract data from the Genesis low-code platform, then perform analytics and publish that data. The published data can be can be consumed by:
+
+- Genesis microservices
+- a Genesis rich-client UI
+- a web-based UI
+
+Alternatively, the data can be published to another medium via the Genesis-Apache Camel integration.
+
+## Installation
+### Pre-requisites
+Before installation, ensure the following packages are installed. Most can be sourced from the Linux package manager (`yum` on Red Hat Enterprise Linux (RHEL) or CentOS), although extra repositories may need to be enabled (`epel` on RHEL or CentOS):
+
+ * R
+ * *(optional)* R Studio Server (from: https://www.rstudio.com/products/rstudio/download-server/)
+ * `openssl-devel`
+ * `curl-devel`
+ * `libxml2-devel`
+
+The following must be added to `~/.Renviron`:
+
+```
+# Required for the Genesis R library
+GENESIS_HOME=<path_to_genesis_run_dir>
+R_HOME=<path_to_r_home>
+```
+
+To find the path for for `R_HOME`, run:
+
+```bash
+$ R RHOME
+```
+
+The following must be added to the end of `~/.bashrc` (or wherever environment variables are defined for this system):
+
+```bash
+if [[ -z "$LD_LIBRARY_PATH" ]]; then
+    export LD_LIBRARY_PATH="$GENESIS_HOME/r/lib"
+else
+    export LD_LIBRARY_PATH="$GENESIS_HOME/r/lib:$LD_LIBRARY_PATH"
+fi
+
+if [[ -z "$R_HOME" ]]; then
+    export R_HOME=$(R RHOME)
+fi
+
+if [[ -z "$RJAVA_JVM_STACK_WORKAROUND" ]]; then
+    export RJAVA_JVM_STACK_WORKAROUND=1
+fi
+```
+
+### Installation
+The Genesis R Integration is installed as any other Genesis framework product. Please see the installation instructions provided.
+
+### Post-installation
+Once the R Integration is installed, a post-installation script must be run. This script will attempt to install any required R libraries. The script can be run as:
+
+```bash
+$ R --vanilla < $GENESIS_HOME/r/scripts/install.R
+```
+
+The script will install all required R dependencies, the `genesisglobal` R library, and it will source and make available the required JRI libraries.
+
+For reference; the following R dependencies are required:
+
+ * `rJava`
+ * `dplyr`
+ * `XML`
+ * `fst`
+ * `flock`
+ * `devtools`
+ 
+Optionally, you need:
+
+  * `stringdist`
+
+which is used in fuzzy search logic.
+
+If for any reason these are not installed, they can be installed by running the following from the R command prompt (the name of the repo can be omitted if your workspace already has a repo defined):
+
+```R
+> install.packages("<name-of-package>", repos="https://cloud.r-project.org/")
+```
+
+The JRI libraries (required for the Genesis R Integration library) must be available. The `install.R` script will source them and place them in the correct directory. If there is any issue with this process, then the location of the required files can be found by running the following command at the R command prompt:
+
+```R
+> system.file(package="rJava", loc="jri")
+```
+
+All files from the above directory with extensions of `.jar` and `.so` must be copied to `$GENESIS_HOME/r/lib`.
+
+The `install.R` script installs the `genesisglobal` R library. If this fails use:
+
+```R
+> devtools::install_url(paste0("file://", Sys.getenv("GENESIS_HOME"), "/r/scripts/genesisglobal-<version>-bin.zip))"
+```
+
+Alternatively, you can also use `install_local`:
+
+```R
+> devtools::install_local("/home/user/run/r/scripts/genesisglobal-<version>-bin.zip")
+```

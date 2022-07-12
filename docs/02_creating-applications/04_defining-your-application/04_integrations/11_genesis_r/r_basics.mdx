@@ -1,0 +1,95 @@
+---
+title: 'R basics'
+sidebar_label: 'R basics'
+sidebar_position: 2
+id: r-basics
+---
+
+
+## Getting data with the Genesis R integration
+The Genesis R Integration makes heavy use of Magrittr-style (`%>%`) pipelines to make the configuration of various parts of the framework easier to read.
+
+### Loading the library
+The integration is available as a library called `genesisglobal`. This will have been installed as part of the installation process. To load the library, either at the R commmand line or in an R script, run:
+
+```R
+> library(genesisglobal)
+```
+
+### Initialising the Genesis Adapter
+Before the Genesis Adapter can be used, you must configure and initialise it using a GenesisBuilder pipeline. At its simplest, this is:
+
+```R
+> genesisAdapter <- GenesisBuilder("FOO") %>% Build()
+```
+
+The following commands can be added to the builder pipeline (before `Build()`) to configure the behaviour of the adapter:
+
+ * `SetLogLevel("<log-level>")` where `<log-level>` is one of `TRACE`, `DEBUG`, `INFO`, `WARN`.
+
+### Snapshotting Genesis Data
+To get a snapshot of the current state of a Genesis database table, use the snapshotting pipeline of the framework. At its simplest, this is:
+
+```R
+> res <- genesisAdapter %>% GenesisSnapshot("TABLE_NAME", "tn") %>% Snapshot()
+```
+
+The `res` variable is a `logical` that will be `TRUE` if the snapshot was successful, and either `FALSE` or `NA` if it was not. `"TABLE_NAME"` specifies the name of the table and `"tn"` specifies the name of the `data.frame` that contains the results of the snapshot. If `res` is `TRUE`, then this `data.frame` is available for immediate use like any other `data.frame`.
+
+If `res` is `FALSE` or `NA`, then the cause of the error can be retrieved with:
+
+```R
+> genesisAdapter %>% GetLastError()
+```
+
+The following commands can be added to the snapshot pipeline (before `Snapshot()`) to configure the results of the snapshot:
+
+ * `AddFilter("<filter-expression>")` -- where `<filter-expression>` is a standard Genesis database filter. This command causes the `data.frame` to contain only rows from the database that match the filter. Default behaviour is to return all database rows.
+ * `AddField("<field>")` and `AddFields(c("<field>", "<field>", ...))` -- where `<field>` is the name of a database field. This command causes the `data.frame` to contain only the specified columns from the database. Default behaviour is to return all database columns.
+
+### Optimising snapshotting
+Snapshotting Genesis data and then performing analysis on that data is one of the most common tasks performed with the R Integration. For large datasets or datasets snapshotted by a number of R scripts or developers, it is possible to configure Genesis database tables to be serialised into an R friendly cache.
+
+The cache will be invisible to the script and the snapshotting pipeline will take advantage of the cache, if available.
+
+Configuring the cache is covered later in this document, but you should certainly consder the following when you write R scripts that take advantage of the cache:
+
+ * Avoid using `AddFilter()` in your snapshot pipeline unless the peformance improvement of the filter outweighs the performance improvement of the cache (which is possible) -  as the cache will not be used.
+ * Consider using the snapshotting pipeline over the subscription pipeline to take advantage of the cache.
+ * The `Snapshot()` command supports `from=` and `to=` parameters to limit the rows returned. This only works when using the cache and the cache is always sorted by the table's primary key.
+
+### Subscribing to Genesis data
+It is possible to subscribe to Genesis data where the Genesis adapter creates a `data.frame` that represents a database table; the adapter the keeps the `data.frame` up-to-date with all inserts, deletes and modifications performed on the table. 
+
+The Genesis R Integration provides an R caching mechanism linked to the snapshotting, which might be more performant.
+
+The simplest subscription pipeline looks like this:
+
+```R
+res <- genesisAdapter %>% GenesisSubscriber("TABLE_NAME", "tn") %>% Subscribe()
+```
+
+The `res` variable is a `logical` that will be `TRUE` if the subscription was successful, and either `FALSE` or `NA` if it was not. `"TABLE_NAME"` specifies the name of the table and `"tn"` specifies the name of the `data.frame` that contains the results of the subscription. A `data.frame` called `"tn_update"` is available, containing just the updated rows. If `res` is `TRUE` then this `data.frame` is available for immediate use like any other `data.frame`.
+
+If `res` is `FALSE` or `NA`, then the cause of the error can be retrieved with:
+
+```R
+> genesisAdapter %>% GetLastError()
+```
+
+For updates to be applied to the `data.frame`, control must be passed to the `genesisAdapter`. You can do this with one of the following two commands:
+
+ * `genesisAdapter %>% Poll()` -- this applies all outstanding updates to R `data.frame`s, and it services any network requests before returning to the script. It accepts a single argument: `timeout`. This specifies the maximum number of milliseconds to spend applying updates (default: `100`). Typically, this will be run in a loop. Note: if there is nothing to process, then this will return immediately and the R script might end up in a CPU intensive busy-loop unless some sort of delay is implemented.
+ * `genesisAdapter %>% Start()` -- this hands over all control to the adapter; from the R script's perspective, it is a fully-blocking call. Like `Poll()`, this applies all updates and services all network requests.
+
+You can add the following commands to the subscription pipeline (before `Subscribe()`) to configure the results of the subscription:
+
+ * `AddFilter("<filter-expression>")` -- where `<filter-expression>` is a standard Genesis database filter. This command causes the `data.frame` to contain only rows from the database that match the filter. Default behaviour is to return all database rows.
+ * `AddField("<field>")` and `AddFields(c("<field>", "<field>", ...))` -- where `<field>` is the name of a database field. This command causes the `data.frame` to contain only the specified columns from the database. Default behaviour is to return all database columns.
+ * `AddMappingField("<field>")` and `AddMappingFields(c("<field>", "<field>", ...))` -- where `<field>` is the name of a database field. By default, all updates and deletes are applied to the `data.frame` using the fields from the database table's primary key. These commands allow the fields that perform this mapping to be configured -- essentially allowing a different key to be used on the `data.frame`.
+ *  `AddUserData("<userdata>")` -- where  `<userdata>` is a character vector that should be returned to an update or initialisation function.
+ * `AddUpdateFunction("<function>")` -- where `<function>` is the name of an R function that accepts an optional piece of user data. `<function>` is called whenever the `data.frame` associated with this subscription is updated.
+ * `AddInitFunction("<function>")` -- where `<function>` is the name of an R function that accepts an optional piece of user data. `<function>` is called immediately after `data.frame` is first created and populated.
+ * `AddUserData("<userdata>")` -- where `<userdata>` is a character vector that is returned to the update and initialisation functions.
+ * `AntiJoin()` and `DontAntiJoin()` -- enable (default) or disable an anti-join while updating the `data.frame`. If disabled, modifications will not be applied to the `data.frame` but instead added to it as new rows. This improves performance where updates to rows are not expected.
+ * `Arrange()` and `DontArrange()` -- enable (default) or default the sorting of rows by the mapping fields. Disabling improves performance if a known order is not required.
