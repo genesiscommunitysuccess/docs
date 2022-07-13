@@ -89,9 +89,9 @@ sources {
 It is vital to ensure that any system definition variables that are used by the configuration definition are properly defined in your __application__**-system-definition.kts** file.
 
 ## PostgreSQL configuration
-To capture changes from PostgreSQL the following requirements must be met:
+To capture changes from PostgreSQL, the following requirements must be met:
  - The Write Ahead Log level has to be set at least to `logical`. The setting for this is `wal_level`.
- - The plugin used for logical decoding must be `pgoutput` (which is the default plugin PostgreSQL uses).
+ - The plugin used for logical decoding must be `pgoutput` (which is the default plugin that PostgreSQL uses).
  - [`max_wal_senders`](https://www.postgresql.org/docs/current/runtime-config-replication.html) must be set to a value greater than zero. PostgreSQL default value is `10`.
  - [`max_replication_slots`](https://www.postgresql.org/docs/current/runtime-config-replication.html) must be set to a value greater than zero. PostgreSQL default value is `10`.
 
