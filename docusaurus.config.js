@@ -80,7 +80,7 @@ module.exports = {
         { to: 'getting-started/learn-the-basics/', label: 'Getting Started' },
         { to: 'become-an-expert/', label: 'Become an Expert' },
         { to: 'tutorials/', label: 'Tutorials' },
-        {to: 'blog/', label: 'Blog'}
+        { to: 'blog/', label: 'Blog' }
       ],
       logo: {
         alt: 'Genesis Logo',
