@@ -49,9 +49,7 @@ In the next prompt, select `Quick Start Application` from the list.
 ```shell
 ? App seed Quick Start Application
 ? Overwrite existing files Yes
-? Package scope (without the @) genesislcap
-? Package name alpha
-? Create design system Yes
+
 ```
 
 At this point, the seed application is created and the genx dependencies are installed.
@@ -64,7 +62,8 @@ Then there are more questions, which you can respond to as follows:
 ? Create design system Yes
 ? Design system name alpha
 ? Base design system package (@latest will be used) @genesislcap/foundation-ui
-? Set API Host Yes (ws://localhost/gwf)
+? Set API Host (Y/n) Yes
+? API Host (with websocket prefix and suffix if any) (ws://localhost/gwf/)
 ? Genesis Server version 6.0.1
 ? Genesis Deploy plugin version 6.0.2
 ? Kotlin version 1.6.10
