@@ -16,7 +16,7 @@ The example below shows mapping a value from the source data to the Genesis data
 ```kotlin
 sources {
 
-  postgres("cdc-test") {
+  postgresSource("cdc-test") {
     hostname = "localhost"
     port = 5432
     username = "postgres"
@@ -65,7 +65,7 @@ System definition variables can be used as part of the source configuration.
 ```kotlin
 sources {
 
-  postgres("cdc-test") {
+  postgresSource("cdc-test") {
     hostname = POSTGRES_HOST
     port = POSTGRES_PORT
     username = DB_USERNAME
@@ -80,7 +80,7 @@ Alternatively, you can access `systemDefinition`s in a programmatic way:
 ```kotlin
 sources {
 
-  postgres("cdc-test") {
+  postgresSource("cdc-test") {
     hostname = systemDefinition["db_host"].orElse("localhost")
   }
 }
@@ -89,11 +89,7 @@ sources {
 It is vital to ensure that any system definition variables that are used by the configuration definition are properly defined in your __application__**-system-definition.kts** file.
 
 ## PostgreSQL configuration
-To capture changes from PostgreSQL, the following requirements must be met:
- - The Write Ahead Log level has to be set at least to `logical`. The setting for this is `wal_level`.
- - The plugin used for logical decoding must be `pgoutput` (which is the default plugin that PostgreSQL uses).
- - [`max_wal_senders`](https://www.postgresql.org/docs/current/runtime-config-replication.html) must be set to a value greater than zero. PostgreSQL default value is `10`.
- - [`max_replication_slots`](https://www.postgresql.org/docs/current/runtime-config-replication.html) must be set to a value greater than zero. PostgreSQL default value is `10`.
+To capture changes from PostgreSQL the Write Ahead Log level has to be set at least to `logical`, and the plugin used for logical decoding must be `pgoutput` (which is the default plugin PostgreSQL uses).
 
 ## Replaying PostgreSQL rows
 While processing source data, Genesis keeps track of the last processed row. If the server gets restarted, it will use the last recorded offset to know where in the source information it should resume reading from.  The offsets are kept in a table called `DATAPIPELINE_OFFSET` and there is one record per connector. If you want to start ingesting the rows from the begining, delete the row with the name of the source connector and restart the Genesis server.
