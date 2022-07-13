@@ -113,7 +113,7 @@ And this is the data pipeline configuration that is tested:
 ```kotlin
 sources {
 
-    postgres("cdc-test") {
+    postgresSource("cdc-test") {
         hostname = "localhost"
         port = 5432
         username = "postgres"

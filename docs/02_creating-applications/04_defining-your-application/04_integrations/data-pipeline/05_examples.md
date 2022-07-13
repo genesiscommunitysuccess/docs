@@ -13,7 +13,7 @@ Here is a full example to ingest trades:
 ```kotlin
 sources {
 
-    postgres("cdc-test") {
+    postgresSource("cdc-test") {
         hostname = "localhost"
         port = 5432
         username = "postgres"
