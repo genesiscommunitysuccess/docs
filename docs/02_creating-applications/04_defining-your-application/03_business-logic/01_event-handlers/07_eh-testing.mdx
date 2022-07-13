@@ -51,11 +51,11 @@ public class TradingEventHandlerTest extends AbstractGenesisTestSupport<EventRes
 </TabItem>
 </Tabs>
 
-For more information about `AbstractGenesisTestSupport`, see the [testing docs](/managing-applications/test/integration-testing/).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/managing-applications/test/integration-testing/).
 
-Once you have set up your configuration, we can start writing tests against our Event Handler.
+Once you have set up your configuration, you can start writing tests against our Event Handler.
 
-### Writing tests
+## Writing tests
 
 Let's write some tests for this simple Event Handler, defined below. If you are looking for a Java event, then ignore the `onValidate` method for now
 
@@ -173,16 +173,17 @@ Below is an example of a simple test.
 </TabItem>
 </Tabs>
 
-We first create our `Event` object, setting the event details and specifying the intended Event Handler for the message "EVENT_TRADE_INSERT".
+First, create your `Event` object, setting the event details and specifying the intended Event Handler for the message "EVENT_TRADE_INSERT".
 
-We then send a message to our Event Handler using `messageClient.suspendRequest(message)`. The result is first verified to be an `EventAck` and then we check that the inserted trade can be retrieved from the database.
+We then send a message to our Event Handler using `messageClient.suspendRequest(message)`. The result is first verified to be an `EventAck`. Then  check that the inserted trade can be retrieved from the database.
 
 Remember to add the `runBlocking` coroutine scope to the test, as the Genesis Platform uses Kotlin coroutines.
 
 ### Error response test
 
-We may also want to test a negative case of when we expect to receive an error as a response.
-You need to modify the previous example Event Handler and add onValidate block:
+You may also want to test a negative case, where you expect to receive an error as a response.
+
+You need to modify the previous example Event Handler and add an `onValidate` block:
 
 ```kotlin
 eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -201,7 +202,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
     }
 }
 ```
-In the example below, we expect the response to be of type `EventNack` which has a property `error` containing a list of errors.
+In the example below, we expect the response to be of type `EventNack`, which has a property `error` containing a list of errors.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -262,7 +263,7 @@ In the example below, we expect the response to be of type `EventNack` which has
 
 #### Set-up
 
-To test that the Event Handler authorisation works correctly, we need to do some setting up.
+To test that the Event Handler authorisation works correctly, you need to do some setting up.
 
 First, make sure that your authorisation set-up is designed to behave as follows:
 - A user who enters a trade must have an entry in the "ENTITY_VISIBILITY" auth map; the entity code for this user must match the `counterpartyId` of the trade.
@@ -359,7 +360,7 @@ You can find a [Java event example](/reference/developer/api/authorisation-api) 
 </TabItem>
 </Tabs>
 
-Third, we need to specify the auth cache override in the `GenesisTestConfig`:
+Third, you need to specify the auth cache override in the `GenesisTestConfig`:
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -402,7 +403,7 @@ public class TradingEventHandlerTest extends AbstractGenesisTestSupport<EventRes
 </TabItem>
 </Tabs>
 
-Fourth, in our test set-up, let's authorise one user to be able to insert trades and another who is not.
+Fourth, in your test set-up, let's authorise one user to be able to insert trades and another who is not.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -442,7 +443,7 @@ public void setUp() {
 
 For more information on authorisation, please see the [authorisation docs](/creating-applications/defining-your-application/access-control/authorisation-over/).
 
-##### Tests
+### Tests
 
 After you have set things up. Now you can create the tests themselves.
 
@@ -583,7 +584,7 @@ If you click on any Event Handler in the list, the fields relevant to the event 
 
 Now you need to pick the Event Handler you want to test. in this example, it is called EVENT_INSTRUMENT_INSERT.
 
-1. Find the Event Handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the event handler was set up.
+1. Find the Event Handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the Event Handler was set up.
 
 ![](/img/test-console-eh-insert-instrument.png)
 
@@ -628,7 +629,7 @@ The url consists of:
 
 - the address or hostname of the server
 - if necessary, some extra routing; in this case **sm** uses a proxy to access the server
-- the name of the event handler
+- the name of the Event Handler
 
 
 Set the body to **JSON**. In the body, you need to insert the details of the fields for the new counterparty, as seen below:
