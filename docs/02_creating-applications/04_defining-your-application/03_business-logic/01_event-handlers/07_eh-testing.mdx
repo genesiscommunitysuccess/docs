@@ -57,7 +57,7 @@ Once you have set up your configuration, we can start writing tests against our 
 
 ### Writing tests
 
-Let's write some tests for this simple event handler defined below. If you are looking for Java event then ignore onValidate method for now
+Let's write some tests for this simple Event Handler, defined below. If you are looking for a Java event, then ignore the `onValidate` method for now
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -118,9 +118,9 @@ Let's write some tests for this simple event handler defined below. If you are l
 </TabItem>
 </Tabs>
 
-#### Simple test
+### Simple test
 
-The below is an example of a simple test.
+Below is an example of a simple test.
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
@@ -173,13 +173,13 @@ The below is an example of a simple test.
 </TabItem>
 </Tabs>
 
-We first create our `Event` object, setting the event details and specifying the intended event handler for the message "EVENT_TRADE_INSERT".
+We first create our `Event` object, setting the event details and specifying the intended Event Handler for the message "EVENT_TRADE_INSERT".
 
 We then send a message to our Event Handler using `messageClient.suspendRequest(message)`. The result is first verified to be an `EventAck` and then we check that the inserted trade can be retrieved from the database.
 
 Remember to add the `runBlocking` coroutine scope to the test, as the Genesis Platform uses Kotlin coroutines.
 
-#### Error response test
+### Error response test
 
 We may also want to test a negative case of when we expect to receive an error as a response.
 You need to modify the previous example Event Handler and add onValidate block:
@@ -258,9 +258,9 @@ In the example below, we expect the response to be of type `EventNack` which has
 </TabItem>
 </Tabs>
 
-#### Testing with authorisation
+### Testing with authorisation
 
-##### Set-up
+#### Set-up
 
 To test that the Event Handler authorisation works correctly, we need to do some setting up.
 
@@ -270,7 +270,7 @@ First, make sure that your authorisation set-up is designed to behave as follows
 
 Second, you need to modify the previous example Event Handler so that only authorised users can insert trades.
 
-For Java event example refer this document [Authorization API](/reference/developer/api/authorisation-api)
+You can find a [Java event example](/reference/developer/api/authorisation-api) in our Authorization API pages.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
