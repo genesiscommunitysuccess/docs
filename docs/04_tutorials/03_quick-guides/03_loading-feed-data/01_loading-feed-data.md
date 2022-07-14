@@ -34,8 +34,8 @@ The main steps in loading the data are:
 
 1.	Examine the format of the source data. You need to be able to map the data into a table in Genesis format. 
 2.	Define a Camel config (in the CFG module) to listen to a staging directory and push the file as a new event.
-3.	Create a new event handler to process the event and push the data to the data server.
-4.	Create some unit tests around the event handler to verify the load process. 
+3.	Create a new Event Handler to process the event and push the data to the data server.
+4.	Create some unit tests around the Event Handler to verify the load process. 
 
 
 ## Source data
@@ -82,7 +82,7 @@ camel {
 The code does three things:
 -	It looks for all files in the bbg folder and moves these to a subfolder called **.camel**.
 -	It sets an initial delay before checking the file (5 seconds). It locks the source files in case you are running the application on multiple servers.
--	It uses the Genesis class `FileEventHandlerProcessor` to create an event handler called `ISSUANCE_EVENT_HANDLER` and an event called `EVENT_FILE_IMPORT_BBG_ISSUANCE`. This class generates a single message containing the raw contents of file. (There is also a file process called `CSVEventHandlerProcessor`, which performs an initial parsing of the contents to generate messages of fields and data.)
+-	It uses the Genesis class `FileEventHandlerProcessor` to create an Event Handler called `ISSUANCE_EVENT_HANDLER` and an event called `EVENT_FILE_IMPORT_BBG_ISSUANCE`. This class generates a single message containing the raw contents of file. (There is also a file process called `CSVEventHandlerProcessor`, which performs an initial parsing of the contents to generate messages of fields and data.)
 
 The code includes parameters, such as **move**.  There is a [huge range of other parameters]( https://camel.apache.org/components/2.x/file-component.html#_query_parameters_87_parameters
 ) that can be used.
@@ -110,15 +110,15 @@ drwxrwxr-x. 3 briss briss 4096 Nov 11 14:10 ..
 [briss@dev-abc-briss1 bbg]$
 
 ```
-## Creating the event handler
+## Creating the Event Handler
 
 
-To handle the incoming content from Bloomberg, create an event handler called `ISSUANCE_EVENT_HANDLER`, and a newly created event type `EVENT_FILE_IMPORT_BBG_ISSUANCE`.  (By the way, there is nothing stopping you from having multiple processors generating the same event to be handled by a single event handler.)
+To handle the incoming content from Bloomberg, create an Event Handler called `ISSUANCE_EVENT_HANDLER`, and a newly created event type `EVENT_FILE_IMPORT_BBG_ISSUANCE`.  (By the way, there is nothing stopping you from having multiple processors generating the same event to be handled by a single Event Handler.)
 
-Bloomberg has a very specific file structure. It would be possible to perform all the initial parsing with a specialized process and generate processed fields and data. However, in our example we use a basic **FileEventHandlerProcessor**. The parsing and formatting of the data is performed by a BBG-specific event handler (event type `EVENT_FILE_IMPORT_BBG_ISSUANCE`).
+Bloomberg has a very specific file structure. It would be possible to perform all the initial parsing with a specialized process and generate processed fields and data. However, in our example we use a basic **FileEventHandlerProcessor**. The parsing and formatting of the data is performed by a BBG-specific Event Handler (event type `EVENT_FILE_IMPORT_BBG_ISSUANCE`).
 
 
-An event handler handles a specific single event. In this case, the event handler inherits from the **AbstractEventHandler** class.
+An Event Handler handles a specific single event. In this case, the Event Handler inherits from the **AbstractEventHandler** class.
 
 ```java
 @Module
@@ -127,7 +127,7 @@ public class BbgIssuanceFileImport extends AbstractEventHandler {
 ```
 
 
-In the event handler, there are two code blocks that you need to specify:
+In the Event Handler, there are two code blocks that you need to specify:
 
 - `onValidate`. This is where you validate the message before processing; return an **ACK** or **NAK**. If you do not want to add any validation, simply return an **ACK**.
 
@@ -155,7 +155,7 @@ public BbgIssuanceFileImport(final EventManager eventManager,
 ```
 
 :::note
-Annotations of @Module and @Inject are required for Genesis Dependency Injection and Inversion of Control patterns. The @Module will be loaded at runtime, and the dependencies are injected into the BbgInsuranceFileImport event handler. In this case, the dependencies are EventManager, and IssuanceDataRx3Repository, which is being used to insert the data into the **ISSUANCE_DATA** table.
+Annotations of @Module and @Inject are required for Genesis Dependency Injection and Inversion of Control patterns. The @Module will be loaded at runtime, and the dependencies are injected into the BbgInsuranceFileImport Event Handler. In this case, the dependencies are EventManager, and IssuanceDataRx3Repository, which is being used to insert the data into the **ISSUANCE_DATA** table.
 :::
 
 If you don’t want to perform any validation, then you can set up the **onValidate** block to ensure that the event manager returns an ACK in every case.  
@@ -250,7 +250,7 @@ for (GenesisSet row : Objects.requireNonNull(Objects.requireNonNull(details).get
 ```
 
 ## Testing
-It is wise to create some tests around the event handler. 
+It is wise to create some tests around the Event Handler. 
 
 ### Unit Tests
 
@@ -308,8 +308,8 @@ Once you have deployed the new build, if it does not work first time, here is a 
 
 -	On start-up, look at the **Logs** directory for errors in **ISSUANCE_CAMEL.log** and **ISSUANCE_EVENT_HANDLER.log**.
 -	Check that the Camel log has registered your route.
--	Check in the event handler log file that your new event has been registered.
--	Drop a test file into the staging directory and see the logs consume the file in the Camel log and log the contents with the event handler logs. In the BBG example below, the handler log shows the file contents and then an NACK error. In this example, we can see **^M** characters are causing parse failures on dates. Copying between email attachments and downloads, DOS and LINUX copies, we have introduced a EOLN issue on split-line file contents. 
+-	Check in the Event Handler log file that your new event has been registered.
+-	Drop a test file into the staging directory and see the logs consume the file in the Camel log and log the contents with the Event Handler logs. In the BBG example below, the handler log shows the file contents and then an NACK error. In this example, we can see **^M** characters are causing parse failures on dates. Copying between email attachments and downloads, DOS and LINUX copies, we have introduced a EOLN issue on split-line file contents. 
 
 ```bash
 |60.71| |N.S.|200000000.00|;2;3;3;13;200000.00;1; ;5;10/21/2021;13;150000.00;1; ;5;10/21/2021;13;100000.00;1; ;5;10/21/2021;|N.D.| |MIDSWAPS|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|^M
