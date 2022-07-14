@@ -1,0 +1,199 @@
+---
+title: 'Advanced R'
+sidebar_label: 'Advanced R'
+sidebar_position: 3
+id: r-advanced
+---
+
+
+## Genesis R integration cache
+Snapshotting Genesis data and then performing analysis on that data is one of the most common tasks performed with the R Integration. For large datasets or datasets snapshotted by a number of R scripts or developers, it is possible to configure Genesis database tables to be serialised into an R friendly cache.
+
+### Configuring tables to be cached
+This functionality is provided by a serialising microservice called`R_SERIALISER`, which is installed and enabled by default when the Genesis R Integration is installed. The `R_SERIALISER` looks for configuration files in the form `*-rtables.xml` in the usual Genesis framework location, and will pick up configuration for products and for the site. The configuration is based on that of the data dictionary. An example for the `TRADE` and `COMMISSION_AND_FEES` table would look like:
+
+```XML
+<dictionary xmlns:xi="http://www.w3.org/2001/XInclude">
+    <tables>
+        <table name="TRADE" renabled="true" />
+        <table name="COMMISSION_AND_FEES" renabled="true" />
+    </tables>
+</dictionary>
+```
+
+The cache files are located in the `$GENESIS_HOME/runtime/rtables` directory. If you need a higher level of performance, you can mount a faster block device (SSD, RAM disk, etc) or symlink one to this location.
+
+## R-based microservices
+Once an R script has been written, you might want to run the script as a Genesis microservice, which optionally exposes a request/reply resource to provide the results to other Genesis microservices, user interfaces or to be used within reports.
+
+The new R process should be added to your application's:
+
+- [service definition](/creating-applications/configure-runtime/service-definitions/) configuration file (**-service-definitions.xml**) like any other Genesis microservice. 
+- [processes configuration file](/creating-applications/configure-runtime/processes-xml/) (_application_**-processes.xml**) 
+
+Here is an example of a definition in **-processes.xml**:
+
+```XML
+<process name="MY_R_MICROSERVICE">
+    <start>true</start>
+    <options>-Drscript=rscript.R</options>
+    <module>r-java</module>
+    <primaryOnly>true</primaryOnly>
+    <package>global.genesis.newr</package>
+    <loggingLevel>TRACE,DATADUMP_OFF</loggingLevel>
+</process>
+```
+
+The R script to be run is passed to the process in the `<options>` tag as `-Drscript=<name_of_script>`.
+
+The R script can now be treated like any other Genesis microservice.
+
+All the features described in [Getting data with the Genesis R Integration](/creating-applications/defining-your-application/integrations/genesis_r/r-basics/#getting-data-with-the-genesis-r-integration) are available to an R Genesis microservice.  The following additional features are also available:
+
+## Pre-populated adapter
+When run as a Genesis R microservice, the R adapter is already initialised and available in the variable `genesisAdapter`, so adapter initialisation is not required. In addition, all R output, including from `print()`, is directed to the microservices log file.
+
+It is useful to write an R script so it can be run as a microservice as well as directly from the R interpreter. The following construct is useful for this:
+
+```R
+# If the script is being run as a Genesis microservice
+# then  the 'genesisAdapter' variable will already exists.
+if(!exists("genesisAdapter")) {
+    # If it doesn't exist create and configure it.
+    builder <- GenesisBuilder("TEST_RSERVER")
+    builder %>% SetLogLevel("TRACE")
+    genesisAdapter <- builder %>% Build()
+} else {
+    # Place any microservice specific configuration here; such as
+    # request/reply configuration.
+    
+    genesisAdapter %>% Start()
+}
+```
+
+### requestReply 
+When run as a Genesis R microservice, an R script can act as a `requestReply` in a Request Server. Below is an R-based example:
+
+```R
+library(genesisglobal)
+
+things <- function(maxRows, userName="", ...) {
+    return(list(...))
+}
+
+# If the script is being run as a Genesis microservice
+# then  the 'genesisAdapter' variable will already exist.
+if(!exists("genesisAdapter")) {
+    # If it doesn't exist create and configure it.
+    builder <- GenesisBuilder("TEST_RSERVER")
+    builder %>% SetLogLevel("TRACE")
+    genesisAdapter <- builder %>% Build()
+} else {
+    # Place any microservice specific configuration here; such as
+    # request/reply configuration.
+    metadata <- list(
+        FIELD1=character(1),
+        FIELD2=logical(1),
+        FIELD3=double(1))
+    genesisAdapter %>% AddRequest(
+        "things",
+        metadata,
+        metadata)
+        
+    genesisAdapter %>% Start()
+}
+```
+
+The key parts of this example are:
+ * `AddRequest("<function>", <request-metadata>, <response-metadata>)` -- where `<function>` is the name of a function that is called when a request is made. `<request-metadata>` and `<response-metadata>` are R lists that contain field-value pairs defining the metadata for request and replies. As these are R lists, it is possible for either to be specified from an example call to the `<function>`.
+ * The `<function>` must be able to accept named arguments `maxRows` and `userName` that will always be passed. It will also be passed named arguments for each piece of metadata in the `<request-metadata>`.
+ * The `requestReply` resource made available in the Request Server will be the name of the function, in all capitals and converted from camel-case to underscores. For example; `things` in the example would be exposed as a resource `THINGS` and `myAmazingFunction` would be exposed as `MY_AMAZING_FUNCTION`.
+
+### requestReply pivots
+The Genesis R integration provides help in building R-based `requestReply` codeblocks that enable users to drive how data is summarised.
+
+Pivoting is expected to work on a drill-down basis. The level of the drill-down can be specified. Typically, the requestor will specify the fields to group by, the fields to filter the drill-down by, and the level within the drill-down tree; the response would contain the summary for that level.
+
+Below is a simple example:
+
+```R
+library(genesisglobal)
+library(dplyr)
+
+PivotPositions <- function(userName="",
+                           GROUP_BY="COUNTERPARTY_ID",
+                           SORT_BY="desc(ABS_REALISED_PNL)", ...) {
+  
+  #
+  # 1. Retrieve data
+  #
+  tradeSnapshotter <- genesisAdapter %>% GenesisSnapshot("TRADE", "t")
+  res <- tradeSnapshoter %>% Snapshot()
+
+  #
+  # 2. Manipulate data and perform any presummarisation calculations
+  #
+  positions <- t %>%
+    mutate(NET_QUANTITY=if_else(SIDE=="B", QUANTITY, -QUANTITY)) %>%
+    mutate(NET_VALUE=if_else(SIDE=="B", PRICE*QUANTITY, -PRICE*QUANTITY)) %>% arrange(TRADE_DATETIME)
+
+  # 3. Summarise the data  
+  return(
+    Pivot(
+      positions,
+      groupSummarise = partial(
+        summarise,
+        NET_QUANTITY=sum(NET_QUANTITY),
+        REALISED_PNL=sum(NET_VALUE),
+        ABS_REALISED_PNL=abs(REALISED_PNL),
+        TRADES=n(),
+        .first = FALSE
+      ),
+      totalSummarise = partial(
+        summarise,
+        NET_QUANTITY=sum(NET_QUANTITY),
+        REALISED_PNL=sum(REALISED_PNL),
+        ABS_REALISED_PNL=sum(ABS_REALISED_PNL),
+        TRADES=sum(TRADES),
+        .first = FALSE
+      ),
+      SORT_BY,
+      GROUP_BY,
+      ...
+    )
+  )
+}
+
+genesisAdapter %>% AddPivot(
+    "PivotPositions",
+    list(
+      COUNTERPARTY_ID=character(1),
+      INSTRUMENT_ID=character(1),
+      SIDE=character(1)
+    ),
+    PivotPositions())
+```
+
+A pivot `requestReply` is typically split into 3 stages: 
+
+- **Data Retrieval**. Data can be sourced from any R source, including Genesis via the tools described earlier in this document.
+- **Presummarisation manipulation**. Before you summarise the data, it is likely that you will need to perform some calculations. The example above creates positive/negative values based on the side of the trade. These can then be used by the summarisation functions.
+- **Pivoting**. There are two specific helper functions for pivoting. These are described below.
+
+The helper functions are:
+
+ * `Pivot(data, groupSummarise, totalSummarise, SORT_BY, GROUP_BY, maxRows, LEVEL=1, ...)` where:
+   + `data` -- is a `data.frame` of data to be summarised.
+   + `groupSummarise` -- is a function that summarises `data` into groups. `partial` from the `purrr` library is exported from the R package and is useful (and used in the example above) in creating `summarise` (from `dplyr`) based summary functions.
+   + `totalSummarise` -- is a function that summarises the groups formed by `groupSummarise` into _Total_ and _Rest_ rows in the resulting data.
+   + `SORT_BY` -- specifies the sort order of the fields. This is usually passed through from the request message. The value of this is passed to `dplyr`'s `arrange` function.
+   + `GROUP_BY` -- a comma-separated list of fields in `data` that defines the grouping. This is usually passed through from the request message. 
+   + `maxRows` -- the number of groups to return. The pivot in fact returns up to 2 more than specified to include the _Total_ and _Rest_ rows. This is usually passed through from the request message. 
+   + `LEVEL` -- the current level being requested. This is usually passed through from the request message.
+   + `...` -- the remaining fields are used to filter the drill-down, and should correspond to the fields passed to `GROUP_BY`.
+ * `adapter %>% AddPivot("<function>", requestMetadata, responseMetadata)` -- where 
+   + `<function>` is the name of a function that is called when a request is made. 
+   + `<request-metadata>` and `<response-metadata>` are R lists that contain field-value pairs defining the metadata for requests and replies. As these are R lists, it is possible for either to be specified from an example call to the `<function>`. This is an extension of the `AddRequest()` function described in [requestReply](/creating-applications/defining-your-application/integrations/genesis_r/r-advanced/#requestreply). In addition to adding the pivot request, it also:
+     + adds required pivoting fields (`GROUP_BY`, `SORT_BY`, `LEVEL`) to the request metadata.
+     + adds an additional requestReply function (with `Fields` appended to the `<function>` name and `_FIELDS` appended to the request), which provide the names of the fields that can be pivoted by.
+

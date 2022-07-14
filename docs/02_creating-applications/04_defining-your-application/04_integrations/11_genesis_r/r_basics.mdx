@@ -52,9 +52,9 @@ Snapshotting Genesis data and then performing analysis on that data is one of th
 
 The cache will be invisible to the script and the snapshotting pipeline will take advantage of the cache, if available.
 
-Configuring the cache is covered later in this document, but you should certainly consder the following when you write R scripts that take advantage of the cache:
+Configuring the cache is covered later in this document, but you should certainly consider the following when you write R scripts that take advantage of the cache:
 
- * Avoid using `AddFilter()` in your snapshot pipeline unless the peformance improvement of the filter outweighs the performance improvement of the cache (which is possible) -  as the cache will not be used.
+ * Avoid using `AddFilter()` in your snapshot pipeline unless the performance improvement of the filter outweighs the performance improvement of the cache (which is possible) -  as the cache will not be used.
  * Consider using the snapshotting pipeline over the subscription pipeline to take advantage of the cache.
  * The `Snapshot()` command supports `from=` and `to=` parameters to limit the rows returned. This only works when using the cache and the cache is always sorted by the table's primary key.
 

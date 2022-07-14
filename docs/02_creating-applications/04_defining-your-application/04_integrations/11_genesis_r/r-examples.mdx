@@ -1,0 +1,143 @@
+---
+title: 'R examples'
+sidebar_label: 'R examples'
+sidebar_position: 5
+id: r-examples
+---
+
+
+
+
+## The simplest subscription pipeline
+
+```R
+res <- genesisAdapter %>% GenesisSubscriber("TABLE_NAME", "tn") %>% Subscribe()
+```
+
+The `res` variable is a `logical` that will be `TRUE` if the subscription was successful, and either `FALSE` or `NA` if it was not. `"TABLE_NAME"` specifies the name of the table and `"tn"` specifies the name of the `data.frame` that contains the results of the subscription. A `data.frame` called `"tn_update"` is available, containing just the updated rows. If `res` is `TRUE` then this `data.frame` is available for immediate use like any other `data.frame`.
+
+If `res` is `FALSE` or `NA`, then the cause of the error can be retrieved with:
+
+```R
+> genesisAdapter %>% GetLastError()
+```
+
+## R-script: pre-populated Adapter
+It is useful to write an R script so it can be run as a microservice as well as from the R interpreter directly. The following construct is useful for this:
+
+```R
+# If the script is being run as a Genesis microservice
+# then  the 'genesisAdapter' variable will already exists.
+if(!exists("genesisAdapter")) {
+    # If it doesn't exist create and configure it.
+    builder <- GenesisBuilder("TEST_RSERVER")
+    builder %>% SetLogLevel("TRACE")
+    genesisAdapter <- builder %>% Build()
+} else {
+    # Place any microservice specific configuration here; such as
+    # request/reply configuration.
+    
+    genesisAdapter %>% Start()
+}
+```
+
+When run as a Genesis R microservice, an R script can act as a `requestReply` in a Request Server. Below is an R-based example:
+
+```R
+library(genesisglobal)
+
+things <- function(maxRows, userName="", ...) {
+    return(list(...))
+}
+
+# If the script is being run as a Genesis microservice
+# then  the 'genesisAdapter' variable will already exist.
+if(!exists("genesisAdapter")) {
+    # If it doesn't exist create and configure it.
+    builder <- GenesisBuilder("TEST_RSERVER")
+    builder %>% SetLogLevel("TRACE")
+    genesisAdapter <- builder %>% Build()
+} else {
+    # Place any microservice specific configuration here; such as
+    # request/reply configuration.
+    metadata <- list(
+        FIELD1=character(1),
+        FIELD2=logical(1),
+        FIELD3=double(1))
+    genesisAdapter %>% AddRequest(
+        "things",
+        metadata,
+        metadata)
+        
+    genesisAdapter %>% Start()
+}
+```
+
+### requestReply pivots
+The Genesis R integration provides help in building R-based `requestReply` codeblocks that enable users to drive how data is summarised.
+
+A pivot `requestReply` is typically split into 3 stages: 
+
+- **Data Retrieval**
+- **Presummarisation manipulation**
+- **Pivoting**
+
+Pivoting works on a drill-down basis. The level of the drill-down can be specified. Below is a simple example:
+
+```R
+library(genesisglobal)
+library(dplyr)
+
+PivotPositions <- function(userName="",
+                           GROUP_BY="COUNTERPARTY_ID",
+                           SORT_BY="desc(ABS_REALISED_PNL)", ...) {
+  
+  #
+  # 1. Retrieve data
+  #
+  tradeSnapshotter <- genesisAdapter %>% GenesisSnapshot("TRADE", "t")
+  res <- tradeSnapshoter %>% Snapshot()
+
+  #
+  # 2. Manipulate data and perform any presummarisation calculations
+  #
+  positions <- t %>%
+    mutate(NET_QUANTITY=if_else(SIDE=="B", QUANTITY, -QUANTITY)) %>%
+    mutate(NET_VALUE=if_else(SIDE=="B", PRICE*QUANTITY, -PRICE*QUANTITY)) %>% arrange(TRADE_DATETIME)
+
+  # 3. Summarise the data  
+  return(
+    Pivot(
+      positions,
+      groupSummarise = partial(
+        summarise,
+        NET_QUANTITY=sum(NET_QUANTITY),
+        REALISED_PNL=sum(NET_VALUE),
+        ABS_REALISED_PNL=abs(REALISED_PNL),
+        TRADES=n(),
+        .first = FALSE
+      ),
+      totalSummarise = partial(
+        summarise,
+        NET_QUANTITY=sum(NET_QUANTITY),
+        REALISED_PNL=sum(REALISED_PNL),
+        ABS_REALISED_PNL=sum(ABS_REALISED_PNL),
+        TRADES=sum(TRADES),
+        .first = FALSE
+      ),
+      SORT_BY,
+      GROUP_BY,
+      ...
+    )
+  )
+}
+
+genesisAdapter %>% AddPivot(
+    "PivotPositions",
+    list(
+      COUNTERPARTY_ID=character(1),
+      INSTRUMENT_ID=character(1),
+      SIDE=character(1)
+    ),
+    PivotPositions())
+```
