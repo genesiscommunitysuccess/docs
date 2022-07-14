@@ -77,7 +77,7 @@ You must generate the code for this change (which also makes it available to Int
 
 ## Configure dynamic permissions
 
-You can now configure dynamic permissions for trades in our IDE. You need to make these changes to the code for the request server, data server and event handler.
+You can now configure dynamic permissions for trades in our IDE. You need to make these changes to the code for the request server, data server and Event Handler.
 For example, here we add permissioning to a query in the data server:
 
 ```kotlin
@@ -110,7 +110,7 @@ requestReplies {
 }
 ```
 
-Event handlers are slightly different, because the input data class can be customised. The code would look like this (taking the TRADE_INSERT event handler as an example):
+Event handlers are slightly different, because the input data class can be customised. The code would look like this (taking the TRADE_INSERT Event Handler as an example):
 
 ```kotlin
   eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -224,7 +224,7 @@ fun `test trade insert without permission`(): Unit = runBlocking {
 
 Now you need to look at RIGHT_SUMMARY permission codes.
 
-Permission codes enable you to establish a yes/no type access to resources (request servers, dataserver, event handler). These do not act dynamically and they won’t filter rows based on fine-grain criteria (in the way that dynamic permissions would).
+Permission codes enable you to establish a yes/no type access to resources (request servers, dataserver, Event Handler). These do not act dynamically and they won’t filter rows based on fine-grain criteria (in the way that dynamic permissions would).
 
 For the purpose of this script, we can keep things simple. In reality, you would use a GUI to create new rights, create new profiles and assign users to profiles. This would give rights to each user.
 
@@ -235,7 +235,7 @@ In our example Positions app, we can set two types of right:
 * TRADER (enables the trader to read and write trades - but only for their own related counterparties)
 * SUPPORT (enables support to have read-only access to everything)
 
-In terms of definitions, you can add the codes as part of the permissions block in the relevant event handler. For example, for the TRADE_INSERT event handler you could have:
+In terms of definitions, you can add the codes as part of the permissions block in the relevant Event Handler. For example, for the TRADE_INSERT Event Handler you could have:
 
 ```kotlin
   eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -261,7 +261,7 @@ In terms of definitions, you can add the codes as part of the permissions block 
   }
 ```
 
-This means only users with the TRADER permission code will be able to use that event handler. 
+This means only users with the TRADER permission code will be able to use that Event Handler. 
 
 You can add similar code to the request servers and data servers, as below. In these examples, you also add the SUPPORT code to give SUPPORT users read-only access to trades.
 
@@ -301,7 +301,7 @@ dataServer {
 
 The permission mechanism is driven by the RIGHT_SUMMARY table, which contains an association between a user and a right-code.
 
-Now you need to write unit tests for this. As an example, test the event handler.
+Now you need to write unit tests for this. As an example, test the Event Handler.
 
 1. Modify the setup function. We are adding another entry to the ENTITY_VISIBILITY auth cache map for user JamieDoe. Also we are adding all of our users to the RIGHT_SUMMARY table.
 
@@ -362,4 +362,4 @@ fun `test trade insert due to incorrect permission code`(): Unit = runBlocking {
 }
 ```
 
-User JamieDoe has the correct entry in the ENTITY_VISIBILITY auth cache map for Counterparty with ID = 1. But JamieDoe's RIGHT_CODE is SUPPORT, so he is not authorised to enter a trade. Only users whose RIGHT_CODE is TRADER can use this event handler.
+User JamieDoe has the correct entry in the ENTITY_VISIBILITY auth cache map for Counterparty with ID = 1. But JamieDoe's RIGHT_CODE is SUPPORT, so he is not authorised to enter a trade. Only users whose RIGHT_CODE is TRADER can use this Event Handler.

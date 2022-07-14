@@ -22,7 +22,7 @@ After you have checked the files generated and addressed any issues in the field
 
 This creates an application called **Cash** with:
 
-* the kts files for the  [event handler](/tutorials/excel-to-genesis/Files/excel-tut-5/), [request server](/tutorials/excel-to-genesis/Files/excel-tut-6/) and [data server](/tutorials/excel-to-genesis/Files/excel-tut-7/)
+* the kts files for the  [Event Handler](/tutorials/excel-to-genesis/Files/excel-tut-5/), [request server](/tutorials/excel-to-genesis/Files/excel-tut-6/) and [data server](/tutorials/excel-to-genesis/Files/excel-tut-7/)
 * the [service definitions](/tutorials/excel-to-genesis/Files/excel-tut-10/)
 * the [process definitions](/tutorials/excel-to-genesis/Files/excel-tut-9/)
 
@@ -30,6 +30,6 @@ This creates an application called **Cash** with:
 
 Run `genesisInstall` again to install these changes.
 
-You now have a basic server that you can access from a web front-end. The event handler, the request server and the dataserver only provide the simplest functions, but the data is exposed so that a front end can be created and connected. The event handler, for example, provides very simple insert, modify and delete events.
+You now have a basic server that you can access from a web front-end. The Event Handler, the request server and the dataserver only provide the simplest functions, but the data is exposed so that a front end can be created and connected. The Event Handler, for example, provides very simple insert, modify and delete events.
 
 Of course, this is really just a beginning - you can go into the code and introduce all kinds of sophistication.

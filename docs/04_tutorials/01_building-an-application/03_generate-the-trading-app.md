@@ -132,7 +132,7 @@ This gives you the following structure:
 
 Move the files that have been generated so far from the **trading_app/cfg** folder to **trading_app-config/src/main/resources/cfg**.
 
-Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the **trading_app-script-config/src/main/resources/scripts** folder.
+Move the files from the **trading_app/scripts** folder (Request Server, Data Server and Event Handler) to the **trading_app-script-config/src/main/resources/scripts** folder.
 
 ### Install the Maven project
 
@@ -142,7 +142,7 @@ Again, you need to move the script and config files. Have these to hand, so you 
 
 1. Move the files that have been generated so far from the **trading_app/cfg** folder to **trading_app-config/src/main/resources/cfg**.
 
-2. Move the files from the **trading_app/scripts** folder (request server, data server and event handler) to the **trading_app-script-config/src/main/resources/scripts** folder.
+2. Move the files from the **trading_app/scripts** folder (Request Server, Data Server and Event Handler) to the **trading_app-script-config/src/main/resources/scripts** folder.
 
 ### Install the Maven project in Intellij
 

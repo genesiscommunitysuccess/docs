@@ -194,7 +194,7 @@ To complete the configuration of the consolidator, add a new entry to **trading_
 ```
 ### Update the service-definitions.xml file
 
-This file lists all the active services for the Positions application. You can see entries have been added automatically when the data server, request server and event handler were generated (by AppGen).
+This file lists all the active services for the Positions application. You can see entries have been added automatically when the data server, request server and Event Handler were generated (by AppGen).
 
 Add a new entry to **trading_app-service-definitions.xml** with the consolidator2 details.
 

@@ -35,10 +35,10 @@ Now you are ready to begin setting up your dynamic rule.
 
 To set up the dynamic rule, go to the DYNAMIC_RULE table and insert a row. Run `SendIt -t DYNAMIC_RULE”`
 
-## 2. Update the event handler
+## 2. Update the Event Handler
 
-The rule needs to call an event handler, which will be called `<PositionCancel>`.
-We have defined the event handler in the code block below. Open the file **trading_app-eventhandler.kts** and insert the code block:
+The rule needs to call an Event Handler, which will be called `<PositionCancel>`.
+We have defined the Event Handler in the code block below. Open the file **trading_app-eventhandler.kts** and insert the code block:
 
 ```java
 eventHandler<PositionCancel> {
@@ -63,9 +63,9 @@ eventHandler<PositionCancel> {
 }
 ```
 
-## 3. Set up the event handler message class
+## 3. Set up the Event Handler message class
 
-To define the event handler message class, insert the following code:
+To define the Event Handler message class, insert the following code:
 
 ```java
 package global.genesis.trading_app.message.event

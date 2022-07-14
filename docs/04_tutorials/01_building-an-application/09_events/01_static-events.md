@@ -68,11 +68,11 @@ When the eveluator is running, create a PostionReport class to trigger the new e
 class PositionReport()
 ```
 
-## 3. Create an event handler
+## 3. Create an Event Handler
 
-Create an event handler that will write the csv files to the runtime/position-daily-report folder. Call it EVENT_POSITION_REPORT.
+Create an Event Handler that will write the csv files to the runtime/position-daily-report folder. Call it EVENT_POSITION_REPORT.
 
-Open the file trading_app-eventhandler.kts. Add an event handler to generate the csv file:
+Open the file trading_app-eventhandler.kts. Add an Event Handler to generate the csv file:
 
 ```java
 import global.genesis.commons.standards.GenesisPaths
@@ -108,7 +108,7 @@ eventHandler {
 
 
 
-## 4. Update the process.xml file for the event handler
+## 4. Update the process.xml file for the Event Handler
 
 Update the **processes.xml** file for the Positions application and change the tag for TRADING_APP_EVENT_HANDLER:
 ```xml

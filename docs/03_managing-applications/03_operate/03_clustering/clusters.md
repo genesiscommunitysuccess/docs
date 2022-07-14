@@ -99,7 +99,7 @@ In summary, the Load Balancer has handled the automatic switching to the seconda
 ## Capacity planning
 You can see CPU and memory usage across an application using the mon command. This gives you a guide to future scaling, either horizontally (extra nodes) or vertically (essentially, you can double the CPU to 8 core and the RAM to 32GB). You can install a larger disc to suit requirements.
 
-You can customise our metrics to output information such as the number of transactions per event handler, for example. You can then choose how to store and report on the data points.
+You can customise our metrics to output information such as the number of transactions per Event Handler, for example. You can then choose how to store and report on the data points.
 
 Additionally, the Genesis low-code platform is compatible with all major monitoring and planning tools for the Linux environment, such as [Nagios](https://nagios.com), [ITRS Geneos](https://www.itrsgroup.com/products/capacity-planner) or [Prometheus](https://prometheus.io/blog/2019/10/10/remote-read-meets-streaming/#summary). 
 
