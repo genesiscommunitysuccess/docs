@@ -10,7 +10,7 @@ In this section, we look at components that you can configure in order translate
 
 [Event handlers](/creating-applications/defining-your-application/business-logic/event-handlers/) enable you to configure events that react to change and trigger further action.
 
-[State machines](/creating-applications/defining-your-application/business-logic/state-machines/define/) are particular types of event handler designed to handle the transition of an item from one state to another.
+[State machines](/creating-applications/defining-your-application/business-logic/state-machines/define/) are particular types of Event Handler designed to handle the transition of an item from one state to another.
 
 [Consolidators](/creating-applications/defining-your-application/business-logic/consolidators/consolidators/) enable you to aggregate data and perform calculations on items of data within the database.
 

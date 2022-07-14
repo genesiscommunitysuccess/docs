@@ -474,7 +474,7 @@ However, note that an `onValidation` codeblock is mandatory when using custom re
 </TabItem>
 </Tabs>
 
-Kotlin’s `require` method throws an exception with a message if the boolean expression is not what is expected, and the event handler automatically converts that exception into a corresponding `EventNack`.
+Kotlin’s `require` method throws an exception with a message if the boolean expression is not what is expected, and the Event Handler automatically converts that exception into a corresponding `EventNack`.
 
 ### Context Event Handlers
 In order to optimise database look-up operations, you might want to use data obtained by the `onValidate` block inside your `onCommit` block. To do this, 
