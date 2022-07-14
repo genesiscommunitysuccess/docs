@@ -517,6 +517,20 @@ or from the dropdown menu:
 
 ![](/img/install-auth.png)
 
+<!-- Adjusting WSL we could remove this-->
+### Deploying the site-specific
+As our application will override the standard definitions using the site-specific folder, we have to run this task.
+
+Usage:
+```shell
+./gradlew :jvm:alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip #On the IntelliJ terminal
+```
+or from the dropdown menu:
+
+![](/img/install-site-specific.png)
+
+<!-- END Adjusting WSL we could remove this-->
+
 ### Deploying the alpha product
 
 Now we have to deploy our application, the alpha product.

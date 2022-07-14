@@ -77,12 +77,12 @@ You are going to update these files so that the application displays a single pa
 
 ### Grid
 
-We want to be able to insert a grid with data into our page. For this, open the file **home.template.ts** and define `tutorialColumnDefs`.
+We want to be able to insert a grid with data into our page. For this, open the file **home.template.ts** and define `tradeColumnDefs`.
 
-First, define `tutorialColumnDefs` after the `import` block using the snippet below:
+First, define `tradeColumnDefs` after the `import` block using the snippet below:
 
 ```ts
-export const tutorialColumnDefs: ColDef[] = [
+export const tradeColumnDefs: ColDef[] = [
   {field: 'TRADE_ID', headerName: 'TRADE_ID'},
   {field: 'SYMBOL', headerName: 'SYMBOL'},
   {field: 'QUANTITY', headerName: 'QUANTITY'},
@@ -95,16 +95,21 @@ Next, create a zero-ag-grid in `HomeTemplate const`.
 
 ```ts
 export const HomeTemplate = html<Home>`
-<zero-card class="trade-card">
-    <zero-ag-grid ${ref('tradesGrid')} rowHeight="45" only-template-col-defs>
-    ${when(x => x.connection.isConnected, html`
-      <ag-genesis-datasource resourceName="ALL_TRADES"></ag-genesis-datasource>
-      ${repeat(() => tutorialColumnDefs, html`
-        <ag-grid-column :definition="${x => x}" />
-      `)}
-    `)}
-    </zero-ag-grid>
-</zero-card>
+<div class="split-layout">
+    <div class="top-layout">
+        <zero-card class="trade-card">
+            <span class="card-title">Trades</span>
+            <zero-ag-grid ${ref('tradesGrid')} rowHeight="45" only-template-col-defs>
+                ${when(x => x.connection.isConnected, html`
+                  <ag-genesis-datasource resourceName="ALL_TRADES"></ag-genesis-datasource>
+                  ${repeat(() => tradeColumnDefs, html`
+                    <ag-grid-column :definition="${x => x}" />
+                  `)}
+                `)}
+            </zero-ag-grid>
+        </zero-card>
+    </div>
+</div>
 `;
 ```
 
@@ -149,6 +154,22 @@ span:first-of-type, zero-button {
   margin-top: 10px;
 }
 
+.add-trade-card .content {
+  margin: calc(var(--design-unit) * 3px);
+}
+
+.card-title {
+  padding: calc(var(--design-unit) * 3px);
+  background-color: #22272a;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.counter-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .split-layout {
     display: flex;
     flex-direction: column;
@@ -160,44 +181,17 @@ span:first-of-type, zero-button {
     margin: 0 calc(var(--design-unit) * 3px);
 }
 
+.top-layout {
+  height: 90%;
+  display: flex;
+  flex-direction: row;
+}
+
 .top-layout zero-card {
     margin: calc(var(--design-unit) * 3px);
     height: 100%;
 }
-
-positions-ag-grid {
-    width: 100%;
-    height: 100%;
-}
-
-.top-layout {
-    height: 90%;
-    display: flex;
-    flex-direction: row;
-}
-
-.positions-card {
-    flex: 1;
-    margin: calc(var(--design-unit) * 3px);
-}
-
-.add-trade-card .content {
-    margin: calc(var(--design-unit) * 3px);
-}
-
-.card-title {
-    padding: calc(var(--design-unit) * 3px);
-    background-color: #22272a;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.counter-container {
-    display: flex;
-    flex-direction: column;
-}
 ```
-
 
 
 ### Form
@@ -214,24 +208,45 @@ In the file **home.ts**, add the following properties to the class: `Home`:
 @observable public tradeSide: string = 'BUY';
 ```
 
-Now go to the file **home.template.ts**. Add the following code after `zero-ag-grid`.
+Now go to the file **home.template.ts** and define `TradeModalTemplate` after `tradeColumnDefs` and before `HomeTemplate`.
 
 ```ts
-<span>Add Trade</span>
-<zero-text-field type="number" :value=${sync(x=> x.quantity)}>
-  <span>Quantity</span>
-</zero-text-field>
-<zero-text-field type="number" :value=${sync(x=> x.price)}>
-  <span>Price</span>
-</zero-text-field>
-<zero-text-field type="text" :value=${sync(x=> x.tradeSymbol)}>
-  <span>Symbol</span>
-</zero-text-field>
-<span>Side</span>
-<zero-select @change=${((x, c)=> x.tradeSideChange(c.event.target as Select))}>
-  <zero-option value='BUY'>BUY</zero-option>
-  <zero-option value='SELL'>SELL</zero-option>
-</zero-select>
+export const TradeModalTemplate = html<Home>`
+<zero-card>
+    <span>&nbsp;</span>
+    <div class="content">
+        <zero-text-field type="number" :value=${sync(x=> x.quantity)}>
+          <span>Quantity</span>
+        </zero-text-field>
+        <zero-text-field type="number" :value=${sync(x=> x.price)}>
+          <span>Price</span>
+        </zero-text-field>
+        <zero-text-field type="text" :value=${sync(x=> x.tradeSymbol)}>
+          <span>Symbol</span>
+        </zero-text-field>
+    </div>
+    <div class="content">
+        <zero-select title="Side" @change=${((x, c)=> x.tradeSideChange(c.event.target as Select))}>
+            <zero-option value='BUY'>BUY</zero-option>
+            <zero-option value='SELL'>SELL</zero-option>
+        </zero-select>
+    </div>
+</zero-card>
+`;
+```
+
+Still in the file **home.template.ts** add `TradeModalTemplate` variable in `HomeTemplate` before the last *div*:
+
+```ts
+export const HomeTemplate = html<Home>`
+<div class="split-layout">
+    <div class="top-layout">
+    ...
+    </div>
+    <div class="top-layout">
+      ${TradeModalTemplate}
+    </div>
+</div>
 ```
 
 To handle the value in `zero-select`, create a function in the file **home.ts**.
@@ -242,27 +257,21 @@ public tradeSideChange(target: Select) {
 }
 ```
 
-In the file **home.styles.ts**, add [styles](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/customisation/app-specific/#styles) to see your changes:
-
-```css
-zero-text-field, zero-select {
-  width: 250px;
-}
-
-span:first-of-type, zero-button {
-  margin-top: 10px;
-}
-```
-
-
-
 ### Button
 Now add a button.  The purpose of this is to insert the data from the form into the database (and the grid).
 
-In the file **home.template.ts**, add the following code after `zero-select`.
+In the file **home.template.ts** `TradeModalTemplate` add the following code after the last *div*.
 
 ```ts
-<zero-button @click=${x=> x.insertTradeData()}>Add Trade</zero-button>
+export const TradeModalTemplate = html<Home>`
+<zero-card>
+  ...
+  <div class="content">
+    ...
+  </div>
+  <zero-button @click=${x=> x.insertTradeData()}>Add Trade</zero-button>
+</zero-card>
+`;
 ```
 
 In the file **home.ts**, create a function to handle the connection to the server.
@@ -294,14 +303,23 @@ public async insertTradeData() {
 }
 ```
 
-To check that the new trade was added successfully, go to the file **home.template.ts**; add the following code before the `Add trade` span:
+To check that the new trade was added successfully, go to the file **home.template.ts** `TradeModalTemplate`, add the following code after the *zero-button*:
 
 ```ts
-${when(x => x.serverResponse, html`
-<span>${x=> x.serverResponse.MESSAGE_TYPE == 'EVENT_ACK' ? 
-  'Successfully added trade' : 'Something went wrong'}
-</span>
-`)}
+export const TradeModalTemplate = html<Home>`
+<zero-card>
+  ...
+  <div class="content">
+    ...
+  </div>
+  <zero-button @click=${x=> x.insertTradeData()}>Add Trade</zero-button>
+  ${when(x => x.serverResponse, html`
+  <span>${x=> x.serverResponse.MESSAGE_TYPE == 'EVENT_ACK' ? 
+    'Successfully added trade' : 'Something went wrong'}
+  </span>
+  `)}
+</zero-card>
+`;
 ```
 
 At this point, the application is now able to display and receive data.
@@ -337,6 +355,20 @@ Great things come from great people.
 We want to build a real-time positions application, where trades can be entered, and will be aggregated to maintain positions.
 
 ![](/img/day2-training-extended-datamodel.png)
+
+In the file **home.styles.ts**, add
+
+```kotlin
+positions-ag-grid {
+    width: 100%;
+    height: 100%;
+}
+
+.positions-card {
+    flex: 1;
+    margin: calc(var(--design-unit) * 3px);
+}
+```
 
 ### Try yourself
 
