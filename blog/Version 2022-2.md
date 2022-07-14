@@ -113,10 +113,13 @@ As part of the upgrade, these Event Handlers now support validation operations.
 | EVENT_ENABLE_MFA_FOR_USER | MFA_ENABLE, `<SELF>` | USER_VISIBILITY |
 | VALIDATE_JWT | No permission code | |
 
-> **WARNING**
-> The new GPAL Event Handlers are transactional, as long as the underlying DB layer supports it. **If it does not, there is no central locking mechanism to prevent concurrent transactions.**
->
-> If you are using Aerospike, exercise caution. We expect to implement a locking mechanism in a later release. Further in the future, AUTH will be extracted to a separate installation, which will be locked to Postgres.
+:::caution
+
+ The new GPAL Event Handlers are transactional, as long as the underlying DB layer supports it. **If it does not, there is no central locking mechanism to prevent concurrent transactions.**
+
+ If you are using Aerospike, exercise caution. We expect to implement a locking mechanism in a later release. Further in the future, AUTH will be extracted to a separate installation, which will be locked to Postgres.
+
+:::
 
 ### FIX
 
