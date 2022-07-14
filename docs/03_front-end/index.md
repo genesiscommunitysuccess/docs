@@ -1,8 +1,8 @@
 ---
-title: 'Become An Expert'
-sidebar_label: 'Introduction'
+title: 'Front End'
+sidebar_label: 'Front End'
 sidebar_position: 1
-id: introduction
+id: front-end
 ---
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry.

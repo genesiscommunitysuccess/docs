@@ -6,18 +6,6 @@ id: create-a-user-interface
 
 Now let's create a single page with a grid and a form for entering data.
 
-Before you start, check if you have set a valid API_HOST in **client/web/package.json**.
-
-The syntax for the API_HOST is:
-- protocol (followed by a colon delimiter)
-- secure websocketshost (followed by a colon delimiter)
-- port (443 is the port assigned for secure HTTP traffic)
-- /gwf/ (this is the standard path for Genesis platform)
-
-for example: ws://localhost:443/gwf/
-
-
-
 For your user interface, the `genx` process has generated the following files:
 
 - **home.template.ts**
