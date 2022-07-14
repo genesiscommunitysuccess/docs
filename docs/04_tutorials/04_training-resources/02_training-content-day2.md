@@ -376,21 +376,28 @@ Let's extend the Data model and create a CRUD, adding the tables **counterparty*
 
 ![](/img/day2_new-tables.png)
 
-:::tip
-Fields are kept separately from tables, so that they, and their meta-data, can be re-used across multiple tables and show linkage.​
+:::note
+Fields are defined separately from tables, so that they, and their meta-data, can be re-used across multiple tables and show linkage.​
 :::
 
 As a reminder, these are the steps needed to complete this task:
-- Edit fields and tables to our tables and *​fields-dictionary.kts* files. When you finish, remember to ​run *genesis-generated-fields* AND​ *genesis-generated-dao​*
-- Add data server queries to *dataserver.kts* file
+- Edit alpha-fields-dictionary.kts first and don't forget to run *generateFields* gradle task when you finish this
+- Then edit alpha-tables-dictionary.kts to add the new tables and their respective fields you created in the previous step. When you finish, remember to ​run *genesis-generated-dao​*
+- Add dataserver queries pointing to the new tables in the alpha-dataserver.kts file
 - Create CRUD events, using event handlers for ​both entities​. When you finish, remember to ​run *deploy*​
-- Build, deploy and test. Test it with Postman or Console, inserting a new counterparty and instrument. Then use them to insert a new Trade as well.​
+- Build, deploy and test. Test it with Postman or Console (see more details in the next section), inserting a new counterparty and instrument. Then use them to insert a new Trade as well.​
 
-#### A test alternative to Genesis Console
+### API testing with auto-generated REST endpoints
 
 As an alternative to Genesis Console, take this opportunity to test your work with an HTTP client such as Postman or Insomnia.
 - [Postman](https://www.postman.com/downloads/)
 - [Insomnia](https://insomnia.rest/download)
+
+:::tip REST endpoints
+When we test our resources using an HTTP client as described here, we're taking advantage of the [REST endpoints](/creating-applications/defining-your-application/integrations/rest-endpoints/) provided by the Genesis Platform. It automatically exposes all configured resources, such as dataserver queries and event handlers, as HTTP endpoints via the GENESIS_ROUTER service. This also enables you to do some API testing automation for all your backend components.
+
+Without any additional code.
+:::
 
 ##### Logging on 
 Whichever client you are using, you need to log in before you can send test requests to the server. This involves two things:
