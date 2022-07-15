@@ -225,6 +225,7 @@ table {
 ```
 
 ### Declaring mappers for PostgreSQL source
+
 For PostgreSQL sources, mappers must be declared per table using the following syntax:
 
 ```kotlin
@@ -245,8 +246,9 @@ table {
 }
 ```
 
-### Mapper for a CSV file source
-For a CSV file source, a single mapper can be declared using the following syntax:
+### Mapper for a file source
+
+For a file source, a single mapper can be declared using the following syntax:
 
 ```kotlin
 mapper("mapper-name", TABLE_OBJECT) {
