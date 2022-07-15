@@ -54,7 +54,7 @@ Run *genesis-generated-fields* to generate the fields, AND​ *genesis-generated
 
 ### 2. Create a new class for the state machine
 
-Add a main folder in the event handler module *alpha-eventhandler* and create a state machine class called *TradeStateMachine*.
+Add a main folder in the event handler module *alpha-eventhandler* and create a state machine class called *TradeStateMachine* inside **alpha-eventhandler/src/main/kotlin/global/genesis**.
 
 Add a state machine definition and assign a field in the **onCommit** block,
 
@@ -158,7 +158,6 @@ sealed class TradeEffect {
 ```
 ...
 api(project(":alpha-eventhandler"))
-api("global.genesis:genesis-pal-eventhandler")
 ...
 ```
 
