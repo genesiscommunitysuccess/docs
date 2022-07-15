@@ -443,8 +443,24 @@ The url consists of:
 - if necessary, some extra routing; in this case **gwf** uses a proxy to access the server
 - the name of the event handler
 
+```
+http://localhost/gwf/EVENT_COUNTERPARTY_INSERT
+```
+
 
 Set the body to **JSON**. In the body, you need to insert the details of the fields for the new counterparty, as seen below:
+
+```
+{
+    "DETAILS": {
+      "SOURCE_REF": "BAUDOIN1",
+      "COUNTERPARTY_LEI": "Thomas S Eiselberg",
+      "COUNTERPARTY_ID": "EISELBERG",
+      "ENABLED": 1,
+      "NAME": "Thomas S Eiselberg GmbH"
+    }
+}
+```
 
 ![](/img/test-eh-url-body-alpha.png)
 
