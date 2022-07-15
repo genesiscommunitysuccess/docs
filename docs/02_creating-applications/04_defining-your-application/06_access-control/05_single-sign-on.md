@@ -315,15 +315,15 @@ In the above command, you need to replace:
 
 4. Now you are ready to add some users.
 
-* Add user to USER table with username “user1@example.com”
+    * Add user to USER table with username “user1@example.com”
 
-* Add user to SSO_USER table:
+    * Add user to SSO_USER table:
 
-"SSO_SOURCE","SSO_METHOD","SSO_DETAILS","USER_NAME”
-SSO_SOURCE = Identity Provider (as per above SAML config ’test’)
-SSO_METHOD = SAML
-SSO_DETAILS = an internal identifier (for example, TRADE_DESK_1)
-USER_NAME = user1@example.com
+      "SSO_SOURCE","SSO_METHOD","SSO_DETAILS","USER_NAME”
+      SSO_SOURCE = Identity Provider (as per above SAML config ’test’)
+      SSO_METHOD = SAML
+      SSO_DETAILS = an internal identifier (for example, TRADE_DESK_1)
+      USER_NAME = user1@example.com
 
 * Add user to USER_ATTRIBUTES table:
 "TELEPHONE_NUMBER_DIRECT","MOBILE_NUMBER","USER_NAME","TELEPHONE_NUMBER_OFFICE","REGION","ADDRESS_LINE1","ADDRESS_LINE2","ADDRESS_LINE3","CITY","COUNTRY","ADDRESS_LINE4","POSTAL_CODE","USER_TYPE","ACCESS_TYPE","TITLE","WEBSITE”
