@@ -267,10 +267,10 @@ this.routes.map(
 ```bash
 docker run -p 8080:8080 -p 8443:8443 -e SIMPLESAMLPHP_SP_ENTITY_ID=https://localhost/gwf/saml/metadata?idp=test -e SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=https://localhost/gwf/saml/logon?idp=test -e SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE=https://localhost/gwf/saml/logout?idp=test -d kristophjunge/test-saml-idp
 ```
-In the above command, you need to replace:
+    In the above command, you need to replace:
 
-- _IP_ with the address/IP of your Genesis instance
-- _test_  with the name of the identify provider
+    - _IP_ with the address/IP of your Genesis instance
+    - _test_  with the name of the identify provider
 
 2. Then, make sure that [auth saml has been added to the GENESIS_ROUTER configuration](/creating-applications/defining-your-application/access-control/sso/#how-to-enable-saml) in **processes.xml**: for example: 
 
@@ -315,9 +315,9 @@ In the above command, you need to replace:
 
 4. Now you are ready to add some users.
 
-* Add user to USER table with username “user1@example.com”
+    * Add user to USER table with username “user1@example.com”
 
-* Add user to SSO_USER table:
+    * Add user to SSO_USER table:
 
 "SSO_SOURCE","SSO_METHOD","SSO_DETAILS","USER_NAME”
 SSO_SOURCE = Identity Provider (as per above SAML config ’test’)
@@ -325,7 +325,7 @@ SSO_METHOD = SAML
 SSO_DETAILS = an internal identifier (for example, TRADE_DESK_1)
 USER_NAME = user1@example.com
 
-* Add user to USER_ATTRIBUTES table:
+    * Add user to USER_ATTRIBUTES table:
 "TELEPHONE_NUMBER_DIRECT","MOBILE_NUMBER","USER_NAME","TELEPHONE_NUMBER_OFFICE","REGION","ADDRESS_LINE1","ADDRESS_LINE2","ADDRESS_LINE3","CITY","COUNTRY","ADDRESS_LINE4","POSTAL_CODE","USER_TYPE","ACCESS_TYPE","TITLE","WEBSITE”
 Only three are relevant!
 USER_NAME = user1@example.com
