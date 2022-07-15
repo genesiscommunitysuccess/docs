@@ -95,6 +95,7 @@ sources {
 
 File location denotes where to watch for files. This can be one of the following:
 - Local file system
+- SFTP
 - S3
 
 ##### Local file system
