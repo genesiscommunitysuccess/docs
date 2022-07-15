@@ -127,6 +127,19 @@ To use S3 as a file source, you will need access to an S3 like service such as A
 | accessKey | | Amazon AWS Access Key |
 | secretKey | | Amazon AWS Secret Key |
 
+##### SFTP
+
+`sftp:host:port/directoryName[?options]`
+
+| Argument | Default value | Description |
+|---|---|---|
+| username | | Username to use for login |
+| password | | Password to use for login |
+| knownHostsUri | | Sets the known_hosts file (loaded from classpath by default), so that the SFTP endpoint can do host key verification |
+| delete | true | Should delete the file after processing |
+| fileName | | Only listen for files with the exact name |
+| recursive | false | Should check sub directories |
+
 ## Mapper for the incoming data
 
 The data from the defined source is read row by row and mapped to a [Table](/creating-applications/defining-your-application/data-model/tables/tables) object. Each column from the incoming row is mapped to a [Field](/creating-applications/defining-your-application/data-model/fields/fields).
