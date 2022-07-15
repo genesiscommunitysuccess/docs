@@ -136,6 +136,7 @@ To use S3 as a file source, you will need access to an S3 like service such as A
 | username | | Username to use for login |
 | password | | Password to use for login |
 | knownHostsUri | | Sets the known_hosts file (loaded from classpath by default), so that the SFTP endpoint can do host key verification |
+| privateKeyUri | | Set the private key file (loaded from classpath by default) so that the SFTP endpoint can do private key verification |
 | delete | true | Should delete the file after processing |
 | fileName | | Only listen for files with the exact name |
 | recursive | false | Should check sub directories |
