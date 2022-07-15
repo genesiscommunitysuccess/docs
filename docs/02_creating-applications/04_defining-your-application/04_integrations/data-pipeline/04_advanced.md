@@ -16,7 +16,7 @@ The example below shows mapping a value from the source data to the Genesis data
 ```kotlin
 sources {
 
-  postgresSource("cdc-test") {
+  postgres("cdc-test") {
     hostname = "localhost"
     port = 5432
     username = "postgres"
@@ -65,7 +65,7 @@ System definition variables can be used as part of the source configuration.
 ```kotlin
 sources {
 
-  postgresSource("cdc-test") {
+  postgres("cdc-test") {
     hostname = POSTGRES_HOST
     port = POSTGRES_PORT
     username = DB_USERNAME
@@ -80,7 +80,7 @@ Alternatively, you can access `systemDefinition`s in a programmatic way:
 ```kotlin
 sources {
 
-  postgresSource("cdc-test") {
+  postgres("cdc-test") {
     hostname = systemDefinition["db_host"].orElse("localhost")
   }
 }
