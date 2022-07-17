@@ -98,15 +98,17 @@ class PositionReport()
 
 Create an event handler that will write the csv files to the runtime/position-daily-report folder. Call it EVENT_POSITION_REPORT.
 
-Open the file *alpha-eventhandler.kts* and add an event handler to generate the csv file:
+Open the file *alpha-eventhandler.kts* and add a variable called *tradeViewRepo* injecting the class *TradeViewAsyncRepository*. Then, add an event handler to generate the csv file:
 
-```kotlin
+```kotlin {8,12}
 import java.io.File
 import java.time.LocalDate
 import global.genesis.TradeStateMachine
 import global.genesis.commons.standards.GenesisPaths
 import global.genesis.gen.view.repository.TradeViewAsyncRepository
 import global.genesis.jackson.core.GenesisJacksonMapper
+
+val tradeViewRepo = inject<TradeViewAsyncRepository>()
 
 eventHandler {
  //... other event handlers removed for clarity
@@ -289,6 +291,8 @@ systemDefinition {
     ...
 }
 ```
+
+Run the *build*, *install-alpha-site-specific* and *deploy* tasks again.
 
 #### 7. Switch on data dumps
 
@@ -502,7 +506,7 @@ If your message type is not a database-generated entity,  you can still define f
 See [here](/creating-applications/defining-your-application/access-control/authorisation-over/) for more details on authorisation.
 
 
-After the configurations, you should execute the genesis setup tasks **setupEnvironment**, **install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip** and **install-auth-distribution** to  prepare the database for permission. Then run **assemble** and **deploy-genesisproduct-alpha** tasks again to deploy the new version.
+After the configurations, you should execute the genesis setup tasks **setupEnvironment**, **install-auth-distribution** and **install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip** to prepare the database for permission. Then run **assemble** and **deploy-genesisproduct-alpha** tasks again to deploy the new version.
 
 Using the command [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script) do the following three configurations below.
 
