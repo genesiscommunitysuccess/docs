@@ -124,7 +124,8 @@ sources {
 
 ## Declaring multiple mappers
 
-In the event that you would like to perform different mapping operations over the same data source, you may use multiple mappers. You can also use a where clause to conditionally map rows from your data source. 
+In the event that you would like to perform different mapping operations over the same data source, you may use multiple mappers. 
+You may also optionally use a where clause to conditionally map rows from your data source. Should a where clause be falsy, no mapping will be performed.
 
 For example, should you wish to map over a trades source, you may want to map and transform your data in a different way depending on the region the trade was made:
 
