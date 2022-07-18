@@ -8,7 +8,9 @@ id: datapipeline-advanced
 
 [Introduction](/creating-applications/defining-your-application/integrations/data-pipeline/overview/)  | [Where to define](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-where-to-define/) | [Basics](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-basics/) | [Advanced](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-advanced/) | [More examples](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-examples/) | [Configuring runtime](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-runtime/) | [Testing](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-testing/)
 
-## Interacting with the database
+## PostgreSQL
+
+### Interacting with the database
 The `transform` function of the mappers has the parameter `entityDb`, which can be used to interact with the Genesis database. It provides a CRUD interface and enables you to implement complex use cases, such as enriching data and inserting or updating missing data. 
 
 The example below shows mapping a value from the source data to the Genesis database. In this example, if a value is missing, it gets created on the fly.
@@ -16,7 +18,7 @@ The example below shows mapping a value from the source data to the Genesis data
 ```kotlin
 sources {
 
-  postgresSource("cdc-test") {
+  postgres("cdc-test") {
     hostname = "localhost"
     port = 5432
     username = "postgres"
@@ -59,13 +61,13 @@ sources {
 }
 ```
 
-## System definition properties
+### System definition properties
 System definition variables can be used as part of the source configuration.
 
 ```kotlin
 sources {
 
-  postgresSource("cdc-test") {
+  postgres("cdc-test") {
     hostname = POSTGRES_HOST
     port = POSTGRES_PORT
     username = DB_USERNAME
@@ -80,16 +82,42 @@ Alternatively, you can access `systemDefinition`s in a programmatic way:
 ```kotlin
 sources {
 
-  postgresSource("cdc-test") {
+  postgres("cdc-test") {
     hostname = systemDefinition["db_host"].orElse("localhost")
   }
 }
 ```
 
-It is vital to ensure that any system definition variables that are used by the configuration definition are properly defined in your __application__**-system-definition.kts** file.
+It is vital to ensure that any system definition variables that are used by the configuration definition are properly defined in your _application_**-system-definition.kts** file.
 
-## PostgreSQL configuration
-To capture changes from PostgreSQL the Write Ahead Log level has to be set at least to `logical`, and the plugin used for logical decoding must be `pgoutput` (which is the default plugin PostgreSQL uses).
+### PostgreSQL configuration
+To capture changes from PostgreSQL, the Write Ahead Log level has to be set at least to `logical`, and the plugin used for logical decoding must be `pgoutput` (which is the default plugin PostgreSQL uses).
 
-## Replaying PostgreSQL rows
+### Replaying PostgreSQL rows
 While processing source data, Genesis keeps track of the last processed row. If the server gets restarted, it will use the last recorded offset to know where in the source information it should resume reading from.  The offsets are kept in a table called `DATAPIPELINE_OFFSET` and there is one record per connector. If you want to start ingesting the rows from the begining, delete the row with the name of the source connector and restart the Genesis server.
+
+## Declaring multiple sources
+
+You may declare multiple sources in the same kts file. All sources should be placed within a single `sources` block.
+
+```kotlin
+sources {
+    postgres("cdc-postgres") {
+        hostname = "localhost"
+        port = 5432
+        username = "postgres"
+        password = "docker"
+        databaseName = "postgres"
+
+        table {
+            // table to mapper definition pairs
+        }
+    }
+
+    csv("cdc-csv") {
+        location = "file://some/directory?fileName=example.xml"
+
+        // mapper definition
+    }
+}
+```

@@ -14,31 +14,133 @@ A data pipeline is a collection of `sources`. Each source contains:
 
 Currently the supported sources are:
 - PostgreSQL
-- CSV files that originate from the local filesystem or over FTP and S3
+- MS SQL Sever
+- Oracle Enterprise
+- Files that originate from the local filesystem or S3
+  - CSV
+  - XML
+  - JSON
 
-## Source of data
+## Data source
 
-### PostgreSQL
+### Database
 
-| Parameter | Default value | Sample Usage | Value Type | Description |
+#### PostgreSQL
+
+| Parameter | Default value | Sample usage | Value type | Description |
 |---|---|---|---|---|
-| name | N/A | `postgresSource("cdc-test")` | String | Name for the source |
+| name | N/A | `postgres("cdc-test")` | String | Name for the source |
 | hostname | N/A | `hostname = "localhost"` | String | Set the hostname where PostgreSQL is running |
 | port | 5432 | `port = 1234` | Integer | Set the port on which PostgreSQL is running |
 | username | N/A | `username = "db-user"` | String | Set the database user  |
 | password | N/A | `password = "db-password"` | String | Set the database user password  |
 | databaseName | N/A | `databaseName = "postgres"` | String | Set the name of the database  |
 
-### CSV file
+### File
 
-| Parameter | Default value | Sample Usage | Value Type | Description |
+Genesis currently supports CSV, JSON and XML file sources. Below, you can see what options are available for each:
+
+#### CSV
+
+| Parameter | Default value | Sample usage | Value type | Description |
 |---|---|---|---|---|
-| name | N/A | `csvSource("cdc-test")` | String | Name for the source |
-| location | N/A | `location = "//data/june/trades.csv"` | String | Set the location of the CSV file |
-| delimiter | , | `delimiter = ;` | Char | Set the value delimiter  |
+| name | N/A | `csv("cdc-test")` | String | Name for the source |
+| location | N/A | `location = "file://data/june/trades.csv"` | String | Set the location of the CSV file. See details below |
+| delimiter | , | `delimiter = ';'` | Char | Set the value delimiter  |
 | hasHeader | true | `hasHeader = false` | Boolean | Set whether the file has headers  |
 | headerOverrides | null | `headerOverrides = arrayListOf("id", "name")` | List | Set the column names to be used. If the file has header it's ignored and the speicifed names are used  |
 | readLazily | false | `readLazily = true` | Boolean | Set lazy reading  |
+
+```kotlin
+sources {
+  csv("cdc-csv") {
+    location = ""
+
+    mapper("mapper-name", TABLE) {
+
+    }
+  }
+}
+```
+
+#### XML and JSON
+
+| Parameter | Default value | Sample usage | Value type | Description |
+|---|---|---|---|---|
+| name | N/A | `xml("cdc-test")` | String | Name for the source |
+| location | N/A | `location = "file://data/june/trades.csv"` | String | Set the location of the CSV file. See details below |
+| rootAt | "$.[*]" | `rootAt = "$.[*]"` | String | Set the root of the Json/XML tree |
+
+```kotlin
+sources {
+  xml("cdc-xml") {
+    location = ""
+
+    mapper("mapper-name", TABLE) {
+
+    }
+  }
+
+  json("cdc-json") {
+    location = ""
+
+    mapper("mapper-name", TABLE) {
+
+    }
+  }
+}
+```
+
+#### Defining file location
+
+File location denotes where to watch for files. This can be one of the following:
+- Local file system
+- SFTP
+- S3
+
+##### Local file system
+
+Listening for files in a directory on the local filesystem is as simple as pointing at the directory in the `location` argument prepended by "file://".
+
+You can also pass arguments to the URI to change the behaviour of the source.
+
+`file:directoryName[?options]`
+
+| Argument | Default value | Description |
+|---|---|---|
+| delete | true | Should delete the file after processing |
+| fileName | | Only listen for files with the exact name |
+| recursive | false | Should check sub directories |
+
+##### S3
+
+To use S3 as a file source, you will need access to an S3 like service such as AWS S3 or Dell ECS.
+
+`aws2-s3://bucketNameOrArn[?options]`
+
+| Argument | Default value | Description |
+|---|---|---|
+| region | | The region in which S3 client needs to work |
+| deleteAfterRead | true | Delete objects from S3 after they have been retrieved |
+| destinationBucket | | Define the destination bucket where an object must be moved when moveAfterRead is set to true |
+| moveAfterRead | false | Move objects from S3 bucket to a different bucket after they have been retrieved |
+| fileName | | To get the object from the bucket with the given file name |
+| accessKey | | Amazon AWS Access Key |
+| secretKey | | Amazon AWS Secret Key |
+
+##### SFTP
+
+`sftp:host:port/directoryName[?options]`
+
+| Argument | Default value | Description |
+|---|---|---|
+| username | | Username to use for login |
+| password | | Password to use for login |
+| knownHostsUri | | Sets the known_hosts file (loaded from classpath by default), so that the SFTP endpoint can do host key verification |
+| privateKeyUri | | Set the private key file (loaded from classpath by default) so that the SFTP endpoint can do private key verification |
+| delete | true | Should delete the file after processing |
+| fileName | | Only listen for files with the exact name |
+| recursive | false | Should check sub directories |
 
 ## Mapper for the incoming data
 
@@ -123,6 +225,7 @@ table {
 ```
 
 ### Declaring mappers for PostgreSQL source
+
 For PostgreSQL sources, mappers must be declared per table using the following syntax:
 
 ```kotlin
@@ -143,8 +246,9 @@ table {
 }
 ```
 
-### Mapper for a CSV file source
-For a CSV file source, a single mapper can be declared using the following syntax:
+### Mapper for a file source
+
+For a file source, a single mapper can be declared using the following syntax:
 
 ```kotlin
 mapper("mapper-name", TABLE_OBJECT) {
