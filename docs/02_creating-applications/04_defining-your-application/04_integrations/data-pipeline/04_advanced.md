@@ -61,7 +61,13 @@ sources {
 }
 ```
 
-### System definition properties
+### PostgreSQL configuration
+To capture changes from PostgreSQL, the Write Ahead Log level has to be set at least to `logical`, and the plugin used for logical decoding must be `pgoutput` (which is the default plugin PostgreSQL uses).
+
+### Replaying PostgreSQL rows
+While processing source data, Genesis keeps track of the last processed row. If the server gets restarted, it will use the last recorded offset to know where in the source information it should resume reading from.  The offsets are kept in a table called `DATAPIPELINE_OFFSET` and there is one record per connector. If you want to start ingesting the rows from the begining, delete the row with the name of the source connector and restart the Genesis server.
+
+## System definition properties
 System definition variables can be used as part of the source configuration.
 
 ```kotlin
@@ -90,12 +96,6 @@ sources {
 
 It is vital to ensure that any system definition variables that are used by the configuration definition are properly defined in your _application_**-system-definition.kts** file.
 
-### PostgreSQL configuration
-To capture changes from PostgreSQL, the Write Ahead Log level has to be set at least to `logical`, and the plugin used for logical decoding must be `pgoutput` (which is the default plugin PostgreSQL uses).
-
-### Replaying PostgreSQL rows
-While processing source data, Genesis keeps track of the last processed row. If the server gets restarted, it will use the last recorded offset to know where in the source information it should resume reading from.  The offsets are kept in a table called `DATAPIPELINE_OFFSET` and there is one record per connector. If you want to start ingesting the rows from the begining, delete the row with the name of the source connector and restart the Genesis server.
-
 ## Declaring multiple sources
 
 You may declare multiple sources in the same kts file. All sources should be placed within a single `sources` block.
@@ -121,3 +121,35 @@ sources {
     }
 }
 ```
+
+## Declaring multiple mappers
+
+In the event that you would like to perform different mapping operations over the same data source, you may use multiple mappers. 
+You may also optionally use a where clause to conditionally map rows from your data source. Should a where clause be falsy, no mapping will be performed.
+
+For example, should you wish to map over a trades source, you may want to map and transform your data in a different way depending on the region the trade was made:
+
+```kotlin
+sources {
+    csv("cdc-csv") {
+
+        location = "file://some/directory?fileName=example.xml"
+
+        mapper("EMEA-order", TABLE_OBJECT) {
+            where { input.get(stringValue("region") == "emea") }
+
+            FIELD {}
+            ...
+        }
+
+        mapper("NAM-order", TABLE_OBJECT) {
+            where { input.get(stringValue("region") == "nam") }
+
+            FIELD {}
+            ...
+        }
+    }
+}
+```
+
+Using conditional mappers enabled you to make powerful data ingress pipeline
