@@ -60,4 +60,4 @@ Once your Genesis application is running, data ingestion will take place.
 
 ## Supported sources
 - PostgreSQL
-- CSV files that originate from the local filesystem or over FTP and S3
+- CSV, JSON and XML files that originate from the local filesystem, SFTP or S3
