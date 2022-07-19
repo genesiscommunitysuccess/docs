@@ -123,6 +123,16 @@ This requires credentials for accessing Genesis Artifactory. If you have not bee
 @genesislcap/foundation-ui@0.0.26 | UNLICENSED | deps: 23 | versions: 111
 Genesis Foundation UI
 ```
+:::caution trouble running npm?
+Please make sure:
+- you have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](/tutorials/training-resources/training-content-day1/#needed-software-packages). More details on GenX installation can be found [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/using-genx/).
+- if you're behind a corporate network, you may need to setup a proxy:
+```shell
+npm config set proxy http://proxy_host:port
+npm config set https-proxy https://proxy.company.com:8080
+npm config set https-proxy http://proxy.company.com:8080
+```
+:::
 
 #### Gradle setup
 Make sure you have a gradle.properties file inside a **.gradle** folder on your user directory; this file must contain your password in clear text:
@@ -193,11 +203,6 @@ Install genx using the following command:
 ```shell
 npm install -g @genesislcap/foundation-cli
 ```
-:::caution
-If you run into trouble running this command, make sure you have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](/tutorials/training-resources/training-content-day1/#needed-software-packages).
-
-More details on GenX installation can be found [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/using-genx/).
-:::
 
 Once installed, from the terminal, go to a folder where you want your project to reside, and run:
 
