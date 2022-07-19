@@ -78,9 +78,9 @@ module.exports = {
     navbar: {
       items: [
         {to: 'getting-started/learn-the-basics/', label: 'Learning'},
+        {to: 'database', label: 'Database'},
         {to: 'server-modules', label: 'Server Modules'},
         {to: 'front-end', label: 'Front End'},
-        {to: 'database', label: 'Database'},
         {to: 'operations', label: 'Operations'},
         {to: 'blog', label: 'Blog'},
         {
