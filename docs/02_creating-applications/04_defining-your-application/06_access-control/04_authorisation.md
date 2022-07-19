@@ -80,7 +80,7 @@ As you can tell, this enables you to build powerful combinations, and since User
 
 #### Good design practice
 
-Having profiles as an intemediary between users and rights enabkes admin users of the system to create complex permission models with no code change. Rights codes generally need to be added to the code.  Although this is simple to do, it requires a code change. Our advice is to design applications with enough granularity in the rights to ensure that code changes aren't required.
+Having profiles as an intemediary between users and rights enables admin users of the system to create complex permission models with no code change. Rights codes generally need to be added to the code.  Although this is simple to do, it requires a code change. Our advice is to design applications with enough granularity in the rights to ensure that code changes aren't required.
 
 ### Entity-level (row-level)
 
