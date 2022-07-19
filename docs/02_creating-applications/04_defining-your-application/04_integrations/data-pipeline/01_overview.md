@@ -13,13 +13,13 @@ You can define data pipelines that map data from an external source (database, f
 
 Each data pipeline defines a source for the data and how that data is mapped to each [Field](/creating-applications/defining-your-application/data-model/fields/fields) in the [Table](/creating-applications/defining-your-application/data-model/tables/tables). 
 
-If the mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a `transform` function whose value will be mapped to the [Field](/creating-applications/defining-your-application/data-model/fields/fields)
+If a field mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a `transform` function whose return value will be mapped to the [Field](/creating-applications/defining-your-application/data-model/fields/fields)
 
 The following is a sample configuration:
 ```kotlin
 sources {
 
-    postgresSource("cdc-test") {
+    postgres("cdc-test") {
         hostname = "localhost"
         port = 5432
         username = "postgres"
@@ -56,8 +56,8 @@ sources {
 
 ```
 
-Broadly, you need to create new data pipeline script and start the platform. Once it's running, the data ingestion will take place.
+Once your Genesis application is running, data ingestion will take place.
 
 ## Supported sources
 - PostgreSQL
-- CSV files that originate from the local filesystem or over FTP and S3
+- CSV, JSON and XML files that originate from the local filesystem, SFTP or S3
