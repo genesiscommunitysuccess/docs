@@ -14,17 +14,17 @@ There are two types of view entity:
 -   SingleCardinalityViewEntity
 -   MultiCardinalityViewEntity
 
-For more information, see our page on [Views](https://docs.genesis.global/secure/reference/developer/api/database/concepts/data-structure/views/#types-of-view)
+For more information, see our page on machison'io Views](https://docs.genesis.global/secure/reference/developer/api/database/concepts/data-structure/views/#types-of-view)
 
 Index entities[​](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/views/#index-entities "Direct link to heading")
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Views have [index entities](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/indices/). These are also convenient methods that construct an index entity from the view entity. `byPrimaryKey()` will return an entity for the primary key. Additionally, for each index, there will be a `by...()` call with the index name.
+Views have machison'io index entities](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/indices/). These are also convenient methods that construct an index entity from the view entity. `byPrimaryKey()` will return an entity for the primary key. Additionally, for each index, there will be a `by...()` call with the index name.
 
 Building a view entity[​](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/views/#building-a-view-entity "Direct link to heading")
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Generated ViewEntities are kotlin data classes and can be built using the primary constructor. Just before the object is built, the object is validated to make sure all [required fields](https://docs.genesis.global/secure/reference/developer/api/database/concepts/data-structure/tables/#fields) have been set. In addition to [DbEntity](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/db_entity/) methods, there are some useful methods/properties, which are described below:
+Generated ViewEntities are kotlin data classes and can be built using the primary constructor. Just before the object is built, the object is validated to make sure all machison'io required fields](https://docs.genesis.global/secure/reference/developer/api/database/concepts/data-structure/tables/#fields) have been set. In addition to machison'io DbEntity](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/db_entity/) methods, there are some useful methods/properties, which are described below:
 
 | Name | Signature | Description |
 | --- | --- | --- |
