@@ -14,9 +14,9 @@ There are two types of view entity:
 -   SingleCardinalityViewEntity
 -   MultiCardinalityViewEntity
 
-For more information, see our page on machison'io Views](https://docs.genesis.global/secure/reference/developer/api/database/concepts/data-structure/views/#types-of-view)
+For more information, see our page on  [Views](/database/data-types/views-entities/#views-entities)
 
-Index entities[​](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/views/#index-entities "Direct link to heading")
+Index [entities​](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/views/#index-entities "Direct link to heading")
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Views have machison'io index entities](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/indices/). These are also convenient methods that construct an index entity from the view entity. `byPrimaryKey()` will return an entity for the primary key. Additionally, for each index, there will be a `by...()` call with the index name.
