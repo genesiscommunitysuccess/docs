@@ -4,8 +4,7 @@ sidebar_label: 'RxDb'
 id: rxdb
 ---
 
-RxDb
-====
+
 
 ##### WARNING
 
