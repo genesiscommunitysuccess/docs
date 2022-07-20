@@ -153,3 +153,104 @@ sources {
 ```
 
 Using conditional mappers enabled you to make powerful data ingress pipeline
+
+## Custom handler for the mapped entity
+
+The default behaviour of a data pipeline is to store the mapped [Table](/creating-applications/defining-your-application/data-model/tables/) object to the Genesis database. However, there are cases when you might want to actually delete or modify that entity or do other operations based on certain conditions. For those cases the `sink` function can be used. The function has two parameters:
+- `entityDb` - object to access the underlying Genesis database
+- `mappedEntity` - the mapped [Table](/creating-applications/defining-your-application/data-model/tables/) object
+
+Recognising that inserting, modifying or deleting mapped entities will be the most commonly used operations, those are already defined under `SinkOperations`
+- `SinkOperations.INSERT`
+- `SinkOperations.MODIFY`
+- `SinkOperations.DELETE`
+
+and can be used like this:
+
+```kotlin
+sources {
+    postgres("cdc-postgres") {
+
+        ...
+
+        mapper("EMEA-order", TABLE_OBJECT) {
+            sink(SinkOperations.DELETE)
+
+            FIELD {}
+            ...
+        }
+
+    }
+}
+```
+
+This can be combined with the `where` function from previous paragraph and give you the ability to delete or modify certain records without mapping each and one of them:
+
+```kotlin
+sources {
+    postgres("cdc-postgres") {
+
+        ...
+
+        mapper("EMEA-order", TABLE_OBJECT) {
+            sink(SinkOperations.DELETE)
+
+            where { input.get(stringValue("side") == "sell") }
+
+            FIELD {}
+            ...
+        }
+
+    }
+}
+```
+
+In other cases when you want to act based on the state of the mapped entity you can declare custom sink method
+
+```kotlin
+sources {
+    postgres("cdc-postgres") {
+
+        ...
+
+        mapper("EMEA-order", TABLE_OBJECT) {
+            sink {
+                if (mappedEntity.tradeType == "sell") {
+                    entityDb.delete(mappedEntity)
+                } else {
+                    entityDb.insert(mappedEntity)
+                }
+            }
+
+            FIELD {}
+            ...
+        }
+
+    }
+}
+```
+
+Note that all database operations are audited if the [Table](/creating-applications/defining-your-application/data-model/tables/) is declared as [auditable](/reference/developer/api/database/how-to/data-types/tables/#auditable-tables). Each sink operation is then stored to the audit table with default event type of `custom-sink-operation`, however, you can change it by passing another type as argument to the `sink` function:
+
+```kotlin
+sources {
+    postgres("cdc-postgres") {
+
+        ...
+
+        mapper("EMEA-order", TABLE_OBJECT) {
+            sink("delete-sell-trades") {
+                if (mappedEntity.tradeType == "sell") {
+                    entityDb.delete(mappedEntity)
+                } else {
+                    entityDb.insert(mappedEntity)
+                }
+            }
+
+            FIELD {}
+            ...
+        }
+
+    }
+}
+```
