@@ -5,8 +5,53 @@ sidebar_position: 1
 id: views-introd
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+When you set up a data model, it implies relationships between tables. For example, a TRADE has a COUNTERPARTY_ID and an INSTRUMENT_ID. That means it has a relationship with the COUNTERPARTY and INSTRUMENTS tables.
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+Views enable you join related tables to create a single holistic view.
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+They are a lot more powerful than this in practice; they underpin many Genesis components that read data from the database in real time or in static form.
+
+The example below creates a view called `TRADE_VIEW`, which joins the `TRADE` table to the `INSTRUMENT` table.
+
+```kotlin
+views {
+
+  view("TRADE_VIEW", TRADE) {
+
+    joins {
+      joining(COUNTERPARTY) {
+        on(TRADE.COUNTERPARTY_ID to COUNTERPARTY { COUNTERPARTY_ID })
+      }
+      joining(INSTRUMENT) {
+        on(TRADE.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
+      }
+    }
+
+    fields {
+      TRADE.allFields()
+
+      COUNTERPARTY.NAME withPrefix COUNTERPARTY
+      INSTRUMENT.NAME withPrefix INSTRUMENT
+      INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
+
+      derivedField("CONSIDERATION", DOUBLE) {
+        withInput(TRADE.QUANTITY, TRADE.PRICE) { QUANTITY, PRICE ->
+          QUANTITY * PRICE
+        }
+      }
+    }
+  }
+}
+```
+
+Views are defined in the file _application-name_**-view-dictionary.kts**. 
+
+So, if your application is called **position**, then the file name will be **position-view-dictionary.kts**.
+
+
+
+
+
+
+
+
