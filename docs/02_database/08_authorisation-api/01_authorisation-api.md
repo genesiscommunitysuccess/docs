@@ -1,7 +1,7 @@
 ---
-title: 'System Definition API'
-sidebar_label: 'System Definition API'
-id: system-definition-api
+title: 'Authorisation API'
+sidebar_label: 'Authorisation API'
+id: authorisation-api
 ---
 
 Authorisation API
