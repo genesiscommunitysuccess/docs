@@ -10,10 +10,12 @@ You define your fields in  a specific file that has the name _application_**-fie
 
 Here is a very simple example of such a file, with only three fields defined.
 
+```kotlin
 fields {
     field(name = "ORDER_ID", type = STRING)
     field(name = "DESCRIPTION", type = STRING, nullable = true)
     field(name = "PRICE", type = DOUBLE, nullable = false)
 }
+```
 
 We keep fields separate from tables, so that they, and their meta-data, can be re-used across multiple tables and show linkage.
