@@ -2,7 +2,7 @@
 title: 'Views - introduction'
 sidebar_label: 'Views - introduction'
 sidebar_position: 1
-id: views-introd
+id: views-intro
 ---
 
 When you set up a data model, it implies relationships between tables. For example, a TRADE has a COUNTERPARTY_ID and an INSTRUMENT_ID. That means it has a relationship with the COUNTERPARTY and INSTRUMENTS tables.
