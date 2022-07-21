@@ -784,6 +784,91 @@ This example runs with a remote postgres DB. it evaluates null and empty strings
 ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass -s -n 2 -i STATUS
 ```
 
+## PurgeTables
+
+It gives the developer the ability to specify what data shall be treated as transient and should be removed from the database if certain criteria is fulfilled.
+
+The tool requires the existence of an *application*-purger.kts file in application config folder, and invoking the **PurgeTables** command will pick up all such files that are found in the $GENESIS_HOME/generated/cfg/ directory.
+In order to enable syntax highlighting and autocompletion for purger files you will need to add **genesis-environment** as a dependency of your “product-config” module. Please see simple examples below for purger definitions:
+
+Log file called purge_{*time_of_run*} created under $GENESIS_HOME/runtime/logs/ folder
+
+There are different ways you can purge data using below functions and filters
+
+### Functions
+
+| Name | Signature |
+|---|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| bulkPurger | `fun <T : GPalTable<E>, E : TableEntity> bulkPurger(table: T): PurgerBuilder<T, E>`|
+| rangePurger | `fun <T : GPalTable<E>, E : TableEntity, F1 : Any> rangePurger(index: GPalIndex1<T, F1>): RequestBuilder.Request1<T, E, GPalIndex1<T, F1>, F1>`<br/> |
+| daysPurger | `fun <T : GPalTable<E>, E : TableEntity> daysPurger(table: T, maxDays: Int): PurgerBuilder<T, E>` |
+| daysPurger | `fun <T : GPalTable<E>, E : TableEntity> daysPurger(field: TableField.NonNullable<T, Long>,maxDays: Int): PurgerBuilder<T, E>` |
+| daysPurger | `@JvmName("daysPurgerDateTime") fun <T : GPalTable<E>, E : TableEntity> daysPurger(field: TableField.NonNullable<T, DateTime>, maxDays: Int): PurgerBuilder<T, E>` |
+| daysPurger | `fun <T : GPalTable<E>, E : TableEntity> daysPurger(field: TableField.Nullable<T, Long>, maxDays: Int): PurgerBuilder<T, E>` |
+| daysPurger | `@JvmName("daysPurgerDateTime")fun <T : GPalTable<E>, E : TableEntity> daysPurger(field: TableField.Nullable<T, DateTime>, maxDays: Int): PurgerBuilder<T, E>` |
+| businessDaysPurger | `fun <T : GPalTable<E>, E : TableEntity> businessDaysPurger(table: T,maxDays: Int,country: String,region: String = "NATIONAL"): PurgerBuilder<T, E>` |
+| businessDaysPurger | `fun <T : GPalTable<E>, E : TableEntity> businessDaysPurger(field: TableField.NonNullable<T, Long>,maxDays: Int,country: String,region: String = "NATIONAL"): PurgerBuilder<T, E>` |
+| businessDaysPurger | `fun <T : GPalTable<E>, E : TableEntity> businessDaysPurger(field: TableField.Nullable<T, Long>,maxDays: Int,country: String,region: String = "NATIONAL"): PurgerBuilder<T, E>` |
+| businessDaysPurger | `@JvmName("businessDaysPurgerDateTime1")fun <T : GPalTable<E>, E : TableEntity> businessDaysPurger(field: TableField.NonNullable<T, DateTime>,maxDays: Int,country: String,region: String = "NATIONAL"): PurgerBuilder<T, E>` |
+| businessDaysPurger | `@JvmName("businessDaysPurgerDateTime2")fun <T : GPalTable<E>, E : TableEntity> businessDaysPurger(field: TableField.Nullable<T, DateTime>,maxDays: Int,country: String,region: String = "NATIONAL"): PurgerBuilder<T, E>` |
+
+Note:: rangePurger performs efficient index range searches in database and speed up purger performance. This method can be overloaded with different GPalIndex ranging from GPalIndex1 to GPalIndex10
+
+### Filters
+
+| Name       | Signature                                                                                                                                                                                |
+|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| whereRange | `fun whereRange(value1: F1): PurgerBuilder.Range<T, E>`                                                                                                                                  |
+| filter | `fun filter(predicate: suspend (E) -> Boolean): PurgerBuilder<T, E>`                                                                                                                     |
+| filterBusinessDays | `fun filterBusinessDays(maxDays: Int,country: String,region: String = "NATIONAL",field: TableField.NonNullable<T, Long> = table.timestamp()): PurgerBuilder<T, E>`                       |
+| filterBusinessDays | `@JvmName("filterBusinessDaysDateTime")fun filterBusinessDays(maxDays: Int,country: String,region: String = "NATIONAL",field: TableField.NonNullable<T, DateTime>): PurgerBuilder<T, E>` |
+| filterBusinessDays | `fun filterBusinessDays(maxDays: Int,country: String,region: String = "NATIONAL",field: TableField.Nullable<T, Long>): PurgerBuilder<T, E>`                                              |
+| filterBusinessDays | `@JvmName("filterBusinessDaysDateTime")fun filterBusinessDays(maxDays: Int,country: String,region: String = "NATIONAL",field: TableField.Nullable<T, DateTime>): PurgerBuilder<T, E>`    |
+| filterDays | `fun filterDays(maxDays: Int,field: TableField.NonNullable<T, Long> = table.timestamp()): PurgerBuilder<T, E>`                                                                           |
+| filterDays | `@JvmName("filterDaysDateTime")fun filterDays(maxDays: Int,field: TableField.NonNullable<T, DateTime>): PurgerBuilder<T, E>`                                                             |
+| filterDays | `fun filterDays(maxDays: Int,field: TableField.Nullable<T, Long>): PurgerBuilder<T, E>`                                                                                                  |
+| filterDays | `@JvmName("filterDaysDateTime")fun filterDays(maxDays: Int,field: TableField.Nullable<T, DateTime>): PurgerBuilder<T, E>`                                                                |
+| finally | `fun finally(finaliser: suspend (E) -> Unit): PurgerBuilder<T, E>`                                                                                                                       |
+
+Note:: whereRange filter contains one parameter which is the first parameter of GPalIndex and you can give upto 10 parameter values if table index consist of many parameters
+
+Some Purger examples explained below:
+
+```kotlin
+import global.genesis.gen.dao.repository.UserSessionRx2Repository
+purgers {
+    // You can inject other repos here
+    val userSessionRepo = inject<UserSessionRx2Repository>()
+
+    // Purger that reads the whole user session every time it runs and deletes all sessions for JohnDoe
+    bulkPurger(USER_SESSION).filter { it.userName == "JohnDoe" }
+
+    // Purger to delete all USER_SESSION records older than 8 days based on LAST_ACCESS_TIME field
+    daysPurger(field = USER_SESSION.LAST_ACCESS_TIME, maxDays = 8)
+
+    // Same as days purger but it will attempt to use business days and holidays if specified
+    businessDaysPurger(field = USER_SESSION.TIMESTAMP, maxDays = 8, country = "SPAIN")
+
+    // Range purger to perform efficient index range searches in database and speed up purger performance
+    rangePurger(USER_SESSION.BY_USER_NAME).whereRange("JohnDoe")
+
+    // Combination of filters for maximum flexibility and use of finally clause
+    rangePurger(USER_SESSION.BY_USER_NAME)
+            .whereRange("JohnDoe")
+            .filterBusinessDays(maxDays = 5, country = "SPAIN", region = "NATIONAL", field = USER_SESSION.LAST_ACCESS_TIME)
+
+    // Use of finally clause to delete extra associated records
+    rangePurger(USER.BY_NAME)
+            .whereRange("JohnDoe")
+            .finally { user ->
+                userSessionRepo.getRangeByUserName(user.userName)
+                        .toList()
+                        .flatMap { foundSessions -> userSessionRepo.deleteAll(foundSessions)}
+                        .blockingGet()
+            }
+}
+```
+
 ## AppGen
 
 AppGen can be used to generate a fully working application from a dictionary file.
