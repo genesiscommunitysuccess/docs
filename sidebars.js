@@ -1,5 +1,6 @@
 module.exports = {
   learningSidebar: [
+    'getting-started/introduction',
     {
       type: 'category',
       label: 'LEARN THE BASICS',
@@ -36,6 +37,7 @@ module.exports = {
     },
   ],
   databaseSidebar: [
+    'database/learning-landing',
     {
       type: 'category',
       label: 'FIELDS, TABLES AND VIEWS',
