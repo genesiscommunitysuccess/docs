@@ -144,6 +144,18 @@ At this point, the application will be configured. Assuming it is successful, yo
 i Application created successfully! 🎉 Please open the application and follow the README to complete setup.
 ```
 
+Here's a quick overview of the generated application's folder structure:
+
+![](/img/create-application-folder-overview.png)
+
+Above, we have expanded the `client` folder. This contains all the UI-related projects.
+
+The `server` folder follows the same structure. This contains all the server-side projects.
+
+:::note more about GenX
+[GenX CLI reference](/creating-applications/creating-a-new-project/alternative_options_supported/web-project-setup/#available-generators).
+:::
+
 ### 2. Define the data model
 Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application.
 
