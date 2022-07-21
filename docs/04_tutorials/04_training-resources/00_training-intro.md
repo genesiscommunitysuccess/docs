@@ -40,6 +40,7 @@ You’ll possibly learn 20% of what is offered ​by the Platform​, which will
 
 ## Agenda
 
+- [Environment setup](/tutorials/training-resources/environment-setup/)
 - [Day 1](/tutorials/training-resources/training-content-day1/): Quick review of the Platform​, set up the workstation and environment, quick start the application and test the backend​​.
 - [Day 2](/tutorials/training-resources/training-content-day2/): Intro to UI​, create a user interface​ and extend the application.
 - [Day 3](/tutorials/training-resources/training-content-day3/): Views​, automated testing​, calculated data, consolidators,​ and data grids​.
@@ -51,5 +52,9 @@ You’ll possibly learn 20% of what is offered ​by the Platform​, which will
 
 ## Source code
 The complete source code of this training is available 
+<<<<<<< HEAD
 [here](https://github.com/genesiscommunitysuccess/devtraining-gama) <img src="/img/github-icon.png" width="20" /> 
+=======
+[here](https://github.com/genesiscommunitysuccess/devtraining-gama/) <img src="/img/github-icon.png" width="20" /> 
+>>>>>>> 3b3468b1 (adding a separate page for env setup)
 &nbsp; 

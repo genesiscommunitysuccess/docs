@@ -2,7 +2,7 @@
 id: training-content-day2
 title: Day 2
 sidebar_label: Day 2
-sidebar_position: 2
+sidebar_position: 4
 
 ---
 In this day we are covering:
