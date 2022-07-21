@@ -4,6 +4,8 @@ sidebar_label: 'Views - advanced'
 id: views-advanced
 ---
 
+[Introduction](/database/fields-tables-views/views/)  | [Basics](/database/fields-tables-views/views/views-basics/) |  [Advanced](/database/fields-tables-views/views/views-advanced/) | [Examples](/database/fields-tables-views/views/views-examples/) 
+
 ## Fields
 
 ### Derived fields
