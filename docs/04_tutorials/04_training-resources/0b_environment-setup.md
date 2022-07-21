@@ -24,7 +24,7 @@ Please note that you will need temporary administrator privileges on your workst
 
 | Package	| Minimum Version| 
 |--------------|:-----:|
-| IntelliJ	| 2021.1.3|
+| IntelliJ Community	| 2021.1.3|
 | Visual Studio Code	| 1.52.1|
 | Java SDK| 11|
 | Chrome | 88.0|
@@ -67,7 +67,7 @@ This requires credentials for accessing Genesis Artifactory. If you have not bee
 8. Replace `<SCOPE>` with `genesislcap`, so that the line reads:
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
 
-9. Save the file and open a terminal under the directory path of this `.npmrc` file and type:
+9. Save the file and **open a terminal as admin** under the directory path of this `.npmrc` file and type:
 `npm info @genesislcap/foundation-ui`. If set-up was successful, you should see a response like this:
 
 ```shell
@@ -96,6 +96,9 @@ Make sure you have a gradle.properties file inside a **.gradle** folder on your 
 genesisArtifactoryUser=<your-artifactory-user>
 genesisArtifactoryPassword=<your-artifactory-password>
 ```
+:::tip
+This is the same credential you used in *step 6* above.
+:::
 
 ### Environment setup
 
@@ -109,7 +112,7 @@ wsl --install
 ```
 If you need help with the WSL installation, please refer to [here](https://docs.microsoft.com/en-us/windows/wsl/install).
 
-Then download the [Genesis WSL training distro](https://netorg209792-my.sharepoint.com/:u:/r/personal/genesis_files_genesis_global/Documents/GENESIS/General/Platform/Training/Developer/training-wsl.zip?csf=1&web=1&e=0Z2OtN). This distro contains everything you need to get started, including: 
+Then download the [Genesis WSL training distro](https://netorg209792-my.sharepoint.com/:u:/g/personal/genesis_files_genesis_global/EVH9uU6r5q9PkTyNhBXsDvABbCtRZgUjvpX1fD5MTs2glA?e=paUHyi). This distro contains everything you need to get started, including: 
 Linux CentOS 7 base, Java 11 SDK, genesis user, nginx, FoundationDB.
 
 Now create a local folder where you want to run the distro, e.g., "C:\wsl\distros\training-distro\". Unzip the package downloaded there and from that folder run:

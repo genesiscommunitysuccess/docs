@@ -153,7 +153,7 @@ Above, we have expanded the `client` folder. This contains all the UI-related pr
 The `server` folder follows the same structure. This contains all the server-side projects.
 
 :::note more about GenX
-[GenX CLI reference](/creating-applications/creating-a-new-project/alternative_options_supported/web-project-setup/#available-generators).
+[GenX CLI reference](/creating-applications/creating-a-new-project/alternative_options_supported/web-project-setup/).
 :::
 
 ### 2. Define the data model
