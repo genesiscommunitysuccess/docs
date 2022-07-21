@@ -11,7 +11,7 @@ Subscribe operations allow code to react to database changes, rather than pollin
 
 Subscriptions are limited to a single table or view.
 
-Types of changes[​](https://docs.genesis.global/secure/reference/developer/api/database/concepts/operations/subscribe/#types-of-changes "Direct link to heading")
+Types of changes[​](/database/database-concepts/subscribe/#types-of-changesdirect-link-to-heading)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 There are 3 categories of changes:
@@ -23,11 +23,11 @@ There are 3 categories of changes:
 When subscribing to a view and or a range, the change will reflect the change to the subscription -\
 rather than directly correlate to a database operation. A database insert or delete update will only be published to the subscriber if the insert appears in the range and/or view. Similarly, a database modify update might not show at all, or be transformed into an insert or delete update, if it moves into or out of the subscription.
 
-### Backward joins[​](https://docs.genesis.global/secure/reference/developer/api/database/concepts/operations/subscribe/#backward-joins "Direct link to heading")
+### Backward joins[​](/database/database-concepts/subscribe/#backward-joinsdirect-link-to-heading
 
 By default, subscriptions on views will only publish updates on database changes to the root table. However, in view definitions, a join to a child table can be defined as `backwardsJoin = true`. For these joins, the subscription will also publish changes to child tables as modify updates. Please note that this is only supported for combined read/subscribe operations, as the subscription needs to cache the joins. This cache will require extra memory and cpu cycles to maintain.
 
-Subscribing to updates[​](https://docs.genesis.global/secure/reference/developer/api/database/concepts/operations/subscribe/#subscribing-to-updates "Direct link to heading")
+Subscribing to updates[​](/database/database-concepts/subscribe/#subscribing-to-updatesdirect-link-to-heading)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 When subscribing to updates, there are a number of different parameters:
@@ -39,7 +39,7 @@ When subscribing to updates, there are a number of different parameters:
 | delay | ❌ | Group and publish updates every x ms | no grouping |
 | subscribeLocally | ❌ | When in a cluster, only listen to local updates | false |
 
-Mixed read/subscribe operations[​](https://docs.genesis.global/secure/reference/developer/api/database/concepts/operations/subscribe/#mixed-readsubscribe-operations "Direct link to heading")
+Mixed read/subscribe operations[​](/database/database-concepts/subscribe/#mixed-readsubscribe-operationsdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Mixed read and subscribe operations are useful in custom components when you need to read a whole or part of a table and need to keep in the loop of changes.
@@ -49,7 +49,7 @@ For this purpose, the database exposes two types of operation:
 -   `bulkSubscribe` - combines `subscribe` and `getBulk`
 -   `rangeSubscribe` - combines `subscribe` and `getRange`
 
-### `bulkSubscribe`[​](https://docs.genesis.global/secure/reference/developer/api/database/concepts/operations/subscribe/#bulksubscribe "Direct link to heading")
+### `bulkSubscribe`[​](/database/database-concepts/subscribe/#bulksubscribedirect-link-to-heading)
 
 `bulkSubscribe` has the following parameters:
 
@@ -62,7 +62,7 @@ For this purpose, the database exposes two types of operation:
 | subscribeLocally | ❌ | When in a cluster, only listen to local updates | false |
 | backwardsJoin | ❌ | subscribe to changes on child tables | false |
 
-### `rangeSubscribe`[​](https://docs.genesis.global/secure/reference/developer/api/database/concepts/operations/subscribe/#rangesubscribe "Direct link to heading")
+### `rangeSubscribe`[​](/database/database-concepts/subscribe/#rangesubscribedirect-link-to-heading)
 
 `rangeSubscribe` has the following parameters:
 

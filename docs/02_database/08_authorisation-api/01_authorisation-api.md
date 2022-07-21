@@ -14,19 +14,19 @@ The authorisation API consists of two main classes that enable you to add permis
 -   `AuthCache` is a kotlin class whose instance should be created by calling the static method `AuthCache.newReader(mapName: String, updateQueue: UpdateQueue): AuthCache`.\
     An UpdateQueue instance can be obtained from an injected RxDb connection: `rxDb.updateQueue`. A permission check for the entity is done by calling `isAuthorised(entityId: String?, userName: String): Boolean`, How this works is covered in more detail [AuthCache section](https://docs.genesis.global/secure/creating-applications/defining-your-application/access-control/authorisation-over/).
 
-### Permission code API[​](https://docs.genesis.global/secure/reference/developer/api/authorisation-api/#permission-code-api "Direct link to heading")
+### Permission code API[​](/database/authorisation-api/authorisation-api/#permission-code-apidirect-link-to-heading)
 
 ```
 package global.genesis.session// imports omitted for brevity@Singletonclass RightSummaryCache @Inject constructor(db: RxDb) :    AbstractBulkTableSubscriber<RightSummaryCache.RightSummary>(db, "RIGHT_SUMMARY") {        // other members omitted for brevity    fun userHasRight(userName: String, rightCode: String): Boolean {        // details omitted for brevity    }}
 ```
 
-### AuthCache API[​](https://docs.genesis.global/secure/reference/developer/api/authorisation-api/#authcache-api "Direct link to heading")
+### AuthCache API[​](/database/authorisation-api/authorisation-api/#authcache-apidirect-link-to-heading)
 
 ```
 package global.genesis.session// imports omitted for brevityclass AuthCache private constructor(private val mapName: String, updateQueue: UpdateQueue) : MasterAuthCache {      companion object {        @JvmStatic        fun newReader(mapName: String, updateQueue: UpdateQueue): AuthCache {            // details omitted for brevity        }    }    override fun isAuthorised(entityId: String?, userName: String): Boolean {        // details omitted for brevity    }}
 ```
 
-### In practice[​](https://docs.genesis.global/secure/reference/developer/api/authorisation-api/#in-practice "Direct link to heading")
+### In practice[​](/database/authorisation-api/authorisation-api/#in-practicedirect-link-to-heading)
 
 The example below shows permission codes and `AuthCache` in use:
 

@@ -14,17 +14,17 @@ The entity database will return type-safe results for write operations. There ar
 -   `ModifyResult`
 -   `UpsertResult`; either a `InsertResult` or a `ModifyResult`
 
-InsertResult[​](https://docs.genesis.global/secure/reference/developer/api/database/how-to/helper/write-result/generic/#insertresult "Direct link to heading")
+InsertResult[​](/database/helper-classes/write-results/generic/#insertresultdirect-link-to-heading)
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 The `InsertResult` has a single property `record` which is the inserted record. This includes any generated values.
 
-DeleteResult[​](https://docs.genesis.global/secure/reference/developer/api/database/how-to/helper/write-result/generic/#deleteresult "Direct link to heading")
+DeleteResult[​](/database/helper-classes/write-results/generic/#deleteresultdirect-link-to-heading)
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 The `DeleteResult` has a single property `record` which is the record as it was in the database before it was deleted.
 
-ModifyResult[​](https://docs.genesis.global/secure/reference/developer/api/database/how-to/helper/write-result/generic/#modifyresult "Direct link to heading")
+ModifyResult[​](/database/helper-classes/write-results/generic/#modifyresultdirect-link-to-heading)
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 The `ModifyResult` is slightly more complex. It has three properties:

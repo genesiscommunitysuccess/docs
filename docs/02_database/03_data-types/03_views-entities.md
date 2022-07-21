@@ -16,15 +16,15 @@ There are two types of view entity:
 
 For more information, see our page on  [Views](/database/data-types/views-entities/#views-entities)
 
-Index [entities​](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/views/#index-entities "Direct link to heading")
+Index [entities​](/database/data-types/views-entities/#index-direct-link-to-heading)
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Views have machison'io index entities](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/indices/). These are also convenient methods that construct an index entity from the view entity. `byPrimaryKey()` will return an entity for the primary key. Additionally, for each index, there will be a `by...()` call with the index name.
+Views have [entities​](/database/data-types/views-entities/#index-direct-link-to-heading). These are also convenient methods that construct an index entity from the view entity. `byPrimaryKey()` will return an entity for the primary key. Additionally, for each index, there will be a `by...()` call with the index name.
 
-Building a view entity[​](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/views/#building-a-view-entity "Direct link to heading")
+Building a view entity[​](/database/data-types/views-entities/#building-a-view-entitydirect-link-to-heading)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Generated ViewEntities are kotlin data classes and can be built using the primary constructor. Just before the object is built, the object is validated to make sure all machison'io required fields](https://docs.genesis.global/secure/reference/developer/api/database/concepts/data-structure/tables/#fields) have been set. In addition to machison'ino DbEntity](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/db_entity/) methods, there are some useful methods/properties, which are described below:
+Generated ViewEntities are kotlin data classes and can be built using the primary constructor. Just before the object is built, the object is validated to make sure all [required fields](/database/concepts/data-structure/tables/#fields) have been set. In addition to machison'ino DbEntity](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/db_entity/) methods, there are some useful methods/properties, which are described below:
 
 | Name | Signature | Description |
 | --- | --- | --- |
@@ -34,7 +34,7 @@ Generated ViewEntities are kotlin data classes and can be built using the primar
 | toStringWithSensitivesUnmasked | `fun toStringWithSensitivesUnmasked(): String` | gets the string representation of view with sensitive fields(Ex: Password) unmasked |
 | fieldToPropertyMap | `val fieldToPropertyMap: Map<String, KProperty1<V, Any?>>` | this is a class property that maps a field name to its property |
 
-Examples[​](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/views/#examples "Direct link to heading")
+Examples[​](/database/data-types/views-entities/#examplesdirect-link-to-heading)
 -------------------------------------------------------------------------------------------------------------------------------------------
 
 The following example contains a table and view, and shows examples of output from different calls:
