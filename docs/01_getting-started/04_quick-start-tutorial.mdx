@@ -25,7 +25,7 @@ Before you start, you need to have:
 - An IDE (preferably IntelliJ)
 - NodeJS (see our [recommended software packages](/creating-applications/getting-ready-to-develop/workstation-setup/#recommended-software-packages) for versioning information)
 - Credentials for accessing Genesis Artifactory. If necessary, contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login)
-- A gradle.properties file inside a **.gradle** folder on your user directory; this file must contain your password in clear text:
+- A gradle.properties file inside a **.gradle** folder on your user directory; this file must contain your Genesis Artifactory password in clear text:
 
 ```shell
 genesisArtifactoryUser=<your-artifactory-user>
@@ -91,9 +91,6 @@ In the next prompt, select `Quick Start Application` from the list.
 ```shell
 ? App seed Quick Start Application
 ? Overwrite existing files Yes
-? Package scope (without the @) genesislcap
-? Package name alpha
-? Create design system Yes
 ```
 
 At this point, the seed application is created and the genx dependencies are installed.
@@ -106,7 +103,8 @@ Then there are more questions, which you can respond to as follows:
 ? Create design system Yes
 ? Design system name alpha
 ? Base design system package (@latest will be used) @genesislcap/foundation-ui
-? Set API Host Yes (ws://localhost/gwf)
+? Set API Host Yes 
+? API Host (with websocket prefix and suffix if any) ws://localhost/gwf/
 ? Genesis Server version 6.0.1
 ? Genesis Deploy plugin version 6.0.2
 ? Kotlin version 1.6.10
@@ -121,7 +119,9 @@ i Application created successfully! 🎉 Please open the application and follow 
 ## 2. Define the data model
 Now you are ready to define the fields and tables that make up your [data model](/creating-applications/defining-your-application/data-model/data-model-overview). This structures information in a simple way that can be viewed by users and processed by the application.
 
-Open Intellij (or your chosen IDE). In the alpha project, you will see the **readme** file for the project. After importing and indexing, you should see the fol
+Open Intellij (or your chosen IDE). In the alpha project, you will see the **readme** file for the project. After importing and indexing, your local environment is ready to build the application
+
+All data model configurations are added to **alpha-config**/**src**/**main**/**resources**/**cfg** folder.
 
 ### Add fields
 You define your [fields](/creating-applications/defining-your-application/data-model/fields/fields/) in the file **alpha-fields-dictionary.kts**.
@@ -152,7 +152,7 @@ fields {
 }
 ```
 
-After you have saved this file, run [genesis-generated-fields](/reference/developer/genesis-dao/#dao-generation-commands).
+After you have saved this file, run [genesis-generated-fields](/reference/developer/genesis-dao/#running-the-commands)
 
 From the Gradle menu on the right of Intellij, this is:
 
@@ -185,7 +185,7 @@ tables {
 }
 ```
 
-After you have saved this file, run [genesis-generated-dao](/reference/developer/genesis-dao/#dao-generation-commands).
+After you have saved this file, run [genesis-generated-dao](/reference/developer/genesis-dao/#running-the-commands).
 
 From the Gradle menu, this is:
 
@@ -196,6 +196,7 @@ From the Gradle menu, this is:
 ## 3. Add business logic
 We have a table; now we want to be able to see its content and create new entries.
 
+All business logic related scripts are added to **alpha-script-config**/**src**/**main**/**resources**/**scripts** folder.
 
 ### Data Server
 A [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers) allows for reading of real-time data. You must define the Data Server in the file **alpha-dataserver.kts**.
@@ -222,10 +223,10 @@ eventHandler {
 }
 ```
 ## 4. Prepare the server and build
-The application has two files that contain vital configuration information:
+The application has two files that contain vital configuration information, which are located in **alpha-config**/**src**/**main**/**resources**/**cfg** folder
 
-- **alpha-processes.xml**
-- **alpha-service-definitions.xml**
+- [**alpha-processes.xml**](/creating-applications/configure-runtime/processes-xml/)
+- [**alpha-service-definitions.xml**](/creating-applications/configure-runtime/service-definitions/)
 
 At present, they are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
 
@@ -274,18 +275,6 @@ In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha**/**
 ## 5. Create a user interface
 
 Now let's create a single page with a grid and a form for entering data.
-
-Before you start, check if you have set a valid API_HOST in **client/web/package.json**.
-
-The syntax for the API_HOST is:
-- protocol (followed by a colon delimiter)
-- secure websocketshost (followed by a colon delimiter)
-- port (443 is the port assigned for secure HTTP traffic)
-- /gwf/ (this is the standard path for Genesis platform)
-
-for example: ws://localhost:443/gwf/
-
-
 
 For your user interface, the `genx` process has generated the following files:
 
@@ -474,7 +463,7 @@ At this point, the application is now able to display and receive data.
 
 ## 6. Run the application
 
-before you start this, make sure that:
+Before you start this, make sure that:
 
 - you have a user with name of the application (alpha)
 - foundationdb is running (if it is not, run `systemctl start foundationdb` from Centos07

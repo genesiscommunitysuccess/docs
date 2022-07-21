@@ -101,7 +101,7 @@ joining(TRADE.JOIN_TRADE_TO_SIDE)
 ### Parameterised joins
 Some join operations require external parameters that are not available in the context of the table-join definition, but will be available when the view repository is access (e.g. client enriched definitions), so an option exists to create parametrised joins.
 
-These are typically used in request server queries:
+These are typically used in Request Server queries:
 
 ```kotlin
 view("INSTRUMENT_PARAMETERS", INSTRUMENT) {
@@ -122,7 +122,7 @@ view("INSTRUMENT_PARAMETERS", INSTRUMENT) {
 }
 ```
 
-So for the above, if we had a request server using the view, it would make `ALTERNATE_TYPE` available as a field input parameter.
+So for the above, if we had a Request Server using the view, it would make `ALTERNATE_TYPE` available as a field input parameter.
 
 ### Dynamic joins
 These have a shared syntax with derived fields. However, rather than specifying a field name and type, it should always return an entity index type of the table you’re joining on.

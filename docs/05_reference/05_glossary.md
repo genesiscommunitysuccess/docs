@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 5
 title: Glossary
 sidebar_label: Glossary
 id: glossary
@@ -242,9 +242,9 @@ In the world of applications servers, a resource is a component that can send an
 
 Genesis applications provide three types of resource:
 
-* request server (request reply), which supplies static data (reference data)
-* data server, which provides real-time data, such as price information
-* event handler, which handles interaction from the front end (such as user clicks), responses to internal database changes and messages to and from external services
+* Request Server (request reply), which supplies static data (reference data)
+* Data Server, which provides real-time data, such as price information
+* Event Handler, which handles interaction from the front end (such as user clicks), responses to internal database changes and messages to and from external services
 
 In most cases, you can generate these resources automatically (via the AppGen command). You can then configure these basic resources to add sophistication to the application.
 

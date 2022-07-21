@@ -41,7 +41,7 @@ Within the curly brackets of the function, you can access all the fields on a ro
 | stdevp        | population standard deviation for value   | any number | DOUBLE        | always        |
 | variance      | statistical variance for value            | any number | DOUBLE        | always        |
 | variancep     | population statistical variance for value | any number | DOUBLE        | always        |
-| stringAgg     | string concatenation                      | any value  | STRING        | sometimes `+` |
+| stringAgg     | string concatenation                      | any string | STRING        | sometimes `+` |
 | checksum      | calculates a hash over the input          | any value  | LONG          | always        |
 
 `*` if previous min or max value is removed<br />
