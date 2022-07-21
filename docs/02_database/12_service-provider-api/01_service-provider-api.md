@@ -9,7 +9,7 @@ Service detail provider
 
 In this page, we look at details of the functions that enable you to interact with the Genesis services that can be specified in the [service-definition.xml](https://docs.genesis.global/secure/creating-applications/configure-runtime/service-definitions//) file.
 
-Functions[​](https://docs.genesis.global/secure/reference/developer/api/service-detail-provider/#functions "Direct link to heading")
+Functions[​](/database/service-provider-api/service-provider-api/#functionsdirect-link-to-heading)
 ------------------------------------------------------------------------------------------------------------------------------------
 
 | Name | Signature | Description |

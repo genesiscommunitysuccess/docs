@@ -18,7 +18,7 @@ You can access system definition properties in two ways:
 -   using existing APIs
 -   using @Named Genesis annotation
 
-Using existing APIs[​](https://docs.genesis.global/secure/reference/developer/api/system-def-api/#using-existing-apis "Direct link to heading")
+Using existing APIs[​](/database/system-definition-api/system-definition-api/#using-existing-apisdirect-link-to-heading)
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
 | name | signature |
@@ -57,7 +57,7 @@ Using existing APIs[​](https://docs.genesis.global/secure/reference/developer/
 | parseProperty | `static <T, R> Optional<R> parseProperty(Supplier<Optional<T>> property, Predicate<? super T> canBeTransformed, Function<? super T, ? extends R> transformer)` |
 | parseStringProperty | `static <R> Optional<R> parseStringProperty(Supplier<Optional<String>> property, Function<? super String, ? extends R> transformer)` |
 
-Using @Named genesis annotation[​](https://docs.genesis.global/secure/reference/developer/api/system-def-api/#using-named-genesis-annotation "Direct link to heading")
+Using @Named genesis annotation[​](/database/system-definition-api/system-definition-api/#using-named-genesis-annotationdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Follow this [link](https://docs.genesis.global/secure/reference/developer/custom-components/#injectable-properties-from-system-definition) for examples
+Follow this [link](https://docs.genesis.global/secure/reference/developer/custom-components/#injectable-properties-from-system-definition) for examples.

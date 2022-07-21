@@ -19,7 +19,7 @@ Java event handlers can be implemented using [RxJava3](https://docs.genesis.gl
 
 We recommend using kotlin to implement event handlers
 
-Configure in processes.xml file[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#configure-in-processesxml-file "Direct link to heading")
+Configure in processes.xml file[​](/database/event-handler-api/event-handler-api/#configure-in-processesxml-filedirect-link-to-heading)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 You need to add the `global.genesis.eventhandler` package in the package tag of the process; this tag defines which package the process should refer to. For example:
@@ -28,7 +28,7 @@ You need to add the `global.genesis.eventhandler` package in the package tag o
   <process name="POSITION_NEW_PROCESS">    <groupId>POSITION</groupId>    <start>true</start>    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>    <module>position-new-process</module>    <package>global.genesis.eventhandler,position.company.manager</package>    <description>Handles events</description>  </process>
 ```
 
-Event Handler interface[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#event-handler-interface "Direct link to heading")
+Event Handler interface[​](/database/event-handler-api/event-handler-api/#event-handler-interfacedirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 The Event Handler interface is the common supertype of AsyncEventHandler, Rx3EventHandler and SyncEventHandler, but it is not meant to be used on its own. It provides basic options for each Event Handler definition, which can be overridden. See the Kotlin methods explanation below:
@@ -59,10 +59,10 @@ Inject objects[​](https://docs.genesis.global/secure/reference/developer/api/e
 
 Use [@Inject](https://docs.genesis.global/secure/reference/developer/dependency-injection/#inject) to provide instances for any objects needed as part of the dependency injection stage
 
-Async[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#async "Direct link to heading")
+Async[​](/database/event-handler-api/event-handler-api/#asyncdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------
 
-### AsyncEventHandler[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#asynceventhandler "Direct link to heading")
+### AsyncEventHandler[​](/database/event-handler-api/event-handler-api/#asynceventhandlerdirect-link-to-heading)
 
 This is the most basic definition of an async Event Handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface, which is defined as: `interface AsyncEventHandler<I : Any, O : Outbound> : AsyncEventWorkflowProcessor<I, O>, EventHandler`
 
@@ -95,13 +95,13 @@ Using these helper methods, you could simplify the previous implementation like 
 import global.genesis.commons.annotation.Moduleimport global.genesis.eventhandler.typed.async.AsyncEventHandlerimport global.genesis.message.core.event.Eventimport global.genesis.message.core.event.EventReply@Moduleclass EventCompanyHandlerAsync : AsyncEventHandler<Company, EventReply> {    override suspend fun process(message: Event<Company>): EventReply {        val company = message.details        // custom code block..        return ack()    }}
 ```
 
-### AsyncValidatingEventHandler[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#asyncvalidatingeventhandler "Direct link to heading")
+### AsyncValidatingEventHandler[​](/database/event-handler-api/event-handler-api/#asyncvalidatingeventhandlerdirect-link-to-heading)
 
 In the previous example, there was no distinction between validation and commit blocks, which is possible in GPAL Event Handlers. In order to have a better separation of concerns using custom Event Handlers, you can implement the `AsyncValidatingEventHandler` interface, which is defined as:
 
 `interface AsyncValidatingEventHandler<I : Any, O : Outbound> : AsyncEventHandler<I, O>`
 
-### Implementation[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#implementation "Direct link to heading")
+### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading)
 
 Using this interface, you don't need to override the `process` method; you can split your logic into validation and commit stages. There are various methods of implementing this, which are described below:
 
@@ -118,11 +118,11 @@ import global.genesis.commons.annotation.Moduleimport global.genesis.eventhandle
 
 If the `validate` flag is received as `true`, only the `onValidate` code block will be executed. If the `validate` flag is received as `false`, both the `onValidate` and `onCommit` blocks will be executed.
 
-### AsyncContextValidatingEventHandler[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#asynccontextvalidatingeventhandler "Direct link to heading")
+### AsyncContextValidatingEventHandler[​](/database/event-handler-api/event-handler-api/#asyncvalidatingeventhandlerdirect-link-to-heading)
 
 In some cases, you might want to carry information from the `onValidate` code block to the `onCommit` code block for efficiency purposes. (For example, if several database look-ups happen in `onValidate` and you want to reuse that information.) Using the `AsyncContextValidatingEventHandler` interface, you can provide this context information from the validation stage to the commit stage. See the interface below: `interface AsyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : AsyncEventHandler<I, O>`
 
-### Implementation[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#implementation-1 "Direct link to heading")
+### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading)
 
 As with the previous example, when using this interface, you don't need to override the `process` method. The different methods for implementing this are described below:
 
@@ -144,19 +144,19 @@ The type `C` represents the contextual information we want to provide, and it 
 import global.genesis.commons.annotation.Moduleimport global.genesis.eventhandler.typed.async.AsyncContextValidatingEventHandlerimport global.genesis.message.core.event.Eventimport global.genesis.message.core.event.EventReplyimport global.genesis.message.core.event.ValidationResult@Moduleclass TestCompanyHandlerAsync : AsyncContextValidatingEventHandler<Company, EventReply, String> {    override suspend fun onValidate(message: Event<Company>): ValidationResult<EventReply, String> {        val company = message.details        // custom code block..        val companyName = company.companyName        return validationResult(ack(), companyName)    }    override suspend fun onCommit(message: Event<Company>, context: String?): EventReply {        if(context != null){            // Do something with the context        }        val company = message.details        // custom code block..        return ack()    }}
 ```
 
-Rx3[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#rx3 "Direct link to heading")
+Rx3[​](database/event-handler-api/event-handler-api/#rx3direct-link-to-heading)
 ------------------------------------------------------------------------------------------------------------------
 
 The mechanism explained in [Async](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#async) can be recycled and reapplied in Rx3 Event Handlers.
 
-Rx3EventHandler[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#rx3eventhandler "Direct link to heading")
+Rx3EventHandler[​](/database/event-handler-api/event-handler-api/#rx3eventhandlerdirect-link-to-heading)
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 In a similar fashion to `AsyncEventHandler`, there is an Rx3 implementation flavour. It works in a very similar way to [`AsyncEventHandler`](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#asynceventhandler), but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
 
 See the interface definition below: `interface Rx3EventHandler<I : Any, O : Outbound> : Rx3EventWorkflowProcessor<I, O>, EventHandler`
 
-### Implementation[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#implementation-2 "Direct link to heading")
+### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading-2)
 
 The mandatory method for implementing this is:
 
@@ -164,7 +164,7 @@ The mandatory method for implementing this is:
 | --- | --- |
 | process | `fun process(message: Event<I>) : Single<O>` |
 
-### Helper methods[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#helper-methods "Direct link to heading")
+### Helper methods[​](/database/event-handler-api/event-handler-api/#helper-methodsdirect-link-to-heading)
 
 | Name | Signature |
 | --- | --- |
@@ -182,13 +182,13 @@ Here is an example:
     import global.genesis.commons.annotation.Module    import global.genesis.eventhandler.typed.rx3.Rx3EventHandler    import global.genesis.gen.dao.Company    import global.genesis.message.core.event.Event    import global.genesis.message.core.event.EventReply    import io.reactivex.rxjava3.core.Single    @Module    class TestCompanyHandlerRx3 : Rx3EventHandler<Company, EventReply> {        override fun process(message: Event<Company>): Single<EventReply> {            return ack()        }    }
 ```
 
-### Rx3ValidatingEventHandler[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#rx3validatingeventhandler "Direct link to heading")
+### Rx3ValidatingEventHandler[​](/database/event-handler-api/event-handler-api/#rx3validatingeventhandlerdirect-link-to-heading)
 
 The same applies to an Rx3ValidatingEventHandler. It is similar to [AsyncValidatingEventHandler](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#asyncvalidatingeventhandler) in every way, but the return type is still `Single<O>`.
 
 `interface Rx3ValidatingEventHandler<I : Any, O : Outbound> : Rx3EventHandler<I, O>`
 
-### Implementation[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#implementation-3 "Direct link to heading")
+### Implementation[​](database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading-3)
 
 | Name | Signature |
 | --- | --- |
@@ -204,20 +204,20 @@ Here is an example:
     import global.genesis.commons.annotation.Module    import global.genesis.eventhandler.typed.rx3.Rx3ValidatingEventHandler    import global.genesis.gen.dao.Company    import global.genesis.message.core.event.Event    import global.genesis.message.core.event.EventReply    import io.reactivex.rxjava3.core.Single    @Module    class TestCompanyHandlerRx3 : Rx3ValidatingEventHandler<Company, EventReply> {        override fun onValidate(message: Event<Company>): Single<EventReply> {            val company = message.details            // custom code block..            return ack()        }        override fun onCommit(message: Event<Company>): Single<EventReply> {            val company = message.details            // custom code block..            return ack()        }    }
 ```
 
-### Rx3ContextValidatingEventHandler[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#rx3contextvalidatingeventhandler "Direct link to heading")
+### Rx3ContextValidatingEventHandler[​](/database/event-handler-api/event-handler-api/#rx3contextvalidatingeventhandlerdirect-link-to-heading)
 
 And the same goes for `Rx3ContextValidatingEventHandler` in relation to [AsyncContextValidatingEventHandler](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#asynccontextvalidatingeventhandler).
 
 `interface Rx3ContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : Rx3EventHandler<I, O>`
 
-### Implementation[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#implementation-4 "Direct link to heading")
+### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading-2)
 
 | Name | Signature |
 | --- | --- |
 | onValidate | `fun onValidate(message: Event<I>): Single<ValidationResult<O, C>>` |
 | onCommit | `fun onCommit(message: Event<I>, context: C?): Single<O>` |
 
-### Helper methods[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#helper-methods-1 "Direct link to heading")
+### Helper methods[​](database/event-handler-api/event-handler-api/#helper-methodsdirect-link-to-heading)
 
 | Name | Signature |
 | --- | --- |
@@ -233,22 +233,22 @@ Here is an example:
     import global.genesis.commons.annotation.Module    import global.genesis.eventhandler.typed.rx3.Rx3ContextValidatingEventHandler    import global.genesis.gen.dao.Company    import global.genesis.message.core.event.Event    import global.genesis.message.core.event.EventReply    import global.genesis.message.core.event.ValidationResult    import io.reactivex.rxjava3.core.Single    @Module    class TestCompanyHandlerRx3 : Rx3ContextValidatingEventHandler<Company, EventReply, String> {        override fun onValidate(message: Event<Company>): Single<ValidationResult<EventReply, String>> {            val company = message.details            // custom code block..            val companyName = company.companyName            return Single.just(validationResult(EventReply.EventAck(), companyName))        }        override fun onCommit(message: Event<Company>, context: String?): Single<EventReply> {            if (context != null) {            // Do something with the context            }            val company = message.details            // custom code block..            return ack()        }    }
 ```
 
-Sync[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#sync "Direct link to heading")
+Sync[​](/database/event-handler-api/event-handler-api/#syncdirect-link-to-heading)
 --------------------------------------------------------------------------------------------------------------------
 
 Sync works similarly to [Async](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#async) and [Rx3](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
 
-### SyncEventHandler[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#synceventhandler "Direct link to heading")
+### SyncEventHandler[​](/database/event-handler-api/event-handler-api/#synceventhandlerdirect-link-to-heading)
 
 `interface SyncEventHandler<I : Any, O : Outbound> : SyncEventWorkflowProcessor<I, O>, EventHandler`
 
-### Implementation[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#implementation-5 "Direct link to heading")
+### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading-5)
 
 | Name | Signature |
 | --- | --- |
 | process | `fun process(message: Event<I>) : O` |
 
-### Helper methods[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#helper-methods-2 "Direct link to heading")
+### Helper methods[​](/database/event-handler-api/event-handler-api/#helper-methodsdirect-link-to-heading-2)
 
 | Name | Signature |
 | --- | --- |
@@ -266,11 +266,11 @@ Here is an example:
     import global.genesis.commons.annotation.Module    import global.genesis.eventhandler.typed.sync.SyncEventHandler    import global.genesis.gen.dao.Company    import global.genesis.message.core.event.Event    import global.genesis.message.core.event.EventReply    @Module    class TestCompanyHandlerSync : SyncEventHandler<Company, EventReply> {        override fun process(message: Event<Company>): EventReply {            return ack()        }    }
 ```
 
-### SyncValidatingEventHandler[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#syncvalidatingeventhandler "Direct link to heading")
+### SyncValidatingEventHandler[​](/database/event-handler-api/event-handler-api/#syncvalidatingeventhandlerdirect-link-to-heading)
 
 `interface SyncValidatingEventHandler<I : Any, O : Outbound> : SyncEventHandler<I, O>`
 
-### Implementation[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#implementation-6 "Direct link to heading")
+### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading-6)
 
 | Name | Signature |
 | --- | --- |
@@ -286,18 +286,18 @@ Here is an example:
     import global.genesis.commons.annotation.Module    import global.genesis.eventhandler.typed.sync.SyncValidatingEventHandler    import global.genesis.gen.dao.Company    import global.genesis.message.core.event.Event    import global.genesis.message.core.event.EventReply    @Module    class TestCompanyHandlerSync : SyncValidatingEventHandler<Company, EventReply> {        override fun onValidate(message: Event<Company>): EventReply {            val company = message.details            return ack()        }        override fun onCommit(message: Event<Company>): EventReply {            val company = message.details            return ack()        }    }
 ```
 
-### SyncContextValidatingEventHandler[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#synccontextvalidatingeventhandler "Direct link to heading")
+### SyncContextValidatingEventHandler[​](/database/event-handler-api/event-handler-api/#synccontextvalidatingeventhandlerdirect-link-to-heading)
 
 `interface SyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : SyncEventHandler<I, O>`
 
-### Implementation[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#implementation-7 "Direct link to heading")
+### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading-7)
 
 | Name | Signature |
 | --- | --- |
 | onValidate | `fun onValidate(message: Event<I>): ValidationResult<O, C>` |
 | onCommit | `fun onCommit(message: Event<I>, context: C?): O` |
 
-### Helper methods[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#helper-methods-3 "Direct link to heading")
+### Helper methods[​](/database/event-handler-api/event-handler-api/#helper-methodsdirect-link-to-heading-3)
 
 | Name | Signature |
 | --- | --- |

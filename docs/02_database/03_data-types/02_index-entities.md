@@ -11,7 +11,7 @@ Index entities are nested in [table](https://docs.genesis.global/secure/referen
 
 A unique index entity will only be created when all fields of a unique index are supplied. In all other cases, a non-unique index entity will be created.
 
-Types[​](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/indices/#types "Direct link to heading")
+Types[​](/database/data-types/index-entities/#typesdirect-link-to-heading)
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 There are two types of index entity:
@@ -26,7 +26,7 @@ There are two types of index entity:
 | Can be used in a `getRange(index)` | ❌ | ✔️ |
 | Can be used in a `getRange(from, to)` | ✔️ | ✔️ |
 
-Usage[​](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/indices/#usage "Direct link to heading")
+Usage[​](/database/data-types/index-entities/#usagedirect-link-to-heading)
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 -   Kotlin
