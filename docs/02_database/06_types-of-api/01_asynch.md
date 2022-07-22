@@ -7,8 +7,7 @@ id: asynch
 Async API
 =========
 
-The Genesis low-code platform relies on [kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html) for providing-high performance applications. The Async API is the preferred API for accessing the database in kotlin; however, while the [RxJava API](/database/types-of-api/rxjava/
-) is also available. The asynchronous API is not available from java.
+The Genesis low-code platform relies on [kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html) for providing-high performance applications. The Async API is the preferred API for accessing the database in kotlin; however, while the [RxJava API](/database/types-of-api/rxjava/) is also available. The asynchronous API is not available from java.
 
 Coroutines overview[​](/database/types-of-api/asynch/#coroutines-overviewdirect-link-to-heading)
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
