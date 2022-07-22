@@ -9,7 +9,7 @@ RxJava API
 
 [RxJava](https://www.rxjava.com/) is a java implementation of reactive extensions. The genesis database use this library to represent asynchronous database operations in java.
 
-The RxJava API is the only way of accessing the database in java. For kotlin the [async](/database/types-of-api/asynch/) API is preferred, but the RxJava API is also supported.
+The RxJava API is the only way of accessing the database in java. For kotlin the [asynch](/database/types-of-api/asynch/) API is preferred, but the RxJava API is also supported.
 
 Subscription[​](/database/types-of-api/rxjava/#subscriptiondirect-link-to-heading)
 -------------------------------------------------------------------------------------------------------------------------------------------------

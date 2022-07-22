@@ -77,8 +77,8 @@ module.exports = {
     },
     navbar: {
       items: [
-        {to: 'getting-started/learn-the-basics/', label: 'Learning'},
-        {to: 'database/fields-tables-views', label: 'Database'},
+        {to: 'getting-started', label: 'Learning'},
+        {to: 'database/learning-landing', label: 'Database'},
         {to: 'server-modules', label: 'Server Modules'},
         {to: 'front-end', label: 'Front End'},
         {to: 'operations', label: 'Operations'},
@@ -95,7 +95,7 @@ module.exports = {
         src: 'img/logo-icon--light.svg',
         width: 25,
         height: 25,
-        href: '/getting-started/learn-the-basics/',
+        href: '/getting-started',
         target: '_self'
       },
       title: 'DOCUMENTATION'

@@ -9,7 +9,7 @@ Supported databases
 
 Genesis supports different databases.
 
-| Database | [FoundationDb](database/reference/supported-databases/foundationdb/) | [Postgresql](database/reference/supported-databases/postgresql/) | [Aerospike](database/reference/supported-databases/aerospike/) | [MSSQL](database/reference/supported-databases/mssql/) | [Oracle](database/reference/supported-databases/oracle/) |
+| Database | [FoundationDb](/database/database-technology/foundationdb/) | [Postgresql](/database/database-technology/postgresql//) | [Aerospike](/database/database-technology/aerospike/) | [MSSQL](/database/database-technology/sql/) | [Oracle](/database/database-technology/sql/) |
 | --- | --- | --- | --- | --- | --- |
 | Technology | NOSQL | SQL | NOSQL | SQL | SQL |
 | Supports transactions | ✔️ | ✔️ | ❌ | ✔️ | ✔ |
