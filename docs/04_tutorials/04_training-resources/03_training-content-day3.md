@@ -425,11 +425,17 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 #### Define the position-keeping logic in the consolidator
 
-Before defining the consolidator, we should insert some data in the *INSTRUMENT_PRICE* table using the command `SendIt`:
+Before defining the consolidator, we should insert some data in the *INSTRUMENT_PRICE* table using the command [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script).
 
+Save this csv as INSTRUMENT_PRICE.csv:
 ```csv
 INSTRUMENT_ID,LAST_PRICE
 1,10
+```
+
+And from the terminal, go to the folder where the csv is located and run:
+```shell
+SendIt
 ```
 
 As well as set the instrument_id field as not nullable in the TRADE and POSITION tables, as the consolidations will use it.

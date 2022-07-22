@@ -481,8 +481,16 @@ or from the dropdown menu:
 
 Once you are inside the console, type 'table USER' and then 'search 1'. If imported correctly, the user JaneDee should be listed.
 
-:::tip
-If you are curious about other things you can do with DbMon, type 'help'.
+:::info how to run server commands from the command line rather than gradle tasks?
+We've been running server commands through the gradle tasks. Alternatively, you can run server commands directly from a command line. 
+Open PowerShell (or Windows Command Prompt), access your WSL instance 'TrainingCentOS' and switch to user 'genesis' to have access to the Genesis Platform commands. Example:
+```shell
+wsl -d TrainingCentOS
+su genesis
+DbMon
+```
+
+During the training we cover some of the most important commands, but feel free to look at the [list of available commands](/managing-applications/operate/on-the-host/helpful-commands/).
 :::
 
 Now, let's run Genesis command 'mon' to see if all processes are up and running on the server:
@@ -511,6 +519,10 @@ PID     Process Name                  Port        Status         CPU       Memor
 664     ALPHA_DATASERVER              11000       RUNNING        58.10     1.50
 703     ALPHA_EVENT_HANDLER           11001       RUNNING        71.30     2.20
 ```
+
+:::note server commands
+Try to run `mon` from the command line as well!
+:::
 
 See [here](/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/configure-deployment-plugin/) for extra details on how to configure the Genesis deploy plugin.
 

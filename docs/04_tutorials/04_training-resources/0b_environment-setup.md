@@ -5,9 +5,7 @@ sidebar_label: Environment setup
 sidebar_position: 2
 
 ---
-## Setting up your workstation and environment
-
-So let's get started by setting up your workstation and the development environment.
+## Setting up your workstation and a local server
 
 ### Workstation setup
 
@@ -67,7 +65,7 @@ This requires credentials for accessing Genesis Artifactory. If you have not bee
 8. Replace `<SCOPE>` with `genesislcap`, so that the line reads:
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
 
-9. Save the file and **open a terminal as admin** under the directory path of this `.npmrc` file and type:
+9. Save the file and **open a terminal as administrator** under the directory path of this `.npmrc` file and type:
 `npm info @genesislcap/foundation-ui`. If set-up was successful, you should see a response like this:
 
 ```shell
@@ -100,7 +98,7 @@ genesisArtifactoryPassword=<your-artifactory-password>
 This is the same credential you used in *step 6* above.
 :::
 
-### Environment setup
+### Local server setup
 
 Make sure you have completed the [Workstation setup](#workstation-setup) prior to this.
 
@@ -130,6 +128,9 @@ You should see this message:
 Welcome to Genesis WSL training distro!
 [root@hostname training-distro]#
 ```
+:::note
+From now on, whenever you see things like "from the terminal or command line" or "run this command", it means from the WSL Linux instance command line as user 'genesis' ('su genesis').
+:::
 
 You are good to go!
 
