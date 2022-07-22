@@ -21,34 +21,38 @@ Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](ht
 
 Web Components are custom html elements that completely encapsulate their logic to create self-contained reusable components, that do not clash or interfere with the rest of application. They are future-proof and interoperable with traditional web frameworks.
 
-We currently offer over 40 web components that are ready to go, but that number is growing and we can also work with our clients to create bespoke web components for their specific needs. Frameworks like React, Angular, Vue and so on, have traditionally offered component models to developers, however Web Components are literally, the standard component model of the web, written into the HTML specification. Applications themselves can be fully encapsulated web components too, for example YouTube is a web component, made up of many smaller web components.
+We currently offer [over 40 web components](/reference/components/pre-built-components/ui-components/) such as Button, Text Field etc that are ready to go. That number is growing and we can also work with our clients to create bespoke web components for their specific needs. Frameworks like React, Angular, Vue and so on, have traditionally offered component models to developers, however Web Components are literally, the standard component model of the web, written into the HTML specification. Applications themselves can be fully encapsulated web components too, for example YouTube is a web component, made up of many smaller web components.
+
+### Micro Frontends
+
+On a higher level, the Genesis Platform also offers a number of re-usable Micro Frontends for common functionalities such as user management, entity management ([CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)), reporting and so on. 
+
+This architecture is a design approach in which a front-end app is decomposed into individual,
+semi-independent micro applications working loosely together. The micro-front-end concept is vaguely inspired by, and named
+after, microservices. Independent development teams can collaborate on a front-end app more easily using this approach,
+and can each have their own release cadence. At Genesis, we use a number of technologies to enable this functionality,
+including [Webpack 5 Module Federation](https://webpack.js.org/concepts/module-federation/).
 
 ### Genesis packages​
 
 Our components are distributed as npm packages, such as:
 
-`@genesislcap/foundation-ui` 
-When you generate a design system using CLI it will automatically extend a base design system that we have provided. ​This highly configurable design system is called Genesis Foundation UI. It is made up of a set of web components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options as necessary for your application.
+#### `@genesislcap/foundation-ui` 
+When you generate a [design system](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/intro/) using CLI it will automatically extend a base design system that we have provided. ​This highly configurable design system is called Genesis Foundation UI. It is made up of a set of web components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options as necessary for your application.
 
-`@genesislcap/foundation-zero` 
-The zero design system variant​.
+#### `@genesislcap/foundation-zero` 
+Our design system variant, called Zero Design System​. It provides the standard components like buttons and data grids, which can be easily integrated with the back end using component attributes such as 'resourceName' that displays and updates data in real-time from a data server resource.
 
-`@genesislcap/foundation-utils​` 
-Useful components to be used mostly in your templates.
+#### `@genesislcap/foundation-utils​` 
+Useful components like loggers, formatters, environment related components etc to be used in your templates.
 
-`@genesislcap/foundation-comms` 
-Core foundation UI communication system with the server.
-
-:::tip
-Key takeaways
-
-**foundation-ui** will give you the standard components like buttons and data grids, which can be easily integrated with the back end using component attributes such as 'resourceName' that displays and updates data in real-time from a data server resource.
-
-**foundation-comms** will give you, for example, Connection components that you can use to connect to the server and do things like subscribing to data streams, commit events or request data.
+#### `@genesislcap/foundation-comms` 
+Core foundation UI communication system with the server. It provides, among other things, Connection components that you can use to connect to the server and do things like subscribing to data streams, commit events or request data.
 
 There are many more packages, but that's what we need for now to develop our application.
-:::
 
+### More about Web UI
+Please look at the complete [UI reference](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/getting-started/) for more details about the Web UI. In this training, we're going to use the Micro Frontends which are the easiest way to start working with the UI.
 
 ## Create a user interface
 

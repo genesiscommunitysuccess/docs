@@ -20,7 +20,7 @@ In system terms, evaluators enable you to connect event handlers to two differen
 1. __Cron Rules__, which are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
 2. __Dynamic Rules__, also known as Dynamic Events, are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
-In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. 
+In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this training, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [Defining a dynamic rule](/creating-applications/defining-your-application/business-logic/evaluators/configure/#defining-a-dynamic-rule).
 
 ### Cron rules (static events)​
 
@@ -49,12 +49,12 @@ Let's look at the most important fields:
 #### 1. Configure the Evaluator
 
 An Evaluator is a process that runs cron jobs. 
-To start, create a process called *ALPHA_EVALUATOR* and add it in the file **alpha-processes.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below.
+To start, create a process called *GENESIS_EVALUATOR* and add it in the file **alpha-processes.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below.
 
 ```xml
 <processes>
     ...
-    <process name="ALPHA_EVALUATOR">
+    <process name="GENESIS_EVALUATOR">
         <start>true</start>
         <groupId>GENESIS</groupId>
         <options>-Xmx512m -DXSD_VALIDATE=false</options>
@@ -66,12 +66,12 @@ To start, create a process called *ALPHA_EVALUATOR* and add it in the file **alp
 </processes>
 ```
 
-Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below. 
+Add the *GENESIS_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below. 
 
 ```xml
 <configuration>
     ...
-    <service host="localhost" name="ALPHA_EVALUATOR" port="11003"/>
+    <service host="localhost" name="GENESIS_EVALUATOR" port="11003"/>
 </configuration>
 ```
 
@@ -143,9 +143,23 @@ CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,ME
 "0 * * ? * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 
-That's it.
+#### 5.Change the log level to verify the execution of the events
+Run the [LogLevel](/managing-applications/operate/on-the-host/helpful-commands/#loglevel-script) command for that:
 
-### Dynamic rules
+```shell
+LogLevel -p GENESIS_EVALUATOR -DATADUMP_ON -l DEBUG
+```
+
+And then to see the logs run:
+```shell
+cd $L
+tail -f GENESIS_EVALUATOR.log
+```
+:::tip
+$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Moreover, feel free to use your favorite command to view logs such as tail, less etc.
+:::
+
+<!-- ### Dynamic rules
 
 We have now set up the evaluator so that our application creates reports daily.
 
@@ -324,9 +338,7 @@ You can see that when the limit is breached, you receive an email automatically.
 
 :::note
 Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the inbox *dev-training@freesmtpserver.com*
-:::
-
-Well done!
+::: -->
 
 #### Try yourself
 
@@ -633,7 +645,7 @@ Now that our application code is complete, let's take a look at the operations s
     └── scripts
 ```
 
-Key take-aways:
+Understanding the file structure:
 - `run` is what we usually call the installation directory, which is preferentially a symlink to another folder named as the date of creation. It makes upgrading easier, so we can just point the `run` folder to a new folder like `2023-01-01` running a new version of the Platform.
 - `auth`, `alpha`, `genesis` are application modules and, as such, they contain the same structure with sub-folders like `bin`, `cfg`, `lib` and `scripts`. If you add a new module, `market_data` for example, it would be another folder under `run` with the same structure as the other modules. You can deploy a new module by unzipping the module's distribution zip file into the `run` folder and running genesisInstall.
 - `generated` contains files processed and installed by the Platform, do not change its content manually (use genesisInstall command instead).

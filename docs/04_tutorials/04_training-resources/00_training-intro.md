@@ -14,7 +14,7 @@ This is a hands-on developer training where we're going to follow the creation �
 
 ## Pre-requisites and assumptions
 
-- You know how to code, ideally familiar with the Java ecosystem and Kotlin language. Even better if you know some​ TypeScript and some basic Linux commands.​
+- You know how to code, ideally familiar with the **Java ecosystem** and **Kotlin** language. Even better if you know some​ **TypeScript** and some basic Linux commands.​
 - You have taken the Foundations course.
 - You are familiar with basic capital markets concepts such as [orders, trades](https://www.investopedia.com/terms/o/order.asp) and [position](https://www.investopedia.com/terms/p/position.asp).
 
@@ -32,20 +32,18 @@ Also, at any point, use the search function of the documentation for extra infor
 
 &nbsp; <b>Daily 4-hour sessions for 5 days</b>
 
-:::note
-<b>80-20 rule​</b>
-
+:::note 80-20 rule
 You’ll possibly learn 20% of what is offered ​by the Platform​, which will enable you to do 80% of your needs
 :::
 
 ## Agenda
 
 - [Environment setup](/tutorials/training-resources/environment-setup/)
-- [Day 1](/tutorials/training-resources/training-content-day1/): Quick review of the Platform​, set up the workstation and environment, quick start the application and test the backend​​.
-- [Day 2](/tutorials/training-resources/training-content-day2/): Intro to UI​, create a user interface​ and extend the application.
-- [Day 3](/tutorials/training-resources/training-content-day3/): Views​, automated testing​, calculated data, consolidators,​ and data grids​.
-- [Day 4](/tutorials/training-resources/training-content-day4/): State management, adding logic to the event handler​, ​and auditing​.
-- [Day 5](#/tutorials/training-resources/training-content-day5/): Schedulers, notifications, permissions​, key server commands​, navigating the documentation, and how to get help​.
+- [Day 1](/tutorials/training-resources/training-content-day1/): Quick review of the Platform​, quick start the application and test the backend​​.
+- [Day 2](/tutorials/training-resources/training-content-day2/): Intro to UI​, create a user interface​ and REST endpoints.
+- [Day 3](/tutorials/training-resources/training-content-day3/): Views​, automated testing​, calculated data, consolidators and data grids​.
+- [Day 4](/tutorials/training-resources/training-content-day4/): State management, adding logic to the event handler​ ​and auditing​.
+- [Day 5](/tutorials/training-resources/training-content-day5/): Schedulers, notifications, permissions​, key server commands​ and how to get help​.
 
 ## Genesis low-code Platform version
 6.0.2

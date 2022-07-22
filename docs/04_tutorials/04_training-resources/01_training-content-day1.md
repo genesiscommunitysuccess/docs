@@ -84,7 +84,7 @@ The GenX CLI tool enables you to seed projects, in this case we just want to gen
 Once [installed](/tutorials/training-resources/environment-setup/), from the terminal, go to a folder where you want your project to reside, and run:
 
 ```shell
-genx
+npx genx
 ```
 
 In the `genx` script, there is a series of questions.

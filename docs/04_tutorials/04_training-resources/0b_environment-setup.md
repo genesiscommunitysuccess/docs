@@ -88,6 +88,25 @@ npm config set https-proxy http://proxy.company.com:8080
 npm install -g @genesislcap/foundation-cli
 ```
 
+11. Check that GenX CLI is working:
+```shell
+npx genx
+```
+and you should see this message:
+```shell
+
+
+   ______                     _     _  __
+  / _______  ____  ___  _____(_____| |/ /
+ / / __/ _ \/ __ \/ _ \/ ___/ / ___|   /
+/ /_/ /  __/ / / /  __(__  / (__  /   |
+\____/\___/_/ /_/\___/____/_/____/_/|_|
+
+
+  GenesisX CLI V1.0.0
+```
+Feel free to abort this program for now - we'll use genx later on.
+
 #### Gradle setup
 Make sure you have a gradle.properties file inside a **.gradle** folder on your user directory; this file must contain your password in clear text:
 ```shell
