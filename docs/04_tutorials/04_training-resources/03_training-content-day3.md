@@ -565,7 +565,7 @@ Run **assemble** and **deploy-genesisproduct-alpha** tasks to verify that the ne
 Add a data grid in the UI to display the Positions. Then insert some trades and check whether the Position grid is being updated accordingly, i.e., automatically updated by the Consolidator process.
 
 :::tip
-Remember to add a data server query around the POSITION table and use the ag-genesis-datasource component in the UI.
+Remember to add a data server query around the POSITION table and use the *Micro Frontend* **EntityManagement** in the UI, as we did for TRADE.
 :::
 
 <!-- Apart from building a front-end, as we did [before](/tutorials/training-resources/training-content-day2/#intro-to-ui) the application user interface can be configured in various aspects such as data distribution, using Request Servers for static (reference) data, and Data Servers for streaming real-time data. -->
