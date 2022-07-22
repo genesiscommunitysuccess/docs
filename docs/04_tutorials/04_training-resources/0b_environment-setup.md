@@ -103,7 +103,7 @@ and you should see this message:
 \____/\___/_/ /_/\___/____/_/____/_/|_|
 
 
-  GenesisX CLI V1.0.0
+  GenesisX CLI V2.0.0
 ```
 Feel free to abort this program for now - we'll use genx later on.
 
@@ -129,7 +129,7 @@ wsl --install
 ```
 If you need help with the WSL installation, please refer to [here](https://docs.microsoft.com/en-us/windows/wsl/install).
 
-Then download the [Genesis WSL training distro](https://netorg209792-my.sharepoint.com/:u:/g/personal/genesis_files_genesis_global/EVH9uU6r5q9PkTyNhBXsDvABbCtRZgUjvpX1fD5MTs2glA?e=paUHyi). This distro contains everything you need to get started, including: 
+Then download the [Genesis WSL training distro](https://genesisglobal.jfrog.io/artifactory/community-uploads/training-wsl.zip). This distro contains everything you need to get started, including: 
 Linux CentOS 7 base, Java 11 SDK, genesis user, nginx, FoundationDB.
 
 Now create a local folder where you want to run the distro, e.g., "C:\wsl\distros\training-distro\". Unzip the package downloaded there and from that folder run:

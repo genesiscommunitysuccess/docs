@@ -76,253 +76,97 @@ For your user interface, the `genx` process has generated the following files:
 - **home.ts**
 - **home.styles.ts**
 
-You are going to update these files so that the application displays a single page and enables you to insert a new trade.
+We are going to update the files **home.template.ts** and **home.ts**, so the application will be able to display a single page and enables you to insert a new trade. As we are using *Micro Frontends*, there is no need to change the file **home.styles.ts** as the styles will be inherited from the base components.
 
 
-### Grid
+### EntityManagement
 
-We want to be able to insert a grid with data into our page. For this, open the file **home.template.ts** and define `tradeColumnDefs`.
+We want to be able to insert a Trade grid with data into our project. For this, we will use the *Micro Frontend* called **EntityManagement**.
 
-First, define `tradeColumnDefs` after the `import` block using the snippet below:
+First, open the file **home.ts** to import the Micro frontends needed as well as declaring EntityManagement after the imports.
 
-```ts
-export const tradeColumnDefs: ColDef[] = [
-  {field: 'TRADE_ID', headerName: 'TRADE_ID'},
-  {field: 'SYMBOL', headerName: 'SYMBOL'},
-  {field: 'QUANTITY', headerName: 'QUANTITY'},
-  {field: 'PRICE', headerName: 'PRICE', valueFormatter: formatNumber(2)},
-  {field: 'DIRECTION', headerName: 'DIRECTION'},
+```ts {2,4}
+...
+import {EntityManagement, Permissions} from '@genesislcap/foundation-entity-management';
+
+EntityManagement;
+
+const name = 'home-route';
+...
+```
+
+Now, still in the **home.ts** file, let's add two constants to define the columns config (*defaultColumnConfig*) and fields available (*COLUMNS*). We need to declare the columns and permissions in the Home class as well. 
+
+```ts {4-9,11-37,45-46,50}
+...
+const name = 'home-route';
+
+const defaultColumnConfig = {
+  enableCellChangeFlash: true,
+  enableRowGroup: true,
+  enablePivot: true,
+  enableValue: true,
+};
+
+const COLUMNS = [
+  {
+    ...defaultColumnConfig,
+    field: 'TRADE_ID',
+    headerName: 'Id',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'SYMBOL',
+    headerName: 'Symbol',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'QUANTITY',
+    headerName: 'Quantity',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'PRICE',
+    headerName: 'Price',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'DIRECTION',
+    headerName: 'Direction',
+  },
 ];
+
+@customElement({
+  name,
+  template,
+  styles,
+})
+export class Home extends FASTElement {
+  @observable columns: any = COLUMNS;
+  @observable permissionsTrade: Permissions[] = [];
+
+  constructor() {
+    super();
+    this.permissionsTrade = [Permissions.add];
+  }
+}
+...
 ```
 
-Next, create a zero-ag-grid in `HomeTemplate const`.
+We can now insert the grid into our page. Open the file **home.template.ts** and insert the *entity-management* tag using the class attributes we just created.
 
-```ts
+```ts {5-11}
+import {html, } from '@microsoft/fast-element';
+import type {Home} from './home';
+
 export const HomeTemplate = html<Home>`
-<div class="split-layout">
-    <div class="top-layout">
-        <zero-card class="trade-card">
-            <span class="card-title">Trades</span>
-            <zero-ag-grid ${ref('tradesGrid')} rowHeight="45" only-template-col-defs>
-                ${when(x => x.connection.isConnected, html`
-                  <ag-genesis-datasource resourceName="ALL_TRADES"></ag-genesis-datasource>
-                  ${repeat(() => tradeColumnDefs, html`
-                    <ag-grid-column :definition="${x => x}" />
-                  `)}
-                `)}
-            </zero-ag-grid>
-        </zero-card>
-    </div>
-</div>
-`;
-```
-
-Now open the file **home.ts**. Define a reference to `zero-ag-grid`; in class `home`, add:
-
-```ts
-public tradesGrid!: AgGrid;
-```
-
-and at the end of the `connectedCallback()` function, add:
-```ts
-this.tradesGrid.addEventListener('onGridReady', () => {
-  this.tradesGrid.gridApi.addEventListener('firstDataRendered', () => {
-    this.tradesGrid.gridApi.sizeColumnsToFit();
-  });
-});
-```
-
-This ensures that the grid takes the full width.
-
-Now you need to add [styles](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/customisation/app-specific/#styles).
-
-Open the file [**home.styles.ts**](/creating-applications/defining-your-application/user-interface/front-end-basics/front-end-basics/#starting-materials), and add the code below.
-
-```css
-zero-ag-grid {
-  width: 100%;
-  height: 50%;
-}
-
-.trade-card {
-    flex: 1;
-    margin: calc(var(--design-unit) * 3px);
-    height: 100%;
-}
-
-zero-text-field, zero-select {
-  width: 250px;
-}
-
-span:first-of-type, zero-button {
-  margin-top: 10px;
-}
-
-.add-trade-card .content {
-  margin: calc(var(--design-unit) * 3px);
-}
-
-.card-title {
-  padding: calc(var(--design-unit) * 3px);
-  background-color: #22272a;
-  font-size: 13px;
-  font-weight: bold;
-}
-
-.counter-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.split-layout {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    width: 100%;
-}
-
-.split-layout zero-divider {
-    margin: 0 calc(var(--design-unit) * 3px);
-}
-
-.top-layout {
-  height: 90%;
-  display: flex;
-  flex-direction: row;
-}
-
-.top-layout zero-card {
-    margin: calc(var(--design-unit) * 3px);
-    height: 100%;
-}
-```
-
-
-### Form
-Here, you are going to create a form with four inputs, so a user can input details of a new trade.
-
-First, define the variables that will hold the values that are entered.
-
-In the file **home.ts**, add the following properties to the class: `Home`:
-
-```ts
-@observable public quantity: string;
-@observable public price: string;
-@observable public tradeSymbol: string;
-@observable public tradeSide: string = 'BUY';
-```
-
-Now go to the file **home.template.ts** and define `TradeModalTemplate` after `tradeColumnDefs` and before `HomeTemplate`.
-
-```ts
-export const TradeModalTemplate = html<Home>`
-<zero-card>
-    <span>&nbsp;</span>
-    <div class="content">
-        <zero-text-field type="number" :value=${sync(x=> x.quantity)}>
-          <span>Quantity</span>
-        </zero-text-field>
-        <zero-text-field type="number" :value=${sync(x=> x.price)}>
-          <span>Price</span>
-        </zero-text-field>
-        <zero-text-field type="text" :value=${sync(x=> x.tradeSymbol)}>
-          <span>Symbol</span>
-        </zero-text-field>
-    </div>
-    <div class="content">
-        <zero-select title="Side" @change=${((x, c)=> x.tradeSideChange(c.event.target as Select))}>
-            <zero-option value='BUY'>BUY</zero-option>
-            <zero-option value='SELL'>SELL</zero-option>
-        </zero-select>
-    </div>
-</zero-card>
-`;
-```
-
-Still in the file **home.template.ts** add `TradeModalTemplate` variable in `HomeTemplate` before the last *div*:
-
-```ts
-export const HomeTemplate = html<Home>`
-<div class="split-layout">
-    <div class="top-layout">
-    ...
-    </div>
-    <div class="top-layout">
-      ${TradeModalTemplate}
-    </div>
-</div>
-```
-
-To handle the value in `zero-select`, create a function in the file **home.ts**.
-
-```ts
-public tradeSideChange(target: Select) {
-  this.tradeSide = target.selectedOptions[0]?.value;
-}
-```
-
-### Button
-Now add a button.  The purpose of this is to insert the data from the form into the database (and the grid).
-
-In the file **home.template.ts** `TradeModalTemplate` add the following code after the last *div*.
-
-```ts
-export const TradeModalTemplate = html<Home>`
-<zero-card>
-  ...
-  <div class="content">
-    ...
-  </div>
-  <zero-button @click=${x=> x.insertTradeData()}>Add Trade</zero-button>
-</zero-card>
-`;
-```
-
-In the file **home.ts**, create a function to handle the connection to the server.
-
-First, add just like before:
-
-```ts
-@observable public serverResponse;
-```
-
-Then, at the very end of the class, add:
-
-```ts
-public async insertTradeData() {
-  this.serverResponse = await this.connection.commitEvent('EVENT_TRADE_INSERT', {
-    DETAILS: {
-      SYMBOL: this.tradeSymbol,
-      QUANTITY: this.quantity,
-      PRICE: this.price,
-      DIRECTION: this.tradeSide,
-    },
-    IGNORE_WARNINGS: true,
-    VALIDATE: false,
-  });
-  this.tradeSymbol = '';
-  this.quantity = '';
-  this.price = '';
-  logger.debug('EVENT_TRADE_INSERT result -> ', this.serverResponse);
-}
-```
-
-To check that the new trade was added successfully, go to the file **home.template.ts** `TradeModalTemplate`, add the following code after the *zero-button*:
-
-```ts
-export const TradeModalTemplate = html<Home>`
-<zero-card>
-  ...
-  <div class="content">
-    ...
-  </div>
-  <zero-button @click=${x=> x.insertTradeData()}>Add Trade</zero-button>
-  ${when(x => x.serverResponse, html`
-  <span>${x=> x.serverResponse.MESSAGE_TYPE == 'EVENT_ACK' ? 
-    'Successfully added trade' : 'Something went wrong'}
-  </span>
-  `)}
-</zero-card>
+  <entity-management
+      resourceName="ALL_TRADES"
+      title = "Trades"
+      entityLabel="Trades"
+      :columns=${x => x.columns}
+      :permissions=${x => x.permissionsTrade}
+  ></entity-management>
 `;
 ```
 
@@ -501,8 +345,3 @@ In the header, you need to supply:
 When you have this in place, click on **Send** to make the call. You can see that the fields for the instruments have been returned on the right of the screen.
 
 ![](/img/test-eh-insert-success-alpha.png)
-
-
-
-
-
