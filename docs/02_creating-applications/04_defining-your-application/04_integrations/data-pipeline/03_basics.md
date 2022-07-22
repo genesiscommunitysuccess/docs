@@ -29,10 +29,10 @@ Currently the supported sources are:
 
 | Parameter | Default value | Sample usage | Value type | Description |
 |---|---|---|---|---|
-| name | cdc-test | `postgres("cdc-test")` | String | Name for the source |
-| hostname | localhost | `hostname = "localhost"` | String | Set the hostname where PostgreSQL is running |
+| name | N/A | `postgres("cdc-test")` | String | Name for the source |
+| hostname | N/A | `hostname = "localhost"` | String | Set the hostname where PostgreSQL is running |
 | port | 5432 | `port = 5432` | Integer | Set the port on which PostgreSQL is running |
-| username | postgres | `username = "postgres"` | String | Set the database user  |
+| username | N/A | `username = "postgres"` | String | Set the database user  |
 | password | N/A | `password = "db-password"` | String | Set the database user password  |
 | databaseName | postgres | `databaseName = "postgres"` | String | Set the name of the database  |
 
@@ -44,9 +44,9 @@ Genesis currently supports CSV, JSON and XML file sources. Below, you can see wh
 
 | Parameter | Default value | Sample usage | Value type | Description |
 |---|---|---|---|---|
-| name | csv-cdc-test | `csv("csv-cdc-test")` | String | Name for the source |
-| location | runtime/testFiles | `        location = "file://runtime/testFiles?fileName=IMPORT_TRADES.csv"
-` | String | Set the location of the CSV file. See details below |
+| name | N/A | `csv("csv-cdc-test")` | String | Name for the source |
+| location | N/A | `        location = "file://runtime/testFiles?fileName=IMPORT_TRADES.csv"` 
+| String | Set the location of the CSV file. See details below |
 | delimiter | , | `delimiter = ','` | Char | Set the value delimiter  |
 | hasHeader | true | `hasHeader = true` | Boolean | Set whether the file has headers  |
 | headerOverrides | null | `headerOverrides = arrayListOf("id", "name")` | List | Set the column names to be used. If the file has header it's ignored and the speicifed names are used  |
@@ -68,9 +68,9 @@ sources {
 
 | Parameter | Default value | Sample usage | Value type | Description |
 |---|---|---|---|---|
-| name | xml-cdc-test | `xml("xml-cdc-test")` | String | Name for the source |
-| location | runtime/testFiles | `location = "file://runtime/testFiles?fileName=trades_array.json"` | String | Set the location of the XML or Json file. See details below |
-| Tag Name | Trade | `tagName = "Trade"` | String | Set the root tag of the XML (does not apply to Json) |
+| name | N/A | `xml("xml-cdc-test")` | String | Name for the source |
+| location | N/A | `location = "file://runtime/testFiles?fileName=trades_array.json"` | String | Set the location of the XML or Json file. See details below |
+| Tag Name | N/A | `tagName = "Trade"` | String | Set the root tag of the XML (does not apply to Json) |
 | rootAt | "$.[*]" | `rootAt = "$.[*]"` | String | Set the root of the Json/XML tree |
 
 ```kotlin
@@ -228,7 +228,7 @@ table {
 
 ### Declaring mappers for sources
 
-For sources, mappers must be declared per table using the following syntax:
+For PostgreSQL sources, mappers must be declared per table using the following syntax:
 
 ```kotlin
 "table-name" to mapper("mapper-name", TABLE_OBJECT) {
