@@ -24,7 +24,7 @@ Views have [entities​](/database/data-types/views-entities/#index-direct-link
 Building a view entity[​](/database/data-types/views-entities/#building-a-view-entitydirect-link-to-heading)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Generated ViewEntities are kotlin data classes and can be built using the primary constructor. Just before the object is built, the object is validated to make sure all [required fields](/database/concepts/data-structure/tables/#fields) have been set. In addition to machison'ino DbEntity](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/db_entity/) methods, there are some useful methods/properties, which are described below:
+Generated ViewEntities are kotlin data classes and can be built using the primary constructor. Just before the object is built, the object is validated to make sure all [required fields](/database/data-types/table-entities/) have been set. In addition to machison'ino DbEntity](https://docs.genesis.global/secure/reference/developer/api/database/how-to/data-types/db_entity/) methods, there are some useful methods/properties, which are described below:
 
 | Name | Signature | Description |
 | --- | --- | --- |
