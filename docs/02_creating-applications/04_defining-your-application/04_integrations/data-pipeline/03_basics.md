@@ -34,7 +34,7 @@ Currently the supported sources are:
 | port | 5432 | `port = 5432` | Integer | Set the port on which PostgreSQL is running |
 | username | N/A | `username = "postgres"` | String | Set the database user  |
 | password | N/A | `password = "db-password"` | String | Set the database user password  |
-| databaseName | postgres | `databaseName = "postgres"` | String | Set the name of the database  |
+| databaseName | N/A | `databaseName = "postgres"` | String | Set the name of the database  |
 
 ### File
 
@@ -45,8 +45,7 @@ Genesis currently supports CSV, JSON and XML file sources. Below, you can see wh
 | Parameter | Default value | Sample usage | Value type | Description |
 |---|---|---|---|---|
 | name | N/A | `csv("csv-cdc-test")` | String | Name for the source |
-| location | N/A | `        location = "file://runtime/testFiles?fileName=IMPORT_TRADES.csv"` 
-| String | Set the location of the CSV file. See details below |
+| location | N/A | `location = "file://runtime/testFiles?fileName=IMPORT_TRADES.csv"`| String | Set the location of the CSV file. See details below |
 | delimiter | , | `delimiter = ','` | Char | Set the value delimiter  |
 | hasHeader | true | `hasHeader = true` | Boolean | Set whether the file has headers  |
 | headerOverrides | null | `headerOverrides = arrayListOf("id", "name")` | List | Set the column names to be used. If the file has header it's ignored and the speicifed names are used  |
