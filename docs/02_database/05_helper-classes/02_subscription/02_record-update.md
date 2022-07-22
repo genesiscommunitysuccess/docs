@@ -1,7 +1,7 @@
 ---
 title: 'Record update'
 sidebar_label: 'Record update'
-id: record update
+id: record-update
 ---
 
 Generic Record Update
