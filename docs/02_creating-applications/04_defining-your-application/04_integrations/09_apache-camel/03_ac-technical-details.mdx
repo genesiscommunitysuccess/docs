@@ -9,7 +9,7 @@ id: ac-technical-details
 
 ## A simple Camel configuration
 
-Here is a simple example of a** *-camel.kts** file. It defines a single route, which we shall explore in a little more detail below.
+Here is a simple example of a** *-camel.kts** file. It defines a single route leveraging a range of Camel configuration options which we'll explore in a little more detail below:
 ```kotlin
 camel {
     routeHandler {
@@ -21,18 +21,18 @@ camel {
 ```
 
 ### routeHandler
-The `routeHandler` defines the possible routes for information to flow into our system.  The example above defines one route. 
+The `routeHandler` defines the possible routes for information to flow into and out of our system.  The example above defines one route.
 
 - First, it defines the `pathStr` using the `GenesisPaths` class to find the `GENESIS_HOME` system environment variable. 
 
-- Next it defines the route itself. The route in the example comes from the filesystem determined by the `file:` start to the endpoint URI. This could be any [Apache Camel component](https://camel.apache.org/components/3.16.x/index.html) that has support for a consumer.
+- Next it defines the route itself. The route in the example comes from the filesystem determined by the `file:` specifier at the start of the string. This could be any [Apache Camel component](https://camel.apache.org/components/3.16.x/index.html) that can act as a [consumer](https://camel.apache.org/manual/camelcontext.html#_consumer).
 
-In this instance, the File component (defined in the [Apache documentation](https://camel.apache.org/components/3.16.x/file-component.html)) can take several path and query parameters, some of which we are using.
+In this instance, the File component (defined in the [File component documentation](https://camel.apache.org/components/3.16.x/file-component.html)) can take several path and query parameters, some of which we are using.
 
 * `${pathStr}/bbg/` is the **directoryName** mandatory path parameter. It indicates where in the file system that Apache Camel should look for files.
-* `move=.camel/\${date:now:yyyyMMdd-HHmmssSSS}-\${headers.CamelFileName}` is the **move** query parameter. This determines where the files found in the path directory should be moved to.
+* `move=.camel/\${date:now:yyyyMMdd-HHmmssSSS}-\${headers.CamelFileName}` is the **move** query parameter. This determines where the files found in the path directory should be moved to once they have been processed.
 
-  Note that both the `$` signs are escaped (`\$`) to prevent Kotlin from injecting a variable into the string. We want these variables to be injected by Apache Camel itself rather than at a GPAL.
+  Note that both the `$` signs are escaped (`\$`) to prevent Kotlin from injecting a variable into the string. We want these variables to be injected by Apache Camel itself rather than Kotlin.
 * `initialDelay=5000` is the **initialDelay** query parameter. This is the time in milliseconds before the system first polls the path directory.
 * `readLock=changed` is the **readLock** query parameter. This sets the strategy to ensure the file being polled isn't in use.
 * `readLockCheckInterval=5000` is the **readLockCheckInterval** query parameter. This sets the time between checks of the **readlock**.
@@ -62,3 +62,6 @@ The parameters for `createProcessor` on the `CSVEventProcessorProvider` are:
 * `ignoreHeaders` is an optional Boolean parameter, defaulting to false. If set to true, the first row of the csv will be ignored, and not parsed as part of the CSV.
 * `replyCallback` is an optional parameter. It allows you to define a custom `Consumer` and behaviour on the response of the `requestReply`. By default, without setting this parameter, a consumer is constructed that logs `EVENT_NACK` messages from the `requestReply`, with the request set.
 * `charset` is an optional parameter defaulting to UTF 8. This defines which character set the CSV is using.
+
+Note: if you want to ingest a CSV directly into GenesisDB rather than calling a Request Server, you might want to
+investigate the Genesis Data Pipeline [CSV source](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-basics/) first.
