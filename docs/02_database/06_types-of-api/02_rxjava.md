@@ -9,7 +9,7 @@ RxJava API
 
 [RxJava](https://www.rxjava.com/) is a java implementation of reactive extensions. The genesis database use this library to represent asynchronous database operations in java.
 
-The RxJava API is the only way of accessing the database in java. For kotlin the [async](/database/reference/apis/async/) API is preferred, but the RxJava API is also supported.
+The RxJava API is the only way of accessing the database in java. For kotlin the [async](/database/types-of-api/asynch/) API is preferred, but the RxJava API is also supported.
 
 Subscription[​](/database/types-of-api/rxjava/#subscriptiondirect-link-to-heading)
 -------------------------------------------------------------------------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ In the RxJava API, a `Single` represents an asynchronous operation, that has t
 
 For example, on the database, `delete` returns a `Single`, with the following possible outcomes:
 
-1.  the record was deleted, it provides a [write result](/database/how-to/helper/write-result/overview/)
+1.  the record was deleted, it provides a [write result](/database/helper-classes/write-results/overview/)
 2.  the operation was not successful, for example the record was not found
 
 ### Maybe[​](/database/types-of-api/rxjava/#maybedirect-link-to-heading)
