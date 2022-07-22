@@ -1,4 +1,4 @@
---
+---
 id: dictionary
 title: Generate Genesis Dictionary
 sidebar_label: Generate Genesis Dictionary
@@ -7,7 +7,7 @@ sidebar_position: 2
 ---
 
 ## Create new Genesis project
-At this point you should have `genx` installed on your machine. If you don't follow this [guide]() to set it up.
+At this point you should have `genx` installed on your machine. If you don't follow this [guide](/creating-a-new-project/recommended-full-stack-project/using-genx) to set it up.
 
 Use `genx` to create new blank project following the [here](/getting-started/quick-start/#1-create-a-new-project). For the rest of the tutorial `datapipeline-trades` will be used for project name but feel free to choose any name you like.
 
@@ -56,8 +56,8 @@ fields {
     field(name = "ENTERED_BY", type = STRING)
     field(
         name = "TRADE_STATUS", type = ENUM(
-            "NEW", "MODIFIED", "CANCELLED", default
-            = "NEW"
+            "NEW", "MODIFIED", "CANCELLED", 
+            default = "NEW"
         )
     )
     field(name = "UNSOLICITED", type = BOOLEAN, default = false)
@@ -69,9 +69,9 @@ fields {
 }
 ```
 
-After you have saved this file, run [genesis-generated-fields](/reference/developer/genesis-dao/#running-the-commands)
+After you have saved this file, run [genesis-generated-fields](/reference/developer/genesis-dao/#running-the-commands).
 
-From the Gradle menu on the right of Intellij, this is:
+From the Gradle menu on the right of IntelliJ, this is:
 
  **genesisproduct-datapipeline-sandbox**/**datapipeline-sandbox-dictionary-cache**/**Tasks**/**genesis-generated-fields**/**Tasks**/**generateFields**
 
@@ -79,7 +79,7 @@ From the Gradle menu on the right of Intellij, this is:
 
 The build step will generate the fields that can be referenced from the tables and data pipelines configuration.
 
-You can find more information on Fields [here](/creating-applications/defining-your-application/data-model/fields/fields/)
+You can find more information on Fields [here](/creating-applications/defining-your-application/data-model/fields/fields/).
 
 The next step is to add the relevant [Fields](/creating-applications/defining-your-application/data-model/fields/fields/) to [Tables](https://docs.genesis.global/secure/creating-applications/defining-your-application/data-model/tables/tables/). Open `datapipeline-trades-tables-dictionary.kts` under `datapipeline-sandbox/server/jvm/datapipeline-trades-config/src/main/resources/cfg` (if you chose another project name don't forget to replace `datapipeline-trades` with it) and enter the following:
 
