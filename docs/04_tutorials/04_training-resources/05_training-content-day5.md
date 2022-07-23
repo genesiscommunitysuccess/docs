@@ -24,9 +24,9 @@ In both cases, you define the rule in a table in the database: CRON_RULES for st
 
 ### Cron rules (static events)​
 
-In this exercise you are going to create a cron rule that will trigger a batch job that will run once each day.
+Let's create a cron rule that will trigger a batch job that will run once every minute.
 
-The batch job will generate a position report as a csv for each counterparty. This wil be stored in **runtime/position-daily-report**. The file name of each report written will have the form COUNTERPARTY_ID-DATE.csv.
+The batch job will generate a position report as a csv for each counterparty. This wil be stored in **runtime/position-minute-report**. The file name of each report written will have the form COUNTERPARTY_ID-DATE.csv.
 
 #### The rule
 
@@ -96,7 +96,7 @@ class PositionReport()
 
 #### 3. Create an event handler
 
-Create an event handler that will write the csv files to the runtime/position-daily-report folder. Call it EVENT_POSITION_REPORT.
+Create an event handler that will write the csv files to the runtime/position-minute-report folder. Call it EVENT_POSITION_REPORT.
 
 Open the file *alpha-eventhandler.kts* and add a variable called *tradeViewRepo* injecting the class *TradeViewAsyncRepository*. Then, add an event handler to generate the csv file:
 
@@ -116,7 +116,7 @@ eventHandler {
         onCommit {
             val mapper = GenesisJacksonMapper.csvWriter<TradeView>()
             val today = LocalDate.now().toString()
-            val positionReportFolder = File(GenesisPaths.runtime()).resolve("position-daily-report")
+            val positionReportFolder = File(GenesisPaths.runtime()).resolve("position-minute-report")
             if (!positionReportFolder.exists()) positionReportFolder.mkdirs()
 
             tradeViewRepo.getBulk()
@@ -140,7 +140,7 @@ Run `SendIt`.
 
 ```csv
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
-"0 * * ? * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
+"0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 
 #### 5.Change the log level to verify the execution of the events
@@ -155,7 +155,7 @@ And then to see the logs run:
 cd $L
 tail -f GENESIS_EVALUATOR.log
 ```
-:::tip
+:::info What is $L?
 $L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Moreover, feel free to use your favorite command to view logs such as tail, less etc.
 :::
 
@@ -342,12 +342,14 @@ Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the i
 
 #### Try yourself
 
-Use the evaluator again to set up dynamic rules. Now we want to check when a position lower limit has been reached. The position lower limit is 10, so any position less than 10 should be warned (QUANTITY < 10). In this case, you want to send an email automatically letting the user know.
+Now we want to run another report every 10 seconds that lists all positions whose quantity is higher than a given value passed through `RESULT_EXPRESSION`. 
 
-You can use the same parameter as the exercise we just did (SMTP credentials). Just remember to add the configurations and create a new  class for that, in this case `<PositionLowerLimit>`.
+:::tip 
+Call this class `RiskReport`, create a new `eventHandler<RiskReport>` and put the csv file in `runtime/position-risk-report`. Also, remember to add the column RESULT_EXPRESSION to the csv you're going to import into CRON_RULE.
 
-:::tip
-Remember to add the record into the DYNAMIC_RULE table, create a test row in POSITION table, and add a new class defining it in the eventhanlder file.
+Note that you don't need to add another EVALUATOR process, as the GENESIS_EVALUATOR process in place can run multiple CRON rules.
+
+By the way, the CRON expression for every 10 seconds is `0/10 * * * * *`. See a CRON generator [here](https://www.freeformatter.com/cron-expression-generator-quartz.html).
 :::
 
 ## Permissions​
