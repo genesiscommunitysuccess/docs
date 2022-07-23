@@ -124,7 +124,10 @@ In the example above, you are exposing a view through a data server query. It's 
 
 Run **alpha-deploy:deployConfig** and test the view with Postman or Console.​
 
-### Try yourself
+### Exercise - using views
+:::info ESTIMATED TIME
+30 mins
+:::
 
 Extend the **TRADE_VIEW** to connect TRADE to COUNTERPARTY and INSTRUMENT:
 1. Add the INSTRUMENT_ID and COUNTERPARTY_ID into TRADE table​.
@@ -386,7 +389,10 @@ view("TRADE_VIEW", TRADE) {
 }
 ```
 
-#### Try yourself
+### Exercise - derived fields
+:::info ESTIMATED TIME
+20 mins
+:::
 
 Let's add a new derived field in the TRADE_VIEW now. The derived field should display ASSET_CLASS from the INSTRUMENT join, and if this field is null or empty the view should display "UNKNOWN".
 
@@ -561,7 +567,10 @@ Run **assemble** and **deploy-genesisproduct-alpha** tasks to verify that the ne
 
 ## UI configuring 
 
-### Try yourself - add a new data grid
+### Exercise - data grids
+:::info ESTIMATED TIME
+30 mins
+:::
 Add a data grid in the UI to display the Positions. Then insert some trades and check whether the Position grid is being updated accordingly, i.e., automatically updated by the Consolidator process.
 
 :::tip

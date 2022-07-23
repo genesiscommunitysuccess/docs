@@ -206,7 +206,10 @@ We want to build a real-time positions application, where trades can be entered,
 
 ![](/img/day2-training-extended-datamodel.png)
 
-### Try yourself
+### Exercise - CRUD
+:::info ESTIMATED TIME
+45 mins
+:::
 
 Let's extend the Data model and create a CRUD, adding the tables **counterparty** and **instrument** as per the definition below. Use all the previous knowledge you've got.
 

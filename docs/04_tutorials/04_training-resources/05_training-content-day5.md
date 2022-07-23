@@ -340,7 +340,10 @@ You can see that when the limit is breached, you receive an email automatically.
 Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the inbox *dev-training@freesmtpserver.com*
 ::: -->
 
-#### Try yourself
+#### Exercise - using the evaluator
+:::info ESTIMATED TIME
+30 mins
+:::
 
 Now we want to run another report every 10 seconds that lists all positions whose quantity is higher than a given value passed through `RESULT_EXPRESSION`. 
 
@@ -554,7 +557,10 @@ JaneDee,TRADER
 
 That is it! You can now insert some trades and see the permissions happening in the application.
 
-### Try yourself
+### Exercise - using permissions
+:::info ESTIMATED TIME
+30 mins
+:::
 
 Set up a permission code for Trade inserting. The permission code should be called *TRADE_INSERT* and be part of the **alpha-eventhandler.kts** file accordingly.
 
@@ -693,7 +699,11 @@ When deploying files manually like this, remember to push the change to version 
 
 An exhaustive list of commands can be found [here](/managing-applications/operate/on-the-host/helpful-commands/).
 
-### Try yourself - manual deployment of the application distribution
+### Exercise - manual deployment of the application distribution
+:::info ESTIMATED TIME
+30 mins
+:::
+
 Add some logging to TRADE_INSERT event handler onCommit method with INFO level:
 ```kotlin
 eventHandler<Trade>(name = "TRADE_INSERT") {

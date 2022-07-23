@@ -231,7 +231,10 @@ You want to manage the state of the trade, so remove the delete event handler. I
 
 To test it, you can try to modify a TRADE and see the states changing accordingly. 
 
-### Try yourself
+### Exercise - State Machines
+:::info ESTIMATED TIME
+20 mins
+:::
 Modify the class TradeStateMachine to keep the trade.price removing the current rule when TradeStatus.NEW, and set the field trade.enteredBy to empty when TradeStatus.CANCELLED.
 
 Remember to run *assemble* and *deploy-genesisproduct-alpha* tasks after the changes, and test it directly in the UI.
@@ -270,7 +273,10 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 }
 ```
 
-#### Try yourself
+### Exercise - event handlers
+:::info ESTIMATED TIME
+30 mins
+:::
 Now add separate eventHandler blocks to handle modify. Don't forget to add the same verification as in TRADE_INSERT.
 
 :::tip
@@ -387,7 +393,7 @@ table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
 
 The id parameter indicates the id of the newly created audit table, and will need to be different from any other table id.
 
-If you are using the GPAL event handlers, this is sufficient to enable auditing on this table. A new table is created by the name of the original table, with the **_AUDIT** suffix added to the end. In this instance that would be the **TRADE_AUDIT** table.
+As we are using the GPAL event handlers, this is sufficient to enable auditing on this table. A new table is created by the name of the original table, with the **_AUDIT** suffix added to the end. In this instance that would be the **TRADE_AUDIT** table.
 
 #### Updating the state machine to use auditing
 
@@ -470,5 +476,9 @@ Now you must update the **alpha-eventhandler.kts** in order to pass the `entityD
 
 Run the *dao*, *build* and *deploy* tasks.
 
-To test it, you can try to insert or modify a TRADE and see the auditing happening accordingly.
+### Exercise - testing an audited table
+:::info ESTIMATED TIME
+20 mins
+:::
+Try to insert or modify a TRADE and see the auditing happening accordingly. You can use DbMon to check the data.
 

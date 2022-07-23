@@ -577,3 +577,9 @@ You can go on to check the TRADE table to see if your insert is there.
 
 ![](/img/test-console-eh-confirm-trade-alpha-2.png)
 
+### Exercise - using criteria
+:::info ESTIMATED TIME
+15 mins
+:::
+
+Insert a few more trades and at least one of them with SYMBOL as 'GENZ'. When checking the insertion with the data server, use the `Criteria` field to filter `SYMBOL == 'GENZ'`.
