@@ -566,6 +566,20 @@ Add a data grid in the UI to display the Positions. Then insert some trades and 
 
 :::tip
 Remember to add a data server query around the POSITION table and use the *Micro Frontend* **EntityManagement** in the UI, as we did for TRADE.
+
+To make it look prettier, add this CSS in the file **home.styles.ts**:
+
+```kotlin
+positions-ag-grid {
+    width: 100%;
+    height: 100%;
+}
+
+.positions-card {
+    flex: 1;
+    margin: calc(var(--design-unit) * 3px);
+}
+```
 :::
 
 <!-- Apart from building a front-end, as we did [before](/tutorials/training-resources/training-content-day2/#intro-to-ui) the application user interface can be configured in various aspects such as data distribution, using Request Servers for static (reference) data, and Data Servers for streaming real-time data. -->

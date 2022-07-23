@@ -145,7 +145,7 @@ const COLUMNS = [
 })
 export class Home extends FASTElement {
   @observable columns: any = COLUMNS;
-  @observable permissionsTrade: Permissions[] = [];
+  @observable permissionsTrade: Permissions[] = []; //no permissions required for now
 
   constructor() {
     super();
@@ -205,20 +205,6 @@ Great things come from great people.
 We want to build a real-time positions application, where trades can be entered, and will be aggregated to maintain positions.
 
 ![](/img/day2-training-extended-datamodel.png)
-
-In the file **home.styles.ts**, add
-
-```kotlin
-positions-ag-grid {
-    width: 100%;
-    height: 100%;
-}
-
-.positions-card {
-    flex: 1;
-    margin: calc(var(--design-unit) * 3px);
-}
-```
 
 ### Try yourself
 

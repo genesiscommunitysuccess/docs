@@ -665,7 +665,9 @@ So far, we've used commands such as `mon`, `DbMon`, `SendIt` and `LogLevel`. The
 - [DumpIt](/managing-applications/operate/on-the-host/helpful-commands/#dumpit-script)
 - [DropTable](/managing-applications/operate/on-the-host/helpful-commands/#droptable)
 
-#### Try yourself - manual deployment of the tables dictionary
+### Practicing the commands
+Let's do a manual deployment of the tables dictionary as an example on how to run the server commands.
+
 From the terminal, go to the folder `/home/genesis/run/alpha/cfg/`, edit file `alpha-tables-dictionary.kts` and add any existing field to table INSTRUMENT_PRICE.
 
 Now, go to the `generated` folder with `cd $GC` (an alias to the `generated` folder). Compare the content between the file you edited previously with the one you see in the `generated` folder. The one in $GC does not contain your change.
@@ -690,6 +692,30 @@ When deploying files manually like this, remember to push the change to version 
 :::
 
 An exhaustive list of commands can be found [here](/managing-applications/operate/on-the-host/helpful-commands/).
+
+### Try yourself - manual deployment of the application distribution
+Add some logging to TRADE_INSERT event handler onCommit method with INFO level:
+```kotlin
+eventHandler<Trade>(name = "TRADE_INSERT") {
+        ...
+        onCommit { event ->
+            LOG.info("Awesome log")
+            ...
+        }
+    }
+...
+```
+
+Next, build the application as you usually do.
+
+Then copy the `genesisproduct-alpha-1.0.0-SNAPSHOT-bin.zip` from .\server\jvm\gama-distribution\build\distributions\ to the /home/genesis/run/ folder in the server (i.e., your WSL instance, where you can access its file system from Windows Explorer navigating to `\\wsl$`).
+
+Once the zip file is in the ~/run/ folder, unzip it (use unzip command) and run `killServer --all`, `genesisInstall`, `remap --commit`, `startServer`.
+
+Change the log level of the ALPHA_EVENT_HANDLER process to INFO with `LogLevel` and insert a new trade from the UI.
+
+To test it, check if you can see the new log you added in the alpha event handler log file.
+
 
 ## Navigating the documentation and how to get help​
 
