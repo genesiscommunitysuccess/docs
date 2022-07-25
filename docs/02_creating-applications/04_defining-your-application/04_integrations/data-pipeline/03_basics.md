@@ -225,7 +225,7 @@ table {
 }
 ```
 
-### Declaring mappers for sources
+### Declaring mappers for database sources
 
 For PostgreSQL sources, mappers must be declared per table using the following syntax:
 
