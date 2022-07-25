@@ -6,7 +6,9 @@ sidebar_position: 4
 ---
 # Gradle
 
-Unlike Maven, Gradle does not have a standard approach to scaffolding projects. The easiest way to scaffold a Genesis Gradle project is to use the *Genesis Maven Plugin*. This plugin requires similar inputs to the [maven archetype](/creating-applications/creating-a-new-project/alternative_options_supported/server-project-setup/), and it is able to create a variety of Gradle project structures. Alternatively, we provide a CLI tool which is available as part of the platform distribution zip file.
+Genesis provides a CLI tool called genx to enable you to build a new full-stack project. This is available as part of the platform distribution zip file.
+
+If you don't want to use genx - for example, if you only want to build a server - you can create a gradle project of your own. The easiest way to scaffold a Genesis Gradle project is to use the *Genesis Maven Plugin*. This requires similar inputs to the [maven archetype](/creating-applications/creating-a-new-project/alternative_options_supported/server-project-setup/), and it is able to create a variety of Gradle project structures. 
 
 The current supported Gradle project templates are:
 
