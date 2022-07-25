@@ -172,7 +172,7 @@ export const HomeTemplate = html<Home>`
 `;
 ```
 
-At this point, the application is now able to display and receive data.
+At this point, the application is now able to display and insert data.
 
 ### Running the application locally 
 
