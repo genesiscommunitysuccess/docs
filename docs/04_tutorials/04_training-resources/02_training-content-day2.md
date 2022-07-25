@@ -118,11 +118,6 @@ const COLUMNS = [
   },
   {
     ...defaultColumnConfig,
-    field: 'SYMBOL',
-    headerName: 'Symbol',
-  },
-  {
-    ...defaultColumnConfig,
     field: 'QUANTITY',
     headerName: 'Quantity',
   },
@@ -130,6 +125,11 @@ const COLUMNS = [
     ...defaultColumnConfig,
     field: 'PRICE',
     headerName: 'Price',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'SYMBOL',
+    headerName: 'Symbol',
   },
   {
     ...defaultColumnConfig,
@@ -152,12 +152,11 @@ export class Home extends FASTElement {
     this.permissionsTrade = [Permissions.add];
   }
 }
-...
 ```
 
 We can now insert the grid into our page. Open the file **home.template.ts** and insert the *entity-management* tag using the class attributes we just created.
 
-```ts {5-11}
+```ts {5-12}
 import {html, } from '@microsoft/fast-element';
 import type {Home} from './home';
 
@@ -166,6 +165,7 @@ export const HomeTemplate = html<Home>`
       resourceName="ALL_TRADES"
       title = "Trades"
       entityLabel="Trades"
+      createEvent = "EVENT_TRADE_INSERT"
       :columns=${x => x.columns}
       :permissions=${x => x.permissionsTrade}
   ></entity-management>
@@ -180,13 +180,13 @@ Now you are ready to run the application you have created for the front end.
 
 From the workspace **alpha/client** folder, run:
 ```
-$ npm run bootstrap
+npm run bootstrap
 ```
 
 Next, spin up the dev server:
 
 ```
-$ npm run dev
+npm run dev
 ```
 
 The application will open at `http://localhost:6060/login`.
