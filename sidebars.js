@@ -37,7 +37,7 @@ module.exports = {
     },
   ],
   databaseSidebar: [
-    'database/learning-landing',
+    'database/database-landing',
     {
       type: 'category',
       label: 'FIELDS, TABLES AND VIEWS',
