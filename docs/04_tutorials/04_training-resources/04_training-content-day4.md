@@ -275,30 +275,10 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 
 ### Exercise 4.2: adding onValidate to event handlers
 :::info ESTIMATED TIME
-30 mins
+20 mins
 :::
-Now add separate eventHandler blocks to handle modify. Don't forget to add the same verification as in TRADE_INSERT.
+Add the same verification `onValidate` as in TRADE_INSERT to the TRADE_MODIFY event handler.
 
-:::tip
-Example on how to add additional blocks in the eventHandler:
-```kotlin
-eventHandler {
-    eventHandler<Trade>(name = "TRADE_INSERT") {
-        onCommit { event ->
-            entityDb.insert(event.details)
-            ack()
-        }
-    }
-
-    eventHandler<Trade>(name = "TRADE_MODIFY") {
-        onCommit { event ->
-            entityDb.modify(event.details)
-            ack()
-        }
-    }
-}
-```
-:::
 
 Implement and test the back end with Console or Postman. To do that see the Day 2 example [here](/tutorials/training-resources/training-content-day2/#a-test-alternative-to-genesis-console). Basically, you should create a POST request using the URL *http://localhost/gwf/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
 
@@ -480,5 +460,4 @@ Run the *dao*, *build* and *deploy* tasks.
 :::info ESTIMATED TIME
 20 mins
 :::
-Try to insert or modify a TRADE and see the auditing happening accordingly. You can use DbMon to check the data.
-
+Try to insert or modify a TRADE and see the auditing happening accordingly. You can use DbMon or Genesis Console to check the data in table TRADE_AUDIT.

@@ -340,7 +340,7 @@ You can see that when the limit is breached, you receive an email automatically.
 Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the inbox *dev-training@freesmtpserver.com*
 ::: -->
 
-#### Exercise 5.1: using the evaluator
+### Exercise 5.1: using the evaluator
 :::info ESTIMATED TIME
 30 mins
 :::
