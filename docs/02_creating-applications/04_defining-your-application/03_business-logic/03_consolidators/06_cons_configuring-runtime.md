@@ -8,9 +8,16 @@ id: cons-configuring-runtime
 [Introduction](/creating-applications/defining-your-application/business-logic/consolidators/consolidators/)  | [Where to define](/creating-applications/defining-your-application/business-logic/consolidators/cons-where-to-define/) | [Basics](/creating-applications/defining-your-application/business-logic/consolidators/cons-technical-details/) |  [Advanced](/creating-applications/defining-your-application/business-logic/consolidators/cons-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/business-logic/consolidators/cons-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/business-logic/consolidators/cons-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/business-logic/consolidators/cons-testing/)
 
 
+For your Consolidator to run, it must be defined as a process and included as a service definition. Make sure you update the following files in your application:
+
+- **processes.xml**
+- **service-definitions.xml**
+
+
+
 ## Adding the Consolidator to processes.xml
 
-Before you can use the Consolidator you have created, you must add its details to the  **processes.xml** file for the application. This is located in the **.cfg** folder for the application. The file contains tags that define key characteristics of the Consolidator - for example, dependencies and logging level. 
+Your application's **processes.xml** file is located in the **.cfg** folder for the application. The file contains tags that define key characteristics of the Consolidator - for example, dependencies and logging level. 
 
 Here is an example configuration (the tags are explained in the page on the [processes.xml file](/creating-applications/configure-runtime/processes-xml/)):
  
@@ -36,3 +43,11 @@ In a multi-node environment, Consolidator services should be set to primary only
 multiple times.
 
 :::
+
+## Adding the Consolidator to the service-definitions.xml
+
+Your application's [**service-definitions.xml**](/creating-applications/configure-runtime/service-definitions/) file is where you specify the ports used by each process for communicating internally. You need to add an entry for your Consolidator, using an unused port number. For example:
+
+```xml
+ <service host="localhost" name="POSITION_CONSOLIDATOR" port="11003"/>
+```
