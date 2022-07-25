@@ -193,11 +193,27 @@ The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
 
 ### CONGRATULATIONS
-You have completed your first application with the Genesis Platform! Take some time to enjoy it!
+You have completed your first application with the Genesis Platform! 
 
-:::note
-Great things come from great people.
+:::note Great things come from great people!
+Now take some time to enjoy it, play with your application for a few minutes.
 :::
+
+### Exercise 2.1: inspecting the messages between the UI and the server
+:::info ESTIMATED TIME
+30 mins
+:::
+
+The communication between the UI and the server happens exchanging some messages through a web socket connection, all managed by the Genesis Platform.
+
+But did you know that you can inspect these messages using [Chrome DevTools](https://developer.chrome.com/docs/devtools/overview/)? That's very useful for debugging what's happening behind the scenes and capturing the data transferred for troubleshooting.
+
+Now, using the [Network tab](https://developer.chrome.com/docs/devtools/network/), try to insert a trade and see if you can find the data being sent to the server:
+1. Logout of the application
+2. Press `F12` to open the Dev Tools, click on the `Network` tab and select `WS` (keep it open during this exercise)
+3. Navigate to your app http://localhost:6060 and in the Dev Tools click on the resource `gwf/` (in the Network -> WS tab)
+4. Login and try to insert a new trade
+5. Try to find the message containing the new trade data
 
 
 ## Extending our initial application
@@ -206,24 +222,42 @@ We want to build a real-time positions application, where trades can be entered,
 
 ![](/img/day2-training-extended-datamodel.png)
 
-### Exercise - CRUD
+### Exercise 2.2: extending the application
 :::info ESTIMATED TIME
-45 mins
+60 mins
 :::
 
 Let's extend the Data model and create a CRUD, adding the tables **counterparty** and **instrument** as per the definition below. Use all the previous knowledge you've got.
 
 ![](/img/day2_new-tables.png)
 
-:::note
-Fields are defined separately from tables, so that they, and their meta-data, can be re-used across multiple tables and show linkage.​
-:::
-
 As a reminder, these are the steps needed to complete this task:
-- Edit alpha-fields-dictionary.kts first and don't forget to run *generateFields* gradle task when you finish this
+- Edit alpha-fields-dictionary.kts first and don't forget to run *generateFields* gradle task when you finish this. Remember that fields are defined separately from tables, so that they (including their meta-data) can be re-used across multiple tables and show linkage.​
 - Then edit alpha-tables-dictionary.kts to add the new tables and their respective fields you created in the previous step. When you finish, remember to ​run *genesis-generated-dao​*
 - Add dataserver queries pointing to the new tables in the alpha-dataserver.kts file
-- Create CRUD events, using event handlers for ​both entities​. When you finish, remember to ​run *deploy*​
+- Create INSERT, MODIFY and DELETE events for all entities using event handlers. When you finish, remember to ​run *deploy*​
+
+:::tip adding a new event handler block
+Example on how to add additional blocks in the eventHandler:
+```kotlin
+eventHandler {
+    eventHandler<Trade>(name = "TRADE_INSERT") {
+        onCommit { event ->
+            entityDb.insert(event.details)
+            ack()
+        }
+    }
+
+    eventHandler<Trade>(name = "TRADE_MODIFY") {
+        onCommit { event ->
+            entityDb.modify(event.details)
+            ack()
+        }
+    }
+}
+```
+:::
+
 - Build, deploy and test. Test it with Postman or Console (see more details in the next section), inserting a new counterparty and instrument. Then use them to insert a new Trade as well.​
 
 ### API testing with auto-generated REST endpoints
@@ -336,3 +370,10 @@ In the header, you need to supply:
 When you have this in place, click on **Send** to make the call. You can see that the fields for the instruments have been returned on the right of the screen.
 
 ![](/img/test-eh-insert-success-alpha.png)
+
+### Exercise 2.3: testing with Postman
+:::info ESTIMATED TIME
+30 mins
+:::
+
+Create requests on POSTMAN for all the events created so far.

@@ -340,7 +340,7 @@ You can see that when the limit is breached, you receive an email automatically.
 Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the inbox *dev-training@freesmtpserver.com*
 ::: -->
 
-#### Exercise - using the evaluator
+#### Exercise 5.1: using the evaluator
 :::info ESTIMATED TIME
 30 mins
 :::
@@ -557,7 +557,7 @@ JaneDee,TRADER
 
 That is it! You can now insert some trades and see the permissions happening in the application.
 
-### Exercise - using permissions
+### Exercise 5.2: using permissions
 :::info ESTIMATED TIME
 30 mins
 :::
@@ -699,7 +699,7 @@ When deploying files manually like this, remember to push the change to version 
 
 An exhaustive list of commands can be found [here](/managing-applications/operate/on-the-host/helpful-commands/).
 
-### Exercise - manual deployment of the application distribution
+### Exercise 5.3: manual deployment of the application distribution
 :::info ESTIMATED TIME
 30 mins
 :::

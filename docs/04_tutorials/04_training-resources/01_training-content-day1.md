@@ -270,11 +270,11 @@ eventHandler {
 ```
 :::info What is entityDb?
 
-The entity db enables you to interact with the database layer, it's part of the Genesis Database API and we'll get into more details soon. For now, understand this is the common way to access data from code. Feel free to explore a bit more the methods available from entityDb using the intellisense of your IDE.
+The [entityDb](/reference/developer/api/database/how-to/interface/entity-db/) enables you to interact with the database layer, it's part of the Genesis Database API and we'll get into more details soon. For now, understand this is the common way to access data from code. Feel free to explore a bit more the methods available from entityDb using the intellisense of your IDE.
 :::
 
 ### 4. Prepare the server and build
-The application has two files that contain vital configuration information:
+So far we have created an event handler and data server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as event handler and data server, must run on their own processes and to do that we have to change the processes and the service definition files:
 
 - **alpha-processes.xml**
 - **alpha-service-definitions.xml**
@@ -318,6 +318,7 @@ Add the following content to the **alpha-service-definitions.xml** file.
 </configuration>
 ```
 
+Please see [here](/creating-applications/configure-runtime/processes-xml/) for a detailed description of the processes configuration.
 <!-- ADD THIS DO DAY 5 AS AN EXERCISE
 #### Overriding default configurations
 You can override the standard definitions using the site-specific folder located at ..\alpha\server\jvm\alpha-site-specific\src\main\resources\cfg\
@@ -412,7 +413,7 @@ or from the dropdown menu:
 ![](/img/install-auth.png)
 
 <!-- Adjusting WSL we could remove this-->
-### Deploying the site-specific
+<!-- ### Deploying the site-specific
 As our application will override the standard definitions using the site-specific folder, we have to run this task.
 
 Usage:
@@ -421,7 +422,7 @@ Usage:
 ```
 or from the dropdown menu:
 
-![](/img/install-site-specific.png)
+![](/img/install-site-specific.png) -->
 
 <!-- END Adjusting WSL we could remove this-->
 
@@ -483,14 +484,16 @@ Once you are inside the console, type 'table USER' and then 'search 1'. If impor
 
 :::info how to run server commands from the command line rather than gradle tasks?
 We've been running server commands through the gradle tasks. Alternatively, you can run server commands directly from a command line. 
-Open PowerShell (or Windows Command Prompt), access your WSL instance 'TrainingCentOS' and switch to user 'genesis' to have access to the Genesis Platform commands. Example:
+
+Open PowerShell (or Windows Command Prompt), access your WSL instance 'TrainingCentOS' and switch to user 'genesis' to have access to the Genesis Platform commands:
 ```shell
 wsl -d TrainingCentOS
 su genesis
 DbMon
 ```
 
-During the training we cover some of the most important commands, but feel free to look at the [list of available commands](/managing-applications/operate/on-the-host/helpful-commands/).
+Try it now!
+
 :::
 
 Now, let's run Genesis command 'mon' to see if all processes are up and running on the server:
@@ -577,9 +580,24 @@ You can go on to check the TRADE table to see if your insert is there.
 
 ![](/img/test-console-eh-confirm-trade-alpha-2.png)
 
-### Exercise - using criteria
+### Exercise 1.1: data servers
 :::info ESTIMATED TIME
-15 mins
+30 mins
 :::
 
-Insert a few more trades and at least one of them with SYMBOL as 'GENZ'. When checking the insertion with the data server, use the `Criteria` field to filter `SYMBOL == 'GENZ'`.
+Look at the [data server documentation](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/) and see if you are able to modify our data server [defined previously](/tutorials/training-resources/training-content-day1/#data-server):
+- add a new query called "ALL_PRICES" on the TRADE table
+- make ALL_PRICES display only SYMBOL and PRICE fields
+- add a `where` clause so it displays only trades whose PRICE are higher than 0.0
+
+Remember to insert a few trades using Genesis Console to test it.
+
+### Exercise 1.2: event handlers
+:::info ESTIMATED TIME
+20 mins
+:::
+
+Look at the [event handler documentation](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#returning-a-nack) and see if you are able to modify our event handler [defined previously](/tutorials/training-resources/training-content-day1/#event-handler):
+- return `nack("Quantity must be positive")` if the quantity is lower than 0.
+
+Test it with Genesis Console.

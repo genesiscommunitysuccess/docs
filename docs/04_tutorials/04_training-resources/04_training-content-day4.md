@@ -231,7 +231,7 @@ You want to manage the state of the trade, so remove the delete event handler. I
 
 To test it, you can try to modify a TRADE and see the states changing accordingly. 
 
-### Exercise - State Machines
+### Exercise 4.1: state machines
 :::info ESTIMATED TIME
 20 mins
 :::
@@ -273,7 +273,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 }
 ```
 
-### Exercise - event handlers
+### Exercise 4.2: adding onValidate to event handlers
 :::info ESTIMATED TIME
 30 mins
 :::
@@ -476,7 +476,7 @@ Now you must update the **alpha-eventhandler.kts** in order to pass the `entityD
 
 Run the *dao*, *build* and *deploy* tasks.
 
-### Exercise - testing an audited table
+### Exercise 4.3: testing an audited table
 :::info ESTIMATED TIME
 20 mins
 :::

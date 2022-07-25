@@ -124,7 +124,7 @@ In the example above, you are exposing a view through a data server query. It's 
 
 Run **alpha-deploy:deployConfig** and test the view with Postman or Console.​
 
-### Exercise - using views
+### Exercise 3.1: using views
 :::info ESTIMATED TIME
 30 mins
 :::
@@ -389,7 +389,7 @@ view("TRADE_VIEW", TRADE) {
 }
 ```
 
-### Exercise - derived fields
+### Exercise 3.2: derived fields
 :::info ESTIMATED TIME
 20 mins
 :::
@@ -567,7 +567,7 @@ Run **assemble** and **deploy-genesisproduct-alpha** tasks to verify that the ne
 
 ## UI configuring 
 
-### Exercise - data grids
+### Exercise 3.3: data grids
 :::info ESTIMATED TIME
 30 mins
 :::
