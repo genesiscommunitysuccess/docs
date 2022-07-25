@@ -31,8 +31,8 @@ Currently the supported sources are:
 |---|---|---|---|---|
 | name | N/A | `postgres("cdc-test")` | String | Name for the source |
 | hostname | N/A | `hostname = "localhost"` | String | Set the hostname where PostgreSQL is running |
-| port | 5432 | `port = 1234` | Integer | Set the port on which PostgreSQL is running |
-| username | N/A | `username = "db-user"` | String | Set the database user  |
+| port | 5432 | `port = 5432` | Integer | Set the port on which PostgreSQL is running |
+| username | N/A | `username = "postgres"` | String | Set the database user  |
 | password | N/A | `password = "db-password"` | String | Set the database user password  |
 | databaseName | N/A | `databaseName = "postgres"` | String | Set the name of the database  |
 
@@ -44,16 +44,16 @@ Genesis currently supports CSV, JSON and XML file sources. Below, you can see wh
 
 | Parameter | Default value | Sample usage | Value type | Description |
 |---|---|---|---|---|
-| name | N/A | `csv("cdc-test")` | String | Name for the source |
-| location | N/A | `location = "file://data/june/trades.csv"` | String | Set the location of the CSV file. See details below |
-| delimiter | , | `delimiter = ';'` | Char | Set the value delimiter  |
-| hasHeader | true | `hasHeader = false` | Boolean | Set whether the file has headers  |
+| name | N/A | `csv("csv-cdc-test")` | String | Name for the source |
+| location | N/A | `location = "file://runtime/testFiles?fileName=IMPORT_TRADES.csv"`| String | Set the location of the CSV file. See details below |
+| delimiter | , | `delimiter = ','` | Char | Set the value delimiter  |
+| hasHeader | true | `hasHeader = true` | Boolean | Set whether the file has headers  |
 | headerOverrides | null | `headerOverrides = arrayListOf("id", "name")` | List | Set the column names to be used. If the file has header it's ignored and the speicifed names are used  |
 | readLazily | false | `readLazily = true` | Boolean | Set lazy reading  |
 
 ```kotlin
 sources {
-  csv("cdc-csv") {
+  csv("csv-cdc-test") {
     location = ""
 
     mapper("mapper-name", TABLE) {
@@ -67,13 +67,14 @@ sources {
 
 | Parameter | Default value | Sample usage | Value type | Description |
 |---|---|---|---|---|
-| name | N/A | `xml("cdc-test")` | String | Name for the source |
-| location | N/A | `location = "file://data/june/trades.csv"` | String | Set the location of the CSV file. See details below |
+| name | N/A | `xml("xml-cdc-test")` | String | Name for the source |
+| location | N/A | `location = "file://runtime/testFiles?fileName=trades_array.json"` | String | Set the location of the XML or Json file. See details below |
+| Tag Name | N/A | `tagName = "Trade"` | String | Set the root tag of the XML (does not apply to Json) |
 | rootAt | "$.[*]" | `rootAt = "$.[*]"` | String | Set the root of the Json/XML tree |
 
 ```kotlin
 sources {
-  xml("cdc-xml") {
+  xml("xml-cdc-test") {
     location = ""
 
     mapper("mapper-name", TABLE) {
@@ -81,7 +82,7 @@ sources {
     }
   }
 
-  json("cdc-json") {
+  json("json-cdc-test") {
     location = ""
 
     mapper("mapper-name", TABLE) {
@@ -224,7 +225,7 @@ table {
 }
 ```
 
-### Declaring mappers for PostgreSQL source
+### Declaring mappers for database sources
 
 For PostgreSQL sources, mappers must be declared per table using the following syntax:
 
