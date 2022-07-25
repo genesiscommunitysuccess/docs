@@ -26,20 +26,20 @@ Additionally, all projects can optionally be generated with artifactory publicat
 
 The available CLI arguments and maven plugin JVM properties are the following:
 
-| Arg Short name     | Arg Long name | JVM Property | Required | Description | Default
-| ----------- | ----------- | ----------- | ----------- | ----------- | ----------- |
-| `-a` | `--artifactId` | `-DartifactId` | yes | Artifact ID (i.e. name of application) |  |
-| `-g` | `--groupId` | `-DgroupId` | no | Project group ID | global.genesis |
-| `-v` | `--version` | `-Dversion` | no | Project version | 1.0.0-SNAPSHOT |
-| `-gv` | `--genesisVersion` | `-DgenesisVersion` | no | Genesis server version to use | Same version as maven/cli tool |
-| `-kv` | `--kotlinVersion` | `-DkotlinVersion` | no | Kotlin version to use | Same Kotlin version used in maven/cli tool |
-| `-grv` | `--gradleVersion` | `-DgradleVersion` | no | Gradle version | Same gradle version used in Genesis build |
-| `-t` | `--templateChoice` | `-DtemplateChoice` | no | Template project to generate. Available choices are: `GRADLE_NO_CODE`, `GRADLE_PRO_CODE`, `GRADLE_SITE_SPECIFIC`, `GRADLE_MULTI_NO_CODE`, `GRADLE_MULTI_PRO_CODE` | `GRADLE_PRO_CODE` |
-| `-b` | `--basepath` | `-Dbasepath` | no | The base path in which the project will be generated | The base path will be a new folder in the local directory with the following name based on the artifactId provided value. If `GRADLE_MULTI`: `artifactId`; If `GRADLE_NO_CODE` or `GRADLE_PRO_CODE`: `artifactId-server`; If `GRADLE_SITE_SPECIFIC`: `artifactId-site-specific`. |
-| `-ae` | `--artifactoryEnabled` | `-DartifactoryEnabled` | no | If enabled, this option will generate artifactory deployment configuration for the gradle server artifacts based on the internal genesis repositories. | false |
-| `-se` | `--siteSpecificEnabled` | `-DsiteSpecificEnabled` | no | If enabled, this option will generate a site-specific project if a `GRADLE_MULTI` template is chosen. | false |
-| `-njsv` | `--nodeJsVersion` | `-DnodeJsVersion` | no | The nodejs version to use when generating `GRADLE_MULTI` projects | 16.13.0 |
-| `-npmv` | `--npmVersion` | `-DnpmVersion` | no | The npm version to use when generating `GRADLE_MULTI` projects | 8.1.0 |
+| Arg Short name     | Arg Long name | JVM Property | Required | Description                                                                                                                                                           | Default
+| ----------- | ----------- | ----------- | ----------- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------| ----------- |
+| `-a` | `--artifactId` | `-DartifactId` | yes | Artifact ID (i.e. name of application)                                                                                                                                |  |
+| `-g` | `--groupId` | `-DgroupId` | no | Project group ID                                                                                                                                                      | global.genesis |
+| `-v` | `--version` | `-Dversion` | no | Project version                                                                                                                                                       | 1.0.0-SNAPSHOT |
+| `-gv` | `--genesisVersion` | `-DgenesisVersion` | no | Genesis server version to use                                                                                                                                         | Same version as maven/cli tool |
+| `-kv` | `--kotlinVersion` | `-DkotlinVersion` | no | Kotlin version to use                                                                                                                                                 | Same Kotlin version used in maven/cli tool |
+| `-grv` | `--gradleVersion` | `-DgradleVersion` | no | Gradle version                                                                                                                                                        | Same gradle version used in Genesis build |
+| `-t` | `--templateChoice` | `-DtemplateChoice` | no | Template project to generate. Available choices are: `GRADLE_NO_CODE`, `GRADLE_PRO_CODE`, `GRADLE_SITE_SPECIFIC`, `GRADLE_MULTI_NO_CODE`, `GRADLE_MULTI_PRO_CODE`     | `GRADLE_PRO_CODE` |
+| `-b` | `--basepath` | `-Dbasepath` | no | The base path in which the project will be generated                                                                                                                  | The base path will be a new folder in the local directory with the following name based on the artifactId provided value. If `GRADLE_MULTI`: `artifactId`; If `GRADLE_NO_CODE` or `GRADLE_PRO_CODE`: `artifactId-server`; If `GRADLE_SITE_SPECIFIC`: `artifactId-site-specific`. |
+| `-ae` | `--artifactoryEnabled` | `-DartifactoryEnabled` | no | If enabled, this option will generate artifactory deployment configuration for the gradle server artifacts based on the internal genesis repositories.                | false |
+| `-se` | `--siteSpecificEnabled` | `-DsiteSpecificEnabled` | no | If enabled, this option will generate a site-specific module within the project.                                                                                      | false |
+| `-njsv` | `--nodeJsVersion` | `-DnodeJsVersion` | no | The nodejs version to use when generating `GRADLE_MULTI` projects                                                                                                     | 16.13.0 |
+| `-npmv` | `--npmVersion` | `-DnpmVersion` | no | The npm version to use when generating `GRADLE_MULTI` projects                                                                                                        | 8.1.0 |
 | `-djs` | `--downloadNodeJs` | `-downloadNodeJs` | no | Enables an automatic download of NodeJS if not installed locally. The instalation will be done locally to the project as part of the the gradle build initialisation. | false |
 
 ### Sample CLI usage
