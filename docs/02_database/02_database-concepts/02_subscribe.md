@@ -23,7 +23,7 @@ There are 3 categories of changes:
 When subscribing to a view and or a range, the change will reflect the change to the subscription -\
 rather than directly correlate to a database operation. A database insert or delete update will only be published to the subscriber if the insert appears in the range and/or view. Similarly, a database modify update might not show at all, or be transformed into an insert or delete update, if it moves into or out of the subscription.
 
-### Backward joins[​](/database/database-concepts/subscribe/#backward-joinsdirect-link-to-heading
+### Backward joins[​](/database/database-concepts/subscribe/#backward-joinsdirect-link-to-heading)
 
 By default, subscriptions on views will only publish updates on database changes to the root table. However, in view definitions, a join to a child table can be defined as `backwardsJoin = true`. For these joins, the subscription will also publish changes to child tables as modify updates. Please note that this is only supported for combined read/subscribe operations, as the subscription needs to cache the joins. This cache will require extra memory and cpu cycles to maintain.
 
