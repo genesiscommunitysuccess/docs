@@ -50,5 +50,5 @@ You’ll possibly learn 20% of what is offered ​by the Platform​, which will
 
 ## Source code
 The complete source code of this training is available 
-[here](https://github.com/genesiscommunitysuccess/devtraining-gama) <img src="/img/github-icon.png" width="20" /> 
+[on GitHub <img src="/img/github-icon.png" width="20" /> ](https://github.com/genesiscommunitysuccess/devtraining-gama) and, alternatively, as a [ZIP file](https://genesisglobal.jfrog.io/artifactory/community-uploads/devtraining-gama.zip).
 &nbsp; 
