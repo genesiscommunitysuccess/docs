@@ -165,7 +165,7 @@ fdbcli --exec "configure new single memory ; status"
 systemctl enable foundationdb
 ```
 
-Then to run it we can utilise systemctl: `systemctl status foundationdb`
+Then to run it, we can use systemctl: `systemctl start foundationdb`
 
 ### Install Docker Desktop for Windows
 
