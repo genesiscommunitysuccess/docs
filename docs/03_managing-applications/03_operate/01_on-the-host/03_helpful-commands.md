@@ -795,79 +795,113 @@ Log file called purge_{*time_of_run*} created under $GENESIS_HOME/runtime/logs/ 
 
 There are different ways you can purge data using below functions and filters
 
-### Functions
 
-| Name | Signature |
-|---|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| bulkPurger | `fun <T : GPalTable<E>, E : TableEntity> bulkPurger(table: T): PurgerBuilder<T, E>`|
-| rangePurger | `fun <T : GPalTable<E>, E : TableEntity, F1 : Any> rangePurger(index: GPalIndex1<T, F1>): RequestBuilder.Request1<T, E, GPalIndex1<T, F1>, F1>`<br/> |
-| daysPurger | `fun <T : GPalTable<E>, E : TableEntity> daysPurger(table: T, maxDays: Int): PurgerBuilder<T, E>` |
-| daysPurger | `fun <T : GPalTable<E>, E : TableEntity> daysPurger(field: TableField.NonNullable<T, Long>,maxDays: Int): PurgerBuilder<T, E>` |
-| daysPurger | `@JvmName("daysPurgerDateTime") fun <T : GPalTable<E>, E : TableEntity> daysPurger(field: TableField.NonNullable<T, DateTime>, maxDays: Int): PurgerBuilder<T, E>` |
-| daysPurger | `fun <T : GPalTable<E>, E : TableEntity> daysPurger(field: TableField.Nullable<T, Long>, maxDays: Int): PurgerBuilder<T, E>` |
-| daysPurger | `@JvmName("daysPurgerDateTime")fun <T : GPalTable<E>, E : TableEntity> daysPurger(field: TableField.Nullable<T, DateTime>, maxDays: Int): PurgerBuilder<T, E>` |
-| businessDaysPurger | `fun <T : GPalTable<E>, E : TableEntity> businessDaysPurger(table: T,maxDays: Int,country: String,region: String = "NATIONAL"): PurgerBuilder<T, E>` |
-| businessDaysPurger | `fun <T : GPalTable<E>, E : TableEntity> businessDaysPurger(field: TableField.NonNullable<T, Long>,maxDays: Int,country: String,region: String = "NATIONAL"): PurgerBuilder<T, E>` |
-| businessDaysPurger | `fun <T : GPalTable<E>, E : TableEntity> businessDaysPurger(field: TableField.Nullable<T, Long>,maxDays: Int,country: String,region: String = "NATIONAL"): PurgerBuilder<T, E>` |
-| businessDaysPurger | `@JvmName("businessDaysPurgerDateTime1")fun <T : GPalTable<E>, E : TableEntity> businessDaysPurger(field: TableField.NonNullable<T, DateTime>,maxDays: Int,country: String,region: String = "NATIONAL"): PurgerBuilder<T, E>` |
-| businessDaysPurger | `@JvmName("businessDaysPurgerDateTime2")fun <T : GPalTable<E>, E : TableEntity> businessDaysPurger(field: TableField.Nullable<T, DateTime>,maxDays: Int,country: String,region: String = "NATIONAL"): PurgerBuilder<T, E>` |
+### Inject repository:
+You can inject any repository in the purger script like below:
 
-Note:: rangePurger performs efficient index range searches in database and speed up purger performance. This method can be overloaded with different GPalIndex ranging from GPalIndex1 to GPalIndex10
+```kotlin
+purgers{
+    val userSessionRepo = inject<UserSessionRx2Repository>()
+}
+```
 
-### Filters
+### Purge by date:
 
-| Name       | Signature                                                                                                                                                                                |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| whereRange | `fun whereRange(value1: F1): PurgerBuilder.Range<T, E>`                                                                                                                                  |
-| filter | `fun filter(predicate: suspend (E) -> Boolean): PurgerBuilder<T, E>`                                                                                                                     |
-| filterBusinessDays | `fun filterBusinessDays(maxDays: Int,country: String,region: String = "NATIONAL",field: TableField.NonNullable<T, Long> = table.timestamp()): PurgerBuilder<T, E>`                       |
-| filterBusinessDays | `@JvmName("filterBusinessDaysDateTime")fun filterBusinessDays(maxDays: Int,country: String,region: String = "NATIONAL",field: TableField.NonNullable<T, DateTime>): PurgerBuilder<T, E>` |
-| filterBusinessDays | `fun filterBusinessDays(maxDays: Int,country: String,region: String = "NATIONAL",field: TableField.Nullable<T, Long>): PurgerBuilder<T, E>`                                              |
-| filterBusinessDays | `@JvmName("filterBusinessDaysDateTime")fun filterBusinessDays(maxDays: Int,country: String,region: String = "NATIONAL",field: TableField.Nullable<T, DateTime>): PurgerBuilder<T, E>`    |
-| filterDays | `fun filterDays(maxDays: Int,field: TableField.NonNullable<T, Long> = table.timestamp()): PurgerBuilder<T, E>`                                                                           |
-| filterDays | `@JvmName("filterDaysDateTime")fun filterDays(maxDays: Int,field: TableField.NonNullable<T, DateTime>): PurgerBuilder<T, E>`                                                             |
-| filterDays | `fun filterDays(maxDays: Int,field: TableField.Nullable<T, Long>): PurgerBuilder<T, E>`                                                                                                  |
-| filterDays | `@JvmName("filterDaysDateTime")fun filterDays(maxDays: Int,field: TableField.Nullable<T, DateTime>): PurgerBuilder<T, E>`                                                                |
-| finally | `fun finally(finaliser: suspend (E) -> Unit): PurgerBuilder<T, E>`                                                                                                                       |
+The purger supports purging based on days. The purger supports to specify the max age of record in terms of calendar days or business days.
+Business days will disregard weekends and public holidays.
 
-Note:: whereRange filter contains one parameter which is the first parameter of GPalIndex and you can give upto 10 parameter values if table index consist of many parameters
+To use this you will need to supply
+- a LONG or DATETIME field in the table to be used, or you can supply just table name and TIMESTAMP field of table will be used to calculate the age of the record.
+- Also max age of record, which indicates all the records older than these days will be purged
+- Optional fields when you use business days: `country` and `region` name.
 
-Some Purger examples explained below:
+```kotlin
+purgers {
+ // purge trades over 6 months old based on field TRADE_DATE
+ daysPurger(TRADE.TRADE_DATE, 180)
+ // purge trades over 6 months old based on field TIMESTAMP of table which will be used internally 
+ daysPurger(TRADE, 180)
+
+ // purge prices older than 5 business days based on PRICE_DATETIME
+ businessDaysPurger(PRICE.PRICE_DATETIME, 5)
+ // purge prices older than 5 business days based on PRICE_DATETIME in country SPAIN
+ businessDaysPurger(PRICE.PRICE_DATETIME, 5, "SPAIN")
+}
+```
+
+### Purge by range:
+Range purger is similar to bulkPurger, but it performs efficient index range searches in database and speed up purger performance compared to bulkPurger.
+- You need to give index name of the table you want to purge data on
+- Purger has special function called `whereRange` which is used to filter based on index value
 
 ```kotlin
 import global.genesis.gen.dao.repository.UserSessionRx2Repository
 purgers {
-    // You can inject other repos here
-    val userSessionRepo = inject<UserSessionRx2Repository>()
+ // Inject repo
+ val userSessionRepo = inject<UserSessionRx2Repository>()
 
-    // Purger that reads the whole user session every time it runs and deletes all sessions for JohnDoe
-    bulkPurger(USER_SESSION).filter { it.userName == "JohnDoe" }
+ // Range purger with whereRange
+ rangePurger(USER_SESSION.BY_USER_NAME).whereRange("JohnDoe")
 
-    // Purger to delete all USER_SESSION records older than 8 days based on LAST_ACCESS_TIME field
-    daysPurger(field = USER_SESSION.LAST_ACCESS_TIME, maxDays = 8)
+ // Combination of filters for maximum flexibility
+ rangePurger(USER_SESSION.BY_USER_NAME)
+  .whereRange("JohnDoe")
+  .filterBusinessDays(maxDays = 5, country = "SPAIN", region = "NATIONAL", field = USER_SESSION.LAST_ACCESS_TIME)
 
-    // Same as days purger but it will attempt to use business days and holidays if specified
-    businessDaysPurger(field = USER_SESSION.TIMESTAMP, maxDays = 8, country = "SPAIN")
+ rangePurger(USER_SESSION.BY_USER_NAME)
+  .whereRange("JohnDoe")
+  .filterDays(maxDays = 5)
 
-    // Range purger to perform efficient index range searches in database and speed up purger performance
-    rangePurger(USER_SESSION.BY_USER_NAME).whereRange("JohnDoe")
-
-    // Combination of filters for maximum flexibility and use of finally clause
-    rangePurger(USER_SESSION.BY_USER_NAME)
-            .whereRange("JohnDoe")
-            .filterBusinessDays(maxDays = 5, country = "SPAIN", region = "NATIONAL", field = USER_SESSION.LAST_ACCESS_TIME)
-
-    // Use of finally clause to delete extra associated records
-    rangePurger(USER.BY_NAME)
-            .whereRange("JohnDoe")
-            .finally { user ->
-                userSessionRepo.getRangeByUserName(user.userName)
-                        .toList()
-                        .flatMap { foundSessions -> userSessionRepo.deleteAll(foundSessions)}
-                        .blockingGet()
-            }
+ // finally clause usage
+ rangePurger(USER_SESSION.BY_USER_NAME)
+  .whereRange("JohnDoe")
+  .finally { userSession ->
+    println("Purged record: ${userSession.toGenesisSet()}")
+  }
 }
 ```
+
+### Purge bulk data:
+
+You can purge data of whole table by using
+
+```kotlin
+bulkPurger(USER_SESSION)
+```
+You can purge data of table based on some conditions
+
+```kotlin
+purgers {
+// Purger that reads the whole user session every time it runs and deletes all sessions for JohnDoe
+ bulkPurger(USER_SESSION).filter { it.userName == "JohnDoe" }
+// Purge USER_SESSION older than 8 business days in country India
+ bulkPurger(USER_SESSION)
+  .filterBusinessDays(8, "INDIA")
+}
+```
+
+### Filters
+
+Following filters are used in the examples explained above:
+
+`whereRange`: This filter can contain value of the table-index parameter or parameters if there are more than one field in the table-index. Parameter list can range from 1-10.
+It filters the records based on the index parameter value/values
+
+`filter`: filter based on predicate provided
+
+`filterBusinessDays`: this method allows to purge data based on business date. 
+You need to provide:
+- max age of record
+- country name
+- region which defaults to "NATIONAL"
+- and optional LONG or DATETIME field of table you want to purge and if not specified TIMESTAMP field of table is used
+
+`filterDays`: this method allows to purge data based on calendar date
+You need to provide:
+- max age of record
+- and optional LONG or DATETIME field of table you want to purge and if not specified TIMESTAMP field of table is used
+
+`finally` clause: It is run for every record that is purged and used to add some extra functionality if needed
 
 ## AppGen
 
