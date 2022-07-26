@@ -2,6 +2,7 @@
 title: 'Tables - introduction'
 sidebar_label: 'Tables - introduction'
 id: tables-intro
+sidebar_position: 1
 ---
 
 Tables are used to store the underlying data in your application. A table is made up of [fields](/database/fields-tables-views/fields). For example:
