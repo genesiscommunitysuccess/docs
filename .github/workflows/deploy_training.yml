@@ -1,4 +1,4 @@
-name: 'Deploy to uat (v2 docs)'
+name: 'Deploy to training (v2 docs)'
 
 # Triggered on new pushes to PLAT-155 (should be renamed eventually)
 on:
