@@ -9,26 +9,26 @@ id: entity-db
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-|                                                                                                 | [EntityDb](../entity-db)                                                           |
+|                                                                                                 | [EntityDb](/database/database-interface/entity-db/)                                                           |
 |-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
-| [Supports tables](../../../concepts/data-structure/tables)                                      | ✔️                                                                                 |
-| [Supports views](../../../concepts/data-structure/views)                                        | ✔️                                                                                 |
+| [Supports tables](/database/fields-tables-views/tables/tables-basics/)                                      | ✔️                                                                                 |
+| [Supports views](/database/fields-tables-views/views/views-basics/)                                        | ✔️                                                                                 |
 | Supports any data type                                                                          | ✔️                                                                                 |
 | Class to import                                                                                 | `AsyncEntityDb` <br/> `RxEntityDb`                                                 |
 | Type-safe read and write                                                                        | ✔️                                                                                 |
 | Type-safe write result                                                                          | ✔️                                                                                 |
-| Returns data as                                                                                 | [table](../../data-types/tables) or [view](../../data-types/views) entities        |
-| Writes data as                                                                                  | [table](../../data-types/tables) or [view](../../data-types/views) entities        |
-| References indexes as                                                                           | [index entities](../../data-types/indices)                                         |
-| Programming interface                                                                           | [Async](../../../reference/apis/async) or [RxJava](../../../reference/apis/rxjava) |
-| Write (input)                                                                                   | [Generic Modify Details](../../helper/modify/generic)                              |
-| Write (output)                                                                                  | [Generic Write Result](../../helper/write-result/generic)                          |
-| Subscribe                                                                                       | [Record Update](../../helper/subscription/record-update) of entity                 |
-| Bulk or Range Subscribe                                                                         | [Bulk](../../helper/subscription/bulk) of entity                                   |
+| Returns data as                                                                                 | [table](/database/fields-tables-views/tables/tables-basics/) or [view](/database/data-types/table-entities//) entities        |
+| Writes data as                                                                                  | [table](/database/fields-tables-views/tables/tables-basics/) or [view](/database/data-types/table-entities/) entities        |
+| References indexes as                                                                           | [index entities](database/data-types/index-entities/)                                         |
+| Programming interface                                                                           | [Async](/database/types-of-api/asynch/) or [RxJava](/database/types-of-api/rxjava/) |
+| Write (input)                                                                                   | [Generic Modify Details](/database/helper-classes/modify-details/generic/)                              |
+| Write (output)                                                                                  | [Generic Write Result](/database/helper-classes/write-results/generic/)                          |
+| Subscribe                                                                                       | [Record Update](/database/helper-classes/subscription/record-update/) of entity                 |
+| Bulk or Range Subscribe                                                                         | [Bulk](/database/helper-classes/subscription/bulk/) of entity                                   |
 
 
-| Available in [event handlers](/creating-applications/defining-your-application/business-logic/event-handlers/)         | ✔️                                                                                 |
-| Available in [custom request replies](/creating-applications/defining-your-application/user-interface/request-servers/rs-advanced-technical-details/#custom-request-servers) | ✔️                                                                                 |
+| Available in [event handlers](/database/event-handler-api/event-handler-api/)         | ✔️                                                                                 |
+| Available in [custom request replies](/getting-started/learn-the-basics/modules/inside-a-request-server/) | ✔️                                                                                 |
 
 
 The entity db enables you to interact with the database layer; you can use any generated type-safe entities for
@@ -39,9 +39,9 @@ The entity db differs from the generated repositories in that it can handle any 
 
 As with the generated repositories, there are two flavours of the entity db:
 
-* One has a [RxJava API](../../../reference/apis/rxjava) signatures, for use from Java.
+* One has a [RxJava API](/database/types-of-api/rxjava/) signatures, for use from Java.
 
-* The other flavour has an [Async API](../../../reference/apis/async), for use from Kotlin.
+* The other flavour has an [Asynch API](/database/types-of-api/asynch/), for use from Kotlin.
 
 The entity db is available in the kotlin Event Handler. Like `RxDb` it can also be injected in java and kotlin
 classes using `AsyncEntityDb` or `RxEntityDb`.
