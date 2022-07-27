@@ -2,7 +2,7 @@
 title: 'Server Modules'
 sidebar_label: 'Server Modules'
 sidebar_position: 1
-id: server_modules
+id: 'server-modules'
 ---
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry.
