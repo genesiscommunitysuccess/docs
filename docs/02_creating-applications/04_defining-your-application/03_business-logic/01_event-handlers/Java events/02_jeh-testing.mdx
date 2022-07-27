@@ -9,9 +9,10 @@ id: jeh-testing
 
 The Genesis Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application.
 
-In this case build GenesisTestConfig with the following information:
-- Set packages: `global.genesis.eventhandler` this is the standard package name from the framework which is needed for all Java events/custom events and
-name of the package where you defined the events Ex: in below example its `global.genesis.position.samples.events.rxjava`
+In this case, build `GenesisTestConfig` with the following information:
+
+- Set packages: `global.genesis.eventhandler` this is the standard package name from the framework, which is needed for all Java events/custom events. Make sure you
+name the package where you defined the events. In the example below, it is `global.genesis.position.samples.events.rxjava`
 - Set genesis home
 - Set initial data: we want to ensure that we have a database, seeded with information
 
@@ -31,7 +32,7 @@ public class TradingEventHandlerTest extends AbstractGenesisTestSupport<EventRes
 
 For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/managing-applications/test/integration-testing/).
 
-Once you have set up your configuration, you can start writing tests against our Event Handler.
+Once you have set up your configuration, you can start writing tests against your Event Handler.
 
 ## Writing tests
 
@@ -82,6 +83,12 @@ Let's write some tests for this simple Event Handler, defined below
 
 Below is an example of a simple test.
 
+First, this creates an `Event` object, setting the event details and specifying the intended Event Handler for the message "EVENT_TRADE_INSERT" and username.
+
+Second, it sends a message to the Event Handler using `getMessageClient().request(event, EventReply.class)`. The result is first verified to be an `EventAck`. 
+
+Finally, it checks that the inserted trade can be retrieved from the database.:
+
 ```java
     @Test
     public void testTradeInsert() throws InterruptedException {
@@ -101,14 +108,12 @@ Below is an example of a simple test.
     }
 ```
 
-First, create your `Event` object, setting the event details and specifying the intended Event Handler for the message "EVENT_TRADE_INSERT" and username.
-
-We then send a message to our Event Handler using `getMessageClient().request(event, EventReply.class)`. The result is first verified to be an `EventAck`. Then  check that the inserted trade can be retrieved from the database.
 
 ### Error response test
 
 You may also want to test a negative case, where you expect to receive an error as a response.
-In the example below, we expect the response to be of type `EventNack` when we try to insert wrong instrument ID as in event handler above we added check to see if instrument exists in database
+
+In the example below, we expect the response to be of type `EventNack` when we try to insert a wrong instrument ID. As in the Event Handler above, there is a check to see if the instrument exists in the database.
 
 ```java
     @Test
@@ -130,17 +135,16 @@ In the example below, we expect the response to be of type `EventNack` when we t
 
 ### Testing with authorisation
 
-#### Set-up
-
 To test that the Event Handler authorisation works correctly, you need to do some setting up.
 
 First, make sure that your authorisation set-up is designed to behave as follows:
+
 - A user who enters a trade must have an entry in the "ENTITY_VISIBILITY" auth map; the entity code for this user must match the `counterpartyId` of the trade.
 - The user must have an entry in the "RIGHT_SUMMARY" table with "RIGHT_CODE" as "TRADER".
 
 Second, you need to modify the previous example Event Handler so that only authorised users can insert trades.
 
-You can find a [Event example](/reference/developer/api/authorisation-api) in our Authorization API pages written in Kotlin.
+You can find an [Event example](/reference/developer/api/authorisation-api) in our Authorization API pages written in Kotlin.
 
 ```java
     @Module
@@ -214,13 +218,13 @@ Fourth, in your test set-up, let's authorise one user to be able to insert trade
     }
 ```
 
-For more information on authorisation, please see the [authorisation docs](/creating-applications/defining-your-application/access-control/authorisation-over/).
+For more information on authorisation, see the [authorisation docs](/creating-applications/defining-your-application/access-control/authorisation-over/).
 
 ### Tests
 
 After you have set things up. Now you can create the tests themselves.
 
-Below is a test that verifies only Traders can enter trades:
+Below is a test that verifies that only Traders can enter trades:
 
 ```java
     @Test
