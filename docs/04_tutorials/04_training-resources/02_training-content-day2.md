@@ -91,7 +91,7 @@ First, open the file **home.ts** to import the Micro frontends needed as well as
 ...
 import {EntityManagement, Permissions} from '@genesislcap/foundation-entity-management';
 
-EntityManagement;
+EntityManagement; //imported from '@genesislcap/foundation-entity-management' to display Trade grid
 
 const name = 'home-route';
 ...
@@ -99,10 +99,11 @@ const name = 'home-route';
 
 Now, still in the **home.ts** file, let's add two constants to define the columns config (*defaultColumnConfig*) and fields available (*COLUMNS*). We need to declare the columns and permissions in the Home class as well. 
 
-```ts {4-9,11-37,45-46,50}
+```ts {5-10,13-39,47-48,52}
 ...
 const name = 'home-route';
 
+//describes the default config for the grid columns
 const defaultColumnConfig = {
   enableCellChangeFlash: true,
   enableRowGroup: true,
@@ -110,6 +111,7 @@ const defaultColumnConfig = {
   enableValue: true,
 };
 
+//grid columns that will be showed
 const COLUMNS = [
   {
     ...defaultColumnConfig,
@@ -145,11 +147,11 @@ const COLUMNS = [
 })
 export class Home extends FASTElement {
   @observable columns: any = COLUMNS;
-  @observable permissionsTrade: Permissions[] = []; //no permissions required for now
-
+  @observable permissionsTrade: Permissions[] = []; 
+  
   constructor() {
     super();
-    this.permissionsTrade = [Permissions.add];
+    this.permissionsTrade = [Permissions.add]; //permissions will show the Grid buttons
   }
 }
 ```
@@ -227,15 +229,15 @@ We want to build a real-time positions application, where trades can be entered,
 60 mins
 :::
 
-Let's extend the Data model and create a CRUD, adding the tables **counterparty** and **instrument** as per the definition below. Use all the previous knowledge you've got.
+Let's extend the Data model and create a CRUD, adding the tables **Counterparty** and **Instrument** as per the definition below. Add the fields *COUNTERPARTY_ID* and *INSTRUMENT_ID* in the **Trade** table as well. Use all the previous knowledge you've got.
 
-![](/img/day2_new-tables.png)
+![](/img/day2_new-tables-alpha.png)
 
 As a reminder, these are the steps needed to complete this task:
 - Edit alpha-fields-dictionary.kts first and don't forget to run *generateFields* gradle task when you finish this. Remember that fields are defined separately from tables, so that they (including their meta-data) can be re-used across multiple tables and show linkage.​
-- Then edit alpha-tables-dictionary.kts to add the new tables and their respective fields you created in the previous step. When you finish, remember to ​run *genesis-generated-dao​*
+- Then edit alpha-tables-dictionary.kts to add the new tables and their respective fields you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to ​run *genesis-generated-dao​*
 - Add dataserver queries pointing to the new tables in the alpha-dataserver.kts file
-- Create INSERT, MODIFY and DELETE events for all entities using event handlers. When you finish, remember to ​run *deploy*​
+- Create INSERT, MODIFY and DELETE (CRUD) events for all entities using event handlers. When you finish, remember to ​run *build* and *deploy*​
 
 :::tip adding a new event handler block
 Example on how to add additional blocks in the eventHandler:
@@ -254,6 +256,13 @@ eventHandler {
             ack()
         }
     }
+
+    eventHandler<Trade>(name = "TRADE_DELETE") {
+      onCommit { event ->
+          entityDb.delete(event.details)
+          ack()
+      }
+    }
 }
 ```
 :::
@@ -263,8 +272,9 @@ eventHandler {
 ### API testing with auto-generated REST endpoints
 
 As an alternative to Genesis Console, take this opportunity to test your work with an HTTP client such as Postman or Insomnia.
-- [Postman](https://www.postman.com/downloads/)
-- [Insomnia](https://insomnia.rest/download)
+- [Postman web version](https://go.postman.co/home/)
+- [Postman App](https://www.postman.com/downloads/)
+- [Insomnia App](https://insomnia.rest/download)
 
 :::tip REST endpoints
 When we test our resources using an HTTP client as described here, we're taking advantage of the [REST endpoints](/creating-applications/defining-your-application/integrations/rest-endpoints/) provided by the Genesis Platform. It automatically exposes all configured resources, such as dataserver queries and event handlers, as HTTP endpoints via the GENESIS_ROUTER service. This also enables you to do some API testing automation for all your backend components.

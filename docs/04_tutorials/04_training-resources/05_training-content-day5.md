@@ -54,9 +54,9 @@ To start, create a process called *GENESIS_EVALUATOR* and add it in the file **a
 ```xml
 <processes>
     ...
-    <process name="GENESIS_EVALUATOR">
+    <process name="ALPHA_EVALUATOR">
         <start>true</start>
-        <groupId>GENESIS</groupId>
+        <groupId>ALPHA</groupId>
         <options>-Xmx512m -DXSD_VALIDATE=false</options>
         <module>genesis-evaluator</module>
         <primaryOnly>true</primaryOnly>
@@ -66,12 +66,12 @@ To start, create a process called *GENESIS_EVALUATOR* and add it in the file **a
 </processes>
 ```
 
-Add the *GENESIS_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below. 
+Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below. 
 
 ```xml
 <configuration>
     ...
-    <service host="localhost" name="GENESIS_EVALUATOR" port="11003"/>
+    <service host="localhost" name="ALPHA_EVALUATOR" port="11002"/>
 </configuration>
 ```
 
@@ -718,7 +718,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 
 Next, build the application as you usually do.
 
-Then copy the `genesisproduct-alpha-1.0.0-SNAPSHOT-bin.zip` from .\server\jvm\gama-distribution\build\distributions\ to the /home/genesis/run/ folder in the server (i.e., your WSL instance, where you can access its file system from Windows Explorer navigating to `\\wsl$`).
+Then copy the `genesisproduct-alpha-1.0.0-SNAPSHOT-bin.zip` from .\server\jvm\alpha-distribution\build\distributions\ to the /home/genesis/run/ folder in the server (i.e., your WSL instance, where you can access its file system from Windows Explorer navigating to `\\wsl$`).
 
 Once the zip file is in the ~/run/ folder, unzip it (use unzip command) and run `killServer --all`, `genesisInstall`, `remap --commit`, `startServer`.
 

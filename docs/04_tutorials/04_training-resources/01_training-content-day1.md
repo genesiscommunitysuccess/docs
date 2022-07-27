@@ -486,6 +486,7 @@ or from the dropdown menu:
 
 Once you are inside the console, type 'table USER' and then 'search 1'. If imported correctly, the user JaneDee should be listed.
 
+#### Running server commands
 :::info how to run server commands from the command line rather than gradle tasks?
 We've been running server commands through the gradle tasks. Alternatively, you can run server commands directly from a command line. 
 

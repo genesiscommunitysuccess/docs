@@ -233,9 +233,47 @@ To test it, you can try to modify a TRADE and see the states changing accordingl
 
 ### Exercise 4.1: state machines
 :::info ESTIMATED TIME
-20 mins
+40 mins
 :::
 Modify the class TradeStateMachine to keep the trade.price removing the current rule when TradeStatus.NEW, and set the field trade.enteredBy to empty when TradeStatus.CANCELLED.
+
+:::info UI CHANGES
+The Cancel button can be added using the *Permissions.delete* in the **home.ts** file.
+
+```kotlin {6}
+...
+export class Home extends FASTElement {
+    ...
+    constructor() {
+      super();
+      this.permissionsTrade = [Permissions.add, Permissions.delete]; //permissions will show the Grid buttons
+    }
+}
+
+```
+
+And adding the *deleteEvent* as well in the **home.template.ts** file.
+
+```html {10}
+...
+export const HomeTemplate = html<Home>`
+<div class="split-layout">
+    <div class="top-layout">
+        <entity-management
+          resourceName="ALL_TRADES"
+          title = "Trades"
+          entityLabel="Trades"
+          createEvent = "EVENT_TRADE_INSERT"
+          deleteEvent = "EVENT_TRADE_CANCELLED"
+          :columns=${x => x.columns}
+          :permissions=${x => x.permissionsTrade}
+        ></entity-management>
+    ...
+    </div>
+</div>
+`;
+```
+:::
 
 Remember to run *assemble* and *deploy-genesisproduct-alpha* tasks after the changes, and test it directly in the UI.
 
@@ -281,63 +319,6 @@ Add the same verification `onValidate` as in TRADE_INSERT to the TRADE_MODIFY ev
 
 
 Implement and test the back end with Console or Postman. To do that see the Day 2 example [here](/tutorials/training-resources/training-content-day2/#a-test-alternative-to-genesis-console). Basically, you should create a POST request using the URL *http://localhost/gwf/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
-
-Regarding the UI, the Cancel button can be added using the genesislcap/foundation-ui components as the sample below.
-
-**home.template.ts**
-```html {14}
-...
-export const HomeTemplate = html<Home>`
-<div class="split-layout">
-    <div class="top-layout">
-        <zero-card class="trade-card">
-            <span class="card-title">Trades</span>
-            <zero-ag-grid ${ref('tradesGrid')} rowHeight="45" only-template-col-defs>
-                ${when(x => x.connection.isConnected, html`
-                  <ag-genesis-datasource resourceName="ALL_TRADES"></ag-genesis-datasource>
-                  ${repeat(() => tradeColumnDefs, html`
-                    <ag-grid-column :definition="${x => x}" />
-                  `)}
-                `)}
-                <ag-grid-column :definition=${x => x.singleTradeActionCancelColDef}></ag-grid-column>
-            </zero-ag-grid>
-        </zero-card>
-    </div>
-    ...
-</div>
-`;
-```
-**home.ts**
-```kotlin
-...
-export class Home extends FASTElement {
-    ...
-    public singleTradeActionCancelColDef: ColDef = {
-        headerName: 'Action',
-        minWidth: 110,
-        maxWidth: 110,
-        cellRenderer: 'action', // AgRendererTypes.action
-        cellRendererParams: {
-        actionClick: async (rowData) => {
-            this.tradeData = rowData;
-            const tradeCancelEvent = await this.connection.commitEvent('EVENT_TRADE_CANCELLED', {
-            DETAILS: {
-                TRADE_ID: this.tradeData.TRADE_ID,
-            },
-            IGNORE_WARNINGS: true,
-            VALIDATE: false,
-            });
-
-            logger.debug('EVENT_TRADE_CANCELLED result -> ', tradeCancelEvent);
-        },
-        actionName: 'Cancel',
-        appearance: 'secondary-orange',
-        },
-        pinned: 'right',
-    };
-    ...
-}
-```
 
 ## Auditing​
 
