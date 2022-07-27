@@ -19,7 +19,7 @@ Within the file, you simply need to specify the details of each table that you n
 
 Of course, all the fields you specify must be in your fields dictionary.
 
-Here is a short and very simple example, which simply specifies one single table with four fields: 
+Here is a short and very simple example, which specifies one single table with four fields: 
 
 ```kotlin
 tables {
