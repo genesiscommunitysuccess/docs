@@ -6,7 +6,7 @@ id: sql
 
 
 ## System definitions
-For the SQL layer (PostgreSQL or MSSQL), take note of the following system definition items in the [**genesis-system-definitions.kts**](/creating-applications/configure-runtime/system-definitions/) file:
+For the SQL layer (PostgreSQL or MSSQL), take note of the following system definition items in the [**genesis-system-definitions.kts**](/database/database-technology/sql/) file:
 
 
 | Setting   | Description   |  
