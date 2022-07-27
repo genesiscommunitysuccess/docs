@@ -5,13 +5,13 @@ sidebar_position: 1
 id: jeh-basics
 ---
 
-Event hadlers can be written in Java using event handler [APIs](/reference/developer/api/event-handler-api). In this section events are written using the Rx3 Event handlers defined [here](/reference/developer/api/event-handler-api/#rx3eventhandler)
+Event Handlers can be written in Java using Event Handler [APIs](/reference/developer/api/event-handler-api). On this page, we look at Event Handlers written using the [Rx3 Event handlers](/reference/developer/api/event-handler-api/#rx3eventhandler)
 
 :::note
 
 We recommend using **Kotlin** to implement Event Handlers.
 
-- **Java** Event Handlers can be implemented using [**RxJava3**](#rx3) [**Sync**](#sync) Event Handlers only.
+- **Java** Event Handlers can only be implemented using [**RxJava3**](#rx3) [**Sync**](#sync) Event Handlers.
 - Async Event Handlers are widely used in Kotlin events and cannot be used for Java events, as there is no implementation for Kotlin coroutines in Java.
 
 
@@ -43,7 +43,7 @@ We recommend using **Kotlin** to implement Event Handlers.
 ```
 
 ## Adding a name
-Every `eventHandler` must have a unique name. If you do not provide one, it will be allocated automatically to default name as specified in previous example.
+Every `eventHandler` must have a unique name. If you do not provide one, it will be allocated a default name automatically, as shown in the previous example.
 
 It is good practice to provide your own name for each `eventHandler`. For example, if you have insert and modify codeblocks for the same table and you don't name them, then the platform will probably generate identical names for both - which will give you a problem.
 Note that the prefix `EVENT_` is automatically added to the name that you specify.
@@ -78,11 +78,11 @@ So, below, we modify our previous example by defining the name of the `eventHand
 
 ## Adding validation
 
-So far, we have overridden process method in our `eventHandler`. This is where the active instructions are - usually database changes.
+So far, we have overridden the process method in our `eventHandler`. This is where the active instructions are - usually database changes.
 
-If you want to provide some validation before the action, you need to implement Rx3ValidatingEventHandler interface and override onCommit and onValidate methods.
+If you want to provide some validation before the action, you need to implement the `Rx3ValidatingEventHandler` interface and override `onCommit` and `onValidate` methods.
 
-`onValidate` method will be executed first and `onCommit` method will only be executed if the `counterparty` field is not null.
+in the example below, the `onValidate` method will be executed first and the `onCommit` method will only be executed if the `counterparty` field is not null.
 
 ```java
 
@@ -124,13 +124,15 @@ If you want to provide some validation before the action, you need to implement 
 ### Returning a nack
 
 The `onValidate` method must always return either an `ack()` or `nack(...)`.
-In previous example the `onValidate` method:
+
+Look at the `onValidate` method in the previous example:
+
 - if the counterparty field is empty, the `eventHandler` returns a `nack`, along with a suitable message.
 - if the counterparty field has content, then the `eventHandler` returns an `ack`
 
 ### Default reply types
 
-So far, we have seen `ack` and `nack.  There is a third type: `warningNack`. Let's stop and look at the specifications for all three default reply types:
+So far, we have seen `ack` and `nack.  There is a third reply type: `warningNack`. Let's stop and look at the specifications for all three default reply types:
 
 * `ack`: used to signify a successful result. `ack` takes an optional parameter of `List<Map<String, Any>>`. For example, `ack(listOf(mapOf("TRADE_ID", "1")))`.
 * `nack`: used to signify an unsuccessful result. `nack` accepts either a `String` parameter or a `Throwable`. For example, `nack("Error!")` or `nack(myThrowable)`.
@@ -139,7 +141,7 @@ So far, we have seen `ack` and `nack.  There is a third type: `warningNack`. Let
 
 ## Transactional Event Handlers (ACID)
 
-If you want your  `eventHandler` to comply with ACID, you need to use RxEntityDb [writeTransaction](reference/developer/api/database/how-to/interface/entity-db/#write-transactions). Any exception or nack returned will result in a complete rollback of all parts of the `onCommit` and `onValidate` (the transaction also covers read commands) methods.
+If you want your  `eventHandler` to comply with ACID, you need to use the RxEntityDb [writeTransaction](reference/developer/api/database/how-to/interface/entity-db/#write-transactions). Any exception or nack returned will result in a complete rollback of all parts of the `onCommit` and `onValidate` (the transaction also covers read commands) methods.
 
 ```java
 
@@ -172,7 +174,7 @@ If you want your  `eventHandler` to comply with ACID, you need to use RxEntityDb
 ### Context Event Handlers
 
 In order to optimise database look-up operations, you might want to use data obtained by the `onValidate` method inside your `onCommit` method. To do this,
-implement Rx3ContextValidatingEventHandler interface, as shown below:
+implement the Rx3ContextValidatingEventHandler interface, as shown below:
 
 ```java
 
