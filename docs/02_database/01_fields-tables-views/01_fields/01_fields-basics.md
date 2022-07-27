@@ -4,7 +4,7 @@ sidebar_label: 'Fields - basics'
 id: fields-basics
 ---
 
-## Field Types
+## Field types
 
 By default, you have access to all the field definitions in the Genesis low-code platform. You also have access to all the fields in the modules that you specified in the Dictionary Cache.
 
@@ -24,7 +24,7 @@ The following field types are available:
 * NANO_TIMESTAMP
 * RAW
 
-Fields are easily defined with a unique `name` and `type`. There are also a few other options, such as default value and non-nullable. Some options are only relevant only for certain types).
+You can define each field, supplying a unique `name` and `type`. There are also options you can specify, such as default value and non-nullable. (Some options are only relevant for certain types.)
 
 For example, here we define two `STRING` fields. (The second is nullable; the first is not nullable):
 
@@ -39,7 +39,7 @@ fields {
 | Parameter | Default value | Sample Usage | Value Type | Description |
 |---|---|---|---|---|
 | default | null | `field(name = "AGE", type = INT, default=20)` | The same type as the field | Set a default value for the field where not supplied on a database insert. Mandatory for `ENUM` |
-| maxSize | 64 (unlimited for non sql DB) | `field(name = "DESCRIPTION", type = STRING, maxSize=1000)` | integer | Set the maxSize of a field. Applicable for `STRING`, `ENUM`, `RAW`. Needed for HFT and SQL data structures. see below for more details |
+| maxSize | 64 (unlimited for non sql DB) | `field(name = "DESCRIPTION", type = STRING, maxSize=1000)` | integer | Set the maxSize of a field. Applicable for `STRING`, `ENUM`, `RAW`. Needed for HFT and SQL data structures. See below for more details |
 | format | N/A | `field(name = "DESCRIPTION", type = BIG_DECIMALS, format="#,##0.000")` | Dependent on type | Set the maxSize of a field. Applicable for `STRING`, `RAW`  |
 | sensitive | false | `field(name = "PASSWORD", type = STRING, sensitive=true)` | boolean | true if the field should be masked on its toString() output  |
 | nullable | true | `field(name = "USER_NAME", type = STRING, sensitive=true)` | boolean | true if the field should be masked on its toString() output  |

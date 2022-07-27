@@ -4,10 +4,7 @@ sidebar_label: 'Read'
 id: read
 ---
 
-Read Operations
-===============
-
-Genesis supports a number of different read operations. Although the specifics vary between the different [interfaces](/database/types-of-api/), the underlying principles remain the same. This document will explain these, without going into specific calls.
+Genesis supports a number of different read operations. Although the specifics vary between the different [interfaces](/database/types-of-api/), the underlying principles remain the same. This document explain these principles, without going into specific calls.
 
 Fields[​](/database/database-concepts/read/#fieldsdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------------------------
