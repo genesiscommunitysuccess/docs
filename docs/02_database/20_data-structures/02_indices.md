@@ -21,11 +21,3 @@ The main distinction in index types is between unique and non-unique indices.
 - For a unique index, the database guarantees uniqueness; there will be at most one combination entry in a table. So, we can uniquely identify records by the unique indices. Every table will have a primary key, which is mandatory for a table definition.
 - For non-unique indices, the database does not guarantee uniqueness. Consequently, there is slightly less overhead for a non-unique index.
 
-## Index versus index entry
-Indices can be unique or non-unique.
-
-Consider a table TRADE with indices TRADE_BY_ID and TRADE_BY_DATE.
-
-The first index - TRADE_BY_ID - is unique; the second one is non-unique.
-
-The first would be to refer to an index in general. For example:
