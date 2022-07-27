@@ -43,7 +43,7 @@ Either way, this should give you enough knowledge to take your first steps in de
 
 
 
-## Take it easy
+## Take it slowly
 
 
 
