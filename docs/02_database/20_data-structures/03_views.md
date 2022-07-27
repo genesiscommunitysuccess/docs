@@ -9,7 +9,7 @@ id: views
 Views are defined in the `-view-dictionary.kts` files as discussed 
 [here](/creating-applications/defining-your-application/data-model/views/views-define/).
 
-Views are the genesis equivalent of SQL select queries. Unlike [tables](../tables), views do not have any data of 
+Views are the genesis equivalent of SQL select queries. Unlike [tables](/database/data-types/table-entities/), views do not have any data of 
 their own, but present a view based on one or more tables. A view always starts with a single table, the root table.
 Other tables can be joined onto the root table to present composite data. 
 
@@ -62,7 +62,7 @@ root table will only be unique if all fields are included.
 
 ## Entities
 
-During code generation, [view](../../../how-to/data-types/views) and [index](../../../how-to/data-types/indices) entities will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
+During code generation, [view](/database/data-types/views-entities/) and [index](/database/data-types/index-entities/) entities will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
 
 The generated entities are kotlin data classes and can be built using the primary constructor. Just before the object is built, it is validated to make sure all required fields have been set.
  
