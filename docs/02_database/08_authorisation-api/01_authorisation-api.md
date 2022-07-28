@@ -9,18 +9,18 @@ Authorisation API
 
 The authorisation API consists of two main classes that enable you to add permission checks to your custom component.
 
--   `RightSummaryCache`is a kotlin class whose instance can be obtained by simply injecting it into your custom component. This functionality relates directly to the permission codes functionality covered in more detail in the [Permission Codes section](https://docs.genesis.global/secure/creating-applications/defining-your-application/access-control/authorisation-over/). The method `userHasRight(userName: String, rightCode: String): Boolean` is used to determine if a particular user has the permission to a rights code.
+-   `RightSummaryCache`is a Kotlin class whose instance can be obtained by simply injecting it into your custom component. This functionality relates directly to the permission codes functionality covered in more detail in the [Permission Codes section](https://docs.genesis.global/secure/creating-applications/defining-your-application/access-control/authorisation-over/). The method `userHasRight(userName: String, rightCode: String): Boolean` is used to determine if a particular user has the permission to a rights code.
 
--   `AuthCache` is a kotlin class whose instance should be created by calling the static method `AuthCache.newReader(mapName: String, updateQueue: UpdateQueue): AuthCache`.\
+-   `AuthCache` is a Kotlin class whose instance should be created by calling the static method `AuthCache.newReader(mapName: String, updateQueue: UpdateQueue): AuthCache`.\
     An UpdateQueue instance can be obtained from an injected RxDb connection: `rxDb.updateQueue`. A permission check for the entity is done by calling `isAuthorised(entityId: String?, userName: String): Boolean`, How this works is covered in more detail [AuthCache section](https://docs.genesis.global/secure/creating-applications/defining-your-application/access-control/authorisation-over/).
 
-### Permission code API[​](/database/authorisation-api/authorisation-api/#permission-code-apidirect-link-to-heading)
+### Permission code API[​](/database/authorisation-api/authorisation-api/#permission-code-api)
 
 ```
 package global.genesis.session// imports omitted for brevity@Singletonclass RightSummaryCache @Inject constructor(db: RxDb) :    AbstractBulkTableSubscriber<RightSummaryCache.RightSummary>(db, "RIGHT_SUMMARY") {        // other members omitted for brevity    fun userHasRight(userName: String, rightCode: String): Boolean {        // details omitted for brevity    }}
 ```
 
-### AuthCache API[​](/database/authorisation-api/authorisation-api/#authcache-apidirect-link-to-heading)
+### AuthCache API[​](/database/authorisation-api/authorisation-api/#authcache-api)
 
 ```
 package global.genesis.session// imports omitted for brevityclass AuthCache private constructor(private val mapName: String, updateQueue: UpdateQueue) : MasterAuthCache {      companion object {        @JvmStatic        fun newReader(mapName: String, updateQueue: UpdateQueue): AuthCache {            // details omitted for brevity        }    }    override fun isAuthorised(entityId: String?, userName: String): Boolean {        // details omitted for brevity    }}
