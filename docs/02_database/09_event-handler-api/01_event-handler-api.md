@@ -9,15 +9,15 @@ Custom Event Handlers
 
 Custom Event Handlers provide a way of implementing business logic in Java or Kotlin outside the Genesis GPAL Event Handler definition, in a more traditional and flexible development approach. Genesis has 3 different flavours of custom Event Handler:
 
--   Async. This uses the Kotlin coroutines API to simplify asynchronous development. This is the underlying implementation used in GPAL event handlers.
--   RxJava3. These use the RxJava3 library, which is a popular option for composing asynchronous event-based programs.
+-   Asynch. This uses the Kotlin coroutine API to simplify asynchronous development. This is the underlying implementation used in GPAL Event Handlers.
+-   RxJava3. This uses the RxJava3 library, which is a popular option for composing asynchronous event-based programs.
 -   Sync. This creates synchronous Event Handlers.
 
 ##### NOTE
 
-Java event handlers can be implemented using [RxJava3](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#rx3) and [Sync](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#sync) event handlers only. Async event handlers cannot be used, as there is no implementation for kotlin coroutines in java.
+Java event handlers can be implemented using [RxJava3](/database/event-handler-api/event-handler-api/#rx3eventhandler) and [Sync](database/event-handler-api/event-handler-api/#sync) event handlers only. Asynch Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
 
-We recommend using kotlin to implement event handlers
+We recommend using Kotlin to implement Event Handlers
 
 Configure in processes.xml file[​](/database/event-handler-api/event-handler-api/#configure-in-processesxml-filedirect-link-to-heading)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ In the previous example, there was no distinction between validation and commit 
 
 ### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading)
 
-Using this interface, you don't need to override the `process` method; you can split your logic into validation and commit stages. There are various methods of implementing this, which are described below:
+Using this interface, you do not need to override the `process` method; you can split your logic into validation and commit stages. There are various methods of implementing this, which are described below:
 
 | Name | Signature |
 | --- | --- |
@@ -124,7 +124,7 @@ In some cases, you might want to carry information from the `onValidate` code 
 
 ### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading)
 
-As with the previous example, when using this interface, you don't need to override the `process` method. The different methods for implementing this are described below:
+As with the previous example, when using this interface, you do not need to override the `process` method. The different methods for implementing this are described below:
 
 | Name | Signature |
 | --- | --- |
@@ -147,12 +147,12 @@ import global.genesis.commons.annotation.Moduleimport global.genesis.eventhandle
 Rx3[​](database/event-handler-api/event-handler-api/#rx3direct-link-to-heading)
 ------------------------------------------------------------------------------------------------------------------
 
-The mechanism explained in [Async](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#async) can be recycled and reapplied in Rx3 Event Handlers.
+The mechanism explained in [Async](/database/event-handler-api/event-handler-api/#async) can be recycled and reapplied in Rx3 Event Handlers.
 
 Rx3EventHandler[​](/database/event-handler-api/event-handler-api/#rx3eventhandlerdirect-link-to-heading)
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-In a similar fashion to `AsyncEventHandler`, there is an Rx3 implementation flavour. It works in a very similar way to [`AsyncEventHandler`](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#asynceventhandler), but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
+In a similar fashion to `AsyncEventHandler`, there is an Rx3 implementation flavour. It works in a very similar way to [`AsyncEventHandler`](/database/event-handler-api/event-handler-api/#asynceventhandler), but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
 
 See the interface definition below: `interface Rx3EventHandler<I : Any, O : Outbound> : Rx3EventWorkflowProcessor<I, O>, EventHandler`
 
@@ -184,7 +184,7 @@ Here is an example:
 
 ### Rx3ValidatingEventHandler[​](/database/event-handler-api/event-handler-api/#rx3validatingeventhandlerdirect-link-to-heading)
 
-The same applies to an Rx3ValidatingEventHandler. It is similar to [AsyncValidatingEventHandler](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#asyncvalidatingeventhandler) in every way, but the return type is still `Single<O>`.
+The same applies to an Rx3ValidatingEventHandler. It is similar to [AsyncValidatingEventHandler](/database/event-handler-api/event-handler-api/#asyncvalidatingeventhandler) in every way, but the return type is still `Single<O>`.
 
 `interface Rx3ValidatingEventHandler<I : Any, O : Outbound> : Rx3EventHandler<I, O>`
 
@@ -206,7 +206,7 @@ Here is an example:
 
 ### Rx3ContextValidatingEventHandler[​](/database/event-handler-api/event-handler-api/#rx3contextvalidatingeventhandlerdirect-link-to-heading)
 
-And the same goes for `Rx3ContextValidatingEventHandler` in relation to [AsyncContextValidatingEventHandler](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#asynccontextvalidatingeventhandler).
+And the same goes for `Rx3ContextValidatingEventHandler` in relation to [AsyncContextValidatingEventHandler](/database/event-handler-api/event-handler-api/#asynccontextvalidatingeventhandler).
 
 `interface Rx3ContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : Rx3EventHandler<I, O>`
 
@@ -236,7 +236,7 @@ Here is an example:
 Sync[​](/database/event-handler-api/event-handler-api/#syncdirect-link-to-heading)
 --------------------------------------------------------------------------------------------------------------------
 
-Sync works similarly to [Async](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#async) and [Rx3](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
+Sync works similarly to [Async](/database/event-handler-api/event-handler-api/#async) and [Rx3](/database/event-handler-api/event-handler-api/#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
 
 ### SyncEventHandler[​](/database/event-handler-api/event-handler-api/#synceventhandlerdirect-link-to-heading)
 
