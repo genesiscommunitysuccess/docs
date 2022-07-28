@@ -4,6 +4,8 @@ sidebar_label: 'Tables - basics'
 id: tables-basics
 ---
 
+[Introduction](/database/fields-tables-views/tables/)  | [Basics](/database/fields-tables-views/tables/tables-basics/) |  [Advanced](/database/fields-tables-views/tables/tables-advanced/) | [Examples](/database/fields-tables-views/tables/tables-examples/) 
+
 In your application's **tables-dictionary.kts** file, you need to define every table that your application needs. Let us go back to the very simple example definition that we started with. This contains a single table with three fields in it.
 
 Then you can look closer at all the elements that can go into a table definition.
