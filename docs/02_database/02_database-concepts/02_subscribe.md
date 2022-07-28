@@ -4,8 +4,6 @@ sidebar_label: 'Subscribe'
 id: subscribe
 ---
 
-Subscribe operations
-====================
 
 Subscribe operations allow code to react to database changes, rather than polling for changes. Code can either just listen to changes, or use a combined read/subscribe operation. These mixed read/subscribe operations are useful.
 
