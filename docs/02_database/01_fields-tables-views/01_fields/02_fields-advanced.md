@@ -6,7 +6,7 @@ id: fields-advanced
 
 ## Modularity
 
-Genesis is modular, so if you have a dependency on another module (e.g. AUTH), your project will naturally inherit all the fields from that module and and they are available in your project. 
+Genesis is modular, so if you have a dependency on another module (e.g. Auth), your project will naturally inherit all the fields from that module and and they are available in your project. 
 
 It makes sense to re-use fields in dependent modules wherever possible; this cuts down your need to define field names that are unique across all modules and the project itself.
 

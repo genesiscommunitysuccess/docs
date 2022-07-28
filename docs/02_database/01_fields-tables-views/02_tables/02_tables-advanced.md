@@ -4,6 +4,8 @@ sidebar_label: 'Tables - advanced'
 id: tables-advanced
 ---
 
+[Introduction](/database/fields-tables-views/tables/)  | [Basics](/database/fields-tables-views/tables/tables-basics/) |  [Advanced](/database/fields-tables-views/tables/tables-advanced/) | [Examples](/database/fields-tables-views/tables/tables-examples/) 
+
 ## Subtables
 
 A subtable provides a unique point of view on the data schema, which goes further than a simple join relationship. It gives extra functionality to a main table.

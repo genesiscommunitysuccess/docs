@@ -38,16 +38,16 @@ When you define a table, you must start by giving it a name that is unique to th
 
 ## Table ID
 
-Tables must also be given an ID that is unique to the application. This ensures that you can rename a table without losing the data in it.
+Tables must also be given a Table ID that is unique to the application. This ensures that you can rename a table without losing the data in it.
  
 ```kotlin
   table( name= "POSITION", id = 11002)
 ```
 
 ## Fields
-After specifying a name and an ID, you specify the fields in the table. 
+After specifying a name and a Table ID, specify the fields in the table. 
 
-Each field's type and other attributes are inherited from the field definition.
+You do not need to specify field types and other attributes - just the field name.
 
 If you are using intelliJ IDE, it will auto-suggest the available fields; any references that are not known will be shown in red.
 
@@ -116,7 +116,7 @@ When you define an index, you cannot supply exactly the same fields in exactly t
 
 ### Primary key and index names
 
-It is not mandatory to give a primary key or index a name. If you don't provide a name, it will be inferred:
+It is not mandatory to give a primary key or an index a name. If you don't provide a name, it will be inferred:
 
  `[TABLE_NAME]_BY_[FIELD_1](_[FIELD_N])`
  
