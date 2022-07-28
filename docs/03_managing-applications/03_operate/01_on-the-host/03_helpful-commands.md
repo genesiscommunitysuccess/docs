@@ -786,7 +786,7 @@ ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p db
 
 ## PurgeTables
 
-This gives enables you to define the data-retention policy. Data will be removed from the database where the defined criteria are fulfilled.
+This enables you to define the data-retention policy. Data will be removed from the database where the defined criteria are fulfilled.
 
 For example: In the TRADE table, we only keep completed orders, or we only keep trades for the last 30 days.
 
