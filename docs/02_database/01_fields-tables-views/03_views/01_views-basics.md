@@ -8,7 +8,7 @@ id: views-basics
 
 When you set up a data model, it implies relationships between tables. For example, a TRADE has a COUNTERPARTY_ID and an INSTRUMENT_ID. That means it has a relationship with the COUNTERPARTY and INSTRUMENTS tables.
 
-Views enable you join related tables to create a single holistic view.
+Views enable you join these tables to create a single holistic view.
 
 They are a lot more powerful than this in practice; they underpin many Genesis components that read data from the database in real time or in static form.
 

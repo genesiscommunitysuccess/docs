@@ -11,7 +11,7 @@ Here is an example **view-dictionary.kts** from our tutorial.
 The file has two views:
 
 * The first view is called TRADE_VIEW. It joins the TRADE table to the COUNTERPARTY table and to the INSTRUMENT table.
-* The second view is called POSITION_VIEW. It joins the POSITION table to the ALT_INSTRUMENT_ID table ( backwards join, because it includes real-time price data) and the INSTRUMENT table.
+* The second view is called POSITION_VIEW. It joins the POSITION table to the ALT_INSTRUMENT_ID table (this is a backwards join, because it includes real-time price data) and the INSTRUMENT table.
 
 ```kotlin
 views {

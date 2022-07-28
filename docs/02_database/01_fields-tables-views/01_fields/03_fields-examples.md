@@ -7,6 +7,9 @@ id: fields-examples
 There is no complexity to a **fields-dictionary.kts** file.
 
 As you can see, each field is named in its own row and given a type, all within a `fields` statement. 
+
+Some of the fields in the example below have extra parameters. For example, `DESCRIPTION` is given a `maxSize`of 255.
+
 ```kotlin
 fields {
     field(name = "ACTIVE", type = BOOLEAN)

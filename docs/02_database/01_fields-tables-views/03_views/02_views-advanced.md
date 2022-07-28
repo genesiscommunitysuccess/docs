@@ -44,7 +44,7 @@ derivedField("SPREAD", DOUBLE) {
     }
 }
 ```
-By default, all fields are populated in the entity. For larger tables, this might have a performance impact if many fields are loaded that are not used in the calculation or the final view. To mitigate this, you can specify to either only load non-null fields, or specify fields to be populated. Non-null fields will always be populated.
+By default, all fields are populated in the entity. For larger tables, this might have a performance impact if many fields are loaded that are not used in the calculation or the final view. To mitigate this, you can specify to load either only non-null fields, or specify the fields to be populated. Non-null fields will always be populated. Let's look at an example of each.
 
 Only load non-null fields:
 
@@ -71,7 +71,7 @@ derivedField("SPREAD", DOUBLE) {
 
 Available join types are INNER and OUTER. If you do not specify the type, it defaults to OUTER.
 
-- `INNER` joins require that all joins match exactly; if one single join fails to match, the row will be discarded.
+- `INNER` joins require all joins to match exactly; if one single join fails to match, the row will be discarded.
 - `OUTER` joins provide null references for failed joins and will still allow the row to be built.
 
 ```kotlin
@@ -95,7 +95,7 @@ joining(TRADE.JOIN_TRADE_TO_SIDE)
 ```
 
 ### Parameterised joins
-Some join operations require external parameters that are not available in the context of the table-join definition, but will be available when the view repository is access (e.g. client enriched definitions), so an option exists to create parametrised joins.
+Some join operations require external parameters that are not available in the context of the table-join definition, but will be available when the view repository is access (e.g. client enriched definitions), so an option exists to create parameterised joins.
 
 These are typically used in Request Server queries:
 

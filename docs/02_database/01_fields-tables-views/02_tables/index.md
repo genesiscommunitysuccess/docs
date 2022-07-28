@@ -5,7 +5,7 @@ id: tables-intro
 sidebar_position: 1
 ---
 
-Tables are used to store the underlying data in your application. A table is made up of [fields](/database/fields-tables-views/fields). For example:
+A table is made up of [fields](/database/fields-tables-views/fields). For example:
 
 - Your application might want to display a grid of trades. For those trades, you will want to see the instruments traded, the trade price and the quantity. That means you want a table, probably called TRADES, with three fields (and almost certainly other fields, as well).
 - Your users might want to select a counterparty from a dropdown list. So, you would have a table of counterparties; this could include your internal ID for the counterparty, the counterparty short name and the counterparty's full business name. Again, it's easy to see what you would call your table and what fields you would include in it.
