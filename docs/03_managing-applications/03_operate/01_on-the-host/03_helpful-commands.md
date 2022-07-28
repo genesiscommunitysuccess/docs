@@ -788,7 +788,7 @@ ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p db
 
 This enables you to define the data-retention policy. Data will be removed from the database where the defined criteria are fulfilled.
 
-For example: In the TRADE table, we only keep completed orders, or we only keep trades for the last 30 days.
+Example: For the TRADE table, we could decide to keep allocated trades for 60 days, and 30 days for the rest.
 
 To use this tool, you must have an _application_**-purger.kts* file in the application's config folder. Invoking the **PurgeTables** command will pick up all  files that are found in the **$GENESIS_HOME/generated/cfg/** directory.
 
