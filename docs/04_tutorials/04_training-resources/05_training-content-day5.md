@@ -71,7 +71,7 @@ Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside y
 ```xml
 <configuration>
     ...
-    <service host="localhost" name="ALPHA_EVALUATOR" port="11002"/>
+    <service host="localhost" name="ALPHA_EVALUATOR" port="11003"/>
 </configuration>
 ```
 
@@ -89,9 +89,9 @@ Run `SetPrimary` and you should be able to see all processes running.
 When the evaluator is running, create a PositionReport class to trigger the new event. This class should be created inside your project folder **server/jvm/alpha-messages/src/main/kotlin/global/genesis/alpha/message/event** as the code below. 
 
 ```kotlin
-global.genesis.alpha.message.event
+package global.genesis.alpha.message.event
 
-class PositionReport()
+class PositionReport
 ```
 
 #### 3. Create an event handler

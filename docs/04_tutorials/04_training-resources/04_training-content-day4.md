@@ -23,22 +23,13 @@ State machines enable you to control workflow by defining the transitions from s
 
 Once we have added add a new field to the data model, we will edit the event handler file to add controlled transitions from one state to another.
 
-### 1. Add the new field to the data model
+### 1. Data model
 
-Add the TRADE_STATUS field to the **alpha-fields-dictionary.kts** file.
+Make sure you added the TRADE_STATUS field to the TRADE table in the **alpha-tables-dictionary.kts** file.
 
-```kotlin {16}
-fields {
-    ...
-    field(name = "TRADE_STATUS", type = ENUM("NEW", "ALLOCATED", "CANCELLED", default = "NEW"))
-}
-```
-
-Add the TRADE_STATUS field to the TRADE table in the **alpha-tables-dictionary.kts** file.
-
-```kotlin {12}
+```kotlin {4}
 tables {
-  table (name = "TRADE", id = 11000) {
+  table (name = "TRADE", id = 2000) {
     ...
     TRADE_STATUS
 
@@ -47,10 +38,11 @@ tables {
     }
 
   }
+  ...
 }
 ```
 
-Run *genesis-generated-fields* to generate the fields, AND​ *genesis-generated-dao​* to create the DAOs.
+If the TRADE_STATUS is missing, run *genesis-generated-fields* to generate the fields, AND​ *genesis-generated-dao​* to create the DAOs.
 
 ### 2. Create a new class for the state machine
 
@@ -238,10 +230,49 @@ To test it, you can try to modify a TRADE and see the states changing accordingl
 Modify the class TradeStateMachine to keep the trade.price removing the current rule when TradeStatus.NEW, and set the field trade.enteredBy to empty when TradeStatus.CANCELLED.
 
 :::info UI CHANGES
-The Cancel button can be added using the *Permissions.delete* in the **home.ts** file.
+Open the **home.ts** file and add the TRADE_STATUS field in the const *COLUMNS*. The Cancel button can be added using the *Permissions.delete*.
 
-```kotlin {6}
+```kotlin {29-33,45}
 ...
+//grid columns that will be showed
+const COLUMNS = [
+  {
+    ...defaultColumnConfig,
+    field: 'TRADE_ID',
+    headerName: 'Id',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'QUANTITY',
+    headerName: 'Quantity',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'PRICE',
+    headerName: 'Price',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'SYMBOL',
+    headerName: 'Symbol',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'DIRECTION',
+    headerName: 'Direction',
+  },
+  {
+    ...defaultColumnConfig,
+    field: 'TRADE_STATUS',
+    headerName: 'Status',
+  },  
+];
+
+@customElement({
+  name,
+  template,
+  styles,
+})
 export class Home extends FASTElement {
     ...
     constructor() {

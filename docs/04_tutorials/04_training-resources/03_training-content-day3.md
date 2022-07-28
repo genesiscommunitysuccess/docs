@@ -80,8 +80,8 @@ Run **alpha-deploy:deployConfig** and test the view with Postman or Console.​
 :::
 
 Extend the **TRADE_VIEW** to connect TRADE to COUNTERPARTY:
-1. Add the respective join (as we did with INSTRUMENT)​.
-2. Then, instead of taking all fields from TRADE, use only: TRADE_ID​, PRICE, QUANTITY, DIRECTION.
+1. Add the respective join (as we did with INSTRUMENT)​
+2. Add the COUNTERPARTY.NAME withPrefix COUNTERPARTY
 3. Test it
 
 ## Extending our application further
@@ -309,6 +309,7 @@ derivedField("CONSIDERATION", DOUBLE) {
 Add this derivedField to your view now.​ The final view should be like this.
 ```kotlin
 view("TRADE_VIEW", TRADE) {
+
     joins {
         joining(COUNTERPARTY) {
             on(TRADE.COUNTERPARTY_ID to COUNTERPARTY { COUNTERPARTY_ID })
@@ -319,10 +320,7 @@ view("TRADE_VIEW", TRADE) {
     }
 
     fields {
-        TRADE.TRADE_ID
-        TRADE.PRICE
-        TRADE.QUANTITY
-        TRADE.DIRECTION
+        TRADE.allFields()
 
         COUNTERPARTY.NAME withPrefix COUNTERPARTY
         INSTRUMENT.NAME withPrefix INSTRUMENT
@@ -381,7 +379,7 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 Before defining the consolidator, we should insert some data in the *INSTRUMENT_PRICE* table using the command [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script). To do that, let's run server commands directly from a command line using PowerShell (or Windows Command Prompt) to access your WSL instance, through user 'genesis' to have access to the Genesis Platform commands as we did [before](/tutorials/training-resources/training-content-day1/#running-server-commands).
 
-From the command line opened, in the /tmp folder, save this csv as INSTRUMENT_PRICE.csv using your favorite editor (i.e. [vim](https://www.vim.org/) or [nano](https://www.nano-editor.org/)):
+From the command line opened, in the */tmp* folder, save this csv as INSTRUMENT_PRICE.csv using your favorite editor (i.e. [vim](https://www.vim.org/) or [nano](https://www.nano-editor.org/)):
 ```csv
 INSTRUMENT_ID,LAST_PRICE
 1,10
@@ -392,7 +390,7 @@ Then go to the folder where the csv is located and run:
 SendIt -t INSTRUMENT_PRICE -f INSTRUMENT_PRICE.csv
 ```
 
-Set the instrument_id field as not nullable in the TRADE and POSITION tables, as the consolidations will use it.
+Make sure you settled the INSTRUMENT_ID field as not nullable in the TRADE and POSITION tables, as the consolidations will use it.
 
 ```kotlin {4,10}
 tables {
@@ -410,6 +408,16 @@ tables {
     ...
 }
 ```
+
+Add the query ALL_POSITIONS in the **alpha-dataserver.kts** file.
+
+```kotlin {3}
+dataServer {
+    ...
+    query("ALL_POSITIONS", POSITION)
+}
+```
+
 When you finish, remember to run *genesis-generated-dao​* and *genesisproduct-assemble*.​
 
 So, let's define a **alpha-consolidator.kts** file inside **alpha-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
