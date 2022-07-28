@@ -95,7 +95,7 @@ joining(TRADE.JOIN_TRADE_TO_SIDE)
 ```
 
 ### Parameterised joins
-Some join operations require external parameters that are not available in the context of the table-join definition, but will be available when the view repository is access (e.g. client enriched definitions), so an option exists to create parameterised joins.
+Some join operations require external parameters that are not available in the context of the table-join definition, but will be available when the view repository is accessed (e.g. client enriched definitions), so an option exists to create parameterised joins.
 
 These are typically used in Request Server queries:
 
@@ -134,7 +134,7 @@ When using dynamic joins on aliased tables, the alias name should match the alia
 | Index | TRADE_BY_ID
 | Entity Index | Trade.ById
 
-As with derived fields, you can use the `withEntity` and the `withInput` syntax. However, the lambda should always return an entity index object or null. Also, it should always return the same type. It is not possible to switch dynamically between indices, so it should ways return the same type or null. It is possible to add further `and` clauses afterwards.
+As with derived fields, you can use the `withEntity` and the `withInput` syntax. However, the lambda should always return an entity index object or null. Also, it should always return the same type. It is not possible to switch dynamically between indices, so it should always return the same type or null. It is possible to add further `and` clauses afterwards.
 
 Syntax:
 

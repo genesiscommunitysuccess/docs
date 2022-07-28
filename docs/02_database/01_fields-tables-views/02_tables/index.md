@@ -5,6 +5,8 @@ id: tables-intro
 sidebar_position: 1
 ---
 
+[Introduction](/database/fields-tables-views/tables/)  | [Basics](/database/fields-tables-views/tables/tables-basics/) |  [Advanced](/database/fields-tables-views/tables/tables-advanced/) | [Examples](/database/fields-tables-views/tables/tables-examples/) 
+
 A table is made up of [fields](/database/fields-tables-views/fields). For example:
 
 - Your application might want to display a grid of trades. For those trades, you will want to see the instruments traded, the trade price and the quantity. That means you want a table, probably called TRADES, with three fields (and almost certainly other fields, as well).

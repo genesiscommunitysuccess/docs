@@ -6,10 +6,6 @@ id: fields-basics
 
 ## Field types
 
-By default, you have access to all the field definitions in the Genesis low-code platform. You also have access to all the fields in the modules that you specified in the Dictionary Cache.
-
-But you can also define your own fields.
-
 The following field types are available:
 
 * STRING
@@ -46,7 +42,9 @@ fields {
 
 ## Naming fields
 
-As is always the case, it is worth being careful with the names you give fields. Clear names help.
+As is always the case, it is worth being careful with the names you give fields. It is good practice to use clear descriptive names.
+
+### Duplicate names
 
 If you create a field name that already exists, there are no consequences - as long as the field type is also the same. In effect, the second definition is simply ignored.
 
@@ -56,12 +54,13 @@ The error is shown when you generate the code.
 
 If the code has already been generated - typically, if you are making changes to an existing server - the error is generated when you run `genesisInstall` after the change.
 
-More specifically, When you build, this generates a duplication warning if the fields are defined in the same way, or an error if they are defined differently. If the duplication is between your own field and one you have inherited from another module, make sure you change the name of your own field, not the one from the other module.
+More specifically, when you build, this generates a duplication warning if the fields are defined in the same way, or an error if they are defined differently. If the duplication is between your own field and one you have inherited from another module, make sure you change the name of your own field, not the one from the other module.
 
-When you define a new field, it is good practice to run `codegen:generateSysDef`. This will generate code based on the fields definition and you will be able to use intellisense to pick this new field within table definitions.
+When you define a new field, it is good practice to run `codegen:generateSysDef`. This will generate code based on the fields you have defined, and you will be able to use intellisense to pick this new field within table definitions.
 
-### Using the maxSize parameter
-When using an SQL DB and you want a field's max size to be the same as that supported by the underlying DB, you can use the helper function `dbMaxSize()`.
+### Using the maxSize parameter 
+
+When using an SQL database and you want a field's max size to be the same as that supported by the underlying database, you can use the helper function `dbMaxSize()`.
 
 For example, if using Postgres and wanting a `STRING` field's size to be equal to the max size Postgres supports, then you would define the field as:
 
@@ -69,11 +68,15 @@ For example, if using Postgres and wanting a `STRING` field's size to be equal t
 field(name = "DESCRIPTION", type = STRING, maxSize = dbMaxSize())
 ```
 
-You can also specify a target `maxSize`. This is useful when you want to limit a field's size to a particular length, but you want to be flexible enough to support different SQL DBs.
+You can also specify a target `maxSize`. This is useful when you want to limit a field's size to a particular length, but you want to be flexible enough to support different SQL databases.
 
 For example:
 
 ```kotlin
 field(name = "DESCRIPTION", type = STRING, maxSize = dbMaxSize(target = 9000))
 ```
-If the underlying database is Postgres, this sets the field's `maxSize` to 9000, because Postgres can support up to 65535. But if you are using MS SQL, then the `maxSize` is set to 8000, the max supported size for MS SQL.
+If the underlying database is Postgres, this sets the field's `maxSize` to 9000, because Postgres can support up to 65535. But if you are using MS SQL, then the `maxSize` is set to 8000, the maximum supported size for MS SQL.
+
+## Pre-defined fields
+
+By default, you have access to all the standard field definitions in the Genesis low-code platform. You also have access to all the fields in any module that you include in your application (for example, the Auth module comes with a set of pre-defined fields).
