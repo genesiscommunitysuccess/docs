@@ -99,7 +99,7 @@ Indices are used in the following scenarios:
 - Providing a performant record lookup (`unique` index)
 - Providing an index for a performant ranged lookup (`nonUnique` index, else `unique` index but searching on part of the key)
 
-You can define indices on a table in a similar fashion to `primaryKey`. As with keys, indices are made up of one or more fields from the table. Where the indices are made up of multiple fields, the order of the fields matters in the case of wanting to performantly search based on a partial index.
+You can define indices on a table in a similar fashion to `primaryKey`. As with keys, indices are made up of one or more fields from the table. Where the indices are made up of multiple fields, the order of the fields matters if you want to search based on a partial index. This affects performance.
 
 ```kotlin
     indices {

@@ -24,7 +24,7 @@ The following field types are available:
 * NANO_TIMESTAMP
 * RAW
 
-You can define each field, supplying a unique `name` and `type`. There are also options you can specify, such as default value and non-nullable. (Some options are only relevant for certain types.)
+You can define each field, supplying a unique `name` and `type`. There are also optional parameters you can specify, such as default value and non-nullable. (Some options are only relevant for certain types.)
 
 For example, here we define two `STRING` fields. (The second is nullable; the first is not nullable):
 
@@ -52,11 +52,11 @@ If you create a field name that already exists, there are no consequences - as l
 
 However, if you create a field name that matches an existing name and you give it a different field type, this generates a duplication error.
 
-The error is shown when you generate the code using Maven.
+The error is shown when you generate the code.
 
 If the code has already been generated - typically, if you are making changes to an existing server - the error is generated when you run `genesisInstall` after the change.
 
-Technically, it is possible to duplicate field names. When you build, this generates a duplication warning if the fields are defined in the same way, or an error if they are defined differently. If the duplication is between your own field and one you have inherited from another module, make sure you change the name of your own field, not the one from the other module.
+More specifically, When you build, this generates a duplication warning if the fields are defined in the same way, or an error if they are defined differently. If the duplication is between your own field and one you have inherited from another module, make sure you change the name of your own field, not the one from the other module.
 
 When you define a new field, it is good practice to run `codegen:generateSysDef`. This will generate code based on the fields definition and you will be able to use intellisense to pick this new field within table definitions.
 
@@ -64,14 +64,16 @@ When you define a new field, it is good practice to run `codegen:generateSysDef`
 When using an SQL DB and you want a field's max size to be the same as that supported by the underlying DB, you can use the helper function `dbMaxSize()`.
 
 For example, if using Postgres and wanting a `STRING` field's size to be equal to the max size Postgres supports, then you would define the field as:
+
 ```kotlin
 field(name = "DESCRIPTION", type = STRING, maxSize = dbMaxSize())
 ```
 
-You can also specify a target max size. This is useful for when you want to limit a field's size to a particular length, but you want to be flexible enough to support different SQL DBs.
+You can also specify a target `maxSize`. This is useful when you want to limit a field's size to a particular length, but you want to be flexible enough to support different SQL DBs.
 
 For example:
+
 ```kotlin
 field(name = "DESCRIPTION", type = STRING, maxSize = dbMaxSize(target = 9000))
 ```
-If the underlying database is Postgres, this sets the field's max size to 9000, because Postgres can support up to 65535. But if using MS SQL then the max size is be set to 8000, the max supported size for MS SQL.
+If the underlying database is Postgres, this sets the field's `maxSize` to 9000, because Postgres can support up to 65535. But if you are using MS SQL, then the `maxSize` is set to 8000, the max supported size for MS SQL.
