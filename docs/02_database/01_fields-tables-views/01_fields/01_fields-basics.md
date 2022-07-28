@@ -4,6 +4,8 @@ sidebar_label: 'Fields - basics'
 id: fields-basics
 ---
 
+[Introduction](/database/fields-tables-views/fields/)  | [Basics](/database/fields-tables-views/fields/fields-basics/) |  [Advanced](/database/fields-tables-views/fields/fields-advanced/) | [Examples](/database/fields-tables-views/fields/fields-examples/) 
+
 ## Field types
 
 The following field types are available:

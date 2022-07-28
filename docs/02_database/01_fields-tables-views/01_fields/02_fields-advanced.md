@@ -4,6 +4,8 @@ sidebar_label: 'Fields - advanced'
 id: fields-advanced
 ---
 
+[Introduction](/database/fields-tables-views/fields/)  | [Basics](/database/fields-tables-views/fields/fields-basics/) |  [Advanced](/database/fields-tables-views/fields/fields-advanced/) | [Examples](/database/fields-tables-views/fields/fields-examples/) 
+
 ## Modularity
 
 Genesis is modular, so if you have a dependency on another module (e.g. Auth), your project will naturally inherit all the fields from that module and and they are available in your project. 
