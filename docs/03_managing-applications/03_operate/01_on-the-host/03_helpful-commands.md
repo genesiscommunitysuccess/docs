@@ -786,12 +786,13 @@ ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p db
 
 ## PurgeTables
 
-It gives the developer the ability to specify what data shall be treated as transient and should be removed from the database if certain criteria is fulfilled.
+It gives the developer the ability to define data retention policy and data will be removed from the database if certain criteria is fulfilled.
+Ex: In TRADE table: We only keep completed orders, or we only keep trades for the last 30 days
 
 The tool requires the existence of an *application*-purger.kts file in application config folder, and invoking the **PurgeTables** command will pick up all such files that are found in the $GENESIS_HOME/generated/cfg/ directory.
 In order to enable syntax highlighting and autocompletion for purger files you will need to add **genesis-environment** as a dependency of your “product-config” module. Please see simple examples below for purger definitions:
 
-Log file called purge_{*time_of_run*} created under $GENESIS_HOME/runtime/logs/ folder
+Log file called purge_{*time_of_run*} will be created under $GENESIS_HOME/runtime/logs/ folder
 
 There are different ways you can purge data using below functions and filters
 
