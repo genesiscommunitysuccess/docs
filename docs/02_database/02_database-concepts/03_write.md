@@ -4,8 +4,6 @@ sidebar_label: 'Write'
 id: write
 ---
 
-Write Operations
-================
 
 Genesis supports the following database operations:
 

@@ -4,12 +4,9 @@ sidebar_label: 'Database interface'
 id: database-interface
 ---
 
-APIs
-====
+Genesis supports different ways of interacting with the database. Regardless of the interface used, the [operations](/database/database-concepts/) remain the same. The preferred way of accessing the database is via the [EntityDb](/database/database-interface/entity-db/).
 
-Genesis supports different ways of interacting with the database. Regardless of the interface used, the operations remain the same. For an overview of the operations, see [here](https://internal-web/secure/reference/developer/api/database/concepts/operations/overview/). The preferred way of accessing the database is via the EntityDb.
-
-|  | [EntityDb](https://internal-web/secure/reference/developer/api/database/how-to/interface/entity-db/) | [Generated Repositories](https://internal-web/secure/reference/developer/api/database/how-to/interface/generated/) | [RxDb](https://internal-web/secure/reference/developer/api/database/how-to/interface/rxdb/) |
+|  | [EntityDb](/database/database-interface/entity-db/) | [Generated Repositories](https://internal-web/secure/reference/developer/api/database/how-to/interface/generated/) | [RxDb](https://internal-web/secure/reference/developer/api/database/how-to/interface/rxdb/) |
 | --- | --- | --- | --- |
 | [Supports tables](https://internal-web/secure/reference/developer/api/database/concepts/data-structure/tables/) | ✔️ | ✔️ | ❌ |
 | [Supports views](https://internal-web/secure/reference/developer/api/database/concepts/data-structure/views/) | ✔️ | ✔️ | ❌ |
