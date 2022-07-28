@@ -152,11 +152,12 @@ sources {
 }
 ```
 
-Using conditional mappers enabled you to make powerful data ingress pipeline
+Using conditional mappers enables you to make powerful data ingress pipeline
 
 ## Custom handler for the mapped entity
 
-The default behaviour of a data pipeline is to store the mapped [Table](/creating-applications/defining-your-application/data-model/tables/tables) object to the Genesis database. However, there are cases when you might want to actually delete or modify that entity or do other operations based on certain conditions. For those cases the `sink` function can be used. The function has two parameters:
+The default behaviour of a data pipeline is to store the mapped [Table](/creating-applications/defining-your-application/data-model/tables/tables) object to the Genesis database. However, there are cases when you might want to actually delete or modify that entity or do other operations based on certain conditions. For those cases, the `sink` function can be used. The function has two parameters:
+
 - `entityDb` - object to access the underlying Genesis database
 - `mappedEntity` - the mapped [Table](/creating-applications/defining-your-application/data-model/tables/tables) object
 
@@ -184,7 +185,7 @@ sources {
 }
 ```
 
-This can be combined with the `where` function from previous paragraph and give you the ability to delete or modify certain records without mapping each and one of them:
+This can be combined with the `where` function from the previous paragraph and give you the ability to delete or modify certain records without mapping each one:
 
 ```kotlin
 sources {
@@ -205,7 +206,7 @@ sources {
 }
 ```
 
-In other cases when you want to act based on the state of the mapped entity you can declare custom sink method
+In other cases when you want to act based on the state of the mapped entity, you can declare a custom sink method:
 
 ```kotlin
 sources {
@@ -230,7 +231,7 @@ sources {
 }
 ```
 
-Note that all database operations are audited if the [Table](/creating-applications/defining-your-application/data-model/tables/tables) is declared as [auditable](/reference/developer/api/database/how-to/data-types/tables/#auditable-tables). Each sink operation is then stored to the audit table with default event type of `custom-sink-operation`, however, you can change it by passing another type as argument to the `sink` function:
+Note that all database operations are audited if the [Table](/creating-applications/defining-your-application/data-model/tables/tables) is declared as [auditable](/reference/developer/api/database/how-to/data-types/tables/#auditable-tables). Each sink operation is then stored to the audit table with  the default event type of `custom-sink-operation`. However, you can change this by passing another type as argument to the `sink` function:
 
 ```kotlin
 sources {
