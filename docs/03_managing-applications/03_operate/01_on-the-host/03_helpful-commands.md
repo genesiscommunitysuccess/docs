@@ -786,19 +786,20 @@ ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p db
 
 ## PurgeTables
 
-It gives the developer the ability to define data retention policy and data will be removed from the database if certain criteria is fulfilled.
-Ex: In TRADE table: We only keep completed orders, or we only keep trades for the last 30 days
+This gives enables you to define the data-retention policy. Data will be removed from the database where the defined criteria are fulfilled.
 
-The tool requires the existence of an *application*-purger.kts file in application config folder, and invoking the **PurgeTables** command will pick up all such files that are found in the $GENESIS_HOME/generated/cfg/ directory.
-In order to enable syntax highlighting and autocompletion for purger files you will need to add **genesis-environment** as a dependency of your “product-config” module. Please see simple examples below for purger definitions:
+For example: In the TRADE table, we only keep completed orders, or we only keep trades for the last 30 days.
 
-Log file called purge_{*time_of_run*} will be created under $GENESIS_HOME/runtime/logs/ folder
+To use this tool, you must have an _application_**-purger.kts* file in the application's config folder. Invoking the **PurgeTables** command will pick up all  files that are found in the **$GENESIS_HOME/generated/cfg/** directory.
 
-There are different ways you can purge data using below functions and filters
+In order to enable syntax highlighting and autocompletion for purger files, you must add **genesis-environment** as a dependency of your application's **-config** module. See simple examples below for purger definitions:
 
+A log file called **purge_{*time_of_run*}** will be created under the **$GENESIS_HOME/runtime/logs/** folder.
 
-### Inject repository:
-You can inject any repository in the purger script like below:
+The functions and filters below give you different ways of purging data.
+
+### Inject repository
+You can inject any repository into the purger script; for example:
 
 ```kotlin
 purgers{
@@ -806,12 +807,12 @@ purgers{
 }
 ```
 
-### Purge by date:
+### Purge by date
 
-The purger supports purging based on days. The purger supports to specify the max age of record in terms of calendar days or business days.
-Business days will disregard weekends and public holidays.
+The purger supports purging based on days. You can specify the max age of record in terms of calendar days or business days.
+Business days disregard weekends and public holidays.
 
-To use this you will need to supply
+To use this you need to supply
 - a LONG or DATETIME field in the table to be used, or you can supply just table name and TIMESTAMP field of table will be used to calculate the age of the record.
 - Also max age of record, which indicates all the records older than these days will be purged
 - Optional fields when you use business days: `country` and `region` name.
