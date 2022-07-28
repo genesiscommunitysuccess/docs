@@ -10,7 +10,7 @@ Welcome to our database documentation. Check out or left-hand menu for the compl
 
 We start with details of the [Data Model](/database/fields-tables-views/fields-tables-views/), which is built on fields, tables and views.
 
-Find out about read, write and subscribe operations in [Database Concepts)(/database/database-concepts/read/)], while you can look at different entities in [Data Types](/data-types/table-entities/).
+Find out about read, write and subscribe operations in [Database Concepts)(/database/database-concepts/read/)], while you can look at different entities in [Data Types](/database/data-types/table-entities/).
 
 ## Engaging with the database
 
