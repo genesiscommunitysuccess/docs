@@ -417,7 +417,7 @@ or from the dropdown menu:
 ![](/img/install-auth.png)
 
 <!-- Adjusting WSL we could remove this-->
-<!-- ### Deploying the site-specific
+### Deploying the site-specific
 As our application will override the standard definitions using the site-specific folder, we have to run this task.
 
 Usage:
@@ -426,7 +426,7 @@ Usage:
 ```
 or from the dropdown menu:
 
-![](/img/install-site-specific.png) -->
+![](/img/install-site-specific.png) 
 
 <!-- END Adjusting WSL we could remove this-->
 
