@@ -5,7 +5,7 @@ sidebar_position: 3
 id: service-definitions
 
 ---
-# Service definitions
+
 
 Just as each application must have  a *-processes.xml* config file, it must also have a *-service-definitions.xml* file. This is where you specify the ports of the various processes. These  are used to communicate internally between processes.
 
