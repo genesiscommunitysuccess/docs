@@ -13,7 +13,7 @@ Genesis supports the following database operations:
 4.  `delete`
 5.  `recover`
 
-All of these operations also have an `...All` version, e.g. `insertAll` that accepts multiple records.
+All of these operations also have an `...All` version (e.g. `insertAll` that accepts multiple records).
 
 Index clash[​](/database/database-concepts/write/#index-clashdirect-link-to-heading)
 ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ The following insert operations are supported:
 Upsert[​](/database/database-concepts/write/#upsertdirect-link-to-heading)
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-The upsert operation modifies an existing record, or inserts it if it doesn't exist. It will fail if the operation would result in a index clash.
+The upsert operation modifies an existing record, or inserts it if it doesn't exist. It will fail if the operation would result in an index clash.
 
 The following insert operations are supported:
 
