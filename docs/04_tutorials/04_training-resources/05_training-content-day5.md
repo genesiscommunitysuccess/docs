@@ -135,7 +135,7 @@ eventHandler {
 ```
 
 #### 4.Load the cron rule on to the database
-Load the cron rule csv below into the database, CRON_RULE Table. 
+Load the cron rule csv below into the database, [CRON_RULE](/creating-applications/defining-your-application/business-logic/evaluators/configure/#cron_rule-table) Table. 
 Run `SendIt`.
 
 ```csv
@@ -348,7 +348,7 @@ Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the i
 Now we want to run another report every 10 seconds that lists all positions whose quantity is higher than a given value passed through `RESULT_EXPRESSION`. 
 
 :::tip 
-Call this class `RiskReport`, create a new `eventHandler<RiskReport>` and put the csv file in `runtime/position-risk-report`. Also, remember to add the column RESULT_EXPRESSION to the csv you're going to import into CRON_RULE.
+Call this class `RiskReport`, create a new `eventHandler<RiskReport>` and put the csv file in `runtime/position-risk-report`. Also, remember to add the column RESULT_EXPRESSION to the csv you're going to import into [CRON_RULE](/creating-applications/defining-your-application/business-logic/evaluators/configure/#cron_rule-table).
 
 Note that you don't need to add another EVALUATOR process, as the GENESIS_EVALUATOR process in place can run multiple CRON rules.
 
