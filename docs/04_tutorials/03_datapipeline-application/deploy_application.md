@@ -7,9 +7,9 @@ sidebar_position: 5
 ---
 To deploy your application to your local Linux or WSL environment, see this [guide](/creating-applications/getting-ready-to-develop/running-applications/gradle-deploy/).
 
-To install your application to a remote Test or Prod server, see [this guide.](/creating-applications/getting-ready-to-develop/running-applications/options/manual-installation/)
+To install your application to a remote server, see [this guide.](/creating-applications/getting-ready-to-develop/running-applications/options/manual-installation/)
 
-## See it work
+## See it in action
 
 To see records stored in the Genesis database you have to insert new rows in the source database. See the sample SQL insert statement for a single trade:
 

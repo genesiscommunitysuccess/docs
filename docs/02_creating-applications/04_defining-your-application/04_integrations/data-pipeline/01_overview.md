@@ -19,7 +19,7 @@ The following is a sample configuration:
 ```kotlin
 sources {
 
-    postgresSource("cdc-test") {
+    postgres("cdc-test") {
         hostname = "localhost"
         port = 5432
         username = "postgres"

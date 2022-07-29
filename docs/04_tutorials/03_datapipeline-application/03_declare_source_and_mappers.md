@@ -18,17 +18,17 @@ In this example the `hostname` needs to be set to the address of the PostgreSQL 
 sources {
 
     postgres("trade-pipeline") {
-        hostname = "localhost"
+        hostname = "alpha.west.master"
         port = 5432
         username = "postgres"
-        password = "CantTell11*"
+        password = systemDefinition.getItem("CdcPostgresPassword").toString()
         databaseName = "postgres"
 
     }
 }
 ```
 
-the next step is to declare the mapper for each table. In our case we are only interested in one table - `trades`.
+The next step is to declare the mapper for each table. In our case we are only interested in one table - `trades`.
 
 ## Declare the Mapper
 
@@ -38,10 +38,10 @@ Enter the code from the next section. Don't worry if it looks confusing now. We'
 sources {
 
     postgres("trade-pipeline") {
-        hostname = "localhost"
+        hostname = "alpha.west.master"
         port = 5432
         username = "postgres"
-        password = "CantTell11*"
+        password = systemDefinition.getItem("CdcPostgresPassword").toString()
         databaseName = "postgres"
 
         table {
@@ -149,4 +149,4 @@ Looking at the code above you can notice that `TRADE_ID`, `INSTRUMENT_ID`, `SIDE
 
 The `transform` function for `INSTRUMENT_ID` is the most complex one as it actually performs additional operations based on the current state of the Genesis database. On the first three lines in the function we try to map the incoming instrument code to a instrument that's already in the Genesis database. If such instrument exist then its id is returned, however, if it's not there a new instrument is created.
 
-Follow the links for more information on [mapping](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-basics/#mapper-for-the-incoming-data) and the [`transform`](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-advanced/#interacting-with-the-database) function
+Follow the links for more information on [mapping](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-basics/#mapper-for-the-incoming-data) and the [`transform`](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-advanced/#interacting-with-the-database) function.

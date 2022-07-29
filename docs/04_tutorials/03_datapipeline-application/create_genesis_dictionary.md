@@ -37,7 +37,7 @@ An instrument has:
 - `INSTRUMENT_ID` of type `STRING`
 - `INSTRUMENT_NAME` of type `STRING`
 
-An alternate instrument has 
+An alternate instrument has:
 - `INSTRUMENT_ID` of type `STRING`
 - `ALTERNATE_TYPE` of type `STRING`
 - `INSTRUMENT_CODE` of type `STRING`
@@ -156,4 +156,4 @@ From the Gradle menu, this is:
 
 The build step will generate the tables definitions along with data access objects (DAO) that will be referenced from the data pipeline configuration.
 
-You can find more information on Tables [here](https://docs.genesis.global/secure/creating-applications/defining-your-application/data-model/tables/tables/)
+You can find more information on Tables [here](https://docs.genesis.global/secure/creating-applications/defining-your-application/data-model/tables/tables/).
