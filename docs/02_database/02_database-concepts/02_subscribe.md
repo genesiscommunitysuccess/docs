@@ -23,7 +23,7 @@ rather than directly correlate to a database operation. A database insert or del
 
 ### Backward joins[​](/database/database-concepts/subscribe/#backward-joinsdirect-link-to-heading)
 
-By default, subscriptions on views will only publish updates on database changes to the root table. However, in view definitions, a join to a child table can be defined as `backwardsJoin = true`. For these joins, the subscription will also publish changes to child tables as modify updates. Please note that this is only supported for combined read/subscribe operations, as the subscription needs to cache the joins. This cache will require extra memory and cpu cycles to maintain.
+By default, subscriptions on views will only publish updates on database changes to the root table. However, in view definitions, a join to a child table can be defined as `backwardsJoin = true`. For these joins, the subscription will also publish changes to child tables as modify updates. Please note that this is only supported for combined read/subscribe operations, as the subscription needs to cache the joins. This cache will require extra memory and CPU cycles to maintain.
 
 Subscribing to updates[​](/database/database-concepts/subscribe/#subscribing-to-updatesdirect-link-to-heading)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
