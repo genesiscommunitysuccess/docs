@@ -29,7 +29,7 @@ We are still working on this page
 | Subscribe | [Record Update](/database/helper-classes/subscription/record-update/) of entity |
 | Bulk or Range Subscribe | [Bulk](/database/helper-classes/subscription/bulk/) of entity |
 
-| Available in [event handlers](https://docs.genesis.global/secure/creating-applications/defining-your-application/business-logic/event-handlers/) | ❌ | | Available in [custom request servers](https://docs.genesis.global/secure/creating-applications/defining-your-application/user-interface/request-servers/rs-advanced-technical-details/#custom-request-servers) | ❌ |
+| Available in [event handlers](/getting-started/learn-the-basics/modules/inside-an-event-handler/) | ❌ | | Available in [custom request servers](getting-started/learn-the-basics/modules/inside-a-request-server/) | ❌ |
 
 During the code generation phase, repository classes are generated for every table and view in the system. These repositories provide a type-safe way of accessing the database.
 
