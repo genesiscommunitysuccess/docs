@@ -47,7 +47,7 @@ Reading a table range[​](/database/database-concepts/read/#reading-a-table-ran
 
 The database can return ranges that can be described as:
 
--   a range described by a non-unique index identifier.
+-   a range described by a non-unique index identifier
 -   a range between two index identifiers
 
 For each of these types of range, Genesis supports the following operations
