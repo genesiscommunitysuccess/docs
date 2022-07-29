@@ -7,7 +7,7 @@ id: aerospike
 Aerospike
 =========
 
-Genesis supports [Aerospike](https://aerospike.com/). To connect to Aerospike, use the [system definition items](https://docs.genesis.global/secure/creating-applications/configure-runtime/system-definitions/) listed below.
+Genesis supports [Aerospike](https://aerospike.com/). To connect to Aerospike, use the [system definition items](/database/database-technology/postgresql/#system-definitions) listed below.
 
 | Setting | Description |
 | --- | --- |
@@ -33,4 +33,3 @@ systemDefinition {    global {        ...        item(name = "DbLayer", value = 
 systemDefinition {    global {        ...        item(name = "DbLayer", value = "AEROSPIKE")        item(name = "DbHost", value = "192.168.10.10")        item(name = "DbPort", value = "4333")        item(name = "DbMode", value = "VANILLA")        item(name = "DbUsername", value = System.getenv("AEROSPIKE_USERNAME"), encrypted = true)        item(name = "DbPassword", value = value = System.getenv("AEROSPIKE_PASSWORD"), encrypted = true)        ...    }    systems {        system(name = "DEV") {            ...            item(name = "DbNamespace", value = "trades")            ...        }    }    ...}
 ```
 
-[](https://docs.genesis.global/secure/reference/developer/api/database/reference/supported-databases/sql/)

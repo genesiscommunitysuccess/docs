@@ -7,12 +7,12 @@ id: postgresql
 PostgreSQL
 ==========
 
-The Genesis low-code platform supports [PostgreSQL](https://www.postgresql.org/). To connect to it, use the [common SQL](/database/database-technology/sql/) configuration properties.
+The Genesis low-code platform supports [PostgreSQL](/database/database-technology/postgresql/). To connect to it, use the [common SQL](/database/database-technology/sql/) configuration properties.
 
 System definitions[​](/database/database-technology/postgresql/#system-definitionsdirect-link-to-heading)
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Take note of the following system definition items in the [genesis-system-definitions.kts](https://docs.genesis.global/secure/creating-applications/configure-runtime/system-definitions/) file:
+Take note of the following system definition items in the [genesis-system-definitions.kts](/database/database-technology/postgresql/#system-definitionsdirect-link-to-heading/) file:
 
 ### DbHost[​](/database/database-technology/postgresql/#dbhostdirect-link-to-heading)
 
@@ -42,11 +42,11 @@ More information on connection configuration can be found [here](https://jdbc.p
 
 ### DbUsername[​](/database/database-technology/postgresql/#dbusernamedirect-link-to-heading)
 
-Instead of specifying the database username as part of the URL it can be specified in this property. It also supports encrypted values. This is useful when plain text credentials are not allowed in any configurations. See [Database username and password encryption](https://docs.genesis.global/secure/creating-applications/configure-runtime/system-definitions/#items-defined) section for more information.
+Instead of specifying the database username as part of the URL it can be specified in this property. It also supports encrypted values. This is useful when plain text credentials are not allowed in any configurations. See [Database username and password encryption](/database/database-technology/postgresql/#system-definitionsdirect-link-to-heading) section for more information.
 
 ### DbPassword[​](/database/database-technology/postgresql/#dbpassworddirect-link-to-heading)
 
-Instead of specifying the database password as part of the URL, it can be specified in this property. It also supports encrypted values. This is useful when plain text credentials are not allowed in any configurations. See [Database username and password encryption](https://docs.genesis.global/secure/creating-applications/configure-runtime/system-definitions/#items-defined) section for more information.
+Instead of specifying the database password as part of the URL, it can be specified in this property. It also supports encrypted values. This is useful when plain text credentials are not allowed in any configurations. See [Database username and password encryption](/database/database-technology/postgresql/#system-definitionsdirect-link-to-heading) section for more information.
 
 ### DbSqlConnectionPoolSize[​](/database/database-technology/postgresql/#dbsqlconnectionpoolsizedirect-link-to-heading)
 
@@ -79,4 +79,3 @@ systemDefinition {    global {        ...        item(name = "DbLayer", value = 
 systemDefinition {    global {        ...        item(name = "DbLayer", value = "SQL")        item(name = "DbHost", value = "jdbc:postgresql://pdb:6060/trades")        item(name = "DbUsername", value = System.getenv("DBUSERNAME"), encrypted = true)        item(name = "DbPassword",  value = System.getenv("DBPASSWORD"), encrypted = true)        ...    }    ...}
 ```
 
-[](https://docs.genesis.global/secure/reference/developer/api/database/reference/supported-databases/aerospike/)
