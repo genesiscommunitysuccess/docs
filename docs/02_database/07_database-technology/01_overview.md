@@ -15,4 +15,3 @@ Genesis supports the following databases:
 | Returns sorted data | ✔️ | ✔️ | ❌ | ✔️ | ✔ |
 | Unlimited operation size | ❌ | ✔️ | ✔️ | ✔️ | ✔ |
 
-[](https://docs.genesis.global/secure/reference/developer/api/database/reference/apis/rxjava/)
