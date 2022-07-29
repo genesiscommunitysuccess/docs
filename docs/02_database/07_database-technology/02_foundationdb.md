@@ -21,7 +21,7 @@ Therefore, for applications using small table records, FDB2 will be more efficie
 System definitions[​](/database/database-technology/foundationdb/#system-definitionsdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-For FDB and FDB2 layers, there are additional system definition items that you can apply in the [genesis-system-definitions.kts](https://docs.genesis.global/secure/creating-applications/configure-runtime/system-definitions/) file:
+For FDB and FDB2 layers, there are additional system definition items that you can apply in the [genesis-system-definitions.kts](/database/database-technology/postgresql/#system-definitions) file:
 
 | Setting | Description |
 | --- | --- |
@@ -52,4 +52,3 @@ systemDefinition {    global {        ...        item(name = "DbThreadKeepAliveS
 systemDefinition {    global {        ...        item(name = "FdbClusterFile", value = "C:\\Genesis\fdb\fdb.cluster")        ...    }    ...}
 ```
 
-[](https://docs.genesis.global/secure/reference/developer/api/database/reference/supported-databases/overview/)
