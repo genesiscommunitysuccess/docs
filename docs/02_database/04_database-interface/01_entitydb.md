@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 
 | Available in [event handlers](/database/event-handler-api/event-handler-api/)         | ✔️                                                                                 |
-| Available in [custom request replies](/getting-started/learn-the-basics/modules/inside-a-request-server/) | ✔️                                                                                 |
+| Available in [custom request replies](/server-modules/request-server/advanced/#custom-request-servers) | ✔️                                                                                 |
 
 
 The entity db enables you to interact with the database layer; you can use any generated type-safe entities for
