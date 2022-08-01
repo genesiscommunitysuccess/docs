@@ -4,8 +4,6 @@ sidebar_label: 'Generated repositories'
 id: generated-repositories
 ---
 
-Generated Repositories
-======================
 
 ##### NOTE
 
@@ -29,7 +27,7 @@ We are still working on this page
 | Subscribe | [Record Update](/database/helper-classes/subscription/record-update/) of entity |
 | Bulk or Range Subscribe | [Bulk](/database/helper-classes/subscription/bulk/) of entity |
 
-| Available in [event handlers](/getting-started/learn-the-basics/modules/inside-an-event-handler/) | ❌ | | Available in [custom request servers](getting-started/learn-the-basics/modules/inside-a-request-server/) | ❌ |
+| Available in [event handlers](server-modules/event-handler/introduction/) | ❌ | | Available in [custom request servers](server-modules/request-server/advanced/#custom-request-servers) | ❌ |
 
 During the code generation phase, repository classes are generated for every table and view in the system. These repositories provide a type-safe way of accessing the database.
 

@@ -4,6 +4,8 @@ sidebar_label: 'Fields - examples'
 id: fields-examples
 ---
 
+[Introduction](/database/fields-tables-views/fields/)  | [Basics](/database/fields-tables-views/fields/fields-basics/) |  [Advanced](/database/fields-tables-views/fields/fields-advanced/) | [Examples](/database/fields-tables-views/fields/fields-examples/) 
+
 There is no complexity to a **fields-dictionary.kts** file.
 
 As you can see, each field is named in its own row and given a type, all within a `fields` statement. 

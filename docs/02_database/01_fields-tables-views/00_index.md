@@ -5,6 +5,8 @@ sidebar_position: 1
 id: 'fields-tables-views'
 ---
 
+[Introduction](/database/fields-tables-views/fields/)  | [Basics](/database/fields-tables-views/fields/fields-basics/) |  [Advanced](/database/fields-tables-views/fields/fields-advanced/) | [Examples](/database/fields-tables-views/fields/fields-examples/) 
+
 For any Genesis application, everything starts with the data model. 
 
 Getting this right is critical not just to the success of the application, but to how intuitive it will be to develop.
