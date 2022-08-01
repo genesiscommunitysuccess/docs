@@ -1,6 +1,6 @@
 ---
 title: 'Operations'
-sidebar_label: 'Operations'
+sidebar_label: 'Overview'
 sidebar_position: 1
 id: operations
 ---
