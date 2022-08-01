@@ -1,6 +1,6 @@
 ---
 title: 'Server Modules'
-sidebar_label: 'Server Modules'
+sidebar_label: 'Overview'
 sidebar_position: 1
 id: 'server-modules'
 ---

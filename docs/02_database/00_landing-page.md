@@ -1,6 +1,6 @@
 ---
 title: 'Database reference'
-sidebar_label: 'Database reference'
+sidebar_label: 'Overview'
 id: 'database-landing'
 ---
 
