@@ -12,7 +12,7 @@ Subscriptions are limited to a single table or view.
 Types of changes[​](/database/database-concepts/subscribe/#types-of-changesdirect-link-to-heading)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-There are 3 categories of changes:
+There are 3 categories of change:
 
 1.  Insert - a new row is inserted
 2.  Delete - an existing row is deleted
