@@ -96,6 +96,17 @@ sources {
 
 It is vital to ensure that any system definition variables that are used by the configuration definition are properly defined in your _application_**-system-definition.kts** file.
 
+## PostgreSQL configuration
+To capture changes from PostgreSQL the following configuration has to be in place:
+
+| Setting | Value |
+|---|---|
+| wal_level | logical |
+| max_wal_senders | greater than 1 (default value is 10) |
+| max_replication_slots | greater than 1 (default value is 10) |
+
+[Here](https://www.postgresql.org/docs/current/runtime-config-replication.html) you can find more information about these settings.
+
 ## Declaring multiple sources
 
 You may declare multiple sources in the same kts file. All sources should be placed within a single `sources` block.
