@@ -4,8 +4,6 @@ sidebar_label: 'DbRecord'
 id: dbrecord
 ---
 
-DbRecord
-========
 
 ##### WARNING
 
