@@ -5,25 +5,27 @@ id: subscribe
 ---
 
 
-Subscribe operations allow code to react to database changes, rather than polling for changes. Code can either just listen to changes, or use a combined read/subscribe operation. These mixed read/subscribe operations are useful.
+Subscribe operations enable code to react to database changes, rather than polling for changes. Code can either just listen to changes, or use a combined read/subscribe operation. These mixed read/subscribe operations are useful.
 
 Subscriptions are limited to a single table or view.
 
-Types of changes[​](/database/database-concepts/subscribe/#types-of-changesdirect-link-to-heading)
+Types of change[​](/database/database-concepts/subscribe/#types-of-changesdirect-link-to-heading)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 There are 3 categories of change:
 
-1.  Insert - a new row is inserted
-2.  Delete - an existing row is deleted
-3.  Modify - an existing row is changed
+- Insert - a new row is inserted
+- Delete - an existing row is deleted
+- Modify - an existing row is changed
 
-When subscribing to a view and or a range, the change will reflect the change to the subscription -\
-rather than directly correlate to a database operation. A database insert or delete update will only be published to the subscriber if the insert appears in the range and/or view. Similarly, a database modify update might not show at all, or be transformed into an insert or delete update, if it moves into or out of the subscription.
+When subscribing to a view and/or a range, the change will reflect the change to the subscription -
+rather than directly correlate to a database operation. A database insert or delete update will only be published to the subscriber if the insert appears in the range and/or view. 
 
-### Backward joins[​](/database/database-concepts/subscribe/#backward-joinsdirect-link-to-heading)
+Similarly, a database modify update might not show at all, or be transformed into an insert or delete update, if it moves into or out of the subscription.
 
-By default, subscriptions on views will only publish updates on database changes to the root table. However, in view definitions, a join to a child table can be defined as `backwardsJoin = true`. For these joins, the subscription will also publish changes to child tables as modify updates. Please note that this is only supported for combined read/subscribe operations, as the subscription needs to cache the joins. This cache will require extra memory and CPU cycles to maintain.
+### Backwards joins[​](/database/database-concepts/subscribe/#backward-joinsdirect-link-to-heading)
+
+By default, subscriptions on views will only publish updates on database changes to the root table. However, in view definitions, a join to a child table can be defined as `backwardsJoin = true`. For these joins, the subscription will also publish changes to the child tables as modify updates. Note that this is only supported for combined read/subscribe operations, as the subscription needs to cache the joins. This cache will require extra memory and CPU cycles to maintain.
 
 Subscribing to updates[​](/database/database-concepts/subscribe/#subscribing-to-updatesdirect-link-to-heading)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
