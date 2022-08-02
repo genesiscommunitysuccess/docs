@@ -21,3 +21,10 @@ Request Servers have other features distinct from a Data Server, such as allowin
     }
   }
 ```
+
+Request Servers are conventionally configured in the file _application-name_**-reqrep.kts**. This file should be in the _application-name_-script-config module.
+
+So, if your application is called **positions**, the file would be named **positions-reqrep.kts**.
+
+You should also check the Request Server component in your application's system-processes and service-definition files, as described in the [Configuring runtime](/creating-applications/defining-your-application/user-interface/request-servers/rs-configure-runtime/) page.
+
