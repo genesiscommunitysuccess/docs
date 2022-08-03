@@ -350,8 +350,6 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name **genesis**-console-proxy --ad
 
 `Test Meta Data File (testMetadata.xml)`
 
-`Test Meta Data File (testMetadata.xml)`
-
 ```bash
 docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host
 ```

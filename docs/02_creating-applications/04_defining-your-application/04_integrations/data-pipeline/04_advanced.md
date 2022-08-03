@@ -96,6 +96,17 @@ sources {
 
 It is vital to ensure that any system definition variables that are used by the configuration definition are properly defined in your _application_**-system-definition.kts** file.
 
+## PostgreSQL configuration
+To capture changes from PostgreSQL the following configuration has to be in place:
+
+| Setting | Value |
+|---|---|
+| wal_level | logical |
+| max_wal_senders | greater than 1 (default value is 10) |
+| max_replication_slots | greater than 1 (default value is 10) |
+
+[Here](https://www.postgresql.org/docs/current/runtime-config-replication.html) you can find more information about these settings.
+
 ## Declaring multiple sources
 
 You may declare multiple sources in the same kts file. All sources should be placed within a single `sources` block.
@@ -152,4 +163,106 @@ sources {
 }
 ```
 
-Using conditional mappers enabled you to make powerful data ingress pipeline
+Using conditional mappers enables you to make powerful data ingress pipeline
+
+## Custom handler for the mapped entity
+
+The default behaviour of a data pipeline is to store the mapped [Table](/creating-applications/defining-your-application/data-model/tables/tables) object to the Genesis database. However, there are cases when you might want to actually delete or modify that entity, or do other conditional operations. For those cases, the `sink` function can be used. The function has two parameters:
+
+- `entityDb` - object to access the underlying Genesis database
+- `mappedEntity` - the mapped [Table](/creating-applications/defining-your-application/data-model/tables/tables) object
+
+Recognising that inserting, modifying or deleting mapped entities will be the most commonly used operations, those are already defined under `SinkOperations`
+- `SinkOperations.INSERT`
+- `SinkOperations.MODIFY`
+- `SinkOperations.DELETE`
+
+and can be used like this:
+
+```kotlin
+sources {
+    postgres("cdc-postgres") {
+
+        ...
+
+        mapper("EMEA-order", TABLE_OBJECT) {
+            sink(SinkOperations.DELETE)
+
+            FIELD {}
+            ...
+        }
+
+    }
+}
+```
+
+This can be combined with the `where` function from the previous paragraph and give you the ability to delete or modify certain records without mapping each one:
+
+```kotlin
+sources {
+    postgres("cdc-postgres") {
+
+        ...
+
+        mapper("EMEA-order", TABLE_OBJECT) {
+            sink(SinkOperations.DELETE)
+
+            where { input.get(stringValue("side") == "sell") }
+
+            FIELD {}
+            ...
+        }
+
+    }
+}
+```
+
+In other cases when you want to act based on the state of the mapped entity, you can declare a custom sink method:
+
+```kotlin
+sources {
+    postgres("cdc-postgres") {
+
+        ...
+
+        mapper("EMEA-order", TABLE_OBJECT) {
+            sink {
+                if (mappedEntity.tradeType == "sell") {
+                    entityDb.delete(mappedEntity)
+                } else {
+                    entityDb.insert(mappedEntity)
+                }
+            }
+
+            FIELD {}
+            ...
+        }
+
+    }
+}
+```
+
+Note that all database operations are audited if the [Table](/creating-applications/defining-your-application/data-model/tables/tables) is declared as [auditable](/reference/developer/api/database/how-to/data-types/tables/#auditable-tables). Each sink operation is then stored to the audit table with  the default event type of `custom-sink-operation`. However, you can change this by passing another type as argument to the `sink` function:
+
+```kotlin
+sources {
+    postgres("cdc-postgres") {
+
+        ...
+
+        mapper("EMEA-order", TABLE_OBJECT) {
+            sink("delete-sell-trades") {
+                if (mappedEntity.tradeType == "sell") {
+                    entityDb.delete(mappedEntity)
+                } else {
+                    entityDb.insert(mappedEntity)
+                }
+            }
+
+            FIELD {}
+            ...
+        }
+
+    }
+}
+```

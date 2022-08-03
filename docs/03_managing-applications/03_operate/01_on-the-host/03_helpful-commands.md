@@ -784,6 +784,127 @@ This example runs with a remote postgres DB. it evaluates null and empty strings
 ReconcileDatabaseSync -d SQL -H "jdbc:postgresql://dbhost:5432/" -u dbuser -p dbpass -s -n 2 -i STATUS
 ```
 
+## PurgeTables
+
+This enables you to define the data-retention policy. Data will be removed from the database where the defined criteria are fulfilled.
+
+Example: For the TRADE table, we could decide to keep allocated trades for 60 days, and 30 days for the rest.
+
+To use this tool, you must have an _application_**-purger.kts* file in the application's config folder. Invoking the **PurgeTables** command will pick up all  files that are found in the **$GENESIS_HOME/generated/cfg/** directory.
+
+In order to enable syntax highlighting and autocompletion for purger files, you must add **genesis-environment** as a dependency of your application's **-config** module. See simple examples below for purger definitions:
+
+A log file called **purge_{*time_of_run*}** will be created under the **$GENESIS_HOME/runtime/logs/** folder.
+
+The functions and filters below give you different ways of purging data.
+
+### Inject repository
+You can inject any repository into the purger script; for example:
+
+```kotlin
+purgers{
+    val userSessionRepo = inject<UserSessionRx2Repository>()
+}
+```
+
+### Purge by date
+
+The purger supports purging based on days. You can specify the max age of record in terms of calendar days or business days.
+Business days disregard weekends and public holidays.
+
+To use this you need to supply
+- a LONG or DATETIME field in the table to be used, or you can supply just table name and TIMESTAMP field of table will be used to calculate the age of the record.
+- Also max age of record, which indicates all the records older than these days will be purged
+- Optional fields when you use business days: `country` and `region` name.
+
+```kotlin
+purgers {
+ // purge trades over 6 months old based on field TRADE_DATE
+ daysPurger(TRADE.TRADE_DATE, 180)
+ // purge trades over 6 months old based on field TIMESTAMP of table which will be used internally 
+ daysPurger(TRADE, 180)
+
+ // purge prices older than 5 business days based on PRICE_DATETIME
+ businessDaysPurger(PRICE.PRICE_DATETIME, 5)
+ // purge prices older than 5 business days based on PRICE_DATETIME in country SPAIN
+ businessDaysPurger(PRICE.PRICE_DATETIME, 5, "SPAIN")
+}
+```
+
+### Purge by range:
+Range purger is similar to bulkPurger, but it performs efficient index range searches in database and speed up purger performance compared to bulkPurger.
+- You need to give index name of the table you want to purge data on
+- Purger has special function called `whereRange` which is used to filter based on index value
+
+```kotlin
+import global.genesis.gen.dao.repository.UserSessionRx2Repository
+purgers {
+ // Inject repo
+ val userSessionRepo = inject<UserSessionRx2Repository>()
+
+ // Range purger with whereRange
+ rangePurger(USER_SESSION.BY_USER_NAME).whereRange("JohnDoe")
+
+ // Combination of filters for maximum flexibility
+ rangePurger(USER_SESSION.BY_USER_NAME)
+  .whereRange("JohnDoe")
+  .filterBusinessDays(maxDays = 5, country = "SPAIN", region = "NATIONAL", field = USER_SESSION.LAST_ACCESS_TIME)
+
+ rangePurger(USER_SESSION.BY_USER_NAME)
+  .whereRange("JohnDoe")
+  .filterDays(maxDays = 5)
+
+ // finally clause usage
+ rangePurger(USER_SESSION.BY_USER_NAME)
+  .whereRange("JohnDoe")
+  .finally { userSession ->
+    println("Purged record: ${userSession.toGenesisSet()}")
+  }
+}
+```
+
+### Purge bulk data:
+
+You can purge data of whole table by using
+
+```kotlin
+bulkPurger(USER_SESSION)
+```
+You can purge data of table based on some conditions
+
+```kotlin
+purgers {
+// Purger that reads the whole user session every time it runs and deletes all sessions for JohnDoe
+ bulkPurger(USER_SESSION).filter { it.userName == "JohnDoe" }
+// Purge USER_SESSION older than 8 business days in country India
+ bulkPurger(USER_SESSION)
+  .filterBusinessDays(8, "INDIA")
+}
+```
+
+### Filters
+
+Following filters are used in the examples explained above:
+
+`whereRange`: This filter can contain value of the table-index parameter or parameters if there are more than one field in the table-index. Parameter list can range from 1-10.
+It filters the records based on the index parameter value/values
+
+`filter`: filter based on predicate provided
+
+`filterBusinessDays`: this method allows to purge data based on business date. 
+You need to provide:
+- max age of record
+- country name
+- region which defaults to "NATIONAL"
+- and optional LONG or DATETIME field of table you want to purge and if not specified TIMESTAMP field of table is used
+
+`filterDays`: this method allows to purge data based on calendar date
+You need to provide:
+- max age of record
+- and optional LONG or DATETIME field of table you want to purge and if not specified TIMESTAMP field of table is used
+
+`finally` clause: It is run for every record that is purged and used to add some extra functionality if needed
+
 ## AppGen
 
 AppGen can be used to generate a fully working application from a dictionary file.

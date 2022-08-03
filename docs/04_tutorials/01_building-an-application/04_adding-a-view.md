@@ -125,9 +125,26 @@ The purpose of the test is to prove you can look up data with the repo and retri
 * look up by keys
 * perform get bulk from the main table
 First, you need to do the following:
-1. Add a new test class to the *alpha-script-config* module called `EnhancedTradeViewTest.kt`
-2. Add an empty txt file to the genesis home folder. This folder is needed for unit tests. 
-3. Add TEST_DATA.csv to a data folder
+1. Add the **db-test** dependency to the config module
+```xml
+<dependency>
+    <groupId>global.genesis</groupId>
+    <artifactId>genesis-dbtest</artifactId>
+    <scope>test</scope>
+</dependency>
+```
+2. Add a dependency on the **ref_data_app-config module** in the pom file.
+```xml
+<dependency>
+    <groupId>global.genesis</groupId>
+    <artifactId>ref_app_data-config</artifactId>
+    <version>${ref_app_data.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+3. Add a new test class to the config module called `EnhancedTradeViewTest.kt`
+4. Add an empty txt file to the genesis home folder. This folder is needed for unit tests. 
+5. Add TEST_DATA.csv to a data folder
 ```csv
 #INSTRUMENT
 INSTRUMENT_ID,NAME
