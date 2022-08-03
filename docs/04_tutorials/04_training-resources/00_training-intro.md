@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ---
 # Genesis developer training
-<img src="/img/dev-training-book-cover.png" /> 
+![](/img/dev-training-book-cover.png)
 
 ## What You'll Learn​
 
@@ -26,11 +26,7 @@ Should you need it along the course, feel free to use the [final application](/t
 
 Also, at any point, use the search function of the documentation for extra information.
 
-
-<img src="/img/time-clock.jpg" width="15" /> 
-&nbsp; Estimated total effort: 
-
-&nbsp; <b>Daily 4-hour sessions for 5 days</b>
+Estimated total effort: <b>Daily 4-hour sessions for 5 days</b>
 
 :::note 80-20 rule
 You’ll possibly learn 20% of what is offered ​by the Platform​, which will enable you to do 80% of your needs
@@ -50,5 +46,4 @@ You’ll possibly learn 20% of what is offered ​by the Platform​, which will
 
 ## Source code
 The complete source code of this training is available 
-[on GitHub <img src="/img/github-icon.png" width="20" /> ](https://github.com/genesiscommunitysuccess/devtraining-gama) and, alternatively, as a [ZIP file](https://genesisglobal.jfrog.io/artifactory/community-uploads/devtraining-gama.zip).
-&nbsp; 
+on [GitHub](https://github.com/genesiscommunitysuccess/devtraining-gama) and, alternatively, as a [ZIP file](https://genesisglobal.jfrog.io/artifactory/community-uploads/devtraining-gama.zip).
