@@ -20,7 +20,7 @@ This is a hands-on developer training where we're going to follow the creation â
 
 ## Programme
 
-This training is divided in 5 sessions, or days, each session covering a few resources of the Platform to build a Trade & Positions application from the very beginning.
+This training is divided in 5 sessions, or days, each session covers a few resources of the Platform to build a Trade & Positions application from the very beginning.
 
 Should you need it along the course, feel free to use the [final application](/tutorials/training-resources/training-intro/#source-code) as a reference.
 

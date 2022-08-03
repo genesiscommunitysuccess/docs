@@ -32,7 +32,7 @@ Please note that you will need temporary administrator privileges on your workst
 | Gradle | 6.8 |
 | Windows Subsystem for Linux (WSL) | WSL 2 |
 
-You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
+You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the Genesis Platform Abstraction Language (**GPAL**) prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
 
 ####  Accessing the Genesis repository and configuring the Genesis packages
 #### .npmrc set-up

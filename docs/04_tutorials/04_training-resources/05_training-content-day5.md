@@ -345,12 +345,10 @@ Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the i
 30 mins
 :::
 
-Now we want to run another report every 10 seconds that lists all positions whose quantity is higher than a given value passed through `RESULT_EXPRESSION`. 
+Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](/creating-applications/defining-your-application/business-logic/evaluators/configure/#cron_rule-table) table, and insert a new role changing the CRON_EXPRESSION value. 
 
 :::tip 
-Call this class `RiskReport`, create a new `eventHandler<RiskReport>` and put the csv file in `runtime/position-risk-report`. Also, remember to add the column RESULT_EXPRESSION to the csv you're going to import into [CRON_RULE](/creating-applications/defining-your-application/business-logic/evaluators/configure/#cron_rule-table).
-
-Note that you don't need to add another EVALUATOR process, as the GENESIS_EVALUATOR process in place can run multiple CRON rules.
+To delete rows you can use [DbMon](/managing-applications/operate/on-the-host/helpful-commands/#dbmon-script) and the command `delete`. After that you can use [SendIt](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script) to insert a new row again.
 
 By the way, the CRON expression for every 10 seconds is `0/10 * * * * *`. See a CRON generator [here](https://www.freeformatter.com/cron-expression-generator-quartz.html).
 :::
