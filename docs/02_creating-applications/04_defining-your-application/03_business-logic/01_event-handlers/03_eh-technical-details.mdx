@@ -4,8 +4,6 @@ sidebar_label: 'Basics'
 sidebar_position: 3
 id: eh-technical-details
 ---
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 [Introduction](/creating-applications/defining-your-application/business-logic/event-handlers/)  | [Where to define](/creating-applications/defining-your-application/business-logic/event-handlers/event-handler-define/) | [Basics](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/) |  [Advanced](/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/business-logic/event-handlers/eh-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/business-logic/event-handlers/eh-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/business-logic/event-handlers/eh-testing/)
 
@@ -41,9 +39,6 @@ Here is a simple example of an Event Handler file. It defines a single `eventHan
 - The single `eventHandler` is of type `<Counterparty>`, which has been created in advance for the COUNTERPARTY table. It defines a single `eventHandler` of type `<Counterparty>`.
 - The `eventHandler` inserts a counterparty into the database, using the [entityDb](/reference/developer/api/database/how-to/interface/entity-db/).
 
-<Tabs>
-<TabItem value="Kotlin">
-
 ```kotlin
     eventHandler {
         eventHandler<Counterparty> {
@@ -56,9 +51,6 @@ Here is a simple example of an Event Handler file. It defines a single `eventHan
     }
 ```
 
-</TabItem>
-</Tabs>
-
 ## Adding a name
 
 Every `eventHandler` in your **.kts** must have a unique name. If you do not provide one, it will be allocated automatically. In the previous example, the `eventHandler` will automatically be named EVENT_COUNTERPARTY.
@@ -70,9 +62,6 @@ If you do not define a name, a default name will be allocated automatically. The
 
 So, below, we modify our previous example by defining the name of the `eventHandler`: COUNTERPARTY_INSERT. This will automatically become EVENT_COUNTERPARTY_INSERT.
 
-<Tabs>
-<TabItem value="Kotlin">
-
 ```kotlin
 eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
     onCommit { event ->
@@ -82,47 +71,6 @@ eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
     }
 }
 ```
-
-</TabItem>
-<TabItem value="Java">
-
-```java
-    import com.google.inject.Inject;
-    import global.genesis.commons.annotation.Module;
-    import global.genesis.db.rx.entity.multi.RxEntityDb;
-    import global.genesis.eventhandler.typed.rx3.Rx3EventHandler;
-    import global.genesis.gen.dao.Counterparty;
-    import global.genesis.message.core.event.Event;
-    import global.genesis.message.core.event.EventReply;
-    import io.reactivex.rxjava3.core.Single;
-    import org.jetbrains.annotations.Nullable;
-
-    @Module
-    public class EventCounterParty implements Rx3EventHandler<Counterparty, EventReply> {
-
-        private final RxEntityDb entityDb;
-
-        @Inject
-        public EventCounterParty(RxEntityDb entityDb) {
-            this.entityDb = entityDb;
-        }
-
-        @Nullable
-        @Override
-        public String messageType() {
-            return "COUNTERPARTY_INSERT";
-        }
-
-        @Override
-        public Single<EventReply> process(Event<Counterparty> counterpartyEvent) {
-            Counterparty counterparty = counterpartyEvent.getDetails();
-            return entityDb.insert(counterparty).flatMap(result -> ack(this));
-        }
-    }
-```
-
-</TabItem>
-</Tabs>
 
 ## Adding validation
 
@@ -149,59 +97,6 @@ The `onCommit` block will only be executed if the `counterparty` field is not nu
     }
 ```
 
-</TabItem>
-<TabItem value="Java">
-
-```java
-    import com.google.inject.Inject;
-    import global.genesis.commons.annotation.Module;
-    import global.genesis.db.rx.entity.multi.RxEntityDb;
-    import global.genesis.eventhandler.typed.rx3.Rx3ValidatingEventHandler;
-    import global.genesis.gen.dao.Counterparty;
-    import global.genesis.message.core.event.Event;
-    import global.genesis.message.core.event.EventReply;
-    import io.reactivex.rxjava3.core.Single;
-    import org.jetbrains.annotations.NotNull;
-    import org.jetbrains.annotations.Nullable;
-
-    @Module
-    public class EventCounterParty implements Rx3ValidatingEventHandler<Counterparty, EventReply> {
-
-        private final RxEntityDb entityDb;
-
-        @Inject
-        public EventCounterParty(RxEntityDb entityDb) {
-            this.entityDb = entityDb;
-        }
-
-        @Nullable
-        @Override
-        public String messageType() {
-            return "COUNTERPARTY_INSERT";
-        }
-
-        @NotNull
-        @Override
-        public Single<EventReply> onCommit(@NotNull Event<Counterparty> event) {
-            Counterparty counterparty = event.getDetails();
-            return entityDb.insert(counterparty) .flatMap(result -> ack(this));
-        }
-
-        @NotNull
-        @Override
-        public Single<EventReply> onValidate(@NotNull Event<Counterparty> event) {
-            Counterparty counterparty = event.getDetails();
-            if(counterparty.getName().isEmpty()) {
-                return nack(this, "Counterparty should have a name");
-            }
-            return ack(this);
-        }
-    }
-```
-
-</TabItem>
-</Tabs>
-
 ## Returning a nack
 The `onCommit` block must always return either an `ack()` or `nack(...)`. In the previous examples, it has always been an `ack()`.
 
@@ -210,9 +105,6 @@ Now consider a scenario where you might want to return a `nack(...)`. In this ca
 In the `onCommit` block:
 - if the counterparty field is empty, the `eventHandler` returns a `nack`, along with a suitable message.
 - if the counterparty field has content, then the `eventHandler` returns an `ack`
-
-<Tabs>
-<TabItem value="Kotlin">
 
 ```kotlin
 eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
@@ -239,10 +131,6 @@ So far, we have seen `ack` and `nack.  There is a third type: `warningNack`. Let
 
 ## Transactional Event Handlers (ACID)
 If you want your  `eventHandler` to comply with ACID, you can declare it to be  `transactional = true`. Any exception or nack returned will result in a complete rollback of all parts of the `onCommit` and `onValidate` (the transaction also covers read commands) blocks.
-For Java events you need to use RxEntityDb [writeTransaction](reference/developer/api/database/how-to/interface/entity-db/#write-transactions)
-
-<Tabs>
-<TabItem value="Kotlin">
 
 ```kotlin
     eventHandler<Counterparty>(transactional = true) {
@@ -272,9 +160,6 @@ As you will have seen above, an `onValidation` codeblock will be executed whethe
 
 However, note that an `onValidation` codeblock is mandatory when using custom reply message types; the script will not compile if there is no `onValidation` codeblock. See the simple example below:
 
-<Tabs>
-<TabItem value="Kotlin">
-
 ```kotlin
     eventHandler<Company>(name = "COMPANY_INSERT") {
         onValidate { event ->
@@ -298,9 +183,6 @@ Kotlin’s `require` method throws an exception with a message if the boolean ex
 In order to optimise database look-up operations, you might want to use data obtained by the `onValidate` block inside your `onCommit` block. To do this, 
 use context Event Handlers, as shown below:
 
-<Tabs>
-<TabItem value="Kotlin">
-
 ```kotlin
     contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {
         onValidate {
@@ -319,65 +201,6 @@ use context Event Handlers, as shown below:
         }
     }
 ```
-
-</TabItem>
-<TabItem value="Java">
-
-```java
-    import com.google.inject.Inject;
-    import global.genesis.commons.annotation.Module;
-    import global.genesis.db.rx.entity.multi.RxEntityDb;
-    import global.genesis.eventhandler.typed.rx3.Rx3ContextValidatingEventHandler;
-    import global.genesis.gen.dao.Company;
-    import global.genesis.message.core.event.Event;
-    import global.genesis.message.core.event.EventReply;
-    import global.genesis.message.core.event.ValidationResult;
-    import io.reactivex.rxjava3.core.Single;
-    import org.jetbrains.annotations.NotNull;
-    import org.jetbrains.annotations.Nullable;
-
-    import java.util.List;
-    import java.util.Map;
-
-    @Module
-    public class ContextEvent implements Rx3ContextValidatingEventHandler<Company, EventReply, String> {
-        private final RxEntityDb entityDb;
-
-        @Inject
-        public ContextEvent(RxEntityDb entityDb) {
-            this.entityDb = entityDb;
-        }
-
-        @Nullable
-        @Override
-        public String messageType() {
-            return "CONTEXT_COMPANY_INSERT";
-        }
-
-        @NotNull
-        @Override
-        public Single<EventReply> onCommit(@NotNull Event<Company> event, @Nullable String context) {
-            String parsedContext;
-            parsedContext = Objects.requireNonNullElse(context, "Missing context");
-            Company company = event.getDetails();
-            return entityDb.insert(company).flatMap(result -> ack(this, List.of(Map.of("VALUE",parsedContext))));
-        }
-
-        @NotNull
-        @Override
-        public Single<ValidationResult<EventReply, String>> onValidate(@NotNull Event<Company> event) {
-            Company company = event.getDetails();
-            if(company.getCompanyName().equals("MY_COMPANY")) {
-                return ack(this).map(result -> validationResult(result, "Best company in the world"));
-            } else {
-                return ack(this).map(this::validationResult);
-            }
-        }
-    }
-```
-
-</TabItem>
-</Tabs>
 
 As the  example shows, there is an additional type defined for the context Event Handler. This is a `String`. It gives you the option of returning a `String` value from the `onValidate` block (see _validationAck_ logic), which can then be captured it in the `onCommit` block (see _context_ lambda parameter).
 
