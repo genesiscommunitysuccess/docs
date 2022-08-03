@@ -50,7 +50,7 @@ class DataServerTests : AbstractGenesisTestSupport<Reply<*>>(
 }
 ```
 
-There is more information about `AbstractGenesisTestSupport` in the section on [Integration testing](/managing-applications/test/integration-testing/).
+There is more information about `AbstractGenesisTestSupport` in the section on [Integration testing](/operations/testing/integration-testing/#abstractgenesistestsupport).
 
 We are now ready to begin writing tests for our Data Server.
 
@@ -126,7 +126,7 @@ An API client is useful way of testing components. As a client, it is effectivel
 
 The API client enables you to create calls to the resources in your server - data servers, request servers and event handlers. Then you can just click to run a call and see what response you get.
 
-Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/managing-applications/test/integration-testing/#using-an-api-client) page.
+Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/operations/testing/component-testing/#using-an-api-client) page.
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 

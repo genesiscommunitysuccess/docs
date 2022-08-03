@@ -4,10 +4,10 @@ sidebar_label: 'Examples'
 id: examples
 ---
 
-[Introduction](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/) | [Where to define](/creating-applications/defining-your-application/user-interface/request-servers/rs-where-to-define/) | [Basics](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/) |  [Advanced](/creating-applications/defining-your-application/user-interface/request-servers/rs-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/user-interface/request-servers/rs-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/user-interface/request-servers/rs-configure-runtime/) | [Testing](/creating-applications/defining-your-application/user-interface/request-servers/rs-testing/)
+[Introduction](/server-modules/request-server/introduction)  | [Basics](/server-modules/request-server/basics) | [Advanced](/server-modules/request-server/advanced) | [Examples](/server-modules/request-server/examples) | [Configuring runtime](/server-modules/request-server/configuring-runtime) | [Testing](/server-modules/request-server/testing)
 
 
-Below is a fairly simple `requestReply` codeblock with standard `request` and `reply` statements. The [`where` block](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/#where-block) below filters out any data that does not meet the conditions. All data that is returned will have an instrumentCode equal to the request parameter INSTRUMENT_CODE. 
+Below is a fairly simple `requestReply` codeblock with standard `request` and `reply` statements. The [`where` block](/server-modules/request-server/basics/#where-block) below filters out any data that does not meet the conditions. All data that is returned will have an instrumentCode equal to the request parameter INSTRUMENT_CODE. 
 
 ```kotlin
 requestReplies {
@@ -64,7 +64,7 @@ requestReplies {
 }
 ```
 
-Below is an example of a file where the single `eventHandler` code block includes a `where` clause. You can find out more about this example on the [Basics](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/#where-block) page.
+Below is an example of a file where the single `eventHandler` code block includes a `where` clause. You can find out more about this example on the [Basics](/server-modules/request-server/basics/#where-block) page.
 
 ```kotlin
 requestReplies {

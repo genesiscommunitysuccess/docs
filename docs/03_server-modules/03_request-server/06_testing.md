@@ -4,7 +4,7 @@ sidebar_label: 'Testing'
 id: testing
 ---
 
-[Introduction](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/)  | [Where to define](/creating-applications/defining-your-application/user-interface/request-servers/rs-where-to-define/) | [Basics](/creating-applications/defining-your-application/user-interface/request-servers/rs-technical-details/) |  [Advanced](/creating-applications/defining-your-application/user-interface/request-servers/rs-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/user-interface/request-servers/rs-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/user-interface/request-servers/rs-configure-runtime/) | [Testing](/creating-applications/defining-your-application/user-interface/request-servers/rs-testing/)
+[Introduction](/server-modules/request-server/introduction)  | [Basics](/server-modules/request-server/basics) | [Advanced](/server-modules/request-server/advanced) | [Examples](/server-modules/request-server/examples) | [Configuring runtime](/server-modules/request-server/configuring-runtime) | [Testing](/server-modules/request-server/testing)
 
 ## Integration testing
 
@@ -25,9 +25,9 @@ class ReqRepTests : AbstractGenesisTestSupport<Reply<*>>(
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [testing docs](/creating-applications/defining-your-application/user-interface/request-servers/rs-testing/).
+For more information about `AbstractGenesisTestSupport`, see the [testing docs](/operations/testing/integration-testing).
 
-Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](/creating-applications/defining-your-application/user-interface/request-servers/rs-advanced-technical-details/#custom-request-servers).
+Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers).
 
 ### Standard Request Servers
 
@@ -96,7 +96,7 @@ Once you click into your Request Server, you will see the current response from 
 
 ![](/img/test-console-rs-success.png)
 
-For more detailed information about using Genesis Console for manual testing, head over to the [testing docs](/creating-applications/defining-your-application/user-interface/request-servers/rs-testing/).
+For more detailed information about using Genesis Console for manual testing, head over to the [testing docs](/server-modules/request-server/testing).
 
 ### Testing with an API client
 
@@ -104,7 +104,7 @@ An API client is useful way of testing components. As a client, it is effectivel
 
 The API client enables you to create calls to the resources in your server - data servers, request servers and event handlers. Then you can just click to run a call and see what response you get.
 
-Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/managing-applications/test/component-testing/#using-an-api-client) page.
+Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/operations/testing/component-testing/#using-an-api-client) page.
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 
