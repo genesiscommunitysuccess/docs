@@ -4,6 +4,8 @@ sidebar_label: 'Examples'
 id: examples
 ---
 
+[Introduction](/server-modules/event-handler/introduction)  | [Basics](/server-modules/event-handler/basics) | [Advanced](/server-modules/event-handler/advanced) | [Examples](/server-modules/event-handler/examples) | [Configuring runtime](/server-modules/event-handler/configuring-runtime) | [Testing](/server-modules/event-handler/testing) | [Java event handlers](/server-modules/event-handler/java-event-handlers) | [Testing java event handlers](/server-modules/event-handler/testing-java-event-handlers)
+
 There is a nice simple example of some logic being added to an Event Handler in our [tutorial](/getting-started/tutorials/add-logic-to-the-event-handler/).
 
 Below we have some other examples of different ways to use an Event Handler.
