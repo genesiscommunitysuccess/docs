@@ -5,19 +5,19 @@ sidebar_label: Day 1
 sidebar_position: 3
 
 ---
-In this day we are covering:
+This day covers:
 
-- [Quick review of the Platform​](#quick-review-of-the-platform)
+- [Quick review of the platform​](#quick-review-of-the-platform)
 - [Setting up Workstation and Environment](#setting-up-workstation-and-environment)
 - [Developing your first application​​](#developing-your-first-application)
-- [Testing the backend​​](#testing-the-backend)
+- [Testing the back end​​](#testing-the-backend)
 
 
-## Quick review of the Platform
+## Quick review of the platform
 
-The only low-code platform designed to build and run mission-critical systems for the financial markets based on event-driven and microservices architecture. 
+The Genesis low-code platform is the only low-code platform designed to build and run mission-critical systems for the financial markets, based on event-driven and microservice architecture. 
 
-The Genesis low-code platform easily enables your application to handle events and distribute data in real time from the start by using its building blocks such as data servers, request servers and event handlers. These resources are powered by Genesis Platform Abstraction Language (**GPAL**), which plugs into IntelliJ allowing for code autocompletion, compilation and syntax highlighting as you code. 
+The platform enables your application to handle events and distribute data in real time from the start by using its building blocks, such as Data Servers, Request Servers and Event Handlers. These resources are powered by Genesis Platform Abstraction Language (**GPAL**), which plugs into IntelliJ, allowing for code autocompletion, compilation and syntax highlighting as you code. 
 
 <b>Genesis Low-Code Platform</b>
 
@@ -25,11 +25,11 @@ The Genesis low-code platform easily enables your application to handle events a
 
 At the heart of the server is the data persistence layer and the **data model**. You model your data by defining fields, then tables, then views.
 
-Once you have a data model defined, you can start bringing your application to life by creating **events** in an event handler process, which have access to the data layer importing auto-generated data repositories, to handle the business logic with code written in languages such as Kotlin and/or Java. 
+Once you have a data model defined, you can start bringing your application to life by creating **events** in an Event Handler process, which have access to the data layer importing auto-generated data repositories, to handle the business logic with code written in languages such as Kotlin and/or Java. 
 
-When it comes to displaying the data, you can configure a **data server** to distribute the data to the front end. The data server is a GPAL component that streams the data in real time to subscribers such as a data grid component in the front end. You can also bind a button in the UI to an event (action) defined in your event handler.
+When it comes to displaying the data, you can configure a **Data Server** to distribute the data to the front end. The Data Server is a GPAL component that streams the data in real time to subscribers, such as a data grid component in the front end. You can also bind a button in the UI to an event (action) defined in your Event Handler.
 
-All of this managed by the Genesis low-code platform. You don't need to worry about inter-process communication or even how to connect the front end to the back end as the Platform handles a web socket connection between the browser and the data server for you. Simply defining something as simple as the example below will get you a data grid showing all trades in real time:
+All of this is managed by the Genesis low-code platform. You don't need to worry about inter-process communication or even how to connect the front end to the back end, as the Platform handles a web socket connection between the browser and the data server for you. Even defining something as simple as the example below will get you a data grid showing all trades in real time:
 
 Back end
 ```kotlin
@@ -79,7 +79,7 @@ Once you finish this lesson, you will extend this initial simple application int
 With a lack of imagination we hope you will find trustworthy, we are going to call this example application **alpha**. You will see this reflected in the file names throughout.
 
 ### 1. Create a new project
-The GenX CLI tool enables you to seed projects, in this case we just want to generate a blank full-stack application project.
+The GenX CLI tool enables you to seed projects. In this case we just want to generate a blank full-stack application project.
 
 Once [installed](/tutorials/training-resources/environment-setup/), from the terminal, go to a folder where you want your project to reside, and run:
 
@@ -87,7 +87,7 @@ Once [installed](/tutorials/training-resources/environment-setup/), from the ter
 npx genx
 ```
 
-:::caution not able to run GenX?
+:::caution - not able to run GenX?
 If after going through the [environment setup](/tutorials/training-resources/environment-setup/#npmrc-set-up) you're not able to run GenX, [download the project structure that would be generated by GenX](https://genesisglobal.jfrog.io/artifactory/community-uploads/alpha.zip) and skip to [step 2](/tutorials/training-resources/training-content-day1/#2-define-the-data-model)
 :::
 
@@ -206,7 +206,7 @@ From the Gradle menu on the right of Intellij, this is:
 
 You are editing a kts file that needs to be compiled and built to be used from other places. In this case, we want the fields to be available to the tables (and with intellisense support from the IDE).
 
-As we go, you'll see we have different Gradle tasks depending on the artifact we want to build.
+As we go, you'll see we have different Gradle tasks, depending on the artifact we want to build.
 :::
 
 #### Add a table
@@ -249,7 +249,7 @@ We have a table; now we want to be able to see its content and create new entrie
 
 
 #### Data Server
-A [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers) allows for reading of real-time data. You must define the Data Server in the file **alpha-dataserver.kts**.
+A [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers) enables data to be read in real time. You must define the Data Server in the file **alpha-dataserver.kts**.
 
 ```kotlin
 dataServer {
@@ -274,11 +274,11 @@ eventHandler {
 ```
 :::info What is entityDb?
 
-The [entityDb](/reference/developer/api/database/how-to/interface/entity-db/) enables you to interact with the database layer, it's part of the Genesis Database API and we'll get into more details soon. For now, understand this is the common way to access data from code. Feel free to explore a bit more the methods available from entityDb using the intellisense of your IDE.
+The [entityDb](/reference/developer/api/database/how-to/interface/entity-db/) enables you to interact with the database layer, it's part of the Genesis Database API and we'll get into more details soon. For now, understand that this is the common way to access data from code. Feel free to use the intellisense of your IDE to explore the methods available from entityDb.
 :::
 
 ### 4. Prepare the server and build
-So far we have created an event handler and data server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as event handler and data server, must run on their own processes and to do that we have to change the processes and the service definition files:
+So far we have created an event handler and data server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Eevent Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
 
 - **alpha-processes.xml**
 - **alpha-service-definitions.xml**
@@ -329,7 +329,7 @@ You can override the standard definitions using the site-specific folder located
 
 Once deployed into the server, the files from that folder get installed in the runtime folder under a sub-folder called 'site-specific'. This is an area of the run directory, i.e. the Platform installation directory, where you can override the standard definitions found elsewhere in the application. You supply the standard definition name and your own definition. Your application will then only use your definition.
 
-This is useful where you have used standard modules such as Auth, FIX or even the Genesis distribution itself; you should never change these modules. Any files/definitions that are listed in the site-specific area automatically take their places. In our case, the genesis-system-definition.kts must be edited to use postgres database engine instead of the default one (FDB) as follows: 
+This is useful where you have used standard modules such as Auth, FIX or even the Genesis distribution itself; you should never change these modules. Any files or definitions that are listed in the site-specific area automatically take their places. In our case, the genesis-system-definition.kts must be edited to use postgres database engine instead of the default one (FDB) as follows: 
 
 ```kotlin
 ...
@@ -392,7 +392,7 @@ Now we are going to install the Genesis Platform (i.e. Genesis distribution) on 
 
 ##### Deploying to the server
 
-We will run `setupEnvironment` first (only need to run it once) to setup the Platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
+We will run `setupEnvironment` first (we only need to run it once) to set up the platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
 
 Usage :
 ```shell
@@ -402,10 +402,10 @@ or from the dropdown menu:
 
 ![](/img/setup-environment.png)
 
-After this command is completed we will have a basic genesis server running.
+After this command is completed, we will have a basic genesis server running.
 
 ### Deploying the auth module
-As our application requires authentication, we have to install the Genesis auth module.
+As our application requires authentication, we have to install the Genesis Auth module.
 
 Usage:
 ```shell
@@ -460,7 +460,7 @@ The following details will be your login details:
 :::
 
 We shall run the task `loadInitialData`. This adds the data in a file called USER.csv to be imported into the USER table in your
-database. The USER table, among other users and permissioning tables, is defined by the Genesis Auth module installed previously. 
+database. The USER table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously. 
 
 To run the task we will call:
 
@@ -487,8 +487,8 @@ or from the dropdown menu:
 Once you are inside the console, type 'table USER' and then 'search 1'. If imported correctly, the user JaneDee should be listed.
 
 #### Running server commands
-:::info how to run server commands from the command line rather than gradle tasks?
-We've been running server commands through the gradle tasks. Alternatively, you can run server commands directly from a command line. 
+:::info can I run server commands from the command line rather than gradle tasks?
+Yes. We've been running server commands through the gradle tasks. Alternatively, you can run server commands directly from a command line. 
 
 Open PowerShell (or Windows Command Prompt), access your WSL instance 'TrainingCentOS' and switch to user 'genesis' to have access to the Genesis Platform commands:
 ```shell
@@ -501,7 +501,7 @@ Try it now!
 
 :::
 
-Now, let's run Genesis command 'mon' to see if all processes are up and running on the server:
+Now, let's run the Genesis command 'mon' to see if all processes are up and running on the server:
 
 ```shell
 ./gradlew :jvm:alpha-deploy:mon #On the IntelliJ terminal
@@ -536,14 +536,14 @@ See [here](/creating-applications/creating-a-new-project/recommended-full-stack-
 
 
 
-## Testing the backend
+## Testing the back end
 
 
-There are multiple ways you can test the back end of your application. It's important to note that most resources, such as event handlers and data servers, are exposed as HTTP endpoints automatically by the Genesis Platform - without any additional code. This allows you to test those resources from HTTP clients like Postman or, alternatively, we can use Genesis Console that also gives you a simple way of testing components from a nice web UI.
+There are multiple ways you can test the back end of your application. It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as HTTP endpoints automatically by the Genesis platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
 
 ### Genesis Console
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
-2. You should enter the IP address of your server, in this case localhost.
+2. Enter the IP address of your server, in this case localhost.
 3. Log in with your user name and password as [defined previously](/tutorials/training-resources/training-content-day1/#adding-a-user-to-login). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES** tab.
 5. Filter the **Resource type** to show only event handlers.
@@ -560,7 +560,7 @@ If you click on any Event Handler in the list, the fields relevant to the event 
 
 Now you need to pick the Event Handler you want to test. So, let's look up EVENT_TRADE_INSERT.
 
-1. Find the Event Handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the event handler was set up.
+1. Find the Event Handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the Event Handler was set up.
 
 ![](/img/test-console-eh-insert-trade-alpha.png)
 
@@ -575,7 +575,7 @@ If the Event Handler is working correctly, you will receive an **ACK**.
 #### Checking the insertion
 You can go on to check the TRADE table to see if your insert is there.
 
-1. Filter the list of services to show only data servers (these are the components that distribute the data).
+1. Filter the list of services to show only Data Servers (these are the components that distribute the data).
 
 2. Search for the relevant resource - in our case TRADE.
 
@@ -585,24 +585,24 @@ You can go on to check the TRADE table to see if your insert is there.
 
 ![](/img/test-console-eh-confirm-trade-alpha-2.png)
 
-### Exercise 1.1: data servers
+### Exercise 1.1: Data Servers
 :::info ESTIMATED TIME
 30 mins
 :::
 
-Look at the [data server documentation](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/) and see if you are able to modify our data server [defined previously](/tutorials/training-resources/training-content-day1/#data-server):
+Look at the [Data Server documentation](/creating-applications/defining-your-application/user-interface/data-servers/ds-technical-details/) and see if you are able to modify our Data Server [defined previously](/tutorials/training-resources/training-content-day1/#data-server):
 - add a new query called "ALL_PRICES" on the TRADE table
 - make ALL_PRICES display only SYMBOL and PRICE fields
 - add a `where` clause so it displays only trades whose PRICE are higher than 0.0
 
 Remember to insert a few trades using Genesis Console to test it.
 
-### Exercise 1.2: event handlers
+### Exercise 1.2: Event Handlers
 :::info ESTIMATED TIME
 20 mins
 :::
 
-Look at the [event handler documentation](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#returning-a-nack) and see if you are able to modify our event handler [defined previously](/tutorials/training-resources/training-content-day1/#event-handler):
+Look at the [Event Handler documentation](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#returning-a-nack) and see if you are able to modify our Event Handler [defined previously](/tutorials/training-resources/training-content-day1/#event-handler):
 - return `nack("Quantity must be positive")` if the quantity is lower than 0.
 
 Test it with Genesis Console.
