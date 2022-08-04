@@ -5,7 +5,7 @@ sidebar_label: Day 4
 sidebar_position: 6
 
 ---
-In this day we are covering:
+This day covers:
 
 - [State management​](#state-management​)
 - [Adding logic to the event handler](#adding-logic-to-the-event-handler)
@@ -128,7 +128,7 @@ api(project(":alpha-eventhandler"))
 
 ### 4. Edit the event handler to add an integrated state machine
 
-Let's edit the event handler to add an integrated state machine. First, in the **alpha-eventhandler.kts** file declare a variable to be visible to all events injecting the class `TradeStateMachine` we just created. 
+Let's edit the event handler to add an integrated state machine. First, in the **alpha-eventhandler.kts** file, declare a variable to be visible to all events by injecting the class `TradeStateMachine` that we have just created. 
 
 ```kotlin {2}
 eventHandler {
@@ -154,7 +154,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 }
 ```
 
-Create two data classes that will be used in the cancel and allocated event handlers. These classes should be in **alpha-messages/src/main/kotlin/global/genesis/alpha/message/event**
+Create two data classes that will be used in the cancel and allocated Event Handlers. These classes should be in **alpha-messages/src/main/kotlin/global/genesis/alpha/message/event**
 
 * TradeAllocated
 * TradeCancelled
@@ -205,7 +205,7 @@ eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
 }
 ```
 
-Modify or add the TRADE_MODIFY event handler to use the state machine.
+Modify or add the TRADE_MODIFY Event Handler to use the state machine.
 
 ```kotlin {4}
 eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
@@ -217,9 +217,9 @@ eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
 }
 ```
 
-Remove the TRADE_DELETE event handler if you included it before.
+Remove the TRADE_DELETE Event Handler if you included it before.
 
-You want to manage the state of the trade, so remove the delete event handler. If a trade is incorrect and needs to be deleted, similar functionality can be achieved by cancelling the trade.
+You want to manage the state of the trade, so remove the delete Event Handler. If a trade is incorrect and needs to be deleted, similar functionality can be achieved by cancelling the trade.
 
 To test it, you can try to modify a TRADE and see the states changing accordingly. 
 
@@ -227,7 +227,7 @@ To test it, you can try to modify a TRADE and see the states changing accordingl
 :::info ESTIMATED TIME
 40 mins
 :::
-Modify the class TradeStateMachine to keep the trade.price removing the current rule when TradeStatus.NEW, and set the field trade.enteredBy to empty when TradeStatus.CANCELLED.
+Modify the class TradeStateMachine to keep the `trade.price`. Removing the current rule when TradeStatus.NEW, and set the field trade.enteredBy to empty when TradeStatus.CANCELLED.
 
 :::info UI CHANGES
 Open the **home.ts** file and add the TRADE_STATUS field in the const *COLUMNS*. The Cancel button can be added using the *Permissions.delete*.
@@ -283,7 +283,7 @@ export class Home extends FASTElement {
 
 ```
 
-And adding the *deleteEvent* as well in the **home.template.ts** file.
+And add the *deleteEvent* as to the **home.template.ts** file.
 
 ```html {10}
 ...
@@ -309,17 +309,17 @@ export const HomeTemplate = html<Home>`
 Remember to run *assemble* and *deploy-genesisproduct-alpha* tasks after the changes, and test it directly in the UI.
 
 
-## Adding logic to the event handler
+## Adding logic to the Event Handler
 
-We are going to change the code in the event handler so that:
+We are going to change the code in the Event Handler so that:
 
 * it checks if the counterparty exists in the database (by checking COUNTERPARTY_ID field)
 * it checks if the instrument exists in the database (by checking INSTRUMENT_ID field)
-* it's also able to modify records with the same verification on counterparty and instrument
+* it is able to modify records with the same verification on counterparty and instrument
 
 ### Add the validation code
 
-Go to the **alpha-eventhandler.kts** file for the event handler. 
+Go to the **alpha-eventhandler.kts** file for the Event Handler. 
 
 Add the verification by inserting an **verify** inside the **onValidate** block, before the **onCommit** block in TRADE_INSERT. We can see this below, with separate lines checking the Counterparty ID and the Instrument ID exist in the database. The new block ends by sending an **ack()**.
 
@@ -349,7 +349,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 Add the same verification `onValidate` as in TRADE_INSERT to the TRADE_MODIFY event handler.
 
 
-Implement and test the back end with Console or Postman. To do that see the Day 2 example [here](/tutorials/training-resources/training-content-day2/#a-test-alternative-to-genesis-console). Basically, you should create a POST request using the URL *http://localhost/gwf/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
+Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](/tutorials/training-resources/training-content-day2/#a-test-alternative-to-genesis-console). Basically, you should create a POST request using the URL *http://localhost/gwf/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
 
 ## Auditing​
 
@@ -357,11 +357,11 @@ We want to be able to track the changes made to the various trades on the TRADE 
 
 This can be useful for historical purposes, if you need to at a later date be able to produce an accurate course of events.
 
-### Adding Basic Auditing
+### Adding basic auditing
 
 #### Adding audit to table dictionary
 
-The first step to add basic auditing is to change the relevant table dictionary. In this instance we will be making changes to the **alpha-tables-dictionary.kts**, in order to add the parameter `audit = details()` to the table definition. It should resemble the following:
+The first step to add basic auditing is to change the relevant table dictionary. In this instance, we will be making changes to the **alpha-tables-dictionary.kts**, in order to add the parameter `audit = details()` to the table definition. It should resemble the following:
 
 ```kotlin {1}
 table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
@@ -419,7 +419,7 @@ Next you need to extend the insert, and modify methods in the **TradeStateMachin
         }
 ```
 
-#### Update the event handlers to use auditing
+#### Update the Event Handlers to use auditing
 
 Now you must update the **alpha-eventhandler.kts** in order to pass the `entityDb` object into the updated methods of the state machine, as the **syncMultiEntityReadWriteGenericSupport** parameter. This should resemble the example below:
 
