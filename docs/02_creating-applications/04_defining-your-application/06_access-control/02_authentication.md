@@ -74,7 +74,7 @@ The `passwordStrength` function can be called within `passwordValidation` and ha
 * **restrictNumericalSequences** restricts numerical sequences in passwords (e.g. 123456). Sequences bigger or equal to 5 numbers won't be allowed if active. Default: true.
 * **illegalCharacters** contains characters you don't want to accept in user passwords. In the example shown below, you can see three banned characters: $, £ and ^. Default: empty.
 * **historicalCheck** if present, this prevents reuse of passwords for the specified number of historical uses. Default: null.
-* **dictionaryWordSize** this variable has been deprecated, if present, this prevents use of English words of four characters or more in length. This number can no longer be specified. Any number set here will replaced by a fixed 4 characters; additionally, a warning will be added to the error log.
+* **dictionaryWordSize** this variable has been deprecated, if present, this prevents use of English words of four characters or more in length. This number can no longer be specified. Any number set here will be replaced by a fixed 4 characters; additionally, a warning will be added to the error log.
 * **restrictDictionarySubstring** this prevents use of English words of four characters or more in length. Default: false.
 * **restrictPassword** this restricts use of known bad passwords. Default: false.
 * **repeatCharacterRestrictSize** if present, this prevents the use of repeated characters of the specified length. Default: null.
