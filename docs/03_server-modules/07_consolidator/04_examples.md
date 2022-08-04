@@ -4,6 +4,8 @@ sidebar_label: 'Examples'
 id: examples
 ---
 
+[Introduction](/server-modules/consolidator/introduction) | [Basics](/server-modules/consolidator/basics) |  [Advanced](/server-modules/consolidator/advanced) | [Examples](/server-modules/consolidator/examples) | [Configuring runtime](/server-modules/consolidator/configuring-runtime) | [Testing](/server-modules/consolidator/testing)
+
 Here is an example Consolidator file that defines two Consolidators:
 
 * CON_ORDER_FROM_TRADES. This Consolidator totals the order quantity across the ```TRADE``` table, grouping by field ```TRADE.ORDER_ID```

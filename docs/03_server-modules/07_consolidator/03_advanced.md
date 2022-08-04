@@ -4,6 +4,8 @@ sidebar_label: 'Advanced'
 id: advanced
 ---
 
+[Introduction](/server-modules/consolidator/introduction) | [Basics](/server-modules/consolidator/basics) |  [Advanced](/server-modules/consolidator/advanced) | [Examples](/server-modules/consolidator/examples) | [Configuring runtime](/server-modules/consolidator/configuring-runtime) | [Testing](/server-modules/consolidator/testing)
+
 In this page, we look in more detail at the functions that are the building blocks of the select statement in a `consolidator` specification.
 
 ## Standard functions
