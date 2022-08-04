@@ -5,7 +5,9 @@ sidebar_label: Host Preparation
 sidebar_position: 1
 
 ---
-This document describes preparing a host to run applications built with Genesis frameworks.
+This document describes preparing a host to run applications built with Genesis frameworks.  It is written for a
+reader with some Linux system administration experience.
+
 
 ## OS Choice
 
@@ -14,8 +16,8 @@ requires (in all likelihood) one of a set of supported databases and Genesis Glo
 if required.  Our existing build pipeline favours producing either ZIP files or RPM packages.  As such, Genesis Global
 recommends an OS from the RedHat family, either CentOS 7 or RHEL 7.  We have seen good results with AmazonLinux 2.
 
-Choosing a different Linux variant will place the onus of installing database and other software packages upon the
-operator of the host(s) involved.
+Choosing a different Linux variant will require the operator to locate suitable packages to install database and other
+software packages.
 
 ## Processes and dependencies
 
