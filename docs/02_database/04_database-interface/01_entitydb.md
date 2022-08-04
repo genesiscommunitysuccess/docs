@@ -462,16 +462,11 @@ db.updateAll(Trade.class, trade -> {
 
 ## Transactions
 
-If the underlying database supports transactions, then the entity db provides type-safe access to these. A
-read transaction will support the same read operations as the entity db, and a write transaction will support the same
-read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not
-supported within transactions.
+If the underlying database supports transactions, then the entity db provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not supported within transactions.
 
-Currently, transactions are supported on **FoundationDb** and **Postgresql**. Using transaction on **Aerospike** will
-result in a failure.
+Currently, transactions are supported on **FoundationDb** and **Postgresql**. Using transaction on **Aerospike** will result in a failure.
 
-When code is expected to run on multiple database types, transactions should be used when available. You can use `safeReadTransaction` and `safeWriteTransaction`. These will run operations in the
-block in a single transaction, if supported.
+When code is expected to run on multiple database types, transactions should be used when available. You can use `safeReadTransaction` and `safeWriteTransaction`. These will run operations in the block in a single transaction, if supported.
 
 There is a distinction between using kotlin and java here.
 
@@ -540,7 +535,7 @@ final var writeResults = pair.getSecond();
 </TabItem>
 </Tabs>
 
-## Subscribe Operations
+## Subscribe operations
 
 ### Subscribe
 
@@ -549,13 +544,12 @@ only updates to the root table will be published.
 
 If the view has any inner joins, these are handled in a range of different ways.
 
-#### Tables
 For tables, this works in the standard way. You subscribe to updates, and:
 * when a record is inserted, you get an insert update
 * when a record is modified you get a modify update 
-* when a record is deleted you get a delete updatethe published update will
+* when a record is deleted you get a delete update 
 
-#### Views
+
 For views, when a record is inserted to the root table, you get an insert update. Modify and delete work the same way. 
 
 However, if there is an inner join, there is a range of outcomes.
@@ -571,14 +565,14 @@ And if there is a modify:
 * if the previous record linked to a valid counterparty, but no longer does after the update, it becomes a delete
 
 
-#### Parameters
+### Subscribe parameters
 Subscribe supports the following parameters:
 
 * `delay`: `Int` the listener will batch updates every x milliseconds
 * `fields`: `Set<String>` filters `ModifyResult` on fields
 * `subscribeLocally`: `Boolean` only publish updates that are local to the node
 
-### Overloads
+#### Overloads
 
 The rx entity db takes a `Class<E>`, whereas the async entity db takes a `KClass<E>`.
 Parameters marked with an asterisk(*) are optional.
