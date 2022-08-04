@@ -10,17 +10,17 @@ sidebar_position: 1
 
 ## What You'll Learn​
 
-This is a hands-on developer training where we're going to follow the creation ​of an application from start to finish. You will become an effective developer on the Genesis low-code platform.
+This is hands-on developer training where we're going to follow the creation ​of an application from start to finish. By complletion, you will be an effective developer on the Genesis low-code platform.
 
 ## Pre-requisites and assumptions
 
 - You know how to code, ideally familiar with the **Java ecosystem** and **Kotlin** language. Even better if you know some​ **TypeScript** and some basic Linux commands.​
-- You have taken the Foundations course.
+- You have taken the Foundation course.
 - You are familiar with basic capital markets concepts such as [orders, trades](https://www.investopedia.com/terms/o/order.asp) and [position](https://www.investopedia.com/terms/p/position.asp).
 
 ## Programme
 
-This training is divided in 5 sessions, or days, each session covers a few resources of the Platform to build a Trade & Positions application from the very beginning.
+This training is divided in 5 sessions, or days; each session covers specific resources of the platform to build a Trade & Positions application from the very beginning.
 
 Should you need it along the course, feel free to use the [final application](/tutorials/training-resources/training-intro/#source-code) as a reference.
 
@@ -29,12 +29,12 @@ Also, at any point, use the search function of the documentation for extra infor
 Estimated total effort: <b>Daily 4-hour sessions for 5 days</b>
 
 :::note 80-20 rule
-You’ll possibly learn 20% of what is offered ​by the Platform​, which will enable you to do 80% of your needs
+You’ll probably learn 20% of what is offered ​by the platform​, which will cover 80% of your needs.
 :::
 
 ## Agenda
 
-- [Environment setup](/tutorials/training-resources/environment-setup/)
+- [Environment set-up](/tutorials/training-resources/environment-setup/)
 - [Day 1](/tutorials/training-resources/training-content-day1/): Quick review of the Platform​, quick start the application and test the backend​​.
 - [Day 2](/tutorials/training-resources/training-content-day2/): Intro to UI​, create a user interface​ and REST endpoints.
 - [Day 3](/tutorials/training-resources/training-content-day3/): Views​, automated testing​, calculated data, consolidators and data grids​.
