@@ -121,7 +121,7 @@ PID     Process Name                  Port        Status         CPU       Memor
 
 ### Connecting the back end and front end
 
-With this next step, we will configure an nginx working as a reverse proxy.
+With this next step, we will configure an nginx server working as a reverse proxy.
 
 In your CentOS terminal, enter:
 ```shell

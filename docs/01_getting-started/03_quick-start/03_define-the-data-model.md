@@ -6,7 +6,7 @@ id: define-the-data-model
 
 Now you are ready to define the fields and tables that make up your data model. This structures information in a simple way that can be viewed by users and processed by the application.
 
-Open Intellij (or your chosen IDE). In the alpha project, you will see the **readme** file for the project. After importing and indexing, you should see the fol
+Open Intellij (or your chosen IDE). In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (alpha, client, genesisproduct-alpha).
 
 ### Add fields
 You define your fields in the file **alpha-fields-dictionary.kts**.
