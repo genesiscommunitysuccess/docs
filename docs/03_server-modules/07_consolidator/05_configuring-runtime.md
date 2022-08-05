@@ -17,7 +17,7 @@ For your Consolidator to run, it must be defined as a process and included as a 
 
 Your application's **processes.xml** file is located in the **.cfg** folder for the application. The file contains tags that define key characteristics of the Consolidator - for example, dependencies and logging level. 
 
-Here is an example configuration (the tags are explained in the page on the [processes.xml file](/creating-applications/configure-runtime/processes-xml/)):
+Here is an example configuration (the tags are explained in the page on the [processes.xml file](/server-modules/configuring-runtime/processes/)):
  
 
 ```kotlin
@@ -44,7 +44,7 @@ multiple times.
 
 ## Adding the Consolidator to the service-definitions.xml
 
-Your application's [**service-definitions.xml**](/creating-applications/configure-runtime/service-definitions/) file is where you specify the ports used by each process for communicating internally. You need to add an entry for your Consolidator, using an unused port number. For example:
+Your application's [service-definitions.xml](/server-modules/configuring-runtime/service-definitions) file is where you specify the ports used by each process for communicating internally. You need to add an entry for your Consolidator, using an unused port number. For example:
 
 ```xml
  <service host="localhost" name="POSITION_CONSOLIDATOR" port="11003"/>
