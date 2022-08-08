@@ -31,7 +31,7 @@ public class TradingEventHandlerTest extends AbstractGenesisTestSupport<EventRes
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/managing-applications/test/integration-testing/).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing/#abstractgenesistestsupport).
 
 Once you have set up your configuration, you can start writing tests against your Event Handler.
 
@@ -147,7 +147,7 @@ First, make sure that your authorisation set-up is designed to behave as follows
 
 Second, you need to modify the previous example Event Handler so that only authorised users can insert trades.
 
-You can find an [Event example](/reference/developer/api/authorisation-api) in our Authorization API pages written in Kotlin.
+You can find an [Event example](/database/authorisation-api/authorisation-api) in our Authorization API pages written in Kotlin.
 
 ```java
     @Module
@@ -221,7 +221,7 @@ Fourth, in your test set-up, let's authorise one user to be able to insert trade
     }
 ```
 
-For more information on authorisation, see the [authorisation docs](/creating-applications/defining-your-application/access-control/authorisation-over/).
+For more information on authorisation, see the [authorisation docs](/server-modules/access-control/authorisation-overview).
 
 ### Tests
 
