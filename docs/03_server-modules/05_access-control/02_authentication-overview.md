@@ -21,19 +21,21 @@ So, if your application is called positions, then the file would conventionally 
 
 ### Login authentication
 
-Login authentication requires you to choose one of the provided solutions in order to allow users to log in and access the system.
+Login authentication allows users to log in directly to the application built on the Genesis low-code platform. This requires you to choose one of the provided solutions in order control this process.
 
 To specify which one to use, just edit the application's **auth-preferences.kts** file and change the `type` variable in the `authentication` block to match the required value. For example:
 
 ```kotlin
-authentication {
-        type = AuthType.LDAP
+security {
+  authentication {
+    type = AuthType.LDAP
+  }
 }
 ```
 
 :::note
 
-If you do not specifiy an authentication type, INTERNAL authentication is used.
+If you do not specify an authentication type, INTERNAL authentication is used.
 
 :::
 
@@ -55,6 +57,12 @@ Internal authentication uses internally stored hashed credentials to authenticat
 - Users can reset or change their password (assuming they can log in first)
 
 Internal authentication is the default authentication behaviour if you don't specify a type in **auth-preferences.kts**.
+
+```kotlin
+    authentication {
+        type = AuthType.INTERNAL
+    }
+```
 
 ## LDAP
 
@@ -114,18 +122,8 @@ The configuration file takes the same fields as LDAP. You can see this in the ex
 
 ### SSO authentication
 
+SSO authentication allows users to use a single set of credentials to access a range of applications, including those built on the Genesis low-code platform. For more information on SSO technology, please visit the [Single-sign on Wikipedia page](https://en.wikipedia.org/wiki/Single_sign-on)
+
 SSO authentication is a more involved process to enable; thus requires additional file changes detailed in [SSO Authentication](server-modules/access-control/sso-authentication/).
 
----
-
-* **url** represents the LDAP server hostname. Default: localhost.
-* **port** defines the LDAP server port to connect to. Default: 389.
-* **searchBases** defines the location(s) in the directory from which the LDAP search begins. This is set by the `searchBase` tag, and any repeated `searchBase` tags that are referenced from within the enclosing tag. Default: ou=temp,dc=temp
-* **userGroups** defines the group(s) that the user will need to belong to in order to log in. This is set by the `userGroup` tag, and any repeated `userGroup` tags that are referenced from within the enclosing tag. Default: none
-* **userPrefix** is an optional prefix you can add to every username received from login requests in your authentication server. Default: empty string.
-* **bindDn** is an optional, distinguished name which acts as a first LDAP login; it is normally required to perform a search. If this field is not specified, no bindings will be used. Default: null
-* **bindPassword** represents the password associated with the **bindDn** account. Default: null.
-* **userIdType** defines the attribute to match in the directory search against the provided username. Default: cn. Amongst the most common LDAP implementations, you can find three main ways of configuring usernames:
-  * using the "uid" attribute
-  * using the "cn" attribute
-  * using  the "sAMAccountName" in Windows.
+Both SSO and login authentication can be used concurrently by applications built on the platform; the use of one does not mandate nor prevent the use of the other.

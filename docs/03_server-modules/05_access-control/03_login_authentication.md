@@ -4,16 +4,35 @@ sidebar_label: 'Login Authentication'
 id: login-authentication
 ---
 
-## Authentication preferences
+We will now go through the various configuration options available for login authentication. These are located in the _your-application-_**auth-preferences.kts** file, located in the _your-application_**-site-specific/src/site-specific/scripts/** directory.
 
-You can set the authentication preferences for your application in the **auth-preferences.kts** file. This is configured through the `security` function, and the following functions can be called within it:
+All of these configuration settings are wrapped within the `security` function.
+
+## security 
+
+The security function wraps all other variable and functions within the **auth-preferences.kts** file. From this top level the following variables can be set.
+
+* **heartbeatIntervalSecs** specifies the number of seconds to wait between sending one heartbeat message to the next one. A heartbeat message is automatically sent from every logged-in user to the Genesis low-code platform's authentication module. This ensures that the platform can determine who is still connected to it. The authentication module then replies with an acknowledgement in exchange. In the example configuration on this page, the heartbeat is set to be sent every 30 seconds. Default null.
+* **sessionTimeoutMins** specifies the time to wait before timing out an idle session with a user client. A user client may very well be answering heartbeats but at the same time being idle (i.e. not using the platform). This timeout represents the number of minutes a user needs to be idle to be logged out of the platform. Default: 30.
+* **expiryCheckMins** specifies the time interval (in minutes) used to check for idle sessions in the system. Default 5.
+* **maxSimultaneousUserLogins** defines the maximum number of active sessions a user can maintain. Once this limit has been reached, the user cannot log in again until another session has been logged out. If the specified value is zero, is not defined, or is not a positive integer, then any number of sessions is permitted. Default 0.
+
+```kotlin
+security {
+    heartbeatIntervalSecs = 30 //30 Seconds
+}
+
+```
+
+the following in order to configure the login authentication:
 
 * authentication
 * passwordValidation
 * passwordRetry
-* sso
 * mfa
 * loginAck
+
+---
 
 ### Basic preferences in detail
 
@@ -33,6 +52,22 @@ The `authentication` function can be used to represent the method of authenticat
 * **type** which indicates which of the following forms of authentication to be used: `INTERNAL`, `LDAP`, or `HYBRID`. Default: `AuthType.INTERNAL`.
 
 The following variables are only used when the authentication type is either `LDAP`, or `HYBRID`.
+
+---
+
+* **url** represents the LDAP server hostname. Default: localhost.
+* **port** defines the LDAP server port to connect to. Default: 389.
+* **searchBases** defines the location(s) in the directory from which the LDAP search begins. This is set by the `searchBase` tag, and any repeated `searchBase` tags that are referenced from within the enclosing tag. Default: ou=temp,dc=temp
+* **userGroups** defines the group(s) that the user will need to belong to in order to log in. This is set by the `userGroup` tag, and any repeated `userGroup` tags that are referenced from within the enclosing tag. Default: none
+* **userPrefix** is an optional prefix you can add to every username received from login requests in your authentication server. Default: empty string.
+* **bindDn** is an optional, distinguished name which acts as a first LDAP login; it is normally required to perform a search. If this field is not specified, no bindings will be used. Default: null
+* **bindPassword** represents the password associated with the **bindDn** account. Default: null.
+* **userIdType** defines the attribute to match in the directory search against the provided username. Default: cn. Amongst the most common LDAP implementations, you can find three main ways of configuring usernames:
+  * using the "uid" attribute
+  * using the "cn" attribute
+  * using  the "sAMAccountName" in Windows.
+
+---
 
 * **url** is used to set the LDAP server hostname. Default: localhost
 * **port** is used to set the LDAP server port. Default: 389
@@ -81,15 +116,6 @@ The `passwordStrength` function can be called within `passwordValidation` and ha
 The `passwordRetry` function allows the following variables to be set. This has two options:
 * **maxAttempts** defines the maximum number of attempts allowed if a user enters a wrong password. Default: 3
 * **waitTimeMins** specifies the time to wait when the maximum number of incorrect attempts is reached. Default: 5.
-
-#### sso
-The `sso` function allows you to configure and enable Single Sign-On (SSO) options. It has the following variables to set:
-* **enabled** is a boolean value that defines whether the SSO functionality is enabled. Default: true when the `sso` function is invoked, otherwise false.
-* **newUserMode** defines behaviour for processing users the first time they log in with SSO. This can take the values of `NewUserMode.REJECT`, `NewUserMode.CREATE_ENABLED`, `NewUserMode.CREATE_DISABLED`. Default `NewUserMode.REJECT`.
-    * In the case of `NewUserMode.REJECT`, when a user logs in for the first time with SSO, if they do not already have a user account, they are rejected.
-    * In the case of `NewUserMode.CREATE_ENABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, an active account is created for them.
-    * In the case of `NewUserMode.CREATE_DISABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, a disabled account is created for them. This will be need to be activated before it can be used.
-
 
 #### mfa
 The `mfa` function allows you to configure Multi-factor Authentication (MFA). It has the following variables to set:

@@ -32,7 +32,7 @@ The following data points need to be shared with Genesis to complete the solutio
 
 ### How Genesis JWT SSO works
 
-The  SSO workflow depends on whether CORS is configured on your internal authentication service to allow the Genesis platform to make direct authentication requests, or not.
+The SSO workflow depends on whether CORS is configured on your internal authentication service to allow the Genesis platform to make direct authentication requests, or not.
 
 #### CORS enabled
 
@@ -387,3 +387,13 @@ Here is some test metadata you can use:
 ## OpenID Connect & OAuth 2.0
 
 Support for OpenID Connect & OAuth 2.0 is part of the Genesis 2022 H1 technical roadmap.
+
+---
+
+#### sso
+The `sso` function allows you to configure and enable Single Sign-On (SSO) options. It has the following variables to set:
+* **enabled** is a boolean value that defines whether the SSO functionality is enabled. Default: true when the `sso` function is invoked, otherwise false.
+* **newUserMode** defines behaviour for processing users the first time they log in with SSO. This can take the values of `NewUserMode.REJECT`, `NewUserMode.CREATE_ENABLED`, `NewUserMode.CREATE_DISABLED`. Default `NewUserMode.REJECT`.
+  * In the case of `NewUserMode.REJECT`, when a user logs in for the first time with SSO, if they do not already have a user account, they are rejected.
+  * In the case of `NewUserMode.CREATE_ENABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, an active account is created for them.
+  * In the case of `NewUserMode.CREATE_DISABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, a disabled account is created for them. This will be need to be activated before it can be used.
