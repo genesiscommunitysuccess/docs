@@ -4,14 +4,13 @@ sidebar_label: 'System Definition API'
 id: system-definition-api
 ---
 
-System definition API
-=====================
+
 
 The [system-definition](/getting-started/learn-the-basics/key-system-files/genesis-system-definitions/) file is the basis of all configurations. In this page, we describe the different functions available to get properties specified in the system-definition.kts file. Default methods have implementations to provide default values for each property.
 
 Most of the functions are to get or set a particular property.
 
-If you add any other property whose getter or setter function is not availablese, use the functions `get` or `getItem`.
+If you add any other property whose getter or setter function is not available, use the functions `get` or `getItem`.
 
 You can access system definition properties in two ways:
 
