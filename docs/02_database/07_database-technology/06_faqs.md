@@ -4,7 +4,7 @@ sidebar_label: 'FAQs'
 id: faqs
 ---
 
-Frequently Asked Questions
+Frequently asked questions
 ==========================
 
 My write operations are not hitting the database[​](database/database-technology/faqs/#my-write-operations-are-not-hitting-the-databasedirect-link-to-heading)

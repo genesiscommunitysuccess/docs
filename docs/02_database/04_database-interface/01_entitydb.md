@@ -17,9 +17,9 @@ import TabItem from '@theme/TabItem';
 | Class to import                                                                                 | `AsyncEntityDb` <br/> `RxEntityDb`                                                 |
 | Type-safe read and write                                                                        | ✔️                                                                                 |
 | Type-safe write result                                                                          | ✔️                                                                                 |
-| Returns data as                                                                                 | [table](/database/fields-tables-views/tables/tables-basics/) or [view](/database/data-types/table-entities//) entities        |
-| Writes data as                                                                                  | [table](/database/fields-tables-views/tables/tables-basics/) or [view](/database/data-types/table-entities/) entities        |
-| References indexes as                                                                           | [index entities](database/data-types/index-entities/)                                         |
+| Returns data as                                                                                 | [table](database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities        |
+| Writes data as                                                                                  | [table](database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities        |
+| References indexes as                                                                           | [index entities](/database/data-types/index-entities/)                                         |
 | Programming interface                                                                           | [Async](/database/types-of-api/asynch/) or [RxJava](/database/types-of-api/rxjava/) |
 | Write (input)                                                                                   | [Generic Modify Details](/database/helper-classes/modify-details/generic/)                              |
 | Write (output)                                                                                  | [Generic Write Result](/database/helper-classes/write-results/generic/)                          |
@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 
 | Available in [event handlers](/database/event-handler-api/event-handler-api/)         | ✔️                                                                                 |
-| Available in [custom request replies](/server-modules/request-server/advanced/#custom-request-servers) | ✔️                                                                                 |
+| Available in [custom request servers](/server-modules/request-server/advanced/#custom-request-servers) | ✔️                                                                                 |
 
 
 The entity db enables you to interact with the database layer; you can use any generated type-safe entities for
@@ -41,7 +41,7 @@ As with the generated repositories, there are two flavours of the entity db:
 
 * One has a [RxJava API](/database/types-of-api/rxjava/) signatures, for use from Java.
 
-* The other flavour has an [Asynch API](/database/types-of-api/asynch/), for use from Kotlin.
+* The other flavour has an [Async API](/database/types-of-api/asynch/), for use from Kotlin.
 
 The entity db is available in the kotlin Event Handler. Like `RxDb` it can also be injected in java and kotlin
 classes using `AsyncEntityDb` or `RxEntityDb`.

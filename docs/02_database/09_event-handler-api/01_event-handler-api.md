@@ -4,7 +4,7 @@ sidebar_label: 'Event Handler API'
 id: event-handler-api
 ---
 
-Custom Event Handlers
+Custom event handlers
 =====================
 
 Custom Event Handlers provide a way of implementing business logic in Java or Kotlin outside the Genesis GPAL Event Handler definition, in a more traditional and flexible development approach. Genesis has 3 different flavours of custom Event Handler:
