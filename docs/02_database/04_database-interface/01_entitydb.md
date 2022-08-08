@@ -27,8 +27,8 @@ import TabItem from '@theme/TabItem';
 | Bulk or Range Subscribe                                                                         | [Bulk](/database/helper-classes/subscription/bulk/) of entity                                   |
 
 
-| Available in [event handlers](/database/event-handler-api/event-handler-api/)         | ✔️                                                                                 |
-| Available in [custom request servers](/server-modules/request-server/advanced/#custom-request-servers) | ✔️                                                                                 |
+| Available in [Event Handlers](/database/event-handler-api/event-handler-api/)         | ✔️                                                                                 |
+| Available in [Custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers) | ✔️                                                                                 |
 
 
 The entity db enables you to interact with the database layer; you can use any generated type-safe entities for
