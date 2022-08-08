@@ -19,7 +19,7 @@ All of these, provide their own configuration settings in the _your-application-
 
 So, if your application is called positions, then the file would conventionally be named **positions-auth-preferences.kts**.
 
-### Login authentication
+## Login authentication
 
 Login authentication allows users to log in directly to the application built on the Genesis low-code platform. This requires you to choose one of the provided solutions in order control this process.
 
@@ -47,7 +47,7 @@ The three values that this can be set to are:
 
 The differences between the solutions associated with each value are as detailed:
 
-## Internal
+### Internal
 
 Internal authentication uses internally stored hashed credentials to authenticate users. It checks user credentials against an internal table. Internal authentication provides the following features:
 
@@ -64,7 +64,7 @@ Internal authentication is the default authentication behaviour if you don't spe
     }
 ```
 
-## LDAP
+### LDAP
 
 LDAP authentication leverages use of its namesake protocol to authenticate users. 
 
@@ -74,7 +74,7 @@ For LDAP authentication, a username must exist inside the internal records of th
 
 To set up LDAP authentication the `authentication` block of the **auth-preferences.kts** file will need to be configured.
 
-For more information on configuring LDAP authentication, please see [login authentication](/server-modules/access-control/login-authentication/).
+For more information on configuring LDAP authentication, please see [login authentication](/server-modules/access-control/login-authentication/#authentication).
 
 # FIX LINK
 
@@ -95,7 +95,7 @@ The example below shows LDAP authentication specified, with **userIdType** set t
     }
 ```
 
-## Hybrid
+### Hybrid
 
 As its name suggests, Hybrid mode is a mix of Internal and LDAP authentication modes, and it checks credentials against both.
 
@@ -120,7 +120,7 @@ The configuration file takes the same fields as LDAP. You can see this in the ex
     }
 ```
 
-### SSO authentication
+## SSO authentication
 
 SSO authentication allows users to use a single set of credentials to access a range of applications, including those built on the Genesis low-code platform. For more information on SSO technology, please visit the [Single-sign on Wikipedia page](https://en.wikipedia.org/wiki/Single_sign-on)
 

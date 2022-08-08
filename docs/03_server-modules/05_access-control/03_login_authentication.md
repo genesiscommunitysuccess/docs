@@ -4,93 +4,61 @@ sidebar_label: 'Login Authentication'
 id: login-authentication
 ---
 
-We will now go through the various configuration options available for login authentication. These are located in the _your-application-_**auth-preferences.kts** file, located in the _your-application_**-site-specific/src/site-specific/scripts/** directory.
+We will now go through the various configuration options available for login authentication. These are located in your application's **auth-preferences.kts** file.
 
 All of these configuration settings are wrapped within the `security` function.
 
 ## security 
 
-The security function wraps all other variable and functions within the **auth-preferences.kts** file. From this top level the following variables can be set.
+The `security` function wraps all other variable and functions within the **auth-preferences.kts** file. From this top level the following variables can be set.
 
-* **heartbeatIntervalSecs** specifies the number of seconds to wait between sending one heartbeat message to the next one. A heartbeat message is automatically sent from every logged-in user to the Genesis low-code platform's authentication module. This ensures that the platform can determine who is still connected to it. The authentication module then replies with an acknowledgement in exchange. In the example configuration on this page, the heartbeat is set to be sent every 30 seconds. Default null.
-* **sessionTimeoutMins** specifies the time to wait before timing out an idle session with a user client. A user client may very well be answering heartbeats but at the same time being idle (i.e. not using the platform). This timeout represents the number of minutes a user needs to be idle to be logged out of the platform. Default: 30.
-* **expiryCheckMins** specifies the time interval (in minutes) used to check for idle sessions in the system. Default 5.
-* **maxSimultaneousUserLogins** defines the maximum number of active sessions a user can maintain. Once this limit has been reached, the user cannot log in again until another session has been logged out. If the specified value is zero, is not defined, or is not a positive integer, then any number of sessions is permitted. Default 0.
+* `sessionTimeoutMins` specifies the time to wait (in minutes) before logging out an idle session with a user client. A user client may very well be answering heartbeats but at the same time being idle (i.e. not using the platform). Default: 30 minutes
+* `expiryCheckMins` specifies the time interval (in minutes) used to check for idle sessions in the system. Default: 5 minutes.
+* `maxSimultaneousUserLogins` specifies the maximum number of concurrent, active sessions a user can maintain. Once this limit has been reached, the user cannot log in again until another session has been logged out. If the specified value is zero, is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
 
 ```kotlin
 security {
-    heartbeatIntervalSecs = 30 //30 Seconds
+  heartbeatIntervalSecs = 30 //30 seconds (not the default null)
+  sessionTimeoutMins = 60 //60 minutes (not the default 30 minutes)
+  expiryCheckMins = 10 //5 minutes (not the default 5 minutes)
+  maxSimultaneousUserLogins = 5 //5 active sessions (not the default unlimited)
 }
-
 ```
 
-the following in order to configure the login authentication:
+From within `security` we can also invoke the further functions in order to configure our login authentication. These are detailed below.
 
-* authentication
-* passwordValidation
-* passwordRetry
-* mfa
-* loginAck
+### authentication
+The `authentication` function is used to define common features of all three Types of authentication. Within it, many variables can be set, but their use depends on the value given to the `type` variable.
 
----
+* `type` indicates which of the three types of login authentication to be used. It accepts the values of: `AuthType.INTERNAL`, `AuthType.LDAP` or `AuthType.HYBRID`. Default: `AuthType.INTERNAL`.
 
-### Basic preferences in detail
+For more information on each of these three authentication types, please see [login authentication](server-modules/access-control/authentication-overview/#login-authentication).
 
-You can define the following preferences:
+The following variables are used to configure an LDAP connection; thus are only used when `type` is either `AuthType.LDAP` or `AuthType.HYBRID`.
 
-#### security
-The `security` function is the top-level function from which the subsequent functions can be invoked. In addition, within this function the following variables can be set.
+* `url` specifies the LDAP server hostname. Default: `localhost`.
+* `port` specifies the LDAP server port. Default: 389.
+* `searchBases` defines the location(s) in the directory in which the LDAP search begins. Default: an organisational unit of `temp` with a domain component of `temp` (`ou=temp,dc=temp`).
+  * This is set by first invoking the `searchBases` function, and repeatedly invoking `searchBase(location)` function(s) within it, where `location` is given as a Distinguished Name.
+* `userGroups` defines the group(s) that the user needs to belong with the LDAP server in order to log in. Default: no groups.
+  * This is set by first invoking the `userGroups` function, and repeatedly invoking `userGroup(group)` function(s) within it, where `group` is given as a Distinguished Name.
+* `userPrefix` specifies a prefix added to every username when communicated with the LDAP server. Default: an empty string.
+* `bindDn` specifies the distinguished name which represents the application within the LDAP server. Normally LDAP servers do not allow anonymous searches, and thus require this. If `bindDn` is not specified, no bindings will be used. Default: null
+* `bindPassword` specifies the password associated with the `bindDn` account. If `bindDn` is not specified, this value is not used. Default: null.
+* `userIdType` defines the attribute to match in the directory search against the provided username. Default: `cn`. 
+  * Amongst the most common LDAP implementations, you can find three main ways of configuring usernames:
+    * using the `uid` attribute (Userid)
+    * using the `cn` attribute (Common Name)
+    * using the `sAMAccountName` in Windows
 
-* **heartbeatIntervalSecs** is the number of seconds to wait between sending one heartbeat message and the next one. A heartbeat message is automatically sent from every logged-in user to the platform's authentication module. This ensures that the platform can determine who is still connected to it. The authentication module then replies with an acknowledgement in exchange. This number is sent from the user client's connection to the authentication module. In the example configuration on this page, the heartbeat is set to be sent every 30 seconds. Default null.
-* **sessionTimeoutMins** specifies the time to wait before timing out an idle session with a user client. A user client may very well be answering heartbeats but at the same time being idle (i.e. not using the platform). This timeout represents the number of minutes a user needs to be idle to be logged out of the platform. Default: 30.
-* **expiryCheckMins** specifies the time interval (in minutes) used to check for idle sessions in the system. Default 5.
-* **maxSimultaneousUserLogins** defines the maximum number of active sessions a user can maintain. Once this limit has been reached, the user cannot log in again until another session has been logged out. If the specified value is zero, is not defined, or is not a positive integer, then any number of sessions is permitted. Default 0.
+For more information on the various authentication types, please see the [Authentication overview](/creating-applications/defining-your-application/access-control/authentic-over/).
 
-#### authentication
-The `authentication` function can be used to represent the method of authentication to be used by the platform. Within this function, the following variables can be set:
-
-* **type** which indicates which of the following forms of authentication to be used: `INTERNAL`, `LDAP`, or `HYBRID`. Default: `AuthType.INTERNAL`.
-
-The following variables are only used when the authentication type is either `LDAP`, or `HYBRID`.
-
----
-
-* **url** represents the LDAP server hostname. Default: localhost.
-* **port** defines the LDAP server port to connect to. Default: 389.
-* **searchBases** defines the location(s) in the directory from which the LDAP search begins. This is set by the `searchBase` tag, and any repeated `searchBase` tags that are referenced from within the enclosing tag. Default: ou=temp,dc=temp
-* **userGroups** defines the group(s) that the user will need to belong to in order to log in. This is set by the `userGroup` tag, and any repeated `userGroup` tags that are referenced from within the enclosing tag. Default: none
-* **userPrefix** is an optional prefix you can add to every username received from login requests in your authentication server. Default: empty string.
-* **bindDn** is an optional, distinguished name which acts as a first LDAP login; it is normally required to perform a search. If this field is not specified, no bindings will be used. Default: null
-* **bindPassword** represents the password associated with the **bindDn** account. Default: null.
-* **userIdType** defines the attribute to match in the directory search against the provided username. Default: cn. Amongst the most common LDAP implementations, you can find three main ways of configuring usernames:
-  * using the "uid" attribute
-  * using the "cn" attribute
-  * using  the "sAMAccountName" in Windows.
-
----
-
-* **url** is used to set the LDAP server hostname. Default: localhost
-* **port** is used to set the LDAP server port. Default: 389
-* **searchBase** is used to define the location(s) in the directory from which the LDAP search begins. Default: a list with a single entry of `ou=temp,dc=temp`.
-    * This is set by the `searchBases` function, and repeated `searchBase` function invocations within it.
-* **userGroups** is used to define the group(s) that the user needs to belong to in order to log in. Default: an empty list.
-    * This is set by the `userGroups` function, and repeated `userGroup` function invocations within it.
-* **userPrefix** is used to add an optional prefix to every username received from login requests in your authentication server. Default: an empty string.
-* **bindDn** is an optional, distinguished name which acts as a first LDAP login; it is normally required to perform a search. If this field is not specified, no bindings will be used. Default: `null`.
-* **bindPassword** is the password associated with the **bindDn** account. Default: `null`.
-* **userIdType** defines the attribute to match in the directory search against the provided username. Default: `cn`. Amongst the most common LDAP implementations, you can find three main ways of configuring usernames:
-    * using the "uid" attribute
-    * using the "cn" attribute
-    * using  the "sAMAccountName" in Windows.
-
-For more information on the various authentication types, please see the [Authentication overview](/creating-applications/defining-your-application/access-control/authentic-over/)
-
-#### passwordValidation
+### passwordValidation
 The `passwordValidation` function enables password validation, and allows you to set variable relating to this validation. The `passwordValidation` settings are only used in the case of the `INTERNAL`, or `HYBRID` authentication types. It has the following variables and functions:
 
 * **passwordSalt** defines a system specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different Genesis systems are stored as different hashes. Default: empty string.
 
-#### passwordStrength
+### passwordStrength
 The `passwordStrength` function can be called within `passwordValidation` and has many variables. These enable you to specify in detail the mandatory characteristics for the password. Within this function, the following variables can be set:
 
 * **minimumLength** this represents the minimum length of password. Default: null.
@@ -112,12 +80,12 @@ The `passwordStrength` function can be called within `passwordValidation` and ha
 * **passwordExpiryDays** if present, this forces a password to expire after the specified number of days. Default: null.
 * **passwordExpiryNotificationDays** if present, a user shall be notified by the specified number of days before their password expires. Default: null.
 
-#### passwordRetry
+### passwordRetry
 The `passwordRetry` function allows the following variables to be set. This has two options:
 * **maxAttempts** defines the maximum number of attempts allowed if a user enters a wrong password. Default: 3
 * **waitTimeMins** specifies the time to wait when the maximum number of incorrect attempts is reached. Default: 5.
 
-#### mfa
+### mfa
 The `mfa` function allows you to configure Multi-factor Authentication (MFA). It has the following variables to set:
 
 * **codePeriodSeconds** defines how long a Time-based One-time Password (TOTP) remains valid. Default: 30.
@@ -130,7 +98,7 @@ The `mfa` function allows you to configure Multi-factor Authentication (MFA). It
 * **secretEncryptKey** defines a key with which Secrets will be encrypted in the database. Default: null.
 * **usernameTableLookUpSalt** defines if usernames will be hashed using the configured key in the database. Default: null.
 
-#### loginAck
+### loginAck
 The `loginAck` function allows you to define additional values to be sent back to the client as part of the LOGIN_ACK message. When you call the `loginAck` function, you have to supply a table or view as a parameter. This is the table or view upon which the following functions will be invoked.
 
 #### loadRecord
@@ -139,7 +107,7 @@ The `loadRecord` function can be invoked within the `loginAck` function to load 
 ##### fields
 The `fields` function can be invoked within the `loginAck` function to specify which additional fields should be sent back to the client as part of the LOGIN_ACK message.
 
-
+### Example
 Example configuration:
 
 ```kotlin
