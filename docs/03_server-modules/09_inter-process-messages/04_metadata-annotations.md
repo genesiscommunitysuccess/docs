@@ -6,7 +6,7 @@ id: metadata-annotations
 
 # Metadata annotations
 
-The following annotations are found in the package `global.genesis.message.core.annotation` and can be applied when defining Kotlin data classes to be used as input `I` message types. As an example, these input types can be used in event handlers and custom request replies (see [type-safe messages](/server-modules/inter-process-messages/type-safe-messages/)). IMPORTANT! These annotations do not currently enforce validation checks in the back end and are informative only. As an example, if `MinLength` and `MaxLength` are used to annotate a metadata property for a String, the back end will not automatically check the size of it.
+The following annotations are found in the package `global.genesis.message.core.annotation` and can be applied when defining Kotlin data classes to be used as input `I` message types. As an example, these input types can be used in Event Handlers and custom Request Servers (see [type-safe messages](/server-modules/inter-process-messages/type-safe-messages/)). IMPORTANT! These annotations do not currently enforce validation checks in the back end and are informative only. As an example, if `MinLength` and `MaxLength` are used to annotate a metadata property for a String, the back end will not automatically check the size of it.
 
 | Annotation name | Targets | Parameters | Description |
 |----|----|----| --- |
