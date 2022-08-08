@@ -1,6 +1,6 @@
 ---
-title: 'Metadata Annotations'
-sidebar_label: 'Metadata Annotations'
+title: 'Metadata annotations'
+sidebar_label: 'Metadata annotations'
 id: metadata-annotations
 ---
 
