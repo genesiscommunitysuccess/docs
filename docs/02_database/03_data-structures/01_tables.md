@@ -7,7 +7,7 @@ id: tables
 
 
 
-Tables are defined in the `-tables-dictionary.kts` files as discussed [here](/creating-applications/defining-your-application/data-model/tables/tables-define/). Table 
+Tables are defined in the `-tables-dictionary.kts` files as discussed [here](/database/fields-tables-views/tables/tables-basics). Table 
 records can be represented as a [table entity](/database/data-types/table-entities/), or as a [`DbRecord`](/database/data-types/dbrecord/)
 
 ## Fields 
