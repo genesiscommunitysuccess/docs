@@ -41,7 +41,7 @@ After you have saved this file, run genesis-generated-fields.
 
 From the Gradle menu on the right of Intellij, this is:
 
- **genesisproduct-alpha**/**alpha-dictionary-cache**/**Tasks**/**genesis-generated-fields**/**Tasks**/**generateFields**
+ **genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-fields**/**Tasks**/**genesis**/**generateFields**
 
 ![](/img/build-gradle-kts-fields.png)
 
@@ -74,7 +74,7 @@ After you have saved this file, run genesis-generated-dao.
 
 From the Gradle menu, this is:
 
-**genesisproduct-alpha**/**alpha-dictionary-cache**/**Tasks**/**genesis-generated-dao**/**Tasks**/**generateDAO**
+**genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDAO**
 
 ![](/img/build-gradle-kts-generated-dao.png)
 
