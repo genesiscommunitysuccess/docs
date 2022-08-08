@@ -12,7 +12,7 @@ A GenesisSet can store integers, booleans, text, etc. Importantly, it can also c
 
 In this section, we give you some examples that illustrate usage and structure.
 
-## Send message to Event handler service
+## Send message to Event Handler service
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
