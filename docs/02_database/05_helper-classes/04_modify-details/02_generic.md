@@ -5,7 +5,7 @@ id: generic
 ---
 
 
-Generic Modify Details
+Generic modify details
 ======================
 
 When performing modify and upsert operations, you must specify the index to use. This identifies the record to modify and the fields to modify. For this, there is the `EntityModifyDetails` class.
