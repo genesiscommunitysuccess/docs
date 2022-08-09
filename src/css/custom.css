@@ -60,6 +60,16 @@ body {
   font-weight: 400;
 }
 
+code {
+  background-color: var(--ifm-code-background);
+  border: 0.1rem solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--ifm-code-border-radius);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: var(--ifm-code-font-size);
+  padding: var(--ifm-code-padding-vertical) var(--ifm-code-padding-horizontal);
+  vertical-align: top;
+}
+
 /* global content styles */
 
 .markdown {
