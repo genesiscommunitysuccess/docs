@@ -5,7 +5,7 @@ id: dependency-injection
 ---
 
 
-Genesis supports some of the key annotations from javax.annotation and javax.inject defined in [Java Platform Enterprise Edition](https://docs.oracle.com/javaee/7/index.html) by using Google Guice as the internal dependency injection mechanism. In addition, Genesis provides some of its own annotations.
+Genesis supports some of the key annotations from javax.annotation and javax.inject, which are defined in [Java Platform Enterprise Edition](https://docs.oracle.com/javaee/7/index.html), using Google Guice as the internal dependency injection mechanism. Genesis also provides its own annotations.
 
 ## @Module
 
