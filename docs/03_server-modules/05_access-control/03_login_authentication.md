@@ -56,47 +56,47 @@ For more information on the various authentication types, please see the [Authen
 ### passwordValidation
 The `passwordValidation` function enables password validation, and allows you to set variable relating to this validation. The `passwordValidation` settings are only used in the case of the `INTERNAL`, or `HYBRID` authentication types. It has the following variables and functions:
 
-* **passwordSalt** defines a system specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different Genesis systems are stored as different hashes. Default: empty string.
+* `passwordSalt` defines a system specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different Genesis systems are stored as different hashes. Default: empty string.
 
 ### passwordStrength
 The `passwordStrength` function can be called within `passwordValidation` and has many variables. These enable you to specify in detail the mandatory characteristics for the password. Within this function, the following variables can be set:
 
-* **minimumLength** this represents the minimum length of password. Default: null.
-* **maximumLength** this represents the maximum length of password. Default: null.
-* **minDigits** this represents the minimum number of digits required in a password. Default: null.
-* **maxRepeatCharacters** this represents the maximum number of the same characters in a password. Default: null.
-* **minUppercaseCharacters** this represents the minimum number of upper-case characters in a password. Default: null.
-* **minLowercaseCharacters** this represents the minimum number of lower-case characters in a password. Default: null.
-* **minNonAlphaNumericCharacters** this represents minimum number of characters which do not belong to common letters or numbers (e.g. !?/-_"). Default: null.
-* **restrictWhitespace** this restricts the usage of whitespaces in passwords. Default: true.
-* **restrictAlphaSequences** this restricts alphabetical sequences in passwords (e.g. abcdefg). Sequences bigger or equal to 5 characters won't be allowed if this is active. Default: false.
-* **restrictQWERTY** this restricts QWERTY sequences in passwords (e.g. qwertyuiop). Sequences bigger or equal to 5 characters won't be allowed if this is active. Default: true.
-* **restrictNumericalSequences** restricts numerical sequences in passwords (e.g. 123456). Sequences bigger or equal to 5 numbers won't be allowed if active. Default: true.
-* **illegalCharacters** contains characters you don't want to accept in user passwords. In the example shown below, you can see three banned characters: $, £ and ^. Default: empty.
-* **historicalCheck** if present, this prevents reuse of passwords for the specified number of historical uses. Default: null.
-* **dictionaryWordSize** if present, this prevents use of English words of the specified length. Default: null.
-* **repeatCharacterRestrictSize** if present, this prevents the use of repeated characters of the specified length. Default: null.
-* **restrictUserName** if present, this prevents use of the user's username as part of their password. Default: false.
-* **passwordExpiryDays** if present, this forces a password to expire after the specified number of days. Default: null.
-* **passwordExpiryNotificationDays** if present, a user shall be notified by the specified number of days before their password expires. Default: null.
+* `minimumLength` this represents the minimum length of password. Default: null.
+* `maximumLength` this represents the maximum length of password. Default: null.
+* `minDigits` this represents the minimum number of digits required in a password. Default: null.
+* `maxRepeatCharacters` this represents the maximum number of the same characters in a password. Default: null.
+* `minUppercaseCharacters` this represents the minimum number of upper-case characters in a password. Default: null.
+* `minLowercaseCharacters` this represents the minimum number of lower-case characters in a password. Default: null.
+* `minNonAlphaNumericCharacters` this represents minimum number of characters which do not belong to common letters or numbers (e.g. !?/-_"). Default: null.
+* `restrictWhitespace` this restricts the usage of whitespaces in passwords. Default: true.
+* `restrictAlphaSequences` this restricts alphabetical sequences in passwords (e.g. abcdefg). Sequences bigger or equal to 5 characters won't be allowed if this is active. Default: false.
+* `restrictQWERTY` this restricts QWERTY sequences in passwords (e.g. qwertyuiop). Sequences bigger or equal to 5 characters won't be allowed if this is active. Default: true.
+* `restrictNumericalSequences` restricts numerical sequences in passwords (e.g. 123456). Sequences bigger or equal to 5 numbers won't be allowed if active. Default: true.
+* `illegalCharacters` contains characters you don't want to accept in user passwords. In the example shown below, you can see three banned characters: $, £ and ^. Default: empty.
+* `historicalCheck` if present, this prevents reuse of passwords for the specified number of historical uses. Default: null.
+* `dictionaryWordSize` if present, this prevents use of English words of the specified length. Default: null.
+* `repeatCharacterRestrictSize` if present, this prevents the use of repeated characters of the specified length. Default: null.
+* `restrictUserName` if present, this prevents use of the user's username as part of their password. Default: false.
+* `passwordExpiryDays` if present, this forces a password to expire after the specified number of days. Default: null.
+* `passwordExpiryNotificationDays` if present, a user shall be notified by the specified number of days before their password expires. Default: null.
 
 ### passwordRetry
 The `passwordRetry` function allows the following variables to be set. This has two options:
-* **maxAttempts** defines the maximum number of attempts allowed if a user enters a wrong password. Default: 3
-* **waitTimeMins** specifies the time to wait when the maximum number of incorrect attempts is reached. Default: 5.
+* `maxAttempts` defines the maximum number of attempts allowed if a user enters a wrong password. Default: 3
+* `waitTimeMins` specifies the time to wait when the maximum number of incorrect attempts is reached. Default: 5.
 
 ### mfa
 The `mfa` function allows you to configure Multi-factor Authentication (MFA). It has the following variables to set:
 
-* **codePeriodSeconds** defines how long a Time-based One-time Password (TOTP) remains valid. Default: 30.
-* **codePeriodDiscrepancy** defines the allows discrepancy to the TOTP allowed. 1 means a block of each codePeriodSeconds either side of the time window. Default: 1.
-* **codeDigits** defines the number of digits used in the TOTP. Default: 6.
-* **hashingAlgorithm** specifies which choice of Hashing Algorithm to use. Available choices are: `HashingFunction.SHA1`, `HashingFunction.SHA256` or `HashingFunction.SHA512`. Default: ``HashingFunction.SHA1`.
-* **issuer** provides a reference to the Organisation or Entity issuing the MFA. Default: Genesis.
-* **label** provides a label for the MFA. This is typically an email address of the issuing Entity or Organisation. Default: genesis.global.
-* **confirmWaitPeriodSecs** defines the period of time before a secret has to be confirmed. Default: 300.
-* **secretEncryptKey** defines a key with which Secrets will be encrypted in the database. Default: null.
-* **usernameTableLookUpSalt** defines if usernames will be hashed using the configured key in the database. Default: null.
+* `codePeriodSeconds` defines how long a Time-based One-time Password (TOTP) remains valid. Default: 30.
+* `codePeriodDiscrepancy` defines the allows discrepancy to the TOTP allowed. 1 means a block of each codePeriodSeconds either side of the time window. Default: 1.
+* `codeDigits` defines the number of digits used in the TOTP. Default: 6.
+* `hashingAlgorithm` specifies which choice of Hashing Algorithm to use. Available choices are: `HashingFunction.SHA1`, `HashingFunction.SHA256` or `HashingFunction.SHA512`. Default: ``HashingFunction.SHA1`.
+* `issuer` provides a reference to the Organisation or Entity issuing the MFA. Default: Genesis.
+* `label` provides a label for the MFA. This is typically an email address of the issuing Entity or Organisation. Default: genesis.global.
+* `confirmWaitPeriodSecs` defines the period of time before a secret has to be confirmed. Default: 300.
+* `secretEncryptKey` defines a key with which Secrets will be encrypted in the database. Default: null.
+* `usernameTableLookUpSalt` defines if usernames will be hashed using the configured key in the database. Default: null.
 
 ### loginAck
 The `loginAck` function allows you to define additional values to be sent back to the client as part of the LOGIN_ACK message. When you call the `loginAck` function, you have to supply a table or view as a parameter. This is the table or view upon which the following functions will be invoked.
