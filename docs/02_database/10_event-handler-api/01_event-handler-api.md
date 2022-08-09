@@ -7,15 +7,15 @@ id: event-handler-api
 Custom Event Handlers
 =====================
 
-Custom Event Handlers provide a way of implementing business logic in Java or Kotlin outside the Genesis GPAL Event Handler definition, in a more traditional and flexible development approach. Genesis has 3 different flavours of custom Event Handler:
+Custom Event Handlers provide a way of implementing business logic in Java or Kotlin outside the Genesis GPAL Event Handler definition, in a more traditional and flexible development approach. Genesis has three different flavours of custom Event Handler:
 
--   Asynch. This uses the Kotlin coroutine API to simplify asynchronous development. This is the underlying implementation used in GPAL Event Handlers.
+-   Async. This uses the Kotlin coroutine API to simplify asynchronous development. This is the underlying implementation used in GPAL Event Handlers.
 -   RxJava3. This uses the RxJava3 library, which is a popular option for composing asynchronous event-based programs.
 -   Sync. This creates synchronous Event Handlers.
 
 ##### NOTE
 
-Java event handlers can be implemented using [RxJava3](/database/event-handler-api/event-handler-api/#rx3eventhandler) and [Sync](database/event-handler-api/event-handler-api/#sync) event handlers only. Asynch Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
+Java event handlers can be implemented using [RxJava3](/database/event-handler-api/event-handler-api/#rx3eventhandler) and [Sync](/database/event-handler-api/event-handler-api/#sync) Event Handlers only. Asynch Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
 
 We recommend using Kotlin to implement Event Handlers
 
@@ -64,7 +64,7 @@ Async[​](/database/event-handler-api/event-handler-api/#asyncdirect-link-to-he
 
 ### AsyncEventHandler[​](/database/event-handler-api/event-handler-api/#asynceventhandlerdirect-link-to-heading)
 
-This is the most basic definition of an async Event Handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface, which is defined as: `interface AsyncEventHandler<I : Any, O : Outbound> : AsyncEventWorkflowProcessor<I, O>, EventHandler`
+This is the most basic definition of an Async Event Handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface, which is defined as: `interface AsyncEventHandler<I : Any, O : Outbound> : AsyncEventWorkflowProcessor<I, O>, EventHandler`
 
 The only mandatory method to implement this in the interface is:
 
