@@ -11,7 +11,7 @@ You can adjust any of the defaults in the `src/_config/values` folder of your de
 
 ## Body font
 
-The base typeface for most of the components. You can modify the default as needed.
+This the base typeface for most of the components. You can modify the default as needed.
 
 ```ts
 export const bodyFontValue = '"Segoe UI", Arial, Helvetica, sans-serif';
@@ -49,7 +49,7 @@ const styles = css`
 
 ## Font sizes and line heights
 
-Group of variables describing the font size and line-height hierarchy.
+This is a group of variables describing the font size and line-height hierarchy.
 
 ```ts
 export const typeRampBaseFontSizeValue = '14px';
