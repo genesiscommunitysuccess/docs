@@ -8,8 +8,8 @@ Our design systems and components are highly configurable. Let's have a look at 
 
 Design system can be shared across multiple applications. When performing customisations, you can control the scope as follows:
 
-* General - applied to the design system itself and affects all applications using the system. Described below.
-* [Application-specific](/front-end/design-systems/customisation-app-specific/) - only applied to a single application. Other applications using the same system are not affected.
+* General - applied to the design system itself, affecting all applications that use the system. This is described below.
+* [Application-specific](/front-end/design-systems/customisation-app-specific/) - this is only applied to a single application. Other applications using the same system are not affected.
 
 ### Configuring defaults
 
@@ -44,7 +44,7 @@ You can achieve major visual changes simply by modifying token defaults. There a
 * [Colour](/front-end/design-systems/tokens/colour/): base colours, dark/light mode, colour variants for interactive states (hover etc.)
 * [Typography](/front-end/design-systems/tokens/typography/): default font family, font size and line height hierarchy
 * [Sizing](/front-end/design-systems/tokens/sizing/): component sizing, spacing and border style
-* [Miscellaneous](/front-end/design-systems/tokens/miscellaneous/): any other configuration options such as the naming prefix (e.g. `alpha`)
+* [Miscellaneous](/front-end/design-systems/tokens/miscellaneous/): other configuration options, such as the naming prefix (e.g. `alpha`)
 
 :::tip
 To help you visualise how modifying tokens impacts the component look and feel, we have created a [live configuration preview](/front-end/design-systems/preview/).
@@ -52,9 +52,9 @@ To help you visualise how modifying tokens impacts the component look and feel, 
 
 ### Overriding default implementation
 
-You can go beyond adjusting token values and override the default component implementation. You can choose only to  override certain aspects of a component (such as template, styles or shadom DOM options) or provide a completely custom implementation.
+To go beyond adjusting token values, you can override the default component implementation. You can choose only to  override certain aspects of a component (such as template, styles or shadom DOM options) or provide a completely custom implementation.
 
-By default components in your design simply re-export components from the underlying foundation design system as is (exact code can vary):
+By default, components in your design simply re-export components from the underlying foundation design system as is (exact code can vary):
 
 ```ts
 import {foundationButton} from '@genesislcap/foundation-ui';
