@@ -5,14 +5,14 @@ id: colour
 ---
 
 Genesis design systems implement an adaptive colour system that provides some unique advantages:
-* Ensure text meets [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) contrast requirements
-* Easily swap from light mode to dark, or anywhere in-between
-* Colour theming through palette tinting
-* Perceptually uniform UI across background colours
+* ensure text meets [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) contrast requirements
+* easily swap from light mode to dark, or anywhere in-between
+* cset up colour theming through palette tinting
+* create a perceptually uniform UI across background colours
 
 ## Workflow
 
-In practice, typical adaptive colour workflow looks as follows:
+In practice, typical adaptive colour workflow looks like this:
 
 ```mermaid
 flowchart LR
@@ -69,9 +69,9 @@ export const accentFillHoverDeltaValue = 4;
 
 ### Use semantic colour variables in your code
 
-After you have configured your colours, you will have a number of variables available which can be used in your code to ensure visual consistency across the design system.
+After you have configured your colours, you have a number of variables available, which can be used in your code to ensure visual consistency across the design system.
 
-Variable names are not tied to specific colours, as they are context dependent and can vary between light and dark modes - they follow semantic naming conventions described below.
+Variable names are not tied to specific colours, as they are context-dependent and can vary between light and dark modes - they follow the semantic naming conventions described below.
 
 #### CSS Custom Property
 
@@ -101,7 +101,7 @@ const styles = css`
 
 Foreground variables are intended for text, icons, or other lightweight decorations where you need or want to meet contrast requirements.
 
-#### Neutral Foreground
+#### Neutral foreground
 
 The most common variable, used for plain text or icons.
 
@@ -110,9 +110,9 @@ The most common variable, used for plain text or icons.
 | `neutralForegroundRest` | ` --neutral-foreground-rest` | <color-token tokenName="neutralForegroundRest"></color-token>  |
 | `neutralForegroundHint` | ` --neutral-foreground-hint` | <color-token tokenName="neutralForegroundHint"></color-token> |
 
-#### Accent Foreground
+#### Accent foreground
 
-Commonly for link text or icon. Also for smaller elements that might not show up well using `accentFill`, for instance if your accent color is dark purple and you support a dark mode interface.
+This is commonly used for link text or icon. It is also used for smaller elements that might not show up well using `accentFill`: for instance, if your accent color is dark purple and you support a dark mode interface.
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -132,7 +132,7 @@ This is either black or white based on the contrast requirements. It returns whi
 | `foregroundOnAccentActive` | `--foreground-on-accent-active` | <color-token tokenName="foregroundOnAccentActive"></color-token>  |
 | `foregroundOnAccentFocus` | `--foreground-on-accent-focus` | <color-token tokenName="foregroundOnAccentFocus"></color-token> |
 
-#### Foreground On Accent Large
+#### Foreground on accent large
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -152,7 +152,7 @@ Fill variables are intended to fill a larger area, commonly a component backgrou
 | --- | --- | --- |
 | `fillColor` | `--fill-color` | <color-token tokenName="fillColor"></color-token>  |
 
-#### Accent Fill
+#### Accent fill
 
 The closest colors from the supplied palette that can be used for component states. For instance, colors needed to support white text and a 14px font (which requires 4.5:1 contrast).
 
@@ -163,9 +163,9 @@ The closest colors from the supplied palette that can be used for component stat
 | `accentFillActive` | `--accent-fill-active` | <color-token tokenName="accentFillActive"></color-token>  |
 | `accentFillFocus` | `--accent-fill-focus` | <color-token tokenName="accentFillFocus"></color-token> |
 
-#### Neutral Fill
+#### Neutral fill
 
-The most basic fill used for buttons or other components.
+This is the most basic fill used for buttons or other components.
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -174,9 +174,9 @@ The most basic fill used for buttons or other components.
 | `neutralFillActive` | `--neutral-fill-active` | <color-token tokenName="neutralFillActive"></color-token>  |
 | `neutralFillFocus` | `--neutral-fill-focus` | <color-token tokenName="neutralFillFocus"></color-token> |
 
-#### Neutral Fill Input
+#### Neutral fill input
 
-Another basic fill, applied to input elements to allow easy differentiation from other components like buttons.
+This is another basic fill, applied to input elements to allow easy differentiation from other components, such as buttons.
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -185,9 +185,9 @@ Another basic fill, applied to input elements to allow easy differentiation from
 | `neutralFillInputActive` | `--neutral-fill-input-active` | <color-token tokenName="neutralFillInputActive"></color-token>  |
 | `neutralFillInputFocus` | `--neutral-fill-input-focus` | <color-token tokenName="neutralFillInputFocus"></color-token> |
 
-#### Neutral Fill Stealth
+#### Neutral fill stealth
 
-More subtle than `neutralFill` in that the resting state is transparent. Often used for low-priority features to draw less attention.
+This is more subtle than `neutralFill` where the resting state is transparent. It is often used for low-priority features to draw less attention.
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -196,7 +196,7 @@ More subtle than `neutralFill` in that the resting state is transparent. Often u
 | `neutralFillStealthActive` | `--neutral-fill-stealth-active` | <color-token tokenName="neutralFillStealthActive"></color-token>  |
 | `neutralFillStealthFocus` | `--neutral-fill-stealth-focus` | <color-token tokenName="neutralFillStealthFocus"></color-token> |
 
-#### Neutral Fill Strong
+#### Neutral fill strong
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -211,14 +211,14 @@ More subtle than `neutralFill` in that the resting state is transparent. Often u
 
 Stroke variables are intended for lines, either outline or divider.
 
-#### Focus Stroke
+#### Focus stroke
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
 | `focusStrokeOuter` | `--focus-stroke-outer` | <color-token tokenName="focusStrokeOuter"></color-token>  |
 | `focusStrokeInner` | `--focus-stroke-inner` | <color-token tokenName="focusStrokeInner"></color-token> |
 
-#### Neutral Stroke
+#### Neutral stroke
 
 Used for strong outline, either alone or with a fill.
 
@@ -229,7 +229,7 @@ Used for strong outline, either alone or with a fill.
 | `neutralStrokeActive` | `--neutral-stroke-active` | <color-token tokenName="neutralStrokeActive"></color-token>  |
 | `neutralStrokeFocus` | `--neutral-stroke-focus` | <color-token tokenName="neutralStrokeFocus"></color-token> |
 
-#### Neutral Stroke Divider
+#### Neutral stroke divider
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -238,13 +238,13 @@ Used for strong outline, either alone or with a fill.
 
 ### Layer
 
-The layer variables are used for different sections of an app or site. They are designed to be able to stack, but that is not required. When stacked in sequence, the layers will lighten on top of each other.
+The layer variables are used for different sections of an app or site. They are designed to be able to stack, but that is not a requirement. When stacked in sequence, the layers will lighten on top of each other.
 
-The key feature of layering is to support the primary container color for light or dark mode. This produces absolute colors based on the `baseLayerLuminance` value, which sets the luminance for layer one.
+The key feature of layering is to support the primary container color for light or dark mode. This produces absolute colours, based on the `baseLayerLuminance` value, which sets the luminance for layer one.
 
 The difference between each layer is defined with `neutralFillLayerRestDelta`.
 
-#### Neutral Layers
+#### Neutral layers
 
 Absolute layer colors derived from and starting at `baseLayerLuminance`. Layer one is lightest and the values darken as the layer number increases.
 
@@ -263,9 +263,9 @@ A special layer to support experiences primarily built with cards, especially in
 | --- | --- | --- |
 | `neutralLayerCardContainer` | `--neutral-layer-card-container` | <color-token tokenName="neutralLayerCardContainer"></color-token>  |
 
-#### Neutral Fill Layer
+#### Neutral fill layer
 
-The only layer recipe that's relative to the container color instead of absolute. The most common example of this is a Card, which will be one layer color lighter than its container.
+This the only layer recipe that's relative to the container color instead of absolute. The most common example of this is a Card, which will be one layer color lighter than its container.
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
