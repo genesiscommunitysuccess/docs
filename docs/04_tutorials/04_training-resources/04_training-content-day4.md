@@ -9,7 +9,11 @@ This day covers:
 
 - [State management​](#state-management​)
 - [Adding logic to the event handler](#adding-logic-to-the-event-handler)
-- [Auditing​](#auditing​)
+- [Auditing​](/tutorials/training-resources/training-content-day4/#auditing​)
+
+
+
+
 
 ## State management​
 

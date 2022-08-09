@@ -9,8 +9,8 @@ This day covers:
 
 - [Schedulers](#schedulers)
 - [Permissions​](#permissions)
-- [Operating the Genesis Platform](#operating-the-genesis-platform)
-- [Navigating the documentation and how to get help​](#navigating-the-documentation-and-how-to-get-help​)
+- [Operating the Genesis Platform](/tutorials/training-resources/training-content-day5/#operating-the-genesis-low-code-platform)
+- [Navigating the documentation and how to get help​](/tutorials/training-resources/training-content-day5/#navigating-the-documentation-and-how-to-get-help​)
 
 ## Schedulers​
 You can use the Evaluator to schedule the production of EOD reports (for example), or to send warnings when a defined limit is breached.
@@ -422,7 +422,7 @@ The objective is to use dynamic permissions and permission codes so that specifi
 
 ### Set up generic permissions
 
-First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field part of the [generic permissions](/creating-applications/defining-your-application/access-control/authorisation/) system.
+First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field part of the [generic permissions](/creating-applications/defining-your-application/access-control/authorisation/#generic-permissions) system.
 
 Starting with the server, set up the USER and USER_ATTRIBUTES records for the system user JaneDee.
 

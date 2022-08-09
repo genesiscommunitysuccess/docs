@@ -9,7 +9,7 @@ This covers:
 
 - [An introduction to UI](#intro-to-ui)
 - [Creating a user interface](#create-a-user-interface)
-- [Extending the data model](#extend-the-data-model)
+- [Extending the data model](https://docs.genesis.global/secure/tutorials/training-resources/training-content-day2/#exercise-22-extending-the-application)
 
 ## Introducing the UI
 
