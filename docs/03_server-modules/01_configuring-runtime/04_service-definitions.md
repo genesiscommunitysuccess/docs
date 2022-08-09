@@ -49,7 +49,7 @@ For example:
     <service host="localhost" name="GCOM_REQUEST_SERVER" port="8571" secure="true"/>
 </configuration>
 ```
-You must also edit the _application_**genesis-system-definition.kts** file, as specified in the example below:
+You must also edit the _application_ **genesis-system-definition.kts** file, as specified in the example below:
 
 
 ```kotlin
