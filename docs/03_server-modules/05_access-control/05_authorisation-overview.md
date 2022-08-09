@@ -119,7 +119,7 @@ Where an `auth` sub-block is defined, you can provide further fine-grained contr
 
 If it is not defined, then all data is returned for the enclosing resource, assuming `permissionCodes` are not restricting access.
 
-- The mapName refers to a specific Permission "entity" defined on the server via the [auth-permission.xml](/creating-applications/defining-your-application/access-control/authorisation/#defining-a-permission-rule) file.
+- The mapName refers to a specific Permission "entity" defined on the server via the [auth-permission.xml](/server-modules/access-control/authorisation/#defining-a-permission-rule) file.
 
   **example: auth-permission.xml entity entry snippet**
 ```xml
@@ -143,7 +143,7 @@ If it is not defined, then all data is returned for the enclosing resource, assu
 
 'Generic permissions' is a term used to name the optional permissions configuration that is available for a Genesis application; this is included as part of the Genesis Auth Module.
 
-To fully activate 'Generic Permissions', you need to add the following values to your [system definition file](/creating-applications/configure-runtime/system-definitions/) before you run `genesisInstall`.
+To fully activate 'Generic Permissions', you need to add the following values to your [system definition file](/server-modules/configuring-runtime/system-definitions/) before you run `genesisInstall`.
 These values specify which table column will be used to associate users to entities for fine-grained row permissions.
 
 
@@ -181,5 +181,3 @@ There are two kinds of permission entity defined by Generic Permissions in the *
 :::note
 Synonym: Dynamic Permission, Permission Entity, Entity, AuthMap, AuthCache
 :::
-
-You can see an example of permissioning in practice in our [tutorial](/tutorials/building-an-application/permissions/).

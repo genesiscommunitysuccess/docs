@@ -407,6 +407,3 @@ Note the following:
         DETAILS.USER_NAME = james
 ##### Response
     MESSAGE_TYPE = EVENT_DELETE_USER_ACK
-
-## Single Sign On (SSO)
-You can read about SSO [here](/server-modules/access-control/single-sign-on/).
