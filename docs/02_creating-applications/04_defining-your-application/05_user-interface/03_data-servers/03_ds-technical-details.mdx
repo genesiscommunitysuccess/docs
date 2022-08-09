@@ -167,7 +167,7 @@ If this is set to `true`, it will compress the query row data before writing it 
 If this is set to true, it will split large updates into smaller ones. Defaults to `false`.
 
 `defaultStringSize`
-This is the size to be used for string storage in the Data Server in-memory cache. Higher values lead to higher memory use and lower values lead to truncation. Defaults to `40`.
+A string overflow happens when the value of a `String` field in an index is larger than `defaultStringSize`, or the size set on the field.
 
 `batchingPeriod`
 This is the delay in milliseconds to wait before sending new data to data-server clients. Defaults to `500ms`.
@@ -177,6 +177,13 @@ This enables linear scan behaviour in the query definition. If false, it will re
 
 `excludedEmitters`
 This enables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored. Defaults to an empty list.
+
+`onStringOverflow`
+A string overflow happens when the value of a `String` field in an index is larger than `defaultStringSize`, or the size set on the field.
+
+Available options:
+* `IGNORE_ROW` - Rows with string overflows will be ignored. Can lead to data missing from the data server.
+* `TRUNCATE_FIELD` - Indices with string overflows will be truncated. The data with the overflow will still be returned in full, and will be searchable. However, if multiple rows are truncated to the same value, any subsequent rows will lead to duplicate index exceptions during the insert and will not be available to the data server.
 
 `enableTypeAwareCriteriaEvaluator`
 This enables the type-aware criteria evaluator. Defaults to `false`. 
