@@ -23,10 +23,14 @@ The options for both XML and GPAL are:
 * **initialCapacity**. This is the number of entries the cache will be able to hold without extending its size since the start of the process. Default: 10000.
 * **maximumEntries** . This is the limit of entries we can hold in our cache. If the limit is achieved, entries will be replaced with an LRU algorithm. Default: 10000.
 * **concurrencyLevel**. This sets the way the cache is structured internally, so it controls the extent of concurrency that is achieved with multi-threaded operations. It is a sensitive configuration parameter and can potentially worsen performance. Use it for fine-tuning - or not at all. You have been warned! Default: 4.
-* **multipleKeys. I**f you set this to **true**, any call to a record with any of its keys will hit cache as long as the record is in it (this is handy, but involves data duplication). Otherwise, a call must use the same key that was used previously to retrieve a record from cache or you will have to reload the record from database (this is more efficient if the same keys are going to be used every time). Default: true
+* **multipleKeys**. This setting has been deprecated and has no effect as of 2022.2 release. In order to achieve similar functionality, the **indices** option for each table has been introduced.
 * **update**. This setting implies the cache will update currently cached records with the latest information as they are updated in the database layer. Default: false.
+* **loadOnStart**. This global option enables pre-loading database tables in cache before the process starts and it applies as a default for all tables defined in the tables section. Default: false.
 * **insertNewEntries**. If you set this to **true**, it will force the caching of new records inserted for each table. Standard behaviour won't cache records inserted if they haven't been read before. Default: false.
-* **tables**. This can define **loadOnStart** as true, if you want to pre-load the whole table in cache before the process starts. Default: false.
+* **tables**
+  * **name** is the only mandatory setting for each table definition, and it is used to identify the database tables to be cached.
+  * **loadOnStart**, **update** and **insertNewEntries** options are also available at this level. The behaviour and default values are the same effect as their global settings counterparty described above, but applies at the specific table level.
+  * The **indices** setting allows you to provide a set of unique indices to be cached as part of the **update** and **loadOnStart** operations.
 
 ### XML example
 ```xml
@@ -37,12 +41,13 @@ The options for both XML and GPAL are:
     			<initialCapacity>10000</initialCapacity>
     			<maximumEntries>10000</maximumEntries>
     			<concurrencyLevel>4</concurrencyLevel>
-    			<multipleKeys>true</multipleKeys>
     			<update>false</update>
     			<insertNewEntries>false</insertNewEntries>
+                <loadOnStart>true</loadOnStart>
     			<tables>
     				<table name="TRADE" />
-    				<table name="CLIENT" loadOnStart="true"/>
+    				<table name="CLIENT" loadOnStart="false"/>
+                    <table name="COUNTERPARTY" update="true" indices="COUNTERPARTY_BY_ID|COUNTERPARTY_BY_LONG_NAME" insertNewEntries="true"/>
     			</tables>
     		</cache>
     	</cacheConfig>
@@ -61,18 +66,16 @@ The options for both XML and GPAL are:
         cacheConfig {
             expireAfterAccess(1, TimeUnit.DAYS)
             expireAfterWrite(1, TimeUnit.DAYS)
-    
+            update = false
             initialCapacity = 20_000
             maximumEntries = 30_000
-            multipleKeys = true
+            insertNewEntries = false
+            loadOnStart = true
     
             tables {
-                table(TRADE, loadOnStart = true)
-                table(INSTRUMENT, loadOnStart = true)
-                table(ALT_INSTRUMENT_ID, loadOnStart = true)
-                table(MARKET, loadOnStart = true)
-                table(EXCHANGE, loadOnStart = true)
-                table(CURRENCY, loadOnStart = true)
+                table(TRADE)
+                table(CLIENT, loadOnStart = false)
+                table(COUNTERPARTY, update = true, indices = listOf(COUNTERPARTY.BY_ID, COUNTERPARTY.BY_LONG_NAME), insertNewEntries = true)
             }
         }
     }
