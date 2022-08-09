@@ -38,7 +38,7 @@ This annotation is used to provide Genesis system definition properties as part 
 
 ## @PostConstruct
 
-The Genesis microservice runtime environment will call this only once after initialization of the object, including all injected beans.
+The Genesis microservice runtime environment will call this only once after initialisation of the object, including all injected beans.
 
 ## @PreDestroy
 
@@ -137,7 +137,7 @@ systemDefinition {
 }
 ```
 
-#### System Definition property being referenced in java file
+#### System Definition property being referenced in Java file
 ```java
 @Inject
 public RequestReplyDefinitionReader(RxDb db,
