@@ -23,12 +23,12 @@ import TabItem from '@theme/TabItem';
 | Programming interface                                                                           | [Async](/database/types-of-api/asynch/) or [RxJava](/database/types-of-api/rxjava/) |
 | Write (input)                                                                                   | [Generic Modify Details](/database/helper-classes/modify-details/generic/)                              |
 | Write (output)                                                                                  | [Generic Write Result](/database/helper-classes/write-results/generic/)                          |
-| Subscribe                                                                                       | [Record Update](/database/helper-classes/subscription/record-update/) of entity                 |
+| Subscribe                                                                                       | [Generic Record Update](/database/helper-classes/subscription/record-update/) of entity                 |
 | Bulk or Range Subscribe                                                                         | [Bulk](/database/helper-classes/subscription/bulk/) of entity                                   |
 
 
-| Available in [event handlers](/database/event-handler-api/event-handler-api/)         | ✔️                                                                                 |
-| Available in [custom request servers](/server-modules/request-server/advanced/#custom-request-servers) | ✔️                                                                                 |
+| Available in [Custom Event Handlers](/database/event-handler-api/event-handler-api/)         | ✔️                                                                                 |
+| Available in [Custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers) | ✔️                                                                                 |
 
 
 The entity db enables you to interact with the database layer; you can use any generated type-safe entities for
@@ -280,7 +280,7 @@ db.getRange(trade1,trade2,Trade.ByTypeId.Companion,1).toList();
 </TabItem>
 </Tabs>
 
-## Write Operations
+## Write operations
 
 All write operations have versions that take a single entity and versions that take multiple entries. 
 
@@ -503,7 +503,7 @@ Single<OrderTrade> oderTrade = db.readTransaction(transaction -> {
 </TabItem>
 </Tabs>
 
-### Write Transactions
+### Write transactions
 
 Write transactions ensure all read and write operations are consistent. If any exception reaches the
 transaction level, all writes are rolled back. The `writeTransaction` will return a `Pair<T, List<EntityWriteResult<*>>>`,

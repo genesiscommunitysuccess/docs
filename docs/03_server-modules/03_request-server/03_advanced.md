@@ -126,7 +126,7 @@ the requestReplies defined from previous example. This example stipulates a pric
 ```
 Note that ranges that are not based on indexes perform more slowly than those that are.
 
-## Custom request servers
+## Custom Request Servers
 By defining your own Request Servers, you have maximum flexibility. You can specify any class for the input and output, similar to Event Handlers. For the request, optional fields should have a default value in the primary constructor. You cannot use native Kotlin classes. You should wrap these in custom input and output classes.
 
 It is recommended to locate your classes within the messages module of your application. Here, we place all the custom message types for our application. You will need to ensure that the script-config module has a dependency on the messages module.
