@@ -16,9 +16,9 @@ The header micro front-end is a semi-batteries included component consisting of 
 
 A quick look at the customisation options:
 
-- Navigation bar and menu show the Genesis logo by default, but this can be overwritten.
+- Specific the icon shown on the navigation bar and flyout menu (shows the Genesis logo by default).
 - Navigation links at the left hand side of the navigation bar.
-- The control buttons on the navigation bar right can be optionally shown/hidden, and the client controls their functionality with event listeners.
+- The control buttons on the right hand side of the navigation bar can be optionally shown/hidden, and the behaviour controlled via event listeners.
 - The contents of the flyout menu.
 
 An example of the navigation bar with three navigation items, and all three control buttons shown.
@@ -107,7 +107,7 @@ The `src` of your `img` tag would reference the image that you want to display.
 
 ### Navigation Items
 
-Navigation items can be added to the left hand side of the navigation bar by setting `slot="routes"` attribute on the element, and then navigation can be controlled in a `@click` event. The following is a really basic example for adding a 'Home' button:
+Navigation items can be added to the left hand side of the navigation bar. Add in elements and set `slot="routes"` attribute on each element, and then navigation can be controlled via their `@click` event. The following is a really basic example for adding a 'Home' button:
 ```javascript
 html`
 <foundation-header
@@ -137,7 +137,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 }
 ```
 
-- When setting the navigation items use the `repeat` directive to iterate over the configured routes and create a navigation item for each. The following example creates a button with an associated logo for each of the three defined routes:
+- When setting the navigation items use the `repeat` directive to iterate over the defined routes and create a navigation item for each. The following example creates a button with an associated logo for each of the three defined routes:
 
 ```javascript
 html`
@@ -161,7 +161,7 @@ html`
 
 ### Control Buttons
 
-There are three control buttons which can be shown or hidden on the right hand side of the navigation bar (hidden by default). Each one of them are boolean attributes which can be added where the `<foundation-header>` tag is defined, and each one dispatches an associated event.
+There are three control buttons which can be shown or hidden on the right hand side of the navigation bar (hidden by default). Each one of them are boolean attributes which can be added where the `<foundation-header>` tag is defined, and each one dispatches an associated event when clicked.
 
 | Logo          | Toggle Attribute             | Dispatched Event          |
 |---------------|------------------------------|---------------------------|
@@ -197,7 +197,7 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 
 ### Menu Contents
 
-To set the content of the flyout menu simply insert the content in the html within an element with the `slot="menu-contents"` attribute.
+To set the content of the flyout menu, add the content in the html within an element with the `slot="menu-contents"` attribute.
 ```html
 <foundation-header>
 	<div slot="menu-contents">
