@@ -14,4 +14,4 @@ The very simple application you will build will look like this:
 
 That’s it. Just enough to get you up and running. Obviously, there is much more you could do, but that can wait for another day.
 
-With a lack of imagination, we hope you will find trustworthy, we are going to call this example application **alpha**. You will see this reflected in the file names throughout.
+With a lack of imagination we hope you will find trustworthy, we are going to call this example application **alpha**. You will see this reflected in the file names throughout.
