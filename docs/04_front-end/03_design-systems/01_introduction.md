@@ -15,7 +15,7 @@ A design system is a collection of resources for interactive media that promotes
 * Component libary
 * Documentation
 
-### UX Assets
+### UX assets
 
 These are visual and interaction design prototypes created in tools like Axure, Sketch or Figma. They are implemented using a set of variables known as design tokens.
 
@@ -37,7 +37,7 @@ Documentation site presents the different parts of a design system together alon
 
 Our design system implementation provides the elements listed above, as well as a few additional features. One of these is the ability for one design system to extend another. For example, a foundation/base design system can focus on functionality and provide components with minimal styling, while more specialised design systems can extend it and provide styling for a given target audience.
 
-You are not restricted to a single design system within a project - it is possible to utilise multiple design systems within the same project (and even on the same page).
+You are not restricted to a single design system within a project - it is possible to use multiple design systems within the same project (and even on the same page).
 
 ### Genesis Foundation UI
 
