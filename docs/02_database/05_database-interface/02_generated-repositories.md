@@ -24,10 +24,10 @@ We are still working on this page
 | Programming interface | [Async](/database/types-of-api/asynch/) or [RxJava](/database/types-of-api/rxjava/) |
 | Write (input) | Generated |
 | Write (output) | [Legacy Write Result](/database/helper-classes/write-results/legacy/) |
-| Subscribe | [Record Update](/database/helper-classes/subscription/record-update/) of entity |
+| Subscribe | [Generic Record Update](/database/helper-classes/subscription/record-update/) of entity |
 | Bulk or Range Subscribe | [Bulk](/database/helper-classes/subscription/bulk/) of entity |
 
-| Available in [event handlers](server-modules/event-handler/introduction/) | ❌ | | Available in [custom request servers](/server-modules/request-server/advanced/#custom-request-servers) | ❌ |
+| Available in [Event Handlers](/getting-started/learn-the-basics/modules/inside-an-event-handler/) | ❌ | | Available in [custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers) | ❌ |
 
 During the code generation phase, repository classes are generated for every table and view in the system. These repositories provide a type-safe way of accessing the database.
 
