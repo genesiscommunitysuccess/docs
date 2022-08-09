@@ -8,13 +8,13 @@ id: miscellaneous
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Contains a number of tokens and options which are hard to classify. You can adjust any of the defaults in the `src/_config/values` folder of your design system.
+You can adjust any of the defaults in the `src/_config/values` folder of your design system. This covers a number of tokens and options.
 
-* `prefix`: Web component name prefix
-* `direction`: The primary document direction (LTR or RTL)
-* `disabledOpacity`: The opacity of disabled controls
-* `strokeWidth`: Controls the width of the stroke of a component that has a stroke
-* `focusStrokeWidth`: Controls with width of the stroke of a component that has a stroke when it has document focus
+* `prefix`: Web Component name prefix
+* `direction`: the primary document direction (LTR or RTL)
+* `disabledOpacity`: the opacity of disabled controls
+* `strokeWidth`: controls the width of the stroke of a component that has a stroke
+* `focusStrokeWidth`: controls with width of the stroke of a component that has a stroke when it has document focus
 
 ### prefix
 
@@ -66,7 +66,7 @@ const styles = css`
 
 ### disabledOpacity
 
-The opacity of disabled controls.
+This controls the opacity of disabled controls.
 
 #### Usage
 
@@ -135,7 +135,7 @@ const styles = css`
 
 ### focusStrokeWidth
 
-Controls the width of the stroke of a component that has a stroke when it has document focus.
+This controls the width of the stroke of a component that has a stroke when it has document focus.
 
 #### Usage
 
