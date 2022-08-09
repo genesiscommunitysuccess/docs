@@ -59,12 +59,12 @@ As you can see from the example, you can define items at global, system and host
 * **System**: These properties contain information about a particular system and can have a free text field. Each system is associated with a host or hosts. The content should specify the type of environment the system is running in. 
 Local values can be specified in this block. **These values override the global values**.
 * **Host**: In this section you can define properties of host or hosts (if running in a cluster environment). Host block can exist under the system section as shown in the above example.
-  The host name defines what environment you are running in. By default, only one host will be used and change its value to current machine hostname
+  The host name defines what environment you are running in. By default, only one host will be used and change its value to current machine hostname.
 
 ## Items defined
 **MqLayer**: This setting defines the type of Message queue technology. You can choose between `ZeroMQ` and `Aeron` message queues.
 
-**DbLayer**: Default value is set to FDB. If you want to use PostgreSQL, MSSQL or Aerospike, then you need to change this value and then [change the value of the DbHost item](/server-modules/configuring-runtime/setting-the-database-technology/)
+**DbLayer**: Default value is set to FDB. If you want to use PostgreSQL, MSSQL or Aerospike, then you need to change this value and then [change the value of the DbHost item](/server-modules/configuring-runtime/setting-the-database-technology/).
 **DbHost**: Contains information about the hostname/JDBC connection string pointing to local database. For example:
 
 
@@ -85,36 +85,36 @@ item(name = "DbPassword", value = System.getenv("DBPASSWORD"), encrypted = true)
 item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 ```
 
-**DictionarySource**: This setting defines where you want to store the dictionary schema. You can choose between DB dictionary source and FILE dictionary source using this setting. Accepted values `DB` and `FILE`. DB dictionary source is preferred, because if you are running a cluster, all nodes will refer to the same dictionary. FILE dictionary source has the problem of being only available on each node
+**DictionarySource**: This setting defines where you want to store the dictionary schema. You can choose between DB dictionary source and FILE dictionary source using this setting. Accepted values `DB` and `FILE`. DB dictionary source is preferred, because if you are running a cluster, all nodes will refer to the same dictionary. FILE dictionary source has the problem of being only available on each node.
 
-**AliasSource**: This setting defines where you want to store dictionary alias schema. The alias schema maps aliases to fields and to tables, and it is updated every time we change the data schema. You can choose between DB alias source and FILE alias source using this setting. Accepted values `DB` and `FILE`. DB alias source is preferred, because if you are running a cluster all nodes will refer to the same alias dictionary. FILE alias source has the problem of being only available on each node
+**AliasSource**: This setting defines where you want to store dictionary alias schema. The alias schema maps aliases to fields and to tables, and it is updated every time we change the data schema. You can choose between DB alias source and FILE alias source using this setting. Accepted values `DB` and `FILE`. DB alias source is preferred, because if you are running a cluster all nodes will refer to the same alias dictionary. FILE alias source has the problem of being only available on each node.
 
 **MetricsEnabled**: Default value is false. For more information, go to the page on [Metrics](/operations/metrics/metrics/).
 
-**ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...)
+**ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
 
 **DbMode**: This setting is only needed if you use the [Aerospike](/database/database-technology/aerospike/) database.
 
 **ResourcePollerTimeout**: This setting controls how often the genesis daemon process keeps the processes and their metadata up to date.
 
-**ReqRepTimeout**: This setting contains the default timeout for the request server resources in the system
+**ReqRepTimeout**: This setting contains the default timeout for the request server resources in the system.
 
 **MetadataChronicleMapAverageKeySizeBytes**, **MetadataChronicleMapAverageValueSizeBytes**, **MetadataChronicleMapEntriesCount**: These are the settings for chronicle map and are related to the way processes store their own metadata resources inside /runtime/proc_metadata
 
-**DaemonServerPort**: This defines the port for daemon process, daemon process is the background process, which collects information about micro-services
+**DaemonServerPort**: This defines the port for daemon process, daemon process is the background process, which collects information about micro-services.
 
-**JVM_OPTIONS**: This defines common JVM options to be applied to all processes defined in the environment
+**JVM_OPTIONS**: This defines common JVM options to be applied to all processes defined in the environment.
 
-**DbNamespace**: This item defines different things, depending on the databases in use and is applicable for [FoundationDB](/database/database-technology/foundationdb/) and [Aerospike](/database/database-technology/aerospike/) only
+**DbNamespace**: This item defines different things, depending on the databases in use and is applicable for [FoundationDB](/database/database-technology/foundationdb/) and [Aerospike](/database/database-technology/aerospike/) only.
 
-**ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes
+**ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.
 
 **Location**: This item contains a 2-character value used to generate **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR",
-then the generated ID will be `000000000001TRLO1` where "LO" represents Location string
+then the generated ID will be `000000000001TRLO1` where "LO" represents Location string.
 
 **LogFramework**: Contains name of the logging framework. Supported framework: LOG4J2
 
-**LogFrameworkConfig**: Contains name of the log framework configuration file
+**LogFrameworkConfig**: Contains name of the log framework configuration file.
 
 If you want to enable SSL for your process communication, this is done in the [service definition](/server-modules/configuring-runtime/service-definitions/#enable-ssl-for-processes).
 
