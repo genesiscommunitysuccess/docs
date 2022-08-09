@@ -11,11 +11,11 @@ id: ds-technical-details
 
 Let's make things really simple.
 - A Data Server is a component that supplies streaming real-time data to the front end of your application.
-- You define your application's Data Server in a kotlin script file.
+- You define your application's Data Server in a Kotlin script file.
 - In this file, you define specific `query` codeblocks, each of which is designed to supply different sets of data.
 - Each `query` listens to a specified table or view; when data on that source changes, it publishes the changes. 
 - A `query` can include a number of other subtleties, such as `where` clauses or ranges, so that you can create code that matches your precise requirements.
-- If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, covering all the tables and views in your data model. You can edit this file to add sophistication to the component.
+- If you use `AppGen` to build from your dictionary, then a basic kts file will be built automatically for you, covering all the tables and views in your data model. You can edit this file to add sophistication to the component.
 - Otherwise, you can build your kts by defining each `query` codeblock from scratch. 
 
 
@@ -182,8 +182,8 @@ This enables update filtering for a list of process names. Any database updates 
 A string overflow happens when the value of a `String` field in an index is larger than `defaultStringSize`, or the size set on the field.
 
 Available options:
-* `IGNORE_ROW` - Rows with string overflows will be ignored. Can lead to data missing from the data server.
-* `TRUNCATE_FIELD` - Indices with string overflows will be truncated. The data with the overflow will still be returned in full, and will be searchable. However, if multiple rows are truncated to the same value, any subsequent rows will lead to duplicate index exceptions during the insert and will not be available to the data server.
+* `IGNORE_ROW` - rows with string overflows will be ignored. This can lead to data missing from the Data Server.
+* `TRUNCATE_FIELD` - indices with string overflows will be truncated. The data with the overflow will still be returned in full, and will be searchable. However, if multiple rows are truncated to the same value, any subsequent rows will lead to duplicate index exceptions during the insert, and will not be available to the Data Server.
 
 `enableTypeAwareCriteriaEvaluator`
 This enables the type-aware criteria evaluator. Defaults to `false`. 
