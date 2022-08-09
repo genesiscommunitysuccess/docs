@@ -9,11 +9,11 @@ import TabItem from '@theme/TabItem';
 
 You can adjust any of the defaults in the `src/_config/values` file of your design system.
 
-- `baseHeightMultiplier`: This value, multiplied by `designUnit`, sets the base height of most controls. Works with adaptive `density` values.
-- `baseHorizontalSpacingMultiplier`: This value, multiplied by `designUnit`, sets the internal horizontal padding of most controls. Works with adaptive `density` values.
-- `controlCornerRadius`: Sets the corner radius used by controls with backgrounds.
-- `density`: An adjustment to sizing tokens `baseHeightMultiplier` and `baseHorizontalSpacingMultiplier`.
-- `designUnit`: The unit size of the design grid. Used to calculate height and spacing sizes for controls.
+- `baseHeightMultiplier`: this value, multiplied by `designUnit`, sets the base height of most controls. Works with adaptive `density` values.
+- `baseHorizontalSpacingMultiplier`: this value, multiplied by `designUnit`, sets the internal horizontal padding of most controls. Works with adaptive `density` values.
+- `controlCornerRadius`: sets the corner radius used by controls with backgrounds.
+- `density`: an adjustment to sizing tokens `baseHeightMultiplier` and `baseHorizontalSpacingMultiplier`.
+- `designUnit`: the unit size of the design grid. Used to calculate height and spacing sizes for controls.
 
 ## Usage
 
