@@ -57,7 +57,7 @@ Each custom Event Handler must define an input message type `I` and an output 
 Inject objects[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#inject-objects "Direct link to heading")
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-Use [@Inject](https://docs.genesis.global/secure/reference/developer/dependency-injection/#inject) to provide instances for any objects needed as part of the dependency injection stage
+Use [@Inject](/database/dependency-injection/dependency-injection/) to provide instances for any objects needed as part of the dependency injection stage
 
 Async[​](/database/event-handler-api/event-handler-api/#asyncdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------
