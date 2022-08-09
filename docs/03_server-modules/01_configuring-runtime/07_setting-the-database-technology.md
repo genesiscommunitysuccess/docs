@@ -14,7 +14,7 @@ The Genesis low-code platform supports the following database technology:
 
 Because we abstract from the underlying technology, you can easily toggle between any of these four.
 
-There are also tools that enable you to stream real-time data reliably to and from any classic Oracle/SQL database](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/overview/).
+There are also tools that enable you to stream real-time data reliably to and from any classic [Oracle/SQL database](/database/database-technology/sql/).
 
 By default, FoundationDB is installed on the platform. If you need to use another supported database, follow the steps below.
 
@@ -26,7 +26,7 @@ Edit the [system definition file](/server-modules/configuring-runtime/system-def
 
 You need to make two changes.
 
-First, go to the line item for **DbLayer** and change the **value** from **FDB** to **SQL** (for Postgres and MSSQL) or **AEROSPIKE**.
+First, go to the line item for **DbLayer** and change the **value** from **FDB** to **SQL** (for Postgres and MSSQL) or **Aerospike**.
 
 ```kotlin
 systemDefinition {
