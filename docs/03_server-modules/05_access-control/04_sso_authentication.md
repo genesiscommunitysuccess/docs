@@ -6,33 +6,58 @@ id: SSO-authentication
 
 import CodeBlock from '@theme/CodeBlock';
 
-## Introduction
+Single sign-on (SSO) authentication uses the underlying SSO technology. SSO is a mechanism that allows a user to be authenticated against a single system, and use that across multiple applications - including those built on the Genesis low-code platform. This has the advantage that a user is required to log in only once, rather than once per system.
 
-Single sign-on is a mechanism that enables you to authenticate a user in your own systems, and then use this authentication to inform your Genesis application that the specified user has already been authenticated. The advantage is that the user doesn't have to log in twice - or more.
+There are two different types of SSO authentication presently supported by the Genesis low-code platform. These are as follows:
 
-If you use single sign-on with [JWT (JSON Web Token)](https://jwt.io/introduction), a user is automatically verified with the identity provider when they sign in. The user then has access to your Genesis application.
+* [JWT (JSON Web Token)](https://jwt.io/introduction) SSO
+* [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language)
 
-The Genesis low-code platform only grants access to users who have been authenticated by your internal [Microsoft Azure AD](https://azure.microsoft.com/en-gb/services/active-directory/#overview) component.
+## Configuring SSO
+
+To enable SSO, you will need to configure it in your application's **-auth-preferences.kts** file.
+
+These following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Login Authentication section](/server-modules/access-control/login-authentication/).
+
+### sso
+The `sso` function allows you to configure and enable SSO options. It has the following variables to set:
+* `enabled` is a boolean value that defines whether the SSO functionality is enabled. Default: true when the `sso` function is invoked, otherwise false.
+* `newUserMode` defines behaviour for processing users the first time they log in with SSO. This can take the values of `NewUserMode.REJECT`, `NewUserMode.CREATE_ENABLED`, `NewUserMode.CREATE_DISABLED`. Default `NewUserMode.REJECT`.
+  * In the case of `NewUserMode.REJECT`, when a user logs in for the first time with SSO, if they do not already have a user account, they are rejected.
+  * In the case of `NewUserMode.CREATE_ENABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, an active account is created for them.
+  * In the case of `NewUserMode.CREATE_DISABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, a disabled account is created for them. This will be need to be activated before it can be used.
+
+### passwordRetry
+The `passwordRetry` function allows you to configure settings for limiting the rate at which a user can retry passwords and SSO tokens. It allows the following variables to be set:
+* `maxAttempts` defines the maximum number of attempts allowed if a user enters an incorrect SSO token. Default: 3
+* `waitTimeMins` specifies the time to wait when the maximum number of incorrect attempts is reached. Default: 5.
+
 
 ## JWT SSO
 
-Genesis SSO relies on JSON Web Token (JWT) technology for securing the exchange of user authentication data.
+By giving the user a JWT when they authenticate with your identity provider, they can automatically have this identity verified when they attempt to access the application built on the Genesis low-code platform.
 
-### Internal JWT authentication service
+By centralising this authentication, you can authorise users access only to the relevant systems using tools like the [Microsoft Azure AD](https://azure.microsoft.com/en-gb/services/active-directory/#overview) component; thus letting you control who you grant access to applications built on the Genesis low-code platform.
 
-The IT infrastructure/security team at your organisation is usually responsible for setting up and managing your company's JWT authentication service. If a solution isn’t in place, Genesis can provide detailed instruction and assistance.
+:::note
+
+The IT infrastructure or security team at your organisation is usually responsible for setting up and managing your company's JWT authentication service. If a solution is not in place, Genesis can provide detailed instructions and assistance.
+
+:::
 
 ### Configuration details
 
-The following data points need to be shared with Genesis to complete the solution. These data points are stored in the database of your Genesis application.
+The following data points need to be shared with Genesis to complete the solution. These data points are stored in the database of your Genesis application. These are all stored on the `JWT_CONFIG` table.
 
-- The public key of the JWT RSA key pair, (the private key is used to sign the JWT at the internal authentication service)
-- As an alternative to supplying the Public Key directly, you can provide a URL it can be obtained dynamically; this is expected to be in JSON Web Key Sets format
-- The URL to the internal JWT authentication service
+* The `DOMAIN` must contain the domain for which this JWT is valid.
+* The `PUBLIC_KEY` should contain the public key of the JWT key pair, (the private key is used to sign the JWT at the internal authentication service).
+* Alternatively the `PUBLIC_KEY_URL` can be set as a URL to obtain this dynamically. Public keys obtained in this way are expected to be in JSON Web Key Sets format.
+* The `REDIRECT_URL` must contain the URL for which the user is redirected to log in, should they not possess a valid JWT.
+* The `KEY_ALGORITHM` should be set either to `KeyAlgorithm.RSA` or `KeyAlgorithm.HMAC`.
 
 ### How Genesis JWT SSO works
 
-The SSO workflow depends on whether CORS is configured on your internal authentication service to allow the Genesis platform to make direct authentication requests, or not.
+The SSO workflow depends on whether CORS is configured on your internal authentication service to allow the Genesis low-code platform to make direct authentication requests, or not.
 
 #### CORS enabled
 
@@ -383,17 +408,3 @@ Here is some test metadata you can use:
     </md:IDPSSODescriptor>
 </md:EntityDescriptor>
 ```
-
-## OpenID Connect & OAuth 2.0
-
-Support for OpenID Connect & OAuth 2.0 is part of the Genesis 2022 H1 technical roadmap.
-
----
-
-#### sso
-The `sso` function allows you to configure and enable Single Sign-On (SSO) options. It has the following variables to set:
-* **enabled** is a boolean value that defines whether the SSO functionality is enabled. Default: true when the `sso` function is invoked, otherwise false.
-* **newUserMode** defines behaviour for processing users the first time they log in with SSO. This can take the values of `NewUserMode.REJECT`, `NewUserMode.CREATE_ENABLED`, `NewUserMode.CREATE_DISABLED`. Default `NewUserMode.REJECT`.
-  * In the case of `NewUserMode.REJECT`, when a user logs in for the first time with SSO, if they do not already have a user account, they are rejected.
-  * In the case of `NewUserMode.CREATE_ENABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, an active account is created for them.
-  * In the case of `NewUserMode.CREATE_DISABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, a disabled account is created for them. This will be need to be activated before it can be used.

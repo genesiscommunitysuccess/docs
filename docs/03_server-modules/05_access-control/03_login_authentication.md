@@ -28,7 +28,7 @@ security {
 From within `security` we can also invoke the further functions in order to configure our login authentication. These are detailed below.
 
 ### authentication
-The `authentication` function is used to define common features of all three Types of authentication. Within it, many variables can be set, but their use depends on the value given to the `type` variable.
+The `authentication` function is used to define common features of all three types of authentication. Within it, many variables can be set, but their use depends on the value given to the `type` variable.
 
 * `type` indicates which of the three types of login authentication to be used. It accepts the values of: `AuthType.INTERNAL`, `AuthType.LDAP` or `AuthType.HYBRID`. Default: `AuthType.INTERNAL`.
 
@@ -54,57 +54,64 @@ The following variables are used to configure an LDAP connection; thus are only 
 For more information on the various authentication types, please see the [Authentication overview](/creating-applications/defining-your-application/access-control/authentic-over/).
 
 ### passwordValidation
-The `passwordValidation` function enables password validation, and allows you to set variable relating to this validation. The `passwordValidation` settings are only used in the case of the `INTERNAL`, or `HYBRID` authentication types. It has the following variables and functions:
+The `passwordValidation` function enables password validation, and is used to set the variables relating to this validation. 
 
-* `passwordSalt` defines a system specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different Genesis systems are stored as different hashes. Default: empty string.
+These following variables are used to configure the application's password validation; thus are only used when `type` is either `AuthType.INTERNAL` or `AuthType.HYBRID`.
 
-### passwordStrength
-The `passwordStrength` function can be called within `passwordValidation` and has many variables. These enable you to specify in detail the mandatory characteristics for the password. Within this function, the following variables can be set:
+* `passwordSalt` defines a system specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different applications built on the Genesis low-code platform are stored as different hashes. Default: empty string indicating no additional salting.
 
-* `minimumLength` this represents the minimum length of password. Default: null.
-* `maximumLength` this represents the maximum length of password. Default: null.
-* `minDigits` this represents the minimum number of digits required in a password. Default: null.
-* `maxRepeatCharacters` this represents the maximum number of the same characters in a password. Default: null.
-* `minUppercaseCharacters` this represents the minimum number of upper-case characters in a password. Default: null.
-* `minLowercaseCharacters` this represents the minimum number of lower-case characters in a password. Default: null.
-* `minNonAlphaNumericCharacters` this represents minimum number of characters which do not belong to common letters or numbers (e.g. !?/-_"). Default: null.
-* `restrictWhitespace` this restricts the usage of whitespaces in passwords. Default: true.
-* `restrictAlphaSequences` this restricts alphabetical sequences in passwords (e.g. abcdefg). Sequences bigger or equal to 5 characters won't be allowed if this is active. Default: false.
-* `restrictQWERTY` this restricts QWERTY sequences in passwords (e.g. qwertyuiop). Sequences bigger or equal to 5 characters won't be allowed if this is active. Default: true.
-* `restrictNumericalSequences` restricts numerical sequences in passwords (e.g. 123456). Sequences bigger or equal to 5 numbers won't be allowed if active. Default: true.
-* `illegalCharacters` contains characters you don't want to accept in user passwords. In the example shown below, you can see three banned characters: $, £ and ^. Default: empty.
-* `historicalCheck` if present, this prevents reuse of passwords for the specified number of historical uses. Default: null.
-* `dictionaryWordSize` if present, this prevents use of English words of the specified length. Default: null.
-* `repeatCharacterRestrictSize` if present, this prevents the use of repeated characters of the specified length. Default: null.
-* `restrictUserName` if present, this prevents use of the user's username as part of their password. Default: false.
-* `passwordExpiryDays` if present, this forces a password to expire after the specified number of days. Default: null.
-* `passwordExpiryNotificationDays` if present, a user shall be notified by the specified number of days before their password expires. Default: null.
+In addition, from within `passwordValidation` the `passwordStrength` method can be invoked as below.
+
+#### passwordStrength
+The `passwordStrength` function can be called within `passwordValidation` to set many configuration variables. These enable you to specify in detail the mandatory characteristics for the password. 
+
+Within this function, the following variables can be set:
+
+* `minimumLength` specifies the minimum length of password. If null or undefined this assumes there is no minimum limit. Default: null.
+* `maximumLength` specifies the maximum length of password. If null or undefined this assumes there is no maximum limit. Default: null.
+* `minDigits` specifies the minimum number of numerical digits required in a password. If null or undefined this assumes there is no minimum limit. Default: null.
+* `maxRepeatCharacters` specifies the maximum number of the same characters across an entire password. This does not just include consecutive repeat characters, which is controlled by the `repeatCharacterRestrictSize` variable below. If null or undefined this assumes there is no maximum limit. Default: null.
+* `minUppercaseCharacters` specifies the minimum number of upper-case characters in a password. If null or undefined this assumes there is no minimum limit. Default: null.
+* `minLowercaseCharacters` specifies the minimum number of lower-case characters in a password. If null or undefined this assumes there is no minimum limit. Default: null.
+* `minNonAlphaNumericCharacters` specifies the minimum number of non-alphanumeric characters, such as punctuation and other special characters. If null or undefined this assumes there is no minimum limit. Default: null.
+* `restrictWhitespace` specifies if whitespace characters are prevented from being used in passwords. Default: true.
+* `restrictAlphaSequences` specifies if alphabetical sequences in passwords (e.g. abcdefg) are restricted. Sequences greater than or equal to five characters won't be permitted if this is true. Default: false.
+* `restrictQWERTY` specifies if QWERTY sequences in passwords (e.g. qwertyuiop) are restricted. Sequences greater or equal to five characters won't be permitted if this is true. Default: true.
+* `restrictNumericalSequences` specifies if numerical sequences in passwords (e.g. 123456) are restricted. Sequences greater or equal to five numbers won't be allowed if active. Default: true.
+* `illegalCharacters` specifies which characters are not permitted in user passwords. Default: empty.
+* `historicalCheck` specifies how many previous passwords to check against, in order to prevent password re-use. If null or undefined no historical check is performed. Default: null.
+* `restrictPassword` specifies if the password should differ from a list of the worst passwords stored within the application. Default: false.
+* `restrictDictionarySubstring` specifies if any dictionary word of 4 or more characters can be included in a password (either forwards or backwards). Default: false.
+* `restrictUserName` specifies if the user's username is restricted as part of their password. Default: false.
+* `repeatCharacterRestrictSize` specifies the number of consecutive repeated characters that make a password restricted. If null or undefined this assumes there is no limit. Default: null.
+* `passwordExpiryDays` specifies how many days before a password expires. If null or undefined this assumes there is no limit. Default: null.
+* `passwordExpiryNotificationDays` specifies how many days before their password expiry, a user is notified. If null or undefined a user not notified in advance of their password expiry. Default: null.
 
 ### passwordRetry
-The `passwordRetry` function allows the following variables to be set. This has two options:
-* `maxAttempts` defines the maximum number of attempts allowed if a user enters a wrong password. Default: 3
-* `waitTimeMins` specifies the time to wait when the maximum number of incorrect attempts is reached. Default: 5.
+The `passwordRetry` function allows you configure settings for limiting the rate at which a user can retry passwords. It allows the following variables to be set:
+* `maxAttempts` specifies the maximum number of attempts allowed if a user enters a wrong password. Default: 3 attempts.
+* `waitTimeMins` specifies the time to wait in minutes when the maximum number of incorrect attempts is reached, before allowing a user to try again. Default: 5 minutes.
 
 ### mfa
-The `mfa` function allows you to configure Multi-factor Authentication (MFA). It has the following variables to set:
+The `mfa` function allows you to configure Multi-factor Authentication (MFA). For more information on MFA please see [Wikipedia](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function the following variables can be set:
 
-* `codePeriodSeconds` defines how long a Time-based One-time Password (TOTP) remains valid. Default: 30.
-* `codePeriodDiscrepancy` defines the allows discrepancy to the TOTP allowed. 1 means a block of each codePeriodSeconds either side of the time window. Default: 1.
-* `codeDigits` defines the number of digits used in the TOTP. Default: 6.
-* `hashingAlgorithm` specifies which choice of Hashing Algorithm to use. Available choices are: `HashingFunction.SHA1`, `HashingFunction.SHA256` or `HashingFunction.SHA512`. Default: ``HashingFunction.SHA1`.
-* `issuer` provides a reference to the Organisation or Entity issuing the MFA. Default: Genesis.
-* `label` provides a label for the MFA. This is typically an email address of the issuing Entity or Organisation. Default: genesis.global.
-* `confirmWaitPeriodSecs` defines the period of time before a secret has to be confirmed. Default: 300.
-* `secretEncryptKey` defines a key with which Secrets will be encrypted in the database. Default: null.
-* `usernameTableLookUpSalt` defines if usernames will be hashed using the configured key in the database. Default: null.
+* `codePeriodSeconds` specifies how many seconds a Time-based One-time Password (TOTP) remains valid. Default: 30 seconds.
+* `codePeriodDiscrepancy` specifies the allowed discrepancy to the TOTP. 1 would mean a single block of each `codePeriodSeconds` either side of the time window. Default: 1.
+* `codeDigits` specifies the number of digits used in the TOTP. Default: 6 digits.
+* `hashingAlgorithm` specifies which choice of Hashing Algorithm to use. Available choices are: `HashingFunction.SHA1`, `HashingFunction.SHA256` or `HashingFunction.SHA512`. Default: `HashingFunction.SHA1`.
+* `issuer` specifies a reference to the Organisation or Entity issuing the MFA. Default: Genesis.
+* `label` specifies a label for the MFA. This is typically an email address of the issuing Entity or Organisation. Default: genesis.global.
+* `confirmWaitPeriodSecs` specifies the period of time in seconds before a secret has to be confirmed. Default: 300 seconds.
+* `secretEncryptKey` specifies a key with which Secrets will be encrypted in the database. If this is null or undefined Secrets will not be encrypted in the database. Default: null.
+* `usernameTableLookUpSalt` specifies the salt with which a username is hashed, when stored in the database with the above Secret. If this is null or undefined the username will not be hashed in the database. Default: null.
 
 ### loginAck
-The `loginAck` function allows you to define additional values to be sent back to the client as part of the LOGIN_ACK message. When you call the `loginAck` function, you have to supply a table or view as a parameter. This is the table or view upon which the following functions will be invoked.
+The `loginAck` function allows you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message. When you call the `loginAck` function, you have to supply a table or view as a parameter. This is the table or view upon which the following functions will be invoked.
 
 #### loadRecord
 The `loadRecord` function can be invoked within the `loginAck` function to load a single record from the previously supplied table or view.
 
-##### fields
+#### fields
 The `fields` function can be invoked within the `loginAck` function to specify which additional fields should be sent back to the client as part of the LOGIN_ACK message.
 
 ### Example
@@ -155,9 +162,9 @@ security {
             restrictAlphaSequences = false
             restrictQWERTY = true
             restrictNumericalSequences = true
-            illegalCharacters = ""
+            illegalCharacters = "\$£^"
             historicalCheck = 0
-            dictionaryWordSize = null
+            restrictDictionarySubstring = false
             restrictUserName = false
             repeatCharacterRestrictSize = null
             passwordExpiryDays = null
@@ -201,11 +208,13 @@ security {
 ## Message flows
 
 Security messages can be split into three categories.
-- Pre-authentication
+- Pre-authentication (not used?)
 - Authentication
 - Post-authentication
 
 All requests below are capable of returning an error with a code of INTERNAL_ERROR, which will be used as a last resort.
+
+---
 
 ### Pre-authentication
 Pre-authentication messages can be sent by a client without the user being logged in
@@ -217,6 +226,9 @@ Currently, this is the only preference published.
 ##### Response
     MESSAGE_TYPE = EVENT_LOGIN_PREFS_ACK
         DETAILS.PASSWORD_RESET_TYPE = ADMIN/EMAIL
+
+---
+
 ### Authentication
 Once you have a list of preferences, you can show the correct login dialog and let the user make a login attempt.  The password is provided in plain text, as it is expected you will secure the connection using TLS.
 #### Login
@@ -225,6 +237,8 @@ Once you have a list of preferences, you can show the correct login dialog and l
     MESSAGE_TYPE = EVENT_LOGIN_AUTH
        DETAILS.USER_NAME = JohnDoe
        DETAILS.PASSWORD = Password123
+
+# SSO?
 
 ##### Response
 If successful:
