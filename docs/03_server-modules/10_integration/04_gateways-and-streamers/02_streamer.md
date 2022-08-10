@@ -24,7 +24,7 @@ To create a Streamer:
 </process>
 ```
 
-For more information on the above process tags, see the page on [configuring runtime processes](/creating-applications/configure-runtime/processes-xml).
+For more information on the above process tags, see the page on [configuring runtime processes](03_server-modules/02_data-server/05_configuring-runtime.md).
 
 2. Create a kotlin script file named {applicationName}-streamer.kts. Add the following information:
     * A stream name
