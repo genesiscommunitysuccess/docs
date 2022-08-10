@@ -76,8 +76,8 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 ```javascript
 export const defaultLayout = new FASTElementLayout(html`
 <div class="container">
-	<!-- show-lightmode-toggle-button boolean attribute added to show that button on the navigation bar -->
-	<foundation-header show-lightmode-toggle-button></foundation-header>
+	<!-- show-luminance-toggle-button boolean attribute added to show that button on the navigation bar -->
+	<foundation-header show-luminance-toggle-button></foundation-header>
 	<!-- Other markup -->
 </div>`);
 
@@ -165,7 +165,7 @@ There are three control buttons which can be shown or hidden on the right hand s
 
 | Logo          | Toggle Attribute             | Dispatched Event          |
 |---------------|------------------------------|---------------------------|
-| Moon          | show-lightmode-toggle-button | darkmode-icon-clicked     |
+| Moon          | show-luminance-toggle-button | luminance-icon-clicked    |
 | Misc          | show-misc-toggle-button      | misc-icon-clicked         |
 | Notifications | show-notification-button     | notification-icon-clicked |
 
