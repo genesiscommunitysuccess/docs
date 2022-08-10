@@ -4,8 +4,8 @@ sidebar_label: 'Legacy'
 id: legacy
 ---
 
-Legacy write result
-===================
+## Legacy write result
+
 
 ##### NOTE
 
