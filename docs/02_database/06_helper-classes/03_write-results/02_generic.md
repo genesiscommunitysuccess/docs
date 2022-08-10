@@ -4,10 +4,12 @@ sidebar_label: 'Generic'
 id: generic
 ---
 
-Generic write result
-====================
+## Generic write result
 
-The entity database will return type-safe results for write operations. There are four main write results, one for each type of write operation. In all cases, the records in the result will be a generated entity that matches the input. So, for inserting a `Trade` instance, the database will return a result of type `InsertResult<Trade>` where the property `record` will be of type `Trade`.
+
+The entity database will return type-safe results for write operations. There are four main write results, one for each type of write operation. 
+
+In all cases, the records in the result will be a generated entity that matches the input. So, for inserting a `Trade` instance, the database will return a result of type `InsertResult<Trade>` where the property `record` will be of type `Trade`.
 
 -   `InsertResult`
 -   `DeleteResult`
