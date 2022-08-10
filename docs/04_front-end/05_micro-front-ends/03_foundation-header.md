@@ -16,9 +16,9 @@ The header micro front-end is a semi-batteries included component consisting of 
 
 A quick look at the customisation options:
 
-- Specific the icon shown on the navigation bar and flyout menu (shows the Genesis logo by default).
+- The icon shown on the navigation bar and flyout menu (shows the Genesis logo by default).
 - Navigation links at the left hand side of the navigation bar.
-- The control buttons on the right hand side of the navigation bar can be optionally shown/hidden, and the behaviour controlled via event listeners.
+- The control buttons on the right hand side of the navigation bar can be optionally shown/hidden, and their behaviour controlled via event listeners.
 - The contents of the flyout menu.
 
 An example of the navigation bar with three navigation items, and all three control buttons shown.
@@ -103,7 +103,7 @@ By default the Navigation Bar and Flyout Menu will show the Genesis logo. You ca
 	<img src="https://icotar.com/avatar/genesis" slot="logo" />
 </foundation-header>
 ```
-The `src` of your `img` tag would reference the image that you want to display.
+The `src` of your `img` tag would reference the image that you want to display. Adding an `img` in this slot will update the logo in both the navigation bar and the flyout.
 
 ### Navigation Items
 
