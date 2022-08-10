@@ -4,7 +4,7 @@ sidebar_label: 'Introduction'
 id: introduction
 ---
 
-[Introduction](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/overview/)  | [Where to define](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/dbtogenesis-where-to-define/) | [Basics](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/dbtogenesis-basics/) | [Advanced](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/dbtogenesis-advanced/) | [More examples](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/dbtogenesis-examples/) | [Configuring runtime](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/dbtogenesis-runtime/) | [Testing](/creating-applications/defining-your-application/integrations/database-streaming/dbtogenesis/dbtogenesis-testing/)
+[Introduction](/server-modules/integration/database-streaming-in/introduction)  | [Basics](/server-modules/integration/database-streaming-in/basics) | [Advanced](/server-modules/integration/database-streaming-in/advanced) | [Examples](/server-modules/integration/database-streaming-in/examples) | [Configuring runtime](/server-modules/integration/database-streaming-in/configuring-runtime) | [Testing](/server-modules/integration/database-streaming-in/testing)
 
 ## DbToGenesis
 

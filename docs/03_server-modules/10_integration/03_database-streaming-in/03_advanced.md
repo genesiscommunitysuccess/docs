@@ -4,6 +4,8 @@ sidebar_label: 'Advanced'
 id: advanced
 ---
 
+[Introduction](/server-modules/integration/database-streaming-in/introduction)  | [Basics](/server-modules/integration/database-streaming-in/basics) | [Advanced](/server-modules/integration/database-streaming-in/advanced) | [Examples](/server-modules/integration/database-streaming-in/examples) | [Configuring runtime](/server-modules/integration/database-streaming-in/configuring-runtime) | [Testing](/server-modules/integration/database-streaming-in/testing)
+
 ## Encrypting user and passwords
 
 A script called `encryptUserPass` is provided with Genesis so you can encrypt the user and password before using it in `DbToGenesis`.
