@@ -9,196 +9,186 @@ sidebar_position: 5
 
 [Introduction](/creating-applications/defining-your-application/business-logic/consolidators/consolidators/)  | [Where to define](/creating-applications/defining-your-application/business-logic/consolidators/cons-where-to-define/) | [Basics](/creating-applications/defining-your-application/business-logic/consolidators/cons-technical-details/) |  [Advanced](/creating-applications/defining-your-application/business-logic/consolidators/cons-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/business-logic/consolidators/cons-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/business-logic/consolidators/cons-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/business-logic/consolidators/cons-testing/)
 
+### Examples
+
 Here is an example Consolidator file that defines two Consolidators:
 
-* CON_ORDER_FROM_TRADES. This Consolidator totals the order quantity across the ```TRADE``` table, grouping by field ```TRADE.ORDER_ID```
-                          into a table called ```ORDER_CONSOLIDATED_VOLUME```.
-               
-* CON_BASKET_FROM_ORDERS.  This Consolidator counts the number of orders and the order quantity, grouped by the field ```BASKET_ORDER_DETAILS.BASKET_ID``` from the ```ORDERS``` table. Note that in the table ```BASKET_ORDER_DETAILS``` there is a ```backwardJoin``` that ensures that real-time data from the table and the table it joins are reflected in the calculation.  
+* CON_ORDER_FROM_TRADES. 
+This Consolidator builds ORDER table using CONSOLIDATOR_TRADE table. Uses max, min, sum and count functions and grouping by field ```ORDER.ORDER_ID``` and build new row for output table ORDER
 
+* CON_ORDER_SUMMARY_FROM_ORDER.  This Consolidator builds ORDER_SUMMARY table using ORDER table and grouped by the field ```ORDER.ORDER_DATE``` from the ```ORDER``` table. You can give multiple groupBy conditions based on your requirement.
+In this example we store all the consolidations grouped by ORDER_DATE year and ORDER_DATE year and month in database, which avoids duplication of consolidator code if you need to group same consolidation based on different group-by conditions
 
-```xml
-<consolidations>
-    <consolidation name="CON_ORDER_FROM_TRADES" start="false" group="ORDER">
-        <tables>
-            <table name="TRADE" alias="tr" seedKey="TRADE_BY_ID" consolidationFields="QUANTITY"/>
-        </tables>
+```kotlin
+consolidators {
 
-        <groupBy>
-            <![CDATA[
-            tr.getString("ORDER_ID")
-            ]]>
-        </groupBy>
-
-        <consolidateTable name="ORDER_CONSOLIDATED_VOLUME" alias="ov" consolidationFields="CONSOLIDATED_VOLUME" transient="false">
-            <consolidationTarget key="ORDER_BY_ID">
-                <![CDATA[
-                ov.setString("ORDER_ID", groupId)
-                ]]>
-            </consolidationTarget>
-
-            <calculation>
-                <![CDATA[
-                    int deltaVolume = tr.getInteger("QUANTITY") - previous_tr.getInteger("QUANTITY")
-                    int oldConsolidatedVolume = ov.getInteger("CONSOLIDATED_VOLUME")
-                    int newConsolidatedVolume = oldConsolidatedVolume + deltaVolume
-                    ov.setInteger("CONSOLIDATED_VOLUME", newConsolidatedVolume)
-                ]]>
-            </calculation>
-
-        </consolidateTable>
-    </consolidation>
-
-    <consolidation name="CON_BASKET_FROM_ORDERS" start="true">
-        <tables>
-            <table name="ORDER" alias="o" seedKey="ORDER_BY_ID" consolidationFields="VOLUME"/>
-
-            <table name="BASKET_ORDER_DETAILS" alias="bo" >
-                <join key="BASKET_ORDER_DETAILS_BY_ORDER_ID">
-                    <![CDATA[
-                    bo.setString("ORDER_ID", o.getString("ORDER_ID"))
-                    ]]>
-                </join>
-                <backwardJoin>
-                    <![CDATA[
-                    parent.setString('ORDER_ID', child.getString('ORDER_ID'))
-                    ]]>
-                </backwardJoin>
-            </table>
-        </tables>
-        
-            
-        <where>
-            <![CDATA[
-                bo != null
-            ]]>
-        </where>
-
-
-        <groupBy>
-            <![CDATA[
-            group(bo?.getString("BASKET_ID"))
-            ]]>
-        </groupBy>
-
-
-        <consolidateTable name="BASKET" alias="consbasket" consolidationFields="NUM_ORDERS VOLUME">
-            <consolidationTarget key="BASKET_BY_ID">
-                <![CDATA[
-                consbasket.setString("BASKET_ID", bo?.getString("BASKET_ID"))
-                ]]>
-            </consolidationTarget>
-            <calculation>
-                <![CDATA[
-                // Consolidating NUM_ORDERS
-
-                int numOrders = consbasket.getInteger("NUM_ORDERS") // before
-                if(eventType==EventType.JOIN) {
-                    consbasket.setInteger("NUM_ORDERS", numOrders + 1)
-                    msg += "NEW basket NUM_ORDERS: "+consbasket.getInteger("NUM_ORDERS")+"\n"
-
-                } else if(eventType==EventType.LEAVE) {
-                    consbasket.setInteger("NUM_ORDERS", numOrders - 1)
-                    msg += "NEW basket NUM_ORDERS: "+consbasket.getInteger("NUM_ORDERS")+"\n"
-
+    consolidator(CONSOLIDATOR_TRADE, ORDER) {
+        config {
+            tableTransient = true
+        }
+    
+        select {
+            ORDER {
+                max { price } into MAX_PRICE
+                min { price } into MIN_PRICE
+                sum { price * quantity } into TOTAL_NOTIONAL
+                sum { quantity } into TOTAL_QUANTITY
+                count() into TRADE_COUNT
+            }
+        }
+    
+        groupBy { Order.ById(orderId) } into {
+            val start = DateTime(2022, 1, 1, 0, 0)
+            build {
+                val id = groupId.orderId.toInt()
+                Order {
+                    orderId = groupId.orderId
+                    orderDate = start.plusMonths(id % 12)
+                    filledQuantity = 0
                 }
-
-                // Consolidating VOLUME
-
-                int deltaVolume = o.getInteger("VOLUME") - previous_o.getInteger("VOLUME")
-                int oldConsolidatedVolume = consbasket.getInteger("VOLUME")
-                int newConsolidatedVolume = oldConsolidatedVolume + deltaVolume
-
-                consbasket.setInteger("VOLUME", newConsolidatedVolume)
-                msg += "NEW basket VOLUME: "+consbasket.getInteger("VOLUME")+"\n"
-
-                println msg
-                ]]>
-            </calculation>
-        </consolidateTable>
-    </consolidation>
-</consolidations>
+            }
+        }
+    }
+    
+    consolidator("CON_ORDER_SUMMARY_FROM_ORDER", ORDER, ORDER_SUMMARY) {
+        select {
+            ORDER_SUMMARY {
+                sum { totalNotional } into TOTAL_NOTIONAL
+                sum { totalQuantity } into TOTAL_QUANTITY
+                sum { tradeCount } into TRADE_COUNT
+            }
+        }
+    
+        groupBy { OrderSummary.byGroupId("${orderDate.year}") }
+        groupBy { OrderSummary.byGroupId("${orderDate.year}-${orderDate.monthOfYear}") }
+    }
+}
 ```
-
 
 The example below comes from the Consolidator exercise in our [tutorial](/tutorials/building-an-application/add-calculated-data/). It has a single consolidator, called `CONSOLIDATE_POSITIONS`. 
 
 To give you some basic pointers to the content, the main code blocks in this Consolidator are:
 
-- The `tables` block contains two tables: `TRADE` and `INSTRUMENT_PRICE`, which are given aliases.
-- The `groupBy` block groups by `INSTRUMENT_ID` and `COUNTERPARTY_ID`.
-- The `consolidateTable` block contains the `consolidationTarget` block and the `calculation` block. 
+- The `config` block contains consolidator level configuration
+- The `select` block to specify some calculations and assign to output fields
+- The `onCommit` block to amend the output row
+- The `groupBy` block groups by `INSTRUMENT_ID`
 
-```xml
-<consolidations>
+```kotlin
+consolidator("CONSOLIDATE_POSITIONS", TRADE_PRICE_VIEW, POSITION) {
+    config {
+        logLevel = DEBUG
+        logFunctions = true
+    }
+    select {
+        sum {
+            when(side) {
+                "BUY" -> when(tradeStatus) {
+                    TradeStatus.NEW -> quantity
+                    TradeStatus.ALLOCATED -> quantity
+                    TradeStatus.CANCELLED -> 0
+                }
+                "SELL" -> when(tradeStatus) {
+                    TradeStatus.NEW -> -quantity
+                    TradeStatus.ALLOCATED -> -quantity
+                    TradeStatus.CANCELLED -> 0
+                }
+                else -> null
+            }
+        } into QUANTITY
+        sum {
+            val quantity = when(side) {
+                "BUY" -> quantity
+                "SELL" -> -quantity
+                else -> 0
+            }
+            quantity * price
+        } into VALUE
+    }
+    onCommit {
+        val quantity = output.quantity ?: 0
+        val marketPrice = when {
+            quantity > 0 -> input.emsBidPrice ?: 0.0
+            quantity < 0 -> input.emsAskPrice ?: 0.0
+            else -> 0.0
+        }
+        output.notional = marketPrice * quantity
+        output.pnl = output.value - output.notional
+    }
+    groupBy {
+        instrumentId
+    } into {
+        lookup {
+            Position.ByInstrumentId(groupId)
+        }
+        build {
+            Position {
+                instrumentId = groupId
+                quantity = 0
+                value = 0.0
+                pnl = 0.0
+                notional = 0.0
+            }
+        }
+    }
+}
+```
 
-    <consolidation name="CONSOLIDATE_POSITIONS" start="true">
-        <tables>
-            <table name="TRADE" alias="t" seedKey="TRADE_BY_ID" consolidationFields="QUANTITY PRICE"/>
+### Table definitions used in above examples:
 
-            <table name="INSTRUMENT_PRICE" alias="ip" >
-                <join key="INSTRUMENT_PRICE_BY_INSTRUMENT_ID">
-                    <![CDATA[
-                    ip.setString("INSTRUMENT_ID", t.getString("INSTRUMENT_ID"))
-                    ]]>
-                </join>
-            </table>
-        </tables>
+```kotlin
+  table("ORDER", 1001) {
+    ORDER_ID
+    ORDER_DATE not null
+    ORDER_STATE
+    QUANTITY
+    FILLED_QUANTITY not null
+    ENTERED_BY
+    ASSIGNED_TO
+    SYMBOL
+    AVERAGE_PRICE
+    LIMIT_PRICE
+    TRADE_COUNT
+    TOTAL_QUANTITY
+    TOTAL_NOTIONAL
+    MAX_PRICE
+    MIN_PRICE
+    SIDE
+    ORDER_TYPE
+    COUNTERPARTY_ID
 
-        <groupBy>
-            <![CDATA[
-                group(t.getString("INSTRUMENT_ID"), t.getString("COUNTERPARTY_ID"))
-            ]]>
-        </groupBy>
+    primaryKey {
+      ORDER_ID
+    }
+  }
 
-        <consolidateTable name="POSITION" alias="p" consolidationFields="QUANTITY NOTIONAL"
-                          transient="true">
-            <consolidationTarget key="POSITION_BY_INSTRUMENT_ID_COUNTERPARTY_ID">
-                <![CDATA[
-                p.setString("COUNTERPARTY_ID", t?.getString("COUNTERPARTY_ID"))
-                p.setString("INSTRUMENT_ID", t?.getString("INSTRUMENT_ID"))
-                ]]>
-            </consolidationTarget>
-            <calculation>
-                <![CDATA[
-                    long quantity = t.getLong("QUANTITY")
-                    long previousQuantity = previous_t.getLong("QUANTITY")
-                    long quantityDelta = quantity - previousQuantity
-                    String tradeStatus = t.getString("TRADE_STATUS")
-                    long newQuantity = p.getLong("QUANTITY")
-                    switch(tradeStatus) {
-                      case "NEW":
-                      case "ALLOCATED":
-                        String side = t.getString("TRADE_STATUS")
-                        switch(side) {
-                          case "BUY":
-                            newQuantity += quantityDelta
-                            break
-                          case "SELL":
-                            newQuantity -=quantityDelta
-                            break
-                          }
-                        break
-                      case "CANCELLED":
-                        String previousSide = previous_t.getString("TRADE_STATUS")
-                        switch(previousSide) {
-                          case "BUY":
-                            newQuantity -= quantityDelta
-                            break
-                          case "SELL":
-                            newQuantity +=quantityDelta
-                            break
-                          }
-                        break
-                    }
-                    p.setLong("QUANTITY", newQuantity)
-                    Double lastPrice = ip?.getDouble("LAST_PRICE")
-                    if (lastPrice != null) {
-                        p.setDouble("NOTIONAL", newQuantity * lastPrice )
-                    }
-                ]]>
-            </calculation>
-        </consolidateTable>
-    </consolidation>
-</consolidations>
+  table("ORDER_SUMMARY", 1003) {
+    GROUP_ID
+    TOTAL_QUANTITY
+    TOTAL_NOTIONAL
+    TRADE_COUNT
+
+    primaryKey {
+      GROUP_ID
+    }
+  }
+
+  table("CONSOLIDATOR_TRADE", 1004) {
+    TRADE_ID
+    ORDER_ID
+    TRADE_DATE
+    QUANTITY
+    TRADE_STATUS
+    PRICE
+
+    primaryKey {
+      TRADE_ID
+    }
+
+    indices {
+      nonUnique {
+        ORDER_ID
+      }
+    }
+  }
 ```
