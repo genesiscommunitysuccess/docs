@@ -7,9 +7,9 @@ sidebar_position: 6
 ---
 This day covers:
 
-- [State management​](#state-management​)
+- [State management​](#state-management)
 - [Adding logic to the event handler](#adding-logic-to-the-event-handler)
-- [Auditing​](/tutorials/training-resources/training-content-day4/#auditing​)
+- [Auditing​](#auditing)
 
 
 
