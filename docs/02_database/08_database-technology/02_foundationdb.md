@@ -4,8 +4,7 @@ sidebar_label: 'FoundationDb'
 id: foundationdb
 ---
 
-FoundationDb
-============
+
 
 Genesis provides two databases built on FoundationDB.
 
