@@ -1,7 +1,7 @@
 ---
-title: 'DSL Quick Start'
-sidebar_label: 'DSL Quick Start'
-id: dsl-quick-start
+title: 'gpl-seed README'
+sidebar_label: 'gpl-seed README'
+id: gpl-seed-readme
 ---
 
 This short guide will enable you to build a very simple application using Genesis platform DSL (domain specific language).
