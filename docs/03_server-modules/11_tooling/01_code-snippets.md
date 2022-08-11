@@ -241,3 +241,10 @@ xml("") {
 </td>
 </tr>
 </table>
+
+## Define and tweak snippets
+
+You can define and tweak Genesis snippets within your JetBrains products.
+To do so, open the settings for your IDE of choice and search for "Live Templates".
+
+Do you have some super fancy snippets that you think colleagues and the Genesis community could benefit from? Get in touch and we can add them to the official settings distribution!
