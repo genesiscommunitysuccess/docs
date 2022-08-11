@@ -12,29 +12,29 @@ tags:
   - micro frontends
 ---
 
-The header micro front-end is a semi-batteries included component consisting of a navigation bar and flyout menu, with routing and account logout capabilities.
+The Header micro front-end is a semi-batteries included component. It consists of a navigation bar and flyout menu, with routing and account logout capabilities.
 
-A quick look at the customisation options:
+You can customise:
 
-- The icon shown on the navigation bar and flyout menu (shows the Genesis logo by default).
-- Navigation links at the left hand side of the navigation bar.
-- The control buttons on the right hand side of the navigation bar can be optionally shown/hidden, and their behaviour controlled via event listeners.
+- the icon shown on the navigation bar and flyout menu (this shows the Genesis logo by default).
+- navigation links at the left-hand side of the navigation bar.
+- the control buttons on the right-hand side of the navigation bar can be shown or hidden, and their behaviour controlled via event listeners
 - The contents of the flyout menu.
 
-An example of the navigation bar with three navigation items, and all three control buttons shown.
+Here is an example of the navigation bar with three navigation items, and all three control buttons shown.
 ![Header with the standard genesis logo](/img/foundation-header-standard.png)
 
-The same as the previous example except the Genesis logo is replaced with a custom icon.
+This next example is the same as the previous example, except the Genesis logo is replaced with a custom icon.
 ![Header with a customised logo](/img/foundation-header-replaced-img.png)
 
-A set of example options set in the flyout menu.
+In this next example, we have put a set of example options set in the flyout menu.
 ![The sidebar included with the header opened with some example content](/img/foundation-header-sidebar.png)
 
-## Header Setup
+## Header set-up
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-header` as a dependency in your *package.json* file. Whenever you change the dependencies of your project ensure you run the bootstrap command again.
+- Add `@genesislcap/foundation-header` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
 
 ```javascript
 {
@@ -46,9 +46,11 @@ To enable this micro front-end in your application, follow the steps below.
 }
 ```
 
-> **_NOTE:_** This page assumes you're already using the Login and Routing systems which are part of `foundation-ui` for the logout and routing functionality.
->
-> It will be possible for you to set up routing manually, but that won't be covered in this tutorial.
+:::note
+This page assumes you're already using the Login and Routing systems that are part of `foundation-ui` for the logout and routing functionality.
+
+It is possible for you to set up routing manually, but that won't be covered in this tutorial.
+:::
 
 - In the top level class of your application, import and dependency inject the Navigation class.
 ```javascript
@@ -93,21 +95,23 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 }
 ```
 
-## Header Customisation
+## Customising the header 
 
 ### Icon
 
-By default the Navigation Bar and Flyout Menu will show the Genesis logo. You can override this by setting an `img` tag with the `slot="logo"` attribute. For example:
+By default, the navigation bar and flyout menu show the Genesis logo. You can override this by setting an `img` tag with the `slot="logo"` attribute. For example:
+
 ```html
 <foundation-header>
 	<img src="https://icotar.com/avatar/genesis" slot="logo" />
 </foundation-header>
 ```
-The `src` of your `img` tag would reference the image that you want to display. Adding an `img` in this slot will update the logo in both the navigation bar and the flyout.
+The `src` of your `img` tag identifies the image that you want to display. Adding an `img` in this slot updates the logo in both the navigation bar and the flyout.
 
-### Navigation Items
+### Navigation items
 
-Navigation items can be added to the left hand side of the navigation bar. Add in elements and set `slot="routes"` attribute on each element, and then navigation can be controlled via their `@click` event. The following is a really basic example for adding a 'Home' button:
+You can add navigation items can be added to the left-hand side of the navigation bar. For each element, you can set `slot="routes"` attribute, so that navigation is controlled via a `@click` event. The following is a really basic example for adding a 'Home' button:
+
 ```javascript
 html`
 <foundation-header
@@ -118,9 +122,9 @@ html`
 	>Home</zero-button>
 ></foundation-header>`;
 ```
-The `navigation` object referenced via the `parent` object is why the `navigation` object is added as an attribute to the `fast-router` in the [setup step](#header-setup). From it the `navigateTo` method can be called which allows the user to navigate around the finished application from the navigation buttons.
+The `navigation` object referenced via the `parent` object is why the `navigation` object is added as an attribute to the `fast-router` in the [setup step](#header-setup). From it, the `navigateTo` method can be called, which allows the user to navigate around the finished application from the navigation buttons.
 
-Moving on from this basic example, a dynamic set of routes can be configured leveraging the `repeat` directive from FAST.
+Moving on from this basic example, a dynamic set of routes can be configured, using the `repeat` directive from FAST.
 
 - Add the routes configuration into an array in the router configuration class.
 ```javascript
@@ -137,7 +141,9 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 }
 ```
 
-- When setting the navigation items use the `repeat` directive to iterate over the defined routes and create a navigation item for each. The following example creates a button with an associated logo for each of the three defined routes:
+- When setting the navigation items, use the `repeat` directive to iterate over the defined routes and create a navigation item for each. 
+
+The following example creates a button with an associated logo for each of the three defined routes:
 
 ```javascript
 html`
@@ -159,9 +165,9 @@ html`
 ></foundation-header>`;
 ```
 
-### Control Buttons
+### Control buttons
 
-There are three control buttons which can be shown or hidden on the right hand side of the navigation bar (hidden by default). Each one of them are boolean attributes which can be added where the `<foundation-header>` tag is defined, and each one dispatches an associated event when clicked.
+There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (these are hidden by default). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined. Each one dispatches an associated event when clicked.
 
 | Logo          | Toggle Attribute             | Dispatched Event          |
 |---------------|------------------------------|---------------------------|
@@ -195,9 +201,9 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 `;
 ```
 
-### Menu Contents
+### Menu contents
 
-To set the content of the flyout menu, add the content in the html within an element with the `slot="menu-contents"` attribute.
+To set the content of the flyout menu, add the content in the html within an element that has the `slot="menu-contents"` attribute.
 ```html
 <foundation-header>
 	<div slot="menu-contents">
