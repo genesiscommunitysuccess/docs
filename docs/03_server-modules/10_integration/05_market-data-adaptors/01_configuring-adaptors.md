@@ -29,7 +29,7 @@ The majority of customisable logic is specified within the xml file as groovy co
 
 ### Pre-expression[​](https://internal-web/secure/creating-applications/defining-your-application/integrations/market-data/adaptors/common-config/#pre-expression "Direct link to heading")
 
-The pre expression is a groovy code block executed before any other code block specified in the file. You can use this expression to define any utility functions you wish to use within your other code.
+The pre-expression is a groovy code block executed before any other code block specified in the file. You can use this expression to define any utility functions you wish to use within your other code.
 
 ```
 <preExpression>    <![CDATA[        import org.joda.time.format.DateTimeFormat        import org.joda.time.format.DateTimeFormatter        import org.joda.time.DateTime        import org.joda.time.LocalTime        import org.apache.commons.lang3.time.DateUtils        class DateTimeHelper {           private final static DateTimeFormatter fullDateFormatter = DateTimeFormat.forPattern("dd MMM yyyy HH:mm:ss")           private final static DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HH:mm:ss")           private final static DateTimeFormatter fullDateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")           public static DateTime fullDateTimeConverter(String date, String time){            return DateTime.parse("${date} ${time}", DateTimeHelper.fullDateFormatter)           }           public static DateTime timeToDateTimeConverter(String time){            return LocalTime.parse(time, DateTimeHelper.timeFormatter).toDateTimeToday()           }           public static DateTime dateTimeToDateTimeConverter(String time){            return DateTime.parse(time, DateTimeHelper.fullDateTimeFormatter)           }        }    ]]></preExpression>
@@ -57,7 +57,7 @@ Each subscription has a `where` element, where you can define a code block for
 <where>    <![CDATA[    recordExists(ips)    ]]></where>
 ```
 
-Each subscription has a number of `record` elements defined within a `records` element. These elements define the destination that market data will be published to, i.e. which tables.
+Each subscription has a number of `record` elements defined within a `records` element. These elements define the destination that market data will be published to (i.e. which tables).
 
 A `record` has the following attributes.
 
