@@ -1,8 +1,7 @@
 ---
-title: 'Low Code'
-sidebar_label: 'OVERVIEW'
-sidebar_position: 1
-id: 'introduction'
+title: 'X Language'
+sidebar_label: 'X Language'
+id: x-language
 ---
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry.

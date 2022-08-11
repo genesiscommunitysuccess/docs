@@ -19,7 +19,7 @@ The exercise is in the following steps:
 Before you start, you need to have:
 
 - An IDE (preferably IntelliJ)
-- NodeJS version 16 or later (see our [recommended software packages](https://docs.genesis.global/secure/creating-applications/getting-ready-to-develop/workstation-setup/#recommended-software-packages) for versioning information)
+- NodeJS version 16 or later (see our [recommended software packages](/low-code/prerequisites/hardware-and-software/) for versioning information)
 - Credentials for accessing Genesis Artifactory. If necessary, contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login)
 - A gradle.properties file inside a **.gradle** folder on your user directory; this file must contain your Genesis Artifactory password in clear text:
 
@@ -44,7 +44,7 @@ We are going to call this example application **alpha**. You will see this refle
 
 The GenX CLI tool enables you to seed projects, in this case we want to generate a blank DSL application project.
 
-For step-by-step instructions on how to install and use this tool, follow the guide on [GenX](https://docs.genesis.global/secure/creating-applications/creating-a-new-project/recommended-full-stack-project-setup/using-genx/).
+For step-by-step instructions on how to install and use this tool, follow the guide on [GenX](/low-code/prerequisites/genx-new-project/).
 
 Once configured, install genx using the following command:
 
