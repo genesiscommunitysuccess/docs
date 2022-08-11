@@ -26,7 +26,7 @@ Views are very powerful and in this training we're going to cover just the basic
 
 ### Entities
 
-During code generation, [view](/creating-applications/defining-your-application/data-model/views/views-define/) and [index entities](/reference/developer/api/database/how-to/data-types/indices/) will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
+During code generation, [view](/reference/developer/api/database/how-to/data-types/views/) and [index entities](/reference/developer/api/database/how-to/data-types/indices/) will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
 
 The generated entities are kotlin data classes and can be built using the primary constructor (so you can also import Views in your Java/Kotlin code as well). Just before the object is built, it is validated to make sure all required fields have been set.
 

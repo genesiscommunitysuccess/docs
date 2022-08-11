@@ -8,9 +8,9 @@ sidebar_position: 3
 This day covers:
 
 - [Quick review of the platform​](#quick-review-of-the-platform)
-- [Setting up Workstation and Environment](#setting-up-workstation-and-environment)
+- [Setting up Workstation and Environment](/tutorials/training-resources/environment-setup/)
 - [Developing your first application​​](#developing-your-first-application)
-- [Testing the back end​​](#testing-the-backend)
+- [Testing the back end​​](/tutorials/training-resources/training-content-day1/#testing-the-back-end)
 
 
 ## Quick review of the platform
@@ -602,7 +602,7 @@ Remember to insert a few trades using Genesis Console to test it.
 20 mins
 :::
 
-Look at the [Event Handler documentation](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/#returning-a-nack) and see if you are able to modify our Event Handler [defined previously](/tutorials/training-resources/training-content-day1/#event-handler):
+Look at the [Event Handler documentation](/creating-applications/defining-your-application/business-logic/event-handlers/eh-technical-details/) and see if you are able to modify our Event Handler [defined previously](/tutorials/training-resources/training-content-day1/#event-handler):
 - return `nack("Quantity must be positive")` if the quantity is lower than 0.
 
 Test it with Genesis Console.
