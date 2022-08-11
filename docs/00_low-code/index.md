@@ -1,6 +1,6 @@
 ---
 title: 'Low Code'
-sidebar_label: 'Overview'
+sidebar_label: 'OVERVIEW'
 sidebar_position: 1
 id: 'introduction'
 ---

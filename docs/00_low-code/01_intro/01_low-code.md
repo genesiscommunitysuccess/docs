@@ -1,6 +1,6 @@
 ---
-title: 'Low Code Introduction'
-sidebar_label: 'Low Code Introduction'
+title: 'The Low-Code Platform'
+sidebar_label: 'The Low-Code Platform'
 id: low-code-intro
 ---
 
