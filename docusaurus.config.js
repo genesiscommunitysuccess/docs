@@ -78,11 +78,11 @@ module.exports = {
     navbar: {
       items: [
         {to: 'getting-started', label: 'Learning'},
-        {to: 'low-code', label: 'Low Code'},
         {to: 'database/database-landing', label: 'Database'},
         {to: 'server-modules', label: 'Server Modules'},
         {to: 'front-end', label: 'Front End'},
         {to: 'operations', label: 'Operations'},
+        {to: 'low-code', label: 'Low Code'},
         {to: 'blog', label: 'Updates'},
         {
           href: "https://stackoverflow.com/",
