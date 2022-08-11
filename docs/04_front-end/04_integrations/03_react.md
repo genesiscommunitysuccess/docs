@@ -115,7 +115,9 @@ Decorators are an upcoming feature planned for a future version of JavaScript, b
 
 While there are size implications of using decorators prior to full language support, they do present the most declarative and readable form of the API, and we recommend their use for the average project. To strike a balance between declarative readability and size, we recommend that TypeScript be used in combination with the `"importHelpers": true` compiler option. When this option is set, instead of generating helper functions for decorators into every file, TypeScript will import a set of shared helpers published in the `tslib` package.
 
-For those that require the smallest possible builds, FAST Elements can be completely defined in Vanilla JS, without using decorators, by leveraging a static `definition` field on your class. The `definition` field only needs to present the same configuration as the `@customElement` decorator. Here's an example that shows the use of the `definition` field along with a manual call to `define` the element:
+For those who require the smallest possible builds, FAST Elements can be completely defined in Vanilla JS, without using decorators; to do this, use a static `definition` field on your class. The `definition` field only needs to present the same configuration as the `@customElement` decorator. 
+
+Here's an example that shows the use of the `definition` field along with a manual call to `define` the element:
 
 ```js
 import { FoundationElement, html, css } from '@genesislcap/foundation-ui';
@@ -165,7 +167,7 @@ React's synthetic eventing system comes with an unfortunate side-effect of being
 
 [@skatejs/val](https://github.com/skatejs/val) is a small library that wraps React's `createElement` function and provides the ability direct React *props* explicitly to HTML attributes, DOM properties, or to declarative event listeners.
 
-Another good option is [reactify-wc](https://github.com/BBKolton/reactify-wc). It provides similar capabilities as `@skatejs/val` but does so by creating component wrappers.
+Another good option is [reactify-wc](https://github.com/BBKolton/reactify-wc). It provides similar capabilities as `@skatejs/val`, but does so by creating component wrappers.
 
 ### TypeScript and TSX support
 
