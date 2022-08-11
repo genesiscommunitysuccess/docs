@@ -4,10 +4,9 @@ sidebar_label: 'PostgreSQL'
 id: postgresql
 ---
 
-PostgreSQL
-==========
 
-The Genesis low-code platform supports [PostgreSQL](/database/database-technology/postgresql/). To connect to it, use the [common SQL](/database/database-technology/sql/) configuration properties.
+
+The Genesis low-code platform supports [PostgreSQL](https://www.postgresql.org/). To connect to it, use the [common SQL](/database/database-technology/sql/) configuration properties.
 
 System definitions[​](/database/database-technology/postgresql/#system-definitionsdirect-link-to-heading)
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
