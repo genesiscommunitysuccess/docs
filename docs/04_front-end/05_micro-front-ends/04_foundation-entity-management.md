@@ -97,13 +97,11 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 
 ### Icon
 
-By default the Navigation Bar and Flyout Menu will show the Genesis logo. You can override this by setting an `img` tag with the `slot="logo"` attribute. For example:
+By default the Navigation Bar and Flyout Menu will show the Genesis logo. You can override this by setting the `logo-src` attribute on the header. For example:
 ```html
-<foundation-header>
-	<img src="https://icotar.com/avatar/genesis" slot="logo" />
-</foundation-header>
+<foundation-header logo-src="https://icotar.com/avatar/genesis"></foundation-header>
 ```
-The `src` of your `img` tag would reference the image that you want to display. Adding an `img` in this slot will update the logo in both the navigation bar and the flyout.
+The `log-src` would reference the image that you want to display. Adding this attribute will update the logo in both the navigation bar and the flyout.
 
 ### Navigation Items
 
