@@ -4,7 +4,7 @@ sidebar_label: 'Code snippets'
 id: code-snippets
 ---
 
-The following code snippets can be imported into IntellJ to speed up repetitive development tasks, mainly around the declaration of Genesis scripts and configuration.
+The following code snippets can be imported into IntelliJ to speed up repetitive development tasks, mainly around the declaration of Genesis scripts and configuration.
 
 To import the below live templates, download the Genesis [settings.zip](/file/settings.zip) file and import this into your IDE. This can be done by selecting `File > Manage IDE Settings > Import Settings`.
 
