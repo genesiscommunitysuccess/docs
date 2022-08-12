@@ -9,7 +9,7 @@ sidebar_position: 2
 
 ### Workstation setup
 
-Please note that you will need temporary administrator privileges on your workstation during the installation and setup of the dependencies listed here.
+Please follow these instructions very carefully to ensure your environment is ready for a productive training. It's not necessary to have admin rights on your workstation to develop with the Genesis Platform, but you may have to check with your System Administrator how to install the required third-party software listed here.
 
 #### Recommended hardware and operating system
 
@@ -52,7 +52,7 @@ This requires credentials for accessing Genesis Artifactory. If you have not bee
 
  ![](/img/set-me-up.png)
 
- 7. Scroll down _inside_ the Set Me Up dialog. At the bottom of the page, you will find a code sample for .npmrc, which contains your scope information, including user name an encrypted password. Copy this and paste it into the file you created in the previous step. For reference, the snippet should look something like this (but **don't** copy the one below - because it contains dummy information!):
+ 7. Scroll down _inside_ the Set Me Up dialog. At the bottom of the page, you will find a code sample for .npmrc, which contains your scope information, including user name an encrypted password. Copy this and paste it into the file you created in the previous step. For reference, the snippet should look something like this (but **don't copy the one below** - because it contains dummy information!):
 
 ```shell
 @<SCOPE>:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/
@@ -65,7 +65,7 @@ This requires credentials for accessing Genesis Artifactory. If you have not bee
 8. Replace `<SCOPE>` with `genesislcap`, so that the line reads:
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
 
-9. Save the file and **open a terminal as administrator** under the directory path of this `.npmrc` file and type:
+9. Save the file and under the directory path of this `.npmrc` file and type:
 `npm info @genesislcap/foundation-ui`. If set-up was successful, you should see a response like this:
 
 ```shell
@@ -78,8 +78,8 @@ Please make sure:
 - if you're behind a corporate network, you may need to setup a proxy:
 ```shell
 npm config set proxy http://proxy_host:port
-npm config set https-proxy https://proxy.company.com:8080
-npm config set https-proxy http://proxy.company.com:8080
+npm config set https-proxy https://proxy_host:port
+npm config set https-proxy http://proxy_host:port
 ```
 :::
 
@@ -127,8 +127,22 @@ Make sure you have a gradle.properties file inside a **.gradle** folder on your 
 genesisArtifactoryUser=<your-artifactory-user>
 genesisArtifactoryPassword=<your-artifactory-password>
 ```
-:::tip
-This is the same credential you used in *step 6* above.
+
+Use the same credential you used in *step 6* above.
+:::caution proxy settings
+If you are behind a corporate proxy, make sure to add your proxy settings to the gradle.properties file as well. For example:
+```shell
+systemProp.https.proxyHost=proxy_hostname_here
+systemProp.https.proxyPort=proxy_port_here
+systemProp.https.proxyUser=your_proxy_user_here
+systemProp.https.proxyPassword=your_proxy_password_here
+#if behind an NTLM authenticated proxy, add the next line:
+#systemProp.https.auth.ntlm.domain=your_network_domain_here
+```
+
+If you are unsure on what settings to use, please contact your IT support.
+
+More information [here](https://docs.gradle.org/current/userguide/build_environment.html#sec:accessing_the_web_via_a_proxy).
 :::
 
 ### Local server setup
