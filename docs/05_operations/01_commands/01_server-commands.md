@@ -52,5 +52,3 @@ RenameFields -i PRICE -o FIRST_NAME
 ```
 
 This would result in an error as PRICE is of type DOUBLE while FIRST_NAME is of type STRING.
-The following error will be logged:
-`The following input -> output fields don't have matching attributes:`
