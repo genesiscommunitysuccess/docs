@@ -17,10 +17,11 @@ There are two different types of SSO authentication presently supported by the G
 
 To enable SSO, you will need to configure it in your application's **-auth-preferences.kts** file.
 
-These following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Login Authentication section](/server-modules/access-control/login-authentication/).
+These following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Password Authentication section](/server-modules/access-control/password-authentication/).
 
 ### sso
 The `sso` function allows you to configure and enable SSO options. It has the following variables to set:
+
 * `enabled` is a boolean value that defines whether the SSO functionality is enabled. Default: true when the `sso` function is invoked, otherwise false.
 * `newUserMode` defines behaviour for processing users the first time they log in with SSO. This can take the values of `NewUserMode.REJECT`, `NewUserMode.CREATE_ENABLED`, `NewUserMode.CREATE_DISABLED`. Default `NewUserMode.REJECT`.
   * In the case of `NewUserMode.REJECT`, when a user logs in for the first time with SSO, if they do not already have a user account, they are rejected.
@@ -29,6 +30,7 @@ The `sso` function allows you to configure and enable SSO options. It has the fo
 
 ### passwordRetry
 The `passwordRetry` function allows you to configure settings for limiting the rate at which a user can retry passwords and SSO tokens. It allows the following variables to be set:
+
 * `maxAttempts` defines the maximum number of attempts allowed if a user enters an incorrect SSO token. Default: 3
 * `waitTimeMins` specifies the time to wait when the maximum number of incorrect attempts is reached. Default: 5.
 

@@ -8,9 +8,9 @@ The Genesis low-code platform has a collection of access control mechanisms to l
 
 Applications built on the system use both authentication and authorisation solutions to verify user identities and their permission to interact with the application, and underlying data.
 
-This is done through a pair of authentication functions, both Single Sign-On (SSO) authentication and a configurable login authentication.
+This is done through a variety of authentication functions, including Single Sign-On (SSO) authentication, username and password authentication, and Multi-factor authentication.
 
-The login authentication can be configured to use an internal store of users, LDAP to communicate with an external service, or a combination of both.
+The password authentication can be configured to use an internal store of users, LDAP to communicate with an external service, or a combination of both.
 
 For more information about LDAP, see [Wikipedia](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol).
 

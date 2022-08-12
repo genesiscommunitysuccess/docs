@@ -1,10 +1,10 @@
 ---
-title: 'Login Authentication'
-sidebar_label: 'Login Authentication'
-id: login-authentication
+title: 'Username and Password Authentication'
+sidebar_label: 'Username and Password Authentication'
+id: password-authentication
 ---
 
-We will now go through the various configuration options available for login authentication. These are located in your application's **auth-preferences.kts** file.
+We will now go through the various configuration options available for authentication. These are located in your application's **auth-preferences.kts** file.
 
 All of these configuration settings are wrapped within the `security` function.
 
@@ -25,14 +25,14 @@ security {
 }
 ```
 
-From within `security` we can also invoke the further functions in order to configure our login authentication. These are detailed below.
+From within `security` we can also invoke the further functions in order to configure our username and password authentication. These are detailed below.
 
 ### authentication
 The `authentication` function is used to define common features of all three types of authentication. Within it, many variables can be set, but their use depends on the value given to the `type` variable.
 
-* `type` indicates which of the three types of login authentication to be used. It accepts the values of: `AuthType.INTERNAL`, `AuthType.LDAP` or `AuthType.HYBRID`. Default: `AuthType.INTERNAL`.
+* `type` indicates which of the three types of username and password authentication to be used. It accepts the values of: `AuthType.INTERNAL`, `AuthType.LDAP` or `AuthType.HYBRID`. Default: `AuthType.INTERNAL`.
 
-For more information on each of these three authentication types, please see [login authentication](server-modules/access-control/authentication-overview/#login-authentication).
+For more information on each of these three authentication types, please see the [authentication overview](server-modules/access-control/authentication-overview/#username-and-password-authentication).
 
 The following variables are used to configure an LDAP connection; thus are only used when `type` is either `AuthType.LDAP` or `AuthType.HYBRID`.
 
@@ -88,7 +88,8 @@ Within this function, the following variables can be set:
 * `passwordExpiryNotificationDays` specifies how many days before their password expiry, a user is notified. If null or undefined a user not notified in advance of their password expiry. Default: null.
 
 ### passwordRetry
-The `passwordRetry` function allows you configure settings for limiting the rate at which a user can retry passwords. It allows the following variables to be set:
+The `passwordRetry` function allows you to configure settings for limiting the rate at which a user can retry passwords. It allows the following variables to be set:
+
 * `maxAttempts` specifies the maximum number of attempts allowed if a user enters a wrong password. Default: 3 attempts.
 * `waitTimeMins` specifies the time to wait in minutes when the maximum number of incorrect attempts is reached, before allowing a user to try again. Default: 5 minutes.
 

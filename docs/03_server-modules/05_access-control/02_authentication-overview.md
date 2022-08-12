@@ -4,12 +4,9 @@ sidebar_label: 'Authentication Overview'
 id: authentication-overview
 ---
 
-Authentication can be performed through two techniques:
+Authentication can be performed within applications built on the Genesis low-code platform through many techniques. All of these techniques support [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication) to bring additional security.
 
-* Login authentication
-* SSO authentication
-
-Login authentication can be further specified to use one of three solutions:
+Username and Password authentication can be further specified to use one of three solutions:
 
 * INTERNAL
 * LDAP
@@ -24,9 +21,9 @@ All of these, provide their own configuration settings in the _your-application-
 
 So, if your application is called positions, then the file would conventionally be named **positions-auth-preferences.kts**.
 
-## Login authentication
+## Username and password authentication
 
-Login authentication allows users to log in directly to the application built on the Genesis low-code platform. This requires you to choose one of the provided solutions in order control this process.
+Username and password authentication allows users to log in directly to the application built on the Genesis low-code platform. This requires you to choose one of the provided solutions in order control this process.
 
 To specify which one to use, just edit the application's **auth-preferences.kts** file and change the `type` variable in the `authentication` block to match the required value. For example:
 
@@ -79,9 +76,7 @@ For LDAP authentication, a username must exist inside the internal records of th
 
 To set up LDAP authentication the `authentication` block of the **auth-preferences.kts** file will need to be configured.
 
-For more information on configuring LDAP authentication, please see [login authentication](/server-modules/access-control/login-authentication/#authentication).
-
-# FIX LINK
+For more information on configuring LDAP authentication, please see [Username and password authentication](/server-modules/access-control/password-authentication/#authentication).
 
 The example below shows LDAP authentication specified, with **userIdType** set to **cn** for the search for the username.
 
@@ -131,4 +126,4 @@ SSO authentication allows users to use a single set of credentials to access a r
 
 SSO authentication is a more involved process to enable; thus requires additional file changes detailed in [SSO Authentication](server-modules/access-control/sso-authentication/).
 
-Both SSO and login authentication can be used concurrently by applications built on the platform; the use of one does not mandate nor prevent the use of the other.
+Both SSO and password authentication can be used concurrently by applications built on the platform; the use of one does not mandate nor prevent the use of the other.
