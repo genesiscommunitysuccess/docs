@@ -83,7 +83,7 @@ consolidator($LISTEN_TABLE$, $AGGREGATION_TABLE$) {
 </td>
 </tr>
 <tr>
-<td>csvs</td>
+<td>dpcsv</td>
 <td>Data Pipeline</td>
 <td>
 
@@ -118,7 +118,7 @@ eventHandler<$TYPE$>("$NAME$") {
 </td>
 </tr>
 <tr>
-<td>jsons</td>
+<td>dpjson</td>
 <td>Data Pipeline</td>
 <td>
 
@@ -135,7 +135,7 @@ json("") {
 </td>
 </tr>
 <tr>
-<td>mssqls</td>
+<td>dpmssql</td>
 <td>Data Pipeline</td>
 <td>
 
@@ -155,7 +155,7 @@ msSql("") {
 </td>
 </tr>
 <tr>
-<td>oracles</td>
+<td>dporacle</td>
 <td>Data Pipeline</td>
 <td>
 
@@ -175,7 +175,7 @@ oracle("") {
 </td>
 </tr>
 <tr>
-<td>psqls</td>
+<td>dppsql</td>
 <td>Data Pipeline</td>
 <td>
 
@@ -195,7 +195,7 @@ postgres("") {
 </td>
 </tr>
 <tr>
-<td>xmls</td>
+<td>dpxml</td>
 <td>Data Pipeline</td>
 <td>
 
