@@ -92,6 +92,7 @@ If they are all empty, you can omit the entire `emailDistribution` JSON object.
     "to": ["jason <jason@email.com>", "carol@email.com>"],
     "cc": ["susan@email.com", "Tom <tom@email.com>"],
     "bcc": []
+  }
 } 
 ```
 
@@ -142,6 +143,7 @@ The data is all on one single line. It has three strings, and the third string h
     "cc": ["susan@email.com", "Tom <tom@email.com>"],
     "bcc": [],
     "contents" : "Content of Message Here"
+  }
 } 
 ```
 
