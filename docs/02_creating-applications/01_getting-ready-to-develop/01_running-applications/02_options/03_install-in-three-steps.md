@@ -2,7 +2,7 @@
 id: install-in-three-steps
 sidebar_label: Install in three easy steps
 sidebar_position: 3
-title: Install in three easy steps
+title: Install in four easy steps
 
 ---
 To install the Genesis low-code platform on your server, go through the following steps.
@@ -74,8 +74,12 @@ auth    genesis
 [foxtrot@genesisserv1 run]$
 ```
 
+### 3. Update system definition
 
-### 3. Run genesisInstall
+We must make a small edit to the system configuration file found at the following URI: `site-specific/cfg/genesis-system-definition.kts`.
+Remove the current host configuration items and replace them with the name of your own host.
+
+### 4. Run genesisInstall
 
 The script does all the hard work for you. Just run `genesisInstall`.
 
