@@ -5,7 +5,7 @@ sidebar_label: Installing An Application
 sidebar_position: 2
 
 ---
-This document describes installing an application build with Genesis frameworks.  It is written for a reader with some
+This document describes installing an application built with Genesis frameworks.  It is written for a reader with some
 Linux system administration experience.
 
 ## Installing build artifacts
