@@ -28,7 +28,8 @@ genesisArtifactoryUser=<your-artifactory-user>
 genesisArtifactoryPassword=<your-artifactory-password>
 ```
 
-- A local or cloud Linux environment for runtime, which has a user created with the name of the application, e.g. [setup and host on WSL](https://docs.genesis.global/secure/creating-applications/getting-ready-to-develop/running-applications/options/using-wsl-setup/)
+- [.npmrc file configured to access Genesis packages](/low-code/prerequisites/hardware-and-software/#npmrc-set-up)
+- A local or cloud Linux environment for runtime, which has a user created with the name of the application, e.g. [setup and host on WSL](/low-code/prerequisites/do-you-need-wsl/#setting-up)
 - Foundation DB must be running on this environment
 
 ## What you will build
@@ -44,9 +45,7 @@ We are going to call this example application **alpha**. You will see this refle
 
 The GenX CLI tool enables you to seed projects, in this case we want to generate a blank DSL application project.
 
-For step-by-step instructions on how to install and use this tool, follow the guide on [GenX](/low-code/prerequisites/genx-new-project/).
-
-Once configured, install genx using the following command:
+Install it using the following command:
 
 ```shell
 npm uninstall -g @genesislcap/foundation-cli
