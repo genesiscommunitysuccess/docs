@@ -18,8 +18,8 @@ RenameFields [-i <[current name of field]>] [-o  <[new name of field]>]
 
 | Argument | Argument long name | Mandatory | Description                              | Restricted values |
 |----------|--------------------|-----------|------------------------------------------|-------------------|
-| -i       | --input            | yes       | name of field that you want to change    |                   |
-| -o       | --output           | yes       | name you want the field to be changed to |                   |
+| -i       | --input            | yes       | name of field that you want to change    | No                |
+| -o       | --output           | yes       | name you want the field to be changed to | No                |
 
 
 
