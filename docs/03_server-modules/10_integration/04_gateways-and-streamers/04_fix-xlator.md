@@ -66,7 +66,7 @@ fixStream("CUSTOM", CUSTOM_FIX.FIX_INDEX, CUSTOM_FIX.DATA, ExecutionReport::clas
 
 When using the FIX_IN table, the appropriate index and column are selected automatically.
 
-When specifying a message type, this will become a filter on type, so the "EXECUTION_REPORT" stream will only stream execution reports. Also, the fields can now be accessed in a type-safe manner:
+When specifying a message type, this will become a filter on type, so the "EXECUTION_REPORT" stream will only stream execution reports. The fields can now be accessed in a type-safe manner:
 
 ```kotlin
 fixStream<ExecutionReport>("EXECUTION_REPORT_VODL") {

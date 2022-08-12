@@ -56,7 +56,7 @@ You can define the following blocks to transform the stream:
 
 **Where**
 
-Using where, the stream can be filtered. It is available in two versions: one that just has the streamed row as a parameter, and one that also has the logon message.
+Using where, the stream can be filtered. It is available in two versions: one that has the streamed row as a parameter, and one that also has the logon message.
 
 Here, we only stream orders with a quantity greater than 1,000.
 ```kotlin

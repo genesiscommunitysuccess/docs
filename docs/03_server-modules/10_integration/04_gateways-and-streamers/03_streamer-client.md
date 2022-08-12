@@ -51,13 +51,13 @@ This example takes a message from a Streamer and sends it to `QUOTE_EVENT_HANDLE
 ### Properties
 You can set the following properties in a Streamer Client:
 
-`isReplayable`. This flag determines if the stream is replayable. Default value is `false`
+* `isReplayable`. This flag determines if the stream is replayable. Default value is `false`
 
-`eventHandlerBuffer`. This specifies how many messages to buffer for the Event Handler. If the Event Handler fails to respond after this number of messages is reached, the Streamer stops sending messages. Default value is 50
+* `eventHandlerBuffer`. This specifies how many messages to buffer for the Event Handler. If the Event Handler fails to respond after this number of messages is reached, the Streamer stops sending messages. Default value is 50
 
-`sentWarningRange`. Specifies a range that controls the status of the Streamer process.  If an Event Handler takes too long to respond, the process status will go to either warning or error.
+* `sentWarningRange`. This specifies a range that controls the status of the Streamer process.  If an Event Handler takes too long to respond, the process status will go to either warning or error.
 
-`receiveWarndingRange`. Specifies a range that controls the status of the Streamer process.  If an Event Handler takes too long to respond, the process status will go to either warning or error.
+* `receiveWarndingRange`. This specifies a range that controls the status of the Streamer process.  If an Event Handler takes too long to respond, the process status will go to either warning or error.
 
 ## Types of streamer client
 
@@ -98,7 +98,7 @@ streamerClient(clientName = "CLIENT", selectionField = "SYMBOL", type = INTEGER)
 streamerClient(clientName = "CLIENT", selectionField = "SYMBOL") { ... }
 ```
 
-## The `onMessage` block
+## The onMessage block
 The `onMessage` tag defines what the Streamer Client does with your message. It has two operations:
 
 * where
