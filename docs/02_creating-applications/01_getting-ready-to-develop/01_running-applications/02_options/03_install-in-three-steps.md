@@ -20,7 +20,7 @@ We describe the recommended steps below, but you can also see the process in a n
 
 You must start with a server with the operating system and relevant packages installed. Genesis supplies the rpm to simplify the installation. Everything you need is in the rpm, and nothing is downloaded when you install it.
 To install the rpm, you need a privileged user account.
-In our example, the rpm is called **genesis-platform-5.1.0-1.x86_64.rpm**.
+In our example, the rpm is called **genesis-platform-6.0.1-1.x86_64.rpm**.
 
 ### 1. Give the user account a name
 
@@ -35,7 +35,7 @@ echo "genesis_user=foxtrot" >> /tmp/genesis_install.conf
 Now you can `sudo yum` and install the rpm.
 
 ```bash
-sudo yum --nogpgcheck localinstall genesis-platform-5.1.0-1.x86.rpm
+sudo yum --nogpgcheck localinstall genesis-platform-6.0.1-1.x86.rpm
 ```
 
 This creates the user account and makes all the recommended security settings. Additionally, it creates the required directory structure and unpacks all the zipped files.
@@ -44,7 +44,7 @@ When the process has finished, you can go to the root directory and see the user
 
 ```bash
 Installed:
-   genesis-platform.x86_64 0:5.1.0-1
+   genesis-platform.x86_64 0:6.0.1-1
 
 Complete!
 [centos@genesisserv1 tmp]$ cd
