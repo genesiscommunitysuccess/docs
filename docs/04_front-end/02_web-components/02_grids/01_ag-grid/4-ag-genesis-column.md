@@ -6,7 +6,7 @@ title: Genesis AG Column
 This is a `slotted` component that allows a more "visual approach" when defining columns. Each `ag-column` takes a `ColDef` typed object that is an exact match to the official AG Grid's [Column Definition](https://www.ag-grid.com/javascript-data-grid/column-definitions/).
 
 :::tip 
-Customizing column definitions using this approach is useful when on **connected data** cases, where the data will be dynamic but there's still a need for extra definitions (e.g. events, transformers, etc).
+Customising column definitions using this approach is useful when on **connected data** cases, where the data will be dynamic but there's still a need for extra definitions (e.g. events, transformers, etc).
 :::
 
 ## Usage
