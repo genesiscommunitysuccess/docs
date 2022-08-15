@@ -41,7 +41,7 @@ Note that both the `$` signs are escaped (`\$`) to prevent Kotlin from injecting
 
 The route then processes the file using the `FileEventHandlerProcessor` created by the `createProcessor` method through the `fileEventProcessorProvider`. A similar method and class exists for handling the processing of [Kafka](https://kafka.apache.org/) messages and CSV files.
 
-This processing will then send an "EVENT_FILE_IMPORT_EXAMPLE" message to the "EXAMPLE_EVENT_HANDLER" process, with a `dataFieldName` of "FILE", expecting it to be handled by an appropriate `requestReply` in your [Request Server](/server-modules/request-server/basics/).
+This processing will then send an "EVENT_FILE_IMPORT_EXAMPLE" message to the "EXAMPLE_EVENT_HANDLER" process, with a `dataFieldName` of "FILE", expecting it to be handled by an appropriate `requestReply` in your [Request Server](/server-modules/request-server/introduction/).
 
 ### createProcessor
 The `createProcessor` on both the `FileEventProcessorProvider` and `KafkaEventProcessorProvider` has the same parameters. However, the `createProcessor` of the `CSVEventProcessorProvider` has slightly different parameters.
@@ -49,7 +49,7 @@ The `createProcessor` on both the `FileEventProcessorProvider` and `KafkaEventPr
 The parameters for `createProcessor` on the `FileEventProcessorProvider` and `KafkaEventProcessorProvider` are:
 
 * `processName` is the name of the process to which you are attempting to send a request to.
-* `messageType` is the type of message sent to the above process. This is important for ensuring the correct `requestReply` in your [Request Server](/server-modules/request-server/basics/) handles this request.
+* `messageType` is the type of message sent to the above process. This is important for ensuring the correct `requestReply` in your [Request Server](/server-modules/request-server/introduction/) handles this request.
 * `dataFieldName` is the name of the parameter that contains the data of the file or kafka events, when sent to the reqrep.
 * `sourceId` is the source of this request.
 * `replyCallback` is an optional parameter. It allows you to define a custom `Consumer` and behaviour on the response of the `requestReply`. By default, without setting this parameter, a consumer is constructed that logs `EVENT_NACK` messages from the `requestReply`, with the request set.
@@ -57,11 +57,12 @@ The parameters for `createProcessor` on the `FileEventProcessorProvider` and `Ka
 The parameters for `createProcessor` on the `CSVEventProcessorProvider` are:
 
 * `processName` is the name of the process to which you are attempting to send a request to.
-* `messageType` is the type of message sent to the above process. This is important for ensuring that the correct `requestReply`  in your [Request Server](/server-modules/request-server/basics/) handles this request.
+* `messageType` is the type of message sent to the above process. This is important for ensuring that the correct `requestReply`  in your [Request Server](/server-modules/request-server/introduction/) handles this request.
 * `sourceId` is the source of this request.
 * `separator` allows you to define which character is used as a separator.
 * `ignoreHeaders` is an optional Boolean parameter, defaulting to false. If set to true, the first row of the csv will be ignored, and not parsed as part of the CSV.
 * `replyCallback` is an optional parameter. It allows you to define a custom `Consumer` and behaviour on the response of the `requestReply`. By default, without setting this parameter, a consumer is constructed that logs `EVENT_NACK` messages from the `requestReply`, with the request set.
 * `charset` is an optional parameter defaulting to UTF 8. This defines which character set the CSV is using.
 
-Note: if you want to ingest a CSV directly into GenesisDB rather than calling a Request Server, you might want to investigate the Genesis Data Pipeline [CSV source](/server-modules/integration/apache-camel/introduction/) first.
+Note: if you want to ingest a CSV directly into GenesisDB rather than calling a Request Server, you might want to
+investigate the Genesis Data Pipeline [CSV source](/server-modules/integration/data-pipeline/basics/) first.
