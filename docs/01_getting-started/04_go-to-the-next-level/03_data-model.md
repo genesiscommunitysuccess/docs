@@ -4,7 +4,7 @@ sidebar_label: 'Define the Data model using Fields, Tables and Views'
 id: data-model
 ---
 
-Hopefull the previous step finished with
+Hopefully, the previous step finished with:
 
 ```
 i Application created successfully! 🎉 Please open the application and follow the README to complete setup.
@@ -26,7 +26,7 @@ Once the project is open, there are two easy ways to find this file quickly in I
 
 :::
 
-For this application we will add the following fields:
+For this application, we will add the following fields:
 
 ```kotlin
 fields {
@@ -67,7 +67,7 @@ From the Gradle menu on the right of Intellij, this is:
 
 :::note Why do I have to run this Gradle task?
 
-You are editing a kts file that needs to be compiled and built to be used from other places. In this case, we want the fields to be available to the tables (and with intellisense support from the IDE).
+You are editing a kts file that needs to be compiled and built for use in other places. In this case, we want the fields to be available to the tables (and with intellisense support from the IDE).
 
 As we go, you'll see we have different Gradle tasks, depending on the artifact we want to build.
 :::
