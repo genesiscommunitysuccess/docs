@@ -18,7 +18,6 @@ The `security` function wraps all other variable and functions within the **auth
 
 ```kotlin
 security {
-  heartbeatIntervalSecs = 30 //30 seconds (not the default null)
   sessionTimeoutMins = 60 //60 minutes (not the default 30 minutes)
   expiryCheckMins = 10 //5 minutes (not the default 5 minutes)
   maxSimultaneousUserLogins = 5 //5 active sessions (not the default unlimited)
@@ -129,7 +128,6 @@ import global.genesis.gen.config.tables.USER_ATTRIBUTES.ADDRESS_LINE1
 import global.genesis.gen.config.tables.USER_ATTRIBUTES.USER_TYPE
 
 security {
-    heartbeatIntervalSecs = null
     sessionTimeoutMins = 30
     expiryCheckMins = 5
     maxSimultaneousUserLogins = 0
