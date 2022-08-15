@@ -1,7 +1,7 @@
 ---
-title: 'gpl-seed README'
-sidebar_label: 'gpl-seed README'
-id: gpl-seed-readme
+title: 'Create a Low-Code application'
+sidebar_label: 'Create a Low-Code application'
+id: create-low-code-application
 ---
 
 This short guide will enable you to build a very simple application using Genesis platform DSL (domain specific language).
@@ -14,7 +14,7 @@ The exercise is in the following steps:
 4. [Start the server](#4-start-the-server).
 5. [Create the application](#5-create-the-application).
 
-## Pre-requisites
+## Prerequisites
 
 Before you start, you need to have:
 
