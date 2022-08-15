@@ -24,14 +24,14 @@ val LOG: Logger
 
 ## A more advanced example Camel configuration
 
-Here is a more advanced example of a **\*-camel.kts** file. It defines 2 routes, and has an `onCommit` block, similar to those seen in [Event Handlers](/creating-applications/defining-your-application/business-logic/event-handlers/). This is because the `camel` block in Genesis functions as a type of Event Handler, reacting to `EVENT_CAMEL_SEND` message types. These events can be raised as normal with Genesis, allowing the Event Handler to be invoked from:
+Here is a more advanced example of a **\*-camel.kts** file. It defines 2 routes, and has an `onCommit` block, similar to those seen in [Event Handlers](/server-modules/event-handler/basics/). This is because the `camel` block in Genesis functions as a type of Event Handler, reacting to `EVENT_CAMEL_SEND` message types. These events can be raised as normal with Genesis, allowing the Event Handler to be invoked from:
 - other `eventHandler` codeblocks
 - the front end
 - custom components in the application.
 
 The Event Handler aspect of this example allows these events to be accessed easily from the Apache Camel route builder via the [SEDA component](https://camel.apache.org/components/3.16.x/seda-component.html).
 The example demonstrates use of the `LOG` and `rxEntityDb` properties noted above, while the last route demonstrates use
-of the `serviceDiscovery` helper to dispatch an event to an [Event Handler](/creating-applications/defining-your-application/business-logic/event-handlers/).
+of the `serviceDiscovery` helper to dispatch an event to an [Event Handler](/server-modules/event-handler/basics/).
 
 ```kotlin
 import global.genesis.jackson.core.GenesisJacksonMapper.Companion.csvIterator
@@ -91,8 +91,8 @@ camel {
 In the above example, the `onCommit` block reads from the properties in the received event, and uses the inbuilt `DefaultCamelSendTo*` classes to send the event message to an appropriate `seda:` endpoint. Details on the SEDA endpoint within Apache Camel can be found [here.](https://camel.apache.org/components/3.16.x/seda-component.html)
 
 ### routeHandler
-In the above example, we have three defined routes. In the first two, we are receiving data from the `seda:` endpoints and then processing it, using an inline-defined processor. This can be useful for quickly defining a processor that isn't used elsewhere. Compared to the previous example, the results of the SEDA endpoint are directly persisted as entities in the database, rather than being passed on to a [Request Server](/creating-applications/defining-your-application/user-interface/request-servers/request-servers/).
+In the above example, we have three defined routes. In the first two, we are receiving data from the `seda:` endpoints and then processing it, using an inline-defined processor. This can be useful for quickly defining a processor that isn't used elsewhere. Compared to the previous example, the results of the SEDA endpoint are directly persisted as entities in the database, rather than being passed on to a [Request Server](/server-modules/request-server/basics/).
 
-The third route demonstrates use of service discovery to locate another process assumed to be a [Genesis Event Handler](/creating-applications/defining-your-application/business-logic/event-handlers/) to which a message is then dispatched.
+The third route demonstrates use of service discovery to locate another process assumed to be a [Genesis Event Handler](/server-modules/event-handler/basics/) to which a message is then dispatched.
 
-Remember; if your use case is basic data ingestion, transformation and persistence to GenesisDB then you should first investigate the [Genesis Data Pipeline](/creating-applications/defining-your-application/integrations/data-pipeline/overview/), which offers a higher-level abstraction than seen here.
+Remember; if your use case is basic data ingestion, transformation and persistence to GenesisDB then you should first investigate the [Genesis Data Pipeline](/server-modules/integration/apache-camel/introduction/), which offers a higher-level abstraction than seen here.
