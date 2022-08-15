@@ -6,7 +6,7 @@ id: basics
 
 [Introduction](/server-modules/integration/apache-camel/introduction/)  | [Basics](/server-modules/integration/apache-camel/basics) | [Advanced](/server-modules/integration/apache-camel/advanced) | [Examples](/server-modules/integration/apache-camel/examples) | [Configuring runtime](/server-modules/integration/apache-camel/configuring-runtime) | [Testing](/server-modules/integration/apache-camel/testing)
 
-Apache Camel integrations are defined within your application's **-camel.kts** file located in the **src/main/resources/scripts** directory within your application's **-script-config** submodule.
+Apache Camel integrations are defined within your application's **-camel.kts** file. This is located in the **src/main/resources/scripts** directory within your application's **-script-config** submodule.
 
 ## A simple Camel configuration
 
@@ -26,16 +26,16 @@ The `routeHandler` defines the possible routes for information to flow into and 
 
 - First, it defines the `pathStr` using the `GenesisPaths` class to find the `GENESIS_HOME` system environment variable.
 
-- Next it defines the route itself. The route in the example comes from the filesystem determined by the `file:` specifier at the start of the string. This could be any [Apache Camel component](https://camel.apache.org/components/3.16.x/index.html) that can act as a [consumer](https://camel.apache.org/manual/camelcontext.html#_consumer).
+- Next, it defines the route itself. The route in the example comes from the filesystem determined by the `file:` specifier at the start of the string. This could be any [Apache Camel component](https://camel.apache.org/components/3.16.x/index.html) that can act as a [consumer](https://camel.apache.org/manual/camelcontext.html#_consumer).
 
 In this instance, the File component (defined in the [File component documentation](https://camel.apache.org/components/3.16.x/file-component.html)) can take several path and query parameters, some of which we are using.
 
 * `${pathStr}/exampledir/` is the **directoryName** mandatory path parameter. It indicates where in the file system that Apache Camel should look for files.
 * `move=.camel/\${date:now:yyyyMMdd-HHmmssSSS}-\${headers.CamelFileName}` is the **move** query parameter. This determines where the files found in the path directory should be moved to once they have been processed.
 
-  Note that both the `$` signs are escaped (`\$`) to prevent Kotlin from injecting a variable into the string. We want these variables to be injected by Apache Camel itself rather than Kotlin.
+Note that both the `$` signs are escaped (`\$`) to prevent Kotlin from injecting a variable into the string. We want these variables to be injected by Apache Camel itself rather than Kotlin.
 * `initialDelay=5000` is the **initialDelay** query parameter. This is the time in milliseconds before the system first polls the path directory.
-* `readLock=changed` is the **readLock** query parameter. This sets the strategy to ensure the file being polled isn't in use.
+* `readLock=changed` is the **readLock** query parameter. This sets the strategy to ensure that the file being polled isn't in use.
 * `readLockCheckInterval=5000` is the **readLockCheckInterval** query parameter. This sets the time between checks of the **readlock**.
 * `readLockTimeout=60000` is the **readLockTimeout** query parameter. This sets the maximum time that Apache Camel will wait when trying to acquire a **readlock** before timing out.
 
