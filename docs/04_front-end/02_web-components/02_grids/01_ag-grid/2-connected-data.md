@@ -7,14 +7,14 @@ The examples below use JSX syntax. Real-world scenarions might be different, dep
 
 For `foundation-ui` versions after **0.0.17** the [Genesis Datasource](/front-end/web-components/grids/ag-grid/ag-genesis-datasource/) has its own slotted component. The documentation should be valid for both usages (current vs. previous), since attributes/props are the same.
 
-## Se-tup
+## Set-up
 
 :::info
 In the examples below, we refer to a sample `@genesislcap/alpha-design-system` design system with an `alpha` prefix. Your design system would probably have a different name/prefix, while still exposing the same API.
 :::
 
 :::warning
-Make sure you check which version is currently being used in your application. The examples below reflec the available scenarios for each version.
+Make sure you check which version is currently being used in your application. The examples below reflect the available scenarios for each version.
 :::
 
 ```ts
