@@ -4,7 +4,8 @@ sidebar_label: 'RxJava'
 id: rxjava
 ---
 
-
+[Async](/database/types-of-api/asynch/) |
+[RxJava](/database/types-of-api/rxjava/) 
 
 [RxJava](https://www.rxjava.com/) is a Java implementation of reactive extensions. The Genesis database uses this library to represent asynchronous database operations in java.
 

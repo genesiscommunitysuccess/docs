@@ -4,6 +4,11 @@ sidebar_label: 'DbEntity'
 id: dbentity
 ---
 
+[Introduction](/database/data-types/data-types/) |
+[Table entities](/database/data-types/table-entities/) | [Index entities](/database/data-types/index-entities/) | 
+[Views entities](/database/data-types/views-entities/) | 
+[DbRecord](/database/data-types/dbrecord/) | 
+[DbEntity](/database/data-types/dbentity/) 
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

@@ -5,7 +5,9 @@ sidebar_position: 1
 id: 'fields-tables-views'
 ---
 
-[Introduction](/database/fields-tables-views/fields/)  | [Basics](/database/fields-tables-views/fields/fields-basics/) |  [Advanced](/database/fields-tables-views/fields/fields-advanced/) | [Examples](/database/fields-tables-views/fields/fields-examples/) 
+[Fields](/database/fields-tables-views/fields/)  | [Tables](/database/fields-tables-views/tables/)  |
+ [Views](/database/fields-tables-views/views/)  | [Generating DAOs](/database/fields-tables-views/genesisDao/) 
+
 
 For any Genesis application, everything starts with the data model. 
 
