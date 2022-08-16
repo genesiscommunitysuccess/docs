@@ -8,7 +8,7 @@ id: examples
 
 ### Oracle Sample
 
-**Create TRADE table**
+Create TRADE table:
 
 ```sql
 CREATE TABLE DB_NAME.TRADE
@@ -21,7 +21,7 @@ CREATE TABLE DB_NAME.TRADE
 );
 ```
 
-**Insert, modify and delete stored procedures**
+Insert, modify and delete stored procedures:
 
 ```sql
 create or replace PROCEDURE insertTrade(
@@ -70,7 +70,7 @@ create or replace PROCEDURE deleteTrade(p_tradeid IN ALL_TRADES.TRADE_ID%TYPE)
 
 ### MSSQL Sample
 
-**Create TRADE table**
+Create TRADE table:
 
 ```sql
 CREATE TABLE TRADE
@@ -84,7 +84,7 @@ CREATE TABLE TRADE
 GO
 ```
 
-**Insert, modify and delete stored procedures**
+Insert, modify and delete stored procedures**
 
 ```sql
 CREATE PROCEDURE insertTrade
@@ -134,11 +134,11 @@ GO
 
 ```
 
-### PostGreSQL Sample
+### PostgreSQL Sample
 
-N.B. Assumes that the *plpgsql* language is already installed in the respective PostgreSQL database.
+N.B. Assumes that the [plpgsql](https://www.postgresql.org/docs/current/plpgsql.html) procedural language is already installed in the respective PostgreSQL database.
 
-**Create TRADE table**
+Create TRADE table:
 
 ```sql
 DROP TABLE "POSITION";
@@ -152,7 +152,7 @@ CONSTRAINT "POSITION_ID_PK" PRIMARY KEY("POSITION_ID"));
  GO
 ```
 
-**Insert, modify and delete stored procedures**
+Insert, modify and delete stored procedures:
 
 ```sql
 CREATE OR REPLACE FUNCTION "insertPosition"(p_NetPosition decimal,

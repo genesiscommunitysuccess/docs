@@ -6,27 +6,30 @@ id: basics
 
 [Introduction](/server-modules/integration/database-streaming-out/introduction)  | [Basics](/server-modules/integration/database-streaming-out/basics) | [Advanced](/server-modules/integration/database-streaming-out/advanced) | [Examples](/server-modules/integration/database-streaming-out/examples) | [Configuring runtime](/server-modules/integration/database-streaming-out/configuring-runtime) | [Testing](/server-modules/integration/database-streaming-out/testing)
 
-## GenesisToDb
+## Configuration
 
-The **GenesisToDb** module enables you to stream data from Genesis to classic RDBMS databases, such as Oracle or MSSQL.
+You can configure GenesisToDb in an xml file called _application_**-genesistodb.xml**. This must be located in your application's **resources/cfg** directory.
 
-The process listens to changes in the Genesis tables (insert, modify and delete) and immediately reproduces them in the selected RDBMS.
+The outline of this configuration file is as follows:
 
-### Arguments
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<genesisToDb xmlns:xi="http://www.w3.org/2001/XInclude">
+    <preExpression>
+        <!-- optional dynamic groovy code goes here -->
+    </preExpression>
+    <options>
+        <!-- database configuration options go here -->
+    </options>
+    <databaseStream>
+        <!-- stream configuration goes here -->
+    </databaseStream>
+</genesisToDb>
+```
 
-Use **startProcess** to start the **GenesisToDb** process. This can take two optional arguments.
+### Process definition
 
-**--clearText** can be passed if you want to use clear text user and passwords in the configuration file, instead of encrypted ones.
-
-**--force** if passed to the process, this  attempts to re-insert every trade found in our Genesis table to the RDBMS, ignoring previously inserted records.
-
-### Configuration
-
-The configuration is similar to **DbToGenesis** (and other Genesis modules). It can be configured through the standard Genesis configuration XML files.
-
-There are two well defined sections: process configuration and database stream configurations.
-
-The process definition is made up of several fields that will set up the main configuration of the process:
+The process definition is made up of several fields that set up the main configuration of the process:
 
 _preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add to this module for further usage.
 
@@ -130,6 +133,14 @@ Example:
 </databaseStream>
 ```
 
+### Process arguments
+
+Use **startProcess** to start the `GenesisToDb` process. This can take two optional arguments:
+
+**--clearText** can be passed if you want to use clear text user and passwords in the configuration file, instead of encrypted ones.
+
+**--force** if passed to the process, this  attempts to re-insert every trade found in our Genesis table to the RDBMS, ignoring previously inserted records.
+
 ### Table joins
 
 The process keeps track of the last record timestamp, so if you want to avoid reloading all records in Genesis to the RDBMS, it is very important to use a TIMESTAMP seedKey in order to make it work properly.
@@ -152,4 +163,4 @@ Even though Genesis cannot modify these triggers/procedures and they can potenti
 
 ### Encrypting user and passwords
 
-A script called "encryptUserPass" is provided with Genesis so we can encrypt our user and password before using it in **GenesisToDb**.
+A script called `encryptUserPass` is provided with Genesis so we can encrypt our user and password before using it in **GenesisToDb**.
