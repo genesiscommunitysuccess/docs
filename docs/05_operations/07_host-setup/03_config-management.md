@@ -28,11 +28,12 @@ automation and consistency that is the mainstay of
 Key aspects of a host prepared for Genesis applications are suitable for config management:
 * Dependency packages
 * Nginx reverse-proxy configuration
-* Environmental override configuration (needs alteration to [processes.xml](/creating-applications/configure-runtime/processes.xml) )
+* Environmental override configuration (needs alteration to [processes.xml](/server-modules/configuring-runtime/processes) )
 
 ### Dependencies
 
-Packages needed to run a Genesis application are covered in more detail in [host preparation](/managing-applications/deploy/host-preparation).
+Packages needed to run a Genesis application are covered in more detail in
+[host preparation](/operations/host-setup/host-preparation).
 All of them are off-the-shelf packages found either in OS core package repos or extended repos such as EPEL.
 
 ### Nginx Configuration
@@ -97,7 +98,7 @@ DbHost = fdb01.my.domain
 
 Note, overrides files are not able to perform environment substitutions the way system-definitions can - it is a .kts
 file (Kotlin script) and thus effectively _executed_ whereas the properties file is only read.  See
-[clusters/Environment variables](/managing-applications/operate/clustering/clusters#Environment-variables).
+[clusters/Environment variables](/operations/clustering/clusters#Environment-variables).
 
 
 

@@ -138,20 +138,15 @@ developer with all necessary information.
 
 If anything cannot be determined at site-specific ZIP build time, it may need manual change on the host.
 
-Following this, several Genesis commands must be run to complete the installation.  These are not necessarily only
-run at install time, and are described in the documentation on operating commands.
+Following this, several Genesis commands must be run to complete the installation.  Both must be run as the application
+user, as they will generate files with the ownership of the user running the  command.
 
-* [genesisInstall](/managing-applications/operate/helpful-commands/#genesisInstall)
-* [remap](/managing-applications/operate/helpful-commands/#remap-script)
-
-Both must be run as the application user, as they will generate files with the ownership of the user running the
-command.
-
-The command genesisInstall will create a set of files, consolidating config to create a unified view of it, which the
+The command `genesisInstall` will create a set of files, consolidating config to create a unified view of it, which the
 processes will consume.  It is needed after an install or an upgrade.
 
-The command remap handles the data model, and thus database schema.  It has some arguments that control its behaviour
-but its purpose is to generate DAO (data access object) classes and apply the data model schema to the database.
+The command `remap --commit` handles the data model, and thus database schema.  It has some arguments that control its
+behaviour  but its purpose is to generate DAO (data access object) classes and apply the data model schema to the
+database.
 
 
 
