@@ -49,7 +49,7 @@ Install it using the following command:
 
 ```shell
 npm uninstall -g @genesislcap/foundation-cli
-npm install -g @genesislcap/foundation-cli@2.0.1-alpha-4090d36.0+4090d36
+npm install -g @genesislcap/foundation-cli@2.0.1-alpha-91bcdf7.0+91bcdf7
 ```
 
 Once installed, from the terminal, run:
@@ -65,9 +65,10 @@ Provide Artifactory credentials if needed and select `create application`:
 ? Genesis Password **************
 √ Logged into Genesis
 ? Please select an option: (Use arrow keys)
+> create Low-Code application - Creates a Low-Code application.
   create workspace - Generates a local workspace to use for your Genesis based apps.
   configure workspace - Configure a local workspace.
-> create application - Generates a local application.
+  create application - Generates a local application.
   configure application - Configure a local app.
 ```
 
@@ -76,27 +77,6 @@ Now you can proceed using the following responses:
 ```shell
 ? Create a app in current directory Yes
 ? App name alpha
-```
-
-In the next prompt, select `❯ DSL App Seed` from the list.
-
-```shell
-? App seed
-  Quick Start Application
-  Positions Application
-  Hello World Application
-  Foundation-Store Based Application
-  Foundation App Seed
-❯ DSL App Seed
-  Local Application Seed
-```
-
-Seed delivery mechanism should be left at the default value (Download). Hit Enter to go to the next prompt.
-
-```shell
-? Seed delivery (Cloning requires an SSH key with a blank passphrase configured for your account) (Use arrow keys)
-❯ Download
-  Clone
 ```
 
 After you will be asked whether you want to overwrite existing files.
@@ -108,12 +88,11 @@ After you will be asked whether you want to overwrite existing files.
 At this point, the seed application is created and dependencies are installed.
 
 ```shell
-? App seed DSL App Seed
 ? Overwrite existing files Yes
 ✔ Create path alpha
 ✔ Create directory alpha
-✔ Creating from seed 'DSL App Seed'
-ℹ Installing seed dependencies.
+✔ Creating from seed 'Low-code Application Seed'
+ℹ Installing dependencies.
 ✔ Install success.
 ```
 
@@ -133,10 +112,10 @@ Next, you will be asked whether you want to configure an API host. By default we
 Continue with the remaining questions:
 
 ```shell
-? Genesis Server version 6.0.1
-? Auth Server version 6.0.1
-? GPL version 0.0.9
-? Kotlin version 1.6.10
+? Genesis Server version
+? Auth Server version
+? GPL version
+? Kotlin version
 ? Group Id global.genesis
 ? Application Version 1.0.0-SNAPSHOT
 ```
