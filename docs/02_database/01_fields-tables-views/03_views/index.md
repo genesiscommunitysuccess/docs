@@ -2,7 +2,7 @@
 title: 'Views - introduction'
 sidebar_label: 'Views - introduction'
 sidebar_position: 1
-id: views-introF
+id: views-intro
 ---
 
 [Introduction](/database/fields-tables-views/views/)  | [Basics](/database/fields-tables-views/views/views-basics/) |  [Advanced](/database/fields-tables-views/views/views-advanced/) | [Examples](/database/fields-tables-views/views/views-examples/)
