@@ -8,7 +8,9 @@ id: testing
 
 ## Integration testing
 
-The Genesis Platform provides the AbstractGenesisTestSupport abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Consolidator configuration is used to create our Consolidator. We also need to add the required packages, genesis home and separately set the "IS_SCRIPT" System Definition property to true (This is required as part of the Consolidator initialisation).
+The Genesis low-code platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Consolidator configuration is used to create our Consolidator. 
+
+First, we need to add the required packages and genesis home. Then we need to set the "IS_SCRIPT" System Definition property to true (this is required as part of the Consolidator initialisation).
 
 ```kotlin
 class ConsolidatorTest : AbstractGenesisTestSupport<GenesisSet>(
@@ -24,7 +26,7 @@ class ConsolidatorTest : AbstractGenesisTestSupport<GenesisSet>(
 }
 ```
 
-For more information about AbstractGenesisTestSupport, see the [Testing pages](/operations/testing/integration-testing/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing/#abstractgenesistestsupport).
 
 Once you have set up your configuration, you can start writing tests against our Consolidators.
 
@@ -69,7 +71,7 @@ consolidators {
 }
 ```
 
-Before we write test add the below method and variable to test class
+Before we write test, add the below method and variable to test class:
 
 ```kotlin
 private var lastTradeId = 0
@@ -125,7 +127,7 @@ private fun trade(
 
 ### Nested consolidation test
 
-Add below consolidator to above consolidator definition:
+To test this, add the consolidator below to the consolidator definition above:
 
 ```kotlin
     consolidator(ORDER, ORDER_SUMMARY) {
@@ -141,7 +143,7 @@ Add below consolidator to above consolidator definition:
     }
 ```
 
-You will see adding trade would build ORDER and ORDER_SUMMARY tables
+You will see that adding a trade would build ORDER and ORDER_SUMMARY tables.
 
 ```kotlin
 @Test
