@@ -58,12 +58,17 @@ Once installed, from the terminal, run:
 foundation-cli
 ```
 
-Provide Artifactory credentials if needed and select `create application`:
+Provide Artifactory credentials if needed.
 
 ```shell
 ? Genesis Username example.username
 ? Genesis Password **************
 √ Logged into Genesis
+```
+
+Select `create Low-Code application`:
+
+```shell
 ? Please select an option: (Use arrow keys)
 > create Low-Code application - Creates a Low-Code application.
   create workspace - Generates a local workspace to use for your Genesis based apps.
