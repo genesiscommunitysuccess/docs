@@ -4,7 +4,7 @@ sidebar_label: 'Fields - advanced'
 id: fields-advanced
 ---
 
-[Introduction](/database/fields-tables-views/fields/)  | [Basics](/database/fields-tables-views/fields/fields-basics/) |  [Advanced](/database/fields-tables-views/fields/fields-advanced/) | [Examples](/database/fields-tables-views/fields/fields-examples/) 
+[Introduction](/database/fields-tables-views/fields/)  | [Basics](/database/fields-tables-views/fields/fields-basics/) |  [Advanced](/database/fields-tables-views/fields/fields-advanced/) | [Examples](/database/fields-tables-views/fields/fields-examples/) | [Generating DAOs](/database/fields-tables-views/genesisDao/) 
 
 ## Modularity
 

@@ -5,7 +5,7 @@ id: tables-intro
 sidebar_position: 1
 ---
 
-[Introduction](/database/fields-tables-views/tables/)  | [Basics](/database/fields-tables-views/tables/tables-basics/) |  [Advanced](/database/fields-tables-views/tables/tables-advanced/) | [Examples](/database/fields-tables-views/tables/tables-examples/) 
+[Introduction](/database/fields-tables-views/tables/)  | [Basics](/database/fields-tables-views/tables/tables-basics/) |  [Advanced](/database/fields-tables-views/tables/tables-advanced/) | [Examples](/database/fields-tables-views/tables/tables-examples/) | [Generating DAOs](/database/fields-tables-views/genesisDao/) 
 
 A table is made up of [fields](/database/fields-tables-views/fields). For example:
 
