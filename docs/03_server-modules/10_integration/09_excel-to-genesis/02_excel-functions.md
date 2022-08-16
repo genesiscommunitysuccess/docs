@@ -3,7 +3,6 @@ title: 'Excel functions'
 sidebar_label: 'Excel functions'
 id: excel-functions
 ---
-## Functions converted by ExcelToGenesis
 
 The following Excel functions are currently supported by ExcelToGenesis.
 

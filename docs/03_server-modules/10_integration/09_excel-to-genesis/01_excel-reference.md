@@ -4,9 +4,16 @@ sidebar_label: 'Excel Reference'
 id: excel-reference
 ---
 
+[Introduction](docs/03_server-modules/10_integration/09_excel-to-genesis/01_excel-reference)  | [ExcelToGenesis](#ExcelToGenesis) | [Options](#options) | [Functions](#functions) | [Column headings and field names](#Column_headings_and_field_names) | [Files created](#Files_created) | [The tables file](#The_tables_file) | [The views file](#The_views_file)
+
+The Genesis low-code platform enables the user to convert existing Excel spreadsheets into Genesis data models. 
+
+The process of conversion handles the [functions](#functions), [columns/field names](#Column_headings_and_field_names), [tables](#The_tables_file) and much more. All the logic for conversion is structured around these areas. 
+
+
 ## ExcelToGenesis
 
-This script converts an Excel spreadsheet into a Genesis data model, which can then be used to generate a working server.
+This script converts the Excel spreadsheet into the aforementioned data model, which can then be used to generate a working server.
 
 ### Options
 
@@ -25,7 +32,7 @@ By default, the conversion process will convert each separate worksheet into a t
 
 ### Functions
 
-The conversion script turns Excel functions in the named workbook into kotlin code. The [most common Excel functions](/creating-applications/defining-your-application/integrations/external-systems/exceltogenesis/excel-functions/) are all covered.
+The conversion script turns Excel functions in the named workbook into kotlin code. The [most common Excel functions](\docs/03_server-modules/10_integration/09_excel-to-genesis/02_excel-functions.md) are all covered.
 
 
 ### Column headings and field names
