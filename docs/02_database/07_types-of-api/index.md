@@ -6,6 +6,6 @@ id: types-of-api
 
 This section outlines two types of API for interacting with the database:
 
-- asynch
+- async
 - RxJava
 
