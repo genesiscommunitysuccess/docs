@@ -165,10 +165,10 @@ Using conditional mappers enables you to make powerful data ingress pipeline
 
 ## Custom handler for the mapped entity
 
-The default behaviour of a data pipeline is to store the mapped [Table](/creating-applications/defining-your-application/data-model/tables/tables) object to the Genesis database. However, there are cases when you might want to actually delete or modify that entity, or do other conditional operations. For those cases, the `sink` function can be used. The function has two parameters:
+The default behaviour of a data pipeline is to store the mapped [Table](/database/fields-tables-views/tables/) object to the Genesis database. However, there are cases when you might want to actually delete or modify that entity, or do other conditional operations. For those cases, the `sink` function can be used. The function has two parameters:
 
 - `entityDb` - object to access the underlying Genesis database
-- `mappedEntity` - the mapped [Table](/creating-applications/defining-your-application/data-model/tables/tables) object
+- `mappedEntity` - the mapped Table object
 
 Recognising that inserting, modifying or deleting mapped entities will be the most commonly used operations, those are already defined under `SinkOperations`
 - `SinkOperations.INSERT`
@@ -240,7 +240,7 @@ sources {
 }
 ```
 
-Note that all database operations are audited if the [Table](/creating-applications/defining-your-application/data-model/tables/tables) is declared as [auditable](/reference/developer/api/database/how-to/data-types/tables/#auditable-tables). Each sink operation is then stored to the audit table with  the default event type of `custom-sink-operation`. However, you can change this by passing another type as argument to the `sink` function:
+Note that all database operations are audited if the Table is declared as [auditable](/database/data-types/table-entities/#auditable-tables). Each sink operation is then stored to the audit table with  the default event type of `custom-sink-operation`. However, you can change this by passing another type as argument to the `sink` function:
 
 ```kotlin
 sources {

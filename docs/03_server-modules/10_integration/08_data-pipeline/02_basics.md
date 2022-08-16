@@ -153,12 +153,12 @@ To use S3 as a file source, you will need access to an S3 like service such as A
 
 ## Mapper for the incoming data
 
-The data from the defined source is read row by row and mapped to a [Table](/creating-applications/defining-your-application/data-model/tables/tables) object. Each column from the incoming row is mapped to a [Field](/creating-applications/defining-your-application/data-model/fields/fields).
+The data from the defined source is read row by row and mapped to a [Table](/database/fields-tables-views/tables/) object. Each column from the incoming row is mapped to a [Field](/database/fields-tables-views/fields/).
 
 ### Mapping by column name
-If the column name of the source row is the same as the [Field](/creating-applications/defining-your-application/data-model/fields/fields) name, then there is no need for explicit mapping.
+If the column name of the source row is the same as the Field name, then there is no need for explicit mapping.
 
-If the column name of the source row is not the same as the [Field](/creating-applications/defining-your-application/data-model/fields/fields) name, then it can be specified using the `sourceProperty` parameter:
+If the column name of the source row is not the same as the Field name, then it can be specified using the `sourceProperty` parameter:
 
 ```kotlin
 TRADE_SIDE {
@@ -166,15 +166,15 @@ TRADE_SIDE {
 }
 ```
 
-If the type of the source row is different from the [Field](/creating-applications/defining-your-application/data-model/fields/fields) type, then it will converted in best effort.
+If the type of the source row is different from the Field type, then it will be converted in the best effort.
 
 ### Mapping function
-There are cases when the [Field](/creating-applications/defining-your-application/data-model/fields/fields) value is not directly mapped to the source row value. For example:
+There are cases when the Field value is not directly mapped to the source row value. For example:
 
 - Type conversion is complex
 - Data enrichment
 - Data obfuscation
-- Calcuated value based on input
+- Calculated value based on input
 
 For such cases, each mapper can declare a `transform` function. Here are a few examples:
 

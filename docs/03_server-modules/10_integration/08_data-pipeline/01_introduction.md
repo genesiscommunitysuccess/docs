@@ -6,11 +6,11 @@ id: introduction
 
 [Introduction](/server-modules/integration/data-pipeline/introduction/)  | [Basics](/server-modules/integration/data-pipeline/basics) | [Advanced](/server-modules/integration/data-pipeline/advanced) | [Examples](/server-modules/integration/data-pipeline/examples) | [Configuring runtime](/server-modules/integration/data-pipeline/configuring-runtime) | [Testing](/server-modules/integration/data-pipeline/testing)
 
-You can define data pipelines that map data from an external source (database, file) to [Tables](/creating-applications/defining-your-application/data-model/tables/tables) in your application. By default, the resulting [Table](/creating-applications/defining-your-application/data-model/tables/tables) objects are stored in the database. However, you can define[custom operations](/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-advanced/#custom-handler-for-the-mapped-entity) as well.
+You can define data pipelines that map data from an external source (database, file) to [Tables](/database/fields-tables-views/tables/) in your application. By default, the resulting Table objects are stored in the database. However, you can define [custom operations](/server-modules/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity) as well.
 
-Each data pipeline defines a source for the data and how that data is mapped to each [Field](/creating-applications/defining-your-application/data-model/fields/fields) in the [Table](/creating-applications/defining-your-application/data-model/tables/tables).
+Each data pipeline defines a source for the data and how that data is mapped to each [Field](/database/fields-tables-views/fields/) in the Table.
 
-If a field mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a `transform` function that has a return value that is mapped to the required [Field](/creating-applications/defining-your-application/data-model/fields/fields).
+If a field mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a `transform` function that has a return value that is mapped to the required Field.
 
 Here is a sample configuration:
 ```kotlin
