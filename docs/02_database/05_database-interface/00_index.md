@@ -2,6 +2,7 @@
 title: 'Database interface'
 sidebar_label: 'Database interface'
 id: database-interface
+sidebar_position: 1
 ---
 
 Genesis supports different ways of interacting with the database. Regardless of the interface used, the operations remain the same. The preferred way of accessing the database is via the [EntityDb](/database/database-interface/entity-db/).

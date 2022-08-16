@@ -1,5 +1,4 @@
 ---
-sidebar_position: 2
 title: EntityDb
 sidebar_label: EntityDb
 id: entity-db
