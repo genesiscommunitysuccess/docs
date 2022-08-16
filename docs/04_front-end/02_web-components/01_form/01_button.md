@@ -52,7 +52,7 @@ Disabled buttons prevent user interaction; they cannot be pressed or focused.
 
 ## Icons
 
-For simplicity, this example shows SVG data embedded inline. Typically you would import it from an external file.
+For simplicity, this example shows SVG data embedded inline. Typically, you would import it from an external file.
 
 ```html live
 <alpha-button appearance="neutral">
