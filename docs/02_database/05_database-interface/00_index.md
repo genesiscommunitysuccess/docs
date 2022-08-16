@@ -4,6 +4,8 @@ sidebar_label: 'Database interface'
 id: database-interface
 ---
 
+[Introduction](/database/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/) 
+
 Genesis supports different ways of interacting with the database. Regardless of the interface used, the operations remain the same. The preferred way of accessing the database is via the [EntityDb](/database/database-interface/entity-db/).
 
 |  | [EntityDb](/database/database-interface/entity-db/) | [Generated Repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/) |
