@@ -9,15 +9,15 @@ id: examples
 Here is an example Consolidator file that defines two Consolidators:
 
 * CON_ORDER_FROM_TRADES.
-  This Consolidator builds ORDER table using CONSOLIDATOR_TRADE table. Uses max, min, sum and count functions and grouping by field ```ORDER.ORDER_ID``` and build new row for output table ORDER
+  This Consolidator builds the ORDER table using the CONSOLIDATOR_TRADE table. It uses max, min, sum and count functions and groups by field ```ORDER.ORDER_ID``` to build a new row for the output table ORDER.
 
-* CON_ORDER_SUMMARY_FROM_ORDER.  This Consolidator builds ORDER_SUMMARY table using ORDER table and grouped by the field ```ORDER.ORDER_DATE``` from the ```ORDER``` table. You can give multiple groupBy conditions based on your requirement.
-  In this example we store all the consolidations grouped by ORDER_DATE year and ORDER_DATE year and month in database, which avoids duplication of consolidator code if you need to group same consolidation based on different group-by conditions
+* CON_ORDER_SUMMARY_FROM_ORDER.  This Consolidator builds the ORDER_SUMMARY table using the ORDER table and groups by the field ```ORDER.ORDER_DATE``` from the ```ORDER``` table. You can give multiple `groupBy` conditions based on your requirement.
+  In this second Consolidator,  we store all the consolidations grouped by ORDER_DATE year and ORDER_DATE year and month in database, (which are defined right at the end of the Consolidator). This avoids duplication of consolidator code if you need to group the same consolidation based on different `groupBy` conditions.
 
 ```kotlin
 consolidators {
 
-    consolidator(CONSOLIDATOR_TRADE, ORDER) {
+    consolidator("CON_ORDER_FROM_TRADES", CONSOLIDATOR_TRADE, ORDER) {
         config {
             tableTransient = true
         }
