@@ -81,7 +81,7 @@ Select `create Low-Code application`:
 Now you can proceed using the following responses:
 
 ```shell
-? Create a app in current directory Yes
+? Create an app in current directory Yes
 ? App name alpha
 ```
 
