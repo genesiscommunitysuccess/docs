@@ -29,8 +29,8 @@ provideDesignSystem().register(alphaRadioGroup(), alphaRadio());
 
 ## Use cases
 
-* Present options where only one option is allowed
+* To provide options where only one option is allowed.
 
 ## Additional resources
 
-- [W3C Component Aria Practices](https://www.w3.org/TR/wai-aria/#radiogroup)
+[W3C Component Aria Practices](https://www.w3.org/TR/wai-aria/#radiogroup)
