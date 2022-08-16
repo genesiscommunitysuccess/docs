@@ -58,7 +58,8 @@ Once installed, from the terminal, run:
 foundation-cli
 ```
 
-Provide Artifactory credentials if needed.
+Provide Artifactory credentials if needed. We persist an authentication token, so you don't have to enter your username/password each time.
+Once your session expires, we ask for the password again.
 
 ```shell
 ? Genesis Username example.username
