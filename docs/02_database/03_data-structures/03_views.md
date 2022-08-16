@@ -4,7 +4,7 @@ sidebar_label: 'Views'
 id: views
 ---
 
-
+[Introduction](/database/data-structures/data-structures/)  | [Tables](/database/data-structures/tables/) |  [Indices](/database/data-structures/indices/) | [Views](/database/data-structures/views/) 
 
 Views are defined in the `-view-dictionary.kts` files as discussed 
 [here](/database/fields-tables-views/views/).
