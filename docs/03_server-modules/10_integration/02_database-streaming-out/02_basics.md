@@ -31,7 +31,7 @@ The outline of this configuration file is as follows:
 
 The process definition is made up of several fields that set up the main configuration of the process:
 
-_preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add to this module for further usage.
+`preExpression` defines dynamic groovy code (methods, imports, etc.). You can add to this module for further usage:
 
 ```xml
 <preExpression>
@@ -55,18 +55,18 @@ _preExpression_ defines dynamic groovy code (methods, imports, etc.) you can add
 </preExpression>
 ```
 
-_options_ is a field container that represents the basic behaviour and database configuration of the process.
+`options` is a field container that represents the basic behaviour and database configuration of the process.
 
-* **databaseType** can be set to ORACLE, MSSQL or POSTGRES.
-* **url** represents the database url to connect to using the JDBC driver. The url definition specifies the databaseType:
+* `databaseType` can be set to ORACLE, MSSQL or POSTGRES.
+* `url` represents the database url to connect to using the JDBC driver. The url definition specifies the databaseType:
 * POSTGRES - `<url>jdbc:postgresql://IP_ADDRESS:PORT/DATABASE_NAME</url>`
 * MSSQL - `<url>jdbc:sqlserver://IP_ADDRESS:PORT;databaseName=DATABASE_NAME;</url>`
 * ORACLE - `<url>jdbc:oracle:thin:@IP_ADDRESS:PORT:DATABASE_NAME</url>`
-* **user** user from RDBMS. Encrypted by command line tool `encryptUserPass`.
-* **password** password from RDBMS. Encrypted by command line tool `encryptUserPass`.
-* **dbMinConnections** represents the minimum number of RDBMS connections that will be created on startup  inside each pool partition. Default: 10.
-* **dbMaxConnections** sets the maximum number of connections to be created by the RDBMS connection pool. Default: 10.
-* **maxOutstanding** sets the threshold for the internal work queue that triggers the process to start logging warnings. Example use case: there are more than **maxOutstanding** records pending to be inserted in the RDBMS. Default: 10000.
+* `user` user from RDBMS. Encrypted by command line tool `encryptUserPass`.
+* `password` password from RDBMS. Encrypted by command line tool `encryptUserPass`.
+* `dbMinConnections` represents the minimum number of RDBMS connections that will be created on startup  inside each pool partition. Default: 10.
+* `dbMaxConnections` sets the maximum number of connections to be created by the RDBMS connection pool. Default: 10.
+* `maxOutstanding` sets the threshold for the internal work queue that triggers the process to start logging warnings. Example use case: there are more than `maxOutstanding` records pending to be inserted in the RDBMS. Default: 10000.
 
 ```xml
 <options>
@@ -80,11 +80,11 @@ _options_ is a field container that represents the basic behaviour and database 
 </options>
 ```
 
-_databaseStream_ represents one stream from Genesis to the RDBMS. It contains the necessary logic to join different tables if necessary and it sets the fields to be inserted or modified in the RDBMS. It also specifies the stored procedures calls to be used and the parameters ordering used to call them. You can define as many databaseStreams as you want. It has a name attribute to databaseStreams from each other.
+`databaseStream` represents one stream from Genesis to the RDBMS. It contains the necessary logic to join different tables if necessary and it sets the fields to be inserted or modified in the RDBMS. It also specifies the stored procedures calls to be used and the parameters ordering used to call them. You can define as many databaseStreams as you want. It has a name attribute to databaseStreams from each other.
 
-* **tables** Similar to DataServer configuration, you can specify a seed Genesis table with its seed key and join it to other Genesis tables so you can get all the data you need. GenesisToDb works with a timestamp system, and it can keep track of the last timestamp processed for each record, so the seedKey should be a timestamp field (e.g. "TIMESTAMP", "DATE_TIMESTAMP", "CREATED_AT", etc.) if you want to take full advantage of GenesisToDb capabilities.
-* **fields** is the representation of the SQL row to be written inside the RDBMS. Parameters are ordered by number from first to last. In the example we could associate "TRADE_ID" with parameter 1, "TRADE_QUANTITY" with parameter 2, and so on.
-* **proc** contains the store procedure calls for each of the use cases: insert, modify and delete. The standard JDBC call to RDBMS store procedures is standardised as _{call procedure(param1,param2,param3)}_. The configuration is flexible and allows to change the parameter order depending on the current call. A stored procedure could be called like: _insertIdAndClientName(1,3)_ and _modifyQuantity(2)_.
+* `tables` Similar to DataServer configuration, you can specify a seed Genesis table with its seed key and join it to other Genesis tables so you can get all the data you need. GenesisToDb works with a timestamp system, and it can keep track of the last timestamp processed for each record, so the seedKey should be a timestamp field (e.g. "TIMESTAMP", "DATE_TIMESTAMP", "CREATED_AT", etc.) if you want to take full advantage of GenesisToDb capabilities.
+* `fields` is the representation of the SQL row to be written inside the RDBMS. Parameters are ordered by number from first to last. In the example we could associate "TRADE_ID" with parameter 1, "TRADE_QUANTITY" with parameter 2, and so on.
+* `proc` contains the store procedure calls for each of the use cases: insert, modify and delete. The standard JDBC call to RDBMS store procedures is standardised as _{call procedure(param1,param2,param3)}_. The configuration is flexible and allows to change the parameter order depending on the current call. A stored procedure could be called like: _insertIdAndClientName(1,3)_ and _modifyQuantity(2)_.
 
 Example:
 
@@ -135,11 +135,11 @@ Example:
 
 ### Process arguments
 
-Use **startProcess** to start the `GenesisToDb` process. This can take two optional arguments:
+Use `startProcess` to start the GenesisToDb process (see [Configuring Runtime](/server-modules/integration/database-streaming-out/configuring-runtime/) for more information on how to configure this). This can take two additional optional arguments:
 
-**--clearText** can be passed if you want to use clear text user and passwords in the configuration file, instead of encrypted ones.
+`--clearText` can be passed if you want to use clear text user and passwords in the configuration file, instead of encrypted ones.
 
-**--force** if passed to the process, this  attempts to re-insert every trade found in our Genesis table to the RDBMS, ignoring previously inserted records.
+`--force` if passed to the process, this  attempts to re-insert every trade found in our Genesis table to the RDBMS, ignoring previously inserted records.
 
 ### Table joins
 
@@ -163,4 +163,4 @@ Even though Genesis cannot modify these triggers/procedures and they can potenti
 
 ### Encrypting user and passwords
 
-A script called `encryptUserPass` is provided with Genesis so we can encrypt our user and password before using it in **GenesisToDb**.
+A script called `encryptUserPass` is provided with Genesis, allowing us to encrypt our user and password before using it in GenesisToDb configuration.
