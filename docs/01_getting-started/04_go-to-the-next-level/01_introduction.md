@@ -14,7 +14,7 @@ The application will make use of the following platform features:
 - [Data Model](/getting-started/go-to-the-next-level/data-model/)
 - [Data Grid](/getting-started/go-to-the-next-level/data-grid/)
 - [Data Server](/getting-started/go-to-the-next-level/events/) and [Event Handlers](/getting-started/go-to-the-next-level/events/)
-- [Auditable](/getting-started/go-to-the-next-level/audit/) tables
+- [Auditable tables](/getting-started/go-to-the-next-level/audit/)
 - [Computed values](/getting-started/go-to-the-next-level/computed-values/)
 - [Condition](/getting-started/go-to-the-next-level/condition-rules/) and [Time based](/getting-started/go-to-the-next-level/time-rules/) rules
 - [Consolidators](/getting-started/go-to-the-next-level/consolidators/)
