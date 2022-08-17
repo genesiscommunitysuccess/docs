@@ -50,7 +50,7 @@ The following variables are used to configure an LDAP connection; thus are only 
     * using the `cn` attribute (Common Name)
     * using the `sAMAccountName` in Windows
 
-For more information on the various authentication types, please see the [Authentication overview](/creating-applications/defining-your-application/access-control/authentic-over/).
+For more information on the various authentication types, please see the [Authentication overview](/server-modules/access-control/authentication-overview/).
 
 ### passwordValidation
 The `passwordValidation` function enables password validation, and is used to set the variables relating to this validation. 
