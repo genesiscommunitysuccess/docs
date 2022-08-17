@@ -1,7 +1,7 @@
 ---
 id: environment-setup
-title: Environment setup
-sidebar_label: Environment setup
+title: Environment set-up
+sidebar_label: Environment set-up
 sidebar_position: 2
 
 ---
@@ -9,7 +9,7 @@ sidebar_position: 2
 
 ### Workstation setup
 
-Please follow these instructions very carefully to ensure your environment is ready for a productive training. It's not necessary to have admin rights on your workstation to develop with the Genesis Platform, but you may have to check with your System Administrator how to install the required third-party software listed here.
+Please follow these instructions very carefully to ensure your environment is ready for a productive training. It's not necessary to have admin rights on your workstation to develop with the Genesis low-code platform, but you may have to check with your System Administrator how to install the required third-party software listed here.
 
 #### Recommended hardware and operating system
 
@@ -18,7 +18,7 @@ Please follow these instructions very carefully to ensure your environment is re
 * CPU : 8 Core
 * SSD : 250GB
 
-#### Needed software packages
+#### Required software packages
 
 | Package	| Minimum Version| 
 |--------------|:-----:|
@@ -40,12 +40,12 @@ You can use a range of IDEs (for example, Eclipse) with the Genesis low-code pla
 For access to Genesis packages, you need to configure the `@genesislcap` scope of `npm` to use our jfrog registry. 
 
 :::note
-This requires credentials for accessing Genesis Artifactory. If you have not been provided with the credentials, please contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login). It's not possible to complete the training without this access as it would not be possible to download the Genesis Platform components and build your project.
+This requires credentials for accessing Genesis Artifactory. If you have not been provided with the credentials, please contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login). It's not possible to complete the training without this access, because you won't be able to download the Genesis platform components and build your project.
 :::
 
 1. Create an `.npmrc` file in your user home directory (usually at 'C:\Users\YOUR_LOGIN_NAME\').
  2. Using your credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
- 3. Click on the `Welcome <username>` on the top right corner.
+ 3. Click on the `Welcome <username>` in the top right corner.
  4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
  5. Select `npm` for both **Package Type** and **Repository**.
  6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in to the Genesis repository on jfrog.) Then press **Enter**. 
@@ -66,7 +66,7 @@ This requires credentials for accessing Genesis Artifactory. If you have not bee
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
 
 9. Save the file and under the directory path of this `.npmrc` file and type:
-`npm info @genesislcap/foundation-ui`. If set-up was successful, you should see a response like this:
+`npm info @genesislcap/foundation-ui`. If the set-up wass successful, you should see a response like this:
 
 ```shell
 @genesislcap/foundation-ui@0.0.26 | UNLICENSED | deps: 23 | versions: 111
@@ -74,7 +74,7 @@ Genesis Foundation UI
 ```
 :::caution trouble running npm?
 Please make sure:
-- you have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](/tutorials/training-resources/training-content-day1/#needed-software-packages). If you have an older version of npm (run 'npm -v'), make sure to uninstall it first.
+- you have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](/tutorials/training-resources/training-content-day1/#needed-software-packages). If you have an older version of npm (run 'npm -v'), make sure you uninstall it first.
 - if you're behind a corporate network, you may need to setup a proxy:
 ```shell
 npm config set proxy http://proxy_host:port
@@ -83,7 +83,7 @@ npm config set https-proxy http://proxy_host:port
 ```
 :::
 
-10. Install GenX CLI, a Genesis tool that enables you to seed projects.
+10. Install GenX CLI; this is a Genesis tool that enables you to seed projects.
 ```shell
 npm install -g @genesislcap/foundation-cli
 ```
@@ -122,7 +122,8 @@ As an alternative, you can [download the project structure that would be generat
 :::
 
 #### Gradle setup
-Make sure you have a gradle.properties file inside a **.gradle** folder on your user directory; this file must contain your password in clear text:
+Make sure you have a **gradle.properties** file inside a **.gradle** folder in your user directory; this file must contain your password in clear (unencrypted) text:
+
 ```shell
 genesisArtifactoryUser=<your-artifactory-user>
 genesisArtifactoryPassword=<your-artifactory-password>
@@ -130,7 +131,7 @@ genesisArtifactoryPassword=<your-artifactory-password>
 
 Use the same credential you used in *step 6* above.
 :::caution proxy settings
-If you are behind a corporate proxy, make sure to add your proxy settings to the gradle.properties file as well. For example:
+If you are behind a corporate proxy, make sure you add your proxy settings to the **gradle.properties** file as well. For example:
 ```shell
 systemProp.https.proxyHost=proxy_hostname_here
 systemProp.https.proxyPort=proxy_port_here
@@ -145,22 +146,22 @@ If you are unsure on what settings to use, please contact your IT support.
 More information [here](https://docs.gradle.org/current/userguide/build_environment.html#sec:accessing_the_web_via_a_proxy).
 :::
 
-### Local server setup
+### Local server set-up
 
 Make sure you have completed the [Workstation setup](#workstation-setup) prior to this.
 
-We are going to setup Windows Subsystem for Linux (WSL 2) to deploy and run the application locally.
+We are going to set up Windows Subsystem for Linux (WSL 2) to deploy and run the application locally.
 
 You can install everything you need to run WSL by entering this command in an administrator PowerShell or Windows Command Prompt and then restarting your machine.
 ```
 wsl --install
 ```
-If you need help with the WSL installation, please refer to [here](https://docs.microsoft.com/en-us/windows/wsl/install).
+Microsoft provides [documentation on the WSL installation](https://docs.microsoft.com/en-us/windows/wsl/install), if you need it.
 
 Then download the [Genesis WSL training distro](https://genesisglobal.jfrog.io/artifactory/community-uploads/training-wsl.zip). This distro contains everything you need to get started, including: 
 Linux CentOS 7 base, Java 11 SDK, genesis user, nginx, FoundationDB.
 
-Now create a local folder where you want to run the distro, e.g., "C:\wsl\distros\training-distro\". Unzip the package downloaded there and from that folder run:
+Now create a local folder where you want to run the distro, e.g., "C:\wsl\distros\training-distro\". Unzip the package downloaded there and from that folder, run:
 ```
 wsl --import TrainingCentOS . training-wsl.backup
 ```

@@ -18,7 +18,7 @@ When you set up a data model, it implies relationships between tables. For examp
 
 Views enable you join related tables to create a single holistic view.
 
-In short, Views are the genesis equivalent of SQL select queries. Unlike [tables](/reference/developer/api/database/concepts/data-structure/tables/), views do not have any data of their own, they are read-only, but present a view based on one or more tables. 
+In short, views are the Genesis equivalent of SQL select queries. Unlike [tables](/reference/developer/api/database/concepts/data-structure/tables/), views do not have any data of their own, they are read-only, but present a view based on one or more tables. 
 
 A view always starts with a single table, the root table. Other tables can be joined onto the root table to present composite data. 
 
@@ -28,13 +28,13 @@ Views are very powerful and in this training we're going to cover just the basic
 
 During code generation, [view](/reference/developer/api/database/how-to/data-types/views/) and [index entities](/reference/developer/api/database/how-to/data-types/indices/) will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
 
-The generated entities are kotlin data classes and can be built using the primary constructor (so you can also import Views in your Java/Kotlin code as well). Just before the object is built, it is validated to make sure all required fields have been set.
+The generated entities are Kotlin data classes and can be built using the primary constructor (so you can also import Views in your Java/Kotlin code as well). Just before the object is built, it is validated to make sure all required fields have been set.
 
 ### Usage
 
-Create `alpha-view-dictionary.kts` file inside the folder *server\jvm\alpha-config\src\main\resources\cfg*.
+Create the **alpha-view-dictionary.kts** file inside the folder **server\jvm\alpha-config\src\main\resources\cfg**.
 
-The example below creates a view called `TRADE_VIEW`, which joins the `TRADE` table to the `INSTRUMENT` table. Edit *alpha–view-dictionary.kts* file and add the view on the TRADE table​
+The example below creates a view called `TRADE_VIEW`, which joins the `TRADE` table to the `INSTRUMENT` table. Edit the **alpha–view-dictionary.kts** file and add the view on the TRADE table​
 
 ```kotlin
 views {
@@ -56,7 +56,7 @@ views {
   }
 }
 ```
-Run **alpha-config:assemble** to make the view ready for use, then add it to the data server:​
+Run `alpha-config:assemble` to make the view ready for use, then add it to the Data Server.​
 
 Now go to the Data Server definition (inside the **-script-config** module). Replace the `ALL_TRADES` query in the Data Server with the new `TRADE_VIEW`.
 
@@ -67,12 +67,12 @@ dataServer {​
 ```
 
 :::tip
-In the example above, you are exposing a view through a data server query. It's also possible to inject a View into a request server or even in your event handler code, making it easier to access complex data from multiple tables in your Kotlin or Java code. Look at package global.genesis.gen.view.repository.*. 
+In the example above, you are exposing a view through a data server query. It's also possible to inject a view into a Data Server or even in your Event Handler code, making it easier to access complex data from multiple tables in your Kotlin or Java code. Look at package global.genesis.gen.view.repository.*. 
 
 
 :::
 
-Run **alpha-deploy:deployConfig** and test the view with Postman or Console.​
+Run `alpha-deploy:deployConfig` and test the view with Postman or Console.​
 
 ### Exercise 3.1: using views
 :::info ESTIMATED TIME
@@ -80,16 +80,16 @@ Run **alpha-deploy:deployConfig** and test the view with Postman or Console.​
 :::
 
 Extend the **TRADE_VIEW** to connect TRADE to COUNTERPARTY:
-1. Add the respective join (as we did with INSTRUMENT)​
-2. Add the COUNTERPARTY.NAME withPrefix COUNTERPARTY
-3. Test it
+1. Add the respective join (as we did with INSTRUMENT)​.
+2. Add the COUNTERPARTY.NAME withPrefix COUNTERPARTY.
+3. Test it.
 
 ## Extending our application further
 Moving on, for our app to be able to keep positions based on the trades, we need to extend our data model as the next step.
 
 ### Adding new fields​
 
-Let´s add new fields to Trade table​. 
+Let´s add some new fields to the Trade table​. 
 
 ```kotlin
 field("SIDE", type = STRING)​
@@ -122,7 +122,7 @@ field("VALUE", type = DOUBLE)​
 field("PNL", type = DOUBLE)​
 ```
 
-When you finish, remember to run *genesis-generated-fields*.
+When you finish, remember to run `genesis-generated-fields`.
 
 ### Extending Trade and adding Position table​
 
@@ -160,20 +160,22 @@ table(name = "INSTRUMENT_PRICE", id = 2004) {
 }
 ```
 
-When you finish, remember to  run *genesis-generated-dao​* and *genesisproduct-assemble*.​
+When you finish, remember to  run `genesis-generated-dao` and `genesisproduct-assemble`.​
 
 :::tip
 As we previously generated the fields, autocompletion helps you to define the tables more quickly, and with fewer errors. Also note that Genesis provides several autogenerated primary keys: **sequence**, **uuid**, **autoincrement**.
 :::
 
-### Automated Testing
+### Automated testing
 
 So far we have been testing our work manually, using Genesis Console or some HTTP client.
+
 Now the time has come to start writing some automated tests for our application.
 
-Before running tests, install the [FoundationDB](https://genesisglobal.jfrog.io/artifactory/community-uploads/foundationdb-6.2.15-x64.msi) locally to allow a proper database mocking. Further details regarding FoundationDB can be found [here](https://www.foundationdb.org/).
+Before running the tests, install the [FoundationDB](https://genesisglobal.jfrog.io/artifactory/community-uploads/foundationdb-6.2.15-x64.msi) locally to allow a proper database mocking. Further details on FoundationDB can be found [on its website](https://www.foundationdb.org/).
 
-Let's create a automated test that inserts and retrieves some data using Genesis' automated test support components, in summary:
+Let's create an automated test that inserts and retrieves some data using the Genesis automated test support components. In summary:
+
 * load data from a CSV file 
 * retrieve data using [Genesis Database API](/reference/developer/api/database/overview/)
 
@@ -189,8 +191,8 @@ dependencies {
 
 description = "alpha-config"
 ```
-2. Add a new test class to the *alpha-config* module (**alpha\server\jvm\alpha-config\src\test\kotlin**) called `TradeViewTest.kt`
-3. Add an empty txt file *donotdelete.txt* to the genesis home folder (**alpha\server\jvm\alpha-config\src\test\resources\GenesisHome**). This folder is needed for automated tests. 
+2. Add a new test class to the **alpha-config** module (**alpha\server\jvm\alpha-config\src\test\kotlin**), called `TradeViewTest.kt`
+3. Add an empty txt file **donotdelete.txt** to the Genesis home folder (**alpha\server\jvm\alpha-config\src\test\resources\GenesisHome**). This folder is needed for automated tests. 
 4. Add TEST_DATA.csv to a data folder (**alpha\server\jvm\alpha-config\src\test\resources\data**)
 ```csv
 #INSTRUMENT
@@ -202,13 +204,13 @@ COUNTERPARTY_ID,COUNTERPARTY_LEI,NAME,
 1,335800A8HK6JBITVPA30,Test Ltd,
 2,655FG0324Q4LUVJJMS11,Testing AG,
 ```
-The directory tree should like below:
+The directory tree should like this:
 
 ![](/img/dir-tree-alpha.png)
 
-The test class should look like below:
+We shall look at the test class now.
 
-### Test class setup
+### Test class set-up
 ```kotlin
 package global.genesis
 import global.genesis.db.util.AbstractDatabaseTest
@@ -343,7 +345,7 @@ view("TRADE_VIEW", TRADE) {
 Let's add a new derived field in the TRADE_VIEW now. The derived field should display ASSET_CLASS from the INSTRUMENT join, and if this field is null or empty the view should display "UNKNOWN".
 
 :::tip
-After changing the files remember to run *assemble* and *deploy*
+After changing the files, remember to run `assemble` and `deploy`.
 :::
 
 
@@ -351,7 +353,7 @@ After changing the files remember to run *assemble* and *deploy*
 
 Consolidators perform data aggregation and calculations that can either be real-time, when used as a service, or on-demand, when used as objects. 
 
-Consolidators follow a SQL-like syntax: 
+Consolidators follow an SQL-like syntax: 
 
 ```kotlin
 consolidator(TRADE, ORDER) {
@@ -375,11 +377,11 @@ Some features provided by Consolidators:
 
 In our case, Consolidators are a good fit for consolidating a position table from trades. 
 
-#### Define the position-keeping logic in the consolidator
+#### Define the position-keeping logic in the Consolidator
 
-Before defining the consolidator, we should insert some data in the *INSTRUMENT_PRICE* table using the command [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script). To do that, let's run server commands directly from a command line using PowerShell (or Windows Command Prompt) to access your WSL instance, through user 'genesis' to have access to the Genesis Platform commands as we did [before](/tutorials/training-resources/training-content-day1/#running-server-commands).
+Before defining the Consolidator, insert some data into the *INSTRUMENT_PRICE* table using the command [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script). To do that, let's run server commands directly from a command line using PowerShell (or Windows Command Prompt) to access your WSL instance. Do this through user 'genesis' so you have access to the Genesis commands as we did [before](/tutorials/training-resources/training-content-day1/#running-server-commands).
 
-From the command line opened, in the */tmp* folder, save this csv as INSTRUMENT_PRICE.csv using your favorite editor (i.e. [vim](https://www.vim.org/) or [nano](https://www.nano-editor.org/)):
+With the command line opened, in the */tmp* folder, save this csv as INSTRUMENT_PRICE.csv using your favorite editor (i.e. [vim](https://www.vim.org/) or [nano](https://www.nano-editor.org/)):
 ```csv
 INSTRUMENT_ID,LAST_PRICE
 1,10
@@ -418,9 +420,9 @@ dataServer {
 }
 ```
 
-When you finish, remember to run *genesis-generated-dao​* and *genesisproduct-assemble*.​
+When you finish, remember to run `genesis-generated-dao` and `genesisproduct-assemble`.​
 
-So, let's define a **alpha-consolidator.kts** file inside **alpha-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
+So, let's define an **alpha-consolidator.kts** file inside **alpha-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
 
 The consolidator is going to increase or decrease the quantity for POSITION records, based on the TRADE table updates. It also needs to calculate the new notional.
 
@@ -490,7 +492,7 @@ consolidators {
 
 ##### Update the processes.xml file
 
-As consolidators run on their own process, we need to add a new entry to **alpha-processes.xml** with the consolidator process definition.
+As the Consolidator runs on its own process, we need to add a new entry to **alpha-processes.xml** with the Consolidator process definition.
 
 ```xml
 <process name="ALPHA_CONSOLIDATOR">
@@ -507,9 +509,9 @@ As consolidators run on their own process, we need to add a new entry to **alpha
 ```
 ##### Update the service-definitions.xml file
 
-This file lists all the active services for the Positions application. You can see entries have been added automatically when the data server, request server and event handler were generated.
+This file lists all the active services for the Positions application. You can see entries have been added automatically when the Data Server, Request Server and Event Handler were generated.
 
-Add a new entry to **alpha-service-definitions.xml** with the consolidator details. Remember the ports numbers should be free and, ideally, sequential.
+Add a new entry to **alpha-service-definitions.xml** with the Consolidator details. Remember the port numbers should be free and, ideally, sequential.
 
 ```xml
 <configuration>
@@ -518,11 +520,11 @@ Add a new entry to **alpha-service-definitions.xml** with the consolidator detai
 </configuration>
 ```
 
-Run **assemble** and **deploy-genesisproduct-alpha** tasks to verify that the new process works as expected.
+Run `assemble` and `deploy-genesisproduct-alpha` tasks to verify that the new process works as expected.
 
 ## UI configuring 
 
-Let's add a grid in the UI to display the Positions. We could use [Entity Management](/tutorials/training-resources/training-content-day2/#entitymanagement) again, but here we will use AgGrid in `@genesislcap/foundation-zero` [Genesis package](/tutorials/training-resources/training-content-day2/#genesis-packages) presented in [Day 2](/tutorials/training-resources/training-content-day2/), as this approach offers more flexibility to customize the HTML and CSS.
+Let's add a grid in the UI to display the positions. We could use [Entity Management](/tutorials/training-resources/training-content-day2/#entitymanagement) again, but here we will use AgGrid in `@genesislcap/foundation-zero` [Genesis package](/tutorials/training-resources/training-content-day2/#genesis-packages) presented in [Day 2](/tutorials/training-resources/training-content-day2/), as this approach offers more flexibility to customize the HTML and CSS.
 
 First, open the file **home.styles.ts** and add the code below.
 
