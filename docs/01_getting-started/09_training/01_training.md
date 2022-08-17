@@ -30,16 +30,15 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 
 ## Agenda
 
-- [Environment set-up](/tutorials/training-resources/environment-setup/)
-- [Day 1](/tutorials/training-resources/training-content-day1/): Quick review of the Platform​, quick start the application and test the backend​​.
-- [Day 2](/tutorials/training-resources/training-content-day2/): Intro to UI​, create a user interface​ and REST endpoints.
-- [Day 3](/tutorials/training-resources/training-content-day3/): Views​, automated testing​, calculated data, consolidators and data grids​.
-- [Day 4](/tutorials/training-resources/training-content-day4/): State management, adding logic to the event handler​ ​and auditing​.
-- [Day 5](/tutorials/training-resources/training-content-day5/): Schedulers, notifications, permissions​, key server commands​ and how to get help​.
+- [Day 1](#): System definitions, advanced event handlers.
+- [Day 2](#): Dynamic rules, notify, advanced views.
+- [Day 3](#): Advanced data Servers, advanced request servers, FIX.
+- [Day 4](#): Streamer, streamer client, custom endpoints.
+- [Day 5](#): Camel module, data pipeline​.
 
 ## Genesis low-code platform version
 6.0.2
 
 ## Source code
 The complete source code of this training is available 
-on [GitHub](https://github.com/genesiscommunitysuccess/devtraining-gama) and, alternatively, as a [ZIP file](https://genesisglobal.jfrog.io/artifactory/community-uploads/devtraining-gama.zip).
+on [GitHub](https://github.com/genesiscommunitysuccess/devtraining-gama-server-specialist) and, alternatively, as a [ZIP file](https://genesisglobal.jfrog.io/artifactory/community-uploads/devtraining-gama-server-specialist.zip).
