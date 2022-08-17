@@ -4,14 +4,17 @@ sidebar_label: 'Network API'
 id: network-api
 ---
 
-Network API
-===========
+# Network API
 
 Use these APIs to send and receive messages between micro-services.
 
-### ClientConnectionsManager[​](/database/network-api/network-api/#clientconnectionsmanagerdirect-link-to-heading)
+## ClientConnectionsManager[​](/database/network-api/network-api/#clientconnectionsmanagerdirect-link-to-heading)
 
-Use `@Inject` to create `ClientConnectionsManager`. See the example below:
+<br/>
+
+Use `@Inject` to create `ClientConnectionsManager`.
+
+See the example below:
 
 ```kotlin
 class TestService(@Inject val clientConnectionManager: ClientConnectionsManager) {}
@@ -64,7 +67,7 @@ GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration:
 | isActive | Checks whether netty connector is open for new connection |
 | isConnected | Checks whether netty connector is open for new connection |
 
-### Example[​](/database/network-api/network-api/#exampledirect-link-to-heading)
+Example:
 
 ```kotlin
 class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnectionsManager) {  
