@@ -26,6 +26,6 @@ Once you know the basics, you can explore the details of how you can interact wi
 
 - Async and RxJava APIs - For more details about Genesis look at Async and RxJava APIs.
 
-- API - You can then explore specific APIs, such as the  Event Handler API and Authorisation API
+- API - You can then explore specific APIs, such as the Event Handler API and Authorisation API
 
 
