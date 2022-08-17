@@ -2,9 +2,8 @@
 title: 'The Server'
 id: the-server
 ---
-# The Server
 
-## Preparing the server
+### Preparing the server
 
 Now we will generate the server configuration by running the below task:
 
@@ -15,7 +14,7 @@ Now we will generate the server configuration by running the below task:
 This task generates both the server and UI configuration. We will use it again later when we create our application.
 
 
-## Starting the server
+### Starting the server
 
 Before you start this, make sure that:
 
@@ -146,3 +145,8 @@ You can run this command from within WSL or from your workstation. If you run it
 docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
 
 ```
+:::
+
+## Recap
+
+<span style={{color:'red'}}>Are we going to have a "The Server" Recap?</span>

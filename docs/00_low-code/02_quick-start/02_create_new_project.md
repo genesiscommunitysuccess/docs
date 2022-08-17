@@ -143,8 +143,6 @@ At this point, the application will be configured. If successful, you will see t
 
 Now open your chosen IDE (e.g. IntelliJ) and locate the newly created alpha project. Have a look at **README.md** for more information about the project created. 
 
-
-
 ## Recap
 
 Congratulations, your local environment is now ready to build applications. We have:
