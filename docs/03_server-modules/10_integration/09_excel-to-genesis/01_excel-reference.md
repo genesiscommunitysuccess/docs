@@ -4,11 +4,11 @@ sidebar_label: 'Excel Reference'
 id: excel-reference
 ---
 
-[Introduction](docs/03_server-modules/10_integration/09_excel-to-genesis/01_excel-reference)  | [ExcelToGenesis](#ExcelToGenesis) | [Options](#options) | [Functions](#functions) | [Column headings and field names](#Column_headings_and_field_names) | [Files created](#Files_created) | [The tables file](#The_tables_file) | [The views file](#The_views_file)
+[Introduction](/server-modules/integration/excel-to-genesis/excel-reference/)  | [ExcelToGenesis](#ExcelToGenesis) | [Options](#options) | [Functions](#functions) | [Column headings and field names](#column-headings-and-field-names) | [Files created](#files-created) | [The tables file](#the-tables-file) | [The views file](#the-views-file)
 
 The Genesis low-code platform enables the user to convert existing Excel spreadsheets into Genesis data models. 
 
-The process of conversion handles the [functions](#functions), [columns/field names](#Column_headings_and_field_names), [tables](#The_tables_file) and much more. All the logic for conversion is structured around these areas. 
+The process of conversion handles the [functions](#functions), [columns/field names](#column-headings-and-field-names), [tables](#the-tables-file) and much more. All the logic for conversion is structured around these areas. 
 
 
 ## ExcelToGenesis
@@ -32,7 +32,7 @@ By default, the conversion process will convert each separate worksheet into a t
 
 ### Functions
 
-The conversion script turns Excel functions in the named workbook into kotlin code. The [most common Excel functions](\docs/03_server-modules/10_integration/09_excel-to-genesis/02_excel-functions.md) are all covered.
+The conversion script turns Excel functions in the named workbook into kotlin code. The [most common Excel functions](/server-modules/integration/excel-to-genesis/excel-functions/) are all covered.
 
 
 ### Column headings and field names
@@ -52,7 +52,7 @@ The conversion creates a folder called `/home/core/run/_name_.cfg` where _name_ 
 * The data from each worksheet is extracted to a separate csv file.
 
 
-#### The tables file
+### The tables file
 In the Tables file, the source of each table is included as a comment at the beginning.
 
 
@@ -64,10 +64,10 @@ If the conversion process is not able to parse a field, this is clearly marked o
 
 ![](/img/unable-to-parse.png)
 
-The first column in each worksheet is always  used as the primary key for the table.
+The first column in each worksheet is always used as the primary key for the table.
 
-#### The views file
+### The views file
 
-The script automatically finds where jopins are required. Inside the Views file, any exceptions are highlighted.
+The script automatically finds where joins are required. Inside the Views file, any exceptions are highlighted.
 
 The conversion creates derived fields - simple calculations based on other fields in the view. 
