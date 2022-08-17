@@ -95,18 +95,16 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 }
 ```
 
-## Customising the header 
+## Customising the header
 
 ### Icon
 
-By default, the navigation bar and flyout menu show the Genesis logo. You can override this by setting an `img` tag with the `slot="logo"` attribute. For example:
+By default, the navigation bar and flyout menu show the Genesis logo. You can override this by setting the `logoSrc` attribute. For example:
 
 ```html
-<foundation-header>
-	<img src="https://icotar.com/avatar/genesis" slot="logo" />
-</foundation-header>
+<foundation-header logoSrc="https://icotar.com/avatar/genesis"></foundation-header>
 ```
-The `src` of your `img` tag identifies the image that you want to display. Adding an `img` in this slot updates the logo in both the navigation bar and the flyout.
+The `logoSrc` defines the image that you want to display. Adding this attribute will update the logo on both the flyout and navigation bar. Omit the attribute to leave the Genesis logo.
 
 ### Navigation items
 
@@ -141,7 +139,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 }
 ```
 
-- When setting the navigation items, use the `repeat` directive to iterate over the defined routes and create a navigation item for each. 
+- When setting the navigation items, use the `repeat` directive to iterate over the defined routes and create a navigation item for each.
 
 The following example creates a button with an associated logo for each of the three defined routes:
 
