@@ -36,7 +36,7 @@ jobs:
     - name: Build
       run: npm run build
       env:
-        BASE_URL: /uat/pull-requests/${{ github.event.number }}/secure/
+        BASE_URL: /uat/pull-requests/${{ github.event.number }}/
 
     - name: Deploy
       uses: jakejarvis/s3-sync-action@master
@@ -48,4 +48,4 @@ jobs:
         AWS_S3_BUCKET: genesis-internal-web
         AWS_REGION: 'eu-west-2'
         SOURCE_DIR: 'build'
-        DEST_DIR: 'uat/pull-requests/${{ github.event.number }}/secure'
+        DEST_DIR: 'uat/pull-requests/${{ github.event.number }}'
