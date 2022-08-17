@@ -4,7 +4,7 @@ sidebar_label: 'Views - basics'
 id: views-basics
 ---
 
-[Introduction](/database/fields-tables-views/views/)  | [Basics](/database/fields-tables-views/views/views-basics/) |  [Advanced](/database/fields-tables-views/views/views-advanced/) | [Examples](/database/fields-tables-views/views/views-examples/) 
+[Introduction](/database/fields-tables-views/views/)  | [Basics](/database/fields-tables-views/views/views-basics/) |  [Advanced](/database/fields-tables-views/views/views-advanced/) | [Examples](/database/fields-tables-views/views/views-examples/) | [Generating DAOs](/database/fields-tables-views/genesisDao/) 
 
 A view definition is made up of **joins** and **fields**.
 
