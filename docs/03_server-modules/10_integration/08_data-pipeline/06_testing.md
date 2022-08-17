@@ -185,7 +185,7 @@ sources {
 
 ## Starting source PostgreSQL
 
-There are various ways to start PostgreSQL as a test dependency. Here is a list of the few most common ones
+There are various ways to start PostgreSQL as a test dependency. Here is a list of the most common ones:
 
 ### Testcontainers
 You can start PostgreSQL as a test rule using [Testcontainers](https://www.testcontainers.org/). It has a [Postgres Module](https://www.testcontainers.org/modules/databases/postgres/) that has a pre-configured rule to use out of the box. However, it requires additional configuration for the Write Ahead Log (WAL) level, and it has to be set to `logical`. Below is a sample rule configuration:

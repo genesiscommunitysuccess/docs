@@ -134,7 +134,7 @@ sources {
 ## Declaring multiple mappers
 
 In the event that you would like to perform different mapping operations over the same data source, you may use multiple mappers.
-You may also optionally use a where clause to conditionally map rows from your data source. Should a where clause be falsy, no mapping will be performed.
+You may also optionally use a where clause to conditionally map rows from your data source. Should a where clause be false, no mapping will be performed. These conditional mappers allow you to create more complex and powerful data ingestion pipelines.
 
 For example, should you wish to map over a trades source, you may want to map and transform your data in a different way depending on the region the trade was made:
 
@@ -161,7 +161,6 @@ sources {
 }
 ```
 
-Using conditional mappers enables you to make powerful data ingress pipeline
 
 ## Custom handler for the mapped entity
 
@@ -170,12 +169,13 @@ The default behaviour of a data pipeline is to store the mapped [Table](/databas
 - `entityDb` - object to access the underlying Genesis database
 - `mappedEntity` - the mapped Table object
 
-Recognising that inserting, modifying or deleting mapped entities will be the most commonly used operations, those are already defined under `SinkOperations`
+Recognising that inserting, modifying or deleting mapped entities will be the most commonly used operations, those are already defined under `SinkOperations`:
+
 - `SinkOperations.INSERT`
 - `SinkOperations.MODIFY`
 - `SinkOperations.DELETE`
 
-and can be used like this:
+That can be used like this:
 
 ```kotlin
 sources {
