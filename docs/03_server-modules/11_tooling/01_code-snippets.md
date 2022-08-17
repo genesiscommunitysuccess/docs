@@ -39,7 +39,7 @@ field(name = "$NAME$", type = $TYPE$, nullable = true)
 <td>
 
 ```kt
-table( name= "$NAME$", id = $ID$) {
+table(name = "$NAME$", id = $ID$) {
     primaryKey { }
 }
 ```
