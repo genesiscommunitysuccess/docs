@@ -4,9 +4,11 @@ sidebar_label: 'SQL'
 id: sql
 ---
 
+[Introduction](/database/database-technology/overview/) |
+[FoundationDb](/database/database-technology/foundationdb/) | [SQL](/database/database-technology/sql/) | [Aerospike](/database/database-technology/aerospike/) |  [PostgreSQL](/database/database-technology/postgresql/) | [FAQs](/database/database-technology/faqs/) 
 
 ## System definitions
-For the SQL layer (PostgreSQL or MSSQL), take note of the following system definition items in the [**genesis-system-definitions.kts**](/database/database-technology/sql/) file:
+For the SQL layer (PostgreSQL, MSSQL or Oracle), take note of the following system definition items in the [**genesis-system-definitions.kts**](/database/database-technology/sql/) file:
 
 
 | Setting   | Description   |  

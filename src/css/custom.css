@@ -60,6 +60,16 @@ body {
   font-weight: 400;
 }
 
+code {
+  background-color: var(--ifm-code-background);
+  border: 0.1rem solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--ifm-code-border-radius);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: var(--ifm-code-font-size);
+  padding: var(--ifm-code-padding-vertical) var(--ifm-code-padding-horizontal);
+  vertical-align: top;
+}
+
 /* global content styles */
 
 .markdown {
@@ -200,6 +210,7 @@ div.aa-DetachedSearchButtonIcon:hover {
 }
 
 .navbar__title {
+  color: var(--ifm-navbar-link-color);
   font-weight: normal;
 }
 
@@ -208,7 +219,7 @@ div.aa-DetachedSearchButtonIcon:hover {
 }
 
 a.navbar__item.navbar__link {
-  color: white;
+  color: var(--ifm-navbar-link-color);
   font-weight: 400;
   line-height: 24px;
   font-size: 16px;
@@ -216,9 +227,12 @@ a.navbar__item.navbar__link {
   margin: 4px 12px;
 }
 
+a.navbar__item.navbar__link:hover {
+  border-bottom: 1px solid;
+}
+
 a.navbar__item.navbar__link.navbar__link--active {
   font-weight: 700;
-  font-family: var(--medium-font);
   border-bottom: 1px solid;
 }
 
@@ -330,6 +344,7 @@ nav.menu {
 }
 
 /* sidebar carets */
+button.menu__caret::before,
 a.menu__link--sublist-caret::after {
   min-width: 8px;
   min-height: 8px;
@@ -354,20 +369,16 @@ a.menu__link--sublist-caret {
 }
 
 /* only top level categories should be gray */
+li.theme-doc-sidebar-item-link.theme-doc-sidebar-item-link-level-1.menu__list-item > a,
 li.theme-doc-sidebar-item-category-level-1 > div.menu__list-item-collapsible > .menu__link.menu__link--sublist:first-child {
-  color: var(--warm-gray-2);
-}
-
-ul.theme-doc-sidebar-menu.menu__list * {
-  border-radius: 0;
-}
-
-/* Sidebar nav header  */
-.menu > .menu__list > .menu__list-item > .menu__list-item-collapsible {
   font-family: var(--medium-font);
   font-size: 14px;
   color: var(--warm-gray-2);
   text-transform: uppercase;
+}
+
+ul.theme-doc-sidebar-menu.menu__list * {
+  border-radius: 0;
 }
 
 div[class^=sidebar_] .menu__link.menu__link--active:not(.menu__link--sublist) {

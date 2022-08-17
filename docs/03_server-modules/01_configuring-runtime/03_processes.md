@@ -80,6 +80,7 @@ You can see that this file has separate code blocks for each of the application'
       <module>genesis-pal-streamer</module>
       <package>global.genesis.streamer.pal</package>
       <script>trading_app-streamer.kts</script>
+      <configOverridesFile>/home/genesis/appstreamer.properties</configOverridesFile>
   </process>
 </processes>
 ```
@@ -174,3 +175,7 @@ When you are defining the process in your application's **process.xml**, this ta
 This tag helps in hard-coding the process arguments for starting the processes,  since some processes always need arguments on startup.
 
 When you are defining the process in your application's **process.xml**, this tag is optional.
+
+### configOverridesFile
+This tag specifies another config file (properties format) that this process will read on startup.  The properties in
+this file will override the system-definitions file.

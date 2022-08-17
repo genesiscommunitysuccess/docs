@@ -4,6 +4,11 @@ sidebar_label: 'Index entities'
 id: index-entities
 ---
 
+[Introduction](/database/data-types/data-types/) |
+[Table entities](/database/data-types/table-entities/) | [Index entities](/database/data-types/index-entities/) | 
+[Views entities](/database/data-types/views-entities/) | 
+[DbRecord](/database/data-types/dbrecord/) | 
+[DbEntity](/database/data-types/dbentity/) 
 
 Index entities are nested in [table](/database/data-types/table-entities/) and [view entities](/database/data-types/views-entities/). The name will be based on the index name. The entity can be constructed by passing in the field values in order. The first field of the index must always be provided, and the others are optional.
 

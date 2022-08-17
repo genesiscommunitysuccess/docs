@@ -1,9 +1,11 @@
 name: Build
 
-# Triggered on PRs against master
+# Triggered on PRs against master and UAT
 on:
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+      - uat
 
 jobs:
   build:
@@ -12,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -30,5 +32,6 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
 
+    # docusaurus will check for broken links as part of the build process
     - name: Build
       run: npm run build
