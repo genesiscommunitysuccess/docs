@@ -1,11 +1,13 @@
 ---
-title: 'Front-end reporting'
+title: 'Front-end Reporting'
 sidebar_label: 'Front-end reporting'
 id: front-end-reporting
 tags:
   - reporting
   - frontend
   - ui
+  - web
+  - micro frontends
 ---
 
 The Reporting component enables your users to create report specifications, run them, or save them for later use.
@@ -32,7 +34,7 @@ The Report Server adds the following metadata services:
 - ALL_REPORT_DATASOURCES (Request Response)
 
 ## Front-end configuration
- 
+
 To enable this micro front-end in your application, follow the steps below.
 
 - Add `@genesislcap/foundation-reporting` as a dependency in your *package.json* file.
