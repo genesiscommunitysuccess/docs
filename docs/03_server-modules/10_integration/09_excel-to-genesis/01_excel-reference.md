@@ -6,14 +6,14 @@ id: excel-reference
 
 [Introduction](/server-modules/integration/excel-to-genesis/excel-reference/)  | [ExcelToGenesis](#ExcelToGenesis) | [Options](#options) | [Functions](#functions) | [Column headings and field names](#column-headings-and-field-names) | [Files created](#files-created) | [The tables file](#the-tables-file) | [The views file](#the-views-file)
 
-The Genesis low-code platform enables the user to convert existing Excel spreadsheets into Genesis data models. 
+The Genesis low-code platform enables you to convert existing Excel spreadsheets into Genesis data models. 
 
 The process of conversion handles the [functions](#functions), [columns/field names](#column-headings-and-field-names), [tables](#the-tables-file) and much more. All the logic for conversion is structured around these areas. 
 
 
 ## ExcelToGenesis
 
-This script converts the Excel spreadsheet into the aforementioned data model, which can then be used to generate a working server.
+This script converts the Excel spreadsheet into the Genesis data model, which can then be used to generate a working server.
 
 ### Options
 
@@ -32,16 +32,16 @@ By default, the conversion process will convert each separate worksheet into a t
 
 ### Functions
 
-The conversion script turns Excel functions in the named workbook into kotlin code. The [most common Excel functions](/server-modules/integration/excel-to-genesis/excel-functions/) are all covered.
+The conversion script turns Excel functions in the named workbook into Kotlin code. The [most common Excel functions](/server-modules/integration/excel-to-genesis/excel-functions/) are all covered.
 
 
 ### Column headings and field names
 
-Column names will be turned into field names by the conversion process, which also analyses the content and allocates a field type for each one.
+The conversion process turns Excel column names into Genesis field names. It analyses the content of the column to determine the field type of each fieldd.
 
 The fields are automatically sampled by the command to allocate a type. If there is ambiguity, it sets the field as STRONG.
 
-It is recommended that you shorten long column headings before you make the conversion. In general, you want short and usable field names in your data model. It is quicker to do this before running the script, rather than editing the fields dictionary and other files that are generated.
+**It is recommended that you shorten long column headings before you make the conversion**. In general, you want short and usable field names in your data model. It is quicker to do this before running the script, rather than editing the fields dictionary and other files that are generated.
 
 ### Files created
 The conversion creates a folder called `/home/core/run/_name_.cfg` where _name_ is the application name specified in the script. This contains:
@@ -68,6 +68,6 @@ The first column in each worksheet is always used as the primary key for the tab
 
 ### The views file
 
-The script automatically finds where joins are required. Inside the Views file, any exceptions are highlighted.
+The script automatically finds where joins are required. Inside the View file, any exceptions are highlighted.
 
-The conversion creates derived fields - simple calculations based on other fields in the view. 
+The conversion can create derived fields where these are simple calculations based on other fields in the view. 
