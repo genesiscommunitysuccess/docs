@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 
 Genesis Router is responsible for all communication between front end and back end. 
 On the Genesis low-code platform, the front end connects to the back end through HTTPS or secure Websockets via a reverse proxy.
-This must run on the same instance as the back end. The GENESIS_ROUTER service on the server acts as the endpoint for all API calls and by default listens to port 9064.
+This must run on the same instance as the back end. The GENESIS_ROUTER service on the server acts as the endpoint for all API calls and listens (by default) to port 9064.
 This is configured in the file **genesis-router.kts**.
 
 Here is an example:
@@ -243,7 +243,7 @@ public class FileProcessor implements WebEndpoint {
 
 To create unit tests for Genesis Router, you can extend the `AbstractGenesisTestSupport` class and specify the `genesis-router.kts` as the Script file name. Examples of how you would initialise a test extending this class are provided below.
 
-There is more information on how testing works in our section on machison'io Integration testing](/managing-applications/test/integration-testing).
+There is more information on how testing works in our section on [Integration testing](/operations/testing/integration-testing/).
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
