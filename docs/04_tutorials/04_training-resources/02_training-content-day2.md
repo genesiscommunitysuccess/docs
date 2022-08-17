@@ -41,13 +41,13 @@ Our components are distributed as npm packages, such as:
 When you generate a [design system](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/intro/) using the CLI, it will automatically extend a base design system that we have provided. ​This highly configurable design system is called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options to provide everythin you need for your application.
 
 #### `@genesislcap/foundation-zero` 
-Our design system variant, called Zero Design System​. This provides the standard components, such as buttons and data grids (wrappers around Microsoft FAST components); these can be easily integrated with the back end using component attributes such as 'resourceName', which displays and updates data in real time from a Data Server resource.
+This is our design system variant, called Zero Design System​. This provides the standard components, such as buttons and data grids (wrappers around Microsoft FAST components); these can be easily integrated with the back end using component attributes such as 'resourceName', which displays and updates data in real time from a Data Server resource.
 
 #### `@genesislcap/foundation-utils​` 
 Useful components like loggers, formatters, environment related components etc to be used in your templates.
 
 #### `@genesislcap/foundation-comms` 
-Core Foundation UI communication system with the server. This provides, among other things, connection components that you can use to connect to the server and do things like subscribing to data streams, commit events or request data.
+This is our core Foundation UI communication system with the server. This provides, among other things, connection components that you can use to connect to the server and do things like subscribing to data streams, commit events or request data.
 
 There are many more packages, but that's what we need for now to develop our application.
 
@@ -212,14 +212,14 @@ Now take some time to enjoy it, play with your application for a few minutes.
 30 mins
 :::
 
-The communication between the UI and the server happens through messages sent via a web socket connection, all managed by the Genesis Platform.
+The communication between the UI and the server happens through messages sent via a web socket connection, all managed by the Genesis low-code platform.
 
 But did you know that you can inspect these messages using [Chrome DevTools](https://developer.chrome.com/docs/devtools/overview/)? That's very useful for debugging what's happening behind the scenes and capturing the data transferred for troubleshooting.
 
 Now, using the [Network tab](https://developer.chrome.com/docs/devtools/network/), try to insert a trade and see if you can find the data being sent to the server:
 
 1. Log out of the application.
-2. Press `F12` to open the Dev Tools, click on the `Network` tab and select `WS` (keep it open during this exercise).
+2. Press **F12** to open the Dev Tools, click on the `Network` tab and select `WS` (keep it open during this exercise).
 3. Navigate to your app http://localhost:6060 and in the Dev Tools, click on the resource `gwf/` (in the Network -> WS tab).
 4. Log in and try to insert a new trade.
 5. Try to find the message containing the new trade data.
@@ -247,9 +247,9 @@ Use all the previous knowledge you've got.
 
 As a reminder, these are the steps needed to complete this task:
 
-- Edit alpha-fields-dictionary.kts first, and don't forget to run the *generateFields* gradle task when you finish this. Remember that fields are defined separately from tables, so that they (including their meta-data) can be re-used across multiple tables and show linkage.​
-- Then edit alpha-tables-dictionary.kts to add the new tables and the fields you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to ​run *genesis-generated-dao​*.
-- Add queries to the Data Server. These must point to the new tables in the alpha-dataserver.kts file.
+- Edit **alpha-fields-dictionary.kts** first, and don't forget to run the `generateFields` gradle task when you finish this. Remember that fields are defined separately from tables, so that they (including their meta-data) can be re-used across multiple tables and show linkage.​
+- Then edit **alpha-tables-dictionary.kts** to add the new tables and the fields you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to ​run `genesis-generated-dao`.
+- Add queries to the Data Server. These must point to the new tables in the ++alpha-dataserver.kts** file.
 - Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to ​run *build* and *deploy*​
 
 :::tip adding a new event handler block
@@ -289,7 +289,7 @@ eventHandler {
 
 ### API testing with auto-generated REST endpoints
 
-As an alternative to Genesis Console, take this opportunity to test your work with an HTTP client such as Postman or Insomnia.
+As an alternative to Genesis Console, take this opportunity to test your work with an HTTP client, such as Postman or Insomnia.
 - [Postman web version](https://go.postman.co/home/)
 - [Postman App](https://www.postman.com/downloads/)
 - [Insomnia App](https://insomnia.rest/download)
@@ -334,7 +334,7 @@ Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each r
 
 In the example below, we are using Postman as the client API. We are going to test the EVENT_COUNTERPARTY_INSERT Event Handler by adding a new counterparty.
 
-###### url and Body
+###### url and body
 In front of the url, set the call to **POST**.
 
 The url consists of:

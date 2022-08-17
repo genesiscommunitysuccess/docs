@@ -17,14 +17,14 @@ You can use the Evaluator to schedule the production of EOD reports (for example
 
 In system terms, Evaluators enable you to connect Event Handlers to two different kinds of event: dynamic and static (cron rules): 
 
-- __Cron Rules__  are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
-- __Dynamic Rules__, also known as Dynamic Events, are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
+- __Cron Rules__  are scheduling rules; these are defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
+- __Dynamic Rules__, also known as Dynamic Events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
-In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this training, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [Defining a dynamic rule](/creating-applications/defining-your-application/business-logic/evaluators/configure/#defining-a-dynamic-rule).
+In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this training, we're going to use Cron Rules, but if you're interested in the Dynamic Rules, please look at [Defining a dynamic rule](/creating-applications/defining-your-application/business-logic/evaluators/configure/#defining-a-dynamic-rule).
 
 ### Cron rules (static events)​
 
-Let's create a cron rule that triggesr a batch job to run once every minute.
+Let's create a cron rule that triggers a batch job to run once every minute.
 
 The batch job will generate a position report as a csv for each counterparty. This will be stored in **runtime/position-minute-report**. The file name of each report written will have the form COUNTERPARTY_ID-DATE.csv.
 
@@ -49,7 +49,7 @@ Let's look at the most important fields:
 #### 1. Configure the Evaluator
 
 An Evaluator is a process that runs cron jobs. 
-To start, create a process called *GENESIS_EVALUATOR* and add it to the file **alpha-processes.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below.
+To start, create a process called `GENESIS_EVALUATOR` and add it to the file **alpha-processes.xml** in your project folder **server/jvm/alpha-config/src/main/resources/cfg**, using the code below.
 
 ```xml
 <processes>
@@ -66,7 +66,7 @@ To start, create a process called *GENESIS_EVALUATOR* and add it to the file **a
 </processes>
 ```
 
-Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** with the code below. 
+Add the `ALPHA_EVALUATOR` to the file **alpha-service-definitions.xml** in your project folder **server/jvm/alpha-config/src/main/resources/cfg** with the code below. 
 
 ```xml
 <configuration>
@@ -75,18 +75,23 @@ Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside y
 </configuration>
 ```
 
-Run **assemble** and **deploy-genesisproduct-alpha** tasks to verify that the new process works as expected.
+Run `assemble` and `deploy-genesisproduct-alpha` tasks to verify that the new process works as expected.
 
-Run `monDay 2 example.
+Run `mon` as you learned on Day 1. From the command line in IntelliJ terminal, this is:
+
+```shell
+./gradlew :jvm:alpha-deploy:mon #On the IntelliJ terminal
+```
+
 You should be able to see the process is present, but on `Standby`.
 ![](/img/standbysmall-alpha.png)
 
-This is because the Evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the Primary node.
+This is because the Evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the primary node.
 
 Run `SetPrimary` and you should be able to see all processes running.
 
 #### 2. Create a new class
-When the evaluator is running, create a PositionReport class to trigger the new event. This class should be created inside your project folder **server/jvm/alpha-messages/src/main/kotlin/global/genesis/alpha/message/event** as the code below. 
+When the Evaluator is running, create a `PositionReport` class to trigger the new event. This class should be created inside your project folder **server/jvm/alpha-messages/src/main/kotlin/global/genesis/alpha/message/event** using the code below. 
 
 ```kotlin
 package global.genesis.alpha.message.event
@@ -94,11 +99,11 @@ package global.genesis.alpha.message.event
 class PositionReport
 ```
 
-#### 3. Create an event handler
+#### 3. Create an Event Handler
 
-Create an event handler that will write the csv files to the runtime/position-minute-report folder. Call it EVENT_POSITION_REPORT.
+Create an Event Handler that will write the csv files to the runtime/position-minute-report folder. Call it EVENT_POSITION_REPORT.
 
-Open the file *alpha-eventhandler.kts* and add a variable called *tradeViewRepo* injecting the class *TradeViewAsyncRepository*. Then, add an event handler to generate the csv file:
+Open the file **alpha-eventhandler.kts** and add a variable called **tradeViewRepo** injecting the class **TradeViewAsyncRepository**. Then, add an `eventHandler` codeblock to generate the csv file:
 
 ```kotlin {8,12}
 import java.io.File
@@ -157,7 +162,7 @@ cd $L
 tail -f GENESIS_EVALUATOR.log
 ```
 :::info What is $L?
-$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Feel free to use your favorite command to view logs such as tail, less etc.
+$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis pPlatform. Feel free to use your favorite command to view logs such as tail, less etc.
 :::
 
 <!-- ### Dynamic rules
@@ -172,7 +177,7 @@ First, check that you have the Evaluator running. If it is not, check the proced
 
 You need to create two csv files for this exercise.
 
-The first is the file with your rule in the correct format, similsr to the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
+The first is the file with your rule in the correct format, similar to the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
 
 ```csv
 NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
@@ -234,7 +239,7 @@ eventHandler<PositionCancel> {
 
 #### 4. Set up the Notify module and start the process
 
-The module GENESIS_NOTIFY does not run by default. To change this, we are adding a customized module to our project. To do that, create a process called *ALPHA_NOTIFY* and add it to the file **alpha-processes.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below.
+The module GENESIS_NOTIFY does not run by default. To change this, we are adding a customised module to our project. To do that, create a process called `ALPHA_NOTIFY`* and add it to the file **alpha-processes.xml** in your project folder **server/jvm/alpha-config/src/main/resources/cfg** using the code below.
 
 ```xml
 <processes>
@@ -251,7 +256,7 @@ The module GENESIS_NOTIFY does not run by default. To change this, we are adding
     </process>
 </processes>
 ```
-Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below. 
+Add the `ALPHA_EVALUATOR` to the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** using the code below. 
 
 ```xml
 <configuration>
@@ -260,7 +265,7 @@ Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside y
 </configuration>
 ```
 
-Run **assemble** and **deploy-genesisproduct-alpha** tasks to verify that the new process works as expected.
+Run the `assemble` and `deploy-genesisproduct-alpha` tasks to verify that the new process works as expected.
 
 Run `mon`.
 You should be able to see the process is present.
@@ -307,13 +312,13 @@ systemDefinition {
 }
 ```
 
-Run the *build*, *install-alpha-site-specific* and *deploy* tasks again.
+Run the `build`, `install-alpha-site-specific` and `deploy` tasks again.
 
 #### 7. Switch on data dumps
 
 Data dumps need to be switched on for both EVALUATOR and NOTIFY so we can see some additional data in the logs.
 
-Run the [LogLevel](/managing-applications/operate/on-the-host/helpful-commands/#loglevel-script) command for that:
+Run the [LogLevel](/managing-applications/operate/on-the-host/helpful-commands/#loglevel-script) command to do this:
 
 ```shell
 LogLevel -p ALPHA_EVALUATOR -DATADUMP_ON -l DEBUG
@@ -326,7 +331,7 @@ cd $L
 tail -f ALPHA_EVALUATOR.log
 ```
 :::tip
-$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Moreover, feel free to use your favorite command to view logs such as tail, less etc.
+$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis platform. Feel free to use your favorite command to view logs such as tail, less etc.
 :::
 
 #### 8. Trigger the event to test the rule
@@ -346,10 +351,10 @@ Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the i
 30 mins
 :::
 
-Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](/creating-applications/defining-your-application/business-logic/evaluators/configure/#cron_rule-table) table, and insert a new role changing the CRON_EXPRESSION value. 
+Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](/creating-applications/defining-your-application/business-logic/evaluators/configure/#cron_rule-table) table, and insert a new rule that changes the CRON_EXPRESSION value. 
 
 :::tip 
-To delete rows you can use [DbMon](/managing-applications/operate/on-the-host/helpful-commands/#dbmon-script) and the command `delete`. After that you can use [SendIt](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script) to insert a new row again.
+To delete rows you can use [DbMon](/managing-applications/operate/on-the-host/helpful-commands/#dbmon-script) and the command `delete`. After that you can use [SendIt](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script) to insert a new row.
 
 By the way, the CRON expression for every 10 seconds is `0/10 * * * * *`. See a CRON generator [here](https://www.freeformatter.com/cron-expression-generator-quartz.html).
 :::
@@ -372,7 +377,7 @@ Effectively, you have two levels of control:
 
 **High-level**
 
-You could hide an entire grid from the UI, for example. So, one group of users could view reference data, but other groups would not see this. Or, you could hide an entire data server. To achieve this, you use RIGHT_CODE. This is like a switch – you can either see it or not, depending on whether the code is TRUE or FALSE.
+You could hide an entire grid from the UI, for example. So, one group of users could view reference data, but other groups would not see this. Or, you could hide an entire `query` block in a Data Server. To achieve this, you use RIGHT_CODE. This is like a switch – you can either see it or not, depending on whether the code is TRUE or FALSE.
 
 **Entity-level**
 
@@ -383,7 +388,7 @@ This is row- or column-level access to information. Different users can all view
 
 By including these permissions in an Event Handler, user A can only enter a trade on behalf of a specific set of clients, and user B can only enter trades on behalf of a different set of clients.
 
-Similarly, you can have different users seeing different columns in the same grid. This could be used for a support function, for example. You can prevent the support team from seeing specific columns of sensitive data, such as who the client for a trade is. This can be specified by using GPAL.
+Similarly, you can have different users seeing different columns in the same grid. This could be used for a support function, for example. You can prevent the support team from seeing specific columns of sensitive data, such as who the client for a trade is. This can be specified using GPAL.
 
 #### Users, profiles and right codes
 
@@ -409,8 +414,8 @@ Related to these tables, we have the RIGHT_SUMMARY table, which contains the sup
 The RIGHT_SUMMARY table entries are automatically maintained by the system in real time. In this way, the rights are easily accessible at speed. The GENESIS_AUTH_MANAGER process manages this table's entries automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY table is updated immediately and all the users in that profile receive the new right automatically.
 
 :::warning
-This table is only automatically maintained when profile user/right entries are maintained via GENESIS_AUTH_MANAGER business events. If you update the data in the tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. **DbMon** or **SendIt**) then the RIGHT_SUMMARY table will not be maintained automatically.
-In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in PROFILE_USER and PROFILE_RIGHT and populates RIGHT_SUMMARY withe the correct data.
+This table is only automatically maintained when profile user/right entries are maintained via GENESIS_AUTH_MANAGER business events. If you update the data in the tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. **DbMon** or **SendIt**), then the RIGHT_SUMMARY table will not be maintained automatically.
+In such situations (e.g. setting up a brand new environment and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in PROFILE_USER and PROFILE_RIGHT and populates RIGHT_SUMMARY withe the correct data.
 :::
 
 Further information as well as a sample system set-up can be found [here](/creating-applications/defining-your-application/access-control/authorisation/#sample-explanation).
@@ -427,7 +432,7 @@ First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field pa
 Starting with the server, set up the USER and USER_ATTRIBUTES records for the system user JaneDee.
 
 :::tip
-If you are not sure how to read and write information from the Genesis database, see reference page covering the [`DbMon`](/managing-applications/operate/on-the-host/helpful-commands/#dbmon-script) and [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script) commands.
+If you are not sure how to read and write information from the Genesis database, see the reference page covering the [`DbMon`](/managing-applications/operate/on-the-host/helpful-commands/#dbmon-script) and [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script) commands.
 :::
 
 Set two new key values in **site-specific/cfg/genesis-system-definition.kts** file. This enables the COUNTERPARTY table and COUNTERPARTY_ID field to become part of the generic permissions system:
@@ -529,11 +534,11 @@ If your message type is not a database-generated entity,  you can still define f
 See [here](/creating-applications/defining-your-application/access-control/authorisation-over/) for more details on authorisation.
 
 
-After the configurations, you should execute the Genesis set-up tasks **setupEnvironment**, **install-auth-distribution** and **install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip** to prepare the database for permission. Then run **assemble** and **deploy-genesisproduct-alpha** tasks again to deploy the new version.
+After the configurations, you should execute the Genesis set-up tasks `setupEnvironment`*, `install-auth-distribution` and `install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip` to prepare the database for permission. Then run `assemble` and `deploy-genesisproduct-alpha` tasks again to deploy the new version.
 
-Using the command [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script), make the following three configurations below.
+Using the command [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script), make the following three configurations:
 
-1. Add the permission to the user JaneDee to use the table USER_ATTRIBUTES.
+1. Add permission to the user JaneDee to use the table USER_ATTRIBUTES.
 
 ```
 USER_NAME,USER_TYPE,ACCESS_TYPE,COUNTERPARTY_ID
@@ -561,13 +566,13 @@ That is it! You can now insert some trades and see the permissions happening in 
 30 mins
 :::
 
-Set up a permission code for Trade inserting. The permission code should be called *TRADE_INSERT* and be part of the **alpha-eventhandler.kts** file accordingly.
+Set up a permission code for Trade inserting. The permission code should be called `TRADE_INSERT`* and be part of the **alpha-eventhandler.kts** file.
 
 
 :::tip
-Remember to change the **alpha-eventhandler.kts** file, as well as inserting the record via `SendIt` command in the configuration table *RIGHT_SUMMARY* too.
+Remember to change the **alpha-eventhandler.kts** file. Also, insert the record into the configuration table `RIGHT_SUMMARY` via the `SendIt` command.
 
-After the configurations, you should run **assemble** and **deploy-genesisproduct-alpha** tasks again to deploy the new version.
+After the configurations, you should run `assemble`* and `deploy-genesisproduct-alpha` tasks again to deploy the new version.
 :::
 
 <!-- ## Generating data model from existing sources
@@ -597,19 +602,21 @@ If you already have a Genesis low-code platform, you can download the workbook a
 ### From an existing relational database
 
 :::note
-The command from this step has to be executed from where the Genesis Platform is set up (be it either a local installation or on remote host).
+The command from this step has to be executed from where the platform is set up (be it either a local installation or on remote host).
 :::
 
 The product that we create will be called **ref_data_app**. Using the instance in which the platform is installed, run:
+
 ```bash
 DictionaryBuilder -t <database-type> -U <username> -P <password> -p <database-port> -H <database-host> -d tradingapp --product <product-name> -o <output-directory> -i 200 --tables <comma-separated-table-names>
 ```
 For example, if there is an MSSQL database running on AWS, a sample command would look like:
+
 ```bash
 DictionaryBuilder -t MSSQL -U admin -P beONneON*74 -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d tradingapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument
 ```
 
-Once the command has finished, it will generate the `fields-dictionary.kts` and `tables-dictionary.kts` files for the data model. Keep these files handy, as you will have to copy them over in the next steps.
+Once the command has finished, it will generate the **fields-dictionary.kts** and **tables-dictionary.kts** files for the data model. Keep these files handy, as you will have to copy them over in the next steps.
  -->
 
  ### Application is done!
@@ -673,13 +680,14 @@ So far, we've used commands such as `mon`, `DbMon`, `SendIt` and `LogLevel`. The
 ### Practising the commands
 Let's do a manual deployment of the tables dictionary as an example of how to run the server commands.
 
-From the terminal, go to the folder `/home/genesis/run/alpha/cfg/`, edit file `alpha-tables-dictionary.kts` and add any existing field to table INSTRUMENT_PRICE.
+From the terminal, go to the folder **/home/genesis/run/alpha/cfg/**. Edit the file **alpha-tables-dictionary.kts** and add any existing field to the table INSTRUMENT_PRICE.
 
 Now, go to the `generated` folder with `cd $GC` (an alias to the `generated` folder). Compare the content between the file you edited previously with the one you see in the `generated` folder. The one in $GC does not contain your change.
 
 Next, run `genesisInstall` and then compare again the files - you'll notice now they are identical because `genesisInstall` processed and installed it into the `generated` folder. Without running `genesisInstall`, it would use an older version of the file.
 
 Since this is a table change, we need to install the changes in the database. So, let's stop the server, back up the table data and run `remap`:
+
 ```shell
 cd /tmp
 killServer --all
@@ -723,7 +731,7 @@ Once the zip file is in the ~/run/ folder, unzip it (use unzip command) and run 
 
 Change the log level of the ALPHA_EVENT_HANDLER process to INFO with `LogLevel` and insert a new trade from the UI.
 
-To test it, check if you can see the new log you added in the alpha event handler log file.
+To test it, check if you can see the new log you added in the alpha Event Handler log file.
 
 
 ## Navigating the documentation and how to get help​
