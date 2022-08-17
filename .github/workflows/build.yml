@@ -1,4 +1,4 @@
-name: Build
+name: Build and deploy to preview
 
 # Triggered on PRs against master and UAT
 on:
@@ -32,13 +32,13 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
 
-    # docusaurus will check for broken links as part of the build process
+    # docusaurus will check for broken links as part of the build process and will fail here if necessary
     - name: Build
       run: npm run build
       env:
         BASE_URL: /uat/pull-requests/${{ github.event.number }}/
 
-    - name: Deploy
+    - name: Deploy to preview
       uses: jakejarvis/s3-sync-action@master
       with:
         args: --follow-symlinks
