@@ -1,6 +1,6 @@
 ---
 title: 'The User Interface'
-id: the_user_interface
+id: the-user-interface
 ---
 
 # The User Interface
