@@ -4,15 +4,7 @@ sidebar_label: 'Entity Db'
 id: entity-db
 ---
 
-[Introduction](/database/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/) 
-
----
-sidebar_position: 2
-title: EntityDb
-sidebar_label: EntityDb
-id: entity-db
-
----
+[Introduction](/database/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/)
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
