@@ -25,7 +25,7 @@ If you would like to see that in detail, please see Example 1.
 
 If you already have a Genesis low-code platform, you can download the workbook and try this for yourself.
 
-## Example 1
+## Analyse, adjust and run
 
 We are going to start with a workbook that has ten different worksheets.
 
@@ -71,7 +71,7 @@ The process is quick. It creates a number of tables. Each table has a numeric ID
 OK. Now take a look at the results in Example 2.
 
 
-## Example 2
+## Check the files and load the data
 
 Now you have run the conversion script, let's look at the files that have been created.
 
@@ -234,7 +234,7 @@ You can load the data from all the files into the database in one simple command
 `**sendIt -a`
 So you are ready now to [generate your server application](#Example 3).
 
-## Example 3 
+## Generate the application
 
 After you have checked the files generated and addressed any issues in the fields, tables and views, you can run the sequence of commands to generate an application.
 
