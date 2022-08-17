@@ -13,7 +13,7 @@ Use these APIs to send and receive messages between micro-services.
 
 Use `@Inject` to create `ClientConnectionsManager`. See the example below:
 
-```
+```kotlin
 class TestService(@Inject val clientConnectionManager: ClientConnectionsManager) {}
 ```
 
@@ -23,8 +23,11 @@ class TestService(@Inject val clientConnectionManager: ClientConnectionsManager)
 
 If you connect successfully to the TRADING_APP_EVENT_HANDLER service, you will get GenesisMessageClient. Otherwise, you will get null.
 
-```
-class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnectionsManager) {    private val genesisMessageClient = clientConnectionManager.getGenesisMessageClient("TRADING_APP_EVENT_HANDLER")    // custom code here}
+```kotlin
+class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnectionsManager) {
+    private val genesisMessageClient = clientConnectionManager.getGenesisMessageClient("TRADING_APP_EVENT_HANDLER")    
+    // custom code here
+}
 ```
 
 #### Constructor[​](/database/network-api/network-api/#constructordirect-link-to-heading)
@@ -63,8 +66,25 @@ GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration:
 
 ### Example[​](/database/network-api/network-api/#exampledirect-link-to-heading)
 
-```
-class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnectionsManager) {    private val genesisMessageClient = clientConnectionManager.getGenesisMessageClient("GENESIS_AUTH_MANAGER")    fun sendMessageToEventHandler() {        genesisMessageClient?.waitForConnection()        genesisMessageClient?.sendReqRep(            genesisSet {                MESSAGE_TYPE with "EVENT_LOGIN_AUTH"                SERVICE_NAME with "GENESIS_AUTH_MANAGER"                SOURCE_REF with "sourceRef"                DETAILS with genesisSet {                    USER_NAME with "User"                    PASSWORD with "Password"                }            }        )?.get()        genesisMessageClient?.shutdown()    }}
+```kotlin
+class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnectionsManager) {  
+    private val genesisMessageClient = clientConnectionManager.getGenesisMessageClient("GENESIS_AUTH_MANAGER")    
+    fun sendMessageToEventHandler() {        
+        genesisMessageClient?.waitForConnection()        
+        genesisMessageClient?.sendReqRep(            
+            genesisSet {                
+                MESSAGE_TYPE with "EVENT_LOGIN_AUTH"                
+                SERVICE_NAME with "GENESIS_AUTH_MANAGER"                
+                SOURCE_REF with "sourceRef"                
+                DETAILS with genesisSet {                    
+                    USER_NAME with "User"                    
+                    PASSWORD with "Password"                
+                }            
+            }        
+        )?.get()        
+        genesisMessageClient?.shutdown()    
+    }
+}
 ```
 
 ### GenesisMessageHandler[​](/database/network-api/network-api/#genesismessagehandlerdirect-link-to-heading)
@@ -88,6 +108,24 @@ This method is called when a new message is received.
 
 Example:
 
-```
-class CreateListener(@Inject val clientConnectionManager: ClientConnectionsManager) {    private val genesisMessageClient = clientConnectionManager.getGenesisMessageClient("GENESIS_AUTH_MANAGER")    fun listener(args: Array<String>) {        // Add listener which prints GenesisSet        genesisMessageClient?.handler?.addListener { set: GenesisSet?, channel: GenesisChannel? ->            println(set)        }        // Listener gets called when new message is received        genesisMessageClient?.sendMessage(genesisSet {            MESSAGE_TYPE with "EVENT_LOGIN_AUTH"            SERVICE_NAME with "GENESIS_AUTH_MANAGER"            SOURCE_REF with "sourceRef"            DETAILS with genesisSet {                USER_NAME with "User"                PASSWORD with "Password"            }        }        )    }}
+```kotlin
+class CreateListener(@Inject val clientConnectionManager: ClientConnectionsManager) {    
+    private val genesisMessageClient = clientConnectionManager.getGenesisMessageClient("GENESIS_AUTH_MANAGER")    
+    fun listener(args: Array<String>) {        
+        // Add listener which prints GenesisSet        
+        genesisMessageClient?.handler?.addListener { 
+            set: GenesisSet?, channel: GenesisChannel? -> println(set)        
+        }        
+        // Listener gets called when new message is received        
+        genesisMessageClient?.sendMessage(genesisSet {            
+            MESSAGE_TYPE with "EVENT_LOGIN_AUTH"            
+            SERVICE_NAME with "GENESIS_AUTH_MANAGER"            
+            SOURCE_REF with "sourceRef"            
+            DETAILS with genesisSet {                
+                USER_NAME with "User"                
+                PASSWORD with "Password"            
+            }        
+        })    
+    }
+}
 ```
