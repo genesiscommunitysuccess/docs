@@ -35,3 +35,17 @@ jobs:
     # docusaurus will check for broken links as part of the build process
     - name: Build
       run: npm run build
+      env:
+        BASE_URL: /uat/pull-requests/${{ github.event.number }}/secure/
+
+    - name: Deploy
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --follow-symlinks
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_S3_BUCKET: genesis-internal-web
+        AWS_REGION: 'eu-west-2'
+        SOURCE_DIR: 'build'
+        DEST_DIR: 'uat/pull-requests/${{ github.event.number }}/secure'
