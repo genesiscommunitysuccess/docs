@@ -5,7 +5,7 @@ sidebar_position: 1
 id: views-intro
 ---
 
-[Introduction](/database/fields-tables-views/views/)  | [Basics](/database/fields-tables-views/views/views-basics/) |  [Advanced](/database/fields-tables-views/views/views-advanced/) | [Examples](/database/fields-tables-views/views/views-examples/) 
+[Introduction](/database/fields-tables-views/views/)  | [Basics](/database/fields-tables-views/views/views-basics/) |  [Advanced](/database/fields-tables-views/views/views-advanced/) | [Examples](/database/fields-tables-views/views/views-examples/) | [Generating DAOs](/database/fields-tables-views/genesisDao/) 
 
 
 Views enable you join related tables to create a single view. This is useful because a single grid display in your application often contains information from more than one table.
