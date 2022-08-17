@@ -5,7 +5,7 @@ sidebar_position: 1
 id: introduction
 ---
 
-Welcome to the Learning area for the Genesis low-code platform.
+Welcome to the Learning area for the Genesis low-code platform. Hello, world!
 
 
 
