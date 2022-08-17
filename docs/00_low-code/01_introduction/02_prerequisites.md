@@ -1,7 +1,5 @@
 ---
 title: 'Prerequisites'
-sidebar_label: 'Prerequisites'
-sidebar_position: 1
 id: 'prerequisites'
 ---
 

@@ -1,7 +1,6 @@
 ---
 title: 'Create New Project'
-sidebar_label: 'Create New Project'
-id: quick-start-create-new-project
+id: create-new-project
 ---
 
 # Create New Project

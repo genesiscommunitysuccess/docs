@@ -1,7 +1,6 @@
 ---
 title: 'Introduction'
-sidebar_label: 'Introduction'
-id: quick-start-introduction
+id: introduction
 ---
 
 # Introduction
@@ -12,11 +11,11 @@ This guide will be split into the following steps:
 
 <span style={{color:'red'}}>Need to adjust this to be more customer friendly</span>
 
-1. [Create New Project](/low-code/quick-start/quick-start-create-new-project/)
-2. [The User Interface](/low-code/quick-start/quick-start-the_user_interface/)
-3. [The Server](/low-code/quick-start/quick-start-the-server)
+1. [Create New Project](/low-code/quick-start/create-new-project/)
+2. [The User Interface](/low-code/quick-start/the_user_interface/)
+3. [The Server](/low-code/quick-start/the-server)
 4. [Sample application](/low-code/quick-start/sample-application)
-5. [Recap and Conclusion](/low-code/quick-start/quick-start-recap-and-conclusion)
+5. [Recap and Conclusion](/low-code/quick-start/recap-and-conclusion)
 
 ## What will you build?
 

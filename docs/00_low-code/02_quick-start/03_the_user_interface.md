@@ -1,7 +1,6 @@
 ---
 title: 'The User Interface'
-sidebar_label: 'The User Interface'
-id: quick-start-the_user_interface
+id: the_user_interface
 ---
 
 # The User Interface

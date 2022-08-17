@@ -1,7 +1,6 @@
 ---
 title: 'Sample Application'
-sidebar_label: 'Sample Application'
-id: quick-start-sample-application
+id: sample-application
 ---
 
 # Sample Application

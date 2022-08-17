@@ -1,7 +1,5 @@
 ---
 title: 'Low-Code'
-sidebar_label: 'Low-Code'
-sidebar_position: 1
 id: 'introduction'
 ---
 

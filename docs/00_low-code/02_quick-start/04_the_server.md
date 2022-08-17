@@ -1,7 +1,6 @@
 ---
 title: 'The Server'
-sidebar_label: 'The Server'
-id: quick-start-the-server
+id: the-server
 ---
 # The Server
 

@@ -1,7 +1,6 @@
 ---
 title: 'Recap and Conclusion'
-sidebar_label: 'Recap and Conclusion'
-id: quick-start-recap-and-conclusion
+id: recap-and-conclusion
 ---
 
 ## Conclusion
