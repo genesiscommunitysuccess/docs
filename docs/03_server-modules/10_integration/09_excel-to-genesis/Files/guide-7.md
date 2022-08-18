@@ -1,13 +1,13 @@
 ---
 id: guide-7
-sidebar_label: 'The data server file'
+sidebar_label: 'The Data Server file'
 sidebar_position: 70
-title: 'The data server file'
+title: 'The Data Server file'
 ---
 
 
 
-This file shows the data servers that have been generated. Each `query`  makes real-time data available to the front end.
+This file shows the Data Servers that have been generated. Each `query` makes real-time data available to the front end.
 
 ```kotlin
 dataServer {

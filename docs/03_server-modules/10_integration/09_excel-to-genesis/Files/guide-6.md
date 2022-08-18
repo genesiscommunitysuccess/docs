@@ -1,13 +1,13 @@
 ---
 id: guide-6
-sidebar_label: 'The request server file'
+sidebar_label: 'The Request Server file'
 sidebar_position: 60
-title: 'The request server file'
+title: 'The Request Server file'
 ---
 
 
 
-This file shows the request servers that have been generated. Each `requestReply`  makes snapshot data available to the front end.
+This file shows the Request Servers that have been generated. Each `requestReply`  makes snapshot data available to the front end.
 
 ```kotlin
 requestReplies {
