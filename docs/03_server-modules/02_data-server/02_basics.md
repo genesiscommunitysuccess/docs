@@ -8,7 +8,7 @@ id: basics
 
 Let's make things really simple.
 - A Data Server is a component that supplies streaming real-time data to the front end of your application.
-- You define your application's Data Server in a kotlin script file named -dataserver.kts. This file can be found inside the -script-config module (app-name\app-name-script-config\src\main\resources\scripts\app-name-dataserver.kts). 
+- You define your application's Data Server in a kotlin script file named _application-name_-dataserver.kts. This file can be found inside the -script-config module (_application-name_\\_application-name_-script-config\src\main\resources\scripts\\_application-name_-dataserver.kts). 
 - In this file, you define specific `query` codeblocks, each of which is designed to supply different sets of data.
 - Each `query` listens to a specified table or view; when data on that source changes, it publishes the changes. 
 - A `query` can include a number of other subtleties, such as `where` clauses or ranges, so that you can create code that matches your precise requirements.
@@ -18,7 +18,7 @@ Let's make things really simple.
 
 ## The simplest possible definition
 
-Your app-name-dataserver.kts kotlin script file contains all the queries you create. These are wrapped in a single `dataServer` statement.
+Your _application-name_-dataserver.kts kotlin script file contains all the queries you create. These are wrapped in a single `dataServer` statement.
 Our example below shows a file with a single query, which publishes changes to the table INSTRUMENT_DETAILS.
 
 
