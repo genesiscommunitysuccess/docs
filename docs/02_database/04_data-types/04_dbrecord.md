@@ -14,7 +14,7 @@ id: dbrecord
 
 Using `DbRecord` instead of [](/database/data-types/views-entities/) entities will circumvent compile-time validation of database interactions. This means that errors might not appear until runtime or might lead to unexpected results.
 
-DbRecord enables you to build record of specified Table. Usage of this is not recommended as its not type-safe
+DbRecord enables you to build record of specified Table. Usage of this is not recommended as its not type-safe.
 
 ### Constructors
 
@@ -35,7 +35,7 @@ DbRecord("TRADE_SUMMARY", tradeRecord)
 
 ### functions
 
-Use below functions to set and get fields of DbRecord. Field type can be any type among [these](/database/fields-tables-views/fields/fields-basics/#field-types)
+Use below functions to set and get fields of DbRecord. Field type can be any type among [these](/database/fields-tables-views/fields/fields-basics/#field-types).
 
 #### Set record:
 `fun set{DataType}(column: String, value: {DataType}?)`: You need to specify name and value of the column. `DataType` represents the type of the field you are trying to set.
