@@ -32,7 +32,7 @@ provideDesignSystem().register(alphaTreeView(), alphaTreeItem());
 
 ## Use cases
 
-* Hierarchical list such as a file system
+* A hierarchical list such as a file system
 
 ## Additional resources
 

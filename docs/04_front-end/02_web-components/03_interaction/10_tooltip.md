@@ -6,7 +6,7 @@ id: tooltip
 
 <div class="tooltip-examples">
 
-The `alpha-tooltip` component is used provide extra information about another element when the user hovers over it.
+The `alpha-tooltip` component is used to provide extra information about another element when the user hovers over it.
 
 ## Set-up
 

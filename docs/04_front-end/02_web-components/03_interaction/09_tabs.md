@@ -4,7 +4,7 @@ sidebar_label: 'Tabs'
 id: tabs
 ---
 
-_Tabs_ are a set of layered sections of content that display one panel of content at a time. Each tab panel has an associated tab element, that when activated, displays the panel. The list of tab elements is arranged along one edge of the currently displayed panel.
+_Tabs_ are a set of layered sections of content that display one panel of content at a time. Each tab panel has an associated tab element that, when activated, displays the panel. The list of tab elements is arranged along one edge of the currently displayed panel.
 
 ## Set-up
 
