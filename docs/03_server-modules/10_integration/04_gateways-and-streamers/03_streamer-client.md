@@ -9,7 +9,8 @@ This page shows you how to create a Streamer Client. It also looks at the syntax
 * table or view entity
 * GenesisSet
 
-Also, you can see an example of a Streamer Client in practice in our [tutorial](/01_getting-started/05_tutorials/12_integrate-a-fix-gateway.md).
+Also, you can see an example of a Streamer Client in practice in our [tutorial](/).
+<!-- TODO: link to 'fix-gateway' turorial -->
 
 ## Creating a Streamer Client
 To create a Streamer Client:

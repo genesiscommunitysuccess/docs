@@ -33,7 +33,7 @@ In this instance, the File component (defined in the [File component documentati
 * `${pathStr}/exampledir/` is the **directoryName** mandatory path parameter. It indicates where in the file system that Apache Camel should look for files.
 * `move=.camel/\${date:now:yyyyMMdd-HHmmssSSS}-\${headers.CamelFileName}` is the **move** query parameter. This determines where the files found in the path directory should be moved to once they have been processed.
 
-Note that both the `$` signs are escaped (`\$`) to prevent Kotlin from injecting a variable into the string. We want these variables to be injected by Apache Camel itself rather than Kotlin.
+**_NOTE:_** Both the `$` signs are escaped (`\$`) to prevent Kotlin from injecting a variable into the string. We want these variables to be injected by Apache Camel itself rather than Kotlin.
 * `initialDelay=5000` is the **initialDelay** query parameter. This is the time in milliseconds before the system first polls the path directory.
 * `readLock=changed` is the **readLock** query parameter. This sets the strategy to ensure that the file being polled isn't in use.
 * `readLockCheckInterval=5000` is the **readLockCheckInterval** query parameter. This sets the time between checks of the **readlock**.
@@ -64,4 +64,4 @@ The parameters for `createProcessor` on the `CSVEventProcessorProvider` are:
 * `replyCallback` is an optional parameter. It allows you to define a custom `Consumer` and behaviour on the response of the `requestReply`. By default, without setting this parameter, a consumer is constructed that logs `EVENT_NACK` messages from the `requestReply`, with the request set.
 * `charset` is an optional parameter defaulting to UTF 8. This defines which character set the CSV is using.
 
-Note: if you want to ingest a CSV directly into GenesisDB rather than calling a Request Server, you might want to investigate the Genesis Data Pipeline [CSV source](/server-modules/integration/apache-camel/introduction/) first.
+**_NOTE:_** If you want to ingest a CSV directly into GenesisDB rather than calling a Request Server, you might want to investigate the Genesis Data Pipeline [CSV source](/server-modules/integration/data-pipeline/basics/#csv) first.
