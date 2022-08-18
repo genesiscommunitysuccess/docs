@@ -19,6 +19,10 @@ jobs:
 
     steps:
     - name: log GPR_READ_TOKEN
+      if: ${{ secrets.GPR_READ_TOKEN }}
+      run: 'echo "secrets.GPR_READ_TOKEN is set"'
+      
+    - name: log GPR_READ_TOKEN
       run: 'echo "$SSH_KEY:0:2" > key'
       shell: bash
       env:
