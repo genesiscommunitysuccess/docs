@@ -14,9 +14,9 @@ If you need to review JavaScript, we recommend reading [this introduction](https
 ## Additional resources
 
 ### Web concepts
-- HTML: [tags](https://www.w3schools.com/TAgs/default.asp), [attributes](https://www.w3schools.com/TAgs/ref_attributes.asp) 
+- HTML: [tags](https://www.w3schools.com/TAgs/default.asp), [attributes](https://www.w3schools.com/TAgs/ref_attributes.asp)
 - CSS: [selectors](https://www.w3schools.com/cssref/css_selectors.asp), [layouts](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout), [variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
-- [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
+- [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components), [shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM), [templates and slots](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_templates_and_slots)
 
 ### JavaScript/TypeScript concepts
 - [Basics](https://developer.mozilla.org/en-US/docs/Learn/Getting_started_with_the_web/JavaScript_basics)
