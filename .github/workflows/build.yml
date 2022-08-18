@@ -19,11 +19,11 @@ jobs:
 
     steps:
     - name: log GPR_READ_TOKEN
-      if: ${{secrets.GPR_READ_TOKEN}}
       shell: bash
-      run: 'echo "secrets.GPR_READ_TOKEN is set"'
       env:
-        SSH_KEY: ${{secrets.GPR_READ_TOKEN}}
+        MY_KEY: ${{ secrets.GPR_READ_TOKEN }}
+      if: "${{ env.MY_KEY != '' }}"
+      run: echo "This command is executed if GPR_READ_TOKEN secret IS NOT empty"
       
     - name: log GPR_READ_TOKEN
       run: 'echo "$SSH_KEY:0:2" > key'
