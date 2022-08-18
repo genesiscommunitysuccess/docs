@@ -4,8 +4,7 @@ sidebar_label: 'Tables'
 id: tables
 ---
 
-
-
+[Introduction](/database/data-structures/data-structures/)  | [Tables](/database/data-structures/tables/) |  [Indices](/database/data-structures/indices/) | [Views](/database/data-structures/views/) 
 
 Tables are defined in the `-tables-dictionary.kts` files as discussed [here](/database/fields-tables-views/tables/tables-basics). Table 
 records can be represented as a [table entity](/database/data-types/table-entities/), or as a [`DbRecord`](/database/data-types/dbrecord/)

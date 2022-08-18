@@ -4,7 +4,7 @@ sidebar_label: 'Tables - basics'
 id: tables-basics
 ---
 
-[Introduction](/database/fields-tables-views/tables/)  | [Basics](/database/fields-tables-views/tables/tables-basics/) |  [Advanced](/database/fields-tables-views/tables/tables-advanced/) | [Examples](/database/fields-tables-views/tables/tables-examples/) 
+[Introduction](/database/fields-tables-views/tables/)  | [Basics](/database/fields-tables-views/tables/tables-basics/) |  [Advanced](/database/fields-tables-views/tables/tables-advanced/) | [Examples](/database/fields-tables-views/tables/tables-examples/) | [Generating DAOs](/database/fields-tables-views/genesisDao/) 
 
 In your application's **tables-dictionary.kts** file, you need to define every table that your application needs. Let us go back to the very simple example definition that we started with. This contains a single table with three fields in it.
 
@@ -13,14 +13,14 @@ Then you can look closer at all the elements that can go into a table definition
 ```kotlin
 tables {
 
-  table( name= "POSITION", id = 11002) {
+  table(name = "POSITION", id = 11002) {
     sequence(POSITION_ID, "PS")
     INSTRUMENT_ID
     QUANTITY
     NOTIONAL
 
-    primaryKey {
-     POSITION_ID
+    primaryKey { 
+      POSITION_ID
     }
   }
 
@@ -35,7 +35,7 @@ When you define a table, you must start by giving it a name that is unique to th
 
 
 ```kotlin
-  table( name= "POSITION")
+  table(name = "POSITION")
 ```
 
 ## Table ID
@@ -43,7 +43,7 @@ When you define a table, you must start by giving it a name that is unique to th
 Tables must also be given a Table ID that is unique to the application. This ensures that you can rename a table without losing the data in it.
  
 ```kotlin
-  table( name= "POSITION", id = 11002)
+  table(name = "POSITION", id = 11002)
 ```
 
 ## Fields
@@ -56,7 +56,7 @@ If you are using intelliJ IDE, it will auto-suggest the available fields; any re
 
 ```kotlin
 
-  table( name= "POSITION", id = 11002) {
+  table(name = "POSITION", id = 11002) {
     sequence(POSITION_ID, "PS")
     INSTRUMENT_ID
     QUANTITY
@@ -79,14 +79,14 @@ The example below shows a `primaryKey` with a single field: `POSITION_ID`:
 ```kotlin
 tables {
 
-  table( name= "POSITION", id = 11002) {
+  table(name = "POSITION", id = 11002) {
     sequence(POSITION_ID, "PS")
     INSTRUMENT_ID
     QUANTITY
     NOTIONAL
 
     primaryKey {
-     POSITION_ID
+      POSITION_ID
     }
   }
 
@@ -152,8 +152,8 @@ Let's see some examples. Below, the table name is `POSITION`. The inferred names
 In this example, we have specified the name of the primary key in the `name` parameter.
 
 ```kotlin
-    primaryKey(name = "POSITION_PRIMARY_KEY" ) {
-     POSITION_ID
+    primaryKey(name = "POSITION_PRIMARY_KEY") {
+      POSITION_ID
     }
 ```
 
