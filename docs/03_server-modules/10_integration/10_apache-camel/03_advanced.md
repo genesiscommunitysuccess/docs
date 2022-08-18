@@ -95,4 +95,4 @@ In the above example, we have three defined routes. In the first two, we are rec
 
 The third route demonstrates use of service discovery to locate another process assumed to be a [Genesis Event Handler](/server-modules/event-handler/basics/) to which a message is then dispatched.
 
-Remember; if your use case is basic data ingestion, transformation and persistence to GenesisDB then you should first investigate the [Genesis Data Pipeline](/server-modules/integration/apache-camel/introduction/), which offers a higher-level abstraction than seen here.
+Remember; if your use case is basic data ingestion, transformation and persistence to GenesisDB then you should first investigate the [Genesis Data Pipeline](/server-modules/integration/data-pipeline/introduction/), which offers a higher-level abstraction than seen here.
