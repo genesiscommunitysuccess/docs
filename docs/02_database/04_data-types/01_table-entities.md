@@ -20,7 +20,7 @@ For example, `TABLE_NAME` becomes `TableName`.
 
 All table/view entities implement a common interface called [DbEntity](/database/data-types/dbentity/).
 
-Index entities[​](/database/data-types/table-entities/#index-entitiesdirect-link-to-heading)
+Index entities[​](/database/data-types/table-entities/#index-entities)
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Tables, like views, have [index entities](/database/data-types/index-entities/). There are also convenient methods that construct an index entity from the table entity. `byPrimaryKey()` will return an entity for the primary key. Additionally, for each index, there will be a `by...()` call with the index name.
@@ -60,7 +60,7 @@ Trade trade = Trade.builder()
 </TabItem>
 </Tabs>
 
-Auditable tables[​](/database/data-types/table-entities/#auditable-tablesdirect-link-to-heading)
+Auditable tables[​](/database/data-types/table-entities/#auditable-tables)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 When a table is audited, the table entity can be easily converted to its audited counterpart by calling the `toAuditEntity` function.
@@ -91,7 +91,7 @@ TradeAudit = trade.toAuditEntity(
 </Tabs>
 
 
-Some of the most useful methods[​](/database/data-types/table-entities/#some-of-the-most-useful-methodsdirect-link-to-heading)
+Some of the most useful methods[​](/database/data-types/table-entities/#some-of-the-most-useful-methods)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 | Name | Signature | Description |
@@ -102,7 +102,7 @@ Some of the most useful methods[​](/database/data-types/table-entities/#some-o
 | toStringWithSensitivesUnmasked | `fun toStringWithSensitivesUnmasked(): String` | gets the string representation of view with sensitive fields(Ex: Password) unmasked |
 | set | `operator fun <T> set(field: TableField<*, T>, value: T?)` | to set table field with provided value |
 
-Examples[​](/database/data-types/table-entities/#examplesdirect-link-to-heading)
+Examples[​](/database/data-types/table-entities/#examples)
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 The following example contains a table definition, and shows examples of output from different calls:
