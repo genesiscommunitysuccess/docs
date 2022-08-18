@@ -5,7 +5,7 @@ id: generated-repositories
 ---
 
 
-[Introduction](/database/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/) 
+[Introduction](/database/database-interface/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/) 
 
 During the code generation phase, repository classes are generated for every table and view in the system. These repositories provide a type-safe way of accessing the database.
 
@@ -25,7 +25,7 @@ The main differences between the generated repositories and the [Entity Db](/da
 | Returns data as | [table](/database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities |
 | Writes data as | [table](/database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities |
 | References indexes as | Generated methods                                                                                      |
-| Programming interface | [Async](/database/types-of-api/asynch/) or [RxJava](/database/types-of-api/rxjava/)                    |
+| Programming interface | [Async](/database/types-of-api/async/) or [RxJava](/database/types-of-api/rxjava/)                    |
 | Write (input) | Generated                                                                                              |
 | Write (output) | [Legacy Write Result](/database/helper-classes/write-results/legacy/)                                  |
 | Subscribe | [Generic Record Update](/database/helper-classes/subscription/record-update/) of entity                |
@@ -37,7 +37,7 @@ With generated repositories, there are two flavours of the entity db:
 
 * One has a [RxJava API](/database/types-of-api/rxjava/) signatures, for use from Java
 
-* The other flavour has an [Async API](/database/types-of-api/asynch/) signatures, for use from Kotlin.
+* The other flavour has an [Async API](/database/types-of-api/async/) signatures, for use from Kotlin.
 
 If you have a table called **POSITION** and two repositories called **PositionRx3Repository** and **PositionAsyncRepository** will be generated as part of [generateDao](/database/fields-tables-views/genesisDao/) task
 You can perform CRUD operations on Table/View by its primary key and indices

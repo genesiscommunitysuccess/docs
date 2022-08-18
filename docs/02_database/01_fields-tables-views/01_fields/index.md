@@ -12,15 +12,9 @@ A single field can be used in multiple tables.
 
 You define your fields in a specific file that has the name _application_**-fields-dictionary.kts**.
 
-Here is a very simple example of such a file, with only three fields defined.
+So, if your application is called **heracleum**, the file name will be **heracleum-fields-dictionary.kts**.
 
-```kotlin
-fields {
-    field(name = "ORDER_ID", type = STRING)
-    field(name = "DESCRIPTION", type = STRING, nullable = true)
-    field(name = "PRICE", type = DOUBLE, nullable = false)
-}
-```
+
 
 
 
