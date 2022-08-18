@@ -154,7 +154,8 @@ Run the *build*, *install-alpha-site-specific* and *deploy* tasks again.
 
 Data dumps need to be switched on for both EVALUATOR and NOTIFY so we can see some additional data in the logs.
 
-Run the [LogLevel](/managing-applications/operate/on-the-host/helpful-commands/#loglevel-script) command for that:
+Run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command for that:
+<!-- TODO: add LogLevel section to Server Commands -->
 
 ```shell
 LogLevel -p ALPHA_EVALUATOR -DATADUMP_ON -l DEBUG

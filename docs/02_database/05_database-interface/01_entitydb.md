@@ -4,7 +4,7 @@ sidebar_label: 'Entity Db'
 id: entity-db
 ---
 
-[Introduction](/database/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/)
+[Introduction](/database/database-interface/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/)
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -29,7 +29,7 @@ The entity db is available in the kotlin Event Handler. It can be injected in Ko
 | Returns data as                                                                                 | [table](database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities        |
 | Writes data as                                                                                  | [table](database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities        |
 | References indexes as                                                                           | [index entities](/database/data-types/index-entities/)                                         |
-| Programming interface                                                                           | [Async](/database/types-of-api/asynch/) or [RxJava](/database/types-of-api/rxjava/) |
+| Programming interface                                                                           | [Async](/database/types-of-api/async/) or [RxJava](/database/types-of-api/rxjava/) |
 | Write (input)                                                                                   | [Generic Modify Details](/database/helper-classes/modify-details/generic/)                              |
 | Write (output)                                                                                  | [Generic Write Result](/database/helper-classes/write-results/generic/)                          |
 | Subscribe                                                                                       | [Generic Record Update](/database/helper-classes/subscription/record-update/) of entity                 |

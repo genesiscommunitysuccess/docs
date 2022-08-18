@@ -14,7 +14,7 @@ It makes sense to re-use fields in dependent modules wherever possible; this cut
 
 ## Scripting
 
-GPAL is a scripting language that gives engineers plenty of advantages, especially when it comes to repetition. 
+[GPAL](/getting-started/glossary/glossary/#gpal) is a scripting language that gives engineers plenty of advantages, especially when it comes to repetition. 
 
 For example, where you need to create a large number of table fields, say `ALGO_PARAM_1` through to `ALGO_PARAM_50`, you can introduce `for` loops:
 

@@ -11,7 +11,7 @@ Our example below shows an application's **tables-dictionary.kts** file containi
 
 ```kotlin
 tables {
-  table (name = "TRADE", id = 11000, audit = details(id = 11001, sequence = "TR", tsKey = true)) {
+  table(name = "TRADE", id = 11000, audit = details(id = 11001, sequence = "TR", tsKey = true)) {
     // Source: Trade
     sequence(TRADE_ID, "TR")
     INSTRUMENT_ID not null
@@ -34,14 +34,14 @@ tables {
     }
   }
 
-  table( name= "POSITION", id = 11002) {
+  table(name = "POSITION", id = 11002) {
     sequence(POSITION_ID, "PS")
     INSTRUMENT_ID
     QUANTITY
     NOTIONAL
 
     primaryKey {
-     POSITION_ID
+      POSITION_ID
     }
   }
 
