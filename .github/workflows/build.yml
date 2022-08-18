@@ -18,6 +18,18 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - name: log GPR_READ_TOKEN
+    - run: 'echo "$SSH_KEY" > key'
+      shell: bash
+      env:
+        SSH_KEY: ${{secrets.GPR_READ_TOKEN}}
+        
+    - name: log GITHUB_TOKEN
+    - run: 'echo "$SSH_KEY" > key'
+      shell: bash
+      env:
+        SSH_KEY: ${{secrets.GITHUB_TOKEN}}
+    
     - uses: actions/checkout@v2
 
     - name: Use Node.js ${{ matrix.node-version }}
