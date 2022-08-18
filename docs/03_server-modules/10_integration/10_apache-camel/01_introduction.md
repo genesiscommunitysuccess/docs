@@ -17,4 +17,4 @@ Likely uses for Apache Camel include:
 
 Note that Camel's power and flexibility come at the cost of some complexity and configuration overhead.
 
-If you simply want to ingest and transform data from the most common sources (e.g. CSV files and relational databases), you should first investigate the new [Genesis Data Pipeline](/getting-started/quick-guides/loading-feed-data/sftp-and-encryption/), which offers a higher-level ingestion workflow than the Apache Camel DSL.
+If you simply want to ingest and transform data from the most common sources (e.g. CSV files and relational databases), you should first investigate the new [Genesis Data Pipeline](/server-modules/integration/data-pipeline/introduction/), which offers a higher-level ingestion workflow than the Apache Camel DSL.

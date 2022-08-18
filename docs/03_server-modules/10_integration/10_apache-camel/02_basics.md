@@ -64,4 +64,4 @@ The parameters for `createProcessor` on the `CSVEventProcessorProvider` are:
 * `replyCallback` is an optional parameter. It allows you to define a custom `Consumer` and behaviour on the response of the `requestReply`. By default, without setting this parameter, a consumer is constructed that logs `EVENT_NACK` messages from the `requestReply`, with the request set.
 * `charset` is an optional parameter defaulting to UTF 8. This defines which character set the CSV is using.
 
-**_NOTE:_** If you want to ingest a CSV directly into GenesisDB rather than calling a Request Server, you might want to investigate the Genesis Data Pipeline [CSV source](/server-modules/integration/apache-camel/introduction/) first.
+**_NOTE:_** If you want to ingest a CSV directly into GenesisDB rather than calling a Request Server, you might want to investigate the Genesis Data Pipeline [CSV source](/server-modules/integration/data-pipeline/basics/#csv) first.
