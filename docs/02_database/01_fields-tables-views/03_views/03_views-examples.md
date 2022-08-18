@@ -4,7 +4,7 @@ sidebar_label: 'Views - examples'
 id: views-examples
 ---
 
-[Introduction](/database/fields-tables-views/views/)  | [Basics](/database/fields-tables-views/views/views-basics/) |  [Advanced](/database/fields-tables-views/views/views-advanced/) | [Examples](/database/fields-tables-views/views/views-examples/) 
+[Introduction](/database/fields-tables-views/views/)  | [Basics](/database/fields-tables-views/views/views-basics/) |  [Advanced](/database/fields-tables-views/views/views-advanced/) | [Examples](/database/fields-tables-views/views/views-examples/) | [Generating DAOs](/database/fields-tables-views/genesisDao/) 
 
 Here is an example **view-dictionary.kts** from our tutorial.
 

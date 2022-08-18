@@ -31,7 +31,7 @@ Once you have set up your configuration, you can start writing tests against our
 
 ## Writing tests
 
-Let's write some tests for this simple Event Handler, defined below. If you are looking for a Java event, then ignore the `onValidate` method for now
+Let's write some tests for this simple Event Handler, defined below
 
 ```kotlin
     eventHandler<Trade>(name = "TRADE_INSERT") {

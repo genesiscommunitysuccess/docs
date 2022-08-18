@@ -6,7 +6,7 @@ id: basics
 
 [Introduction](/server-modules/consolidator/introduction) | [Basics](/server-modules/consolidator/basics) |  [Advanced](/server-modules/consolidator/advanced) | [Examples](/server-modules/consolidator/examples) | [Configuring runtime](/server-modules/consolidator/configuring-runtime) | [Testing](/server-modules/consolidator/testing)
 
-You define a Consolidator service in a **consolidator.kts** file. Within the file, you can define as many Consolidators as you like. Each one is specified in a `<consolidator>` block of code. 
+You define a Consolidator service in a **consolidator.kts** file. Within the file, you can define as many Consolidators as you like. Each one is specified in a `consolidator` block of code. 
 
 
 
@@ -125,7 +125,7 @@ select {
 </Tabs>
 
 ### logging
-For debugging purposes, the `select` block also supports logging. By default, the Consolidator logs all events with debug level **TRACE**, but this can be overwritten with custom messages. To do this, use the `logJoin`, `logLeave` and `logNoop` blocks:
+For debugging purposes, the `select` block also supports logging. By default, the Consolidator logs all events with default level **TRACE**, but this can be overwritten with custom messages. To do this, use the `logJoin`, `logLeave` and `logNoop` blocks:
 
 ```kotlin
 select {

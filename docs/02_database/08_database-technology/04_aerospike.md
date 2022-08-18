@@ -4,6 +4,8 @@ sidebar_label: 'Aerospike'
 id: aerospike
 ---
 
+[Introduction](/database/database-technology/overview/) |
+[FoundationDb](/database/database-technology/foundationdb/) | [SQL](/database/database-technology/sql/) | [Aerospike](/database/database-technology/aerospike/) |  [PostgreSQL](/database/database-technology/postgresql/) | [FAQs](/database/database-technology/faqs/) 
 
 Genesis supports [Aerospike](https://aerospike.com/). To connect to Aerospike, use the [system definition items](use the [system definition items](/server-modules/configuring-runtime/system-definitions/) listed below.) listed below.
 
