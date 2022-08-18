@@ -83,7 +83,7 @@ Lets choose the location and name for our project. In this case, our current dir
 ? App name alpha
 ```
 
-We want to have a clean install, so let's overwrite any previous installations, choosing 'Yes'. The following prompt will be skipped, if this is the first time you are creating an application with this name. 
+We want to have a clean install, so let's overwrite any previous installations, choosing 'Yes'. If this is the first time you are creating an application with this name, the following prompt will be skipped.
 
 ```shell
 ? Overwrite existing files (y/N) Yes
