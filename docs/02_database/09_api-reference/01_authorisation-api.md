@@ -4,9 +4,6 @@ sidebar_label: 'Authorisation API'
 id: authorisation-api
 ---
 
-Authorisation API
-=================
-
 The authorisation API consists of two main classes that enable you to add permission checks to your custom component.
 
 -   `RightSummaryCache`is a Kotlin class whose instance can be obtained by simply injecting it into your custom component. This functionality relates directly to the permission codes functionality covered in more detail in the [Permission Codes section](/server-modules/access-control/authorisation-overview/). The method `userHasRight(userName: String, rightCode: String): Boolean` is used to determine if a particular user has the permission to a rights code.
