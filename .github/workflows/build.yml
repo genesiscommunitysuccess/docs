@@ -18,6 +18,12 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - name: log GITHUB_TOKEN
+      shell: bash
+      env:
+        MY_KEY2: ${{ secrets.GITHUB_TOKEN }}
+      if: "${{ env.MY_KEY2 != '' }}"
+      run: echo "This command is executed if GITHUB_TOKEN secret IS NOT empty"
     - name: log GPR_READ_TOKEN
       shell: bash
       env:
