@@ -25,7 +25,7 @@ Let's start by installing GenX using the following command in your terminal:
 
 ```shell
 npm uninstall -g @genesislcap/foundation-cli
-npm install -g @genesislcap/foundation-cli@2.0.1-alpha-c5193cd.0+c5193cd
+npm install -g @genesislcap/foundation-cli@2.0.1-alpha-4ce6685.0+4ce6685
 ```
 :::note
 Our Flow seed is currently only available on a particular version, therefore we need to remove any previous version and specify the one we need.
