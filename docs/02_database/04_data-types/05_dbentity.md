@@ -10,9 +10,6 @@ id: dbentity
 [DbRecord](/database/data-types/dbrecord/) | 
 [DbEntity](/database/data-types/dbentity/) 
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 DbEntity is the common interface implemented by table entities and view entities.
 
 The DbEntity methods are described below:

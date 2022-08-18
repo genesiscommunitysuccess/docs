@@ -10,6 +10,8 @@ id: dbrecord
 [DbRecord](/database/data-types/dbrecord/) | 
 [DbEntity](/database/data-types/dbentity/) 
 
-##### WARNING
+:::warning
 
 Using `DbRecord` instead of [](/database/data-types/views-entities/) entities will circumvent compile-time validation of database interactions. This means that errors might not appear until runtime or might lead to unexpected results.
+
+:::
