@@ -19,7 +19,7 @@ jobs:
 
     steps:
     - name: log GPR_READ_TOKEN
-      if: ${{ secrets.GPR_READ_TOKEN }}
+      if: ${{secrets.GPR_READ_TOKEN}}
       run: 'echo "secrets.GPR_READ_TOKEN is set"'
       
     - name: log GPR_READ_TOKEN
