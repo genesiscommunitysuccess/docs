@@ -25,7 +25,7 @@ Let's start by installing GenX using the following command in your terminal:
 
 ```shell
 npm uninstall -g @genesislcap/foundation-cli
-npm install -g @genesislcap/foundation-cli@2.0.1-alpha-91bcdf7.0+91bcdf7
+npm install -g @genesislcap/foundation-cli@2.0.1-alpha-c5193cd.0+c5193cd
 ```
 :::note
 Our DSL seed is currently only available on a particular version, therefore we need to remove any previous version and specify the one we need.
@@ -83,7 +83,8 @@ Lets choose the location and name for our project. In this case, our current dir
 ? App name alpha
 ```
 
-We want to have a clean install, so let's overwrite any previous installations, choosing 'Yes'
+The following prompt will be skipped, if this is the first time you are creating this folder. 
+However, if the folder already exists, we want to have a clean install, so let's overwrite any previous installations, choosing 'Yes'
 
 ```shell
 ? Overwrite existing files (y/N) Yes
