@@ -12,6 +12,7 @@
     "swizzle": "docusaurus swizzle"
   },
   "dependencies": {
+		"@genesislcap/foundation-header": "2.0.0-docs.2",
     "@cmfcmf/docusaurus-search-local": "^0.10.0",
     "@docusaurus/core": "^2.0.0",
     "@docusaurus/preset-classic": "^2.0.0",
