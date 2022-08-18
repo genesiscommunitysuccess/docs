@@ -32,7 +32,7 @@ Our DSL seed is currently only available on a particular version, therefore we n
 :::
 
 
-### Choosing the Seed
+### Choosing Project Type
 
 Now we are ready to generate our seed project.
 
@@ -83,8 +83,7 @@ Lets choose the location and name for our project. In this case, our current dir
 ? App name alpha
 ```
 
-The following prompt will be skipped, if this is the first time you are creating this folder. 
-However, if the folder already exists, we want to have a clean install, so let's overwrite any previous installations, choosing 'Yes'
+We want to have a clean install, so let's overwrite any previous installations, choosing 'Yes'. The following prompt will be skipped, if this is the first time you are creating an application with this name. 
 
 ```shell
 ? Overwrite existing files (y/N) Yes
