@@ -4,10 +4,7 @@ sidebar_label: 'FoundationDb'
 id: foundationdb
 ---
 
-[Introduction](/database/database-technology/overview/) |
-[FoundationDb](/database/database-technology/foundationdb/) | [SQL](/database/database-technology/sql/) | [Aerospike](/database/database-technology/aerospike/) |  [PostgreSQL](/database/database-technology/postgresql/) | [FAQs](/database/database-technology/faqs/) 
-
-Genesis provides two databases built on FoundationDB.
+Genesis provides two databases solutions built on FoundationDB.
 
 FDB and FDB2 are equivalent in terms of configuration, but they store data using a different data model.
 
@@ -36,19 +33,41 @@ Sample configurations[​](/database/database-technology/foundationdb/#sample-co
 
 ### Min and max thread count[​](/database/database-technology/foundationdb/#min-and-max-thread-countdirect-link-to-heading)
 
-```
-systemDefinition {    global {        ...        item(name = "DbThreadsMin", value = "5")        item(name = "DbThreadsMax", value = "15")        ...    }    ...}
+```kotlin
+systemDefinition {
+    global {
+        ...
+        item(name = "DbThreadsMin", value = "5")
+        item(name = "DbThreadsMax", value = "15")
+        ...
+    }
+    ...
+}
 ```
 
 ### Thread timeouts to two minutes[​](/database/database-technology/foundationdb/#thread-timeouts-to-two-minutesdirect-link-to-heading)
 
-```
-systemDefinition {    global {        ...        item(name = "DbThreadKeepAliveSeconds", value = "120")        ...    }    ...}
+```kotlin
+systemDefinition {
+    global {
+        ...
+        item(name = "DbThreadKeepAliveSeconds", value = "120")
+        ...
+    }
+    ...
+}
 ```
 
 ### Cluster file location on windows[​](/database/database-technology/foundationdb/#cluster-file-location-on-windowsdirect-link-to-heading)
 
-```
-systemDefinition {    global {        ...        item(name = "FdbClusterFile", value = "C:\\Genesis\fdb\fdb.cluster")        ...    }    ...}
+```kotlin
+systemDefinition {
+    global {
+        ...
+        item(name = "FdbClusterFile", value = "C:\\Genesis\fdb\fdb.cluster")
+        ...
+    }
+    ...
+}
 ```
 
