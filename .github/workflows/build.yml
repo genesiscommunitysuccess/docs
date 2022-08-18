@@ -35,3 +35,5 @@ jobs:
     # docusaurus will check for broken links as part of the build process
     - name: Build
       run: npm run build
+      env:
+          NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
