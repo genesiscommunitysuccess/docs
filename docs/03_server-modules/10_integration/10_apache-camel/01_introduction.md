@@ -13,9 +13,8 @@ Genesis makes this easy to configure and set up, allowing new processors to be d
 Likely uses for Apache Camel include:
 
 * receiving data [from the local filesystem](/getting-started/quick-guides/loading-feed-data/overview/)
-* receiving data [from an external location](/getting-started/quick-guides/loading-feed-data/sftp-and-encryption/)
-* sending data machison'io to an external location](/creating-applications/defining-your-application/integrations/apache-camel/ac-more-examples/#writing-to-an-sftp-server)
+* transmitting data [to or from an external location](/getting-started/quick-guides/loading-feed-data/sftp-and-encryption/)
 
 Note that Camel's power and flexibility come at the cost of some complexity and configuration overhead.
 
-If you simply want to ingest and transform data from the most common sources (e.g. CSV files and relational databases), you should first investigate the new [Genesis Data Pipeline](/server-modules/integration/apache-camel/introduction/), which offers a higher-level ingestion workflow than the Apache Camel DSL.
+If you simply want to ingest and transform data from the most common sources (e.g. CSV files and relational databases), you should first investigate the new [Genesis Data Pipeline](/server-modules/integration/data-pipeline/introduction/), which offers a higher-level ingestion workflow than the Apache Camel DSL.

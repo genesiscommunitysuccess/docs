@@ -4,7 +4,7 @@ sidebar_label: 'RxDb'
 id: rxdb
 ---
 
-[Introduction](/database/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/) 
+[Introduction](/database/database-interface/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/) 
 
 ##### WARNING
 
