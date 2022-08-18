@@ -11,7 +11,7 @@ In system terms, Evaluators enable you to connect Event Handlers to two differen
 - __Cron Rules__  are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
 - __Dynamic Rules__, also known as Dynamic Events, are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
-In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this training, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [Defining a dynamic rule](/creating-applications/defining-your-application/business-logic/evaluators/configure/#defining-a-dynamic-rule).
+In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this training, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [Defining a dynamic rule](/server-modules/evaluator/configuring-runtime/#defining-a-dynamic-rule).
 
 ### Cron rules (static events)​
 
@@ -125,7 +125,7 @@ eventHandler {
 ```
 
 #### 4.Load the cron rule on to the database
-Load the cron rule csv below into the database, [CRON_RULE](/creating-applications/defining-your-application/business-logic/evaluators/configure/#cron_rule-table) Table. 
+Load the cron rule csv below into the database, [CRON_RULE](/server-modules/evaluator/configuring-runtime/#cron_rule-table) Table. 
 
 Run `SendIt`.
 
@@ -135,7 +135,7 @@ CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,ME
 ```
 
 #### 5.Change the log level to verify the execution of the events
-To do this, run the [LogLevel](/managing-applications/operate/on-the-host/helpful-commands/#loglevel-script) command:
+To do this, run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command:
 
 ```shell
 LogLevel -p GENESIS_EVALUATOR -DATADUMP_ON -l DEBUG

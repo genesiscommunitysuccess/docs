@@ -44,4 +44,5 @@ The Notify route table provides a link from NOTIFY that can be picked up and sen
 * Retry mechanisms
  
 
-Our tutorial has practical examples of configuring Notify for static and [dynamic](/getting-started/tutorials/set-up-events/dynamic-events/) events.
+Our tutorial has practical examples of configuring Notify for static and [dynamic](/) events.
+<!-- TODO: link to dynamic-events -->
