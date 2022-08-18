@@ -93,7 +93,7 @@ In the Gradle menu on the right of IntelliJ, select **positions-app-tutorial**/*
 ![](/img/assemble-server.png)
 
 :::info HTTP Endpoints
- It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as HTTP endpoints automatically by the Genesis platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
+ It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as [HTTP endpoints](/server-modules/integration/rest-endpoints/introduction/) automatically by the Genesis platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
 :::
 
 ### Conclusion
