@@ -29,4 +29,6 @@ Each of these must be specified in a separate file on the file system:
 
 In this section, we look in more detail at how you define your fields, tables and views.
 
-These pages assume you are creating a data model from scratch. You can also create a data model from an existing Excel spreadsheet or RDBMS database. You can see this in practice in our tutorial covering the [Excel](/getting-started/tutorials/generate-positions-app/) and [RDBMS](/getting-started/tutorials/generate-reference-module/) routes.
+These pages assume you are creating a data model from scratch. You can also create a data model from an existing Excel spreadsheet or RDBMS database. You can see this in practice in our tutorial covering the [Excel](/) and [RDBMS](/) routes.
+
+<!-- TODO: Fix Excel and RDBMS tutorial links -->
