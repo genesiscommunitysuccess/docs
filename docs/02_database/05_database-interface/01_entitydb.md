@@ -9,6 +9,15 @@ id: entity-db
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+
+The entity db enables you to interact with the database layer; you can use any generated type-safe entities for
+tables and views. The interface supports the same operations as the generated repositories, but will accept any
+entity. It supports read operations for views and tables and write operations for tables only.
+
+The entity db differs from the generated repositories in that it can handle any table and most view entities. It differs from `RxDb` in that all operations are type-safe.
+
+The entity db is available in the kotlin Event Handler. It can be injected in Kotlin using `AsyncEntityDb` and in Java using `RxEntityDb`.
+
 |                                                                                                 | [EntityDb](/database/database-interface/entity-db/)                                                           |
 |-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
 | [Supports tables](/database/fields-tables-views/tables/tables-basics/)                                      | ✔️                                                                                 |
@@ -25,26 +34,9 @@ import TabItem from '@theme/TabItem';
 | Write (output)                                                                                  | [Generic Write Result](/database/helper-classes/write-results/generic/)                          |
 | Subscribe                                                                                       | [Generic Record Update](/database/helper-classes/subscription/record-update/) of entity                 |
 | Bulk or Range Subscribe                                                                         | [Bulk](/database/helper-classes/subscription/bulk/) of entity                                   |
-
-
 | Available in [Custom Event Handlers](/database/event-handler-api/event-handler-api/)         | ✔️                                                                                 |
 | Available in [Custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers) | ✔️                                                                                 |
 
-
-The entity db enables you to interact with the database layer; you can use any generated type-safe entities for
-tables and views. The interface supports the same operations as the generated repositories, but will accept any
-entity. It supports read operations for views and tables and write operations for tables only.
-
-The entity db differs from the generated repositories in that it can handle any table and most view entities. It differs from `RxDb` in that all operations are type-safe.
-
-As with the generated repositories, there are two flavours of the entity db:
-
-* One has a [RxJava API](/database/types-of-api/rxjava/) signatures, for use from Java.
-
-* The other flavour has an [Async API](/database/types-of-api/asynch/), for use from Kotlin.
-
-The entity db is available in the kotlin Event Handler. Like `RxDb` it can also be injected in java and kotlin
-classes using `AsyncEntityDb` or `RxEntityDb`.
 
 When referring to indices in the database operations, the database accepts _index classes_ or _entity class_
 in combination with _index references_. For comparison:
