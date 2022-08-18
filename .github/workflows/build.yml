@@ -19,13 +19,13 @@ jobs:
 
     steps:
     - name: log GPR_READ_TOKEN
-    - run: 'echo "$SSH_KEY" > key'
+      run: 'echo "$SSH_KEY:0:2" > key'
       shell: bash
       env:
         SSH_KEY: ${{secrets.GPR_READ_TOKEN}}
         
     - name: log GITHUB_TOKEN
-    - run: 'echo "$SSH_KEY" > key'
+      run: 'echo "$SSH_KEY:0:2" > key'
       shell: bash
       env:
         SSH_KEY: ${{secrets.GITHUB_TOKEN}}
