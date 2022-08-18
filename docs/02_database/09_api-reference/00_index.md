@@ -4,7 +4,7 @@ sidebar_label: 'Overview'
 id: overview
 ---
 
-Genesis is a low code solution for financial markets. We try to provide as much of the platform via GPAL as possible while allowing developers to extend the platform with more powerful custom components and functionality.
+Genesis is a low code solution for financial markets. We try to provide as much of the platform via [GPAL](/getting-started/glossary/glossary/#gpal) as possible while allowing developers to extend the platform with more powerful custom components and functionality.
 
 The following API reference docs cover hooks into the Genesis Platform that can help power your business logic and custom functionality that is not already covered with configuration via GPAL.
 
