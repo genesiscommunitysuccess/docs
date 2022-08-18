@@ -1,8 +1,8 @@
 ---
 id: guide-5
-sidebar_label: 'The event handler file'
+sidebar_label: 'The Event Handler file'
 sidebar_position: 50
-title: 'The event handler file'
+title: 'The Event Handler file'
 ---
 
 This file provides insert, modify and delete events for each table generated.

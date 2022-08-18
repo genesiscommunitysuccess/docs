@@ -240,7 +240,7 @@ After you have checked the files generated and addressed any issues in the field
 
 1. Run `genesisInstall` to check all the config files and prepare the application for the current environment (using the files in site-specific to replace values in the modules, for example).
 2. Run `remap --commit` to set any changes to the database (modifications to fields, tables and views).
-3. Run `AppGen` to generate event handlers,  request servers and data servers for all the tables. For example:
+3. Run `AppGen` to generate Event Handlers, Request Servers and Data Servers for all the tables. For example:
 
 ```bash
     AppGen -n cash -p 10000
@@ -248,7 +248,7 @@ After you have checked the files generated and addressed any issues in the field
 
 This creates an application called **Cash** with:
 
-* the kts files for the  [event handler](/server-modules/integration/excel-to-genesis/Files/guide-5), [request server](/server-modules/integration/excel-to-genesis/Files/guide-6) and [data server](/server-modules/integration/excel-to-genesis/Files/guide-7)
+* the kts files for the  [Event Handler](/server-modules/integration/excel-to-genesis/Files/guide-5), [Request Server](/server-modules/integration/excel-to-genesis/Files/guide-6) and [Data Server](/server-modules/integration/excel-to-genesis/Files/guide-7)
 * the [service definitions](/server-modules/integration/excel-to-genesis/Files/guide-10)
 * the [process definitions](/server-modules/integration/excel-to-genesis/Files/guide-9)
 
@@ -256,6 +256,6 @@ This creates an application called **Cash** with:
 
 Run `genesisInstall` again to install these changes.
 
-You now have a basic server that you can access from a web front-end. The event handler, the request server and the dataserver only provide the simplest functions, but the data is exposed so that a front end can be created and connected. The event handler, for example, provides very simple insert, modify and delete events.
+You now have a basic server that you can access from a web front end. The Event Handler, the Request Server and the Data Server only provide the simplest functions, but the data is exposed so that a front end can be created and connected. The Event Handler, for example, provides very simple insert, modify and delete events.
 
 Of course, this is really just a beginning - you can go into the code and introduce all kinds of sophistication.
