@@ -174,4 +174,4 @@ Run **positions-app-tutorial-config:assemble** to make the view ready for use
 
 #### Entities
 
-During code generation, [view](/reference/developer/api/database/how-to/data-types/views/) and [index entities](/reference/developer/api/database/how-to/data-types/indices/) will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
+During code generation, [view](/database/data-structures/views/) and [index entities](/database/data-structures/indices/) will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.

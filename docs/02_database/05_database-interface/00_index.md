@@ -4,7 +4,7 @@ sidebar_label: 'Database interface'
 id: database-interface
 ---
 
-[Introduction](/database/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/) 
+[Introduction](/database/database-interface/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/) 
 
 Genesis supports different ways of interacting with the database. Regardless of the interface used, the operations remain the same. The preferred way of accessing the database is via the [EntityDb](/database/database-interface/entity-db/).
 
@@ -19,7 +19,7 @@ Genesis supports different ways of interacting with the database. Regardless of 
 | Returns data as | [table](/database/data-types/table-entities//) or [view](/database/data-types/views-entities/) entities | [table](/database/data-types/table-entities/) or [view](/database/data-types/views-entities//) entities | [DbRecord](/database/data-types/dbrecord/) |
 | Writes data as | [table](/database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities  | [table](/database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities | [DbRecord](/database/data-types/dbrecord/) |
 | References indexes as | [index entities](/database/data-types/index-entities/)                                                  | Generated methods | [DbRecord](/database/data-types/dbrecord/) and `String` |
-| Programming interface | [Async](/database/types-of-api/asynch/) or [RxJava](/database/types-of-api/rxjava/)                     | [Async](/database/types-of-api/asynch/) or [RxJava](/database/types-of-api/rxjava/) | [RxJava](/database/types-of-api/rxjava/) |
+| Programming interface | [Async](/database/types-of-api/async/) or [RxJava](/database/types-of-api/rxjava/)                     | [Async](/database/types-of-api/async/) or [RxJava](/database/types-of-api/rxjava/) | [RxJava](/database/types-of-api/rxjava/) |
 | Write (input) | [Generic Modify Details](/database/helper-classes/modify-details/generic/)                              | Generated | [Legacy Modify Details](/database/helper-classes/modify-details/legacy/) |
 | Write (output) | [Generic Write Result](/database/helper-classes/write-results/generic/)                                 | [Legacy Write Result](/database/helper-classes/write-results/legacy/) | [Legacy Write result](/database/helper-classes/write-results/legacy/) |
 | Subscribe | [Generic Record Update](/database/helper-classes/subscription/record-update/) of entity                 | [Generic Record Update](/database/helper-classes/subscription/record-update/) of entity | [Generic Record Update](/database/helper-classes/subscription/record-update/) of `DbRecord` |

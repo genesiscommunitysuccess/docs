@@ -42,7 +42,7 @@ modifyEvent {
 
 You can click to view the [whole file for this example state machine](/server-modules/state-machine/examples/) and see how each of the events is handled.
 
-You can also see a state machine being created in practice in our [tutorial](/getting-started/tutorials/workflow-add-a-state-machine/).
+You can also see a state machine being created in practice in our [tutorial](/getting-started/go-to-the-next-level/state-management/).
 
 
 
