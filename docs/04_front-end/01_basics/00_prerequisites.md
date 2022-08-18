@@ -11,7 +11,7 @@ You also need to have perseverance and a capacity for solving problems and seeki
 
 If you need to review JavaScript, we recommend reading [this introduction](https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript).
 
-If you get confused by any of the terminology we use in this section, we are providing a checklist of additional resources. We are not suggesting that you read diligently through all the links here (in fact, please don't). But it is a useful point of reference where you can take time out to explore some specific areas so that you can come back and follow things more easily.
+If you get confused by any of the terminology we use in this section, we are providing a checklist of additional resources. We are not suggesting that you read diligently through all the links here (in fact, please don't). But it is a useful point of reference where you can take time out to explore some specific areas; you can then come back and follow things more easily.
 
 ## Additional resources
 
