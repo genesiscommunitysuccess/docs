@@ -9,7 +9,7 @@ id: basics
 
 Let's make things really simple.
 - A Request Server is a component that supplies static data to the front end of your application.
-- You define your application's Request Reply in a kotlin script file.
+- You define your application's Request Reply in a kotlin script file  _application-name_**-reqrep.kts**. This file should be in the _application-name_-script-config module.
 - In this file, you define specific `requestReply` codeblocks, each of which is designed to supply different sets of data; this could be a table or view, or just a subset of the fields in a table or view.
 - A `requestReply` can include a number of other subtleties, such as `where` clauses or ranges, so that you can create code that matches your precise requirements.
 - If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, covering all the tables and views in your data model. You can edit this file to add sophistication to the component.
@@ -108,7 +108,7 @@ requestReplies {
 ### Where block
 
 The `where` block enables you to specify the conditions for which data should be returned. The `where` block can take two optional parameters:
-* instrumentDetails - this represents a row from the table or view
+* row - this represents a row from the table or view
 * parameters - this a GenesisSet that holds the parameters that are passed on the request; the parameters can be accessed by using the GenesisSet getters to access named parameters
 
 In this contrived example below, the `where` block filters rows whose instrumentCode is not equal to "ALLL3" and the request parameter "ALTERNATE_TYPE" is either "RIC" or "BLOOMBERG". 
