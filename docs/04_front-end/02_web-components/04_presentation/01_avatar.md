@@ -4,7 +4,7 @@ sidebar_label: 'Avatar'
 id: avatar
 ---
 
-The _avatar_ component is used to graphically represent a user or an object.
+The `avatar` component is used to graphically represent a user or an object.
 
 ## Set-up
 
@@ -30,7 +30,7 @@ provideDesignSystem().register(alphaAvatar());
 
 ### Filled, coloured, and shaped
 
-The `fill` and `color` attributes of the _avatar_ create CSS custom properties which can be used to style the control.
+The `fill` and `color` attributes of the _avatar_ create CSS custom properties, which can be used to style the control.
 
 ```css
 alpha-avatar {
