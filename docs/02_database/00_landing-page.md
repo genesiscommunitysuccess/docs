@@ -4,7 +4,7 @@ sidebar_label: 'Overview'
 id: 'database-landing'
 ---
 
-Welcome to our database documentation. Here, we will dive into more detail related to the model and structure of the database and the different ways we can interact with it.
+Welcome to our database documentation. Here, we shall look in detail at the model and structure of the Genesis database, and the different ways we can interact with it.
 
 ## Basics
 
