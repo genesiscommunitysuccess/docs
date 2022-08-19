@@ -32,7 +32,8 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 #### Define the position-keeping logic in the consolidator
 
-Before defining the consolidator, we should insert some data in the *INSTRUMENT_PRICE* table using the command [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script). To do that, let's run server commands directly from a command line using PowerShell (or Windows Command Prompt) to access your WSL instance, through user 'genesis' to have access to the Genesis Platform commands as we did [before](/tutorials/training-resources/training-content-day1/#running-server-commands).
+Before defining the consolidator, we should insert some data in the *INSTRUMENT_PRICE* table using the command [`SendIt`](/operations/commands/server-commands/#sendit-script). To do that, let's run server commands directly from a command line using PowerShell (or Windows Command Prompt) to access your WSL instance, through user 'genesis' to have access to the Genesis Platform commands as we did before.
+<!-- TODO: link to 'training-content-day1' (?) -->
 
 From the command line opened, in the */tmp* folder, save this csv as INSTRUMENT_PRICE.csv using your favorite editor (i.e. [vim](https://www.vim.org/) or [nano](https://www.nano-editor.org/)):
 ```csv

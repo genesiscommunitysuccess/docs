@@ -4,12 +4,12 @@ sidebar_label: 'RxJava'
 id: rxjava
 ---
 
-[Async](/database/types-of-api/asynch/) |
+[Async](/database/types-of-api/async/) |
 [RxJava](/database/types-of-api/rxjava/) 
 
 [RxJava](https://www.rxjava.com/) is a Java implementation of reactive extensions. The Genesis database uses this library to represent asynchronous database operations in java.
 
-If you are using Java. RxJava API is the only way of accessing the database. For Kotlin, the [asynch](/database/types-of-api/asynch/) API is preferred (although the RxJava API is also supported).
+If you are using Java. RxJava API is the only way of accessing the database. For Kotlin, the [async](/database/types-of-api/async/) API is preferred (although the RxJava API is also supported).
 
 Subscription[​](/database/types-of-api/rxjava/#subscriptiondirect-link-to-heading)
 -------------------------------------------------------------------------------------------------------------------------------------------------

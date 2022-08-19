@@ -8,7 +8,7 @@ id: basics
 
 Let's make things really simple.
 - A Data Server is a component that supplies streaming real-time data to the front end of your application.
-- You define your application's Data Server in a kotlin script file.
+- You define your application's Data Server in a Kotlin script file named _application-name_**-dataserver.kts**. This file can be found inside the _application-name_**-script-config** module (_application-name_\\_application-name_-script-config\src\main\resources\scripts\\_application-name_-dataserver.kts). 
 - In this file, you define specific `query` codeblocks, each of which is designed to supply different sets of data.
 - Each `query` listens to a specified table or view; when data on that source changes, it publishes the changes. 
 - A `query` can include a number of other subtleties, such as `where` clauses or ranges, so that you can create code that matches your precise requirements.
@@ -18,7 +18,7 @@ Let's make things really simple.
 
 ## The simplest possible definition
 
-Your kotlin script file contains all the queries you create. These are wrapped in a single `dataServer` statement.
+Your _application-name_-**dataserver.kts** kotlin script file contains all the queries you create. These are wrapped in a single `dataServer` statement.
 Our example below shows a file with a single query, which publishes changes to the table INSTRUMENT_DETAILS.
 
 
@@ -184,7 +184,7 @@ For example, you might want a front-end client to perform a criteria search on a
 This search can be translated automatically to the right field types internally (even though `TRADE_DATE` is a field of type `DateTime`). The Genesis index search mechanism can also identify the appropriate search intervals in order to provide an optimised experience.
 The type-aware evaluator can transform strings to integers, and any other sensible and possible conversion (e.g `TRADE_ID == '1'`). As a side note, this type-aware evaluator is also available in `DbMon` for operations like `search` and `qsearch`.
 
-By contrast, the traditional criteria evaluator needs the field types to match the query fields in the Data Server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our common date expressions(more at Advanced technical details) to handle date searches.
+By contrast, the traditional criteria evaluator needs the field types to match the query fields in the Data Server. So the same comparison using the default criteria evaluator for `TRADE_DATE` would be something like: `TRADE_DATE > new DateTime(1425168000000) && TRADE_DATE < new DateTime(1425254400000)`. This approach is less intuitive and won't work with our automatic index selection mechanism. In this case, you should use our common date expressions (more at Advanced technical details) to handle date searches.
 
 ## Backwards joins
 

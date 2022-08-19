@@ -6,47 +6,9 @@ id: views-basics
 
 [Introduction](/database/fields-tables-views/views/)  | [Basics](/database/fields-tables-views/views/views-basics/) |  [Advanced](/database/fields-tables-views/views/views-advanced/) | [Examples](/database/fields-tables-views/views/views-examples/) | [Generating DAOs](/database/fields-tables-views/genesisDao/) 
 
-When you set up a data model, it implies relationships between tables. For example, a TRADE has a COUNTERPARTY_ID and an INSTRUMENT_ID. That means it has a relationship with the COUNTERPARTY and INSTRUMENTS tables.
+A view definition is made up of **joins** and **fields**.
 
-Views enable you join these tables to create a single holistic view.
-
-They are a lot more powerful than this in practice; they underpin many Genesis components that read data from the database in real time or in static form.
-
-The example below creates a view called `TRADE_VIEW`, which joins the `TRADE` table to the `INSTRUMENT` table.
-
-```kotlin
-views {
-
-  view("TRADE_VIEW", TRADE) {
-
-    joins {
-      joining(COUNTERPARTY) {
-        on(TRADE.COUNTERPARTY_ID to COUNTERPARTY { COUNTERPARTY_ID })
-      }
-      joining(INSTRUMENT) {
-        on(TRADE.INSTRUMENT_ID to INSTRUMENT { INSTRUMENT_ID })
-      }
-    }
-
-    fields {
-      TRADE.allFields()
-
-      COUNTERPARTY.NAME withPrefix COUNTERPARTY
-      INSTRUMENT.NAME withPrefix INSTRUMENT
-      INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
-
-      derivedField("CONSIDERATION", DOUBLE) {
-        withInput(TRADE.QUANTITY, TRADE.PRICE) { QUANTITY, PRICE ->
-          QUANTITY * PRICE
-        }
-      }
-    }
-  }
-}
-```
-
-
-Views are made up of joins and fields.
+**Joins** enable you to bring other related tables into a view and **fields** allow you to define which fields you would like to include in your view.
 
 ## Joins
 
@@ -112,8 +74,9 @@ Joins can be one-to-one (key field match) or one-to-many (part-key-field match).
 Views with one-to-many joins cannot be used with Data Servers.
 :::
 
-
 ## Fields
+
+Fields allow you to define which fields you would like to include in your view. You can reference fields from any of the tables that have been joined inside your view.
 
 Adding a field is as simple as typing it in the `fields` section of the view.
 
@@ -131,7 +94,11 @@ You can add all the fields from a given table to a view using the `allFields` ac
     }
 ```
 
-You can also access derived fields that were defined in the tables dictionary. This is just the same as any other field. For example, if the table TRADE has a derived field called FAVOURITE, you could use it as follows:
+<br/>
+
+:::note
+
+You can also access derived fields that were defined in the tables dictionary. This is just the same as any other field. For example, if the table TRADE has a derived field called `FAVOURITE`, you could use it as follows:
 
 
 ```kotlin
@@ -140,7 +107,10 @@ You can also access derived fields that were defined in the tables dictionary. T
     }
 ```
 
+:::
+
 ### Overriding a field name
+
 You can override the name of a field using various operators:
 
 - `withAlias` - gives the field an alternative name on the view

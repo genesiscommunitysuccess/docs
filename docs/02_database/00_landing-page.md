@@ -22,9 +22,11 @@ Once you know the basics, you can explore the details of how you can interact wi
 
 - [Database Interface](/database/database-interface/entity-db/) - You can have a look at database interface for the standard methods of interacting with the database.
  
+
 - [Helper Classes](/database/helper-classes/) - You can look at helper classes for details of classes such as Subscription, Write Result and Modify Details.
 
 - Async and RxJava APIs - For more details about Genesis look at Async and RxJava APIs.
+
 
 - API - You can then explore specific APIs, such as the Event Handler API and Authorisation API
 
