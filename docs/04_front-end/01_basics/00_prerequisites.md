@@ -9,7 +9,7 @@ We shall assume that you have some familiarity with HTML, CSS and JavaScript/Typ
 
 You also need to have perseverance and a capacity for solving problems and seeking information independently.
 
-If you need to review JavaScript, we recommend reading [this introduction](https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript).
+If you need to brush up on your JavaScript, we recommend reading [this introduction](https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript).
 
 If you get confused by any of the terminology we use in this section, we are providing a checklist of additional resources. We are not suggesting that you read diligently through all the links here (in fact, please don't). But it is a useful point of reference where you can take time out to explore some specific areas; you can then come back and follow things more easily.
 
@@ -27,11 +27,11 @@ If you get confused by any of the terminology we use in this section, we are pro
 - [JSON](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON)
 - [Template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
 - [Arrow functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
-- [Typescript](https://www.typescriptlang.org/docs/handbook/release-notes/overview.html)
+- [TypeScript](https://www.typescriptlang.org/docs/handbook/release-notes/overview.html)
 
 ### Build and revision tools
 - [How to use npm and package.json](https://docs.npmjs.com/cli/v7/configuring-npm/package-json)
-- [Typescript compiler/tsconfig](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
+- [TypeScript compiler/tsconfig](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
 - [.npmrc and getting set up](https://docs.npmjs.com/cli/v8/configuring-npm/npmrc)
 - [Installing packages](https://docs.npmjs.com/cli/v8/commands/npm-install)
 - [Starting up the app and writing npm commands](/front-end/basics/package-json-basics/#scripts)
@@ -54,4 +54,4 @@ If you get confused by any of the terminology we use in this section, we are pro
 <!-- TODO: link to foundation-store example when we have one -->
 
 ### IDE recommendations
-You can use whichever IDE or editor you are comfortable with; we recommend [Webstorm](https://www.jetbrains.com/webstorm/) or [VS Code](https://code.visualstudio.com/)
+You can use whichever IDE or editor you are comfortable with; we recommend IntelliJ Ultimate / [WebStorm](https://www.jetbrains.com/webstorm/) or [VS Code](https://code.visualstudio.com/).
