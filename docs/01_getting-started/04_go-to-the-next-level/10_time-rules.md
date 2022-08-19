@@ -4,12 +4,12 @@ sidebar_label: 'Time based rules'
 id: time-rules
 ---
 
-It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send warning when a defined limit is breaked. For such purposes the Genesis platform provides a feature called [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect Event Handlers to two different kinds of event: dynamic and static (cron rules): 
+It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send warning when a defined limit is reached. For such purposes the Genesis platform provides a feature called [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect Event Handlers to two different kinds of event: dynamic and static (cron rules): 
 
 - __Cron Rules__  are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
 - __Dynamic Rules__, also known as Dynamic Events, are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
-In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this section, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [the next section](/getting-started/go-to-the-next-level/condition-rules/).
+In both cases, you define the rule in a table in the database: `CRON_RULES` for static rules and `DYNAMIC_RULES` for dynamic rules. In this section, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [the next section](/getting-started/go-to-the-next-level/condition-rules/).
 
 ### Cron rules (static events)​
 
@@ -64,7 +64,7 @@ Add the *POSITIONS_APP_TUTORIAL_EVALUATOR* in the file **positions-app-tutorial-
 </configuration>
 ```
 
-Run **assemble** and **deploy-genesisproduct-positions-app-tutorial** tasks to verify that the new process works as expected.
+Run `assemble` and `positions-app-tutorial-config:assemble` tasks to verify that the new process works as expected.
 
 Run `mon`.
 You should be able to see the process is present, but on `Standby`.
@@ -83,9 +83,9 @@ class PositionReport
 
 ### Create an event handler
 
-Create an event handler that will write the csv files to the runtime/position-minute-report folder. Call it EVENT_POSITION_REPORT.
+Create an event handler that will write the csv files to the runtime/position-minute-report folder. Call it `EVENT_POSITION_REPORT`.
 
-Open the file *alpha-eventhandler.kts* and add a variable called *tradeViewRepo* injecting the class *TradeViewAsyncRepository*. Then, add an event handler to generate the csv file:
+Open the file **positions-app-tutorial-eventhandler.kts** and add a variable called `tradeViewRepo` injecting the class `TradeViewAsyncRepository`. Then, add an event handler to generate the csv file:
 
 ```kotlin {8,12}
 import java.io.File
@@ -122,7 +122,7 @@ eventHandler {
 ```
 
 ### Load the cron rule on to the database
-Load the cron rule csv below into the database, [CRON_RULE](/creating-applications/defining-your-application/business-logic/evaluators/configure/#cron_rule-table) Table. 
+Load the cron rule csv below into the database, `CRON_RULE` Table. 
 
 Run `SendIt`.
 
@@ -146,3 +146,6 @@ tail -f GENESIS_EVALUATOR.log
 :::info What is $L?
 $L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Feel free to use your favorite command to view logs such as tail, less etc.
 :::
+
+### Conclusion
+This concludes generating reports for the positions application. In the next section you will see how to trigger based on condition in the database

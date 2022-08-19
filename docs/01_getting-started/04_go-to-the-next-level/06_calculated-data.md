@@ -49,4 +49,4 @@ views {
 ```
 
 ### Conclusion
-We just added a dervived field. If you feel eager to see the changes work feel free to head to [See It Work](/getting-started/go-to-the-next-level/see-it-work)  and give it a try.
+We just added a derived field. If you feel eager to see the changes work feel free to head to [See It Work](/getting-started/go-to-the-next-level/see-it-work)  and give it a try.

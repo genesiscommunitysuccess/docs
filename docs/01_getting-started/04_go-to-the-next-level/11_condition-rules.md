@@ -8,7 +8,7 @@ Now we are going to use the Evaluator again to set up dynamic rules. In this cas
 
 ### Preparation
 
-First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron rule](#cron-rules-static-events).
+First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron rule](/getting-started/go-to-the-next-level/time-rules/).
 
 You need to create two csv files for this exercise.
 
@@ -23,7 +23,7 @@ The second is a csv file that enables you to test the rule. Create a file called
 
 ```csv
 POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
-,2,2,600,1100000
+1,2,2,600,1100000
 ```
 
 Now you are ready to begin setting up your dynamic rule.
@@ -44,7 +44,7 @@ data class PositionCancel(
 
 ### Update the Event Handler
 
-The rule needs to call an Event Handler, which will be called `<PositionCancel>` using the class created in the previous step.
+The rule needs to call an Event Handler, which will be called `PositionCancel` using the class created in the previous step.
 We have defined the Event Handler in the code block below. Open the file **positions-app-tutorial-eventhandler.kts** and insert the code block:
 
 ```kotlin
@@ -72,7 +72,7 @@ eventHandler<PositionCancel> {
 
 ### Set up the Notify module and start the process
 
-The module GENESIS_NOTIFY does not run by default. To change this, we are adding a customized module to our project. To do that, create a process called *ALPHA_NOTIFY* and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** as the code below.
+The module GENESIS_NOTIFY does not run by default. To change this, we are adding a customized module to our project. To do that, create a process called *POSITIONS_APP_TUTORIAL_NOTIFY* and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** as the code below.
 
 ```xml
 <processes>
@@ -89,7 +89,7 @@ The module GENESIS_NOTIFY does not run by default. To change this, we are adding
     </process>
 </processes>
 ```
-Add the *POSITIONS_APP_TUTORIAL_EVALUATOR* in the file **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** as the code below. 
+Add the *POSITIONS_APP_TUTORIAL_NOTIFY* in the file **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** as the code below. 
 
 ```xml
 <configuration>
@@ -98,7 +98,7 @@ Add the *POSITIONS_APP_TUTORIAL_EVALUATOR* in the file **positions-app-tutorial-
 </configuration>
 ```
 
-Run **assemble** and **deploy-genesisproduct-positions-app-tutorial** tasks to verify that the new process works as expected.
+Run `assemble` and `positions-app-tutorial-config:assemble` tasks to verify that the new process works as expected.
 
 Run `mon`.
 You should be able to see the process is present.
@@ -177,3 +177,6 @@ You can see that when the limit is breached, you receive an email automatically.
 :::note
 Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the inbox *dev-training@freesmtpserver.com*
 ::: -->
+
+### Conclusion
+This section showed how to trigger events based on condition in the database. This is a powerful feature that allows you to raise alarms on certain conditions or react on specific states.

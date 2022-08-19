@@ -30,7 +30,7 @@ tables {
 }
 ```
 
-Add the query `ALL_POSITIONS` in the **positions-app-tutorial-dataserver.kts** file.
+Add the query `ALL_POSITIONS` in the **positions-app-tutorial-dataserver.kts** file. 
 
 ```kotlin {3}
 dataServer {
@@ -38,6 +38,7 @@ dataServer {
     query("ALL_POSITIONS", POSITION)
 }
 ```
+It will be used to show all the positions calculated by the consolidator.
 
 When you finish, remember to run **genesis-generated-dao​** and **genesisproduct-assemble**.​
 
@@ -110,6 +111,8 @@ consolidators {
 
 ### Update the system files
 
+Now that the consolidator logic is in place we have to make sure it's running.
+
 #### Update the processes.xml file
 
 As the Consolidator runs on its own process, we need to add a new entry to **positions-app-tutorial-processes.xml** with the Consolidator process definition.
@@ -129,7 +132,7 @@ As the Consolidator runs on its own process, we need to add a new entry to **pos
 ```
 #### Update the service-definitions.xml file
 
-This file lists all the active services for the Positions application. You can see entries have been added automatically when the Data Server, Request Server and Event Handler were generated.
+This file lists all the active services for the Positions application. You can see entries have been added automatically when the Data Server and Event Handler were generated.
 
 Add a new entry to **positions-app-tutorial-service-definitions.xml** with the Consolidator details. Remember the port numbers should be free and, ideally, sequential.
 
@@ -140,7 +143,7 @@ Add a new entry to **positions-app-tutorial-service-definitions.xml** with the C
 </configuration>
 ```
 
-Run `assemble` and `deploy-genesisproduct-positions-app-tutorial` tasks to verify that the new process works as expected.
+Run `assemble` and `positions-app-tutorial-config:assemble` tasks to verify that the new process works as expected.
 
 
 ### Conclusion

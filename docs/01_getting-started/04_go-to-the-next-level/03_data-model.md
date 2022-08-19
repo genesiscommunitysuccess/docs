@@ -4,7 +4,7 @@ sidebar_label: 'Define the Data model using Fields, Tables and Views'
 id: data-model
 ---
 
-Hopefully, the previous step finished with:
+Hopefully, the project creation step finished with:
 
 ```
 i Application created successfully! 🎉 Please open the application and follow the README to complete setup.
