@@ -4,7 +4,7 @@ sidebar_label: 'Avatar'
 id: avatar
 ---
 
-The `alpha-avatar` component is used to graphically represent a user or an object.
+The _avatar_ component is used to graphically represent a user or an object.
 
 ## Set-up
 

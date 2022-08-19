@@ -4,7 +4,7 @@ sidebar_label: 'Badge'
 id: badge
 ---
 
-The `alpha-badge` component is used to highlight an item and attract attention or flag its status.
+The _badge_ component is used to highlight an item and attract attention or flag its status.
 
 ## Set-up
 

@@ -4,7 +4,7 @@ sidebar_label: 'Card'
 id: card
 ---
 
-The `alpha-card` component is a visual container without semantics, which takes children. Cards are snapshots of content that are typically used in a group to present collections of related information.
+The _card_ component is a visual container without semantics, which takes children. Cards are snapshots of content that are typically used in a group to present collections of related information.
 
 ## Setup
 

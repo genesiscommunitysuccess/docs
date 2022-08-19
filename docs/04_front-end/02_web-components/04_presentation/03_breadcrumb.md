@@ -8,7 +8,7 @@ As defined by the [W3C](https://w3c.github.io/aria-practices/#breadcrumb):
 
 > A breadcrumb trail consists of a list of links to the parent pages of the current page in hierarchical order. It helps users find their place within a website or web application. Breadcrumbs are often placed horizontally before a page's main content.
 
-## Set=up
+## Set-up
 
 ```ts
 import { provideDesignSystem, alphaBreadcrumb, alphaBreadcrumbItem } from '@genesislcap/alpha-design-system';
