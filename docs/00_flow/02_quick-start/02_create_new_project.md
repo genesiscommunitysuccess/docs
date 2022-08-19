@@ -7,7 +7,7 @@ id: create-new-project
 
 To help give you a helping hand in getting started with your applications, our GenX CLI tool will allow you to create seed projects. 
 
-> A seed project is a productive starting point for any application with our Unified DSL. 
+> A seed project is a productive starting point for any application using Flow. 
 > 
 > It will create an initial file structure and install any necessary dependencies, allowing you to focus on the important bits. 
 
@@ -25,10 +25,10 @@ Let's start by installing GenX using the following command in your terminal:
 
 ```shell
 npm uninstall -g @genesislcap/foundation-cli
-npm install -g @genesislcap/foundation-cli@2.0.1-alpha-c5193cd.0+c5193cd
+npm install -g @genesislcap/foundation-cli@2.0.1-alpha-4ce6685.0+4ce6685
 ```
 :::note
-Our DSL seed is currently only available on a particular version, therefore we need to remove any previous version and specify the one we need.
+Our Flow seed is currently only available on a particular version, therefore we need to remove any previous version and specify the one we need.
 :::
 
 
@@ -44,7 +44,7 @@ foundation-cli
 
 If this is your first time running our CLI tool, you'll need to provide your artifactory credentials. 
 
-> No credentials? See our [Prerequisites](low-code/introduction/prerequisites/)
+> No credentials? See our [Prerequisites](/flow/introduction/prerequisites/)
 
 ```shell
 ? Genesis Username example.username
@@ -57,11 +57,11 @@ We persist your details to help speed things up, so you won't need this everytim
 :::
 
 
-Select `create Low-Code application`:
+Select `create flow application`:
 
 ```shell
 ? Please select an option: (Use arrow keys)
-> create Low-Code application - Creates a Low-Code application.
+> create flow application - Creates a Flow application.
   create workspace - Generates a local workspace to use for your Genesis based apps.
   configure workspace - Configure a local workspace.
   create application - Generates a local application.
@@ -95,7 +95,7 @@ The seed application is now created and dependencies are installed. Our expected
 ? Overwrite existing files Yes
 ✔ Create path alpha
 ✔ Create directory alpha
-✔ Creating from seed 'Low-code Application Seed'
+✔ Creating from seed 'Flow Application Seed'
 ℹ Installing dependencies.
 ✔ Install success.
 ```
@@ -148,6 +148,6 @@ Now open your chosen IDE (e.g. IntelliJ) and locate the newly created alpha proj
 Congratulations, your local environment is now ready to build applications. We have:
 
 - Installed GenX CLI
-- Created a new Low-Code seed project
+- Created a new Flow seed project
 - Configured our seed
 - Configured our application defaults

@@ -5,9 +5,9 @@ id: 'prerequisites'
 
 # Prerequisites
 
-Our Unified Low-Code offering has the same requirements as our other Low-Code options. Therefore, before progressing with our guides please refer to the below pages to ensure you have the initial set up:
+Flow has the same requirements as our other Genesis platform options. Therefore, before progressing with our guides please refer to the below pages to ensure you have the initial set up:
 
-- [Hardware and Software](getting-started/prerequisites/hardware-and-software/)
+- [Hardware and Software](/getting-started/prerequisites/hardware-and-software/)
 - [Do you need WSL?](/getting-started/prerequisites/do-you-need-wsl/)
 - [The Gradle deploy plugin](/getting-started/prerequisites/you-can-now-run-genx/)
 

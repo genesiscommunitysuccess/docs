@@ -83,7 +83,7 @@ module.exports = {
         {to: 'server-modules', label: 'Server Modules'},
         {to: 'front-end', label: 'Front End'},
         {to: 'operations', label: 'Operations'},
-        {to: 'low-code/introduction', label: 'Low-Code'},
+        {to: 'flow/introduction', label: 'Flow'},
         {to: 'blog', label: 'Updates'},
         {
           href: "https://stackoverflow.com/",
