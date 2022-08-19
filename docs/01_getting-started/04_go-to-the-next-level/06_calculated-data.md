@@ -1,10 +1,10 @@
 ---
-title: 'Calculated data using Derived fields'
-sidebar_label: 'Calculated data using Derived fields'
+title: 'Calculated data using derived fields'
+sidebar_label: 'Calculated data using derived fields'
 id: calculated-data
 ---
 
-In certain cases you might want to display piece of information that can be derived from the data in hand. To achieve that you can use [Derived fields](/database/fields-tables-views/views/views-advanced/#derived-fields). They are a useful way of providing calculated data and can be added to Views. Note that you must only use fields that are in the view.
+In certain cases, you might want to display piece of information that can be derived from the data in hand. To achieve that, you can use [derived fields](/database/fields-tables-views/views/views-advanced/#derived-fields). They are a useful way of providing calculated data and can be added to views. Note that you can only use fields that are in the view to create a derived field.
 
 Let's add a derived field named `CONSIDERATION` that uses the `QUANTITY` and the `PRICE` from the `TRADE` table and returns their product:
 
@@ -16,7 +16,8 @@ derivedField("CONSIDERATION", DOUBLE) {
 }
 ```
 
-Add this `derivedField` to your view now.​ The final view should be like this.
+Add this `derivedField` to your view now. The final view should be like this.
+
 ```kotlin
 views {
 
@@ -49,4 +50,4 @@ views {
 ```
 
 ### Conclusion
-We just added a derived field. If you feel eager to see the changes work feel free to head to [See It Work](/getting-started/go-to-the-next-level/see-it-work)  and give it a try.
+We just added a derived field. If you feel eager to see the changes, work feel free to head to [See it work](/getting-started/go-to-the-next-level/see-it-work)  and give it a try.
