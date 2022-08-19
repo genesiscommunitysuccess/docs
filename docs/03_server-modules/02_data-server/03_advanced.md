@@ -19,7 +19,7 @@ The `join` operation receives two parameters:
 - `row` the pre-built query `row`
 - `userData` the table or view lookup result; this will be null if the lookup fails to find a record
 
-The `fields` section defines what fields should be visible as part of the query. use this if you want to use a subset of fields from the enriched table or view, or if you want to declare your own derived fields.
+The `fields` section defines what fields should be visible as part of the query. Use this if you want to use a subset of fields from the enriched table or view, or if you want to declare your own derived fields.
 
 The example below should help you to understand the functionality. Comments are included in the code to ease understanding.
 
