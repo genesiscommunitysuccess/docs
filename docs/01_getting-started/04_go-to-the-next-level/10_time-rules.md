@@ -4,16 +4,16 @@ sidebar_label: 'Time based rules'
 id: time-rules
 ---
 
-It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send warning when a defined limit is reached. For such purposes the Genesis platform provides a feature called [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect Event Handlers to two different kinds of event: dynamic and static (cron rules): 
+It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes the Genesis low-code platform provides a feature called the [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect Event Handlers to two different kinds of event: dynamic and static (cron rules): 
 
-- __Cron Rules__  are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
-- __Dynamic Rules__, also known as Dynamic Events, are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
+- __Cron Rules__  are scheduling rules; these are defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
+- __Dynamic Rules__, also known as Dynamic Events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
-In both cases, you define the rule in a table in the database: `CRON_RULES` for static rules and `DYNAMIC_RULES` for dynamic rules. In this section, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [the next section](/getting-started/go-to-the-next-level/condition-rules/).
+In both cases, you define the rule in a table in the database: `CRON_RULES` for static rules and `DYNAMIC_RULES` for dynamic rules. In this section, we're going to use Cron Rules, but if you're interested in the Dynamic Rules, please look at [the next section](/getting-started/go-to-the-next-level/condition-rules/).
 
-### Cron rules (static events)​
+### Cron rules (static events)
 
-Let's create a cron rule that triggesr a batch job to run once every minute.
+Let's create a cron rule that triggers a batch job to run once every minute.
 
 The batch job will generate a position report as a csv for each counterparty. This will be stored in **runtime/position-minute-report**. The file name of each report written will have the form COUNTERPARTY_ID-DATE.csv.
 
@@ -55,7 +55,7 @@ To start, create a process called *GENESIS_EVALUATOR* and add it to the file **p
 </processes>
 ```
 
-Add the *POSITIONS_APP_TUTORIAL_EVALUATOR* in the file **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** with the code below. 
+Add the `POSITIONS_APP_TUTORIAL_EVALUATOR` to the file **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** with the code below. 
 
 ```xml
 <configuration>
@@ -64,12 +64,12 @@ Add the *POSITIONS_APP_TUTORIAL_EVALUATOR* in the file **positions-app-tutorial-
 </configuration>
 ```
 
-Run `assemble` and `positions-app-tutorial-config:assemble` tasks to verify that the new process works as expected.
+Run the `assemble` and `positions-app-tutorial-config:assemble` tasks to verify that the new process works as expected.
 
 Run `mon`.
 You should be able to see the process is present, but on `Standby`.
 
-This is because the Evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the Primary node.
+This is because the Evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the primary node.
 
 Run `SetPrimary` and you should be able to see all processes running.
 
@@ -81,11 +81,11 @@ When the evaluator is running, create a `PositionReport` class to trigger the ne
 class PositionReport
 ```
 
-### Create an event handler
+### Create an Event Handler
 
-Create an event handler that will write the csv files to the runtime/position-minute-report folder. Call it `EVENT_POSITION_REPORT`.
+Create an Event Handler that will write the csv files to the **runtime/position-minute-report** folder. Call it `EVENT_POSITION_REPORT`.
 
-Open the file **positions-app-tutorial-eventhandler.kts** and add a variable called `tradeViewRepo` injecting the class `TradeViewAsyncRepository`. Then, add an event handler to generate the csv file:
+Open the file **positions-app-tutorial-eventhandler.kts** and add a variable called `tradeViewRepo`, injecting the class `TradeViewAsyncRepository`. Then, add an Event Handler to generate the csv file:
 
 ```kotlin {8,12}
 import java.io.File
@@ -138,14 +138,14 @@ To do this, run the LogLevel command:
 LogLevel -p GENESIS_EVALUATOR -DATADUMP_ON -l DEBUG
 ```
 
-And then to see the logs run:
+And then to see the logs, run:
 ```shell
 cd $L
 tail -f GENESIS_EVALUATOR.log
 ```
 :::info What is $L?
-$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Feel free to use your favorite command to view logs such as tail, less etc.
+$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis low-code platform. Feel free to use your favorite command to view logs such as tail, less etc.
 :::
 
 ### Conclusion
-This concludes generating reports for the positions application. In the next section you will see how to trigger based on condition in the database
+This concludes generating reports for the positions application. In the next section you will see how to trigger based on a condition in the database
