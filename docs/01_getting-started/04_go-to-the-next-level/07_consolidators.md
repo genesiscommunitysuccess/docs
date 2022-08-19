@@ -4,14 +4,14 @@ sidebar_label: 'Data Aggregation using Consolidator'
 id: consolidators
 ---
 
-Following from the calculated data using [Derived fields](/getting-started/go-to-the-next-level/calculated-data/) the Genesis platform provides a more advanced feature to aggregate data or perform calculattions whenever the underlying data is changed. That feature is called [Consolidator](/server-modules/consolidator/introduction/)
+Following from the calculated data using [derived fields](/getting-started/go-to-the-next-level/calculated-data/), the Genesis platform provides a more advanced feature to aggregate data or perform calculattions whenever the underlying data is changed. That feature is called [Consolidator](/server-modules/consolidator/introduction/).
 
 In our case, Consolidators are a good fit for consolidating a position table from trades.
 
 
-### Define the position-keeping logic in the consolidator
+### Define the position-keeping logic in the Consolidator
 
-Make sure you settled the `INSTRUMENT_ID` field as not nullable in the `TRADE` and `POSITION` tables, as the consolidations will use it.
+Make sure that the `INSTRUMENT_ID` field as not nullable in the `TRADE` and `POSITION` tables, as the consolidations will use it.
 
 ```kotlin {4,10}
 tables {
@@ -30,7 +30,7 @@ tables {
 }
 ```
 
-Add the query `ALL_POSITIONS` in the **positions-app-tutorial-dataserver.kts** file. 
+Add the query `ALL_POSITIONS` to the **positions-app-tutorial-dataserver.kts** file. 
 
 ```kotlin {3}
 dataServer {
@@ -38,9 +38,9 @@ dataServer {
     query("ALL_POSITIONS", POSITION)
 }
 ```
-It will be used to show all the positions calculated by the consolidator.
+This query will be used to show all the positions calculated by the consolidator.
 
-When you finish, remember to run **genesis-generated-dao​** and **genesisproduct-assemble**.​
+When you finish, remember to run **genesis-generated-dao​** and **genesisproduct-assemble**.
 
 So, let's define a **positions-app-tutorial-consolidator.kts** file inside **positions-app-tutorial-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
 
@@ -111,7 +111,7 @@ consolidators {
 
 ### Update the system files
 
-Now that the consolidator logic is in place we have to make sure it's running.
+Now that the Consolidator logic is in place we have to make sure it's running.
 
 #### Update the processes.xml file
 
@@ -143,8 +143,8 @@ Add a new entry to **positions-app-tutorial-service-definitions.xml** with the C
 </configuration>
 ```
 
-Run `assemble` and `positions-app-tutorial-config:assemble` tasks to verify that the new process works as expected.
+Run the `assemble` and `positions-app-tutorial-config:assemble` tasks to verify that the new process works as expected.
 
 
 ### Conclusion
-This shows a quick example of a consolidator. As usual you can [give it a try](/getting-started/go-to-the-next-level/see-it-work) or go the next section.
+This shows a quick example of a Consolidator. As usual, you can either [give it a try](/getting-started/go-to-the-next-level/see-it-work) or go the next section.
