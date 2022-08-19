@@ -20,7 +20,7 @@ provideDesignSystem().register(alphaBadge());
 <alpha-badge fill="primary" color="primary" class="badge">Badge</alpha-badge>
 ```
 
-The `fill` and `color` attributes of the _badge_ create CSS custom properties, which can be used to style the control.
+The `fill` and `color` attributes of the `badge` create CSS custom properties, which can be used to style the control.
 
 ```css
 alpha-badge {
