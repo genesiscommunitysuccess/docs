@@ -212,8 +212,6 @@ eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
 }
 ```
 
-Remove the `TRADE_DELETE` Event Handler if you included it before.
-
 You want to manage the state of the trade, so remove the delete Event Handler. If a trade is incorrect and needs to be deleted, similar functionality can be achieved by cancelling the trade.
 
 To test it, you can try to modify a `TRADE` and see the states changing accordingly. 
