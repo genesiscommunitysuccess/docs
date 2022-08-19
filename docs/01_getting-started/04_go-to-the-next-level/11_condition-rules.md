@@ -1,6 +1,6 @@
 ---
-title: 'Condition based rules'
-sidebar_label: 'Condition based rules'
+title: 'Condition-based rules'
+sidebar_label: 'Condition-based rules'
 id: condition-rules
 ---
 
@@ -8,11 +8,11 @@ Now we are going to use the Evaluator again to set up dynamic rules. In this cas
 
 ### Preparation
 
-First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron rule](/getting-started/go-to-the-next-level/time-rules/).
+First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on [setting up a cron rule](/getting-started/go-to-the-next-level/time-rules/).
 
 You need to create two csv files for this exercise.
 
-The first is the file with your rule in the correct format, similsr to the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
+The first is the file with your rule in the correct format, similar to the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
 
 ```csv
 NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
@@ -30,11 +30,11 @@ Now you are ready to begin setting up your dynamic rule.
 
 ### Set up the dynamic rule
 
-To set up the dynamic rule, go to the DYNAMIC_RULE table and insert the *DYNAMIC_RULE.csv* file. Run `SendIt -t DYNAMIC_RULE -f DYNAMIC_RULE.csv`
+To set up the dynamic rule, go to the DYNAMIC_RULE table and insert the **DYNAMIC_RULE.csv** file. Run `SendIt -t DYNAMIC_RULE -f DYNAMIC_RULE.csv`
 
 ### Set up the Event Handler message class
 
-To define the Event Handler message class, create a Kotlin class called *PositionCancel* in your project folder **server/jvm/positions-app-tutorial-messages/src/main/kotlin/global/genesis/positions-app-tutorial/message/event**, and insert the following code:
+To define the Event Handler message class, create a Kotlin class called `PositionCancel` in your project folder **server/jvm/positions-app-tutorial-messages/src/main/kotlin/global/genesis/positions-app-tutorial/message/event**, and insert the following code:
 
 ```kotlin
 data class PositionCancel(
@@ -44,7 +44,7 @@ data class PositionCancel(
 
 ### Update the Event Handler
 
-The rule needs to call an Event Handler, which will be called `PositionCancel` using the class created in the previous step.
+The rule needs to call an Event Handler, which will be named `PositionCancel` using the class created in the previous step.
 We have defined the Event Handler in the code block below. Open the file **positions-app-tutorial-eventhandler.kts** and insert the code block:
 
 ```kotlin
@@ -72,7 +72,7 @@ eventHandler<PositionCancel> {
 
 ### Set up the Notify module and start the process
 
-The module GENESIS_NOTIFY does not run by default. To change this, we are adding a customized module to our project. To do that, create a process called *POSITIONS_APP_TUTORIAL_NOTIFY* and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** as the code below.
+The module GENESIS_NOTIFY does not run by default. To change this, we are adding a customised module to our project. To do that, create a process called `POSITIONS_APP_TUTORIAL_NOTIFY` and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. Use the code below.
 
 ```xml
 <processes>
@@ -89,7 +89,7 @@ The module GENESIS_NOTIFY does not run by default. To change this, we are adding
     </process>
 </processes>
 ```
-Add the *POSITIONS_APP_TUTORIAL_NOTIFY* in the file **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** as the code below. 
+Add the `POSITIONS_APP_TUTORIAL_NOTIFY` in the file **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. Use the code below. 
 
 ```xml
 <configuration>
@@ -98,7 +98,7 @@ Add the *POSITIONS_APP_TUTORIAL_NOTIFY* in the file **positions-app-tutorial-ser
 </configuration>
 ```
 
-Run `assemble` and `positions-app-tutorial-config:assemble` tasks to verify that the new process works as expected.
+Run the `assemble` and `positions-app-tutorial-config:assemble` tasks to verify that the new process works as expected.
 
 Run `mon`.
 You should be able to see the process is present.
@@ -107,7 +107,7 @@ You should be able to see the process is present.
 
 #### Insert a gateway route
 
-Create a file GATEWAY.csv as shown below and insert it in the table GATEWAY using the command `SendIt`.
+Create a file **GATEWAY.csv** as shown below and insert it in the table GATEWAY using the command `SendIt`.
 
 ```csv
 GATEWAY_ID,GATEWAY_TYPE,GATEWAY_VALUE,INCOMING_TOPIC
@@ -116,7 +116,7 @@ GATEWAY_ID,GATEWAY_TYPE,GATEWAY_VALUE,INCOMING_TOPIC
 
 #### Insert NOTIFY_ROUTE
 
-Create a file NOTIFY_ROUTE.csv as shown below, then insert it in the table NOTIFY_ROUTE using the command `SendIt`.
+Create a file **NOTIFY_ROUTE.csv** as shown below, then insert it in the table NOTIFY_ROUTE using the command `SendIt`.
 
 ```csv
 ENTITY_ID,ENTITY_ID_TYPE,TOPIC_MATCH,GATEWAY_ID
@@ -163,14 +163,14 @@ cd $L
 tail -f POSITIONS_APP_TUTORIAL_EVALUATOR.log
 ```
 :::tip
-$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Moreover, feel free to use your favorite command to view logs such as tail, less etc.
+$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Feel free to use your favorite command to view logs such as tail, less etc.
 :::
 
 ### Trigger the event to test the rule
 
 So, let's see if that has worked.
 
-Insert the file POSITION.csv into the database. This is the file that you prepared earlier; it contains a value that breaches a limit, so it should trigger our event.
+Insert the file **POSITION.csv** into the database. This is the file that you prepared earlier; it contains a value that breaches a limit, so it should trigger our event.
 
 You can see that when the limit is breached, you receive an email automatically.
 
@@ -179,4 +179,4 @@ Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the i
 ::: -->
 
 ### Conclusion
-This section showed how to trigger events based on condition in the database. This is a powerful feature that allows you to raise alarms on certain conditions or react on specific states.
+This section showed how to trigger events based on a condition in the database. This is a powerful feature that allows you to raise alarms on certain conditions or to react on specific states.
