@@ -1,6 +1,8 @@
 const baseUrl = process.env.BASE_URL || '/';
 const routeBasePath = '/';
 
+const apiPullPlugin = require('./pull-api-docs');
+
 module.exports = {
   title: 'Low-code Platform For Financial Markets',
   tagline: 'The Platform with 50+ Modern Building Blocks to Accelerate App Development.',
@@ -10,7 +12,7 @@ module.exports = {
   organizationName: 'genesislcap', // Usually your GitHub org/user name.
   projectName: 'docs', // Usually your repo name.
   trailingSlash: true,
-  onBrokenLinks: 'warn',
+  onBrokenLinks: 'throw', // please do NOT change this to 'warn', fix or remove your broken links instead
   scripts: [
     {
       src: `${baseUrl}js/docs.iife.min.js`,
@@ -26,8 +28,10 @@ module.exports = {
     }],
     [require.resolve('docusaurus-gtm-plugin'), {
       id: 'GTM-5GTR43J',
-    }
-    ]
+    }],
+		() => ({
+			loadContent: apiPullPlugin.loadContent(),
+		})
   ],
 
   presets: [
@@ -121,3 +125,4 @@ module.exports = {
   },
 
 };
+

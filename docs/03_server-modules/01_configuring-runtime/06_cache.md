@@ -5,16 +5,16 @@ id: cache
 ---
 
 
-Database caching on local microservices is supported out of the box. You can configure a caching layer for any Genesis module. The cache can reduce the database workload for tables that contain static data.
+Database caching on local modules is supported out of the box. You can configure a caching layer for any Genesis module. The cache can reduce the database workload for tables that contain static data.
 
 ## Configuration
 
-The caching mechanism applies to single-record database-look-up operations across the whole microservice runtime.
+The caching mechanism applies to single-record database-look-up operations across the whole module runtime.
 
 There two ways of defining the cache for a module:
 
 * in XML format, inside the config file of the process.
-* in GPAL format. The GPAL format is generally used for microservices using a GPAL script (defined in the **script** attribute in **processes.xml**). The cache file is defined in the **config** attribute of the process definition. The GPAL file naming convention is: _application_**-process-config.kts**
+* in GPAL format. The GPAL format is generally used for modules using a GPAL script (defined in the **script** attribute in **processes.xml**). The cache file is defined in the **config** attribute of the process definition. The GPAL file naming convention is: _application_**-process-config.kts**
 
 The options for both XML and GPAL are:
 
@@ -78,7 +78,7 @@ The options for both XML and GPAL are:
     }
 ```
 
-As the example above shows, the GPAL **process-config** file can override system definition values on a per microservice basis as well.
+As the example above shows, the GPAL **process-config** file can override system definition values on a per-module basis as well.
 
 ### GPAL processes.xml example
 ```xml

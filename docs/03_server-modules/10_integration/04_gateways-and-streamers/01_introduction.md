@@ -44,4 +44,5 @@ Note that Genesis has a pre-built FIX module, which has all the Quick FIX librar
 The FIX Xlator is a plugin for the streamer and streamer client, to bring in type-safe handling of FIX messages.
 Follow this link to know more about [FIX Xlator](/03_server-modules/10_integration/04_gateways-and-streamers/04_fix-xlator.md).
 
-You can see an example of streamers, streamer clients, the FIX Xlator and a FIX gateway in our [tutorial](/01_getting-started/05_tutorials/12_integrate-a-fix-gateway.md).
+You can see an example of streamers, streamer clients, the FIX Xlator and a FIX gateway in our [tutorial](/).
+<!-- TODO: link to 'fix-gateway' turorial -->
