@@ -3,6 +3,9 @@ title: 'Data'
 sidebar_label: 'Data'
 id: data
 ---
+
+[Introduction](/operations/console/introduction/)  | [Microservices](/operations/console/microservices/) |  [Data](/operations/console/data/) | [Resources](/operations/console/resources/) | [Packages](/operations/console/packages/) | [Messages](/operations/console/messages/)
+
 This lists all the tables in your data model.
 
 ![](/img/con-data1.png)

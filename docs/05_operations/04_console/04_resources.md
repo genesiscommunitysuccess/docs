@@ -4,6 +4,8 @@ sidebar_label: 'Resources'
 id: resources
 ---
 
+[Introduction](/operations/console/introduction/)  | [Microservices](/operations/console/microservices/) |  [Data](/operations/console/data/) | [Resources](/operations/console/resources/) | [Packages](/operations/console/packages/) | [Messages](/operations/console/messages/)
+
 This page shows all the available resources that publish data to the web UI. 
 
 ![](/img/con-resources1.png)

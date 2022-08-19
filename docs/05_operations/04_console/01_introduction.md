@@ -3,6 +3,9 @@ title: 'Introduction'
 sidebar_label: 'Introduction'
 id: introduction
 ---
+
+[Introduction](/operations/console/introduction/)  | [Microservices](/operations/console/microservices/) |  [Data](/operations/console/data/) | [Resources](/operations/console/resources/) | [Packages](/operations/console/packages/) | [Messages](/operations/console/messages/)
+
 # Genesis Console
 Console enables you to monitor your application with precision, enabling you to see individual processes, resources and data. You can view logs for each process, insert data, control logging levels, monitor CPU and memory usage, and examine the code of specific processes.
 ## Logging in

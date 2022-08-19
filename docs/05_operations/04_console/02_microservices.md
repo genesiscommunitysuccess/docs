@@ -4,6 +4,8 @@ sidebar_label: 'Microservices'
 id: microservices
 ---
 
+[Introduction](/operations/console/introduction/)  | [Microservices](/operations/console/microservices/) |  [Data](/operations/console/data/) | [Resources](/operations/console/resources/) | [Packages](/operations/console/packages/) | [Messages](/operations/console/messages/)
+
 This screen enables you to view all the processes (microservices) that are running. The services are listed on the left of the page.
 
 By default, the list shows all the processes in the application. The processes are organised into packages, and you can select a package from the top of the list to see only the processes in that package. 
