@@ -1,6 +1,6 @@
 ---
-title: 'Pre-requisites'
-sidebar_label: 'Pre-requisites'
+title: 'Prerequisites'
+sidebar_label: 'Prerequisites'
 id: prerequisites
 ---
 
