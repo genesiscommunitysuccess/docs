@@ -30,7 +30,7 @@ provideDesignSystem().register(alphaAvatar());
 
 ### Filled, coloured, and shaped
 
-The `fill` and `color` attributes of the _avatar_ create CSS custom properties, which can be used to style the control.
+The `fill` and `color` attributes of the `avatar` create CSS custom properties, which can be used to style the control.
 
 ```css
 alpha-avatar {
