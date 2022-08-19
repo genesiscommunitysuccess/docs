@@ -10,7 +10,7 @@ module.exports = {
   organizationName: 'genesislcap', // Usually your GitHub org/user name.
   projectName: 'docs', // Usually your repo name.
   trailingSlash: true,
-  onBrokenLinks: 'warn',
+  onBrokenLinks: 'throw', // please do NOT change this to 'warn', fix or remove your broken links instead
   scripts: [
     {
       src: `${baseUrl}js/docs.iife.min.js`,

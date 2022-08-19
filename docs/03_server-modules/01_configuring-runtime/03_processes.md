@@ -4,9 +4,9 @@ sidebar_label: 'Processes'
 id: processes
 ---
 
-Each application must have a **-processes.xml** file. This contains the configuration of each microservice (data server, request server and event-handler etc). It is generated automatically when you machison'io create a new Genesis project using maven](/creating-applications/creating-a-new-project/alternative_options_supported/server-project-setup/).
+Each application must have a **-processes.xml** file. This contains the configuration of each module (data server, request server and event-handler etc). It is generated automatically when you create a new Genesis project using  [GenX CLI tool](/getting-started/quick-start/create-a-new-project/).
 
-If you add new processes, you need to add their details to the _application_**-processes.xml** file.
+If you add new processes, you need to add their details to the _application_**-processes.xml** file. See the section on [adding processes](/getting-started/quick-start/prepare-the-server-and-build/) for more details on how to do this.
 
 When you run the command `genesisInstall`, the details of this file are aggregated along with details from internal Genesis files (for example, **auth-processes.xml**) into a single newly-generated **processes.xml** file in the **generated** folder.
 
