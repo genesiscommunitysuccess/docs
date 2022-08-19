@@ -7,7 +7,7 @@ id: event-handler-api
 Custom Event Handlers
 =====================
 
-Custom Event Handlers provide a way of implementing business logic in Java or Kotlin outside the Genesis GPAL Event Handler definition, in a more traditional and flexible development approach. Genesis has three different flavours of custom Event Handler:
+Custom Event Handlers provide a way of implementing business logic in Java or Kotlin outside the Genesis GPAL Event Handler definition, in a more traditional and flexible development approach. Genesis has three different flavours of custom Event Handler:
 
 -   Async. This uses the Kotlin coroutine API to simplify asynchronous development. This is the underlying implementation used in GPAL Event Handlers.
 -   RxJava3. This uses the RxJava3 library, which is a popular option for composing asynchronous event-based programs.
@@ -15,16 +15,16 @@ Custom Event Handlers provide a way of implementing business logic in Java or�
 
 :::note
 
-Java event handlers can be implemented using [RxJava3](/database/event-handler-api/event-handler-api/#rx3eventhandler) and [Sync](/database/event-handler-api/event-handler-api/#sync) Event Handlers only. Async Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
+Java event handlers can be implemented using [RxJava3](/database/api-reference/event-handler-api/#rx3eventhandler) and [Sync](/database/api-reference/event-handler-api/#sync) Event Handlers only. Async Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
 
 :::
 
-We recommend using Kotlin to implement Event Handlers
+We recommend using Kotlin to implement Event Handlers
 
-Configure in processes.xml file[​](/database/event-handler-api/event-handler-api/#configure-in-processesxml-filedirect-link-to-heading)
+Configure in processes.xml file
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-You need to add the `global.genesis.eventhandler` package in the package tag of the process; this tag defines which package the process should refer to. For example:
+You need to add the `global.genesis.eventhandler` package in the package tag of the process; this tag defines which package the process should refer to. For example:
 
 ```xml
 <process name="POSITION_NEW_PROCESS">    
@@ -35,43 +35,43 @@ You need to add the `global.genesis.eventhandler` package in the package tag o
 </process>
 ```
 
-Event Handler interface[​](/database/event-handler-api/event-handler-api/#event-handler-interfacedirect-link-to-heading)
+Event Handler interface
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 The Event Handler interface is the common supertype of AsyncEventHandler, Rx3EventHandler and SyncEventHandler, but it is not meant to be used on its own. It provides basic options for each Event Handler definition, which can be overridden. See the Kotlin methods explanation below:
 
-| Name | Signature | Default value | Description |
-| --- | --- | --- | --- |
-| excludeMetadataFields | `fun excludeMetadataFields(): Set<String>` | setOf("RECORD_ID", "TIMESTAMP") | Contains a list of metadata fields to be excluded from the event metadata extracted from the input `I` |
-| includeMetadataFields | `fun includeMetadataFields(): Set<String>` | emptySet() | Contains a list of metadata fields that need to be included in the event metadata; this must be available in input `I`. A non-empty list will exclude the other fields. |
-| messageType | `fun messageType(): String?` | null | Contains the name of the Event Handler. If undefined, the Event Handler name will become `EVENT_*INPUT_CLASS_NAME*`. So, for an Event Handler using an input type called `TradeInsert`, the message type will become `EVENT_TRADE_INSERT`. |
-| overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I` |
-| requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them ([pending approval](https://docs.genesis.global/secure/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals) in order to take effect) |
+| Name | Signature | Default value | Description                                                                                                                                                                                                                                                                                              |
+| --- | --- | --- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| excludeMetadataFields | `fun excludeMetadataFields(): Set<String>` | setOf("RECORD_ID", "TIMESTAMP") | Contains a list of metadata fields to be excluded from the event metadata extracted from the input `I`                                                                                                                                                                                                   |
+| includeMetadataFields | `fun includeMetadataFields(): Set<String>` | emptySet() | Contains a list of metadata fields that need to be included in the event metadata; this must be available in input `I`. A non-empty list will exclude the other fields.                                                                                                                                  |
+| messageType | `fun messageType(): String?` | null | Contains the name of the Event Handler. If undefined, the Event Handler name will become `EVENT_*INPUT_CLASS_NAME*`. So, for an Event Handler using an input type called `TradeInsert`, the message type will become `EVENT_TRADE_INSERT`.                                                               |
+| overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I`                                                                                        |
+| requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them ([pending approval](https://docs.genesis.global/secure/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals) in order to take effect) |
 
-Each custom Event Handler must define an input message type `I` and an output message type `O` (these need to be data classes), as GPAL Event Handlers do). In the examples below, `Company` is the input message and `EventReply` is the output message. The `message` object contains event message and has the following properties :
+Each custom Event Handler must define an input message type `I` and an output message type `O` (these need to be data classes), as GPAL Event Handlers do). In the examples below, `Company` is the input message and `EventReply` is the output message. The `message` object contains event message and has the following properties :
 
-| Name | Default value | Description |
-| --- | --- | --- |
-| details |  | This has input information, example: Company |
-| messageType |  | Name of the Event Handler |
-| userName |  | Name of logged-in user |
-| ignoreWarnings | false | If set to false, events will not be processed if there are any warnings; you will get EventNack with warning message. If set to true, warning messages will be ignored; processing of events will be stopped only if there are any errors |
-| requiresApproval | false | This particular event needs approval from a second user if set to true. For more details, check [Pending Approval](https://docs.genesis.global/secure/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals) |
-| approvalKey | null | Auto-generated key ID for particular approval request. For more details, check [Pending Approval](https://docs.genesis.global/secure/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals) |
-| approvalMessage | null | Optional message for approval request. For more details, check [Pending Approval](https://docs.genesis.global/secure/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals) |
-| reason | null | Optional reason sent as part of event message |
+| Name | Default value | Description                                                                                                                                                                                                                                                                           |
+| --- | --- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| details |  | This has input information, example: Company                                                                                                                                                                                                                                          |
+| messageType |  | Name of the Event Handler                                                                                                                                                                                                                                                             |
+| userName |  | Name of logged-in user                                                                                                                                                                                                                                                                |
+| ignoreWarnings | false | If set to false, events will not be processed if there are any warnings; you will get EventNack with warning message. If set to true, warning messages will be ignored; processing of events will be stopped only if there are any errors                                             |
+| requiresApproval | false | This particular event needs approval from a second user if set to true. For more details, check [Pending Approval](https://docs.genesis.global/secure/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals) |
+| approvalKey | null | Auto-generated key ID for particular approval request. For more details, check [Pending Approval](https://docs.genesis.global/secure/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals)                  |
+| approvalMessage | null | Optional message for approval request. For more details, check [Pending Approval](https://docs.genesis.global/secure/creating-applications/defining-your-application/business-logic/event-handlers/eh-advanced-technical-details/#pending-approvals)                                  |
+| reason | null | Optional reason sent as part of event message                                                                                                                                                                                                                                         |
 
 Inject objects[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#inject-objects "Direct link to heading")
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-Use [@Inject](/database/dependency-injection/dependency-injection/) to provide instances for any objects needed as part of the dependency injection stage
+Use [@Inject](/database/dependency-injection/dependency-injection/) to provide instances for any objects needed as part of the dependency injection stage
 
 Async[​](/database/event-handler-api/event-handler-api/#asyncdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------
 
 ### AsyncEventHandler[​](/database/event-handler-api/event-handler-api/#asynceventhandlerdirect-link-to-heading)
 
-This is the most basic definition of an Async Event Handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface, which is defined as: `interface AsyncEventHandler<I : Any, O : Outbound> : AsyncEventWorkflowProcessor<I, O>, EventHandler`
+This is the most basic definition of an Async Event Handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface, which is defined as: `interface AsyncEventHandler<I : Any, O : Outbound> : AsyncEventWorkflowProcessor<I, O>, EventHandler`
 
 The only mandatory method to implement this in the interface is:
 
@@ -79,7 +79,7 @@ The only mandatory method to implement this in the interface is:
 | --- | --- |
 | process | `fun suspend process(message: Event<I>) : O` |
 
-This method passes the input message type `I` as a parameter and expects the output message type `O` to be returned.
+This method passes the input message type `I` as a parameter and expects the output message type `O` to be returned.
 
 Here is an example:
 
@@ -104,7 +104,7 @@ import global.genesis.message.core.event.EventReply
 }
 ```
 
-The methods below are provided as part of `AsyncEventHandler`; they provide an easy way of creating `EventReply` responses.
+The methods below are provided as part of `AsyncEventHandler`; they provide an easy way of creating `EventReply` responses.
 
 | Name | Signature |
 | --- | --- |
@@ -130,15 +130,15 @@ import global.genesis.message.core.event.EventReply
 }
 ```
 
-### AsyncValidatingEventHandler[​](/database/event-handler-api/event-handler-api/#asyncvalidatingeventhandlerdirect-link-to-heading)
+### AsyncValidatingEventHandler
 
-In the previous example, there was no distinction between validation and commit blocks, which is possible in GPAL Event Handlers. In order to have a better separation of concerns using custom Event Handlers, you can implement the `AsyncValidatingEventHandler` interface, which is defined as:
+In the previous example, there was no distinction between validation and commit blocks, which is possible in GPAL Event Handlers. In order to have a better separation of concerns using custom Event Handlers, you can implement the `AsyncValidatingEventHandler` interface, which is defined as:
 
 `interface AsyncValidatingEventHandler<I : Any, O : Outbound> : AsyncEventHandler<I, O>`
 
-### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading)
+### Implementation
 
-Using this interface, you do not need to override the `process` method; you can split your logic into validation and commit stages. There are various methods of implementing this, which are described below:
+Using this interface, you do not need to override the `process` method; you can split your logic into validation and commit stages. There are various methods of implementing this, which are described below:
 
 | Name | Signature |
 | --- | --- |
