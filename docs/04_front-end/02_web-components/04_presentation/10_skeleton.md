@@ -4,7 +4,7 @@ sidebar_label: 'Skeleton'
 id: skeleton
 ---
 
-The _skeleton_ component is used as a visual placeholder for an element while it is in a loading state. It usually presents itself as a simplified wireframe-like version of the UI it is representing.
+The `skeleton` component is used as a visual placeholder for an element while it is in a loading state. It usually presents itself as a simplified wireframe-like version of the UI it is representing.
 
 ## Set-up
 
