@@ -18,18 +18,18 @@ The application will make use of the following platform features:
 - [Consolidators](/getting-started/go-to-the-next-level/consolidators/)
 - [State management](/getting-started/go-to-the-next-level/state-management/)
 - [Auditable tables](/getting-started/go-to-the-next-level/audit/)
-- [Condition](/getting-started/go-to-the-next-level/condition-rules/) and [Time based](/getting-started/go-to-the-next-level/time-rules/) rules
+- [Condition](/getting-started/go-to-the-next-level/condition-rules/) and [Time-based](/getting-started/go-to-the-next-level/time-rules/) rules
 - [Data pipelines](/getting-started/go-to-the-next-level/data-pipeline/)
 
 
 We are going to call this example application **positions-app-tutorial**. You will see this reflected in the file names throughout.
 
 ## Create a new project
-Using the GenX CLI tool we want to generate a blank full-stack application project. Go to a folder where you want your project to reside, and run:
+Using the GenX CLI tool, we want to generate a blank full-stack application project. Go to a folder where you want your project to reside, and run:
 
 ```
 npx genx
 ```
 
-Follow through the series of questions and for `App name` enter `positions-app-tutorial`. If this is the first time using the GenX CLI tool check the [Quick Start](/getting-started/quick-start/create-a-new-project/) guide first.
+Follow through the series of questions and for `App name` enter `positions-app-tutorial`. If this is the first time you are using the GenX CLI tool, check the [Quick Start](/getting-started/quick-start/create-a-new-project/) guide first.
 
