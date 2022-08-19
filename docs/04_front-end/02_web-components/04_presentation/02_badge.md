@@ -4,7 +4,7 @@ sidebar_label: 'Badge'
 id: badge
 ---
 
-The _badge_ component is used to highlight an item and attract attention or flag its status.
+The `badge` component is used to highlight an item or flag its status.
 
 ## Set-up
 
@@ -20,7 +20,7 @@ provideDesignSystem().register(alphaBadge());
 <alpha-badge fill="primary" color="primary" class="badge">Badge</alpha-badge>
 ```
 
-The `fill` and `color` attributes of the _badge_ create CSS custom properties which can be used to style the control.
+The `fill` and `color` attributes of the _badge_ create CSS custom properties, which can be used to style the control.
 
 ```css
 alpha-badge {
