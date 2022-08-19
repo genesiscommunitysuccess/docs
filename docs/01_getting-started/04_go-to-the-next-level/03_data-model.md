@@ -26,7 +26,7 @@ Once the project is open, there are two easy ways to find this file quickly in I
 
 :::
 
-For this application, we will need fields that model a Trade, Position and Company and for that purpose we'll add the following:
+For this application, we will need fields that model a Trade, Position and Company; to do that, we'll add the following:
 
 ```kotlin
 fields {
@@ -81,8 +81,8 @@ As we go, you'll see we have different Gradle tasks, depending on the artifact w
 :::
 
 ### Add tables
-Now that we have our fields let's define the tables in the file **positions-app-tutorial-tables-dictionary.kts**.
-We will define four tables `TRADE`, `POSITION`, `COUNTERPARTY` and `INSTRUMENT`:
+Now that we have our fields, let's define the tables in the file **positions-app-tutorial-tables-dictionary.kts**.
+We shall define four tables, `TRADE`, `POSITION`, `COUNTERPARTY` and `INSTRUMENT`:
 
 ```kotlin
 tables {
@@ -160,13 +160,13 @@ When you set up a data model, it implies relationships between tables. For examp
 
 Views enable you join related tables to create a single holistic view.
 
-In short, Views are the genesis equivalent of SQL select queries. Unlike tables, views do not have any data of their own, they are read-only, but present a view based on one or more tables. 
+In short, views are the Genesis equivalent of SQL select queries. Unlike tables, views do not have any data of their own, they are read-only, but they present a view based on one or more tables. 
 
 A view always starts with a single table, the root table. Other tables can be joined onto the root table to present composite data. 
 
 Views are very powerful and here we are going to cover just the basics. When you have a chance, have a look at the [documentation](/database/fields-tables-views/views/).
 
-The code below creates a view called `TRADE_VIEW`, which joins the `TRADE` table to the `INSTRUMENT` and `COUNTERPARTY` tables. Edit **positions-app-tutorial–view-dictionary.kts** file and add the view on the `TRADE` table​
+The code below creates a view called `TRADE_VIEW`, which joins the `TRADE` table to the `INSTRUMENT` and `COUNTERPARTY` tables. Edit **positions-app-tutorial–view-dictionary.kts** file and add the view on the `TRADE` table:
 
 ```kotlin
 views {
@@ -193,12 +193,12 @@ views {
 }
 ```
 
-Run **positions-app-tutorial-config:assemble** to make the view ready for use
+Run **positions-app-tutorial-config:assemble** to make the view ready for use.
 
 #### Entities
 
-During code generation, view and index entities will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
+During code generation, view and index entities are generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
 
 
 ### Conclusion
-With this our data model is defined. As a next step we will add business logic to show the data and create entries
+With this, our data model is defined. As a next step, we shall add business logic to show the data and create entries
