@@ -71,6 +71,38 @@ Local values can be specified in this block. **These values override the global 
   The host name defines what environment you are running in. By default, only one host will be used and change its value to current machine hostname.
 
 ### Items defined
+
+In the system definitions file, there are several items to be used as default values, or even change configurations to adapt the application. 
+
+For instance, to change the database configuration to any one of the technologies support, you should change the items `DbLayer`, `DbHost`, and possibly `system/hosts`. The code bellow show us how we could do this.
+
+```kotlin {6,8,13-16}
+package genesis.cfg
+
+systemDefinition {
+    global {
+        ...
+        item(name = "DbLayer", value = "SQL")
+        ...
+        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=")
+        ...
+    }
+
+    systems {
+        system(name = "DEV") {
+            hosts {
+                host(LOCAL_HOST)
+            }
+            ...
+        }
+    }
+}
+```
+
+Further information regarding the system definitions and items can be found [here](/creating-applications/configure-runtime/system-definitions/).
+
+DELETE BELOW
+
 **MqLayer**: This setting defines the type of Message queue technology. You can choose between `ZeroMQ` and `Aeron` message queues.
 
 **DbLayer**: Default value is set to FDB. If you want to use PostgreSQL, MSSQL or Aerospike, then you need to change this value and then [change the value of the DbHost item](/server-modules/configuring-runtime/setting-the-database-technology/).
@@ -222,6 +254,9 @@ systemDefinition {
 Multiple levels of linking are supported. However, `genesisInstall` will fail if a circular link is detected, or if the `source` of a link is not found. 
 
 ### Exercise 1.1 System Definitions
+<!--
+Answer is pretty much here: https://www.notion.so/genesisglobal/What-makes-Genesis-low-code-ccfb29a874644b8da799a8f5469efb46#6d46b3a15ee94bf8940fa54a72624766
+-->
 
 :::info ESTIMATED TIME
 20 mins
