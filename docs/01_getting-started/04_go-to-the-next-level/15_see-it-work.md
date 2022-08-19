@@ -12,7 +12,7 @@ The Genesis deploy plugin provides several tasks that help to set up the Genesis
 
 You should hava a sub-module called `positions-app-tutorial-deploy` under ../server/jvm.
 
-Ensure the **build.gradle.kts** in this sub-module has the following entry
+Ensure the **build.gradle.kts** in this sub-module has the following entry:
 
 ```kotlin
 plugins {
@@ -41,12 +41,12 @@ wsl-user=genesis
 
 ### Deployment of the back end
 
-Now we are going to install the Genesis Platform (i.e. Genesis distribution) on the server and then install the back end of our application on the same server. This is all done using the Genesis deploy plugin that comes with several tasks grouped under `genesisdeploy` and `genesissetup`.
+Now we are going to install the Genesis low-code platform (i.e. Genesis distribution) on the server and then install the back end of our application on the same server. This is all done using the Genesis deploy plugin, which comes with several tasks grouped under `genesisdeploy` and `genesissetup`.
 
 #### Deploying to the server
 
 :::caution
-This is one time operation. If this is not the first time following this tutorial skip to the next paragraph.
+This is a one-time operation. If this is not your first time following this tutorial, skip to the next paragraph.
 :::
 
 We will run `setupEnvironment` first (we only need to run it once) to set up the platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
@@ -59,7 +59,7 @@ or from the dropdown menu:
 
 ![](/img/setup-environment.png)
 
-After this command is completed, we will have a basic genesis server running.
+After this command is completed, we will have a basic Genesis server running.
 
 ### Deploying the auth module
 As our application requires authentication, we have to install the Genesis Auth module.
@@ -74,7 +74,7 @@ or from the dropdown menu:
 ![](/img/install-auth.png)
 
 ### Deploying the site-specific
-As our application will override the standard definitions using the site-specific folder, we have to run this task.
+As our application will use the site-specific folder to override the standard definitions, we have to run this task.
 
 Usage:
 ```shell
@@ -95,12 +95,12 @@ or from the dropdown menu:
 ![](/img/deploy-alpha-product.png)
 
 :::tip
-This will take the last built distribution and does not run a project build as part of the task. Make sure you have already built the project before deploying it.
+This will take the last built distribution. It does not run a project build as part of the task. Make sure you have already built the project before deploying it.
 :::
 
 ### Adding a user to login
 
-Next let´s create a user.
+Next, let´s create a user.
 
 :::note
 The following details will be your login details:
@@ -112,7 +112,7 @@ The following details will be your login details:
 We shall run the task `loadInitialData`. This adds the data in a file called USER.csv to be imported into the USER table in your
 database. The USER table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously. 
 
-To run the task we will call:
+To run the task, we shall call:
 
 ```shell
 ./gradlew :jvm:positions-app-tutorial-deploy:loadInitialData #On the IntelliJ terminal
@@ -126,7 +126,7 @@ Now we are going to use Genesis DbMon to run some queries on the database.
 
 
 :::info DbMon
-DbMon is the Genesis database client. It provides unified interface to the underlying database and hides the details about the database vendor.
+DbMon is the Genesis database client. It provides a unified interface to the underlying database and hides the details about the database vendor.
 :::
 
 Run `DbMon` to check that the user has been created:
@@ -158,9 +158,9 @@ DbMon:USER>
 
 ### Running server commands
 :::info can I run server commands from the command line rather than gradle tasks?
-Yes. We've been running server commands through the gradle tasks. Alternatively, you can run server commands directly from a command line. 
+Yes. We've been running server commands through the gradle tasks. But alternatively, you can run server commands directly from a command line. 
 
-Assuming you are using the provided 'TrainingCentOS' WSL distribution. Open PowerShell (or Windows Command Prompt), access your WSL instance 'TrainingCentOS' and switch to user 'genesis' to have access to the Genesis Platform commands:
+Assuming you are using the provided 'TrainingCentOS' WSL distribution, open PowerShell (or Windows Command Prompt). Access your WSL instance 'TrainingCentOS' and switch to user 'genesis' to have access to the Genesis Platform commands:
 ```shell
 wsl -d TrainingCentOS
 su genesis
@@ -200,14 +200,14 @@ PID     Process Name                  Port        Status         CPU       Memor
 
 ### Testing the back end
 
-There are multiple ways you can test the back end of your application. It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as HTTP endpoints automatically by the Genesis platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
+There are multiple ways you can test the back end of your application. It's important to note that most resources, such as Event Handlers and Data Servers, are automatically exposed as HTTP endpoints by the Genesis platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
 
 #### Genesis Console
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
 2. Enter the IP address of your server, in this case localhost.
 3. Log in with your user name and password as [defined previously](/getting-started/go-to-the-next-level/see-it-work/#adding-a-user-to-login). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES** tab.
-5. Filter the **Resource type** to show only event handlers.
+5. Filter the **Resource type** to show only Event Handlers.
 
 As well as the Event Handlers that you have defined yourself, you will also see other Event Handlers that have been generated automatically by the platform: anything that is a **GENESIS_CLUSTER** service, for example.
 
@@ -275,11 +275,11 @@ For example, to log in using Postman:
 
 6. When you have done this, click on the **Send** button.
 
-This returns a set of details on the bottom side of the Postman window, where you can copy the SESSION_AUTH_TOKEN, which you will need for your test requests.
+This returns a set of details on the bottom side of the Postman window, where you can copy the `SESSION_AUTH_TOKEN`, which you will need for your test requests.
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 
-In the example below, we are using Postman as the client API. We are going to test the EVENT_COUNTERPARTY_INSERT Event Handler by adding a new counterparty.
+In the example below, we are using Postman as the client API. We are going to test the `EVENT_COUNTERPARTY_INSERT` Event Handler by adding a new counterparty.
 
 ###### url and body
 In front of the url, set the call to **POST**.
