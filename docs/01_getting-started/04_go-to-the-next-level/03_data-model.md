@@ -104,7 +104,7 @@ tables {
 
     table(name= "POSITION", id = 11001) {
         sequence(POSITION_ID, "PS")
-        INSTRUMENT_ID
+        INSTRUMENT_ID not null
         QUANTITY
         NOTIONAL
 

@@ -4,11 +4,9 @@ sidebar_label: 'Condition based rules'
 id: condition-rules
 ---
 
-We have now set up the Evaluator so that our application creates reports daily.
+Now we are going to use the Evaluator again to set up dynamic rules. In this case, an email will be sent if a specified limit has been breached.
 
-Now you are going to use the Evaluator again to set up dynamic rules. In this case, you want to send an email automatically if a specified limit has been breached.
-
-#### Preparation
+### Preparation
 
 First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron rule](#cron-rules-static-events).
 
@@ -30,26 +28,24 @@ POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
 
 Now you are ready to begin setting up your dynamic rule.
 
-#### 1. Set up the dynamic rule
+### Set up the dynamic rule
 
 To set up the dynamic rule, go to the DYNAMIC_RULE table and insert the *DYNAMIC_RULE.csv* file. Run `SendIt -t DYNAMIC_RULE -f DYNAMIC_RULE.csv`
 
-#### 2. Set up the Event Handler message class
+### Set up the Event Handler message class
 
-To define the Event Handler message class, create a Kotlin class called *PositionCancel* in your project folder **server/jvm/alpha-messages/src/main/kotlin/global/genesis/alpha/message/event**, and insert the following code:
+To define the Event Handler message class, create a Kotlin class called *PositionCancel* in your project folder **server/jvm/positions-app-tutorial-messages/src/main/kotlin/global/genesis/positions-app-tutorial/message/event**, and insert the following code:
 
 ```kotlin
-package global.genesis.alpha.message.event
-
 data class PositionCancel(
       val positionId: String,
 )
 ```
 
-#### 3. Update the Event Handler
+### Update the Event Handler
 
 The rule needs to call an Event Handler, which will be called `<PositionCancel>` using the class created in the previous step.
-We have defined the Event Handler in the code block below. Open the file **alpha-eventhandler.kts** and insert the code block:
+We have defined the Event Handler in the code block below. Open the file **positions-app-tutorial-eventhandler.kts** and insert the code block:
 
 ```kotlin
 eventHandler<PositionCancel> {
@@ -74,14 +70,14 @@ eventHandler<PositionCancel> {
 }
 ```
 
-#### 4. Set up the Notify module and start the process
+### Set up the Notify module and start the process
 
-The module GENESIS_NOTIFY does not run by default. To change this, we are adding a customized module to our project. To do that, create a process called *ALPHA_NOTIFY* and add it to the file **alpha-processes.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below.
+The module GENESIS_NOTIFY does not run by default. To change this, we are adding a customized module to our project. To do that, create a process called *ALPHA_NOTIFY* and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** as the code below.
 
 ```xml
 <processes>
     ...
-    <process name="ALPHA_NOTIFY">
+    <process name="POSITIONS_APP_TUTORIAL_NOTIFY">
         <start>true</start>
         <groupId>GENESIS</groupId>
         <options>-Xmx512m -DXSD_VALIDATE=false</options>
@@ -93,23 +89,23 @@ The module GENESIS_NOTIFY does not run by default. To change this, we are adding
     </process>
 </processes>
 ```
-Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below. 
+Add the *POSITIONS_APP_TUTORIAL_EVALUATOR* in the file **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** as the code below. 
 
 ```xml
 <configuration>
     ...
-    <service host="localhost" name="ALPHA_NOTIFY" port="11004"/>
+    <service host="localhost" name="POSITIONS_APP_TUTORIAL_NOTIFY" port="11004"/>
 </configuration>
 ```
 
-Run **assemble** and **deploy-genesisproduct-alpha** tasks to verify that the new process works as expected.
+Run **assemble** and **deploy-genesisproduct-positions-app-tutorial** tasks to verify that the new process works as expected.
 
 Run `mon`.
 You should be able to see the process is present.
 
-#### 5. Set up GENESIS_NOTIFY in the database
+### Set up GENESIS_NOTIFY in the database
 
-##### Insert a gateway route
+#### Insert a gateway route
 
 Create a file GATEWAY.csv as shown below and insert it in the table GATEWAY using the command `SendIt`.
 
@@ -118,7 +114,7 @@ GATEWAY_ID,GATEWAY_TYPE,GATEWAY_VALUE,INCOMING_TOPIC
 "EmailDistribution1","EmailDistribution","{ \"emailDistribution\" : { \"to\" : [ ], \"cc\" : [ ], \"bcc\" : [ ] } }",
 ```
 
-##### Insert NOTIFY_ROUTE
+#### Insert NOTIFY_ROUTE
 
 Create a file NOTIFY_ROUTE.csv as shown below, then insert it in the table NOTIFY_ROUTE using the command `SendIt`.
 
@@ -127,7 +123,7 @@ ENTITY_ID,ENTITY_ID_TYPE,TOPIC_MATCH,GATEWAY_ID
 ,"GATEWAY","PositionAlert","EmailDistribution1" 
 ```
 
-#### 6. Add connection details to the system definition
+### Add connection details to the system definition
 
 Open the **genesis-system-definition.kts** file and add the details of the connection for the SMTP server:
 ```kotlin
@@ -150,27 +146,27 @@ systemDefinition {
 
 Run the *build*, *install-alpha-site-specific* and *deploy* tasks again.
 
-#### 7. Switch on data dumps
+### Switch on data dumps
 
 Data dumps need to be switched on for both EVALUATOR and NOTIFY so we can see some additional data in the logs.
 
 Run the [LogLevel](/managing-applications/operate/on-the-host/helpful-commands/#loglevel-script) command for that:
 
 ```shell
-LogLevel -p ALPHA_EVALUATOR -DATADUMP_ON -l DEBUG
-LogLevel -p ALPHA_NOTIFY -DATADUMP_ON -l DEBUG
+LogLevel -p POSITIONS_APP_TUTORIAL_EVALUATOR -DATADUMP_ON -l DEBUG
+LogLevel -p POSITIONS_APP_TUTORIAL_NOTIFY -DATADUMP_ON -l DEBUG
 ```
 
 And then to see the logs run:
 ```shell
 cd $L
-tail -f ALPHA_EVALUATOR.log
+tail -f POSITIONS_APP_TUTORIAL_EVALUATOR.log
 ```
 :::tip
 $L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Moreover, feel free to use your favorite command to view logs such as tail, less etc.
 :::
 
-#### 8. Trigger the event to test the rule
+### Trigger the event to test the rule
 
 So, let's see if that has worked.
 
