@@ -67,9 +67,9 @@ in combination with _index references_. For comparison:
 | `KClass<E>`                        | The kotlin class reference for E  | `Trade::class` |
 
 
-## Read Operations
+#### Read Operations
 
-### get
+##### get
 
 Get is a simple lookup on the database; it will return a single entity if a match is found, or no records if none is
 found.
@@ -187,7 +187,7 @@ the whole table after the provided record.
 
 ```kotlin
 // we can pass in Trade as a type parameter
-val flow = db.getBulk&lt;Trade>()
+val flow = db.getBulk<Trade>()
 // we can pass in the TRADE object
 val flow = db.getBulk(TRADE)
 // or we can pass in an index reference

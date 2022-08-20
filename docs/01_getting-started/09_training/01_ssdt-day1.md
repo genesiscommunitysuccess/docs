@@ -10,6 +10,8 @@ This day covers:
 - [System definitions​](#system-definitions)
 - [Advanced event handlers](#advanced-event-handlers)
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 ## System definitions​
 
@@ -72,9 +74,9 @@ Local values can be specified in this block. **These values override the global 
 
 ### Items defined
 
-In the system definitions file, there are several items to be used as default values, or even change configurations to adapt the application. 
+In the system definitions file, there are several items to be used as default values or even change configurations to adapt the application. 
 
-For instance, to change the database configuration to any one of the technologies support, you should change the items `DbLayer`, `DbHost`, and possibly `system/hosts`. The code bellow show us how we could do this.
+For instance, to change the database configuration to any one of the [technologies supported]((/database/database-technology/overview/)), you should change the items `DbLayer`, `DbHost`, and possibly `system/hosts`. The code bellow show us how we could do this.
 
 ```kotlin {6,8,13-16}
 package genesis.cfg
@@ -99,161 +101,26 @@ systemDefinition {
 }
 ```
 
-Further information regarding the system definitions and items can be found [here](/creating-applications/configure-runtime/system-definitions/).
+Additionally, it is possible to create a global custom definition to be used like the code bellow.
 
-DELETE BELOW
-
-**MqLayer**: This setting defines the type of Message queue technology. You can choose between `ZeroMQ` and `Aeron` message queues.
-
-**DbLayer**: Default value is set to FDB. If you want to use PostgreSQL, MSSQL or Aerospike, then you need to change this value and then [change the value of the DbHost item](/server-modules/configuring-runtime/setting-the-database-technology/).
-**DbHost**: Contains information about the hostname/JDBC connection string pointing to local database. For example:
-
-
-```kotlin
-item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432”)
-```
-
-See our pages on [database technology](/database/database-technology/overview/) for more information on how to configure a specific database.
-
-**Database username and password encryption**
-You can add an encrypted username and password for the database system.
-Run the command `encryptUserPassWithKey`, which will ask you to supply the plain username, password and Genesis Key. Genesis Key is 32 characters long.
-This will generate encrypted username and password, which can then be added into a system definition file. You can directly add the encrypted values or you can embed these fields into the local system environment variables and refer to them as follows:
-
-```kotlin
-item(name = "DbUsername", value = System.getenv("DBUSERNAME"), encrypted = true)
-item(name = "DbPassword", value = System.getenv("DBPASSWORD"), encrypted = true)
-item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
-```
-
-**DictionarySource**: This setting defines where you want to store the dictionary schema. You can choose between DB dictionary source and FILE dictionary source using this setting. Accepted values `DB` and `FILE`. DB dictionary source is preferred, because if you are running a cluster, all nodes will refer to the same dictionary. FILE dictionary source has the problem of being only available on each node.
-
-**AliasSource**: This setting defines where you want to store dictionary alias schema. The alias schema maps aliases to fields and to tables, and it is updated every time we change the data schema. You can choose between DB alias source and FILE alias source using this setting. Accepted values `DB` and `FILE`. DB alias source is preferred, because if you are running a cluster all nodes will refer to the same alias dictionary. FILE alias source has the problem of being only available on each node.
-
-**MetricsEnabled**: Default value is false. For more information, go to the page on [Metrics](/operations/metrics/metrics/).
-
-**ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
-
-**DbMode**: This setting is only needed if you use the [Aerospike](/database/database-technology/aerospike/) database.
-
-**ResourcePollerTimeout**: This setting controls how often the genesis daemon process keeps the processes and their metadata up to date.
-
-**ReqRepTimeout**: This setting contains the default timeout for the request server resources in the system.
-
-**MetadataChronicleMapAverageKeySizeBytes**, **MetadataChronicleMapAverageValueSizeBytes**, **MetadataChronicleMapEntriesCount**: These are the settings for chronicle map and are related to the way processes store their own metadata resources inside /runtime/proc_metadata
-
-**DaemonServerPort**: This defines the port for daemon process, daemon process is the background process, which collects information about micro-services.
-
-**JVM_OPTIONS**: This defines common JVM options to be applied to all processes defined in the environment.
-
-**DbNamespace**: This item defines different things, depending on the databases in use and is applicable for [FoundationDB](/database/database-technology/foundationdb/) and [Aerospike](/database/database-technology/aerospike/) only.
-
-**ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.
-
-**Location**: This item contains a 2-character value used to generate **standard ID** for a given entity. For example, if a Location item defined as "LO" and entity TRADE has a field called TRADE_ID defined with the sequence "TR",
-then the generated ID will be `000000000001TRLO1` where "LO" represents Location string.
-
-**LogFramework**: Contains name of the logging framework. Supported framework: LOG4J2
-
-**LogFrameworkConfig**: Contains name of the log framework configuration file.
-
-If you want to enable SSL for your process communication, this is done in the [service definition](/server-modules/configuring-runtime/service-definitions/#enable-ssl-for-processes).
-
-### HashiCorp Vault support
-
-:::important
-
-This feature is supported from version 6.0
-
-:::
-
-Services can also load their configuration from HashiCorp vault. 
-This can be done by adding a `vault` tag in the `global`, `system` or `host`
-tags. 
-
-The `vault` tag has three sub tags, `config`, `sslConfig` and `readSecrets`. Of
-these three, `config` and `readSecrets` are required:
-
-```kotlin
-vault {
-  config {  
-    ...
-  }
-
-  sslConfig { 
-    ...
-  }
-
-  readSecrets { 
-    ...
-  }
-}
-```
-
-#### Config 
-
-This part of the configuration tells the service where to read secrets from: 
-
-```kotlin
-config {
-    address("http://localhost:8200")     // Defaults to "VAULT_ADDR" environment variable
-    token("s.NSxyuF4ClXxd4YoSFvKwil0i")  // Defaults to "VAULT_TOKEN" environment variable
-    openTimeout(5)                       // Defaults to "VAULT_OPEN_TIMEOUT" environment variable
-    readTimeout(30)                      // Defaults to "VAULT_READ_TIMEOUT" environment variable 
-}
-```
-
-#### sslConfig
-
-This part of the configuration tells the service how to handle the ssl hand 
-shake with the vault server. For details regarding the ssl config, please see
-[here](https://github.com/BetterCloud/vault-java-driver#ssl-config).
-Note that the `SslConfig` object will be passed as the receiver within 
-the `sslConfig` tag.
-
-#### readSecrets
-
-This part of the configuration tells the service which secrets to load:
-
-```kotlin
-readSecrets {
-  read("secret/path_to_secret")
-}
-```
-
-Currently, a single call to `read` is supported. This takes a single parameter,
-which is the path to the secrets.
-
-Secrets are always provided as `String`
-
-#### Linked properties support
-
-:::important
-
-This feature is supported from version 6.0
-
-:::
-
-When reading secrets from external systems, the keys to these secrets might 
-not map directly to the required properties in Genesis. To help with this, the platform supports the linking of properties. 
-
-The links can be applied as tags at `global`, 
-`system` or `host` level. 
-
-To create a link, use `link`, as per below, where we link `DbHost` to `secret.db.host`:
-
-```kotlin
+```kotlin {3}
 systemDefinition {
-  global {
-    link(name = "DbHost", source = "secret.db.host")
-  }
-  ...
+    global {
+        item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
+    }
 }
 ```
 
-Multiple levels of linking are supported. However, `genesisInstall` will fail if a circular link is detected, or if the `source` of a link is not found. 
+The custom definition value will be available globally and can be accessed like this.
 
-### Exercise 1.1 System Definitions
+```kotlin
+val permissionsField = SysDef.ADMIN_PERMISSION_ENTITY_FIELD
+```
+
+Further information regarding the system definitions such as items defined, HashiCorp Vault, and more can be found [here](/secure/creating-applications/configure-runtime/system-definitions/).
+
+
+#### Exercise 1.1 System Definitions
 <!--
 Answer is pretty much here: https://www.notion.so/genesisglobal/What-makes-Genesis-low-code-ccfb29a874644b8da799a8f5469efb46#6d46b3a15ee94bf8940fa54a72624766
 -->
@@ -262,10 +129,10 @@ Answer is pretty much here: https://www.notion.so/genesisglobal/What-makes-Genes
 20 mins
 :::
 
-Let´s start the hands-on doing the first exercise. We are going to change the database configurations to use any [technology supported](/database/database-technology/overview/).
+Let´s start the hands-on doing the first exercise. We are going create a global custom definition to set the nullability for Trade table fields. Create a new item in the system definition and use it in the fields definition file.
 
 :::tip changing genesis-system-definition configurations 
-To do this exercise, clone the Developer Training [repository](https://github.com/genesiscommunitysuccess/devtraining-gama), go to the file **genesis-system-definition.kts** and change the global items `DbLayer` and `DbHost`. If you are running localhost, make sure you changed the system host accordingly.
+To do this exercise, clone the Developer Training [repository](https://github.com/genesiscommunitysuccess/devtraining-gama), go to the file **genesis-system-definition.kts** and do the changes. Then, go to the fields definition file and set the *nullable* using SysDef. 
 
 After the changes don't forget to run *build*, *install-site-specific* and *deploy* tasks.
 :::
@@ -281,35 +148,112 @@ All the business logic for applications built on the platform is structured arou
 
 As a rough guide, many of the tables you have created need **Insert**, **Modify** and **Delete** events, so that you can specify the processing that these events require. 
 
-The vast majority of applications include business workflow.
-
-That could be a simple linear workflow, such as a deal being enriched and approved, or a margin call payment – or it could be a more complex set of steps.
-
-Most applications built on the platform include the typical financial product **business entities**, such as orders, trades, bids, allocations and positions. These business entities have a lifecycle where they go through various **states**. The transition from one state to another is an event that needs to be handled. The paths through those states are workflows, and to assist the workflows, we use state machines.
-
-Event Handlers are conventionally defined in the file _application-name_**-eventhandler.kts**. 
-
-So, if your application is called **positions**, then the file would conventionally be named **positions-eventhandler.kts**.
-
-You can write custom Event Handlers using our [APIs](/database/event-handler-api/event-handler-api/). These can be implemented using Kotlin or Java.
-
-:::note
-We recommend using **Kotlin** to implement Event Handlers.
-
-- **Java** Event Handlers are implemented using [**RxJava3**](#rx3) [**Sync**](#sync) Event Handlers only. 
-- Async Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
-:::
+The vast majority of applications include business workflow. Event Handlers are conventionally defined in the file _application-name_**-eventhandler.kts**. 
 
 In the [Developer Training](#) we defined the application Event Handler in a [Kotlin script file](/tutorials/training-resources/training-content-day1/#event-handler), as well as basic things like [enabling the application to write to the database](/tutorials/training-resources/training-content-day2/#exercise-22-extending-the-application).
 
-However, there are more we can explore such as [Types](#types), [Database API](#database-api), [Exception handling](#exception-handling), and [Custom reply message type](#custom-reply-message-type) described in the next sections.
+However, there are more we can explore such as [Database API](#database-api), [Exception handling](#exception-handling), and [Custom reply message type](#custom-reply-message-type) described in the next sections.
 
 ### Database API
 
-https://docs.genesis.global/secure/reference/developer/api/database/how-to/interface/entity-db
+The [entityDb](/database/database-interface/entity-db/) enables you to interact with the database layer; you can use any generated type-safe entities for tables and views. The interface supports the same operations as the generated repositories, but will accept any entity. It supports read operations for views and tables and write operations for tables only.
 
-Read Operations
-Write Operations
+The entityDb differs from the generated repositories in that it can handle any table and most view entities. The entityDb is available in the kotlin Event Handler. 
+
+When referring to indices in the database operations, the database accepts _index classes_ or _entity class_ in combination with _index references_. Further details and conventions can be found [here](/database/database-interface/entity-db/#type-convention).
+
+EntityDb offers Read and Write Operations. Using [Read Operations](/database/database-interface/entity-db/#read-operations) it is possible to get a simple lookup on the database through the method [get](/database/database-interface/entity-db/#get), or even create a [Flow](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/) or [Flowable](http://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Flowable.html) of the whole table as the code below.
+
+#### Syntax
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+// we can pass in Trade as a type parameter
+val flow = db.getBulk<Trade>()
+// we can pass in the TRADE object
+val flow = db.getBulk(TRADE)
+// or we can pass in an index reference
+val flow = db.getBulk(Trade.ByTypeId)
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+// we can pass in Trade as a type parameter
+final var flowable = db.getBulk(Trade.class);
+// we can pass in the TRADE object
+final var flowable = db.getBulk(TRADE.INSTACE);
+// or we can pass in an index reference
+final var flowable = db.getBulk(Trade.ById.Companion);
+```
+</TabItem>
+</Tabs>
+
+On the other hand, [Write Operations](/database/database-interface/entity-db/#write-operations) have versions that take a single entity and versions that take multiple entries. The return values for these operations are type-safe (see details below), provided all entries are of the same type. There are [Default and generated values](/database/database-interface/entity-db/#default-and-generated-values), as well as CRUD methods and variations: [Insert](/database/database-interface/entity-db/#insert), [Modify](/database/database-interface/entity-db/#modify), [Upsert](/database/database-interface/entity-db/#upsert), [Delete](/database/database-interface/entity-db/#delete), [Update](/database/database-interface/entity-db/#update) as the code below. 
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+db.updateBy(Trade.byId("xxxxx")) {
+    price = 15.0
+}
+
+db.updateByRange(Trade.byOrderId("xxxx")) {
+    orderStatus = OrderStatus.CANCELLED
+}
+
+db.updateByRange(Trade.byOrderId("xxxx"), Trade.byOrderId("yyyy") {
+    orderStatus = OrderStatus.CANCELLED
+}
+
+db.updateAll<Trade> {
+    orderStatus = OrderStatus.CANCELLED
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+db.updateBy(Trade.byId("xxx"), trade -> {
+    trade.setPrice(15.0);
+}).blockingGet();
+
+db.updateByRange(Trade.byOrderId("xxxx"), trade -> {
+    trade.setTradeType(OrderStatus.CANCELLED);
+}).blockingGet();
+
+db.updateByRange(Trade.byOrderId("xxxx"), Trade.byOrderId("yyyy"), trade -> {
+    trade.setTradeType(OrderStatus.CANCELLED);
+}).blockingGet();
+
+db.updateAll(Trade.class, trade -> {
+    trade.setTradeType(OrderStatus.CANCELLED);
+}).blockingGet();
+```
+
+</TabItem>
+</Tabs>
+
+If the underlying database supports transactions, then the entityDb provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not supported within transactions. Currently, transactions are supported on **FoundationDb** and **Postgresql**. Using transaction on **Aerospike** will result in a failure. Further detaisl regarding transactions can be found [here](/database/database-interface/entity-db/#transactions).
+
+Using entityDb it is also possible to subscribe operations starting a database listener that receives updates to tables or views. When subscribing to view updates, only updates to the root table will be published. Further details regarding subscribe operations can be found [here](/database/database-interface/entity-db/#subscribe-operations).
+
+#### Exercise 1.2 entityDb ReadOperation getBulk
+:::info ESTIMATED TIME
+40 mins
+:::
+
+Create a new event called **TRADE_STANDARDIZATION** to perform a standardization in the Trade table, setting all negative *Trade.Quantity* records to zero. This method can use the ReadOperation [getBulk](/database/database-interface/entity-db/#getbulk) method to list all Trades and then use the [filter](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/filter.html) method Kotlin Flow class offers.
+
+:::tip
+After selecting the Trade records you can use the *forEach* method to set the quantities to zero, and then use entityDb method [modifyAll](/database/database-interface/entity-db/#modify) to update everything.
+:::
+
 <!-- 
 C:\Users\DanielBarros\Projects\clarity-server\clarity-script-config\src\main\resources\scripts\clarity-resetmanager-eventhandler.kts
 -->
@@ -336,7 +280,7 @@ eventHandler {
 }
 ```
 
-#### Exercise 1.2 Exception handling
+#### Exercise 1.3 Exception handling
 :::info ESTIMATED TIME
 30 mins
 :::
@@ -399,7 +343,7 @@ sealed class CustomTradeEventReply : Outbound() {
 
 The `onException` block can capture any exceptions thrown by the `onValidate` and `onCommit` blocks and returns the expected reply message type (as shown in the last example). This function is particularly useful if you are using a custom message type; by default, Event Handlers will attempt to translate exceptions automatically to an **EventNack** message, which might cause compatibility problems if you are using custom replies.
 
-#### Exercise 1.3 Event Handler Custom Message
+#### Exercise 1.4 Event Handler Custom Message
 :::info ESTIMATED TIME
 30 mins
 :::
