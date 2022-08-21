@@ -267,7 +267,7 @@ After:
 }
 ```
 
-#### Exercise 2.2 Changing TRADE_VIEW JOINs types
+#### Exercise 2.2 Changing TRADE_VIEW JOINs
 
 :::info ESTIMATED TIME
 15 mins
