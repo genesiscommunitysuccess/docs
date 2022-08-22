@@ -68,6 +68,10 @@ You should now see the updated application title:
 
 ![](/img/gpl-seed-title.png)
 
+And also the "Hello World" text:
+
+![](/img/gpl-seed-hello-world.png)
+
 ## Recap
 
 <span style={{color:'red'}}>Are we going to have a "The User Interface" Recap?</span>
