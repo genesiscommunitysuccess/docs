@@ -28,9 +28,9 @@ By default, you see the Dashboard when you log in. This has separate graphics sh
 ![](/img/con-dashboard.png)
 
 At the top of the screen is a menu that enables you to move between different displays.
-* **[Dashboard](/managing-applications/operate/genesis-console/intro/#dashboard)** (This is the display you see when you log in.)
-* **[Microservices](/managing-applications/operate/genesis-console/microservices/)**
-* **[Data](/managing-applications/operate/genesis-console/data/)**
-* **[Resources](/managing-applications/operate/genesis-console/resources/)**
-* **[Packages](/managing-applications/operate/genesis-console/packages/) **
-* **[Messages](/managing-applications/operate/genesis-console/messages/)**
+* **[Dashboard](/operations/console/introduction/#dashboard)** (This is the display you see when you log in.)
+* **[Microservices](/operations/console/microservices)**
+* **[Data](/operations/console/data/)**
+* **[Resources](/operations/console/resources/)**
+* **[Packages](/operations/console/packages/)**
+* **[Messages](/operations/console/messages/)**
