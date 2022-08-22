@@ -131,13 +131,8 @@ CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,ME
 "0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 
-<<<<<<< HEAD
 ### Change the log level to verify the execution of the events
-To do this, run the `LogLevel` command:
-=======
-#### 5.Change the log level to verify the execution of the events
 To do this, run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command:
->>>>>>> uat
 
 ```shell
 LogLevel -p GENESIS_EVALUATOR -DATADUMP_ON -l DEBUG
