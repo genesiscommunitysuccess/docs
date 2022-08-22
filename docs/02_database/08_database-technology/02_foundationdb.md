@@ -18,7 +18,7 @@ Therefore, for applications using small table records, FDB2 will be more efficie
 System definitions[​](/database/database-technology/foundationdb/#system-definitionsdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-For FDB and FDB2 layers, there are additional system definition items that you can apply in the [genesis-system-definitions.kts](/database/database-technology/postgresql/#system-definitions) file:
+For FDB and FDB2 layers, there are additional system definition items that you can apply in the [genesis-system-definitions.kts](/database/database-technology/sql/#system-definitions) file:
 
 | Setting | Description |
 | --- | --- |
