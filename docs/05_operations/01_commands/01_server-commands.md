@@ -6,6 +6,51 @@ id: server-commands
 
 Genesis has numerous built-in commands that have their own individual functions.
 This page goes through them and details the function, parameters and use cases of those commands. 
+
+## Starting and stopping the server
+
+The commands for starting and stopping the application or specific processes are straightforward.
+
+### startServer
+
+This starts all the processes in the application. If any processes are running already, they are not affected.
+The command also compresses and moves all log files in `~/run/runtime/logs/` and `~/run/runtime/logs/currentRun` into `~/run/runtime/logs/archive/<datetime startServer was run>`
+
+### killServer
+
+This stops all the processes in the application, except for the GENESIS_CLUSTER process.
+
+You can use the following flags.
+**--all**
+Including this flag also stops the GENESIS_CLUSTER process.
+**--force**
+Including this flag monitors the progress of the kill on each process. If a process is still running after 10 seconds, it runs a SIGKILL to ensure the process stops. Unsaved data is lost.
+
+### startProcess
+
+`startServer [server_name]`  starts the named process.
+It also compresses and moves all log files in `~/run/runtime/logs/` into `~/run/runtime/logs/currentRun`
+
+### killProcess
+
+`killServer [server_name]`  stops the named process.
+**--force**
+Including this flag monitors the progress of the kill on each process. If a process is still running after 10 seconds, it runs a **SIGKILL** to ensure the process stops. Unsaved data is lost.
+
+### startGroup
+
+Groups of processes can be defined in the process definition files, where a set of processes is given a `<group>` tag. Typically, all the processes in a particular module are given the same `<group>` tag.
+
+`startGroup [group_ID]` starts all processes in the named group.
+
+It also compresses and moves all log files in `~/run/runtime/logs/` into `~/run/runtime/logs/currentRun`.
+
+## killGroup
+
+`killGroup [group_ID]`
+This stops the processes in the named group.
+**--force** If you include this flag, the command monitors the progress of the kill on each process. If a process is still running after 10 seconds, it runs a **SIGKILL** to ensure the process stops. Unsaved data is lost.
+
 ## RenameFields script
 This script is used to rename a field name in a database without changing the dictionary or config files.
 
