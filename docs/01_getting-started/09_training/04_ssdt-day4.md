@@ -375,7 +375,9 @@ public class FileProcessor implements WebEndpoint {
 </Tabs>
 
 #### Exercise 4.2 ???
-
+<!--
+https://docs.genesis.global/secure/creating-applications/defining-your-application/integrations/custom-endpoints/ce-advanced-technical-details/#attachmentdownloadendpoint
+-->
 :::info ESTIMATED TIME
 ?? mins
 :::
