@@ -4,7 +4,7 @@ sidebar_label: 'Aerospike'
 id: aerospike
 ---
 
-Genesis supports [Aerospike](https://aerospike.com/). To connect to Aerospike, use the [system definition items](use the [system definition items](/server-modules/configuring-runtime/system-definitions/) listed below.) listed below.
+Genesis supports [Aerospike](https://aerospike.com/). To connect to Aerospike, use the [system definition items](/server-modules/configuring-runtime/system-definitions/) listed below.
 
 | Setting | Description |
 | --- | --- |
