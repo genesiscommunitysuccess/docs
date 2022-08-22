@@ -4,7 +4,7 @@ sidebar_label: 'FoundationDb'
 id: foundationdb
 ---
 
-Genesis provides two databases solutions built on FoundationDB.
+Genesis provides two database solutions built on FoundationDB.
 
 FDB and FDB2 are equivalent in terms of configuration, but they store data using a different data model.
 
@@ -22,7 +22,7 @@ For FDB and FDB2 layers, there are additional system definition items that you c
 
 | Setting | Description |
 | --- | --- |
-| `FdbClusterFile` | A path to an fdb.cluster file. If this item is not defined, the default fdb.cluster file will be used. This file is located in /*etc*/foundationdb/fdb.cluster. |
+| `FdbClusterFile` | A path to an fdb.cluster file. If this item is not defined, the default fdb.cluster file will be used. This file is located in /*etc*/foundationdb/fdb.cluster |
 | `DbNamespace` | A name for the internal FDB directory to use. |
 | `DbThreadsMin` | The minimum number of threads to be created in the FDB layer thread pool. Defaults to the minimum of 4 or the number of processing units |
 | `DbThreadsMax` | The maximum number of threads to be created in the FDB layer thread pool. Defaults to the maximum of 4 or the number of processing units multiplied by 2 |
