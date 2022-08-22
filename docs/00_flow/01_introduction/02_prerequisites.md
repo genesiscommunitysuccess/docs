@@ -20,3 +20,23 @@ Additionally: <span style={{color:'red'}}>Should this be in our main prereqs?</s
 genesisArtifactoryUser=<your-artifactory-user>
 genesisArtifactoryPassword=<your-artifactory-password>
 ```
+## GenX CLI
+####
+GenX is a CLI tool that enables you to pull seed projects that adhere to best practices for development on the Genesis low-code platform.
+### Expected Result
+By the end of this step, you should have:
+- GenX CLI installed and available on any terminal
+
+This will start you on your journey to building application functionality.
+
+
+### Installation
+Let's start by installing GenX using the following command in your terminal:
+:::note
+Our Flow seed is currently only available on a particular version, therefore we need to uninstall any previous version and specify the one we need.
+:::
+
+```shell
+npm uninstall -g @genesislcap/foundation-cli
+npm install -g @genesislcap/foundation-cli@2.0.1-alpha-4ce6685.0+4ce6685
+```
