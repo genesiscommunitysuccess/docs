@@ -9,7 +9,7 @@ id: customize-look-and-feel
 You might want to apply specific styles to some columns. 
 We start by creating a stylesheet document that will have some style definitions for the grid.
 
-Create a stylesheet file called trades.styles.ts and provide following code
+Create a stylesheet file called trades.styles.ts and provide the following code:
 
 ```typescript
 import {css, ElementStyles} from '@microsoft/fast-element';
@@ -21,13 +21,13 @@ export const tradesGridStyles: ElementStyles = css`
 `
 ```
 
-Configure your column to have specific class name [column config](https://ag-grid.com/javascript-data-grid/cell-styles/#cell-class)
+Configure your column to have the specific class name [column config](https://ag-grid.com/javascript-data-grid/cell-styles/#cell-class):
 
 ```typescript
  {field: 'CURRENCY', cellClass: 'currency-column'},
 ```
 
-In home.template.ts in the grid tag include utility that will inject your stylesheet to the component.
+In home.template.ts, in the grid tag, include utility that will inject your stylesheet to the component:
 
 ```html
 import {tradesGridStyles} from "./trades-grid.styles";
@@ -40,13 +40,13 @@ import {tradesGridStyles} from "./trades-grid.styles";
 `
 ```
 
-If you need to provide different class names under specific conditions you can provide function to cellClass column config like on the example below
+If you need to provide different class names under specific conditions you can provide function to the cellClass column config as shown in the example below:
 
 ```typescript
  {field: 'SIDE', cellClass: (params) => params.value === 'BUY' ? : 'buy-side', 'sell-side'},
 ```
 
-Remember to add new styles in your stylesheet file
+Remember to add new styles in your stylesheet file.
 
 ```diff
 import {css, ElementStyles} from '@microsoft/fast-element';
@@ -69,6 +69,6 @@ export const tradesGridStyles: ElementStyles = css`
 
 ## Styling custom component
 
-https://www.fast.design/docs/fast-element/leveraging-css/#styles-and-the-element-lifecycle
+Further information about styles and the element lifecycle can be located [here](https://www.fast.design/docs/fast-element/leveraging-css/#styles-and-the-element-lifecycle).
 
 ## Styling user management
