@@ -14,8 +14,8 @@ A Data Server file consists of a number of queries that handle each event in the
 
 The initial run of the query serves all the data that is defined by the table or view. From then on, it automatically monitors the user who has requested the data. Whenever a value in the underlying table or view changes, that change is sent to the user. In this way, the user’s data is maintained up to date in real time, without the unnecessary burden of sending the whole data set each time there is a change.
 
-Data Servers are conventionally defined in the file application-name-dataserver.kts.
+Data Servers are conventionally defined in the file _application-name_**-dataserver.kts**.
 
-So, if your application is called positions, then the file would conventionally be named positions-dataserver.kts.
+So, if your application is called **positions**, then the file would conventionally be named **positions-dataserver.kts**.
 
 Note, you will also need to declare your Data Server within the [runtime configuration](/server-modules/data-server/configuring-runtime/).
