@@ -24,7 +24,7 @@ Once you know the basics, you can explore the details of how you are going to in
  
 - [Helper Classes](/database/helper-classes/helper-classes/) gives details of classes such as Subscription, Write Result and Modify Details.
 
-- Find out about Genesis [Asynch and RxJava APIs](/database/types-of-api/async/).
+- Find out about Genesis [Async and RxJava APIs](/database/types-of-api/async/).
 
 - Explore specific APIs, such as the [Event Handler API](/database/event-handler-api/event-handler-api/) and [Authorisation API](/database/authorisation-api/authorisation-api/)
 
