@@ -12,14 +12,14 @@ First, check that you have the Evaluator running. If it is not, check the proced
 
 You need to create two csv files for this exercise.
 
-The first is the file with your rule in the correct format, similar to the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
+The first is the file with your rule in the correct format, similar to the static cron rule in the previous exercise. Call the file **DYNAMIC_RULE.csv**.
 
 ```csv
 NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
 MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),JaneDee,ALPHA_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
 ```
 
-The second is a csv file that enables you to test the rule. Create a file called POSITION.csv with the following data:
+The second is a csv file that enables you to test the rule. Create a file called **POSITION.csv** with the following data:
 
 ```csv
 POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
@@ -30,7 +30,7 @@ Now you are ready to begin setting up your dynamic rule.
 
 ### Set up the dynamic rule
 
-To set up the dynamic rule, go to the DYNAMIC_RULE table and insert the **DYNAMIC_RULE.csv** file. Run `SendIt -t DYNAMIC_RULE -f DYNAMIC_RULE.csv`
+To set up the dynamic rule, go to the `DYNAMIC_RULE` table and insert the **DYNAMIC_RULE.csv** file. Run `SendIt -t DYNAMIC_RULE -f DYNAMIC_RULE.csv`
 
 ### Set up the Event Handler message class
 
@@ -144,13 +144,13 @@ systemDefinition {
 }
 ```
 
-Run the *build*, *install-alpha-site-specific* and *deploy* tasks again.
+Run the `build`, `install-positions-app-tutorial-site-specific` and `deploy` tasks again.
 
 ### Switch on data dumps
 
 Data dumps need to be switched on for both EVALUATOR and NOTIFY so we can see some additional data in the logs.
 
-Run the [LogLevel](/managing-applications/operate/on-the-host/helpful-commands/#loglevel-script) command for that:
+Run the `LogLevel` command for that:
 
 ```shell
 LogLevel -p POSITIONS_APP_TUTORIAL_EVALUATOR -DATADUMP_ON -l DEBUG

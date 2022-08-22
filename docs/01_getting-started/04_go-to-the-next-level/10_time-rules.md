@@ -4,7 +4,7 @@ sidebar_label: 'Time based rules'
 id: time-rules
 ---
 
-It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes the Genesis low-code platform provides a feature called the [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect Event Handlers to two different kinds of event: dynamic and static (cron rules): 
+It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes the Genesis low-code platform provides a feature called the [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server-modules/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
 
 - __Cron Rules__  are scheduling rules; these are static events, defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
 - __Dynamic Rules__, also known as dynamic events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
@@ -45,7 +45,7 @@ To start, create a process called *GENESIS_EVALUATOR* and add it to the file **p
     ...
     <process name="POSITIONS_APP_TUTORIAL_EVALUATOR">
         <start>true</start>
-        <groupId>ALPHA</groupId>
+        <groupId>POSITIONS_APP_TUTORIAL</groupId>
         <options>-Xmx512m -DXSD_VALIDATE=false</options>
         <module>genesis-evaluator</module>
         <primaryOnly>true</primaryOnly>
@@ -132,7 +132,7 @@ CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,ME
 ```
 
 ### Change the log level to verify the execution of the events
-To do this, run the LogLevel command:
+To do this, run the `LogLevel` command:
 
 ```shell
 LogLevel -p GENESIS_EVALUATOR -DATADUMP_ON -l DEBUG
@@ -144,8 +144,8 @@ cd $L
 tail -f GENESIS_EVALUATOR.log
 ```
 :::info What is $L?
-$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis low-code platform. Feel free to use your favorite command to view logs such as tail, less etc.
+$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis low-code platform. Feel free to use your favourite command to view logs such as tail, less etc.
 :::
 
 ### Conclusion
-This concludes generating reports for the positions application. In the next section you will see how to trigger based on a condition in the database
+This concludes generating reports for the positions application. In the next section you will see how to trigger based on a condition in the database.

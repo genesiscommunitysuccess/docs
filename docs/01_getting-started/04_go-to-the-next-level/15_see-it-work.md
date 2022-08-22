@@ -269,9 +269,6 @@ For example, to log in using Postman:
 }
 ```
 5. Click to view the header, then insert SOURCE_REF in the header. For this field, you can use any string that identifies you (in effect). In the example below, we have set SOURCE_REF to *BAUDOIN1* (for no particular reason).
-&nbsp
-&nbsp
-
 
 6. When you have done this, click on the **Send** button.
 
@@ -328,7 +325,7 @@ The url consists of:
 - if necessary, some extra routing; in this case **gwf** uses a proxy to access the server
 - the name of the request server
 
-Set the body to **JSON**. There is no need for any information in the body. Simply insert a pair of curly brackets **{}**. 
+Set the body to **JSON**. There is no need for any information in the body. Simply insert a pair of curly brackets `{}`. 
 
 In the header, you need to supply:
 

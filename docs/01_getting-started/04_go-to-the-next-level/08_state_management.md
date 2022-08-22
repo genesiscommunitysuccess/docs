@@ -37,7 +37,7 @@ If the `TRADE_STATUS` is missing, run **genesis-generated-fields** to generate t
 
 Add a `main/kotlin` folder in the Event Handler module *positions-app-tutorial-eventhandler* and create a state machine class called `TradeStateMachine` inside **positions-app-tutorial-eventhandler/src/main/kotlin/global/genesis**.
 
-Add a state machine definition and assign a field in the **onCommit** block:
+Add a state machine definition and assign a field in the `onCommit` block:
 
 ```kotlin
 package global.genesis
@@ -107,7 +107,9 @@ sealed class TradeEffect {
 }
 ```
 
-### Add the module as a dependency to the *build.gradle.kts* inside **positions-app-tutorial-script-config** module. 
+### Add dependency on positions-app-tutorial-eventhandler
+
+Add the **positions-app-tutorial-eventhandler** module as a dependency to the **build.gradle.kts** inside **positions-app-tutorial-script-config** module. 
 
 ```
 ...
@@ -162,7 +164,9 @@ TradeCancelled:
 data class TradeCancelled(val tradeId: String)
 ```
 
-### Add the messages module as a dependency to the *build.gradle.kts* inside the **positions-app-tutorial-script-config** module. 
+### Add the messages module as a dependency to the positions-app-tutorial-script-config module. 
+
+Add the messages module as a dependency to the **build.gradle.kts** inside the **positions-app-tutorial-script-config** module. 
 
 ```
 ...

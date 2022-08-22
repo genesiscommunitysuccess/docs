@@ -16,7 +16,7 @@ derivedField("CONSIDERATION", DOUBLE) {
 }
 ```
 
-Add this `derivedField` to your view now. The final view should be like this.
+Add this `derivedField` to your view now. The final view should be like this:
 
 ```kotlin
 views {
@@ -50,4 +50,4 @@ views {
 ```
 
 ### Conclusion
-We just added a derived field. If you feel eager to see the changes, work feel free to head to [See it work](/getting-started/go-to-the-next-level/see-it-work)  and give it a try.
+We just added a derived field. If you feel eager to see the changes, feel free to head to [See it work](/getting-started/go-to-the-next-level/see-it-work) and give it a try.

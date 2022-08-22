@@ -112,7 +112,7 @@ Now you must update the **positions-app-tutorial-eventhandler.kts** in order to 
     }
 ```
 
-Run the **dao**, **build** and **deploy** tasks.
+Run the `dao`, `build` and `deploy` tasks.
 
 ### Conclusion
 With this, any changes made to `TRADE` are tracked to `TRADE_AUDIT`. To try it out, insert a new `TRADE` and see what's stored in the `TRADE_AUDIT` table.
