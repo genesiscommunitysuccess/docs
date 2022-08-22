@@ -24,7 +24,7 @@ Event Handlers are conventionally defined in the file _application-name_**-event
 
 So, if your application is called **positions**, then the file would conventionally be named **positions-eventhandler.kts**.
 
-You can write custom Event Handlers using our [APIs](/database/event-handler-api/event-handler-api/). These can be implemented using Kotlin or Java.
+You can write custom Event Handlers using our [APIs](/database/api-reference/event-handler-api/). These can be implemented using Kotlin or Java.
 
 :::note
 

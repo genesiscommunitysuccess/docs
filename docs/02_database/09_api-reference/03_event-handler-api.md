@@ -64,12 +64,12 @@ Each custom Event Handler must define an input message type `I` and an output me
 Inject objects[​](https://docs.genesis.global/secure/reference/developer/api/event-handler-api/#inject-objects "Direct link to heading")
 ----------------------------------------------------------------------------------------------------------------------------------------
 
-Use [@Inject](/database/dependency-injection/dependency-injection/) to provide instances for any objects needed as part of the dependency injection stage
+Use [@Inject](/database/api-reference/dependency-injection/) to provide instances for any objects needed as part of the dependency injection stage
 
-Async[​](/database/event-handler-api/event-handler-api/#asyncdirect-link-to-heading)
+Async[​](/database/api-reference/event-handler-api/#asyncdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------
 
-### AsyncEventHandler[​](/database/event-handler-api/event-handler-api/#asynceventhandlerdirect-link-to-heading)
+### AsyncEventHandler[​](/database/api-reference/event-handler-api/#asynceventhandlerdirect-link-to-heading)
 
 This is the most basic definition of an Async Event Handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface, which is defined as: `interface AsyncEventHandler<I : Any, O : Outbound> : AsyncEventWorkflowProcessor<I, O>, EventHandler`
 
@@ -170,11 +170,11 @@ import global.genesis.message.core.event.EventReply
 
 If the `validate` flag is received as `true`, only the `onValidate` code block will be executed. If the `validate` flag is received as `false`, both the `onValidate` and `onCommit` blocks will be executed.
 
-### AsyncContextValidatingEventHandler[​](/database/event-handler-api/event-handler-api/#asyncvalidatingeventhandlerdirect-link-to-heading)
+### AsyncContextValidatingEventHandler[​](/database/api-reference/event-handler-api/#asyncvalidatingeventhandlerdirect-link-to-heading)
 
 In some cases, you might want to carry information from the `onValidate` code block to the `onCommit` code block for efficiency purposes. (For example, if several database look-ups happen in `onValidate` and you want to reuse that information.) Using the `AsyncContextValidatingEventHandler` interface, you can provide this context information from the validation stage to the commit stage. See the interface below: `interface AsyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : AsyncEventHandler<I, O>`
 
-### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading)
+### Implementation[​](/database/api-reference/event-handler-api/#implementationdirect-link-to-heading)
 
 As with the previous example, when using this interface, you do not need to override the `process` method. The different methods for implementing this are described below:
 
@@ -218,19 +218,19 @@ import global.genesis.message.core.event.ValidationResult
 }
 ```
 
-Rx3[​](database/event-handler-api/event-handler-api/#rx3direct-link-to-heading)
+Rx3[​](database/api-reference/event-handler-api/#rx3direct-link-to-heading)
 ------------------------------------------------------------------------------------------------------------------
 
-The mechanism explained in [Async](/database/event-handler-api/event-handler-api/#async) can be recycled and reapplied in Rx3 Event Handlers.
+The mechanism explained in [Async](/database/api-reference/event-handler-api/#async) can be recycled and reapplied in Rx3 Event Handlers.
 
-Rx3EventHandler[​](/database/event-handler-api/event-handler-api/#rx3eventhandlerdirect-link-to-heading)
+Rx3EventHandler[​](/database/api-reference/event-handler-api/#rx3eventhandlerdirect-link-to-heading)
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-In a similar fashion to `AsyncEventHandler`, there is an Rx3 implementation flavour. It works in a very similar way to [`AsyncEventHandler`](/database/event-handler-api/event-handler-api/#asynceventhandler), but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
+In a similar fashion to `AsyncEventHandler`, there is an Rx3 implementation flavour. It works in a very similar way to [`AsyncEventHandler`](/database/api-reference/event-handler-api/#asynceventhandler), but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
 
 See the interface definition below: `interface Rx3EventHandler<I : Any, O : Outbound> : Rx3EventWorkflowProcessor<I, O>, EventHandler`
 
-### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading-2)
+### Implementation[​](/database/api-reference/event-handler-api/#implementationdirect-link-to-heading-2)
 
 The mandatory method for implementing this is:
 
@@ -238,7 +238,7 @@ The mandatory method for implementing this is:
 | --- | --- |
 | process | `fun process(message: Event<I>) : Single<O>` |
 
-### Helper methods[​](/database/event-handler-api/event-handler-api/#helper-methodsdirect-link-to-heading)
+### Helper methods[​](/database/api-reference/event-handler-api/#helper-methodsdirect-link-to-heading)
 
 | Name | Signature |
 | --- | --- |
@@ -268,13 +268,13 @@ class TestCompanyHandlerRx3 : Rx3EventHandler<Company, EventReply> {
 }
 ```
 
-### Rx3ValidatingEventHandler[​](/database/event-handler-api/event-handler-api/#rx3validatingeventhandlerdirect-link-to-heading)
+### Rx3ValidatingEventHandler[​](/database/api-reference/event-handler-api/#rx3validatingeventhandlerdirect-link-to-heading)
 
-The same applies to an Rx3ValidatingEventHandler. It is similar to [AsyncValidatingEventHandler](/database/event-handler-api/event-handler-api/#asyncvalidatingeventhandler) in every way, but the return type is still `Single<O>`.
+The same applies to an Rx3ValidatingEventHandler. It is similar to [AsyncValidatingEventHandler](/database/api-reference/event-handler-api/#asyncvalidatingeventhandler) in every way, but the return type is still `Single<O>`.
 
 `interface Rx3ValidatingEventHandler<I : Any, O : Outbound> : Rx3EventHandler<I, O>`
 
-### Implementation[​](database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading-3)
+### Implementation[​](database/api-reference/event-handler-api/#implementationdirect-link-to-heading-3)
 
 | Name | Signature |
 | --- | --- |
@@ -310,20 +310,20 @@ class TestCompanyHandlerRx3 : Rx3ValidatingEventHandler<Company, EventReply> {
 }
 ```
 
-### Rx3ContextValidatingEventHandler[​](/database/event-handler-api/event-handler-api/#rx3contextvalidatingeventhandlerdirect-link-to-heading)
+### Rx3ContextValidatingEventHandler[​](/database/api-reference/event-handler-api/#rx3contextvalidatingeventhandlerdirect-link-to-heading)
 
-And the same goes for `Rx3ContextValidatingEventHandler` in relation to [AsyncContextValidatingEventHandler](/database/event-handler-api/event-handler-api/#asynccontextvalidatingeventhandler).
+And the same goes for `Rx3ContextValidatingEventHandler` in relation to [AsyncContextValidatingEventHandler](/database/api-reference/event-handler-api/#asynccontextvalidatingeventhandler).
 
 `interface Rx3ContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : Rx3EventHandler<I, O>`
 
-### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading-2)
+### Implementation[​](/database/api-reference/event-handler-api/#implementationdirect-link-to-heading-2)
 
 | Name | Signature |
 | --- | --- |
 | onValidate | `fun onValidate(message: Event<I>): Single<ValidationResult<O, C>>` |
 | onCommit | `fun onCommit(message: Event<I>, context: C?): Single<O>` |
 
-### Helper methods[​](database/event-handler-api/event-handler-api/#helper-methodsdirect-link-to-heading)
+### Helper methods[​](database/api-reference/event-handler-api/#helper-methodsdirect-link-to-heading)
 
 | Name | Signature |
 | --- | --- |
@@ -364,22 +364,22 @@ class TestCompanyHandlerRx3 : Rx3ContextValidatingEventHandler<Company, EventRep
 }
 ```
 
-Sync[​](/database/event-handler-api/event-handler-api/#syncdirect-link-to-heading)
+Sync[​](/database/api-reference/event-handler-api/#syncdirect-link-to-heading)
 --------------------------------------------------------------------------------------------------------------------
 
-Sync works similarly to [Async](/database/event-handler-api/event-handler-api/#async) and [Rx3](/database/event-handler-api/event-handler-api/#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
+Sync works similarly to [Async](/database/api-reference/event-handler-api/#async) and [Rx3](/database/api-reference/event-handler-api/#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
 
-### SyncEventHandler[​](/database/event-handler-api/event-handler-api/#synceventhandlerdirect-link-to-heading)
+### SyncEventHandler[​](/database/api-reference/event-handler-api/#synceventhandlerdirect-link-to-heading)
 
 `interface SyncEventHandler<I : Any, O : Outbound> : SyncEventWorkflowProcessor<I, O>, EventHandler`
 
-### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading-5)
+### Implementation[​](/database/api-reference/event-handler-api/#implementationdirect-link-to-heading-5)
 
 | Name | Signature |
 | --- | --- |
 | process | `fun process(message: Event<I>) : O` |
 
-### Helper methods[​](/database/event-handler-api/event-handler-api/#helper-methodsdirect-link-to-heading-2)
+### Helper methods[​](/database/api-reference/event-handler-api/#helper-methodsdirect-link-to-heading-2)
 
 | Name | Signature |
 | --- | --- |
@@ -407,11 +407,11 @@ Here is an example:
     }
 ```
 
-### SyncValidatingEventHandler[​](/database/event-handler-api/event-handler-api/#syncvalidatingeventhandlerdirect-link-to-heading)
+### SyncValidatingEventHandler[​](/database/api-reference/event-handler-api/#syncvalidatingeventhandlerdirect-link-to-heading)
 
 `interface SyncValidatingEventHandler<I : Any, O : Outbound> : SyncEventHandler<I, O>`
 
-### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading-6)
+### Implementation[​](/database/api-reference/event-handler-api/#implementationdirect-link-to-heading-6)
 
 | Name | Signature |
 | --- | --- |
@@ -444,18 +444,18 @@ Here is an example:
     }
 ```
 
-### SyncContextValidatingEventHandler[​](/database/event-handler-api/event-handler-api/#synccontextvalidatingeventhandlerdirect-link-to-heading)
+### SyncContextValidatingEventHandler[​](/database/api-reference/event-handler-api/#synccontextvalidatingeventhandlerdirect-link-to-heading)
 
 `interface SyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : SyncEventHandler<I, O>`
 
-### Implementation[​](/database/event-handler-api/event-handler-api/#implementationdirect-link-to-heading-7)
+### Implementation[​](/database/api-reference/event-handler-api/#implementationdirect-link-to-heading-7)
 
 | Name | Signature |
 | --- | --- |
 | onValidate | `fun onValidate(message: Event<I>): ValidationResult<O, C>` |
 | onCommit | `fun onCommit(message: Event<I>, context: C?): O` |
 
-### Helper methods[​](/database/event-handler-api/event-handler-api/#helper-methodsdirect-link-to-heading-3)
+### Helper methods[​](/database/api-reference/event-handler-api/#helper-methodsdirect-link-to-heading-3)
 
 | Name | Signature |
 | --- | --- |
