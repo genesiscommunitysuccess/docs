@@ -15,9 +15,9 @@ Indices are key components of any database. In the Genesis low-code platform, th
 ## Types of index
 These fall into three categories:
 
-1. unique index
-2. non-unique index
-3. partial index
+- unique index
+- non-unique index
+- partial index
 
 |                                       | Unique | Non-Unique | Partial |
 |---------------------------------------|--------|------------|---------|
@@ -40,12 +40,12 @@ by ORDER_ID.
 ### Partial indices
 
 Look-ups can also be done on a partial index. A partial index can be used on indices that have more than one field. In
-these cases, a look-up can be done only on some fields in the index. In such cases, the partial index behaves as a
+these cases, a look-up can be done only on some of the fields in the index. The partial index behaves as a
 non-unique index, even if the index itself is unique.
 
 Fields should always be provided in order. For example, if an index has three fields, then the valid partial indices would
 be on field 1 and on field 1 and 2. There is no valid partial index on field 1 and 3.
 
-For example, the TRADE table might have an index on EXCHANGE_ID and SYMBOL. Sometimes, we might want to query on both
+For example, the TRADE table has an index on EXCHANGE_ID and SYMBOL. Sometimes, we might want to query on both
 fields, but on other times, on EXCHANGE_ID only.
 
