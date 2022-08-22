@@ -3,9 +3,9 @@ title: 'Clusters'
 sidebar_label: 'Clusters'
 id: clusters
 ---
-The Genesis platform is highly resilient and easy to cluster for a High Availability (HA) setup. This area takes you through the steps required to establish a HOT-HOT setup.
+The Genesis low-code platform is highly resilient and easy to cluster for a High Availability (HA) setup. This area takes you through the steps required to establish a HOT-HOT setup.
 
-## Pre-requisites
+## Prerequisites
 
 This set-up will only focus on the Genesis platform within an HA setup. The database is expected to be decoupled from the Genesis server instances in its HA setup.
 
