@@ -22,15 +22,15 @@ For any testing, you need to know:
 - the user name and password that will enable you to login and authenticate yourself
 
 ### Testing with Genesis Console
-For users who have Console, the easiest way to check a component is to log into the server and subscribe to the relevant data server via the Resources page. You need to know the server address and have a valid user name and password.
+For users who have Console, the easiest way to check a component is to log into the server and subscribe to the relevant Data Server via the Resources page. You need to know the server address and have a valid user name and password.
 
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
 2. Enter the IP address of your server.
 3. Log in with your user name and password.
 4. Click on the **RESOURCES** tab.
-5. Filter the type to show only the relevant component, for example event handlers.
+5. Filter the type to show only the relevant component, for example Event Handlers.
 
-In the example below, we are testing the ability of the event handler EVENT_COUNTERPARTY_INSERT to insert a row of data to the table ALL_COUNTERPARTYS. The four fields in the table are listed on the left. On the right, we have supplied values for the four fields. The you can click on **COMMIT** to send the insert. A successful insert displays an **ACK** message.
+In the example below, we are testing the ability of the Event Handler EVENT_COUNTERPARTY_INSERT to insert a row of data to the table ALL_COUNTERPARTYS. The four fields in the table are listed on the left. On the right, we have supplied values for the four fields. Then you can click on **COMMIT** to send the insert. A successful insert displays an **ACK** message.
 ![](/img/test-console-add-ctpty.png)
 
 ### Using an API client
