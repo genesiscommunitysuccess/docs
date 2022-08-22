@@ -60,7 +60,7 @@ consolidators {
 }
 ```
 
-The example below comes from the Consolidator exercise in our [tutorial](/getting-started/tutorials/add-calculated-data). It has a single consolidator, called `CONSOLIDATE_POSITIONS`.
+The example below comes from the Consolidator exercise in our [tutorial](/getting-started/go-to-the-next-level/calculated-data/). It has a single consolidator, called `CONSOLIDATE_POSITIONS`.
 
 To give you some basic pointers to the content, the main code blocks in this Consolidator are:
 

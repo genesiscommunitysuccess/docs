@@ -36,7 +36,7 @@ eventHandler {
 ```
 :::info What is entityDb?
 
-The [entityDb](/reference/developer/api/database/how-to/interface/entity-db/) enables you to interact with the database layer, it's part of the Genesis Database API and we'll get into more details soon. For now, understand that this is the common way to access data from code. Feel free to use the intellisense of your IDE to explore the methods available from entityDb.
+The [entityDb](/database/database-interface/entity-db/) enables you to interact with the database layer, it's part of the Genesis Database API and we'll get into more details soon. For now, understand that this is the common way to access data from code. Feel free to use the intellisense of your IDE to explore the methods available from entityDb.
 :::
 
 ### Prepare the server and build

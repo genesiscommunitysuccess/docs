@@ -4,15 +4,29 @@ sidebar_label: 'Time based rules'
 id: time-rules
 ---
 
+<<<<<<< HEAD
 It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes the Genesis low-code platform provides a feature called the [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server-modules/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
+=======
+You can use the [Evaluator](/server-modules/evaluator/introduction/) to schedule the production of EOD reports (for example), or to send warnings when a defined limit is breached.
+>>>>>>> uat
 
 - __Cron Rules__  are scheduling rules; these are static events, defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
 - __Dynamic Rules__, also known as dynamic events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
+<<<<<<< HEAD
 In both cases, you define the rule in a table in the database: `CRON_RULES` for static rules and `DYNAMIC_RULES` for dynamic rules. In this section, we're going to use Cron Rules, but if you're interested in the dynamic rules, please look at [the next section](/getting-started/go-to-the-next-level/condition-rules/).
 
 ### Cron rules (static events)
 
+=======
+- **Cron Rules** are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
+- **Dynamic Rules**, also known as Dynamic Events, are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
+
+In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this training, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [Defining a dynamic rule](/server-modules/evaluator/configuring-runtime/#defining-a-dynamic-rule).
+
+### Cron rules (static events)
+
+>>>>>>> uat
 Let's create a cron rule that triggers a batch job to run once every minute.
 
 The batch job will generate a position report as a csv for each counterparty. This will be stored in **runtime/position-minute-report**. The file name of each report written will have the form COUNTERPARTY_ID-DATE.csv.
@@ -122,7 +136,7 @@ eventHandler {
 ```
 
 ### Load the cron rule on to the database
-Load the cron rule csv below into the database, `CRON_RULE` Table. 
+Load the cron rule csv below into the database, [CRON_RULE](/server-modules/evaluator/configuring-runtime/#cron_rule-table) Table.
 
 Run `SendIt`.
 
@@ -131,8 +145,13 @@ CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,ME
 "0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 
+<<<<<<< HEAD
 ### Change the log level to verify the execution of the events
 To do this, run the `LogLevel` command:
+=======
+#### 5.Change the log level to verify the execution of the events
+To do this, run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command:
+>>>>>>> uat
 
 ```shell
 LogLevel -p GENESIS_EVALUATOR -DATADUMP_ON -l DEBUG

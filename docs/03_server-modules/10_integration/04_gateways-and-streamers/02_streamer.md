@@ -6,7 +6,8 @@ id: streamer
 
 This page shows you how to create a Streamer.
 
-You can see an example of a Streamer in practice in our [tutorial](/01_getting-started/05_tutorials/12_integrate-a-fix-gateway.md).
+You can see an example of a Streamer in practice in our [tutorial](/).
+<!-- TODO: link to 'fix-gateway' turorial -->
 
 ## Creating a Streamer
 To create a Streamer:
