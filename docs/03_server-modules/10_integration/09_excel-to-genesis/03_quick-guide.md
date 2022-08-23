@@ -239,7 +239,7 @@ And here are the first ten rows of the data file:
 "37HS191","HARRISON GLB CORP FX T BD 2020","400515-77050130","USD","2018-06-06T00:00","62024.18","0.0","0.0","-176715.13","0.0","0.0","0.0","0.0","DEPOSIT","false","2.9759165768984433E7","0.0","-176715.13","-5.878793110603057E-4"
 ```
 
-## Load the Data and Generate the application
+## Load the data and generate the application
 
 After you have checked the files generated and addressed any issues in the fields, tables and views, you can run the sequence of commands to load the data and generate an application.
 
