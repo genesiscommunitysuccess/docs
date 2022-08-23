@@ -15,15 +15,18 @@ To help give you a helping hand in getting started with your applications, our [
 > Install the [GenX CLI](/flow/introduction/prerequisites/#genx-cli) before proceeding with the following steps.
 :::
 
-
-## Choosing Project Type
-####
-Once the GenX CLI has been installed, we are ready to generate our seed project.
 ### Expected Result
 By the end of this step, you should have:
 - created a new project named *alpha* with any relevant application configuration set up
 
 This will start you on your journey to building application functionality.
+
+## Using GenX CLI
+####
+
+Once the GenX CLI has been installed, we are ready to generate our seed project.
+
+### Choosing Project Type
 
 From the terminal, run:
 
