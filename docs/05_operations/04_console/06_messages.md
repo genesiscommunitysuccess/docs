@@ -7,7 +7,7 @@ id: messages
 [Introduction](/operations/console/introduction/)  | [Microservices](/operations/console/microservices/) |  [Data](/operations/console/data/) | [Resources](/operations/console/resources/) | [Packages](/operations/console/packages/) | [Messages](/operations/console/messages/)
 
 This page displays system messages.
-The **Suppress Heartbeats** switch at the top is useful for excluding these regular system messages that just check for activity from the web UI. In the example below, we have done this.
+The **Suppress Heartbeats** switch at the top is useful for excluding regular system messages that just check for activity from the web UI. In the example below, we have done this.
 
 
 ![](/img/con-messages.png)
