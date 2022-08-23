@@ -21,7 +21,7 @@ For this part of the guide, we've picked out a few core features we can demonstr
 
 Currently, all our pages are public. We can protect pages with sensitive data by enabling the login service.
 
-Let's reopen _src/main/kotlin/global/genesis/alpha/Application.kt_ and add `service(Login)`:
+Let's reopen **src/main/kotlin/global/genesis/alpha/Application.kt** and add `service(Login)`:
 
 ```kotlin
  ui("Alpha Trading Dashboard") {
@@ -38,7 +38,7 @@ You should now see a login screen:
 ![](/img/gpl-seed-login.png)
 
 :::note
-If the login button is not clickable, Web client was not able to connect to the Genesis API Host. You can confirm whether it's trying to connect to correct URL in browser console:
+You can confirm whether it's trying to connect to the correct URL in the browser console, as seen in the image below:
 :::
 
 ![](/img/gpl-seed-host.png)
@@ -83,7 +83,7 @@ Once the project is open, there are two easy ways to find this file quickly in I
 
 ## Grid
 
-Grids are our primary was of displaying information. For our application, let's add a grid to display our new **TRADE** model:
+Grids are our primary way of displaying information. For our application, let's add a grid to display our new **TRADE** model:
 
 ```kotlin
  ui("Alpha Trading Dashboard") {
@@ -119,7 +119,7 @@ Therefore, we need to update the server with the following tasks:
 ./gradlew :alpha-deploy:deploy-genesisproduct-alpha.zip #On the IntelliJ terminal
 ```
 
-If successful, you will then see a grid on the UI.
+If the tasks above were successful, you will then see a grid on the UI.
 
 ![](/img/gpl-seed-grid.png)
 
@@ -149,7 +149,7 @@ To do this, we need to modify the `entityManager` parameters:
 
 ## Update
 
-Because we've modified the `entityManager` we again need to regenerate update our server.
+Because we've modified the `entityManager`, we need to regenerate update our server.
 
 ### Regenerate
 
