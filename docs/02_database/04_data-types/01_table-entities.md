@@ -5,7 +5,8 @@ id: table-entities
 ---
 
 [Introduction](/database/data-types/data-types/) |
-[Table entities](/database/data-types/table-entities/) | [Index entities](/database/data-types/index-entities/) | 
+[Table entities](/database/data-types/table-entities/) |
+[Index entities](/database/data-types/index-entities/) | 
 [Views entities](/database/data-types/views-entities/) | 
 [DbRecord](/database/data-types/dbrecord/) | 
 [DbEntity](/database/data-types/dbentity/) 
@@ -125,26 +126,20 @@ val customer = Customer {
   country = "UK"
 }
 
-// toGenesisSet
 customer.toGenesisSet(listOf("CUSTOMER_NAME"))
 // Output: CUSTOMER_NAME = Customer_1
 
-// toGenesisSetFormatted
 customer.toGenesisSetFormatted(listOf(ColumnConfig.Field.Aliased("COUNTRY", "CUSTOMER_COUNTRY")))
 // Output: CUSTOMER_COUNTRY = UK
 
-// toString
 customer.toString()
 // Output: Customer{serialVersionUID='1', customerName=Customer_1, customerAddress=London, country=UK, customerPassword=XXXXXX, recordId={not-set}, timestamp={not-set}}
 
-// toStringWithSensitivesUnmasked
 customer.toStringWithSensitivesUnmasked()
 // Output: Customer{serialVersionUID='1', customerName=Customer_1, customerAddress=London, country=UK, customerPassword=PASSWORD, recordId={not-set}, timestamp={not-set}}
 
-// get
 customer.get(CUSTOMER.CUSTOMER_ADDRESS)
 // Output: London
 
-// set
 customer.set(CUSTOMER.CUSTOMER_ADDRESS, "Manchester")
 ```

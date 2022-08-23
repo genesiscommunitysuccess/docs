@@ -11,7 +11,7 @@ id: dbrecord
 [DbEntity](/database/data-types/dbentity/) 
 
 :::warning
-Using `DbRecord` instead of [](/database/data-types/views-entities/) entities will circumvent compile-time validation of database interactions. This means that errors might not appear until runtime or might lead to unexpected results.
+Using `DbRecord` instead of entities will circumvent compile-time validation of database interactions. This means that errors might not appear until runtime or might lead to unexpected results.
 :::
 
 DbRecord enables you to build a record of a specified Table. It is not type-safe, so this is not our recommended method.

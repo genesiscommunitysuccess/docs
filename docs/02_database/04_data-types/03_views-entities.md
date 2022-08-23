@@ -21,7 +21,7 @@ For more information, see our page about [Views](/database/fields-tables-views/v
 
 ## Index entities
 
-Views have [entities​](/database/data-types/views-entities/#index-direct-link-to-heading). These are also convenient methods that construct an index entity from the view entity. `byPrimaryKey()` will return an entity for the primary key. Additionally, for each index, there will be a `by...()` call with the index name.
+Views have entities​](/database/data-types/views-entities). These are also convenient methods that construct an index entity from the view entity. `byPrimaryKey()` will return an entity for the primary key. Additionally, for each index, there will be a `by...()` call with the index name.
 
 ## Building a view entity
 
@@ -66,23 +66,18 @@ Examples:
 ```kotlin
 val customerView = CustomerView("Customer_1", "PASSWORD", "London", "UK")  
 
-// toGenesisSet  
 customerView.toGenesisSet(listOf("CUSTOMER_NAME"))  
 // Output: CUSTOMER_NAME = Customer_1  
 
-// toGenesisSetFormatted  
 customerView.toGenesisSetFormatted(listOf(ColumnConfig.Field.Aliased("COUNTRY", "CUSTOMER_COUNTRY")))  
 // Output: CUSTOMER_COUNTRY = UK 
 
-// toString  
 customerView.toString()  
 // Output: global.genesis.gen.view.entity.CustomerView{serialVersionUID='1', customerName=Customer_1, customerPassword=XXXXXX, customerAddress=London, country=UK, recordId={not-set}, timestamp={not-set}}  
 
-// toStringWithSensitivesUnmasked  
 customerView.toStringWithSensitivesUnmasked()  
 // Output: global.genesis.gen.view.entity.CustomerView{serialVersionUID='1', customerName=Customer_1, customerPassword=PASSWORD, customerAddress=London, country=UK, recordId={not-set}, timestamp={not-set}}  
 
-// get
 customerView.get("CUSTOMER_NAME")  
 // Output: Customer_1
 ```
