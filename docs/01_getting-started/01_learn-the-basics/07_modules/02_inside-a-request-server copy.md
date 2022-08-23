@@ -16,7 +16,7 @@ You specify all your Request Servers as requestReply queries in a single Kotlin 
 
 Here is a simple example of a Request Server file. It defines three requestReply queries:
 
-- the first returns all the fields in the INSTRUMENT_DETAILS table
+- the first returns all the fields in the COUNTERPARTY table
 - the second returns all the fields in the EXCHANGE table
 - the third includes a  request block, which specifies the two fields ALTERNATE_TYPE and INSTRUMENT_CODE as a primary key; it responds with four fields from the INSTRUMENT_DETAILS table
 
