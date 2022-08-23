@@ -4,17 +4,17 @@ sidebar_label: 'Condition based rules'
 id: condition-rules
 ---
 
-We have now set up the Evaluator so that our application creates reports daily.
+We have now set up the [Evaluator](/server-modules/evaluator/introduction/) so that our application creates reports daily.
 
 Now you are going to use the Evaluator again to set up dynamic rules. In this case, you want to send an email automatically if a specified limit has been breached.
 
 #### Preparation
 
-First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron rule](#cron-rules-static-events).
+First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron rule](/getting-started/go-to-the-next-level/time-rules/).
 
 You need to create two csv files for this exercise.
 
-The first is the file with your rule in the correct format, similsr to the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
+The first is the file with your rule in the correct format, similar to the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
 
 ```csv
 NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
@@ -152,7 +152,7 @@ Run the *build*, *install-alpha-site-specific* and *deploy* tasks again.
 
 #### 7. Switch on data dumps
 
-Data dumps need to be switched on for both EVALUATOR and NOTIFY so we can see some additional data in the logs.
+Data dumps need to be switched on for both EVALUATOR and NOTIFY so that we can see some additional data in the logs.
 
 Run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command for that:
 <!-- TODO: add LogLevel section to Server Commands -->

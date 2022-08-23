@@ -1,6 +1,8 @@
 const baseUrl = process.env.BASE_URL || '/';
 const routeBasePath = '/';
 
+const apiPullPlugin = require('./pull-api-docs');
+
 module.exports = {
   title: 'Low-code Platform For Financial Markets',
   tagline: 'The Platform with 50+ Modern Building Blocks to Accelerate App Development.',
@@ -26,8 +28,10 @@ module.exports = {
     }],
     [require.resolve('docusaurus-gtm-plugin'), {
       id: 'GTM-5GTR43J',
-    }
-    ]
+    }],
+		() => ({
+			loadContent: apiPullPlugin.loadContent(),
+		})
   ],
 
   presets: [
@@ -121,3 +125,4 @@ module.exports = {
   },
 
 };
+
