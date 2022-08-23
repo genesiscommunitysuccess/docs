@@ -37,7 +37,7 @@ Generated ViewEntities are Kotlin data classes and can be built using the primar
 
 ## Examples
 
-Given the following table and view definitions, declared as described [here](/fields-tables-views/tables/) and [here](/fields-tables-views/views/), the platform will generate view entities as shown in the examples.
+Given the following table and view definitions, declared as described [here](/database/fields-tables-views/tables/) and [here](/database/fields-tables-views/views/), the platform will generate view entities as shown in the examples.
 
 ```kotlin
 // table definition    

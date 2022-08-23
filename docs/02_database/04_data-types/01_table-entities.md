@@ -101,7 +101,7 @@ TradeAudit = trade.toAuditEntity(
 
 ## Examples
 
-Given the following table definition, declared as described [here](/fields-tables-views/tables/), the platform will generate table entities as shown in the examples.
+Given the following table definition, declared as described [here](/database/fields-tables-views/tables/), the platform will generate table entities as shown in the examples.
 
 ```kotlin
 table(name="CUSTOMER", id = 11002) {
