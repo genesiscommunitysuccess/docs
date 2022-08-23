@@ -12,4 +12,4 @@ Following a successful deployment, details of each process in the deployment are
 * Description
 * Is Core
 
-In particular, you need to know the version number is useful for troubleshooting.
+In particular, you need to know the version number; this is useful for troubleshooting.
