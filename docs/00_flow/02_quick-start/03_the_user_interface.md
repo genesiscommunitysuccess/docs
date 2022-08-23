@@ -64,13 +64,9 @@ Waiting for changes to input files of tasks... (ctrl-d to exit)
 
 ```
 
-You should now see the updated application title:
+You should now see the updated `Alpha Trading Dashboard` page title as well as the `Hello World` heading text:
 
-![](/img/gpl-seed-title.png)
-
-And also the "Hello World" text:
-
-![](/img/gpl-seed-hello-world.png)
+![](/img/gpl-seed-start-first-changes.png)
 
 ## Recap
 
