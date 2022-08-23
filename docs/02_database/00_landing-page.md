@@ -20,7 +20,7 @@ Before you start doing anything clever, there are some useful basics that will g
 
 Once you know the basics, you can explore the details of how you can interact with the database.
 
-- [Database Interface](/database/database-interface/entity-db/) - You can have a look at database interface for the standard methods of interacting with the database.
+- [Database Interface](/database/database-interface/entity-db/) - You can have a look at the database interface for the standard methods of interacting with the database.
  
 
 - [Helper Classes](/database/helper-classes/) - You can look at helper classes for details of classes such as Subscription, Write Result and Modify Details.
