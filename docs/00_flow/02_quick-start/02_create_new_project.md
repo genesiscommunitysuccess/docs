@@ -5,36 +5,28 @@ id: create-new-project
 
 # Create New Project
 
-To help give you a helping hand in getting started with your applications, our GenX CLI tool will allow you to create seed projects. 
+To help give you a helping hand in getting started with your applications, our [GenX CLI](/flow/introduction/prerequisites/#genx-cli)  tool will allow you to create seed projects. 
+
 
 > A seed project is a productive starting point for any application using Flow. 
 > 
 > It will create an initial file structure and install any necessary dependencies, allowing you to focus on the important bits. 
+:::important
+> Install the [GenX CLI](/flow/introduction/prerequisites/#genx-cli) before proceeding with the following steps.
+:::
 
 ### Expected Result
-By the end of this step, you should:
-- Have GenX CLI installed and available on any terminal
+By the end of this step, you should have:
 - created a new project named *alpha* with any relevant application configuration set up
 
 This will start you on your journey to building application functionality.
 
-## GenX CLI
+## Using GenX CLI
+####
 
-### Installation
-Let's start by installing GenX using the following command in your terminal:
-
-```shell
-npm uninstall -g @genesislcap/foundation-cli
-npm install -g @genesislcap/foundation-cli@2.0.1-alpha-4ce6685.0+4ce6685
-```
-:::note
-Our Flow seed is currently only available on a particular version, therefore we need to remove any previous version and specify the one we need.
-:::
-
+Once the GenX CLI has been installed, we are ready to generate our seed project.
 
 ### Choosing Project Type
-
-Now we are ready to generate our seed project.
 
 From the terminal, run:
 
@@ -73,7 +65,8 @@ We now want to configure our seed. There will be a number of fields to fill in t
 
 
 :::tip 
-If you see any answers in bold, this is the default answer, you can just hit enter to use it.
+In some instances, you will see grey text reflecting possible answers to the prompted question. The capitalized option is the default so you can just hit enter to use it. 
+For example `y/N`: default here is 'N', which is equivalent to 'No'.
 :::
 
 Lets choose the location and name for our project. In this case, our current directory and our application name will be **alpha**.
@@ -83,7 +76,8 @@ Lets choose the location and name for our project. In this case, our current dir
 ? App name alpha
 ```
 
-We want to have a clean install, so let's overwrite any previous installations, choosing 'Yes'. If this is the first time you are creating an application with this name, the following prompt will be skipped.
+We want to have a clean install, so let's overwrite any previous installations, choosing 'Yes'.
+> If this is the first time you are creating an application with this name, the following prompt will be skipped.
 
 ```shell
 ? Overwrite existing files (y/N) Yes
@@ -113,16 +107,15 @@ This will ensure we pull our Genesis packages to help support your development.
 
 Next, you will be asked whether you want to configure an API host. 
 
-> By default, our web component will attempt to connect to your local server. If you want to connect to a remote server instead, choose Yes and specify WebSocket URL.
+> Our web component will attempt to connect to your local server. If you want to connect to a remote server, choose Yes and specify WebSocket URL. Otherwise, hit enter and the web component will connect to your local server by default. 
 
-<span style={{color:'red'}}>We should explain this better</span>
 
 ```shell
 ? (Optional) Override the default API Host URL (N/y)
 ```
 
-Continue with the remaining questions:
-<span style={{color:'red'}}>Continue what? What do we choose?</span>
+Continue with the remaining prompts:
+> Hit enter and the default versions will be selected. If you want to use a different version, simply add the version next to the prompt and hit enter. 
 
 ```shell
 ? Genesis Server version
@@ -147,7 +140,6 @@ Now open your chosen IDE (e.g. IntelliJ) and locate the newly created alpha proj
 
 Congratulations, your local environment is now ready to build applications. We have:
 
-- Installed GenX CLI
 - Created a new Flow seed project
 - Configured our seed
 - Configured our application defaults
