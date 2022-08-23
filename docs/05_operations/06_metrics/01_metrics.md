@@ -7,32 +7,28 @@ id: metrics
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-
 The Genesis Metrics module enables you to capture metrics for specific components of your application. You achieve this by inserting programmatic calls into appropriate places in your code.
 
 By default, when running the Genesis system, the metric calls will have no impact on the performance or behaviour of the system.
 
-To make use of the metric calls, you must set `MetricsEnabled` to `true` in the [system definition file](/server-modules/configuring-runtime/system-definitions/). In addition, you should define the `MetricsReportType`
-to include a comma-separated list of ReportType outputs, which should include at least one of the following:-
+To make use of the metric calls, you must set `MetricsEnabled` to `true` in the [system definition file](/server-modules/configuring-runtime/system-definitions/). In addition, you should define the `MetricsReportType` to include a comma-separated list of `MetricsReportType` outputs, which should include at least one of the following:
 
-* Console - sends metrics straight to the console.
-* SLF4J - will append metrics to a [SLF4J](http://www.slf4j.org/) Logger
-* GRAPHITE - will send metrics to a [Graphite](https://graphiteapp.org/) service, which needs to be up and running,
+* Console - sends metrics straight to the console
+* SLF4J - will append metrics to an [SLF4J](http://www.slf4j.org/) Logger
+* GRAPHITE - will send metrics to a [Graphite](https://graphiteapp.org/) service, which needs to be up and running
     * This requires some additional settings for `MetricsGraphiteURL` and `MetricsGraphitePort` which identify the Graphite server.
 
 ## Set-up (example using SLF4J and GRAPHITE)
 
-In this example, we use a SLF4J log and Graphite Server to capture metrics. Detailed set-up of a GraphiteServer is beyond the scope of this document,
-but a GraphiteServer can be ran in a [docker container](http://docker.com) as described [here](https://registry.hub.docker.com/r/hopsoft/graphite-statsd#!)
+In this example, we use a SLF4J log and Graphite server to capture metrics. Detailed set-up of a Graphite server is beyond the scope of this document, but it can be run in a [docker container](http://docker.com) as described [here](https://registry.hub.docker.com/r/hopsoft/graphite-statsd#!)
 
 ```kotlin
-item(name = "MetricsEnabled", value = "true" )
+item(name = "MetricsEnabled", value = "true")
 item(name = "MetricsReportType", value = "GRAPHITE,SLF4J")
 
-item(name = "MetricsGraphiteURL", value = "localhost" )
-item(name = "MetricsGraphitePort", value = "2003" )
-item(name = "MetricsReportIntervalSecs", value = "60" ) // Optional, defaults to 10 seconds if not specified
+item(name = "MetricsGraphiteURL", value = "localhost")
+item(name = "MetricsGraphitePort", value = "2003")
+item(name = "MetricsReportIntervalSecs", value = "60") // Optional, defaults to 10 seconds if not specified
 ```
 
 ## Metrics API
@@ -66,19 +62,19 @@ implementation("global.genesis:genesis-metrics")
 </TabItem>
 </Tabs>
 
-The object MetricService is available via the dependency injection mechanism. Simply mark a constructor with the `@Inject` annotation and the parameters will be resolved automatically.
+The object `MetricService` is available via the dependency injection mechanism. Simply mark a constructor with the `@Inject` annotation and the parameters will be resolved automatically.
 
-Once the MetricService object is in scope, you can invoke methods on it to retrieve the appropriate metric objects. Below are some examples.
+Once the `MetricService` object is in scope, you can invoke methods on it to retrieve the appropriate metric objects. Below are some examples.
 
-Metrics names are defined at two levels. When a metric is updated, another metric with the qualifier name is also updated.
+Metric names are defined at two levels. When a metric is updated, another metric with the qualifier name is also updated.
 For instance, if we have two metrics of type `counter`:
 * `metric1 (name = "name1", qualifier="events")`
 * `metric2 (name = "name2", qualifier="events")`
 
-If we update `metric1` two times and `metric2` one time, the result will be:-
-* `process_name.counter.events  count = 3`
+If we update `metric1` twice and `metric2` once, the result will be:
+* `process_name.counter.events.count = 3`
 * `process_name.counter.events.name1 = 2`
-* `process_name.counter.events.name2= 1`
+* `process_name.counter.events.name2 = 1`
 
 
 ### Counters
