@@ -26,6 +26,6 @@ Once you know the basics, you can explore the details of how you are going to in
 
 - Find out about Genesis [Asynch and RxJava APIs](/database/types-of-api/async/).
 
-- Explore specific APIs, such as the [Event Handler API](/database/event-handler-api/event-handler-api/) and [Authorisation API](/database/authorisation-api/authorisation-api/)
+- Explore specific APIs, such as the [Event Handler API](/database/api-reference/event-handler-api/) and [Authorisation API](/database/api-reference/authorisation-api/)
 
 
