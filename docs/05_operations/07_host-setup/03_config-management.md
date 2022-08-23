@@ -1,7 +1,7 @@
 ---
 id: config-management
-title: Config Management
-sidebar_label: Config Management
+title: 'Config Management'
+sidebar_label: 'Config Management'
 sidebar_position: 3
 
 ---
