@@ -10,8 +10,8 @@ This introductory guide will enable you to quickly and easily get a full stack G
 This guide will be split into the following steps:
 
 1. [Create New Project](/flow/quick-start/create-new-project/)
-2. [The User Interface](/flow/quick-start/the-user-interface/)
-3. [Server](/flow/quick-start/server)
+2. [User Interface](/flow/quick-start/user-interface/)
+3. [The Server](/flow/quick-start/the-server)
 4. [Sample application](/flow/quick-start/sample-application)
 5. [Recap and Conclusion](/flow/quick-start/recap-and-conclusion)
 

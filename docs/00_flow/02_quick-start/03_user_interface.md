@@ -1,9 +1,9 @@
 ---
-title: 'The User Interface'
+title: 'User Interface'
 id: the-user-interface
 ---
 
-# The User Interface
+# User Interface
 
 We have two key elements to our application, our user interface and our server. This section will focus on the former.
 
@@ -42,7 +42,7 @@ Once you see a message similar to `INFO: Accepting connections at http://localho
 
 ### Test simple UI changes
 
-Let's open **src/main/kotlin/global/genesis/alpha/Application.kt** and customise the auto-generated application title:
+The application title is auto-generated based on what you named the project initially. If you would like to change that, open **src/main/kotlin/global/genesis/alpha/Application.kt** and customise the auto-generated application title:
 
 ```kotlin
 ui("Alpha Trading Dashboard") {
@@ -51,8 +51,9 @@ ui("Alpha Trading Dashboard") {
     }
 }
 ```
-
+:::tip
 It is useful to have the code generation terminal visible - you will see when your changes have been processed:
+:::
 
 ```shell
 BUILD SUCCESSFUL in 754ms
@@ -70,4 +71,8 @@ You should now see the updated application title:
 
 ## Recap
 
-<span style={{color:'red'}}>Are we going to have a "The User Interface" Recap?</span>
+Congratulations, you now have a local view of the application's user interface. 
+You have:
+
+- made the UI available in a web browser
+- made changes to the UI and reflected those changes in the web browser
