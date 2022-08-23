@@ -216,6 +216,10 @@ Whenever you run npm install, NPM will look at your package.json file and import
 
 Plain Old Java Object
 
+## Polling
+
+In electronic communications, the continuous checking of some resource to check what state it is currently in. This is usually used to ensure sustained communication or when listening for updates.
+
 ## POM
 
 Project Object Model

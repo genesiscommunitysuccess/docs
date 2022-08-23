@@ -4,7 +4,7 @@ sidebar_label: 'Write'
 id: write
 ---
 
-[Read](/database/database-concepts/read/)  | [Subscribe](/database/database-concepts/subscribe/) |  [Write](/database/database-concepts/write/) 
+[Read](/database/database-concepts/read/) | [Subscribe](/database/database-concepts/subscribe/) | [Write](/database/database-concepts/write/) 
 
 Genesis supports the following database operations:
 
