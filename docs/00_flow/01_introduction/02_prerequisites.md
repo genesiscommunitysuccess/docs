@@ -23,16 +23,11 @@ genesisArtifactoryPassword=<your-artifactory-password>
 ## GenX CLI
 ####
 GenX is a CLI tool that enables you to pull seed projects that adhere to best practices for development on the Genesis low-code platform.
-### Expected Result
-By the end of this step, you should have:
-- GenX CLI installed and available on any terminal
-
-This will start you on your journey to building application functionality.
 
 
 ### Installation
-Let's start by installing GenX using the following command in your terminal:
-:::note
+To install GenX, use the following command in your terminal:
+:::important
 Our Flow seed is currently only available on a particular version, therefore we need to uninstall any previous version and specify the one we need.
 :::
 

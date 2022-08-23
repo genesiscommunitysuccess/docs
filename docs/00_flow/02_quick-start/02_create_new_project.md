@@ -11,19 +11,19 @@ To help give you a helping hand in getting started with your applications, our [
 > A seed project is a productive starting point for any application using Flow. 
 > 
 > It will create an initial file structure and install any necessary dependencies, allowing you to focus on the important bits. 
-:::note 
+:::important
 > Install the [GenX CLI](/flow/introduction/prerequisites/#genx-cli) before proceeding with the following steps.
 :::
 
+
+## Choosing Project Type
+####
+Once the GenX CLI has been installed, we are ready to generate our seed project.
 ### Expected Result
 By the end of this step, you should have:
 - created a new project named *alpha* with any relevant application configuration set up
 
 This will start you on your journey to building application functionality.
-
-### Choosing Project Type
-
-Once the GenX CLI has been installed, we are ready to generate our seed project.
 
 From the terminal, run:
 
@@ -63,7 +63,7 @@ We now want to configure our seed. There will be a number of fields to fill in t
 
 :::tip 
 In some instances, you will see grey text reflecting possible answers to the prompted question. The capitalized option is the default so you can just hit enter to use it. 
-For example `y/N`: default here is 'No'
+For example `y/N`: default here is 'N', which is equivalent to 'No'.
 :::
 
 Lets choose the location and name for our project. In this case, our current directory and our application name will be **alpha**.
@@ -106,7 +106,6 @@ Next, you will be asked whether you want to configure an API host.
 
 > Our web component will attempt to connect to your local server. If you want to connect to a remote server, choose Yes and specify WebSocket URL. Otherwise, hit enter and the web component will connect to your local server by default. 
 
-<span style={{color:'red'}}>We should explain this better</span>
 
 ```shell
 ? (Optional) Override the default API Host URL (N/y)
@@ -114,7 +113,6 @@ Next, you will be asked whether you want to configure an API host.
 
 Continue with the remaining prompts:
 > Hit enter and the default versions will be selected. If you want to use a different version, simply add the version next to the prompt and hit enter. 
-<span style={{color:'red'}}>Continue what? What do we choose?</span>
 
 ```shell
 ? Genesis Server version
