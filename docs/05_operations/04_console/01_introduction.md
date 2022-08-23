@@ -12,7 +12,7 @@ Console enables you to monitor your application with precision, enabling you to 
 Logging into your application (instance)
 Console monitors a specific application. To use Console, you will be provided with:
 * The URL for Console
-* Hostname (this is the instance name of the application, which you can find in GEM)
+* Hostname (this is the instance name of the application)
 * A username and password
 
 To log in to Console:
