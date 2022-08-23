@@ -16,13 +16,11 @@ Genesis supports the following database operations:
 
 All these operations also have an `...All` version (e.g. `insertAll` that accepts multiple records).
 
-Index clash[​](/database/database-concepts/write/#index-clashdirect-link-to-heading)
----------------------------------------------------------------------------------------------------------------------------------------------------
+## Index clash
 
 Where we refer to an index clash below, we mean that the record to be written has the same fields on a unique index as an existing record.
 
-Inserting[​](/database/database-concepts/write/#insertingdirect-link-to-heading)
------------------------------------------------------------------------------------------------------------------------------------------------
+## Inserting
 
 This operation writes a new record to the database. As part of the insert, any generated fields, such as sequence or auto-increment fields, will be populated. 
 
@@ -33,8 +31,7 @@ The following insert operations are supported:
 -   `insert`
 -   `insertAll`
 
-Modifying[​](/database/database-concepts/write/#modifyingdirect-link-to-heading)
------------------------------------------------------------------------------------------------------------------------------------------------
+## Modifying
 
 This operation modifies an existing record. By default, the record will be looked up by the primary key, but you can provide another key. 
 
@@ -45,8 +42,7 @@ The following insert operations are supported:
 -   `modify`
 -   `modifyAll`
 
-Upsert[​](/database/database-concepts/write/#upsertdirect-link-to-heading)
------------------------------------------------------------------------------------------------------------------------------------------
+## Upsert
 
 The upsert operation modifies an existing record. If the record does not exist, the data provided is inserted as a new record. 
 
@@ -57,8 +53,7 @@ The following insert operations are supported:
 -   `upsert`
 -   `upsertAll`
 
-Deleting[​](/database/database-concepts/write/#deletingdirect-link-to-heading)
----------------------------------------------------------------------------------------------------------------------------------------------
+## Deleting
 
 The delete operation removes a record from the database. The operation will fail if the record is not found.
 
@@ -67,7 +62,6 @@ The following insert operations are supported:
 -   `delete`
 -   `deleteAll`
 
-Recover[​](/database/database-concepts/write/#recoverdirect-link-to-heading)
--------------------------------------------------------------------------------------------------------------------------------------------
+## Recover
 
 We shall provide details here as soon as we can. Thank you for your patience.
