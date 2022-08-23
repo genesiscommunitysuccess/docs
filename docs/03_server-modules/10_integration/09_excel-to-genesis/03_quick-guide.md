@@ -15,8 +15,8 @@ Take a look at this quick exercise. We start with an Excel workbook. We finish w
 
 1. Do some up-front checks and edits to head off any obvious issues.
 2. Run the convertor. This creates your data model in Genesis format and creates data files in csv format.
-3. Check the fields, tables and views in the data model. Make any necessary adjustments in the spreadsheet and re-run the convertor. (Repeat this step if necessary)
-4. Run a quick sequence of Genesis scripts to produce the files that contain the business logic, including Remap and expose the endpoints.
+3. Check the fields, tables and views in the data model. Make any necessary adjustments in the spreadsheet and re-run the convertor. (Repeat this step if necessary.)
+4. Run a quick sequence of Genesis scripts to produce the files that contain the business logic and to expose the endpoints.
 5. Load the csv data files to the database.
 
 That’s it. If you follow those steps, you'll have a working server, ready to be connected to a front end.
@@ -25,10 +25,10 @@ graph TD
 A[Excel Spreadsheet] --> B[Analyse - structure, functions, headings]
 B --> C[Adjust]
 C -->D[Convert]
-D -->E[Check Generated Files for requirements or errors]
-E -->|Modify Spreadsheet if required|C
+D -->E[Check generated files for requirements or errors]
+E -->|Modify spreadsheet if required|C
 E -->F[genesisInstall , remap, AppGen , genesisInstall]
-F -->G[Load Generated Data]
+F -->G[Load generated data]
 ```
 If you would like to see that in detail, please see the following example.
 
