@@ -245,7 +245,7 @@ After you have checked the files generated and addressed any issues in the field
 
 1. Run `genesisInstall` to check all the config files and prepare the application for the current environment (using the files in site-specific to replace values in the modules, for example).
 2. Run `remap --commit` to set any changes to the database (modifications to fields, tables and views).
-3. Run `**sendIt -a`  to load the data from all the generated data files into the database.
+3. Run `SendIt -a`  to load the data from all the generated data files into the database.
 4. Run `AppGen` to generate Event Handlers, Request Servers and Data Servers for all the tables. For example:
 
 ```bash
