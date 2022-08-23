@@ -23,6 +23,12 @@ There are two ways to use GPAL Consolidators:
 
 ## Consolidator as a service
 
+````mermaid
+graph TD
+    A[INPUT - Table/View] --> |Listening for changes| B[ CONSOLIDATOR Service]
+    B -->|Updated data after changed input| C[Saved to OUTPUT Table]
+````
+
 This is the standard method of using Consolidators. The Consolidator runs as a process (service) that you can monitor using the `mon` command. An individual Consolidator in your **consolidator.kts** file listens to a specific table and automatically updates an output table. 
 
 
@@ -53,8 +59,27 @@ val result = tradeConsolidator.whatIf(Trade.ByOrderId("2"), trade1, trade2)
 You can consider the following types of Consolidator object as different use cases.
 
 - **input-output**. This type of Consolidator is not limited to tables. It takes any input and produces any output; the output it creates can be used elsewhere in your application. For example, it could read a table of trades and create the sum of all trade values.
+````mermaid
+graph TD
+    B[Any Input - not limited to database tables] --> C[Consolidator on Demand]
+    C --> D[Output - not limited to a table]
+  
+````
 - **read input table**. This type of Consolidator reads a table where data is changed and then creates an output; the output can be anything. For example, it could read updates to a table of orders and check the table of trades to find other trades that match that order (by order number or by counterparty, for example).
+````mermaid
+graph TD
+H[Data to consolidate with Input table] --> I
+G[Input Table - from DB] --> I[Consolidator On Demand]
+I -->J[Output - not limited to a table]
+````
 - **read output table**. This type of Consolidator can read any type of input, but the output must be a table. For example, it could read the output from a trade table (a new trade), and compare to an order in the order table. It could then calculate the effect of the change in terms of how much is outstanding and fulfilled in the order.
+````mermaid
+graph TD
+M[Data To Consolidate with Input] --> N
+L[Any Data for Input eg. an Output Table] --> N[Consolidator On Demand]
+N -->O[Output - to a table]
+O--> P[Not Saved to Database]
+````
 
 Consolidators are conventionally defined in the file **_application_-consolidator.kts**. 
 
