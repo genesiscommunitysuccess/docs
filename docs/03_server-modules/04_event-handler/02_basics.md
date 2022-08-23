@@ -8,7 +8,7 @@ id: basics
 
 Let's make things really simple.
 - The Event Handler is the component that enables the application to write to the database.
-- You define your application's Event Handler in a Kotlin script file.
+- You define your application's Event Handler in a Kotlin script file (**.kts**).
 - In this file, you define specific `eventHandler` codeblocks, each of which has full access to the database.
 - Each `eventHandler` can be invoked from the front end, from other `eventHandler` codeblocks, or from custom components in the application.
 - If you use AppGen to build from your dictionary, then a basic **.kts** file will be built automatically for you, creating basic insert, modify and delete `eventHandler` code blocks for all the tables and views in your data model. You can edit this file to customise the component.
@@ -72,7 +72,7 @@ eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
 
 ## Adding validation
 
-So far, we have provided an `onCommit`block in our `eventHandler`. This is where the active instructions are - usually database changes.
+So far, we have provided an `onCommit`block in our `eventHandler`. This is where the active instructions are usually database changes.
 
 If you want to provide some validation before the action, you need to have an `onValidate` block before the `onCommit`. The last value of the code block must always be the return message type.
 
@@ -95,7 +95,7 @@ The `onCommit` block will only be executed if the `counterparty` field is not nu
     }
 ```
 
-## Returning a nack
+## Returning a value
 The `onCommit` block must always return either an `ack()` or `nack(...)`. In the previous examples, it has always been an `ack()`.
 
 Now consider a scenario where you might want to return a `nack(...)`. In this case, there is no `onValidate` block.
@@ -120,7 +120,7 @@ eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
 
 ### Default reply types
 
-So far, we have seen `ack` and `nack.  There is a third type: `warningNack`. Let's stop and look at the specifications for all three default reply types:
+So far, we have seen `ack` and `nack`. There is a third type: `warningNack`. Let's stop and look at the specifications for all three default reply types:
 
 * `ack`: used to signify a successful result. `ack` takes an optional parameter of `List<Map<String, Any>>`. For example, `ack(listOf(mapOf("TRADE_ID", "1")))`.
 * `nack`: used to signify an unsuccessful result. `nack` accepts either a `String` parameter or a `Throwable`. For example, `nack("Error!")` or `nack(myThrowable)`.
@@ -128,7 +128,7 @@ So far, we have seen `ack` and `nack.  There is a third type: `warningNack`. Let
 
 
 ## Transactional Event Handlers (ACID)
-If you want your  `eventHandler` to comply with ACID, you can declare it to be  `transactional = true`. Any exception or nack returned will result in a complete rollback of all parts of the `onCommit` and `onValidate` (the transaction also covers read commands) blocks.
+If you want your  `eventHandler` to comply with [ACID](/getting-started/glossary/glossary/#acid), you can declare it to be  `transactional = true`. Any exception returned will result in a complete rollback of all parts of the `onCommit` and `onValidate` (the transaction also covers read commands) blocks. While an exception will trigger a rollback, the transaction will commit if a `nack` or `ack` is returned.
 
 ```kotlin
     eventHandler<Counterparty>(transactional = true) {
@@ -140,23 +140,23 @@ If you want your  `eventHandler` to comply with ACID, you can declare it to be  
     }
 ```
 
- whether it is a database update or uploading a report to a third party. It will be called when an event message is received with `validate = false` and has successfully passed the `onValidate` block. The last value of the code block must always be the return message type.
+ Whether it is a database update or uploading a report to a third party. It will be called when an event message is received with `validate = false` and has successfully passed the `onValidate` block. The last value of the code block must always be the return message type.
 
 ## Processing onValidate and onCommit
 The incoming message that triggers an Event Handler can have `validate` set to `true` or `false`. This controls whether the Event Handler simply performs some validation or it executes its complete set of processing. 
 
 ### validate = true
-The key thing about this setting is that it means that only the `onValidation` block is executed, not the `onCommit` block. Here is the precise process flow:
+The key thing about this setting is that it means that only the `onValidate` block is executed, not the `onCommit` block. Here is the precise process flow:
 
 ![](/img/eh-validate-true.png)
 ### validate = false
-With this setting, both the `onValidation` codeblock and the `onCommit` codeblock will be executed. Here is the precise process flow:
+With this setting, both the `onValidate` codeblock and the `onCommit` codeblock will be executed. Here is the precise process flow:
 
 ![](/img/eh-validate-false.png)
 ## More information about onValidate
-As you will have seen above, an `onValidation` codeblock will be executed whether the incoming message has `validate=true` or `validate=false`.The `onValidate` block is optional if you are using the default reply message type (`EventReply`) and will automatically be successful if not defined.
+As you will have seen above, an `onValidate` codeblock will be executed whether the incoming message has `validate=true` or `validate=false`.The `onValidate` block is optional if you are using the default reply message type (`EventReply`) and will automatically be successful if not defined.
 
-However, note that an `onValidation` codeblock is mandatory when using custom reply message types; the script will not compile if there is no `onValidation` codeblock. See the simple example below:
+However, note that an `onValidate` codeblock is mandatory when using custom reply message types; the script will not compile if there is no `onValidate` codeblock. See the simple example below:
 
 ```kotlin
     eventHandler<Company>(name = "COMPANY_INSERT") {

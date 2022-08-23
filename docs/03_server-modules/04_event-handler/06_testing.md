@@ -15,9 +15,9 @@ The Genesis Platform provides the `AbstractGenesisTestSupport` abstract class th
 class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
     GenesisTestConfig {
         addPackageName("global.genesis.eventhandler.pal")
-        genesisHome = "/GenesisHome/"
+        genesisHome = "<genesis-home>"
         parser = { it }
-        scriptFileName = "your-application-eventhandler.kts"
+        scriptFileName = "<app-name>-eventhandler.kts"
         initialDataFile = "seed-data.csv"
     }
 ) {
@@ -27,7 +27,7 @@ class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 
 For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing/#abstractgenesistestsupport).
 
-Once you have set up your configuration, you can start writing tests against our Event Handler.
+Once you have added your config above, you can start writing tests against our Event Handler.
 
 ## Writing tests
 
@@ -130,8 +130,6 @@ In the example below, we expect the response to be of type `EventNack`, which ha
 
 ### Testing with authorisation
 
-#### Set-up
-
 To test that the Event Handler authorisation works correctly, you need to do some setting up.
 
 First, make sure that your authorisation set-up is designed to behave as follows:
@@ -143,19 +141,27 @@ Second, you need to modify the previous example Event Handler so that only autho
 You can find a [Java event example](/database/api-reference/authorisation-api) in our Authorization API pages.
 
 ```kotlin
-    eventHandler<Trade>(name = "TRADE_INSERT") {
-        permissioning {
-            permissionCodes = listOf("TRADER")
-            auth(mapName = "ENTITY_VISIBILITY") {
-                field { counterpartyId }
-            }
-        }
-        onCommit { event ->
-            val trade = event.details
-            val result = entityDb.insert(trade)
-            ack(listOf(mapOf("TRADE_ID" to result.record.tradeId)))
+eventHandler<Trade>(name = "TRADE_INSERT") {
+    permissioning {
+        permissionCodes = listOf("TRADER")
+        auth(mapName = "ENTITY_VISIBILITY") {
+            field { counterpartyId }
         }
     }
+    onValidate { event ->
+        val message = event.details
+        verify {
+            entityDb hasEntry Counterparty.ById(message.counterpartyId)
+            entityDb hasEntry Instrument.ById(message.instrumentId)
+        }
+        ack()
+    }
+    onCommit { event ->
+        val trade = event.details
+        val result = entityDb.insert(trade)
+        ack(listOf(mapOf("TRADE_ID" to result.record.tradeId)))
+    }
+}
 ```
 
 Third, you need to specify the auth cache override in the `GenesisTestConfig`:
@@ -196,10 +202,6 @@ Fourth, in your test set-up, let's authorise one user to be able to insert trade
 ```
 
 For more information on authorisation, please see the [authorisation docs](/server-modules/access-control/authorisation-overview).
-
-### Tests
-
-After you have set things up. Now you can create the tests themselves.
 
 Below is a test that verifies only Traders can enter trades:
 
@@ -264,10 +266,10 @@ Following that, we have a test to verify that a trade cannot be entered if the u
 If you use Genesis Console, this gives you a simple way of testing components.
 
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
-2. Enter the IP address of your server.
-3. Log in with your user name and password. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
-4. Click on the **RESOURCES** tab.
-5. Filter the **Resource type** to show only event handlers.
+2. Enter the IP address of your server, in this case **localhost**.
+3. Log in with the username and password of your genesis user. This starts the Genesis Console, and you will see a list of tabs along the top of the screen.
+4. Click on the RESOURCES tab.
+5. Filter the Resource type to show only Event Handlers.
 
 For example:
 
