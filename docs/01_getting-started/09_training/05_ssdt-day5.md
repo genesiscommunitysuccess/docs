@@ -164,7 +164,7 @@ public class FileProcessor implements WebEndpoint {
 </TabItem>
 </Tabs>
 
-#### Exercise 4.2 ???
+#### Exercise 5.1 ???
 <!--
 https://docs.genesis.global/secure/creating-applications/defining-your-application/integrations/custom-endpoints/ce-advanced-technical-details/#attachmentdownloadendpoint
 -->
@@ -195,7 +195,7 @@ Apache Camel integrations are defined within your application's **-camel.kts** f
 
 The Genesis low-code platform only includes the `camel-core` dependency. You will want to declare additional dependencies to make best use of the different available Camel components.
 
-### Camel configuration
+### Configuration
 
 - Add the configuration for the Camel module to the {applicationName}-processes.xml file:
 
@@ -243,7 +243,7 @@ camel {
 The `routeHandler` defines the possible routes for information to flow into and out of our system.  The example above defines one route. First, it defines the `pathStr` using the `GenesisPaths` class to find the `GENESIS_HOME` system environment variable. Next, it defines the route itself. The route in the example comes from the filesystem determined by the `file:` specifier at the start of the string. This could be any [Apache Camel component](https://camel.apache.org/components/3.16.x/index.html) that can act as a [consumer](https://camel.apache.org/manual/camelcontext.html#_consumer). Further `routeHandler` parameters and explanation can be found [here](/server-modules/integration/apache-camel/basics/#routehandler).
 
 
-#### Exercise 5.1 Reading and Writing using an SFTP server
+#### Exercise 5.2 Reading and Writing using an SFTP server
 <!--
 this is pretty much here: http://localhost:8080/server-modules/integration/apache-camel/examples/#reading-from-an-sftp-server
 -->
@@ -264,4 +264,101 @@ You can see some samples [here](https://camel.apache.org/components/3.18.x/ftp-c
 
 ## Data pipeline
 
-https://docs.genesis.global/secure/creating-applications/defining-your-application/integrations/data-pipeline/overview/
+You can define data pipelines that map data from an external source (database, file) to [Tables](/database/fields-tables-views/tables/) in your application. By default, the resulting Table objects are stored in the database. However, you can define [custom operations](/server-modules/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity) as well.
+
+Each data pipeline defines a source for the data and how that data is mapped to each [Field](/database/fields-tables-views/fields/) in the Table. If a field mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a `transform` function that has a return value that is mapped to the required Field.
+
+Once your Genesis application is running, data ingestion will take place.
+
+Currently, the supported sources are: *PostgreSQL*, *MS SQL Server*, *Oracle Enterprise*, and *Files* that originate from the local filesystem or S3 (CSV, XML, JSON). The parameters and sample usage for each supported data source can be found [here](/server-modules/integration/data-pipeline/basics/#data-source).
+
+### Configuration
+
+- Add the configuration for the Camel module to the {applicationName}-processes.xml file:
+
+```xml
+<processes>
+    <process name="DATAPIPELINE_SANDBOX">
+        <groupId>data-pipeline</groupId>
+        <start>true</start>
+        <options>-Xmx1024m</options>
+        <module>genesis-pal-datapipeline</module>
+        <script>alpha-datapipeline.kts</script>
+        <description>Trades execution</description>
+        <language>pal</language>
+        <loggingLevel>TRACE,DATADUMP_ON</loggingLevel>
+    </process>
+</processes>
+```
+
+Where the position-camel-libs module may have similar dependencies to the following:
+
+```kotlin
+    api("org.apache.camel:camel-mail:3.14.2")
+    api("javax.mail:javax.mail-api:1.6.2")
+```
+
+- Next, add the service definition to the {applicationName}-service-definitions.xml file:
+
+```xml
+<configuration>
+    ...
+    <service host="localhost" name="DATAPIPELINE_SANDBOX" port="11007"/>
+</configuration>
+```
+
+- Create a kotlin script file named **{applicationName}-datapipeline.kts** file. Here is a sample configuration using *PostgreSQL*:
+```kotlin
+sources {
+
+    postgres("cdc-test") {
+        hostname = "localhost"
+        port = 5432
+        username = "postgres"
+        password = "docker"
+        databaseName = "postgres"
+
+        table {
+            "public.source_trades" to mapper("incoming_trades", TRADE) {
+                val tradeId = stringValue("trd_id")
+                val tradedAt = longValue("traded_at")
+
+                TRADE {
+
+                    TRADE_TYPE {
+                        sourceProperty = "side"
+                    }
+
+                    TRADE_DATE {
+                        transform {
+                            DateTime(input.get(tradedAt))
+                        }
+                    }
+
+                    RECORD_ID {
+                        transform {
+                            input.get(tradeId).removePrefix("ITS_").toLong()
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+#### Exercise 5.3 Reading and Writing using an SFTP server
+<!--
+this is pretty much here: https://docs.genesis.global/secure/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-examples/
+-->
+:::info ESTIMATED TIME
+30 mins
+:::
+
+We are creating now a Data pipeline to ingest trades using CSV. To do that, consider the same layout we showed the *PostgreSQL* configuration.
+
+:::tip
+Check the CSV options [here](/server-modules/integration/data-pipeline/basics/#csv).
+:::
+
+
