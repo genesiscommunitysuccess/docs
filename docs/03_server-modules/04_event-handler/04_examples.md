@@ -108,7 +108,7 @@ And now an example with [fixed permissions](http://localhost:3000/server-modules
 ```
 
 ## Transactions
-Below is an example of how to make an Event Handler [transactional](http://localhost:3000/server-modules/event-handler/basics/#transactional-event-handlers-acid).
+Below is an example of how to make an Event Handler [transactional](/server-modules/event-handler/basics/#transactional-event-handlers-acid).
 
 ```kotlin
     eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
