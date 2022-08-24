@@ -1,11 +1,10 @@
 ---
-title: 'Generic'
-sidebar_label: 'Generic'
-id: generic
+title: 'WriteResult'
+sidebar_label: 'WriteResult'
+id: writeResult
 ---
 
 ## Generic write result
-
 
 The entity database will return type-safe results for write operations. There are four main write results, one for each type of write operation. 
 
@@ -16,18 +15,15 @@ In all cases, the records in the result will be a generated entity that matches 
 -   `ModifyResult`
 -   `UpsertResult`; either a `InsertResult` or a `ModifyResult`
 
-InsertResult[​](/database/helper-classes/write-results/generic/#insertresultdirect-link-to-heading)
---------------------------------------------------------------------------------------------------------------------------------------------------------------
+## InsertResult
 
 The `InsertResult` has a single property `record` which is the inserted record. This includes any generated values.
 
-DeleteResult[​](/database/helper-classes/write-results/generic/#deleteresultdirect-link-to-heading)
---------------------------------------------------------------------------------------------------------------------------------------------------------------
+## DeleteResult
 
 The `DeleteResult` has a single property `record` which is the record as it was in the database before it was deleted.
 
-ModifyResult[​](/database/helper-classes/write-results/generic/#modifyresultdirect-link-to-heading)
---------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ModifyResult
 
 The `ModifyResult` is slightly more complex. It has three properties:
 

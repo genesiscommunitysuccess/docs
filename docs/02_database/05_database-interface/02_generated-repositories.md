@@ -27,7 +27,7 @@ The main differences between the generated repositories and the [Entity Db](/da
 | References indexes as | Generated methods                                                                                      |
 | Programming interface | [Async](/database/types-of-api/async/) or [RxJava](/database/types-of-api/rxjava/)                    |
 | Write (input) | Generated                                                                                              |
-| Write (output) | [Legacy Write Result](/database/helper-classes/write-results/legacy/)                                  |
+| Write (output) | [Write Result](/database/helper-classes/write-result/)                                  |
 | Subscribe | [Generic Record Update](/database/helper-classes/subscription/record-update/) of entity                |
 | Bulk or Range Subscribe | [Bulk](/database/helper-classes/subscription/bulk/) of entity                                          |
 | Available in [Event Handlers](/getting-started/learn-the-basics/modules/inside-an-event-handler/) | ❌                                                                                                      |
