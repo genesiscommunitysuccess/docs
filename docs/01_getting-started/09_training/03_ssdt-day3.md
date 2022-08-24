@@ -430,4 +430,59 @@ I order to apply the knowledge you got recently, limit the number of rows return
 
 ## ExcelToGenesis
 
-https://docs.genesis.global/secure/creating-applications/defining-your-application/integrations/external-systems/exceltogenesis/excel-reference/#exceltogenesis
+All across the financial sector, you can find operational functions sitting in Excel workbooks. And this sometimes includes functions that are mission-critical. 
+
+[ExcelToGenesis](/server-modules/integration/excel-to-genesis/excel-reference/#exceltogenesis) converts the Excel spreadsheet into the Genesis data model, which can then be used to generate a working server.
+
+There are three mandatory [options](/server-modules/integration/excel-to-genesis/excel-reference/#options) to use ExcelToGenesis: -f the name of the worksheet you are going to convert; -n the name of the project (application) you want to create.; -t the start of the table id sequence (see note after the sample below).
+
+```shell
+ExcelToGenesis -f euc\\ demo\\ cash\\ mgmt.xlsx -n cash -t 10000
+```
+
+Each table is automatically given a unique numeric ID. Supply the opening sequence number, for example, 10000. Numeric IDs are useful because they enable you to change the name of a table without losing the data. By default, the conversion process will convert each separate worksheet into a table.
+
+The conversion script turns Excel functions in the named workbook into Kotlin code. The most common [Excel functions](/server-modules/integration/excel-to-genesis/excel-functions/) are all covered. Moreover, the conversion creates a folder called `/home/core/run/_name_.cfg` where name is the application name specified in the script. This contains the default definitions to fields, tables, and views (i.e. `_name_-fields-dictionary.kts`, `_name_-tables-dictionary.kts`, `_name_-view-dictionary.kts`), and the data from each worksheet is extracted to a separate csv file.
+
+#### Exercise 3.3 Using ExcelToGenesis
+
+:::info ESTIMATED TIME
+45 mins
+:::
+
+Let's do a quick exercise. We start with an Excel workbook. We finish with a simple but effective server that you can add a front end to.
+
+First, create an Excel file (mgmt.xlsx) with one tab called 'Cash Mgmt Dashboard' and load the following data into it.
+
+```csv
+"ACCT_CODE","ACCOUNT_NAME","ACCOUNT_NUMBER","ACCOUNT_CURRENCY","AVAILABLE_BALANCE_DATE","PREVIOUS_CLOSE_BALANCE","EXPECTED_MARGIN_INFLOWS","EXPECTED_MARGIN_OUTFLOWS","NET_AVAILABLE_BALANCE","TBILLS_HOLDINGS","CURRENT_FUNDING_POSN","FUND_HOLDINGS_LEVEL","PERCENT_OF_FUNDS_ALL","SUGGESTED_ACTION","DEPOSIT_AMOUNT_ON_MAY_IN_PERCENT_HAIR_CUT_AND_MAX_PERCENT_ON_FUNDS","MAX_DEPOSIT_AMOUNT_BASED_ON_PERCENT_LIMIT","POTENTIAL_ADDITIONAL_TBILLS_DEPOSIT","EXPECTED_BALANCE_AFTER_REDEMPTION_PER_DEPOSIT_CASH_ONLY_NO_TBILLS","EXPECTED_CASH_BALANCE_PERCENT"
+"22HS002","HARRISON GEM DEBT TOTAL RET","400515-73293786","USD","2018-06-06T00:00",,"6324131.264","-710000.0","1.5792632929E8","0.0","0.0","0.0","0.0","DEPOSIT","1.26341063432E8","1.3646971152574575E8","0.0",,"0.0"
+"24HS015","HARRISON GEM BOND","400515-73293684","USD","2018-06-06T00:00",,"940000.0","-1524265.8","1.4552071188E8","4.490730003118515E7","0.0","0.0","0.0","DEPOSIT","1.1641656950400001E8","3.827067500084964E8","4.490730003118515E7","3.0628408176E7","0.0079230701035628"
+"21HS001","HARRISON GEM LOC DBT OLAY","400515-73294157","USD","2018-06-06T00:00",,"5870000.0","-3560000.0","1.5986032965E8","1.1378883589836652E9","0.0","1.860230439E7","0.006464116805936957","DEPOSIT","1.2788826372000001E8","2.662978900060171E8","1.3840962628601706E8","3.553206592999999E7","0.012347041512300127"
+"31HS091","HARRISON GLOBAL HIGH YIELD BOND US FIXE","400515-73423766","USD","2018-06-06T00:00","2.818183719E7","0.0","-885648.28","9234858.05","0.0","0.0","2.256239879E7","0.023281613162053506","DEPOSIT","7387886.440000001","7.33792984052206E7","0.0","2732619.8899999987","0.0028197267404966907"
+"21HS118","HARRISON GEM LOCAL CCY RATES","400515-74216790","USD","2018-06-06T00:00","8.7873232E7","0.0","-220000.0","6811542.99","1.9983200001186796E7","0.0","0.0","0.0","DEPOSIT","5449234.392000001","2.228452513942915E7","1.6835290747429147E7","1582308.5979999993","0.007029476743250574"
+"30HS123","HARRISON-GB CORP BD (US SL)-AMEU","400515-74429794","USD","2018-06-06T00:00","3223323.0","0.0","0.0","7307726.11","0.0","0.0","85660.62000000011","6.451190070137826E-5","DEPOSIT","5846180.888","1.3136917620546082E8","0.0","1461545.4519999996","0.0011007050272339245"
+"30HS056","HARRISON HIGH INCOME-EMD","400515-73294790","USD","2018-06-06T00:00","1.468687899E7","0.0","-320000.0","1.477901352E7","0.0","0.0","0.0","0.0","DEPOSIT","1.1823210816E7","4.3218194548963524E7","0.0","3275802.704","0.007503887450193767"
+"21HS184","HARRISON GEM LOC DEBT EX-ASIA","400515-76690541","USD","2018-06-06T00:00","1.007845887E7","0.0","0.0","1.008958349E7","0.0","0.0","0.0","0.0","DEPOSIT","1023728.0723177514","1266863.4894932173","0.0","9065855.41768225","0.7084580886529274"
+"37HS191","HARRISON GLB CORP FX T BD 2020","400515-77050130","USD","2018-06-06T00:00","62024.18","0.0","0.0","-176715.13","0.0","0.0","0.0","0.0","DEPOSIT","false","2.9759165768984433E7","0.0","-176715.13","-5.878793110603057E-4"
+```
+Then, follow the steps below.
+
+- Do some up-front checks and edits to head off any obvious issues.
+- Run the convertor. This creates your data model in Genesis format and creates data files in csv format.
+- Check the fields, tables and views in the data model. Then make any necessary adjustments.
+- Load another csv sample data to the database.
+- Run a quick sequence of Genesis scripts to produce the files that contain the business logic and expose the endpoints.
+
+That’s it. If you follow those steps, you'll have a working server, ready to be connected to a front end.
+
+:::tip
+The command to run the convertor is pretty much the one we presented here.
+```shell
+ExcelToGenesis -f euc\\ demo\\ cash\\ mgmt.xlsx -n cash -t 10000
+```
+:::
+
+<!--
+Answer is pretty much here: https://docs.genesis.global/secure/tutorials/excel-to-genesis/overview/
+-->
