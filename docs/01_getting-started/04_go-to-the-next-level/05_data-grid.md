@@ -10,13 +10,13 @@ For your user interface, the `genx` process has generated the following files:
 - **home.ts**
 - **home.styles.ts**
 
-Before we make any changes you need to install your npm dependencies by running in your terminal
+Before we make any changes, you need to install your npm dependencies by running the following in your terminal:
 
 ```shell
 npm run bootstrap
 ```
 
-Once you have all dependecies install you can run your UI with following command in terminal
+Once you have all dependencies installed, you can use the terminal to run your UI with the following command: 
 
 ```shell
 npm run dev
@@ -26,7 +26,7 @@ The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
 
 
-In the template file we start by adding genesis data source pointing to appropriate resource name and wrapped in a grid of our choice. For this example we will use ag-grid.
+In the template file, start by adding the Genesis data source pointing to the appropriate resource name; this must be wrapped in a grid of your choice. For this example we shall use ag-grid.
 
 [//]: # (link to ag-genesis-datasource tsdocs)
 ```html title="home.template.ts"
@@ -38,11 +38,11 @@ In the template file we start by adding genesis data source pointing to appropri
 </zero-ag-grid>
 ```
 
-This will result in grid displaying all the columns available in the for this resource.
+This will result in grid displaying all the columns available in the for the `ALL_POSITIONS` resource.
 
-### Grid interaction
+## Grid interaction
 
-To add new columns that are not part of the API we can add additional column definitions.
+To add new columns that are not part of the API, we can add additional column definitions.
 
 ```html {6} title="home.template.ts"
 <zero-ag-grid>
@@ -55,9 +55,9 @@ To add new columns that are not part of the API we can add additional column def
 
 ```
 
-In component definition file we can provide method that will allow us to interact with the rest of the class.
-The example below would create a column with a button that will log data in the row to the console.
-Here you can easily swap logging the row data with some custom logic like calling backend api that we will cover in more details later on.
+In the component definition file, we can provide a method that enables us to interact with the rest of the class.
+The example below creates a column with a button that logs data in the row to the console.
+Here you can easily swap logging the row data with some custom logic (such as calling a back-end api that we shall cover in more detail later on).
 
 ```typescript title="home.ts"
   public singlePositionActionColDef: ColDef = {
@@ -76,11 +76,12 @@ Here you can easily swap logging the row data with some custom logic like callin
   };
 ```
 
-### Providing custom column config
+## Custom column config
 
-If we want to fully customise how columns are displayed we can provide column config for every column.
+If you want to customise how each column is displayed, you can provide column config for every column.
 
-Create a new file called positionColumnDefs.ts in the same directory
+Create a new file called positionColumnDefs.ts in the same directory.
+
 ```typescript title="positionColumnDefs.ts"
 export const positionColumnDefs: ColDef[] = [
   {field: 'INSTRUMENT_NAME', headerName: 'Instrument', sort: 'desc', flex: 2},
@@ -92,9 +93,9 @@ export const positionColumnDefs: ColDef[] = [
 ];
 ```
 
-To stop automatic generation of columns we need to add `only-template-col-defs` attribute to the zero-ag-grid.
+To stop automatic generation of columns, you need to add the `only-template-col-defs` attribute to the zero-ag-grid.
 
-Then we use [repeat](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive) directive to include all the columns from our column config array
+Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive) directive; this includes all the columns from our column config array.
 
 
 ```typescript {4,10-12} title="home.template.ts"
@@ -114,9 +115,9 @@ import {positionColumnDefs} from './positionColumnDefs.ts';
 </zero-ag-grid>
 ```
 
-### Saving user preferences
+## Saving user preferences
 
-Additionally, we can supply another attribute to zero-ag-grid called `persist-column-state-key` that would persist users changes to things like sorting, column order, visibility and others on their machine so when they reload the browser they would end up with the same configuration
+You can add the `persist-column-state-key` to the zero-ag-grid to persist user changes to things such as sorting, column order, and visibility on their machine. With this, when the user reloads the browser, they get the same configuration.
 
 ```html {2}
 <zero-ag-grid
