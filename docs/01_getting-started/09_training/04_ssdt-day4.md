@@ -16,7 +16,48 @@ import TabItem from '@theme/TabItem';
 
 ## DictionaryBuilder
 
-https://docs.genesis.global/secure/tutorials/building-an-application/reference-app/#1-generate-the-dictionary-files
+DictionaryBuilder connects to an RDBMS, parses schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases. As a script, it reads the source database and generates the appropriate fields, tables and views in Genesis format. These are stored in two files: **-fields-dictionary.kts** and **-tables-dictionary.kts**.
+
+The script accepts a series of [arguments](/operations/commands/server-commands/#syntax-23) to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc). Sample below.
+
+```shell
+DictionaryBuilder -u TAS -p my_password -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
+```
+
+Regarding how the script behaves, it tries to connect to the RDBMS currently specified in the arguments. It generates Genesis dictionary fields for column names and their types, and it creates tables with their fields and keys.
+
+There are a few considerations you should be aware of:
+
+- If a column name (e.g. DATE) is found in several tables, and it always has the same type, only one field will be specified in the dictionary. However, if the same column name is found in different tables with different types, a new field will be created for each type, keeping the column name and adding the table name (e.g. CALENDAR) in the following fashion: DATE_IN_CALENDAR. The script will output this event on screen so you can fix the name and/or type it manually later on.
+- The types are mapped from java types [here](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html) to Genesis dictionary types. Each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate; you must check the results for correctness.
+- If there is no mapping available for the java.sql.Type retrieved by the column metadata query, it will be mapped by default to the Genesis dictionary type STRING. This event will be shown on standard output too, so you can know that there is an uncommon type that you should take care of.
+- Every time a table is successfully parsed, the script will give feedback: TABLE USERS complete.
+- Views are not parsed.
+
+Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based. Only unique indexes will be parsed as secondary keys. There is no concept of foreign keys in Genesis, so these are ignored. Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE). Further details and type mapping are available [here](/operations/commands/server-commands/#type-mapping).
+
+#### Exercise 4.1 Running DictionaryBuilder from a local database
+
+:::info ESTIMATED TIME
+25 mins
+:::
+
+From a local database availble, let's create product that we create ref_data_app. All the files we create will start with that name. Then, run `DictionaryBuilder` using a instance in which the platform is installed.
+
+After the run, you should check these files and adjust them to suit your application. For example, look inside the fields-dictionary.kts file to see if the field definitions are correct.
+
+
+:::tip
+The command should like this.
+
+```shell
+DictionaryBuilder -t MSSQL -U admin -P beONneON*74 -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d tradingapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument
+```
+
+Note that we specified the names of the four source tables in the --tables argument of the command. So you could include just a subset of your source database if you wish.
+
+The dictionaryBuilder script generates the fields-dictionary.kts and tables-dictionary.kts files for the data model.
+:::
 
 ## Streamer​
 
@@ -207,7 +248,7 @@ sendFormatted("QUOTE_HANDLER", "QUOTE_EVENT") {
 }
 ```
 
-#### Exercise 4.1 Creating a Streamer solution to control TRADE_AUDIT table
+#### Exercise 4.2 Creating a Streamer solution to control TRADE_AUDIT table
 
 :::info ESTIMATED TIME
 45 mins
