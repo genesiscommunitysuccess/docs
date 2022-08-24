@@ -4,28 +4,26 @@ sidebar_label: 'Overview'
 id: 'database-landing'
 ---
 
-Welcome to our database documentation. 
-
-Check out or left-hand menu for the complete list of content available. We have tried to be as complete as we can in describing everything from basic concepts, through underlying technology to data structures and APIs. But let us know if we have missed something or just not made it clear enough.
+Welcome to our database documentation. Here, we shall look in detail at the model and structure of the Genesis database, and the different ways we can interact with it.
 
 ## Basics
 
 Before you start doing anything clever, there are some useful basics that will give you an understanding of the way the Genesis database works.
 
-- We start with details of the [Data Model](/database/fields-tables-views/fields-tables-views/), which is built on fields, tables and views.
+- [Data Model](/database/fields-tables-views/fields-tables-views/) - start by looking at how you can define your data model, which is built on fields, tables and views.
+- [Database Concepts](/database/database-concepts/database-concepts/) - you can then find out about read, write and subscribe operations and how each operation works.
+- [Data Types](/database/data-types/data-types/) - finally, have a look at the different entities used in the Genesis low-code platform.
 
-- Find out about read, write and subscribe operations in [Database Concepts](/database/database-concepts/read/), while you can look at different entities in [Data Types](/database/data-types/table-entities/).
 
-## Engaging with the database
+## Interacting with the database
 
-Once you know the basics, you can explore the details of how you are going to interact.
+Once you know the basics, you can explore the details of how you can interact with the database.
 
-- For the standard methods of interacting with the database, see [Database Interface](/database/database-interface/entity-db/).
- 
-- [Helper Classes](/database/helper-classes/helper-classes/) gives details of classes such as Subscription, Write Result and Modify Details.
+- [Database Interface](/database/database-interface/database-interface/) - You can have a look at the database interface for the standard methods of interacting with the database.
+- [Helper Classes](/database/helper-classes/helper-classes/) - You can look at helper classes for details of classes such as Subscription, Write Result and Modify Details.
+- Find out more about our [Async](/database/types-of-api/async/) and [RxJava](/database/types-of-api/rxjava/) APIs.
+- You can then explore specific APIs, such as the [Event Handler API](/database/api-reference/event-handler-api/) and [Authorisation API](/database/api-reference/authorisation-api/).
 
-- Find out about Genesis [Asynch and RxJava APIs](/database/types-of-api/async/).
 
-- Explore specific APIs, such as the [Event Handler API](/database/event-handler-api/event-handler-api/) and [Authorisation API](/database/authorisation-api/authorisation-api/)
 
 

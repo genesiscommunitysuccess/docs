@@ -6,6 +6,14 @@ id: introduction
 
 [Introduction](/server-modules/data-server/introduction) | [Basics](/server-modules/data-server/basics) |  [Advanced](/server-modules/data-server/advanced) | [More examples](/server-modules/data-server/examples) | [Configuring runtime](/server-modules/data-server/configuring-runtime) | [Testing](/server-modules/data-server/testing)
 
+```mermaid
+graph TD
+A[UI] --> |Connection| B(DATA_SERVER)
+B -->|Inital Data| A
+B --> |Updates| A
+B -->|Connection| C[Database]
+C --> |Changes in table/view trigger a read|B
+```
 Data Servers monitor specific tables or views in the database. When a change in data occurs, the Data Server sends the updates to all of its subscribers.
 
 The Data Server configuration is refreshingly light, because all the hard work is done by the table or views.
