@@ -4,13 +4,6 @@ sidebar_label: 'Run the application'
 id: run-the-application
 ---
 
-### Assembling the distributions
-
-Finally, you can build the server distributions.
-
-In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**Tasks**/**Build/Assemble**.
-
-![](/img/assemble-server.png)
 
 ### Building and composing Docker images 
 
@@ -36,4 +29,5 @@ That’s it. You have quickly built a very simple application using some fundame
 ![](/img/quickstart-app-final.png)
 
 There's obviously a lot more to building enterprise-ready applications. However, you now have enough knowledge and experience of the Genesis low-code platform to look at our reference documentation and learn more there. We hope you have a good experience.
+You may check the following section for tips and tricks for local development.
 

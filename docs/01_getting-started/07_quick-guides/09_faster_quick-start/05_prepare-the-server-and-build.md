@@ -47,4 +47,12 @@ Add the following content to the **alpha-service-definitions.xml** file.
     <service host="localhost" name="ALPHA_EVENT_HANDLER" port="11001"/>
 </configuration>
 ```
+### Assembling the distributions
 
+Finally, you can build the server distributions.
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**Tasks**/**Build/Assemble**.
+
+![](/img/assemble-server.png)
+
+You may proceed to the next section while this gradle task is running.
