@@ -7,12 +7,16 @@ sidebar_position: 5
 ---
 This day covers:
 
-- [Streamer​](#quick-review-of-the-platform)
-- [Streamer client](/tutorials/training-resources/environment-setup/)
-- [Custom endpoints](#developing-your-first-application)
+- [DictionaryBuilder](#)
+- [Streamer​](#streamer)
+- [Streamer client](#streamer-client)
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+
+## DictionaryBuilder
+
+https://docs.genesis.global/secure/tutorials/building-an-application/reference-app/#1-generate-the-dictionary-files
 
 ## Streamer​
 
@@ -221,168 +225,3 @@ Create a streamer called TRADE_AUDIT_OUT, based on the *TRADE_AUDIT* table. The 
 :::
 
 
-## Custom endpoints
-
-The Genesis low-code platform provides a series of REST endpoints exposing all configured resources (like Event Handlers, Request Server, Data Servers, Authentication) as HTTP endpoints via the [GENESIS_ROUTER](/server-modules/configuring-runtime/genesis-router/) service. 
-
-You can extend the Platform by creating custom endpoints, which make it easy to integrate with existing systems. Likely uses for these custom endpoints include: file upload and download, and integration into external authentication systems.
-
-To create a custom endpoint using the Genesis Router, simply implement the `WebEndpoint` interface provided by Genesis Router. Call upon the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
-
-In the following examples, a `FileEndpointCommon` class has also been created to hold utility methods that may be needed across multiple endpoints:
-
-### FileEndpointCommon
-
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-<TabItem value="kotlin">
-
-```kotlin
-public class FileEndpointCommon {
-    companion object {
-        const val ENDPOINT_NAME = "file-handler"
-   }
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-```java
-public class FileEndpointCommon {
-    static final String ENDPOINT_NAME = "file-handler";
-}
-```
-
-</TabItem>
-</Tabs>
-
-### FileProcessor
-
-<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
-<TabItem value="kotlin">
-
-```kotlin
-@Module
-class FileProcessorKotlin @Inject constructor(
-    private val registry: WebEndpointRegistry
-) : WebEndpoint {
-    @PostConstruct
-    fun init() {
-        registry.registerEndpoint(FileEndpointCommon.ENDPOINT_NAME, this)
-    }
-
-    override fun allowedMethods(): Set<RequestType> {
-        return ALLOWED_HTTP_METHODS
-    }
-
-    override fun name(): String {
-        return "upload"
-    }
-
-    override fun process(s: String, fullHttpRequest: FullHttpRequest, channel: Channel): Any {
-        LOG.debug("Hit {}/{} endpoint", FileEndpointCommon.ENDPOINT_NAME, name())
-        //This is where you would make calls to other services and libraries with the newly uploaded file.
-        val responseJson = "{ \"Result\": \"Successful upload\"}".toByteArray(StandardCharsets.UTF_8)
-        val responseBuffer = Unpooled.wrappedBuffer(responseJson)
-        val response = DefaultFullHttpResponse(
-            HttpVersion.HTTP_1_1,
-            HttpResponseStatus.OK,
-            responseBuffer
-        )
-        response.headers().add(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
-        HttpUtil.setContentLength(response, responseJson.size.toLong())
-        return response
-    }
-
-    override fun requiresAuth(): Boolean {
-        return if (System.getProperty("TEST_MODE") != null) {
-            false
-        } else {
-            super.requiresAuth()
-        }
-    }
-
-    companion object {
-        private val LOG = LoggerFactory.getLogger(FileProcessorKotlin::class.java)
-        private val ALLOWED_HTTP_METHODS: Set<RequestType> = ImmutableSet.of(RequestType.POST)
-    }
-}
-```
-
-</TabItem>
-<TabItem value="java">
-
-```java
-@Module
-public class FileProcessor implements WebEndpoint {
-
-    private static final Logger LOG = LoggerFactory.getLogger(FileProcessor.class);
-    private static final Set<RequestType> ALLOWED_HTTP_METHODS = ImmutableSet.of(RequestType.POST);
-
-    private final WebEndpointRegistry registry;
-
-    @Inject
-    public FileProcessor(WebEndpointRegistry registry) {
-        this.registry = registry;
-    }
-
-    @PostConstruct
-    public void init() {
-        this.registry.registerEndpoint(FileEndpointCommon.ENDPOINT_NAME, this);
-    }
-
-    @NotNull
-    @Override
-    public Set<RequestType> allowedMethods() {
-        return ALLOWED_HTTP_METHODS;
-    }
-
-    @NotNull
-    @Override
-    public String name() {
-        return "upload";
-    }
-
-    @NotNull
-    @Override
-    public Object process(@NotNull String s, @NotNull FullHttpRequest fullHttpRequest, @NotNull Channel channel) {
-        final byte[] responseJson = "{ \"Result\": \"Successful upload\"}".getBytes(StandardCharsets.UTF_8);
-        //This is where you would make calls to other services and libraries with the newly uploaded file.
-        final ByteBuf responseBuffer = Unpooled.wrappedBuffer(responseJson);
-        final DefaultFullHttpResponse response = new DefaultFullHttpResponse(
-                HttpVersion.HTTP_1_1,
-                HttpResponseStatus.OK,
-                responseBuffer
-        );
-        response.headers().add(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON);
-        HttpUtil.setContentLength(response, responseJson.length);
-        return response;
-    }
-
-    @Override
-    public boolean requiresAuth() {
-        if(System.getProperty("TEST_MODE") != null){
-            return false;
-        } else {
-            return WebEndpoint.super.requiresAuth();
-        }
-    }
-
-}
-```
-
-</TabItem>
-</Tabs>
-
-#### Exercise 4.2 ???
-<!--
-https://docs.genesis.global/secure/creating-applications/defining-your-application/integrations/custom-endpoints/ce-advanced-technical-details/#attachmentdownloadendpoint
--->
-:::info ESTIMATED TIME
-?? mins
-:::
-
-???.
-
-:::tip
-:::

@@ -7,8 +7,175 @@ sidebar_position: 6
 ---
 This day covers:
 
+- [Custom endpoints](#custom-endpoints)
 - [Camel module​](#camel-module)
 - [Data pipeline](#data-pipeline)
+
+## Custom endpoints
+
+The Genesis low-code platform provides a series of REST endpoints exposing all configured resources (like Event Handlers, Request Server, Data Servers, Authentication) as HTTP endpoints via the [GENESIS_ROUTER](/server-modules/configuring-runtime/genesis-router/) service. 
+
+You can extend the Platform by creating custom endpoints, which make it easy to integrate with existing systems. Likely uses for these custom endpoints include: file upload and download, and integration into external authentication systems.
+
+To create a custom endpoint using the Genesis Router, simply implement the `WebEndpoint` interface provided by Genesis Router. Call upon the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
+
+In the following examples, a `FileEndpointCommon` class has also been created to hold utility methods that may be needed across multiple endpoints:
+
+### FileEndpointCommon
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+public class FileEndpointCommon {
+    companion object {
+        const val ENDPOINT_NAME = "file-handler"
+   }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+public class FileEndpointCommon {
+    static final String ENDPOINT_NAME = "file-handler";
+}
+```
+
+</TabItem>
+</Tabs>
+
+### FileProcessor
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+@Module
+class FileProcessorKotlin @Inject constructor(
+    private val registry: WebEndpointRegistry
+) : WebEndpoint {
+    @PostConstruct
+    fun init() {
+        registry.registerEndpoint(FileEndpointCommon.ENDPOINT_NAME, this)
+    }
+
+    override fun allowedMethods(): Set<RequestType> {
+        return ALLOWED_HTTP_METHODS
+    }
+
+    override fun name(): String {
+        return "upload"
+    }
+
+    override fun process(s: String, fullHttpRequest: FullHttpRequest, channel: Channel): Any {
+        LOG.debug("Hit {}/{} endpoint", FileEndpointCommon.ENDPOINT_NAME, name())
+        //This is where you would make calls to other services and libraries with the newly uploaded file.
+        val responseJson = "{ \"Result\": \"Successful upload\"}".toByteArray(StandardCharsets.UTF_8)
+        val responseBuffer = Unpooled.wrappedBuffer(responseJson)
+        val response = DefaultFullHttpResponse(
+            HttpVersion.HTTP_1_1,
+            HttpResponseStatus.OK,
+            responseBuffer
+        )
+        response.headers().add(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
+        HttpUtil.setContentLength(response, responseJson.size.toLong())
+        return response
+    }
+
+    override fun requiresAuth(): Boolean {
+        return if (System.getProperty("TEST_MODE") != null) {
+            false
+        } else {
+            super.requiresAuth()
+        }
+    }
+
+    companion object {
+        private val LOG = LoggerFactory.getLogger(FileProcessorKotlin::class.java)
+        private val ALLOWED_HTTP_METHODS: Set<RequestType> = ImmutableSet.of(RequestType.POST)
+    }
+}
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+@Module
+public class FileProcessor implements WebEndpoint {
+
+    private static final Logger LOG = LoggerFactory.getLogger(FileProcessor.class);
+    private static final Set<RequestType> ALLOWED_HTTP_METHODS = ImmutableSet.of(RequestType.POST);
+
+    private final WebEndpointRegistry registry;
+
+    @Inject
+    public FileProcessor(WebEndpointRegistry registry) {
+        this.registry = registry;
+    }
+
+    @PostConstruct
+    public void init() {
+        this.registry.registerEndpoint(FileEndpointCommon.ENDPOINT_NAME, this);
+    }
+
+    @NotNull
+    @Override
+    public Set<RequestType> allowedMethods() {
+        return ALLOWED_HTTP_METHODS;
+    }
+
+    @NotNull
+    @Override
+    public String name() {
+        return "upload";
+    }
+
+    @NotNull
+    @Override
+    public Object process(@NotNull String s, @NotNull FullHttpRequest fullHttpRequest, @NotNull Channel channel) {
+        final byte[] responseJson = "{ \"Result\": \"Successful upload\"}".getBytes(StandardCharsets.UTF_8);
+        //This is where you would make calls to other services and libraries with the newly uploaded file.
+        final ByteBuf responseBuffer = Unpooled.wrappedBuffer(responseJson);
+        final DefaultFullHttpResponse response = new DefaultFullHttpResponse(
+                HttpVersion.HTTP_1_1,
+                HttpResponseStatus.OK,
+                responseBuffer
+        );
+        response.headers().add(HttpHeaderNames.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON);
+        HttpUtil.setContentLength(response, responseJson.length);
+        return response;
+    }
+
+    @Override
+    public boolean requiresAuth() {
+        if(System.getProperty("TEST_MODE") != null){
+            return false;
+        } else {
+            return WebEndpoint.super.requiresAuth();
+        }
+    }
+
+}
+```
+
+</TabItem>
+</Tabs>
+
+#### Exercise 4.2 ???
+<!--
+https://docs.genesis.global/secure/creating-applications/defining-your-application/integrations/custom-endpoints/ce-advanced-technical-details/#attachmentdownloadendpoint
+-->
+:::info ESTIMATED TIME
+?? mins
+:::
+
+???.
+
+:::tip
+:::
 
 
 ## Camel module
@@ -26,9 +193,43 @@ Note that Camel's power and flexibility comes at the cost of some complexity and
 
 Apache Camel integrations are defined within your application's **-camel.kts** file. This is located in the **src/main/resources/scripts** directory within your application's **-script-config** submodule.
 
+The Genesis low-code platform only includes the `camel-core` dependency. You will want to declare additional dependencies to make best use of the different available Camel components.
+
 ### Camel configuration
 
-Here is a simple example of a** *-camel.kts** file. It defines a single route using a range of Camel configuration options, which we'll explore in a little more detail below:
+- Add the configuration for the Camel module to the {applicationName}-processes.xml file:
+
+```xml
+  <process name="ALPHA_CAMEL">
+    <groupId>ALPHA</groupId>
+    <start>true</start>
+    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
+    <module>genesis-pal-camel</module>
+    <package>global.genesis.eventhandler.pal</package>
+    <script>alpha-eventhandler.kts</script>
+    <description>Handles events</description>
+    <classpath>alpha-messages*,alpha-camel*,alpha-camel-libs*.jar</classpath>
+    <language>pal</language>
+  </process>
+```
+
+Where the position-camel-libs module may have similar dependencies to the following:
+
+```kotlin
+    api("org.apache.camel:camel-mail:3.14.2")
+    api("javax.mail:javax.mail-api:1.6.2")
+```
+
+- Next, add the service definition to the {applicationName}-service-definitions.xml file:
+
+```xml
+<configuration>
+    ...
+    <service host="localhost" name="ALPHA_CAMEL" port="11006"/>
+</configuration>
+```
+
+- Create a kotlin script file named **{applicationName}-camel.kts** file. It defines a single route using a range of Camel configuration options, which we'll explore in a little more detail below:
 ```kotlin
 camel {
     routeHandler {
@@ -42,20 +243,23 @@ camel {
 The `routeHandler` defines the possible routes for information to flow into and out of our system.  The example above defines one route. First, it defines the `pathStr` using the `GenesisPaths` class to find the `GENESIS_HOME` system environment variable. Next, it defines the route itself. The route in the example comes from the filesystem determined by the `file:` specifier at the start of the string. This could be any [Apache Camel component](https://camel.apache.org/components/3.16.x/index.html) that can act as a [consumer](https://camel.apache.org/manual/camelcontext.html#_consumer). Further `routeHandler` parameters and explanation can be found [here](/server-modules/integration/apache-camel/basics/#routehandler).
 
 
-#### Exercise 5.1 Reading and Writing using a SFTP server
+#### Exercise 5.1 Reading and Writing using an SFTP server
 <!--
-http://localhost:8080/server-modules/integration/apache-camel/examples/#reading-from-an-sftp-server
-https://www.sftp.net/public-online-sftp-servers
+this is pretty much here: http://localhost:8080/server-modules/integration/apache-camel/examples/#reading-from-an-sftp-server
 -->
 :::info ESTIMATED TIME
-?? mins
+45 mins
 :::
 
-???.
+It is your time! Using the Camel module build a Reading and Writing structure using an [SFTP](https://camel.apache.org/components/3.16.x/sftp-component.html) server. 
+
+You can use any SFTP public server available to do that. [Here](https://www.sftp.net/public-online-sftp-servers) you have some options to select.
 
 :::tip
-:::
+Use properties set in the _application_**-camel.kts**, allowing you to have site-specific variables for each instance. This is particularly useful when integrating with external services where connection details are likely to vary between environments.
 
+You can see some samples [here](https://camel.apache.org/components/3.18.x/ftp-component.html#_samples). 
+:::
 
 
 ## Data pipeline

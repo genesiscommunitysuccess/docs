@@ -9,6 +9,7 @@ This day covers:
 
 - [Advanced data servers​](#advanced-request-servers)
 - [Advanced request servers](#advanced-request-servers)
+- [ExcelToGenesis](#exceltogenesis)
 
 
 ## Advanced data servers
@@ -426,3 +427,7 @@ Futher details and examples can be found [here](/server-modules/request-server/a
 We can presume the Counterparty table does not change so much, so we would not have to be connected to the client to get recent updates. Therefore, it is worth moving ALL_COUNTERPARTIES from Data Servers to Request Servers.
 
 I order to apply the knowledge you got recently, limit the number of rows returned to 20 and set a timeout of 10 seconds.
+
+## ExcelToGenesis
+
+https://docs.genesis.global/secure/creating-applications/defining-your-application/integrations/external-systems/exceltogenesis/excel-reference/#exceltogenesis

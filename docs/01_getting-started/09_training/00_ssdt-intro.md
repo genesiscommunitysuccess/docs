@@ -32,9 +32,9 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 
 - [Day 1](#): System definitions, advanced event handlers.
 - [Day 2](#): Notify, dynamic rules, advanced views.
-- [Day 3](#): Advanced data Servers, advanced request servers.
-- [Day 4](#): Streamer, streamer client, custom endpoints.
-- [Day 5](#): Camel module, data pipeline​.
+- [Day 3](#): Advanced data Servers, advanced request servers, ExcelToGenesis.
+- [Day 4](#): DictionaryBuilder, streamer, streamer client, custom endpoints.
+- [Day 5](#): Custom endpoints, camel module, data pipeline​.
 
 ## Genesis low-code platform version
 6.0.2
