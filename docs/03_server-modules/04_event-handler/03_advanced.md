@@ -23,7 +23,7 @@ data class TradeEvent(
 }
 ```
 
-... and  a custom message reply type called `CustomTradeEventReply` defined as:
+...and a custom message reply type called `CustomTradeEventReply` defined as:
 
 ```kotlin
 sealed class CustomTradeEventReply : Outbound() {
@@ -33,7 +33,9 @@ sealed class CustomTradeEventReply : Outbound() {
 }
 ```
 
-... you could use the example Event Handler below:
+Add `CustomTradeEventReply` under **{app-name}-messages** and assemble. Once you have built, add `api(project(":alpha-messages"))` to your build.gradle.kts file under **{app-name}-script-config/build.gradle.kts**.
+
+...you can now use the following example Event Handler below:
 
 ```kotlin
     eventHandler<TradeEvent, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
