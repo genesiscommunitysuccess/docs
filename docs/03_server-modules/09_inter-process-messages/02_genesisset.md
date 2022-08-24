@@ -7,7 +7,7 @@ id: genesisSet
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-GenesisSet is a generic format for sending and receiving messages between Genesis processes. The information in the messages must be stored as key-value pairs.
+`GenesisSet` is a generic message format used to send data between Genesis processes. The information in the messages must be stored as key-value pairs.
 A GenesisSet can store integers, booleans, text, etc. Importantly, it can also contain other GenesisSets.
 
 In this section, we give you some examples that illustrate usage and structure.
