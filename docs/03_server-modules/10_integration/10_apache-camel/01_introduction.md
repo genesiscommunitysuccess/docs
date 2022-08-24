@@ -12,8 +12,8 @@ Genesis makes this easy to configure and set up, allowing new processors to be d
 
 Likely uses for Apache Camel include:
 
-* receiving data [from the local filesystem](/getting-started/quick-guides/loading-feed-data/overview/)
-* transmitting data [to or from an external location](/getting-started/quick-guides/loading-feed-data/sftp-and-encryption/)
+* receiving data [from the local filesystem](/getting-started/use-cases/loading-feed-data/overview/)
+* transmitting data [to or from an external location](/getting-started/use-cases/loading-feed-data/sftp-and-encryption/)
 
 Note that Camel's power and flexibility come at the cost of some complexity and configuration overhead.
 
