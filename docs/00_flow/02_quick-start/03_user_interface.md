@@ -72,9 +72,8 @@ You should now see the updated `Alpha Trading Dashboard` page title as well as t
 
 ## Recap
 
-Congratulations, you now have a local view of the application's user interface. 
-You have:
+Congratulations, you now have a local view of the application's user interface. We have:
 
-- started a local Web server
-- made the UI available in a web browser
-- made changes to the UI and reflected those changes in the web browser
+- Started a local Web server
+- Made the UI available in a web browser
+- Made changes to the UI and reflected those changes in the web browser
