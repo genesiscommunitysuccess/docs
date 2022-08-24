@@ -1,7 +1,7 @@
 ---
 id: installing-an-application
-title: Installing An Application
-sidebar_label: Installing An Application
+title: 'Installing An Application'
+sidebar_label: 'Installing An Application'
 sidebar_position: 2
 
 ---

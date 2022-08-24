@@ -1,7 +1,7 @@
 ---
 id: host-preparation
-title: Host Preparation
-sidebar_label: Host Preparation
+title: 'Host Preparation'
+sidebar_label: 'Host Preparation'
 sidebar_position: 1
 
 ---
