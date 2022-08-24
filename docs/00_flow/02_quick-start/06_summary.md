@@ -1,6 +1,6 @@
 ---
-title: 'Recap and Conclusion'
-id: recap-and-conclusion
+title: 'Summary'
+id: summary
 ---
 
 **That’s it.** You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.

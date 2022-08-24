@@ -1,9 +1,9 @@
 ---
-title: 'Sample Application'
-id: sample-application
+title: 'Add Features'
+id: add-features
 ---
 
-# Sample Application
+# Add Features
 
 We've now got our seed project created and configured. We've started our UI and Server and now we're ready to add features to our application.
 

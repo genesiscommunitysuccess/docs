@@ -1,9 +1,9 @@
 ---
-title: 'Create New Project'
-id: create-new-project
+title: 'Create Project'
+id: create-project
 ---
 
-# Create New Project
+# Create Project
 
 To help give you a helping hand in getting started with your applications, our [GenX CLI](/flow/introduction/prerequisites/#genx-cli)  tool will allow you to create seed projects. 
 
