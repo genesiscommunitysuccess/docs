@@ -166,7 +166,6 @@ You can run this command from within WSL or from your workstation. If you run it
 docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
 
 ```
-:::
 
 ## Recap
 

@@ -5,9 +5,23 @@ id: sample-application
 
 # Sample Application
 
-### Authentication
+We've now got our seed project created and configured. We've started our UI and Server and now we're ready to add features to our application.
 
-Currently, all our pages are public. We can protect pages with sensitive data by enabling the login service:
+
+### Expected Result
+
+For this part of the guide, we've picked out a few core features we can demonstrate while building a sample application. By the end of this step we will have:
+
+- **Authentication** enabled wth our app
+- Added a data **model** to describe the structure we'd like
+- Configured a **grid** to display the application data
+- Added a **form** to create data into our application
+
+## Authentication
+
+Currently, all our pages are public. We can protect pages with sensitive data by enabling the login service.
+
+Let's reopen **src/main/kotlin/global/genesis/alpha/Application.kt** and add `service(Login)`:
 
 ```kotlin
  ui("Alpha Trading Dashboard") {
@@ -23,11 +37,13 @@ You should now see a login screen:
 
 ![](/img/gpl-seed-login.png)
 
-Note: If the login button is not clickable, Web client was not able to connect to the Genesis API Host. You can confirm whether it's trying to connect to correct URL in browser console:
+:::note
+You can confirm whether it's trying to connect to the correct URL in the browser console, as seen in the image below:
+:::
 
 ![](/img/gpl-seed-host.png)
 
-### Add model
+## Model
 
 Now you are ready to define the fields and tables that make up your [data model](https://docs.genesis.global/secure/creating-applications/defining-your-application/data-model/data-model-overview/). This structures information in a simple way that can be viewed by users and processed by the application.
 
@@ -65,9 +81,9 @@ Once the project is open, there are two easy ways to find this file quickly in I
 
 :::
 
-### Grid
+## Grid
 
-Next, let's add a grid to display the trades. We do this by passing **TRADE** model to `entityManager`:
+Grids are our primary way of displaying information. For our application, let's add a grid to display our new **TRADE** model:
 
 ```kotlin
  ui("Alpha Trading Dashboard") {
@@ -79,37 +95,43 @@ Next, let's add a grid to display the trades. We do this by passing **TRADE** mo
 }
 ```
 
+## Update
+
 Adding an `entityManager` results in having additional server resources generated to supply the grid with data.
 
-To update the server we run the following tasks:
+Therefore, we need to update the server with the following tasks:
 
-### Generate server configuration
+### Regenerate
 
 ```shell
 ./gradlew :generateAll #On the IntelliJ terminal
 ```
 
-### Build the alpha product
+### Build
 
 ```shell
 ./gradlew :distribution:distZip #On the IntelliJ terminal
 ```
 
-### Deploy the alpha product
+### Deploy
 
 ```shell
 ./gradlew :alpha-deploy:deploy-genesisproduct-alpha.zip #On the IntelliJ terminal
 ```
 
-You will then see a grid on the UI.
+If the tasks above were successful, you will then see a grid on the UI.
 
 ![](/img/gpl-seed-grid.png)
 
-### Form
+## Form
 
-Grid title matches model name by default - let's customise it and set to `Trades` instead.
+Finally, let's allow users to submit new trades.
 
-Finally, let's allow users to submit new trades - this is done by enabling `EntityOperations.ADD` operation:
+This is done by enabling `EntityOperations.ADD` operation.
+
+We'll also customise the grid title to `Trades` instead.
+
+To do this, we need to modify the `entityManager` parameters:
 
 ```kotlin
  ui("Alpha Trading Dashboard") {
@@ -125,26 +147,41 @@ Finally, let's allow users to submit new trades - this is done by enabling `Enti
 }
 ```
 
-We again repeat the steps to update the server:
+## Update
 
-### Generate server configuration
+Because we've modified the `entityManager`, we need to regenerate in order to update our server.
+
+### Regenerate
 
 ```shell
 ./gradlew :generateAll #On the IntelliJ terminal
 ```
 
-### Build the alpha product
+### Build
 
 ```shell
 ./gradlew :distribution:distZip #On the IntelliJ terminal
 ```
 
-### Deploy the alpha product
+### Deploy
 
 ```shell
 ./gradlew :alpha-deploy:deploy-genesisproduct-alpha.zip #On the IntelliJ terminal
 ```
 
-If you click the **Add** button, you will see a form displayed in a modal:
+```shell
+./gradlew :alpha-deploy:deploy-genesisproduct-alpha.zip #On the IntelliJ terminal
+```
+
+Now, if you click the **Add** button, you will see a form displayed in a modal:
 
 ![](/img/gpl-seed-form.png)
+
+## Recap
+
+Congratulations, with just a few lines of code and some commands, we now have:
+
+- Authentication enabled on our application
+- A new data model for Trades
+- A grid display of all Trades
+- The ability to add new Trades via a form
