@@ -209,15 +209,25 @@ There are multiple ways you can test the back end of your application. It's impo
 4. Click on the **RESOURCES** tab.
 5. Filter the **Resource type** to show only event handlers.
 
+For example:
+
+![](/img/test-console-eh-filter-alpha.png)
+
 As well as the Event Handlers that you have defined yourself, you will also see other Event Handlers that have been generated automatically by the platform: anything that is a **GENESIS_CLUSTER** service, for example.
 
 If you click on any Event Handler in the list, the fields relevant to the event are displayed to the right.
+
+![](/img/test-console-eh-fields-alpha.png)
 
 Now you need to pick the Event Handler you want to test. So, let's look up EVENT_TRADE_INSERT.
 
 1. Find the Event Handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the Event Handler was set up.
 
+![](/img/test-console-eh-insert-trade-alpha.png)
+
 2. Enter the details of the new trade in the fields then click on **COMMIT**:
+
+![](/img/test-console-eh-insert-trade-alpha-2.png)
 
 If the Event Handler is working correctly, you will receive an **ACK**.
 
@@ -230,6 +240,10 @@ You can go on to check the `TRADE` table to see if your insert is there.
 
 2. Search for the relevant resource - in our case `TRADE`.
 
+![](/img/test-console-eh-confirm-trade-alpha.png)
+
 3. Click on the arrow beside the relevant resource. You should now see the new trade in the list displayed on the right.
+
+![](/img/test-console-eh-confirm-trade-alpha-2.png)
 
 Alternatively you can use `DbMon` similar to the way the `USER` table was queried
