@@ -27,9 +27,9 @@ We are going to call this example application **alpha**. You will see this refle
 ## What will you learn?
 
 Upon completion, you should have knowledge of how to build an application using Flow with a keen focus on:
-- Setting up your environment for this and future applications
-- Creating initial applications using our Flow seed
+- Setting up your environment for this and future *low-code* applications
+- Creating a starting project structure using our [Flow](/flow/introduction/) application seed
 - Modelling data with clear type definitions
 - Building grid views to visualise data
 - Setting up forms to manipulate the data set
-- Integrating with our existing components, in this case our Auth component 
+- Integrating with our existing components, in this case our Login (auth) component 

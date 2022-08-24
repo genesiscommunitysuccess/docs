@@ -3,6 +3,16 @@ title: 'Summary'
 id: summary
 ---
 
-**That’s it.** You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.
+**That’s it** 🎉👏🏻
 
-There's obviously a lot more to building enterprise-ready applications. We suggest you read through [Defining your application](https://docs.genesis.global/secure/creating-applications/defining-your-application/intro/) for details of all the Genesis components and their features.
+You have created a full-stack application using the Genesis *low-code* development platform that shows:
+- A customisable grid surfacing any application data
+- A form allowing the ability to insert new data
+
+You have also learned how to: 
+- Set up your environment for this and future *low-code* applications
+- Create a starting project structure using our [Flow](/flow/introduction/) application seed
+- Model data with clear type definitions
+- Build grid views to visualise data
+- Set up forms to manipulate the data set
+- Integrate with our existing components, in this case our Login (auth) component 
