@@ -20,7 +20,7 @@ In system terms, Evaluators enable you to connect Event Handlers to two differen
 - __Cron Rules__  are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
 - __Dynamic Rules__, also known as Dynamic Events, are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
-In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this training, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [Defining a dynamic rule](/creating-applications/defining-your-application/business-logic/evaluators/configure/#defining-a-dynamic-rule).
+In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this training, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [Defining a dynamic rule](/server-modules/evaluator/basics/#defining-a-dynamic-rule).
 
 ### Cron rules (static events)​
 
@@ -135,7 +135,7 @@ eventHandler {
 ```
 
 #### 4.Load the cron rule on to the database
-Load the cron rule csv below into the database, [CRON_RULE](/creating-applications/defining-your-application/business-logic/evaluators/configure/#cron_rule-table) Table. 
+Load the cron rule csv below into the database, [CRON_RULE](/server-modules/evaluator/basics/#cron_rule-table) Table. 
 
 Run `SendIt`.
 
@@ -145,7 +145,7 @@ CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,ME
 ```
 
 #### 5.Change the log level to verify the execution of the events
-To do this, run the [LogLevel](/managing-applications/operate/on-the-host/helpful-commands/#loglevel-script) command:
+To do this, run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command:
 
 ```shell
 LogLevel -p GENESIS_EVALUATOR -DATADUMP_ON -l DEBUG
@@ -346,10 +346,10 @@ Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the i
 30 mins
 :::
 
-Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](/creating-applications/defining-your-application/business-logic/evaluators/configure/#cron_rule-table) table, and insert a new role changing the CRON_EXPRESSION value. 
+Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](/server-modules/evaluator/basics/#cron_rule-table) table, and insert a new role changing the CRON_EXPRESSION value. 
 
 :::tip 
-To delete rows you can use [DbMon](/managing-applications/operate/on-the-host/helpful-commands/#dbmon-script) and the command `delete`. After that you can use [SendIt](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script) to insert a new row again.
+To delete rows you can use [DbMon](/operations/commands/server-commands/#dbmon-script) and the command `delete`. After that you can use [SendIt](/operations/commands/server-commands/#sendit-script) to insert a new row again.
 
 By the way, the CRON expression for every 10 seconds is `0/10 * * * * *`. See a CRON generator [here](https://www.freeformatter.com/cron-expression-generator-quartz.html).
 :::
@@ -413,7 +413,7 @@ This table is only automatically maintained when profile user/right entries are 
 In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in PROFILE_USER and PROFILE_RIGHT and populates RIGHT_SUMMARY withe the correct data.
 :::
 
-Further information as well as a sample system set-up can be found [here](/creating-applications/defining-your-application/access-control/authorisation/#sample-explanation).
+Further information as well as a sample system set-up can be found [here](/server-modules/access-control/authorisation/#sample-explanation)
 
 ### The objective
 
@@ -422,12 +422,12 @@ The objective is to use dynamic permissions and permission codes so that specifi
 
 ### Set up generic permissions
 
-First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field part of the [generic permissions](/creating-applications/defining-your-application/access-control/authorisation/) system.
+First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field part of the [generic permissions](/server-modules/access-control/authorisation-overview/#generic-permissions) <!-- TODO: Is this the right link? --> system.
 
 Starting with the server, set up the USER and USER_ATTRIBUTES records for the system user JaneDee.
 
 :::tip
-If you are not sure how to read and write information from the Genesis database, see reference page covering the [`DbMon`](/managing-applications/operate/on-the-host/helpful-commands/#dbmon-script) and [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script) commands.
+If you are not sure how to read and write information from the Genesis database, see reference page covering the [`DbMon`](/operations/commands/server-commands/#dbmon-script) and [`SendIt`](/operations/commands/server-commands/#sendit-script) commands.
 :::
 
 Set two new key values in **site-specific/cfg/genesis-system-definition.kts** file. This enables the COUNTERPARTY table and COUNTERPARTY_ID field to become part of the generic permissions system:
@@ -526,12 +526,12 @@ If your message type is not a database-generated entity,  you can still define f
     }
 ```
 
-See [here](/creating-applications/defining-your-application/access-control/authorisation-over/) for more details on authorisation.
+See [here](/server-modules/access-control/authorisation/) <!-- TODO: Is this the right link?--> for more details on authorisation.
 
 
 After the configurations, you should execute the Genesis set-up tasks **setupEnvironment**, **install-auth-distribution** and **install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip** to prepare the database for permission. Then run **assemble** and **deploy-genesisproduct-alpha** tasks again to deploy the new version.
 
-Using the command [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script), make the following three configurations below.
+Using the command [`SendIt`](/operations/commands/server-commands/#dbmon-script), make the following three configurations below.
 
 1. Add the permission to the user JaneDee to use the table USER_ATTRIBUTES.
 
@@ -659,16 +659,16 @@ Understanding the file structure:
 - `runtime` contains important files used by the platform at run time. Do **not** change its content manually, but use commands like `ClearCodegenCache` (if you run into problems updating the data model) to manage some of its content. The `logs` folder contains all the logs, including logs from your modules (such as `alpha`) and from the platform itself.
 - `site-specific` is very useful when you want to override files from standard modules, such as `genesis` and `auth`.
 
-A more detailed explanation on the file structure can be found [here](/managing-applications/operate/on-the-host/folders/).
+A more detailed explanation on the file structure can be found here. <!-- TODO: What is the proper link for this?-->
 
 ### Key server commands
 
 So far, we've used commands such as `mon`, `DbMon`, `SendIt` and `LogLevel`. There are quite a few more important commands to help you operate the Genesis Platform:
-- [genesisInstall](/managing-applications/operate/on-the-host/helpful-commands/#genesisinstall-script)
-- [remap](/managing-applications/operate/on-the-host/helpful-commands/#remap-script)
-- [starting and stopping the server](/managing-applications/operate/on-the-host/important-commands/)
-- [DumpIt](/managing-applications/operate/on-the-host/helpful-commands/#dumpit-script)
-- [DropTable](/managing-applications/operate/on-the-host/helpful-commands/#droptable)
+- [genesisInstall](/operations/commands/server-commands/#genesisinstall-script)
+- [remap](/operations/commands/server-commands/#remap-script)
+- [starting and stopping the server](/operations/commands/server-commands/) <!-- TODO: What is the proper link for this?-->
+- [DumpIt](/operations/commands/server-commands/#dumpit-script)
+- [DropTable](/operations/commands/server-commands/#droptable)
 
 ### Practising the commands
 Let's do a manual deployment of the tables dictionary as an example of how to run the server commands.
@@ -696,7 +696,7 @@ startServer
 When deploying files manually like this, remember to push the change to version control as well, otherwise the next deployment will override the changes. Ideally, you'd change the file first in your IDE and then copy it to the server and run the commands. 
 :::
 
-An exhaustive list of commands can be found [here](/managing-applications/operate/on-the-host/helpful-commands/).
+An exhaustive list of commands can be found [here](/operations/commands/server-commands/). <!-- TODO: What is the proper link for this?-->
 
 ### Exercise 5.3: manual deployment of the application distribution
 :::info ESTIMATED TIME

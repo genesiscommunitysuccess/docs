@@ -24,7 +24,7 @@ Please follow these instructions very carefully to ensure your environment is re
 
 | Package	| Minimum Version| 
 |--------------|:-----:|
-| IntelliJ Community	| 2021.1.3|
+| IntelliJ Community	| 2022.2|
 | Visual Studio Code	| 1.52.1|
 | Java SDK| 11|
 | Chrome | 88.0|
@@ -76,7 +76,7 @@ Genesis Foundation UI
 ```
 :::caution trouble running npm?
 Please make sure:
-- you have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](/tutorials/training-resources/training-content-day1/#needed-software-packages). If you have an older version of npm (run 'npm -v'), make sure you uninstall it first.
+- you have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](/getting-started/developer-training/environment-setup/#required-software-packages). If you have an older version of npm (run 'npm -v'), make sure you uninstall it first.
 - if you're behind a corporate network, you may need to setup a proxy:
 ```shell
 npm config set proxy http://proxy_host:port

@@ -9,7 +9,7 @@ This covers:
 
 - [An introduction to UI](#intro-to-ui)
 - [Creating a user interface](#create-a-user-interface)
-- [Extending the data model](#extend-the-data-model)
+- [Extending the data model](#extending-our-initial-application)
 
 ## Introducing the UI
 
@@ -21,7 +21,7 @@ Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](ht
 
 Web Components are custom html elements that completely encapsulate their logic to create self-contained reusable components, that do not clash or interfere with the rest of application. They are future-proof and interoperable with traditional web frameworks such as Angular, React and Vue.
 
-We currently offer [over 40 web components](/reference/components/pre-built-components/ui-components/) such as Button and Text Field, which are ready to go. That number is growing (and we can work with you if you need to create bespoke web components for specific needs. 
+We currently offer over 40 web components <!-- TODO: What is the proper link for this? --> such as Button and Text Field, which are ready to go. That number is growing (and we can work with you if you need to create bespoke web components for specific needs. 
 
 Frameworks like React, Angular, Vue and so on, have traditionally offered component models to developers. However, Web Components are literally the standard component model of the web, written into the HTML specification. Applications themselves can be fully encapsulated web components too; for example, YouTube is a web component, made up of many smaller web components.
 
@@ -38,7 +38,7 @@ At Genesis, we use a number of technologies to enable this functionality, includ
 Our components are distributed as npm packages, such as:
 
 #### `@genesislcap/foundation-ui` 
-When you generate a [design system](/creating-applications/defining-your-application/user-interface/web-ui-reference/design-systems/intro/) using the CLI, it will automatically extend a base design system that we have provided. ​This highly configurable design system is called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options to provide everythin you need for your application.
+When you generate a [design system](/front-end/design-systems/introduction/) using the CLI, it will automatically extend a base design system that we have provided. ​This highly configurable design system is called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options to provide everythin you need for your application.
 
 #### `@genesislcap/foundation-zero` 
 Our design system variant, called Zero Design System​. This provides the standard components, such as buttons and data grids (wrappers around Microsoft FAST components); these can be easily integrated with the back end using component attributes such as 'resourceName', which displays and updates data in real time from a Data Server resource.
@@ -54,7 +54,7 @@ There are many more packages, but that's what we need for now to develop our app
 ### Web UI design
 ![](/img/WebUIDiagram.png)
 
-Please look at the complete [UI reference](/creating-applications/defining-your-application/user-interface/web-ui-reference/components/getting-started/) for more details about the Web UI. In this training, we're going to use the Micro Front-ends, which are the easiest way to start working with the UI.
+Please look at the complete UI reference<!-- TODO: What is the proper link for this? --> for more details about the Web UI. In this training, we're going to use the Micro Front-ends, which are the easiest way to start working with the UI.
 
 ## Create a user interface
 
@@ -295,7 +295,7 @@ As an alternative to Genesis Console, take this opportunity to test your work wi
 - [Insomnia App](https://insomnia.rest/download)
 
 :::tip REST endpoints
-When we test our resources using an HTTP client as described here, we're taking advantage of the [REST endpoints](/creating-applications/defining-your-application/integrations/rest-endpoints/) provided by the platform. Without any additional code from you, it automatically exposes all configured resources, such as Data Server queries and Event Handlers, as HTTP endpoints via the GENESIS_ROUTER service. This also enables you to do some API testing automation for all your back-end components.
+When we test our resources using an HTTP client as described here, we're taking advantage of the [REST endpoints](/server-modules/integration/rest-endpoints/introduction/) provided by the platform. Without any additional code from you, it automatically exposes all configured resources, such as Data Server queries and Event Handlers, as HTTP endpoints via the GENESIS_ROUTER service. This also enables you to do some API testing automation for all your back-end components.
 
 :::
 

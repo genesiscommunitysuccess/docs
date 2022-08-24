@@ -7,9 +7,9 @@ sidebar_position: 6
 ---
 This day covers:
 
-- [State management​](#state-management​)
+- [State management​](#state-management)
 - [Adding logic to the event handler](#adding-logic-to-the-event-handler)
-- [Auditing​](#auditing​)
+- [Auditing​](#auditing)
 
 ## State management​
 
@@ -349,7 +349,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 Add the same verification `onValidate` as in TRADE_INSERT to the TRADE_MODIFY event handler.
 
 
-Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](/tutorials/training-resources/training-content-day2/#a-test-alternative-to-genesis-console). Basically, you should create a POST request using the URL *http://localhost/gwf/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
+Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](/getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL *http://localhost/gwf/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
 
 ## Auditing​
 

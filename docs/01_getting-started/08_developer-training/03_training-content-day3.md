@@ -18,15 +18,15 @@ When you set up a data model, it implies relationships between tables. For examp
 
 Views enable you join related tables to create a single holistic view.
 
-In short, Views are the genesis equivalent of SQL select queries. Unlike [tables](/reference/developer/api/database/concepts/data-structure/tables/), views do not have any data of their own, they are read-only, but present a view based on one or more tables. 
+In short, Views are the genesis equivalent of SQL select queries. Unlike [tables](/database/data-structures/tables/), views do not have any data of their own, they are read-only, but present a view based on one or more tables. 
 
 A view always starts with a single table, the root table. Other tables can be joined onto the root table to present composite data. 
 
-Views are very powerful and in this training we're going to cover just the basics. When you have a chance, try to look at the [documentation](/creating-applications/defining-your-application/data-model/views/views/).
+Views are very powerful and in this training we're going to cover just the basics. When you have a chance, try to look at the [documentation](/database/fields-tables-views/views/).
 
 ### Entities
 
-During code generation, [view](/creating-applications/defining-your-application/data-model/views/views-define/) and [index entities](/reference/developer/api/database/how-to/data-types/indices/) will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
+During code generation, [view](/database/data-structures/views/) and [index entities](/database/data-structures/indices/) will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
 
 The generated entities are kotlin data classes and can be built using the primary constructor (so you can also import Views in your Java/Kotlin code as well). Just before the object is built, it is validated to make sure all required fields have been set.
 
@@ -175,7 +175,7 @@ Before running tests, install the [FoundationDB](https://genesisglobal.jfrog.io/
 
 Let's create a automated test that inserts and retrieves some data using Genesis' automated test support components, in summary:
 * load data from a CSV file 
-* retrieve data using [Genesis Database API](/reference/developer/api/database/overview/)
+* retrieve data using [Genesis Database API](/database/database-landing/) <!-- TODO: Is this the right link? -->
 
 
 So, first, let's do the following:
@@ -365,7 +365,7 @@ consolidator(TRADE, ORDER) {
 }
 ```
 
-In the above example, we aggregate data from the TRADE table into the ORDER table. We group by orderId and we count the number of trades and sum the notional. For further details, please see [here](https://docs.genesis.global/secure/creating-applications/defining-your-application/business-logic/consolidators/consolidators/).
+In the above example, we aggregate data from the TRADE table into the ORDER table. We group by orderId and we count the number of trades and sum the notional. For further details, please see [here](/server-modules/consolidator/introduction/).
 
 Some features provided by Consolidators: 
 
@@ -377,7 +377,7 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 #### Define the position-keeping logic in the consolidator
 
-Before defining the consolidator, we should insert some data in the *INSTRUMENT_PRICE* table using the command [`SendIt`](/managing-applications/operate/on-the-host/helpful-commands/#sendit-script). To do that, let's run server commands directly from a command line using PowerShell (or Windows Command Prompt) to access your WSL instance, through user 'genesis' to have access to the Genesis Platform commands as we did [before](/tutorials/training-resources/training-content-day1/#running-server-commands).
+Before defining the consolidator, we should insert some data in the *INSTRUMENT_PRICE* table using the command [`SendIt`](/operations/commands/server-commands/#sendit-script). To do that, let's run server commands directly from a command line using PowerShell (or Windows Command Prompt) to access your WSL instance, through user 'genesis' to have access to the Genesis Platform commands as we did [before](/getting-started/developer-training/training-content-day1/#running-server-commands).
 
 From the command line opened, in the */tmp* folder, save this csv as INSTRUMENT_PRICE.csv using your favorite editor (i.e. [vim](https://www.vim.org/) or [nano](https://www.nano-editor.org/)):
 ```csv
@@ -522,7 +522,7 @@ Run **assemble** and **deploy-genesisproduct-alpha** tasks to verify that the ne
 
 ## UI configuring 
 
-Let's add a grid in the UI to display the Positions. We could use [Entity Management](/tutorials/training-resources/training-content-day2/#entitymanagement) again, but here we will use AgGrid in `@genesislcap/foundation-zero` [Genesis package](/tutorials/training-resources/training-content-day2/#genesis-packages) presented in [Day 2](/tutorials/training-resources/training-content-day2/), as this approach offers more flexibility to customize the HTML and CSS.
+Let's add a grid in the UI to display the Positions. We could use [Entity Management](/getting-started/developer-training/training-content-day2/#entitymanagement) again, but here we will use AgGrid in `@genesislcap/foundation-zero` [Genesis package](/getting-started/developer-training/training-content-day2/#genesis-packages) presented in [Day 2](/getting-started/developer-training/training-content-day2/), as this approach offers more flexibility to customize the HTML and CSS.
 
 First, open the file **home.styles.ts** and add the code below.
 

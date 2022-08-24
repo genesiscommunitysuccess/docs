@@ -22,7 +22,7 @@ This is hands-on developer training where we're going to follow the creation ​
 
 This training is divided in 5 sessions, or days; each session covers specific resources of the platform to build a Trade & Positions application from the very beginning.
 
-Should you need it along the course, feel free to use the [final application](/tutorials/training-resources/training-intro/#source-code) as a reference.
+Should you need it along the course, feel free to use the [final application](#source-code) as a reference.
 
 Also, at any point, use the search function of the documentation for extra information.
 
@@ -34,12 +34,12 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 
 ## Agenda
 
-- [Environment set-up](/tutorials/training-resources/environment-setup/)
-- [Day 1](/tutorials/training-resources/training-content-day1/): Quick review of the Platform​, quick start the application and test the backend​​.
-- [Day 2](/tutorials/training-resources/training-content-day2/): Intro to UI​, create a user interface​ and REST endpoints.
-- [Day 3](/tutorials/training-resources/training-content-day3/): Views​, automated testing​, calculated data, consolidators and data grids​.
-- [Day 4](/tutorials/training-resources/training-content-day4/): State management, adding logic to the event handler​ ​and auditing​.
-- [Day 5](/tutorials/training-resources/training-content-day5/): Schedulers, notifications, permissions​, key server commands​ and how to get help​.
+- [Environment set-up](/getting-started/developer-training/environment-setup/)
+- [Day 1](/getting-started/developer-training/training-content-day1/): Quick review of the Platform​, quick start the application and test the backend​​.
+- [Day 2](/getting-started/developer-training/training-content-day2/): Intro to UI​, create a user interface​ and REST endpoints.
+- [Day 3](/getting-started/developer-training/training-content-day3/): Views​, automated testing​, calculated data, consolidators and data grids​.
+- [Day 4](/getting-started/developer-training/training-content-day4/): State management, adding logic to the event handler​ ​and auditing​.
+- [Day 5](/getting-started/developer-training/training-content-day5/): Schedulers, notifications, permissions​, key server commands​ and how to get help​.
 
 ## Genesis low-code Platform version
 6.0.2
