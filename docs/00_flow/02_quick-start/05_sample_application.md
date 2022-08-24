@@ -149,7 +149,7 @@ To do this, we need to modify the `entityManager` parameters:
 
 ## Update
 
-Because we've modified the `entityManager`, we need to regenerate update our server.
+Because we've modified the `entityManager`, we need to regenerate in order to update our server.
 
 ### Regenerate
 
