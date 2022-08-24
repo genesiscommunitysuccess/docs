@@ -1,18 +1,18 @@
 ---
-title: 'The User Interface'
-id: the-user-interface
+title: 'User Interface'
+id: user-interface
 ---
 
-# The User Interface
+# User Interface
 
 We have two key elements to our application, our user interface and our server. This section will focus on the former.
 
 ### Expected Result
 
-By the end of this section we should have a local view of our application's user interface. We will
+By the end of this section we should have a local view of our application's user interface. We will have:
 
-- Have our UI available in a web browser
-- Have the ability to make changes to our UI and reflect those changes in our web browser
+- our UI available in a web browser
+- the ability to make changes to our UI and reflect those changes in our web browser
 
 ## User Interface Set up
 
@@ -42,7 +42,8 @@ Once you see a message similar to `INFO: Accepting connections at http://localho
 
 ### Test simple UI changes
 
-Let's open **src/main/kotlin/global/genesis/alpha/Application.kt** and customise the auto-generated application title:
+The application title is auto-generated based on what you named the project initially. 
+If you would like to change that, open **src/main/kotlin/global/genesis/alpha/Application.kt** and customise the title:
 
 ```kotlin
 ui("Alpha Trading Dashboard") {
@@ -51,8 +52,9 @@ ui("Alpha Trading Dashboard") {
     }
 }
 ```
-
+:::tip
 It is useful to have the code generation terminal visible - you will see when your changes have been processed:
+:::
 
 ```shell
 BUILD SUCCESSFUL in 754ms
@@ -70,4 +72,9 @@ You should now see the updated `Alpha Trading Dashboard` page title as well as t
 
 ## Recap
 
-<span style={{color:'red'}}>Are we going to have a "The User Interface" Recap?</span>
+Congratulations, you now have a local view of the application's user interface. 
+You have:
+
+- started a local Web server
+- made the UI available in a web browser
+- made changes to the UI and reflected those changes in the web browser
