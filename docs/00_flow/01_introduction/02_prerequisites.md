@@ -11,7 +11,7 @@ Flow has the same requirements as our other Genesis platform options. Therefore,
 - [Do you need WSL?](/getting-started/prerequisites/do-you-need-wsl/)
 - [The Gradle deploy plugin](/getting-started/prerequisites/you-can-now-run-genx/)
 
-Additionally: <span style={{color:'red'}}>Should this be in our main prereqs?</span> 
+Additionally:
 
 - Credentials for accessing Genesis Artifactory. If necessary, contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login)
 - A gradle.properties file inside a **.gradle** folder on your user directory; this file must contain your Genesis Artifactory password in clear text:
