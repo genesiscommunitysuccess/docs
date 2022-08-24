@@ -1,6 +1,6 @@
 ---
 title: 'User Interface'
-id: the-user-interface
+id: user-interface
 ---
 
 # User Interface
