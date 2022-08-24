@@ -284,6 +284,8 @@ For example, to log in using Postman:
 ```
 5. Click to view the header, then insert SOURCE_REF in the header. For this field, you can use any string that identifies you (in effect). In the example below, we have set SOURCE_REF to *BAUDOIN1* (for no particular reason).
 
+![](/img/test-login-result-alpha.png)
+
 6. When you have done this, click on the **Send** button.
 
 This returns a set of details on the bottom side of the Postman window, where you can copy the `SESSION_AUTH_TOKEN`, which you will need for your test requests.
@@ -320,6 +322,8 @@ Set the body to **JSON**. In the body, you need to insert the details of the fie
 }
 ```
 
+![](/img/test-eh-url-body-alpha.png)
+
 ###### Header
 In the header, you need to supply:
 
@@ -327,6 +331,8 @@ In the header, you need to supply:
 - the SESSION_AUTH_TOKEN that permissions you to access the server
 
 When you have all these elements in place, click on **Send** to make the call. If the event is a success, you will receive an **ACK** message.
+
+![](/img/test-eh-header-alpha.png)
 
 ###### Checking the insertion
 Now you can check that the new counterparty you inserted is in the correct table of the database. The resource you need to check is the Request Server called ALL_COUNTERPARTIES.
@@ -341,9 +347,13 @@ The url consists of:
 
 Set the body to **JSON**. There is no need for any information in the body. Simply insert a pair of curly brackets `{}`. 
 
+![](/img/test-eh-check-insertion-alpha.png)
+
 In the header, you need to supply:
 
 - a SOURCE_REF (always), which identifies you; you can use any string value that suits you
 - the SESSION_AUTH_TOKEN that permissions you to access the server
 
 When you have this in place, click on **Send** to make the call. You can see that the fields for the instruments have been returned on the right of the screen.
+
+![](/img/test-eh-insert-success-alpha.png)
