@@ -21,7 +21,7 @@ During application development, it is likely that there will be frequent code re
 using config management systems to enact such an upgrade is likely to be more complicated than allowing a CI/CD
 system to issue releases.  Development-phase versioning is less rigorous than when an application approaches
 readiness.  Ill-behaved versions are possible.  Releases may be frequent.  These conditions are a poor fit for the
-automation and consistency that is the mainstay of 
+automation and consistency that is the mainstay of a config management system.
 
 ## Suitable elements for CM
 
@@ -33,7 +33,7 @@ Key aspects of a host prepared for Genesis applications are suitable for config 
 ### Dependencies
 
 Packages needed to run a Genesis application are covered in more detail in
-[host preparation](/operations/host-setup/host-preparation).
+[host preparation](/operations/server-setup/host-preparation).
 All of them are off-the-shelf packages found either in OS core package repos or extended repos such as EPEL.
 
 ### Nginx Configuration
