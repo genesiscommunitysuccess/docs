@@ -262,6 +262,6 @@ This creates an application called **Cash** with:
 
 Run `genesisInstall` again to install these changes.
 
-You now have a basic server that you can access from a web front end. The Event Handler, the Request Server and the Data Server only provide the simplest functions, but the data is exposed so that a front end can be created and connected. The Event Handler, for example, provides very simple insert, modify and delete events.
+You now have a basic server that you can access from a web front end. The Event Handler, the Request Server and the Data Server provide only the simplest functions, but the data is exposed so that a front end can be created and connected. The Event Handler, for example, provides very simple insert, modify and delete events.
 
 Of course, this is really just a beginning - you can go into the code and introduce all kinds of sophistication.
