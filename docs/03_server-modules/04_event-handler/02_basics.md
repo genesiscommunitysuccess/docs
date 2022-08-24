@@ -72,7 +72,7 @@ eventHandler<Counterparty>(name = "COUNTERPARTY_INSERT") {
 
 ## Adding validation
 
-So far, we have provided an `onCommit`block in our `eventHandler`. This is where the active instructions are usually database changes.
+So far, we have provided an `onCommit`block in our `eventHandler`. This is where the active instructions are; these are usually database changes.
 
 If you want to provide some validation before the action, you need to have an `onValidate` block before the `onCommit`. The last value of the code block must always be the return message type.
 
