@@ -11,6 +11,9 @@ This day covers:
 - [Camel module​](#camel-module)
 - [Data pipeline](#data-pipeline)
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Custom endpoints
 
 The Genesis low-code platform provides a series of REST endpoints exposing all configured resources (like Event Handlers, Request Server, Data Servers, Authentication) as HTTP endpoints via the [GENESIS_ROUTER](/server-modules/configuring-runtime/genesis-router/) service. 
@@ -164,17 +167,39 @@ public class FileProcessor implements WebEndpoint {
 </TabItem>
 </Tabs>
 
-#### Exercise 5.1 ???
+### Construction and initialisation
+The constructor should contain an instance of the `WebEndpointRegistry` class in order to call upon it during initialisation. This is necessary for the Genesis Router to automatically route appropriate traffic to this endpoint.
+
+In the examples above the initialisation step is annotated with `@PostConstruct`, and calls upon the `WebEndpointRegistry.registerEndpoint()` function with the subdirectory of the endpoint, and the endpoint itself. The registered endpoint would be reachable at a combination of this subdirectory, and the return value of the endpoint's `name()` function. In the example above this would be `file-handler/upload`.
+
+### Endpoint name
+The `name()` method must be overridden to provide the endpoint a name.
+
+### Allowed methods
+The `allowedMethods()` function must be overridden and implemented to declare which of the HTTP request types are permitted for this endpoint. It must return a set of `RequestType` objects corresponding with the HTTP `GET`, `POST`, `PUT`, `PATCH`, and `DELETE` functions.
+
+### Processing requests
+The `process()` function must be overridden and implemented in order to add business logic to the endpoint.
+
+### Authentication
+The `requiresAuth()` function can be overridden to determine if the endpoint requires a `SESSION_AUTH_TOKEN` with the request, such as those made from authenticated sessions. Without a definition, this returns a default value of `true`. In the example above, this Authorisation is not required when the system is running in `TEST_MODE`, which is useful for testing these endpoints with integration tests.
+
+#### Exercise 5.1 Trade.getBulk to CSV Download Endpoint
 <!--
+acho q da pra usar esse de base:
+
 https://docs.genesis.global/secure/creating-applications/defining-your-application/integrations/custom-endpoints/ce-advanced-technical-details/#attachmentdownloadendpoint
+
+mas eu mudaria pra ele fazer tipo um getBulk numa tabela, gerar um CSV e fazer o download
 -->
 :::info ESTIMATED TIME
-?? mins
+45 mins
 :::
 
-???.
+We are creating a new endpoint where the result of Trade.getBulk should write a CSV file and then download it. You should create a class implementing the interface `WebEndpoint` following all the knwoledge you got.
 
 :::tip
+There is a similar sample [here](/server-modules/integration/custom-endpoints/advanced/#attachmentdownloadendpoint), which defines Attachments Download Endpoint.
 :::
 
 
