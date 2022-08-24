@@ -64,4 +64,15 @@ The following insert operations are supported:
 
 ## Recover
 
-We shall provide details here as soon as we can. Thank you for your patience.
+The recover operation enables you to insert a document into the database using the record's preset timestamp and ID.
+
+The following recover operations are supported:
+
+- `recover`
+- `recoverAll`
+
+:::danger
+
+This API must be used with caution. Integrity checks are skipped and can leave your Genesis application in a poor state if used incorrectly. Record IDs and timestamps are assumed to be unique.
+
+:::
