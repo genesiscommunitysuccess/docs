@@ -21,7 +21,7 @@ For more information, see our page about [Views](/database/fields-tables-views/v
 
 ## Index entities
 
-Views have entities​](/database/data-types/views-entities). These are also convenient methods that construct an index entity from the view entity. `byPrimaryKey()` will return an entity for the primary key. Additionally, for each index, there will be a `by...()` call with the index name.
+Views have [entities​](/database/data-types/views-entities). These are also convenient methods that construct an index entity from the view entity. `byPrimaryKey()` will return an entity for the primary key. Additionally, for each index, there will be a `by...()` call with the index name.
 
 ## Building a view entity
 
