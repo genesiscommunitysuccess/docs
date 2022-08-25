@@ -12,12 +12,12 @@
     "swizzle": "docusaurus swizzle"
   },
   "dependencies": {
-    "@genesislcap/foundation-header": "2.0.0-docs.3",
-    "@genesislcap/foundation-entity-management": "2.0.0-docs.3",
     "@cmfcmf/docusaurus-search-local": "^0.10.0",
     "@docusaurus/core": "^2.0.0",
     "@docusaurus/preset-classic": "^2.0.0",
     "@docusaurus/theme-live-codeblock": "^2.0.0",
+    "@genesislcap/foundation-entity-management": "2.0.0-docs.3",
+    "@genesislcap/foundation-header": "2.0.0-docs.3",
     "classnames": "^2.3.1",
     "docusaurus-gtm-plugin": "^0.0.2",
     "mdx-mermaid": "1.2.2",
@@ -25,6 +25,7 @@
     "raw-loader": "^4.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-player": "^2.10.1",
     "tslib": "^2.3.1"
   },
   "browserslist": {
