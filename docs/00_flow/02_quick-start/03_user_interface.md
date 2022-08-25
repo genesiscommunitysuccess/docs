@@ -36,14 +36,14 @@ In another terminal window, let's start a local Web server:
 ./gradlew :npmStart
 ```
 
-Once you see a message similar to `INFO: Accepting connections at http://localhost:3000` open the displayed URL and you should see the following:
+Once we see a message similar to `INFO: Accepting connections at http://localhost:3000`, open the displayed URL, and we should see the following:
 
 ![](/img/gpl-seed-start.png)
 
 ### Test simple UI changes
 
-The application title is auto-generated based on what you named the project initially. 
-If you would like to change that, open **src/main/kotlin/global/genesis/alpha/Application.kt** and customise the title:
+The application title is auto-generated based on what we named the project initially. 
+To change that, open **src/main/kotlin/global/genesis/alpha/Application.kt** and customise the title:
 
 ```kotlin
 ui("Alpha Trading Dashboard") {
@@ -53,7 +53,7 @@ ui("Alpha Trading Dashboard") {
 }
 ```
 :::tip
-It is useful to have the code generation terminal visible - you will see when your changes have been processed:
+It is useful to have the code generation terminal visible, then we'll see when the changes have been processed:
 :::
 
 ```shell
@@ -66,15 +66,14 @@ Waiting for changes to input files of tasks... (ctrl-d to exit)
 
 ```
 
-You should now see the updated `Alpha Trading Dashboard` page title as well as the `Hello World` heading text:
+We should now see the updated `Alpha Trading Dashboard` page title as well as the `Hello World` heading text:
 
 ![](/img/gpl-seed-start-first-changes.png)
 
 ## Recap
 
-Congratulations, you now have a local view of the application's user interface. 
-You have:
+Congratulations, we now have a local view of the application's user interface. We have:
 
-- started a local Web server
-- made the UI available in a web browser
-- made changes to the UI and reflected those changes in the web browser
+- Started a local Web server
+- Made the UI available in a web browser
+- Made changes to the UI and reflected those changes in the web browser
