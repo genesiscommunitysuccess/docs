@@ -15,13 +15,13 @@ The gateway also provides a number of out-of-the-box implementations that can be
 ## Customisation through injection
 Custom components are injected through the standard dependency-injection mechanism for the platform.
 
-The process bootstrap will scan packages specified in the package block of the process definition in the **processes.xml** file.
+The process bootstrap will scan packages specified in the package block of the process definition in the _applicationName_-**processes.xml** file.
 
 If no implementations of certain interfaces are found, it will provide default implementations.
 
 To inject a custom interface, all you need to do is:
 1. Create a class that implements the appropriate interface
-2. Make sure the package is scanned by specifying it in the package block of the process definition.
+2. Make sure the package is scanned by specifying it in the package block of the process definition
 3. Annotate your class with the @Module annotation that the framework provides.
 
 ## Authentication
@@ -34,12 +34,12 @@ interface AuthenticationStrategy {
 ```
 
 The interface is called on receipt of an admin FIX message from a session (which includes logon messages).
-- If the method call returns, the logon is accepted.
+- If the method call returns, the logon is accepted
 - If the method throws a RejectLogon exception, the logon is rejected.
 
 The default implementation authenticates the username and password provided in standard FIX tags 553 and 554 of the Logon message.
 
-It will validate these and the CompId fields against an entry in the FIX_SESSION_AUTH table, which is provided as part of the FIX product distribution.
+It will validate these and the CompId fields against an entry in the `FIX_SESSION_AUTH` table, which is provided as part of the FIX product distribution.
 
 The default implementation is disabled by default. In order to enable it, add the following to the FIX Gateway process configuration file:
 
