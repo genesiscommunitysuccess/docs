@@ -5,13 +5,11 @@ id: dbentity
 ---
 
 [Introduction](/database/data-types/data-types/) |
-[Table entities](/database/data-types/table-entities/) | [Index entities](/database/data-types/index-entities/) | 
+[Table entities](/database/data-types/table-entities/) | 
+[Index entities](/database/data-types/index-entities/) | 
 [Views entities](/database/data-types/views-entities/) | 
 [DbRecord](/database/data-types/dbrecord/) | 
 [DbEntity](/database/data-types/dbentity/) 
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 DbEntity is the common interface implemented by table entities and view entities.
 
