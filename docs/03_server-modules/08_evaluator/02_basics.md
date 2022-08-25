@@ -25,15 +25,24 @@ To define a rule, you need to insert a row into the DYNAMIC_RULE table. This tab
 
 **Note**: Groovy Expressions need to be surrounded by brackets.
 
-MESSAGE_TYPE fields define the Java/kotlin Class that is instantiated and set by the RESULT_EXPRESSION. The MESSAGE_TYPE is defined as SNAKE_CASE, but the class is defined as regular Camel case (for example,POSITION_CANCEL maps to PositionCancel).
+`MESSAGE_TYPE` fields define the Java/kotlin Class that is instantiated and set by the `RESULT_EXPRESSION`. The `MESSAGE_TYPE` is defined as SNAKE_CASE, but the class is defined as regular Camel case (for example, POSITION_CANCEL maps to PositionCancel).
 
-Fields that are set in the expression but which are not on the class are ignored. The instantiated class is sent to the EventHandler implementation defined in the process identified by PROCESS_NAME.
+Fields that are set in the expression but which are not on the class are ignored. The instantiated class is sent to the EventHandler implementation defined in the process identified by `PROCESS_NAME`.
 
-To set up a MESSAGE_TYPE for the event handlers, simply create an appropriate data class, for example: `trading_app-server\trading_app-messages\src\main\java\global\genesis\trading_app\message\event\TradeCancel.kt`.
+Rules can be loaded into the database by creating a csv file containing the rules in the above format.
+The following is an example of a csv file, which can be loaded into the database by saving as **DYNAMIC_RULE.csv** and running `sentIt`
+```csv
+NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
+MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),JaneDee,ALPHA_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
+```
+
+To set up a `MESSAGE_TYPE` for the event handlers, simply create an appropriate data class, for example: _application-name_**-server\\**_application-name_**-messages\src\main\java\global\genesis\\**_application-name_**\message\event\PositionCancel.kt**.
 ```kotlin
-package global.genesis.trading_app.message.event
+package global.genesis.application_name.message.event
 
-data class TradeCancel(val tradeId: Long)
+data class PositionCancel(
+    val positionId: String,
+)
 ```
 
 So if the RULE_TABLE is set to `POSITION`, and the RULE_EXPRESSION is set to `(POSITION_ID = POSITION_ID)`, then this will take the POSITION_ID from the POSITION table and set it on the PositionClass object that gets instantiated and ultimately sent to the Event Handler.
@@ -68,7 +77,7 @@ eventHandler<PositionCancel> {
 
 ```
 
-You can see an example of a dynamic rule being configured in our [tutorial](/getting-started/go-to-the-next-level/condition-rules/).
+You can see an example of a dynamic rule using [Notify](/server-modules/integration/notify/configuring/) email messages being configured in our [tutorial](/getting-started/go-to-the-next-level/condition-rules/).
 
 ### Defining a static rule
 To define a scheduled event, you need to insert a row into the `CRON_RULE` table. This row must specify the CRON schedule that triggers the event. The table is defined as follows:
@@ -88,4 +97,4 @@ To define a scheduled event, you need to insert a row into the `CRON_RULE` table
 
 MESSAGE_TYPE fields define the Java/kotlin Class that is instantiated and set by the RESULT_EXPRESSION. The MESSAGE_TYPE is defined as SNAKE_CASE, but the class is defined as regular Camel case (for example,POSITION_CANCEL maps to PositionCancel).
 
-You can see an example of a static rule being configured in our [tutorial](/getting-started/go-to-the-next-level/time-rules/).
+You can see an example of a static rule being configured in our [tutorial](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#static-rules-cron-rules).

@@ -24,4 +24,19 @@ The example below is for a standard Genesis file for controlling `/home/trading/
 </process>
 ```
 
-**Note**: the evaluator only runs on a primary node within the cluster. You can set your node to primary with the command `SetPrimary`.If you do not do this,   the GENESIS_EVALUATOR will go into STANDBY mode.
+Add the evaluator to the file _application-name_**-service-definitions.xml** inside your project folder **server/jvm/**_application-name_**-config/src/main/resources/cfg** with the code below.
+Replacing PROCESS_NAME with process you named above, in this case GENESIS_EVALUATOR .
+```xml
+<configuration>
+    ...
+    <service host="localhost" name="PROCESS_NAME" port="11003"/>
+</configuration>
+```
+
+Run the `assemble` and `positions-app-tutorial-config:assemble` tasks to verify that the new process works as expected.
+
+Run `mon`.
+
+**Note**: the evaluator only runs on a primary node within the cluster. If your application only has one node, you still have to identify it as the primary node. You can set your node to primary with the command `SetPrimary`. If you do not do this, the GENESIS_EVALUATOR will go into STANDBY mode.
+
+Run `SetPrimary` and you should be able to see all processes running.
