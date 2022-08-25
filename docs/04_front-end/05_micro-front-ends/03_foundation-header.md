@@ -14,7 +14,11 @@ tags:
 
 # Foundation Header
 
+## API Reference
+
 API reference [can be found here.](../foundation-header_apiref/)
+
+## Introduction
 
 The Header micro front-end is a semi-batteries included component. It consists of a navigation bar and flyout menu, with routing and account logout capabilities.
 
@@ -34,7 +38,7 @@ This next example is the same as the previous example, except the Genesis logo i
 In this next example, we have put a set of example options set in the flyout menu.
 ![The sidebar included with the header opened with some example content](/img/foundation-header-sidebar.png)
 
-## Header set-up
+## Header Set-up
 
 To enable this micro front-end in your application, follow the steps below.
 
