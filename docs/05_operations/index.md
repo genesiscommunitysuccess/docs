@@ -7,10 +7,13 @@ id: operations
 
 ## Overview
 
-The Genesis low-code platform builds applications that run on Linux servers.  Previous chapters have covered setting
+The Genesis low-code platform builds applications that run on Linux servers. Other areas have covered setting
 up development environments and the properties of the code frameworks.
 
-This chapter covers setting up a server to run applications, installing and managing applications, and complex server
-setups involving clustering and environment management.
+This area covers: 
+
+- setting up a server to run applications
+- installing and managing applications
+- complex server set-ups that involve clustering and environment management
 
 
