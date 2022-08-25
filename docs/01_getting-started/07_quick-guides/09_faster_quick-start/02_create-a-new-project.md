@@ -4,7 +4,7 @@ sidebar_label: 'Create a new project'
 id: create-a-new-project
 ---
 
-The GenX CLI tool enables you to seed projects, in this case we just want to generate a blank full-stack application project.
+The GenX CLI tool enables you to seed projects. In this case, we just want to generate a blank full-stack application project.
 
 For step-by-step instructions on how to install and use this tool, follow the guide on GenX.
 
