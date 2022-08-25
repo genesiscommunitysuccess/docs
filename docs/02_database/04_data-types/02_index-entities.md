@@ -5,7 +5,8 @@ id: index-entities
 ---
 
 [Introduction](/database/data-types/data-types/) |
-[Table entities](/database/data-types/table-entities/) | [Index entities](/database/data-types/index-entities/) | 
+[Table entities](/database/data-types/table-entities/) | 
+[Index entities](/database/data-types/index-entities/) | 
 [Views entities](/database/data-types/views-entities/) | 
 [DbRecord](/database/data-types/dbrecord/) | 
 [DbEntity](/database/data-types/dbentity/) 
@@ -42,7 +43,7 @@ val byTypeId = Trade.byTypeId("SWAP", "TR_123")
 val byType = Trade.byTypeId("SWAP")
 ```
 
-Index entities can also be created directly from a table or views entity:
+Index entities can also be created directly from a table or view entity:
 
 ```kotlin
 // TRADE_BY_ID is a unique index; a unique index entity is created
