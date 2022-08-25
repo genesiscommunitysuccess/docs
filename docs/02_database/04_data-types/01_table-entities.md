@@ -5,7 +5,8 @@ id: table-entities
 ---
 
 [Introduction](/database/data-types/data-types/) |
-[Table entities](/database/data-types/table-entities/) | [Index entities](/database/data-types/index-entities/) | 
+[Table entities](/database/data-types/table-entities/) |
+[Index entities](/database/data-types/index-entities/) | 
 [Views entities](/database/data-types/views-entities/) | 
 [DbRecord](/database/data-types/dbrecord/) | 
 [DbEntity](/database/data-types/dbentity/) 
@@ -20,17 +21,16 @@ For example, `TABLE_NAME` becomes `TableName`.
 
 All table/view entities implement a common interface called [DbEntity](/database/data-types/dbentity/).
 
-Index entities[​](/database/data-types/table-entities/#index-entities)
---------------------------------------------------------------------------------------------------------------------------------------------------------
+## Index entities
 
 Tables, like views, have [index entities](/database/data-types/index-entities/). There are also convenient methods that construct an index entity from the table entity. `byPrimaryKey()` will return an entity for the primary key. Additionally, for each index, there will be a `by...()` call with the index name.
 
-Builder[​](/database/data-types/table-entities/#builderdirect-link-to-heading)
-------------------------------------------------------------------------------------------------------------------------------------------
+## Builder
 
 All table entities come with builders to help construct these objects. In Kotlin, the builder works as a lambda in which the field values are set, and the object is built after the lambda call is completed. In Java, the builder is a fluent interface, where fields are set and the object is built in a final `build` call.
 
-Just before the object is built, the object is validated to make sure all [required fields](/database/fields-tables-views/fields/) have been set.  **THIS REF SHOULD BE TO DATA STRUCTURES/TABLES/FIELDS# **
+Just before the object is built, the object is validated to make sure all [required fields](/database/fields-tables-views/fields/) have been set.
+
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
@@ -60,8 +60,7 @@ Trade trade = Trade.builder()
 </TabItem>
 </Tabs>
 
-Auditable tables[​](/database/data-types/table-entities/#auditable-tables)
-------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Auditable tables
 
 When a table is audited, the table entity can be easily converted to its audited counterpart by calling the `toAuditEntity` function.
 
@@ -91,8 +90,7 @@ TradeAudit = trade.toAuditEntity(
 </Tabs>
 
 
-Some of the most useful methods[​](/database/data-types/table-entities/#some-of-the-most-useful-methods)
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Some of the most useful methods
 
 | Name | Signature | Description |
 | --- | --- | --- |
@@ -102,51 +100,46 @@ Some of the most useful methods[​](/database/data-types/table-entities/#some-o
 | toStringWithSensitivesUnmasked | `fun toStringWithSensitivesUnmasked(): String` | gets the string representation of view with sensitive fields(Ex: Password) unmasked |
 | set | `operator fun <T> set(field: TableField<*, T>, value: T?)` | to set table field with provided value |
 
-Examples[​](/database/data-types/table-entities/#examples)
---------------------------------------------------------------------------------------------------------------------------------------------
+## Examples
 
-The following example contains a table definition, and shows examples of output from different calls:
+Given the following table definition, declared as described [here](/database/fields-tables-views/tables/), the platform will generate table entities as shown in the examples.
 
 ```kotlin
-  // table definition
-    table(name="CUSTOMER", id = 11002) {
-      CUSTOMER_NAME
-      CUSTOMER_ADDRESS
-      COUNTRY
-      CUSTOMER_PASSWORD sensitive "XXXXXX"
-      primaryKey {
-        CUSTOMER_NAME
-      }
-    }
+table(name="CUSTOMER", id = 11002) {
+  CUSTOMER_NAME
+  CUSTOMER_ADDRESS
+  COUNTRY
+  CUSTOMER_PASSWORD sensitive "XXXXXX"
+  primaryKey {
+    CUSTOMER_NAME
+  }
+}
+```
 
-  // Examples
-    val customer = Customer {
-        customerName = "Customer_1"
-        customerPassword = "PASSWORD"
-        customerAddress = "London"
-        country = "UK"
-    }
+Examples:
 
-    // toGenesisSet
-    customer.toGenesisSet(listOf("CUSTOMER_NAME"))
-    // Output: CUSTOMER_NAME = Customer_1
+```kotlin
+val customer = Customer {
+  customerName = "Customer_1"
+  customerPassword = "PASSWORD"
+  customerAddress = "London"
+  country = "UK"
+}
 
-    // toGenesisSetFormatted
-    customer.toGenesisSetFormatted(listOf(ColumnConfig.Field.Aliased("COUNTRY", "CUSTOMER_COUNTRY")))
-    // Output: CUSTOMER_COUNTRY = UK
+customer.toGenesisSet(listOf("CUSTOMER_NAME"))
+// Output: CUSTOMER_NAME = Customer_1
 
-    // toString
-    customer.toString()
-    // Output: Customer{serialVersionUID='1', customerName=Customer_1, customerAddress=London, country=UK, customerPassword=XXXXXX, recordId={not-set}, timestamp={not-set}}
+customer.toGenesisSetFormatted(listOf(ColumnConfig.Field.Aliased("COUNTRY", "CUSTOMER_COUNTRY")))
+// Output: CUSTOMER_COUNTRY = UK
 
-    // toStringWithSensitivesUnmasked
-    customer.toStringWithSensitivesUnmasked()
-    // Output: Customer{serialVersionUID='1', customerName=Customer_1, customerAddress=London, country=UK, customerPassword=PASSWORD, recordId={not-set}, timestamp={not-set}}
+customer.toString()
+// Output: Customer{serialVersionUID='1', customerName=Customer_1, customerAddress=London, country=UK, customerPassword=XXXXXX, recordId={not-set}, timestamp={not-set}}
 
-    // get
-    customer.get(CUSTOMER.CUSTOMER_ADDRESS)
-    // Output: London
+customer.toStringWithSensitivesUnmasked()
+// Output: Customer{serialVersionUID='1', customerName=Customer_1, customerAddress=London, country=UK, customerPassword=PASSWORD, recordId={not-set}, timestamp={not-set}}
 
-    // set
-    customer.set(CUSTOMER.CUSTOMER_ADDRESS, "Manchester")
+customer.get(CUSTOMER.CUSTOMER_ADDRESS)
+// Output: London
+
+customer.set(CUSTOMER.CUSTOMER_ADDRESS, "Manchester")
 ```

@@ -5,7 +5,8 @@ id: index-entities
 ---
 
 [Introduction](/database/data-types/data-types/) |
-[Table entities](/database/data-types/table-entities/) | [Index entities](/database/data-types/index-entities/) | 
+[Table entities](/database/data-types/table-entities/) | 
+[Index entities](/database/data-types/index-entities/) | 
 [Views entities](/database/data-types/views-entities/) | 
 [DbRecord](/database/data-types/dbrecord/) | 
 [DbEntity](/database/data-types/dbentity/) 
@@ -14,38 +15,41 @@ Index entities are nested in [table](/database/data-types/table-entities/) and
 
 A unique index entity will only be created when all fields of a unique index are supplied. In all other cases, a non-unique index entity will be created.
 
-Types[​](/database/data-types/index-entities/#typesdirect-link-to-heading)
----------------------------------------------------------------------------------------------------------------------------------------
+## Types
 
 There are two types of index entity:
 
-1.  unique index entity
-2.  non-unique index entity
+- unique index entity
+- non-unique index entity
 
-|  | Unique | Non-Unique |
+|  | Unique | Non-unique |
 | --- | --- | --- |
 | Can be used in a `get` | ✔️ | ❌ |
 | Can be used in a `getBulk` | ✔️ | ✔️ |
 | Can be used in a `getRange(index)` | ❌ | ✔️ |
 | Can be used in a `getRange(from, to)` | ✔️ | ✔️ |
 
-Usage[​](/database/data-types/index-entities/#usagedirect-link-to-heading)
----------------------------------------------------------------------------------------------------------------------------------------
+## Usage
 
--   Kotlin
--   Java
-
-```
-// TRADE_BY_ID is a unique index; a unique index entity is createdval byId = Trade.byId("TR_123")// TRADE_BY_DATE is a non-unique index; a non-unique index entity is createdval byDate = Trade.byDate(now())// TRADE_BY_TYPE_ID is a unique index; a unique index entity is createdval byTypeId = Trade.byTypeId("SWAP", "TR_123")// TRADE_BY_TYPE_ID is a unique index, not all fields are provided;// a non-unique index entity is createdval byType = Trade.byTypeId("SWAP")
-```
-
-Index entities can also be created directly from a table or views entity:
-
--   Kotlin
--   Java
-
-```
-// TRADE_BY_ID is a unique index; a unique index entity is createdval byId = trade.byId()// TRADE_BY_DATE is a non-unique index; a non-unique index entity is createdval byDate = trade.byDate()// TRADE_BY_TYPE_ID is a unique index; a unique index entity is createdval byTypeId = trade.byTypeId()
+```kotlin
+// TRADE_BY_ID is a unique index; a unique index entity is created
+val byId = Trade.byId("TR_123")
+// TRADE_BY_DATE is a non-unique index; a non-unique index entity is created
+val byDate = Trade.byDate(now())
+// TRADE_BY_TYPE_ID is a unique index; a unique index entity is created
+val byTypeId = Trade.byTypeId("SWAP", "TR_123")
+// TRADE_BY_TYPE_ID is a unique index, not all fields are provided;
+// a non-unique index entity is created
+val byType = Trade.byTypeId("SWAP")
 ```
 
-[
+Index entities can also be created directly from a table or view entity:
+
+```kotlin
+// TRADE_BY_ID is a unique index; a unique index entity is created
+val byId = trade.byId()
+// TRADE_BY_DATE is a non-unique index; a non-unique index entity is created
+val byDate = trade.byDate()
+// TRADE_BY_TYPE_ID is a unique index; a unique index entity is created
+val byTypeId = trade.byTypeId()
+```
