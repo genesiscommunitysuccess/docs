@@ -5,8 +5,7 @@ id: add-features
 
 # Add Features
 
-We've now got our seed project created and configured. We've started our UI and Server and now we're ready to add features to our application.
-
+We've now got our seed project created and configured. We've started our UI and Server, now we're ready to add features to our application.
 
 ### Expected Result
 
@@ -33,19 +32,19 @@ Let's reopen **src/main/kotlin/global/genesis/alpha/Application.kt** and add `se
 }
 ```
 
-You should now see a login screen:
+We should now see a login screen:
 
 ![](/img/gpl-seed-login.png)
 
 :::note
-You can confirm whether it's trying to connect to the correct URL in the browser console, as seen in the image below:
+We can confirm whether it's trying to connect to the correct URL in the browser console, as seen in the image below:
 :::
 
 ![](/img/gpl-seed-host.png)
 
 ## Model
 
-Now you are ready to define the fields and tables that make up your [data model](https://docs.genesis.global/secure/creating-applications/defining-your-application/data-model/data-model-overview/). This structures information in a simple way that can be viewed by users and processed by the application.
+Now we're ready to define the fields and tables that make up the [data model](https://docs.genesis.global/secure/creating-applications/defining-your-application/data-model/data-model-overview/). This structures information in a simple way that can be viewed by users and processed by the application.
 
 Let's create a new package **model** in **src/main/kotlin/global/genesis/alpha** and add a file called **Trade.kt** with the following contents:
 
@@ -76,8 +75,8 @@ enum class TradeStatus { NEW, ALLOCATED, CANCELLED }
 
 Once the project is open, there are two easy ways to find this file quickly in Intellij:
 
-- Press the **Shift** key twice, then type the name of the file you are looking for.
-- Press **Shift** + **Ctrl** + **N**, then type the name of the file you are looking for.
+- Press the **Shift** key twice, then type the name of the file we are looking for.
+- Press **Shift** + **Ctrl** + **N**, then type the name of the file we are looking for.
 
 :::
 
@@ -119,7 +118,7 @@ Therefore, we need to update the server with the following tasks:
 ./gradlew :alpha-deploy:deploy-genesisproduct-alpha.zip #On the IntelliJ terminal
 ```
 
-If the tasks above were successful, you will then see a grid on the UI.
+If the tasks above were successful, we will then see a grid on the UI.
 
 ![](/img/gpl-seed-grid.png)
 
@@ -169,11 +168,7 @@ Because we've modified the `entityManager`, we need to regenerate in order to up
 ./gradlew :alpha-deploy:deploy-genesisproduct-alpha.zip #On the IntelliJ terminal
 ```
 
-```shell
-./gradlew :alpha-deploy:deploy-genesisproduct-alpha.zip #On the IntelliJ terminal
-```
-
-Now, if you click the **Add** button, you will see a form displayed in a modal:
+Now, if we click the **Add** button, we will see a form displayed in a modal:
 
 ![](/img/gpl-seed-form.png)
 

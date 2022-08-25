@@ -18,9 +18,9 @@ By the end of this section we should have our all of our server application runn
 
 ## Server Set Up
 
-Before you start this, make sure that:
+Before starting this, make sure that:
 
-- you have a user with name of the application (alpha)
+- we have a user with name of the application (alpha)
 - FoundationDB is running (if it is not, run `systemctl start foundationdb` from CentOS7
 - Have our Genesis home, distribution and user configured like below:
 
@@ -30,16 +30,16 @@ wsl-distro=CentOS7
 wsl-user=alpha
 ```
 
-If you're not sure about the above, please refer to our [Prerequisites](/flow/introduction/prerequisites/), particularly "Do you need WSL?".
+If unsure about the above, please refer to our [Prerequisites](/flow/introduction/prerequisites/), particularly "Do you need WSL?".
 
 
 ### Preparing the server
 
-Our main aim is for you to write less and do more. 
+Our main aim is to write less and do more. 
 
-To enable this, we need to have a common task that will take what you've done and generate all the server and UI configuration. 
+To enable this, we need to have a common task that will take what we've done and generate all the server and UI configuration. 
 
-> This is an important command and one you will use regularly for all Flow development.
+> This is an important command and one that will be used regularly for all Flow development.
 
 To get started with an initial server configuration, we need to run this task:
 
@@ -88,13 +88,13 @@ Once built, we need to deploy it:
 Although we have installed, built and deployed our Auth component as part of the above server configuration. We need to add a user that we'll use to log into our new application.
 
 :::tip
-The following details will be your login details:
+The following will be the application login details:
 
 - Username: JaneDee
 - Password: beONneON\*74 (This is encrypted in the USER.csv file.)
 :::
 
-We shall run the task `loadInitialData`. This adds the user data into your database. 
+We shall run the task `loadInitialData`. This adds the user data into the database. 
 
 To do that we will run:
 
@@ -110,7 +110,7 @@ Running `DbMon` will check that the user has been created:
 ./gradlew :alpha-deploy:DbMon #On the IntelliJ terminal
 ```
 
-Once you are inside the console, type 'table USER' and then 'search 1'. If imported correctly, the user JaneDee should be listed.
+Once inside the console, type 'table USER' and then 'search 1'. If imported correctly, the user JaneDee should be listed.
 
 ### Review 
 
@@ -146,22 +146,22 @@ PID     Process Name                  Port        Status         CPU       Memor
 
 Finally, we want to connect everything together.  
 
-With this next step, we will configure a NginX working as a reverse proxy.
+With this next step, we will configure a Nginx working as a reverse proxy.
 
-In your CentOS terminal, enter:
+In the CentOS terminal, enter:
 
 ```shell
 docker login genesisglobal-docker-internal.jfrog.io
 ...
 
-You need to enter your artifactory credentials at this point
+We need to enter artifactory credentials at this point
 
-The enter
+Then enter
 ...
 docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
 #...
 
-You can run this command from within WSL or from your workstation. If you run it from the CentOS shell, you can use the following command:
+We can run this command from within WSL or from the workstation. If running it from the CentOS shell, use the following command:
 #...
 docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
 

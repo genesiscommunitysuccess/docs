@@ -5,12 +5,12 @@ id: summary
 
 **That’s it** 🎉👏🏻
 
-You have created a full-stack application using the Genesis *low-code* development platform that shows:
+We have created a full-stack application using the Genesis *low-code* development platform that shows:
 - A customisable grid surfacing any application data
 - A form allowing the ability to insert new data
 
-You have also learned how to: 
-- Set up your environment for this and future *low-code* applications
+We have also learned how to: 
+- Set up the environment for this and future *low-code* applications
 - Create a starting project structure using our [Flow](/flow/introduction/) application seed
 - Model data with clear type definitions
 - Build grid views to visualise data
