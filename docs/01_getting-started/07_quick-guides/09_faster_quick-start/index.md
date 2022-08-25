@@ -1,22 +1,24 @@
 ---
 title: 'Quick Start'
-sidebar_label: 'Dockerized quickstart'
+sidebar_label: 'Quick start with Docker'
 sidebar_position: 1
 id: introduction
 ---
 
 ## Requirements
 
-- You need to setup your .npmrc as explained in [here](/getting-started/prerequisites/hardware-and-software).
+You need just three things before you can start this exercise:
 
-- A gradle.properties file inside a **.gradle** folder on your user directory; this file must contain your Genesis Artifactory password in clear text:
+- You must set up your .npmrc, which is explained [here](/getting-started/prerequisites/hardware-and-software).
+
+- You must have a gradle.properties file inside a **.gradle** folder on your user directory; this file must contain your Genesis Artifactory password in clear text:
 
 ```shell
 genesisArtifactoryUser=<your-artifactory-user>
 genesisArtifactoryPassword=<your-artifactory-password>
 ```
 
-- Also Docker for Desktop. For instructions on how to install, see the [Docker documentation](https://docs.docker.com/docker-for-windows/). For a
+- You must have (unsurprsingly) Docker for Desktop. For instructions on how to install this, see the [Docker documentation](https://docs.docker.com/docker-for-windows/). For a
 download, [click here](https://hub.docker.com/editions/community/docker-ce-desktop-windows/).
 
 ## What you will build
