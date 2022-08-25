@@ -18,7 +18,7 @@ There are five hierarchical levels:
 3. Tables
     - Create the DAOs for all the system tables
 4. HFT
-    - The [HFT](/getting-started/glossary/glossary/#hft) layer is a cache sitting above the database for rapid access to the data; it is used for rapid update data such us price
+    - The [HFT](/getting-started/glossary/glossary/#hft) layer is a cache sitting above the database for rapid access to the data; it is used for rapidly updated data, such us price
 5. Views
     - Views are the final layer and are used in many Genesis components. They enable us to take fields from more than one table to create a coherent view of information 
 
