@@ -4,7 +4,7 @@ sidebar_label: 'Basics'
 id: basics
 ---
 
-[Introduction](/server-modules/evaluator/introduction) | [Basics](/server-modules/evaluator/basics) |  [Advanced](/server-modules/evaluator/advanced) | [More examples](/server-modules/evaluator/examples) | [Configuring runtime](/server-modules/evaluator/configuring-runtime) | [Testing](/server-modules/evaluator/testing)
+[Introduction](/server-modules/evaluator/introduction) | [Basics](/server-modules/evaluator/basics) | [Examples](/server-modules/evaluator/examples) | [Configuring runtime](/server-modules/evaluator/configuring-runtime) | [Testing](/server-modules/evaluator/testing)
 
 ### Defining a dynamic rule
 To define a rule, you need to insert a row into the DYNAMIC_RULE table. This table is defined as follows:
