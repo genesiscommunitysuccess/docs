@@ -26,7 +26,7 @@ That could be a simple linear workflow, such as a deal being enriched and approv
 
 Most applications built on the platform include the typical financial product **business entities**, such as orders, trades, bids, allocations and positions. These business entities have a lifecycle where they go through various **states**. The transition from one state to another is an event that needs to be handled. The paths through those states are workflows, and to assist the workflows, we use state machines.
 
-Event Handlers are conventionally defined in the file _application-name_**-eventhandler.kts**. 
+Event Handlers are conventionally defined in the file **{app-name}-eventhandler.kts**. 
 
 So, if your application is called **positions**, then the file would conventionally be named **positions-eventhandler.kts**.
 
