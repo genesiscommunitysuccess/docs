@@ -18,10 +18,10 @@ A unique index entity will only be created when all fields of a unique index are
 
 There are two types of index entity:
 
-1.  unique index entity
-2.  non-unique index entity
+- unique index entity
+- non-unique index entity
 
-|  | Unique | Non-Unique |
+|  | Unique | Non-unique |
 | --- | --- | --- |
 | Can be used in a `get` | ✔️ | ❌ |
 | Can be used in a `getBulk` | ✔️ | ✔️ |
