@@ -90,6 +90,10 @@ Apache Camel uses Uniform Resource Identifiers (URIs) to work directly with the 
 
 There is a lot of information at the [official Apache Camel website](https://camel.apache.org/).
 
+## DAO
+
+A Data Access Object (DAO) is a pattern that provides abstract interfaces to some persistence mechanism. DAOs provide data access without exposing details of the underlying persistence technologies being used.
+
 ## DBeaver
 
 [DBeaver](https://dbeaver.com/docs/wiki/) is a desktop application written in Java and based on the Eclipse platform.
@@ -136,7 +140,15 @@ It also gives you a standard FIX inbound streamer that listens to the FIX_In tab
 
 Genesis Platform Abstraction Language
 This is our own scripting language, which plugs in to IntelliJ.
-It means that you have access to autocompletion Help and error highlighting as you code. Once you define an object in GPAL (such as a View), you can use it in multiple components.
+It means that you have access to autocompletion, Help and error highlighting as you code. Once you define an object in GPAL (such as a View), you can use it in multiple components.
+
+## HFT
+
+High Frequency Trading (HFT) relates to software-enabled trading of large numbers of orders within a fraction of a second. This can be achieved using technologies such as low-latency caching and high-expense infrastructure. In this world, the trader who can execute the quickest has an advantage, being able to buy low and sell high (or sell high and buy back lower) within milliseconds or less. For example:
+- You have an algorithm that "sniffs" the arrival of a new large buy order in the market; this order is likely to push the price up.
+- You can execute a lot of buy trades on the instrument within milliseconds and offer these at a higher price because the market has moved up - partly as a result of your buying.
+- You get to sell these back to the market at a new higher price.
+That means no change in your holdings or risk, plus a profit for your trading desk. All in the blink of an eye.
 
 ## Java Binary Object
 

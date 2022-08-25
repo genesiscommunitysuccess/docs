@@ -37,7 +37,7 @@ fields {
 | Parameter | Default value | Sample Usage | Value Type | Description |
 |---|---|---|---|---|
 | default | null | `field(name = "AGE", type = INT, default=20)` | The same type as the field | Set a default value for the field where not supplied on a database insert. Mandatory for `ENUM` |
-| maxSize | 64 (unlimited for non sql DB) | `field(name = "DESCRIPTION", type = STRING, maxSize=1000)` | integer | Set the maxSize of a field. Applicable for `STRING`, `ENUM`, `RAW`. Needed for HFT and SQL data structures. See below for more details |
+| maxSize | 64 (unlimited for non sql DB) | `field(name = "DESCRIPTION", type = STRING, maxSize=1000)` | integer | Set the maxSize of a field. Applicable for `STRING`, `ENUM`, `RAW`. Needed for [HFT](/getting-started/glossary/glossary/#hft) and SQL data structures. See below for more details |
 | format | N/A | `field(name = "DESCRIPTION", type = BIG_DECIMALS, format="#,##0.000")` | Dependent on type | Set the maxSize of a field. Applicable for `STRING`, `RAW`  |
 | sensitive | false | `field(name = "PASSWORD", type = STRING, sensitive=true)` | boolean | true if the field should be masked on its toString() output  |
 | nullable | true | `field(name = "USER_NAME", type = STRING, sensitive=true)` | boolean | true if the field should be masked on its toString() output  |
