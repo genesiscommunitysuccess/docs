@@ -72,7 +72,7 @@ For reference, let's look at a process that has been configured to run on the pr
 
 ## Disaster recovery: example
 
-In a clustered Genesis set-up, all session data is shared amongst all nodes. Following the example set-up in the Prerequisites section, if the primary node fails and goes offline, The Load Balancer should divert traffic to thesSecondary node, which contains all the session data for the end users. Their work will continue without disruption. Below you can see the switch to the secondary node using **MonCluster**.
+In a clustered Genesis set-up, all session data is shared amongst all nodes. Following the example set-up in the Prerequisites section, if the primary node fails and goes offline, The Load Balancer should divert traffic to the secondary node, which contains all the session data for the end users. Their work will continue without disruption. Below you can see the switch to the secondary node using **MonCluster**.
 
 ![](/img/cluster-4-disaster-a.png)
 
