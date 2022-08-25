@@ -4,7 +4,7 @@ sidebar_label: 'Configuring Runtime'
 id: configuring-runtime
 ---
 
-[Introduction](/server-modules/integration/rest-endpoints/introduction/)  | [Basics](/server-modules/integration/rest-endpoints/basics/) | [Advanced](/server-modules/integration/rest-endpoints/advanced/) | [Configuring runtime](/server-modules/integration/rest-endpoints/configuring-runtime/) | [Testing](/server-modules/integration/rest-endpoints/testing/)
+[Introduction](/server-modules/integration/rest-endpoints/introduction/) | [Where to define](/server-modules/integration/rest-endpoints/where-to-define) | [Basics](/server-modules/integration/rest-endpoints/basics/) | [Advanced](/server-modules/integration/rest-endpoints/advanced/) | [Configuring runtime](/server-modules/integration/rest-endpoints/configuring-runtime/) | [Testing](/server-modules/integration/rest-endpoints/testing/)
 
 There are two important files in your application that contain configuration information:
 - _application-name_**-processes.xml**
