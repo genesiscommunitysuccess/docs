@@ -21,7 +21,7 @@ By the end of this guide, we will have created a full stack Genesis application 
 - A customisable grid surfacing any application data
 - A form allowing the ability to insert new data
 
-We are going to call this example application **alpha**. We'll will see this reflected in the file names throughout.
+We are going to call this example application **alpha**. We'll see this reflected in the file names throughout.
 
 
 ## What will we learn?

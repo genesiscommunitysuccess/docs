@@ -18,9 +18,9 @@ By the end of this section we should have our all of our server application runn
 
 ## Server Set Up
 
-Before starting this, make sure that:
+Before starting with the server set up, make sure that:
 
-- we have a user with name of the application (alpha)
+- We have a user with name of the application (alpha)
 - FoundationDB is running (if it is not, run `systemctl start foundationdb` from CentOS7
 - Have our Genesis home, distribution and user configured like below:
 

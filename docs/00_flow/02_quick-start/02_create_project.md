@@ -5,7 +5,7 @@ id: create-project
 
 # Create Project
 
-To help give a helping hand in getting started with building applications, our [GenX CLI](/flow/introduction/prerequisites/#genx-cli)  tool will create seed projects. 
+To help give a helping hand in getting started with building applications, our [GenX CLI](/flow/introduction/prerequisites/#genx-cli) tool will create seed projects.
 
 
 > A seed project is a productive starting point for any application using Flow. 
@@ -115,7 +115,7 @@ Next, we'll be asked whether we want to configure an API host.
 ```
 
 Continue with the remaining prompts:
-> Hit enter and the default versions will be selected. If we want to use a different version, simply add the version next to the prompt and hit enter. 
+> Hit enter and the default versions will be selected. If we want to use a different one, simply add the version next to the prompt and hit enter.
 
 ```shell
 ? Genesis Server version
