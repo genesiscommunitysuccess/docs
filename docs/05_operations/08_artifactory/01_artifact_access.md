@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ---
 
-This document covers Genesis' artifact store, which is an instance of JFrog's Artifactory.
+This document covers the Genesis artifact store, which is an instance of JFrog's Artifactory.
 
 
 ## Obtaining credentials
