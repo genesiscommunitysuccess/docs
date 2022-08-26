@@ -8,7 +8,7 @@ id: introduction
 
 For genesis application servers the web server of choice is [nginx](https://www.nginx.com/).
 
-There is a _product user_ on each server named after the product e.g. ``priss`` on dev-hsbc-priss2. 
+There is a _product user_ on each server named after the product.
 
 The web root (where the production build needs to end up) is `/data/${productUser}/web` by convention.
 
@@ -24,7 +24,7 @@ server {
     listen 443 ssl http2;
     server_name _;
 
-    root /data/priss/web;
+    root /data/client-x/web;
 
     index index.html index.htm;
 
@@ -98,8 +98,8 @@ server {
 ```
 
 In this example by looking at the 5th line we can tell that:
-- the _web root_ is `/data/priss/web`
-- _product user_ is `priss`
+- the _web root_ is `/data/client-x/web`
+- _product user_ is `client-x`
 
 You will need this information if you ever want to [manually deploy](/front-end/deploying/manual-deployment/) the Front End from your machine to the web server.
 
