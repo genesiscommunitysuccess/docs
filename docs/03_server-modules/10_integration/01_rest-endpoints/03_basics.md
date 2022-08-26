@@ -313,7 +313,7 @@ Any request parameters should be prefixed with `request.`. E.g. `request.[reques
 
 Parameter values can be wild-carded (`*`, `A*`, `_A`, `_A*`, etc.) or left blank (and assumed to be `*`).
 
-Request server requests require:
+Request Server requests require:
 
 * `SOURCE_REF` header (a unique value should be supplied on every request with a unique value)
 * `SESSION_AUTH_TOKEN` header
@@ -352,7 +352,7 @@ Events are submitted via POST requests to
 
 All resource paths should be prefixed with `event_`. For example `localhost:9064/event_order_insert`. In this example `order_insert` is our custom event route and `event_` is the prefix.
 
-Event handler requests require:
+Event Handler requests require:
 
 * `SOURCE_REF` header (a unique value should be supplied on every request with a unique value)
 * `SESSION_AUTH_TOKEN` header
