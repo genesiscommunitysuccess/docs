@@ -38,7 +38,7 @@ The majority of customisable logic is specified within the xml file as groovy co
 
 ### Pre-expression[​](https://internal-web/secure/creating-applications/defining-your-application/integrations/market-data/adaptors/common-config/#pre-expression "Direct link to heading")
 
-The pre expression is a groovy code block executed before any other code block specified in the file. You can use this expression to define any utility functions you wish to use within your other code.
+The pre-expression is a groovy code block executed before any other code block specified in the file. You can use this expression to define any utility functions you wish to use within your other code.
 
 ``` java
 <preExpression>
@@ -90,7 +90,7 @@ Each subscription has a `where` element, where you can define a code block for
 <where><![CDATA[recordExists(ips)]]></where>
 ```
 
-Each subscription has a number of `record` elements defined within a `records` element. These elements define the destination that market data will be published to, i.e. which tables.
+Each subscription has a number of `record` elements defined within a `records` element. These elements define the destination that market data will be published to (i.e. which tables).
 
 A `record` has the following attributes.
 
@@ -112,7 +112,7 @@ The `lookupKey` element defines a function in groovy. Its goal is to populate 
 
 Below is an example of a simple lookup key function. The `INSTRUMENT_L1_PRICE` table has an index on `INSTRUMENT_CODE`, so this is the only data point we need to locate the existing record. We obtain the code from the subscription table defined with alias 'ips'.
 
-If your price tables are more complex than the stock tables provided by the market data system, then you will need to make sure the record in this function is populated with sufficient information in order to locate the existing record by an index.
+If your price tables are more complex than the stock tables provided by the market data system, then you will need to make sure that the record in this function is populated with sufficient information in order to locate the existing record by an index.
 
 ```xml
 <record targetTable="INSTRUMENT_L1_PRICE" alias="ip" type="MODIFY" isHFT="true">    
@@ -120,7 +120,7 @@ If your price tables are more complex than the stock tables provided by the mark
 </record>
 ```
 
-The record has two more elements
+The record has two more elements:
 
 `Fields` enables you to specify a transformation function that maps your data map to a record in the target table.
 
