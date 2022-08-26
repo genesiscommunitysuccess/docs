@@ -16,7 +16,7 @@ The Genesis low-code platform gives you a way of turning these into applications
 Take a look at this quick exercise. We start with an Excel workbook. We finish with a simple but effective server that you can add a front end to. The steps to producing this are:
 
 1. Do some up-front checks and edits to head off any obvious issues.
-2. Run the convertor. This creates your data model in Genesis format and creates data files in csv format.
+2. Run the convertor. This creates your data model in Genesis format and creates data files in CSV format.
 3. Check the fields, tables and views in the data model. Make any necessary adjustments in the spreadsheet and re-run the convertor. (Repeat this step if necessary.)
 4. Run a quick sequence of Genesis scripts. This produces the files that contain the business logic and exposes the endpoints.
 5. Load the csv data files to the database.
@@ -33,7 +33,7 @@ E -->F[genesisInstall, remap, AppGen, genesisInstall]
 F -->G[Load generated data]
 ```
 
-If you already have a Genesis low-code platform, you can [download the workbook](/file/Excel_Export_Demo.xlsx) and try this for yourself.
+If you already have a Genesis platform, you can [download the workbook](/file/Excel_Export_Demo.xlsx) and try this for yourself.
 
 ## Analyse, adjust and run
 
@@ -116,7 +116,7 @@ fields {
 }
   
 ```
-You can see the whole file [here](/server-modules/integration/excel-to-genesis/Files/guide-5)
+You can see the whole file [here](/server-modules/integration/excel-to-genesis/Files/guide-5).
 #### Field types
 The fields are automatically sampled by the command to allocate a type. If it is not sure, it allocates the field as STRONG. Most of these will be correct, but you will need to handle exceptions.
 #### Long names and illegal characters
@@ -156,7 +156,7 @@ tables {
     }
   
 ```
-You can see the whole tables file [here](/server-modules/integration/excel-to-genesis/Files/guide-12). Table IDs are sequential from the first one created, starting with the `-t` number supplied when you ran the script.
+You can see the whole table's file [here](/server-modules/integration/excel-to-genesis/Files/guide-12). Table IDs are sequential from the first one created, starting with the `-t` number supplied when you ran the script.
 #### Unable to parse
 If the conversion process was not able to parse a field, this is clearly marked by the comment. For example:
 ```kotlin
@@ -165,7 +165,7 @@ If the conversion process was not able to parse a field, this is clearly marked 
 You will have to deal with this, perhaps by creating a consolidator.
 #### Primary key
 The first column in each worksheet is always used as the primary key for the table.
-The process is able to handle concatenations in excel. For example, in the Cash Mvmnt Orders sheet, column A contains a combination of columns B and C:
+The process is able to handle concatenations in Excel. For example, in the Cash Mvmnt Orders sheet, column A contains a combination of columns B and C:
 ![](/img/concat-xls.png)
 
 Consequently, the conversion has used both these fields to create the primary key:
