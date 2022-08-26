@@ -6,10 +6,10 @@ sidebar_position: 1
 
 ---
 
-This document covers Genesis' artifact store, which is an instance of JFrog's Artifactory.
+This document covers the Genesis artifact store, which is an instance of JFrog's Artifactory.
 
 
-## Obtaining Credentials
+## Obtaining credentials
 
 Genesis provides clients with a username and password to access.  Our Customer Success team can arrange this.
 Log in with those credentials here:  [Genesis Artifactory](https://genesisglobal.jfrog.io/ui/login/)
@@ -43,12 +43,10 @@ source of that scope.
 We offer both our scoped packages and a remote to the npmjs.org repository via a single repository, available
 [here](https://genesisglobal.jfrog.io/artifactory/npm/).  This is a virtual repository on Artifactory.
 
-We offer direct access to only our scoped packages via a repository called 'github-packages' (we build them on Github
-but do not expose  them  there) and is available [here](https://genesisglobal.jfrog.io/artifactory/github-packages/).
+We offer direct access to our scoped packages only via a repository called ['github-packages'](https://genesisglobal.jfrog.io/artifactory/github-packages/). (We build the packages on Github, but we do not expose them there).
 
 These repositories are used in **.npmrc** files, by developers and CI/CD systems.  More details on the use
 of web repositories is [here](/getting-started/prerequisites/hardware-and-software/#npmrc-set-up).
-
 
 
 ## Community objects
@@ -59,6 +57,5 @@ There is a number of Genesis user community uploads in a Genesis-curated reposit
 
 ## Private repositories
 
-If there are any artifacts that Genesis should build and host, we will create a repository dedicated to that and your
-user will give you read-write access to that repository.  The URL for it will be provided.
+In some circumstances, you might want Genesis to build and host artifacts for you. Where this occurs, we shall create a repository dedicated to you, and shall give you read-write access to the repository. The URL for it will be provided.
 
