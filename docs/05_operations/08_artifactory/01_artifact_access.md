@@ -46,13 +46,10 @@ We offer both our scoped packages and a remote to the npmjs.org repository via a
 We offer direct access to only our scoped packages via a repository called 'github-packages' (we build them on Github
 but do not expose  them  there) and is available [here](https://genesisglobal.jfrog.io/artifactory/github-packages/).
 
-These repositories are what should appear in a **.npmrc** file, along with user credentials.  For example:
-```text
-registry=https://registry.npmjs.org/
-@genesislcape:registry=https://genesisglobal.jfrog.io/artifactory/npm/
-//genesisglobal.jfrog.io/artifactory/npm/:username={username}
-//genesisglobal.jfrog.io/artifactory/npm/:_password={base-64-encoded password}
-```
+These repositories are used in **.npmrc** files, by developers and CI/CD systems.  More details on the use
+of web repositories is [here](/getting-started/prerequisites/hardware-and-software/#npmrc-set-up).
+
+
 
 ## Community objects
 
