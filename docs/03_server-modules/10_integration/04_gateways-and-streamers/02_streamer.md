@@ -24,7 +24,7 @@ To create a Streamer:
 
 For more information on the above process tags, see the page on [configuring runtime processes](03_server-modules/02_data-server/05_configuring-runtime.md).
 
-2. Create a kotlin script file named **{app-name}-streamer.kts** under **jvm/{app-name}-script-config**. Add the following information:
+2. Create a Kotlin script file named **{app-name}-streamer.kts** under **jvm/{app-name}-script-config**. Add the following information:
     * A stream name
     * A GPAL index reference for a unique index with a single LONG field, this could refer to a table index or a view index.
 
