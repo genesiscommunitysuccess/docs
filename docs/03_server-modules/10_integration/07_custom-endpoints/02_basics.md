@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 [Introduction](/server-modules/integration/custom-endpoints/introduction/) | [Basics](/server-modules/integration/custom-endpoints/basics/) |  [Advanced](/server-modules/integration/custom-endpoints/advanced/) | [Examples](/server-modules/integration/custom-endpoints/examples/) | [Configuring runtime](/server-modules/integration/custom-endpoints/configuring-runtime/) | [Testing](/server-modules/integration/custom-endpoints/testing/)
 
-Custom endpoints are defined within their own submodule of the project, using classes implementing the the `WebEndpoint` interface provided by Genesis-Router.
+Custom endpoints are defined within their own submodule of the project, using classes implementing the `WebEndpoint` interface provided by Genesis-Router.
 
 In their initialisation, the classes need to call on the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
 
