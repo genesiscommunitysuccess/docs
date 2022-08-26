@@ -30,7 +30,7 @@ Two core components are used to manage the entities - the grid and the form. The
 Example grid used to manage counterpartys.
 ![Example entity management grid](/img/foundation-entity-management-grid.png)
 
-The other component is the form, and this is used to edit an existing entity or add a new one. An example form is shown here.
+The other component is the form, and this is used to update an existing entity or create a new one. An example form is shown here.
 ![Example entity management form](/img/foundation-entity-management-form.png)
 
 ## Set-up
