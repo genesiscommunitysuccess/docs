@@ -7,7 +7,7 @@ title: 'The Request Server file'
 
 
 
-This file shows the Request Servers that have been generated. Each `requestReply`  makes snapshot data available to the front end.
+This file shows the routes that have been generated for the Request Server. Each `requestReply`  makes snapshot data available to the front end.
 
 ```kotlin
 requestReplies {
