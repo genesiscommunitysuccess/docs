@@ -7,7 +7,7 @@ id: basics
 [Introduction](/server-modules/integration/rest-endpoints/introduction/) | [Where to define](/server-modules/integration/rest-endpoints/where-to-define) | [Basics](/server-modules/integration/rest-endpoints/basics/) | [Advanced](/server-modules/integration/rest-endpoints/advanced/) | [Configuring runtime](/server-modules/integration/rest-endpoints/configuring-runtime/) | [Testing](/server-modules/integration/rest-endpoints/testing/)
 
 ## Authentication
-As mentioned in the introduction, all requests to all Genesis components require you to have done an intial log in and retrieve the `SESSION_AUTH_TOKEN`.
+As mentioned in the introduction, all requests to all Genesis components require you to have done an intial log in and to have retrieved the `SESSION_AUTH_TOKEN`.
 
 ### EVENT_LOGIN_AUTH
 
@@ -16,8 +16,8 @@ Log in requests are submitted via POST requests to
 
 Intial login requests require:
 
-* `USER_NAME` and `PASSWORD` keys in the `DETAILS` object.
-* `SOURCE_REF` header
+* `USER_NAME` and `PASSWORD` keys in the `DETAILS` object
+* `SOURCE_REF` header.
 
 Sample request:
 

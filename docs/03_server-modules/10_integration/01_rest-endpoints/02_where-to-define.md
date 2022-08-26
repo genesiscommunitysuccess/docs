@@ -8,7 +8,7 @@ id: where-to-define
 
 The Genesis low-code platform makes defining REST Endpoints easy. Instead of needing to configure individual endpoints, you only have to declare the relevant resources, and configure the [Genesis Router](/server-modules/configuring-runtime/genesis-router/).
 
-The following resources support automatic route registration
+The following resources support automatic route registration:
 * [Data Servers](/server-modules/data-server/introduction/)
 * [Request Servers](/server-modules/request-server/introduction/)
 * [Event Handlers](/server-modules/event-handler/introduction/)
