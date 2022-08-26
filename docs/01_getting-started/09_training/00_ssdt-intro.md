@@ -10,7 +10,6 @@ This is hands-on server specialist developer training where we're going to exten
 
 ## Pre-requisites and assumptions
 
-- You know how to code, ideally familiar with the **Java ecosystem** and **Kotlin** language. Even better if you know some​ **TypeScript** and some basic Linux commands.​
 - You have taken the [Foundation](#) course as well as the [Developer Training](#).
 
 
