@@ -23,15 +23,15 @@ Normally, these credentials will give access to four categories of artifact:
 
 ## Server-side code
 
-There is one principal repository for server-side artifacts, which include:
+There is one principal repository for server-side artifacts, which includes:
  * Genesis low-code platform frameworks (supplied as zip files)
  * Gradle plugins to aid development
 
 This repository is called 'libs-release-client' and is available
 [here](https://genesisglobal.jfrog.io/artifactory/libs-release-client/).
 
-Default project creation using the cli tool [genx](/getting-started/quick-start/create-a-new-project) will populate
-urls as gradle dependencies.
+Default project creation using the CLI tool [genx](/getting-started/quick-start/create-a-new-project) will populate
+URLs as gradle dependencies.
 
 
 ## Web artifacts
@@ -43,19 +43,19 @@ source of that scope.
 We offer both our scoped packages and a remote to the npmjs.org repository via a single repository, available
 [here](https://genesisglobal.jfrog.io/artifactory/npm/).  This is a virtual repository on Artifactory.
 
-We offer direct access to our scoped packages only via a repository called ['github-packages'](https://genesisglobal.jfrog.io/artifactory/github-packages/). (We build the packages on Github, but we do not expose them there).
+We offer direct access to our scoped packages only via a repository called ['github-packages'](https://genesisglobal.jfrog.io/artifactory/github-packages/). (We build the packages on Github, but we do not expose them there.)
 
-These repositories are used in **.npmrc** files, by developers and CI/CD systems.  More details on the use
-of web repositories is [here](/getting-started/prerequisites/hardware-and-software/#npmrc-set-up).
+These repositories are used in **.npmrc** files, by developers and CI/CD systems.  Further details about the use
+of web repositories are available [here](/getting-started/prerequisites/hardware-and-software/#npmrc-set-up).
 
 
 ## Community objects
 
-There is a number of Genesis user community uploads in a Genesis-curated repository available
+There are a number of Genesis user community uploads in a Genesis-curated repository available
 [here](https://genesisglobal.jfrog.io/artifactory/community-uploads/).
 
 
 ## Private repositories
 
-In some circumstances, you might want Genesis to build and host artifacts for you. Where this occurs, we shall create a repository dedicated to you, and shall give you read-write access to the repository. The URL for it will be provided.
+If you want Genesis to build and host artifacts for yourself we will create a repository dedicated to you, and additionaly give you read-write access to the repository. The URL for it will be provided.
 
