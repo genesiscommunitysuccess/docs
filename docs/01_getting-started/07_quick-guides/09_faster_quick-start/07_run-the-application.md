@@ -21,7 +21,7 @@ Usage:
 http://localhost:6060
 ```
 
-Once the server has successfully started all the components on the docker container, you may log in
+Once the server has successfully started all the components on the docker container, you may log in.
 
 ## Conclusion
 That’s it. You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.
