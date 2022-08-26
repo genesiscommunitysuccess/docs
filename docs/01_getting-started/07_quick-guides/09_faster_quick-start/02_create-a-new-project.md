@@ -8,7 +8,7 @@ The GenX CLI tool enables you to seed projects. In this case, we just want to ge
 
 For step-by-step instructions on how to install and use this tool, follow the guide on GenX.
 
-Once configured, install genx using the following command:
+Once configured, install GenX using the following command:
 
 ```shell
 npm install -g @genesislcap/foundation-cli
@@ -20,11 +20,11 @@ Once installed, from the terminal, run:
 genx
 ```
 
-In the `genx` script, there is a series of questions.
+In the `genx` script, there are a series of questions.
 
 First, you are asked to provide your username and password - these are the credentials you use to access Genesis Artifactory.
 
-Then you are asked to select from a short list of seed applications. Select `create application`:
+You are then asked to select from a short list of seed applications. Select `create application`:
 
 
 ```shell
@@ -52,7 +52,7 @@ In the next prompt, select `Quick Start Application` from the list.
 
 ```
 
-At this point, the seed application is created and the genx dependencies are installed.
+At this point, the seed application is created and the GenX dependencies are installed.
 
 Then there are more questions, which you can respond to as follows:
 
@@ -70,7 +70,7 @@ Then there are more questions, which you can respond to as follows:
 ? Group Id global.genesis
 ? Application Version 1.0.0-SNAPSHOT
 ```
-At this point, the application will be configured. Assuming it is successful, you will see the following text:
+At this point, the application will be configured. A successful configuration will result in the following text:
 
 ```shell
 i Application created successfully! 🎉 Please open the application and follow the README to complete setup.
