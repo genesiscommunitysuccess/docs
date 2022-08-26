@@ -13,10 +13,24 @@ This day covers:
 
 Micro-front-end architecture is a design approach in which a front-end app is decomposed into individual, semi-independent **micro applications** working loosely together. The micro-front-end concept is vaguely inspired by, and named after, microservices. Independent development teams can collaborate on a front-end app more easily using this approach, and can each have their own release cadence. We've built out a number of re-usable micro-front-ends that can be used by Genesis-powered applications.
 
-### Front-end Reporting
+### Header
 
+### Config
+
+### Reporting
 
 https://internal-web/uat/secure/front-end/micro-front-ends/front-end-reporting/
+
+#### Exercise 5.1 Using a custom micro frontend
+
+<!--
+this is pretty much here: 
+-->
+:::info ESTIMATED TIME
+30 mins
+:::
+
+We are building ....
 
 ## Angular integration
 
