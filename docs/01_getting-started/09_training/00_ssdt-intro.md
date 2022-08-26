@@ -37,7 +37,7 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 - [Day 5](#): Custom endpoints, camel module, data pipeline​.
 
 ## Genesis low-code platform version
-6.0.2
+6.1.4
 
 ## Source code
 The complete source code of this training is available 

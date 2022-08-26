@@ -199,7 +199,7 @@ Answer is pretty much here: http://localhost:8080/server-modules/data-server/exa
 
 ## Advanced request servers
 
-Request Servers, (otherwise known as request/replies and often shortened to reqrep) retrieve a snapshot of data from a table or a view on demand and serve it up to the requesting client. They are predominantly used for serving the UI.
+Request Servers, (otherwise known as request/replies and often shortened to reqrep) retrieve a snapshot of data from a table or a view on demand and serve it up to the requesting client. They are predominantly used for serving the UI. As Data Servers, using Request Servers you can also [specify derived fields](/server-modules/request-server/basics/#specifying-derived-fields), [use an index](/server-modules/request-server/basics/#using-an-index), and add [where blocks](/server-modules/request-server/basics/#where-block).
 
 :::caution Request Servers are different from Data Servers
 Request Servers will reply with a single response. Once the response is received, the transaction is over (unlike a [Data Server](/server-modules/data-server/basics), which stays connected to the client and pushes updates).
@@ -252,7 +252,7 @@ Note the following:
 - When you do not define a `request` block, the primary key for the table or view is used as the default request field.
 - When you do not define a `reply block`, all the fields will be returned.
 
-As Data Servers, using Request Servers you can also [specify derived fields](/server-modules/request-server/basics/#specifying-derived-fields), [use an index](/server-modules/request-server/basics/#using-an-index), and add [where blocks](/server-modules/request-server/basics/#where-block). Now we are exploring Request Servers advanced concepts like [Pre-processing the request](#pre-processing-the-request), [Limit the number of rows returned](#limit-the-number-of-rows-returned), [Timeout](#timeout), [Ranges](#ranges), and [Custom Request Servers](#custom-request-servers).
+Now we are exploring Request Servers advanced concepts like [Pre-processing the request](#pre-processing-the-request), [Limit the number of rows returned](#limit-the-number-of-rows-returned), [Timeout](#timeout), [Ranges](#ranges), and [Custom Request Servers](#custom-request-servers).
 
 ### Pre-processing the request
 

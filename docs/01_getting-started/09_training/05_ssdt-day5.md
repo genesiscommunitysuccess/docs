@@ -289,6 +289,10 @@ You can see some samples [here](https://camel.apache.org/components/3.18.x/ftp-c
 
 ## Data pipeline
 
+:::info
+Feature included in the Genesis low-code platform version 6.1.1
+:::
+
 You can define data pipelines that map data from an external source (database, file) to [Tables](/database/fields-tables-views/tables/) in your application. By default, the resulting Table objects are stored in the database. However, you can define [custom operations](/server-modules/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity) as well.
 
 Each data pipeline defines a source for the data and how that data is mapped to each [Field](/database/fields-tables-views/fields/) in the Table. If a field mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a `transform` function that has a return value that is mapped to the required Field.
