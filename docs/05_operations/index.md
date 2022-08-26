@@ -15,5 +15,6 @@ This area covers:
 - setting up a server to run applications
 - installing and managing applications
 - complex server set-ups that involve clustering and environment management
+- Genesis artifact access
 
 
