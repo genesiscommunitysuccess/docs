@@ -78,7 +78,7 @@ For more information on the tags that can be set within the configuration for yo
 
 ### Configuring in service-definitions.xml
 
-Here is an example of an Event Handler's service configuration:
+Here is an example of the Genesis-router's service configuration:
 
 ```xml
   <service host="localhost" name="GENESIS_ROUTER" port="9017"/>
