@@ -56,7 +56,7 @@ There are two important files in your application that contain configuration inf
 
 ### Configuring in processes.xml
 
-Here is an example of a Genesis-router configuration in an application's **processes.xml** file:
+Here is an example of the Genesis-router's configuration in an application's **processes.xml** file:
 
 ```xml
   <process name="GENESIS_ROUTER">
