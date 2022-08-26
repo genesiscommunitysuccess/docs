@@ -12,6 +12,6 @@ There are two important files in your application that contain configuration inf
 
 REST endpoints require that both their resources, and the [Genesis Router](/server-modules/configuring-runtime/genesis-router/) are configured within the above files.
 
-For more information on configuring your application's **processes.xml**, follow this [link](/server-modules/configuring-runtime/processes)
+For more information on configuring your application's **processes.xml**, follow this [link](/server-modules/configuring-runtime/processes).
 
 For more information on configuring your application's **service-definitions.xml**, follow this [link](/server-modules/configuring-runtime/service-definitions).
