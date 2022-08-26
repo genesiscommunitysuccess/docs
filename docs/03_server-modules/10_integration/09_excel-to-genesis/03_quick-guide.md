@@ -4,6 +4,8 @@ sidebar_label: 'Quick guide'
 id: quick-guide
 ---
 
+[Excel reference](/server-modules/integration/excel-to-genesis/excel-reference/)  | [Excel functions](/server-modules/integration/excel-to-genesis/excel-functions) | [Quick guide](/server-modules/integration/excel-to-genesis/quick-guide)
+
 ## Introduction 
 
 ![](/img/intro3-xtg.png)
@@ -11,7 +13,7 @@ All across the financial sector, you can find operational functions sitting in E
 
 The Genesis low-code platform gives you a way of turning these into applications that can be audited and maintained in a standard and controlled manner. Along the way, you can build in better workflow and usability without heavy IT development effort.
 
-Take a look at this quick exercise. We start with an Excel workbook. We finish with a simple but effective server that you can add a front end to.
+Take a look at this quick exercise. We start with an Excel workbook. We finish with a simple but effective server that you can add a front end to. The steps to producing this are:
 
 1. Do some up-front checks and edits to head off any obvious issues.
 2. Run the convertor. This creates your data model in Genesis format and creates data files in csv format.
@@ -30,7 +32,6 @@ E -->|Modify spreadsheet if required|C
 E -->F[genesisInstall, remap, AppGen, genesisInstall]
 F -->G[Load generated data]
 ```
-If you would like to see that in detail, please see the following example.
 
 If you already have a Genesis low-code platform, you can [download the workbook](/file/Excel_Export_Demo.xlsx) and try this for yourself.
 
@@ -62,22 +63,24 @@ Column names will be turned into field names by the conversion process, which al
 
 Long column headings do not make good field names. So, look at the headings in each sheet and replace the long ones with shorter text that makes better field names. It is quicker to do this at the start than to wait until after the conversion.
 
-For example, it would help to change this long name to **Cpty_Base_Adj_Collat_Val**:
+For example, it would help to change **Base Adjusted Collateral Value held by Cpty** to **Cpty_Base_Adj_Collat_Val**:
 
 ![](/img/adjust-field-name.png)
 
 
 ### Convert the workbook
 
-Once you have adjusted the column headings, you can run the conversion process:
+Once you have adjusted the column headings, you can run the conversion process in your terminal:
 
 ```bash
 ExcelToGenesis -f euc\\ demo\\ cash\\ mgmt.xlsx -n cash -t 10000
 ```
 
-The process is quick. It creates a number of tables. Each table has a numeric ID, starting with the number 10000 that you supplied in the command. The dictionary files produced all include the product name **Cash**, which you supplied with the command.
+:::info
+The above command assumes you have already set up the genesis platform on your machine and have the `ExcelToGenesis` CLI tool available.
+:::
 
-OK. Now take a look at the results in Example 2.
+The process is quick. It creates a number of tables. Each table has a numeric ID, starting with the number 10000 that you supplied in the command. The dictionary files produced all include the product name **Cash**, which you supplied with the command.
 
 
 ## Check the files and load the data
@@ -153,8 +156,7 @@ tables {
     }
   
 ```
-You can see the whole tables file [here](/server-modules/integration/excel-to-genesis/Files/guide-12)
-Table IDs are sequential from the first one created, starting with the `-t` number supplied when you ran the script.
+You can see the whole tables file [here](/server-modules/integration/excel-to-genesis/Files/guide-12). Table IDs are sequential from the first one created, starting with the `-t` number supplied when you ran the script.
 #### Unable to parse
 If the conversion process was not able to parse a field, this is clearly marked by the comment. For example:
 ```kotlin
@@ -163,8 +165,9 @@ If the conversion process was not able to parse a field, this is clearly marked 
 You will have to deal with this, perhaps by creating a consolidator.
 #### Primary key
 The first column in each worksheet is always used as the primary key for the table.
-The process is able to handle concatenations in excel. For example, in the Cash Mvmnt Orders sheet, column A contains a conctenation of columns B and C:
+The process is able to handle concatenations in excel. For example, in the Cash Mvmnt Orders sheet, column A contains a combination of columns B and C:
 ![](/img/concat-xls.png)
+
 Consequently, the conversion has used both these fields to create the primary key:
 ```kotlin
 }
@@ -186,6 +189,7 @@ Consequently, the conversion has used both these fields to create the primary ke
 ### The view file
 Inside the file `cash-view-dictionary.kts`, you can see that the script has been able to find where tables need joins. Exceptions are highlighted.
 In the example here, the first worksheet has been converted. This has created a view with two joins successfully. But it has not been possible to create a third join:
+
 ```kotlin
 views {
   view ("CASH_MGMT_DASHBOARD_VIEW", CASH_MGMT_DASHBOARD) {
@@ -206,11 +210,12 @@ views {
     }
   }
 }
-    
 ```
 You can see the complete view file [here](/server-modules/integration/excel-to-genesis/Files/guide-13).
+
 #### Derived fields
-The conversion has created derived fields - simple calculations based on other fields in the view. Our example includes both IF statements and VAL.
+The conversion has created derived fields - simple calculations based on other fields in the view.
+
 ```kotlin
 derivedField("FINAL_QUANTITY", DOUBLE) {
         // F: I2
@@ -221,10 +226,13 @@ derivedField("FINAL_QUANTITY", DOUBLE) {
           SUGGESTED_QUANTITY
         }
 ```
+
 ### The data files
 There is one data file for each of the sheets in the workbook.
 For example, here is a look at the top of the first sheet in the workbook:
+
 ![](/img/top-dashboard.png)
+
 And here are the first ten rows of the data file:
 ```
 "ACCT_CODE","ACCOUNT_NAME","ACCOUNT_NUMBER","ACCOUNT_CURRENCY","AVAILABLE_BALANCE_DATE","PREVIOUS_CLOSE_BALANCE","EXPECTED_MARGIN_INFLOWS","EXPECTED_MARGIN_OUTFLOWS","NET_AVAILABLE_BALANCE","TBILLS_HOLDINGS","CURRENT_FUNDING_POSN","FUND_HOLDINGS_LEVEL","PERCENT_OF_FUNDS_ALL","SUGGESTED_ACTION","DEPOSIT_AMOUNT_ON_MAY_IN_PERCENT_HAIR_CUT_AND_MAX_PERCENT_ON_FUNDS","MAX_DEPOSIT_AMOUNT_BASED_ON_PERCENT_LIMIT","POTENTIAL_ADDITIONAL_TBILLS_DEPOSIT","EXPECTED_BALANCE_AFTER_REDEMPTION_PER_DEPOSIT_CASH_ONLY_NO_TBILLS","EXPECTED_CASH_BALANCE_PERCENT"
@@ -243,9 +251,9 @@ And here are the first ten rows of the data file:
 
 After you have checked the files generated and addressed any issues in the fields, tables and views, you can run the sequence of commands to load the data and generate an application.
 
-1. Run `genesisInstall` to check all the config files and prepare the application for the current environment (using the files in site-specific to replace values in the modules, for example).
+1. Run `genesisInstall` to check all the config files and prepare the application for the current environment.
 2. Run `remap --commit` to set any changes to the database (modifications to fields, tables and views).
-3. Run `SendIt -a`  to load the data from all the generated data files into the database.
+3. Run `SendIt -a` to load the data from all the generated data files into the database.
 4. Run `AppGen` to generate Event Handlers, Request Servers and Data Servers for all the tables. For example:
 
 ```bash
