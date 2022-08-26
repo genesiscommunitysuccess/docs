@@ -1,31 +1,30 @@
 ---
-id: web-environment-setup
-title: Web environment setup
-sidebar_label: Web environment setup
+title: 'Getting Started'
+sidebar_label: 'Getting Started'
+id: ssdt-getting_started
 sidebar_position: 2
-
 ---
-# Setting up your workstation and a local server
-You must have completed the environment setup from the previous Developer Training. If that's not the case, please [do that](/getting-started/web-training/environment-setup/) before continuing this guide.
 
-## Downloading and building the initial project
 
-As this training is a continuation of the initial developer training, please [download the project structure](https://genesisglobal.jfrog.io/artifactory/community-uploads/web-alpha.zip) and unzip it in a convenient location for you.
+## Environment set-up
 
-Then, from the workspace **alpha/client** folder, run:
-```
-npm run bootstrap
-```
+Make sure you completed the [Environment set-up](#), the same you did in the [Developer Training](#).
 
-Next, spin up the dev server:
 
-```
-npm run dev
-```
+## Start the project baseline
 
-If you don't get any errors, you're all set!
+Clone the Developer Training repo [here](https://github.com/genesiscommunitysuccess/devtraining-gama). Open it using IntelliJ and follow the next steps:
 
-## Running the backend
-During this training, you are going to retrieve and send data to some backend components. You won't change them, but you need to have them running so they are reachable.
-[Link to Developer Training Deployment guide](/getting-started/developer-training/#deployment)
 
+
+- Build the server. In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha/Tasks/Build/Assemble**.
+
+- Make sure you are ok with all [pre-requisites](/tutorials/training-resources/training-content-day1/#pre-requisites).
+
+- Do the [Deployment process](/tutorials/training-resources/training-content-day1/#5-deployment).
+
+- Run the application [locally](/tutorials/training-resources/training-content-day2/#running-the-application-locally)
+
+
+
+The application will open at `http://localhost:6060/login`.
