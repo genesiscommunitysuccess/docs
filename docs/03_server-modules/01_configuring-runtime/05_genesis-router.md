@@ -48,6 +48,44 @@ router {
 }
 ```
 
+## Configuring Runtime
+
+There are two important files in your application that contain configuration information:
+-  _application-name_**-processes.xml**
+- _application-name_**-service-definitions.xml**
+
+### Configuring in processes.xml
+
+Here is an example of a Genesis-router configuration in an application's **processes.xml** file:
+
+```xml
+  <process name="GENESIS_ROUTER">
+    <start>true</start>
+    <scheduleRestart>true</scheduleRestart>
+    <groupId>GENESIS</groupId>
+    <options>-Xmx512m -DXSD_VALIDATE=false</options>
+    <module>router</module>
+    <package>global.genesis.router,global.genesis.console</package>
+    <config>router-process-config.kts</config>
+    <script>genesis-router.kts</script>
+    <language>pal</language>
+    <classpath>genesis-console-*.jar</classpath>
+    <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
+</process>
+```
+
+For more information on the tags that can be set within the configuration for your application, go to our page on [processes.xml](/server-modules/configuring-runtime/processes/).
+
+### Configuring in service-definitions.xml
+
+Here is an example of an Event Handler's service configuration:
+
+```xml
+  <service host="localhost" name="GENESIS_ROUTER" port="9017"/>
+```
+
+For more information on the attributes that can be set here, go to our page on [service definitions](/server-modules/configuring-runtime/service-definitions/).
+
 ## Router configuration
 Let's have a look at the different options for configuring this file. You have seen some, but not all of these in the example above.
 
