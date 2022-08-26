@@ -12,7 +12,7 @@ i Application created successfully! 🎉 Please open the application and follow 
 
 Now you are ready to define the fields and tables that make up the data model. 
 
-Start IntelliJ (or your chosen IDE) and then open the `positions-app-tutorial` project. This triggers importing and indexing of the files (which takes about as long as "Hotel California", so be patient). After that, you will see the files and the project structure displayed in your IDE.
+Start IntelliJ (or your chosen IDE) and then open the `positions-app-tutorial` project. This triggers importing and indexing of the files (which takes about as long as [Hotel California](https://youtu.be/jVHhV3A5C5c), so be patient). After that, you will see the files and the project structure displayed in your IDE.
 
 ## Add fields
 The fields are defined in the file **positions-app-tutorial-fields-dictionary.kts**
@@ -195,7 +195,7 @@ views {
 
 Run **positions-app-tutorial-config:assemble** to make the view ready for use.
 
-### Entities
+## Entities
 
 During code generation, [view](/database/data-structures/views/) and [index entities](/database/data-structures/indices/) will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
 
