@@ -13,7 +13,7 @@ Attaching a terminal to a docker container is as easy as running:
 docker exec -it gsf bash
 ```
 
-You can try logging as "alpha" and running "mon" to monitor the platform services
+You can try logging as "alpha" and running "mon" to monitor the platform services.
 ```shell
 su - alpha
 
@@ -26,7 +26,7 @@ The container running the Genesis Platform is able to detect changes happening o
 
 Try editing one of the previous .kts (i.e alpha-fields-dictionary.kts). Add one more field.
 
-You may see the changes if you run the following command on a terminal attached to the Docker container (as explained just before)
+You may see the changes if you run the following command on a terminal attached to the Docker container (as explained just before).
 
 ```shell
 cat /home/alpha/run/alpha/cfg/alpha-fields-dictionary.kts
@@ -52,7 +52,7 @@ Try running the gradle task "killServer".
 ./gradlew :genesisproduct-alpha:alpha-deploy:killServer #On the IntelliJ terminal
 ```
 
-You can check running 
+You can check running:
 
 ```shell
 ./gradlew :genesisproduct-alpha:alpha-deploy:mon #On the IntelliJ terminal
