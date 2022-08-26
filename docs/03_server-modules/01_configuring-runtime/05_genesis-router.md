@@ -56,7 +56,7 @@ There are two important files in your application that contain configuration inf
 
 ### Configuring in processes.xml
 
-Here is an example of the Genesis-router's configuration in an application's **processes.xml** file:
+Here is an example of the Genesis Router's configuration in an application's **processes.xml** file:
 
 ```xml
   <process name="GENESIS_ROUTER">
@@ -112,7 +112,7 @@ Different decoder options
   * `initialBufferSize`: default value: 128
 
 `httpObjectAggregatorDefinition`: A ChannelHandler that aggregates an HttpMessage and its following HttpContents into a single FullHttpRequest or FullHttpResponse (depending on if it used to handle requests or responses) with no following HttpContents.
-For more information, follow this [link](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpObjectAggregator.html)
+For more information, follow this [link](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpObjectAggregator.html).
 
   * `maxContentLength`: the maximum length of the aggregated content in bytes. Default value: 262144
   * `closeOnExpectationFailed`: If a 100-continue response is detected but the content length is too large, then true means close the connection. Otherwise, the connection will remain open and data will be consumed and discarded until the next request is received. Default value: false
@@ -283,7 +283,7 @@ public class FileProcessor implements WebEndpoint {
 
 To create unit tests for Genesis Router, you can extend the `AbstractGenesisTestSupport` class and specify the `genesis-router.kts` as the Script file name. Examples of how you would initialise a test extending this class are provided below.
 
-There is more information on how testing works in our section on [Integration testing](/operations/testing/integration-testing/).
+More information about how testing works is in our section on [Integration testing](/operations/testing/integration-testing/).
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
