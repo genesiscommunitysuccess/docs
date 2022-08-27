@@ -31,7 +31,7 @@ Estimated total effort: <b>Daily 4-hour sessions for 5 days</b>
 
 - [Web Developer environment set-up](/getting-started/web-training/environment-setup/)
 - [Day 1](/getting-started/web-training/training-content-day1/): Reviewing basic concepts, extending our web application​, navigation menu
-- [Day 2](/getting-started/web-training/training-content-day2/): Complex forms, data entry components, introducation to Genesis Comms lib.
+- [Day 2](/getting-started/web-training/training-content-day2/): Complex forms, data entry components, introduction to Genesis Comms lib.
 - [Day 3](/getting-started/web-training/training-content-day3/): Displaying data with Genesis ag-grid, filters and streaming data
 - [Day 4](/getting-started/web-training/training-content-day4/): Design systems, styling, reporting
 - [Day 5](/getting-started/web-training/training-content-day5/): Using more micro frontend, Angular integration​.
