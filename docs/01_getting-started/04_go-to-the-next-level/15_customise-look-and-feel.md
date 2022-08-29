@@ -66,9 +66,18 @@ export const tradesGridStyles: ElementStyles = css`
 `
 ```
 
+## Layout 
+By default, all elements on screen will use `display: block` but we can easily customise it using our custom component that supports responsive web design.
 
-## Styling custom component
+```html
+<foundation-flex-layout class="flex-row flex-sm-column spacing-2x">
+    <!--content-->
+</foundation-flex-layout>
+```
 
-Further information about styles and the element lifecycle can be located [here](https://www.fast.design/docs/fast-element/leveraging-css/#styles-and-the-element-lifecycle).
 
 ## Styling user management
+
+
+## Styling other parts of application
+This was only small part of platforms capabilities in terms of styling. You can read more about our powerful design system configuration in more details in [here](/front-end/design-systems/introduction/)
