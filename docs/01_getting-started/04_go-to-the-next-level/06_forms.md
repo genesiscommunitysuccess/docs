@@ -1,6 +1,6 @@
 ---
-title: 'Input data using forms'
-sidebar_label: 'Input data using forms'
+title: 'Create a form to input data'
+sidebar_label: 'Create a form to input data'
 id: forms
 ---
 
@@ -75,13 +75,27 @@ Now we need to add event handlers that would respond to user changes and store t
 We can do it in traditional way by adding `@change` [event handler](https://www.fast.design/docs/fast-element/declaring-templates#events) but we can also use the `sync` directive that would do that for us.
 Let's add it to each form element:
 
-```html title='home.template.ts' 
-<zero-text-field :value=${sync(x=> x.quantity)}>Quantity</zero-text-field>
-<zero-text-field :value=${sync(x=> x.price)}>Price</zero-text-field>
+```html {2,7,13,18} title='home.template.ts' 
+<zero-text-field 
+  :value=${sync(x=> x.quantity)}
+>
+  Quantity
+</zero-text-field>
+<zero-text-field 
+  :value=${sync(x=> x.price)}
+>
+  Price
+</zero-text-field>
 <span>Instrument</span>
-<zero-select :value=${sync(x=> x.instrument)}></zero-select>
+<zero-select 
+  :value=${sync(x=> x.instrument)}
+>
+</zero-select>
 <span>Side</span>
-<zero-select :value=${sync(x=> x.side)}></zero-select>
+<zero-select 
+  :value=${sync(x=> x.side)}
+>
+</zero-select>
 ```
 
 You probably realize that we don't have any options in our select component so let's fix that now.
