@@ -1,6 +1,6 @@
 ---
-title: 'Charts'
-sidebar_label: 'Charts'
+title: 'Create a chart'
+sidebar_label: 'Create a chart'
 id: charts
 ---
 
@@ -48,7 +48,11 @@ import {Datasource} from '@genesislcap/foundation-comms';
 @Datasource tradeDatasource: Datasource;
 ```
 
-Now you will take care of fetching the data from the server and assigning it to the `chartOptions`
+Now you will take care of fetching the data from the server and assigning it to the `chartOptions`.
+
+You start by initializing data source with requested `resourceName` and fields that we want the data for.
+
+Then you request snapshot of the data and assign the result to `series` property of chart options.
 
 ```typescript title="home.ts"
 public async connectedCallback()
