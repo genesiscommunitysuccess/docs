@@ -322,13 +322,9 @@ Set the body to **JSON**. In the body, you need to insert the details of the fie
 }
 ```
 
-<<<<<<< HEAD
 ![](/img/test-eh-url-body-alpha.png)
 
-###### Header
-=======
 #### Header
->>>>>>> uat
 In the header, you need to supply:
 
 - a SOURCE_REF (always), which identifies you; you can use any string value that suits you
@@ -336,13 +332,9 @@ In the header, you need to supply:
 
 When you have all these elements in place, click on **Send** to make the call. If the event is a success, you will receive an **ACK** message.
 
-<<<<<<< HEAD
 ![](/img/test-eh-header-alpha.png)
 
-###### Checking the insertion
-=======
 #### Checking the insertion
->>>>>>> uat
 Now you can check that the new counterparty you inserted is in the correct table of the database. The resource you need to check is the Request Server called ALL_COUNTERPARTIES.
 
 In front of the url, set the call to **POST**.
