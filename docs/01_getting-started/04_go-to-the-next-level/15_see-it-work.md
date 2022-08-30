@@ -44,7 +44,7 @@ wsl-user=genesis
 Now we are going to install the platform (i.e. Genesis distribution) on the server and then install the back end of our application on the same server. This is all done using the Genesis deploy plugin, which comes with several tasks grouped under `genesisdeploy` and `genesissetup`.
 
 :::caution
-All the following sections are one-time operations. If you have alerady followed this tutorial previously, they are not necessary. Skip to the [next paragraph](/getting-started/go-to-the-next-level/see-it-work/#deploying-the-application).
+All the following sections are one-time operations. If you have alerady followed this tutorial previously, they are not necessary. Skip to [Deploying the application](/getting-started/go-to-the-next-level/see-it-work/#deploying-the-application).
 :::
 
 ### Set up the platform
