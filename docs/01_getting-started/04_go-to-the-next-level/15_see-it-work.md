@@ -39,21 +39,21 @@ wsl-user=genesis
 
 :::
 
-### Deployment of the back end
+### Deploy the Genesis low-code platform
 
-Now we are going to install the Genesis low-code platform (i.e. Genesis distribution) on the server and then install the back end of our application on the same server. This is all done using the Genesis deploy plugin, which comes with several tasks grouped under `genesisdeploy` and `genesissetup`.
-
-#### Deploying to the server
+Now we are going to install the platform (i.e. Genesis distribution) on the server and then install the back end of our application on the same server. This is all done using the Genesis deploy plugin, which comes with several tasks grouped under `genesisdeploy` and `genesissetup`.
 
 :::caution
-This is a one-time operation. If this is not your first time following this tutorial, skip to the next paragraph.
+All the following sections are one-time operation. If this is not your first time following this tutorial, skip to the next paragraph.
 :::
+
+#### Set up the platform
 
 We will run `setupEnvironment` first (we only need to run it once) to set up the platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
 
 Usage :
 ```shell
-./gradlew :jvm:positions-app-tutorial-deploy:setupEnvironment #On the IntelliJ terminal
+./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:setupEnvironment #On the IntelliJ terminal
 ```
 or from the dropdown menu:
 
@@ -61,44 +61,27 @@ or from the dropdown menu:
 
 After this command is completed, we will have a basic Genesis server running.
 
-### Deploying the auth module
+#### Deploying the auth module
 As our application requires authentication, we have to install the Genesis Auth module.
 
 Usage:
 ```shell
-./gradlew :jvm:positions-app-tutorial-deploy:install-auth-distribution.zip #On the IntelliJ terminal
+./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:install-auth-distribution.zip #On the IntelliJ terminal
 ```
 
 or from the dropdown menu:
 
 ![](/img/install-auth.png)
 
-### Deploying the site-specific
+#### Deploying the site-specific
 As our application will use the site-specific folder to override the standard definitions, we have to run this task.
 
 Usage:
 ```shell
-./gradlew :jvm:positions-app-tutorial-deploy:install-positions-app-tutorial-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip #On the IntelliJ terminal
+./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:install-positions-app-tutorial-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip #On the IntelliJ terminal
 ```
 
-### Deploying the positions-app-tutorial product
-
-Now we have to deploy our application, the positions-app-tutorial product.
-
-Usage:
-```shell
-./gradlew :jvm:positions-app-tutorial-deploy:deploy-genesisproduct-positions-app-tutorial.zip #On the IntelliJ terminal
-```
-
-or from the dropdown menu:
-
-![](/img/deploy-alpha-product.png)
-
-:::tip
-This will take the last built distribution. It does not run a project build as part of the task. Make sure you have already built the project before deploying it.
-:::
-
-### Adding a user to login
+#### Adding a user to login
 
 Next, let´s create a user.
 
@@ -115,7 +98,7 @@ database. The USER table, among other users and permissioning tables, is defined
 To run the task, we shall call:
 
 ```shell
-./gradlew :jvm:positions-app-tutorial-deploy:loadInitialData #On the IntelliJ terminal
+./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:loadInitialData #On the IntelliJ terminal
 ```
 
 or from the dropdown menu:
@@ -132,7 +115,7 @@ DbMon is the Genesis database client. It provides a unified interface to the und
 Run `DbMon` to check that the user has been created:
 
 ```shell
-./gradlew :jvm:positions-app-tutorial-deploy:DbMon #On the IntelliJ terminal
+./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:DbMon #On the IntelliJ terminal
 ```
 
 or from the dropdown menu:
@@ -156,6 +139,23 @@ Total Results:  1
 DbMon:USER>
 ```
 
+### Deploying the application
+
+Now we have to deploy our application, the positions-app-tutorial product.
+
+Usage:
+```shell
+./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:deploy-genesisproduct-positions-app-tutorial.zip #On the IntelliJ terminal
+```
+
+or from the dropdown menu:
+
+![](/img/deploy-alpha-product.png)
+
+:::tip
+This will take the last built distribution. It does not run a project build as part of the task. Make sure you have already built the project before deploying it.
+:::
+
 ### Running server commands
 :::info can I run server commands from the command line rather than gradle tasks?
 Yes. We've been running server commands through the gradle tasks. But alternatively, you can run server commands directly from a command line. 
@@ -174,7 +174,7 @@ Try it now!
 Now, let's run the Genesis command 'mon' to see if all processes are up and running on the server:
 
 ```shell
-./gradlew :jvm:positions-app-tutorial-deploy:mon #On the IntelliJ terminal
+./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:mon #On the IntelliJ terminal
 ```
 or from the dropdown menu:
 
