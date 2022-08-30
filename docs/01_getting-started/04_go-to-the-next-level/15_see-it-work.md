@@ -59,7 +59,7 @@ or from the dropdown menu:
 
 ![](/img/setup-environment.png)
 
-After this command is completed, we will have a basic Genesis server running.
+After this command is complete, we will have a basic Genesis server running.
 
 ### Deploying the auth module
 As our application requires authentication, we have to install the Genesis Auth module.
@@ -73,7 +73,7 @@ or from the dropdown menu:
 
 ![](/img/install-auth.png)
 
-### Deploying the site-specific
+### Deploying site-specific configuration
 As our application will use the site-specific folder to override the standard definitions, we have to run this task.
 
 Usage:
@@ -83,7 +83,7 @@ Usage:
 
 ### Adding a user to login
 
-Next, let´s create a user.
+Next, let's create a user.
 
 :::note
 The following details will be your login details:
