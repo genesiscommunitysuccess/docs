@@ -79,8 +79,8 @@ eventHandler<PositionCancel> {
 }
 
 ```
-Fot the above example to work you will need to set up a [Notify](/server-modules/integration/notify/configuring/) process together with inserting a GATEWAY  and a NOTIFY_ROUTE in the database and add the details of the connection for the SMTP server to the  genesis-system-definition.kts file.
-You can see an example of a dynamic rule using [Notify](/server-modules/integration/notify/configuring/) email messages being configured in our [tutorial](/getting-started/go-to-the-next-level/condition-rules/).
+For the above example to work you will need to set up a [Notify](/server-modules/integration/notify/configuring/) process together with inserting a GATEWAY  and a NOTIFY_ROUTE in the database and add the details of the connection for the SMTP server to the  genesis-system-definition.kts file.
+You can see an example of a dynamic rule using [Notify](/server-modules/integration/notify/configuring/) email messages being configured in our [tutorial](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#dynamic-rules-conditional-rules).
 ### Static Rules
 Static rules are used to create scheduled activities. For instance to schedule the production of EOD reports, or to run a batch report on the hour.
 
