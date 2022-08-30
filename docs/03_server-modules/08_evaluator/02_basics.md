@@ -6,6 +6,9 @@ id: basics
 
 [Introduction](/server-modules/evaluator/introduction) | [Basics](/server-modules/evaluator/basics) | [Examples](/server-modules/evaluator/examples) | [Configuring runtime](/server-modules/evaluator/configuring-runtime) | [Testing](/server-modules/evaluator/testing)
 
+### Dynamic Rules
+This is a powerful feature that allows you to raise alarms on certain conditions or to react on specific states. Dynamic rules respond to changes in database tables. For instance if a figure goes above a certain threshold the rule could trigger a warning email to be sent out.
+
 ### Defining a dynamic rule
 To define a rule, you need to insert a row into the DYNAMIC_RULE table. This table is defined as follows:
 
@@ -76,8 +79,10 @@ eventHandler<PositionCancel> {
 }
 
 ```
-
+Fot the above example to work you will need to set up a [Notify](/server-modules/integration/notify/configuring/) process together with inserting a GATEWAY  and a NOTIFY_ROUTE in the database and add the details of the connection for the SMTP server to the  genesis-system-definition.kts file.
 You can see an example of a dynamic rule using [Notify](/server-modules/integration/notify/configuring/) email messages being configured in our [tutorial](/getting-started/go-to-the-next-level/condition-rules/).
+### Static Rules
+Static rules are used to create scheduled activities. For instance to schedule the production of EOD reports, or to run a batch report on the hour.
 
 ### Defining a static rule
 To define a scheduled event, you need to insert a row into the `CRON_RULE` table. This row must specify the CRON schedule that triggers the event. The table is defined as follows:
@@ -96,5 +101,16 @@ To define a scheduled event, you need to insert a row into the `CRON_RULE` table
 | RESULT_EXPRESSION | this is a [groovy expression](https://groovy-lang.org/syntax.html) which should set on the MESSAGE Object that is defined in MESSAGE_TYPE |
 
 MESSAGE_TYPE fields define the Java/kotlin Class that is instantiated and set by the RESULT_EXPRESSION. The MESSAGE_TYPE is defined as SNAKE_CASE, but the class is defined as regular Camel case (for example,POSITION_CANCEL maps to PositionCancel).
+
+### Load the Static (Cron) rule into the database
+To load a Static (Cron) rule into the database create a csv file with the rule in the above format. Call the file **CRON_RULE.csv**.
+```csv
+CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
+"0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
+```
+
+Load the cron rule **CRON_RULE.csv** file into the `CRON_RULE`  [table](/server-modules/evaluator/configuring-runtime/#cron_rule-table).
+
+Run `SendIt`
 
 You can see an example of a static rule being configured in our [tutorial](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#static-rules-cron-rules).

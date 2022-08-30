@@ -14,7 +14,7 @@ In both cases, you define the rule in a table in the database: `DYNAMIC_RULES` f
 ### Configure the Evaluator
 
 An Evaluator is a process that runs cron jobs and conditional rules.
-To start, create a process called *GENESIS_EVALUATOR* and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** as the code below.
+To start, create a process called *POSITIONS_APP_TUTORIAL_EVALUATOR* and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** as the code below.
 
 ```xml
 <processes>
@@ -244,7 +244,7 @@ Our cron rule takes the following form:
 
 | CRON_EXPRESSION | DESCRIPTION | TIME_ZONE | RULE_STATUS | NAME | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 0 45 7 ? * MON,TUE,WED,THU,FRI * | It’s a rule | Europe/London | ENABLED | A rule | JaneDee | ALPHA_EVENTHANDLER | EVENT_POSITION_REPORT |  |
+| `0 45 7 ? * MON,TUE,WED,THU,FRI *` | It’s a rule | Europe/London | ENABLED | A rule | JaneDee | ALPHA_EVENTHANDLER | EVENT_POSITION_REPORT |  |
 
 Let's look at the most important fields:
 
