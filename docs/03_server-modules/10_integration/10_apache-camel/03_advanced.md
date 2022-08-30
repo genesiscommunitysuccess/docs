@@ -24,14 +24,13 @@ val LOG: Logger
 
 ## A more advanced example Camel configuration
 
-Here is a more advanced example of a **\*-camel.kts** file. It defines 2 routes, and has an `onCommit` block, similar to those seen in [Event Handlers](/server-modules/event-handler/basics/). This is because the `camel` block in Genesis functions as a type of Event Handler, reacting to `EVENT_CAMEL_SEND` message types. These events can be raised as normal with Genesis, allowing the Event Handler to be invoked from:
+Here is a more advanced example of a _application-name_**-camel.kts** file. It defines 2 routes, and has an `onCommit` block, similar to those seen in [Event Handlers](/server-modules/event-handler/basics/). This is because the `camel` block in Genesis functions acts as a type of Event Handler, reacting to `EVENT_CAMEL_SEND` message types. These events can be raised as normal with Genesis, allowing the Event Handler to be invoked from:
 - other `eventHandler` codeblocks
 - the front end
 - custom components in the application.
 
 The Event Handler aspect of this example allows these events to be accessed easily from the Apache Camel route builder via the [SEDA component](https://camel.apache.org/components/3.16.x/seda-component.html).
-The example demonstrates use of the `LOG` and `rxEntityDb` properties noted above, while the last route demonstrates use
-of the `serviceDiscovery` helper to dispatch an event to an [Event Handler](/server-modules/event-handler/basics/).
+This example demonstrates use of the `LOG` and `rxEntityDb` properties noted above, while the last route demonstrates the use of the `serviceDiscovery` helper to dispatch an event to an [Event Handler](/server-modules/event-handler/basics/).
 
 ```kotlin
 import global.genesis.jackson.core.GenesisJacksonMapper.Companion.csvIterator
@@ -93,6 +92,6 @@ In the above example, the `onCommit` block reads from the properties in the rece
 ### routeHandler
 In the above example, we have three defined routes. In the first two, we are receiving data from the `seda:` endpoints and then processing it, using an inline-defined processor. This can be useful for quickly defining a processor that isn't used elsewhere. Compared to the previous example, the results of the SEDA endpoint are directly persisted as entities in the database, rather than being passed on to a [Request Server](/server-modules/request-server/basics/).
 
-The third route demonstrates use of service discovery to locate another process assumed to be a [Genesis Event Handler](/server-modules/event-handler/basics/) to which a message is then dispatched.
+The third route demonstrates the use of service discovery to locate another process assumed to be a [Genesis Event Handler](/server-modules/event-handler/basics/) to which a message is then dispatched.
 
 Remember; if your use case is basic data ingestion, transformation and persistence to GenesisDB then you should first investigate the [Genesis Data Pipeline](/server-modules/integration/data-pipeline/introduction/), which offers a higher-level abstraction than seen here.

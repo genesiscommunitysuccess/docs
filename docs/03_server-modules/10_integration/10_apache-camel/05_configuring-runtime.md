@@ -10,14 +10,14 @@ import TabItem from '@theme/TabItem';
 [Introduction](/server-modules/integration/apache-camel/introduction/)  | [Basics](/server-modules/integration/apache-camel/basics) | [Advanced](/server-modules/integration/apache-camel/advanced) | [Examples](/server-modules/integration/apache-camel/examples) | [Configuring runtime](/server-modules/integration/apache-camel/configuring-runtime) | [Testing](/server-modules/integration/apache-camel/testing)
 
 ### System definitions
-It is vital to ensure that any system definition variables that are used by the Camel definition are properly defined in your _application_**-system-definition.kts** file.
+It is vital to ensure that any system definition variables that are used by the Camel definition are properly defined in your _application-name_**-system-definition.kts** file.
 
 ### Dependencies
 The Genesis low-code platform only includes the `camel-core` dependency. You will want to declare additional dependencies to make best use of the different available Camel components.
 
 To do so, simply create a new local module declaring the Camel dependencies, and add this module to the classpath of the Camel process configuration in your _application-name_**-processes.xml** file.
 
-The process definition may then look similar to the following:
+The process definition may look similar to the following:
 
 ```xml
   <process name="POSITION_CAMEL">

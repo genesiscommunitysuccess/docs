@@ -1,7 +1,7 @@
 ---
 id: host-preparation
-title: Host Preparation
-sidebar_label: Host Preparation
+title: 'Host Preparation'
+sidebar_label: 'Host Preparation'
 sidebar_position: 1
 
 ---
@@ -50,6 +50,7 @@ choices make sense in your environment.  The currently supported list is:
 * [Aerospike](https://aerospike.com/)
 * [PostgreSQL](https://www.postgresql.org/) (local or RDS within AWS)
 * [MSSQL](https://www.microsoft.com/en-gb/sql-server/sql-server-2016) (Windows environments)
+* [Oracle](https://www.oracle.com/uk/database/)
 * [Aurora](https://aws.amazon.com/rds/aurora/) (AWS environments)
 
 

@@ -4,7 +4,9 @@ sidebar_label: 'Excel functions'
 id: excel-functions
 ---
 
-The following Excel functions are currently supported by ExcelToGenesis.
+[Excel reference](/server-modules/integration/excel-to-genesis/excel-reference/)  | [Excel functions](/server-modules/integration/excel-to-genesis/excel-functions) | [Quick guide](/server-modules/integration/excel-to-genesis/quick-guide)
+
+The following Excel functions are currently supported by `ExcelToGenesis`.
 
 | Operator | Example |
 | -------- | --------- |

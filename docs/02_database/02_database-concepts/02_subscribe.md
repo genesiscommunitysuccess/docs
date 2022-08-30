@@ -4,14 +4,13 @@ sidebar_label: 'Subscribe'
 id: subscribe
 ---
 
-[Read](/database/database-concepts/read/)  | [Subscribe](/database/database-concepts/subscribe/) |  [Write](/database/database-concepts/write/) 
+[Read](/database/database-concepts/read/) | [Subscribe](/database/database-concepts/subscribe/) | [Write](/database/database-concepts/write/) 
 
-Subscribe operations enable code to react to database changes, rather than polling for changes. Code can either just listen to changes, or use a combined read/subscribe operation. These mixed read/subscribe operations are useful.
+Subscribe operations enable code to react to database changes, rather than [polling](/getting-started/glossary/glossary/#polling) for changes. Code can either just listen to changes, or use a combined read/subscribe operation. These mixed read/subscribe operations are useful.
 
 Subscriptions are limited to a single table or view.
 
-Types of change[​](/database/database-concepts/subscribe/#types-of-changesdirect-link-to-heading)
------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Types of change
 
 There are 3 categories of change:
 
@@ -24,12 +23,19 @@ rather than directly correlate to a database operation. A database insert or del
 
 Similarly, a database modify update might not show at all, or be transformed into an insert or delete update, if it moves into or out of the subscription.
 
-### Backwards joins[​](/database/database-concepts/subscribe/#backward-joinsdirect-link-to-heading)
+### Backwards joins
 
-By default, subscriptions on views will only publish updates on database changes to the root table. However, in view definitions, a join to a child table can be defined as `backwardsJoin = true`. For these joins, the subscription will also publish changes to the child tables as modify updates. Note that this is only supported for combined read/subscribe operations, as the subscription needs to cache the joins. This cache will require extra memory and CPU cycles to maintain.
+By default, subscriptions on views will only publish updates on database changes to the root table. If you would like to subscribe to changes to sub tables, you will need to enable backwards joins in your view definition. A join to a sub table can be defined as `backwardsJoin = true`. For these joins, the subscription will also publish changes to the sub tables as modify updates.
 
-Subscribing to updates[​](/database/database-concepts/subscribe/#subscribing-to-updatesdirect-link-to-heading)
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+See the [views examples](/database/fields-tables-views/views/views-examples) to understand how to define a backwards join on a view.
+
+:::note
+
+Backwards join subscriptions are only supported for combined read/subscribe operations, as the subscription needs to cache the joins. This cache will require extra memory and CPU cycles to maintain.
+
+:::
+
+## Subscribing to updates
 
 When subscribing to updates, there are a number of different parameters:
 
@@ -40,8 +46,7 @@ When subscribing to updates, there are a number of different parameters:
 | delay | ❌ | Group and publish updates every x ms | no grouping |
 | subscribeLocally | ❌ | When in a cluster, only listen to local updates | false |
 
-Mixed read/subscribe operations[​](/database/database-concepts/subscribe/#mixed-readsubscribe-operationsdirect-link-to-heading)
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Mixed read/subscribe operations
 
 Mixed read and subscribe operations are useful in custom components when you need to read a whole or part of a table and need to keep in the loop of changes.
 
@@ -50,7 +55,7 @@ For this purpose, the database exposes two types of operation:
 -   `bulkSubscribe` - combines `subscribe` and `getBulk`
 -   `rangeSubscribe` - combines `subscribe` and `getRange`
 
-### `bulkSubscribe`[​](/database/database-concepts/subscribe/#bulksubscribedirect-link-to-heading)
+### `bulkSubscribe`
 
 `bulkSubscribe` has the following parameters:
 
@@ -61,9 +66,9 @@ For this purpose, the database exposes two types of operation:
 | fields | ❌ | Only listen to changes on selected fields | listen to all fields |
 | delay | ❌ | Group and publish updates every x ms | no grouping |
 | subscribeLocally | ❌ | When in a cluster, only listen to local updates | false |
-| backwardsJoin | ❌ | subscribe to changes on child tables | false |
+| backwardsJoin | ❌ | subscribe to changes on sub tables | false |
 
-### `rangeSubscribe`[​](/database/database-concepts/subscribe/#rangesubscribedirect-link-to-heading)
+### `rangeSubscribe`
 
 `rangeSubscribe` has the following parameters:
 
@@ -75,4 +80,4 @@ For this purpose, the database exposes two types of operation:
 | fields | ❌ | Only listen to changes on selected fields | listen to all fields |
 | delay | ❌ | Group and publish updates every x ms | no grouping |
 | subscribeLocally | ❌ | When in a cluster, only listen to local updates | false |
-| backwardsJoin | ❌ | subscribe to changes on child tables | false |
+| backwardsJoin | ❌ | subscribe to changes on sub tables | false |

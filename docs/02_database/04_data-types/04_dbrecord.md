@@ -5,24 +5,24 @@ id: dbrecord
 ---
 
 [Introduction](/database/data-types/data-types/) |
-[Table entities](/database/data-types/table-entities/) | [Index entities](/database/data-types/index-entities/) | 
+[Table entities](/database/data-types/table-entities/) | 
+[Index entities](/database/data-types/index-entities/) | 
 [Views entities](/database/data-types/views-entities/) | 
 [DbRecord](/database/data-types/dbrecord/) | 
 [DbEntity](/database/data-types/dbentity/) 
 
-
 :::warning
-Using `DbRecord` instead of [](/database/data-types/views-entities/) entities will circumvent compile-time validation of database interactions. This means that errors might not appear until runtime or might lead to unexpected results.
+Using `DbRecord` instead of entities will circumvent compile-time validation of database interactions. This means that errors might not appear until runtime or might lead to unexpected results.
 :::
 
-DbRecord enables you to build a record of a specified Table. It is not type-safe, so this is not our recommended method.
+DbRecord enables you to build a record of a specified table. It is not type-safe, so this is not our recommended method.
 
 ### Constructors
 
 | Signature | Description                                                                                                                                                                |
 |---|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `constructor(tableName: String)` | Create record with specified table name.                                                                                                                                   |
-| `constructor(source: DbRecord?)` | Clone existing record                                                                                                                                                      |
+| `constructor(source: DbRecord?)` | Clone existing record.                                                                                                                                                    |
 | `constructor(targetTableName: String, source: DbRecord?) : this(source)` | Clone an existing record cells into another record belonging to a different table. This is useful when the target table record is the extended table of the source record. |
 
 Example
@@ -36,7 +36,7 @@ DbRecord("TRADE_SUMMARY", tradeRecord)
 
 ### functions
 
-Use the below functions to set and get fields of DbRecord. The field type can be any of these [types](/database/fields-tables-views/fields/fields-basics/#field-types).
+Use the functions below to set and get fields of DbRecord. The field type can be any of these [types](/database/fields-tables-views/fields/fields-basics/#field-types).
 
 #### Set record
 `fun set{DataType}(column: String, value: {DataType}?)`: you need to specify name and value of the column. `DataType` represents the type of the field you are trying to set.
