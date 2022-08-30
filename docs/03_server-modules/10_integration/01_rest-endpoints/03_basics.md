@@ -4,7 +4,70 @@ sidebar_label: 'Basics'
 id: basics
 ---
 
-[Introduction](/server-modules/integration/rest-endpoints/introduction/)  | [Basics](/server-modules/integration/rest-endpoints/basics/) | [Advanced](/server-modules/integration/rest-endpoints/advanced/) | [Configuring runtime](/server-modules/integration/rest-endpoints/configuring-runtime/) | [Testing](/server-modules/integration/rest-endpoints/testing/)
+[Introduction](/server-modules/integration/rest-endpoints/introduction/) | [Where to define](/server-modules/integration/rest-endpoints/where-to-define) | [Basics](/server-modules/integration/rest-endpoints/basics/) | [Advanced](/server-modules/integration/rest-endpoints/advanced/) | [Configuring runtime](/server-modules/integration/rest-endpoints/configuring-runtime/) | [Testing](/server-modules/integration/rest-endpoints/testing/)
+
+## Authentication
+As mentioned in the introduction, all requests to all Genesis components require you to have done an intial log in and to have retrieved the `SESSION_AUTH_TOKEN`.
+
+### EVENT_LOGIN_AUTH
+
+Log in requests are submitted via POST requests to
+`[host]:[genesis_router_port]/event-login-auth`.
+
+Intial login requests require:
+
+* `USER_NAME` and `PASSWORD` keys in the `DETAILS` object
+* `SOURCE_REF` header.
+
+Sample request:
+
+```json
+POST /event-login-auth HTTP/1.1
+Host: localhost:9064
+Content-Type: application/json
+SOURCE_REF: 123456-789041
+
+{
+    "DETAILS": {
+        "USER_NAME": "JaneDee",
+        "PASSWORD": "beONneON*74"
+    }
+}
+```
+
+Sample response:
+
+```json
+{
+    "MESSAGE_TYPE": "EVENT_LOGIN_AUTH_ACK",
+    "SESSION_AUTH_TOKEN": "y9lNIRTax0pmTdUN0XC1PgVl32KuXGsf",
+    "REFRESH_AUTH_TOKEN": "FmqF9CGzo2MiujEZoiRUjGXh8ybDC62L",
+    "SESSION_ID": "3f0203a5-e89d-4245-9e8b-c21fb0bcacd9",
+    "USER_ID": "",
+    "DETAILS": {
+        "SYSTEM": {
+            "DATE": "Sun Jan 21 20:53:44 UTC 2018"
+        },
+        "HEARTBEAT_INTERVAL_SECS": 30,
+        "FAILED_LOGIN_ATTEMPTS": 0,
+        "REJECTED_LOGIN_ATTEMPTS": 0,
+        "LAST_LOGIN_DATETIME": 1516567765917,
+        "PRODUCT": [
+            {
+                "NAME": "dta",
+                "VERSION": "2.2.2"
+            },
+            {
+                "NAME": "auth",
+                "VERSION": "1.1.1"
+            }
+        ]
+    },
+    "SOURCE_REF": "123456-789041"
+}
+```
+
+Now that the `SESSION_AUTH_TOKEN` has been returned, you must add it to every future request, except `EVENT_LOGIN_REFRESH` and `EVENT_LOGOUT`, more on that later. 
 
 ## Data Server
 
@@ -38,7 +101,7 @@ SESSION_AUTH_TOKEN: 83eLYBnlqjIWt1tqtJhKwTXJj2IL2WA0
 
 {
   "DETAILS": {
-    "MAX_ROWS" : "5",
+    "MAX_ROWS" : "3",
     "FIELDS": "TRADE_ID CURRENCY FULLY_FILLED PRICE"
   }
 }
@@ -78,26 +141,6 @@ Sample response:
             "DETAILS": {
                 "OPERATION": "INSERT",
                 "ROW_REF": 1516923055486415809
-            }
-        },
-        {
-            "CURRENCY": "GBX",
-            "FULLY_FILLED": false,
-            "PRICE": 230.79,
-            "TRADE_ID": "000000000000008TRLO1",
-            "DETAILS": {
-                "OPERATION": "INSERT",
-                "ROW_REF": 1516923055486007935
-            }
-        },
-        {
-            "CURRENCY": "EUR",
-            "FULLY_FILLED": true,
-            "PRICE": 92.64,
-            "TRADE_ID": "000000000000009TRLO1",
-            "DETAILS": {
-                "OPERATION": "INSERT",
-                "ROW_REF": 1516923055484123909
             }
         }
     ],
@@ -263,19 +306,23 @@ Sample response:
 
 ## Request Server
 
-Request Servers are accessed via a GET request to
+Request Servers are accessed via GET requests to
 `[host]:[genesis_router_port]/[request_reply_name]`.
 
-Any request parameters should be set as URL parameters prefixed by `REQUEST`. E.g. `REQUEST.[request_parameter]=[value]`.
+Any request parameters should be prefixed with `request.`. E.g. `request.[request_parameter]=[value]`. For example `localhost:9064/req-counterparty-details?request.[request_parameter]=[value]&request.[request_parameter]=[value]`.
 
 Parameter values can be wild-carded (`*`, `A*`, `_A`, `_A*`, etc.) or left blank (and assumed to be `*`).
 
-A unique `SOURCE_REF` header should be supplied on every request with a unique value and will be supplied back on the relative response.
+Request Server requests require:
+
+* `SOURCE_REF` header (a unique value should be supplied on every request with a unique value)
+* `SESSION_AUTH_TOKEN` header
+* A request body as per your event handler in side the `DETAILS` object.
 
 Sample request:
 
 ```json
-GET /req-counterparty-details HTTP/1.1?REQUEST.CPTY_TYPE=MARKET&REQUEST.CPTY_REGION=US
+GET /req-counterparty-details?request.CPTY_TYPE=MARKET&request.CPTY_REGION=US HTTP/1.1
 Host: localhost:9064
 Content-Type: application/json
 SESSION_AUTH_TOKEN: 83eLYBnlqjIWt1tqtJhKwTXJj2IL2WA0
@@ -300,13 +347,16 @@ Sample response:
 ```
 
 ## Event Handler
-Events are submitted via a POST request to
-`[host]:[genesis_router_port]/[event_name]`
+Events are submitted via POST requests to
+`[host]:[genesis_router_port]/event_[<event_name>]`.
 
+All resource paths should be prefixed with `event_`. For example `localhost:9064/event_order_insert`. In this example `order_insert` is our custom event route and `event_` is the prefix.
 
-Event fields are represented as JSON properties in a `DETAILS` object.
+Event Handler requests require:
 
-A unique `SOURCE_REF` header should be supplied on every request with a unique value and will be supplied back on the relative response.
+* `SOURCE_REF` header (a unique value should be supplied on every request with a unique value)
+* `SESSION_AUTH_TOKEN` header
+* A request body as per your event handler in side the `DETAILS` object.
 
 Sample request:
 

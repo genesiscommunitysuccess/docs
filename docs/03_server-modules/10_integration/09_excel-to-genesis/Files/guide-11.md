@@ -5,7 +5,7 @@ sidebar_position: 44
 title: 'The fields dictionary'
 ---
 
-This file contains all the fields that have been created by the conversion proceess.
+This file shows all the fields that have been created by the conversion proceess.
 
 
 ```kotlin

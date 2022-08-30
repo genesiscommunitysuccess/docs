@@ -6,7 +6,7 @@ title: 'The processes file'
 ---
 
 
-This file shows the three microservices (processes) have been defined in the application's process file. The tags for each process define its characteristics. This file has been generated automatically by the AppGen process.
+This file shows the three microservices (processes) that have been defined in the application's process file (_application-name_-**processes.xml**). Each `process` tag defines its own characteristics. This file has been generated automatically by `genx`.
 
 
 ```xml

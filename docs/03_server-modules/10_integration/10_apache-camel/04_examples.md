@@ -8,7 +8,7 @@ id: examples
 
 ## Reading from an SFTP server
 
-The example below defines an [SFTP component](https://camel.apache.org/components/3.16.x/sftp-component.html), and shows how you can use properties set in the _application_**-camel.kts**, allowing you to have site-specific variables for each instance.
+The example below defines an [SFTP component](https://camel.apache.org/components/3.16.x/sftp-component.html), and shows how you can use properties set in the _application-name_**-camel.kts**, allowing you to have site-specific variables for each instance.
 This is particularly useful when integrating with external services where connection details are likely to vary between environments.
 
 ```kotlin
