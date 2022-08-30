@@ -209,15 +209,25 @@ There are multiple ways you can test the back end of your application. It's impo
 4. Click on the **RESOURCES** tab.
 5. Filter the **Resource type** to show only Event Handlers.
 
+For example:
+
+![](/img/test-console-eh-filter-alpha.png)
+
 As well as the Event Handlers that you have defined yourself, you will also see other Event Handlers that have been generated automatically by the platform: anything that is a **GENESIS_CLUSTER** service, for example.
 
 If you click on any Event Handler in the list, the fields relevant to the event are displayed to the right.
+
+![](/img/test-console-eh-fields-alpha.png)
 
 Now you need to pick the Event Handler you want to test. So, let's look up EVENT_TRADE_INSERT.
 
 1. Find the Event Handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the Event Handler was set up.
 
+![](/img/test-console-eh-insert-trade-alpha.png)
+
 2. Enter the details of the new trade in the fields then click on **COMMIT**:
+
+![](/img/test-console-eh-insert-trade-alpha-2.png)
 
 If the Event Handler is working correctly, you will receive an **ACK**.
 
@@ -230,9 +240,13 @@ You can go on to check the `TRADE` table to see if your insert is there.
 
 2. Search for the relevant resource - in our case `TRADE`.
 
+![](/img/test-console-eh-confirm-trade-alpha.png)
+
 3. Click on the arrow beside the relevant resource. You should now see the new trade in the list displayed on the right.
 
-Alternatively, you can use `DbMon` similar to the way the `USER` table was queried
+![](/img/test-console-eh-confirm-trade-alpha-2.png)
+
+Alternatively you can use `DbMon` similar to the way the `USER` table was queried
 
 ### Postman
 
@@ -270,6 +284,8 @@ For example, to log in using Postman:
 ```
 5. Click to view the header, then insert SOURCE_REF in the header. For this field, you can use any string that identifies you (in effect). In the example below, we have set SOURCE_REF to *BAUDOIN1* (for no particular reason).
 
+![](/img/test-login-result-alpha.png)
+
 6. When you have done this, click on the **Send** button.
 
 This returns a set of details at the bottom of the Postman window, where you can copy the `SESSION_AUTH_TOKEN`, which you will need for your test requests.
@@ -306,7 +322,13 @@ Set the body to **JSON**. In the body, you need to insert the details of the fie
 }
 ```
 
+<<<<<<< HEAD
+![](/img/test-eh-url-body-alpha.png)
+
+###### Header
+=======
 #### Header
+>>>>>>> uat
 In the header, you need to supply:
 
 - a SOURCE_REF (always), which identifies you; you can use any string value that suits you
@@ -314,7 +336,13 @@ In the header, you need to supply:
 
 When you have all these elements in place, click on **Send** to make the call. If the event is a success, you will receive an **ACK** message.
 
+<<<<<<< HEAD
+![](/img/test-eh-header-alpha.png)
+
+###### Checking the insertion
+=======
 #### Checking the insertion
+>>>>>>> uat
 Now you can check that the new counterparty you inserted is in the correct table of the database. The resource you need to check is the Request Server called ALL_COUNTERPARTIES.
 
 In front of the url, set the call to **POST**.
@@ -327,9 +355,13 @@ The url consists of:
 
 Set the body to **JSON**. There is no need for any information in the body. Simply insert a pair of curly brackets `{}`. 
 
+![](/img/test-eh-check-insertion-alpha.png)
+
 In the header, you need to supply:
 
 - a SOURCE_REF (always), which identifies you; you can use any string value that suits you
 - the SESSION_AUTH_TOKEN that permissions you to access the server
 
 When you have this in place, click on **Send** to make the call. You can see that the fields for the instruments have been returned on the right of the screen.
+
+![](/img/test-eh-insert-success-alpha.png)
