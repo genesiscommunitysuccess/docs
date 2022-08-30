@@ -4,7 +4,9 @@ sidebar_label: 'Username and Password Authentication'
 id: password-authentication
 ---
 
-We will now go through the various configuration options available for authentication. These are located in your application's **auth-preferences.kts** file.
+[Introduction](/server-modules/access-control/introduction)  | [Authentication overview](/server-modules/access-control/authentication-overview) | [Username and Password](/server-modules/access-control/password-authentication) | [SSO](/server-modules/access-control/sso-authentication) | [Authorisation overview](/server-modules/access-control/authorisation-overview) | [Authorisation](/server-modules/access-control/authorisation)
+
+We will now go through the various configuration options available for authentication. These are located in your _application-name-_**auth-preferences.kts** file.
 
 All of these configuration settings are wrapped within the `security` function.
 
@@ -14,7 +16,7 @@ The `security` function wraps all other variable and functions within the **auth
 
 * `sessionTimeoutMins` specifies the time to wait (in minutes) before logging out an idle session with a user client. A user client may very well be answering heartbeats but at the same time being idle (i.e. not using the platform). Default: 30 minutes
 * `expiryCheckMins` specifies the time interval (in minutes) used to check for idle sessions in the system. Default: 5 minutes.
-* `maxSimultaneousUserLogins` specifies the maximum number of concurrent, active sessions a user can maintain. Once this limit has been reached, the user cannot log in again until another session has been logged out. If the specified value is zero, is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
+* `maxSimultaneousUserLogins` specifies the maximum number of concurrent, active sessions a user can maintain. Once this limit has been reached, the user cannot log in again until another session has been logged out. If the value zero is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
 
 ```kotlin
 security {
@@ -31,16 +33,16 @@ The `authentication` function is used to define common features of all three typ
 
 * `type` indicates which of the three types of username and password authentication to be used. It accepts the values of: `AuthType.INTERNAL`, `AuthType.LDAP` or `AuthType.HYBRID`. Default: `AuthType.INTERNAL`.
 
-For more information on each of these three authentication types, please see the [authentication overview](server-modules/access-control/authentication-overview/#username-and-password-authentication).
+For more information on each of these three authentication types, please see the [authentication overview](/server-modules/access-control/authentication-overview/#username-and-password-authentication).
 
 The following variables are used to configure an LDAP connection; thus are only used when `type` is either `AuthType.LDAP` or `AuthType.HYBRID`.
 
 * `url` specifies the LDAP server hostname. Default: `localhost`.
 * `port` specifies the LDAP server port. Default: 389.
 * `searchBases` defines the location(s) in the directory in which the LDAP search begins. Default: an organisational unit of `temp` with a domain component of `temp` (`ou=temp,dc=temp`).
-  * This is set by first invoking the `searchBases` function, and repeatedly invoking `searchBase(location)` function(s) within it, where `location` is given as a Distinguished Name.
+  * This is set by first invoking the `searchBases` function, and repeatedly invoking `searchBase(location)` function(s) within it, where `location` is given as a distinguished name.
 * `userGroups` defines the group(s) that the user needs to belong with the LDAP server in order to log in. Default: no groups.
-  * This is set by first invoking the `userGroups` function, and repeatedly invoking `userGroup(group)` function(s) within it, where `group` is given as a Distinguished Name.
+  * This is set by first invoking the `userGroups` function, and repeatedly invoking `userGroup(group)` function(s) within it, where `group` is given as a distinguished name.
 * `userPrefix` specifies a prefix added to every username when communicated with the LDAP server. Default: an empty string.
 * `bindDn` specifies the distinguished name which represents the application within the LDAP server. Normally LDAP servers do not allow anonymous searches, and thus require this. If `bindDn` is not specified, no bindings will be used. Default: null
 * `bindPassword` specifies the password associated with the `bindDn` account. If `bindDn` is not specified, this value is not used. Default: null.
@@ -216,7 +218,7 @@ All requests below are capable of returning an error with a code of INTERNAL_ERR
 ---
 
 ### Pre-authentication
-Pre-authentication messages can be sent by a client without the user being logged in
+Pre-authentication messages can be sent by a client without the user being logged in.
 #### Login preferences
 You need make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knows this before any user logs in.
 Currently, this is the only preference published.
@@ -234,58 +236,62 @@ Once you have a list of preferences, you can show the correct login dialog and l
 ##### Request
 
     MESSAGE_TYPE = EVENT_LOGIN_AUTH
-       DETAILS.USER_NAME = JohnDoe
-       DETAILS.PASSWORD = Password123
-
-# SSO?
+    DETAILS.USER_NAME = JohnDoe
+    DETAILS.PASSWORD = Password123
 
 ##### Response
 If successful:
 
     MESSAGE_TYPE = EVENT_LOGIN_AUTH_ACK
-        DETAILS.SYSTEM.DATE = 2014-06-18 12:27:01
-        DETAILS.HEARTBEAT_INTERVAL_SECS = 30
-            DETAILS.SYSTEM.PRODUCT[0].NAME = SBL
-            DETAILS.SYSTEM.PRODUCT[0].VERSION = 1.0.0-RELEASE
-            DETAILS.SYSTEM.PRODUCT[1].NAME = AUTH
-            DETAILS.SYSTEM.PRODUCT[1].VERSION = 1.0.1.RELEASE
+    DETAILS.SYSTEM.DATE = 2014-06-18 12:27:01
+    DETAILS.HEARTBEAT_INTERVAL_SECS = 30
+    DETAILS.SYSTEM.PRODUCT[0].NAME = SBL
+    DETAILS.SYSTEM.PRODUCT[0].VERSION = 1.0.0-RELEASE
+    DETAILS.SYSTEM.PRODUCT[1].NAME = AUTH
+    DETAILS.SYSTEM.PRODUCT[1].VERSION = 1.0.1.RELEASE
 
-If there is a problem, the server will return the standard error set with CODE/TEXT details and the error code LOGIN_AUTH_NACK.  The following error codes can be provided:
+If there is a problem, the server will return the standard error set with CODE/TEXT details and the error code `LOGIN_AUTH_NACK`.  The following error codes can be provided:
 
-- UNKNOWN_ACCOUNT - User is unknown
-- INCORRECT_CREDENTIALS - User/password combination is invalid
-- LOCKED_ACCOUNT - Account is locked and needs to be re-activated by administrator
-- PASSWORD_EXPIRED - Password must be changed
-- LOGIN_FAIL - Generic error code
+- `UNKNOWN_ACCOUNT` - User is unknown
+- `INCORRECT_CREDENTIALS` - User/password combination is invalid
+- `LOCKED_ACCOUNT` - Account is locked and needs to be re-activated by administrator
+- `PASSWORD_EXPIRED` - Password must be changed
+- `LOGIN_FAIL` - Generic error code
 
 #### Password change
-If the response is PASSWORD_EXPIRED, then the GUI can allow the user to change the password, provided they know their existing password.
+If the response is `PASSWORD_EXPIRED`, then the GUI can allow the user to change the password, provided they know their existing password.
+
 ##### Request
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD
-        DETAILS.USER_NAME = JohnDoe
-        DETAILS.OLD_PASSWORD = Password123
-        DETAILS.NEW_PASSWORD = Password456
+    DETAILS.USER_NAME = JohnDoe
+    DETAILS.OLD_PASSWORD = Password123
+    DETAILS.NEW_PASSWORD = Password456
+
 ##### Response
 If successful:
 
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD_ACK
+
 If there's a problem, you will receive a standard error set with type
-- CHANGE_USER_PASSWORD_NACK.  The error codes that can be returned are currently:
-- TOO_SHORT - Password length too short
-- TOO_LONG - Password length too long
-- INSUFFICIENT_CHARACTERS - Covers a few cases so text field may be required, used for things like no digits provided when 1 digit is required.
-- ILLEGAL_MATCH - Covers a few cases so text field may be required, used for things like repeating characters in password
-- ILLEGAL_WHITESPACE - If password contains white space
-- INSUFFICIENT_CHARACTERISTICS - May be provided if you have configured passwords to be successful if only 2 of 5 strength checks pass.  Should be provided alongside "real" error codes.
-- ILLEGAL_SEQUENCE - Numerical/alphabetical sequence detected
+- `CHANGE_USER_PASSWORD_NACK`.  The error codes that can be returned are currently:
+- `TOO_SHORT` - Password length too short.
+- `TOO_LONG` - Password length too long.
+- `INSUFFICIENT_CHARACTERS` - Covers a few cases so text field may be required, used for things like no digits provided when 1 digit is required.
+- `ILLEGAL_MATCH` - Covers a few cases so text field may be required, used for things like repeating characters in password.
+- `ILLEGAL_WHITESPACE` - If password contains white space.
+- `INSUFFICIENT_CHARACTERISTICS` - May be provided if you have configured passwords to be successful if only 2 of 5.strength checks pass.  Should be provided alongside "real" error codes.
+- `ILLEGAL_SEQUENCE` - Numerical/alphabetical sequence detected.
 
 #### Reset password
 This can only be called by an administrator; it simply specifies a user name and sets the password to blank.
+
 ##### Request
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD
-        DETAILS.USER_NAME = JohnDoe
+    DETAILS.USER_NAME = JohnDoe
+
 ##### Response
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD_ACK
+
 ### Post-authentication
 Once the user has been authenticated, the server expects heartbeat messages, as defined in the interval setting on the ACK message.  If the GUI misses a configurable number of heartbeats, the session will be expired.  In response to a heartbeat, the GUI will receive a list of available services and their details.
 
@@ -295,24 +301,25 @@ These services should be contacted on the hosts in the order they are defined in
 
     MESSAGE_TYPE = EVENT_HEARTBEAT
     USER_NAME = JohnDoe
+
 ##### Response
     MESSAGE_TYPE = EVENT_HEARTBEAT_ACK
-        DETAILS.SERVICE[0].NAME = SBL_EVENT_HANDLER
-        DETAILS.SERVICE[0].ENCRYPTED = false
-            DETAILS.SERVICE[0].HOST[0].NAME = genesisserv1
-            DETAILS.SERVICE[0].HOST[0].PORT = 9001
-            DETAILS.SERVICE[0].HOST[1].NAME = genesisserv2
-            DETAILS.SERVICE[0].HOST[1].PORT = 9001
-        DETAILS.SERVICE[1].NAME = SBL_DATA_SERVER
-        DETAILS.SERVICE[1].ENCRYPTED = false
-            DETAILS.SERVICE[1].HOST[0].NAME = genesisserv1
-            DETAILS.SERVICE[1].HOST[0].PORT = 9002
-            DETAILS.SERVICE[1].HOST[1].NAME = genesisserv2
-            DETAILS.SERVICE[1].HOST[1].PORT = 9002
+    DETAILS.SERVICE[0].NAME = SBL_EVENT_HANDLER
+    DETAILS.SERVICE[0].ENCRYPTED = false
+    DETAILS.SERVICE[0].HOST[0].NAME = genesisserv1
+    DETAILS.SERVICE[0].HOST[0].PORT = 9001
+    DETAILS.SERVICE[0].HOST[1].NAME = genesisserv2
+    DETAILS.SERVICE[0].HOST[1].PORT = 9001
+    DETAILS.SERVICE[1].NAME = SBL_DATA_SERVER
+    DETAILS.SERVICE[1].ENCRYPTED = false
+    DETAILS.SERVICE[1].HOST[0].NAME = genesisserv1
+    DETAILS.SERVICE[1].HOST[0].PORT = 9002
+    DETAILS.SERVICE[1].HOST[1].NAME = genesisserv2
+    DETAILS.SERVICE[1].HOST[1].PORT = 9002
 
 
 #### Rights polling
-The GUI can receive rights from a process called AUTH_DATASERVER. The view USER_RIGHTS displays all users and codes.  A logged-in user should automatically set the Filter expression to be USER_NAME=='xxx' to receive push updates to user privileges.
+The GUI can receive rights from a process called `AUTH_DATASERVER`. The view `USER_RIGHTS` displays all users and codes. A logged-in user should automatically set the Filter expression to be `USER_NAME`=='xxx' to receive push updates to user privileges.
 
 #### Entity management
 In the Genesis low-code platform, there are profiles, users and rights.  A profile is a group of users, which can be permissioned.  For example, you could have a SALES_TRADER group in which all users must have the same permissions.  In all cases where you specify either a right for a user/profile, or a user in a profile, the event represents what you want the entity to look like; i.e. if you amend a profile and don't supply a user that previously was part of that profile, then that user will be removed from that profile on the server.
@@ -321,88 +328,105 @@ Note the following:
 
 * 2-phase validation is not currently supported
 * metadata is not supported on the following transactions.
-  User/profile STATUS field can be ENABLED/DISABLED/PASSWORD_EXPIRED/PASSWORD_RESET.
-  PASSWORD_EXPIRED should prompt the user to enter a new password.
-  PASSWORD_RESET should do the same but the server expects a blank "current password" field.
+  User/profile `STATUS` field can be set to `ENABLED`, `DISABLED`, `PASSWORD_EXPIRED` and `PASSWORD_RESET`.
+  `PASSWORD_EXPIRED` should prompt the user to enter a new password.
+  `PASSWORD_RESET` should do the same but the server expects a blank "current password" field.
 
 #### Insert profile
+
 ##### Request
 
     MESSAGE_TYPE = EVENT_INSERT_PROFILE
     USER_NAME = JohnDoe
-        DETAILS.NAME = SALES_TRADERS
-        DETAILS.DESCRIPTION = Sales Traders
-        DETAILS.STATUS = ENABLED
-            DETAILS.RIGHT[0].ID = 00000000000001RISP0
-            DETAILS.RIGHT[0].CODE = ORDEN
-            DETAILS.RIGHT[1].ID = 00000000000002RISP0
-            DETAILS.RIGHT[1].CODE = ORDAM
-            DETAILS.USER[0].ID = 00000000000001USSP0
-            DETAILS.USER[0].USER_NAME = JohnDoe
-            DETAILS.USER[1].ID = 00000000000002USSP0
-            DETAILS.USER[1].USER_NAME = james
+    DETAILS.NAME = SALES_TRADERS
+    DETAILS.DESCRIPTION = Sales Traders
+    DETAILS.STATUS = ENABLED
+    DETAILS.RIGHT[0].ID = 00000000000001RISP0
+    DETAILS.RIGHT[0].CODE = ORDEN
+    DETAILS.RIGHT[1].ID = 00000000000002RISP0
+    DETAILS.RIGHT[1].CODE = ORDAM
+    DETAILS.USER[0].ID = 00000000000001USSP0
+    DETAILS.USER[0].USER_NAME = JohnDoe
+    DETAILS.USER[1].ID = 00000000000002USSP0
+    DETAILS.USER[1].USER_NAME = james
+
 ##### Response
     MESSAGE_TYPE = EVENT_INSERT_PROFILE_ACK
+
 #### Amend Profile
+
 ##### Request
     MESSAGE_TYPE = EVENT_AMEND_PROFILE
     USER_NAME = JohnDoe
-        DETAILS.ID = 000000000001PRSP0
-        DETAILS.NAME = SALES_TRADERS_AMEND
-        DETAILS.DESCRIPTION = Sales Traders (Amended)
-        DETAILS.STATUS = ENABLED
-            DETAILS.RIGHT[0].ID = 00000000000001RISP0
-            DETAILS.RIGHT[0].CODE = ORDEN
-            DETAILS.RIGHT[1].ID = 00000000000002RISP0
-            DETAILS.RIGHT[1].CODE = ORDAM
-            DETAILS.RIGHT[2].ID = 00000000000003RISP0
-            DETAILS.RIGHT[2].CODE = ORDEL
-            DETAILS.USER[0].ID = 00000000000001USSP0
-            DETAILS.USER[0].USER_NAME = JohnDoe
+    DETAILS.ID = 000000000001PRSP0
+    DETAILS.NAME = SALES_TRADERS_AMEND
+    DETAILS.DESCRIPTION = Sales Traders (Amended)
+    DETAILS.STATUS = ENABLED
+    DETAILS.RIGHT[0].ID = 00000000000001RISP0
+    DETAILS.RIGHT[0].CODE = ORDEN
+    DETAILS.RIGHT[1].ID = 00000000000002RISP0
+    DETAILS.RIGHT[1].CODE = ORDAM
+    DETAILS.RIGHT[2].ID = 00000000000003RISP0
+    DETAILS.RIGHT[2].CODE = ORDEL
+    DETAILS.USER[0].ID = 00000000000001USSP0
+    DETAILS.USER[0].USER_NAME = JohnDoe
+
 ##### Response
     MESSAGE_TYPE = EVENT_AMEND_PROFILE_ACK
+
 #### Delete Profile
+
 ##### Request
     MESSAGE_TYPE = EVENT_DELETE_PROFILE
     USER_NAME = JohnDoe
-        DETAILS.NAME = SALES_TRADERS
+    DETAILS.NAME = SALES_TRADERS
+
 ##### Response
     MESSAGE_TYPE = EVENT_DELETE_PROFILE_ACK
+
 #### Insert User
+
 ##### Request
     MESSAGE_TYPE = EVENT_INSERT_USER
     USER_NAME = mthompson
-        DETAILS.USER_NAME = JohnDoe
-        DETAILS.FIRST_NAME = John
-        DETAILS.LAST_NAME = Doe
-        DETAILS.EMAIL_ADDRESS = john.doe@genesis.global
-        DETAILS.STATUS = ENABLED
-            DETAILS.RIGHT[0].ID = 00000000000001RISP0
-            DETAILS.RIGHT[0].CODE = ORDEN
-            DETAILS.RIGHT[1].ID = 00000000000002RISP0
-            DETAILS.RIGHT[1].CODE = ORDAM
+    DETAILS.USER_NAME = JohnDoe
+    DETAILS.FIRST_NAME = John
+    DETAILS.LAST_NAME = Doe
+    DETAILS.EMAIL_ADDRESS = john.doe@genesis.global
+    DETAILS.STATUS = ENABLED
+    DETAILS.RIGHT[0].ID = 00000000000001RISP0
+    DETAILS.RIGHT[0].CODE = ORDEN
+    DETAILS.RIGHT[1].ID = 00000000000002RISP0
+    DETAILS.RIGHT[1].CODE = ORDAM
+
 ##### Response
     MESSAGE_TYPE = EVENT_INSERT_USER_ACK
+
 #### Amend User
+
 ##### Request
     MESSAGE_TYPE = EVENT_AMEND_USER
     USER_NAME = mthompson
-        DETAILS.ID = 00000000000001USSP0
-        DETAILS.USER_NAME = JohnDoe
-        DETAILS.FIRST_NAME = John
-        DETAILS.LAST_NAME = Doe
-        DETAILS.EMAIL_ADDRESS = john.doe@genesis.global
-        DETAILS.STATUS = ENABLED
-            DETAILS.RIGHT[0].ID = 00000000000001RISP0
-            DETAILS.RIGHT[0].CODE = ORDEN
-            DETAILS.RIGHT[1].ID = 00000000000002RISP0
-            DETAILS.RIGHT[1].CODE = ORDAM
+    DETAILS.ID = 00000000000001USSP0
+    DETAILS.USER_NAME = JohnDoe
+    DETAILS.FIRST_NAME = John
+    DETAILS.LAST_NAME = Doe
+    DETAILS.EMAIL_ADDRESS = john.doe@genesis.global
+    DETAILS.STATUS = ENABLED
+    DETAILS.RIGHT[0].ID = 00000000000001RISP0
+    DETAILS.RIGHT[0].CODE = ORDEN
+    DETAILS.RIGHT[1].ID = 00000000000002RISP0
+    DETAILS.RIGHT[1].CODE = ORDAM
+
 ##### Response
     MESSAGE_TYPE = EVENT_AMEND_USER_ACK
+
 #### Delete User
+
 ##### Request
     MESSAGE_TYPE = EVENT_DELETE_USER
     USER_NAME = JohnDoe
-        DETAILS.USER_NAME = james
+    DETAILS.USER_NAME = james
+
 ##### Response
     MESSAGE_TYPE = EVENT_DELETE_USER_ACK

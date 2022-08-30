@@ -4,6 +4,8 @@ sidebar_label: 'Authentication Overview'
 id: authentication-overview
 ---
 
+[Introduction](/server-modules/access-control/introduction)  | [Authentication overview](/server-modules/access-control/authentication-overview) | [Username and Password](/server-modules/access-control/password-authentication) | [SSO](/server-modules/access-control/sso-authentication) | [Authorisation overview](/server-modules/access-control/authorisation-overview) | [Authorisation](/server-modules/access-control/authorisation)
+
 Authentication can be performed within applications built on the Genesis low-code platform through many techniques. All of these techniques support [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication) to bring additional security.
 
 Username and Password authentication can be further specified to use one of three solutions:
@@ -17,7 +19,7 @@ SSO authentication is further broken down into either:
 * [JWT (JSON Web Token)](https://jwt.io/introduction) SSO
 * [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language)
 
-All of these, provide their own configuration settings in the _your-application-_**auth-preferences.kts** file.
+All of these, provide their own configuration settings in the _application-name-_**auth-preferences.kts** file.
 
 So, if your application is called positions, then the file would conventionally be named **positions-auth-preferences.kts**.
 
@@ -58,7 +60,7 @@ Internal authentication uses internally stored hashed credentials to authenticat
 - Passwords can be required to conform to configurable standard
 - Users can reset or change their password (assuming they can log in first)
 
-Internal authentication is the default authentication behaviour if you don't specify a type in **auth-preferences.kts**.
+Internal authentication is the default authentication behaviour if you don't specify a `type` in **auth-preferences.kts**.
 
 ```kotlin
     authentication {
@@ -78,7 +80,7 @@ To set up LDAP authentication the `authentication` block of the **auth-preferenc
 
 For more information on configuring LDAP authentication, please see [Username and password authentication](/server-modules/access-control/password-authentication/#authentication).
 
-The example below shows LDAP authentication specified, with **userIdType** set to **cn** for the search for the username.
+The example below shows LDAP authentication specified, with `userIdType` set to `cn` for the search for the username.
 
 ```kotlin
     authentication {
@@ -103,7 +105,7 @@ First, an internal authentication is performed. If the outcome is successful, an
 
 This enables you to take advantage of all the available functionality of internal mode (locked accounts, expiring passwords, reset/change passwords). However, if passwords are changed or expired, they need to be changed manually in LDAP too, because authentication always happens in both services.
 
-The configuration file takes the same fields as LDAP. You can see this in the example below, where the authentication type has been set to `HYBRID`.
+The configuration file takes the same fields as LDAP. You can see this in the example below, where the authentication `type` has been set to `HYBRID`.
 
 ```kotlin
     authentication {
