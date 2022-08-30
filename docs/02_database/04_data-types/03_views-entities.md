@@ -19,13 +19,11 @@ There are two types of view entity:
 
 For more information, see our page about [Views](/database/fields-tables-views/views/).
 
-Index entities[​](/database/data-types/views-entities/#index-direct-link-to-heading)
--------------------------------------------------------------------------------------------------------------------------------------------------------
+## Index entities
 
-Views have [entities​](/database/data-types/views-entities/#index-direct-link-to-heading). These are also convenient methods that construct an index entity from the view entity. `byPrimaryKey()` will return an entity for the primary key. Additionally, for each index, there will be a `by...()` call with the index name.
+You can also construct an index entity from a view entity. `byPrimaryKey()` will return an entity for the primary key. Additionally, for each index, there will be a `by...()` call with the index name.
 
-Building a view entity[​](/database/data-types/views-entities/#building-a-view-entitydirect-link-to-heading)
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Building a view entity
 
 Generated ViewEntities are Kotlin data classes and can be built using the primary constructor. Just before the object is built, the object is validated to make sure all [required fields](/database/data-types/table-entities/) have been set. In addition to [DbEntity](/database/database-interface/entity-db/) methods, there are some useful methods/properties, which are described below:
 
@@ -37,12 +35,50 @@ Generated ViewEntities are Kotlin data classes and can be built using the primar
 | toStringWithSensitivesUnmasked | `fun toStringWithSensitivesUnmasked(): String` | gets the string representation of view with sensitive fields(Ex: Password) unmasked |
 | fieldToPropertyMap | `val fieldToPropertyMap: Map<String, KProperty1<V, Any?>>` | this is a class property that maps a field name to its property |
 
-Examples[​](/database/data-types/views-entities/#examplesdirect-link-to-heading)
--------------------------------------------------------------------------------------------------------------------------------------------
+## Examples
 
-The following example contains a table and view, and shows examples of output from different calls:
+Given the following table and view definitions, declared as described [here](/database/fields-tables-views/tables/) and [here](/database/fields-tables-views/views/), the platform will generate view entities as shown in the examples.
 
+```kotlin
+// table definition    
+table(name="CUSTOMER", id = 11002) {      
+  CUSTOMER_NAME      
+  CUSTOMER_ADDRESS      
+  COUNTRY      
+  CUSTOMER_PASSWORD sensitive "XXXXXX"      
+  primaryKey {        
+    CUSTOMER_NAME      
+  }    
+}  
+
+// view definition     
+view("CUSTOMER_VIEW", CUSTOMER) {       
+  fields {         
+    CUSTOMER.CUSTOMER_NAME         
+    CUSTOMER.CUSTOMER_PASSWORD         
+    CUSTOMER.CUSTOMER_ADDRESS         
+    CUSTOMER.COUNTRY       
+  }     
+}
 ```
-  // table definition    table(name="CUSTOMER", id = 11002) {      CUSTOMER_NAME      CUSTOMER_ADDRESS      COUNTRY      CUSTOMER_PASSWORD sensitive "XXXXXX"      primaryKey {        CUSTOMER_NAME      }    }  // view definition     view("CUSTOMER_VIEW", CUSTOMER) {       fields {         CUSTOMER.CUSTOMER_NAME         CUSTOMER.CUSTOMER_PASSWORD         CUSTOMER.CUSTOMER_ADDRESS         CUSTOMER.COUNTRY       }     }  // Examples  val customerView = CustomerView("Customer_1", "PASSWORD", "London", "UK")  // toGenesisSet  customerView.toGenesisSet(listOf("CUSTOMER_NAME"))  // Output: CUSTOMER_NAME = Customer_1  // toGenesisSetFormatted  customerView.toGenesisSetFormatted(listOf(ColumnConfig.Field.Aliased("COUNTRY", "CUSTOMER_COUNTRY")))  // Output: CUSTOMER_COUNTRY = UK  // toString  customerView.toString()  // Output: global.genesis.gen.view.entity.CustomerView{serialVersionUID='1', customerName=Customer_1, customerPassword=XXXXXX, customerAddress=London, country=UK, recordId={not-set}, timestamp={not-set}}  // toStringWithSensitivesUnmasked  customerView.toStringWithSensitivesUnmasked()  // Output: global.genesis.gen.view.entity.CustomerView{serialVersionUID='1', customerName=Customer_1, customerPassword=PASSWORD, customerAddress=London, country=UK, recordId={not-set}, timestamp={not-set}}  // get  customerView.get("CUSTOMER_NAME")  // Output: Customer_1
+
+Examples:
+```kotlin
+val customerView = CustomerView("Customer_1", "PASSWORD", "London", "UK")  
+
+customerView.toGenesisSet(listOf("CUSTOMER_NAME"))  
+// Output: CUSTOMER_NAME = Customer_1  
+
+customerView.toGenesisSetFormatted(listOf(ColumnConfig.Field.Aliased("COUNTRY", "CUSTOMER_COUNTRY")))  
+// Output: CUSTOMER_COUNTRY = UK 
+
+customerView.toString()  
+// Output: global.genesis.gen.view.entity.CustomerView{serialVersionUID='1', customerName=Customer_1, customerPassword=XXXXXX, customerAddress=London, country=UK, recordId={not-set}, timestamp={not-set}}  
+
+customerView.toStringWithSensitivesUnmasked()  
+// Output: global.genesis.gen.view.entity.CustomerView{serialVersionUID='1', customerName=Customer_1, customerPassword=PASSWORD, customerAddress=London, country=UK, recordId={not-set}, timestamp={not-set}}  
+
+customerView.get("CUSTOMER_NAME")  
+// Output: Customer_1
 ```
 

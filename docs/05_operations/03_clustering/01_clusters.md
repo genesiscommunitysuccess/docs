@@ -72,11 +72,11 @@ For reference, let's look at a process that has been configured to run on the pr
 
 ## Disaster recovery: example
 
-In a clustered Genesis setup, all session data is shared amongst all nodes. Following the example setup in the Pre-requisites section, if the Primary node fails and goes offline, The Load Balancer should divert traffic to the Secondary node, which contains all the session data for the end users. Their work will continue without disruption. Below you can see the switch to the secondary node using **MonCluster**.
+In a clustered Genesis set-up, all session data is shared amongst all nodes. Following the example set-up in the Prerequisites section, if the primary node fails and goes offline, The Load Balancer should divert traffic to the secondary node, which contains all the session data for the end users. Their work will continue without disruption. Below you can see the switch to the secondary node using **MonCluster**.
 
 ![](/img/cluster-4-disaster-a.png)
 
-If you decide that the primary node will not come back online within an acceptable time frame, you can then set the Secondary node to Primary.
+If you decide that the primary node will not come back online within an acceptable time frame, you can then set the secondary node to primary.
 
 To do this, run **SetPrimary** on NodeB. This means that any of those processes where **primaryOnly** is defined as **true** will now start running on NodeB.
 
@@ -88,7 +88,7 @@ So, when you are satisfied that NodeA is performing reliably, you can run **SetP
 
 ![](/img/cluster-6-disasterd.png)
 
-In summary, the Load Balancer has handled the automatic switching to the secondary node in response to failure. You have then been changed the two nodes manually using **SetPrimary**.
+In summary, the Load Balancer has handled the automatic switching to the secondary node in response to failure. You have then changed the two nodes manually using **SetPrimary**.
 
 ## Capacity planning
 You can see CPU and memory usage across an application using the **mon** command. This gives you a guide to future scaling, either horizontally (extra nodes) or vertically (essentially, you can double the CPU to 8 core and the RAM to 32GB). You can install a larger disc to suit requirements.
@@ -129,7 +129,7 @@ Example:
 
 ## Environment variables
 
-The Genesis platform supports extraction of system-level variables to populate solution-specific settings. The system-level variables can be derived from enterprise configuration management system and the platform supports encrypted settings.
+The Genesis platform supports extraction of system-level variables to populate solution-specific settings. The system-level variables can be derived from an enterprise configuration management system, and the platform supports encrypted settings.
 
 ```kotlin
 item(name = "DbUsername", value = System.getenv("DBUSERNAME"), encrypted = true)

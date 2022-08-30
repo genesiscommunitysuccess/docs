@@ -4,7 +4,7 @@ sidebar_label: 'Excel Reference'
 id: excel-reference
 ---
 
-[Introduction](/server-modules/integration/excel-to-genesis/excel-reference/)  | [ExcelToGenesis](#ExcelToGenesis) | [Options](#options) | [Functions](#functions) | [Column headings and field names](#column-headings-and-field-names) | [Files created](#files-created) | [The tables file](#the-tables-file) | [The views file](#the-views-file)
+[Excel reference](/server-modules/integration/excel-to-genesis/excel-reference/)  | [Excel functions](/server-modules/integration/excel-to-genesis/excel-functions) | [Quick guide](/server-modules/integration/excel-to-genesis/quick-guide)
 
 The Genesis low-code platform enables you to convert existing Excel spreadsheets into Genesis data models. 
 
@@ -13,7 +13,7 @@ The process of conversion handles the [functions](#functions), [columns/field na
 
 ## ExcelToGenesis
 
-This script converts the Excel spreadsheet into the Genesis data model, which can then be used to generate a working server.
+This script converts the Excel spreadsheet into a Genesis data model, which can then be used to generate a working server.
 
 ### Options
 
@@ -21,7 +21,7 @@ This script converts the Excel spreadsheet into the Genesis data model, which ca
 |----------|-------------------------|-----------|-----------------------------------------------------------|---------------------------|       
 | -f       | --file                  | Yes       | the name of the worksheet you are going to convert.       | No                        |        
 | -n       | -–name                  | Yes       | the name of the project (application) you want to create. | No                        |              
-| -t       | -–table                 | Yes       | the start of the table id sequence (see note below)       | No                        |        
+| -t       | -–table                 | Yes       | the start of the table id sequence (see note below).       | No                        |        
 
 
 
@@ -41,7 +41,9 @@ The conversion process turns Excel column names into Genesis field names. It ana
 
 The fields are automatically sampled by the command to allocate a type. If there is ambiguity, it sets the field as STRONG.
 
-**It is recommended that you shorten long column headings before you make the conversion**. In general, you want short and usable field names in your data model. It is quicker to do this before running the script, rather than editing the fields dictionary and other files that are generated.
+:::info
+It is recommended that you shorten long column headings before you make the conversion. In general, you want short and usable field names in your data model. It is quicker to do this before running the script, rather than editing the fields dictionary and other files that are generated.
+:::
 
 ### Files created
 The conversion creates a folder called `/home/core/run/_name_.cfg` where _name_ is the application name specified in the script. This contains:

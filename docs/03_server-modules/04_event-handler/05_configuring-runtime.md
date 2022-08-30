@@ -10,8 +10,6 @@ There are two important files in your application that contain configuration inf
 -  _application-name_**-processes.xml**
 - _application-name_**-service-definitions.xml**
 
-
-
 ### Configuring in processes.xml
 
 Here is an example of an Event Handler configuration in an application's **processes.xml** file:
@@ -30,7 +28,7 @@ Here is an example of an Event Handler configuration in an application's **proce
   </process>
 ```
 
-For more information on the tags that can be set within the configuration for your application, go to our page on [processes.xml](//server-modules/configuring-runtime/processes/).
+For more information on the tags that can be set within the configuration for your application, go to our page on [processes.xml](/server-modules/configuring-runtime/processes/).
 
 ### Configuring in service-definitions.xml
 
