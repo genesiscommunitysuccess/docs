@@ -15,14 +15,23 @@ Configuration[​](https://internal-web/secure/creating-applications/defining-yo
 
 The Refinitiv adaptor relies on a `connection` block within the adaptor's xml file to define the connectivity information that connects to the remote Refinitiv provider (for example, ADH).
 
-```
-<connection>    <connectionType>RSSL</connectionType>    <port>14002</port>    <host>localhost</host>    <userName>genesis</userName>    <service>ELEKTRON_DD</service>    <logEnabled>0</logEnabled></connection>
+```xml
+<connection>    
+    <connectionType>RSSL</connectionType>    
+    <port>14002</port>    
+    <host>localhost</host>    
+    <userName>genesis</userName>    
+    <service>ELEKTRON_DD</service>    
+    <logEnabled>0</logEnabled>
+</connection>
 ```
 
 The `ricFormat` section enables you to modify instrument codes before the subscription is sent to the remote provider.
 
-```
-<ricFormat>    <![CDATA[ "/" + ips.getString('INSTRUMENT_CODE') + ".L" ]]></ricFormat>
+```xml
+<ricFormat>    
+    <![CDATA[ "/" + ips.getString('INSTRUMENT_CODE') + ".L" ]]>
+</ricFormat>
 ```
 
 `ips` refers to the alias given to the `INSTRUMENT_PRICE_SUBSCRIPTION` table. All tables are referenced by alias in this function.

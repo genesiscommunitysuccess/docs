@@ -16,7 +16,7 @@ flowchart LR
     b2
     end
 ````
-The GenX CLI is bundled with several application seeds. An application seed is a scaffolded project that can be used as a starting point for future development. To run the `positions-app-tutorial` with all the code generated for you, select `Positions App Seed` from the GenX CLI tool and then select [See it work](/getting-started/go-to-the-next-level/see-it-work/).
+The GenX CLI provides several application seeds. An application seed is a scaffolded project that can be used as a starting point for future development. To run the `positions-app-tutorial` with all the code generated for you, select `Positions App Seed` from the GenX CLI tool and then select [See it work](/getting-started/go-to-the-next-level/see-it-work/).
 
 ```
 ? Create a app in current directory Yes

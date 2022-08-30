@@ -7,7 +7,7 @@ title: 'The Data Server file'
 
 
 
-This file shows the Data Servers that have been generated. Each `query` makes real-time data available to the front end.
+This file shows the routes that have been generated for the Data Server. Each `query` makes real-time data available to the front end.
 
 ```kotlin
 dataServer {
