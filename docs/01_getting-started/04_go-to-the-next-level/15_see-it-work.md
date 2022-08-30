@@ -44,14 +44,14 @@ wsl-user=genesis
 Now we are going to install the platform (i.e. Genesis distribution) on the server and then install the back end of our application on the same server. This is all done using the Genesis deploy plugin, which comes with several tasks grouped under `genesisdeploy` and `genesissetup`.
 
 :::caution
-All the following sections are one-time operation. If this is not your first time following this tutorial, skip to the next paragraph.
+All the following sections are one-time operations. If this is not your first time following this tutorial, they are not necessary. Skip to the next paragraph.
 :::
 
 ### Set up the platform
 
 We will run `setupEnvironment` first (we only need to run it once) to set up the platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
 
-Usage :
+Usage
 ```shell
 ./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:setupEnvironment #On the IntelliJ terminal
 ```
@@ -278,7 +278,7 @@ Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each r
 
 In the example below, we are using Postman as the client API. We are going to test the `EVENT_COUNTERPARTY_INSERT` Event Handler by adding a new counterparty.
 
-##### url and body
+#### url and body
 In front of the url, set the call to **POST**.
 
 The url consists of:
@@ -306,7 +306,7 @@ Set the body to **JSON**. In the body, you need to insert the details of the fie
 }
 ```
 
-##### Header
+#### Header
 In the header, you need to supply:
 
 - a SOURCE_REF (always), which identifies you; you can use any string value that suits you
@@ -314,7 +314,7 @@ In the header, you need to supply:
 
 When you have all these elements in place, click on **Send** to make the call. If the event is a success, you will receive an **ACK** message.
 
-##### Checking the insertion
+#### Checking the insertion
 Now you can check that the new counterparty you inserted is in the correct table of the database. The resource you need to check is the Request Server called ALL_COUNTERPARTIES.
 
 In front of the url, set the call to **POST**.
