@@ -8,7 +8,7 @@ id: testing
 
 The REST Endpoints created by the Genesis low-code platform reflect your application's business logic. These endpoints can be be configured through the [Genesis Router](/server-modules/configuring-runtime/genesis-router/).
 
-For information of how to test this business logic, please read the appropriate Testing section from the selection below:
+For information on how to test this business logic, see one of the following:
 * [Data Servers](/server-modules/data-server/testing/)
 * [Request Servers](/server-modules/request-server/testing/)
 * [Event Handlers](/server-modules/event-handler/testing/)
