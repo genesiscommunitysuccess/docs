@@ -227,7 +227,7 @@ a.navbar__item.navbar__link {
   margin: 4px 12px;
 }
 
-a.navbar__item.navbar__link:hover {
+a.navbar__item.navbar__link:hover, a.navbar__item.navbar__link.navbar__link--active {
   border-bottom: 2px solid;
   font-weight: 500;
 }
