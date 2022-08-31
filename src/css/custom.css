@@ -250,6 +250,12 @@ div.navbar-sidebar__item {
 }
 
 /* search bar */
+
+body > div.aa-DetachedOverlay > div {
+  top: 88px; /* Align to the bottom of the nav bar */
+  border-radius: 0;
+}
+
 div.dsla-search-field {
   width: 160px;
   height: 32px;
