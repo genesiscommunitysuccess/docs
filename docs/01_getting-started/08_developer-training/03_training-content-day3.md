@@ -175,7 +175,7 @@ Before running tests, install the [FoundationDB](https://genesisglobal.jfrog.io/
 
 Let's create a automated test that inserts and retrieves some data using Genesis' automated test support components, in summary:
 * load data from a CSV file 
-* retrieve data using [Genesis Database API](/database/database-landing/) <!-- TODO: Is this the right link? -->
+* retrieve data using [Genesis Database API](/database/) <!-- TODO: Is this the right link? -->
 
 
 So, first, let's do the following:
