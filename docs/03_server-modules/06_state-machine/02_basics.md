@@ -10,9 +10,9 @@ Within your application's **eventhandler.kts**, you must define the conditions f
 
 You can initialize the state machine in two ways as shown below:
 
-- Firstly you need a ENUM field which holds the state
+- Firstly you need an ENUM field that holds the state
 
-- One way of initializing is to provide the field of the table which holds the state, and it will always be transaction if the database layer supports it.
+- One way of initialising is to provide the field of the table that holds the state, and it will always be transaction if the database layer supports it.
 ```kotlin
 // tableField: the field of table which holds the state and will always be transaction if the database layer supports it.
 eventHandler {
@@ -22,7 +22,7 @@ eventHandler {
 }
 ```
 
-- Other way to initialize is to provide the field of table which holds the state and choose whether you want to make the event Transactional or not by providing boolean value.
+- Another way to initialise is to provide the field of table which holds the state and choose whether you want to make the event Transactional or not by providing boolean value.
 ```kotlin
 eventHandler {
     stateMachine(tableField = TRADE.TRADE_STATUS, transactional = true) {
@@ -70,11 +70,11 @@ eventHandler {
 
 **initialStates** : This covers the insertion of a new trade, when the status is set to DRAFT. 
 **excludedFields** : It deliberately ignores the fields ENTERED_BY, ENTERED_TIME, MODIFIED_BY and MODIFIED_TIME. 
-**onEvent** : It provides event information which can be used to get information like event user, event time etc.
+**onEvent** : It provides event information, which can be used to get information like event user, event time, etc.
 
 ## modifyEvent
 
-Using modifyEvent method you can modify trade. The name of the event would be EVENT_{entity_name}_MODIFY so in this example it EVENT_TRADE_MODIFY
+Using the modifyEvent method you can modify trade. The name of the event is written EVENT_{entity_name}_MODIFY so in this example it would be EVENT_TRADE_MODIFY
 
 ```kotlin
 eventHandler {
@@ -109,7 +109,7 @@ eventHandler {
 
 ## transitionEvent
 
-With this you can specify possible transitions of TRADE_STATUS field. Events are created based on transitionEvent. In above example following events are created EVENT_TRADE_OPEN, EVENT_TRADE_CLOSED, EVENT_TRADE_CANCELLED
+With this you can specify possible transitions of TRADE_STATUS field. Events are created based on transitionEvent. In above example the following events are created EVENT_TRADE_OPEN, EVENT_TRADE_CLOSED, EVENT_TRADE_CANCELLED
 
 ```kotlin
 eventHandler {
@@ -145,6 +145,6 @@ eventHandler {
 ```
 
 **fromStates** : With this method you can specify what is the possible transition of Trade status. In above example possible transitions are: DRAFT to OPEN, DRAFT to CLOSED, DRAFT to CANCELLED
-**onEvent** : It provides event information which can be used to get information like event user, event time etc.
+**onEvent** : It provides event information, which can be used to get information like event user, event time, etc.
 
 You can click to view the [whole file for this example state machine](/server-modules/state-machine/examples/) and see how each of the events is handled.
