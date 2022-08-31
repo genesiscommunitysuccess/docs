@@ -103,6 +103,10 @@ The functionality of the entity manager is customised through the properties you
 
 `createEvent`, `updateEvent`, `deleteEvent` are set to be the events on the back-end which handle the specific actions, such as deleting counterparty data. For the create and update functionality, these also define the resource in which the form is populated when the user is creating or updating an entity. The authorisation of the user with respect to these events are controlled with the [permissions property](#permissions).
 
+### Datasource Configuration
+
+Set this object to configure how the entity manager interacts with the resource. [See here](../foundation-entity-management_apiref/foundation-entity-management.datasourceconfiguration/#example).
+
 ### Permissions
 
 `permissions` is an array of the authorisations that the user has for interacting with the entity manager. For example, to allow the user to be able edit existing entities then this array. Permissions are controlled with [enum values](../foundation-entity-management_apiref/foundation-entity-management.permissions_2/#enumeration-members).

@@ -94,6 +94,10 @@ To configure the columns yourself you can set the columns attribute when definin
 ```
 To see a more verbose version of this custom example [see the second example here](../foundation-entity-management_apiref/foundation-entity-management.users/#example).
 
+### Datasource Configuration
+
+Set this object to configure how the user manager interacts with the resource. [See here](../foundation-entity-management_apiref/foundation-entity-management.datasourceconfiguration/#example).
+
 ### Permissions
 
 `permissions` is an array of the authorisations that the user has for interacting with the entity manager. For example, to allow the user to be able edit existing entities then this array. Permissions are controlled with [enum values](../foundation-entity-management_apiref/foundation-entity-management.permissions_2/#enumeration-members).
