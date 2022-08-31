@@ -388,13 +388,13 @@ Customize our header in such a way that we end up with these menu items:
 | Menu item          | Route             |
 |---------------|------------------------------|
 | Trades & Positions          | home |
-| Order entry          | order-entry |
+| Orders          | orders |
 | Reporting          | reporting      |
 
-Feel free to simply display the same content of the home page when you create the new pages (Order Entry and Reporting). We're just interested in the navigation for now.
+Feel free to simply display the same content of the home page when you create the new pages (Orders and Reporting). We're just interested in the navigation for now.
 
 :::tip 
-You can copy the home folder into new folders to create the new pages. Name the new folders in routes as `order-entry` and `reporting`, then name the files as `order-entry.styles.ts` etc.
+You can copy the home folder into new folders to create the new pages. Name the new folders in routes as `order` and `reporting`, then name the files as `order.styles.ts` etc.
 
 Also, make sure to configure `client/web/src/main/main.ts` and `client/web/src/routes/config.ts` accordingly.
 :::
