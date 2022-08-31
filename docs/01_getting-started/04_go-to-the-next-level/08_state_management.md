@@ -6,8 +6,10 @@ id: state-management
 
 [State machines](/server-modules/state-machine/introduction/) enable you to control workflow by defining the transitions from state to state. This example enables you to build a very simple state machine so that you can add new trades. We shall use the `TRADE_STATUS` field, which can have three possible states: `NEW`, `ALLOCATED`, or `CANCELLED`.
 
-* `NEW` can go to `ALLOCATED` or `CANCELLED`.
-* `ALLOCATED` and `CANCELLED` can’t go anywhere else.
+Based on below state machine:
+* TradeStatus `NEW` can change to `ALLOCATED` or `CANCELLED`.
+* TradeStatus `ALLOCATED` can change to `CANCELLED`.
+* TradeStatus `CANCELLED` can’t go anywhere else.
 * `NEW` is the only state you can use to insert new records.
 
 ![](/img/diagram-of-states.png)
@@ -58,6 +60,7 @@ class TradeStateMachine @Inject constructor(
         readState { tradeStatus }
 
         state(TradeStatus.NEW) {
+            // Trade fields can be changed when status is NEW
             isMutable = true
 
             initialState(TradeEffect.New) {
@@ -81,13 +84,14 @@ class TradeStateMachine @Inject constructor(
         }
 
         state(TradeStatus.ALLOCATED) {
+            // Trade fields cannot be changed when status is ALLOCATED
             isMutable = false
 
-            transition(TradeStatus.NEW, TradeEffect.Cancelled)
             transition(TradeStatus.CANCELLED, TradeEffect.Cancelled)
         }
 
         state(TradeStatus.CANCELLED) {
+            // Trade fields cannot be changed when status is CANCELLED
             isMutable = false
         }
     }
