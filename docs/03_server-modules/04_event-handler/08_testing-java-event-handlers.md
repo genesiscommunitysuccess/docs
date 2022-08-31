@@ -147,7 +147,7 @@ First, make sure that your authorisation set-up is designed to behave as follows
 
 Second, you need to modify the previous example Event Handler so that only authorised users can insert trades.
 
-You can find an [Event example](/database/authorisation-api/authorisation-api) in our Authorization API pages written in Kotlin.
+You can find an [Event example](/database/api-reference/authorisation-api) in our Authorization API pages written in Kotlin.
 
 ```java
     @Module

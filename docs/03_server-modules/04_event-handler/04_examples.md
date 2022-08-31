@@ -6,13 +6,9 @@ id: examples
 
 [Introduction](/server-modules/event-handler/introduction)  | [Basics](/server-modules/event-handler/basics) | [Advanced](/server-modules/event-handler/advanced) | [Examples](/server-modules/event-handler/examples) | [Configuring runtime](/server-modules/event-handler/configuring-runtime) | [Testing](/server-modules/event-handler/testing) | [Java event handlers](/server-modules/event-handler/java-event-handlers) | [Testing java event handlers](/server-modules/event-handler/testing-java-event-handlers)
 
-There is a nice simple example of some logic being added to an Event Handler in our [tutorial](/getting-started/go-to-the-next-level/condition-rules/#3-update-the-event-handler).
+There is a nice simple example of some logic being added to an Event Handler in our [tutorial](/getting-started/go-to-the-next-level/condition-rules/#3-update-the-event-handler). Below we have some other examples of different ways to use an Event Handler.
 
-Below we have some other examples of different ways to use an Event Handler.
-&nbsp;  
-&nbsp;  
-&nbsp;  
-
+## Basic
 The example below is a simple Event Handler
 to validate input and insert a record in the database. There is an [`onValidate`](/server-modules/event-handler/basics/#adding-validation) block that defines the validation and an [`onCommit`](/server-modules/event-handler/basics/#a-simple-example-of-an-event-handler) block that specifies the action that is to be taken.
 ```kotlin
@@ -31,9 +27,8 @@ to validate input and insert a record in the database. There is an [`onValidate`
         }
     }
 ```
-&nbsp;  
-&nbsp;  
 
+## Carrying context
 This next snippet is an example of how to reuse data between 
 [onValidate](/server-modules/event-handler/basics/#adding-validation) 
 and [onCommit](/server-modules/event-handler/basics/#a-simple-example-of-an-event-handler) using a `contextEventHandler`. In the `onValidate` block we check to see if a trade exists in the database, and we pass it as _context_ to the `onCommit` block so we don't have to do another database lookup.
@@ -58,9 +53,8 @@ and [onCommit](/server-modules/event-handler/basics/#a-simple-example-of-an-even
         }
     }
 ```
-&nbsp;  
-&nbsp;
 
+## Handling exceptions
 This is an example of how to use [`onException`](/server-modules/event-handler/advanced/#onexception)
 in an Event Handler.
 ```kotlin
@@ -77,9 +71,9 @@ in an Event Handler.
         }
     }
 ```
-&nbsp;
-&nbsp;
 
+## Authorisation
+### permissioning
 This is an example of how to add [authorisation](/server-modules/event-handler/advanced/#permissioning-and-permissioncodes)
 to an Event Handler.
 
@@ -98,9 +92,8 @@ to an Event Handler.
         }
     }
 ```
-&nbsp;  
-&nbsp;  
 
+### fixed permissions
 And now an example with [fixed permissions](http://localhost:3000/server-modules/event-handler/advanced/#permissioning-and-permissioncodes).
 
 ```kotlin
@@ -113,10 +106,9 @@ And now an example with [fixed permissions](http://localhost:3000/server-modules
         }
     }
 ```
-&nbsp;  
-&nbsp;  
 
-Below is an example of how to make an Event Handler [transactional](http://localhost:3000/server-modules/event-handler/basics/#transactional-event-handlers-acid).
+## Transactions
+Below is an example of how to make an Event Handler [transactional](/server-modules/event-handler/basics/#transactional-event-handlers-acid).
 
 ```kotlin
     eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
@@ -130,9 +122,8 @@ Below is an example of how to make an Event Handler [transactional](http://local
         }
     }
 ```
-&nbsp;  
-&nbsp;  
 
+## Approval requests
 The example below is a simple Event Handler that [requires approval](/server-modules/event-handler/advanced/#pending-approvals).
 ```kotlin
 

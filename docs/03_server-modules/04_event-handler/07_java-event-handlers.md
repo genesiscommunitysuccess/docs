@@ -6,7 +6,7 @@ id: java-event-handlers
 
 [Introduction](/server-modules/event-handler/introduction)  | [Basics](/server-modules/event-handler/basics) | [Advanced](/server-modules/event-handler/advanced) | [Examples](/server-modules/event-handler/examples) | [Configuring runtime](/server-modules/event-handler/configuring-runtime) | [Testing](/server-modules/event-handler/testing) | [Java event handlers](/server-modules/event-handler/java-event-handlers) | [Testing java event handlers](/server-modules/event-handler/testing-java-event-handlers)
 
-Event Handlers can be written in Java using Event Handler [APIs](/database/event-handler-api/event-handler-api). On this page, we look at Event Handlers written using the [Rx3 Event handlers](/database/event-handler-api/event-handler-api/#rx3eventhandler)
+Event Handlers can be written in Java using Event Handler [APIs](/database/api-reference/event-handler-api). On this page, we look at Event Handlers written using the [Rx3 Event handlers](/database/api-reference/event-handler-api/#rx3eventhandler)
 
 :::note
 

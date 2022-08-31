@@ -29,9 +29,13 @@ module.exports = {
     [require.resolve('docusaurus-gtm-plugin'), {
       id: 'GTM-5GTR43J',
     }],
-		() => ({
-			loadContent: apiPullPlugin.loadContent(),
-		})
+    // Declares a local plugin, plugins array takes a set of functions to execute to 
+    // load in the plugin. Anonymous function used here to simulate the same thing, and
+    // return an object that declares a function to execute as part of the `loadContent`
+    // step in the docusaurus lifecycle
+    () => ({
+      loadContent: apiPullPlugin.loadContent(),
+    })
   ],
 
   presets: [
@@ -84,8 +88,8 @@ module.exports = {
       items: [
         {to: 'getting-started', label: 'Learning'},
         {to: 'database/database-landing', label: 'Database'},
-        {to: 'server-modules', label: 'Server Modules'},
-        {to: 'front-end', label: 'Front End'},
+        {to: 'server-modules', label: 'Server'},
+        {to: 'front-end', label: 'Web'},
         {to: 'operations', label: 'Operations'},
         {to: 'flow/introduction', label: 'Flow'},
         {to: 'blog', label: 'Updates'},
