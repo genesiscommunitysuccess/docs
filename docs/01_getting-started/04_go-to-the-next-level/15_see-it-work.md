@@ -44,14 +44,14 @@ wsl-user=genesis
 Now we are going to install the platform (i.e. Genesis distribution) on the server and then install the back end of our application on the same server. This is all done using the Genesis deploy plugin, which comes with several tasks grouped under `genesisdeploy` and `genesissetup`.
 
 :::caution
-All the following sections are one-time operations. If you have alerady followed this tutorial previously, they are not necessary. Skip to [Deploying the application](/getting-started/go-to-the-next-level/see-it-work/#deploying-the-application).
+All the following sections are one-time operations. If you have already followed this tutorial previously, they are not necessary. Skip to [Deploying the application](/getting-started/go-to-the-next-level/see-it-work/#deploying-the-application).
 :::
 
 ### Set up the platform
 
-We will run `setupEnvironment` first (we only need to run it once) to set up the platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
+We will run `setupEnvironment` first (we only need to run it once) to set up the platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution:
 
-Usage
+
 ```shell
 ./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:setupEnvironment #On the IntelliJ terminal
 ```
@@ -61,10 +61,9 @@ or from the dropdown menu:
 
 After this command is complete, we will have a basic Genesis server running.
 
-### Deploying the auth module
-As our application requires authentication, we have to install the Genesis Auth module.
+### Deploy the auth module
+As our application requires authentication, we have to install the Genesis Auth module:
 
-Usage:
 ```shell
 ./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:install-auth-distribution.zip #On the IntelliJ terminal
 ```
@@ -73,15 +72,14 @@ or from the dropdown menu:
 
 ![](/img/install-auth.png)
 
-### Deploying site-specific configuration
-As our application will use the site-specific folder to override the standard definitions, we have to run this task.
+### Deploy the site-specific configuration
+As our application will use the site-specific folder to override the standard definitions, we have to run this task:
 
-Usage:
 ```shell
 ./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:install-positions-app-tutorial-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip #On the IntelliJ terminal
 ```
 
-### Adding a user to login
+### Add a user
 
 Next, let's create a user.
 
@@ -92,10 +90,10 @@ The following details will be your login details:
 - Password: beONneON*74 (This is encrypted in the USER.csv file.)
 :::
 
-We shall run the task `loadInitialData`. This adds the data to a file called USER.csv to be imported into the USER table in your
+Run the task `loadInitialData`. This adds the data to a file called USER.csv to be imported into the USER table in your
 database. The USER table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously. 
 
-To run the task, we shall call:
+To run the task, call:
 
 ```shell
 ./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:loadInitialData #On the IntelliJ terminal
@@ -141,9 +139,9 @@ DbMon:USER>
 
 ## Deploying the application
 
-Now we have to deploy our application, the positions-app-tutorial product.
+Now we have to deploy our application, the positions-app-tutorial product:
 
-Usage:
+
 ```shell
 ./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:deploy-genesisproduct-positions-app-tutorial.zip #On the IntelliJ terminal
 ```
@@ -156,11 +154,12 @@ or from the dropdown menu:
 This will take the last built distribution. It does not run a project build as part of the task. Make sure you have already built the project before deploying it.
 :::
 
-## Running server commands
-:::info can I run server commands from the command line rather than gradle tasks?
+## Run the server commands
+:::info Can I run server commands from the command line rather than gradle tasks?
 Yes. Here, we've been running server commands through the gradle tasks. But alternatively, you can run server commands directly from a command line. 
 
 Assuming you are using the provided 'TrainingCentOS' WSL distribution, open PowerShell (or Windows Command Prompt). Access your WSL instance 'TrainingCentOS' and switch to user 'genesis' to have access to the Genesis commands:
+
 ```shell
 wsl -d TrainingCentOS
 su genesis
@@ -292,9 +291,8 @@ This returns a set of details at the bottom of the Postman window, where you can
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 
-In the example below, we are using Postman as the client API. We are going to test the `EVENT_COUNTERPARTY_INSERT` Event Handler by adding a new counterparty.
+In the example below, we use Postman as the client API. We are going to test the `EVENT_COUNTERPARTY_INSERT` Event Handler by adding a new counterparty.
 
-#### url and body
 In front of the url, set the call to **POST**.
 
 The url consists of:
@@ -308,7 +306,7 @@ http://localhost/gwf/EVENT_COUNTERPARTY_INSERT
 ```
 
 
-Set the body to **JSON**. In the body, you need to insert the details of the fields for the new counterparty, as shown below:
+After the url, you need to move to the body. Set the body to **JSON**. Then, in the body, insert the details of the fields for the new counterparty, as shown below:
 
 ```
 {
@@ -322,13 +320,9 @@ Set the body to **JSON**. In the body, you need to insert the details of the fie
 }
 ```
 
-<<<<<<< HEAD
 ![](/img/test-eh-url-body-alpha.png)
 
-###### Header
-=======
-#### Header
->>>>>>> uat
+
 In the header, you need to supply:
 
 - a SOURCE_REF (always), which identifies you; you can use any string value that suits you
@@ -336,13 +330,9 @@ In the header, you need to supply:
 
 When you have all these elements in place, click on **Send** to make the call. If the event is a success, you will receive an **ACK** message.
 
-<<<<<<< HEAD
 ![](/img/test-eh-header-alpha.png)
 
-###### Checking the insertion
-=======
-#### Checking the insertion
->>>>>>> uat
+### Checking the insertion
 Now you can check that the new counterparty you inserted is in the correct table of the database. The resource you need to check is the Request Server called ALL_COUNTERPARTIES.
 
 In front of the url, set the call to **POST**.
