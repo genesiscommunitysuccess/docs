@@ -103,7 +103,7 @@ By default the `permissions` are set automatically depending on the authorisatio
 :::
 
 ### Persist Column State
-`persist-column-state-key` is a string value which is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set then the behaviour will be to _not_ persist the column state, and hence the grid will revert back to its default state every time the user navigates away from it.
+`persist-column-state-key` is a string value which is used to control how the column states are persisted through actions such as page changes or refreshes. When using this micro-frontend, it is set to `entity_profiles_management`.
 
 :::info
 For more info on `persist-column-state-key` see [the section in the entity management.](./04_foundation-entity-management.md#persist-column-state)
