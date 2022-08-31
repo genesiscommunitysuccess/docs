@@ -36,7 +36,7 @@ foundation-cli
 
 If this is the first time running our CLI tool, we'll need to provide artifactory credentials. 
 
-> No credentials? See our [Prerequisites](/flow/introduction/prerequisites/)
+> No credentials? See our [Pre-requisites](/flow/introduction/prerequisites/)
 
 ```shell
 ? Genesis Username example.username

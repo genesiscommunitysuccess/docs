@@ -3,11 +3,7 @@ title: 'Flow'
 id: 'introduction'
 ---
 
-Welcome to the learning area for Flow.
-
-The following guides will show how to use and get the most out of Flow, ultimately supercharging development.
-
-Flow is a full stack low-code option to building applications. Delivering productive solutions quicker than ever before.
+Flow is a full stack low-code language to building applications. Delivering productive solutions quicker than ever before.
 
 Writing up to 75% less code than prior Genesis versions, Flow allows us to:
 - Model complex data objects with clear type definitions

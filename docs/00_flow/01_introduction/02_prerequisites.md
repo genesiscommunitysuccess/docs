@@ -1,9 +1,9 @@
 ---
-title: 'Prerequisites'
+title: 'Pre-requisites'
 id: 'prerequisites'
 ---
 
-# Prerequisites
+# Pre-requisites
 
 Flow has the same requirements as our other Genesis platform options. Therefore, before progressing with our guides please refer to the below pages to ensure we have the initial set up:
 

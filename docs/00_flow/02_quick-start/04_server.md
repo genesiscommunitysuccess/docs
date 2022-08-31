@@ -30,7 +30,7 @@ wsl-distro=CentOS7
 wsl-user=alpha
 ```
 
-If unsure about the above, please refer to our [Prerequisites](/flow/introduction/prerequisites/), particularly "Do you need WSL?".
+If unsure about the above, please refer to our [Pre-requisites](/flow/introduction/prerequisites/), particularly "Do you need WSL?".
 
 
 ### Preparing the server
