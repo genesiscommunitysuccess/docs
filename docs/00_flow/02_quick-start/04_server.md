@@ -9,7 +9,7 @@ Now we have our basic user interface running, we need to start our server to be 
 
 ### Expected Result
 
-By the end of this section we should have our all of our server application running. We will
+By the end of this section we should have all of our server application running. We will
 
 - Generate our server configuration 
 - Have our server running
@@ -21,7 +21,7 @@ By the end of this section we should have our all of our server application runn
 Before starting with the server set up, make sure that:
 
 - We have a user with name of the application (alpha)
-- FoundationDB is running (if it is not, run `systemctl start foundationdb` from CentOS7
+- FoundationDB is running (if it is not, run `systemctl start foundationdb` from CentOS7)
 - Have our Genesis home, distribution and user configured like below:
 
 ```shell
@@ -94,12 +94,12 @@ The following will be the application login details:
 - Password: beONneON\*74 (This is encrypted in the USER.csv file.)
 :::
 
-We shall run the task `loadInitialData`. This adds the user data into the database. 
+Copy the file `user.csv` in your project's folder `data` to the following CentOS directory `$GENESIS_HOME/site-specific/data`
 
-To do that we will run:
+From the CentOS terminal run the following command:
 
 ```shell
-./gradlew :alpha-deploy:loadInitialData #On the IntelliJ terminal
+SendIt -t USER -f $GENESIS_HOME/site-specific/data/user.csv
 ```
 
 We want to validate that the above was successful, the following commands will help with that.
