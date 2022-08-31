@@ -1,0 +1,110 @@
+---
+title: 'User Management'
+sidebar_label: 'User management'
+Id: front-end-foundation-user-management
+tags:
+  - user
+  - management
+  - frontend
+  - ui
+  - mf
+  - web
+  - micro frontends
+  - form
+  - resource
+---
+
+# User Management
+
+## API Reference
+
+API reference [can be found here.](../foundation-entity-management_apiref/)
+
+## Introduction
+
+The User Management micro fronted used to manage the users on the front-end. Two core components are used to manage the entities - the grid and the form. The grid contains an entity on each row and data in each column. Under the hood the grid uses [ag-grid](https://www.ag-grid.com/) and hence has a lot of its features such as filtering and ordering of data.
+
+:::info
+User Management is a concrete use case of the [entity management](./04_foundation-entity-management.md) micro-frontend which is provided as part of `foundation-ui`.
+:::
+
+Example grid view when managing users.
+![Example user management grid](/img/foundation-user-management.png)
+
+## Set-up
+
+To enable this micro front-end in your application, follow the steps below.
+
+- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
+
+```javascript
+{
+  ...
+  "dependencies": {
+    "@genesislcap/foundation-entity-management": "latest"
+  },
+  ...
+}
+```
+
+- Import and declare the class in the page of the class where you wish to use the user manager. Then add the user management into the template html where required:
+```javascript
+// Import
+import { Users, } from '@genesislcap/foundation-entity-management';
+
+// Declare class
+Users;
+
+// Example html with the user management
+// You can customise this with additional fields, see futher in this documentation
+export const AdminTemplate: ViewTemplate = html`
+  <zero-tabs>
+    <zero-tab-panel slot="tabpanel">
+      <zero-error-boundary>
+        <user-management></user-management>
+      </zero-error-boundary>
+    </zero-tab-panel>
+  </zero-tabs>
+`;
+```
+
+## Config
+
+The functionality of the user manager is customised through the properties you set on it in the html. This section will cover the main properties that you will want to customise. For a full list of all of the properties [see here](../foundation-entity-management_apiref/foundation-entity-management.users/#properties).
+
+### Columns
+
+The primary way to configure the user management functionality is via the columns that are displayed on the grid.
+```javascript
+// Default usage, will contain the "default" columns:
+//    username, first name, last name, email, last login
+// as well as the additional entity and status columns
+<user-management></user-management>
+```
+The default columns are contained in the [UserColumnConfig](../foundation-entity-management_apiref/foundation-entity-management.userscolumnconfig) variable. The entity and status columns are always added to the grid.
+
+To configure the columns yourself you can set the columns attribute when defining the user management in the html. You can mix in your custom column config with the default user columns config using the javascript spread operator.
+```javascript
+// Custom usage, will contain the "default" columns:
+//    username, first name, last name, email, last login
+// the custom "userColumns"
+// as well as the additional entity and status columns
+<user-management :columns=${() => [...UsersColumnConfig, ...userColumns]}>
+</user-management>
+```
+To see a more verbose version of this custom example [see the second example here](../foundation-entity-management_apiref/foundation-entity-management.users/#example).
+
+### Permissions
+
+`permissions` is an array of the authorisations that the user has for interacting with the entity manager. For example, to allow the user to be able edit existing entities then this array. Permissions are controlled with [enum values](../foundation-entity-management_apiref/foundation-entity-management.permissions_2/#enumeration-members).
+
+:::info
+By default the `permissions` are set automatically depending on the authorisations of the user - if the user is an `ADMIN` then they will have *all* permissions, else they will have *no* permissions.
+:::
+
+### Persist Column State
+`persist-column-state-key` is a string value which is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set then the behaviour will be to _not_ persist the column state, and hence the grid will revert back to its default state every time the user navigates away from it.
+
+:::info
+For more info on `persist-column-state-key` see [the section in the entity management.](./04_foundation-entity-management.md#persist-column-state)
+:::
