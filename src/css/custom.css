@@ -228,12 +228,8 @@ a.navbar__item.navbar__link {
 }
 
 a.navbar__item.navbar__link:hover {
-  border-bottom: 1px solid;
-}
-
-a.navbar__item.navbar__link.navbar__link--active {
-  font-weight: 700;
-  border-bottom: 1px solid;
+  border-bottom: 2px solid;
+  font-weight: 500;
 }
 
 .navbar__toggle > svg {
