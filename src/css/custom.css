@@ -24,6 +24,8 @@
 
   --black: #161412;
   --primary-blue: #1200DE;
+  --darker-blue: #0A004A;
+
   --warm-gray-4: #F6F5F4;
   --warm-gray-3: #E3E0DD;
   --warm-gray-2: #808387;
@@ -132,10 +134,10 @@ code {
 
 /* Tables */
 .markdown table th {
-  color: var(--primary-blue);
+  color: white;
   font-family: var(--medium-font);
   font-weight: 700;
-  background-color: var(--warm-gray-3);
+  background-color: var(--darker-blue);
 }
 .markdown table tr:nth-child(2n) {
   background-color: var(--warm-gray-3);
