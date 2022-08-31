@@ -4,14 +4,14 @@ sidebar_label: 'Advanced'
 id: advanced
 ---
 
-The state machine can be injected to event handler script or API
+The state machine can be injected to the Event Handler script or API.
 
 ## StateMachineBuilder
 
 You can build state machine using this interface by providing following:
-- Entity of the state machine, in below example it is called Trade
-- State of entity field to manage, this field needs to be ENUM field, in below example it is called TradeStatus
-- The side effect of a state change, it is something you can subscribe to when the state changes, in below example it is called TradeEffect
+- Entity of the state machine. In below example it is called Trade.
+- State of entity field to manage, this field needs to be ENUM field. In the below example it is called TradeStatus
+- The side effect of a state change, is something you can subscribe to when the state changes. In below example it is called TradeEffect.
 
 ```kotlin
 sealed class TradeEffect {
@@ -29,7 +29,7 @@ It specifies which state to read from table
 
 ### state
 `fun state(state: S, stateHandler: StateBuilder<T, S, E>.() -> Unit)`
-This is the method where you define how to handle the state of the table. Handling of the state is managed by StateBuilder which is explained in detail below
+This is the method where you define how to handle the state of the table. Handling of the state is managed by StateBuilder, which is explained in detail below.
 
 #### StateBuilder
 
@@ -46,7 +46,7 @@ This is the method where you define how to handle the state of the table. Handli
 | transitionWithContext | `fun <C : Any> transitionWithContext(newState: S,sideEffect: E,priority: Int,transitionBuilder: ContextTransitionBuilder<T, C>.() -> Unit,)` | The state machine will a transition from the current state to [newState] and you can specify priority for this transition. The validation will share a context|
 
 
-State machine creation is explained with example below
+State machine creation is explained with the example below.
 
 ```kotlin
 @Module
@@ -105,7 +105,7 @@ class TradeStateMachine @Inject constructor(
 
 ## StateMachine
 
-State machine properties and functions
+State machine properties and functions:
 
 |                           | Signature                                                                                                                                                                                     | Description                                                                                                                                                                                                                                                                          |
 |---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
