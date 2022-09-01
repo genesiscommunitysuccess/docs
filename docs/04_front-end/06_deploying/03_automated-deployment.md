@@ -221,3 +221,9 @@ pipeline {
 ```
 
 The generated builds can then be fetched and moved to the correct location on the webserver with another script or [manually](/front-end/deploying/manual-deployment/).
+
+## What the full pipeline might look like:
+
+![](/img/build-pipeline.png)
+
+<!-- Taken from here https://www.notion.so/genesisglobal/Current-Build-Pipeline-9c9fa95467a24e678ce7f56dbd2bfc87 but not sure if we want to show this diagram to external clients as it's mostly internal stuff including gem -->
