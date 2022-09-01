@@ -159,7 +159,7 @@ Now you have a fully running application. If not opened automatically, you can n
 ![](/img/login-screen-quickstart.png)
 
 :::tip
-If the blue button to login is not clickable, go through the previous section again. The problem is most likely located there.
+If the blue button to login is not clickable, go through the previous section again, the problem will most likely be located there.
 
 ::::
 
