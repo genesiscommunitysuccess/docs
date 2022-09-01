@@ -4,7 +4,7 @@ sidebar_label: 'User interaction using Data Server and Event Handlers'
 id: events
 ---
 
-Now that we have our data model defined, we can continue with exposing the data and adding the capability to create entries.
+Now that we have our data model defined, we can start adding the capabilities to read and create entries.
 
 
 ## Data Server
@@ -84,11 +84,9 @@ Add the following content to the **positions-app-tutorial-service-definitions.xm
 </configuration>
 ```
 
-Please see [here](/server-modules/configuring-runtime/processes/) for a detailed description of the processes configuration.
-Finally, you can build the server.
+Please see [here](/server-modules/configuring-runtime/processes/) for a detailed description of the processes configuration. Finally, you can build the server.
 
-
-In the Gradle menu on the right of IntelliJ, select **positions-app-tutorial**/**Tasks**/**build/assemble**.
+From the Gradle menu on the right of Intellij, this is: **genesisproduct-positions-app-tutorial**/**Tasks**/**build/assemble**.
 
 ![](/img/assemble-server.png)
 

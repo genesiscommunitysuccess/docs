@@ -32,5 +32,7 @@ Using the GenX CLI tool, we want to generate a blank full-stack application proj
 npx genx
 ```
 
-Follow through the series of questions and for `App name` enter `positions-app-tutorial`. If this is the first time you are using the GenX CLI tool, check the [Quick Start](/getting-started/quick-start/create-a-new-project/) guide first.
+Follow through the series of questions. For `App name` enter `positions-app-tutorial` and for `App seed` enter `Quick Start Application`.
+
+If this is the first time you are using the GenX CLI tool, check the [Quick Start](/getting-started/quick-start/create-a-new-project/) guide first.
 
