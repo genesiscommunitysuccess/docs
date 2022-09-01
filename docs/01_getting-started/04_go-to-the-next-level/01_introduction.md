@@ -36,3 +36,6 @@ Follow through the series of questions. For `App name` enter `positions-app-tuto
 
 If this is the first time you are using the GenX CLI tool, check the [Quick Start](/getting-started/quick-start/create-a-new-project/) guide first.
 
+:::info
+this project is not a direct copy of the positions app but will contain most of it's functionality.
+:::

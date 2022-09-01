@@ -16,7 +16,7 @@ Ensure the **build.gradle.kts** in this sub-module has the following entry:
 
 ```kotlin
 plugins {
-    id("global.genesis.deploy") version "6.0.2"
+    id("global.genesis.deploy") version "<your version>"
 }
 ```
 
@@ -35,9 +35,20 @@ wsl-user=genesis
 |`genesis-home`|  This is a mandatory property that is a path on the WSL distribution. |
 |`wsl-distro`|  This is a mandatory property that is the name of the WSL distribution. |
 |`wsl-user`|  This is an optional property. If omitted, the default WSL user will be used. |
-
-
 :::
+
+if you haven't already, you should have a project artifact built using the following gradle task **genesisproduct-positions-app-tutorial**/**Tasks**/**build**/**assemble**.
+
+![](/img/assemble-server.png)
+
+The following environment variables need to be set in your `.bashrc` as follows:
+
+```bash
+export GENESIS_HOME=$HOME/run/
+[ -f $GENESIS_HOME/genesis/util/setup.sh ] && source $GENESIS_HOME/genesis/util/setup.sh
+```
+
+Finally, you need to have a FoundationDB database running.
 
 ## Deploy the Genesis low-code platform
 
@@ -49,11 +60,11 @@ All the following sections are one-time operations. If you have already followed
 
 ### Set up the platform
 
-We will run `setupEnvironment` first (we only need to run it once) to set up the platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution:
+We will run `setupEnvironment` under `genesissetup` first (we only need to run it once) to set up the platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution:
 
 
 ```shell
-./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:setupEnvironment #On the IntelliJ terminal
+./gradlew :genesisproduct-positions-app-tutorial:positions-app-tutorial-deploy:setupEnvironment #On the IntelliJ terminal
 ```
 or from the dropdown menu:
 
@@ -65,7 +76,7 @@ After this command is complete, we will have a basic Genesis server running.
 As our application requires authentication, we have to install the Genesis Auth module:
 
 ```shell
-./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:install-auth-distribution.zip #On the IntelliJ terminal
+./gradlew :genesisproduct-positions-app-tutorial:positions-app-tutorial-deploy:install-auth-distribution.zip #On the IntelliJ terminal
 ```
 
 or from the dropdown menu:
@@ -76,8 +87,10 @@ or from the dropdown menu:
 As our application will use the site-specific folder to override the standard definitions, we have to run this task:
 
 ```shell
-./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:install-positions-app-tutorial-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip #On the IntelliJ terminal
+./gradlew :genesisproduct-positions-app-tutorial:positions-app-tutorial-deploy:install-positions-app-tutorial-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip #On the IntelliJ terminal
 ```
+
+![](/img/install-site-specific.png)
 
 ### Add a user
 
@@ -90,13 +103,13 @@ The following details will be your login details:
 - Password: beONneON*74 (This is encrypted in the USER.csv file.)
 :::
 
-Run the task `loadInitialData`. This adds the data to a file called USER.csv to be imported into the USER table in your
-database. The USER table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously. 
+Run the task `loadInitialData`. This adds the data to a file called USER.csv to be imported into the `USER` table in your
+database. The `USER` table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously. 
 
 To run the task, call:
 
 ```shell
-./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:loadInitialData #On the IntelliJ terminal
+./gradlew :genesisproduct-positions-app-tutorial:positions-app-tutorial-deploy:loadInitialData #On the IntelliJ terminal
 ```
 
 or from the dropdown menu:
@@ -143,7 +156,7 @@ Now we have to deploy our application, the positions-app-tutorial product:
 
 
 ```shell
-./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:deploy-genesisproduct-positions-app-tutorial.zip #On the IntelliJ terminal
+./gradlew :genesisproduct-positions-app-tutorial:positions-app-tutorial-deploy:deploy-genesisproduct-positions-app-tutorial.zip #On the IntelliJ terminal
 ```
 
 or from the dropdown menu:
@@ -170,10 +183,10 @@ Try it now!
 
 :::
 
-Now, let's run the Genesis command 'mon' to see if all processes are up and running on the server:
+Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
 
 ```shell
-./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:mon #On the IntelliJ terminal
+./gradlew :genesisproduct-positions-app-tutorial:positions-app-tutorial-deploy:mon #On the IntelliJ terminal
 ```
 or from the dropdown menu:
 
