@@ -44,6 +44,20 @@ When you finish, remember to run `genesis-generated-dao` and `genesisproduct-ass
 
 So, let's define a **positions-app-tutorial-consolidator.kts** file inside **positions-app-tutorial-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
 
+:::tip
+If you don't have intelisense when editing the consolidator file check the contents of **positions-app-tutorial-script-config/build.gradle.kts**. Under **dependencies** it should contain `api("global.genesis:genesis-pal-consolidator")`. If that entry is not present add it to the list of dependencies. Once done the file should look like:
+```kotlin
+dependencies {
+    ...
+    api("global.genesis:genesis-pal-consolidator")
+    ..
+}
+```
+
+Reload the project from the Gradle tab on the right side of the screen.
+
+:::
+
 The consolidator is going to increase or decrease the quantity for `POSITION` records, based on the `TRADE` table updates. It also needs to calculate the new notional.
 
 ```kotlin
