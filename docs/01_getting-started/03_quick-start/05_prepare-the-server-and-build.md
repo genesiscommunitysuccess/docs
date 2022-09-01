@@ -39,7 +39,10 @@ Add the following content to the **alpha-processes.xml** file.
     </process>
 </processes>
 ```
-Add the following content to the **alpha-service-definitions.xml** file.
+
+You can find more info on the **-processes.xml** file [here](/server-modules/configuring-runtime/processes/).
+
+You can then add the following content to the **alpha-service-definitions.xml** file.
 
 ```xml
 <configuration>
@@ -47,6 +50,8 @@ Add the following content to the **alpha-service-definitions.xml** file.
     <service host="localhost" name="ALPHA_EVENT_HANDLER" port="11001"/>
 </configuration>
 ```
+You can find more info on the **-service-defintions.xml** file [here](/server-modules/configuring-runtime/service-definitions/).
+
 Finally, you can build the server.
 
 In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha**/**Tasks**/**Build/Assemble**.

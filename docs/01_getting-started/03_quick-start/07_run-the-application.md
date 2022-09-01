@@ -7,7 +7,7 @@ id: run-the-application
 Before you start this, make sure that:
 
 - you have a user with the name of the application (alpha)
-- foundationdb is running (if it is not, run `systemctl start foundationdb` from Centos07
+- foundationdb is running (if it is not, run `systemctl start foundationdb` from Centos07)
 
 If that's OK, you can deploy the server.
 
@@ -60,7 +60,7 @@ or from the dropdown menu:
 
 ### Adding a user to login
 
-Next let´s create a user.
+Next let's create a user.
 
 :::tip
 The following details will be your login details:
@@ -130,7 +130,7 @@ docker login genesisglobal-docker-internal.jfrog.io
 
 You need to enter your artifactory credentials at this point
 
-The enter
+Then enter:
 ...
 docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
 #...
@@ -159,7 +159,7 @@ Now you have a fully running application. If not opened automatically, you can n
 ![](/img/login-screen-quickstart.png)
 
 :::tip
-If the blue button to login is not clickable, go through the previous section again; this is the most likely location of a problem.
+If the blue button to login is not clickable, go through the previous section again. The problem is most likely located there.
 
 ::::
 
