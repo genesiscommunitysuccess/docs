@@ -535,7 +535,7 @@ a.table-of-contents__link--active {
   border-radius: 100%;
   background-color: white;
   background-image: url('../../static/svg/stackoverflow.svg');
-  background-size: 18px 18px;
+  background-size: 16px 16px;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
