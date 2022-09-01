@@ -8,11 +8,11 @@ sidebar_position: 1
 # Genesis developer training
 ![](/img/dev-training-book-cover.png)
 
-## What You'll Learn​
+## What you'll learn​
 
-This is hands-on developer training where we're going to follow the creation ​of an application from start to finish. By complletion, you will be an effective developer on the Genesis low-code platform.
+This is hands-on developer training where we're going to follow the creation ​of an application from start to finish. By completion, you will be an effective developer on the Genesis low-code platform.
 
-## Pre-requisites and assumptions
+## Prerrequisites and assumptions
 
 - You know how to code, ideally familiar with the **Java ecosystem** and **Kotlin** language. Even better if you know some​ **TypeScript** and some basic Linux commands.​
 - You have taken the Foundation course.
@@ -41,7 +41,7 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 - [Day 4](/getting-started/developer-training/training-content-day4/): State management, adding logic to the event handler​ ​and auditing​.
 - [Day 5](/getting-started/developer-training/training-content-day5/): Schedulers, notifications, permissions​, key server commands​ and how to get help​.
 
-## Genesis low-code Platform version
+## Genesis low-code platform version
 6.0.2
 
 ## Source code

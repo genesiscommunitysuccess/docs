@@ -1,7 +1,7 @@
 ---
 id: training-content-day5
-title: Day 5
-sidebar_label: Day 5
+title: Day five
+sidebar_label: Day five
 sidebar_position: 7
 
 ---
@@ -9,7 +9,7 @@ This day covers:
 
 - [Schedulers](#schedulers)
 - [Permissions​](#permissions)
-- [Operating the Genesis Platform](#operating-the-genesis-platform)
+- [Operating the platform](#operating-the-genesis-platform)
 - [Navigating the documentation and how to get help​](#navigating-the-documentation-and-how-to-get-help​)
 
 ## Schedulers​
