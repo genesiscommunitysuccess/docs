@@ -11,36 +11,7 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 ### Define the position-keeping logic in the Consolidator
 
-Make sure that the `INSTRUMENT_ID` field is not nullable in the `TRADE` and `POSITION` tables, as the consolidations will use it.
-
-```kotlin {4,10}
-tables {
-    table (name = "TRADE" ...) {
-        ...
-        INSTRUMENT_ID not null
-        ...
-    }
-
-    table(name = "POSITION" ...) {
-        ...
-        INSTRUMENT_ID not null
-        ...        
-    }
-    ...
-}
-```
-
-Add the query `ALL_POSITIONS` to the **positions-app-tutorial-dataserver.kts** file. 
-
-```kotlin {3}
-dataServer {
-    ...
-    query("ALL_POSITIONS", POSITION)
-}
-```
-This query will be used to show all the positions calculated by the consolidator.
-
-When you finish, remember to run `genesis-generated-dao` and `genesisproduct-assemble`.
+We will use the query `ALL_POSITIONS` that was [previously defined](/getting-started/go-to-the-next-level/events/#data-server) to show all the positions calculated by the consolidator.
 
 So, let's define a **positions-app-tutorial-consolidator.kts** file inside **positions-app-tutorial-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
 
