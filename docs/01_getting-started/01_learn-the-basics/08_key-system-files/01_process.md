@@ -27,44 +27,44 @@ Here is an example of a generated **processes.xml** file for an application that
 
 ```kotlin
 <processes>
-  <process name="TRADING_APP_DATASERVER">
-    <groupId>TRADING_APP</groupId>
+  <process name="POSITION_APP_DATASERVER">
+    <groupId>POSITION_APP</groupId>
     <start>true</start>
     <options>-Xmx256m</options>
     <module>genesis-pal-dataserver</module>
     <package>global.genesis.dataserver.pal</package>
-    <script>trading_app-dataserver.kts</script>
+    <script>position_app-dataserver.kts</script>
     <language>pal</language>
     <classpath>quickfixj-core-*.jar</classpath>
   </process>
-  <process name="TRADING_APP_REQUEST_SERVER">
-    <groupId>TRADING_APP</groupId>
+  <process name="POSITION_APP_REQUEST_SERVER">
+    <groupId>POSITION_APP</groupId>
     <start>true</start>
     <options>-Xmx256m</options>
     <module>genesis-pal-requestserver</module>
     <package>global.genesis.requestreply.pal</package>
-    <script>trading_app-reqrep.kts</script>
+    <script>position_app-reqrep.kts</script>
     <language>pal</language>
   </process>
-  <process name="TRADING_APP_EVENT_HANDLER">
-    <groupId>TRADING_APP</groupId>
+  <process name="POSITION_APP_EVENT_HANDLER">
+    <groupId>POSITION_APP</groupId>
     <start>true</start>
     <options>-Xmx256m -DRedirectStreamsToLog=true</options>
     <module>genesis-pal-eventhandler</module>
     <package>global.genesis.eventhandler.pal</package>
-    <script>trading_app-eventhandler.kts</script>
-    <classpath>trading_app-messages*,trading_app-eventhandler*</classpath>
+    <script>position_app-eventhandler.kts</script>
+    <classpath>position_app-messages*,position_app-eventhandler*</classpath>
     <language>pal</language>
   </process>
-  <process name="TRADING_APP_CONSOLIDATOR">
-      <groupId>TRADING_APP</groupId>
+  <process name="POSITION_APP_CONSOLIDATOR">
+      <groupId>POSITION_APP</groupId>
       <start>true</start>
       <options>-Xmx256m -DRedirectStreamsToLog=true  -DXSD_VALIDATE=false</options>
       <module>consolidator2</module>
       <package>global.genesis.consolidator2</package>
-      <config>trading_app-consolidator2.xml</config>
+      <config>position_app-consolidator2.xml</config>
       <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
-      <dependency>TRADING_APP_EVENT_HANDLER</dependency>
+      <dependency>POSITION_APP_EVENT_HANDLER</dependency>
   </process>
   
 </processes>
