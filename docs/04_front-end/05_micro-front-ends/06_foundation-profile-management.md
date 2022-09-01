@@ -69,7 +69,7 @@ export const AdminTemplate: ViewTemplate = html`
 
 ## Config
 
-The functionality of the profile manager is customised through the properties you set on it in the html. This section will cover the main properties that you will want to customise. For a full list of all of the properties [see here](../foundation-entity-management_apiref/foundation-entity-management.users/#properties).
+The functionality of the profile manager is customised through the properties you set on it in the html. This section will cover the main properties that you will want to customise. For a full list of all of the properties [see here](../foundation-entity-management_apiref/foundation-entity-management.profiles/#properties).
 
 ### Datasource Configuration
 
