@@ -4,9 +4,10 @@ sidebar_label: 'Create a form to input data'
 id: forms
 ---
 
-For event handler you created in [here](/getting-started/go-to-the-next-level/events#event-handler) you will create a form that will collect the data from the user.
+## Interacting with the Event Handler
+To interact with the Event Handler that you created [previously](/getting-started/go-to-the-next-level/events#event-handler), you will now create a form that will collect the data from the user.
 
-We will start with using form component that will generate all the inputs based on the API:
+Start with the Form component, which will generate all the inputs based on the API:
 
 ```html title='home.template.ts'
 <zero-form
@@ -14,7 +15,7 @@ We will start with using form component that will generate all the inputs based 
 ></zero-form>
 ```
 
-To respond to user clicking Submit button we need to add event handler:
+To respond to the user clicking on the **Submit** button, you need to add the `EVENT_INSERT_TRADE` resource:
 ```html {3} title='home.template.ts'
 <zero-form
   resourceName="EVENT_INSERT_TRADE"
@@ -22,7 +23,7 @@ To respond to user clicking Submit button we need to add event handler:
 ></zero-form>
 ```
 
-We define `insertTrade` function in home.ts
+Define the `insertTrade` function in the file **home.ts**:
 
 ```typescript title='home.ts'
   import {Connect} from '@genesislcap/foundation-comms';
@@ -44,11 +45,12 @@ We define `insertTrade` function in home.ts
   }
 ```
 
-This approach is good for simple forms or prototyping, but we might realise that it is not enough for our use case, and we require much more customisation.
+## Adding customisation
+What we have done so far is good for simple forms or prototyping, but we need much more customisation.
 
-To enable that you will create each form element manually and take care of storing user inputted data.
+To do this, you must create each form element manually and take care of storing the data input by the user.
 
-You start by adding elements to the template
+Start by adding the elements to the template:
 
 ```html title='home.template.ts' 
 <zero-text-field>Quantity</zero-text-field>
@@ -59,7 +61,7 @@ You start by adding elements to the template
 <zero-select></zero-select>
 ```
 
-Then, define the variables that will hold the values that are entered.
+Then, define the variables that will hold the values that the user enters:
 
 In the file **home.ts**, add the following properties to the class: `Home`:
 
@@ -70,9 +72,10 @@ In the file **home.ts**, add the following properties to the class: `Home`:
 @observable public side: string = 'BUY';
 ```
 
-Now we need to add event handlers that would respond to user changes and store the inputted data
+Now we need to interact with the Event Handlers that respond to user changes and store the data that is input:
 
-We can do it in traditional way by adding `@change` [event handler](https://www.fast.design/docs/fast-element/declaring-templates#events) but we can also use the `sync` directive that would do that for us.
+We can do it in the traditional way by adding `@change` [event handler](https://www.fast.design/docs/fast-element/declaring-templates#events) - but we can also use the `sync` directive, which does that for us.
+
 Let's add it to each form element:
 
 ```html {2,7,13,18} title='home.template.ts' 
@@ -98,8 +101,14 @@ Let's add it to each form element:
 </zero-select>
 ```
 
-You probably realize that we don't have any options in our select component so let's fix that now.
-We will start with side as it only has two static options BUY and SELL so we just need to add those two options inside select tag
+## Adding selection options
+You probably realise that we don't have any options in our select component, so let's fix that now.
+
+To enter a new trade, we want the the user to be able to select:
+- side (buy or sell)
+- the instrument to be traded
+
+We will start with side, as it only has two static options: BUY and SELL. We just need to add those two options inside the select tag:
 
 ```html title='home.template.ts' 
 <zero-select :value=${sync(x=> x.side)}>
@@ -108,11 +117,12 @@ We will start with side as it only has two static options BUY and SELL so we jus
 </zero-select>
 ```
 
-For instrument, it's more complicated because list of options needs to be fetched from the API.
+To enable the user to select the instrument, it's more complicated, because a list of options needs to be fetched from the API.
 
-We will do that in [connectedCallback](https://www.fast.design/docs/fast-element/defining-elements#the-element-lifecycle) which happens when element is inserted into the DOM
-First, declare `tradeInstruments` that will be later used in the template.
-To get the data from the API we inject
+We will do that in [connectedCallback](https://www.fast.design/docs/fast-element/defining-elements#the-element-lifecycle), which happens when an element is inserted into the DOM.
+First, declare `tradeInstruments`. This will be used in the template later.
+
+To get the data from the API, inject:
 ```typescript title='home.ts'
 @observable tradeInstruments: Array<{value: string, label: string}>;
 @Connect connect: Connect;
@@ -125,8 +135,8 @@ public async connectedCallback() {
 }
 ```
 
-Once we have the data with the list of instruments we can make use of it in the template file
-To dynamically include list of options we use [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items
+Once we have the data with the list of instruments, we can make use of it in the template file. 
+To dynamically include a list of instruments, use the [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items.
 
 ```typescript title='home.template.ts' 
 <zero-select :value=${sync(x=> x.instrument)}>
@@ -136,14 +146,15 @@ To dynamically include list of options we use [repeat](https://www.fast.design/d
 </zero-select>
 ```
 
-Now when we gathered all the data we're ready to send it over the wire:
+## Enabling the user to insert
+Now we have the data that can be selected, we need to be able the user to submit the trade:
 
-We create a simple button with click event handler:
+Create a simple button with a click event handler:
 ```html title='home.template.ts'
 <zero-button @click=${x=> x.insertTrade()}>Add Trade</zero-button>
 ```
 
-Then we create a new API call to insert trade
+Then create a new API call to insert the trade:
 ```typescript title='home.ts'
 public async insertTrade() {
   const insertTradeRequest = await this.connect.commitEvent('EVENT_TRADE_INSERT', {
@@ -161,4 +172,4 @@ public async insertTrade() {
 }
 ```
 
-Now if everything went well you can go to your browser insert the data, click the button, and you should see new trade showing up in the data grid you set up in [previous chapter](/getting-started/go-to-the-next-level/data-grid)
+Now if everything has worked, you can go to your browser, insert the data for a new trade, and click the button. You will see the new trade showing up in the data grid that you set up in the [previous chapter](/getting-started/go-to-the-next-level/data-grid).
