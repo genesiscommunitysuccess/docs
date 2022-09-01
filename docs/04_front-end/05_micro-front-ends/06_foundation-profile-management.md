@@ -71,10 +71,6 @@ export const AdminTemplate: ViewTemplate = html`
 
 The functionality of the profile manager is customised through the properties you set on it in the html. This section will cover the main properties that you will want to customise. For a full list of all of the properties [see here](../foundation-entity-management_apiref/foundation-entity-management.profiles/#properties).
 
-### Datasource Configuration
-
-Set this object to configure how the profile manager interacts with the resource. [See here](../foundation-entity-management_apiref/foundation-entity-management.datasourceconfiguration/#example).
-
 ### Permissions
 
 `permissions` is an array of the authorisations that the user has for interacting with the entity manager. For example, to allow the user to be able edit existing entities then this array. Permissions are controlled with [enum values](../foundation-entity-management_apiref/foundation-entity-management.permissions_2/#enumeration-members).
