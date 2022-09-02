@@ -14,10 +14,36 @@ This day covers:
 ## Design systems
 [SHOW THIS CONTENT](https://internal-web/uat/secure/front-end/design-systems/introduction/)
 
+A design system is a collection of resources for interactive media that promotes brand alignment of [UX assets](/front-end/design-systems/introduction/#ux-assets), [Design tokens](/front-end/design-systems/introduction/#design-tokens), [Component libary](/front-end/design-systems/introduction/#component-library), and [Documentation](/front-end/design-systems/introduction/#documentation-site).
+
+Our design system implementation provides the elements listed above, as well as a few additional features. One of these is the ability for one design system to extend another. For example, a foundation/base design system can focus on functionality and provide components with minimal styling, while more specialised design systems can extend it and provide styling for a given target audience. Therefore, you are not restricted to a single design system within a project - it is possible to use multiple design systems within the same project (and even on the same page).
+
+
+#### Exercise 4.1 Overriding some components using Design System
+<!--
+this is pretty much here:
+-->
+:::info ESTIMATED TIME
+30 mins
+:::
+
+Let´s .....
+
 ## Styling
 [SHOW THIS CONTENT](https://internal-web/uat/secure/getting-started/go-to-the-next-level/customize-look-and-feel/#styling-custom-component)
 and
 [SHOW THIS CONTENT](https://www.fast.design/docs/fast-element/leveraging-css/#styles-and-the-element-lifecycle)
+
+#### Exercise 4.2 Styling an ag-grid
+<!--
+this is pretty much here:
+-->
+:::info ESTIMATED TIME
+30 mins
+:::
+
+Let´s .....
+
 
 ## Reporting
 
@@ -29,7 +55,6 @@ The Reporting component enables your users to create report specifications, run 
 - save the report with a name and retrieve it for future use
 - apply ad hoc filtering to a report
 - export the report results to .csv  format
-
 
 ### Server configuration
 
@@ -92,10 +117,16 @@ public async configure() {
 }
 ```
 
-### Exercises
-- Override some components design system
-- style an ag-grid
-- Further style the Reporting Micro Frontend
+#### Exercise 4.3 Using Micro-front-end Reporting
+<!--
+this is pretty much here:
+-->
+:::info ESTIMATED TIME
+30 mins
+:::
+
+Let´s .....
+
 
 ## Angular integration
 
@@ -215,7 +246,7 @@ Third-party controls require a ControlValueAccessor for writing a value and list
 
 Congratulations! You're now set up to use Genesis Foundation and Angular!
 
-#### Exercise 5.2 Adding a AgGrid to list Counterparties in our Angular solution
+#### Exercise 4.4 Adding a AgGrid to list Counterparties in our Angular solution
 <!--
 this is pretty much here: https://docs.genesis.global/secure/tutorials/training-resources/training-content-day3/#ui-configuring
 -->
