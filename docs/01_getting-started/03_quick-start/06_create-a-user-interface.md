@@ -24,7 +24,7 @@ Once you have all dependencies installed, you can use the terminal to run your U
 npm run dev
 ```
 
-We will make use of entity-management component which includes [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) functionality by providing previously defined endpoints.
+We will make use of entity-management component which includes CRUD functionality by providing previously defined endpoints.
 
 Add code below to the template file.
 
