@@ -12,7 +12,7 @@ sidebar_position: 1
 
 This is hands-on developer training where we're going to follow the creation ​of an application from start to finish. By completion, you will be an effective developer on the Genesis low-code platform.
 
-## Prerrequisites and assumptions
+## Prerequisites and assumptions
 
 - You know how to code, ideally familiar with the **Java ecosystem** and **Kotlin** language. Even better if you know some​ **TypeScript** and some basic Linux commands.​
 - You have taken the Foundation course.
