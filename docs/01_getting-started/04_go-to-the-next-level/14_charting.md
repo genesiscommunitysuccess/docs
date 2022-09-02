@@ -4,17 +4,18 @@ sidebar_label: 'Create a chart'
 id: charts
 ---
 
-Because web components it is very easy to integrate 3rd party libraries with our platform. 
-You will see that on the example of integrating highcharts library with Genesis data.
+Because we use Web Components, it is very easy to integrate third-party libraries with the Genesis low-code platform. 
+In this example, we shall integrate the highcharts library with Genesis data.
 
-You start with add new dependency to our project by running this command in terminal
+## Add, declare and bind
+Start by adding a new dependency to our project by running this command in terminal:
 
 ```shell title='/client/web/'
 lerna add highcharts
 lerna add highcharts-webcomponent
 ```
 
-Then you have to declare it in your `components.ts` file by adding following lines
+Then you have to declare it in your `components.ts` file by adding the following lines:
 
 ```typescript title='components.ts'
 import Highcharts from 'highcharts';
@@ -23,14 +24,15 @@ import DarkUnica from 'highcharts/themes/dark-unica';
 DarkUnica(Highcharts);
 ```
 
-Now go back to your template file and declare new chart in there
+Now go back to your template file and declare a new chart:
 
 ```typescript title='home.template.ts'
 <highcharts-chart :options=${x => x.chartOptions}></highcharts-chart>
 ```
 
-As you can see we bind `chartOptions` from our component definition to the `:options` property on the chart component.
-Additionally, you need to declare datasource that will allow us to fetch data from the server
+As you can see, we bind `chartOptions` from our component definition to the `:options` property on the chart component.
+
+You also need to declare datasource that will allow us to fetch data from the server
 
 ```typescript title='home.ts'
 import {Datasource} from '@genesislcap/foundation-comms';
@@ -48,11 +50,13 @@ import {Datasource} from '@genesislcap/foundation-comms';
 @Datasource tradeDatasource: Datasource;
 ```
 
-Now you will take care of fetching the data from the server and assigning it to the `chartOptions`.
+## Fetching the data
+Now you will define how to fetch the data from the server and assign it to the `chartOptions`.
 
-You start by initializing data source with requested `resourceName` and fields that we want the data for.
+Use the snippet below, where:
 
-Then you request snapshot of the data and assign the result to `series` property of chart options.
+- We start by initialising the data source with the requested `resourceName` (`ALL-POSITIONS`) and the fields that we want the data for (`QUANTITY` and `INSTRUMENT NAME`).
+- Then we request a snapshot of the data and assign the result to the `series` property of chart options.
 
 ```typescript title="home.ts"
 public async connectedCallback()
@@ -80,6 +84,6 @@ public async connectedCallback()
 }
 ```
 
-#### Final result
+## Final result
 
 ![](/img/charts.png)
