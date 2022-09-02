@@ -20,6 +20,12 @@ Once installed, from the terminal, run:
 genx
 ```
 
+:::tip
+
+Use command `npx genx` if the above command does not work
+
+:::
+
 In the `genx` script, there is a series of questions.
 
 First, you are asked to provide your username and password - these are the credentials you use to access Genesis Artifactory.
@@ -32,9 +38,9 @@ Then you are asked to select from a short list of seed applications. Select `cre
 ? Genesis Password **************
 √ Logged into Genesis
 ? Please select an option: (Use arrow keys)
-> create workspace - Generates a local workspace to use for your Genesis based apps.
+  create workspace - Generates a local workspace to use for your Genesis based apps.
   configure workspace - Configure a local workspace.
-  create application - Generates a local application.
+> create application - Generates a local application.
   configure application - Configure a local app.
 ```
 Now you can proceed using the following responses:

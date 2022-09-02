@@ -25,7 +25,7 @@ Streamer Client example:
 ```kotlin
 streamerClients {
     streamerClient(clientName = "QUOTE_RESPONSE") {
-        dataSource(processName = "TRADING_APP-STREAMER", sourceName = "ORDERS_OUT")
+        dataSource(processName = "POSITION_APP-STREAMER", sourceName = "ORDERS_OUT")
         onMessage {
             send("QUOTE_EVENT_HANDLER", "QUOTE_UPDATE_EVENT")
         }

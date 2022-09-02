@@ -25,61 +25,61 @@ You can see that this file has separate code blocks for each of the application'
 
 ```xml
 <processes>
-  <process name="TRADING_APP_DATASERVER">
-    <groupId>TRADING_APP</groupId>
+  <process name="POSITION_APP_DATASERVER">
+    <groupId>POSITION_APP</groupId>
     <start>true</start>
     <options>-Xmx256m</options>
     <module>genesis-pal-dataserver</module>
     <package>global.genesis.dataserver.pal</package>
-    <script>trading_app-dataserver.kts</script>
+    <script>position_app-dataserver.kts</script>
     <description>Displays real-time details</description>
     <language>pal</language>
     <classpath>quickfixj-core-*.jar</classpath>
   </process>
-  <process name="TRADING_APP_REQUEST_SERVER">
-    <groupId>TRADING_APP</groupId>
+  <process name="POSITION_APP_REQUEST_SERVER">
+    <groupId>POSITION_APP</groupId>
     <start>true</start>
     <options>-Xmx256m</options>
     <module>genesis-pal-requestserver</module>
     <package>global.genesis.requestreply.pal</package>
-    <script>trading_app-reqrep.kts</script>
+    <script>position_app-reqrep.kts</script>
     <description>Server one-shot requests for details</description>
     <language>pal</language>
   </process>
-  <process name="TRADING_APP_EVENT_HANDLER">
-    <groupId>TRADING_APP</groupId>
+  <process name="POSITION_APP_EVENT_HANDLER">
+    <groupId>POSITION_APP</groupId>
     <start>true</start>
     <options>-Xmx256m -DRedirectStreamsToLog=true</options>
     <module>genesis-pal-eventhandler</module>
     <package>global.genesis.eventhandler.pal</package>
-    <script>trading_app-eventhandler.kts</script>
+    <script>position_app-eventhandler.kts</script>
     <description>Handles events</description>
-    <classpath>trading_app-messages*,trading_app-eventhandler*</classpath>
+    <classpath>position_app-messages*,position_app-eventhandler*</classpath>
     <language>pal</language>
   </process>
-  <process name="TRADING_APP_CONSOLIDATOR">
-      <groupId>TRADING_APP</groupId>
+  <process name="POSITION_APP_CONSOLIDATOR">
+      <groupId>POSITION_APP</groupId>
       <start>true</start>
       <options>-Xmx256m -DRedirectStreamsToLog=true  -DXSD_VALIDATE=false</options>
       <module>consolidator2</module>
       <package>global.genesis.consolidator2</package>
-      <config>trading_app-consolidator2.xml</config>
+      <config>position_app-consolidator2.xml</config>
       <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
-      <dependency>TRADING_APP_EVENT_HANDLER</dependency>
+      <dependency>POSITION_APP_EVENT_HANDLER</dependency>
   </process>
-  <process name="TRADING_APP_STREAMER_CLIENT">
+  <process name="POSITION_APP_STREAMER_CLIENT">
       <start>true</start>
       <options>-Xmx128m -DXSD_VALIDATE=false</options>
       <module>genesis-pal-streamerclient</module>
       <package>global.genesis.streamerclient.pal</package>
-      <script>trading_app-streamer-client.kts</script>
+      <script>position_app-streamer-client.kts</script>
   </process>
-  <process name="TRADING_APP_STREAMER">
+  <process name="POSITION_APP_STREAMER">
       <start>true</start>
       <options>-Xmx128m -DXSD_VALIDATE=false</options>
       <module>genesis-pal-streamer</module>
       <package>global.genesis.streamer.pal</package>
-      <script>trading_app-streamer.kts</script>
+      <script>position_app-streamer.kts</script>
       <configOverridesFile>/home/genesis/appstreamer.properties</configOverridesFile>
   </process>
 </processes>
@@ -92,7 +92,7 @@ For each process, the tags define key information. Let's look at the tags that a
 
 ### dependency
 
-This tag defines the processes that the current process is dependent on. In the above example, the **TRADING_APP_CONSOLIDATOR** process will only start once the **TRADING_APP_EVENT_HANDLER** process is running. 
+This tag defines the processes that the current process is dependent on. In the above example, the **POSITION_APP_CONSOLIDATOR** process will only start once the **POSITION_APP_EVENT_HANDLER** process is running. 
 
 When you are defining the process in your application's **process.xml**, this tag is optional.
 
@@ -106,7 +106,7 @@ When you are defining the process in your application's **process.xml**, this ta
 
 This tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated and need to exist within a "lib" folder for any of the genesis products in the environment.
 
-You can use wild cards in your specification. This can be seen in the **classpath** for the **TRADING_APP_DATASERVER** configuration in the example above.
+You can use wild cards in your specification. This can be seen in the **classpath** for the **POSITION_APP_DATASERVER** configuration in the example above.
 
 When you are defining the process in your application's **process.xml**, this tag is optional.
 
@@ -122,11 +122,11 @@ When you are defining the process in your application's **process.xml**, this ta
 
 ### package
 
-This tag defines which package the process should refer to. All Genesis source code is contained in packages. So, in the example above, the configuration for the **TRADING_APP_STREAMER** process points to the source code in the package **global.genesis.streamer.pal**.
+This tag defines which package the process should refer to. All Genesis source code is contained in packages. So, in the example above, the configuration for the **POSITION_APP_STREAMER** process points to the source code in the package **global.genesis.streamer.pal**.
 Multiple package scans needs to be comma-separated.
 
 ### module
-This tag defines where in the package (see above) the process should look for its binaries - base jar files. In the above example, the configuration of the **TRADING_APP_EVENT_HANDLER** has a **module** tag that points to **genesis-pal-eventhandler**.  This finds every jar file with the text **genesis-pal-eventhandler** and gets all the relevant classpath dependencies.
+This tag defines where in the package (see above) the process should look for its binaries - base jar files. In the above example, the configuration of the **POSITION_APP_EVENT_HANDLER** has a **module** tag that points to **genesis-pal-eventhandler**.  This finds every jar file with the text **genesis-pal-eventhandler** and gets all the relevant classpath dependencies.
 
 When you are defining the process in your application's **process.xml**, this tag is mandatory.
 
@@ -140,7 +140,7 @@ When you are defining the process in your application's **process.xml**, this ta
 
 This tag defines which script file the process should refer to. 
 
-When you are defining the process in its **process.xml**, if the process uses scripts, then you have to specify the script file using this tag. In the example above, the **TRADING_APP_REQEST_SERVER** has a script tag identifying **trading_app-reqrep.kts**, which is where the configuration of the request server exists. If you are not using scripts for the process, then this tag is not needed.
+When you are defining the process in its **process.xml**, if the process uses scripts, then you have to specify the script file using this tag. In the example above, the **POSITION_APP_REQUEST_SERVER** has a script tag identifying **position_app-reqrep.kts**, which is where the configuration of the Request Server exists. If you are not using scripts for the process, then this tag is not needed.
 
 ### language
 

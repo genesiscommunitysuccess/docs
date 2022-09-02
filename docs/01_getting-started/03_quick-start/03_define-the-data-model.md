@@ -6,7 +6,7 @@ id: define-the-data-model
 
 Now you are ready to define the fields and tables that make up your data model. This structures information in a simple way that can be viewed by users and processed by the application.
 
-Open Intellij (or your chosen IDE). In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (alpha, client, genesisproduct-alpha).
+Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/) (recommended) or your chosen IDE. In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (alpha, client, genesisproduct-alpha).
 
 ### Add fields
 You define your fields in the file **alpha-fields-dictionary.kts**.
@@ -37,9 +37,9 @@ fields {
 }
 ```
 
-After you have saved this file, run genesis-generated-fields.
+You can find more information on fields [here](/database/fields-tables-views/fields/).
 
-From the Gradle menu on the right of Intellij, this is:
+After you have saved this file, run genesis-generated-fields from the Gradle menu on the right of Intellij, this is:
 
  **genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-fields**/**Tasks**/**genesis**/**generateFields**
 
@@ -70,12 +70,12 @@ tables {
 }
 ```
 
-After you have saved this file, run genesis-generated-dao.
+You can find more information on tables [here](/database/fields-tables-views/tables/).
 
-From the Gradle menu, this is:
+After you have saved this file, run genesis-generated-dao from the Gradle menu, this is:
 
 **genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDAO**
 
 ![](/img/build-gradle-kts-generated-dao.png)
 
-OK. You have now created your data model. You can now create the key modules that surround the database.
+Now that that is done, you can create the key modules that surround the database.
