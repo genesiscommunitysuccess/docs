@@ -8,9 +8,9 @@ Now that we have our data model defined, we can continue with exposing the data 
 
 
 ## Data Server
-The component that enables data to be read in real time is called [Data Server](/server-modules/data-server/introduction/). All the queries that a Data Server executes are defined in **positions-app-tutorial-dataserver.kts**. Data Server can query both Tables and Views so let's add two queries:
-- `ALL_POSITIONS` - that queries the `POSITIONS` table and returns the data stored in the table
-- `ALL_TRADES` - that queries the `TRADE_VIEW` and returns the joined data stored in `TRADE`, `INSTRUMENT` and `COUNTERPARTY` tables
+The component that enables data to be read in real time is called the [Data Server](/server-modules/data-server/introduction/). All the queries that a Data Server executes are defined in **positions-app-tutorial-dataserver.kts**. A Data Server can query both tables and views, so let's add two queries:
+- `ALL_POSITIONS` - that queries the `POSITION` table and returns the data stored in the table
+- `ALL_TRADES` - that queries the `TRADE_VIEW` and returns the joined data stored in the `TRADE`, `INSTRUMENT` and `COUNTERPARTY` tables
 
 ```kotlin
 dataServer {
