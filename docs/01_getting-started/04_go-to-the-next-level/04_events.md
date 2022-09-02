@@ -88,7 +88,7 @@ Please see [here](/server-modules/configuring-runtime/processes/) for a detailed
 
 From the Gradle menu on the right of Intellij, this is: **genesisproduct-positions-app-tutorial**/**Tasks**/**build/assemble**.
 
-![](/img/assemble-server.png)
+![](/img/assemble-server-positions.png)
 
 :::info HTTP Endpoints
  It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as [HTTP endpoints](/server-modules/integration/rest-endpoints/introduction/) automatically by the Genesis platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.

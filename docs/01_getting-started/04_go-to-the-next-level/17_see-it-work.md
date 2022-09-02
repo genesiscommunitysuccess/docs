@@ -39,7 +39,7 @@ wsl-user=genesis
 
 if you haven't already, you should have a project artifact built using the following gradle task **genesisproduct-positions-app-tutorial**/**Tasks**/**build**/**assemble**.
 
-![](/img/assemble-server.png)
+![](/img/assemble-server-positions.png)
 
 The following environment variables need to be set in your `.bashrc` as follows:
 
@@ -68,7 +68,7 @@ We will run `setupEnvironment` under `genesissetup` first (we only need to run i
 ```
 or from the dropdown menu:
 
-![](/img/setup-environment.png)
+![](/img/setup-environment-positions.png)
 
 After this command is complete, we will have a basic Genesis server running.
 
@@ -81,7 +81,7 @@ As our application requires authentication, we have to install the Genesis Auth 
 
 or from the dropdown menu:
 
-![](/img/install-auth.png)
+![](/img/install-auth-positions.png)
 
 ### Deploy the site-specific configuration
 As our application will use the site-specific folder to override the standard definitions, we have to run this task:
@@ -90,7 +90,7 @@ As our application will use the site-specific folder to override the standard de
 ./gradlew :genesisproduct-positions-app-tutorial:positions-app-tutorial-deploy:install-positions-app-tutorial-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip #On the IntelliJ terminal
 ```
 
-![](/img/install-site-specific.png)
+![](/img/install-site-specific-positions.png)
 
 ### Add a user
 
@@ -114,7 +114,7 @@ To run the task, call:
 
 or from the dropdown menu:
 
-![](/img/load-initial-data.png)
+![](/img/load-initial-data-positions.png)
 
 Now we are going to use Genesis `DbMon` to run some queries on the database.
 
@@ -131,7 +131,7 @@ Run `DbMon` to check that the user has been created:
 
 or from the dropdown menu:
 
-![](/img/using-DbMon.png)
+![](/img/using-DbMon-positions.png)
 
 Once you are inside the console, type `table USER` and then `search 1`. If imported correctly, the user JaneDee should be listed:
 ```
@@ -161,7 +161,7 @@ Now we have to deploy our application, the positions-app-tutorial product:
 
 or from the dropdown menu:
 
-![](/img/deploy-alpha-product.png)
+![](/img/deploy-alpha-product-positions.png)
 
 :::tip
 This will take the last built distribution. It does not run a project build as part of the task. Make sure you have already built the project before deploying it.
@@ -190,7 +190,7 @@ Now, let's run the Genesis command `mon` to see if all processes are up and runn
 ```
 or from the dropdown menu:
 
-![](/img/using-mon.png)
+![](/img/using-mon-positions.png)
 
 We should see something like this
 

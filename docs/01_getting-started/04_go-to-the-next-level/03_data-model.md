@@ -71,7 +71,7 @@ From the Gradle menu on the right of Intellij, this is:
 
 **genesisproduct-positions-app-tutorial**/**positions-app-tutorial-dictionary-cache**/**genesis-generated-fields**/**Tasks**/**genesis**/**generateFields**
 
-![](/img/build-gradle-kts-fields.png)
+![](/img/build-gradle-kts-fields-positions.png)
 
 :::note Why do I have to run this Gradle task?
 
@@ -146,7 +146,7 @@ From the Gradle menu, this is:
 
 **genesisproduct-positions-app-tutorial**/**positions-app-tutorial-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDAO**
 
-![](/img/build-gradle-kts-generated-dao.png)
+![](/img/build-gradle-kts-generated-dao-positions.png)
 
 This script generates the DAOs (data repos) from the tables, and they are available to be imported in your code.
 
@@ -199,7 +199,7 @@ From the Gradle menu, this is:
 
 **genesisproduct-positions-app-tutorial**/**positions-app-tutorial-dictionary-cache**/**genesis-generated-view**/**Tasks**/**genesis**/**generateView**
 
-![](/img/build-gradle-kts-generated-view.png)
+![](/img/build-gradle-kts-generated-view-positions.png)
 
 <!-- Run **positions-app-tutorial-config:assemble** to make the view ready for use. -->
 
