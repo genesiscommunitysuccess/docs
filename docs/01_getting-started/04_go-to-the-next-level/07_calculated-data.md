@@ -50,4 +50,4 @@ views {
 ```
 
 ### Conclusion
-We just added a derived field. If you feel eager to see the changes, feel free to head to [See it work](/getting-started/go-to-the-next-level/see-it-work) and give it a try.
+We just added a derived field. To see it in action, follow the steps on the next page which will show you how to glue the consolidator and view together.

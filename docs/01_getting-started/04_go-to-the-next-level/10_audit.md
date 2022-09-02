@@ -9,7 +9,7 @@ We want to be able to track the changes made to the various trades on the `TRADE
 This can be useful for historical purposes, if you need to at a later date be able to produce an accurate course of events.
 
 ### Adding audit to table dictionary
-The first step to add basic auditing is to change the relevant table dictionary. In this instance, we will be making changes to the **positions-app-tutorial-tables-dictionary.kts**, in order to add the parameter `audit = details()` to the table definition. It should resemble the following:
+The first step to add basic auditing is to change the relevant table dictionary. In this instance, we will be making changes to the **positions-app-tutorial-tables-dictionary.kts**, by adding the `audit` parameter. It should resemble the following:
 
 ```kotlin {1}
 table (name = "TRADE", id = 11000, audit = details(id = 11003, sequence = "TR")) {

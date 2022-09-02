@@ -18,26 +18,29 @@ Based on below state machine:
 
 Make sure that you added the `TRADE_STATUS` field to the `TRADE` table in the **positions-app-tutorial-tables-dictionary.kts** file.
 
-```kotlin {4}
-tables {
-  table (name = "TRADE", id = 11000) {
-    ...
-    TRADE_STATUS
+```kotlin {10}
+    table (name = "TRADE", id = 11000) {
+        sequence(TRADE_ID, "TR")
+        INSTRUMENT_ID not null
+        COUNTERPARTY_ID not null
+        QUANTITY not null
+        SIDE not null
+        PRICE not null
+        TRADE_DATETIME
+        ENTERED_BY
+        TRADE_STATUS
 
-    primaryKey {
-      TRADE_ID
+        primaryKey {
+            TRADE_ID
+        }
     }
-
-  }
-  ...
-}
 ```
 
-If the `TRADE_STATUS` is missing, run **genesis-generated-fields** to generate the fields, and **genesis-generated-dao** to create the DAOs.
+If `TRADE_STATUS` is missing, add it in, run **generateFields** to generate the fields and then **generateDao** to create the DAOs.
 
-### Create a new class for the state machine
+### Create the State Machine logic and data classes
 
-Add a `main/kotlin` folder in the Event Handler module *positions-app-tutorial-eventhandler* and create a state machine class called `TradeStateMachine` inside **positions-app-tutorial-eventhandler/src/main/kotlin/global/genesis**.
+Fist we need to define our state machine class for type `Trade`. To do this, create a file called `TradeStateMachine.kt` under **positions-app-tutorial-eventhandler/src/main/kotlin/global/genesis**.
 
 Add a state machine definition and assign a field in the `onCommit` block:
 
@@ -111,50 +114,9 @@ sealed class TradeEffect {
 }
 ```
 
-### Add dependency on positions-app-tutorial-eventhandler
+Next, we want to create two data classes that will be used in the cancel and allocated Event Handlers. Create two data classes called `TradeAllocated.kt` and `TradeCancelled.kt` under **positions-app-tutorial-messages/src/main/kotlin/global/genesis/message/event/**.
 
-Add the **positions-app-tutorial-eventhandler** module as a dependency to the **build.gradle.kts** inside **positions-app-tutorial-script-config** module. 
-
-```
-...
-api(project(":positions-app-tutorial-eventhandler"))
-...
-```
-
-### Edit the Event Handler to add an integrated state machine
-
-Let's edit the Event Handler to add an integrated state machine. First, in the **positions-app-tutorial-eventhandler.kts** file, declare a variable to be visible to all events by injecting the class `TradeStateMachine` that we have just created. 
-
-```kotlin {2}
-eventHandler {
-    val stateMachine = inject<TradeStateMachine>()
-
-    eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
-        ...
-    }
-    ...
-}
-```
-
-Then, integrate the state machine in the TRADE_INSERT event *onCommit*.
-
-```kotlin {2,5}
-eventHandler<Trade>(name = "TRADE_INSERT") {
-    onCommit { event ->
-        val trade = event.details
-        trade.enteredBy = event.userName
-        stateMachine.insert(trade)
-        ack()
-    }
-}
-```
-
-Create two data classes that will be used in the cancel and allocated Event Handlers. These classes should be in **positions-app-tutorial-messages/src/main/kotlin/global/genesis/positions-app-tutorial/message/event**.
-
-* TradeAllocated
-* TradeCancelled
-
-Both classes have a single single field: **tradeId** of type `String`.
+Both data classes have a single field: `tradeId` of type `String`.
 
 TradeAllocated:
 
@@ -168,15 +130,47 @@ TradeCancelled:
 data class TradeCancelled(val tradeId: String)
 ```
 
-### Add the messages module as a dependency to the positions-app-tutorial-script-config module. 
+### Updating the dependencies for positions-app-tutorial-script-config
 
-Add the messages module as a dependency to the **build.gradle.kts** inside the **positions-app-tutorial-script-config** module. 
+In order to use the following `TradeStateMachine` and data classes (`TradeAllocated` and `TradeCancelled`) we just defined, we need to add the **positions-app-tutorial-eventhandler** and **positions-app-tutorial-messages** modules as dependencies inside the **positions-app-tutorial-script-config** modules `build.gradle` file.
 
-```
-...
+```kotlin
+api(project(":positions-app-tutorial-eventhandler"))
 api(project(":positions-app-tutorial-messages"))
-...
 ```
+
+Finally, refresh your gradle project.
+
+### Edit the Event Handler to add an integrated state machine
+
+Let's edit the Event Handler to add an integrated state machine. First, in the **positions-app-tutorial-eventhandler.kts** file, declare a variable to be visible to all events by injecting the class `TradeStateMachine` that we have just created. 
+
+```kotlin {2}
+eventHandler {
+    val stateMachine = inject<TradeStateMachine>()
+
+    eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
+        ...
+    }
+}
+```
+
+Then, replace the `entryDb.insert(event.details)` with the highlighted lines below in the `TRADE_INSERT` `onCommit` block.
+
+```kotlin {3,4,5}
+eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
+    onCommit { event ->
+        val trade = event.details
+        trade.enteredBy = event.userName
+        stateMachine.insert(trade)
+        ack()
+    }
+}
+```
+
+:::info
+You may have noticed we are passing a `transactional = ture` parameter into our event handler. This ensures any exception or nack returned will result in a complete rollback of all parts of the onCommit and onValidate (the transaction also covers read commands) blocks. You can read more on transactions [here](/server-modules/event-handler/basics/#transactional-event-handlers-acid)
+:::
 
 ### Add Event Handlers for the rest of the states
 
@@ -208,7 +202,7 @@ eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
 }
 ```
 
-Modify or add the `TRADE_MODIFY` Event Handler to use the state machine.
+Create a new Event Handler called `TRADE_MODIFY` to handle modifications. Integrate the state machine in it.
 
 ```kotlin {4}
 eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
@@ -220,9 +214,58 @@ eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
 }
 ```
 
-You want to manage the state of the trade, so remove the delete Event Handler. If a trade is incorrect and needs to be deleted, similar functionality can be achieved by cancelling the trade.
+You **positions-app-tutorial-eventhandler.kts** file at the end should look this:
 
-To test it, you can try to modify a `TRADE` and see the states changing accordingly. 
+```kotlin
+import global.genesis.TradeStateMachine
+import global.genesis.message.event.TradeAllocated
+import global.genesis.message.event.TradeCancelled
+
+eventHandler {
+    val stateMachine = inject<TradeStateMachine>()
+
+    eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
+        onCommit { event ->
+            val trade = event.details
+            trade.enteredBy = event.userName
+            stateMachine.insert(trade)
+            ack()
+        }
+    }
+
+    eventHandler<TradeCancelled>(name = "TRADE_CANCELLED", transactional = true) {
+        onCommit { event ->
+            val message = event.details
+            stateMachine.modify(message.tradeId) { trade ->
+                trade.tradeStatus = TradeStatus.CANCELLED
+            }
+            ack()
+        }
+    }
+
+    eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
+        onCommit { event ->
+            val message = event.details
+            stateMachine.modify(message.tradeId) { trade ->
+                trade.tradeStatus = TradeStatus.ALLOCATED
+            }
+            ack()
+        }
+    }
+
+    eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
+        onCommit { event ->
+            val trade = event.details
+            stateMachine.modify(trade)
+            ack()
+        }
+    }
+}
+```
+
+You want to manage the state of the trade, so we don't want a delete Event Handler. If a trade is incorrect and needs to be deleted, similar functionality can be achieved by cancelling the trade.
+
+To test it, you can try to modify a `TRADE` (assuming you already have at least one trade in the database) and see the state change accordingly. 
 
 ### Conclusion
 With this, we finish showing how an application can add state management. As usual, you can either [give it a try](/getting-started/go-to-the-next-level/see-it-work) or go the next section.
