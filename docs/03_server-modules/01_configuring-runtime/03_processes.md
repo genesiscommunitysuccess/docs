@@ -140,7 +140,7 @@ When you are defining the process in your application's **process.xml**, this ta
 
 This tag defines which script file the process should refer to. 
 
-When you are defining the process in its **process.xml**, if the process uses scripts, then you have to specify the script file using this tag. In the example above, the **POSITION_APP_REQEST_SERVER** has a script tag identifying **position_app-reqrep.kts**, which is where the configuration of the request server exists. If you are not using scripts for the process, then this tag is not needed.
+When you are defining the process in its **process.xml**, if the process uses scripts, then you have to specify the script file using this tag. In the example above, the **POSITION_APP_REQUEST_SERVER** has a script tag identifying **position_app-reqrep.kts**, which is where the configuration of the Request Server exists. If you are not using scripts for the process, then this tag is not needed.
 
 ### language
 
