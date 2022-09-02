@@ -110,6 +110,21 @@ consolidators {
 }
 ```
 
+:::tip
+If you don't have intelisense when editing the consolidator file check the contents of **positions-app-tutorial-script-config/build.gradle.kts**. Under **dependencies** it should contain `api("global.genesis:genesis-pal-consolidator")`. If that entry is not present add it to the list of dependencies. Once done the file should look like:
+```kotlin
+dependencies {
+    ...
+    api("global.genesis:genesis-pal-consolidator")
+    ..
+}
+```
+
+Reload the project from the Gradle tab on the right side of the screen.
+
+:::
+
+
 ### Update the system files
 
 Now that the Consolidator logic is in place we need to update the system files.

@@ -18,22 +18,19 @@ Based on below state machine:
 
 Make sure that you added the `TRADE_STATUS` field to the `TRADE` table in the **positions-app-tutorial-tables-dictionary.kts** file.
 
-```kotlin {10}
+```kotlin {4}
+tables {
     table (name = "TRADE", id = 11000) {
-        sequence(TRADE_ID, "TR")
-        INSTRUMENT_ID not null
-        COUNTERPARTY_ID not null
-        QUANTITY not null
-        SIDE not null
-        PRICE not null
-        TRADE_DATETIME
-        ENTERED_BY
+
+        ...
         TRADE_STATUS
+        ...
 
         primaryKey {
             TRADE_ID
         }
     }
+}
 ```
 
 If `TRADE_STATUS` is missing, add it in, run **generateFields** to generate the fields and then **generateDao** to create the DAOs.
