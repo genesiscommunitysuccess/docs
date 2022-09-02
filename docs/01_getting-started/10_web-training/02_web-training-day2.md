@@ -64,6 +64,9 @@ Try to run it now and you'll notice that, even though the form is displayed, not
   @submit=${(x, c) => x.insertOrder(c.event as CustomEvent)}
 ></zero-form>
 ```
+:::tip what is the @ and ${(x, c)} ?
+This is related to binding as we briefly explained in the previous day. If it's still unclear, make sure to check [Understanding bindings](https://www.fast.design/docs/fast-element/declaring-templates#understanding-bindings) and [Events](https://www.fast.design/docs/fast-element/declaring-templates#events)
+:::
 
 We define `insertOrder` function in order.ts
 
@@ -86,6 +89,8 @@ We define `insertOrder` function in order.ts
     });
   }
 ```
+
+INTRODUCE GENESIS COMMS and EXPLAIN CONNECT!
 
 This approach is good for simple forms or prototyping, but we might realise that it is not enough for our use case, and we require much more customisation.
 

@@ -81,10 +81,6 @@ Genesis basic web components, such as Button and Text Fields, were not created f
 - Offers a DI system, a Router and other opt-in utilities.
 - Highly active and responsive community.
 
-:::info More about Microsoft FAST
-It's particularly helpful to understand how to build components as you're going to build FAST elements as part of your application. Things like defining a custom element, attributes, templates and directives are quite important and you can review these concepts [here](https://www.fast.design/docs/resources/cheat-sheet/#building-components).
-:::
-
 ## A deeper dive into the alpha web application structure
 The alpha application, the one we developed during the Developer training, had a basic UI with a simple page a few components. Open the project on your favorite IDE and you should see an initial project structure like this:
 
@@ -327,7 +323,7 @@ export class MarketdataComponent extends FASTElement {
         let priceFromExchange = Math.random() * 10;
         setInterval(() => {
             this.lastPrice = priceFromExchange;
-        }, 500);
+        }, 1000);
         return this.lastPrice;
     }
 }
@@ -385,23 +381,94 @@ export class FriendList extends FASTElement {
 }
 ```
 
-Please make sure to review the [directives](https://www.fast.design/docs/resources/cheat-sheet/#directives) carefully, as we're going to use them along the training!
+Please make sure to review the [directives](https://www.fast.design/docs/fast-element/using-directives) carefully, as we're going to use them along the training!
 :::
 
 ### Styling our component
-FASTElement provides a css tagged template helper that allows for the creation of ElementStyles.
-- ADD SOME STYLING TO THE MARKETDATA COMPONENT
+FASTElement provides a **css** tagged template helper that allows for the creation of ElementStyles.
 
-More details about [styling](https://www.fast.design/docs/resources/cheat-sheet/#styles).
+Add this code:
+```typescript {2} title='playground.ts'
+...
+const marketdataComponentCSS = css`
+  h4 {
+    color: #00ffff;
+  }
+`;
+...
+```
+
+Add add the **styles** property to the customElement definition so the component will use the style given:
+```typescript {1} title='playground.ts'
+@customElement({name: "marketdata-component", template: myTemplate, styles: marketdataComponentCSS}) // custom element being created
+...
+```
+
+This is the final code:
+```typescript title='playground.ts'
+import { FASTElement, customElement, html, attr, css } from "@microsoft/fast-element";
+
+const myTemplate = html<MarketdataComponent>`
+  <div class="header">
+    <h3>My Marketdata component</h3>
+    <h4>Last price: ${x => x.getLastPriceRealTime()}</h4>
+  </div>
+`;
+
+const marketdataComponentCSS = css`
+  h4 {
+    color: #00ffff;
+  }
+`;
+
+@customElement({name: "marketdata-component", template: myTemplate, styles: marketdataComponentCSS})
+export class MarketdataComponent extends FASTElement {
+    @attr lastPrice: number = 0;
+
+    public getLastPriceRealTime() {
+        let priceFromExchange = Math.random() * 10;
+        setInterval(() => {
+            this.lastPrice = priceFromExchange;
+        }, 1000);
+        return this.lastPrice;
+    }
+}
+```
+
+There are quite a few more interesting resources such as [composing styles, partial CSS and CSS Directives](https://www.fast.design/docs/fast-element/leveraging-css) provided by FAST. Make sure to check that out!
+
+By now, you should have a good understanding on how to build web components based on FAST. But, again, make sure to check [FAST official documentation](https://www.fast.design/docs/fast-element/defining-elements).
 
 
 ### Exercise 1.1
-- ADD EXERCISES, CREATE A NEW COMPONENT OF TYPE BOOLEAN FOR EXAMPLE
+:::info estimated time
+30min
+:::
+Let's change the MarkedataComponent so that it can work with multiple instruments and a fixed price for each of one them (instead of random). This is roughly how it'd look like:
+```
+My Marketdata component
+Instrument MSFT 101.23
+Instrument AAPL 227.12
+```
+
+Steps:
+- add a list called ***instruments*** to the MarketdataComponent. Feel free to initialize it with a few instruments like `@observable instruments: String[] = ["MSFT", "AAPL"];`
+- change the lastPrice attribute to a list of prices. Feel free to initialize it with corresponding prices like `@observable lastPrices: number[] = [101.23, 227.12];`
+- change `getLastPriceRealTime` to receive the instrument name now and return the corresponding price
+- in the HTML template, make sure to loop through all the instruments and display the price for each one
+- style it so that the instrument name will be displayed in some tone of blue and the price in some tone of green
+
+:::tip repeat directive
+You may find it useful: https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive, make sure to check the special context object as well. Example:
+```typescript
+${(x,c) => c.PROPERTY_OF_THE_CONTEXT
+```
+:::
 
 
 ## Extending our application
 ### What are we going to build
-Hopefully this introduction was enough to recap the basic concepts and introduce some of the web technologies we rely on. 
+Hopefully the introduction was enough to recap the basic concepts and introduce some of the web technologies we rely on. 
 
 To get started on the implementation of our web app, these are the features we're going to build during the training:
 -   **a proper navigation menu**
@@ -634,22 +701,23 @@ To set the content of the flyout menu, add the content in the html within an ele
 </foundation-header>
 ```
 
-### Exercise 1.1: customizing the header
+### Exercise 1.2: customizing the header
 :::info estimated time
-45min
+30min
 :::
 Customize our header in such a way that we end up with these menu items:
 
 | Menu item          | Route             |
 |---------------|------------------------------|
 | Trades & Positions          | home |
+| Playground          | playground |
 | Orders          | orders |
 | Reporting          | reporting      |
 
-Feel free to simply display the same content of the home page when you create the new pages (Orders and Reporting). We're just interested in the navigation for now.
+Feel free to simply display some empty content when you create the new pages (Orders and Reporting). We're just interested in the navigation for now.
 
 :::tip 
-You can copy the home folder into new folders to create the new pages. Name the new folders in routes as `order` and `reporting`, then name the files as `order.styles.ts` etc.
+Feel free to follow the pattern of creating a `.template.ts`, `.styles.ts` and `.ts` files for each component.
 
 Also, make sure to configure `client/web/src/main/main.ts` and `client/web/src/routes/config.ts` accordingly.
 :::
