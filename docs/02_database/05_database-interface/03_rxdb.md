@@ -343,15 +343,65 @@ Whereas a `get` operation selects a single entry from a unique index, and a `get
 
 By providing different parameters, you can refine what information you are returned:
 * `startRecord` is needed in all cases, and defines where the range should start from.
+* `endRecord` is an optional end record for where the range should end.
 * `index` is also needed in all cases, it is the String name of the Index upon which the range spans.
 * `numKeyFields` is the last of the mandatory fields, it ???
 * `fields` is a set of Strings, that are the names of the fields to be returned. If not provided, or an empty set is provided, all fields will be returned.
-* `endRecord` is an optional end record for where the range should end.
 
 #### Overloads
 
 * `getRange(startRecord: DbRecord, index: I, numKeyFields: Int): Flowable<DbRecord>`
 * `getRange(startRecord: DbRecord, index: I, numKeyFields: Int, fields: Set<String>): Flowable<DbRecord>`
+* `getRange(startRecord: DbRecord, endRecord: DbRecord?, index: I, numKeyFields: Int): Flowable<DbRecord>`
+* `getRange(startRecord: DbRecord, endRecord: DbRecord?, index: I, numKeyFields: Int, fields: Set<String>): Flowable<DbRecord>`
+
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
+
+```kotlin
+// there are multiple ways to get a range of records, either for some fields
+// of a unique index or some or all fields of a non unique index:
+db.getRange(Trade.byTypeId("typeA"))
+db.getRange(trade.byTypeId(), 1)
+db.getRange(trade, Trade.ByTypeId, 1)
+
+// or by setting a start and an end range:
+db.getRange(Trade.byTypeId("tradeType1"), Trade.byTypeId("tradeType2"))
+db.getRange(trade1.byTypeId(), trade2.byTypeId(), 1).toList()
+db.getRange(trade1, trade2, Trade.ByTypeId, 1).toList()
+```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+// there are multiple ways to get a range of records, either for some fields
+// of a unique index or some or all fields of a non unique index:
+db.getRange(Trade.byTypeId("typeA"));
+db.getRange(trade.byTypeId(),1);
+db.getRange(trade,Trade.ByTypeId.Companion,1);
+
+// or by setting a start and an end range:
+db.getRange(Trade.byTypeId("tradeType1"),Trade.byTypeId("tradeType2"));
+db.getRange(trade1.byTypeId(),trade2.byTypeId(),1).toList();
+db.getRange(trade1,trade2,Trade.ByTypeId.Companion,1).toList();
+```
+</TabItem>
+</Tabs>
+
+### getRangeFromEnd
+
+Works similiary to the `getRange` operation but returns the range in reverse order.
+
+By providing different parameters, you can refine what information you are returned:
+* `startRecord` is needed in all cases, and defines where the range should start from.
+* `endRecord` is the end record for where the range should end.
+* `index` is also needed in all cases, it is the String name of the Index upon which the range spans.
+* `numKeyFields` is the last of the mandatory fields, it ???
+* `fields` is a set of Strings, that are the names of the fields to be returned. If not provided, or an empty set is provided, all fields will be returned.
+
+#### Overloads
+
 * `getRange(startRecord: DbRecord, endRecord: DbRecord?, index: I, numKeyFields: Int): Flowable<DbRecord>`
 * `getRange(startRecord: DbRecord, endRecord: DbRecord?, index: I, numKeyFields: Int, fields: Set<String>): Flowable<DbRecord>`
 
