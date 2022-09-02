@@ -11,7 +11,7 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 ### Define the position-keeping logic in the Consolidator
 
-We will use the query `ALL_POSITIONS` that was [previously defined](/getting-started/go-to-the-next-level/events/#data-server) to show all the positions calculated by the consolidator.
+We will use the query `ALL_POSITIONS` that was [previously defined](/getting-started/go-to-the-next-level/events/#data-server) to show all the positions calculated by the Consolidator.
 
 So, let's define a **positions-app-tutorial-consolidator.kts** file inside **positions-app-tutorial-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
 
