@@ -7,7 +7,7 @@ id: run-the-application
 Before you start this, make sure that:
 
 - you have a user with the name of the application (alpha)
-- foundationdb is running (if it is not, run `systemctl start foundationdb` from Centos07
+- foundationdb is running (if it is not, run `systemctl start foundationdb` from Centos07)
 
 If that's OK, you can deploy the server.
 
@@ -60,7 +60,7 @@ or from the dropdown menu:
 
 ### Adding a user to login
 
-Next let´s create a user.
+Next let's create a user.
 
 :::tip
 The following details will be your login details:
@@ -90,7 +90,33 @@ or from the dropdown menu:
 
 ![](/img/using-DbMon.png)
 
-Once you are inside the console, type 'table USER' and then 'search 1'. If imported correctly, the user JaneDee should be listed.
+Once you are inside the console, type 'table USER' and then 'search 1'. If imported correctly, the user JaneDee should be listed like this:
+
+```
+
+DbMon:USER>search 1
+==================================
+USER
+==================================
+Field Name                               Value                                    Type
+===========================================================================================
+TIMESTAMP                                2022-09-01 16:41:06.198(n:0,s:151)       NANO_TIMESTAMP
+COMPANY_ID                                                                        STRING
+COMPANY_NAME                             GENESIS                                  STRING
+DOMAIN                                                                            STRING
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING
+FIRST_NAME                               Jane                                     STRING
+LAST_LOGIN                               2016-04-28                               DATE
+LAST_NAME                                Dee                                      STRING
+ONLINE                                   false                                    BOOLEAN
+PASSWORD                                 ********************************         STRING
+PASSWORD_EXPIRY_DATETIME                                                          DATETIME
+REFRESH_TOKEN                            ********************************         STRING
+STATUS                                   ENABLED                                  STRING
+USER_NAME                                JaneDee                                  STRING
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+```
 
 After running
 
@@ -130,7 +156,7 @@ docker login genesisglobal-docker-internal.jfrog.io
 
 You need to enter your artifactory credentials at this point
 
-The enter
+Then enter:
 ...
 docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
 #...
@@ -159,7 +185,7 @@ Now you have a fully running application. If not opened automatically, you can n
 ![](/img/login-screen-quickstart.png)
 
 :::tip
-If the blue button to login is not clickable, go through the previous section again; this is the most likely location of a problem.
+If the blue button to login is not clickable, go through the previous section again, the problem will most likely be located there.
 
 ::::
 

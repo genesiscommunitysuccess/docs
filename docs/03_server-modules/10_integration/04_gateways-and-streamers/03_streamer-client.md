@@ -4,33 +4,30 @@ sidebar_label: 'Streamer Client'
 id: streamer-client
 ---
 
-This page shows you how to create a Streamer Client. It also looks at the syntax of the two types of Streamer Client that are available:
+This page shows you how to create a Streamer Client. It also looks at the syntax of the two types of Streamer Clients that are available:
 
 * table or view entity
 * GenesisSet
 
-Also, you can see an example of a Streamer Client in practice in our [tutorial](/).
-<!-- TODO: link to 'fix-gateway' turorial -->
-
 ## Creating a Streamer Client
 To create a Streamer Client:
 
-1. Add the configuration for the Streamer Client process to the {applicationName}-processes.xml file:
+1. Add the configuration for the Streamer Client process to the _applicationName_-**processes.xml** file:
 
 ```xml
-<process name="TRADING_APP_STREAMER_CLIENT">
+<process name="POSITION_APP_STREAMER_CLIENT">
     <start>true</start>
     <options>-Xmx128m -DXSD_VALIDATE=false</options>
     <module>genesis-pal-streamerclient</module>
     <package>global.genesis.streamerclient.pal</package>
-    <script>trading_app-streamer-client.kts</script>
+    <script>position_app-streamer-client.kts</script>
 	<language>pal</language>
 </process>
 ```
 
-For more information on above process tags, follow this [link](/03_server-modules/02_data-server/05_configuring-runtime.md)
+For more information on the above process tags, see the page on [configuring runtime processes](03_server-modules/02_data-server/05_configuring-runtime.md).
 
-2. Create a kotlin script file named {applicationName}-streamer-client.kts and add the following details:
+2. Create a kotlin script file named **{app-name}-streamer-client.kts** under **jvm/{app-name}-script-config**. Add the following information:
     * A streamer client name
     * A streamer data source process and stream name
     * One or more `onMessage` tags
@@ -39,7 +36,7 @@ The simplest streamer-client definition is:
 ```kotlin
 streamerClients {
     streamerClient(clientName = "QUOTE_RESPONSE") {
-        dataSource(processName = "TRADING_APP-STREAMER", sourceName = "ORDERS_OUT")
+        dataSource(processName = "POSITION_APP-STREAMER", sourceName = "ORDERS_OUT")
             onMessage {
                 send("QUOTE_EVENT_HANDLER", "QUOTE_UPDATE_EVENT")
             }
@@ -50,7 +47,7 @@ streamerClients {
 This example takes a message from a Streamer and sends it to `QUOTE_EVENT_HANDLER` as a `QUOTE_UPDATE_EVENT`.
 
 ### Properties
-You can set the following properties in a Streamer Client:
+You can also specify the following optional parameters in a streamer client:
 
 * `isReplayable`. This flag determines if the stream is replayable. Default value is `false`
 
@@ -60,9 +57,9 @@ You can set the following properties in a Streamer Client:
 
 * `receiveWarndingRange`. This specifies a range that controls the status of the Streamer process.  If an Event Handler takes too long to respond, the process status will go to either warning or error.
 
-## Types of streamer client
+## Types of Streamer Clients
 
-There are two types of Streamer Client:
+There are two types of streamer clients:
 
 * Table or View entity streamer client
 ```kotlin
@@ -106,8 +103,8 @@ The `onMessage` tag defines what the Streamer Client does with your message. It 
 * send
 
 **Where**
-Where enables you to make the action conditional.
-This operation has one parameter: the type of the Streamer Client. This can be:
+
+The `where` tag enables you to make the action conditional. This operation has one parameter, the type of Streamer Client. This can be:
 * a table or view entity
 * a GenesisSet
   The operation must return a Boolean.
@@ -127,7 +124,8 @@ where { quotes ->
 ```
 
 **Send**
-Send directs and optionally formats the outgoing message.
+
+The `send` tag allows directs and optionally formats the outgoing message.
 It requires:
 * a target process
 * a message type

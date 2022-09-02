@@ -29,9 +29,13 @@ module.exports = {
     [require.resolve('docusaurus-gtm-plugin'), {
       id: 'GTM-5GTR43J',
     }],
-		() => ({
-			loadContent: apiPullPlugin.loadContent(),
-		})
+    // Declares a local plugin, plugins array takes a set of functions to execute to 
+    // load in the plugin. Anonymous function used here to simulate the same thing, and
+    // return an object that declares a function to execute as part of the `loadContent`
+    // step in the docusaurus lifecycle
+    () => ({
+      loadContent: apiPullPlugin.loadContent(),
+    })
   ],
 
   presets: [
@@ -44,28 +48,6 @@ module.exports = {
           routeBasePath,
           sidebarPath: require.resolve('./sidebars.js'),
           remarkPlugins: [require('mdx-mermaid')],
-        },
-        blog: {
-          path: 'blog',
-          editLocalizedFiles: false,
-          blogTitle: 'Blog title',
-          blogDescription: 'Blog',
-          blogSidebarCount: 5,
-          blogSidebarTitle: 'All our posts',
-          routeBasePath: 'blog',
-          include: ['**/*.{md,mdx}'],
-          exclude: [
-            '**/_*.{js,jsx,ts,tsx,md,mdx}',
-            '**/_*/**',
-            '**/*.test.{js,jsx,ts,tsx}',
-            '**/__tests__/**',
-          ],
-          postsPerPage: 10,
-          blogListComponent: '@theme/BlogListPage',
-          blogPostComponent: '@theme/BlogPostPage',
-          blogTagsListComponent: '@theme/BlogTagsListPage',
-          blogTagsPostsComponent: '@theme/BlogTagsPostsPage',
-          showReadingTime: true,
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -83,11 +65,10 @@ module.exports = {
     navbar: {
       items: [
         {to: 'getting-started', label: 'Learning'},
-        {to: 'database/database-landing', label: 'Database'},
-        {to: 'server-modules', label: 'Server Modules'},
-        {to: 'front-end', label: 'Front End'},
+        {to: 'database', label: 'Database'},
+        {to: 'server-modules', label: 'Server'},
+        {to: 'front-end', label: 'Web'},
         {to: 'operations', label: 'Operations'},
-        {to: 'blog', label: 'Updates'},
         {
           href: "https://stackoverflow.com/",
           className: "so-icon",

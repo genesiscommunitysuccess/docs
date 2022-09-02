@@ -6,28 +6,25 @@ id: streamer
 
 This page shows you how to create a Streamer.
 
-You can see an example of a Streamer in practice in our [tutorial](/).
-<!-- TODO: link to 'fix-gateway' turorial -->
-
 ## Creating a Streamer
 To create a Streamer:
 
 1. Add the process configuration for the Streamer to the _applicationName_**-processes.xml** file. For example:
 
 ```xml
-<process name="TRADING_APP_STREAMER">
+<process name="POSITION_APP_STREAMER">
     <start>true</start>
     <options>-Xmx128m -DXSD_VALIDATE=false</options>
     <module>genesis-pal-streamer</module>
     <package>global.genesis.streamer.pal</package>
-    <script>trading_app-streamer.kts</script>
+    <script>position_app-streamer.kts</script>
 	<language>pal</language>
 </process>
 ```
 
 For more information on the above process tags, see the page on [configuring runtime processes](03_server-modules/02_data-server/05_configuring-runtime.md).
 
-2. Create a kotlin script file named {applicationName}-streamer.kts. Add the following information:
+2. Create a Kotlin script file named **{app-name}-streamer.kts** under **jvm/{app-name}-script-config**. Add the following information:
     * A stream name
     * A GPAL index reference for a unique index with a single LONG field, this could refer to a table index or a view index.
 
@@ -38,16 +35,16 @@ streams {
 }
 ```
 
-This example creates a stream called `ORDER_OUT`, based on the `ORDERS_OUT` table (or view). The data will be streamed, ordered by timestamp.
+This example creates a stream called `ORDERS_OUT`, based on the `ORDER_OUT` table (or view). The data will be streamed, ordered by timestamp.
 
 ### Parameters
 You can also specify the following optional parameters in a stream block:
 
-`batchSize` - default value 100
+* `batchSize` - default value 100
 
-`logoffTimeout` - default value 5000
+* `logoffTimeout` - default value 5000
 
-`maxLogons` - default value 1
+* `maxLogons` - default value 1
 
 ### Transforming the stream
 You can define the following blocks to transform the stream:
@@ -57,7 +54,7 @@ You can define the following blocks to transform the stream:
 
 **Where**
 
-Using where, the stream can be filtered. It is available in two versions: one that has the streamed row as a parameter, and one that also has the logon message.
+The `where` tag enables the stream to be filtered. It is available in two versions: one that has the streamed row as a parameter, and one that also has the logon message.
 
 Here, we only stream orders with a quantity greater than 1,000.
 ```kotlin
@@ -82,7 +79,8 @@ streams {
 ```
 
 **Fields**
-The fields tag enables you to transform the output in a similar way to views, data server and req rep definitions. For example, here we output three fields:
+
+The `fields` tag enables you to transform the output in a similar way to views, data server and req rep definitions. For example, here we output three fields:
 ```kotlin
 streams {
     stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP) {
@@ -96,7 +94,8 @@ streams {
 ```
 
 **toGenesisSet**
-This enables you to create a custom GenesisSet from the entity:
+
+The `toGenesisSet` tag enables you to create a custom GenesisSet from the entity:
 ```kotlin
 streams {
     stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP) {

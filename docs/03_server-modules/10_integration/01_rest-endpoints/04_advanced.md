@@ -4,74 +4,19 @@ sidebar_label: 'Advanced'
 id: advanced
 ---
 
-[Introduction](/server-modules/integration/rest-endpoints/introduction/)  | [Basics](/server-modules/integration/rest-endpoints/basics/) | [Advanced](/server-modules/integration/rest-endpoints/advanced/) | [Configuring runtime](/server-modules/integration/rest-endpoints/configuring-runtime/) | [Testing](/server-modules/integration/rest-endpoints/testing/)
+[Introduction](/server-modules/integration/rest-endpoints/introduction/) | [Where to define](/server-modules/integration/rest-endpoints/where-to-define) | [Basics](/server-modules/integration/rest-endpoints/basics/) | [Advanced](/server-modules/integration/rest-endpoints/advanced/) | [Configuring runtime](/server-modules/integration/rest-endpoints/configuring-runtime/) | [Testing](/server-modules/integration/rest-endpoints/testing/)
 
 ## Authentication
 
-If AUTH is enabled on the server, for any new session you will need to log in to retrieve a valid `SESSION_AUTH_TOKEN` to supply on your requests.
+### EVENT_LOGIN_REFRESH
 
-### EVENT_LOGIN_AUTH
+Log in refresh requests are submitted via POST requests to
+`[host]:[genesis_router_port]/event-login-auth`.
 
-The URL for the login transaction is
-`[host]:[genesis_router_port]/ehandler-login-auth`.
+Log in refresh requests require:
 
-
-Requests require a `USER_NAME` parameter in the `DETAILS` object.
-
-* Initial login requires the `PASSWORD` parameter with a value of the user's password.
-* Refresh requires the `REFRESH_AUTH_TOKEN` parameter with the value associated with the session (supplied on the last login reply payload).
-
-To login initially
-
-Sample request:
-
-```json
-POST /event-login-auth HTTP/1.1
-Host: localhost:9064
-Content-Type: application/json
-SOURCE_REF: 123456-789041
-
-{
-    "DETAILS": {
-        "USER_NAME": "JaneDee",
-        "PASSWORD": "beONneON*74"
-    }
-}
-```
-
-Sample response:
-
-```json
-{
-    "MESSAGE_TYPE": "EVENT_LOGIN_AUTH_ACK",
-    "SESSION_AUTH_TOKEN": "y9lNIRTax0pmTdUN0XC1PgVl32KuXGsf",
-    "REFRESH_AUTH_TOKEN": "FmqF9CGzo2MiujEZoiRUjGXh8ybDC62L",
-    "SESSION_ID": "3f0203a5-e89d-4245-9e8b-c21fb0bcacd9",
-    "USER_ID": "",
-    "DETAILS": {
-        "SYSTEM": {
-            "DATE": "Sun Jan 21 20:53:44 UTC 2018"
-        },
-        "HEARTBEAT_INTERVAL_SECS": 30,
-        "FAILED_LOGIN_ATTEMPTS": 0,
-        "REJECTED_LOGIN_ATTEMPTS": 0,
-        "LAST_LOGIN_DATETIME": 1516567765917,
-        "PRODUCT": [
-            {
-                "NAME": "dta",
-                "VERSION": "2.2.2"
-            },
-            {
-                "NAME": "auth",
-                "VERSION": "1.1.1"
-            }
-        ]
-    },
-    "SOURCE_REF": "123456-789041"
-}
-```
-
-To refresh the token
+* `SOURCE_REF` header
+* `USER_NAME` and `REFRESH_AUTH_TOKEN` (supplied on the last login reply payload in the HTTP headers) parameters in the `DETAILS` object.
 
 Sample request:
 
@@ -123,7 +68,16 @@ Sample response:
 
 ### EVENT_LOGOUT
 
-To end the user's session, you need to send a logout EVENT. This particular request `SESSION_ID` (supplied on the last login reply payload) in the HTTP headers requires no body.
+To end the user's session, you need to send a log out request.
+
+Log out requests are submitted via POST requests to
+`[host]:[genesis_router_port]/event-logout`.
+
+Log out requests require:
+
+* `SOURCE_REF` header
+* `USER_NAME` header
+* `SESSION_ID` header (supplied on the last login reply payload in the HTTP headers)
 
 Sample request:
 
@@ -153,9 +107,13 @@ There are special requests which can be used to retrieve available system resour
 
 This request will return all the resources available on the server, each resource has a name and a type (e.g. RequestServer, DataServer, EventHandler).
 
-Resources can be accessed with a GET request to
+Resource requests are accessed via GET requests to
 `[host]:[genesis_router_port]/resources-request`.
 
+Resource requests require:
+
+* `SOURCE_REF` header
+* `SESSION_AUTH_TOKEN` header
 
 Sample request:
 
@@ -202,8 +160,8 @@ Sample response:
 
 This request will return all the metadata associated with a given resource.
 
-Metadata can be accessed with a GET request to
-`[host]:[genesis_router_port]/meta-request?DETAILS[FEATURE]=[resource_name]`.
+Metadata requests are accessed via GET requests to
+`[host]:[genesis_router_port]/meta-request?details[FEATURE]=[RESOURCE_NAME]`.
 
 * Request Server resources will return the request and reply fields available to the resource and their associated metadata.
 
@@ -211,10 +169,15 @@ Metadata can be accessed with a GET request to
 
 * Event Handler resources will return the transaction fields available to the resource and their associated metadata.
 
+Metadata requests require:
+
+* `SOURCE_REF` header
+* `SESSION_AUTH_TOKEN` header
+
 Sample request:
 
 ```json
-GET /meta-request?DETAILS[FEATURE]=MY_TRADES HTTP/1.1
+GET /meta-request?details[FEATURE]=MY_TRADES HTTP/1.1
 Host: localhost:9064
 Content-Type: application/json
 SOURCE_REF: 123456-789052
