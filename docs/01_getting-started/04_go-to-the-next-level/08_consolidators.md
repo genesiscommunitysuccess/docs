@@ -15,7 +15,7 @@ We will use the query `ALL_POSITIONS` that was [previously defined](/getting-sta
 
 So, let's define a **positions-app-tutorial-consolidator.kts** file inside **positions-app-tutorial-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
 
-The consolidator is going to increase or decrease the quantity for `POSITION` records, based on the `TRADE` table updates. It also needs to calculate the new notional.
+The Consolidator is going to increase or decrease the quantity for `POSITION` records, based on the `TRADE` table updates. It also needs to calculate the new notional.
 
 ```kotlin
 import global.genesis.gen.config.tables.POSITION.NOTIONAL
@@ -82,7 +82,7 @@ consolidators {
 
 ### Update the system files
 
-Now that the Consolidator logic is in place we have to make sure it's running.
+Now that the Consolidator logic is in place, we have to make sure it's running.
 
 #### Update the processes.xml file
 
