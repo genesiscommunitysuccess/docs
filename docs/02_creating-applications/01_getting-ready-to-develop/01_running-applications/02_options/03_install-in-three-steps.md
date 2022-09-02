@@ -1,6 +1,6 @@
 ---
 id: install-in-three-steps
-sidebar_label: Install in three easy steps
+sidebar_label: Install in four easy steps
 sidebar_position: 3
 title: Install in four easy steps
 
@@ -21,6 +21,20 @@ We describe the recommended steps below, but you can also see the process in a n
 You must start with a server with the operating system and relevant packages installed. Genesis supplies the rpm to simplify the installation. Everything you need is in the rpm, and nothing is downloaded when you install it.
 To install the rpm, you need a privileged user account.
 In our example, the rpm is called **genesis-platform-6.0.1-1.x86_64.rpm**.
+
+If you need to provide a group other than genesis, then you can pass the group name to the installation by adding:
+
+```bash
+echo “genesis_grp=charlie” >> /tmp/genesis_install.conf
+```
+By default, Genesis code is installed under **/data**. You can also provide a new directory to install by running:
+
+```bash
+echo “root_dir=opt” /tmp/genesis_install.conf
+```
+
+For these to work, you need a valid group (we have used`charlie`), and the directory you supply (here we have used  **/opt** ) must already be present. 
+
 
 ### 1. Give the user account a name
 
