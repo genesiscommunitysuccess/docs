@@ -15,12 +15,8 @@ docker-compose up -d #On the IntelliJ terminal
 
 ## Accessing the application
 
-After everything has been built and deployed on Docker containers, the frontend is accessible on 
+After the Docker containers are up and running, the front end is accessible on: `http://localhost:6060`
 
-Usage:
-```shell
-http://localhost:6060
-```
 
 Once the server has successfully started all the components on the docker container, you may log in.
 
