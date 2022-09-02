@@ -90,7 +90,33 @@ or from the dropdown menu:
 
 ![](/img/using-DbMon.png)
 
-Once you are inside the console, type 'table USER' and then 'search 1'. If imported correctly, the user JaneDee should be listed.
+Once you are inside the console, type 'table USER' and then 'search 1'. If imported correctly, the user JaneDee should be listed like this:
+
+```
+
+DbMon:USER>search 1
+==================================
+USER
+==================================
+Field Name                               Value                                    Type
+===========================================================================================
+TIMESTAMP                                2022-09-01 16:41:06.198(n:0,s:151)       NANO_TIMESTAMP
+COMPANY_ID                                                                        STRING
+COMPANY_NAME                             GENESIS                                  STRING
+DOMAIN                                                                            STRING
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING
+FIRST_NAME                               Jane                                     STRING
+LAST_LOGIN                               2016-04-28                               DATE
+LAST_NAME                                Dee                                      STRING
+ONLINE                                   false                                    BOOLEAN
+PASSWORD                                 ********************************         STRING
+PASSWORD_EXPIRY_DATETIME                                                          DATETIME
+REFRESH_TOKEN                            ********************************         STRING
+STATUS                                   ENABLED                                  STRING
+USER_NAME                                JaneDee                                  STRING
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+```
 
 After running
 
