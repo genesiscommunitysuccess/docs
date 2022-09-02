@@ -47,9 +47,10 @@ So, let's define a **positions-app-tutorial-consolidator.kts** file inside **pos
 The Consolidator is going to increase or decrease the quantity for `POSITION` records, based on the `TRADE` table updates. It also needs to calculate the new notional.
 
 ```kotlin
-import global.genesis.gen.config.tables.POSITION.NOTIONAL
+import global.genesis.gen.config.tables.POSITION
 import global.genesis.gen.config.tables.POSITION.QUANTITY
 import global.genesis.gen.config.tables.POSITION.VALUE
+import global.genesis.gen.config.view.TRADE_VIEW
 import global.genesis.gen.dao.Position
 
 consolidators {
