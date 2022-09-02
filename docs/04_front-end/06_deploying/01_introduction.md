@@ -104,3 +104,7 @@ In this example by looking at the 5th line we can tell that:
 You will need this information if you ever want to [manually deploy](/front-end/deploying/manual-deployment/) the Front End from your machine to the web server.
 
 Ideally the deployment process should be [automated](/front-end/deploying/automated-deployment/).
+
+:::note
+For apps hosted across multiple nodes or production/UAT (client facing) apps, they would access it via a loadbalancer (also nginx) which performs round robin load balancing. In that case, the nginx config mentioned above would be bypassed.
+:::
