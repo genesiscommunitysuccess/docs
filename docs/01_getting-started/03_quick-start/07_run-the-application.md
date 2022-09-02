@@ -1,6 +1,6 @@
 ---
-title: 'Run the application (WSL)'
-sidebar_label: 'Run the application (WSL)'
+title: 'Run the application (WSL/Linux)'
+sidebar_label: 'Run the application (WSL/Linux)'
 id: run-the-application
 ---
 
