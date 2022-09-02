@@ -8,9 +8,9 @@ A modal component will prevent the user from interacting with other content on t
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#dialog_modal):
 
-> A dialog is a window overlaid on either the primary window or another dialog window. Windows under a modal dialog are inert. That is, users cannot interact with content outside an active dialog window. Inert content outside an active dialog is typically visually obscured or dimmed so it is difficult to discern, and in some implementations, attempts to interact with the inert content cause the dialog to close.
+> A dialog is a window overlaid on either the primary window or another dialog window. Windows under a modal dialog are inert. That is, users cannot interact with content outside an active dialog window. Inert content outside an active dialog is typically visually obscured or dimmed so it is difficult to discern; in some implementations, attempts to interact with the inert content cause the dialog to close.
 >
-> Like non-modal dialogs, modal dialogs contain their tab sequence. That is, Tab and Shift + Tab do not move focus outside the dialog. However, unlike most non-modal dialogs, modal dialogs do not provide means for moving keyboard focus outside the dialog window without closing the dialog.
+> Like non-modal dialogs, modal dialogs contain their tab sequence. That is, **Tab** and **Shift** + **Tab** do not move focus outside the dialog. However, unlike most non-modal dialogs, modal dialogs do not provide means for moving keyboard focus outside the dialog window without closing the dialog.
 
 ## Set-up
 
@@ -35,7 +35,7 @@ provideDesignSystem().register(alphaModal());
 
 ## Use cases
 
-* Confirmation popups
+* Confirmation pop-ups
 
 ## Additional resources
 
