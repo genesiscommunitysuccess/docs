@@ -35,4 +35,4 @@ Add code below to the template file.
 ></entity-management>
 ```
 
-At this point, refresh the application is now able to display data from the server and make changes.
+You can now refresh the application to display data from the server and make changes.

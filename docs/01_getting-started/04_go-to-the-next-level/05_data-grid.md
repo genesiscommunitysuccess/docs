@@ -99,7 +99,7 @@ Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives
 
 
 ```typescript {4,10-12} title="home.template.ts"
-import {positionColumnDefs} from './positionColumnDefs.ts';
+import {positionColumnDefs} from './positionColumnDefs';
 
 <zero-ag-grid
     only-template-col-defs

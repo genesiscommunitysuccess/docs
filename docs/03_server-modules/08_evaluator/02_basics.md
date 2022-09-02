@@ -19,7 +19,7 @@ To define a rule, you need to insert a row into the DYNAMIC_RULE table. This tab
 | RULE_TABLE | The Table to listen to for changes, eg |
 | RULE_STATUS | This is either "ENABLED" or "DISABLED" and respectively enables or disables the rule  |
 | RULE_EXPRESSION | This is a [groovy expression](https://groovy-lang.org/syntax.html) which is evaluated when their is a table change on RULE_TABLE, if this evaluates to true, then the RESULT_EXPRESSION logic is activated eg `(QUANTITY > 500)` |
-| PROCESS_NAME | Process Name to send the Event  eg TRADING_APP_EVENT_HANDLER |
+| PROCESS_NAME | Process Name to send the Event  eg POSITION_APP_EVENT_HANDLER |
 | MESSAGE_TYPE | The Message Type that will be defined |
 | RESULT_EXPRESSION | this is a [groovy expression](https://groovy-lang.org/syntax.html) which should set on the MESSAGE Object that is defined in MESSAGE_TYPE eg `(POSITION_ID = POSITION_ID)`|
 
@@ -29,9 +29,9 @@ MESSAGE_TYPE fields define the Java/kotlin Class that is instantiated and set by
 
 Fields that are set in the expression but which are not on the class are ignored. The instantiated class is sent to the EventHandler implementation defined in the process identified by PROCESS_NAME.
 
-To set up a MESSAGE_TYPE for the event handlers, simply create an appropriate data class, for example: `trading_app-server\trading_app-messages\src\main\java\global\genesis\trading_app\message\event\TradeCancel.kt`.
+To set up a MESSAGE_TYPE for the event handlers, simply create an appropriate data class, for example: `position_app-server\position_app-messages\src\main\java\global\genesis\position_app\message\event\TradeCancel.kt`.
 ```kotlin
-package global.genesis.trading_app.message.event
+package global.genesis.position_app.message.event
 
 data class TradeCancel(val tradeId: Long)
 ```
@@ -82,7 +82,7 @@ To define a scheduled event, you need to insert a row into the `CRON_RULE` table
 | TIME_ZONE | eg Europe/London |
 | RULE_STATUS | This is either "ENABLED" or "DISABLED", respectively enables or disables the rule  |
 | USER_NAME | The User Name that will be used to perform the operation / null implies system |
-| PROCESS_NAME | Process Name to send the Event  eg TRADING_APP_EVENT_HANDLER |
+| PROCESS_NAME | Process Name to send the Event  eg POSITION_APP_EVENT_HANDLER |
 | MESSAGE_TYPE | The Message Type that will be defined  |
 | RESULT_EXPRESSION | this is a [groovy expression](https://groovy-lang.org/syntax.html) which should set on the MESSAGE Object that is defined in MESSAGE_TYPE |
 

@@ -1,7 +1,7 @@
 ---
 id: training-content-day5
-title: Day 5
-sidebar_label: Day 5
+title: Day five
+sidebar_label: Day five
 sidebar_position: 7
 
 ---
@@ -9,7 +9,7 @@ This day covers:
 
 - [Schedulers](#schedulers)
 - [Permissions​](#permissions)
-- [Operating the Genesis Platform](#operating-the-genesis-platform)
+- [Operating the platform](#operating-the-genesis-platform)
 - [Navigating the documentation and how to get help​](#navigating-the-documentation-and-how-to-get-help​)
 
 ## Schedulers​
@@ -602,11 +602,11 @@ The command from this step has to be executed from where the Genesis Platform is
 
 The product that we create will be called **ref_data_app**. Using the instance in which the platform is installed, run:
 ```bash
-DictionaryBuilder -t <database-type> -U <username> -P <password> -p <database-port> -H <database-host> -d tradingapp --product <product-name> -o <output-directory> -i 200 --tables <comma-separated-table-names>
+DictionaryBuilder -t <database-type> -U <username> -P <password> -p <database-port> -H <database-host> -d positionapp --product <product-name> -o <output-directory> -i 200 --tables <comma-separated-table-names>
 ```
 For example, if there is an MSSQL database running on AWS, a sample command would look like:
 ```bash
-DictionaryBuilder -t MSSQL -U admin -P beONneON*74 -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d tradingapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument
+DictionaryBuilder -t MSSQL -U admin -P beONneON*74 -p 1433 -H ref-data-rdb.clatr30sknco.eu-west-2.rds.amazonaws.com -d positionapp --product ref_data_app -o ref_data_app/ -i 200 --tables alt_counterparty_id,alt_instrument_id,counterparty,instrument
 ```
 
 Once the command has finished, it will generate the `fields-dictionary.kts` and `tables-dictionary.kts` files for the data model. Keep these files handy, as you will have to copy them over in the next steps.
