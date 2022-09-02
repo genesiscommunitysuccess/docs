@@ -9,7 +9,7 @@ sidebar_position: 3
 Reviewing the basics and extending our application​.
 
 ## Reviewing basic concepts
-As introduced in the Developer Training, Genesis provides a modern future-proofed web stack on top of Microsoft FAST, which is a lightweight abstraction that enables you to easily ​build performant, memory-efficient, standards-compliant ​Web Components. 
+As introduced in the Developer Training, Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](https://www.fast.design/), which is a lightweight abstraction that enables you to easily ​build performant, memory-efficient, standards-compliant ​Web Components. 
 
 Genesis also offers a highly configurable design system called Genesis Foundation UI. It is made up of a set of web components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options as necessary for your application.
 
@@ -19,6 +19,70 @@ This picture gives an overview on how it all ties together:
 
 :::tip confused with any term used here? Revisit the Developer Training!
 Please feel free to revisit the UI chapter of the [Developer Training](/getting-stared/developer-training/developer-training-day2) before we get into other aspects of the underlying technology used by Genesis in the next sections.
+:::
+
+### Why Web Components?
+Remember that Web Components are custom html elements that completely encapsulate their logic to create self-contained reusable components, that do not clash or interfere with the rest of application. Genesis offers a comprehensive set of web components from simple components like a Button and Text Field to more complex ones like Micro Frontend apps. 
+
+#### Performance
+
+Web Components have proven to be consistently faster than many popular JavaScript frameworks when it comes to both
+startup time and paint performance. They also use less memory and often result in significantly smaller bundle sizes
+when compared to their JavaScript counterparts. Standard benchmarks show our component implementation outperforming
+React, Angular 12, Vue 3.2 as well as many others. 
+
+#### Interoperability
+
+Every Web Component inherits from HTMLElement. So, Web Components seamlessly interoperate with any library or framework
+designed to work with DOM. This includes modern frameworks like React, Angular, Vue, etc. but also libraries like jQuery
+and others. Adopting Web Components enables use of a consistent component library across a diverse set of applications.
+So, teams can standardize on the components and design system without having to force a specific architecture or
+framework on the application developer.
+
+#### Incremental adoption
+
+You do not have to re-write an existing app or site to take advantage of Web Components. Since Web Components just
+extend the palette of available HTML elements, you can choose to simply start leveraging whatever custom elements you
+want within your existing app the same way as you use built-in elements.
+
+#### Future-proof
+
+Web Components are *literally*, the standard component model of the web, written into the HTML specification. The base
+features have shipped in every modern browser and many new features are planned for the DOM and CSS standards. Some of
+these new HTML capabilities will only be available to Web Components, so continuing down the path of non-standard
+component models will prevent you from taking advantage of platform improvements. Aligning yourself with Web Components
+and other standards will enable you to get the greatest benefit from the evolving web platform.
+
+#### Extensible ecosystems and plugin models
+
+By choosing web components, you enable your customers to choose their preferred application framework or library, rather
+than forcing them to use any particular JavaScript framework. Building your ecosystem or plugin model around one
+framework often means the exclusion of an entire set of customers who build on another.
+
+#### You no longer need JavaScript framework experts
+Most of the popular JavaScript frameworks require strong JavaScript skills and knowledge and often at least an
+intermediate proficiency for use. Web Components can be used without any knowledge of JavaScript whatsoever. Building
+around Web Components opens up opportunities for a broader range of customers with more diverse backgrounds.
+
+#### Who is using Web Components?
+Across the industry we see a pretty big adoption since January 2020. This includes not only heavy investment from
+**Microsoft**, but also from **Google**, **Adobe**, **Salesforce**, **SAP**, **MIT**, **SpaceX**, and many more.
+Curious who else is using Web Components? Check out the ever-growing list of companies
+[here](https://arewebcomponentsathingyet.com/).
+
+### And why Microsoft FAST?
+Genesis basic web components, such as Button and Text Fields, were not created from scratch. They extend Microsoft FAST components for a number of reasons:
+- FAST is a collection of technologies built on Web Components and modern Web Standards.
+- Proven at scale in production. FAST powers Edge, Bing, Maps, Ads, News and other web products at Microsoft. As such, it will power all their next gen web components and design system technologies.
+- Provides a comprehensive and growing component set out of the box, built directly on the W3C Web Component standards with accessibility built in.
+- Extensible and highly efficient base element to build Genesis domain specific components on top of.
+- Leverages [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) to efficiently re-use CSS across components.
+- Advanced design system architecture to support custom theming between clients and applications.
+- Offers a DI system, a Router and other opt-in utilities.
+- Highly active and responsive community.
+
+:::info More about Microsoft FAST
+It's particularly helpful to understand how to build components as you're going to build FAST elements as part of your application. Things like defining a custom element, attributes, templates and directives are quite important and you can review these concepts [here](https://www.fast.design/docs/resources/cheat-sheet/#building-components).
 :::
 
 ## A deeper dive into the alpha web application structure
@@ -140,9 +204,200 @@ In the Developer Training, we amended these files in the **client/web/src/routes
 -	**home.ts**
 -	**home.styles.ts**
 
+:::tip 
+We usually follow the pattern of creating a `.template.ts`, `.ts` and `.styles.ts` files. But it doesn't have to be that way, could be a single file for example as we're going to see an example next. 
+:::
+
 Realistically, any application will require multiple pages and routes. 
 
 If you're not familiar with the concept of [routing](https://developpaper.com/question/what-is-front-end-routing-when-is-front-end-routing-appropriate-what-are-the-advantages-and-disadvantages-of-front-end-routing/), it's basically displaying different content or pages according to different URL addresses. In this context, it means that different routes correspond to different contents or pages to the front-end, which is realized by the server returning different pages according to the different URLs. In single-page applications, most pages are structurally unchanged and only part of the content is changed.
+
+In our case, there's a `home` route pointing to the `Home` component which is the home page. The routes are set in the `config.ts` and we'll get into more details soon. 
+
+## Building components
+
+As you know, in the Developer Training we created the Home component but didn't get into too much detail on how component building actually works. So, let's take a step back and create a new page with a single file for the purpose of learning how to setup new components so we understand the foundations before starting our new application.
+
+There are two main approaches to building a component:
+-  The first approach is for simple declarations of non-shared components.
+-  The second approach is for components designed to be published in shareable libraries. 
+
+The second approach involves design systems and we will cover this topic at some point in this training. For now, let's see how the first approach would work creating a very simple component.
+
+### Defining a custom component
+Create folder `./client/web/src/routes/playground/` and create a new empty file `playground.ts` in there. Then, add this code to `playground.ts`:
+
+```typescript
+import { FASTElement, customElement } from "@microsoft/fast-element";
+
+@customElement({name: "marketdata-component"}) // custom element being created
+export class MarketdataComponent extends FASTElement {
+
+}
+```
+
+We've just created a new Web Component extending FASTElement (so, again, we don't have to start from scratch and implement a myriad of attributes and methods). 
+
+This component could be anything, like a custom button or even a business component. But, for now, it's just empty and doesn't do much. However, we could already use it anywhere in HTML with the following markup if we wanted:
+```html
+<marketdata-component></marketdata-component>
+```
+
+### Adding a route to the new component
+Let's add a route pointing to `playground` so we can access it from the menu.
+
+2. Edit file `config.ts` and add **playground** to **allRoutes** and **routes.map** so we'll be able to access playground from the menu:
+	```typescript {1, 3,12} title='config.ts'
+	import { MarketdataComponent } from './playground/playground';
+	...
+		public allRoutes = [
+			...
+			{ index: 3, path: 'playground', title: 'Playground', icon: 'home', variant: 'solid' },
+		];
+
+		...
+
+		public configure() {
+			...
+			this.routes.map(
+			...
+			{path: 'playground', element: MarketdataComponent, title: 'Playground', name: 'playground', settings: commonSettings},
+			);
+		```
+
+You should see the **Playground** menu item now.
+
+### Creating an HTML template
+To create an HTML template for our element, we have to import and use the html tagged template helper and pass the template to the @customElement decorator.
+
+```typescript {3,9} title='playground.ts'
+import { FASTElement, customElement, html } from "@microsoft/fast-element";
+
+const myTemplate = html<MarketdataComponent>`
+  <div class="header">
+    <h3>My marketdata component</h3>
+  </div>
+`;
+
+@customElement({name: "marketdata-component", template: myTemplate}) // custom element being created
+export class MarketdataComponent extends FASTElement {
+  
+}
+```
+
+As you see, we're defining a const called `myTemplate` that contains the HTML code. This constant is then passed to the definition of our customElement through the ***template*** parameter. This way, when we use this component, it will display the HTML associated to it.
+
+Try it now!
+
+:::tip code editors
+You're free to use any IDE or code editor you feel most comfortable with. Some of them, however, do not support syntax highlighting and IntelliSense for html inside of JavaScript and TypeScript tagged template strings - like our HTML code in the `html<MarketdataComponent>` template.
+
+As a tip, search for extensions in your IDE to support that. That's usually called `lit` or `literal`.
+:::
+
+### Adding attributes to the component
+Let's add an attribute to our MarketdataComponent. Use @attr for primitive properties (string, bool, number) that are intended to be surfaced on your element as HTML attributes. Use @observable for all other property types on an HTMLElement and all observable properties on plain classes.
+
+```typescript {5} title='playground.ts'
+import { FASTElement, customElement, html, attr } from "@microsoft/fast-element";
+
+@customElement({name: "marketdata-component", template: myTemplate})
+export class MarketdataComponent extends FASTElement {
+    @attr lastPrice: Number = 0;
+}
+```
+
+Having the lastPrice always as zero doesn't make our MarketdataComponent very useful. Let's change the HTML template to display the price in real time and add some behavior to the component so it gets the price in real time (in this example, we're mimicing the exchange behavior with a Math.random function):
+
+```typescript {6,12} title='playground.ts'
+import { FASTElement, customElement, html, attr } from "@microsoft/fast-element";
+
+const myTemplate = html<MarketdataComponent>`
+  <div class="header">
+    <h3>My Marketdata component</h3>
+    <h4>Last price: ${x => x.getLastPriceRealTime()}</h4>
+  </div>
+`;
+
+@customElement({name: "marketdata-component", template: myTemplate}) // custom element being created
+export class MarketdataComponent extends FASTElement {
+    @attr lastPrice: number = 0;
+
+    public getLastPriceRealTime() {
+        let priceFromExchange = Math.random() * 10;
+        setInterval(() => {
+            this.lastPrice = priceFromExchange;
+        }, 500);
+        return this.lastPrice;
+    }
+}
+```
+
+Try it now and you'll see the price being updated dynamically!
+
+Don't forget to notice this line:
+```typescript
+<h4>Last price: ${x => x.getLastPriceRealTime()}</h4>
+```
+
+The `x` refers to the custom-element class instance. This is called **binding** and you can check all [binding types here](https://www.fast.design/docs/resources/cheat-sheet/#bindings). 
+
+:::info DIRECTIVES
+FAST also provides directives, such as `when` and `repeat` that are very useful for conditionals and looping through a data structure in your templates.
+
+Examples:
+```typescript {5}
+import { FASTElement, customElement, observable, html, when } from "@microsoft/fast-element";
+
+const template = html<MyApp>`
+ ...
+  ${when(x => !x.ready, html<MyApp>`
+    Loading...
+  `)}
+`;
+
+@customElement({
+  name: "my-app",
+  template
+})
+export class MyApp extends FASTElement {
+  @observable ready: boolean = false;
+  ...
+}
+```
+```typescript {5}
+import { FASTElement, customElement, observable, html, repeat } from "@microsoft/fast-element";
+
+const template = html<FriendList>`
+  ...
+    ${repeat(x => x.friends, html<string>`
+      <li>${x => x}</li>
+    `)}
+`;
+
+@customElement({
+  name: "friend-list",
+  template
+})
+export class FriendList extends FASTElement {
+  @observable friends: Person[] = [];
+  ...
+}
+```
+
+Please make sure to review the [directives](https://www.fast.design/docs/resources/cheat-sheet/#directives) carefully, as we're going to use them along the training!
+:::
+
+### Styling our component
+FASTElement provides a css tagged template helper that allows for the creation of ElementStyles.
+- ADD SOME STYLING TO THE MARKETDATA COMPONENT
+
+More details about [styling](https://www.fast.design/docs/resources/cheat-sheet/#styles).
+
+
+### Exercise 1.1
+- ADD EXERCISES, CREATE A NEW COMPONENT OF TYPE BOOLEAN FOR EXAMPLE
+
 
 ## Extending our application
 ### What are we going to build

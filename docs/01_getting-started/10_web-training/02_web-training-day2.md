@@ -41,17 +41,23 @@ Insert, edit and cancel.
 
 ### Adding the new Order modal
 
-For event handler you created in [here](/getting-started/go-to-the-next-level/events#event-handler) you will create a form that will collect the data from the user.
+Let's start with the simplest way to create a form, using the `zero-form` component:
 
-We will start with using form component that will generate all the inputs based on the API:
+```html {6} title='order.template.ts'
+import type {Order} from './order';
 
-```html title='order.template.ts'
-<zero-form
-  resourceName="EVENT_INSERT_ORDER"
-></zero-form>
+export const OrderTemplate = html<Order>`
+<div class="split-layout">
+    <div class="top-layout">
+      <zero-form class="order-entry-form" resourceName="EVENT_ORDER_INSERT"></zero-form>
+    </div> 
+</div>
+`;
 ```
 
-To respond to user clicking Submit button we need to add event handler:
+This component is able to retrieve the meta-data from the `EVENT_INSERT_ORDER` backend resource (an Event Handler) and automatically builds a simple form for you. In simple scenarios, it can be good enough.
+
+Try to run it now and you'll notice that, even though the form is displayed, nothing happens when you click on Submit. We have to bind the submit button to a function, like this:
 ```html {3} title='order.template.ts'
 <zero-form
   resourceName="EVENT_INSERT_ORDER"
