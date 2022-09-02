@@ -27,7 +27,7 @@ provideDesignSystem().register(alphaModal());
   <alpha-button id="js-alpha-show-modal" appearance="accent">Show Rapid Modal</alpha-button>
   <alpha-modal>
     <h5 slot="top">Modal title</h5>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit/</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit/</p> Lorem ipsum found here
     <alpha-button slot="bottom" id="js-alpha-close-modal">Close this modal</alpha-button>
   </alpha-modal>
 </alpha-card>
