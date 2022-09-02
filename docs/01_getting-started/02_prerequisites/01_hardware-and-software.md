@@ -74,3 +74,12 @@ Genesis Foundation UI
 ```
 
 Please [contact us](mailto:support@genesis.global?subject=.npmrc%20Setup) if you run into any problems.
+
+## gradle.properties file
+You must have a **gradle.properties** file inside a **.gradle** folder on your user directory; this file must contain your Genesis Artifactory password in clear (unencrypted) text:
+
+```shell
+genesisArtifactoryUser=<your-artifactory-user>
+genesisArtifactoryPassword=<your-artifactory-password>
+```
+
