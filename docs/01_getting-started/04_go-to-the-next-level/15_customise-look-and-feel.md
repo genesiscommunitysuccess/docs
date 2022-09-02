@@ -40,13 +40,13 @@ import {tradesGridStyles} from "./trades-grid.styles";
 `
 ```
 
-If you need to provide different class names under specific conditions you can provide function to the cellClass column config as shown in the example below:
+If you need to provide different class names for specific conditions, you can provide a function to the `cellClass` column config, as shown in the example below:
 
 ```typescript
  {field: 'SIDE', cellClass: (params) => params.value === 'BUY' ? : 'buy-side', 'sell-side'},
 ```
 
-Remember to add new styles in your stylesheet file.
+Remember to add the new styles to your stylesheet file.
 
 ```diff
 import {css, ElementStyles} from '@microsoft/fast-element';
@@ -67,7 +67,7 @@ export const tradesGridStyles: ElementStyles = css`
 ```
 
 ## Layout 
-By default, all elements on screen will use `display: block` but we can easily customise it using our custom component that supports responsive web design.
+By default, all elements on screen will use `display: block`, but we can easily customise it using our custom component that supports responsive web design.
 
 ```html
 <foundation-flex-layout class="flex-row flex-sm-column spacing-2x">
@@ -80,4 +80,4 @@ By default, all elements on screen will use `display: block` but we can easily c
 
 
 ## Styling other parts of application
-This was only small part of platforms capabilities in terms of styling. You can read more about our powerful design system configuration in more details in [here](/front-end/design-systems/introduction/)
+This was only small part of the platform's capabilities in terms of styling. You can read more about design-system configuration [here](/front-end/design-systems/introduction/).
