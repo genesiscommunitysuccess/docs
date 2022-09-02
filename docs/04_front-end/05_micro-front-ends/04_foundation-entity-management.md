@@ -13,8 +13,6 @@ tags:
   - form
   - resource
 ---
-import ReactPlayer from 'react-player'
-
 # Entity Management
 
 ## API Reference
@@ -117,8 +115,3 @@ The default value of the `permissions` array is to all permissions, so ensure yo
 :::warning
 The string defines the key in which the serialised state of the columns is stored in an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). Therefore, if you are setting multiple entity managers in your application to persist the state you need to use unique keys or you will get undefined behaviour.
 :::
-
-An example of the behaviour of the persisted column state and resetting the columns is shown here.
-![Example of a user changing and reloading the states](/img/foundation-entity-management-persistance.mp4)
-
-<ReactPlayer controls width='100%' url='/img/foundation-entity-management-persistance.mp4' />

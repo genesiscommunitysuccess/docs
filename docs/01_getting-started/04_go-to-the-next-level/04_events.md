@@ -8,13 +8,13 @@ Now that we have our data model defined, we can continue with exposing the data 
 
 
 ## Data Server
-The component that enables data to be read in real time is called [Data Server](/server-modules/data-server/introduction/). All the queries that a Data Server executes are defined in **positions-app-tutorial-dataserver.kts**. Data Server can query both Tables and Views so let's add two queries:
-- `ALL_BASE_TRADES` - that queries the `TRADE` table and returns the data stored in the table
-- `ALL_TRADES` - that queries the `TRADE_VIEW` and returns the joined data stored in `TRADE`, `INSTRUMENT` and `COUNTERPARTY` tables
+The component that enables data to be read in real time is called the [Data Server](/server-modules/data-server/introduction/). All the queries that a Data Server executes are defined in **positions-app-tutorial-dataserver.kts**. A Data Server can query both tables and views, so let's add two queries:
+- `ALL_POSITIONS` - that queries the `POSITION` table and returns the data stored in the table
+- `ALL_TRADES` - that queries the `TRADE_VIEW` and returns the joined data stored in the `TRADE`, `INSTRUMENT` and `COUNTERPARTY` tables
 
 ```kotlin
 dataServer {
-    query("ALL_BASE_TRADES", TRADE)
+    query("ALL_POSITIONS", POSITION)
     query("ALL_TRADES", TRADE_VIEW)
 }
 ```
@@ -97,4 +97,4 @@ In the Gradle menu on the right of IntelliJ, select **positions-app-tutorial**/*
 :::
 
 ## Conclusion
-Data Server and Event Handler are the main components to interact with the server. Now that they are defined you can either give them a try [right away](/getting-started/go-to-the-next-level/see-it-work) or continue with adding Data Grid to show the data.
+Data Server and Event Handler are the main components to interact with the server. Now that they are defined, you can either give them a try [right away](/getting-started/go-to-the-next-level/see-it-work) or continue with adding Data Grid to show the data.

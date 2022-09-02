@@ -12,12 +12,12 @@ To create a Streamer:
 1. Add the process configuration for the Streamer to the _applicationName_**-processes.xml** file. For example:
 
 ```xml
-<process name="TRADING_APP_STREAMER">
+<process name="POSITION_APP_STREAMER">
     <start>true</start>
     <options>-Xmx128m -DXSD_VALIDATE=false</options>
     <module>genesis-pal-streamer</module>
     <package>global.genesis.streamer.pal</package>
-    <script>trading_app-streamer.kts</script>
+    <script>position_app-streamer.kts</script>
 	<language>pal</language>
 </process>
 ```

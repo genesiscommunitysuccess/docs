@@ -15,12 +15,12 @@ To create a Streamer Client:
 1. Add the configuration for the Streamer Client process to the _applicationName_-**processes.xml** file:
 
 ```xml
-<process name="TRADING_APP_STREAMER_CLIENT">
+<process name="POSITION_APP_STREAMER_CLIENT">
     <start>true</start>
     <options>-Xmx128m -DXSD_VALIDATE=false</options>
     <module>genesis-pal-streamerclient</module>
     <package>global.genesis.streamerclient.pal</package>
-    <script>trading_app-streamer-client.kts</script>
+    <script>position_app-streamer-client.kts</script>
 	<language>pal</language>
 </process>
 ```
@@ -36,7 +36,7 @@ The simplest streamer-client definition is:
 ```kotlin
 streamerClients {
     streamerClient(clientName = "QUOTE_RESPONSE") {
-        dataSource(processName = "TRADING_APP-STREAMER", sourceName = "ORDERS_OUT")
+        dataSource(processName = "POSITION_APP-STREAMER", sourceName = "ORDERS_OUT")
             onMessage {
                 send("QUOTE_EVENT_HANDLER", "QUOTE_UPDATE_EVENT")
             }
