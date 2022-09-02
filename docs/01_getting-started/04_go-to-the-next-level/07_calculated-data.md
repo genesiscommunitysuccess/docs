@@ -4,7 +4,7 @@ sidebar_label: 'Calculated data using derived fields'
 id: calculated-data
 ---
 
-In certain cases, you might want to display piece of information that can be derived from the data in hand. To achieve that, you can use [derived fields](/database/fields-tables-views/views/views-advanced/#derived-fields). They are a useful way of providing calculated data and can be added to views. Note that you can only use fields that are in the view to create a derived field.
+In certain cases, you might want to display pieces of information that can be derived from the data in hand. To achieve that, you can use [derived fields](/database/fields-tables-views/views/views-advanced/#derived-fields). They are a useful way of providing calculated data and can be added to views. Note that you can only use fields that are in the view to create a derived field.
 
 Let's add a derived field named `CONSIDERATION` that uses the `QUANTITY` and the `PRICE` from the `TRADE` table and returns their product:
 

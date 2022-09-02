@@ -25,7 +25,7 @@ plugins {
 Ensure the **gradle.properties** file from the **server/jvm folder** is properly set with the following entries:
 
 ```properties
-genesis-home=/home/genesis/run
+genesis-home=/home/genesis/run/
 wsl-distro=TrainingCentOS
 wsl-user=genesis
 ```

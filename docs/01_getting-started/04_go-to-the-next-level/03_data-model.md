@@ -107,6 +107,8 @@ tables {
         INSTRUMENT_ID not null
         QUANTITY
         NOTIONAL
+        VALUE
+        PNL
 
         primaryKey {
             POSITION_ID
