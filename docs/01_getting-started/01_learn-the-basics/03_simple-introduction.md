@@ -1,6 +1,6 @@
 ---
-title: 'Simple introduction'
-sidebar_label: 'A very simple introduction'
+title: 'A very simple introduction'
+sidebar_label: 'Simple introduction'
 id: simple-introduction
 ---
 
