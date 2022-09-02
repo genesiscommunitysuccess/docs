@@ -59,7 +59,9 @@ cat /home/alpha/run/alpha/cfg/alpha-fields-dictionary.kts
 
 ### Integration with the Deployment Plugin
 
-The Genesis low-code platform running on the container can be accessed via SSH on the port 1337, so the deployment plugin can be configured to operate with it.
+The main Genesis server container can be accessed via SSH, which by default will be bound to your host machine on port 1337 (unless you have changed it by editing the provided docker-compose.yml file). 
+
+Now we can configure the deployment plugin to operate with the main Genesis server container.
 
 Let's add the following in the **gradle.properties** in the jvm/server directory: 
 
