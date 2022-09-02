@@ -18,7 +18,7 @@ docker-compose up -d #On the IntelliJ terminal
 After the Docker containers are up and running, the front end is accessible on: `http://localhost:6060`
 
 
-Once the server has successfully started all the components on the docker container, you may log in.
+Wait until all the processes are running on the server container (it takes a couple of minutes), you can log in.
 
 ## Conclusion
 That’s it. You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.
