@@ -4,7 +4,7 @@ sidebar_label: 'Run the application (Docker)'
 id: run-the-application-docker
 ---
 
-You have a choice of how you run the application. The instructions on this page are for using Docker. If you prefer to use WSL/centOS as your environment, there are [separate instructions](/getting-started/quick-start/run-the-application/).
+You have a choice of how you run the application. The instructions on this page are for using Docker. If you prefer to use WSL/CentOS as your environment, there are [separate instructions](/getting-started/quick-start/run-the-application/).
 
 ## Building and composing Docker images 
 
