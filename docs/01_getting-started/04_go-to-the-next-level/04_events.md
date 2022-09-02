@@ -97,4 +97,4 @@ In the Gradle menu on the right of IntelliJ, select **positions-app-tutorial**/*
 :::
 
 ## Conclusion
-Data Server and Event Handler are the main components to interact with the server. Now that they are defined you can either give them a try [right away](/getting-started/go-to-the-next-level/see-it-work) or continue with adding Data Grid to show the data.
+Data Server and Event Handler are the main components to interact with the server. Now that they are defined, you can either give them a try [right away](/getting-started/go-to-the-next-level/see-it-work) or continue with adding Data Grid to show the data.
