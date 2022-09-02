@@ -438,7 +438,7 @@ At the beginning of a cold start, all fields in `consolidationFields` of the con
 
 ## Troubleshooting
 
-You can set the default logging level for all the Consolidators in your _-_application_**consolidator.kts** file using a config statement at the beginning. 
+You can set the default logging level for all the Consolidators in your _application_-**consolidator.kts** file using a config statement at the beginning. 
 However, within any individual Consolidator, you can also set a logging level that overrides this setting.
 If a Consolidator is not functioning as expected, raise its logging level to INFO, or even higher.
 Let's see a very simple example. Here the default logging level has been set to INFO. However, Consolidator B has its own loglevel, `DEBUG`, which overrides the file-level setting:
