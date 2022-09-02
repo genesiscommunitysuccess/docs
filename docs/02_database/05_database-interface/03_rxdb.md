@@ -361,14 +361,9 @@ By providing different parameters, you can refine what information you are retur
 ```kotlin
 // there are multiple ways to get a range of records, either for some fields
 // of a unique index or some or all fields of a non unique index:
-db.getRange(Trade.byTypeId("typeA"))
-db.getRange(trade.byTypeId(), 1)
-db.getRange(trade, Trade.ByTypeId, 1)
-
-// or by setting a start and an end range:
-db.getRange(Trade.byTypeId("tradeType1"), Trade.byTypeId("tradeType2"))
-db.getRange(trade1.byTypeId(), trade2.byTypeId(), 1).toList()
-db.getRange(trade1, trade2, Trade.ByTypeId, 1).toList()
+rxDb.getRange(Trade.byTypeId("typeA"))
+rxDb.getRange(trade.byTypeId(), 1)
+rxDb.getRange(trade, Trade.ByTypeId, 1)
 ```
 
 </TabItem>
