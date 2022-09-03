@@ -7,34 +7,37 @@ sidebar_position: 6
 
 This day covers:
 
-- [Design systems](#) and [Styling](#)
-- [Reporting](#)
+- [Styling](#styling) and [Design systems](#design-systems) 
+- [Reporting](#reporting)
 - [Angular integration​](#angular-integration)
 
-## Design systems
-[SHOW THIS CONTENT](https://internal-web/uat/secure/front-end/design-systems/introduction/)
-
-A design system is a collection of resources for interactive media that promotes brand alignment of [UX assets](/front-end/design-systems/introduction/#ux-assets), [Design tokens](/front-end/design-systems/introduction/#design-tokens), [Component libary](/front-end/design-systems/introduction/#component-library), and [Documentation](/front-end/design-systems/introduction/#documentation-site).
-
-Our design system implementation provides the elements listed above, as well as a few additional features. One of these is the ability for one design system to extend another. For example, a foundation/base design system can focus on functionality and provide components with minimal styling, while more specialised design systems can extend it and provide styling for a given target audience. Therefore, you are not restricted to a single design system within a project - it is possible to use multiple design systems within the same project (and even on the same page).
-
-
-#### Exercise 4.1 Overriding some components using Design System
-<!--
-this is pretty much here:
--->
-:::info ESTIMATED TIME
-30 mins
-:::
-
-Let´s .....
-
 ## Styling
+
+You might watn to customise look and feel using layout and styles.
+
+For instance, styling an ag-grid can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called trades.styles.ts and provide the following code:
+
+```typescript
+import {css, ElementStyles} from '@microsoft/fast-element';
+
+export const tradesGridStyles: ElementStyles = css`
+    .currency-column {
+        color: blue;
+    }
+`
+```
+
+Configure your column to have the specific class name [column config](https://ag-grid.com/javascript-data-grid/cell-styles/#cell-class):
+
+```typescript
+{field: 'CURRENCY', cellClass: 'currency-column'},
+```
+
 [SHOW THIS CONTENT](https://internal-web/uat/secure/getting-started/go-to-the-next-level/customize-look-and-feel/#styling-custom-component)
 and
 [SHOW THIS CONTENT](https://www.fast.design/docs/fast-element/leveraging-css/#styles-and-the-element-lifecycle)
 
-#### Exercise 4.2 Styling an ag-grid
+#### Exercise 4.1 Styling an ag-grid
 <!--
 this is pretty much here:
 -->
@@ -43,6 +46,210 @@ this is pretty much here:
 :::
 
 Let´s .....
+
+
+## Design systems
+
+A design system is a collection of resources for interactive media that promotes brand alignment of [UX assets](/front-end/design-systems/introduction/#ux-assets), [Design tokens](/front-end/design-systems/introduction/#design-tokens), [Component libary](/front-end/design-systems/introduction/#component-library), and [Documentation](/front-end/design-systems/introduction/#documentation-site).
+
+The Genesis [design system](/front-end/design-systems/introduction/) implementation provides the elements listed above, as well as a few additional features, such as:
+- set of reusable UI components
+- configuration files which allow you to control colours, typography, sizing and various other aspects
+- building blocks for creating your own custom components on top of the design system
+
+When you generate a design system using the Genesis scaffolding CLI tool [GenX](/getting-started/quick-start/create-a-new-project/) it will automatically extend a base design system that we have provided. This highly configurable design system is called Genesis Foundation UI. Our design system starts in [Axure](https://www.axure.com/) and has been lab-tested to meet the needs of financial markets.
+
+Design system are highly configurable and can be shared across multiple applications. When performing customisations, you can control the scope as follows:
+
+* [Customisation (general)](#customisation-general) - applied to the design system itself, affecting all applications that use the system. 
+* [Customisation (app-specific)](#customisation-app-specific) - this is only applied to a single application. Other applications using the same system are not affected.
+
+### Customisation (general)
+
+The starting point for making [general customisations](/front-end/design-systems/customisation-general/) is the `src/_config` folder:
+
+```bash
+alpha-design-system
+├── dist
+├── node_modules
+├── src
+│   ├── _config
+│   │   ├── styles
+│   │   │   ├── colors.ts
+│   │   │   └── index.ts
+│   │   ├── tokens
+│   │   │   ├── custom.ts
+│   │   │   ├── default.ts
+│   │   │   └── index.ts
+│   │   ├── values
+│   │   │   ├── color.ts
+│   │   │   ├── index.ts
+│   │   │   ├── misc.ts
+│   │   │   ├── sizing.ts
+│   │   │   └── typography.ts
+│   │   └── index.ts
+```
+
+It contains configuration files that set default values for various design tokens, as well as a few other settings. You can achieve major visual changes simply by modifying token defaults. There are several categories of token available:
+
+* [Colour](/front-end/design-systems/tokens/colour/): base colours, dark/light mode, colour variants for interactive states (hover etc.)
+* [Typography](/front-end/design-systems/tokens/typography/): default font family, font size and line height hierarchy
+* [Sizing](/front-end/design-systems/tokens/sizing/): component sizing, spacing and border style
+* [Miscellaneous](/front-end/design-systems/tokens/miscellaneous/): other configuration options, such as the naming prefix (e.g. `alpha`)
+
+:::tip
+To help you visualise how modifying tokens impacts the component look and feel, we have created a [live configuration preview](/front-end/design-systems/preview/).
+:::
+
+To go beyond adjusting token values, you can override the default component implementation. You can choose only to  override certain aspects of a component (such as template, styles or shadom DOM options) or provide a completely custom implementation. By default, components in your design simply re-export components from the underlying foundation design system as is (exact code can vary):
+
+```ts
+import {foundationButton} from '@genesislcap/foundation-ui';
+
+export const alphaButton = () => foundationButton();
+```
+
+Instead of re-exporting the default, you can provide your own custom implementation:
+
+```ts
+import {css, FoundationElement, FoundationElementDefinition, html} from '@genesislcap/foundation-ui';
+
+export const styles = css`
+/* CSS  */
+`;
+
+export const template = html<AlphaButton>`
+/* Template */
+`;
+
+interface ButtonDefinition extends FoundationElementDefinition {
+  /* Any properties */
+}
+
+export class Button extends FoundationElement {
+  /* Any custom logic */
+}
+
+export const alphaButton = Button.compose<ButtonDefinition>({
+  baseName: 'button',
+  template,
+  styles
+});
+```
+
+### Customisation (app-specific)
+
+In the [Customisation (app-specific)](/front-end/design-systems/customisation-app-specific/) you can also choose to customise either [all the components](#customising-all-components) or only [individual ones](#customising-individual-components).
+
+#### Customising all components
+
+When you register a design system in an application, there are several configuration options that affect all the components provided by that design system.
+
+You can override the default prefix set in the `_config` folder for a specific application as follows:
+
+```ts
+import { alphaButton, provideDesignSystem } from '@genesislcap/alpha-design-system';
+
+provideDesignSystem()
+    .withPrefix('custom')
+    .register(alphaButton())
+```
+
+The element can then be used in HTML using the `custom` prefix:
+
+```html
+<custom-button>Button</custom-button>
+```
+
+You can also override the default [shadow root mode](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode) (typically `open`, as that is both recommended and the default). You can choose to close all shadow roots by default using `withShadowRootMode()`:
+
+```ts
+provideDesignSystem()
+    .withShadowRootMode('closed')
+    .register(/* ... */)
+```
+
+As a best practice, one should try to avoid registering the same component more than once. If your architecture makes this difficult or impossible, you can provide a custom callback to handle disambiguating the duplicate elements. Further details can be found [here](/front-end/design-systems/customisation-app-specific/#name-disambiguation).
+
+#### Customising individual components
+
+The APIs described above impact all components, but those options can also be configured or overridden on a per-component basis. Configuring the component itself takes priority over any design system configuration.
+
+The prefix for a component can be configured for a component registration by providing a configuration object with a prefix field during registration:
+
+```ts
+provideDesignSystem()
+    .register(
+        alphaButton({ prefix: 'custom' })
+    );
+```
+
+To use a custom template for a component, provide a `template` field to the configuration object during registration:
+
+```ts
+provideDesignSystem()
+    .register(
+        alphaButton({
+            template: html`
+                <p>A completely new template</p>
+            `
+        })
+    )
+```
+
+Styles for a component can be configured as well, by providing a `styles` field to the configuration object during registration:
+
+```ts
+provideDesignSystem()
+    .register(
+        alphaButton({
+            styles: css`
+                /* completely replace the original styles */
+            `
+        })
+    )
+```
+
+You can also use this technique to extend the existing styles; call the style function to import the originals and compose those with new styles. Here's what that would look like:
+
+```ts
+provideDesignSystem()
+    .register(
+        alphaButton({
+            styles: (ctx, def) => css`
+                ${buttonStyles(ctx, def)}
+                /* add your style augmentations here */
+            `
+        })
+    )
+```
+Shadow options can be configured as well, including both [shadow root mode](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode) and [focus delegation](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus):
+
+```ts
+provideDesignSystem()
+    .register(
+        alphaButton({
+            shadowOptions: {
+                mode: 'closed',
+                delegatesFocus: true
+            }
+        })
+    );
+```
+
+For more information on shadow options, see [Element.attachShadow()](https://developer.mozilla.org/en-US/docs/Web/API/Element/attachShadow).
+
+
+#### Exercise 4.2 Overriding some components using Design System
+<!--
+this is pretty much here: https://github.com/genesislcap/clarity-web/blob/develop/packages/apps/clarity/src/components/components.ts
+  ====> provideZeroDS
+-->
+:::info ESTIMATED TIME
+40 mins
+:::
+
+We are customising our application using [Customisation (app-specific)](#customisation-app-specific). Use the prefix **ui-training** and create a custom TextField and ComboBox style.
 
 
 ## Reporting
