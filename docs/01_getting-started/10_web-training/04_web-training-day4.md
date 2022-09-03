@@ -13,9 +13,11 @@ This day covers:
 
 ## Styling
 
-You might watn to customise look and feel using layout and styles.
+You might watn to customise look and feel using layout and styles. For instance, we can style an [ag-grid](#ag-grid) or even a [layout](#layout) that supports responsive web design.
 
-For instance, styling an ag-grid can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called trades.styles.ts and provide the following code:
+### Ag-Grid
+
+Styling an ag-grid can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called trades.styles.ts and provide the following code:
 
 ```typescript
 import {css, ElementStyles} from '@microsoft/fast-element';
@@ -32,6 +34,43 @@ Configure your column to have the specific class name [column config](https://ag
 ```typescript
 {field: 'CURRENCY', cellClass: 'currency-column'},
 ```
+
+In home.template.ts, in the grid tag, include utility that will inject your stylesheet to the component:
+
+```html
+import {tradesGridStyles} from "./trades-grid.styles";
+
+<zero-ag-grid>
+    ...    
+    <slotted-styles :styles=${() => tradesGridStyles}></slotted-styles>
+    ...
+</zero-ag-grid>
+`
+```
+
+If you need to provide different class names for specific conditions, you can provide a function to the `cellClass` column config, as shown in the example below:
+
+```typescript
+{field: 'SIDE', cellClass: (params) => params.value === 'BUY' ? : 'buy-side', 'sell-side'},
+```
+
+Remember to add the new styles to your stylesheet file.
+
+```css
+import {css, ElementStyles} from '@microsoft/fast-element';
+
+export const tradesGridStyles: ElementStyles = css`         .currency-column {         color: blue;     }
+
++    .buy-side {
++        color: green;
++    }    
++    .sell-side {
++        color: red;
++    }
+`
+```
+
+### Layout
 
 [SHOW THIS CONTENT](https://internal-web/uat/secure/getting-started/go-to-the-next-level/customize-look-and-feel/#styling-custom-component)
 and
