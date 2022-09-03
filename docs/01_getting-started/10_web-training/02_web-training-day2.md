@@ -70,7 +70,7 @@ This is related to binding as we briefly explained in the previous day. If it's 
 
 We define `insertOrder` function in order.ts
 
-```typescript title='order.ts'
+```typescript {1,3,7} title='order.ts'
   import {Connect} from '@genesislcap/foundation-comms';
   
   @Connect connect: Connect;
@@ -90,9 +90,30 @@ We define `insertOrder` function in order.ts
   }
 ```
 
-INTRODUCE GENESIS COMMS and EXPLAIN CONNECT!
+### Introducing Genesis Comms lib
+As you can see in the `insertOrder` code, we are importing `Connect` from `@genesislcap/foundation-comms`, which is Genesis core communication system with the server.
+:::info full flexibility
+You can use the foundation-comms in any modern web app, based on FAST or not. This gives you full flexibility on how to interact with the server without, necessarily, relying on the UI components provided.
+:::
 
-This approach is good for simple forms or prototyping, but we might realise that it is not enough for our use case, and we require much more customisation.
+One of the key objects provided by the Foundation Comms is the `Connect` object whose main methods are:
+- `connect`: 
+connects to the server through a web socket (when WS is available or http as fallback). You must pass the server host URL. In most apps, such as the one we're building in this training, the connection is already handled by the MainApplication component on initilization relying on the [config](/getting-started/web-training/web-training-day1/#config) provided by the app.
+
+- `commitEvent`: 
+use it to call event handlers on the server. You must pass the name of the event and an object with the input data required by the event. This data must be in JSON format with key **DETAILS**. See the example above of the `insertOrder` function.
+
+- `getMetadata`: it retrieves the metadata of a resource, that can be an event handler, data server query or a request server. When we used the **zero-form** component previously, for example, it used internally getMetadata passing the event handler name to get all the input fields of the event.
+
+- `request`: use it to call a [request server](/server-modules/request-server/introduction/) resource. You must pass the request server resource name.
+
+- `snapshot` and `stream`: use them to get a snapshot of data or to stream data in real time from a resource (usually, a data server query).
+
+These are the most common features from Foundation Comms you will use. We're going to use most of them and give more practical examples througout the training. However, please note that there are more components provided by Foundation Comms such as Auth, Session, User, Analytics. Feel free to import these components and explore their methods to get a sense of what's provided.
+
+### Creating a custom form
+
+Using `zero-form` is good for simple forms or prototyping, but we might realise that it is not enough for our use case, and we require much more customisation.
 
 To enable that you will create each form element manually and take care of storing user inputted data.
 
