@@ -32,7 +32,7 @@ A page listing all the orders with a filter by Type and actions to insert a new 
 | Quantity          | Integer      | Yes | Must be positive
 | Price          | Double      | Yes | Must be positive
 | Total          | Double      | No | Display Quantity * Price
-| Type          | Dropdown      | Yes | Display types from ENUM ORDER_TYPES
+| Side          | Dropdown      | Yes | Display types from ENUM SIDE
 | Notes          | String      | Yes | Free text up to 50 chars
 
 #### Actions
@@ -64,7 +64,7 @@ Try to run it now and you'll notice that, even though the form is displayed, not
   @submit=${(x, c) => x.insertOrder(c.event as CustomEvent)}
 ></zero-form>
 ```
-:::tip what is the @ and ${(x, c)} ?
+:::tip what is the @submit=${(x, c)} ?
 This is related to binding as we briefly explained in the previous day. If it's still unclear, make sure to check [Understanding bindings](https://www.fast.design/docs/fast-element/declaring-templates#understanding-bindings) and [Events](https://www.fast.design/docs/fast-element/declaring-templates#events)
 :::
 
@@ -94,6 +94,8 @@ We define `insertOrder` function in order.ts
 As you can see in the `insertOrder` code, we are importing `Connect` from `@genesislcap/foundation-comms`, which is Genesis core communication system with the server.
 :::info full flexibility
 You can use the foundation-comms in any modern web app, based on FAST or not. This gives you full flexibility on how to interact with the server without, necessarily, relying on the UI components provided.
+
+Alternatively, you could use any HTTP client to access the server resources as they are exposed as HTTP endpoints as well. However, we strongly encourage the use of Foundation Comms as it handles things like the web socket connection, authentication and authorization, data subscription and so on.
 :::
 
 One of the key objects provided by the Foundation Comms is the `Connect` object whose main methods are:
@@ -109,7 +111,7 @@ use it to call event handlers on the server. You must pass the name of the event
 
 - `snapshot` and `stream`: use them to get a snapshot of data or to stream data in real time from a resource (usually, a data server query).
 
-These are the most common features from Foundation Comms you will use. We're going to use most of them and give more practical examples througout the training. However, please note that there are more components provided by Foundation Comms such as Auth, Session, User, Analytics. Feel free to import these components and explore their methods to get a sense of what's provided.
+Those are the most common features from Foundation Comms you will use. We're going to use most of them and give more practical examples througout the training. However, please note that there are more components provided by Foundation Comms such as Auth, Session, User, Analytics. Feel free to import these components and explore their methods to get a sense of what's provided.
 
 ### Creating a custom form
 
@@ -117,15 +119,16 @@ Using `zero-form` is good for simple forms or prototyping, but we might realise 
 
 To enable that you will create each form element manually and take care of storing user inputted data.
 
-You start by adding elements to the template
+You start by adding elements to the template:
 
 ```html title='order.template.ts' 
-<zero-text-field>Quantity</zero-text-field>
+<zero-select>Instrument</zero-select>
+<label>Last price</label>
+<zero-text-field type="number">Quantity</zero-text-field>
 <zero-text-field type="number">Price</zero-text-field>
-<span>Instrument</span>
-<zero-select></zero-select>
-<span>Side</span>
-<zero-select></zero-select>
+<label>Total</label>
+<zero-select>Side</zero-select>
+<zero-text-area>Notes</zero-text-area>
 ```
 
 Then, define the variables that will hold the values that are entered.
@@ -133,34 +136,50 @@ Then, define the variables that will hold the values that are entered.
 In the file **order.ts**, add the following properties to the class: `Order`:
 
 ```ts title='order.ts'
-@observable public quantity: string;
-@observable public price: string;
 @observable public instrument: string;
-@observable public side: string = 'BUY';
+@observable public lastPrice: number;
+@observable public quantity: number;
+@observable public price: number;
+@observable public total: number;
+@observable public side: string;
+@observable public notes: string;
 ```
 
-Now we need to add event handlers that would respond to user changes and store the inputted data
+Now we need to add event handlers that would respond to user changes and store the inputted data.
 
-We can do it in traditional way by adding `@change` [event handler](https://www.fast.design/docs/fast-element/declaring-templates#events) but we can also use the `sync` directive that would do that for us.
+We can do it in the traditional way by adding `@change` [event handler](https://www.fast.design/docs/fast-element/declaring-templates#events) or we can use the `sync` directive from Genesis Foundation Utls that would do that for us.
+
 Let's add it to each form element:
 
-```html title='order.template.ts' 
-<zero-text-field :value=${sync(x=> x.quantity)}>Quantity</zero-text-field>
-<zero-text-field :value=${sync(x=> x.price)}>Price</zero-text-field>
+```html title='order.template.ts'
 <span>Instrument</span>
 <zero-select :value=${sync(x=> x.instrument)}></zero-select>
+
+<span>Last price: ${x => x.lastPrice}</span>
+<zero-text-field :value=${sync(x=> x.quantity)}>Quantity</zero-text-field>
+<zero-text-field :value=${sync(x=> x.price)}>Price</zero-text-field>
+<span>Total: ${x => x.lastPrice}</span>
 <span>Side</span>
-<zero-select :value=${sync(x=> x.side)}></zero-select>
+<zero-select :value=${sync(x=> x.type)}>Side</zero-select>
+<zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
+
 ```
 
-You probably realize that we don't have any options in our select component so let's fix that now.
-We will start with side as it only has two static options BUY and SELL so we just need to add those two options inside select tag
+You probably realized we don't have any options in our select components, so let's fix that now.
+
+Let's start with **side**. We could just add two static options BUY and SELL like this:
 
 ```html title='order.template.ts' 
 <zero-select :value=${sync(x=> x.side)}>
     <zero-option>BUY</zero-option>
     <zero-option>SELL</zero-option>
 </zero-select>
+```
+
+However, any changes on the backend would require a change in the options. Wouldn't it be much better if we could just retrieve all side options from the server? Like this:
+
+```ts
+code to retrieve ENUM side from server
 ```
 
 For instrument, it's more complicated because list of options needs to be fetched from the API.
@@ -289,7 +308,7 @@ export const orderColumnDefs: ColDef[] = [
   {field: 'QUANTITY', headerName: 'Quantity', valueFormatter: formatNumber(0), type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
   {field: 'ORDER_ID', headerName: 'Order ID', flex: 1, enableCellChangeFlash: true},
   {field: 'PRICE', headerName: 'Price', valueFormatter: formatNumber(2), type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
-  {field: 'ORDER_TYPE', headerName: 'Order Type', sort: 'desc', flex: 2},
+  {field: 'ORDER_SIDE', headerName: 'Order Side', sort: 'desc', flex: 2},
   {field: 'NOTES', headerName: 'Notes', sort: 'desc', flex: 2},
   
 ];

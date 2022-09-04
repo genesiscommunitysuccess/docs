@@ -437,7 +437,7 @@ export class MarketdataComponent extends FASTElement {
 
 There are quite a few more interesting resources such as [composing styles, partial CSS and CSS Directives](https://www.fast.design/docs/fast-element/leveraging-css) provided by FAST. Make sure to check that out!
 
-By now, you should have a good understanding on how to build web components based on FAST. But, again, make sure to check [FAST official documentation](https://www.fast.design/docs/fast-element/defining-elements).
+By now, you should have a good understanding of how to build web components based on FAST. But, again, make sure to check [FAST official documentation](https://www.fast.design/docs/fast-element/defining-elements).
 
 
 ### Exercise 1.1
