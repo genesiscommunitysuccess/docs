@@ -17,7 +17,7 @@ You might watn to customise look and feel using layout and styles. For instance,
 
 ### Ag-Grid
 
-Styling an ag-grid can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called trades.styles.ts and provide the following code:
+Styling an ag-grid can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called **trades.styles.ts** and provide the following code:
 
 ```typescript
 import {css, ElementStyles} from '@microsoft/fast-element';
@@ -35,7 +35,7 @@ Configure your column to have the specific class name [column config](https://ag
 {field: 'CURRENCY', cellClass: 'currency-column'},
 ```
 
-In home.template.ts, in the grid tag, include utility that will inject your stylesheet to the component:
+In **home.template.ts**, in the grid tag, include utility that will inject your stylesheet to the component:
 
 ```html
 import {tradesGridStyles} from "./trades-grid.styles";
@@ -72,19 +72,23 @@ export const tradesGridStyles: ElementStyles = css`         .currency-c
 
 ### Layout
 
-[SHOW THIS CONTENT](https://internal-web/uat/secure/getting-started/go-to-the-next-level/customize-look-and-feel/#styling-custom-component)
-and
-[SHOW THIS CONTENT](https://www.fast.design/docs/fast-element/leveraging-css/#styles-and-the-element-lifecycle)
+By default, all elements on screen will use `display:block`, but we can easily customise it using our custom component that supports responsive web design.
+
+```html
+<foundation-flex-layout class="flex-row flex-sm-column spacing-2x">
+    <!--content-->
+</foundation-flex-layout>
+```
+
+This was only small part of the platform's capabilities in terms of styling. You can read more about design-system configuration [here](#design-systems).
+
 
 #### Exercise 4.1 Styling an ag-grid
-<!--
-this is pretty much here:
--->
 :::info ESTIMATED TIME
 30 mins
 :::
 
-Let´s .....
+Create a stylesheet file called **positions.styles.ts** to sytle the AgGrid we are using in the Positions, query ALL_POSITIONS. Use all the knowledge you got.
 
 
 ## Design systems
@@ -363,15 +367,15 @@ public async configure() {
 }
 ```
 
-#### Exercise 4.3 Using Micro-front-end Reporting
+#### Exercise 4.3 Creating a new ALL_POSITIONS Report
 <!--
 this is pretty much here:
 -->
 :::info ESTIMATED TIME
-30 mins
+25 mins
 :::
 
-Let´s .....
+Create a new report using the ALL_POSITIONS query in the Data Server.
 
 
 ## Angular integration
