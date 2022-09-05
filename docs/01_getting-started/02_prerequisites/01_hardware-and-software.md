@@ -4,7 +4,7 @@ sidebar_label: 'Hardware and software'
 id: hardware-and-software
 ---
 
-This page gives you the hardware and software requirement you need in order to run a development workstation for the Genesis low-code platform. It also give you instructions on accessing the Genesis repository and configuring the Genesis packages.
+This page gives you the hardware and software requirements needed in order to run a development workstation for the Genesis low-code platform. It also provides instructions for accessing the Genesis repository and configuring the Genesis packages.
 
 
 ## Recommended hardware and operating system
@@ -16,19 +16,19 @@ This page gives you the hardware and software requirement you need in order to r
 
 ## Recommended software packages
 
-| Package	| Minimum Version| 
-|--------------|:-----:|
-| IntelliJ	| 2021.1.3|
-|Visual Studio Code	| 1.52.1|
-|Java SDK| 11|
-| Putty	| 0.74|
-| Chrome | 88.0|
-| Maven	| 3.6.3|
-| Postman	| 8|
-| Gradle  | 6.8|
-| NodeJS  |16 LTS+|
+| Package	| Minimum Version | 
+|--------------|:---------------:|
+| IntelliJ	| 2022.2 and above  |
+|Visual Studio Code	|     1.52.1      |
+|Java SDK|       11        |
+| Putty	|      0.74       |
+| Chrome |      88.0       |
+| Maven	|      3.6.3      |
+| Postman	|        8        |
+| Gradle  |       6.8       |
+| NodeJS  |     16 LTS+     |
 
-You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
+You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJ enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
 
 ## Requirements
 
@@ -52,7 +52,7 @@ You will be provided with access details during your on-boarding.
 
  ![](/img/set-me-up.png)
 
- 7. Scroll down _inside_ the Set Me Up dialog. At the bottom of the page, you will find a code sample for .npmrc, which contains your scope information, including user name an encrypted password. Copy this and paste it into the file you created in the previous step. For reference, the snippet should look something like this (but **don't** copy the one below - because it contains dummy information!):
+ 7. Scroll down _inside_ the Set Me Up dialog. At the bottom of the page, you will find a code sample for .npmrc, which contains your scope information, including user name an encrypted password. Copy this and paste it into the file you created in the previous step. For reference, the snippet should look something like this (**Do not** copy the below example directly - because it contains dummy information!):
 
 ```shell
 @<SCOPE>:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/
@@ -65,7 +65,7 @@ You will be provided with access details during your on-boarding.
 8. Replace `<SCOPE>` with `genesislcap`, so that the line reads:
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
 
-9. Save the file and open a terminal under the directory path of this `.npmrc` file and type:
+9. Save the file and open a terminal under the directory path `.npmrc` file and type:
 `npm info @genesislcap/foundation-ui`. If set-up was successful, you should see a response like this:
 
 ```shell
