@@ -13,9 +13,9 @@
   },
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^0.10.0",
-    "@docusaurus/core": "2.0.0",
-    "@docusaurus/preset-classic": "2.0.0",
-    "@docusaurus/theme-live-codeblock": "^2.0.0",
+    "@docusaurus/core": "2.0.1",
+    "@docusaurus/preset-classic": "2.0.1",
+    "@docusaurus/theme-live-codeblock": "2.0.1",
     "@genesislcap/foundation-entity-management": "2.0.0-docs.4",
     "@genesislcap/foundation-header": "2.0.0-docs.4",
     "classnames": "^2.3.1",
