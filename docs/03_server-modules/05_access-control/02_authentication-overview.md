@@ -124,7 +124,7 @@ The configuration file takes the same fields as LDAP. You can see this in the ex
 
 ## SSO authentication
 
-SSO authentication allows users to use a single set of credentials to access a range of applications, including those built on the Genesis low-code platform. For more information on SSO technology, please visit the [Single-sign on Wikipedia page](https://en.wikipedia.org/wiki/Single_sign-on)
+SSO authentication allows users to use a single set of credentials to access a range of applications, including those built on the Genesis low-code platform. For more information on SSO technology, please visit the [Single-sign on Wikipedia page](https://en.wikipedia.org/wiki/Single_sign-on).
 
 SSO authentication is a more involved process to enable; thus requires additional file changes detailed in [SSO Authentication](/server-modules/access-control/SSO-authentication/).
 
