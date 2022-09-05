@@ -7,7 +7,7 @@ id: basics
 [Introduction](/server-modules/evaluator/introduction) | [Basics](/server-modules/evaluator/basics) | [Examples](/server-modules/evaluator/examples) | [Configuring runtime](/server-modules/evaluator/configuring-runtime) | [Testing](/server-modules/evaluator/testing)
 
 ## Dynamic rules
-This feature enablse you to raise alarms on certain conditions or to react on specific states. Dynamic rules respond to changes in database tables. For instance if a figure goes above a certain threshold, the rule could trigger a warning email to be sent out.
+This feature enables you to raise alarms on certain conditions or to react on specific states. Dynamic rules respond to changes in database tables. For instance, if a figure goes above a certain threshold, the rule could trigger a warning email to be sent out.
 
 ## Defining a dynamic rule
 To define a rule, you need to insert a row into the DYNAMIC_RULE table. This table is defined as follows:
@@ -22,7 +22,7 @@ To define a rule, you need to insert a row into the DYNAMIC_RULE table. This tab
 | RULE_EXPRESSION | This is a [groovy expression](https://groovy-lang.org/syntax.html) which is evaluated when their is a table change on RULE_TABLE, if this evaluates to true, then the RESULT_EXPRESSION logic is activated eg `(QUANTITY > 500)` |
 | PROCESS_NAME | Process Name to send the event  eg POSITION_APP_EVENT_HANDLER |
 | MESSAGE_TYPE | The Message Type that will be defined |
-| RESULT_EXPRESSION | this is a [groovy expression](https://groovy-lang.org/syntax.html) which should set on the MESSAGE Object that is defined in MESSAGE_TYPE eg `(POSITION_ID = POSITION_ID)`|
+| RESULT_EXPRESSION | This is a [groovy expression](https://groovy-lang.org/syntax.html) which should set on the MESSAGE Object that is defined in MESSAGE_TYPE eg `(POSITION_ID = POSITION_ID)`|
 
 :::note
 Groovy expressions need to be surrounded by brackets.
@@ -32,7 +32,7 @@ MESSAGE_TYPE fields define the Java/Kotlin class that is instantiated and set by
 
 Fields that are set in the expression but which are not on the class are ignored. The instantiated class is sent to the Event Handler implementation defined in the process identified by PROCESS_NAME.
 
-To set up a MESSAGE_TYPE for the Event Handlers, simply create an appropriate data class, for example: `position_app-server\position_app-messages\src\main\java\global\genesis\position_app\message\event\PositionCancel.kt`.
+To set up a MESSAGE_TYPE for the Event Handlers, simply create an appropriate data class: for example, `position_app-server\position_app-messages\src\main\java\global\genesis\position_app\message\event\PositionCancel.kt`.
 
 Rules can be loaded into the database by creating a csv file containing the rules in the above format.
 The following is an example of a csv file, which can be loaded into the database by saving as **DYNAMIC_RULE.csv** and running `sendIt`:
@@ -87,7 +87,7 @@ You can see an example of a dynamic rule using [Notify](/server-modules/integrat
 ## Static rules
 Static rules are used to create scheduled activities. For instance to schedule the production of EOD reports, or to run a batch report on the hour.
 
-### Defining a static rule
+## Defining a static rule
 To define a scheduled event, you need to insert a row into the `CRON_RULE` table. This row must specify the CRON schedule that triggers the event. The table is defined as follows:
 
 | Field Name | Usage |
@@ -100,12 +100,12 @@ To define a scheduled event, you need to insert a row into the `CRON_RULE` table
 | USER_NAME | The User Name that will be used to perform the operation / null implies system |
 | PROCESS_NAME | Process Name to send the Event  e.g. POSITION_APP_EVENT_HANDLER |
 | MESSAGE_TYPE | The message type that will be defined  |
-| RESULT_EXPRESSION | this is a [groovy expression](https://groovy-lang.org/syntax.html) which should set on the MESSAGE Object that is defined in MESSAGE_TYPE |
+| RESULT_EXPRESSION | This is a [groovy expression](https://groovy-lang.org/syntax.html) which should set on the MESSAGE Object that is defined in MESSAGE_TYPE |
 
-MESSAGE_TYPE fields define the Java/kotlin Class that is instantiated and set by the RESULT_EXPRESSION. The MESSAGE_TYPE is defined as SNAKE_CASE, but the class is defined as regular Camel case (for example,POSITION_CANCEL maps to PositionCancel).
+MESSAGE_TYPE fields define the Java/Kotlin class that is instantiated and set by the RESULT_EXPRESSION. The MESSAGE_TYPE is defined as SNAKE_CASE, but the class is defined as regular Camel case (for example, POSITION_CANCEL maps to PositionCancel).
 
-### Load the Static (Cron) rule 
-To load a Static (Cron) rule into the database, create a csv file with the rule in the above format. Call the file **CRON_RULE.csv**.
+### Load the static (Cron) rule 
+To load a static (Cron) rule into the database, create a csv file with the rule in the above format. Call the file **CRON_RULE.csv**.
 ```csv
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
 "0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
