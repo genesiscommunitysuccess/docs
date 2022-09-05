@@ -13,14 +13,44 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 We will use the query `ALL_POSITIONS` that was [previously defined](/getting-started/go-to-the-next-level/events/#data-server) to show all the positions calculated by the Consolidator.
 
+Make sure that the `INSTRUMENT_ID` field is not nullable in the `TRADE` and `POSITION` tables, as the consolidations will use it.
+
+```kotlin {4,10}
+tables {
+    table (name = "TRADE" ...) {
+        ...
+        INSTRUMENT_ID not null
+        ...
+    }
+
+    table(name = "POSITION" ...) {
+        ...
+        INSTRUMENT_ID not null
+        ...        
+    }
+    ...
+}
+```
+
+Add the query `ALL_POSITIONS` to the **positions-app-tutorial-dataserver.kts** file. 
+
+```kotlin {3}
+dataServer {
+    ...
+    query("ALL_POSITIONS", POSITION)
+}
+```
+This query will be used to show all the positions calculated by the consolidator.
+
 So, let's define a **positions-app-tutorial-consolidator.kts** file inside **positions-app-tutorial-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
 
 The Consolidator is going to increase or decrease the quantity for `POSITION` records, based on the `TRADE` table updates. It also needs to calculate the new notional.
 
 ```kotlin
-import global.genesis.gen.config.tables.POSITION.NOTIONAL
+import global.genesis.gen.config.tables.POSITION
 import global.genesis.gen.config.tables.POSITION.QUANTITY
 import global.genesis.gen.config.tables.POSITION.VALUE
+import global.genesis.gen.config.view.TRADE_VIEW
 import global.genesis.gen.dao.Position
 
 consolidators {
@@ -80,9 +110,24 @@ consolidators {
 }
 ```
 
+:::tip
+If you don't have intelisense when editing the consolidator file check the contents of **positions-app-tutorial-script-config/build.gradle.kts**. Under **dependencies** it should contain `api("global.genesis:genesis-pal-consolidator")`. If that entry is not present add it to the list of dependencies. Once done the file should look like:
+```kotlin
+dependencies {
+    ...
+    api("global.genesis:genesis-pal-consolidator")
+    ..
+}
+```
+
+Reload the project from the Gradle tab on the right side of the screen.
+
+:::
+
+
 ### Update the system files
 
-Now that the Consolidator logic is in place, we have to make sure it's running.
+Now that the Consolidator logic is in place we need to update the system files.
 
 #### Update the processes.xml file
 
@@ -108,14 +153,10 @@ This file lists all the active services for the Positions application. You can s
 Add a new entry to **positions-app-tutorial-service-definitions.xml** with the Consolidator details. Remember the port numbers should be free and, ideally, sequential.
 
 ```xml
-<configuration>
-    ...
     <service host="localhost" name="POSITIONS_APP_TUTORIAL_CONSOLIDATOR" port="11002"/>
-</configuration>
 ```
 
-Run the `assemble` and `positions-app-tutorial-config:assemble` tasks to verify that the new process works as expected.
-
+When you finish, remember to run `generateDao` (if you made changes to the table), `assemble` and `deploy-genesisproduct-positions-app-tutorial`.
 
 ### Conclusion
 This shows a quick example of a Consolidator. As usual, you can either [give it a try](/getting-started/go-to-the-next-level/see-it-work) or go the next section.

@@ -65,13 +65,13 @@ fields {
 }
 ```
 
-After you have saved this file, run `genesis-generated-fields`.
+After you have saved this file, run `generateFields`.
 
 From the Gradle menu on the right of Intellij, this is:
 
 **genesisproduct-positions-app-tutorial**/**positions-app-tutorial-dictionary-cache**/**genesis-generated-fields**/**Tasks**/**genesis**/**generateFields**
 
-![](/img/build-gradle-kts-fields.png)
+![](/img/build-gradle-kts-fields-positions.png)
 
 :::note Why do I have to run this Gradle task?
 
@@ -107,6 +107,8 @@ tables {
         INSTRUMENT_ID not null
         QUANTITY
         NOTIONAL
+        VALUE
+        PNL
 
         primaryKey {
             POSITION_ID
@@ -140,13 +142,13 @@ tables {
 }
 ```
 
-After you have saved this file, run `genesis-generated-dao`
+After you have saved this file, run `generateDao`
 
 From the Gradle menu, this is:
 
 **genesisproduct-positions-app-tutorial**/**positions-app-tutorial-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDAO**
 
-![](/img/build-gradle-kts-generated-dao.png)
+![](/img/build-gradle-kts-generated-dao-positions.png)
 
 This script generates the DAOs (data repos) from the tables, and they are available to be imported in your code.
 
@@ -185,7 +187,7 @@ views {
         fields {
             TRADE.allFields()
 
-            COUNTERPARTY.NAME withPrefix COUNTERPARTY
+            COUNTERPARTY.COUNTERPARTY_NAME withPrefix COUNTERPARTY
             INSTRUMENT.INSTRUMENT_SYMBOL withPrefix INSTRUMENT
             INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
         }
@@ -193,7 +195,15 @@ views {
 }
 ```
 
-Run **positions-app-tutorial-config:assemble** to make the view ready for use.
+After you have saved this file, run `generateView`
+
+From the Gradle menu, this is:
+
+**genesisproduct-positions-app-tutorial**/**positions-app-tutorial-dictionary-cache**/**genesis-generated-view**/**Tasks**/**genesis**/**generateView**
+
+![](/img/build-gradle-kts-generated-view-positions.png)
+
+<!-- Run **positions-app-tutorial-config:assemble** to make the view ready for use. -->
 
 ## Entities
 
@@ -201,4 +211,4 @@ During code generation, [view](/database/data-structures/views/) and [index enti
 
 
 ## Conclusion
-With this, our data model is defined. As a next step, we shall add business logic to show the data and create entries
+With this, our data model is defined. As a next step, we shall add business logic to show the data and create entries.
