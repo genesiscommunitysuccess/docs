@@ -131,7 +131,7 @@ From Windows, your WSL distros are accessible from ** \\wsl$\ ** in Windows Expl
 
 If you are using Windows Firewall, you need to allow smooth network communication between your WSL distros and Windows.
 
-First, get the network range for your WSL network switch; run `ipconfig.exe` from powershell and look for WSL:
+First, get the network range for your WSL network switch; run `ipconfig.exe` as admin in powershell and look for WSL:
 
 ```
 Ethernet adapter vEthernet (WSL):
@@ -143,7 +143,7 @@ Ethernet adapter vEthernet (WSL):
    Default Gateway . . . . . . . . . :
 ```
 
-Run the following powershell command in Windows so your firewall will not block inbound traffic from your WSL instances:
+Run the following command as admin in powershell so your firewall will not block inbound traffic from your WSL instances:
 
 ```
 New-NetFirewallRule -DisplayName "WSL" -Direction Inbound  -InterfaceAlias "vEthernet (WSL)"  -Action Allow
