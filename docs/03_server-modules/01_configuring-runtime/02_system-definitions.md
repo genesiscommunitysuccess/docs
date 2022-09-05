@@ -118,6 +118,18 @@ then the generated ID will be `000000000001TRLO1` where "LO" represents Location
 
 If you want to enable SSL for your process communication, this is done in the [service definition](/server-modules/configuring-runtime/service-definitions/#enable-ssl-for-processes).
 
+## Setting System Definitions values from environment variables
+
+It's possible to load system definition values from the environments, this may be prefered if you wish to dynamically set values for a given environment.
+
+To do this, the `value` attribute of an `item` can be set to read an environment variable and fall back to a sensible default. 
+
+```kotlin
+item(name = "DbHost", value = System.getenv("DBHOST") ?: "localhost")
+```
+
+In this example we are fetching the value of `DbHost` from the environment variable `DBHOST`, if the environment variable is not set then the default value of `"localhost"` will be used.
+
 ## HashiCorp Vault support
 
 :::important
