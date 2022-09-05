@@ -11,8 +11,7 @@ There is a nice simple example of some logic being added to an Event Handler in 
 Below, we have some other examples of different ways to use an Event Handler.
 
 ## Basic
-The example below is a simple Event Handler
-to validate input and insert a record in the database. There is an [`onValidate`](/server-modules/event-handler/basics/#adding-validation) block that defines the validation and an [`onCommit`](/server-modules/event-handler/basics/#a-simple-example-of-an-event-handler) block that specifies the action that is to be taken.
+The example below is a simple Event Handler to validate input and insert a record in the database. There is an [`onValidate`](/server-modules/event-handler/basics/#adding-validation) block that defines the validation and an [`onCommit`](/server-modules/event-handler/basics/#a-simple-example-of-an-event-handler) block that specifies the action that is to be taken.
 ```kotlin
    eventHandler<Company>(name = "COMPANY_INSERT") {
         onValidate { event ->
@@ -31,9 +30,7 @@ to validate input and insert a record in the database. There is an [`onValidate`
 ```
 
 ## Carrying context
-This next snippet is an example of how to reuse data between 
-[onValidate](/server-modules/event-handler/basics/#adding-validation) 
-and [onCommit](/server-modules/event-handler/basics/#a-simple-example-of-an-event-handler) using a `contextEventHandler`. In the `onValidate` block we check to see if a trade exists in the database, and we pass it as _context_ to the `onCommit` block so we don't have to do another database lookup.
+This next snippet is an example of how to reuse data between [onValidate](/server-modules/event-handler/basics/#adding-validation) and [onCommit](/server-modules/event-handler/basics/#a-simple-example-of-an-event-handler) using a `contextEventHandler`. In the `onValidate` block, we check to see if a trade exists in the database, and we pass it as _context_ to the `onCommit` block so we don't have to do another database lookup.
 
 ```kotlin
     contextEventHandler<TradeAlertAck, Trade>(name = "TRADE_ALERT_ACK") {
@@ -75,7 +72,7 @@ in an Event Handler.
 ```
 
 ## Authorisation
-### permissioning
+### Permissioning
 This is an example of how to add [authorisation](/server-modules/event-handler/advanced/#permissioning-and-permissioncodes)
 to an Event Handler.
 
