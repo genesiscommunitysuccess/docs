@@ -11,7 +11,7 @@ Now we have our basic user interface running, we need to start our server to be 
 
 By the end of this section we should have all of our server application running. We will
 
-- Generate our server configuration 
+- Generate our server configuration
 - Have our server running
 - Have our local FoundationDB running
 - Populated our DB with some basic user credentials which will be utilised later.
@@ -30,14 +30,14 @@ wsl-distro=CentOS7
 wsl-user=alpha
 ```
 
-If unsure about the above, please refer to our [Pre-requisites](/flow/introduction/prerequisites/), particularly "Do you need WSL?".
+If unsure about the above, please refer to our [Pre-requisites](/getting-started/flow/prerequisites/), particularly "Do you need WSL?".
 
 
 ### Preparing the server
 
-Our main aim is to write less and do more. 
+Our main aim is to write less and do more.
 
-To enable this, we need to have a common task that will take what we've done and generate all the server and UI configuration. 
+To enable this, we need to have a common task that will take what we've done and generate all the server and UI configuration.
 
 > This is an important command and one that will be used regularly for all Flow development.
 
@@ -92,7 +92,7 @@ The following will be the application login details:
 
 - Username: JaneDee
 - Password: beONneON\*74 (This is encrypted in the USER.csv file.)
-:::
+  :::
 
 Copy the file `user.csv` in your project's folder `data` to the following CentOS directory `$GENESIS_HOME/site-specific/data`
 
@@ -112,11 +112,11 @@ Running `DbMon` will check that the user has been created:
 
 Once inside the console, type 'table USER' and then 'search 1'. If imported correctly, the user JaneDee should be listed.
 
-### Review 
+### Review
 
 We've run a lot of commands. Therefore, it's a good time to validate everything is running as expected.
 
-To do this, we'll use our Genesis monitor. Let's run it with: 
+To do this, we'll use our Genesis monitor. Let's run it with:
 
 ```shell
 ./gradlew :alpha-deploy:mon #On the IntelliJ terminal
@@ -124,7 +124,7 @@ To do this, we'll use our Genesis monitor. Let's run it with:
 
 If successful, we will see something like this:
 
-> The PID, CPU and Memory values may differ, we're mainly looking for the process names and statuses. 
+> The PID, CPU and Memory values may differ, we're mainly looking for the process names and statuses.
 
 ```shell
 PID     Process Name                  Port        Status         CPU       Memory    Message
@@ -144,7 +144,7 @@ PID     Process Name                  Port        Status         CPU       Memor
 
 ## Connecting the UI and Server
 
-Finally, we want to connect everything together.  
+Finally, we want to connect everything together.
 
 With this next step, we will configure a Nginx working as a reverse proxy.
 

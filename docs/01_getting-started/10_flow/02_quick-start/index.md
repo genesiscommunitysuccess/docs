@@ -9,11 +9,11 @@ This introductory guide will enable us to quickly and easily get a full stack Ge
 
 This guide will be split into the following steps:
 
-1. [Create Project](/flow/quick-start/create-project/)
-2. [User Interface](/flow/quick-start/user-interface/)
-3. [Server](/flow/quick-start/server)
-4. [Add Features](/flow/quick-start/add-features)
-5. [Summary](/flow/quick-start/summary)
+1. [Create Project](/getting-started/flow/quick-start/create-project/)
+2. [User Interface](/getting-started/flow/quick-start/user-interface/)
+3. [Server](/getting-started/flow/quick-start/server)
+4. [Add Features](/getting-started/flow/quick-start/add-features)
+5. [Summary](/getting-started/flow/quick-start/summary)
 
 ## What will we build?
 
@@ -28,7 +28,7 @@ We are going to call this example application **alpha**. We'll see this reflecte
 
 Upon completion, we should have knowledge of how to build an application using Flow with a keen focus on:
 - Setting up an environment for this and future *low-code* applications
-- Creating a starting project structure using the [Flow](/flow/introduction/) application seed
+- Creating a starting project structure using the [Flow](/getting-started/flow/introduction/) application seed
 - Modelling data with clear type definitions
 - Building grid views to visualise data
 - Setting up forms to manipulate the data set

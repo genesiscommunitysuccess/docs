@@ -42,7 +42,7 @@ Once we see a message similar to `INFO: Accepting connections at http://localhos
 
 ### Test simple UI changes
 
-The application title is auto-generated based on what we named the project initially. 
+The application title is auto-generated based on what we named the project initially.
 To change that, open **src/main/kotlin/global/genesis/alpha/Application.kt** and customise the title:
 
 ```kotlin

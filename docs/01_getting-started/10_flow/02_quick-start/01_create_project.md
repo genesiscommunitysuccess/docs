@@ -5,14 +5,14 @@ id: create-project
 
 # Create Project
 
-To help give a helping hand in getting started with building applications, our [GenX CLI](/flow/introduction/prerequisites/#genx-cli) tool will create seed projects.
+To help give a helping hand in getting started with building applications, our [GenX CLI](/getting-started/flow/prerequisites/#genx-cli) tool will create seed projects.
 
 
-> A seed project is a productive starting point for any application using Flow. 
-> 
-> It will create an initial file structure and install any necessary dependencies, allowing us to focus on the important bits. 
+> A seed project is a productive starting point for any application using Flow.
+>
+> It will create an initial file structure and install any necessary dependencies, allowing us to focus on the important bits.
 :::important
-> Install the [GenX CLI](/flow/introduction/prerequisites/#genx-cli) before proceeding with the following steps.
+> Install the [GenX CLI](/getting-started/flow/prerequisites/#genx-cli) before proceeding with the following steps.
 :::
 
 ### Expected Result
@@ -34,9 +34,9 @@ From the terminal, run:
 foundation-cli
 ```
 
-If this is the first time running our CLI tool, we'll need to provide artifactory credentials. 
+If this is the first time running our CLI tool, we'll need to provide artifactory credentials.
 
-> No credentials? See our [Pre-requisites](/flow/introduction/prerequisites/)
+> No credentials? See our [Pre-requisites](/getting-started/flow/prerequisites/)
 
 ```shell
 ? Genesis Username example.username
@@ -64,8 +64,8 @@ Select `create flow application`:
 We now want to configure our seed. There will be a number of fields to fill in to help us get the best possible start.
 
 
-:::tip 
-In some instances, there will be grey text reflecting possible answers to the prompted question. The capitalized option is the default, so we can just hit enter to use it. 
+:::tip
+In some instances, there will be grey text reflecting possible answers to the prompted question. The capitalized option is the default, so we can just hit enter to use it.
 For example `y/N`: default here is 'N', which is equivalent to 'No'.
 :::
 
@@ -96,7 +96,7 @@ The seed application is now created and dependencies are installed. Our expected
 
 ### Configuring the application
 
-We can now configure the application starting with NPM module settings. 
+We can now configure the application starting with NPM module settings.
 
 This will ensure we pull our Genesis packages to help support development.
 
@@ -105,9 +105,9 @@ This will ensure we pull our Genesis packages to help support development.
 ? NPM package name (alpha)
 ```
 
-Next, we'll be asked whether we want to configure an API host. 
+Next, we'll be asked whether we want to configure an API host.
 
-> Our web component will attempt to connect to a local server. If we want to connect to a remote server, choose Yes and specify WebSocket URL. Otherwise, hit enter and the web component will connect to the local server by default. 
+> Our web component will attempt to connect to a local server. If we want to connect to a remote server, choose Yes and specify WebSocket URL. Otherwise, hit enter and the web component will connect to the local server by default.
 
 
 ```shell
@@ -134,7 +134,7 @@ At this point, the application will be configured. If successful, we will see th
 ℹ Application created successfully! 🎉 Please open the application and follow the README to complete setup.
 ```
 
-Now open the chosen IDE (e.g. IntelliJ) and locate the newly created alpha project. Have a look at **README.md** for more information about the project created. 
+Now open the chosen IDE (e.g. IntelliJ) and locate the newly created alpha project. Have a look at **README.md** for more information about the project created.
 
 ## Recap
 
