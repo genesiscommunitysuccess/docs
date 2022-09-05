@@ -5,9 +5,18 @@ sidebar_position: 1
 id: 'server-modules'
 ---
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Welcome to our reference documentation on the server. Here you can find information on all aspects of defining your server.
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+Configuring runtime
+There is a group of files you need to be aware of for [configuring your application](/server-modules/configuring-runtime/introduction/). These control the characteristics of each module in the application, and indeed, whether a module is considered part of the application at all. So it is important that you know what is in each of these files.
+You can also find information here on changing the database technology](/server-modules/configuring-runtime/setting-the-database-technology/).
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+Modules
+A lot of your focus will be on the modules that you define for your application. You can find reference information on all these here, including the [auth](/server-modules/access-control/introduction/) module, [state machine](/server-modules/state-machine/introduction/) (which you define within your Event Handler](/server-modules/state-machine/introduction/) and [Consolidator](/server-modules/consolidator/introduction/).
 
+Integration
+The Integration section looks at all the different ways of getting information into and out of the system for integrating with other systems. Check the [Data Pipeline](/server-modules/integration/data-pipeline/introduction/), for ingesting data, or the pages on using [Apache Camel](/server-modules/integration/apache-camel/introduction/).
+
+
+Tooling
+You should also make a note of the Tooling section, where you can find a set of useful [code snippets](/server-modules/tooling/code-snippets/) that you can copy and amend. This could save you some time and typing.
