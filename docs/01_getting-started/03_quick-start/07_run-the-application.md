@@ -1,8 +1,10 @@
 ---
-title: 'Run the application'
-sidebar_label: 'Run the application'
+title: 'Run the application (WSL/Linux)'
+sidebar_label: 'Run the application (WSL/Linux)'
 id: run-the-application
 ---
+
+You have a choice of how you run the application. The instructions on this page are for using WSL/CentOS. If you prefer to use Docker as your environment, there are [separate instructions](/getting-started/quick-start/run-the-application-docker/).
 
 Before you start this, make sure that:
 
@@ -11,7 +13,7 @@ Before you start this, make sure that:
 
 If that's OK, you can deploy the server.
 
-### Deploying to the server
+## Deploying to the server
 
 First, we need to configure our genesis home, distribution and user. We will do that by adding the following fields to the **gradle.properties** under **alpha/server/jvm**
 
@@ -33,7 +35,7 @@ or from the dropdown menu:
 
 After this command is completed we will have a basic genesis server running
 
-### Deploying the auth module
+## Deploying the auth module
 
 Usage:
 ```shell
@@ -44,7 +46,7 @@ or from the dropdown menu:
 
 ![](/img/install-auth.png)
 
-### Deploying the alpha product
+## Deploying the alpha product
 
 Now we have to deploy the alpha product
 
@@ -58,7 +60,7 @@ or from the dropdown menu:
 ![](/img/deploy-alpha-product.png)
 
 
-### Adding a user to login
+## Adding a user to login
 
 Next let's create a user.
 
@@ -145,7 +147,7 @@ PID     Process Name                  Port        Status         CPU       Memor
 703     ALPHA_EVENT_HANDLER           11001       RUNNING        71.30     2.20
 ```
 
-### Connecting the back end and front end
+## Connecting the back end and front end
 
 With this next step, we will configure an nginx server working as a reverse proxy.
 
@@ -167,7 +169,7 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-ho
 
 ```
 
-### Running the front end
+## Running the front end
 
 
 Now you can run the application's front end. From there, you can view the table of data and add the details of a new trade.
