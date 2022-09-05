@@ -4,17 +4,17 @@ sidebar_label: 'Setting Genesis Evaluator rules'
 id: setting-genesis-evaluator-rules
 ---
 
-It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes the Genesis low-code platform provides a feature called the [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server-modules/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
+It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server-modules/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
 
 - [Dynamic Rules](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#dynamic-rules-conditional-rules), also known as dynamic events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
-- [Static Rules](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#static-rules-cron-rules)  are scheduling rules; these are static events, defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression).
+- [Static Rules](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#static-rules-cron-rules) are scheduling rules; these are static events, defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression).
 
 In both cases, you define the rule in a table in the database: `DYNAMIC_RULES` for dynamic rules and `CRON_RULES` for static rules. In this section, we're going to use dynamic rules, but if you're interested in the static scheduling rules, please look at [the next section](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#static-rules-cron-rules).
 
-### Configure the Evaluator
+## Configure the Evaluator
 
 An Evaluator is a process that runs cron jobs and conditional rules.
-To start, create a process called *POSITIONS_APP_TUTORIAL_EVALUATOR* and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** as the code below.
+To start, create a process called `POSITIONS_APP_TUTORIAL_EVALUATOR` and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. Here is the code you need to add:
 
 ```xml
 <processes>
@@ -49,9 +49,9 @@ This is because the Evaluator process is set to run only on the primary node. Ou
 
 Run `SetPrimary` and you should be able to see all processes running.
 
-### Dynamic rules (Conditional rules)
+## Dynamic rules (Conditional rules)
 
-Now we are going to use the [Evaluator](/server-modules/evaluator/introduction/) to set up dynamic rules. In this case, an email will be sent if a specified limit has been breached.
+Now we are going to use the [Evaluator](/server-modules/evaluator/introduction/) to set up dynamic rules. This will automatically send an email if a specified limit has been breached.
 
 First, check that you have the Evaluator running. If it is not, check the procedure [above](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#configure-the-evaluator).
 
@@ -73,11 +73,11 @@ POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
 
 Now you are ready to begin setting up your dynamic rule.
 
-### Set up the dynamic rule
+## Set up the dynamic rule
 
 To set up the dynamic rule, go to the `DYNAMIC_RULE` table and insert the **DYNAMIC_RULE.csv** file. Run `SendIt`
 
-### Set up the Event Handler message class
+## Set up the Event Handler message class
 
 To define the Event Handler message class, create a Kotlin class called `PositionCancel` in your project folder **server/jvm/positions-app-tutorial-messages/src/main/kotlin/global/genesis/positions-app-tutorial/message/event**, and insert the following code:
 
@@ -87,7 +87,7 @@ data class PositionCancel(
 )
 ```
 
-### Update the Event Handler
+## Update the Event Handler
 
 The rule needs to call an Event Handler, which will be named `PositionCancel` using the class created in the previous step.
 We have defined the Event Handler in the code block below. Open the file **positions-app-tutorial-eventhandler.kts** and insert the code block:
@@ -115,9 +115,9 @@ eventHandler<PositionCancel> {
 }
 ```
 
-### Set up the Notify module and start the process
+## Set up the Notify module and start the process
 
-For a more detailed explanation of GENESIS_NOTIFY and GATEWAY see our [Integration Section](/server-modules/integration/notify/configuring/).
+For a more detailed explanation of GENESIS_NOTIFY and GATEWAY, see our [Integration section](/server-modules/integration/notify/configuring/).
 
 The module GENESIS_NOTIFY does not run by default. To change this, we are adding a customised module to our project. To do that, create a process called `POSITIONS_APP_TUTORIAL_NOTIFY` and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. Use the code below.
 
@@ -136,7 +136,7 @@ The module GENESIS_NOTIFY does not run by default. To change this, we are adding
     </process>
 </processes>
 ```
-Add the `POSITIONS_APP_TUTORIAL_NOTIFY` in the file **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. Use the code below.
+Add the `POSITIONS_APP_TUTORIAL_NOTIFY` to the file **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. Use the code below.
 
 ```xml
 <configuration>
@@ -150,9 +150,9 @@ Run the `assemble` and `positions-app-tutorial-config:assemble` tasks to verify 
 Run `mon`.
 You should be able to see the process is present.
 
-### Set up GENESIS_NOTIFY in the database
+## Set up GENESIS_NOTIFY in the database
 
-#### Insert a gateway route
+### Insert a gateway route
 
 Create a file **GATEWAY.csv** as shown below and insert it in the table GATEWAY using the command `SendIt`.
 
@@ -161,7 +161,7 @@ GATEWAY_ID,GATEWAY_TYPE,GATEWAY_VALUE,INCOMING_TOPIC
 "EmailDistribution1","EmailDistribution","{ \"emailDistribution\" : { \"to\" : [ ], \"cc\" : [ ], \"bcc\" : [ ] } }",
 ```
 
-#### Insert NOTIFY_ROUTE
+### Insert NOTIFY_ROUTE
 
 Create a file **NOTIFY_ROUTE.csv** as shown below, then insert it in the table NOTIFY_ROUTE using the command `SendIt`.
 
@@ -170,7 +170,7 @@ ENTITY_ID,ENTITY_ID_TYPE,TOPIC_MATCH,GATEWAY_ID
 ,"GATEWAY","PositionAlert","EmailDistribution1" 
 ```
 
-### Add connection details to the system definition
+## Add connection details to the system definition
 
 Open the **genesis-system-definition.kts** file and add the details of the connection for the SMTP server:
 ```kotlin
@@ -193,7 +193,7 @@ systemDefinition {
 
 Run the `build`, `install-positions-app-tutorial-site-specific` and `deploy` tasks again.
 
-### Switch on data dumps
+## Switch on data dumps
 
 Data dumps need to be switched on for both EVALUATOR and NOTIFY so that we can see some additional data in the logs.
 
@@ -214,7 +214,7 @@ tail -f POSITIONS_APP_TUTORIAL_EVALUATOR.log
 $L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Feel free to use your favorite command to view logs such as tail, less etc.
 :::
 
-### Trigger the event to test the rule
+## Trigger the event to test the rule
 
 So, let's see if that has worked.
 
@@ -227,7 +227,7 @@ Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the i
 ::: -->
 
 ### Conclusion
-This section showed how to trigger events based on a condition in the database. This is a powerful feature that allows you to raise alarms on certain conditions or to react on specific states.
+This section showed how to trigger events based on a condition in the database. This enables you to raise alarms on certain conditions or to react to specific states.
 In the next section you will see how to run scheduled tasks.
 
 ### Static rules (Cron rules)
@@ -236,9 +236,9 @@ Let's create a cron rule that triggers a batch job to run once every minute.
 
 First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on [configuring the evaluator](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#configure-the-evaluator).
 
-The batch job will generate a position report as a csv for each counterparty. This will be stored in **runtime/position-minute-report**. The file name of each report written will have the form COUNTERPARTY_ID-DATE.csv.
+The batch job will generate a position report as a csv for each counterparty. This will be stored in **runtime/position-minute-report**. The file name of each report written will take the form COUNTERPARTY_ID-DATE.csv.
 
-#### The rule
+## The rule
 
 Our cron rule takes the following form:
 
@@ -261,21 +261,21 @@ CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,ME
 "0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 
-### Load the cron rule into the database
+## Load the cron rule into the database
 
 Load the cron rule **CRON_RULE.csv** file into the `CRON_RULE`  [table](/server-modules/evaluator/configuring-runtime/#cron_rule-table).
 
 Run `SendIt`
 
-### Create a new class
-When the evaluator is running, create a `PositionReport` class to trigger the new event. This class should be created inside your project folder **server/jvm/positions-app-tutorial-messages/src/main/kotlin/global/genesis/positions-app-tutorial/message/event** as the code below. 
+## Create a new class
+When the Evaluator is running, create a `PositionReport` class to trigger the new event. This class should be created inside your project folder **server/jvm/positions-app-tutorial-messages/src/main/kotlin/global/genesis/positions-app-tutorial/message/event**. Use the code below: 
 
 ```kotlin
 
 class PositionReport
 ```
 
-### Create an Event Handler
+## Create an Event Handler
 
 Create an Event Handler that will write the csv files to the **runtime/position-minute-report** folder. Call it `EVENT_POSITION_REPORT`.
 
@@ -315,7 +315,9 @@ eventHandler {
 }
 ```
 
-### Change the log level to verify the execution of the events
+## Change the log level
+Change the log level to verify the execution of the events.
+
 To do this, run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command:
 
 ```shell
@@ -332,4 +334,4 @@ $L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis l
 :::
 
 ### Conclusion
-This concludes generating reports for the positions application.
+Taht's it. You have now see how to generate reports for the positions application.
