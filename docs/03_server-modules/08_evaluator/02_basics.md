@@ -84,13 +84,12 @@ eventHandler<PositionCancel> {
 ```
 For the example above to work, you need to set up a [Notify](/server-modules/integration/notify/configuring/) process together with inserting a GATEWAY and a NOTIFY_ROUTE in the database and add the details of the connection for the SMTP server to the **genesis-system-definition.kts** file.
 You can see an example of a dynamic rule using [Notify](/server-modules/integration/notify/configuring/) email messages being configured in our [tutorial](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#dynamic-rules-conditional-rules).
-### Static Rules
+## Static rules
 Static rules are used to create scheduled activities. For instance to schedule the production of EOD reports, or to run a batch report on the hour.
 
 ### Defining a static rule
 To define a scheduled event, you need to insert a row into the `CRON_RULE` table. This row must specify the CRON schedule that triggers the event. The table is defined as follows:
 
-### CRON_RULE Table
 | Field Name | Usage |
 | --- | --- |
 | NAME | Name of the rule |
