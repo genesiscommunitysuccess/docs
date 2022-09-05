@@ -10,7 +10,11 @@ const copiedModules = {};
  * Skips subsequent copies otherwise it gets into an infinite loop
  */
 const copyMicroFrontendApiDocs = () => {
-  const microFrontends = ["foundation-header", "foundation-entity-management"];
+  const microFrontends = [
+    "foundation-header",
+    "foundation-entity-management",
+    "foundation-login",
+  ];
 
   microFrontends.forEach((mf) => {
     if (mf in copiedModules) {
