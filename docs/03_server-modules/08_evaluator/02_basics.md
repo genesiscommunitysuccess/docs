@@ -7,7 +7,7 @@ id: basics
 [Introduction](/server-modules/evaluator/introduction) | [Basics](/server-modules/evaluator/basics) | [Examples](/server-modules/evaluator/examples) | [Configuring runtime](/server-modules/evaluator/configuring-runtime) | [Testing](/server-modules/evaluator/testing)
 
 ## Dynamic rules
-This feature that enable you to raise alarms on certain conditions or to react on specific states. Dynamic rules respond to changes in database tables. For instance if a figure goes above a certain threshold the rule could trigger a warning email to be sent out.
+This feature enablse you to raise alarms on certain conditions or to react on specific states. Dynamic rules respond to changes in database tables. For instance if a figure goes above a certain threshold, the rule could trigger a warning email to be sent out.
 
 ## Defining a dynamic rule
 To define a rule, you need to insert a row into the DYNAMIC_RULE table. This table is defined as follows:
