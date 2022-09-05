@@ -21,7 +21,7 @@ API reference [can be found here](../foundation-entity-management_apiref/).
 
 ## Introduction
 
-The User Management micro front-end is used to manage the users on the front end. Two core components are used to manage the entities
+The User Management micro front-end is used to manage the users on the front end. Two core components are used to manage the entities:
 - the grid
 - the form
 
