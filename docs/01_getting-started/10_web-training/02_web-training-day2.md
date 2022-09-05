@@ -28,7 +28,7 @@ A page listing all the orders with a filter by Type and actions to insert a new 
 | Field          | Type             | Editable | Notes
 |---------------|------------------------------|------------------------------|------------------------------|
 | Instrument          | Select or Search (autocomplete field) | Yes | Load data from ALL_INTRUMENTS Data Server
-| Market data          | Display price of the selected symbol | No | Load data from GET_PRICE_PER_INSTRUMENT ReqRep
+| Market data          | Display price of the selected symbol | No | Load data from INSTRUMENT_MARKET_DATA ReqRep
 | Quantity          | Integer      | Yes | Must be positive
 | Price          | Double      | Yes | Must be positive
 | Total          | Double      | No | Display Quantity * Price
@@ -43,7 +43,7 @@ Insert, edit and cancel.
 
 Let's start with the simplest way to create a form, using the `zero-form` component:
 
-```html {6} title='order.template.ts'
+```ts {6} title='order.template.ts'
 import type {Order} from './order';
 
 export const OrderTemplate = html<Order>`
@@ -121,7 +121,8 @@ To enable that you will create each form element manually and take care of stori
 
 You start by adding elements to the template:
 
-```html title='order.template.ts' 
+```ts title='order.template.ts' 
+export const OrderTemplate = html<Order>`
 <zero-select>Instrument</zero-select>
 <label>Last price</label>
 <zero-text-field type="number">Quantity</zero-text-field>
@@ -129,6 +130,7 @@ You start by adding elements to the template:
 <label>Total</label>
 <zero-select>Side</zero-select>
 <zero-text-area>Notes</zero-text-area>
+`;
 ```
 
 Then, define the variables that will hold the values that are entered.
@@ -140,7 +142,6 @@ In the file **order.ts**, add the following properties to the class: `Order`:
 @observable public lastPrice: number;
 @observable public quantity: number;
 @observable public price: number;
-@observable public total: number;
 @observable public side: string;
 @observable public notes: string;
 ```
@@ -151,23 +152,67 @@ We can do it in the traditional way by adding `@change` [event handler](https://
 
 Let's add it to each form element:
 
-```html title='order.template.ts'
+```ts title='order.template.ts'
+import { sync } from '@genesislcap/foundation-utils';
+
+export const OrderTemplate = html<Order>`
 <span>Instrument</span>
 <zero-select :value=${sync(x=> x.instrument)}></zero-select>
 
 <span>Last price: ${x => x.lastPrice}</span>
 <zero-text-field :value=${sync(x=> x.quantity)}>Quantity</zero-text-field>
 <zero-text-field :value=${sync(x=> x.price)}>Price</zero-text-field>
-<span>Total: ${x => x.lastPrice}</span>
+<span>Total: ${x => x.quantity * x.price}</span>
 <span>Side</span>
-<zero-select :value=${sync(x=> x.type)}>Side</zero-select>
+<zero-select :value=${sync(x=> x.side)}>Side</zero-select>
 <zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
-
+`;
 ```
+
+Note that we have also added the calculation of the ***total*** field that doesn't require a property in the Order class. It's just an information on the screen that should not be sent to the server.
 
 You probably realized we don't have any options in our select components, so let's fix that now.
 
-Let's start with **side**. We could just add two static options BUY and SELL like this:
+#### Loading data from the server into the select fields
+Let's start with **instrument** field. We want to load the data once Order the component is initialized so, then, the ***select*** field can just iterate through the list of instruments loaded from the server. 
+
+Order is a Web Component and, as such, it supports a series of [lifecycle events](https://www.fast.design/docs/fast-element/defining-elements/#the-element-lifecycle) that you can tap into to execute custom code at specific points in time. To make the Order component load data on initilization, we can override one of the lifecycle events called `connectedCallback` that runs when the element is inserted into the DOM.
+
+```typescript {6} title='order.ts'
+@observable public allInstruments: Array<{value: string, label: string}>; //add this property
+
+public async connectedCallback() { //add this method to Order class
+    super.connectedCallback(); //FASTElement implementation
+
+    const msg = await this.connect.snapshot('ALL_INSTRUMENTS'); //get a snapshot of data from ALL_INTRUMENTS data server
+    console.log(msg); //add this to look into the data returned and understand its structure
+    this.allInstruments = msg.ROW?.map(instrument => ({
+      value: instrument.INSTRUMENT_ID, label: instrument.NAME}));
+  }
+```
+:::tip async and await
+If you're not entirely familiar with [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function), it is a modern JavaScript function to enable asynchronous behavior and the await keyword is permitted within it. They enable asynchronous, promise-based behavior to be written in a cleaner style, avoiding the need to explicitly configure promise chains.
+
+Also, check this pratical resource on [Async Await](https://www.typescriptlang.org/pt/play#example/async-await).
+:::
+
+As you can see, we used `connect.snapshot` to retrieve the data from a data server resource called `ALL_INSTRUMENTS`. If you wanted to stream data in real time, you could use the `connect.stream` method instead. Remember to always use these methods to get data from data server resources.
+
+Once we have the list of instruments from the server we can make use of it in the template file.
+
+To dynamically include list of options we use [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items.
+
+```ts title='order.template.ts'
+<zero-select :value=${sync(x=> x.instrument)}>
+  ${repeat(x => x.allInstruments, html`
+    <zero-option value=${x => x.value}>${x => x.label}</zero-option>
+  `)}
+</zero-select>
+```
+
+You should see the instrument field populated now with the instruments from the server.
+
+Now let's get the **side** field sorted. We could just add two static options BUY and SELL like this:
 
 ```html title='order.template.ts' 
 <zero-select :value=${sync(x=> x.side)}>
@@ -176,76 +221,141 @@ Let's start with **side**. We could just add two static options BUY and SELL lik
 </zero-select>
 ```
 
-However, any changes on the backend would require a change in the options. Wouldn't it be much better if we could just retrieve all side options from the server? Like this:
+However, any changes on the backend would require a change in the options. Wouldn't it be much better if we could just retrieve all ***side*** options from the server? We already know how to get data from a data server resource, now let's use the `getMetadata` method from ***Connect*** to get some metadata of a field, ***side field*** in our case.
 
-```ts
-code to retrieve ENUM side from server
-```
-
-For instrument, it's more complicated because list of options needs to be fetched from the API.
-
-We will do that in [connectedCallback](https://www.fast.design/docs/fast-element/defining-elements#the-element-lifecycle) which happens when element is inserted into the DOM
-First, declare `orderInstruments` that will be later used in the template.
-To get the data from the API we inject
-```typescript title='order.ts'
-@observable orderInstruments: Array<{value: string, label: string}>;
-@Connect connect: Connect;
-
+```ts {10,11,12,13} title='order.ts' 
 public async connectedCallback() {
-    super.connectedCallback();
-    
-    const orderInstrumentsRequest = await this.connect.request('INSTRUMENT');
-    this.orderInstruments = orderInstrumentsRequest.REPLY?.map(instrument => ({value: instrument.INSTRUMENT_ID, label: instrument.NAME}));
-}
+    super.connectedCallback(); //FASTElement implementation
+
+    const msg = await this.connect.snapshot('ALL_INSTRUMENTS');
+    console.log(msg);
+    this.allInstruments = msg.ROW?.map(instrument => ({
+      value: instrument.INSTRUMENT_ID, label: instrument.NAME}));
+    console.log(this.allInstruments);
+
+    const metadata = await this.connect.getMetadata('ALL_ORDERS');
+    console.log(metadata);
+    const sideField = metadata.FIELD?.find(field => field.NAME == 'SIDE');
+    this.sideOptions = Array.from(sideField.VALID_VALUES).map(v => ({value: v, label: v}));
+  }
+
 ```
 
-Once we have the data with the list of instruments we can make use of it in the template file
-To dynamically include list of options we use [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items
+Next, let's just use the ***repeat*** directive again to iterate through the ***sideOptions***:
 
 ```typescript title='order.template.ts' 
-<zero-select :value=${sync(x=> x.instrument)}>
-  ${repeat(x => x.orderInstruments, html`
-    <zero-option value=${x => x.INSTRUMENT_ID}>${x => x.NAME}</zero-option>
+<zero-select :value=${sync(x=> x.side)}>
+  ${repeat(x => x.sideOptions, html`
+    <zero-option value=${x => x.value}>${x => x.label}</zero-option>
   `)}
 </zero-select>
 ```
 
+Reload your screen and should see the select fields being populated now!
+
+:::caution ERROR HANDLING
+For learning purposes, we are not doing proper error handling in our code.
+
+Things like checking null or empty data from the server, arrays out of bounds etc.
+
+When working on production code, make sure to add those validations.
+:::
+
+#### Loading Market Data
+We're still missing the ***lastPrice*** field that, based on the instrument selected, must display the corresponding ***lastPrice***.
+
+We have a request server resource (a.k.a reqRep) available on the server called `INSTRUMENT_MARKET_DATA`. It takes the INSTRUMENT_ID as input and returns the last price of the given instrument.
+
+We already know how to get data from data servers, now let's see how to get data from a reqRep. 
+
+Add this method to the Order class:
+
+```ts {2} title='order.ts'
+public async getMarketData() {
+    const msg = await this.connect.request('INSTRUMENT_MARKET_DATA', {
+      REQUEST: {
+        INSTRUMENT_ID: this.instrument,
+      }});
+    console.log(msg);
+
+    this.lastPrice = msg.REPLY[0].LAST_PRICE;
+  }
+```
+
+And change the template to make the ***instrument field*** like this:
+```ts {2} title='order.template.ts'
+<span>Instrument</span>
+<zero-select :value=${sync(x=> x.instrument)} @change=${x => x.getMarketData()}>
+  <zero-option :selected=${sync(x => x.instrument==undefined)}>-- Select --</zero-option>
+  ${repeat(x => x.allInstruments, html`
+    <zero-option value=${x => x.value}>${x => x.label}</zero-option>
+  `)}
+</zero-select>
+```
+
+Note that we used the `@change` binding to call `getMarketData()` when the value selected changed.
+
+:::tip
+We've used console.log to display the data returned from the server so we can get a better understanding of the data structure returned by each kind of resource (data servers, request replies, metadata etc).
+
+Remember that you can also use POSTMAN or any HTTP client to retrieve and analyze the data as we saw in the Developer Training.
+:::
+
+### Sending the data
+
 Now when we gathered all the data we're ready to send it over the wire:
 
-We create a simple button with click event handler:
+Let's add a simple button with click event handler:
 ```html title='order.template.ts'
 <zero-button @click=${x=> x.insertOrder()}>Add Order</zero-button>
 ```
 
-Then we create a new API call to insert order
+Then let's amend our insertOrder function to work with the custom form now:
 ```typescript title='order.ts'
 public async insertOrder() {
-  const insertOrderRequest = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
-    DETAILS: {
-      COUNTERPARTY_ID: 'GENESIS',
-      INSTRUMENT_ID: this.instrument,
-      QUANTITY: this.quantity,
-      PRICE: this.price,
-      SIDE: this.orderSide,
-      ORDER_DATETIME: Date.now(),
-    },
-    IGNORE_WARNINGS: true,
-    VALIDATE: false,
-  });
-}
+      const insertOrderEvent = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
+        DETAILS: {
+          COUNTERPARTY_ID: 'GENESIS',
+          INSTRUMENT_ID: this.instrument,
+          QUANTITY: this.quantity,
+          PRICE: this.price,
+          SIDE: this.side,
+          NOTES: this.notes,
+        },
+      });
+      console.log(insertOrderEvent);
+    }
 ```
 
-Now if everything went well you can go to your browser insert the data, click the button, and you should see new order showing up in the data grid you set up in [previous chapter](/getting-started/go-to-the-next-level/data-grid)
+Reload your screen and try to insert a new order. For now, just check your browser console and see if you find the result of the `insertOrder()` call.
 
-### Exercise 2.1: using Genesis Comms
-:::info estimated time
-30min
-:::
-Load some field with Genesis Comms, or do some error handling reading the response from the Event
+Let's improve our screen a little bit and add a simple success or error message based on the result from the `EVENT_ORDER_INSERT` event to showcase how to handle the response from the server.
 
-### Adding the Orders data grid
-In the template file, start by adding the Genesis [data source](/front-end/web-components/grids/ag-grid/ag-genesis-datasource/) pointing to the appropriate resource name; this must be wrapped in a grid of your choice. For this example we shall use [ag-grid](/front-end/web-components/grids/ag-grid/ag-grid-intro/).
+```ts {14,15,16,17,18,19} title='order.ts'
+public async insertOrder() {
+      const insertOrderEvent = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
+        DETAILS: {
+          COUNTERPARTY_ID: 'GENESIS',
+          INSTRUMENT_ID: this.instrument,
+          QUANTITY: this.quantity,
+          PRICE: this.price,
+          SIDE: this.side,
+          NOTES: this.notes,
+        },
+      });
+      console.log(insertOrderEvent);
 
+      if (insertOrderEvent.MESSAGE_TYPE == 'EVENT_NACK') {
+        const errorMsg = insertOrderEvent.ERROR[0].TEXT;
+        alert(errorMsg);
+      } else {
+        alert("Order inserted successfully.")
+      }
+    }
+```
+
+### Adding a simple Orders data grid
+In the template file, let's add the Genesis [data source](/front-end/web-components/grids/ag-grid/ag-genesis-datasource/) pointing to the `ALL_ORDERS` resource and wrap it in [ag-grid](/front-end/web-components/grids/ag-grid/ag-grid-intro/).
 
 ```html title="order.template.ts"
 <zero-ag-grid>
@@ -258,109 +368,13 @@ In the template file, start by adding the Genesis [data source](/front-end/web-c
 
 This will result in grid displaying all the columns available in the for the `ALL_ORDERS` resource.
 
-### Grid interaction
+Our order entry functionality is complete now! 
 
-To add new columns that are not part of the resource model (ALL_ORDERS query in this case), we can add additional column definitions.
+Take a moment to play around, insert new orders and see the orders in the grid.
 
-```html {6} title="order.template.ts"
-<zero-ag-grid>
-    <ag-genesis-datasource
-            resourceName="ALL_ORDERS"
-            orderBy="ORDER_ID">
-    </ag-genesis-datasource>
-    <ag-grid-column :definition="${x => x.singleOrderActionColDef}" />
-</zero-ag-grid>
-
-```
-
-In the component definition file, we can provide a method that enables us to interact with the rest of the class.
-The example below creates a column with a button that logs data in the row to the console.
-Here you can easily swap logging the row data with some custom logic (such as calling a back-end api that we shall cover in more detail later on).
-
-```typescript title="order.ts"
-import {ColDef} from '@ag-grid-community/core';
-
-  public singleOrderActionColDef: ColDef = {
-    headerName: 'Action',
-    minWidth: 120,
-    maxWidth: 120,
-    cellRenderer: 'action',
-    cellRendererParams: {
-      actionClick: async (rowData) => {
-        console.log(rowData);
-      },
-      actionName: 'Print Order',
-      appearance: 'primary-gradient',
-    },
-    pinned: 'right',
-  };
-```
-
-### Custom column config
-
-If you want to customise how each column is displayed, you can provide column config for every column.
-
-Create a new file called orderColumnDefs.ts in the same directory.
-
-```typescript title="orderColumnDefs.ts"
-export const orderColumnDefs: ColDef[] = [
-  {field: 'INSTRUMENT_ID', headerName: 'Instrument', sort: 'desc', flex: 2},
-  {field: 'QUANTITY', headerName: 'Quantity', valueFormatter: formatNumber(0), type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
-  {field: 'ORDER_ID', headerName: 'Order ID', flex: 1, enableCellChangeFlash: true},
-  {field: 'PRICE', headerName: 'Price', valueFormatter: formatNumber(2), type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
-  {field: 'ORDER_SIDE', headerName: 'Order Side', sort: 'desc', flex: 2},
-  {field: 'NOTES', headerName: 'Notes', sort: 'desc', flex: 2},
-  
-];
-```
-To stop automatic generation of columns, you need to add the `only-template-col-defs` attribute to the zero-ag-grid.
-
-Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive) directive; this includes all the columns from our column config array.
-
-
-```typescript {4,10-12} title="order.template.ts"
-import {orderColumnDefs} from './orderColumnDefs';
-
-<zero-ag-grid
-    only-template-col-defs
-    >
-    <ag-genesis-datasource
-        resourceName="ALL_ORDERS"
-        orderBy="ORDER_ID">
-    </ag-genesis-datasource>
-    ${repeat(() => orderColumnDefs, html`
-    <ag-grid-column :definition="${x => x}" />
-    `)}
-    <ag-grid-column :definition="${x => x.singleOrderActionColDef}" />
-</zero-ag-grid>
-```
-
-### Saving user preferences
-
-You can add the `persist-column-state-key` to the zero-ag-grid to persist user changes to things such as sorting, column order, and visibility on their machine. With this, when the user reloads the browser, they get the same configuration.
-
-```html {2}
-<zero-ag-grid
-    persist-column-state-key='order-grid-settings'
->
-```
-
-
-### Exercise 2.2: customizing the grid
+### Exercise 2.1: using Genesis Comms
 :::info estimated time
 30min
 :::
-Change the row height of the data grid to '20 px' and add a new column called 'See order' that opens a window.alert with the row data.
-
-:::tip More Genesis ag-grid attributes
-You can find all the additional attributes and props, including row height, of the Genesis ag-grid at [Genesis ag-grid documentation](/front-end/web-components/grids/ag-grid/ag-grid-intro/)
-:::
-
-
-### Adding the edit and cancel Order action
-
-## Exercises
-- Add a new action 'delete order'
-- Display more data on 'Market data' and 'Symbol'
-- Add a new field dropdown 'Order on behalf' listing all USERs, must select one or none
+Load some field with Genesis Comms, or do some error handling reading the response from the Event
 
