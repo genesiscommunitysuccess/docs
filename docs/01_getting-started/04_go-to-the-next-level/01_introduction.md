@@ -19,7 +19,7 @@ The application will make use of the following platform features:
 - [Auditable tables](/getting-started/go-to-the-next-level/audit/)
 - [State management](/getting-started/go-to-the-next-level/state-management/)
 - [Auditable tables](/getting-started/go-to-the-next-level/audit/)
-- [Condition](/getting-started/go-to-the-next-level/condition-rules/) and [Time-based](/getting-started/go-to-the-next-level/time-rules/) rules
+- [Genesis Evaluator rules](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/) 
 - [Data pipelines](/getting-started/go-to-the-next-level/data-pipeline/)
 
 
