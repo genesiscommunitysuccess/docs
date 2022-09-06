@@ -422,7 +422,7 @@ The objective is to use dynamic permissions and permission codes so that specifi
 
 ### Set up generic permissions
 
-First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field part of the [generic permissions](/server-modules/access-control/authorisation-overview/#generic-permissions) <!-- TODO: Is this the right link? --> system.
+First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field part of the [generic permissions](/server-modules/access-control/authorisation-overview/#generic-permissions) system.
 
 Starting with the server, set up the USER and USER_ATTRIBUTES records for the system user JaneDee.
 
