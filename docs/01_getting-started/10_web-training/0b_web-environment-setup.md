@@ -8,21 +8,33 @@ sidebar_position: 2
 
 # Environment set-up
 
-You must have completed the environment setup from the previous Developer Training. If that's not the case, please [do that](/getting-started/web-training/environment-setup/) before continuing this guide.
+You must have completed the environment setup from the previous Developer Training. If that's not the case, please [do that](/getting-started/developer-training/environment-setup/) before continuing this guide.
 
 
 ## Start the project baseline
 
-Clone the Developer Training repo from [here](https://github.com/genesiscommunitysuccess/devtraining-gama). Alternatively, download a zip file with the project from [here](https://genesisglobal.jfrog.io/artifactory/community-uploads/devtraining-gama.zip). 
+Clone the Developer Training repo from [here](https://github.com/genesiscommunitysuccess/web-training-gama). Alternatively, download a zip file with the project from [here](https://genesisglobal.jfrog.io/artifactory/community-uploads/web-training-gama.zip).
 
-Open the project using IntelliJ and follow the next steps:
+Open the project using your favorite IDE such as IntelliJ or Visual Studio Code.
 
-### Build the server
-During this training, we are going to retrieve and send data to some backend components. We won't change them, but we need to have them running so they are reachable.
+## Running the backend
+You're not going to change any backend code, but we must have the server running to make our application work. To do that, we're simply going to run a different WSL distro from the Developer Training.
 
-In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha/Tasks/Build/Assemble**. Then, do the [Deployment process](/tutorials/training-resources/training-content-day1/#5-deployment).
+Download this [WSL distro](https://genesisglobal.jfrog.io/artifactory/community-uploads/web-training-wsl.zip), unzip it and import it into WSL.
 
-### Run the application
-Next, [run the application locally](/tutorials/training-resources/training-content-day2/#running-the-application-locally).
+Then, from the command line run:
+```shell
+wsl -d web-training
+su genesis
+startServer
+mon
+```
+
+You should see all processes up and running. Run those commands at the start of each day.
+
+### Running the frontend
+Next, [run the application locally](/getting-started/developer-training/training-content-day2/#running-the-application-locally).
 
 If you don't get any errors, you're all set!
+
+During the training, every time you add or change some code, make sure to reload your screen and test your changes from the browser. It's also useful to keep your browser's developer mode enabled and keep the browser console tab always open.

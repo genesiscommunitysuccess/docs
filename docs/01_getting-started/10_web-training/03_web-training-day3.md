@@ -48,6 +48,12 @@ import {ColDef} from '@ag-grid-community/core';
     pinned: 'right',
   };
 ```
+:::tip ColDef and renderes
+Find out more about:
+- [ColDef and Genesis AG Column](/front-end/web-components/grids/ag-grid/ag-genesis-column/)
+- [Cell Renderer](/front-end/web-components/grids/ag-grid/ag-genesis-cell/)
+- [AG Renderers](/front-end/web-components/grids/ag-grid/ag-renderers/)
+:::
 
 ### Custom column config
 
@@ -111,19 +117,17 @@ You can find all the additional attributes and props, including row height, of t
 
 ### Adding the edit and cancel Order action
 
+### Creating our own grid component
+Display this content https://internal-web/uat/secure/front-end/basics/inserting-a-grid/#going-further
+
 ## Exercises
 - Add a new action 'delete order'
 - Display more data on 'Market data' and 'Symbol'
-- Add a new field dropdown 'Order on behalf' listing all USERs, must select one or none
-
 
 ### Adding filters to the Orders data grid
-
-### Customizing Genesis ag-grid
-
-### Other methods available from Genesis Comms
+https://internal-web/uat/secure/front-end/web-components/grids/ag-grid/ag-genesis-datasource/
+use criteria, orderBy, reverse
 
 ### Exercises
-- Add a new filter to the data grid
+- Add a new filter to the data grid - criteria_match
 - Ag-grid customization exercises (using Genesis specific attributes)
-- Some exercises on Genesis Comms

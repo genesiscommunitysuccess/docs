@@ -440,7 +440,7 @@ There are quite a few more interesting resources such as [composing styles, part
 By now, you should have a good understanding of how to build web components based on FAST. But, again, make sure to check [FAST official documentation](https://www.fast.design/docs/fast-element/defining-elements).
 
 
-### Exercise 1.1
+### Exercise 1.1: getting familiar with customElement
 :::info estimated time
 30min
 :::
@@ -480,7 +480,7 @@ To get started on the implementation of our web app, these are the features we'r
 Some of the non-functional requirements we're going to address along with the implementation of the app:
 -   **override a design system to promote brand alignment and a reusable component library**
 -   **components styling**
--   **async communication with the server with Genesis Comms**
+-   **async communication with the server with Genesis Foundation Comms**
 -   **Angular integration**
 
 Now, let's get down to business!
@@ -507,7 +507,9 @@ In this next example, we have put a set of example options set in the flyout men
 
 #### Header Set-up
 
-To enable this micro front-end in our application, follow the steps below.
+We have already enabled this micro front-end when we created the initial structure of the application in the Developer Training. But for learning purposes, let's review what needs to be done to setup the foundation-header from scratch - compare this with the existing code to get a better understanding.
+
+To enable this micro front-end in our application, we'd have to follow the steps below.
 
 - Add `@genesislcap/foundation-header` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
 
@@ -713,6 +715,7 @@ Customize our header in such a way that we end up with these menu items:
 | Playground          | playground |
 | Orders          | orders |
 | Reporting          | reporting      |
+
 
 Feel free to simply display some empty content when you create the new pages (Orders and Reporting). We're just interested in the navigation for now.
 

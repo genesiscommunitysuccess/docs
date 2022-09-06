@@ -16,26 +16,25 @@ This is hands-on web developer training where we're going to extend the applicat
 
 - **TypeScript**, **HTML** and **CSS** are mandatory pre-requisites.​ If you're not an experienced frontend developer, please make sure to check this [resources page](/front-end/basics/prerequisites/) on the required technologies. However, with some perseverance, you should be able to follow along even if you’re coming from a different programming language as we cover some elements of the underlying technlogy we rely on.
 - You have taken the Developer Training course. Make sure your environment is setup as explained in the [Developer Training Environment Setup](/getting-started/web-training/environment-setup/)
-- This is not a web design course and the main focus is on how to build frontend functionalities. We'll cover how to style components, then you are free to style your application any way you want with proper CSS skills.
+- This is not a web design course and the main focus is on how to build frontend functionalities. We'll cover how to style components and you are free to style your application any way you want with proper CSS skills. Just to be clear, we're not going to spend time making things look good as we're interested in teaching how to make things work. This is not a CSS course.
 
 ## Programme
 
-This training is divided into 5 sessions, or days; each session covers specific resources of the platform to build a Trade & Positions application from the very beginning.
+This training is divided into 4 sessions, or days; each session covers specific resources of the Platform to extend the application built in the initial Developer Training.
 
 Should you need it along the course, feel free to use the [final application](#source-code) as a reference.
 
 Also, at any point, use the search function of the documentation for extra information.
 
-Estimated total effort: <b>Daily 4-hour sessions for 5 days</b>
+Estimated total effort: <b>Daily 4-hour sessions for 4 days</b>
 
 ## Agenda
 
-- [Web Developer environment set-up](/getting-started/web-training/environment-setup/)
+- [Web Developer environment set-up](/getting-started/web-training/web-training-environment-setup/)
 - [Day 1](/getting-started/web-training/training-content-day1/): Reviewing basic concepts, extending our web application​, navigation menu
-- [Day 2](/getting-started/web-training/training-content-day2/): Complex forms, data entry components, introduction to Genesis Comms lib.
+- [Day 2](/getting-started/web-training/training-content-day2/): Complex forms, data entry components, introduction to Genesis Foundation Comms
 - [Day 3](/getting-started/web-training/training-content-day3/): Displaying data with Genesis ag-grid, filters and streaming data
-- [Day 4](/getting-started/web-training/training-content-day4/): Design systems, styling, reporting
-- [Day 5](/getting-started/web-training/training-content-day5/): Using more micro frontend, Angular integration​.
+- [Day 4](/getting-started/web-training/training-content-day4/): Design systems, styling, reporting, Angular integration​
 
 ## Genesis low-code platform version
 6.0.2

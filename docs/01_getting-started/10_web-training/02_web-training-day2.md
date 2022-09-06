@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ---
 # Day 2 agenda
-Complex forms, data entry components, introduction to Genesis Comms lib.
+Complex forms, data entry components, introduction to Genesis Foundation Comms lib.
 
 ## Orders screen
 Let's continue the development of our web app creating an order screen. We're going to work on these files:
@@ -16,13 +16,11 @@ Let's continue the development of our web app creating an order screen. We're go
 
 You should have created these files in the last exercise of the previous day of the training with the navigation bar pointing to them as well.
 
-Now, let's replace the dummy content of these files with the actual implementation we want. This is how this screen will look like:
-
-**INSERT SCREENSHOT HERE WHEN DONE**
+Now, let's replace the dummy content of these files with the actual implementation we want.
 
 ### Requirements
 
-A page listing all the orders with a filter by Type and actions to insert a new order, edit an existing order and cancel an order.
+The goal of our app is to list all the orders with some filters and actions to insert a new order, edit an existing order and cancel an order.
 
 #### Fields
 | Field          | Type             | Editable | Notes
@@ -79,18 +77,17 @@ We define `insertOrder` function in order.ts
     const formData = event.detail;
     const insertOrderEvent = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
       DETAILS: {
-        COUNTERPARTY_ID: 'GENESIS',
         INSTRUMENT_ID: formData.INSTRUMENT_ID,
         QUANTITY: formData.QUANTITY,
         PRICE: formData.PRICE,
         SIDE: formData.SIDE,
-        ORDER_DATETIME: Date.now(),
+        NOTES: formData.NOTES,
       },
     });
   }
 ```
 
-### Introducing Genesis Comms lib
+### Introducing Genesis Foundation Comms lib
 As you can see in the `insertOrder` code, we are importing `Connect` from `@genesislcap/foundation-comms`, which is Genesis core communication system with the server.
 :::info full flexibility
 You can use the foundation-comms in any modern web app, based on FAST or not. This gives you full flexibility on how to interact with the server without, necessarily, relying on the UI components provided.
@@ -132,6 +129,10 @@ export const OrderTemplate = html<Order>`
 <zero-text-area>Notes</zero-text-area>
 `;
 ```
+
+:::info form style
+We're just showing the relevant code for the functionality we're building. Feel free to surround the elements with `div` or use any other resource to make your form look good.
+:::
 
 Then, define the variables that will hold the values that are entered.
 
@@ -300,6 +301,14 @@ We've used console.log to display the data returned from the server so we can ge
 
 Remember that you can also use POSTMAN or any HTTP client to retrieve and analyze the data as we saw in the Developer Training.
 :::
+### Exercise 2.1: using Foundation Comms
+:::info estimated time
+30min
+:::
+Let's revisit our Marketdata component. Make it retrieve all instruments from the server and display all instrument names and their corresponding last prices.
+
+Server resources to be used: ALL_INSTRUMENTS and INSTRUMENT_MARKET_DATA.
+
 
 ### Sending the data
 
@@ -315,7 +324,6 @@ Then let's amend our insertOrder function to work with the custom form now:
 public async insertOrder() {
       const insertOrderEvent = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
         DETAILS: {
-          COUNTERPARTY_ID: 'GENESIS',
           INSTRUMENT_ID: this.instrument,
           QUANTITY: this.quantity,
           PRICE: this.price,
@@ -335,7 +343,6 @@ Let's improve our screen a little bit and add a simple success or error message 
 public async insertOrder() {
       const insertOrderEvent = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
         DETAILS: {
-          COUNTERPARTY_ID: 'GENESIS',
           INSTRUMENT_ID: this.instrument,
           QUANTITY: this.quantity,
           PRICE: this.price,
@@ -357,6 +364,7 @@ public async insertOrder() {
 ### Adding a simple Orders data grid
 In the template file, let's add the Genesis [data source](/front-end/web-components/grids/ag-grid/ag-genesis-datasource/) pointing to the `ALL_ORDERS` resource and wrap it in [ag-grid](/front-end/web-components/grids/ag-grid/ag-grid-intro/).
 
+Add this code to the end of html template code:
 ```html title="order.template.ts"
 <zero-ag-grid>
     <ag-genesis-datasource
@@ -366,15 +374,20 @@ In the template file, let's add the Genesis [data source](/front-end/web-compone
 </zero-ag-grid>
 ```
 
-This will result in grid displaying all the columns available in the for the `ALL_ORDERS` resource.
-
-Our order entry functionality is complete now! 
+This will result in a grid displaying all the columns available in the for the `ALL_ORDERS` resource.
 
 Take a moment to play around, insert new orders and see the orders in the grid.
 
-### Exercise 2.1: using Genesis Comms
+### Exercise 2.2: customizing order entry further
 :::info estimated time
 30min
 :::
-Load some field with Genesis Comms, or do some error handling reading the response from the Event
+Implement these changes in the order entry form:
+- there's a field ORDER_ID in the ORDER table which is generated automatically by the server. However, if a value is given, it will use the given value instead. Generate a random value on the frontend and pass the value to the EVENT_ORDER_INSERT event.
+- Fields instrument, quantity and price are mandatory on the server. Whenever a null or empty value is passed, make sure to capture the error response from the server and paint the missing field label in red.
 
+### Exercise 2.3: revamp the Trade screen
+:::info estimated time
+60min
+:::
+Remember the Trade screen from the Developer Training? Rebuilt it now using a custom form like we did with the Order screen instead of using the entity-management micro frontend. Make sure to populate the dropdown fields and handle the server response as well.
