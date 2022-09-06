@@ -25,19 +25,19 @@ If you haven’t already, please install [Windows Terminal](https://www.microsof
 
 Your Windows install must be 2004+ ([2020 May feature release or higher](https://support.microsoft.com/en-us/topic/windows-10-update-history-24ea91f4-36e7-d8fd-0ddb-d79d9d0cdbda)).
 
-If you have previously enabled WSL, you need to set the default version to 2 and (optionally) convert existing distros in PowerShell:
+If you have previously enabled WSL, you need to set the default version to 2 and (optionally) convert existing distros:
 
-```
-PS C:\Users\user.name> wsl -l -v
+```none title="PowerShell"
+> wsl -l -v
   NAME      STATE           VERSION
 * Ubuntu    Stopped         1
-PS C:\Users\user.name> wsl --set-default-version 2
+> wsl --set-default-version 2
 For information on key differences with WSL 2 please visit https://aka.ms/wsl2
-PS C:\Users\user.name> wsl --set-version Ubuntu 2
+> wsl --set-version Ubuntu 2
 Conversion in progress, this may take a few minutes...
 For information on key differences with WSL 2 please visit https://aka.ms/wsl2
 Conversion complete.
-PS C:\Users\user.name> wsl -l -v
+> wsl -l -v
   NAME      STATE           VERSION
 * Ubuntu    Stopped         2
 ```
@@ -70,15 +70,15 @@ To install this distro, unzip and execute the .exe
 
 For an alternative and expedient way to install CentOS7, you can use the Microsoft article below in order to build a CentOS distro from a Docker image.
 
-:::tip
+:::caution Important
 
 Note that you want to install CentOS7, whereas the microsoft article below focuses on CentOS latest.
 
 Replace
-`docker run -t centos bash ls/`
+`# docker run -t centos bash ls/`
 
 with
-`docker run -t centos:centos7 bash ls/` 
+`# docker run -t centos:centos7 bash ls/` 
 
 for the third step under **Export the tar from a container**.
 
@@ -104,13 +104,13 @@ Next, update CentOS by running:
 
 2. Install Java 11 or scp jdk from local binaries folder and install:
 
-```
+```none title="CentOS"
 sudo yum install java-11-openjdk-devel
 ```
 
-Once you have set this up, it is a good idea to export the distribution. You can do this by using the following command in PowerShell:
+Once you have set this up, it is a good idea to export the distribution:
 
-```
+```none title="PowerShell"
 wsl --export CentOS7 centos.backup
 ```
 
@@ -120,18 +120,18 @@ You can then [import](https://docs.microsoft.com/en-us/windows/wsl/use-custom-di
 
 From WSL, your Windows drives are available from `/mnt/${driveLetter}`:
 
-```
-[root@LONPC24 mnt]# pwd
+```none title="CentOS"
+# pwd
 /mnt
-[root@LONPC24 mnt]# ll
+# ll
 total 0
 drwxrwxrwx 1 root root  512 Aug  8 12:48 c
 drwxrwxrwx 1 root root 4096 Aug 14 08:50 d
 drwxrwxrwt 5 root root  100 Aug 14 10:16 wsl
-[root@LONPC24 mnt]#
+#
 ```
 
-From Windows, your WSL distros are accessible from ** \\\wsl$\ ** in Windows Explorer.
+From Windows 10, your WSL distros are accessible from ** \\\wsl$\ ** in Windows Explorer.
 
 ### Windows Firewall set-up
 
@@ -149,9 +149,9 @@ Ethernet adapter vEthernet (WSL):
    Default Gateway . . . . . . . . . :
 ```
 
-Run the following command as admin in PowerShell so your firewall will not block inbound traffic from your WSL instances:
+Run the following command as admin so your firewall will not block inbound traffic from your WSL instances:
 
-```
+```none title="PowerShell"
 New-NetFirewallRule -DisplayName "WSL" -Direction Inbound  -InterfaceAlias "vEthernet (WSL)"  -Action Allow
 ```
 
@@ -159,16 +159,16 @@ New-NetFirewallRule -DisplayName "WSL" -Direction Inbound  -InterfaceAlias "vEth
 
 ### Installing FDB (recommended for development environments)
 
-As root in CentOS (note, replace `alpha` with the application user set up):
+As root (note, replace `alpha` with the application user set up):
 
-```
+```none title="CentOS"
 useradd alpha
 usermod -aG wheel alpha
 ```
 
 Then...
 
-```
+```none title="CentOS"
 rpm -Uvhi https://github.com/apple/foundationdb/releases/download/6.3.23/foundationdb-clients-6.3.23-1.el7.x86_64.rpm
 rpm -Uvhi https://github.com/apple/foundationdb/releases/download/6.3.23/foundationdb-server-6.3.23-1.el7.x86_64.rpm
 mv /usr/bin/systemctl /usr/bin/systemctl.old
@@ -189,7 +189,7 @@ Then to check if it's running:
 
 You can run Aerospike with the following Docker command:
 
-```
+```none title="CentOS"
 docker run --name aerospike -tid -p 3000:3000 -p 3001:3001 -p 3002:3002 -p 3003:3003 aerospike/aerospike-server:3.15.1.4
 ```
 
@@ -198,24 +198,24 @@ This creates a download and runs Aerospike in a Docker container.
 To check if the container is running, use the `docker container ls -a` command. This will show the id and name of the Aerospike
 container. You need these to interact with the container.
 
-```
-[root@machine wsl]# docker container ls -a
+```none title="CentOS"
+# docker container ls -a
 CONTAINER ID        IMAGE                                 COMMAND                CREATED             STATUS                      PORTS               NAMES
 c3468768d9c9        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   2 minutes ago       Exited (0) 32 seconds ago                       priceless_bardeen
 ```
 
 To start or stop the container, use `docker start|stop ${containerName}`:
 
-```
-[root@machine wsl]# docker stop priceless_bardeen
+```none title="CentOS"
+# docker stop priceless_bardeen
 priceless_bardeen
-[root@machine wsl]# docker container ls -a
+# docker container ls -a
 CONTAINER ID        IMAGE                                 COMMAND                CREATED             STATUS
         PORTS               NAMES
 c3468768d9c9        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   5 minutes ago       Exited (0) 3 minutes ago                       priceless_bardeen
-[root@machine wsl]# docker start priceless_bardeen
+# docker start priceless_bardeen
 priceless_bardeen
-[root@machine wsl]# docker container ls -a
+# docker container ls -a
 CONTAINER ID        IMAGE                                 COMMAND                CREATED             STATUS
  PORTS                              NAMES
 c3468768d9c9        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   5 minutes ago       Up 4 seconds        0.0.0.0:3000-3003->3000-3003/tcp   priceless_bardeen
@@ -223,20 +223,20 @@ c3468768d9c9        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"  
 
 To remove the container, use `docker rm ${containerName}`:
 
-```
-[root@machine wsl]# docker rm priceless_bardeen
+```none title="CentOS"
+# docker rm priceless_bardeen
 priceless_bardeen
-[root@machine wsl]# docker container ls -a
+# docker container ls -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS
 NAMES
 ```
 
 After removing, you can create a fresh container using the same command as above:
 
-```
-[root@machine wsl]# docker run -tid -p 3000:3000 -p 3001:3001 -p 3002:3002 -p 3003:3003 aerospike/aerospike-server:3.15.1.4
+```none title="CentOS"
+# docker run -tid -p 3000:3000 -p 3001:3001 -p 3002:3002 -p 3003:3003 aerospike/aerospike-server:3.15.1.4
 41e9aee4246ca1aaaa5d5fb4e832e0778ba541cf56ad37869c675bc96c1ceb3e
-[root@machine wsl]# docker container ls -a
+# docker container ls -a
 CONTAINER ID        IMAGE                                 COMMAND                CREATED             STATUS
  PORTS                              NAMES
 41e9aee4246c        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   6 seconds ago       Up 5 seconds        0.0.0.0:3000-3003->3000-3003/tcp   sweet_sinoussi
@@ -261,7 +261,7 @@ file **genesis-system-definition.kts**:
 
 Running Postgres from Docker is very similar to running Aerospike:
 
-```
+```none title="CentOS"
 docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c shared_buffers=80MB -c max_connections=250
 ```
 
@@ -271,14 +271,14 @@ details [see here](https://hub.docker.com/_/postgres/). For version 10, change `
 
 To connect, use this JDBC URL:
 
-```
+```none title="CentOS"
 jdbc:postgresql://localhost:5432/?user=postgres&password=docker
 ```
 
 ### Running MSSQL from Docker
 Run the following Docker command:
 
-```
+```none title="CentOS"
 docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=docker" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 ```
 
@@ -287,6 +287,6 @@ details [see here](https://hub.docker.com/_/microsoft-mssql-server).
 
 To connect, use this JDBC URL:
 
-```
+```none title="CentOS"
 jdbc:sqlserver://localhost:1433;database=master;user=sa;password=docker
 ```
