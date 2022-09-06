@@ -3,10 +3,6 @@ name: Deploy to production archive
 on:
   # Manually triggered
   workflow_dispatch:
-  # And temporarily when a PR is raised for testing purposes
-  pull_request:
-    branches:
-      - master
 
 jobs:
   deploy:
@@ -40,13 +36,13 @@ jobs:
 
     - uses: jakejarvis/s3-sync-action@master
       with:
-        # TODO re-instate delete: args: --follow-symlinks --delete
         args: --follow-symlinks
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        #AWS_S3_BUCKET: genesis-portal
-        AWS_S3_BUCKET: genesis-internal-web
+        AWS_S3_BUCKET: genesis-portal
+        # internal/staging bucket, used during testing
+        #AWS_S3_BUCKET: genesis-internal-web
         AWS_REGION: 'eu-west-2'
         SOURCE_DIR: 'build'
         DEST_DIR: 'archive'
