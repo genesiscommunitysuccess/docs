@@ -1,7 +1,7 @@
 ---
 id: web-training-day4
 title: Day 4
-sidebar_label: Day 4
+sidebar_label: Day four
 sidebar_position: 6
 ---
 
