@@ -1,7 +1,7 @@
 ---
-title: 'Now you are ready'
-sidebar_label: 'Now you are ready'
-id: you-can-now-run
+title: 'Genx'
+sidebar_label: 'Genx'
+id: genx
 ---
 
 Once you have checked that you have all the pre-requisites in place, you have everything you need in order to run our Quick Start.
