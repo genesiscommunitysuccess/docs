@@ -8,7 +8,7 @@ sidebar_position: 6
 This day covers:
 
 - [Styling](#styling) and [Design systems](#design-systems) 
-- [Reporting](#reporting)
+- [Micro Front-ends](#micro-front-ends)
 - [Angular integration​](#angular-integration)
 
 ## Styling
@@ -295,18 +295,99 @@ this is pretty much here: https://github.com/genesislcap/clarity-web/blob/develo
 We are customising our application using [Customisation (app-specific)](#customisation-app-specific). Use the prefix **ui-training** and create a custom TextField and ComboBox style.
 
 
-## Reporting
+## Micro Front-ends
 
-The [Micro-front-end](/front-end/micro-front-ends/introduction/) architecture is a design approach in which a front-end app is decomposed into individual, semi-independent **micro applications** working loosely together. There are re-usable micro-front-ends that can be used by Genesis-powered applications, such as Front-end Reporting.
+The [Micro-front-end](/front-end/micro-front-ends/introduction/) architecture is a design approach in which a front-end app is decomposed into individual, semi-independent **micro applications** working loosely together. There are re-usable micro-front-ends that can be used by Genesis-powered applications, such as [Foundation Header](/front-end/micro-front-ends/foundation-header/) (we covered in [Day 1](#)), [Entity Management](/front-end/micro-front-ends/foundation-entity-management/)(pretty much covered in the [Developer Training](#)), [User Management](#user-management), and [Front-end reporting](#front-end-reporting).
 
-The Reporting component enables your users to create report specifications, run them, or save them for later use. From the GUI, users can:
+### User Management
+
+The [User Management](/front-end/micro-front-ends/foundation-user-management/) micro front-end is used to manage the users on the front end. Two core components are used to manage the entities `grid`(uses [ag-grid](https://www.ag-grid.com/)) and `form`.
+
+:::info
+User Management is a concrete use case of the [Entity Management](/front-end/micro-front-ends/foundation-entity-management/) micro front-end, which is provided as part of `foundation-ui`.
+:::
+
+To enable this micro front-end in your application, follow the steps below:
+
+- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
+
+```javascript
+{
+  ...
+  "dependencies": {
+    "@genesislcap/foundation-entity-management": "latest"
+  },
+  ...
+}
+```
+
+- Import and declare the class in the page of the class where you wish to use the user manager. Then add User Management to the template html where required:
+
+```javascript
+// Import
+import { Users, } from '@genesislcap/foundation-entity-management';
+
+// Declare class
+Users;
+
+// Example html with the user management
+// You can customise this with additional fields, see futher in this documentation
+export const AdminTemplate: ViewTemplate = html`
+  <zero-tabs>
+    <zero-tab-panel slot="tabpanel">
+      <zero-error-boundary>
+        <user-management></user-management>
+      </zero-error-boundary>
+    </zero-tab-panel>
+  </zero-tabs>
+`;
+```
+
+You can customise the functionality of User Management through the properties you set in the html. The primary way to configure the User Management functionality is via the columns that are displayed on the grid.
+
+```javascript
+// Default usage, will contain the "default" columns:
+//    username, first name, last name, email, last login
+// as well as the additional entity and status columns
+<user-management></user-management>
+```
+
+The default columns are contained in the [UserColumnConfig](/front-end/micro-front-ends/foundation-entity-management_apiref/foundation-entity-management.userscolumnconfig) variable. The `Entity` and `Status` columns are always added to the grid.
+
+To configure the columns yourself, set the `columns` attribute when you define the User Management in the html. You can mix in your custom column config with the default user columns config using the javascript `spread` operator.
+```javascript
+// Custom usage, will contain the "default" columns:
+//    username, first name, last name, email, last login
+// the custom "userColumns"
+// as well as the additional entity and status columns
+<user-management :columns=${() => [...UsersColumnConfig, ...userColumns]}>
+</user-management>
+```
+
+Further information about User Management API Ref (such as `Permissions` or `persist-column-state-key`) can be found [here](/front-end/micro-front-ends/foundation-entity-management_apiref).
+
+
+##### Exercise 4.3 Add the User Management into the application
+<!--
+this is pretty much here:
+-->
+:::info ESTIMATED TIME
+25 mins
+:::
+
+Add the User Management into the application.
+
+
+### Front-end reporting
+
+The [Front-end reporting](/front-end/micro-front-ends/front-end-reporting/) component enables your users to create report specifications, run them, or save them for later use. From the GUI, users can:
 
 - select columns from existing data sources
 - save the report with a name and retrieve it for future use
 - apply ad hoc filtering to a report
 - export the report results to .csv  format
 
-### Server configuration
+#### Server configuration
 
 To enable this component on the server, pull in the [reporting-distribution-5.6.1-bin.zip](https://genesisglobal.jfrog.io/ui/repos/tree/General/libs-release-local%2Fglobal%2Fgenesis%2Freporting-distribution%2F5.6.1%2Freporting-distribution-5.6.1-bin.zip) from Artifactory, and `unzip` it alongside genesis and auth modules in the standard genesis deployment server directory.
 
@@ -318,7 +399,7 @@ The Report Server adds the following metadata services:
 - SAVED_REPORTS (Request Response)
 - ALL_REPORT_DATASOURCES (Request Response)
 
-### Front-end configuration
+#### Front-end configuration
  
 To enable this micro front-end in your application, follow the steps below.
 
@@ -367,7 +448,7 @@ public async configure() {
 }
 ```
 
-#### Exercise 4.3 Creating a new ALL_POSITIONS Report
+##### Exercise 4.4 Creating a new ALL_POSITIONS Report
 <!--
 this is pretty much here:
 -->
@@ -496,7 +577,7 @@ Third-party controls require a ControlValueAccessor for writing a value and list
 
 Congratulations! You're now set up to use Genesis Foundation and Angular!
 
-#### Exercise 4.4 Adding a AgGrid to list Counterparties in our Angular solution
+#### Exercise 4.5 Adding a AgGrid to list Counterparties in our Angular solution
 <!--
 this is pretty much here: https://docs.genesis.global/secure/tutorials/training-resources/training-content-day3/#ui-configuring
 -->
