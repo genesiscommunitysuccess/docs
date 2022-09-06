@@ -17,7 +17,6 @@ Using `RxDb` instead of [entityDb](/database/database-interface/entity-db/) or [
 
 The `RxDb` enables you to interact with the database layer, but you do not have any level of type-safety when doing so. Instead, it uses [Flowable](/database/types-of-api/rxjava/#flowable) entities. 
 
-//unsure on this, rewrite
 The interface supports the same operations as the generated repositories, but will accept any entity. It supports read and write operations for tables only.
 
 The RxDb can be injected in Kotlin and Java using `RxDb`.
@@ -92,9 +91,9 @@ final Set<String> fields = Set.of("ID", "CLIENT_ID");
 final DbRecord trade = rxDb.get(findRec, "TRADE_BY_ID", fields).blockingGet();
 
 ```
+
 </TabItem>
 </Tabs>
-
 
 ### getAll
 
@@ -174,6 +173,7 @@ final Map<String, DbRecord> resultsMapFromFlowable = rxDb.getAll(Flowable.fromIt
 final DbRecord recordA2 = resultsMapFromFlowable["A"];
 final DbRecord recordB2 = resultsMapFromFlowable["B"];
 ```
+
 </TabItem>
 </Tabs>
 
@@ -250,6 +250,7 @@ final Map<String, DbRecord> resultsMapFromFlowable = rxDb.getAll(Flowable.fromIt
 final DbRecord recordA2 = resultsMapFromFlowable[0];
 final DbRecord recordB2 = resultsMapFromFlowable[1];
 ```
+
 </TabItem>
 </Tabs>
 
@@ -296,6 +297,7 @@ final FLowable<DbRecord> tradeByPrimaryKeyIDAndPrice = rxDb.getBulk("TRADE", Set
 // or both!
 final FLowable<DbRecord> tradeByIDIDAndPrice = rxDb.getBulk("TRADE", "TRADE_BY_ID", Set.of("ID", "PRICE"));
 ```
+
 </TabItem>
 </Tabs>
 
@@ -320,7 +322,7 @@ There is also the `getBulk` function, which will return records in ascending ord
 // we can pass in the table name and index name, to sort by that descending
 val tradeByIDEveryField = rxDb.getBulkFromEnd("TRADE", "TRADE_BY_ID")
 // or with a set of fields to select
-val tradeByIDIDAndPrice = rxDb.getBulkFromEnd("TRADE", "TRADE_BY_ID", setOf("ID", "PRICE"))
+val tradeByIDAndPrice = rxDb.getBulkFromEnd("TRADE", "TRADE_BY_ID", setOf("ID", "PRICE"))
 ```
 
 </TabItem>
@@ -332,8 +334,7 @@ final Flowable<DbRecord> tradeByIDEveryField = rxDb.getBulkFromEnd("TRADE", "TRA
 // or with a set of fields to select
 final FLowable<DbRecord> tradeByIDIDAndPrice = rxDb.getBulkFromEnd("TRADE", "TRADE_BY_ID", Set.of("ID", "PRICE"));
 ```
-</TabItem>
-</Tabs>
+
 </TabItem>
 </Tabs>
 
@@ -431,5 +432,6 @@ db.getRange(Trade.byTypeId("tradeType1"),Trade.byTypeId("tradeType2"));
 db.getRange(trade1.byTypeId(),trade2.byTypeId(),1).toList();
 db.getRange(trade1,trade2,Trade.ByTypeId.Companion,1).toList();
 ```
+
 </TabItem>
 </Tabs>
