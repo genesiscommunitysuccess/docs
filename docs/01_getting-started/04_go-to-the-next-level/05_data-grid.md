@@ -4,11 +4,32 @@ sidebar_label: 'Show data using Data Grid'
 id: data-grid
 ---
 
-For your user interface, the `genx` process has generated the following files:
+## Prerequisites
 
-- **home.template.ts**
-- **home.ts**
-- **home.styles.ts**
+There are couple of steps that have to be done before seeing the user interface running.
+
+### Connecting the back end and front end
+With this next step, we will configure an nginx server working as a reverse proxy.
+
+In your CentOS terminal, enter:
+```shell
+docker login genesisglobal-docker-internal.jfrog.io
+...
+
+You need to enter your artifactory credentials at this point
+
+Then enter:
+...
+docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
+#...
+
+You can run this command from within WSL or from your workstation. If you run it from the CentOS shell, you can use the following command:
+#...
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+
+```
+
+### Installing the dependencies
 
 Before we make any changes, you need to install your npm dependencies by running the following in your terminal:
 
@@ -25,6 +46,13 @@ npm run dev
 The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
 
+## Showing all positions 
+
+For your user interface, the `genx` process has generated the following files:
+
+- **home.template.ts**
+- **home.ts**
+- **home.styles.ts**
 
 In the template file, start by adding the Genesis data source pointing to the appropriate resource name; this must be wrapped in a grid of your choice. For this example we shall use ag-grid.
 
