@@ -25,7 +25,7 @@ If you haven’t already, please install [Windows Terminal](https://www.microsof
 
 Your Windows install must be 2004+ ([2020 May feature release or higher](https://support.microsoft.com/en-us/topic/windows-10-update-history-24ea91f4-36e7-d8fd-0ddb-d79d9d0cdbda)).
 
-If you have previously enabled WSL, you need to set the default version to 2 and (optionally) convert existing distros:
+If you have previously enabled WSL, you need to set the default version to 2 and (optionally) convert existing distros in PowerShell:
 
 ```
 PS C:\Users\user.name> wsl -l -v
@@ -68,18 +68,23 @@ distro](https://github.com/mishamosher/CentOS-WSL/releases/download/7.9-2111/Cen
 
 To install this distro, unzip and execute the .exe
 
-For an alternative and expedient way to install CentOS7, you can also use the following [article from Microsoft](https://docs.microsoft.com/en-us/windows/wsl/use-custom-distro) in order to build a CentOS distro from a Docker image.
+For an alternative and expedient way to install CentOS7, you can use the Microsoft article below in order to build a CentOS distro from a Docker image.
 
-### Important Note
+:::tip
 
-Follow the instructions on the link below to install. However, note that you want to install CentOS7, whereas the instructions focus on CentOS latest.
+Note that you want to install CentOS7, whereas the microsoft article below focuses on CentOS latest.
 
-Replace `docker run -t centos bash ls/` with `docker run -t centos:centos7 bash ls/` in the instructions on the page.
+Replace
+`docker run -t centos bash ls/`
 
-Got that? OK. Here's the link:
+with
+`docker run -t centos:centos7 bash ls/` 
 
-[https://docs.microsoft.com/en-us/windows/wsl/use-custom-distro#export-the-tar-from-a-container](https://docs.microsoft.com/en-us/windows/wsl/use-custom-distro#export-the-tar-from-a-container)
+for the third step under **Export the tar from a container**.
 
+:::
+
+You can find the Microsoft article to install CentOS [here](https://docs.microsoft.com/en-us/windows/wsl/use-custom-distro).
 
 Once you have installed CentOS, close your Windows Terminal then reopen it. Note the new entry in the drop-down menu:
 
@@ -103,16 +108,17 @@ Next, update CentOS by running:
 sudo yum install java-11-openjdk-devel
 ```
 
-Once you have set this up, it is a good idea to export the distribution. You can then import it again under a different
-name. This allows you to have multiple distributions for different projects, for example, or for running Intellij:
+Once you have set this up, it is a good idea to export the distribution. You can do this by using the following command in PowerShell:
 
 ```
 wsl --export CentOS7 centos.backup
 ```
 
+You can then [import](https://docs.microsoft.com/en-us/windows/wsl/use-custom-distro#import-the-tar-file-into-wsl) it again under a different name. This allows you to have multiple distributions for different projects, for example, or for running Intellij.
+
 ### Copying files between Windows and WSL
 
-From WSL, your Windows drives are available from `/mnt/_drive letter_`:
+From WSL, your Windows drives are available from `/mnt/${driveLetter}`:
 
 ```
 [root@LONPC24 mnt]# pwd
@@ -125,13 +131,13 @@ drwxrwxrwt 5 root root  100 Aug 14 10:16 wsl
 [root@LONPC24 mnt]#
 ```
 
-From Windows, your WSL distros are accessible from ** \\wsl$\ ** in Windows Explorer.
+From Windows, your WSL distros are accessible from ** \\\wsl$\ ** in Windows Explorer.
 
 ### Windows Firewall set-up
 
 If you are using Windows Firewall, you need to allow smooth network communication between your WSL distros and Windows.
 
-First, get the network range for your WSL network switch; run `ipconfig.exe` as admin in powershell and look for WSL:
+First, get the network range for your WSL network switch; run `ipconfig.exe` as admin in PowerShell and look for WSL:
 
 ```
 Ethernet adapter vEthernet (WSL):
@@ -143,7 +149,7 @@ Ethernet adapter vEthernet (WSL):
    Default Gateway . . . . . . . . . :
 ```
 
-Run the following command as admin in powershell so your firewall will not block inbound traffic from your WSL instances:
+Run the following command as admin in PowerShell so your firewall will not block inbound traffic from your WSL instances:
 
 ```
 New-NetFirewallRule -DisplayName "WSL" -Direction Inbound  -InterfaceAlias "vEthernet (WSL)"  -Action Allow
@@ -153,16 +159,16 @@ New-NetFirewallRule -DisplayName "WSL" -Direction Inbound  -InterfaceAlias "vEth
 
 ### Installing FDB (recommended for development environments)
 
-As root (note, replace `alpha` with the application user set up)
+As root in CentOS (note, replace `alpha` with the application user set up):
 
-```bash
+```
 useradd alpha
 usermod -aG wheel alpha
 ```
 
 Then...
 
-```bash
+```
 rpm -Uvhi https://github.com/apple/foundationdb/releases/download/6.3.23/foundationdb-clients-6.3.23-1.el7.x86_64.rpm
 rpm -Uvhi https://github.com/apple/foundationdb/releases/download/6.3.23/foundationdb-server-6.3.23-1.el7.x86_64.rpm
 mv /usr/bin/systemctl /usr/bin/systemctl.old
@@ -170,9 +176,10 @@ curl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/mas
 chmod +x /usr/bin/systemctl
 fdbcli --exec "configure new single memory ; status"
 systemctl enable foundationdb
+systemctl start foundationdb
 ```
 
-Then, to run this, use systemctl: 
+Then to check if it's running: 
 
 `systemctl status foundationdb`
 
@@ -188,38 +195,38 @@ docker run --name aerospike -tid -p 3000:3000 -p 3001:3001 -p 3002:3002 -p 3003:
 
 This creates a download and runs Aerospike in a Docker container.
 
-To check if the container is running, use the `Docker ps -all` command. This will show the id and name of the Aerospike
+To check if the container is running, use the `docker container ls -a` command. This will show the id and name of the Aerospike
 container. You need these to interact with the container.
 
 ```
-[root@machine wsl]# docker ps -all
+[root@machine wsl]# docker container ls -a
 CONTAINER ID        IMAGE                                 COMMAND                CREATED             STATUS                      PORTS               NAMES
 c3468768d9c9        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   2 minutes ago       Exited (0) 32 seconds ago                       priceless_bardeen
 ```
 
-To start or stop the container, use `docker start|stop _container name_`:
+To start or stop the container, use `docker start|stop ${containerName}`:
 
 ```
 [root@machine wsl]# docker stop priceless_bardeen
 priceless_bardeen
-[root@machine wsl]# docker ps -all
+[root@machine wsl]# docker container ls -a
 CONTAINER ID        IMAGE                                 COMMAND                CREATED             STATUS
         PORTS               NAMES
 c3468768d9c9        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   5 minutes ago       Exited (0) 3 minutes ago                       priceless_bardeen
 [root@machine wsl]# docker start priceless_bardeen
 priceless_bardeen
-[root@machine wsl]# docker ps -all
+[root@machine wsl]# docker container ls -a
 CONTAINER ID        IMAGE                                 COMMAND                CREATED             STATUS
  PORTS                              NAMES
 c3468768d9c9        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   5 minutes ago       Up 4 seconds        0.0.0.0:3000-3003->3000-3003/tcp   priceless_bardeen
 ```
 
-To remove the container, use `docker rm container name`:
+To remove the container, use `docker rm ${containerName}`:
 
 ```
 [root@machine wsl]# docker rm priceless_bardeen
 priceless_bardeen
-[root@machine wsl]# docker ps -all
+[root@machine wsl]# docker container ls -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS
 NAMES
 ```
@@ -229,14 +236,26 @@ After removing, you can create a fresh container using the same command as above
 ```
 [root@machine wsl]# docker run -tid -p 3000:3000 -p 3001:3001 -p 3002:3002 -p 3003:3003 aerospike/aerospike-server:3.15.1.4
 41e9aee4246ca1aaaa5d5fb4e832e0778ba541cf56ad37869c675bc96c1ceb3e
-[root@machine wsl]# docker ps -all
+[root@machine wsl]# docker container ls -a
 CONTAINER ID        IMAGE                                 COMMAND                CREATED             STATUS
  PORTS                              NAMES
 41e9aee4246c        aerospike/aerospike-server:3.15.1.4   "/entrypoint.sh asd"   6 seconds ago       Up 5 seconds        0.0.0.0:3000-3003->3000-3003/tcp   sweet_sinoussi
 ```
 
 By default, the Aerospike Docker database only has the **test** namespace, so you need to change the namespace in the
-file **genesis-system-definition.kts**.
+file **genesis-system-definition.kts**:
+
+```kotlin
+    ...
+    systems {
+        system(name = "DEV") {
+            ...
+            item(name = "DbNamespace", value = "test")
+            ...
+        }
+    }
+    ...
+```
 
 ### Running Postgres from Docker
 
@@ -248,6 +267,7 @@ docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres
 
 This downloads and runs a Postgres image for version 12.6. Other versions are available; for more
 details [see here](https://hub.docker.com/_/postgres/). For version 10, change `12.6-alpine` to `10.16-alpine`.
+
 
 To connect, use this JDBC URL:
 
