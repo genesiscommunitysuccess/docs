@@ -3,6 +3,7 @@
   "description": "Genesis platform documentation",
   "version": "0.0.1",
   "scripts": {
+    "docusaurus": "docusaurus",
     "build": "docusaurus build",
     "build:base_url": "BASE_URL=/secure/ docusaurus build",
     "clear": "docusaurus clear",
