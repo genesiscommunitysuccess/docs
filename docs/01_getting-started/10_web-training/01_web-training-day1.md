@@ -192,6 +192,23 @@ This includes **@genesislcap** dependencies. This is where you would change thei
 You can use the `lerna add` command (instead of `npm install`) if you need to add more dependencies, since the app is a [lerna managed](https://lerna.js.org/) monorepo.
 :::
 
+### Deploying
+
+For Genesis application servers the web server of choice is [nginx](https://www.nginx.com/).
+
+As explained previously, for the training we have provided a WSL instance with nginx pre-installed and running being used a reverse proxy. We're not going to deploy our application to that nginx instance though, we're going to simply use the local web server initiated by `npm run client:web` command. 
+
+For actual server deployment, these are the steps you'd need:
+1. build the project: `npm run build` from the ..client/web folder
+2. copy the content of the ..client/web/dist/ folder to the root folder of your web server. To find out the root folder, that's in the `root` directive in the server block of nginx.conf file.
+
+:::tip ZIP DIST FOLDER
+You can zip and unzip the content of `dist` to make it quicker.
+:::
+
+More information on [Web Deployment](/front-end/deploying/introduction/).
+
+
 ### Web pages
 To view or use your Genesis application, you need to create one or more web pages. On each of these pages, you need to have components that display information or enable the user to interact with the application.
 
