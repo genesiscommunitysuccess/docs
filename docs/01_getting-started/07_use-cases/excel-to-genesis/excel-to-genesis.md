@@ -4,8 +4,6 @@ sidebar_label: 'Quick guide'
 id: quick-guide
 ---
 
-[Excel reference](/server-modules/integration/excel-to-genesis/excel-reference/)  | [Excel functions](/server-modules/integration/excel-to-genesis/excel-functions) | [Quick guide](/server-modules/integration/excel-to-genesis/quick-guide)
-
 ## Introduction 
 
 ![](/img/intro3-xtg.png)
