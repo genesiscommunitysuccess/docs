@@ -131,7 +131,7 @@ drwxrwxrwt 5 root root  100 Aug 14 10:16 wsl
 #
 ```
 
-From Windows 10, your WSL distros are accessible from ** \\\wsl$\ ** in Windows Explorer.
+To access your WSL distros from Windows, open Windows Explorer and search ** \\\wsl$\ ** for Windows 10 or ** \\\wsl.localhost\ ** for Windows 11.
 
 ### Windows Firewall set-up
 
