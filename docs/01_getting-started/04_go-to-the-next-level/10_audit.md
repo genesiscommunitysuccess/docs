@@ -4,9 +4,9 @@ sidebar_label: 'Track the data changes using Auditable Tables'
 id: audit
 ---
 
-We want to be able to track the changes made to the various trades on the `TRADE` table, such that we could see the times and modifications made during the history of the trade. So, we are going to add basic auditing to the `TRADE` table to keep a record of the changing states of the trades.
+We want to be able to track the changes made to the various trades on the `TRADE` table, such that we are able to see the times and modifications made during the history of the trade. So, we are going to add basic auditing to the `TRADE` table to keep a record of the changing states of the trades.
 
-This can be useful for historical purposes, if you need to at a later date be able to produce an accurate course of events.
+This is useful for historical purposes if you need to at a later date be able to produce an accurate course of events.
 
 ### Adding audit to table dictionary
 The first step to add basic auditing is to change the relevant table dictionary. In this instance, we will be making changes to the **positions-app-tutorial-tables-dictionary.kts**, by adding the `audit` parameter. It should resemble the following:
@@ -29,7 +29,7 @@ table (name = "TRADE", id = 11000, audit = details(id = 11002, sequence = "TR"))
 }
 ```
 
-The `id` parameter insdie the details function indicates the `id` of the newly created audit table, and will need to be different from any other table id.
+The `id` parameter inside the details function indicates the `id` of the newly created audit table, and will need to be different from any other table id.
 
 As we are using the GPAL Event Handlers, this is sufficient to enable auditing on this table. A new table is created with the name of the original table, plus the **_AUDIT** suffix. In this instance, that would be the **TRADE_AUDIT** table.
 
@@ -67,7 +67,7 @@ Next we need to extend the insert and modify methods in the **TradeStateMachine.
 
 ### Update the Event Handlers to use auditing
 
-Now we must update our `Trade` event handlers inside the **positions-app-tutorial-eventhandler.kts** file and pass in our `transaction` object as a parameter, in this case it's our `entityDb` object. It should resemble the example below:
+Now we must update our `Trade` Event Handlers inside the **positions-app-tutorial-eventhandler.kts** file and pass in our `transaction` object as a parameter, in this case it's our `entityDb` object. It should resemble the example below:
 
 ```kotlin {4,11,18,27}
     eventHandler<Trade>(name = "TRADE_INSERT") {
