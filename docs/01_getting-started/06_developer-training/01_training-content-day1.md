@@ -532,7 +532,7 @@ PID     Process Name                  Port        Status         CPU       Memor
 Try to run `mon` from the command line as well!
 :::
 
-See [here](/getting-started/prerequisites/you-can-now-run-genx/) <!--TODO: Is this the right link? --> for extra details on how to configure the Genesis deploy plugin.
+See [here](/getting-started/prerequisites/genx/) <!--TODO: Is this the right link? --> for extra details on how to configure the Genesis deploy plugin.
 
 
 
