@@ -6,7 +6,7 @@ id: introduction
 
 # Default web server setup:
 
-For genesis application servers the web server of choice is [nginx](https://www.nginx.com/).
+For Genesis application servers the web server of choice is [nginx](https://www.nginx.com/).
 
 There is a _product user_ on each server named after the product.
 
@@ -14,7 +14,7 @@ The web root (where the production build needs to end up) is `/data/${productUse
 
 You can confirm that by looking at the nginx configuration file found at `/etc/nginx/conf.d/localhost.conf`
 
-Here is what a default configuration file looks like. 
+Here is what a default configuration file looks like:
 
 ```
 server {
@@ -101,10 +101,10 @@ In this example by looking at the 5th line we can tell that:
 - the _web root_ is `/data/client-x/web`
 - _product user_ is `client-x`
 
-You will need this information if you ever want to [manually deploy](/front-end/deploying/manual-deployment/) the Front End from your machine to the web server.
+You will need this information if you want to [manually deploy](/front-end/deploying/manual-deployment/) the Front End from your machine to the web server.
 
 Ideally the deployment process should be [automated](/front-end/deploying/automated-deployment/).
 
 :::note
-For apps hosted across multiple nodes or production/UAT (client facing) apps, they would access it via a loadbalancer (also nginx) which performs round robin load balancing. In that case, the nginx config mentioned above would be bypassed.
+For apps hosted across multiple nodes or production/UAT (client facing) apps, they would access it via a loadbalancer (also nginx), which performs round robin load balancing. In that case, the nginx config mentioned above would be bypassed.
 :::
