@@ -10,7 +10,7 @@ It can be configured to run automatically when something is merged into certain 
 
 <!-- TODO: add an example that's more suitable for external clients, this one is likely only useful to our internal client app devs -->
 
-Here is an example of a github workflow which can trigger a deployment by the click of a button (running the action on github):
+Here is an example of a github workflow, which can trigger a deployment by the click of a button (running the action on github):
 
 ```yml
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
@@ -65,7 +65,7 @@ jobs:
 
 Another example, this time of a Jenkins pipeline to automatically build commits that are tagged with a version and upload them to jfrog / artifactory. 
 
-It will also run [SonarQube](https://www.sonarqube.org/) analysis and send notifications using office 365 webhooks. It will likely have to be adjusted based on project setup and external infrastructure.
+It will also run [SonarQube](https://www.sonarqube.org/) analysis and send notifications using Office 365 webhooks. It will likely have to be adjusted based on project setup and external infrastructure.
 
 ![](/img/jenkins-pipeline.png)
 
