@@ -10,40 +10,29 @@ tags:
   - micro frontends
 ---
 
-The Reporting component enables your users to create report specifications, run them, or save them for later use.
+import Reporting from '../../resource/reporting_mf.md'
 
-From the GUI, users can:
+<Reporting />
 
-- select columns from existing data sources
-- save the report with a name and retrieve it for future use
-- apply ad hoc filtering to a report
-- export the report results to .csv  format
+## Set-up
 
+### Server configuration
 
+To enable the report micro-frontend you need to configure the reporting module on the server.
+The required configuration is described in the [server module](../../03_server-modules/10_integration/11_data-reporting.md).
 
-## Server configuration
-
-To enable this component on the server, pull in the [reporting-distribution-5.6.1-bin.zip](https://genesisglobal.jfrog.io/ui/repos/tree/General/libs-release-local%2Fglobal%2Fgenesis%2Freporting-distribution%2F5.6.1%2Freporting-distribution-5.6.1-bin.zip) from Artifactory, and `unzip` it alongside genesis and auth modules in the standard genesis deployment server directory.
-
-To make data available to users so that they can create reports, you must insert entries into the `REPORT_DATASOURCES` table. This table determines which data resources can be reported on. In most cases, you will have already set up queries in your [Data Server](/server-modules/data-server/basics/) to provide the data, but you can add new sources by creating new queries in your _application_**-dataserver.kts**.
-
-The Report Server adds the following metadata services:
-
-- ALL_SAVED_REPORTS (Data Server)
-- SAVED_REPORTS (Request Response)
-- ALL_REPORT_DATASOURCES (Request Response)
-
-## Front-end configuration
+### Front-end configuration
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-reporting` as a dependency in your *package.json* file.
+- Add `@genesislcap/foundation-reporting` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again.
+
 
 ```javascript
 {
   ...
   "dependencies": {
-    "@genesislcap/foundation-reporting": "1.0.1-alpha-7ea7de2.0"
+    "@genesislcap/foundation-reporting": "latest"
   },
   ...
 }
