@@ -20,7 +20,7 @@ plugins {
 }
 ```
 
-Ensure you have a wsl user in this example it is genesis
+Ensure you have a wsl user, in this example it is `genesis`.
 
 ```none title="CentOS"
 useradd genesis
