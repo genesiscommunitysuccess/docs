@@ -6,7 +6,7 @@ sidebar_position: 5
 
 ---
 # Day 3 agenda
-Custom data grids, client-side options and filters
+Custom data grids, client-side options and filters.
 
 ## Order entry screen
 Let's continue the development of the order screen.
@@ -28,7 +28,7 @@ To add new columns that are not part of the resource model (ALL_ORDERS query in 
 
 In the component definition file, we can provide a method that enables us to interact with the rest of the class.
 The example below creates a column with a button that logs data in the row to the console.
-Here you can easily swap logging the row data with some custom logic (such as calling a back-end api that we shall cover in more detail later on).
+Here you can easily swap logging the row data with some custom logic (such as calling a back-end API that we shall cover in more detail later on).
 
 ```typescript {3,7,10} title="order.ts"
 import {ColDef} from '@ag-grid-community/core';
@@ -111,7 +111,7 @@ You can add the `persist-column-state-key` to the zero-ag-grid to persist user c
 Change the row height of the data grid to '20 px'.
 
 :::tip More Genesis ag-grid attributes
-You can find all the additional attributes and props, including row height, of the Genesis ag-grid at [Genesis ag-grid documentation](/front-end/web-components/grids/ag-grid/ag-grid-intro/)
+You can find all the additional attributes and props, including row height, of the Genesis ag-grid at [Genesis ag-grid documentation](/front-end/web-components/grids/ag-grid/ag-grid-intro/).
 :::
 
 
@@ -246,9 +246,9 @@ Create a OrdersAgGrid extending AgGridZero and apply the same style on the `SIDE
 
 ### Adding filters to the Orders data grid
 
-The way we have been using ag-grid so far is encapsulating a genesis datasource to have access to data server resources. Makes it easy to retrieve data without worrying about connection, handling update events and so on. This is called [connected data](/front-end/web-components/grids/ag-grid/ag-grid-connected/).
+The way we have been using ag-grid so far is encapsulating a Genesis datasource to have access to Data Server resources. This makes it easier to retrieve data without worrying about the connection, handling update events and so on. This is called [connected data](/front-end/web-components/grids/ag-grid/ag-grid-connected/).
 
-[Genesis datasource](/front-end/web-components/grids/ag-grid/ag-genesis-datasource/) offers some [attributes](/front-end/web-components/grids/ag-grid/ag-genesis-datasource/#attributes-and-props) to parametrize how to retrieve the data. Some commonly used attributes are:
+[Genesis datasource](/front-end/web-components/grids/ag-grid/ag-genesis-datasource/) offers some [attributes](/front-end/web-components/grids/ag-grid/ag-genesis-datasource/#attributes-and-props) to parametrise how to retrieve the data. Some commonly used attributes are:
 
 - **`criteria: string`**: a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: Expr.dateIsBefore(TRADE_DATE,'20150518') or QUANTITY > 10000.
 
