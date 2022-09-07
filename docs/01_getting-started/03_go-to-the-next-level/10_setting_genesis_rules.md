@@ -11,6 +11,14 @@ It is often useful to run tasks periodically - for example to schedule the produ
 
 In both cases, you define the rules in a table in the database: `DYNAMIC_RULES` for dynamic rules and `CRON_RULES` for static rules. We're going start with dynamic rules.
 
+## Section objectives
+The goal of this section define is to:
+- configure and define our Evaluator
+- create event handlers for both static and dynamic events
+- load our static and dynamic events to there given tables
+- update our system definitions
+- configure and define our Notify process
+
 ## Configure the Evaluator
 
 An Evaluator is a process that runs cron jobs (static) and conditional (dynamic) rules.

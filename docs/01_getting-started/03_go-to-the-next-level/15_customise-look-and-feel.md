@@ -4,6 +4,9 @@ sidebar_label: 'Customise look and feel'
 id: customize-look-and-feel
 ---
 
+## Section objectives
+The goal of this section is to customise our styles in the UI.
+
 ## Styling ag-grid
 
 You might want to apply specific styles to some columns. 

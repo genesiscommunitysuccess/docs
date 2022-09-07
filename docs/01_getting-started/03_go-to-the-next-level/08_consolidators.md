@@ -8,8 +8,11 @@ Following from the calculated data using [derived fields](/getting-started/go-to
 
 In our case, Consolidators are a good fit for consolidating a position table from trades.
 
+## Section objectives
+The goal of this section is to define and build a [Consolidator](/server-modules/consolidator/introduction/).
 
-### Define the position-keeping logic in the Consolidator
+
+## Define the position-keeping logic in the Consolidator
 
 We will use the query `ALL_POSITIONS` that was [previously defined](/getting-started/go-to-the-next-level/events/#data-server) to show all the positions calculated by the Consolidator.
 
@@ -125,11 +128,11 @@ Reload the project from the Gradle tab on the right side of the screen.
 :::
 
 
-### Update the system files
+## Update the system files
 
 Now that the Consolidator logic is in place we need to update the system files.
 
-#### Update the processes.xml file
+### Update the processes.xml file
 
 As the Consolidator runs on its own process, we need to add a new entry to **positions-app-tutorial-processes.xml** with the Consolidator process definition.
 
@@ -146,7 +149,7 @@ As the Consolidator runs on its own process, we need to add a new entry to **pos
     <language>pal</language>
 </process>
 ```
-#### Update the service-definitions.xml file
+### Update the service-definitions.xml file
 
 This file lists all the active services for the Positions application. You can see entries have been added automatically when the Data Server and Event Handler were generated.
 
@@ -158,5 +161,5 @@ Add a new entry to **positions-app-tutorial-service-definitions.xml** with the C
 
 When you finish, remember to run `generateDao` (if you made changes to the table), `assemble` and `deploy-genesisproduct-positions-app-tutorial`.
 
-### Conclusion
-This shows a quick example of a Consolidator. As usual, you can either [give it a try](/getting-started/go-to-the-next-level/see-it-work) or go the next section.
+## Conclusion
+This shows a quick example of a Consolidator. If you want to see it in action, go to [Endpoints](/server-modules/integration/rest-endpoints/introduction/) for information on testing your the back end.

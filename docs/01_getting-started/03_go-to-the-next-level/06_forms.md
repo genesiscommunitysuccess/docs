@@ -4,6 +4,9 @@ sidebar_label: 'Create a form to input data'
 id: forms
 ---
 
+## Section objectives
+The goal of this section is to add a form that enables us to insert trades in to our database.
+
 ## Interacting with the Event Handler
 To interact with the Event Handler that you created [previously](/getting-started/go-to-the-next-level/events#event-handler), you will now create a form that will collect the data from the user.
 

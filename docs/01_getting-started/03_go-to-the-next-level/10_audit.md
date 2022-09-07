@@ -8,6 +8,12 @@ We want to be able to track the changes made to the various trades on the `TRADE
 
 This is useful for historical purposes if you need to at a later date be able to produce an accurate course of events.
 
+## Section objectives
+The goal of this section is:
+- update our tables to be auditable
+- update our state machine to use auditing
+- update our Event Handlers to pass transactions to our state machine of type `AsyncMultiEntityReadWriteGenericSupport`.
+
 ### Adding audit to table dictionary
 The first step to add basic auditing is to change the relevant table dictionary. In this instance, we will be making changes to the **positions-app-tutorial-tables-dictionary.kts**, by adding the `audit` parameter. It should resemble the following:
 
@@ -107,4 +113,4 @@ Now we must update our `Trade` Event Handlers inside the **positions-app-tutoria
 Finally we can run `generateDao`, `assemble` and `deploy-genesisproduct-positions-app-tutorial`.
 
 ### Conclusion
-With this, any changes made to `TRADE` are tracked to `TRADE_AUDIT`. To try it out, insert a new `TRADE` and see what's stored in the `TRADE_AUDIT` table via `DbMon`. Go to your terminal and run `DbMon`, `table TRADE_AUDIT` and `search 1`.
+With this, any changes made to `TRADE` are tracked to `TRADE_AUDIT`. To try it out, insert a new `TRADE` and see what's stored in the `TRADE_AUDIT` table via `DbMon`. Go to your terminal and run `DbMon`, `table TRADE_AUDIT` and `search 1`. For more information on testing, go to [Endpoints](/server-modules/integration/rest-endpoints/introduction/).
