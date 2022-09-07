@@ -4,10 +4,11 @@ sidebar_label: 'Create a new project'
 id: create-a-new-project
 ---
 
-The GenX CLI tool enables you to seed projects, in this case we just want to generate a blank full-stack application project.
+The GenX CLI tool enables you to seed projects. In this case we want to generate a blank full-stack application project.
 
-For step-by-step instructions on how to install and use this tool, follow the guide on GenX.
+We also have step-by-step instructions on [how to install and use genx](/getting-started/prerequisites/genx/).
 
+## Starting
 Once configured, install genx using the following command:
 
 ```shell
@@ -22,7 +23,7 @@ genx
 
 :::tip
 
-Use command `npx genx` if the above command does not work
+If the above command does not work, use the command `npx genx`.
 
 :::
 
@@ -30,13 +31,14 @@ In the `genx` script, there is a series of questions.
 
 First, you are asked to provide your username and password - these are the credentials you use to access Genesis Artifactory.
 
-Then you are asked to select from a short list of seed applications. Select `create application`:
-
-
 ```shell
 ? Genesis Username example.username
 ? Genesis Password **************
 √ Logged into Genesis
+```
+Then you are asked to select from a short list of seed applications. Select `create application`:
+
+```shell
 ? Please select an option: (Use arrow keys)
   create workspace - Generates a local workspace to use for your Genesis based apps.
   configure workspace - Configure a local workspace.
@@ -50,13 +52,19 @@ Now you can proceed using the following responses:
 ? App name alpha
 ```
 
-In the next prompt, select `Quick Start Application` from the list.
+Then you are asked to select the App Seed. Select `Quick Start Application` from the list. Do **not** select the Positions Application.
+You will be asked if you want to overwrite existing files. Select **Y**.
 
-```shell
-? App seed Quick Start Application
-? Overwrite existing files Yes
-
-```
+  ```shell
+App seed (Use arrow keys)
+> **Quick Start Application**
+  Positions Application
+  Hello World Application
+  Foundation-Store Based Application
+  Foundation App Seed
+  Local Application Seed
+  Overwrite existing files (y/N)
+  ```
 
 At this point, the seed application is created and the genx dependencies are installed.
 
@@ -70,8 +78,8 @@ Then there are more questions, which you can respond to as follows:
 ? Base design system package (@latest will be used) @genesislcap/foundation-ui
 ? Set API Host (Y/n) Yes
 ? API Host (with websocket prefix and suffix if any) (ws://localhost/gwf/)
-? Genesis Server version 6.0.1
-? Genesis Deploy plugin version 6.0.2
+? Genesis Server version 6.1.2
+? Genesis Deploy plugin version 6.1.2
 ? Kotlin version 1.6.10
 ? Group Id global.genesis
 ? Application Version 1.0.0-SNAPSHOT
