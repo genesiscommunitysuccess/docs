@@ -9,29 +9,29 @@ sidebar_position: 3
 Reviewing the basics and extending our application​.
 
 ## Reviewing basic concepts
-As introduced in the Developer Training, Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](https://www.fast.design/), which is a lightweight abstraction that enables you to easily ​build performant, memory-efficient, standards-compliant ​Web Components. 
+As introduced in the Developer Training, Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](https://www.fast.design/), which is a lightweight abstraction that enables you to easily build performant, memory-efficient, standards-compliant Web Components. 
 
-Genesis also offers a highly configurable design system called Genesis Foundation UI. It is made up of a set of web components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options as necessary for your application.
+Genesis also offers a highly configurable design system called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. This enables you to control visual design in myriad ways using the tokens, CSS, element templates and shadow DOM options.
 
-This picture gives an overview on how it all ties together:
+This picture gives an overview of how it all ties together:
 
 ![](/img/WebUIDiagram.png)
 
 :::tip confused with any term used here? Revisit the Developer Training!
-Please feel free to revisit the UI chapter of the [Developer Training](/getting-started/developer-training/training-content-day2/) before we get into other aspects of the underlying technology used by Genesis in the next sections.
+Feel free to revisit the UI chapter of the [Developer Training](/getting-started/developer-training/training-content-day2/) before we get into other aspects of the underlying technology used by Genesis in the next sections.
 :::
 
-### Why Web Components?
-Remember that Web Components are custom html elements that completely encapsulate their logic to create self-contained reusable components, that do not clash or interfere with the rest of application. Genesis offers a comprehensive set of web components from simple components like a Button and Text Field to more complex ones like Micro Frontend apps. 
+## Why Web Components?
+Remember that Web Components are custom html elements that completely encapsulate their logic to create self-contained reusable components. These components do not clash or interfere with the rest of application. Genesis offers a comprehensive set of Web Components, from simple components like a Button and Text Field, to more complex ones like Micro Front-end apps. 
 
-#### Performance
+### Performance
 
 Web Components have proven to be consistently faster than many popular JavaScript frameworks when it comes to both
 startup time and paint performance. They also use less memory and often result in significantly smaller bundle sizes
 when compared to their JavaScript counterparts. Standard benchmarks show our component implementation outperforming
 React, Angular 12, Vue 3.2 as well as many others. 
 
-#### Interoperability
+### Interoperability
 
 Every Web Component inherits from HTMLElement. So, Web Components seamlessly interoperate with any library or framework
 designed to work with DOM. This includes modern frameworks like React, Angular, Vue, etc. but also libraries like jQuery
@@ -39,13 +39,13 @@ and others. Adopting Web Components enables use of a consistent component librar
 So, teams can standardize on the components and design system without having to force a specific architecture or
 framework on the application developer.
 
-#### Incremental adoption
+### Incremental adoption
 
 You do not have to re-write an existing app or site to take advantage of Web Components. Since Web Components just
 extend the palette of available HTML elements, you can choose to simply start leveraging whatever custom elements you
 want within your existing app the same way as you use built-in elements.
 
-#### Future-proof
+### Future-proof
 
 Web Components are *literally*, the standard component model of the web, written into the HTML specification. The base
 features have shipped in every modern browser and many new features are planned for the DOM and CSS standards. Some of
@@ -53,31 +53,30 @@ these new HTML capabilities will only be available to Web Components, so continu
 component models will prevent you from taking advantage of platform improvements. Aligning yourself with Web Components
 and other standards will enable you to get the greatest benefit from the evolving web platform.
 
-#### Extensible ecosystems and plugin models
+### Extensible ecosystems and plugin models
 
-By choosing web components, you enable your customers to choose their preferred application framework or library, rather
+By choosing Web Components, you enable your customers to choose their preferred application framework or library, rather
 than forcing them to use any particular JavaScript framework. Building your ecosystem or plugin model around one
 framework often means the exclusion of an entire set of customers who build on another.
 
-#### You no longer need JavaScript framework experts
+### You no longer need JavaScript framework experts
 Most of the popular JavaScript frameworks require strong JavaScript skills and knowledge and often at least an
 intermediate proficiency for use. Web Components can be used without any knowledge of JavaScript whatsoever. Building
 around Web Components opens up opportunities for a broader range of customers with more diverse backgrounds.
 
-#### Who is using Web Components?
+### Who is using Web Components?
 Across the industry we see a pretty big adoption since January 2020. This includes not only heavy investment from
 **Microsoft**, but also from **Google**, **Adobe**, **Salesforce**, **SAP**, **MIT**, **SpaceX**, and many more.
-Curious who else is using Web Components? Check out the ever-growing list of companies
-[here](https://arewebcomponentsathingyet.com/).
+Curious who else is using Web Components? Check out the ever-growing [list of companies](https://arewebcomponentsathingyet.com/).
 
 ### And why Microsoft FAST?
-Genesis basic web components, such as Button and Text Fields, were not created from scratch. They extend Microsoft FAST components for a number of reasons:
+Genesis basic Web Components, such as Button and Text Fields, were not created from scratch. They extend Microsoft FAST components for a number of reasons:
 - FAST is a collection of technologies built on Web Components and modern Web Standards.
-- Proven at scale in production. FAST powers Edge, Bing, Maps, Ads, News and other web products at Microsoft. As such, it will power all their next gen web components and design system technologies.
+- Proven at scale in production. FAST powers Edge, Bing, Maps, Ads, News and other web products at Microsoft. As such, it will power all their next gen web components and design-system technologies.
 - Provides a comprehensive and growing component set out of the box, built directly on the W3C Web Component standards with accessibility built in.
-- Extensible and highly efficient base element to build Genesis domain specific components on top of.
-- Leverages [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) to efficiently re-use CSS across components.
-- Advanced design system architecture to support custom theming between clients and applications.
+- Extensible and highly efficient base element to build Genesis domain specific components.
+- Uses [Constructable Stylesheet Objects](https://wicg.github.io/construct-stylesheets/) to efficiently re-use CSS across components.
+- Advanced design-system architecture to support custom theming between clients and applications.
 - Offers a DI system, a Router and other opt-in utilities.
 - Highly active and responsive community.
 
@@ -91,7 +90,7 @@ Remember that the initial project structure can be generated by GenX if you are 
 :::
 
 ### The monorepo
-This is a [lerna managed](https://lerna.js.org/) monorepo. One possible definition of a monorepo is a single repository containing multiple distinct projects, with well-defined relationships. In our case, it basically means your backend and frontend code will reside in the same repo in different folders. The web code is in the **client/web** folder. 
+This is a [lerna managed](https://lerna.js.org/) monorepo. One possible definition of a monorepo is a single repository containing multiple distinct projects, with well-defined relationships. In our case, it basically means your back-end and front-end code reside in the same repo in different folders. The web code is in the **client/web** folder. 
 
 :::info web frameworks
 Genesis components are standards-based Web Components, making them compatible with almost any modern web framework such as Angular, React or Vue. 
@@ -103,9 +102,9 @@ During this training, we are trying to be framework-agnostic but an Angular inte
 
 
 ### package.json file
-In **client/web**, you'll also find a [package.json](https://nodejs.org/en/knowledge/getting-started/npm/what-is-the-file-package-json/) file. This file is used to give information to [npm](https://docs.npmjs.com/about-npm) that allows it to identify the project as well as handle the project's dependencies. It can also contain other metadata such as a project description, the version of the project in a particular distribution, license information or even configuration data. 
+In **client/web**, you'll also find a [package.json](https://nodejs.org/en/knowledge/getting-started/npm/what-is-the-file-package-json/) file. This file is used to give information to [npm](https://docs.npmjs.com/about-npm) to enable it to identify the project as well as handle the project's dependencies. It can also contain other metadata, such as a project description, the version of the project in a particular distribution, licence information or even configuration data. 
 
-Looking deeper at our package.json, at the top you'll find the `name` and `description` of your application.
+Looking deeper at our **package.json**, at the top you'll find the `name` and `description` of your application.
 
 Following this, there are three key sections you need to be aware of:
 
@@ -125,12 +124,12 @@ When running the app on your local machine, you can adjust a few settings under 
   },
 ```
 
-Since our backend is running locally, we set the API_HOST to localhost. The **/gwf/** path is a [reverse proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) configured in a nginx web server running on the server (a WSL instance in our case). 
+Since our back end is running locally, we set the `API_HOST` to localhost. The **/gwf/** path is a [reverse proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) configured in a nginx web server running on the server (a WSL instance in our case). 
 
-Essentially, the frontend will be connecting to the backend through a websocket to **localhost/gwf** which in turn will, internally, ***proxy pass*** the connection to an internal Genesis process called GENESIS_ROUTER that contains a web socket adapter able to communicate with other Genesis processes such as data servers, request servers, event handlers etc. Think of this as a gateway from the frontend to all services on the backend.
+Essentially, the front end will connect to the back end through a websocket to **localhost/gwf**, which in turn will, internally, ***proxy pass*** the connection to an internal Genesis process called GENESIS_ROUTER. This contains a web socket adapter able to communicate with other Genesis processes, such as Data Servers, Request Servers, Event Handlers, etc. Think of this as a gateway from the front end to all services on the back end.
 
 
-Alternatively, you can connect to **ws://localhost:9064** to bypass the proxy, but this is not encouraged for some reasons such as potential firewall issues.
+Alternatively, you can connect to **ws://localhost:9064** to bypass the proxy, but this is not encouraged - it could cause firewall issues.
 
 :::tip
 On your WSL server, the nginx configuration is at /etc/nginx/nginx.conf.
@@ -159,14 +158,14 @@ The next section is `scripts`.
 Your settings from the `config` block will be passed to different scripts as environment variables, using [cross-env](https://www.npmjs.com/package/cross-env).
 :::
 
-Also, note that we rely on [webpack](https://webpack.js.org/concepts/) to bundle the application. In **client/web** you'll find the ***webpack.config.js*** configuration file.
+Also, note that we rely on [webpack](https://webpack.js.org/concepts/) to bundle the application. You'll find the ***webpack.config.js*** configuration file in **client/web** .
 
 #### Dependencies
 
 Last but not least, the `dependencies` section contains a list of your app's dependencies and their versions.
 
 :::info
-This includes **@genesislcap** dependencies. This is where you would change their versions to upgrade to a newer version of the platform.
+This includes **@genesislcap** dependencies. This is where you can change versions to upgrade to a newer version of the platform.
 :::
 
 
@@ -194,13 +193,13 @@ You can use the `lerna add` command (instead of `npm install`) if you need to ad
 
 ### Deploying
 
-For Genesis application servers the web server of choice is [nginx](https://www.nginx.com/).
+For Genesis application servers, the web server of choice is [nginx](https://www.nginx.com/).
 
-As explained previously, for the training we have provided a WSL instance with nginx pre-installed and running being used a reverse proxy. We're not going to deploy our application to that nginx instance though, we're going to simply use the local web server initiated by `npm run client:web` command. 
+As explained previously, we have provided a WSL instance with nginx pre-installed and running for this training. nginx is used here as a reverse proxy. We're not going to deploy our application to that nginx instance, though; we're going to simply use the local web server initiated by `npm run client:web` command. 
 
 For actual server deployment, these are the steps you'd need:
-1. build the project: `npm run build` from the ..client/web folder
-2. copy the content of the ..client/web/dist/ folder to the root folder of your web server. To find out the root folder, that's in the `root` directive in the server block of nginx.conf file.
+1. Build the project: `npm run build` from the ..client/web folder
+2. Copy the content of the ..client/web/dist/ folder to the root folder of your web server. To find the root folder, look in the `root` directive in the server block of nginx.conf file.
 
 :::tip ZIP DIST FOLDER
 You can zip and unzip the content of `dist` to make it quicker.
@@ -218,27 +217,27 @@ In the Developer Training, we amended these files in the **client/web/src/routes
 -	**home.styles.ts**
 
 :::tip 
-We usually follow the pattern of creating a `.template.ts`, `.ts` and `.styles.ts` files. But it doesn't have to be that way, could be a single file for example as we're going to see an example next. 
+We usually follow the pattern of creating a `.template.ts`, `.ts` and `.styles.ts` files. But it doesn't have to be that way; it could be a single file, for example, as we're going to see next. 
 :::
 
 Realistically, any application will require multiple pages and routes. 
 
-If you're not familiar with the concept of [routing](https://developpaper.com/question/what-is-front-end-routing-when-is-front-end-routing-appropriate-what-are-the-advantages-and-disadvantages-of-front-end-routing/), it's basically displaying different content or pages according to different URL addresses. In this context, it means that different routes correspond to different contents or pages to the front-end, which is realized by the server returning different pages according to the different URLs. In single-page applications, most pages are structurally unchanged and only part of the content is changed.
+If you're not familiar with the concept of [routing](https://developpaper.com/question/what-is-front-end-routing-when-is-front-end-routing-appropriate-what-are-the-advantages-and-disadvantages-of-front-end-routing/), it's basically displaying different content or pages according to different URL addresses. In this context, it means that different routes correspond to different contents or pages on the front end; this is implmented by the server returning different pages according to the different URLs. In single-page applications, most pages are structurally unchanged and only part of the content is changed.
 
 In our case, there's a `home` route pointing to the `Home` component which is the home page. The routes are set in the `config.ts` and we'll get into more details soon. 
 
 ## Building components
 
-As you know, in the Developer Training we created the Home component but didn't get into too much detail on how component building actually works. So, let's take a step back and create a new page with a single file for the purpose of learning how to setup new components so we understand the foundations before starting our new application.
+As you know, in the Developer Training we created the Home component but didn't get into too much detail on how component building actually works. So, let's take a step back and create a new page with a single file for the purpose of learning how to set up new components so we understand the foundations before starting our new application.
 
 There are two main approaches to building a component:
 -  The first approach is for simple declarations of non-shared components.
 -  The second approach is for components designed to be published in shareable libraries. 
 
-The second approach involves design systems and we will cover this topic at some point in this training. For now, let's see how the first approach would work creating a very simple component.
+The second approach involves design systems and we will cover this topic later in this training. For now, let's see how the first approach would work, creating a very simple component.
 
 ### Defining a custom component
-Create folder `./client/web/src/routes/playground/` and create a new empty file `playground.ts` in there. Then, add this code to `playground.ts`:
+Create folder **./client/web/src/routes/playground/** and create a new empty file called **playground.ts** in there. Then, add this code to **playground.ts**:
 
 ```typescript
 import { FASTElement, customElement } from "@microsoft/fast-element";
@@ -252,12 +251,13 @@ export class MarketdataComponent extends FASTElement {
 We've just created a new Web Component extending FASTElement (so, again, we don't have to start from scratch and implement a myriad of attributes and methods). 
 
 This component could be anything, like a custom button or even a business component. But, for now, it's just empty and doesn't do much. However, we could already use it anywhere in HTML with the following markup if we wanted:
+
 ```html
 <marketdata-component></marketdata-component>
 ```
 
 ### Adding a route to the new component
-Let's add a route pointing to `playground` so we can access it from the menu.
+Let's add a route pointing to **playground** so we can access it from the menu.
 
 2. Edit file `config.ts` and add **playground** to **allRoutes** and **routes.map** so we'll be able to access playground from the menu:
 	```typescript {1, 3,12} title='config.ts'
@@ -281,7 +281,7 @@ Let's add a route pointing to `playground` so we can access it from the menu.
 You should see the **Playground** menu item now.
 
 ### Creating an HTML template
-To create an HTML template for our element, we have to import and use the html tagged template helper and pass the template to the @customElement decorator.
+To create an HTML template for our element, we have to import and use the html-tagged template helper and pass the template to the @customElement decorator.
 
 ```typescript {3,9} title='playground.ts'
 import { FASTElement, customElement, html } from "@microsoft/fast-element";
@@ -298,12 +298,12 @@ export class MarketdataComponent extends FASTElement {
 }
 ```
 
-As you see, we're defining a const called `myTemplate` that contains the HTML code. This constant is then passed to the definition of our customElement through the ***template*** parameter. This way, when we use this component, it will display the HTML associated to it.
+As you see, we're defining a const called `myTemplate`, which contains the HTML code. This constant is then passed to the definition of our `customElement` through the `template` parameter. This way, when we use this component, it will display the HTML associated with it.
 
 Try it now!
 
 :::tip code editors
-You're free to use any IDE or code editor you feel most comfortable with. Some of them, however, do not support syntax highlighting and IntelliSense for html inside of JavaScript and TypeScript tagged template strings - like our HTML code in the `html<MarketdataComponent>` template.
+You're free to use any IDE or code editor you feel most comfortable with. Some of them, however, do not support syntax highlighting and IntelliSense for html inside JavaScript and TypeScript tagged template strings - like our HTML code in the `html<MarketdataComponent>` template.
 
 As a tip, search for extensions in your IDE to support that. That's usually called `lit` or `literal`.
 :::
@@ -320,7 +320,7 @@ export class MarketdataComponent extends FASTElement {
 }
 ```
 
-Having the lastPrice always as zero doesn't make our MarketdataComponent very useful. Let's change the HTML template to display the price in real time and add some behavior to the component so it gets the price in real time (in this example, we're mimicing the exchange behavior with a Math.random function):
+Having the lastPrice always as zero doesn't make our MarketdataComponent very useful. Let's change the HTML template to display the price in real time and add some behaviour to the component, so that it gets the price in real time (in this example, we're simulating the exchange behaviour with a Math.random function):
 
 ```typescript {6,12} title='playground.ts'
 import { FASTElement, customElement, html, attr } from "@microsoft/fast-element";
@@ -398,7 +398,8 @@ export class FriendList extends FASTElement {
 }
 ```
 
-Please make sure to review the [directives](https://www.fast.design/docs/fast-element/using-directives) carefully, as we're going to use them along the training!
+:::info
+Please review the [directives](https://www.fast.design/docs/fast-element/using-directives) carefully, as we're going to use them in this training!
 :::
 
 ### Styling our component
@@ -452,16 +453,16 @@ export class MarketdataComponent extends FASTElement {
 }
 ```
 
-There are quite a few more interesting resources such as [composing styles, partial CSS and CSS Directives](https://www.fast.design/docs/fast-element/leveraging-css) provided by FAST. Make sure to check that out!
+There are quite a few more interesting resources, such as [composing styles, partial CSS and CSS Directives](https://www.fast.design/docs/fast-element/leveraging-css) provided by FAST. Make sure you check these out!
 
-By now, you should have a good understanding of how to build web components based on FAST. But, again, make sure to check [FAST official documentation](https://www.fast.design/docs/fast-element/defining-elements).
+By now, you should have a good understanding of how to build Web Components based on FAST. But, again, make sure to check [FAST official documentation](https://www.fast.design/docs/fast-element/defining-elements).
 
 
 ### Exercise 1.1: getting familiar with customElement
 :::info estimated time
 30min
 :::
-Let's change the MarkedataComponent so that it can work with multiple instruments and a fixed price for each of one them (instead of random). This is roughly how it'd look like:
+Let's change the MarkedataComponent so that it can work with multiple instruments and a fixed price for each of one them (instead of random). This is roughly what it'd look like:
 ```
 My Marketdata component
 Instrument MSFT 101.23
@@ -469,11 +470,11 @@ Instrument AAPL 227.12
 ```
 
 Steps:
-- add a list called ***instruments*** to the MarketdataComponent. Feel free to initialize it with a few instruments like `@observable instruments: String[] = ["MSFT", "AAPL"];`
-- change the lastPrice attribute to a list of prices. Feel free to initialize it with corresponding prices like `@observable lastPrices: number[] = [101.23, 227.12];`
-- change `getLastPriceRealTime` to receive the instrument name now and return the corresponding price
-- in the HTML template, make sure to loop through all the instruments and display the price for each one
-- style it so that the instrument name will be displayed in some tone of blue and the price in some tone of green
+- add a list called ***instruments*** to the MarketdataComponent. Feel free to initialise it with a few instruments, such as `@observable instruments: String[] = ["MSFT", "AAPL"];`
+- change the lastPrice attribute to a list of prices. Feel free to initialise it with corresponding prices, such as `@observable lastPrices: number[] = [101.23, 227.12];`
+- change `getLastPriceRealTime` to receive the instrument name now and return the corresponding price;
+- in the HTML template, make sure to loop through all the instruments and display the price for each one;
+- style it so that the instrument name is displayed in some tone of blue and the price in some tone of green.
 
 :::tip repeat directive
 You may find it useful: https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive, make sure to check the special context object as well. Example:
@@ -485,7 +486,7 @@ ${(x,c) => c.PROPERTY_OF_THE_CONTEXT
 
 ## Extending our application
 ### What are we going to build
-Hopefully the introduction was enough to recap the basic concepts and introduce some of the web technologies we rely on. 
+Hopefully, this introduction was enough to recap the basic concepts and introduce some of the web technologies we rely on. 
 
 To get started on the implementation of our web app, these are the features we're going to build during the training:
 -   **a proper navigation menu**
@@ -524,7 +525,7 @@ In this next example, we have put a set of example options set in the flyout men
 
 #### Header Set-up
 
-We have already enabled this micro front-end when we created the initial structure of the application in the Developer Training. But for learning purposes, let's review what needs to be done to setup the foundation-header from scratch - compare this with the existing code to get a better understanding.
+We have already enabled this micro front-end when we created the initial structure of the application in the Developer Training. But for learning purposes, let's review what needs to be done to set up the foundation-header from scratch - compare this with the existing code to get a better understanding.
 
 To enable this micro front-end in our application, we'd have to follow the steps below.
 
@@ -720,11 +721,11 @@ To set the content of the flyout menu, add the content in the html within an ele
 </foundation-header>
 ```
 
-### Exercise 1.2: customizing the header
+### Exercise 1.2: customising the header
 :::info estimated time
 30min
 :::
-Customize our header in such a way that we end up with these menu items:
+Customise our header in such a way that we end up with these menu items:
 
 | Menu item          | Route             |
 |---------------|------------------------------|
@@ -734,10 +735,10 @@ Customize our header in such a way that we end up with these menu items:
 | Reporting          | reporting      |
 
 
-Feel free to simply display some empty content when you create the new pages (Orders and Reporting). We're just interested in the navigation for now.
+Feel free to display only empty content when you create the new pages (Orders and Reporting). We're just interested in the navigation for now.
 
 :::tip 
-Feel free to follow the pattern of creating a `.template.ts`, `.styles.ts` and `.ts` files for each component.
+Feel free to follow the pattern of creating a **.template.ts**, **.styles.ts** and **.ts** files for each component.
 
-Also, make sure to configure `client/web/src/main/main.ts` and `client/web/src/routes/config.ts` accordingly.
+Also, make sure to configure **client/web/src/main/main.ts** and **client/web/src/routes/config.ts** accordingly.
 :::
