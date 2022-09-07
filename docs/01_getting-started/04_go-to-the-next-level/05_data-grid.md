@@ -47,7 +47,7 @@ The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
 
 ## Section objectives
-The goal of this section run our UI for the first time and add a data grid.
+The goal of this section is to run our UI for the first time and add a data grid.
 
 ## Showing all positions 
 
