@@ -20,13 +20,19 @@ plugins {
 }
 ```
 
+Ensure you have a WSL user, in this example it is `genesis`.
+
+```none title="CentOS"
+useradd genesis
+usermod -aG wheel genesis
+```
 
 :::caution edit gradle.properties
 Ensure the **gradle.properties** file from the **server/jvm folder** is properly set with the following entries:
 
 ```properties
 genesis-home=/home/genesis/run/
-wsl-distro=TrainingCentOS
+wsl-distro=CentOS7
 wsl-user=genesis
 ```
 
@@ -37,7 +43,7 @@ wsl-user=genesis
 |`wsl-user`|  This is an optional property. If omitted, the default WSL user will be used. |
 :::
 
-if you haven't already, you should have a project artifact built using the following gradle task **genesisproduct-positions-app-tutorial**/**Tasks**/**build**/**assemble**.
+If you haven't already, you should have a project artifact built using the following gradle task **genesisproduct-positions-app-tutorial**/**Tasks**/**build**/**assemble**.
 
 ![](/img/assemble-server-positions.png)
 
@@ -83,7 +89,7 @@ or from the dropdown menu:
 
 ![](/img/install-auth-positions.png)
 
-### Deploy the site-specific configuration
+### Install the site-specific configuration
 As our application will use the site-specific folder to override the standard definitions, we have to run this task:
 
 ```shell
@@ -91,6 +97,13 @@ As our application will use the site-specific folder to override the standard de
 ```
 
 ![](/img/install-site-specific-positions.png)
+
+### Run GenesisInstall
+Run genesisInstall to create the Genesis scripts.
+```shell
+./gradlew :genesisproduct-positions-app-tutorial:positions-app-tutorial-deploy:genesisInstall #On the IntelliJ terminal
+```
+![](/img/genesis-install.png)
 
 ### Add a user
 

@@ -41,7 +41,7 @@ requestReplies {
     }
 }
 ```
-Your application will certainly have many more queries, but that covers the basics. Generally speaking, if you create your tables and views carefully, you can keep your **dataserver.kts** simple.
+Your application will certainly have many more queries, but that covers the basics. Generally speaking, if you create your tables and views carefully, you can keep your **reqrep.kts** simple.
 
 
 
