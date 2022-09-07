@@ -36,7 +36,7 @@ React, Angular 12, Vue 3.2 as well as many others.
 Every Web Component inherits from HTMLElement. So, Web Components seamlessly interoperate with any library or framework
 designed to work with DOM. This includes modern frameworks like React, Angular, Vue, etc. but also libraries like jQuery
 and others. Adopting Web Components enables use of a consistent component library across a diverse set of applications.
-So, teams can standardize on the components and design system without having to force a specific architecture or
+So, teams can standardise on the components and design system without having to force a specific architecture or
 framework on the application developer.
 
 ### Incremental adoption
@@ -197,7 +197,7 @@ For Genesis application servers, the web server of choice is [nginx](https://www
 
 As explained previously, we have provided a WSL instance with nginx pre-installed and running for this training. nginx is used here as a reverse proxy. We're not going to deploy our application to that nginx instance, though; we're going to simply use the local web server initiated by `npm run client:web` command. 
 
-For actual server deployment, these are the steps you'd need:
+For actual server deployment, these are the steps that you need to follow:
 1. Build the project: `npm run build` from the ..client/web folder
 2. Copy the content of the ..client/web/dist/ folder to the root folder of your web server. To find the root folder, look in the `root` directive in the server block of nginx.conf file.
 
