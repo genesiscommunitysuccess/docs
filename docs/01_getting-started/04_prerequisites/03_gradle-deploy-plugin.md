@@ -1,7 +1,7 @@
 ---
-title: 'The Gradle deploy plugin'
-sidebar_label: 'The Gradle deploy plugin'
-id: you-can-now-run-genx
+title: 'Gradle deploy plugin'
+sidebar_label: 'Gradle deploy plugin'
+id: gradle-deploy-plugin
 ---
 
 
