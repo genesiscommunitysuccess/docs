@@ -1,7 +1,7 @@
 ---
-title: 'Do you need WSL?'
-sidebar_label: 'Do you need WSL?'
-id: do-you-need-wsl
+title: 'Installing WSL'
+sidebar_label: 'Installing WSL'
+id: installing-wsl
 ---
 
 If you don't have a Linux box for running your Genesis platform, you can use Windows Subsystem for Linux (WSL2) to install a Linux environment on your Windows machine.
