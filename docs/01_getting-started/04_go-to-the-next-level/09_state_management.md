@@ -18,8 +18,8 @@ Based on below state machine:
 ## Section objectives
 The goal of this section is to:
 - create a state machine
-- create allocated, cancel and modify event handlers
-- add our state machine in our event handlers.
+- create allocated, cancel and modify Event Handlers
+- add our state machine in our Event Handlers.
 
 
 ## Data model
@@ -174,7 +174,7 @@ eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
 ```
 
 :::info
-You may have noticed we are passing a `transactional = ture` parameter into our event handler. This ensures any exception or nack returned will result in a complete rollback of all parts of the onCommit and onValidate (the transaction also covers read commands) blocks. You can read more on transactions [here](/server-modules/event-handler/basics/#transactional-event-handlers-acid)
+You may have noticed we are passing a `transactional = ture` parameter into our event handler. This ensures any exception or nack returned will result in a complete rollback of all parts of the onCommit and onValidate (the transaction also covers read commands) blocks. You can read more about transactions [here](/server-modules/event-handler/basics/#transactional-event-handlers-acid)
 :::
 
 ## Add Event Handlers for the rest of the states
@@ -273,4 +273,4 @@ You want to manage the state of the trade, so we don't want a delete Event Handl
 To test it, you can try to modify a `TRADE` (assuming you already have at least one trade in the database) and see the state change accordingly. 
 
 ## Conclusion
-With this, we finish showing how an application can add state management. If you want to see it in action, go to [Endpoints](/server-modules/integration/rest-endpoints/introduction/) for information on testing your the back end.
+With this, we finish showing how an application can add state management. If you want to see it in action, go to [Endpoints](/server-modules/integration/rest-endpoints/introduction/) for information about testing the back end.
