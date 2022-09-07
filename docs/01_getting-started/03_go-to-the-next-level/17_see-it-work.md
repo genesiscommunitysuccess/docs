@@ -20,7 +20,7 @@ plugins {
 }
 ```
 
-Ensure you have a wsl user, in this example it is `genesis`.
+Ensure you have a WSL user, in this example it is `genesis`.
 
 ```none title="CentOS"
 useradd genesis
@@ -43,7 +43,7 @@ wsl-user=genesis
 |`wsl-user`|  This is an optional property. If omitted, the default WSL user will be used. |
 :::
 
-if you haven't already, you should have a project artifact built using the following gradle task **genesisproduct-positions-app-tutorial**/**Tasks**/**build**/**assemble**.
+If you haven't already, you should have a project artifact built using the following gradle task **genesisproduct-positions-app-tutorial**/**Tasks**/**build**/**assemble**.
 
 ![](/img/assemble-server-positions.png)
 
@@ -99,7 +99,7 @@ As our application will use the site-specific folder to override the standard de
 ![](/img/install-site-specific-positions.png)
 
 ### Run GenesisInstall
-Run genesisInstall to create the genesis scripts.
+Run genesisInstall to create the Genesis scripts.
 ```shell
 ./gradlew :genesisproduct-positions-app-tutorial:positions-app-tutorial-deploy:genesisInstall #On the IntelliJ terminal
 ```
