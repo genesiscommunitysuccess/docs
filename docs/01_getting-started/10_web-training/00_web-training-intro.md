@@ -26,7 +26,7 @@ Should you need it along the course, feel free to use the [final application](#s
 
 Also, at any point, use the search function of the documentation for extra information.
 
-Estimated total effort: <b>Daily four-hour sessions for four days</b>
+Estimated total effort: <b>Daily four-hour sessions for four days</b>.
 
 ## Agenda
 
