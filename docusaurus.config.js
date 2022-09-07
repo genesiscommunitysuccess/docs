@@ -10,6 +10,7 @@ module.exports = {
   organizationName: 'genesislcap', // Usually your GitHub org/user name.
   projectName: 'docs', // Usually your repo name.
   trailingSlash: true,
+  noIndex: true, // belt and braces along with robots.txt to disable crawling of archived content
   scripts: [
     {
         src: `${baseUrl}js/docs.iife.min.js`,
