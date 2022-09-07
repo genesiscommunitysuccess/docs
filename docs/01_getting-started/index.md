@@ -25,7 +25,7 @@ Depending on how fast you want to go, these should give you enough knowledge to 
 
 - It pays to read the [very simple introduction](/getting-started/learn-the-basics/simple-introduction/); this introduces you to some terminology and the basic architecture.
 
-- Get the software you need onto your machine; check out our [pre-requisites](/getting-started/prerequisites/hardware-and-software/).
+- Get the software you need onto your machine; check out our [pre-requisites](/getting-started/quick-start/hardware-and-software/).
 
 - [Get started](/getting-started/quick-start/) straightaway. Build the simplest of applications in just a few careful steps.
 
@@ -42,4 +42,4 @@ From there, just progress through each section so that you build up knowledge of
 
 
 
-After you have been through all those, you'll be ready to check the [prerequisites](/getting-started/prerequisites/hardware-and-software/) and [start building a simple application](/getting-started/quick-start/).
+After you have been through all those, you'll be ready to check the [prerequisites](/getting-started/quick-start/hardware-and-software/) and [start building a simple application](/getting-started/quick-start/).
