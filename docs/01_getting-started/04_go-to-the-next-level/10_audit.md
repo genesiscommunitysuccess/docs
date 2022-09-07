@@ -12,7 +12,7 @@ This is useful for historical purposes if you need to at a later date be able to
 The goal of this section is:
 - update our tables to be auditable
 - update our state machine to use auditing
-- update our event handlers to pass transactions to our state machine of type `AsyncMultiEntityReadWriteGenericSupport`.
+- update our Event Handlers to pass transactions to our state machine of type `AsyncMultiEntityReadWriteGenericSupport`.
 
 ### Adding audit to table dictionary
 The first step to add basic auditing is to change the relevant table dictionary. In this instance, we will be making changes to the **positions-app-tutorial-tables-dictionary.kts**, by adding the `audit` parameter. It should resemble the following:
