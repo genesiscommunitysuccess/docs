@@ -100,7 +100,7 @@ We follow the data pipeline definition with the usual runtime configuration. Ens
 
 We have now configured a CSV source that listens for changes on the local file system!
 
-You can use the following CSV as an example when testing your pipeline. Pasting a file with the name `trades.csv` and contents below, will trigger our pipeline into action. Each row of the csv will be parsed, mapped and stored down to the database. Your file will disappear when the pipeline processed. You can then use the DbMon utility to check your database for changes.
+You can use the following CSV as an example when testing your pipeline. Pasting a file with the name `trades.csv` and contents below, into a running instance of your Genesis application, will trigger the pipeline into action. Each row of the csv will be parsed, mapped and stored down to the database. Your CSV file will disappear when the pipeline has processed the file. You can then use the DbMon utility to check your database for changes.
 
 ```csv
 instrumentId,counterpartyId,amount,buySell,price,date,enteredBy
