@@ -265,4 +265,4 @@ You want to manage the state of the trade, so we don't want a delete Event Handl
 To test it, you can try to modify a `TRADE` (assuming you already have at least one trade in the database) and see the state change accordingly. 
 
 ### Conclusion
-With this, we finish showing how an application can add state management. As usual, you can either [give it a try](/getting-started/go-to-the-next-level/see-it-work) or go the next section.
+With this, we finish showing how an application can add state management. If you want to see it in action, go to [Endpoints](/server-modules/integration/rest-endpoints/introduction/) for information on testing your the back end.
