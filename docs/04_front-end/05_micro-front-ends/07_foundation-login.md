@@ -41,7 +41,7 @@ An example of the request account screen: <br/>
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-login` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
+- Add `@genesislcap/foundation-login` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again.
 
 ```javascript
 {
@@ -130,7 +130,7 @@ With regards to authentication, most configuration is set in the back-end. You s
 The standard authentication method is the user supplying their username and password. Even when SSO is enabled as an authentication method the user will still have the option to sign in with their normal credentials.
 
 :::noteTip
-Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables will automatically populate the credentials in the login form which can be useful during development so developers don't need to continuously will out their credentials.
+Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables will automatically populate the credentials in the login form which can be useful during development so developers don't need to continuously write out their credentials.
 :::
 
 ### SSO
