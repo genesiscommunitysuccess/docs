@@ -123,11 +123,13 @@ This workflow is described in more detail in the section on [Front-to-back flow]
 
 ### Definitions
 
+
 | Term | Meaning                                      | Example                                                                                     |
 | --- |----------------------------------------------|---------------------------------------------------------------------------------------------|
 | IDP | Identity Provider.                            | The authentication source, for example your your User management solution.                   |
 | SP | Service Provider.                             | The service for which the user needs to be authenticated, for example a Genesis application. |
 | MetaData | Configuration shared between the IDP and SP. | See below.                                                                                   |
+
 
 ```xml
 <?xml version="1.0"?>
@@ -301,7 +303,9 @@ this.routes.map(
 5. The browser redirects to the **ssoLoginUrl**, which might be, for example: `https://dev-position2/gwf/saml/login?idp=provider1`.
 6. The server sends the user to the identity provider’s login page.
 7. The user logs in using their SSO credentials.
+
 8. The server redirects the client back to the client-app with a new url param: `SSO_TOKEN`.
+
 9. The front end checks for the presence of an `SSO_TOKEN` url param. If found, it stores it in session storage and uses it to perform an ‘SSO Login’.
 10. The server responds with an ACK and the user is now logged in. If there is an error, a NACK is returned and the login fails.
 
