@@ -5,7 +5,7 @@ id: calculated-data
 ---
 
 ## Section objectives
-The goal of this section is add a derived field to our existing `TRADE_VIEW`.
+The goal of this section is to add a derived field to our existing `TRADE_VIEW`.
 
 ## Adding a derived field
 
@@ -55,4 +55,4 @@ views {
 ```
 
 ## Conclusion
-We just added a derived field. To see it in action, follow the steps on the next page which will show you how to glue the consolidator and view together.
+We just added a derived field. To see it in action, follow the steps on the next page that will show you how to glue the consolidator and view together.
