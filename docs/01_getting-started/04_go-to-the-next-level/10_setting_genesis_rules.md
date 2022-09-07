@@ -4,175 +4,227 @@ sidebar_label: 'Setting Genesis Evaluator rules'
 id: setting-genesis-evaluator-rules
 ---
 
-It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server-modules/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
+It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server-modules/event-handler/introduction/) to two different kinds of events: dynamic and static (cron rules): 
 
 - [Dynamic Rules](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#dynamic-rules-conditional-rules), also known as dynamic events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 - [Static Rules](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#static-rules-cron-rules) are scheduling rules; these are static events, defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression).
 
-In both cases, you define the rule in a table in the database: `DYNAMIC_RULES` for dynamic rules and `CRON_RULES` for static rules. In this section, we're going to use dynamic rules, but if you're interested in the static scheduling rules, please look at [the next section](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#static-rules-cron-rules).
+In both cases, you define the rules in a table in the database: `DYNAMIC_RULES` for dynamic rules and `CRON_RULES` for static rules. We're going start with dynamic rules.
 
 ## Configure the Evaluator
 
-An Evaluator is a process that runs cron jobs and conditional rules.
-To start, create a process called `POSITIONS_APP_TUTORIAL_EVALUATOR` and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. Here is the code you need to add:
+An Evaluator is a process that runs cron jobs (static) and conditional (dynamic) rules.
+To start, create a process called `POSITIONS_APP_TUTORIAL_EVALUATOR` and add it to your **positions-app-tutorial-processes.xml** file inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. Here is the code you need to add:
 
 ```xml
-<processes>
-    ...
-    <process name="POSITIONS_APP_TUTORIAL_EVALUATOR">
-        <start>true</start>
-        <groupId>POSITIONS_APP_TUTORIAL</groupId>
-        <options>-Xmx512m -DXSD_VALIDATE=false</options>
-        <module>genesis-evaluator</module>
-        <primaryOnly>true</primaryOnly>
-        <package>global.genesis.eventhandler,global.genesis.evaluator</package>
-        <description>Dynamic/time rules engine</description>
-    </process>
-</processes>
+<process name="POSITIONS_APP_TUTORIAL_EVALUATOR">
+    <start>true</start>
+    <groupId>POSITIONS_APP_TUTORIAL</groupId>
+    <options>-Xmx512m -DXSD_VALIDATE=false</options>
+    <module>genesis-evaluator</module>
+    <primaryOnly>true</primaryOnly>
+    <package>global.genesis.eventhandler,global.genesis.evaluator</package>
+    <description>Dynamic/time rules engine</description>
+</process>
 ```
 
-Add the `POSITIONS_APP_TUTORIAL_EVALUATOR` to the file **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** with the code below.
+Add the `POSITIONS_APP_TUTORIAL_EVALUATOR` to your **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** with the code below.
 
 ```xml
-<configuration>
-    ...
-    <service host="localhost" name="POSITIONS_APP_TUTORIAL_EVALUATOR" port="11003"/>
-</configuration>
+<service host="localhost" name="POSITIONS_APP_TUTORIAL_EVALUATOR" port="11003"/>
 ```
 
-Run the `assemble` and `positions-app-tutorial-config:assemble` tasks to verify that the new process works as expected.
+We have just defined our evaluator. Next we're going to add our business logic.
 
-Run `mon`.
-You should be able to see the process is present, but on `Standby`.
+## Define the bussines logic
 
-This is because the Evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the primary node.
+### Create a data class
 
-Run `SetPrimary` and you should be able to see all processes running.
-
-## Dynamic rules (Conditional rules)
-
-Now we are going to use the [Evaluator](/server-modules/evaluator/introduction/) to set up dynamic rules. This will automatically send an email if a specified limit has been breached.
-
-First, check that you have the Evaluator running. If it is not, check the procedure [above](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#configure-the-evaluator).
-
-You need to create two csv files for this exercise.
-
-The first is the file with your rule in the correct [format](/server-modules/evaluator/basics/#dynamic_rule-table) in order to be inserted into the  `DYNAMIC_RULE` table. Call the file **DYNAMIC_RULE.csv**.
-
-```csv
-NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
-MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),JaneDee,ALPHA_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
-```
-
-The second is a csv file that enables you to test the rule. Create a file called **POSITION.csv** with the following data:
-
-```csv
-POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
-1,2,2,600,1100000
-```
-
-Now you are ready to begin setting up your dynamic rule.
-
-## Set up the dynamic rule
-
-To set up the dynamic rule, go to the `DYNAMIC_RULE` table and insert the **DYNAMIC_RULE.csv** file. Run `SendIt`
-
-## Set up the Event Handler message class
-
-To define the Event Handler message class, create a Kotlin class called `PositionCancel` in your project folder **server/jvm/positions-app-tutorial-messages/src/main/kotlin/global/genesis/positions-app-tutorial/message/event**, and insert the following code:
+Now we need to create a `PositionCancel` class. This class should be created under **server/jvm/positions-app-tutorial-messages/src/main/kotlin/global/genesis/message/event**.
 
 ```kotlin
-data class PositionCancel(
-      val positionId: String,
-)
+data class PositionCancel(val positionId: String)
 ```
 
-## Update the Event Handler
+### Create the event handler
 
-The rule needs to call an Event Handler, which will be named `PositionCancel` using the class created in the previous step.
-We have defined the Event Handler in the code block below. Open the file **positions-app-tutorial-eventhandler.kts** and insert the code block:
+Next we need to create an Event Handler that will trigger notify to send an email. Navigate to **positions-app-tutorial-script-config** and insert the following event handler:
 
 ```kotlin
-eventHandler<PositionCancel> {
-   onCommit { event ->
-       val positionId = event.details.positionId
-       entityDb.insert(
-           Notify {
-               topic = "PositionAlert"
-               header = "Position Alert for $positionId"
-               body = mapOf<String, Any?>(
-                   "emailDistribution" to mapOf(
-                       "to" to listOf("dev-training@freesmtpserver.com"),
-                       "cc" to emptyList(),
-                       "bcc" to emptyList(),
-                   ),
-                   "content" to "Position $positionId breached the limit"
-               ).toJsonString(true)
-           }
-       )
-       ack()
-   }
+eventHandler<PositionCancel>(name = "POSITION_CANCEL", transactional = true) {
+    onCommit { event ->
+        val positionId = event.details.positionId
+        entityDb.insert(
+            Notify {
+                topic = "PositionAlert"
+                header = "Position Alert for $positionId"
+                body = mapOf<String, Any?>(
+                    "emailDistribution" to mapOf(
+                        "to" to listOf("dev-training@freesmtpserver.com"),
+                        "cc" to emptyList(),
+                        "bcc" to emptyList(),
+                    ),
+                    "content" to "Position $positionId breached the limit"
+                ).toJsonString(true)
+            }
+        )
+        ack()
+    }
 }
 ```
 
-## Set up the Notify module and start the process
+Next we are going to load our rule definitions into the database.
+
+## Setting up the dynamic rules
+
+### Defining the rule
+Now we can load the dynamic rule csv below into the `DYNAMIC_RULE` table.
+
+Navigate to **home/genesis/run/temp-data/** in your WSL terminal and create a file called **dynamic-rule.csv** with the following:
+
+```csv
+NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
+MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),JaneDee,POSITIONS_APP_TUTORIAL_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
+```
+
+The second is a csv file that enables you to test the rule. Create another file called **position.csv** with the following data:
+
+```csv
+POSITION_ID,INSTRUMENT_ID,QUANTITY,NOTIONAL
+1,1,600,1100000
+```
+
+### Loading the rule into the database
+Now we need to import this rule into our `DYNAMIC_RULE` table. Run the following command in your WSL terminal:
+
+```bash
+SendIt -f dynamic-rule.csv -t DYNAMIC_RULE
+```
+
+To validate the file was imported correctly, run `DbMon`, `table DYNAMIC_RULE` then `search 1`. You should see the following:
+
+```bash
+Field Name                               Value                                    Type
+===========================================================================================
+TIMESTAMP                                2022-09-06 14:00:49.771(n:0,s:2407)      NANO_TIMESTAMP
+DESCRIPTION                              It’s a rule                              STRING
+ID                                       cbdcbb88-9fb0-4d02-8400-e9a186204a27D... STRING
+MESSAGE_TYPE                             EVENT_POSITION_CANCEL                    STRING
+NAME                                     MY_RULE                                  STRING
+PROCESS_NAME                             POSITIONS_APP_TUTORIAL_EVENT_HANDLER     STRING
+RESULT_EXPRESSION                        ((QUANTITY = 0) && (POSITION_ID = POS... STRING
+RULE_EXPRESSION                          (QUANTITY > 500)                         STRING
+RULE_STATUS                              ENABLED                                  ENUM[ENABLED DISABLED]
+RULE_TABLE                               POSITION                                 STRING
+TABLE_OPERATION                          INSERT                                   STRING
+USER_NAME                                JaneDee                                  STRING
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+Total Results:  1
+```
+
+We will load the **position.csv** file later when we are ready to trigger the event.
+
+Ok now we have configured our evaluator, defined our bussiness logic and loaded the dynamic rule in to the database. In order for Notify to send an email, we first need define and configure it in our system.
+
+## Configure Notify
 
 For a more detailed explanation of GENESIS_NOTIFY and GATEWAY, see our [Integration section](/server-modules/integration/notify/configuring/).
 
-The module GENESIS_NOTIFY does not run by default. To change this, we are adding a customised module to our project. To do that, create a process called `POSITIONS_APP_TUTORIAL_NOTIFY` and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. Use the code below.
+The **GENESIS_NOTIFY** module does not run by default. To change this, we are adding a customised module to our project. To do that, create a process called `POSITIONS_APP_TUTORIAL_NOTIFY` and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. Use the code below.
+
+The **GENESIS_NOTIFY** module does not run by default. To change this, we are going to add it to our **positions-app-tutorial-processes.xml**.
 
 ```xml
-<processes>
-    ...
-    <process name="POSITIONS_APP_TUTORIAL_NOTIFY">
-        <start>true</start>
-        <groupId>GENESIS</groupId>
-        <options>-Xmx512m -DXSD_VALIDATE=false</options>
-        <module>genesis-notify</module>
-        <package>global.genesis.notify</package>
-        <script>genesis-notify.kts</script>
-        <language>pal</language>
-        <description>Notify Mechanism for sending messages to external systems, such as Email and Symphony</description>
-    </process>
-</processes>
+<process name="POSITIONS_APP_TUTORIAL_NOTIFY">
+    <start>true</start>
+    <groupId>GENESIS</groupId>
+    <options>-Xmx512m -DXSD_VALIDATE=false</options>
+    <module>genesis-notify</module>
+    <package>global.genesis.notify</package>
+    <script>genesis-notify.kts</script>
+    <language>pal</language>
+    <description>Notify Mechanism for sending messages to external systems, such as Email and Symphony</description>
+</process>
 ```
-Add the `POSITIONS_APP_TUTORIAL_NOTIFY` to the file **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. Use the code below.
+
+Add the `POSITIONS_APP_TUTORIAL_NOTIFY` process to your **positions-app-tutorial-service-definitions.xml**.
 
 ```xml
-<configuration>
-    ...
-    <service host="localhost" name="POSITIONS_APP_TUTORIAL_NOTIFY" port="11004"/>
-</configuration>
+<service host="localhost" name="POSITIONS_APP_TUTORIAL_NOTIFY" port="11004"/>
 ```
-
-Run the `assemble` and `positions-app-tutorial-config:assemble` tasks to verify that the new process works as expected.
-
-Run `mon`.
-You should be able to see the process is present.
 
 ## Set up GENESIS_NOTIFY in the database
 
 ### Insert a gateway route
-
-Create a file **GATEWAY.csv** as shown below and insert it in the table GATEWAY using the command `SendIt`.
+Navigate to **home/genesis/run/temp-data** in your WSL terminal and create a file called **gateway.csv**, in the following [format](/server-modules/integration/notify/email/#gateway).
 
 ```csv
 GATEWAY_ID,GATEWAY_TYPE,GATEWAY_VALUE,INCOMING_TOPIC
 "EmailDistribution1","EmailDistribution","{ \"emailDistribution\" : { \"to\" : [ ], \"cc\" : [ ], \"bcc\" : [ ] } }",
 ```
 
+Then run:
+
+```bash
+SendIt -f gateway.csv -t GATEWAY
+```
+
+To validate the file was imported correctly, run `DbMon`, `table GATEWAY` then `search 1`. You should see the following:
+
+```bash
+GATEWAY
+==================================
+Field Name                               Value                                    Type
+===========================================================================================
+TIMESTAMP                                2022-09-06 14:28:12.302(n:0,s:2537)      NANO_TIMESTAMP
+CONNECTION_ID                                                                     STRING
+GATEWAY_ID                               EmailDistribution1                       STRING
+GATEWAY_TYPE                             EmailDistribution                        ENUM[Log EmailUser EmailDistribution SymphonyByUserEmail SymphonyRoom MsTeamsChannel SymphonyRoomReqRep]
+GATEWAY_VALUE                            { \"emailDistribution\" : { \"to\" : ... STRING
+INCOMING_TOPIC                                                                    STRING
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+Total Results:  1
+```
+
 ### Insert NOTIFY_ROUTE
 
-Create a file **NOTIFY_ROUTE.csv** as shown below, then insert it in the table NOTIFY_ROUTE using the command `SendIt`.
+Navigate to **home/genesis/run/temp-data** in your WSL terminal and create a file called **notify_route.csv**, in the following [format](/server-modules/integration/notify/email/#notify_route).
 
 ```csv
 ENTITY_ID,ENTITY_ID_TYPE,TOPIC_MATCH,GATEWAY_ID
 ,"GATEWAY","PositionAlert","EmailDistribution1" 
 ```
 
+Then run:
+
+```bash
+SendIt -f notify_route.csv -t NOTIFY_ROUTE
+```
+
+To validate the file was imported correctly, run `DbMon`, `table NOTIFY_ROUTE` then `search 1`. You should see the following:
+
+```bash
+NOTIFY_ROUTE
+==================================
+Field Name                               Value                                    Type
+===========================================================================================
+TIMESTAMP                                2022-09-06 14:33:35.763(n:0,s:3357)      NANO_TIMESTAMP
+ENTITY_ID                                                                         STRING
+ENTITY_ID_TYPE                           GATEWAY                                  ENUM[USER_NAME PROFILE_NAME GATEWAY]
+GATEWAY_ID                               EmailDistribution1                       STRING
+NOTIFY_ROUTE_ID                          c0a645f7-4d53-48eb-99b8-87b56f42bc45N... STRING
+TOPIC_MATCH                              PositionAlert                            STRING
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+Total Results:  1
+```
+
 ## Add connection details to the system definition
 
-Open the **genesis-system-definition.kts** file and add the details of the connection for the SMTP server:
+Open your **genesis-system-definition.kts** file under **positions-app-tutorial-site-specific/src/main/resources/cfg** and add the details of the connection for the SMTP server:
+
 ```kotlin
 package genesis.cfg
 
@@ -191,7 +243,13 @@ systemDefinition {
 }
 ```
 
-Run the `build`, `install-positions-app-tutorial-site-specific` and `deploy` tasks again.
+Now run `assemble`, `positions-app-tutorial-config:assemble`, `install-positions-app-tutorial-site-specific` and finally `deploy-genesisproduct-positions-app-tutorial`.
+
+Once deployed run `mon`. You should be able to see the evaluator process is present, but on `STANDBY`.
+
+This is because the Evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the primary node.
+
+Run `SetPrimary` in your WSL terminal and you should be able to see all processes running.
 
 ## Switch on data dumps
 
@@ -219,31 +277,41 @@ So, let's see if that has worked.
 
 Insert the file **POSITION.csv** into the database. This is the file that you prepared earlier; it contains a value that breaches a limit, so it should trigger our event.
 
+```bash
+SendIt -f position.csv -t POSITION
+```
+
 You can see that when the limit is breached, you receive an email automatically.
 
 :::note
 Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the inbox *dev-training@freesmtpserver.com*
 ::: -->
 
-### Conclusion
-This section showed how to trigger events based on a condition in the database. This enables you to raise alarms on certain conditions or to react to specific states.
-In the next section you will see how to run scheduled tasks.
+This section showed how to trigger events based on a condition in the database. This enables you to raise alarms on certain conditions or to react to specific states. In the next section you will see how to run static events.
 
-### Static rules (Cron rules)
 
-Let's create a cron rule that triggers a batch job to run once every minute.
+## Static rules (Cron rules)
 
-First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on [configuring the evaluator](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#configure-the-evaluator).
+It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes the Genesis low-code platform provides a feature called the [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server-modules/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
 
-The batch job will generate a position report as a csv for each counterparty. This will be stored in **runtime/position-minute-report**. The file name of each report written will take the form COUNTERPARTY_ID-DATE.csv.
+- __Cron Rules__  are scheduling rules; these are static events, defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
+- __Dynamic Rules__, also known as dynamic events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
-## The rule
+In both cases, you define the rule in a table in the database: `CRON_RULES` for static rules and `DYNAMIC_RULES` for dynamic rules. In this section, we're going to use `CRON_RULES`.
+
+### Cron rules (static events)
+
+Let's create a cron rule that triggers a batch job to run once every 30 seconds.
+
+The batch job will generate a position report as a csv for each counterparty. This will be stored in genesis environemnts **runtime/position-30seconds-report**. The file name of each report written will be in the format **[COUNTERPARTY_ID]-[DATE].csv**.
+
+#### The rule
 
 Our cron rule takes the following form:
 
 | CRON_EXPRESSION | DESCRIPTION | TIME_ZONE | RULE_STATUS | NAME | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `0 45 7 ? * MON,TUE,WED,THU,FRI *` | It’s a rule | Europe/London | ENABLED | A rule | JaneDee | ALPHA_EVENTHANDLER | EVENT_POSITION_REPORT |  |
+| 0/30 * * * * ? * | It’s a rule | Europe/London | ENABLED | A rule | JaneDee | POSITIONS_APP_TUTORIAL_EVALUATOR | EVENT_POSITION_REPORT |  |
 
 Let's look at the most important fields:
 
@@ -253,84 +321,130 @@ Let's look at the most important fields:
 * **MESSAGE_TYPE** is the message that needs to be sent to the specified **PROCESS_NAME**.
 * **RESULT_EXPRESSION** is the value or values that will be sent as part of the transaction to the target PROCESS_NAME; we can leave RESULT_EXPRESSION empty, as we are going to generate a report for all positions anyway.
 
+:::info
+We use [Quartz](http://www.quartz-scheduler.org/) to manage our cron expression. All cron expression formats should match that of Quartz specification.
+:::
 
-Create a csv file with the rule in the above format. Call the file **CRON_RULE.csv**.
-```csv
-CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
-"0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
+### Configure the Evaluator
+
+An Evaluator is a process that runs cron jobs. 
+To start, create a process called **POSITIONS_APP_TUTORIAL_EVALUATOR** and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** as the code below.
+
+```xml
+<process name="POSITIONS_APP_TUTORIAL_EVALUATOR">
+    <start>true</start>
+    <groupId>POSITIONS_APP_TUTORIAL</groupId>
+    <options>-Xmx512m -DXSD_VALIDATE=false</options>
+    <module>genesis-evaluator</module>
+    <primaryOnly>true</primaryOnly>
+    <package>global.genesis.eventhandler,global.genesis.evaluator</package>
+    <description>Dynamic/time rules engine</description>
+</process>
 ```
 
-## Load the cron rule into the database
+Add the `POSITIONS_APP_TUTORIAL_EVALUATOR` to the file **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** with the code below. 
 
-Load the cron rule **CRON_RULE.csv** file into the `CRON_RULE`  [table](/server-modules/evaluator/configuring-runtime/#cron_rule-table).
+```xml
+<service host="localhost" name="POSITIONS_APP_TUTORIAL_EVALUATOR" port="11003"/>
+```
 
-Run `SendIt`
-
-## Create a new class
-When the Evaluator is running, create a `PositionReport` class to trigger the new event. This class should be created inside your project folder **server/jvm/positions-app-tutorial-messages/src/main/kotlin/global/genesis/positions-app-tutorial/message/event**. Use the code below: 
+### Create a new class
+Now we need to create a `PositionReport` class to trigger the new event. This class should be created under **server/jvm/positions-app-tutorial-messages/src/main/kotlin/global/genesis/messages/event**.
 
 ```kotlin
-
 class PositionReport
 ```
 
-## Create an Event Handler
+### Create an Event Handler
 
-Create an Event Handler that will write the csv files to the **runtime/position-minute-report** folder. Call it `EVENT_POSITION_REPORT`.
+Next we need to create an Event Handler that will write the csv files to the **runtime/position-30seconds-report** folder. First, open the **positions-app-tutorial-eventhandler.kts** file and add a variable called `tradeViewRepo`, injecting the class `TradeViewAsyncRepository`:
 
-Open the file **positions-app-tutorial-eventhandler.kts** and add a variable called `tradeViewRepo`, injecting the class `TradeViewAsyncRepository`. Then, add an Event Handler to generate the csv file:
-
-```kotlin {8,12}
-import java.io.File
-import java.time.LocalDate
-import global.genesis.TradeStateMachine
-import global.genesis.commons.standards.GenesisPaths
-import global.genesis.gen.view.repository.TradeViewAsyncRepository
-import global.genesis.jackson.core.GenesisJacksonMapper
-
+```kotlin
 val tradeViewRepo = inject<TradeViewAsyncRepository>()
+```
 
-eventHandler {
- //... other event handlers removed for clarity
-     eventHandler<PositionReport> {
-        onCommit {
-            val mapper = GenesisJacksonMapper.csvWriter<TradeView>()
-            val today = LocalDate.now().toString()
-            val positionReportFolder = File(GenesisPaths.runtime()).resolve("position-minute-report")
-            if (!positionReportFolder.exists()) positionReportFolder.mkdirs()
+Then, add an Event Handler to generate the csv file:
 
-            tradeViewRepo.getBulk()
-                .toList()
-                .groupBy { it.counterpartyName }
-                .forEach { (counterParty, trades) ->
-                    val file = positionReportFolder.resolve("${counterParty}_$today.csv")
-                    if (file.exists()) file.delete()
-                    mapper.writeValues(file).use { it.writeAll(trades) }
-                }
+```kotlin
+eventHandler<PositionReport>(name = "EVENT_POSITION_REPORT", transactional = true) {
+    onCommit {
+        val mapper = GenesisJacksonMapper.csvWriter<TradeView>()
+        val today = LocalDate.now().toString()
+        val positionReportFolder = File(GenesisPaths.runtime()).resolve("position-30seconds-report")
+        if (!positionReportFolder.exists()) positionReportFolder.mkdirs()
 
-            ack()
-        }
+        tradeViewRepo.getBulk()
+            .toList()
+            .groupBy { it.counterpartyCounterpartyName }
+            .forEach { (counterParty, trades) ->
+                val file = positionReportFolder.resolve("${counterParty}_$today.csv")
+                if (file.exists()) file.delete()
+                mapper.writeValues(file).use { it.writeAll(trades) }
+            }
+        ack()
     }
 }
 ```
 
-## Change the log level
-Change the log level to verify the execution of the events.
+Now run `assemble`, `positions-app-tutorial-config:assemble` and `deploy-genesisproduct-positions-app-tutorial`.
 
+Once deployed run `mon`. You should be able to see the process is present, but on `STANDBY`.
+
+This is because the Evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the primary node.
+
+Run `SetPrimary` in your WSL terminal and you should be able to see all processes running.
+
+### Load the cron rule on to the database
+Now we can load the cron rule csv below into the database, [CRON_RULE](/server-modules/evaluator/configuring-runtime/#cron_rule-table) Table.
+
+Navigate to **home/genesis/run/temp-data** in your WSL terminal and create a file called **cron-rule.csv** with the following:
+
+```csv
+CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
+"0/30 * * * * ? *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","POSITIONS_APP_TUTORIAL_EVALUATOR","EVENT_POSITION_REPORT"
+```
+
+Now we need to import this cron rule into our `CRON_RULE` table. Run the following command in your WSL terminal:
+
+```bash
+SendIt -f cron-rule.csv -t CRON_RULE
+```
+
+To validate the file was imported correctly, run `DbMon`, `table CRON_RULE` then `search 1`. You should see the following:
+
+```bash
+Field Name                               Value                                    Type
+===========================================================================================
+TIMESTAMP                                2022-09-05 13:15:42.719(n:0,s:3625)      NANO_TIMESTAMP
+CRON_EXPRESSION                          0/30 * * * * ? *                         STRING
+DESCRIPTION                              It’s a rule                              STRING
+MESSAGE_TYPE                             EVENT_POSITION_REPORT                    STRING
+NAME                                     A rule                                   STRING
+PROCESS_NAME                             POSITIONS_APP_TUTORIAL_EVALUATOR         STRING
+RESULT_EXPRESSION                                                                 STRING
+RULE_STATUS                              ENABLED                                  ENUM[ENABLED DISABLED]
+TIME_ZONE                                Europe/London                            STRING
+USER_NAME                                JaneDee                                  STRING
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+Total Results:  1
+```
+
+### Change the log level to verify the execution of the events
 To do this, run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command:
 
 ```shell
-LogLevel -p GENESIS_EVALUATOR -DATADUMP_ON -l DEBUG
+LogLevel -p POSITIONS_APP_TUTORIAL_EVALUATOR -DATADUMP_ON -l DEBUG
 ```
 
 And then to see the logs, run:
 ```shell
 cd $L
-tail -f GENESIS_EVALUATOR.log
+tail -f POSITIONS_APP_TUTORIAL_EVALUATOR.log
 ```
 :::info What is $L?
 $L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis low-code platform. Feel free to use your favourite command to view logs such as tail, less etc.
 :::
 
 ### Conclusion
-Taht's it. You have now see how to generate reports for the positions application.
+This concludes generating reports for the positions application. In the next section you will see how to trigger based on a condition in the database.
