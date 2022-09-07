@@ -23,6 +23,7 @@ Then you have to declare it in your `components.ts` file by adding the following
 
 ```typescript title='components.ts'
 import Highcharts from 'highcharts';
+import 'highcharts-webcomponent';
 import DarkUnica from 'highcharts/themes/dark-unica';
 
 DarkUnica(Highcharts);
