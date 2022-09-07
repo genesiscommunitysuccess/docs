@@ -121,11 +121,11 @@ This workflow is described in more detail in the section on [Front-to-back flow]
 
 ### Definitions
 
-| Term | Meaning                                      | Example                                                                                     |
-| --- |----------------------------------------------|---------------------------------------------------------------------------------------------|
-| IDP | Identity Provider                            | The authentication source, for example your User management solution                        |
-| SP | Service Provider                             | The service for which the user needs to be authenticated, for example a Genesis application |
-| MetaData | Configuration shared between the IDP and SP. | see below.                                                                                  |
+| Term | Meaning                                      | Example                                                                                      |
+| --- |----------------------------------------------|----------------------------------------------------------------------------------------------|
+| IDP | Identity Provider.                           | The authentication source, for example your User management solution.                        |
+| SP | Service Provider.                            | The service for which the user needs to be authenticated, for example a Genesis application. |
+| MetaData | Configuration shared between the IDP and SP. | see below.                                                                                   |
 
 ```xml
 <?xml version="1.0"?>
