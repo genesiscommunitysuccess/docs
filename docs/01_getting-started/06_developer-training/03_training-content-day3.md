@@ -1,7 +1,7 @@
 ---
 id: training-content-day3
-title: Day three
-sidebar_label: Day three
+title: Day 3
+sidebar_label: Day 3
 sidebar_position: 5
 
 ---

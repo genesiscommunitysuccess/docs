@@ -1,7 +1,7 @@
 ---
 id: training-content-day4
-title: Day four
-sidebar_label: Day four
+title: Day 4
+sidebar_label: Day 4
 sidebar_position: 6
 
 ---
