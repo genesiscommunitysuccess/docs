@@ -8,7 +8,7 @@ Now that you have completed the [Quick Start](/getting-started/quick-start/) and
 
 ## What you will build
 
-We want to build a real-time positions application, where trades can be entered, and will be aggregated to maintain positions.
+We want to build a real-time [positions](https://www.investopedia.com/terms/p/position.asp) application, where trades can be entered, and will be aggregated to maintain positions.
 
 The application will make use of the following platform features:
 - [Data Model](/getting-started/go-to-the-next-level/data-model/)

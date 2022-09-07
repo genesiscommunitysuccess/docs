@@ -33,21 +33,18 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-ho
 
 Before we make any changes, you need to install your npm dependencies by running the following in your terminal:
 
-```shell title="./client"
+```shell
 npm run bootstrap
 ```
 
 Once you have all dependencies installed, you can use the terminal to run your UI with the following command: 
 
-```shell title="./client"
+```shell
 npm run dev
 ```
 
 The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
-
-## Section objectives
-The goal of this section is to run our UI for the first time and add a data grid.
 
 ## Showing all positions 
 
@@ -61,7 +58,7 @@ In the template file, start by adding the Genesis data source pointing to the ap
 
 [//]: # (link to ag-genesis-datasource tsdocs)
 ```html title="home.template.ts"
-<zero-ag-grid style="width: 100%; height: 100%">
+<zero-ag-grid>
     <ag-genesis-datasource
         resourceName="ALL_POSITIONS"
         orderBy="INSTRUMENT_ID">
@@ -78,8 +75,8 @@ To add new columns that are not part of the API, we can add additional column de
 ```html {6} title="home.template.ts"
 <zero-ag-grid>
     <ag-genesis-datasource
-        resourceName="ALL_POSITIONS"
-        orderBy="INSTRUMENT_ID">
+            resourceName="ALL_POSITIONS"
+            orderBy="INSTRUMENT_ID">
     </ag-genesis-datasource>
     <ag-grid-column :definition="${x => x.singlePositionActionColDef}" />
 </zero-ag-grid>
@@ -91,7 +88,7 @@ The example below creates a column with a button that logs data in the row to th
 Here you can easily swap logging the row data with some custom logic (such as calling a back-end api that we shall cover in more detail later on).
 
 ```typescript title="home.ts"
-  public singlePositionActionColDef = {
+  public singlePositionActionColDef: ColDef = {
     headerName: 'Action',
     minWidth: 120,
     maxWidth: 120,
@@ -114,12 +111,13 @@ If you want to customise how each column is displayed, you can provide column co
 Create a new file called positionColumnDefs.ts in the same directory.
 
 ```typescript title="positionColumnDefs.ts"
-export const positionColumnDefs = [
+export const positionColumnDefs: ColDef[] = [
   {field: 'INSTRUMENT_NAME', headerName: 'Instrument', sort: 'desc', flex: 2},
-  {field: 'QUANTITY', headerName: 'Quantity', type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
-  {field: 'NOTIONAL', headerName: 'Traded Value', type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
-  {field: 'VALUE', headerName: 'Market Value', type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
-  {field: 'PNL', headerName: 'PNL', type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
+  {field: 'QUANTITY', headerName: 'Quantity', valueFormatter: formatNumber(0), type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
+  {field: 'CURRENCY', headerName: 'Ccy', flex: 1, enableCellChangeFlash: true},
+  {field: 'NOTIONAL', headerName: 'Traded Value', valueFormatter: formatNumber(2), type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
+  {field: 'VALUE', headerName: 'Market Value', valueFormatter: formatNumber(2), type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
+  {field: 'PNL', headerName: 'PNL', valueFormatter: formatNumber(2), type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
 ];
 ```
 
@@ -128,9 +126,8 @@ To stop automatic generation of columns, you need to add the `only-template-col-
 Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive) directive; this includes all the columns from our column config array.
 
 
-```typescript {5,2,11-13} title="home.template.ts"
+```typescript {4,10-12} title="home.template.ts"
 import {positionColumnDefs} from './positionColumnDefs';
-import {repeat} from '@microsoft/fast-element';
 
 <zero-ag-grid
     only-template-col-defs

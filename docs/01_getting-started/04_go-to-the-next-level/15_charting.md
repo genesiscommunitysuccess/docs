@@ -7,14 +7,10 @@ id: charts
 Because we use Web Components, it is very easy to integrate third-party libraries with the Genesis low-code platform. 
 In this example, we shall integrate the highcharts library with Genesis data.
 
-## Section objectives
-The goal of this section is to add a data chart to the UI.
-
 ## Add, declare and bind
 Start by adding a new dependency to our project by running this command in terminal:
 
 ```shell title='/client/web/'
-npm i lerna -g
 lerna add highcharts
 lerna add highcharts-webcomponent
 ```
@@ -23,7 +19,6 @@ Then you have to declare it in your `components.ts` file by adding the following
 
 ```typescript title='components.ts'
 import Highcharts from 'highcharts';
-import 'highcharts-webcomponent';
 import DarkUnica from 'highcharts/themes/dark-unica';
 
 DarkUnica(Highcharts);
@@ -52,7 +47,7 @@ import {Datasource} from '@genesislcap/foundation-comms';
     series: [],
 };
 
-@Datasource positionDatasource: Datasource;
+@Datasource tradeDatasource: Datasource;
 ```
 
 ## Fetching the data
@@ -89,7 +84,6 @@ public async connectedCallback()
 }
 ```
 
-## Conclusiong
-You should have a data chart that resembles something like this:
+## Final result
 
 ![](/img/charts.png)
