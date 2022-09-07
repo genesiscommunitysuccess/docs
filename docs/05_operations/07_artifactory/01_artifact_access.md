@@ -46,7 +46,7 @@ We offer both our scoped packages and a remote to the npmjs.org repository via a
 We offer direct access to our scoped packages only via a repository called ['github-packages'](https://genesisglobal.jfrog.io/artifactory/github-packages/). (We build the packages on Github, but we do not expose them there.)
 
 These repositories are used in **.npmrc** files, by developers and CI/CD systems.  Further details about the use
-of web repositories are available [here](/getting-started/prerequisites/hardware-and-software/#npmrc-set-up).
+of web repositories are available [here](/getting-started/quick-start/hardware-and-software/#npmrc-set-up).
 
 
 ## Community objects
