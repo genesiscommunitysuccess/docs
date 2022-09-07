@@ -31,7 +31,7 @@ E -->F[genesisInstall, remap, AppGen, genesisInstall]
 F -->G[Load generated data]
 ```
 
-If you already have a Genesis platform, you can [download the workbook](/file/Excel_Export_Demo.xlsx) and try this for yourself.
+If you already have a Genesis platform, you can [download the workbook](pathname:///file/Excel_Export_Demo.xlsx) and try this for yourself.
 
 ## Analyse, adjust and run
 
@@ -83,9 +83,13 @@ The process is quick. It creates a number of tables. Each table has a numeric ID
 
 ## Check the files and load the data
 
-Now you have run the conversion script, let's look at the files that have been created.
+Now you have ran the conversion script, let's look at the files that have been created.
 
-First, it creates a folder called **`/home/core/run/cash.cfg`**. Then it writes the dictionary files for the fields, tables and views that make up your data model.
+First, it creates a folder called **`/home/core/run/cash/cfg`**. Then it writes the dictionary files for the fields, tables and views that make up your data model.
+
+:::info
+The name of the folder above is based on setup where the `GENESIS_HOME` environment variable points to **/home/core/run**. If your `GENESIS_HOME` environment variable points to another directory then that folder will be different. To be on the safe side always check the output of the `ExcelToGenesis` command as it prints out which files and folders were created.
+:::
 
 
 ![](/img/xtg2.png)
@@ -116,7 +120,7 @@ fields {
 ```
 You can see the whole file [here](/getting-started/use-cases/excel-to-genesis/Files/guide-5).
 #### Field types
-The fields are automatically sampled by the command to allocate a type. If it is not sure, it allocates the field as STRONG. Most of these will be correct, but you will need to handle exceptions.
+The fields are automatically sampled by the command to allocate a type. If it is not sure, it allocates the field as `STRING`. Most of these will be correct, but you will need to handle exceptions.
 #### Long names and illegal characters
 Note that our example contains some long field names. Ideally, these should be shortened before the conversion process, but these long field names still work.
 Illegal characters in field names have been automatically converted. You can see here that the **%** sign has twice been changed to PERCENT in this field name.
