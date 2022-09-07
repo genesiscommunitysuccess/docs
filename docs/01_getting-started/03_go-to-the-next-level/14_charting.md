@@ -14,6 +14,7 @@ The goal of this section is to add a data chart to the UI.
 Start by adding a new dependency to our project by running this command in terminal:
 
 ```shell title='/client/web/'
+npm i lerna -g
 lerna add highcharts
 lerna add highcharts-webcomponent
 ```
@@ -50,7 +51,7 @@ import {Datasource} from '@genesislcap/foundation-comms';
     series: [],
 };
 
-@Datasource tradeDatasource: Datasource;
+@Datasource positionDatasource: Datasource;
 ```
 
 ## Fetching the data

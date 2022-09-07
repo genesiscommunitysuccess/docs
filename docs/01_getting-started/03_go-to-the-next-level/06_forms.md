@@ -14,11 +14,11 @@ Start with the Form component, which will generate all the inputs based on the A
 
 ```html title='home.template.ts'
 <zero-form
-  resourceName="EVENT_INSERT_TRADE"
+  resourceName="EVENT_TRADE_INSERT"
 ></zero-form>
 ```
 
-To respond to the user clicking on the **Submit** button, you need to add the `EVENT_INSERT_TRADE` resource:
+To respond to the user clicking on the **Submit** button, you need to call the `EVENT_TRADE_INSERT` event:
 ```html {3} title='home.template.ts'
 <zero-form
   resourceName="EVENT_INSERT_TRADE"
@@ -30,11 +30,13 @@ Define the `insertTrade` function in the file **home.ts**:
 
 ```typescript title='home.ts'
   import {Connect} from '@genesislcap/foundation-comms';
-  
+```
+
+```typescript title='home.ts'
   @Connect connect: Connect;
 
   public async insertTrade(event) {
-    const formData = event.detail;
+    const formData = event.detail.payload;
     const insertTradeEvent = await this.connect.commitEvent('EVENT_TRADE_INSERT', {
       DETAILS: {
         COUNTERPARTY_ID: 'GENESIS',

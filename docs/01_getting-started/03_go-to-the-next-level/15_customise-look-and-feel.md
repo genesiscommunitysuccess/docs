@@ -18,7 +18,7 @@ Create a stylesheet file called trades.styles.ts and provide the following code:
 import {css, ElementStyles} from '@microsoft/fast-element';
 
 export const tradesGridStyles: ElementStyles = css`
-    .currency-column {
+    .quantity-column {
         color: blue;
     }
 `
@@ -27,13 +27,13 @@ export const tradesGridStyles: ElementStyles = css`
 Configure your column to have the specific class name [column config](https://ag-grid.com/javascript-data-grid/cell-styles/#cell-class):
 
 ```typescript
- {field: 'CURRENCY', cellClass: 'currency-column'},
+ {field: 'QUANTITY', cellClass: 'quantity-column'},
 ```
 
 In home.template.ts, in the grid tag, include utility that will inject your stylesheet to the component:
 
 ```html
-import {tradesGridStyles} from "./trades-grid.styles";
+import {tradesGridStyles} from "./trades.styles";
 
 <zero-ag-grid>
     ...    
@@ -55,7 +55,7 @@ Remember to add the new styles to your stylesheet file.
 import {css, ElementStyles} from '@microsoft/fast-element';
 
 export const tradesGridStyles: ElementStyles = css`    
-     .currency-column {
+     .quantity-column {
          color: blue;
      }
 
@@ -77,9 +77,6 @@ By default, all elements on screen will use `display: block`, but we can easily 
     <!--content-->
 </foundation-flex-layout>
 ```
-
-
-## Styling user management
 
 
 ## Styling other parts of application
