@@ -112,4 +112,4 @@ APPL,Z233,100,S,400,2022-09-12 16:20:20,TraderA
 
 Given everything is working as expected, DbMon should show the following 4 entries in your database.
 
-![DbMon screenshot](/img/dbmon-datapipeline.png)
+![DbMon screenshot](/img/dbmon-datapipeline.PNG)
