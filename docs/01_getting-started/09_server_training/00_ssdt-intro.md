@@ -10,14 +10,14 @@ This is hands-on server specialist developer training where we're going to exten
 
 ## Pre-requisites and assumptions
 
-- You have taken the [Foundation](#) course as well as the [Developer Training](#).
+- You have taken the Foundation course as well as the [Developer Training](/getting-started/developer-training/training-intro/).
 
 
 ## Programme
 
-This training is divided into 5 sessions, or days; each session covers specific advanced resources of the platform. To achieve that, we are extending the  Trade & Positions application done during the [Developer Training](#) available [here](https://github.com/genesiscommunitysuccess/devtraining-gama).
+This training is divided into 5 sessions, or days; each session covers specific advanced resources of the platform. To achieve that, we are extending the  Trade & Positions application done during the Developer Training available [here](https://github.com/genesiscommunitysuccess/devtraining-gama).
 
-Should you need it along the course, feel free to use the [final application](#) as a reference.
+Should you need it along the course, feel free to use the [final application](https://github.com/genesiscommunitysuccess/devtraining-gama-server-spc) as a reference.
 
 Also, at any point, use the search function of the documentation for extra information.
 
@@ -29,11 +29,11 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 
 ## Agenda
 
-- [Day 1](#): System definitions, advanced event handlers.
-- [Day 2](#): Notify, dynamic rules, advanced views.
-- [Day 3](#): Advanced data Servers, advanced request servers, ExcelToGenesis.
-- [Day 4](#): DictionaryBuilder, streamer, streamer client, custom endpoints.
-- [Day 5](#): Custom endpoints, camel module, data pipeline​.
+- [Day 1](/getting-started/server_training/01_ssdt-day1/): System definitions, advanced event handlers.
+- [Day 2](/getting-started/server_training/01_ssdt-day2/): Notify, dynamic rules, advanced views.
+- [Day 3](/getting-started/server_training/03_ssdt-day3/): Advanced data Servers, advanced request servers, ExcelToGenesis.
+- [Day 4](/getting-started/server_training/04_ssdt-day4/): DictionaryBuilder, streamer, streamer client, custom endpoints.
+- [Day 5](/getting-started/server_training/05_ssdt-day5/): Custom endpoints, camel module, data pipeline​.
 
 ## Genesis low-code platform version
 6.1.4

@@ -6,7 +6,7 @@ id: ssdt-getting_started
 
 ## Environment set-up
 
-Make sure you completed the [Environment set-up](#), the same you did in the [Developer Training](#).
+Make sure you completed the [Environment set-up](/getting-started/developer-training/environment-setup/), the same you did in the [Developer Training](/getting-started/developer-training/training-intro/).
 
 ## Start the project baseline
 

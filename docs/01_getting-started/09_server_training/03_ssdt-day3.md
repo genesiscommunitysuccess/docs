@@ -28,7 +28,7 @@ dataServer {
 }
 ```
 
-We saw basic concepts and common usages of Data Servers in the [Developer Training](#) such as [specifying fields](/server-modules/data-server/basics/#specifying-fields), [derived fields](/server-modules/data-server/basics/#derived-fields), and [where clauses](/server-modules/data-server/basics/#where-clauses). Now we are exploring Data Servers advanced concepts like [client enriched data](#client-enriched-data), [ranged data server queries](#ranged-data-server-queries), [client side runtime options](#client-side-runtime-options), and [criteria matching](#criteria-matching).
+We saw basic concepts and common usages of Data Servers in the [Developer Training](/getting-started/developer-training/training-intro/) such as [specifying fields](/server-modules/data-server/basics/#specifying-fields), [derived fields](/server-modules/data-server/basics/#derived-fields), and [where clauses](/server-modules/data-server/basics/#where-clauses). Now we are exploring Data Servers advanced concepts like [client enriched data](#client-enriched-data), [ranged data server queries](#ranged-data-server-queries), [client side runtime options](#client-side-runtime-options), and [criteria matching](#criteria-matching).
 
 ### Client enriched data
 

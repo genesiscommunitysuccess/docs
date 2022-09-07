@@ -157,7 +157,7 @@ Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the i
 
 Views enable you join related tables to create a single holistic view. In short, Views are the genesis equivalent of SQL select queries. Views are defined in the file _application-name_**-view-dictionary.kts**. If your application is called **rubicon**, then the file name will be **rubicon-view-dictionary.kts**.
 
-Unlike tables, views do not have any data of their own, they are read-only, but present a view based on one or more tables. We saw basic concepts and common usages of Views in the [Developer Training](#). Now we are exploring Views advanced concepts like **INNER vc OUTER joins**, **Parameterised joins**, and **Dynamic joins**.
+Unlike tables, views do not have any data of their own, they are read-only, but present a view based on one or more tables. We saw basic concepts and common usages of Views in the [Developer Training](/getting-started/developer-training/training-intro/). Now we are exploring Views advanced concepts like **INNER vc OUTER joins**, **Parameterised joins**, and **Dynamic joins**.
 
 ### INNER vc OUTER joins
 

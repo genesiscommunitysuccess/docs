@@ -7,7 +7,7 @@ sidebar_position: 5
 ---
 This day covers:
 
-- [DictionaryBuilder](#)
+- [DictionaryBuilder](#dictionarybuilder)
 - [Streamer​](#streamer)
 - [Streamer client](#streamer-client)
 

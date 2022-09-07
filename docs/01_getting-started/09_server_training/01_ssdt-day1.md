@@ -150,7 +150,7 @@ As a rough guide, many of the tables you have created need **Insert**, **Modify*
 
 The vast majority of applications include business workflow. Event Handlers are conventionally defined in the file _application-name_**-eventhandler.kts**. 
 
-In the [Developer Training](#) we defined the application Event Handler in a [Kotlin script file](/tutorials/training-resources/training-content-day1/#event-handler), as well as basic things like [enabling the application to write to the database](/tutorials/training-resources/training-content-day2/#exercise-22-extending-the-application).
+In the [Developer Training](/getting-started/developer-training/training-intro/) we defined the application Event Handler in a [Kotlin script file](/tutorials/training-resources/training-content-day1/#event-handler), as well as basic things like [enabling the application to write to the database](/tutorials/training-resources/training-content-day2/#exercise-22-extending-the-application).
 
 However, there are more we can explore such as [Database API](#database-api), [Exception handling](#exception-handling), and [Custom reply message type](#custom-reply-message-type) described in the next sections.
 
