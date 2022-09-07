@@ -33,13 +33,13 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-ho
 
 Before we make any changes, you need to install your npm dependencies by running the following in your terminal:
 
-```shell
+```shell title="./client"
 npm run bootstrap
 ```
 
 Once you have all dependencies installed, you can use the terminal to run your UI with the following command: 
 
-```shell
+```shell title="./client"
 npm run dev
 ```
 
