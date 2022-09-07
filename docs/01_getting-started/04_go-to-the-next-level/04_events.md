@@ -8,8 +8,8 @@ Now that we have our data model defined, we can start adding the capabilities to
 
 ## Section objectives
 The goal of this section is to define and build:
-- an event handler for creating trades and a
-- data server for reading positions and trades.
+- an Event Handler for creating trades and a
+- Data Server for reading positions and trades.
 
 
 ## Data Server
