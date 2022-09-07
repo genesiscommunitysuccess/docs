@@ -83,12 +83,12 @@ The process is quick. It creates a number of tables. Each table has a numeric ID
 
 ## Check the files and load the data
 
-Now you have ran the conversion script, let's look at the files that have been created.
+Now you have run the conversion script, let's look at the files that have been created.
 
 First, it creates a folder called **`/home/core/run/cash/cfg`**. Then it writes the dictionary files for the fields, tables and views that make up your data model.
 
 :::info
-The name of the folder above is based on setup where the `GENESIS_HOME` environment variable points to **/home/core/run**. If your `GENESIS_HOME` environment variable points to another directory then that folder will be different. To be on the safe side always check the output of the `ExcelToGenesis` command as it prints out which files and folders were created.
+The name of the folder above is based on a set-up where the `GENESIS_HOME` environment variable points to **/home/core/run**. If your `GENESIS_HOME` environment variable points to another directory, then that folder will be different. To be safe, always check the output of the `ExcelToGenesis` command as it prints out which files and folders were created.
 :::
 
 
