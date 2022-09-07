@@ -595,6 +595,4 @@ this is pretty much here: https://docs.genesis.global/secure/tutorials/training-
 30 mins
 :::
 
-It is your time! Let's use AgGrid in [@genesislcap/foundation-zero](/tutorials/training-resources/training-content-day2/#genesislcapfoundation-zero) Genesis package presented before. The grid should list Counterparties in our Angular solution.
-
-You can use the Data Server query `ALL_COUNTERPARTIES` to do that.
+It's your time! Let's use AgGrid with connected data in the Angular app. The grid should display the data from `ALL_ORDERS`, very similar to what we did in [Adding a simple Orders data grid](/getting-started/web-training/web-training-day2/#adding-a-simple-orders-data-grid), but now in Angular.

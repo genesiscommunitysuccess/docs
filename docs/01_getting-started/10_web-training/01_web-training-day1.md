@@ -18,7 +18,7 @@ This picture gives an overview on how it all ties together:
 ![](/img/WebUIDiagram.png)
 
 :::tip confused with any term used here? Revisit the Developer Training!
-Please feel free to revisit the UI chapter of the [Developer Training](/getting-stared/developer-training/developer-training-day2) before we get into other aspects of the underlying technology used by Genesis in the next sections.
+Please feel free to revisit the UI chapter of the [Developer Training](/getting-started/developer-training/training-content-day2/) before we get into other aspects of the underlying technology used by Genesis in the next sections.
 :::
 
 ### Why Web Components?
