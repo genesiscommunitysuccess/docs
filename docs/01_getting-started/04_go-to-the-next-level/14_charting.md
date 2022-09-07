@@ -7,6 +7,9 @@ id: charts
 Because we use Web Components, it is very easy to integrate third-party libraries with the Genesis low-code platform. 
 In this example, we shall integrate the highcharts library with Genesis data.
 
+## Section objectives
+The goal of this section is to add a data chart to the UI.
+
 ## Add, declare and bind
 Start by adding a new dependency to our project by running this command in terminal:
 
@@ -84,6 +87,7 @@ public async connectedCallback()
 }
 ```
 
-## Final result
+## Conclusiong
+You should have a data chart that resembles something like this:
 
 ![](/img/charts.png)

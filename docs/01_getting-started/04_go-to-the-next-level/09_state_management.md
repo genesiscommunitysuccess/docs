@@ -14,7 +14,15 @@ Based on below state machine:
 
 ![](/img/diagram-of-states.png)
 
-### Data model
+
+## Section objectives
+The goal of this section is to:
+- create a state machine
+- create allocated, cancel and modify event handlers
+- add our state machine in our event handlers.
+
+
+## Data model
 
 Make sure that you added the `TRADE_STATUS` field to the `TRADE` table in the **positions-app-tutorial-tables-dictionary.kts** file.
 
@@ -35,7 +43,7 @@ tables {
 
 If `TRADE_STATUS` is missing, add it in, run **generateFields** to generate the fields and then **generateDao** to create the DAOs.
 
-### Create the State Machine logic and data classes
+## Create the State Machine logic and data classes
 
 Fist we need to define our state machine class for type `Trade`. To do this, create a file called `TradeStateMachine.kt` under **positions-app-tutorial-eventhandler/src/main/kotlin/global/genesis**.
 
@@ -127,7 +135,7 @@ TradeCancelled:
 data class TradeCancelled(val tradeId: String)
 ```
 
-### Updating the dependencies for positions-app-tutorial-script-config
+## Updating the dependencies for positions-app-tutorial-script-config
 
 In order to use the following `TradeStateMachine` and data classes (`TradeAllocated` and `TradeCancelled`) we just defined, we need to add the **positions-app-tutorial-eventhandler** and **positions-app-tutorial-messages** modules as dependencies inside the **positions-app-tutorial-script-config** modules `build.gradle` file.
 
@@ -138,7 +146,7 @@ api(project(":positions-app-tutorial-messages"))
 
 Finally, refresh your gradle project.
 
-### Edit the Event Handler to add an integrated state machine
+## Edit the Event Handler to add an integrated state machine
 
 Let's edit the Event Handler to add an integrated state machine. First, in the **positions-app-tutorial-eventhandler.kts** file, declare a variable to be visible to all events by injecting the class `TradeStateMachine` that we have just created. 
 
@@ -169,7 +177,7 @@ eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
 You may have noticed we are passing a `transactional = ture` parameter into our event handler. This ensures any exception or nack returned will result in a complete rollback of all parts of the onCommit and onValidate (the transaction also covers read commands) blocks. You can read more on transactions [here](/server-modules/event-handler/basics/#transactional-event-handlers-acid)
 :::
 
-### Add Event Handlers for the rest of the states
+## Add Event Handlers for the rest of the states
 
 Create a new Event Handler called `TRADE_CANCELLED` to handle cancellations. Then integrate the state machine in it.
 
@@ -264,5 +272,5 @@ You want to manage the state of the trade, so we don't want a delete Event Handl
 
 To test it, you can try to modify a `TRADE` (assuming you already have at least one trade in the database) and see the state change accordingly. 
 
-### Conclusion
+## Conclusion
 With this, we finish showing how an application can add state management. If you want to see it in action, go to [Endpoints](/server-modules/integration/rest-endpoints/introduction/) for information on testing your the back end.

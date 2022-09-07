@@ -4,6 +4,11 @@ sidebar_label: 'Micro-frontends'
 id: micro-frontends
 ---
 
+## Section objectives
+The goal of this section is to add a micro front-end.
+
+
+## Adding a micro-front end
 You can quickly add micro-frontends to you application by just adding them as a new route in your router config. 
 
 Add a new dependency to your project by running this command in terminal:

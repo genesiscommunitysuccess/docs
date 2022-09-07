@@ -6,6 +6,11 @@ id: events
 
 Now that we have our data model defined, we can start adding the capabilities to read and create entries.
 
+## Section objectives
+The goal of this section is to define and build:
+- an event handler for creating trades and a
+- data server for reading positions and trades.
+
 
 ## Data Server
 The component that enables data to be read in real time is called the [Data Server](/server-modules/data-server/introduction/). All the queries that a Data Server executes are defined in **positions-app-tutorial-dataserver.kts**. A Data Server can query both tables and views, so let's add two queries:
