@@ -46,7 +46,7 @@ import {positionGridStyles} from "./positionsGrid.styles";
 If you need to provide different class names for specific conditions, you can provide a function to the `cellClass` column config, as shown in the example below:
 
 ```typescript title="positionColumnDefs.ts"
- {field: 'PNL', cellClass: (params) => params.value > 0 ? : 'profit', 'loss'},
+ {field: 'PNL', cellClass: (params) => params.value > 0 ? 'profit' : 'loss'},
 ```
 
 Remember to add the new styles to your stylesheet file.
