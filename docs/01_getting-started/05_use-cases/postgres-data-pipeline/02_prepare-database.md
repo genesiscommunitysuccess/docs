@@ -5,7 +5,15 @@ sidebar_label: Prepare the Source Data
 sidebar_position: 3
 ---
 
-The source data comes from a PostgreSQL server that has to meet the minimal configuration mentioned [here](/server-modules/integration/data-pipeline/advanced/#postgresql-configuration-1). If you start PostgreSQL from a Docker image check the notes [here](/server-modules/integration/data-pipeline/configuring-runtime/#starting-source-postgresql-as-a-docker-image).
+The source data comes from a PostgreSQL server that has to meet the minimal configuration mentioned [here](/server-modules/integration/data-pipeline/advanced/#postgresql-configuration-1).
+
+## PostgreSQL in Docker
+
+Docker is a simple way to start playing with a local database and data pipelines. To capture changes from PostgreSQL, the Write Ahead Log level has to be set at least to `logical`. By default, the PostgreSQL docker image has its Log Level set at level lower than this; thus you must specify it explicitly when the image is run:
+
+```shell
+docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c wal_level=logical
+```
 
 ## Database Table
 

@@ -33,16 +33,42 @@ Currently the supported sources are:
 
 ### Database
 
-#### PostgreSQL
+All databases share common configuration. 
 
 | Parameter | Default value | Sample usage | Value type | Description |
 |---|---|---|---|---|
-| name | N/A | `postgres("cdc-test")` | String | Name for the source |
-| hostname | N/A | `hostname = "localhost"` | String | Set the hostname where PostgreSQL is running |
-| port | 5432 | `port = 5432` | Integer | Set the port on which PostgreSQL is running |
+| sourceName | N/A | `postgres("cdc-test")` | String | Name for the source |
+| hostname | N/A | `hostname = "localhost"` | String | Set the hostname of the remote Database |
+| port | 5432 | `port = 5432` | Integer | Set the port on which Database is running |
 | username | N/A | `username = "postgres"` | String | Set the database user  |
 | password | N/A | `password = "db-password"` | String | Set the database user password  |
-| databaseName | N/A | `databaseName = "postgres"` | String | Set the name of the database  |
+| databaseName | N/A | `databaseName = "postgres"` | String | Set the name of the database  | 
+
+```kotlin
+sources {
+  postgres("cdc-test-psql") {
+    hostname = "localhost"
+    port = 5432
+    username = "postgres"
+    password = "db-password"
+    databaseName = "postgres"
+  }
+
+  msSql("cdc-test-mssql") {
+    ...
+  }
+
+  oracle("cdc-test-oracle") {
+    ...
+  }
+}
+```
+
+:::note
+
+Remote databases will not work by default and will require some setup/configuration to enable Change Data Capture. Find details on setup [here](/operations/pipeline-setup/)
+
+:::
 
 ### File
 
