@@ -32,7 +32,7 @@ Configure your column to have the specific class name [column config](https://ag
 
 In home.template.ts, in the grid tag, include utility that will inject your stylesheet to the component:
 
-```html {1,5} title='home.template.ts'
+```html {1,4} title='home.template.ts'
 import {positionGridStyles} from "./positionsGrid.styles";
 
 <zero-ag-grid>
