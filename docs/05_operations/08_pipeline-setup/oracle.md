@@ -102,6 +102,13 @@ EOF
 
 Here are some settings specific to setting up the Oracle Debezium connector.
 
+| Setting | Value |
+| --- | --- |
+| databaseName | ORCLCDB |
+| pdbName | ORCLPDB1 |
+| username | c##dbzuser |
+| password | dbz |
+
 If you set your LogMiner username and password to something different, substitute the values above for the ones you chose.
 
 ## Connecting to the database

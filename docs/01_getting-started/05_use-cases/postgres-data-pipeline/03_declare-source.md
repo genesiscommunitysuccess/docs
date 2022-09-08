@@ -27,6 +27,17 @@ sources {
 }
 ```
 
+:::tip
+If you don't have intelisense when editing the data pipeline file check the contents of **datapipeline-trades-script-config/build.gradle.kts**. Under **dependencies** it should contain `api("global.genesis:genesis-pal-datapipeline")`. If that entry is not present add it to the list of dependencies. Once done the file should look like:
+```kotlin
+dependencies {
+    ...
+    api("global.genesis:genesis-pal-datapipeline")
+    ..
+}
+```
+:::
+
 The next step is to declare the mapper for each table. In our case we are only interested in one table - `trades`.
 
 ## Declare the Mapper
