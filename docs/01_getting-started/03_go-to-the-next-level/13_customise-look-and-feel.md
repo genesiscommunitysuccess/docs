@@ -12,12 +12,12 @@ The goal of this section is to customise our styles in the UI.
 You might want to apply specific styles to some columns. 
 We start by creating a stylesheet document that will have some style definitions for the grid.
 
-Create a stylesheet file called trades.styles.ts and provide the following code:
+Create a stylesheet file called `positionsGrid.styles.ts` and provide the following code:
 
-```typescript
+```typescript title='positionsGrid.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
 
-export const tradesGridStyles: ElementStyles = css`
+export const positionGridStyles: ElementStyles = css`
     .quantity-column {
         color: blue;
     }
@@ -26,18 +26,18 @@ export const tradesGridStyles: ElementStyles = css`
 
 Configure your column to have the specific class name [column config](https://ag-grid.com/javascript-data-grid/cell-styles/#cell-class):
 
-```typescript
+```typescript title="positionColumnDefs.ts"
  {field: 'QUANTITY', cellClass: 'quantity-column'},
 ```
 
 In home.template.ts, in the grid tag, include utility that will inject your stylesheet to the component:
 
-```html
-import {tradesGridStyles} from "./trades.styles";
+```html {1,4} title='home.template.ts'
+import {positionGridStyles} from "./positionsGrid.styles";
 
 <zero-ag-grid>
+    <slotted-styles :styles=${() => positionGridStyles}></slotted-styles>
     ...    
-    <slotted-styles :styles=${() => tradesGridStyles}></slotted-styles>
     ...
 </zero-ag-grid>
 `
@@ -45,27 +45,27 @@ import {tradesGridStyles} from "./trades.styles";
 
 If you need to provide different class names for specific conditions, you can provide a function to the `cellClass` column config, as shown in the example below:
 
-```typescript
- {field: 'SIDE', cellClass: (params) => params.value === 'BUY' ? : 'buy-side', 'sell-side'},
+```typescript title="positionColumnDefs.ts"
+ {field: 'PNL', cellClass: (params) => params.value > 0 ? 'profit' : 'loss'},
 ```
 
 Remember to add the new styles to your stylesheet file.
 
-```diff
+```css {8-14} title='positionsGrid.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
 
-export const tradesGridStyles: ElementStyles = css`    
+export const positionGridStyles: ElementStyles = css`    
      .quantity-column {
          color: blue;
      }
 
-+    .buy-side {
-+        color: green;
-+    }
+    .profit {
+        color: green;
+    }
     
-+    .sell-side {
-+        color: red;
-+    }
+    .loss {
+        color: red;
+    }
 `
 ```
 

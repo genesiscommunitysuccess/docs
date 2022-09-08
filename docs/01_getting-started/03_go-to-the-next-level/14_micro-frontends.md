@@ -22,14 +22,24 @@ In the example below, you will add routing for users to your application:
 ```typescript title='routes/config.ts' 
   import { Users } from '@genesislcap/foundation-entity-management';
   
+  
   public configure() {
-    this.title = 'Positions';
-    this.defaultLayout = defaultLayout;
+    ...
     this.routes.map(
-      {path: '', redirect: 'protected'},
-      {path: 'login', element: Login, title: 'Login', name: 'login', settings: {public: true}, childRouters: true, layout: loginLayout},
+      ...  
       {path: 'users', element: Users, title: 'Users', name: 'users'},
     );
+    ...
+  }
+```
+
+You then need to add the route to users to the navigation bar:
+
+```typescript title='routes/config.ts'
+  public allRoutes = [
+    { index: 1, path: 'home', title: 'Home', icon: 'home', variant: 'solid' },
+    { index: 2, path: 'users', title: 'Users', icon: 'users', variant: 'solid' }
+  ];
 ```
 
 Now you can visit `/users` in your browser, and it should take you to the **users management** page within your application.

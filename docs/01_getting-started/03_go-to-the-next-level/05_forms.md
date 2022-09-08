@@ -83,6 +83,10 @@ We can do it in the traditional way by adding `@change` [event handler](https://
 
 Let's add it to each form element:
 
+```ts title='home.template.ts'
+import {sync} from '@genesislcap/foundation-utils';
+```
+
 ```html {2,7,13,18} title='home.template.ts' 
 <zero-text-field 
   :value=${sync(x=> x.quantity)}
@@ -107,9 +111,9 @@ Let's add it to each form element:
 ```
 
 ## Adding selection options
-You probably realise that we don't have any options in our select component, so let's fix that now.
+You probably realise that we don't have any options in our select components, so let's fix that now.
 
-To enter a new trade, we want the the user to be able to select:
+To enter a new trade, we want the user to be able to select:
 - side (buy or sell)
 - the instrument to be traded
 
@@ -137,6 +141,7 @@ public async connectedCallback() {
     
     const tradeInstrumentsRequest = await this.connect.request('INSTRUMENT');
     this.tradeInstruments = tradeInstrumentsRequest.REPLY?.map(instrument => ({value: instrument.INSTRUMENT_ID, label: instrument.NAME}));
+    this.instrument = this.tradeInstruments[0].value;
 }
 ```
 
@@ -146,13 +151,13 @@ To dynamically include a list of instruments, use the [repeat](https://www.fast.
 ```typescript title='home.template.ts' 
 <zero-select :value=${sync(x=> x.instrument)}>
   ${repeat(x => x.tradeInstruments, html`
-    <zero-option value=${x => x.INSTRUMENT_ID}>${x => x.NAME}</zero-option>
+    <zero-option value=${x => x.value}>${x => x.label}</zero-option>
   `)}
 </zero-select>
 ```
 
 ## Enabling the user to insert
-Now we have the data that can be selected, we need to be able the user to submit the trade:
+Now we have the data that can be selected, we need the user to be able to submit the trade:
 
 Create a simple button with a click event handler:
 ```html title='home.template.ts'
@@ -168,7 +173,7 @@ public async insertTrade() {
       INSTRUMENT_ID: this.instrument,
       QUANTITY: this.quantity,
       PRICE: this.price,
-      SIDE: this.tradeSide,
+      SIDE: this.side,
       TRADE_DATETIME: Date.now(),
     },
     IGNORE_WARNINGS: true,
