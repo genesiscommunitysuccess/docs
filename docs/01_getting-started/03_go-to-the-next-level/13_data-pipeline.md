@@ -7,7 +7,11 @@ id: data-pipeline
 So far, we have only directed you towards manual data ingestion techniques, using gradle tasks, forms, [SendIt](/operations/commands/server-commands/#sendit-script), Genesis Console or Postman.
 Here, we shall look at how you can continuously ingest data using [Data Pipelines](/server-modules/integration/data-pipeline/introduction/).
 
-Data pipelines allow you to ingest data from some external source. You configure what source or sources you want to ingest, how these map to your Genesis application's data model and what to do with this mapped data.
+Data pipelines enable you to ingest data from an external source. You configure:
+
+- what source or sources you want to ingest
+- how these map to your Genesis application's data model
+- what to do with this mapped data.
 
 ## Section objectives
 The goal of this section is to:
@@ -17,21 +21,21 @@ The goal of this section is to:
 
 ## Configure data pipeline
 
-We will be configuring a local filesystem based data pipeline. This will watch a directory for changes over time and consume files that fit the criteria we configure. In this example, files will be read, line by line, be transformed/mapped to our data model and then stored down into the Genesis database.
+We will be configuring a local filesystem based data pipeline. This will watch a directory for changes over time and consume files that fit the criteria we configure. In this example, files will be read, line by line, be transformed/mapped to our data model and then stored in the Genesis database.
 
 :::note
 
-Ingress of files via local file system data pipelines, although a simple way to introduce yourself to data pipelines, is considered bad practise in production. Check the data pipelines docs for more info on file ingestion alternatives such as AWS S3 and FTP and relational database sources.
+Ingress of files via local file system data pipelines, although a simple way to introduce yourself to data pipelines, is considered bad practice in production. Check the data pipelines docs for more info on file ingestion alternatives such as AWS S3 and FTP and relational database sources.
 
 :::
 
-In order to add a CSV local filesystem data pipeline, firstly, add the dependency `genesis-pal-datapipeline` to your **position-app-tutorial-script-config** module. This will ensure that you are able to use the data pipeline functionality within your scripts. Ensure that gradle imports the new dependency.
+In order to add a CSV local filesystem data pipeline, firstly, add the dependency `genesis-pal-datapipeline` to your **position-app-tutorial-script-config** module. This ensures that you are able to use the data pipeline functionality within your scripts. Ensure that gradle imports the new dependency.
 
 ```
 api("global.genesis:genesis-pal-datapipeline")
 ```
 
-Now we can create a new file `positions-app-tutorial-data-pipeline.kts` with the following csv source configuration:
+Now we can create a new file **positions-app-tutorial-data-pipeline.kts** with the following csv source configuration:
 
 ```kotlin
 import global.genesis.gen.config.tables.TRADE
@@ -82,11 +86,11 @@ sources {
 }
 ```
 
-In the above script, we define a CSV file source, configure the location as a local filesystem source with an absolute path to the location of our user account `positions`'s `run/fileIngress` directory. This directory should be created automatically the first time your application is started.
+In the above script, we define a CSV file source. We configure the location as a local filesystem source with an absolute path to the user account `positions`'s **run/fileIngress** directory. This directory should be created automatically the first time your application is started.
 
 The remaining configuration defines a mapper from our CSV to the data model of the `TRADE` table.
 
-We follow the data pipeline definition with the usual runtime configuration. Ensure that you add the following config to your `-processes.xml` and `-service-definitions.xml` files:
+We follow the data pipeline definition with the usual runtime configuration. Ensure that you add the following config to your **-processes.xml** and **-service-definitions.xml** files:
 
 ```xml
 <process name="POSITIONS_APP_TUTORIAL_DATAPIPELINE">
@@ -112,7 +116,9 @@ We are now ready to deploy the changes. Run `assemble` and then `deploy-genesisp
 
 We have now configured a CSV source that listens for changes on the local file system!
 
-You can use the following CSV as an example when testing your pipeline. Pasting a file with the name `trades.csv` and contents below, into a running instance of your Genesis application, will trigger the pipeline into action. Each row of the csv will be parsed, mapped and stored down to the database. Your CSV file will disappear when the pipeline has processed the file. You can then use the DbMon utility to check your database for changes.
+You can use the following CSV as an example to test your pipeline. Create a file named `trades.csv` and paste the contents below into a running instance of your Genesis application. This will trigger the pipeline into action. 
+
+Each row of the csv will be parsed, mapped and stored in the database. Your CSV file will disappear when the pipeline has processed the file. You can then use the `DbMon` utility to check your database for changes.
 
 ```csv
 instrumentId,counterpartyId,amount,buySell,price,date,enteredBy
@@ -123,6 +129,6 @@ APPL,Z233,100,S,400,2022-09-12 16:20:20,TraderA
 ```
 
 ## Conclusion
-In this section, we have created a working data pipeline. Given everything is working as expected, DbMon should show the following 4 entries in your database.
+In this section, we have created a working data pipeline. Given everything is working as expected, `DbMon` will show the following 4 entries in your database.
 
 ![DbMon screenshot](/img/dbmon-datapipeline.PNG)
