@@ -51,7 +51,7 @@ If you need to provide different class names for specific conditions, you can pr
 
 Remember to add the new styles to your stylesheet file.
 
-```diff
+```diff title='positionsGrid.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
 
 export const positionGridStyles: ElementStyles = css`    
