@@ -38,7 +38,7 @@ Here is an example grid view for managing users:
 
 To enable this micro front-end in your application, follow the steps below:
 
-- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
+- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again.
 
 ```javascript
 {

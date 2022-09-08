@@ -413,6 +413,10 @@ module.exports = {
           type: 'doc',
 					id: 'front-end/micro-front-ends/foundation-profile-management'
         },
+        {
+          type: 'doc',
+					id: 'front-end/micro-front-ends/foundation-login'
+        },
       ],
     },
     {
