@@ -22,6 +22,12 @@ module.exports = {
 
 
   plugins: [
+    [
+      "docusaurus2-dotenv",
+      {
+        systemvars: true,
+      },
+    ],
     [require.resolve('docusaurus-gtm-plugin'), {
       id: 'GTM-5GTR43J',
     }],
