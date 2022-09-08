@@ -36,8 +36,8 @@ In home.template.ts, in the grid tag, include utility that will inject your styl
 import {positionGridStyles} from "./positionsGrid.styles";
 
 <zero-ag-grid>
-    ...    
     <slotted-styles :styles=${() => positionGridStyles}></slotted-styles>
+    ...    
     ...
 </zero-ag-grid>
 `
@@ -51,7 +51,7 @@ If you need to provide different class names for specific conditions, you can pr
 
 Remember to add the new styles to your stylesheet file.
 
-```diff title='positionsGrid.styles.ts'
+```css {4-14} title='positionsGrid.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
 
 export const positionGridStyles: ElementStyles = css`    
@@ -59,13 +59,13 @@ export const positionGridStyles: ElementStyles = css`
          color: blue;
      }
 
-+    .profit {
-+        color: green;
-+    }
+    .profit {
+        color: green;
+    }
     
-+    .loss {
-+        color: red;
-+    }
+    .loss {
+        color: red;
+    }
 `
 ```
 
