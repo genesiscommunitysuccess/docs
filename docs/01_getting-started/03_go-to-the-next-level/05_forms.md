@@ -172,7 +172,7 @@ public async insertTrade() {
       INSTRUMENT_ID: this.instrument,
       QUANTITY: this.quantity,
       PRICE: this.price,
-      SIDE: this.tradeSide,
+      SIDE: this.side,
       TRADE_DATETIME: Date.now(),
     },
     IGNORE_WARNINGS: true,
