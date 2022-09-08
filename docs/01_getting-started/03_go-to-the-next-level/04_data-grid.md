@@ -9,14 +9,14 @@ id: data-grid
 There are couple of steps that have to be done before seeing the user interface running.
 
 ### Connecting the back end and front end
-With this next step, we will configure an nginx server working as a reverse proxy.
+In this step, we shall configure an nginx server working as a reverse proxy.
 
 In your CentOS terminal, enter:
 ```shell
 docker login genesisglobal-docker-internal.jfrog.io
 ...
 
-You need to enter your artifactory credentials at this point
+You need to enter your artifactory credentials at this point.
 
 Then enter:
 ...
@@ -57,7 +57,7 @@ For your user interface, the `genx` process has generated the following files:
 - **home.ts**
 - **home.styles.ts**
 
-In the template file, start by adding the Genesis data source pointing to the appropriate resource name; this must be wrapped in a grid of your choice. For this example we shall use ag-grid.
+In the template file, start by adding the Genesis data source pointing to the appropriate resource name; this must be wrapped in a grid of your choice. For this example, we shall use ag-grid.
 
 [//]: # (link to ag-genesis-datasource tsdocs)
 ```html title="home.template.ts"
@@ -69,7 +69,7 @@ In the template file, start by adding the Genesis data source pointing to the ap
 </zero-ag-grid>
 ```
 
-This will result in grid displaying all the columns available in the for the `ALL_POSITIONS` resource.
+This will result in a grid displaying all the columns available in the `ALL_POSITIONS` resource.
 
 ## Grid interaction
 
@@ -88,7 +88,7 @@ To add new columns that are not part of the API, we can add additional column de
 
 In the component definition file, we can provide a method that enables us to interact with the rest of the class.
 The example below creates a column with a button that logs data in the row to the console.
-Here you can easily swap logging the row data with some custom logic (such as calling a back-end api that we shall cover in more detail later on).
+Here you can easily swap logging the row data with some custom logic (such as calling a back-end api, which we shall cover in more detail later on).
 
 ```typescript title="home.ts"
   public singlePositionActionColDef = {
@@ -111,7 +111,7 @@ Here you can easily swap logging the row data with some custom logic (such as ca
 
 If you want to customise how each column is displayed, you can provide column config for every column.
 
-Create a new file called positionColumnDefs.ts in the same directory.
+Create a new file called **positionColumnDefs.ts** in the same directory.
 
 ```typescript title="positionColumnDefs.ts"
 export const positionColumnDefs = [
@@ -149,7 +149,7 @@ import {repeat} from '@microsoft/fast-element';
 
 ## Saving user preferences
 
-You can add the `persist-column-state-key` to the zero-ag-grid to persist user changes to things such as sorting, column order, and visibility on their machine. With this, when the user reloads the browser, they get the same configuration.
+You can add the `persist-column-state-key` to the zero-ag-grid to persist user changes to things such as sorting, column order, and visibility on the user machine. With this, when the user reloads the browser, they get the same configuration.
 
 ```html {2}
 <zero-ag-grid
