@@ -13,6 +13,7 @@ module.exports = {
   projectName: 'docs', // Usually your repo name.
   trailingSlash: true,
   onBrokenLinks: 'throw', // please do NOT change this to 'warn', fix or remove your broken links instead
+  onDuplicateRoutes: 'throw',
   scripts: [
     {
       src: `${baseUrl}js/docs.iife.min.js`,
