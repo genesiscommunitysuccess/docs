@@ -83,6 +83,10 @@ We can do it in the traditional way by adding `@change` [event handler](https://
 
 Let's add it to each form element:
 
+```ts title='home.template.ts'
+import {sync} from '@genesislcap/foundation-utils';
+```
+
 ```html {2,7,13,18} title='home.template.ts' 
 <zero-text-field 
   :value=${sync(x=> x.quantity)}

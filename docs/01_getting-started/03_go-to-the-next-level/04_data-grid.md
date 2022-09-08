@@ -76,7 +76,7 @@ This will result in grid displaying all the columns available in the for the `AL
 To add new columns that are not part of the API, we can add additional column definitions.
 
 ```html {6} title="home.template.ts"
-<zero-ag-grid>
+<zero-ag-grid style="width: 100%; height: 100%">
     <ag-genesis-datasource
         resourceName="ALL_POSITIONS"
         orderBy="INSTRUMENT_ID">
@@ -128,11 +128,12 @@ To stop automatic generation of columns, you need to add the `only-template-col-
 Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive) directive; this includes all the columns from our column config array.
 
 
-```typescript {5,2,11-13} title="home.template.ts"
+```typescript {1,2,6,12-14} title="home.template.ts"
 import {positionColumnDefs} from './positionColumnDefs';
 import {repeat} from '@microsoft/fast-element';
 
 <zero-ag-grid
+    style="width: 100%; height: 100%"
     only-template-col-defs
     >
     <ag-genesis-datasource
