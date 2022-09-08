@@ -51,6 +51,8 @@ The following variables are used to configure an LDAP connection; thus are only 
     * using the `uid` attribute (Userid)
     * using the `cn` attribute (Common Name)
     * using the `sAMAccountName` in Windows
+* `bypassLoginInternalAuth` this is a boolean flag that prevents internal authorisation checks on login
+* `onLoginSuccess` this is a function which is invoked on a successful LDAP login, for example: it allows you to insert a user into the db when it exists in LDAP but not the database.
 
 For more information on the various authentication types, please see the [Authentication overview](/server-modules/access-control/authentication-overview/).
 
