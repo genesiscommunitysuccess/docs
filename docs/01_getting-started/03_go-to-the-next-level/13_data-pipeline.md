@@ -9,6 +9,12 @@ Here, we shall look at how you can continuously ingest data using [Data Pipeline
 
 Data pipelines allow you to ingest data from some external source. You configure what source or sources you want to ingest, how these map to your Genesis application's data model and what to do with this mapped data.
 
+## Section objectives
+The goal of this section is to:
+- define and configure a data pipeline process
+- create a data pipeline script
+- add a csv of trades for the data pipeline to read
+
 ## Configure data pipeline
 
 We will be configuring a local filesystem based data pipeline. This will watch a directory for changes over time and consume files that fit the criteria we configure. In this example, files will be read, line by line, be transformed/mapped to our data model and then stored down into the Genesis database.
@@ -19,7 +25,11 @@ Ingress of files via local file system data pipelines, although a simple way to 
 
 :::
 
-In order to add a CSV local filesystem data pipeline, firstly, add a dependency to `genesis-pal-datapipeline` in the position-script-config module. This will ensure that you are able to use the data pipeline functionality within your scripts. Ensure that gradle imports the new dependency.
+In order to add a CSV local filesystem data pipeline, firstly, add the dependency `genesis-pal-datapipeline` to your **position-app-tutorial-script-config** module. This will ensure that you are able to use the data pipeline functionality within your scripts. Ensure that gradle imports the new dependency.
+
+```
+api("global.genesis:genesis-pal-datapipeline")
+```
 
 Now we can create a new file `positions-app-tutorial-data-pipeline.kts` with the following csv source configuration:
 
@@ -74,7 +84,7 @@ sources {
 
 In the above script, we define a CSV file source, configure the location as a local filesystem source with an absolute path to the location of our user account `positions`'s `run/fileIngress` directory. This directory should be created automatically the first time your application is started.
 
-The remaining configuration defines a mapper from our CSV to the data model of the TRADE table.
+The remaining configuration defines a mapper from our CSV to the data model of the `TRADE` table.
 
 We follow the data pipeline definition with the usual runtime configuration. Ensure that you add the following config to your `-processes.xml` and `-service-definitions.xml` files:
 
@@ -93,8 +103,10 @@ We follow the data pipeline definition with the usual runtime configuration. Ens
 ```
 
 ```xml
-<service host="localhost" name="POSITIONS_APP_TUTORIAL_DATAPIPELINE" port="11003"/>
+<service host="localhost" name="POSITIONS_APP_TUTORIAL_DATAPIPELINE" port="11005"/>
 ```
+
+We are now ready to deploy the changes. Run `assemble` and then `deploy-genesisproduct-positions-app-tutorial`.
 
 ## Verify your pipeline is working
 
@@ -110,6 +122,7 @@ MSFT,A102,140,B,280,2022-09-08 16:34:00,TraderB
 APPL,Z233,100,S,400,2022-09-12 16:20:20,TraderA
 ```
 
-Given everything is working as expected, DbMon should show the following 4 entries in your database.
+## Conclusion
+In this section, we have created a working data pipeline. Given everything is working as expected, DbMon should show the following 4 entries in your database.
 
 ![DbMon screenshot](/img/dbmon-datapipeline.PNG)
