@@ -13,7 +13,7 @@ Data pipelines allow you to ingest data from some external source. You configure
 The goal of this section is to:
 - define and configure a data pipeline process
 - create a data pipeline script
-- add a csv of trades for the data pipeline to read
+- ingest a csv of trades data
 
 ## Configure data pipeline
 
