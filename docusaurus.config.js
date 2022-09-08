@@ -1,7 +1,11 @@
+require('dotenv').config();
+
 const baseUrl = process.env.BASE_URL || '/';
 const routeBasePath = '/';
 
 const apiPullPlugin = require('./pull-api-docs');
+
+const GTM_ID =  process.env.GTM_ID || 'GTM-5GTR43J'; // default to uat GTM_ID, prod one should be set on CI (master) 
 
 module.exports = {
   title: 'Low-code Platform For Financial Markets',
@@ -24,7 +28,7 @@ module.exports = {
 
   plugins: [
     [require.resolve('docusaurus-gtm-plugin'), {
-      id: 'GTM-5GTR43J',
+      id: GTM_ID,
     }],
     // Declares a local plugin, plugins array takes a set of functions to execute to 
     // load in the plugin. Anonymous function used here to simulate the same thing, and

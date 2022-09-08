@@ -4,6 +4,10 @@
 # Production
 /build
 
+# dotenv
+.env
+.env.*
+
 # Generated files
 .docusaurus
 .cache-loader

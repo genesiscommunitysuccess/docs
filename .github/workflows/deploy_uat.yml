@@ -36,6 +36,7 @@ jobs:
       run: npm run build
       env:
         BASE_URL: /uat/secure/
+        GTM_ID: GTM-5GTR43J
 
     - uses: jakejarvis/s3-sync-action@master
       with:
