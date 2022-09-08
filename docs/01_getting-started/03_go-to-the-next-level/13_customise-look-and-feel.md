@@ -14,7 +14,7 @@ We start by creating a stylesheet document that will have some style definitions
 
 Create a stylesheet file called `trades.styles.ts` and provide the following code:
 
-```typescript
+```typescript title='trades.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
 
 export const tradesGridStyles: ElementStyles = css`
@@ -26,13 +26,13 @@ export const tradesGridStyles: ElementStyles = css`
 
 Configure your column to have the specific class name [column config](https://ag-grid.com/javascript-data-grid/cell-styles/#cell-class):
 
-```typescript
+```typescript title="positionColumnDefs.ts"
  {field: 'QUANTITY', cellClass: 'quantity-column'},
 ```
 
 In home.template.ts, in the grid tag, include utility that will inject your stylesheet to the component:
 
-```html
+```html {1,5} title='home.template.ts'
 import {tradesGridStyles} from "./trades.styles";
 
 <zero-ag-grid>
@@ -45,7 +45,7 @@ import {tradesGridStyles} from "./trades.styles";
 
 If you need to provide different class names for specific conditions, you can provide a function to the `cellClass` column config, as shown in the example below:
 
-```typescript
+```typescript title="positionColumnDefs.ts"
  {field: 'SIDE', cellClass: (params) => params.value === 'BUY' ? : 'buy-side', 'sell-side'},
 ```
 

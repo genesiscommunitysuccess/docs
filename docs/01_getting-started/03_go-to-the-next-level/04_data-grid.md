@@ -141,9 +141,9 @@ import {repeat} from '@microsoft/fast-element';
         orderBy="INSTRUMENT_ID">
     </ag-genesis-datasource>
     ${repeat(() => positionColumnDefs, html`
-    <ag-grid-column :definition="${x => x}" />
+    <ag-grid-column :definition="${x => x}"></ag-grid-column>
     `)}
-    <ag-grid-column :definition="${x => x.singlePositionActionColDef}" />
+    <ag-grid-column :definition="${x => x.singlePositionActionColDef}"></ag-grid-column>
 </zero-ag-grid>
 ```
 
