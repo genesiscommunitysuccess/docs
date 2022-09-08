@@ -73,13 +73,13 @@ val trade =  rxDb.get(findRec, "TRADE_BY_ID", fields)
 
 ```java
 // we can look up trades by passing in just an index, this will load all the fields:
-final DbRecord findRec = new DbRecord("TRADE");
+DbRecord findRec = new DbRecord("TRADE");
 findRec.setString("ID", "00001");
-final Maybe<DbRecord> trade = rxDb.get(findRec, "TRADE_BY_ID");
+Maybe<DbRecord> trade = rxDb.get(findRec, "TRADE_BY_ID");
 
 // or we can provide which fields we are looking for, by passing in a set:
-final Set<String> fields = Set.of("ID", "CLIENT_ID");
-final Maybe<DbRecord> trade = rxDb.get(findRec, "TRADE_BY_ID", fields);
+Set<String> fields = Set.of("ID", "CLIENT_ID");
+Maybe<DbRecord> trade = rxDb.get(findRec, "TRADE_BY_ID", fields);
 ```
 
 </TabItem>
@@ -124,20 +124,20 @@ val resultsMapFromFlowable = rxDb.getAll(Flowable.just(details1, details2))
 <TabItem value="java">
 
 ```java
-final String findKey = "TRADE_BY_ID";
+String findKey = "TRADE_BY_ID";
 
-final DbRecord record1 = new DbRecord("TRADE");
+DbRecord record1 = new DbRecord("TRADE");
 record1.setString("ID", "00001");
 
-final RecordMapSearchDetails details1 = RecordMapSearchDetails.newInstance(record1, findKey, "FirstTrade");
+RecordMapSearchDetails details1 = RecordMapSearchDetails.newInstance(record1, findKey, "FirstTrade");
 
-final DbRecord rec2 = new DbRecord("TRADE");
+DbRecord rec2 = new DbRecord("TRADE");
 rec2.setString("ID", "Trade2");
 
-final RecordMapSearchDetails details2 = RecordMapSearchDetails.newInstance(rec2, findKey, "SecondTrade");
+RecordMapSearchDetails details2 = RecordMapSearchDetails.newInstance(rec2, findKey, "SecondTrade");
 
-final Single<Map<String, DbRecord>> resultsMapFromList = getRxDb().getAll(List.of(details1, details2));
-final Single<Map<String, DbRecord>> resultsMapFromFlowable = getRxDb().getAll(Flowable.just(details1, details2));
+Single<Map<String, DbRecord>> resultsMapFromList = getRxDb().getAll(List.of(details1, details2));
+Single<Map<String, DbRecord>> resultsMapFromFlowable = getRxDb().getAll(Flowable.just(details1, details2));
 ```
 
 </TabItem>
@@ -179,23 +179,23 @@ val resultsMapFromFlowable = rxDb.getAllAsList(Flowable.just(details1, details2)
 <TabItem value="java">
 
 ```java
-final String findKey = "TRADE_BY_ID";
+String findKey = "TRADE_BY_ID";
 
-final DbRecord record1 = new DbRecord("TRADE");
+DbRecord record1 = new DbRecord("TRADE");
         record1.setString("ID", "00001");
 
-final RecordMapSearchDetails details1 = RecordMapSearchDetails.newInstance(record1, findKey, "FirstTrade");
+RecordMapSearchDetails details1 = RecordMapSearchDetails.newInstance(record1, findKey, "FirstTrade");
 
-final DbRecord rec2 = new DbRecord("TRADE");
+DbRecord rec2 = new DbRecord("TRADE");
         rec2.setString("ID", "00002");
 
-final RecordMapSearchDetails details2 = RecordMapSearchDetails.newInstance(rec2, findKey, "SecondTrade");
+RecordMapSearchDetails details2 = RecordMapSearchDetails.newInstance(rec2, findKey, "SecondTrade");
 
 // Get by providing list
-final Single<Map<String, DbRecord>> resultsMapFromList = getRxDb().getAll(List.of(details1, details2));
+Single<Map<String, DbRecord>> resultsMapFromList = getRxDb().getAll(List.of(details1, details2));
 
 // Get by providing flowable
-final Single<Map<String, DbRecord>> resultsMapFromFlowable = getRxDb().getAll(Flowable.just(details1, details2));
+Single<Map<String, DbRecord>> resultsMapFromFlowable = getRxDb().getAll(Flowable.just(details1, details2));
 ```
 
 </TabItem>
@@ -203,7 +203,7 @@ final Single<Map<String, DbRecord>> resultsMapFromFlowable = getRxDb().getAll(Fl
 
 ### getBulk
 
-This will create a `Flow` or `Flowable` of the whole table. If the database layer supports it, these will be sorted in ascending order by the index provided, or by the primary key if none is provided. 
+This will create a `Flowable` of the whole table. If the database layer supports it, these will be sorted in ascending order by the index provided, or by the primary key if none is provided. 
 There is also the `getBulkFromEnd` function, which will return records in descending order. There are also a number of continuation operations, which will return the whole table after the provided record.
 
 #### Overloads
@@ -236,13 +236,13 @@ val tradeByIDIDAndPrice = rxDb.getBulk("TRADE", "TRADE_BY_ID", setOf("ID", "PRIC
 
 ```java
 // we can pass in the table name, to get it sorted by primary key
-final Flowable<DbRecord> tradeByPrimaryKeyEveryField = rxDb.getBulk("TRADE");
+Flowable<DbRecord> tradeByPrimaryKeyEveryField = rxDb.getBulk("TRADE");
 // or with an index name to get it sorted by that
-final Flowable<DbRecord> tradeByIDEveryField = rxDb.getBulk("TRADE", "TRADE_BY_ID");
+Flowable<DbRecord> tradeByIDEveryField = rxDb.getBulk("TRADE", "TRADE_BY_ID");
 // or with a set of fields to select
-final FLowable<DbRecord> tradeByPrimaryKeyIDAndPrice = rxDb.getBulk("TRADE", Set.of("ID", "PRICE"));
+FLowable<DbRecord> tradeByPrimaryKeyIDAndPrice = rxDb.getBulk("TRADE", Set.of("ID", "PRICE"));
 // or both!
-final FLowable<DbRecord> tradeByIDIDAndPrice = rxDb.getBulk("TRADE", "TRADE_BY_ID", Set.of("ID", "PRICE"));
+FLowable<DbRecord> tradeByIDIDAndPrice = rxDb.getBulk("TRADE", "TRADE_BY_ID", Set.of("ID", "PRICE"));
 ```
 
 </TabItem>
@@ -250,7 +250,7 @@ final FLowable<DbRecord> tradeByIDIDAndPrice = rxDb.getBulk("TRADE", "TRADE_BY_I
 
 ### getBulkFromEnd
 
-This will create a `Flow` or `Flowable` of the whole table. If the database layer supports it, these will be sorted in descending order by the index provided, or by the primary key if none is provided.
+This will create a `Flowable` of the whole table. If the database layer supports it, these will be sorted in descending order by the index provided, or by the primary key if none is provided.
 There is also the `getBulk` function, which will return records in ascending order. There are also a number of continuation operations, which will return the whole table after the provided record.
 
 #### Overloads
@@ -277,9 +277,9 @@ val tradeByIDAndPrice = rxDb.getBulkFromEnd("TRADE", "TRADE_BY_ID", setOf("ID", 
 
 ```java
 // we can pass in the table name and index name, to sort by that descending
-final Flowable<DbRecord> tradeByIDEveryField = rxDb.getBulkFromEnd("TRADE", "TRADE_BY_ID");
+Flowable<DbRecord> tradeByIDEveryField = rxDb.getBulkFromEnd("TRADE", "TRADE_BY_ID");
 // or with a set of fields to select
-final FLowable<DbRecord> tradeByIDIDAndPrice = rxDb.getBulkFromEnd("TRADE", "TRADE_BY_ID", Set.of("ID", "PRICE"));
+FLowable<DbRecord> tradeByIDIDAndPrice = rxDb.getBulkFromEnd("TRADE", "TRADE_BY_ID", Set.of("ID", "PRICE"));
 ```
 
 </TabItem>
@@ -466,10 +466,10 @@ will be a `Single<T>` where `T` is the value returned in the `readTransaction` l
 
 ```java
     rxDb.readTransaction(readTxn -> {
-        final DbRecord recordToGet = new DbRecord("TRADE");
+        DbRecord recordToGet = new DbRecord("TRADE");
         recordToGet.setString("ID", "Trade1");
 
-        final DbRecord record = readTxn.get(recordToGet, "TRADE_BY_ID").blockingGet();
+        DbRecord record = readTxn.get(recordToGet, "TRADE_BY_ID").blockingGet();
 
         return Single.just(record);
     });
