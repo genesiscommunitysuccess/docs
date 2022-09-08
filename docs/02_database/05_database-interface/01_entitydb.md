@@ -98,19 +98,19 @@ val trade = db.get(trade.byTypeId())
 
 ```java
 // we can look up trades by passing in a unique index class:
-final DbEntity trade = db.get(Trade.byId("TRADE_1"))
+final var trade = db.get(Trade.byId("TRADE_1"))
         .blockingGet();
 
 // a trade object with the primary key set 
-final DbEntity trade = db.get(trade)
+final var trade = db.get(trade)
         .blockingGet();
 
 // a trade object and a reference to unique index
-final DbEntity trade = db.get(trade,Trade.ByTypeId.Companion)
+final var trade = db.get(trade,Trade.ByTypeId.Companion)
         .blockingGet();
 
 // or you can access the index class from the entity
-final DbEntity trade = db.get(trade.byTypeId())
+final var trade = db.get(trade.byTypeId())
         .blockingGet();
 ```
 </TabItem>

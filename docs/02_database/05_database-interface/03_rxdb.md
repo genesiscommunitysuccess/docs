@@ -15,9 +15,9 @@ Using `RxDb` instead of [entityDb](/database/database-interface/entity-db/) or [
 
 :::
 
-The `RxDb` enables you to interact with the database layer, but you do not have any level of type-safety when doing so. Instead, it uses [Flowable](/database/types-of-api/rxjava/#flowable) entities. 
+The `RxDb` enables you to interact with the database layer, but you do not have any level of type-safety when doing so as it uses [DbRecord](/database/data-types/dbrecord/). 
 
-The interface supports the same operations as the generated repositories, but will accept any entity. It supports read and write operations for tables only.
+The interface supports the same operations as the generated repositories, but will accept any entity represented as DbRecord. It supports read and write operations for tables only.
 
 The RxDb can be injected in Kotlin and Java using `RxDb`.
 
@@ -40,15 +40,6 @@ The RxDb can be injected in Kotlin and Java using `RxDb`.
 | Available in [Custom Event Handlers](/database/api-reference/event-handler-api/)         | ✔️                                                                                                                              |
 | Available in [Custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers) | ❌️                                                                                                                              |
 
-## Type convention
-
-| Type                               | Meaning                           | Example         |
-|------------------------------------|-----------------------------------|-----------------|
-| `T`                                | A table name                      | `"TRADE"`       |
-| `I`                                | An index name                     | `"TRADE_BY_ID"` |
-| `U`                                | A unique index                    | `"TRADE_BY_ID"`  |
-
-
 ## Read Operations
 
 ### get
@@ -70,11 +61,11 @@ The following overloads exist for get; fields is a `Set<String>`.
 // we can look up trades by passing in just an index, this will load all the fields:
 val findRec = DbRecord("TRADE")
 findRec.setString("ID", "00001")
-val trade = rxDb.get(findRec, "TRADE_BY_ID").blockingGet()
+val trade = rxDb.get(findRec, "TRADE_BY_ID")
 
 // or we can provide which fields we are looking for, by passing in a set:
 val fields = setOf("ID", "CLIENT_ID")
-val trade =  rxDb.get(findRec, "TRADE_BY_ID", fields).blockingGet()
+val trade =  rxDb.get(findRec, "TRADE_BY_ID", fields)
 ```
 
 </TabItem>
@@ -84,12 +75,11 @@ val trade =  rxDb.get(findRec, "TRADE_BY_ID", fields).blockingGet()
 // we can look up trades by passing in just an index, this will load all the fields:
 final DbRecord findRec = new DbRecord("TRADE");
 findRec.setString("ID", "00001");
-final DbRecord trade = rxDb.get(findRec, "TRADE_BY_ID").blockingGet();
+final Maybe<DbRecord> trade = rxDb.get(findRec, "TRADE_BY_ID");
 
 // or we can provide which fields we are looking for, by passing in a set:
 final Set<String> fields = Set.of("ID", "CLIENT_ID");
-final DbRecord trade = rxDb.get(findRec, "TRADE_BY_ID", fields).blockingGet();
-
+final Maybe<DbRecord> trade = rxDb.get(findRec, "TRADE_BY_ID", fields);
 ```
 
 </TabItem>
@@ -119,26 +109,15 @@ val findKey = "TRADE_BY_ID"
 val record1 = DbRecord("TRADE")
 record1.setString("ID", "00001")
 
-val details1 = RecordMapSearchDetails.newInstance(record1, findKey, "FirstTrade")
+val details1: RecordMapSearchDetails = RecordMapSearchDetails.newInstance(record1, findKey, "FirstTrade")
 
-val rec2 = new DbRecord("TRADE")
+val rec2 = DbRecord("TRADE")
 rec2.setString("ID", "Trade2")
 
-val details2 = RecordMapSearchDetails.newInstance(rec2, findKey, "SecondTrade")
+val details2: RecordMapSearchDetails = RecordMapSearchDetails.newInstance(rec2, findKey, "SecondTrade")
 
-val recordMapSearchDetails = listOf(details1, details2)
-
-//As you can see, creating the recordMapSearchDetails can be an involved process.
-final Map<String, DbRecord> resultsMapFromList = rxDb.getAll(recordMapSearchDetails).blockingGet();
-
-val recordA1 = resultsMapFromList["A"]
-val recordB1 = resultsMapFromList["B"]
-
-//The list can also be converted into a Flowable, this same process is done within the above getAll(List<>).
-val resultsMapFromFlowable = rxDb.getAll(Flowable.fromIterable(recordMapSearchDetails)).blockingGet()
-
-val recordA2 = resultsMapFromFlowable["A"]
-val recordB2 = resultsMapFromFlowable["B"]
+val resultsMapFromList = rxDb.getAll(listOf(details1, details2))
+val resultsMapFromFlowable = rxDb.getAll(Flowable.just(details1, details2))
 ```
 
 </TabItem>
@@ -157,21 +136,8 @@ rec2.setString("ID", "Trade2");
 
 final RecordMapSearchDetails details2 = RecordMapSearchDetails.newInstance(rec2, findKey, "SecondTrade");
 
-final List<RecordMapSearchDetails> recordMapSearchDetails = Lists.newArrayList();
-requestDetails.add(details1);
-requestDetails.add(details2);
-
-//As you can see, creating the recordMapSearchDetails can be an involved process.
-final Map<String, DbRecord> resultsMapFromList = rxDb.getAll(recordMapSearchDetails).blockingGet();
-
-final DbRecord recordA1 = resultsMapFromList["A"];
-final DbRecord recordB1 = resultsMapFromList["B"];
-
-//The list can also be converted into a Flowable, this same process is done within the above getAll(List<>).
-final Map<String, DbRecord> resultsMapFromFlowable = rxDb.getAll(Flowable.fromIterable(recordMapSearchDetails)).blockingGet();
-
-final DbRecord recordA2 = resultsMapFromFlowable["A"];
-final DbRecord recordB2 = resultsMapFromFlowable["B"];
+final Single<Map<String, DbRecord>> resultsMapFromList = getRxDb().getAll(List.of(details1, details2));
+final Single<Map<String, DbRecord>> resultsMapFromFlowable = getRxDb().getAll(Flowable.just(details1, details2));
 ```
 
 </TabItem>
@@ -179,7 +145,7 @@ final DbRecord recordB2 = resultsMapFromFlowable["B"];
 
 ### getAllAsList
 
-This operation is similar to the one above, but will return a `List<E?>`. The results are returned in the order they were requested and will be `null` if no record was found. 
+This operation is similar to the one above, but will return a `List<DbRecord?>`. The results are returned in the order they were requested and will be `null` if no record was found. 
 The result list is guaranteed to be the same count as the input.
 
 #### Overloads
@@ -192,30 +158,21 @@ The result list is guaranteed to be the same count as the input.
 
 ```kotlin
 val findKey = "TRADE_BY_ID"
-
 val record1 = DbRecord("TRADE")
 record1.setString("ID", "00001")
 
 val details1 = RecordMapSearchDetails.newInstance(record1, findKey, "FirstTrade")
 
-val rec2 = new DbRecord("TRADE")
-rec2.setString("ID", "Trade2")
+val rec2 = DbRecord("TRADE")
+rec2.setString("ID", "00002")
 
 val details2 = RecordMapSearchDetails.newInstance(rec2, findKey, "SecondTrade")
 
-val recordMapSearchDetails = listOf(details1, details2)
+// Get by providing list
+val resultsMapFromList = rxDb.getAllAsList(listOf(details1, details2))
 
-//As you can see, creating the recordMapSearchDetails can be an involved process.
-final Map<String, DbRecord> resultsMapFromList = rxDb.getAllAsList(recordMapSearchDetails).blockingGet();
-
-val recordA1 = resultsMapFromList[0]
-val recordB1 = resultsMapFromList[1]
-
-//The list can also be converted into a Flowable, this same process is done within the above getAll(List<>).
-val resultsMapFromFlowable = rxDb.getAllAsList(Flowable.fromIterable(recordMapSearchDetails)).blockingGet()
-
-val recordA2 = resultsMapFromFlowable[0]
-val recordB2 = resultsMapFromFlowable[1]
+// Get by providing flowable
+val resultsMapFromFlowable = rxDb.getAllAsList(Flowable.just(details1, details2))
 ```
 
 </TabItem>
@@ -225,30 +182,20 @@ val recordB2 = resultsMapFromFlowable[1]
 final String findKey = "TRADE_BY_ID";
 
 final DbRecord record1 = new DbRecord("TRADE");
-record1.setString("ID", "00001");
+        record1.setString("ID", "00001");
 
 final RecordMapSearchDetails details1 = RecordMapSearchDetails.newInstance(record1, findKey, "FirstTrade");
 
 final DbRecord rec2 = new DbRecord("TRADE");
-rec2.setString("ID", "Trade2");
+        rec2.setString("ID", "00002");
 
 final RecordMapSearchDetails details2 = RecordMapSearchDetails.newInstance(rec2, findKey, "SecondTrade");
 
-final List<RecordMapSearchDetails> recordMapSearchDetails = Lists.newArrayList();
-requestDetails.add(details1);
-requestDetails.add(details2);
+// Get by providing list
+final Single<Map<String, DbRecord>> resultsMapFromList = getRxDb().getAll(List.of(details1, details2));
 
-//As you can see, creating the recordMapSearchDetails can be an involved process.
-final Map<String, DbRecord> resultsMapFromList = rxDb.getAll(recordMapSearchDetails).blockingGet();
-
-final DbRecord recordA1 = resultsMapFromList[0];
-final DbRecord recordB1 = resultsMapFromList[1];
-
-//The list can also be converted into a Flowable, this same process is done within the above getAll(List<>).
-final Map<String, DbRecord> resultsMapFromFlowable = rxDb.getAll(Flowable.fromIterable(recordMapSearchDetails)).blockingGet();
-
-final DbRecord recordA2 = resultsMapFromFlowable[0];
-final DbRecord recordB2 = resultsMapFromFlowable[1];
+// Get by providing flowable
+final Single<Map<String, DbRecord>> resultsMapFromFlowable = getRxDb().getAll(Flowable.just(details1, details2));
 ```
 
 </TabItem>
@@ -261,12 +208,12 @@ There is also the `getBulkFromEnd` function, which will return records in descen
 
 #### Overloads
 
-* `getBulk(table: T): Flowable<DbRecord>`
-* `getBulk(table: T, index: I? ): Flowable<DbRecord>`
-* `getBulk(table: T, fields: Set<String>): Flowable<DbRecord>`
-* `getBulk(table: T, index: I?, fields: Set<String>): Flowable<DbRecord>`
-* `getBulk(table: T, index: I?, record: DbRecord?): Flowable<DbRecord>` (continuation) (Deprecated)
-* `getBulk(table: T, index: I?, record: DbRecord?, fields: Set<String>): Flowable<DbRecord>` (continuation) (Deprecated)
+* `getBulk(table: String): Flowable<DbRecord>`
+* `getBulk(table: String, index: String? ): Flowable<DbRecord>`
+* `getBulk(table: String, fields: Set<String>): Flowable<DbRecord>`
+* `getBulk(table: String, index: String?, fields: Set<String>): Flowable<DbRecord>`
+* `getBulk(table: String, index: String?, record: DbRecord?): Flowable<DbRecord>` (continuation) (Deprecated)
+* `getBulk(table: String, index: String?, record: DbRecord?, fields: Set<String>): Flowable<DbRecord>` (continuation) (Deprecated)
 
 #### Syntax
 
@@ -308,10 +255,10 @@ There is also the `getBulk` function, which will return records in ascending ord
 
 #### Overloads
 
-* `getBulkFromEnd(table: T, index: I): Flowable<DbRecord>`
-* `getBulkFromEnd(table: T, index: I, fields: Set<String>): Flowable<DbRecord>`
-* `getBulkFromEnd(table: T, index: I, startRecord: DbRecord? = null): Flowable<DbRecord>` (continuation) (Deprecated)
-* `getBulkFromEnd(table: T, index: I, startRecord: DbRecord? = null, fields: Set<String>): Flowable<DbRecord>` (continuation) (Deprecated)
+* `getBulkFromEnd(table: String index: String): Flowable<DbRecord>`
+* `getBulkFromEnd(table: String index: String, fields: Set<String>): Flowable<DbRecord>`
+* `getBulkFromEnd(table: String index: String, startRecord: DbRecord? = null): Flowable<DbRecord>` (continuation) (Deprecated)
+* `getBulkFromEnd(table: String index: String startRecord: DbRecord? = null, fields: Set<String>): Flowable<DbRecord>` (continuation) (Deprecated)
 
 #### Syntax
 
@@ -346,41 +293,46 @@ By providing different parameters, you can refine what information you are retur
 * `startRecord` is needed in all cases, and defines where the range should start from.
 * `endRecord` is an optional end record for where the range should end.
 * `index` is also needed in all cases, it is the String name of the Index upon which the range spans.
-* `numKeyFields` is the last of the mandatory fields, it ???
+* `numKeyFields` is the number of key fields to take into account for the range.
 * `fields` is a set of Strings, that are the names of the fields to be returned. If not provided, or an empty set is provided, all fields will be returned.
 
 #### Overloads
 
-* `getRange(startRecord: DbRecord, index: I, numKeyFields: Int): Flowable<DbRecord>`
-* `getRange(startRecord: DbRecord, index: I, numKeyFields: Int, fields: Set<String>): Flowable<DbRecord>`
-* `getRange(startRecord: DbRecord, endRecord: DbRecord?, index: I, numKeyFields: Int): Flowable<DbRecord>`
-* `getRange(startRecord: DbRecord, endRecord: DbRecord?, index: I, numKeyFields: Int, fields: Set<String>): Flowable<DbRecord>`
+* `getRange(startRecord: DbRecord, index: String, numKeyFields: Int): Flowable<DbRecord>`
+* `getRange(startRecord: DbRecord, index: String, numKeyFields: Int, fields: Set<String>): Flowable<DbRecord>`
+* `getRange(startRecord: DbRecord, endRecord: DbRecord?, index: String numKeyFields: Int): Flowable<DbRecord>`
+* `getRange(startRecord: DbRecord, endRecord: DbRecord?, index: String numKeyFields: Int, fields: Set<String>): Flowable<DbRecord>`
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
-// there are multiple ways to get a range of records, either for some fields
-// of a unique index or some or all fields of a non unique index:
-rxDb.getRange(Trade.byTypeId("typeA"))
-rxDb.getRange(trade.byTypeId(), 1)
-rxDb.getRange(trade, Trade.ByTypeId, 1)
+val startRec = DbRecord("TRADE")
+startRec.setString("TRADE_ID", "1")
+
+val endRec = DbRecord("TRADE")
+endRec.setString("TRADE_ID", "20")
+
+rxDb.getRange(startRec, "TRADE_BY_ID", 1)
+rxDb.getRange(startRec, "TRADE_BY_ID", 1, setOf("TRADE_PRICE", "TRADE_STATUS"))
+rxDb.getRange(startRec, endRec, "TRADE_BY_ID", 10)
+rxDb.getRange(startRec, endRec, "TRADE_BY_ID", 10, setOf("TRADE_PRICE", "TRADE_STATUS"))
 ```
 
 </TabItem>
 <TabItem value="java">
 
 ```java
-// there are multiple ways to get a range of records, either for some fields
-// of a unique index or some or all fields of a non unique index:
-db.getRange(Trade.byTypeId("typeA"));
-db.getRange(trade.byTypeId(),1);
-db.getRange(trade,Trade.ByTypeId.Companion,1);
+DbRecord startRec = new DbRecord("TRADE");
+startRec.setString("TRADE_ID", "1");
 
-// or by setting a start and an end range:
-db.getRange(Trade.byTypeId("tradeType1"),Trade.byTypeId("tradeType2"));
-db.getRange(trade1.byTypeId(),trade2.byTypeId(),1).toList();
-db.getRange(trade1,trade2,Trade.ByTypeId.Companion,1).toList();
+DbRecord endRec = new DbRecord("TRADE");
+endRec.setString("TRADE_ID", "20");
+
+getRxDb().getRange(startRec, "TRADE_BY_ID", 1);
+getRxDb().getRange(startRec, "TRADE_BY_ID", 1, Set.of("TRADE_PRICE", "TRADE_STATUS"));
+getRxDb().getRange(startRec, endRec, "TRADE_BY_ID", 10);
+getRxDb().getRange(startRec, endRec, "TRADE_BY_ID", 10, Set.of("TRADE_PRICE", "TRADE_STATUS"));
 ```
 
 </TabItem>
@@ -394,44 +346,40 @@ By providing different parameters, you can refine what information you are retur
 * `startRecord` is needed in all cases, and defines where the range should start from.
 * `endRecord` is the end record for where the range should end.
 * `index` is also needed in all cases, it is the String name of the Index upon which the range spans.
-* `numKeyFields` is the last of the mandatory fields, it ???
+* `numKeyFields` is the number of key fields to take into account for the range.
 * `fields` is a set of Strings, that are the names of the fields to be returned. If not provided, or an empty set is provided, all fields will be returned.
 
 #### Overloads
 
-* `getRange(startRecord: DbRecord, endRecord: DbRecord?, index: I, numKeyFields: Int): Flowable<DbRecord>`
-* `getRange(startRecord: DbRecord, endRecord: DbRecord?, index: I, numKeyFields: Int, fields: Set<String>): Flowable<DbRecord>`
+* `fun getRangeFromEnd(startRecord: DbRecord, endRecord: DbRecord, index: I, numKeyFields: Int, fields: Set<String>,): Flowable<DbRecord>`
+* `fun getRangeFromEnd(startRecord: DbRecord, endRecord: DbRecord, index: I, numKeyFields: Int,): Flowable<DbRecord>`
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
 
 ```kotlin
-// there are multiple ways to get a range of records, either for some fields
-// of a unique index or some or all fields of a non unique index:
-db.getRange(Trade.byTypeId("typeA"))
-db.getRange(trade.byTypeId(), 1)
-db.getRange(trade, Trade.ByTypeId, 1)
+val startRec = DbRecord("TRADE")
+startRec.setString("TRADE_ID", "1")
 
-// or by setting a start and an end range:
-db.getRange(Trade.byTypeId("tradeType1"), Trade.byTypeId("tradeType2"))
-db.getRange(trade1.byTypeId(), trade2.byTypeId(), 1).toList()
-db.getRange(trade1, trade2, Trade.ByTypeId, 1).toList()
+val endRec = DbRecord("TRADE")
+endRec.setString("TRADE_ID", "20")
+
+rxDb.getRangeFromEnd(startRec, endRec, "TRADE_BY_ID", 10)
+rxDb.getRangeFromEnd(startRec, endRec, "TRADE_BY_ID", 10, setOf("TRADE_PRICE", "TRADE_STATUS"))
 ```
 
 </TabItem>
 <TabItem value="java">
 
 ```java
-// there are multiple ways to get a range of records, either for some fields
-// of a unique index or some or all fields of a non unique index:
-db.getRange(Trade.byTypeId("typeA"));
-db.getRange(trade.byTypeId(),1);
-db.getRange(trade,Trade.ByTypeId.Companion,1);
+DbRecord startRec = new DbRecord("TRADE");
+startRec.setString("TRADE_ID", "1");
 
-// or by setting a start and an end range:
-db.getRange(Trade.byTypeId("tradeType1"),Trade.byTypeId("tradeType2"));
-db.getRange(trade1.byTypeId(),trade2.byTypeId(),1).toList();
-db.getRange(trade1,trade2,Trade.ByTypeId.Companion,1).toList();
+DbRecord endRec = new DbRecord("TRADE");
+endRec.setString("TRADE_ID", "20");
+
+getRxDb().getRangeFromEnd(startRec, endRec,"TRADE_BY_ID", 1);
+getRxDb().getRangeFromEnd(startRec, endRec,"TRADE_BY_ID", 1, Set.of("TRADE_PRICE", "TRADE_STATUS"));
 ```
 
 </TabItem>
@@ -530,7 +478,7 @@ will be a `Single<T>` where `T` is the value returned in the `readTransaction` l
 ### Write transactions
 
 Write transactions ensure all read and write operations are consistent. If any exception reaches the
-transaction level, all writes are rolled back. The `writeTransaction` will return a `Single<Pair<T, List<WriteResult>>>`,
+transaction level, all writes are rolled back. The `writeTransaction` will return a `Single<Pair<String List<WriteResult>>>`,
 where `T` is the value returned in the `writeTransaction` lambda.
 
 ```java
@@ -542,9 +490,7 @@ where `T` is the value returned in the `writeTransaction` lambda.
         rec.setEnum("STATUS", "PENDING");
         rec.setString("CLIENT_ID", "Client1");
 
-        writeTxn.insert(rec).blockingGet();
-
-        return Single.just(true);
+        return writeTxn.insert(rec);
     });
 ```
 
