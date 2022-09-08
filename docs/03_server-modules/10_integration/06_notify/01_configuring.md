@@ -46,3 +46,4 @@ The Notify route table provides a link from NOTIFY that can be picked up and sen
 
 Our tutorial has practical examples of configuring Notify for static and [dynamic](/) events.
 <!-- TODO: link to dynamic-events -->
+<!-- could be /getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#dynamic-rules-conditional-rules -->
