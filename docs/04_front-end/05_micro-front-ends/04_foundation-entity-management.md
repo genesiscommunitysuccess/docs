@@ -35,7 +35,7 @@ The other component is the form, and this is used to update an existing entity o
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
+- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again.
 
 ```javascript
 {
@@ -100,6 +100,10 @@ The functionality of the entity manager is customised through the properties you
 ### Events
 
 `createEvent`, `updateEvent`, `deleteEvent` are set to be the events on the back-end which handle the specific actions, such as deleting counterparty data. For the create and update functionality, these also define the resource in which the form is populated when the user is creating or updating an entity. The authorisation of the user with respect to these events are controlled with the [permissions property](#permissions).
+
+### Datasource Configuration
+
+Set this object to configure how the entity manager interacts with the resource. [See here](../foundation-entity-management_apiref/foundation-entity-management.datasourceconfiguration/#example).
 
 ### Permissions
 
