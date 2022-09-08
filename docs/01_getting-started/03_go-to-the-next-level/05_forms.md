@@ -141,6 +141,7 @@ public async connectedCallback() {
     
     const tradeInstrumentsRequest = await this.connect.request('INSTRUMENT');
     this.tradeInstruments = tradeInstrumentsRequest.REPLY?.map(instrument => ({value: instrument.INSTRUMENT_ID, label: instrument.NAME}));
+    this.instrument = this.tradeInstruments[0].value;
 }
 ```
 

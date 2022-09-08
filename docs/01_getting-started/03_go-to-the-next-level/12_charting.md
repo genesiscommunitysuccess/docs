@@ -15,8 +15,8 @@ Start by adding a new dependency to our project by running this command in termi
 
 ```shell title='/client/web/'
 npm i lerna -g
-lerna add highcharts
-lerna add highcharts-webcomponent
+npx lerna add highcharts
+npx lerna add highcharts-webcomponent
 ```
 
 Then you have to declare it in your `components.ts` file by adding the following lines:
@@ -89,7 +89,7 @@ public async connectedCallback()
 }
 ```
 
-## Conclusiong
+## Conclusion
 You should have a data chart that resembles something like this:
 
 ![](/img/charts.png)
