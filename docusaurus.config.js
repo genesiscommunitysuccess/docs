@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const baseUrl = process.env.BASE_URL || '/';
 const routeBasePath = '/';
 
@@ -24,13 +26,6 @@ module.exports = {
 
 
   plugins: [
-    [
-      "docusaurus2-dotenv",
-      {
-        path: "./.env",
-        systemvars: true,
-      },
-    ],
     [require.resolve('docusaurus-gtm-plugin'), {
       id: GTM_ID,
     }],

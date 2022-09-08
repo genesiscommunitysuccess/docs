@@ -21,7 +21,6 @@
     "@genesislcap/foundation-login": "3.0.0-docs.10",
     "classnames": "^2.3.1",
     "docusaurus-gtm-plugin": "^0.0.2",
-    "docusaurus2-dotenv": "^1.4.0",
     "mdx-mermaid": "1.2.2",
     "mermaid": "8.11.0",
     "raw-loader": "^4.0.2",
@@ -41,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.2"
   }
 }
