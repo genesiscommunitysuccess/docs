@@ -111,9 +111,9 @@ import {sync} from '@genesislcap/foundation-utils';
 ```
 
 ## Adding selection options
-You probably realise that we don't have any options in our select component, so let's fix that now.
+You probably realise that we don't have any options in our select components, so let's fix that now.
 
-To enter a new trade, we want the the user to be able to select:
+To enter a new trade, we want the user to be able to select:
 - side (buy or sell)
 - the instrument to be traded
 
