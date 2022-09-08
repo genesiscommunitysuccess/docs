@@ -4,7 +4,7 @@ sidebar_label: 'Setting Genesis Evaluator rules'
 id: setting-genesis-evaluator-rules
 ---
 
-It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server-modules/event-handler/introduction/) to two different kinds of events: dynamic and static (cron rules): 
+It is often useful to run tasks periodically - for example, to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server-modules/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
 
 - [Dynamic Rules](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#dynamic-rules-conditional-rules), also known as dynamic events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 - [Static Rules](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#static-rules-cron-rules) are scheduling rules; these are static events, defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression).
@@ -12,10 +12,10 @@ It is often useful to run tasks periodically - for example to schedule the produ
 In both cases, you define the rules in a table in the database: `DYNAMIC_RULES` for dynamic rules and `CRON_RULES` for static rules. We're going start with dynamic rules.
 
 ## Section objectives
-The goal of this section define is to:
+The goal of this section is to:
 - configure and define our Evaluator
-- create event handlers for both static and dynamic events
-- load our static and dynamic events to there given tables
+- create `eventHandler` codeblocks for both static and dynamic events
+- load our static and dynamic events to their given tables
 - update our system definitions
 - configure and define our Notify process
 
@@ -42,9 +42,9 @@ Add the `POSITIONS_APP_TUTORIAL_EVALUATOR` to your **positions-app-tutorial-serv
 <service host="localhost" name="POSITIONS_APP_TUTORIAL_EVALUATOR" port="11003"/>
 ```
 
-We have just defined our evaluator. Next we're going to add our business logic.
+We have just defined our Evaluator. Next we're going to add our business logic.
 
-## Define the bussines logic
+## Define the business logic
 
 ### Create a data class
 
@@ -54,9 +54,9 @@ Now we need to create a `PositionCancel` class. This class should be created und
 data class PositionCancel(val positionId: String)
 ```
 
-### Create the event handler
+### Create the eventHandler
 
-Next we need to create an Event Handler that will trigger notify to send an email. Navigate to **positions-app-tutorial-script-config** and insert the following event handler:
+Next we need to create an `eventHandler` codeblock that will trigger Notify to send an email. Navigate to **positions-app-tutorial-script-config** and insert the following `eventHandler` codeblock:
 
 ```kotlin
 eventHandler<PositionCancel>(name = "POSITION_CANCEL", transactional = true) {
@@ -211,7 +211,7 @@ Then run:
 SendIt -f notify_route.csv -t NOTIFY_ROUTE
 ```
 
-To validate the file was imported correctly, run `DbMon`, `table NOTIFY_ROUTE` then `search 1`. You should see the following:
+To check that the file was imported correctly, run `DbMon`, `table NOTIFY_ROUTE` then `search 1`. You should see the following:
 
 ```bash
 NOTIFY_ROUTE
@@ -251,9 +251,14 @@ systemDefinition {
 }
 ```
 
-Now run `assemble`, `positions-app-tutorial-config:assemble`, `install-positions-app-tutorial-site-specific` and finally `deploy-genesisproduct-positions-app-tutorial`.
+Now run the following commands in order:
 
-Once deployed run `mon`. You should be able to see the evaluator process is present, but on `STANDBY`.
+1. `assemble`
+2. `positions-app-tutorial-config:assemble`
+3. `install-positions-app-tutorial-site-specific`
+4. `deploy-genesisproduct-positions-app-tutorial`
+
+Once deployed, run `mon`. You should be able to see the Evaluator process is present, but on `STANDBY`.
 
 This is because the Evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the primary node.
 
@@ -301,7 +306,7 @@ This section showed how to trigger events based on a condition in the database. 
 
 ## Static rules (Cron rules)
 
-It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes the Genesis low-code platform provides a feature called the [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server-modules/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
+It is often useful to run tasks periodically - for example, to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](/server-modules/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server-modules/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
 
 - __Cron Rules__  are scheduling rules; these are static events, defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
 - __Dynamic Rules__, also known as dynamic events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
@@ -314,7 +319,7 @@ Let's create a cron rule that triggers a batch job to run once every 30 seconds.
 
 The batch job will generate a position report as a csv for each counterparty. This will be stored in genesis environemnts **runtime/position-30seconds-report**. The file name of each report written will be in the format **[COUNTERPARTY_ID]-[DATE].csv**.
 
-#### The rule
+### The rule
 
 Our cron rule takes the following form:
 
@@ -364,15 +369,15 @@ Now we need to create a `PositionReport` class to trigger the new event. This cl
 class PositionReport
 ```
 
-### Create an Event Handler
+### Create an eventHandler
 
-Next we need to create an Event Handler that will write the csv files to the **runtime/position-30seconds-report** folder. First, open the **positions-app-tutorial-eventhandler.kts** file and add a variable called `tradeViewRepo`, injecting the class `TradeViewAsyncRepository`:
+Next we need to create an `EventHandler` codeblock that will write the csv files to the **runtime/position-30seconds-report** folder. First, open the **positions-app-tutorial-eventhandler.kts** file and add a variable called `tradeViewRepo`, injecting the class `TradeViewAsyncRepository`:
 
 ```kotlin
 val tradeViewRepo = inject<TradeViewAsyncRepository>()
 ```
 
-Then, add an Event Handler to generate the csv file:
+Then, add this an `EventHandler` codeblock to generate the csv file:
 
 ```kotlin
 eventHandler<PositionReport>(name = "EVENT_POSITION_REPORT", transactional = true) {
@@ -395,9 +400,14 @@ eventHandler<PositionReport>(name = "EVENT_POSITION_REPORT", transactional = tru
 }
 ```
 
-Now run `assemble`, `positions-app-tutorial-config:assemble` and `deploy-genesisproduct-positions-app-tutorial`.
+Now run the following commands in order:
 
-Once deployed run `mon`. You should be able to see the process is present, but on `STANDBY`.
+1. `assemble`
+2. `positions-app-tutorial-config:assemble`
+3. `deploy-genesisproduct-positions-app-tutorial`
+
+
+Once deployed, run `mon`. You should be able to see the process is present, but on `STANDBY`.
 
 This is because the Evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the primary node.
 
@@ -419,7 +429,7 @@ Now we need to import this cron rule into our `CRON_RULE` table. Run the followi
 SendIt -f cron-rule.csv -t CRON_RULE
 ```
 
-To validate the file was imported correctly, run `DbMon`, `table CRON_RULE` then `search 1`. You should see the following:
+To check that the file was imported correctly, run `DbMon`, `table CRON_RULE` then `search 1`. You should see the following:
 
 ```bash
 Field Name                               Value                                    Type
@@ -439,8 +449,8 @@ USER_NAME                                JaneDee                                
 Total Results:  1
 ```
 
-### Change the log level to verify the execution of the events
-To do this, run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command:
+### Change the log level
+You can now change the log level to verify the execution of the events. To do this, run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command:
 
 ```shell
 LogLevel -p POSITIONS_APP_TUTORIAL_EVALUATOR -DATADUMP_ON -l DEBUG
