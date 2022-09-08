@@ -150,13 +150,13 @@ To dynamically include a list of instruments, use the [repeat](https://www.fast.
 ```typescript title='home.template.ts' 
 <zero-select :value=${sync(x=> x.instrument)}>
   ${repeat(x => x.tradeInstruments, html`
-    <zero-option value=${x => x.INSTRUMENT_ID}>${x => x.NAME}</zero-option>
+    <zero-option value=${x => x.value}>${x => x.label}</zero-option>
   `)}
 </zero-select>
 ```
 
 ## Enabling the user to insert
-Now we have the data that can be selected, we need to be able the user to submit the trade:
+Now we have the data that can be selected, we need the user to be able to submit the trade:
 
 Create a simple button with a click event handler:
 ```html title='home.template.ts'
