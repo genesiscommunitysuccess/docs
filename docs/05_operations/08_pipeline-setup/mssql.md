@@ -25,7 +25,7 @@ Remote into the instance and open a bash terminal as the root user. Enable the a
 
 #### SQL Server Management Studio
 
-Use the following documentation to [Start, Stop, or Pause the Service](https://docs.microsoft.com/en-us/sql/ssms/agent/start-stop-or-pause-the-sql-server-agent-service?view=sql-server-ver16)
+Use the following documentation to [Start, Stop, or Pause the Service](https://docs.microsoft.com/en-us/sql/ssms/agent/start-stop-or-pause-the-sql-server-agent-service?view=sql-server-ver16).
 
 ### Create a database
 
