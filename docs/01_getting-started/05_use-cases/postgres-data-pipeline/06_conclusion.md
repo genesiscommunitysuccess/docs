@@ -12,4 +12,4 @@ As next steps you can try some of the other [supported sources](/server-modules/
 - Oracle
 - CSV, XML and JSON files
 
-or go and check the [Advanced](/server-modules/integration/data-pipeline/advanced/) section on how to use custom `sink` function or how to configure when mappers are invoked
+or go and check the [Advanced](/server-modules/integration/data-pipeline/advanced/) section on how to use custom `sink` function or how to configure when mappers are invoked.
