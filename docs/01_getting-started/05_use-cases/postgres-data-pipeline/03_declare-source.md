@@ -9,7 +9,7 @@ In this part of the tutorial we will declare the PostgreSQL server as a data sou
 
 ## Declare Data Source
 
-To define the data pipeline, start by defining the data source. Create new kotlin script `trades-data-pipeline.kts` under `datapipeline-sandbox/server/jvm/datapipeline-trades-script-config/src/main/resources/cfg` (if you chose another project name don't forget to replace `datapipeline-trades` with it) and fill in the following.
+To define the data pipeline, start by defining the data source. Create a new Kotlin script `trades-data-pipeline.kts` under `datapipeline-sandbox/server/jvm/datapipeline-trades-script-config/src/main/resources/cfg` (if you chose another project name don't forget to replace `datapipeline-trades` with it) and fill in the following.
 
 In this example the `hostname` needs to be set to the address of the PostgreSQL server.
 
@@ -163,7 +163,7 @@ When declaring a mapper the first thing is to give it a name. This is just to id
 
 Looking at the code above you can notice that `TRADE_ID`, `INSTRUMENT_ID`, `SIDE`, `TRADE_DATETIME`, `TRADE_DATE` and `TRADE_STATUS` are calculated [Fields](/database/fields-tables-views/fields/) and all the rest are mapped by name.
 
-The `transform` function for `INSTRUMENT_ID` is the most complex one as it actually performs additional operations based on the current state of the Genesis database. On the first three lines in the function we try to map the incoming instrument code to a instrument that's already in the Genesis database. If such instrument exist then its id is returned, however, if it's not there a new instrument is created.
+The `transform` function for `INSTRUMENT_ID` is the most complex one as it actually performs additional operations based on the current state of the Genesis database. On the first three lines in the function we try to map the incoming instrument code to a instrument that's already in the Genesis database. If such an instrument exists then its ID is returned, however, if it's not there a new instrument is created.
 
 Follow the links for more information on [mapping](/server-modules/integration/data-pipeline/basics/#mapper-for-the-incoming-data) and the [`transform`](/server-modules/integration/data-pipeline/advanced/#interacting-with-the-database) function.
 
