@@ -52,6 +52,27 @@ You can then add the following content to the **alpha-service-definitions.xml** 
 ```
 You can find more info on the **-service-defintions.xml** file [here](/server-modules/configuring-runtime/service-definitions/).
 
+If you are going to use the **Docker** solution, you also need to change the highlighted items in **genesis-system-definition.kts**.
+
+```kotlin {4,10}
+systemDefinition {
+    global {
+        ...
+        item(name = "DbLayer", value = "SQL")
+        item(name = "DictionarySource", value = "DB")
+        item(name = "AliasSource", value = "DB")
+        item(name = "MetricsEnabled", value = "false")
+        item(name = "ZeroMQProxyInboundPort", value = "5001")
+        item(name = "ZeroMQProxyOutboundPort", value = "5000")
+        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=postgres")
+        item(name = "DbMode", value = "VANILLA")
+        ...
+    }
+    
+}
+
+```
+
 Finally, you can build the server.
 
 In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha**/**Tasks**/**Build/Assemble**.
