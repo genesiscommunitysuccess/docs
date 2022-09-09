@@ -84,6 +84,18 @@ There are several possible configurations for your deployment. For each one, you
 - a local Linux host
 - a remote Linux host (via SSL)
 
+#### General Setup
+
+Make sure you have a **gradle.properties** file inside a **.gradle** folder in your user directory; this file must contain your Genesis Artifactory credentials in clear (unencrypted) text:
+
+```shell
+genesisArtifactoryUser=<your-artifactory-user>
+genesisArtifactoryPassword=<your-artifactory-password>
+```
+
+:::note
+This requires credentials for accessing Genesis Artifactory. If you have not been provided with the credentials, please contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login). It's not possible to complete the training without this access, because you won't be able to download the Genesis platform components and build your project.
+:::
 
 #### WSL
 
