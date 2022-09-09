@@ -57,6 +57,12 @@ sources {
         table {
             "public.trades" to mapper("e2e-test", TRADE) {
 
+                val tradeId = stringValue("trd_id")
+                val instrument = stringValue("inst")
+                val tradedAt = longValue("traded_at")
+                val side = stringValue("side")
+                val tradeState = stringValue("trade_state")
+
                 TRADE {
                     TRADE_ID {
                         //lookup from ALT_TRADE_ID based on trd_id column
