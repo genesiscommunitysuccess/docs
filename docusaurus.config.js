@@ -65,12 +65,12 @@ module.exports = {
     },
     navbar: {
       items: [
+        {type: 'docsVersionDropdown', className: "version-menu"},
         {to: 'getting-started', label: 'Learning'},
         {to: 'database', label: 'Database'},
         {to: 'server-modules', label: 'Server'},
         {to: 'front-end', label: 'Web'},
         {to: 'operations', label: 'Operations'},
-        {type: 'docsVersionDropdown', position: 'right', className: "version-menu"},
         {
           href: "https://stackoverflow.com/",
           className: "so-icon",
