@@ -166,3 +166,5 @@ Looking at the code above you can notice that `TRADE_ID`, `INSTRUMENT_ID`, `SIDE
 The `transform` function for `INSTRUMENT_ID` is the most complex one as it actually performs additional operations based on the current state of the Genesis database. On the first three lines in the function we try to map the incoming instrument code to a instrument that's already in the Genesis database. If such instrument exist then its id is returned, however, if it's not there a new instrument is created.
 
 Follow the links for more information on [mapping](/server-modules/integration/data-pipeline/basics/#mapper-for-the-incoming-data) and the [`transform`](/server-modules/integration/data-pipeline/advanced/#interacting-with-the-database) function.
+
+Finally, to ensure your Genesis application picks up your new script, we must declare the runtime as defined [here](/server-modules/integration/data-pipeline/configuring-runtime/#configure-processesxml-file).
