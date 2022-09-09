@@ -52,7 +52,7 @@ You can then add the following content to the **alpha-service-definitions.xml** 
 ```
 You can find more info on the **-service-defintions.xml** file [here](/server-modules/configuring-runtime/service-definitions/).
 
-If you are going to use the **Docker** solution you also need to change the highlighted items of **genesis-system-definition.kts**
+If you are going to use the **Docker** solution, you also need to change the highlighted items in **genesis-system-definition.kts**.
 
 ```kotlin {4,10}
 systemDefinition {
