@@ -18,24 +18,24 @@ The entity db differs from the generated repositories in that it can handle any 
 
 The entity db is available in the kotlin Event Handler. It can be injected in Kotlin using `AsyncEntityDb` and in Java using `RxEntityDb`.
 
-|                                                                                                 | [EntityDb](/database/database-interface/entity-db/)                                                           |
-|-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
-| [Supports tables](/database/fields-tables-views/tables/tables-basics/)                          | ✔️                                                                                 |
-| [Supports views](/database/fields-tables-views/views/views-basics/)                             | ✔️                                                                                 |
-| Supports any data type                                                                          | ✔️                                                                                 |
-| Class to import                                                                                 | `AsyncEntityDb` <br/> `RxEntityDb`                                                 |
-| Type-safe read and write                                                                        | ✔️                                                                                 |
-| Type-safe write result                                                                          | ✔️                                                                                 |
-| Returns data as                                                                                 | [table](database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities        |
-| Writes data as                                                                                  | [table](database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities        |
-| References indexes as                                                                           | [index entities](/database/data-types/index-entities/)                                         |
-| Programming interface                                                                           | [Async](/database/types-of-api/async/) or [RxJava](/database/types-of-api/rxjava/) |
-| Write (input)                                                                                   | [Modify Details](/database/helper-classes/modify-details/#entity-modify-details)                              |
-| Write (output)                                                                                  | [Write Result](/database/helper-classes/write-result/#entity-write-result)                          |
-| Subscribe                                                                                       | [Record Update](/database/helper-classes/subscription/record-update/) of entity                 |
-| Bulk or Range Subscribe                                                                         | [Bulk](/database/helper-classes/subscription/bulk/) of entity                                   |
-| Available in [Custom Event Handlers](/database/api-reference/event-handler-api/)         | ✔️                                                                                 |
-| Available in [Custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers) | ✔️                                                                                 |
+|                                                                                                        | [EntityDb](/database/database-interface/entity-db/)                                                     |
+|--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| [Supports tables](/database/fields-tables-views/tables/tables-basics/)                                 | ✔️                                                                                                      |
+| [Supports views](/database/fields-tables-views/views/views-basics/)                                    | ✔️                                                                                                      |
+| Supports any data type                                                                                 | ✔️                                                                                                      |
+| Class to import                                                                                        | `AsyncEntityDb` <br/> `RxEntityDb`                                                                      |
+| Type-safe read and write                                                                               | ✔️                                                                                                      |
+| Type-safe write result                                                                                 | ✔️                                                                                                      |
+| Returns data as                                                                                        | [table](database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities   |
+| Writes data as                                                                                         | [table](database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities   |
+| References indexes as                                                                                  | [index entities](/database/data-types/index-entities/)                                                  |
+| Programming interface                                                                                  | [Async](/database/types-of-api/async/) or [RxJava](/database/types-of-api/rxjava/)                      |
+| Write (input)                                                                                          | [Modify Details](/database/helper-classes/modify-details/#entity-modify-details)                        |
+| Write (output)                                                                                         | [Write Result](/database/helper-classes/write-result/#entity-write-result)                              |
+| Subscribe                                                                                              | [Record Update](/database/helper-classes/subscription/record-update/) of entity                         |
+| Bulk or Range Subscribe                                                                                | [Bulk](/database/helper-classes/subscription/bulk/) of entity                                           |
+| Available in [Custom Event Handlers](/database/api-reference/event-handler-api/)                       | ✔️                                                                                                      |
+| Available in [Custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers) | ✔️                                                                                                      |
 
 
 When referring to indices in the database operations, the database accepts _index classes_ or _entity class_
@@ -157,8 +157,9 @@ val recordB = list[1]
 This will create a `Flow` or `Flowable` of the whole table. If the database layer supports it, these will be
 sorted in ascending order by the index provided, or by the primary key if none is provided. Currently, only
 FoundationDb and Postgres support an ordered `getBulk`. There is also the `getBulkFromEnd` function, which will
-return records in descending order. There are also a number of continuation operations, which will return
-the whole table after the provided record.
+return records in descending order. 
+
+There are also a number of continuation operations, which will return the whole table after the provided record. These methods are deprecated and should not be used going forwards.
 
 #### Overloads
 
@@ -166,10 +167,10 @@ the whole table after the provided record.
 * `getBulk([Class<E> /  KClass<E>]): Flow<E>`
 * `getBulk(UR<E>): Flow<E>`
 * `getBulk(UR<E>, fields): Flow<E>`
-* `getBulk(UR<E>, E, fields): Flow<E>` (continuation)
+* `getBulk(UR<E>, E, fields): Flow<E>` (continuation) (Deprecated)
 * `getBulkFromEnd(UR<E>): Flow<E>`
-* `getBulkFromEnd(UR<E>, E), E: Flow<E>` (continuation)
-* `getBulkFromEnd(UR<E>, E, fields), E: Flow<E>` (continuation)
+* `getBulkFromEnd(UR<E>, E), E: Flow<E>` (continuation) (Deprecated)
+* `getBulkFromEnd(UR<E>, E, fields), E: Flow<E>` (continuation) (Deprecated)
 * `getBulkFromEnd(UR<E>, fields): Flow<E>`
 
 #### Syntax
@@ -179,7 +180,7 @@ the whole table after the provided record.
 
 ```kotlin
 // we can pass in Trade as a type parameter
-val flow = db.getBulk&lt;Trade>()
+val flow = db.getBulk<Trade>()
 // we can pass in the TRADE object
 val flow = db.getBulk(TRADE)
 // or we can pass in an index reference
