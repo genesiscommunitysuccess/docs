@@ -47,8 +47,7 @@ requestReplies {
         timeout = 15
 
         request {
-            ALTERNATE_TYPE
-            INSTRUMENT_CODE withAlias "ALTERNATE_CODE"
+            ALTERNATE_TYPE withAlias "ALTERNATE_TYPE"
         }
 
         reply {

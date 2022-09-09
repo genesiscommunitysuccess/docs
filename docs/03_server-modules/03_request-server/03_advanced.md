@@ -122,22 +122,17 @@ the requestReplies defined from previous example. This example stipulates a pric
         }
     }
 
-    sendRequest(request) // details of sending request hidden for brevity
+    reply(request)
 ```
 Note that ranges that are not based on indexes perform more slowly than those that are.
 
 ## Custom Request Servers
 By defining your own Request Servers, you have maximum flexibility. You can specify any class for the input and output, similar to Event Handlers. For the request, optional fields should have a default value in the primary constructor. You cannot use native Kotlin classes. You should wrap these in custom input and output classes.
 
-It is recommended to locate your classes within the messages module of your application. Here, we place all the custom message types for our application. You will need to ensure that the script-config module has a dependency on the messages module.
+It is recommended to locate your classes within the messages module of your application. Here, we place all the custom message types for our application. You will need to ensure that the **{app-name}-script-config** module has a dependency on the messages module.
 
-```xml
-<dependency>
-    <groupId>your.group</groupId>
-    <artifactId>your-artifact</artifactId>
-    <version>${project.version}</version>
-    <scope>provided</scope>
-</dependency>
+```bash
+    api(project(":{app-name}-messages"))
 ```
 
 The `requestReply` code blocks in can be as simple or complex as your requirements. They are useful, for example, if you want to request data from a number of different tables and views that are not related. By nesting and joining all the relevant data in your `requestReply` statement, you create your own metadata for the Request Server, so it can then be used anywhere in the module.
@@ -216,10 +211,10 @@ requestReply<Hello, World>("HELLO_WORLD_CHECK") {
 }
 ```
 
-In this next example, we are using the generated dao classes to get a single record from the INSTRUMENT table using the INSTRUMENT_BY_ID index. We use the `db` property to access the entity db.
+In this next example, we are using the generated dao classes to get a single record from the `INSTRUMENT_DETAILS` table using the `ByInstrumentId` index. We use the `db` property to access the entity db.
 
 ```kotlin
-requestReply<Instrument.ById, Instrument> {
+requestReply<InstrumentDetails.ByInstrumentId, InstrumentDetails> {
     replySingle { byId->
         db.get(byId)
     }
