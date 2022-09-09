@@ -15,11 +15,11 @@ Using `RxDb` instead of [entityDb](/database/database-interface/entity-db/) or [
 
 :::
 
-The `RxDb` enables you to interact with the database layer, but you do not have any level of type-safety when doing so as it uses [DbRecord](/database/data-types/dbrecord/). 
+The `RxDb` enables you to interact with the database layer, but you do not have any level of type-safety when doing so, as it uses [DbRecord](/database/data-types/dbrecord/). 
 
-The interface supports the same operations as the generated repositories, but will accept any entity represented as DbRecord. It supports read and write operations for tables only.
+The interface supports the same operations as the generated repositories, but will accept any entity represented as `DbRecord`. It supports read and write operations for tables only.
 
-The RxDb can be injected in Kotlin and Java using `RxDb`.
+The `RxDb` can be injected in Kotlin and Java using `RxDb`.
 
 |                                                                                                 | [RxDb](/database/database-interface/rxdb/)                                                                                      |
 |-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
@@ -40,7 +40,7 @@ The RxDb can be injected in Kotlin and Java using `RxDb`.
 | Available in [Custom Event Handlers](/database/api-reference/event-handler-api/)         | ✔️                                                                                                                              |
 | Available in [Custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers) | ❌️                                                                                                                              |
 
-## Read Operations
+## Read operations
 
 ### get
 
