@@ -11,25 +11,32 @@ Data pipeline is a separate module that must be configured in your __application
 
 ```xml
 <processes>
-    <process name="DATAPIPELINE_SANDBOX">
-        <groupId>data-pipeline</groupId>
+    <process name="APPLICATION_DATAPIPELINE">
+        <groupId>APPLICATION</groupId>
         <start>true</start>
         <options>-Xmx1024m</options>
         <module>genesis-pal-datapipeline</module>
+        <package>global.genesis.datapipeline.pal</package>
         <script>trades-datapipeline.kts</script>
-        <description>Trades execution</description>
+        <description>Optional description</description>
         <language>pal</language>
         <loggingLevel>TRACE,DATADUMP_ON</loggingLevel>
     </process>
 </processes>
 ```
 
-## System definitions
-It is vital to ensure that any system definition variables that are used by the configuration definition are properly defined in your __application__**-system-definition.kts** file.
+### Configure 
 
-## Starting source PostgreSQL as a Docker image
-To capture changes from PostgreSQL, the Write Ahead Log level has to be set at least to `logical`. By default, the PostgreSQL docker image has its Log Level set at level lower than this; thus you must specify it explicitly when the image is run:
+Ensure that you also update your __application__**-service-definitions.xml** file with your new pipeline.
 
-```shell
-docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c wal_level=logical
+```xml
+<configuration>
+    ...
+    <service host="localhost" name="APPLICATION_DATAPIPELINE" port="11003"/>
+    ...
+</configuration>
 ```
+
+:::note
+It is vital to ensure that any system definition variables that are used by the configuration definition are properly defined in your __application__**-system-definition.kts** file.
+:::
