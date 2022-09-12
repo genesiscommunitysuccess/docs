@@ -24,6 +24,17 @@ To enable this component on the server, pull in the [reporting-distribution-6.1.
 
 To make data available to users so that they can create reports, you must insert entries into the `REPORT_DATASOURCES` table. This table determines which data resources can be reported on. In most cases, you will have already set up queries in your [Data Server](/server-modules/data-server/basics/) to provide the data, but you can add new sources by creating new queries in your _application_**-dataserver.kts**.
 
+```bash
+SendIt -t REPORT_DATASOURCES.csv
+```
+
+using an example file REPORT_DATASOURCES.csv
+```csv
+DATASOURCE_NAME,DATASOURCE_TYPE
+ALL_TRADES,DATASERVER
+ALL_POSITIONS,DATASERVER
+```
+
 The Report Server adds the following metadata services:
 
 - ALL_SAVED_REPORTS (Data Server)
