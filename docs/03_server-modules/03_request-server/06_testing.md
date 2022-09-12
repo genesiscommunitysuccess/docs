@@ -31,7 +31,7 @@ Once you have set up your configuration, we can start writing tests against our 
 
 ### Standard Request Servers
 
-Lets runs a very simple example.
+Let's run a very simple example.
 Copy the following into a csv file and save as `seed-data.csv` in the test Resources folder.
 
 ```text
@@ -40,8 +40,8 @@ COUNTERPARTY_ID,COUNTERPARTY_NAME
 testID 1,TestName 1
 testID 2,TestName 2
 ```
-Lets send a message to our Genesis application, pointing at the correct Request Server (making sure to add the *REQ_* prefix) and wait for the response.
-The Genesis platform uses Kotlin Coroutines which gives us a degree of non-blocking asynchronous computation. For this reason, we must wrap our tests in a `runBlocking` coroutine scope as seen below.
+We shall send a message to our Genesis application, pointing at the correct Request Server (making sure to add the *REQ_* prefix) and wait for the response.
+The Genesis platform uses Kotlin coroutines which gives us a degree of non-blocking asynchronous computation. For this reason, we must wrap our tests in a `runBlocking` coroutine scope as seen below.
 
 
 ```kotlin
@@ -102,7 +102,7 @@ fun `can get hello world`() = runBlocking {
 
 ### Testing with Console
 
-In Genesis Console, select your Request Sever in the resources tab.
+In Genesis Console, select your Request Server in the Resources tab.
 Once you click into your Request Server, you will see the current response from the Request Server and any input fields that you have defined. You can change the inputs and verify that the correct behaviour is being seen. Make sure that your database has some data for you to search through.
 
 ![](/img/test-console-rs-success.png)
