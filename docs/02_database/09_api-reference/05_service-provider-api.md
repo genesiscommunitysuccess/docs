@@ -1,11 +1,9 @@
 ---
-title: 'Service Provider API'
-sidebar_label: 'Service Provider API'
+title: 'Service provider API'
+sidebar_label: 'Service provider API'
 id: service-provider-api
 ---
 
-Service detail provider
-=======================
 
 In this page, we look at details of the functions that enable you to interact with the Genesis services that can be specified in the [service-definition.xml](/getting-started/learn-the-basics/key-system-files/genesis-system-definitions/) file.
 

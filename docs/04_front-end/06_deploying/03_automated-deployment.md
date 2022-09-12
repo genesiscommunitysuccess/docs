@@ -4,13 +4,14 @@ sidebar_label: 'Automated Deployment'
 id: automated-deployment
 ---
 
-Ideally an automated pipeline such as a github workflow should be put in place to *build, test and deploy* the Front End every time the master or develop branches are updated.
+Ideally, an automated pipeline such as a github workflow should be put in place to *build, test and deploy* the front end every time the master or develop branches are updated.
 
 It can be configured to run automatically when something is merged into certain branches or even triggered manually.
 
 <!-- TODO: add an example that's more suitable for external clients, this one is likely only useful to our internal client app devs -->
 
-Here is an example of a github workflow, which can trigger a deployment by the click of a button (running the action on github):
+## github
+Here is an example of a github workflow, which can trigger a deployment by the click of a button (running the action on github).:
 
 ```yml
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
@@ -63,7 +64,8 @@ jobs:
 ```
 
 
-Another example, this time of a Jenkins pipeline to automatically build commits that are tagged with a version and upload them to jfrog / artifactory. 
+## Jenkins
+Here is an example, this time of a Jenkins pipeline, to build commits that are tagged with a version and upload them to jfrog / artifactory. 
 
 It will also run [SonarQube](https://www.sonarqube.org/) analysis and send notifications using Office 365 webhooks. It will likely have to be adjusted based on project setup and external infrastructure.
 
@@ -222,7 +224,7 @@ pipeline {
 
 The generated builds can then be fetched and moved to the correct location on the webserver with another script or [manually](/front-end/deploying/manual-deployment/).
 
-## What the full pipeline might look like:
+## What the full pipeline might look like
 
 ![](/img/build-pipeline.png)
 

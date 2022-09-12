@@ -6,14 +6,14 @@ id: write-result
 
 ## Entity write result
 
-The entity database will return type-safe results for write operations. There are four main write results, one for each type of write operation. Each of these operations are of type `EntityWriteResult`.
+The entity database will return type-safe results for write operations. There are four main write results, one for each type of write operation. Each of these operations is of type `EntityWriteResult`.
 
 In all cases, the records in the result will be a generated entity that matches the input. So, for inserting a `Trade` instance, the database will return a result of type `InsertResult<Trade>` where the property `record` will be of type `Trade`.
 
 -   `InsertResult`
 -   `DeleteResult`
 -   `ModifyResult`
--   `UpsertResult`; either a `InsertResult` or a `ModifyResult`
+-   `UpsertResult`; either an `InsertResult` or a `ModifyResult`
 
 ### InsertResult
 
@@ -37,7 +37,7 @@ This could be either an `InsertResult` or a `ModifyResult`.
 
 ## Write result
 
-A single catch-all type for results of a write operation when using generated repositories or RxDb.
+This is a single catch-all type for results of a write operation when using generated repositories or RxDb.
 
 This type has the following fields:
 

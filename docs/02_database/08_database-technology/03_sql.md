@@ -73,8 +73,8 @@ JDBC URI can take the following forms:
 - The default value for `port` is `1521`
 
 In addition to the standard connection parameters, the URL accepts several additional parameters:
-- **user** - the database user. If not stated, a connection will try and use the value provided by the `DbUsername` System Definition (if present)
-- **password** - the database user password. If not stated, a connection will try and use the value provided by the `DbPassword` System Definition (if present)
+- **user** - the database user. If not stated, a connection will try and use the value provided by the `DbUsername` system definition (if present)
+- **password** - the database user password. If not stated, a connection will try and use the value provided by the `DbPassword` system definition (if present)
 - **databaseName** - the name of the database to connect to. If not stated, a connection is made to the default database
 
 For a full list of connection properties, including encryption and certificate authentication properties, see the [jdbc support documents](https://docs.oracle.com/en/database/oracle/oracle-database/21/jjdbc/JDBC-standards-support.html).

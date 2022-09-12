@@ -36,7 +36,7 @@ The market data adaptors themselves are configured with an xml file. There are c
 
 The majority of customisable logic is specified within the xml file as groovy code snippets elements prefixed with a CDATA block, similar to the configuration for consolidators.
 
-### Pre-expression[​](https://internal-web/secure/creating-applications/defining-your-application/integrations/market-data/adaptors/common-config/#pre-expression "Direct link to heading")
+## Pre-expression[​](https://internal-web/secure/creating-applications/defining-your-application/integrations/market-data/adaptors/common-config/#pre-expression "Direct link to heading")
 
 The pre-expression is a groovy code block executed before any other code block specified in the file. You can use this expression to define any utility functions you wish to use within your other code.
 
@@ -66,7 +66,7 @@ The pre-expression is a groovy code block executed before any other code block s
 </preExpression>
 ```
 
-### Subscriptions[​](https://internal-web/secure/creating-applications/defining-your-application/integrations/market-data/adaptors/common-config/#subscriptions "Direct link to heading")
+## Subscriptions[​](https://internal-web/secure/creating-applications/defining-your-application/integrations/market-data/adaptors/common-config/#subscriptions "Direct link to heading")
 
 After the pre-expression, an adaptor has a `subscriptions` element. This contains a number of `subscription` elements. This is where you specify the details of the adaptor.
 
@@ -74,7 +74,7 @@ Within a subscription element, you can specify:
 
 -   one or more `table` objects within a `tables` element
 -   a `where` element, where you can define a code block for custom logic
--   `record` elements defined within a `records` element.
+-   `record` elements defined within a `records` element
 
 Each subscription has a number of `table` objects within a `tables` element. Each table is given an alias so it can be referred to in code, using the `alias` attribute. It also has a `seedKey` attribute, that defines the index used for lookups.
 
@@ -96,7 +96,7 @@ A `record` has the following attributes.
 
 -   `targetTable` refers to the name of the table where market data will be published. It must be defined in the tables dictionary for the projects.
 -   `alias` is a variable name given to the record to be populated so it can be referred to in code.
--   `type` is an enumerated value which must be one of `INSERT_ONLY` or `MODIFY`. Insert only records do not overwrite existing records for the same lookup key. This is useful for time series data like time and sales. Modify indicates records should be overwritten for the same lookup key. This is useful for real-time prices.
+-   `type` is an enumerated value which must be one of `INSERT_ONLY` or `MODIFY`. `INSERT_ONLY` records do not overwrite existing records for the same lookup key. This is useful for time-series data like time and sales. Modify indicates records should be overwritten for the same lookup key. This is useful for real-time prices.
 -   `isHFT` refers to whether the target table is configured as a database table or a Genesis HFT memory-mapped table.
 -   `lookupKey` is explained in detail below.
 

@@ -6,7 +6,7 @@ id: system-definition-api
 
 
 
-The [system-definition](/getting-started/learn-the-basics/key-system-files/genesis-system-definitions/) file is the basis of all configurations. In this page, we describe the different functions available to get properties specified in the system-definition.kts file. Default methods have implementations to provide default values for each property.
+The [system-definition](/getting-started/learn-the-basics/key-system-files/genesis-system-definitions/) file is the basis of all configurations. In this page, we describe the different functions available to get properties specified in the **system-definition.kts** file. Default methods have implementations to provide default values for each property.
 
 Most of the functions are to get or set a particular property.
 
@@ -17,7 +17,7 @@ You can access system definition properties in two ways:
 -   using existing APIs
 -   using @Named Genesis annotation
 
-Using existing APIs[​](/database/api-reference/system-definition-api/#using-existing-apisdirect-link-to-heading)
+## Using existing APIs[​](/database/api-reference/system-definition-api/#using-existing-apisdirect-link-to-heading)
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
 | name | signature |
@@ -56,7 +56,26 @@ Using existing APIs[​](/database/api-reference/system-definition-api/#using-ex
 | parseProperty | `static <T, R> Optional<R> parseProperty(Supplier<Optional<T>> property, Predicate<? super T> canBeTransformed, Function<? super T, ? extends R> transformer)` |
 | parseStringProperty | `static <R> Optional<R> parseStringProperty(Supplier<Optional<String>> property, Function<? super String, ? extends R> transformer)` |
 
-Using @Named genesis annotation[​](/database/api-reference/system-definition-api/#using-named-genesis-annotationdirect-link-to-heading)
+## Using @Named genesis annotation[​](/database/api-reference/system-definition-api/#using-named-genesis-annotationdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Follow this [link](https://docs.genesis.global/secure/reference/developer/custom-components/#injectable-properties-from-system-definition) for examples.
+### Injectable properties from system definition
+Here is an example of a **genesis-system-definition.kts** file:
+
+```kotlin
+systemDefinition {
+    global {
+        item(name = "CONFIG_FILE_NAME", value = "/data/")
+        // other params omitted for simplicity
+    }
+}
+```
+Here is an example of a system definition property being referenced in a Java file:
+
+```java
+@Inject
+public RequestReplyDefinitionReader(RxDb db,
+                                    @Named("CONFIG_FILE_NAME") String configFileName) throws GenesisConfigurationException {
+    this(db.getDictionary(), configFileName);
+}
+```

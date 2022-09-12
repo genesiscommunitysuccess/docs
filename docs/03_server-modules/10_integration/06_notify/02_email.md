@@ -32,7 +32,7 @@ notify {
 }
 ```
 
-## Using System Definition in the notify.kts script
+## Using system definition in the notify.kts script
 
 Include the following in your aplication's **genesis-system-definition.kts** file:
 
@@ -154,4 +154,4 @@ Here is an example in Kotlin:
 htmlMailMessage.replaceAll("\"", "&quot;").replaceAll("\\R", "\\\\n");
 ```
 
-The final outgoing emailDistribution will a merge of the distribution list specified on the Notify message and the statically defined distribution list specified for any Gateway which messages may be routed to.
+The final outgoing emailDistribution will perform a merge of the distribution list specified on the Notify message and the statically defined distribution list specified for any Gateway which messages may be routed to.

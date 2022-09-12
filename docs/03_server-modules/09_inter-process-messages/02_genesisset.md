@@ -7,8 +7,7 @@ id: genesisSet
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-`GenesisSet` is a generic message format used to send data between Genesis processes. The information in the messages must be stored as key-value pairs.
-A GenesisSet can store integers, booleans, text, etc. Importantly, it can also contain other GenesisSets.
+`GenesisSet` is a generic message format used to send data between Genesis processes. The information in the messages must be stored as key-value pairs. A GenesisSet can store integers, booleans, text, etc. Importantly, it can also contain other GenesisSets.
 
 In this section, we give you some examples that illustrate usage and structure.
 
@@ -47,7 +46,7 @@ GenesisSet.builder()
 </TabItem>
 </Tabs>
 
-## Send message to request reply service
+## Send message to Request Server
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">

@@ -10,7 +10,7 @@ When performing modify and upsert operations with EntityDb, you must specify the
 
 ## Modify details
 
-Similarly to the `EntityModifyDetails`, `ModifyDetails` does the same job and takes similar arguments for use with RxDb.
+, `ModifyDetails` does the same job as `EntityModifyDetails` and takes similar arguments for use with RxDb.
 
 :::warning
 

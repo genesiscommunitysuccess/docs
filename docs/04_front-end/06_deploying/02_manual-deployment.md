@@ -1,6 +1,6 @@
 ---
-title: 'Manual Deployment'
-sidebar_label: 'Manual Deployment'
+title: 'Manual deployment'
+sidebar_label: 'Manual deployment'
 id: manual-deployment
 ---
 
@@ -8,13 +8,13 @@ To perform a manual deployment, you will have to:
 - Copy the web build from your machine to the target server.
 - Update the _web root_ symlink.
 
-The files need to ultimately be located in `/data/${productUser}/web`. There are multiple ways to do this, use whichever one you are most comfortable with.
+The files need to be placed in `/data/${productUser}/web`. There are multiple ways to do this; use whichever one you are most comfortable with.
 
 :::note
 It is possible to configure [WinSCP](https://winscp.net/eng/index.php) to sudo and deploy to the web root directly.
 :::
 
-If you ssh into the server using your personal credentials you likely won't have access to put them there directly. To get around this you can transfer them to `/tmp` first (or any other directory with open permissions) and then copy them over to the desired location once you are logged in as the _product user_ on the server.
+If you ssh into the server using your personal credentials, you probably won't have access to put them there directly. To get around this, you can transfer them to `/tmp` first (or any other directory with open permissions) and then copy them over to the desired location once you have logged in as the _product user_ on the server.
 
 Here is an example using [rsync](https://explainshell.com/explain?cmd=rsync+-avzhP+-e+%22ssh+i+%2Fpath%2Fto%2Fkey%22+src+target) over SSH:
 

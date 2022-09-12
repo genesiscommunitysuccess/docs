@@ -1,6 +1,6 @@
 ---
-title: 'Excel Reference'
-sidebar_label: 'Excel Reference'
+title: 'Excel reference'
+sidebar_label: 'Excel reference'
 id: excel-reference
 ---
 
@@ -42,7 +42,7 @@ The conversion process turns Excel column names into Genesis field names. It ana
 The fields are automatically sampled by the command to allocate a type. If there is ambiguity, it sets the field as STRONG.
 
 :::info
-It is recommended that you shorten long column headings before you make the conversion. In general, you want short and usable field names in your data model. It is quicker to do this before running the script, rather than editing the fields dictionary and other files that are generated.
+It is recommended that you shorten long column headings before you make the conversion. In general, you want short and usable field names in your data model. It is quicker to do this **before** running the script, rather than editing the fields dictionary and other files that are generated.
 :::
 
 ### Files created
@@ -68,8 +68,8 @@ If the conversion process is not able to parse a field, this is clearly marked o
 
 The first column in each worksheet is always used as the primary key for the table.
 
-### The views file
+### The view file
 
-The script automatically finds where joins are required. Inside the View file, any exceptions are highlighted.
+The script automatically finds where joins are required. Inside the **view** file, any exceptions are highlighted.
 
 The conversion can create derived fields where these are simple calculations based on other fields in the view. 

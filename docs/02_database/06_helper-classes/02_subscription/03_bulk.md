@@ -5,7 +5,7 @@ id: bulk
 ---
 
 
-Bulk objects are published to listeners of mixed read/subscribe operations. Like [Record Update](/database/helper-classes/subscription/record-update/), `Bulk` is a [sealed kotlin class](https://kotlinlang.org/docs/sealed-classes.html). It has the following class hierarchy:
+Bulk objects are published to listeners of mixed read/subscribe operations. Like [Record Update](/database/helper-classes/subscription/record-update/), `Bulk` is a [sealed Kotlin class](https://kotlinlang.org/docs/sealed-classes.html). It has the following class hierarchy:
 
 1.  `Bulk`
     1.  `Bulk.Prime`

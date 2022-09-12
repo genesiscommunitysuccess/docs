@@ -6,7 +6,7 @@ id: examples
 
 [Introduction](/server-modules/integration/data-pipeline/introduction/)  | [Basics](/server-modules/integration/data-pipeline/basics) | [Advanced](/server-modules/integration/data-pipeline/advanced) | [Examples](/server-modules/integration/data-pipeline/examples) | [Configuring runtime](/server-modules/integration/data-pipeline/configuring-runtime) | [Testing](/server-modules/integration/data-pipeline/testing)
 
-Here is a full example to ingest trades:
+Here is a full example of ingesting trades:
 
 ```kotlin
 sources {
@@ -108,7 +108,7 @@ sources {
 }
 ```
 
-Similarly, a source definition for a CSV file, with the same data, would look like the following:
+A source definition for a CSV file with the same data would look like the following:
 
 ```kotlin
 sources {

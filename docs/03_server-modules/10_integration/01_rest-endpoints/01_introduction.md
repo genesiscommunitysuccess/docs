@@ -8,7 +8,7 @@ id: introduction
 
 The Genesis low-code platform automatically exposes all configured resources as REST endpoints via the [Genesis Router](/server-modules/configuring-runtime/genesis-router/). Unless configured otherwise, all requests require a valid `SESSION_AUTH_TOKEN` HTTP header. A `SESSION_AUTH_TOKEN` is retrieved after successful user authentication.
 
-The `Content-Type` of all HTTP request/responses is `application/json`
+The `Content-Type` of all HTTP request/responses is `application/json`.
 
 Here, we provide a list of the endpoints for each resource:
 * [Authentication (log in)](/server-modules/integration/rest-endpoints/basics/#authentication)
