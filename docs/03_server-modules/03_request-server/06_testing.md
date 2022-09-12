@@ -25,7 +25,7 @@ class ReqRepTests : AbstractGenesisTestSupport<Reply<*>>(
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [testing docs](/operations/testing/integration-testing).
+For more information about `AbstractGenesisTestSupport`, see the [testing documentation](/operations/testing/integration-testing).
 
 Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers).
 
@@ -96,7 +96,7 @@ Once you click into your Request Server, you will see the current response from 
 
 ![](/img/test-console-rs-success.png)
 
-For more detailed information about using Genesis Console for manual testing, head over to the [testing docs](/server-modules/request-server/testing).
+For more detailed information about using Genesis Console for manual testing, head over to the [testing documetation](/server-modules/request-server/testing).
 
 ### Testing with an API client
 

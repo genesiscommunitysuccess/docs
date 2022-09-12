@@ -25,7 +25,7 @@ It has got following functions:
 
 ### readState
 `fun readState(init: T.() -> S)`
-It specifies which state to read from table
+Specifies which state to read from table.
 
 ### state
 `fun state(state: S, stateHandler: StateBuilder<T, S, E>.() -> Unit)`
@@ -134,7 +134,7 @@ suspend fun modify(trade: Trade): Transition<Trade, TradeStatus, TradeEffect>? =
 
 ## Inject state machine
 
-### Inject state machine in [event handler](/server-modules/event-handler/basics) file
+### Inject state machine in [Event Handler](/server-modules/event-handler/basics) file
 
 ```kotlin
 eventHandler {
@@ -165,7 +165,7 @@ eventHandler {
 }
 ```
 
-You can also see a state machine being created in practice in our [tutorial](//server-modules/state-machine/introduction/).
+You can also see a state machine being created in practice in our [tutorial](/server-modules/state-machine/introduction/).
 
 ### Inject state machine in event handler [API](/database/api-reference/event-handler-api/)
 

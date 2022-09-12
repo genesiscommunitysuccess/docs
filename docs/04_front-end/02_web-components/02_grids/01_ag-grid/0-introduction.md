@@ -28,14 +28,14 @@ This use case requires the client app to handle all the data transformations/upd
 #### Connected data
 
 :::tip
-This is the most common use case for our AG Grid component. When connecting to a [data server](/server-modules/data-server/introduction/) or [request server](/server-modules/request-server/introduction/).
+This is the most common use case for our AG Grid component. When connecting to a [Data Server](/server-modules/data-server/introduction/) or [Request Server](/server-modules/request-server/introduction/).
 :::
 
 :::warning
 For this use case, a separate `ag-genesis-datasource` component is required with a valid `resourceName`. More details [here](/front-end/web-components/grids/ag-grid/ag-genesis-datasource/).
 :::
 
-The **connected data** use case is when you have a [data server](/server-modules/data-server/introduction/) or [request server](/server-modules/request-server/introduction/) available/ready to use and don't want to worry about handling data transformations/updates/deletes/cell renderers in the grid (for cell renders it's flexible so you can use any component you want or the ones provided by default).
+The **connected data** use case is when you have a [Data Server](/server-modules/data-server/introduction/) or [Request Server](/server-modules/request-server/introduction/) available/ready to use and don't want to worry about handling data transformations/updates/deletes/cell renderers in the grid (for cell renders it's flexible so you can use any component you want or the ones provided by default).
 
 `ag-genesis-datasource`
 

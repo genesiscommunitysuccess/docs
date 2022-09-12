@@ -74,7 +74,7 @@ First, create your `Event` object, setting the event details and specifying the 
 
 We then send a message to our Event Handler using `messageClient.suspendRequest(message)`. The result is first verified to be an `EventAck`. Then  check that the inserted trade can be retrieved from the database.
 
-Remember to add the `runBlocking` coroutine scope to the test, as the Genesis Platform uses Kotlin coroutines.
+Remember to add the `runBlocking` coroutine scope to the test, as the Genesis platform uses Kotlin coroutines.
 
 ### Error response test
 

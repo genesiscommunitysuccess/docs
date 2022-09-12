@@ -30,7 +30,7 @@ Here is an example of a Request Server configuration in an application's **proce
   </process>
 ```
 
-For more information of what can be configured by each tag in the configuration, follow this [link](/server-modules/configuring-runtime/processes)
+For more information of what can be configured by each tag in the configuration, follow this [link](/server-modules/configuring-runtime/processes).
 
 ### Configuring service-definitions.xml
 

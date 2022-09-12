@@ -27,7 +27,7 @@ Here is an example configuration for a Data Server in an application's **process
   </process>
 ```
 
-For more information about the tags that can be used to set the process configuration, follow this [link](/server-modules/configuring-runtime/processes)
+For more information about the tags that can be used to set the process configuration, follow this [link](/server-modules/configuring-runtime/processes).
 
 ### Configuring in service-definitions.xml
 

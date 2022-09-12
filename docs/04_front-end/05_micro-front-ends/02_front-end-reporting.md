@@ -18,12 +18,12 @@ import Reporting from '../../resource/reporting_mf.md'
 
 ### Server configuration
 
-To enable the report micro-frontend you need to configure the reporting module on the server.
-The required configuration is described in the [server module](../../03_server-modules/10_integration/11_data-reporting.md).
+To enable the report micro-front-end you need to configure the reporting module on the server.
+The required configuration is described in the [Server module](../../03_server-modules/10_integration/11_data-reporting.md).
 
 ### Front-end configuration
 
-To enable this micro front-end in your application, follow the steps below.
+To enable this micro-front-end in your application, follow the steps below.
 
 - Add `@genesislcap/foundation-reporting` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again.
 
