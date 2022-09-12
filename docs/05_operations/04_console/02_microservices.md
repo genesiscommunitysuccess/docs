@@ -51,7 +51,7 @@ There is another set of buttons immediately beneath these controls, where you ca
 * Select **error** to view only messages of the type ERROR. You can switch this off or on.
 * Click on **Download** to download the current log file.
 * Click on **Clear** to clear the current log file (all log messages are removed).
-* **Switch** logging off or on
+* **Switch** logging off or on.
 
  Above the log itself, **Filter Logs** simply enables you to search through the log for specific items.
 
