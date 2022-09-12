@@ -230,7 +230,7 @@ There are multiple ways you can test the back end of your application. It's impo
 ### Genesis Console
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
 2. Enter the IP address of your server, in this case localhost.
-3. Log in with your user name and password as [defined previously](/getting-started/go-to-the-next-level/see-it-work/#adding-a-user-to-login). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
+3. Log in with your user name and password as [defined previously](/getting-started/go-to-the-next-level/see-it-work/#add-a-user). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES** tab.
 5. Filter the **Resource type** to show only Event Handlers.
 
