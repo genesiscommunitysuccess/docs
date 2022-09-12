@@ -55,4 +55,4 @@ For example, on the database, `get` returns a `Maybe`, with the following pos
 
 ### Flowable[​](/database/types-of-api/rxjava/#flowabledirect-link-to-heading)
 
-In the RxJava API, a `Flowable` represents an asynchronous operation that has undefined number of outputs.
+In the RxJava API, a `Flowable` represents an asynchronous operation that has an undefined number of outputs.

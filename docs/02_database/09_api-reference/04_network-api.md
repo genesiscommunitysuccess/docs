@@ -4,7 +4,6 @@ sidebar_label: 'Network API'
 id: network-api
 ---
 
-# Network API
 
 Use these APIs to send and receive messages between micro-services.
 
@@ -18,7 +17,7 @@ See the example below:
 class TestService(@Inject val clientConnectionManager: ClientConnectionsManager) {}
 ```
 
-### GenesisMessageClient[​](/database/api-reference/network-api/#genesismessageclientdirect-link-to-heading)
+## GenesisMessageClient[​](/database/api-reference/network-api/#genesismessageclientdirect-link-to-heading)
 
 `GenesisMessageClient` is a messaging client that can be obtained using `ClientConnectionManager`. Here is an example:
 
@@ -31,11 +30,11 @@ class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnecti
 }
 ```
 
-#### Constructor[​](/database/api-reference/network-api/#constructordirect-link-to-heading)
+### Constructor[​](/database/api-reference/network-api/#constructordirect-link-to-heading)
 
 GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration: NetworkConfiguration)
 
-#### Functions[​](/database/api-reference/network-api/#functionsdirect-link-to-heading)
+### Functions[​](/database/api-reference/network-api/#functionsdirect-link-to-heading)
 
 | Name | Signature |
 | --- | --- |
@@ -57,7 +56,7 @@ GenesisMessageClient(address: String, port: Int, secure: Boolean, configuration:
 | suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(message: I, timeout: Int = configuration.reqRepTimeout,): O?` |
 | suspendRequest | `suspend inline fun <reified I : Inbound, reified O : Outbound> suspendRequest(messageWorkflow: DataWorkflow<I, O>, timeout: Int = configuration.reqRepTimeout,): O?` |
 
-#### Properties[​](/database/api-reference/network-api/#propertiesdirect-link-to-heading)
+### Properties[​](/database/api-reference/network-api/#propertiesdirect-link-to-heading)
 
 | Name | Summary |
 | --- | --- |
@@ -88,22 +87,22 @@ class TestAuthManagerService(@Inject val clientConnectionManager: ClientConnecti
 }
 ```
 
-### GenesisMessageHandler[​](/database/api-reference/network-api/#genesismessagehandlerdirect-link-to-heading)
+## GenesisMessageHandler[​](/database/api-reference/network-api/#genesismessagehandlerdirect-link-to-heading)
 
 GenesisMessageHandler enables you to attach listeners to servers and clients.
 
-#### Functions[​](/database/api-reference/network-api/#functionsdirect-link-to-heading-1)
+### Functions[​](/database/api-reference/network-api/#functionsdirect-link-to-heading-1)
 
 | Name | Signature |
 | --- | --- |
 | addListener | `fun addListener(listener: GenesisMessageListener<V>)` |
 | removeListener | `fun removeListener(listener: GenesisMessageListener<V>)` |
 
-### GenesisMessageListener[​](/database/api-reference/network-api/#genesismessagelistenerdirect-link-to-heading)
+## GenesisMessageListener[​](/database/api-reference/network-api/#genesismessagelistenerdirect-link-to-heading)
 
 `GenesisMessageListener` is a functional interface with method `onNewMessage`, which listens for any new messages. `@FunctionalInterface public interface GenesisMessageListener<V extends GenesisMessage>`
 
-#### onNewMessage[​](/database/api-reference/network-api/#onnewmessagedirect-link-to-heading)
+### onNewMessage[​](/database/api-reference/network-api/#onnewmessagedirect-link-to-heading)
 
 This method is called when a new message is received.
 

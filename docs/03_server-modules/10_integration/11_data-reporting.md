@@ -16,7 +16,7 @@ import Reporting from '../../resource/reporting_mf.md'
 
 ### Front-end configuration
 
-See the web section of the documentation to [see the micro-frontend documentation](../../04_front-end/05_micro-front-ends/02_front-end-reporting.md).
+See the web section of the documentation to [see the micro front-end documentation](../../04_front-end/05_micro-front-ends/02_front-end-reporting.md).
 
 ## Server configuration
 

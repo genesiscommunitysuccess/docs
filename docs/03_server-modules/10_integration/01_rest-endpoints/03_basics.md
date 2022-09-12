@@ -67,7 +67,7 @@ Sample response:
 }
 ```
 
-Now that the `SESSION_AUTH_TOKEN` has been returned, you must add it to every future request, except `EVENT_LOGIN_REFRESH` and `EVENT_LOGOUT`, more on that later. 
+Now that the `SESSION_AUTH_TOKEN` has been returned, you must add it to every future request, except `EVENT_LOGIN_REFRESH` and `EVENT_LOGOUT`: more on that later. 
 
 ## Data Server
 

@@ -4,7 +4,7 @@ sidebar_label: 'Introduction'
 id: introduction
 ---
 
-In this area, we'll look at the standardised message format sent between Genesis processes.
+In this area, we'll look at the standard message format sent between Genesis processes.
 
 
 - [GenesisSet](/server-modules/inter-process-messages/genesisSet/) - a generic message format sent between Genesis processes

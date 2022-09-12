@@ -16,7 +16,7 @@ Genesis supports different ways of interacting with the database. Regardless of 
 | Class to import | `AsyncEntityDb` \ `RxEntityDb` | `[TableName]AsyncRepository` \ `[TableName]Rx3Repository` | `RxDb` |
 | Type safe read and write | ✔️ | ✔️ | ❌ |
 | Type safe write result | ✔️ | ❌ | ❌ |
-| Returns data as | [table](/database/data-types/table-entities//) or [view](/database/data-types/views-entities/) entities | [table](/database/data-types/table-entities/) or [view](/database/data-types/views-entities//) entities | [DbRecord](/database/data-types/dbrecord/) |
+| Returns data as | [table](/database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities | [table](/database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities | [DbRecord](/database/data-types/dbrecord/) |
 | Writes data as | [table](/database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities  | [table](/database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities | [DbRecord](/database/data-types/dbrecord/) |
 | References indexes as | [index entities](/database/data-types/index-entities/) | Generated methods | [DbRecord](/database/data-types/dbrecord/) and `String` |
 | Programming interface | [Async](/database/types-of-api/async/) or [RxJava](/database/types-of-api/rxjava/) | [Async](/database/types-of-api/async/) or [RxJava](/database/types-of-api/rxjava/) | [RxJava](/database/types-of-api/rxjava/) |

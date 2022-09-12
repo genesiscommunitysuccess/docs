@@ -40,8 +40,8 @@ The `plugins` tag enables the plugin, and the `fixConfiguration` tag specifies t
 
 Enabling the plugin in a streamer definition enables the `fixStream` definition.
 
-**Fix Streams**:
-Fix Streams are enhanced stream definitions that come with a few useful defaults, enhanced fixed handling and automatic conversion to GenesisSet.
+**FIX Streams**:
+FIX Streams are enhanced stream definitions that come with a few useful defaults, enhanced fixed handling and automatic conversion to GenesisSet.
 
 #### Types of fixStream
 There are three separate types of fixStream configuration:
@@ -113,7 +113,7 @@ The return values are always nullable. Any quick fix date type will automaticall
 
 `encodeInGenesisSet`
 
-Creates genesis set with FIX_VERSION, MESSAGE_TYPE and FIX_STRING keys, based on calling fix message
+Creates genesis set with FIX_VERSION, MESSAGE_TYPE and FIX_STRING keys, based on calling FIX message
 
 ```kotlin
 message.encodeInGenesisSet()
@@ -121,7 +121,7 @@ message.encodeInGenesisSet()
 
 `createFieldWithDefault`
 
-Creates a field with default value for provided fix message tag.
+Creates a field with default value for provided FIX message tag.
 
 ```kotlin
 message.createFieldWithDefault(fixMessageTag)
