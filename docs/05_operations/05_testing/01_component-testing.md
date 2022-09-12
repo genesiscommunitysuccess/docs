@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 ## Component testing
 
-There are two easy ways of testing components in your application.
+There are two easy ways of testing components in your application:
 
 - using the Genesis Console
 - using an API client
@@ -50,7 +50,7 @@ Whichever client you are using, you need to log in before you can send test requ
 For example, to login using Insomnia:
 1. Create a new query in Insomnia.
 2. In front of the url, set the call to **POST**.
-3. For the url, you need to supply your server instance, then **:9064** (which sends you to the application's Router), and then **event-login-auth**. For example:
+3. For the url, you need to supply your server instance, then **:9064** (in order to send you to the application's Router), and then **event-login-auth**. For example:
 **https://test-mynewapp:9064/event-login-auth**
 4. Set the Body to JSON and insert the message below (substituting your correct user name and password) in the main body. 
 

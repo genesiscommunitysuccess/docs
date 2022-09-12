@@ -119,7 +119,7 @@ To write a database test, begin by extending `AbstractDatabaseTest`, and overwri
 
 In the first instance, we are using a **production directory**.
 
-- in kotlin, through the `rxDb` property
+- in Kotlin, through the `rxDb` property
 - in Java, using the `getRxDb()` method
 
 The test makes sure there are no records in the `USER` table. In both languages, the `RxDb` is available.

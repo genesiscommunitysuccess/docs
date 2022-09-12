@@ -12,7 +12,7 @@ Linux system administration experience.
 
 ### Transferring the build artifacts
 
-After whatever build process is finished, the result is a build artifacts ready to be installed.  At present, Genesis
+After a build process is finished, the result is a build artifacts ready to be installed.  At present, Genesis
 framework applications are build as ZIP files ready to be copied to and unzipped on the target host(s).  The
 application's developer will be able to advise which is the correct ZIP files.
 
@@ -41,7 +41,7 @@ drwxr-xr-x  2.0 unx        0 b- defN 22-Jul-10 16:24 genesis/bin/
 
 #### Application paths
 
-The default application install path for Genesis built applications is chosen to divide application up (for when more
+The default application install path for Genesis built applications is chosen to divide the application up (for when more
 than one application is installed on a host) and to manage versions.  For portability, Genesis application artifacts
 represent complete installs, including everything they need inside one directory tree.
 
@@ -112,7 +112,7 @@ only the given environment config is provide, or unified config, where each sepa
 config.
 
 Each approach has its virtues.  Separate config maintains separation between environments.  Unified config provides a
-single artifact for all environments (which helps being certain that what is live, is what was tested).
+single artifact for all environments (this helps to confirm that what is live, is what was tested).
 
 This is also a ZIP file, containing relative paths (the top-level directory is always "site-specfic").
 

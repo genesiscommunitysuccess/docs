@@ -23,7 +23,7 @@ Go to the URL provided and enter the hostname. Click on **Connect to host**.
 Then enter your username and password and click on **Login**.
 
 ## Dashboard
-By default, you see the Dashboard when you log in. This has separate graphics showing CPU usage and memory usage. (You can scroll down to view CPU usage, of necessary.) The CPU usage chart also shows how many processes are running and how many are stopped.
+By default, you see the Dashboard when you log in. This has separate graphics showing CPU usage and memory usage. (You can scroll down to view CPU usage, if necessary.) The CPU usage chart also shows how many processes are running and how many are stopped.
 
 ![](/img/con-dashboard.png)
 

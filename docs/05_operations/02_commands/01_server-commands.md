@@ -193,7 +193,7 @@ The **processes.xml** file looks like this:
 </configuration>
 ```
 
-Each process property is defined in here, including JAVA arguments, configuration files, and scripts.
+Each process property is defined in here, including Java arguments, configuration files, and scripts.
 
 The `dependency` tag defines the processes that the current process is dependent on. In the above example, the GENESIS_AUTH_PERMS process will start after all its dependencies have started.
 
@@ -592,7 +592,7 @@ GetNextSequenceNumbers
 
 ## GetSequenceCount
 
-This gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by the `SetSequence` script (see below)
+This gets the current sequence number for all the sequences in the system. The values can be printed on screen or written to a file so they can be reused by the `SetSequence` script (see below).
 
 ### Syntax
 
@@ -661,7 +661,7 @@ SetAutoIncrement
 
 ## GenesisRun
 
-This is a python script wrapper for Genesis scripts.
+This is a Python script wrapper for Genesis scripts.
 
 'GenesisRun` will attempt to find a script to execute within the Genesis folder structure (site-specific or scripts).
 
