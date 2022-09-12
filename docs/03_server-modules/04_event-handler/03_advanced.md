@@ -57,7 +57,7 @@ Add `CustomTradeEventReply` under **{app-name}-messages** and assemble. Once you
     }
 ```
 
-The following code assumes you have built your fields and tables after you created your `TradeEvent` under **jvm/{app-name}-config** with a primary key of `tradeId`. If intelliJ can't find you `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](/getting-started/learn-the-basics/data-model/)
+The following code assumes you have built your fields and tables after you created your `TradeEvent` under **jvm/{app-name}-config** with a primary key of `tradeId`. If intelliJ can't find you `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](/getting-started/learn-the-basics/data-model/).
 
 ### onException
 

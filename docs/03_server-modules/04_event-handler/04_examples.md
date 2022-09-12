@@ -93,7 +93,7 @@ to an Event Handler.
 ```
 
 ### fixed permissions
-And now an example with [fixed permissions](http://localhost:3000/server-modules/event-handler/advanced/#permissioning-and-permissioncodes).
+And now an example with fixed permissions.
 
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {

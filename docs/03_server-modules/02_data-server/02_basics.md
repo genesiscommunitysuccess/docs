@@ -141,7 +141,7 @@ lmdbAllocateSize = 512.MEGA_BYTE()
 ```
 
 ### Query-level global settings
-The following settings can be applied at a query-level
+The following settings can be applied at a query-level.
 
 `defaultCriteria`
 This represents the default criteria for the query. Defaults to `null`.

@@ -211,7 +211,7 @@ security {
 ## Message flows
 
 Security messages can be split into three categories.
-- Pre-authentication (not used?)
+- Pre-authentication
 - Authentication
 - Post-authentication
 

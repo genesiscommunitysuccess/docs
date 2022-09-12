@@ -154,7 +154,7 @@ Fill variables are intended to fill a larger area, commonly a component backgrou
 
 #### Accent fill
 
-The closest colors from the supplied palette that can be used for component states. For instance, colors needed to support white text and a 14px font (which requires 4.5:1 contrast).
+The closest colors from the supplied palette that can be used for component states. For instance, colors needed to support white text and a 14px font (requires 4.5:1 contrast).
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |

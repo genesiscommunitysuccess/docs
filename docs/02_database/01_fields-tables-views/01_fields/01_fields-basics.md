@@ -58,7 +58,7 @@ If the code has already been generated - typically, if you are making changes to
 
 More specifically, when you build, this generates a duplication warning if the fields are defined in the same way, or an error if they are defined differently. If the duplication is between your own field and one you have inherited from another module, make sure you change the name of your own field, not the one from the other module.
 
-When you define a new field, it is good practice to run `codegen:generateSysDef`. This will generate code based on the fields you have defined, and you will be able to use intellisense to pick this new field within table definitions.
+When you define a new field, it is good practice to run `codegen:generateSysDef`. This will generate code based on the fields you have defined, and you will be able to use Intellisense to pick this new field within table definitions.
 
 ### Using the maxSize parameter 
 

@@ -17,12 +17,12 @@ To define a rule, you need to insert a row into the DYNAMIC_RULE table. This tab
 | NAME | Name of the Rule |
 | DESCRIPTION | Simple description of the function of the rule |
 | USER_NAME | The User Name that will be used to perform the operation / null implies system |
-| RULE_TABLE | The table to listen to for changes, eg |
+| RULE_TABLE | The table to listen to for changes, e.g. |
 | RULE_STATUS | This is either "ENABLED" or "DISABLED" and respectively enables or disables the rule  |
-| RULE_EXPRESSION | This is a [groovy expression](https://groovy-lang.org/syntax.html) which is evaluated when their is a table change on RULE_TABLE, if this evaluates to true, then the RESULT_EXPRESSION logic is activated eg `(QUANTITY > 500)` |
-| PROCESS_NAME | Process Name to send the event  eg POSITION_APP_EVENT_HANDLER |
+| RULE_EXPRESSION | This is a [groovy expression](https://groovy-lang.org/syntax.html), which is evaluated when there is a table change on RULE_TABLE, if this evaluates to true, then the RESULT_EXPRESSION logic is activated e.g. `(QUANTITY > 500)` |
+| PROCESS_NAME | Process Name to send the event  e.g. POSITION_APP_EVENT_HANDLER |
 | MESSAGE_TYPE | The Message Type that will be defined |
-| RESULT_EXPRESSION | This is a [groovy expression](https://groovy-lang.org/syntax.html) which should set on the MESSAGE Object that is defined in MESSAGE_TYPE eg `(POSITION_ID = POSITION_ID)`|
+| RESULT_EXPRESSION | This is a [groovy expression](https://groovy-lang.org/syntax.html), which should set on the MESSAGE Object that is defined in MESSAGE_TYPE e.g. `(POSITION_ID = POSITION_ID)`|
 
 :::note
 Groovy expressions need to be surrounded by brackets.

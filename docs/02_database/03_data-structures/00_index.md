@@ -6,14 +6,14 @@ id: data-structures
 
 [Introduction](/database/data-structures/data-structures/)  | [Tables](/database/data-structures/tables/) |  [Indices](/database/data-structures/indices/) | [Views](/database/data-structures/views/) 
 
-The genesis database supports [table](https://internal-web/secure/reference/developer/api/database/concepts/data-structure/tables/) or [view](https://internal-web/secure/reference/developer/api/database/concepts/data-structure/views/). Tables contain rows of data of the same type. The data in tables support read, write and subscribe operations. A view represents a number of tables joined together. Views support read and subscribe operations.
+The genesis database supports [table](/database/fields-tables-views/tables/) or [view](/database/fields-tables-views/views/). Tables contain rows of data of the same type. The data in tables support read, write and subscribe operations. A view represents a number of tables joined together. Views support read and subscribe operations.
 
-|  | [Tables](https://internal-web/secure/reference/developer/api/database/concepts/data-structure/tables/) | [Indices](https://internal-web/secure/reference/developer/api/database/concepts/data-structure/indices/) | [View](https://internal-web/secure/reference/developer/api/database/concepts/data-structure/views/) |
+|  | [Tables](/database/data-structures/tables/)  | [Indices](/database/data-structures/indices/) | [View](/database/data-structures/views/)  |
 | --- | :-- | :-- | :-- |
 | Has typesafe entity | ✔️ | ✔️ | ✔️ |
 | Can be represented as `DbRecord` | ✔️ | ✔️ | ❌ |
-| Supports [read operations](https://internal-web/secure/reference/developer/api/database/concepts/operations/read/) | ✔️ | ✔️ | ✔️ |
-| Supports [write operations](https://internal-web/secure/reference/developer/api/database/concepts/operations/write/) | ✔️ | Delete Only | ❌ |
-| Supports [subscribe operations](https://internal-web/secure/reference/developer/api/database/concepts/operations/subscribe/) | ✔️ | ❌ | [single cardinality only](https://internal-web/secure/reference/developer/api/database/concepts/data-structure/views/#cardinality) |
-| [Defined in](https://internal-web/secure/creating-applications/defining-your-application/data-model/data-model-overview/) | [`*-tables-dictionary.kts`](https://internal-web/secure/creating-applications/defining-your-application/data-model/tables/tables-define/) | [`*-tables-dictionary.kts`](https://internal-web/secure/creating-applications/defining-your-application/data-model/tables/tables-define/) | [`*-view-dictionary.kts`](https://internal-web/secure/creating-applications/defining-your-application/data-model/views/views-define/) |
+| Supports [read operations](/database/database-concepts/read/) | ✔️ | ✔️ | ✔️ |
+| Supports [write operations](/database/database-concepts/write/) | ✔️ | Delete Only | ❌ |
+| Supports [subscribe operations](/database/database-concepts/subscribe/) | ✔️ | ❌ | [single cardinality only](/database/data-structures/views/#cardinality) |
+| [Defined in](/database/fields-tables-views/fields-tables-views/) | [`*-tables-dictionary.kts`](/database/fields-tables-views/tables/tables-basics/) | [`*-tables-dictionary.kts`](/database/fields-tables-views/tables/tables-basics/) | [`*-view-dictionary.kts`](/database/fields-tables-views/views/views-examples/) |
 | Supports indices | ✔️ | ❌ | ✔️ (root table only) |
