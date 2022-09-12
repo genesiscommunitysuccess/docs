@@ -141,7 +141,7 @@ For a more detailed explanation of **GENESIS_NOTIFY** and **GATEWAY**, see our [
 
 ### Add connection details
 
-The first step is to configure Notify to use email server. Under **server/jvm/positions-app-tutorial-script-config/src/main/resources/scripts** create new file called **positions-app-tutorial-notify.kts**. Add the following code to it:
+The first step is to configure Notify to use the email server. Under **server/jvm/positions-app-tutorial-script-config/src/main/resources/scripts** create new file called **positions-app-tutorial-notify.kts**. Add the following code to it:
 
 ```kotlin title="positions-app-tutorial-notify.kts"
 notify {
