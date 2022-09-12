@@ -17,11 +17,10 @@ class DataServerTests : AbstractGenesisTestSupport<Reply<*>>(
     GenesisTestConfig {
         addPackageName("global.genesis.dataserver.pal")
         genesisHome = "/GenesisHome/"
-        scriptFileName = "trade-101-dataserver.kts"
+        scriptFileName = "positions-app-tutorial-dataserver.kts"
         initialDataFile = "seed-data.csv"
     }
 ) {
-    override fun createDictionary(): GenesisDictionary = prodDictionary()
 
     private var ackReceived = false
     private var initialData: GenesisSet = GenesisSet()
@@ -47,10 +46,20 @@ class DataServerTests : AbstractGenesisTestSupport<Reply<*>>(
             }
         }
     }
-}
 ```
 
 There is more information about `AbstractGenesisTestSupport` in the section on [Integration testing](/operations/testing/integration-testing/#abstractgenesistestsupport).
+
+Let's load some test data into the `seed-data.csv` in the root of the resources folder for your tests.
+
+```text
+#POSITION
+POSITION_ID,INSTRUMENT_ID,QUANTITY,NOTIONAL,VALUE,PNL
+000000000000001PSLO1,INSTRUMENT_TEST1,1,1111.11,1111.11,1111.11
+000000000000001PSLO2,INSTRUMENT_TEST2,1,2222.22,2222.22,2222.22
+000000000000001PSLO3,INSTRUMENT_TEST3,1,3333.33,3333.33,3333.33
+```
+
 
 We are now ready to begin writing tests for our Data Server.
 
@@ -61,39 +70,53 @@ We then need to trigger a change on the database. Our Data Server will see this 
 ```kotlin
 @Test
 fun `data server passes update`(): Unit = runBlocking {
-    messageClient.sendMessage(
-        GenesisSet.genesisSet {
-            MessageType.MESSAGE_TYPE with "DATA_LOGON"
-            MessageType.DETAILS with GenesisSet.genesisSet {
-                MessageType.DATASOURCE_NAME with "POSITION"
+        messageClient.sendMessage(
+            GenesisSet.genesisSet {
+                MessageType.MESSAGE_TYPE with "DATA_LOGON"
+                MessageType.DETAILS with GenesisSet.genesisSet {
+                    MessageType.DATASOURCE_NAME with "ALL_POSITIONS"
+                }
             }
+        )
+        Awaitility.waitAtMost(30, TimeUnit.SECONDS).until(ackAndDataReceived())
+
+        // We pull out the initial data
+        val rows = initialData.getArray<GenesisSet>("ROW")!!.sortedBy { it?.getString("POSITION_ID") }
+        val firstRow = rows.first() ?: fail("Missing first row in initial data")
+        val firstRowRef = firstRow.getGenesisSet("DETAILS")!!.getString("ROW_REF")!!
+        assertEquals(3, rows.size)
+        assertEquals("000000000000001PSLO1", firstRow.getString("POSITION_ID")!!)
+        assertEquals(1111.11, firstRow.getDouble("VALUE")!!)
+
+        // We update the database to trigger our Data Server into action
+        entityDb.updateBy(Position.byId("000000000000001PSLO1")) {
+            value = 1234.56
         }
-    )
-    Awaitility.waitAtMost(30, TimeUnit.SECONDS).until(ackAndDataReceived())
+        Awaitility.await().until(ackDataAndUpdateReceived())
 
-    // We pull out the initial data
-    val rows = initialData.getArray<GenesisSet>("ROW")!!.sortedBy { it?.getString("POSITION_ID") }
-    val firstRow = rows.first() ?: fail("Missing first row in initial data")
-    val firstRowRef = firstRow.getGenesisSet("DETAILS")!!.getString("ROW_REF")!!
-    assertEquals(3, rows.size)
-    assertEquals("000000000000001PSLO1", firstRow.getString("POSITION_ID")!!)
-    assertEquals(999.0, firstRow.getDouble("PRICE")!!)
+        // We consume the update
+        val updateRows = updateData.getArray<GenesisSet>("ROW")!!
+        val updateRow = updateRows.first()!!
 
-    // We update the database to trigger our Data Server into action
-    entityDb.updateBy(Position.byId("000000000000001PSLO1")) {
-        price = 1234.56
+        assertEquals(1, updateRows.size)
+        val updateRowRef = firstRow.getGenesisSet("DETAILS")?.getString("ROW_REF")!!
+        assertEquals(firstRowRef, updateRowRef)
+        assertEquals(1234.56, updateRow.getDouble("VALUE")!!)
     }
-    Awaitility.await().until(ackDataAndUpdateReceived())
 
-    // We consume the update
-    val updateRows = updateData.getArray<GenesisSet>("ROW")!!
-    val updateRow = updateRows.first()!!
-
-    assertEquals(1, updateRows.size)
-    val updateRowRef = firstRow.getGenesisSet("DETAILS")?.getString("ROW_REF")!!
-    assertEquals(firstRowRef, updateRowRef)
-    assertEquals(1234.56, updateRow.getDouble("PRICE")!!)
+/**
+ * Check ack and initial data received.
+ *
+ * @return true if ack and initial data received
+ */
+private fun ackAndDataReceived(): Callable<Boolean>? {
+    return Callable { ackReceived && !initialData.isEmpty }
 }
+private fun ackDataAndUpdateReceived(): Callable<Boolean> {
+    return Callable { ackReceived && !initialData.isEmpty && !updateData.isEmpty }
+}
+
+
 ```
 
 ## Manual testing
