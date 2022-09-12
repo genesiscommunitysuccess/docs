@@ -1,7 +1,7 @@
 ---
 id: artifact-access
-title: 'Artifact Access'
-sidebar_label: 'Artifact Access'
+title: 'Artifact access'
+sidebar_label: 'Artifact access'
 sidebar_position: 1
 
 ---
@@ -11,7 +11,7 @@ This document covers the Genesis artifact store, which is an instance of JFrog's
 
 ## Obtaining credentials
 
-Genesis provides clients with a username and password to access.  Our Customer Success team can arrange this.
+Genesis provides clients with a username and password for access.  Our Customer Success team can arrange this.
 Log in with those credentials here:  [Genesis Artifactory](https://genesisglobal.jfrog.io/ui/login/)
 
 Normally, these credentials will give access to four categories of artifact:
@@ -37,7 +37,7 @@ URLs as gradle dependencies.
 ## Web artifacts
 
 Web server artifacts from Genesis are packaged as [NPMs](https://docs.npmjs.com/about-npm) and 
-[scoped](https://docs.npmjs.com/about-scopes) as @genesislcap/{package}.  The Genesis Artifactory is the primary
+[scoped](https://docs.npmjs.com/about-scopes) as @genesislcap/{package}. The Genesis Artifactory is the primary
 source of that scope.
 
 We offer both our scoped packages and a remote to the npmjs.org repository via a single repository, available
@@ -57,5 +57,5 @@ There are a number of Genesis user community uploads in a Genesis-curated reposi
 
 ## Private repositories
 
-If you want Genesis to build and host artifacts for yourself we will create a repository dedicated to you, and additionaly give you read-write access to the repository. The URL for it will be provided.
+If you want Genesis to build and host artifacts for you, we will create a repository dedicated to you; The URL will be provided, and you will have read-write access to the repository. T
 

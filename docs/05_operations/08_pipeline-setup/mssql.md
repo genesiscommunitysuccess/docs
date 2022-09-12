@@ -13,7 +13,7 @@ CDC capabilities are only supported by MS SQL Server 2016 and later Standard and
 
 #### MS SQL in Docker
 
-When using an MS SQL docker image, pass the environment variable `MSSQL_AGENT_ENABLED=true` on startup to ensure that the SQL agent is running.
+When using an MS SQL docker image, pass the environment variable `MSSQL_AGENT_ENABLED=true` on start-up to ensure that the SQL agent is running.
 
 #### Remote shell on running instance
 
@@ -25,7 +25,7 @@ Remote into the instance and open a bash terminal as the root user. Enable the a
 
 #### SQL Server Management Studio
 
-Use the following documentation to [Start, Stop, or Pause the Service](https://docs.microsoft.com/en-us/sql/ssms/agent/start-stop-or-pause-the-sql-server-agent-service?view=sql-server-ver16).
+Use the following documentation to [Start, Stop, or Pause the service](https://docs.microsoft.com/en-us/sql/ssms/agent/start-stop-or-pause-the-sql-server-agent-service?view=sql-server-ver16).
 
 ### Create a database
 
@@ -37,7 +37,13 @@ CREATE DATABASE TestDB
 
 ### Enable CDC on the database
 
-Using [Transact-SQL](https://docs.microsoft.com/en-us/sql/ssms/scripting/sqlcmd-run-transact-sql-script-files?view=sql-server-ver16), insuring you are a member of sysadmin; you are a db_owner of the database and the SQL Server Agent is running, run the following:
+Make sure 
+
+- you are a member of sysadmin
+- you are the db_owner of the database
+- the SQL Server Agent is running
+
+Using [Transact-SQL](https://docs.microsoft.com/en-us/sql/ssms/scripting/sqlcmd-run-transact-sql-script-files?view=sql-server-ver16), run the following:
 
 ```sql
 USE MyDB
@@ -64,7 +70,13 @@ CREATE TABLE accounts (user_id int PRIMARY KEY,username varchar ( 50 ) UNIQUE NO
 
 ### Enable CDC on the table
 
-Using [Transact-SQL](https://docs.microsoft.com/en-us/sql/ssms/scripting/sqlcmd-run-transact-sql-script-files?view=sql-server-ver16), insuring you have the db_owner role and the SQL Server Agent is running, run the following:
+Make sure 
+
+- you are a member of sysadmin
+- you are the db_owner of the database
+- the SQL Server Agent is running
+
+Using [Transact-SQL](https://docs.microsoft.com/en-us/sql/ssms/scripting/sqlcmd-run-transact-sql-script-files?view=sql-server-ver16), run the following:
 
 ```sql
 USE MyDB
@@ -82,7 +94,7 @@ GO
 
 ### Verify that the user has access to CDC table
 
-An optional step; Run the following stored procedure using Transact-SQL. Ensure that the response is not empty.
+An optional step; run the following stored procedure using Transact-SQL. Ensure that the response is not empty.
 
 ```sql
 USE MyDB;

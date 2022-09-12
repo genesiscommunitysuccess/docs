@@ -80,7 +80,7 @@ sqlplus sys/top_secret@//localhost:1521/ORCLCDB as sysdba <<- EOF
 EOF
 ```
 
-Create a database user with the following script, substituting `genesis` and `test` for your desired username and password, and again `top_secret` for the `sys` password set up on the database.
+Create a database user with the following script, substituting your desired username and password for `genesis` and `test`, and also the `sys` password set up on the database for `top_secret`.
 
 ```bash
 #!/bin/sh
