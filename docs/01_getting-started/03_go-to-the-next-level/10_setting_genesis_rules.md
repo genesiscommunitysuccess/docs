@@ -24,7 +24,7 @@ The goal of this section is to:
 An Evaluator is a process that runs cron jobs (static) and conditional (dynamic) rules.
 To start, create a process called `POSITIONS_APP_TUTORIAL_EVALUATOR` and add it to your **positions-app-tutorial-processes.xml** file inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. Here is the code you need to add:
 
-```xml
+```xml title="positions-app-tutorial-processes.xml"
 <process name="POSITIONS_APP_TUTORIAL_EVALUATOR">
     <start>true</start>
     <groupId>POSITIONS_APP_TUTORIAL</groupId>
@@ -38,7 +38,7 @@ To start, create a process called `POSITIONS_APP_TUTORIAL_EVALUATOR` and add it 
 
 Add the `POSITIONS_APP_TUTORIAL_EVALUATOR` to your **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** with the code below.
 
-```xml
+```xml title="positions-app-tutorial-service-definitions.xml"
 <service host="localhost" name="POSITIONS_APP_TUTORIAL_EVALUATOR" port="11003"/>
 ```
 
@@ -58,7 +58,7 @@ data class PositionCancel(val positionId: String)
 
 Next we need to create an `eventHandler` codeblock that will trigger Notify to send an email. Navigate to **positions-app-tutorial-script-config** and insert the following `eventHandler` codeblock:
 
-```kotlin
+```kotlin title="positions-app-tutorial-eventhandler.kts"
 eventHandler<PositionCancel>(name = "POSITION_CANCEL", transactional = true) {
     onCommit { event ->
         val positionId = event.details.positionId
@@ -88,16 +88,16 @@ Next we are going to load our rule definitions into the database.
 ### Defining the rule
 Now we can load the dynamic rule csv below into the `DYNAMIC_RULE` table.
 
-Navigate to **home/genesis/run/temp-data/** in your WSL terminal and create a file called **dynamic-rule.csv** with the following:
+Navigate to **/home/genesis/run/temp-data/** in your WSL terminal and create a file called **dynamic-rule.csv** with the following:
 
-```csv
+```csv title="dynamic-rule.csv"
 NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
 MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),JaneDee,POSITIONS_APP_TUTORIAL_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
 ```
 
 The second is a csv file that enables you to test the rule. Create another file called **position.csv** with the following data:
 
-```csv
+```csv title="position.csv"
 POSITION_ID,INSTRUMENT_ID,QUANTITY,NOTIONAL
 1,1,600,1100000
 ```
@@ -105,13 +105,13 @@ POSITION_ID,INSTRUMENT_ID,QUANTITY,NOTIONAL
 ### Loading the rule into the database
 Now we need to import this rule into our `DYNAMIC_RULE` table. Run the following command in your WSL terminal:
 
-```bash
+```bash title="From the WSL Distribution"
 SendIt -f dynamic-rule.csv -t DYNAMIC_RULE
 ```
 
 To validate the file was imported correctly, run `DbMon`, `table DYNAMIC_RULE` then `search 1`. You should see the following:
 
-```bash
+```bash title="Contents of table DYNAMIC_RULE"
 Field Name                               Value                                    Type
 ===========================================================================================
 TIMESTAMP                                2022-09-06 14:00:49.771(n:0,s:2407)      NANO_TIMESTAMP
@@ -137,20 +137,43 @@ Ok now we have configured our evaluator, defined our bussiness logic and loaded 
 
 ## Configure Notify
 
-For a more detailed explanation of GENESIS_NOTIFY and GATEWAY, see our [Integration section](/server-modules/integration/notify/configuring/).
+For a more detailed explanation of **GENESIS_NOTIFY** and **GATEWAY**, see our [Integration section](/server-modules/integration/notify/configuring/).
 
-The **GENESIS_NOTIFY** module does not run by default. To change this, we are adding a customised module to our project. To do that, create a process called `POSITIONS_APP_TUTORIAL_NOTIFY` and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. Use the code below.
+### Add connection details
 
-The **GENESIS_NOTIFY** module does not run by default. To change this, we are going to add it to our **positions-app-tutorial-processes.xml**.
+The first step is to configure Notify to use email server. Under **server/jvm/positions-app-tutorial-script-config/src/main/resources/scripts** create new file called **positions-app-tutorial-notify.kts**. Add the following code to it:
 
-```xml
+```kotlin title="positions-app-tutorial-notify.kts"
+notify {
+
+    email {
+        smtpHost = "smtp.freesmtpservers.com"
+        smtpPort = 25
+        smtpUser = ""
+        smtpPw = ""
+        smtpProtocol = "SMTP"
+        systemDefaultUserName = "admin@positions.app"
+        systemDefaultEmail = "admin@positions.app"
+    }
+}
+```
+
+:::note
+We use freely available SMTP server for testing purposes. Change the email configuration accordingly when developing an enterprise grade application.
+:::
+
+### Enable Notify
+
+The **GENESIS_NOTIFY** module does not run by default. To change this, we are adding a customised module to our project. To do that, create a process called `POSITIONS_APP_TUTORIAL_NOTIFY` and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. The process definition should reference the Notify script created in the previous paragraph. Use the code below.
+
+```xml title="positions-app-tutorial-processes.xml"
 <process name="POSITIONS_APP_TUTORIAL_NOTIFY">
     <start>true</start>
     <groupId>GENESIS</groupId>
     <options>-Xmx512m -DXSD_VALIDATE=false</options>
     <module>genesis-notify</module>
     <package>global.genesis.notify</package>
-    <script>genesis-notify.kts</script>
+    <script>positions-app-tutorial-notify.kts</script>
     <language>pal</language>
     <description>Notify Mechanism for sending messages to external systems, such as Email and Symphony</description>
 </process>
@@ -158,29 +181,29 @@ The **GENESIS_NOTIFY** module does not run by default. To change this, we are go
 
 Add the `POSITIONS_APP_TUTORIAL_NOTIFY` process to your **positions-app-tutorial-service-definitions.xml**.
 
-```xml
+```xml title="positions-app-tutorial-service-definitions.xml"
 <service host="localhost" name="POSITIONS_APP_TUTORIAL_NOTIFY" port="11004"/>
 ```
 
 ## Set up GENESIS_NOTIFY in the database
 
 ### Insert a gateway route
-Navigate to **home/genesis/run/temp-data** in your WSL terminal and create a file called **gateway.csv**, in the following [format](/server-modules/integration/notify/email/#gateway).
+Navigate to **/home/genesis/run/temp-data** in your WSL terminal and create a file called **gateway.csv**, in the following [format](/server-modules/integration/notify/email/#gateway).
 
-```csv
+```csv title="gateway.csv"
 GATEWAY_ID,GATEWAY_TYPE,GATEWAY_VALUE,INCOMING_TOPIC
 "EmailDistribution1","EmailDistribution","{ \"emailDistribution\" : { \"to\" : [ ], \"cc\" : [ ], \"bcc\" : [ ] } }",
 ```
 
 Then run:
 
-```bash
+```bash title="From the WSL Distribution"
 SendIt -f gateway.csv -t GATEWAY
 ```
 
 To validate the file was imported correctly, run `DbMon`, `table GATEWAY` then `search 1`. You should see the following:
 
-```bash
+```bash title="Contents of table GATEWAY"
 GATEWAY
 ==================================
 Field Name                               Value                                    Type
@@ -198,9 +221,9 @@ Total Results:  1
 
 ### Insert NOTIFY_ROUTE
 
-Navigate to **home/genesis/run/temp-data** in your WSL terminal and create a file called **notify_route.csv**, in the following [format](/server-modules/integration/notify/email/#notify_route).
+Navigate to **/home/genesis/run/temp-data** in your WSL terminal and create a file called **notify_route.csv**, in the following [format](/server-modules/integration/notify/email/#notify_route).
 
-```csv
+```csv title="notify_route.csv"
 ENTITY_ID,ENTITY_ID_TYPE,TOPIC_MATCH,GATEWAY_ID
 ,"GATEWAY","PositionAlert","EmailDistribution1" 
 ```
@@ -213,7 +236,7 @@ SendIt -f notify_route.csv -t NOTIFY_ROUTE
 
 To check that the file was imported correctly, run `DbMon`, `table NOTIFY_ROUTE` then `search 1`. You should see the following:
 
-```bash
+```bash title="Contents of table NOTIFY_ROUTE"
 NOTIFY_ROUTE
 ==================================
 Field Name                               Value                                    Type
@@ -229,27 +252,7 @@ TOPIC_MATCH                              PositionAlert                          
 Total Results:  1
 ```
 
-## Add connection details to the system definition
-
-Open your **genesis-system-definition.kts** file under **positions-app-tutorial-site-specific/src/main/resources/cfg** and add the details of the connection for the SMTP server:
-
-```kotlin
-package genesis.cfg
-
-systemDefinition {
-    global {
-        ...
-        item(name = "SYSTEM_DEFAULT_USER_NAME", value = "" )
-        item(name = "SYSTEM_DEFAULT_EMAIL", value = "notifications@freesmtpservers.com" )
-        item(name = "EMAIL_SMTP_HOST", value = "smtp.freesmtpservers.com" )
-        item(name = "EMAIL_SMTP_PORT", value = "25" )
-        item(name = "EMAIL_SMTP_USER", value = "" )
-        item(name = "EMAIL_SMTP_PW", value = "" )
-        item(name = "EMAIL_SMTP_PROTOCOL", value = "SMTP")
-    }
-    ...
-}
-```
+## Build and deploy the application
 
 Now run the following commands in order:
 
@@ -271,13 +274,13 @@ Data dumps need to be switched on for both EVALUATOR and NOTIFY so that we can s
 Run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command for that:
 <!-- TODO: add LogLevel section to Server Commands -->
 
-```shell
+```shell title="From the WSL Distribution"
 LogLevel -p POSITIONS_APP_TUTORIAL_EVALUATOR -DATADUMP_ON -l DEBUG
 LogLevel -p POSITIONS_APP_TUTORIAL_NOTIFY -DATADUMP_ON -l DEBUG
 ```
 
 And then to see the logs run:
-```shell
+```shell title="From the WSL Distribution"
 cd $L
 tail -f POSITIONS_APP_TUTORIAL_EVALUATOR.log
 ```
@@ -291,7 +294,7 @@ So, let's see if that has worked.
 
 Insert the file **POSITION.csv** into the database. This is the file that you prepared earlier; it contains a value that breaches a limit, so it should trigger our event.
 
-```bash
+```bash title="From the WSL Distribution"
 SendIt -f position.csv -t POSITION
 ```
 
@@ -299,7 +302,7 @@ You can see that when the limit is breached, you receive an email automatically.
 
 :::note
 Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the inbox *dev-training@freesmtpserver.com*
-::: -->
+:::
 
 This section showed how to trigger events based on a condition in the database. This enables you to raise alarms on certain conditions or to react to specific states. In the next section you will see how to run static events.
 
