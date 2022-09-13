@@ -39,7 +39,7 @@ So, if your application is called **positions**, the file would be named **posit
 You should also check the Request Server component in your application's system-processes and service-definition files, as described in the [Configuring runtime](/server-modules/request-server/configuring-runtime) page.
 
 :::info
-The following examples in this section assume you have the following fields and tables presents:
+The following examples in this section assume you have the following fields and tables present:
 
 ```kotlin
     field(name = "INSTRUMENT_ID", type = STRING)
