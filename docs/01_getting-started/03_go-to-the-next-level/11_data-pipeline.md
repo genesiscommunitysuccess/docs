@@ -31,7 +31,7 @@ Ingress of files via local file system data pipelines, although a simple way to 
 
 In order to add a CSV local filesystem data pipeline, firstly, add the dependency `genesis-pal-datapipeline` to your **position-app-tutorial-script-config** module. This ensures that you are able to use the data pipeline functionality within your scripts. Ensure that gradle imports the new dependency.
 
-```
+```kotlin
 api("global.genesis:genesis-pal-datapipeline")
 ```
 
