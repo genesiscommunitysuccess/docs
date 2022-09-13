@@ -4,6 +4,8 @@ sidebar_label: 'SSO Authentication'
 id: SSO-authentication
 ---
 
+[Introduction](/server-modules/access-control/introduction)  | [Authentication overview](/server-modules/access-control/authentication-overview) | [Username and Password](/server-modules/access-control/password-authentication) | [SSO](/server-modules/access-control/sso-authentication) | [Authorisation overview](/server-modules/access-control/authorisation-overview) | [Authorisation](/server-modules/access-control/authorisation)
+
 import CodeBlock from '@theme/CodeBlock';
 
 Single sign-on (SSO) authentication uses the underlying SSO technology. SSO is a mechanism that allows a user to be authenticated against a single system, and use that across multiple applications - including those built on the Genesis low-code platform. This has the advantage that a user is required to log in only once, rather than once per system.
@@ -11,11 +13,11 @@ Single sign-on (SSO) authentication uses the underlying SSO technology. SSO is a
 There are two different types of SSO authentication presently supported by the Genesis low-code platform. These are as follows:
 
 * [JWT (JSON Web Token)](https://jwt.io/introduction) SSO
-* [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language)
+* [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language).
 
 ## Configuring SSO
 
-To enable SSO, you will need to configure it in your application's **-auth-preferences.kts** file.
+To enable SSO, you will need to configure it in your _application-name_**-auth-preferences.kts** file.
 
 These following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Password Authentication section](/server-modules/access-control/password-authentication/).
 
@@ -65,10 +67,10 @@ The SSO workflow depends on whether CORS is configured on your internal authenti
 
 If CORS is enabled, the SSO workflow is:
 
-1. An unauthenticated user navigates to the Genesis application. For example: **https://your-subdomain.genesisapplication.com/**
+1. An unauthenticated user navigates to the Genesis application. For example: **https://your-subdomain.genesisapplication.com/**.
 2. The Genesis web platform recognises that SSO is enabled from the subdomain and that the user is not authenticated.
 3. A request is made to the Genesis back end to request the URL for the specific authentication service.
-4. The Genesis web platform makes an http request to your organisation's authentication service, which will include the end user’s internal authentication parameters.
+4. The Genesis web platform makes an HTTPS request to your organisation's authentication service, which will include the end user’s internal authentication parameters.
 5. The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends it back to the Genesis web platform.
 6. With the signed JWT, the Genesis web platform makes an SSO authentication request for the specific organisation. If this is successful, an active Session token is returned.
 
@@ -78,7 +80,7 @@ This set-up uses the browser’s redirect functionality, so the user experience 
 
 If CORS is not enabled, the SSO workflow is:
 
-1. An unauthenticated user navigates to the Genesis application. For example: **https://your-subdomain.genesisapplication.com/**
+1. An unauthenticated user navigates to the Genesis application. For example: **https://your-subdomain.genesisapplication.com/**.
 2. The Genesis web platform recognises that SSO is enabled from the subdomain and that the user is not authenticated.
 3. A request is made to the Genesis back end framework to request the URL for the specific authentication service.
 4. A redirect is triggered for the browser to the internal authentication service, which will include the end user’s internal authentication parameters. A return parameter to **https://your-subdomain.genesisapplication.com/** is also part of the request.
@@ -121,11 +123,13 @@ This workflow is described in more detail in the section on [Front-to-back flow]
 
 ### Definitions
 
+
 | Term | Meaning                                      | Example                                                                                     |
 | --- |----------------------------------------------|---------------------------------------------------------------------------------------------|
-| IDP | Identity Provider                            | The authentication source, for example your your User management solution                   |
-| SP | Service Provider                             | The service for which the user needs to be authenticated, for example a Genesis application |
-| MetaData | Configuration shared between the IDP and SP. | see below                                                                                   |
+| IDP | Identity Provider.                            | The authentication source, for example your your User management solution.                   |
+| SP | Service Provider.                             | The service for which the user needs to be authenticated, for example a Genesis application. |
+| MetaData | Configuration shared between the IDP and SP. | See below.                                                                                   |
+
 
 ```xml
 <?xml version="1.0"?>
@@ -156,14 +160,14 @@ This workflow is described in more detail in the section on [Front-to-back flow]
 
 Before starting, ensure you have access to the IDP metadata (this is generated by the IDP). Once you have checked this, there are two things you need to do:
 
-1. Enable SAML support in the Router.  
+1. Enable SAML support in the Router
 2. Configure SAML.
 
 We shall now look at these in detail.
 
 ### How to enable SAML in the Genesis Router
 
-You must enable SAML on the Genesis Router service. Do this by changing the router **processes.xml** config for the module. The process name is `GENESIS_ROUTER`.
+You must enable SAML on the Genesis Router service. Do this by changing the router config in you _application-name-_**processes.xml** file. The process name is `GENESIS_ROUTER`.
 
 Specifically, you have to add:
 
@@ -186,7 +190,7 @@ You can see these additions in the example below:
 ```
 
 
-Additionally, you need a _application_**-saml-config.kts** file, as below:
+Additionally, you need a _application-name-_**saml-config.kts** file, as below:
 
 ```kotlin
     saml {
@@ -246,12 +250,12 @@ Other endpoints provided are:
 
 ### Enabling users for SAML
 
-To enable users to be able to sign in using SAML, you must add them to the USER, USER_ATTRIBUTES and SSO_USER tables within your Genesis application.
+To enable users to be able to sign in using SAML, you must add them to the `USER`, `USER_ATTRIBUTES` and `SSO_USER` tables within your Genesis application.
 
-In the SSO_USER table:
+In the `SSO_USER` table:
 
-* SSO_METHOD must be set to SAML
-* SSO_SOURCE must be set to the identity provider name defined in the **saml-config.kts** file.
+* `SSO_METHOD` must be set to SAML
+* `SSO_SOURCE` must be set to the identity provider name defined in the **saml-config.kts** file.
 
 The Genesis username should be the user’s email address.
 
@@ -259,8 +263,8 @@ The Genesis username should be the user’s email address.
 
 This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes the following settings:
 
-- `ssoToggle` is set to true in the Genesis application’s `config.ts`, this ensures that the ‘Enable SSO?’ checkbox is displayed on the application's login page
-- 'Enable SSO’ is checked, either manually in the UI, or `ssoEnable` is set to true by default in the config
+- `ssoToggle` is set to true in the Genesis application’s `config.ts`, this ensures that the ‘Enable SSO?’ checkbox is displayed on the application's login page.
+- 'Enable SSO’ is checked, either manually in the UI, or `ssoEnable` is set to true by default in the config.
 - In the front end, the following has been added to `src/routes/config.ts`:
 
 ```javascript
@@ -286,7 +290,7 @@ this.routes.map(
 
 ```
 
-1. The front end hits **ssoListEndpoint** - by default - this is `gwf/saml/list`. (This is configurable).
+1. The front end hits **ssoListEndpoint** - by default - this is `gwf/saml/list` (This is configurable).
 2. **ssoListEndpoint** returns a list of identity providers:
    ```
    [
@@ -296,10 +300,12 @@ this.routes.map(
    ```
 3. Identity providers are parsed and the dropdown is populated on the login page.
 4. The user selects an identity provider using the dropdown (or keeps the preselected default). Then the user clicks the '**SSO Login**' button.
-5. The browser redirects to the **ssoLoginUrl**, which might be, for example: `https://dev-position2/gwf/saml/login?idp=provider1`
+5. The browser redirects to the **ssoLoginUrl**, which might be, for example: `https://dev-position2/gwf/saml/login?idp=provider1`.
 6. The server sends the user to the identity provider’s login page.
 7. The user logs in using their SSO credentials.
-8. The server redirects the client back to the client-app with a new url param: `SSO_TOKEN` .
+
+8. The server redirects the client back to the client-app with a new url param: `SSO_TOKEN`.
+
 9. The front end checks for the presence of an `SSO_TOKEN` url param. If found, it stores it in session storage and uses it to perform an ‘SSO Login’.
 10. The server responds with an ACK and the user is now logged in. If there is an error, a NACK is returned and the login fails.
 
@@ -307,7 +313,7 @@ this.routes.map(
 
 #### Server - setting up local SAML
 
-1. In order to test the SAML flow, first, you need to run SAML locally. Start a SAML docker container: for example:
+In order to test the SAML flow, first, you need to run SAML locally. You can do this using a docker container, for example:
 
 ```bash
 docker run -p 8080:8080 -p 8443:8443 -e SIMPLESAMLPHP_SP_ENTITY_ID=https://localhost/gwf/saml/metadata?idp=test -e SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=https://localhost/gwf/saml/logon?idp=test -e SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE=https://localhost/gwf/saml/logout?idp=test -d kristophjunge/test-saml-idp
@@ -317,7 +323,7 @@ In the above command, you need to replace:
 - _IP_ with the address/IP of your Genesis instance
 - _test_  with the name of the IDP
 
-2. Then, make sure that [auth saml has been added to the GENESIS_ROUTER configuration](/server-modules/access-control/SSO-authentication/#how-to-enable-saml-in-the-genesis-router) in **processes.xml**: for example:
+Then, make sure that auth saml has been added to the genesis router configuration in **processes.xml**, for example:
 
 ```xml
 <process name="GENESIS_ROUTER">
@@ -333,7 +339,7 @@ In the above command, you need to replace:
 </process>
 ```
 
-3. Next, in your application's **site-specific/cfg**, create an _application_**-saml-config.kts file** with SAML details:
+Next, in your application's **jvm/{application-name}-site-specific** directory, create an _application-name-_**saml-config.kts** file with the following SAML details:
 
 ```kotlin
     saml {

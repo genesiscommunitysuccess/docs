@@ -9,6 +9,7 @@ id: examples
 ## Reading from an SFTP server
 
 The example below defines an [SFTP component](https://camel.apache.org/components/3.16.x/sftp-component.html), and shows how you can use properties set in the _application-name_**-camel.kts**, allowing you to have site-specific variables for each instance.
+
 This is particularly useful when integrating with external services where connection details are likely to vary between environments.
 
 ```kotlin
@@ -38,8 +39,7 @@ camel {
 ## Writing to an SFTP server
 
 We can easily invert the above example and instead write files from a local directory to a remote SFTP server.
-While the paths and properties below would need to be replaced with appropriate values (be they hardcoded or derived from system
-definition items) the example below shows how simple the basic routing can be:
+While the paths and properties below would need to be replaced with appropriate values (be they hardcoded or derived from system definition items) the example below shows how simple the basic routing can be:
 
 ```kotlin
 camel {

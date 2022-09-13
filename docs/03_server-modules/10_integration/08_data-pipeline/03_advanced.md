@@ -59,12 +59,6 @@ sources {
 }
 ```
 
-### PostgreSQL configuration
-To capture changes from PostgreSQL, the Write Ahead Log level has to be set at least to `logical`, and the plugin used for logical decoding must be `pgoutput` (which is the default plugin PostgreSQL uses).
-
-### Replaying PostgreSQL rows
-While processing source data, Genesis keeps track of the last processed row. If the server gets restarted, it will use the last recorded offset to know where in the source information it should resume reading from.  The offsets are kept in a table called `DATAPIPELINE_OFFSET` and there is one record per connector. If you want to start ingesting the rows from the begining, delete the row with the name of the source connector and restart the Genesis server.
-
 ## System definition properties
 System definition variables can be used as part of the source configuration.
 
@@ -95,7 +89,7 @@ sources {
 It is vital to ensure that any system definition variables that are used by the configuration definition are properly defined in your _application_**-system-definition.kts** file.
 
 ## PostgreSQL configuration
-To capture changes from PostgreSQL the following configuration has to be in place:
+To capture changes from PostgreSQL, the following configuration has to be in place:
 
 | Setting | Value |
 |---|---|
@@ -133,10 +127,10 @@ sources {
 
 ## Declaring multiple mappers
 
-In the event that you would like to perform different mapping operations over the same data source, you may use multiple mappers.
-You may also optionally use a where clause to conditionally map rows from your data source. Should a where clause be false, no mapping will be performed. These conditional mappers allow you to create more complex and powerful data ingestion pipelines.
+If you would like to perform different mapping operations over the same data source, you can use multiple mappers.
+You can also optionally use a `where` clause to conditionally map rows from your data source. Should the `where` clause be false, no mapping will be performed. These conditional mappers allow you to create more complex and powerful data ingestion pipelines.
 
-For example, should you wish to map over a trades source, you may want to map and transform your data in a different way depending on the region the trade was made:
+For example, if you want to map over a trades source, you could map and transform your data in a different way, depending on the region the trade was made:
 
 ```kotlin
 sources {
@@ -175,7 +169,7 @@ Recognising that inserting, modifying or deleting mapped entities will be the mo
 - `SinkOperations.MODIFY`
 - `SinkOperations.DELETE`
 
-That can be used like this:
+They can be used like this:
 
 ```kotlin
 sources {
@@ -240,7 +234,7 @@ sources {
 }
 ```
 
-Note that all database operations are audited if the Table is declared as [auditable](/database/data-types/table-entities/#auditable-tables). Each sink operation is then stored to the audit table with  the default event type of `custom-sink-operation`. However, you can change this by passing another type as argument to the `sink` function:
+Note that all database operations are audited if the table is declared as [auditable](/database/data-types/table-entities/#auditable-tables). Each sink operation is then stored to the audit table with the default event type of `custom-sink-operation`. However, you can change this by passing another type as argument to the `sink` function:
 
 ```kotlin
 sources {

@@ -25,39 +25,50 @@ class ReqRepTests : AbstractGenesisTestSupport<Reply<*>>(
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [testing docs](/operations/testing/integration-testing).
+For more information about `AbstractGenesisTestSupport`, see the [testing documentation](/operations/testing/integration-testing).
 
 Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers).
 
 ### Standard Request Servers
 
-For a standard Request Server, we declare a listener on the messageClient. We then send a message to our Genesis application, pointing at the correct Request Server (making sure to add the *REQ_* prefix) and wait for the response.
-The Genesis platform uses Kotlin Coroutines which gives us a degree of non-blocking asynchronous computation. For this reason, we must wrap our tests in a `runBlocking` coroutine scope as seen below.
+Let's run a very simple example.
+Copy the following into a csv file and save as `seed-data.csv` in the test Resources folder.
+
+```text
+#COUNTERPARTY
+COUNTERPARTY_ID,COUNTERPARTY_NAME
+testID 1,TestName 1
+testID 2,TestName 2
+```
+We shall send a message to our Genesis application, pointing at the correct Request Server (making sure to add the *REQ_* prefix) and wait for the response.
+The Genesis platform uses Kotlin coroutines which gives us a degree of non-blocking asynchronous computation. For this reason, we must wrap our tests in a `runBlocking` coroutine scope as seen below.
+
 
 ```kotlin
-@Test
-fun `can get all positions`() = runBlocking {
-    val responses = mutableListOf<GenesisSet>()
-    messageClient.handler.addListener(
-        MessageListener { set: GenesisSet?, _: GenesisChannel? ->
-            println(set)
-            if (set != null) {
-                responses.add(set)
-            }
+class ReqrepTest : AbstractGenesisTestSupport<GenesisSet>(
+    GenesisTestConfig {
+        addPackageName("global.genesis.requestreply.pal")
+        genesisHome = "/GenesisHome/"
+        scriptFileName = "positions-app-tutorial-reqrep.kts"
+        initialDataFile = "seed-data.csv"
+        parser = { it }
+    }
+) {
+
+    @Test
+    fun `can get all counterparty`() = runBlocking {
+        val request = GenesisSet.genesisSet {
+            MessageType.MESSAGE_TYPE with "REQ_COUNTERPARTY"
         }
-    )
-    val set = GenesisSet()
-    set.setString(MessageType.MESSAGE_TYPE, "REQ_POSITION_BY_CODE")
-
-    messageClient.sendMessage(set)
-
-    val response = await atMost Duration.ofSeconds(20) untilNotNull { responses.firstOrNull() }
-    val positions = response.fields["REPLY"] as ArrayList<GenesisSet>
-    assertEquals(5, positions.size)
+        val counterparties = sendMessageAsync(request).getArray<GenesisSet>("REPLY")
+        assertNotNull(counterparties)
+        assertEquals(2, counterparties.size)
+    }
 }
+
 ```
 
-In the above example, we are asserting that there are five rows within the response from our Request Server. This is based on the five rows of data that we have in our csv seed data declared earlier.
+In the above example, we are asserting that there are five rows within the response from our Request Server. This is based on the two rows of data that we have in `seed-data.csv` declared earlier.
 
 ### Custom Request Servers
 
@@ -91,12 +102,12 @@ fun `can get hello world`() = runBlocking {
 
 ### Testing with Console
 
-In Genesis Console, select your Request Sever in the resources tab.
+In Genesis Console, select your Request Server in the Resources tab.
 Once you click into your Request Server, you will see the current response from the Request Server and any input fields that you have defined. You can change the inputs and verify that the correct behaviour is being seen. Make sure that your database has some data for you to search through.
 
 ![](/img/test-console-rs-success.png)
 
-For more detailed information about using Genesis Console for manual testing, head over to the [testing docs](/server-modules/request-server/testing).
+For more detailed information about using Genesis Console for manual testing, head over to the [testing documetation](/server-modules/request-server/testing).
 
 ### Testing with an API client
 

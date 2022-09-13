@@ -132,7 +132,7 @@ query("TRADE_RANGED_LAST_2_HOURS", TRADE) {
 }
 ```
 
-Examples
+Examples:
 
 ```kotlin
 // all dollar trades:

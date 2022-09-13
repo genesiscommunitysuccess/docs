@@ -20,7 +20,7 @@ Genesis Notify is a generic service; it has various configuration requirements a
 
 ## System definition
 
-This is used to store high-level connection details to the required server, for example SMTP server, or Symphony/Teams server configurations.
+This is used to store high-level connection details to the required server: for example, SMTP server, or Symphony/Teams server configurations.
 
 ### Database
 Here we describe the records and table to be used.
@@ -44,5 +44,6 @@ The Notify route table provides a link from NOTIFY that can be picked up and sen
 * Retry mechanisms
  
 
-Our tutorial has practical examples of configuring Notify for static and [dynamic](/) events.
+Our tutorial has practical examples of configuring Notify for static and dynamic events.
 <!-- TODO: link to dynamic-events -->
+<!-- could be /getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#dynamic-rules-conditional-rules -->

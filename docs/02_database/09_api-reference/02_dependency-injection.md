@@ -5,7 +5,7 @@ id: dependency-injection
 ---
 
 
-# Dependency injection
+
 
 Genesis supports some of the key annotations from javax.annotation and javax.inject, defined in [Java Platform Enterprise Edition](https://docs.oracle.com/javaee/7/index.html), using Google Guice as the internal dependency injection mechanism. In addition, Genesis provides some of its own annotations.
 
@@ -32,11 +32,11 @@ class PriceFeedProvider : Provider<PriceFeedProvider> {
 ```
 
 ## @Inject
-This is used to annotate a field or constructor to indicate to Genesis that it should inject an object of matching type during the dependency injection stage. These types can be provided with the aforementioned **@Module** and **@ProviderOf** annotations. You should use the [java](https://docs.oracle.com/javaee/7/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.) **@Inject** annotation for best practice.
+This is used to annotate a field or constructor to indicate to Genesis that it should inject an object of matching type during the dependency injection stage. These types can be provided with the aforementioned **@Module** and **@ProviderOf** annotations. You should use the [Java](https://docs.oracle.com/javaee/7/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.) **@Inject** annotation for best practice.
 
 ## @Named
 
-This annotation is used to provide Genesis system definition properties as part of the dependendency injection mechanism and should be used alongside @Inject.
+This annotation is used to provide Genesis system definition properties as part of the dependency injection mechanism, and should be used alongside @Inject.
 
 ## @PostConstruct
 
@@ -113,7 +113,7 @@ class ProductMessageTracer : MessageTracer{
     override fun onMessageReceived(msg: Message) = println("Hi $msg")
 }
 ```
-If the package for this class is available in the classpath (i.e.``` <classpath>``` section in processes.xml) and is also being scanned (i.e. ```<package>``` section in processes.xml), ProductMessageTracer will take precedence when starting the process and DefaultMessageTracer will be ignored. Otherwise, DefaultMessageTracer will be instantiated.
+If the package for this class is available in the classpath (i.e.``` <classpath>``` section in processes.xml) and is also being scanned (i.e. ```<package>``` section in processes.xml), `ProductMessageTracer` will take precedence when starting the process and `DefaultMessageTracer` will be ignored. Otherwise, `DefaultMessageTracer` will be instantiated.
 
 ### Conditional on property and missing class
 Lastly, we have a combination of both “conditional on property” and “conditional on missing class“ annotations. Referring to the previous example, we could use both features at once like this:
@@ -130,7 +130,7 @@ The process will crash on start up if the system definition value for `MessageTr
 
 ## Injectable properties from System Definition
 
-#### Example of **genesis-system-definition.kts** file
+### Example of **genesis-system-definition.kts** file
 
 ```kotlin
 systemDefinition {
@@ -141,7 +141,7 @@ systemDefinition {
 }
 ```
 
-#### System Definition property being referenced in Java file
+### System Definition property being referenced in Java file
 ```java
 @Inject
 public RequestReplyDefinitionReader(RxDb db,

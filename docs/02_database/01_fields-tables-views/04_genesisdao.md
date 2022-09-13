@@ -46,7 +46,7 @@ Each of the following has a sub-menu that takes you to the `assemble` build task
 
 ### Troubleshooting
 
-#### Gradle build errors in project and no gradle commands listed in intelliJ 
+#### Gradle build errors in project and no gradle commands listed in IntelliJ 
 
 If you don't see any menu options per the guide above, and see gradle errors trying to build or on opening a project, a common cause is gradle jvm settings.
 

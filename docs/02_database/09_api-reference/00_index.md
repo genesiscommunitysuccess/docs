@@ -14,5 +14,5 @@ The following API reference docs cover hooks into the platform that can help pow
 | [Dependency Injection](./02_dependency-injection.md) | Annotations for DI |
 | [Event Handler](./03_event-handler-api.md) | Custom Event Handlers |
 | [Network](./04_network-api.md) | Sending and receiving messages |
-| [Service Provider](./05_service-provider-api.md) | Interact with application services |
-| [System Definition](./06_system-definition-api.md) | Interact with service-definition config |
+| [Service provider](./05_service-provider-api.md) | Interact with application services |
+| [System definition](./06_system-definition-api.md) | Interact with service-definition config |

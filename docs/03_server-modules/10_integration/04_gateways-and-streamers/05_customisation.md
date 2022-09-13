@@ -20,8 +20,9 @@ The process bootstrap will scan packages specified in the package block of the p
 If no implementations of certain interfaces are found, it will provide default implementations.
 
 To inject a custom interface, all you need to do is:
-1. Create a class that implements the appropriate interface
-2. Make sure the package is scanned by specifying it in the package block of the process definition
+
+1. Create a class that implements the appropriate interface.
+2. Make sure the package is scanned by specifying it in the package block of the process definition.
 3. Annotate your class with the @Module annotation that the framework provides.
 
 ## Authentication
@@ -34,6 +35,7 @@ interface AuthenticationStrategy {
 ```
 
 The interface is called on receipt of an admin FIX message from a session (which includes logon messages).
+
 - If the method call returns, the logon is accepted
 - If the method throws a RejectLogon exception, the logon is rejected.
 

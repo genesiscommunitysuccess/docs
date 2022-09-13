@@ -8,7 +8,7 @@ id: setting-the-database-technology
 The Genesis low-code platform supports the following database technology:
 
 * FoundationDB
-* Postegres (PostgreSQL)
+* Postgres (PostgreSQL)
 * MSSQL
 * Aerospike
 

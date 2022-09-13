@@ -18,24 +18,24 @@ The entity db differs from the generated repositories in that it can handle any 
 
 The entity db is available in the kotlin Event Handler. It can be injected in Kotlin using `AsyncEntityDb` and in Java using `RxEntityDb`.
 
-|                                                                                                 | [EntityDb](/database/database-interface/entity-db/)                                                           |
-|-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------|
-| [Supports tables](/database/fields-tables-views/tables/tables-basics/)                          | ✔️                                                                                 |
-| [Supports views](/database/fields-tables-views/views/views-basics/)                             | ✔️                                                                                 |
-| Supports any data type                                                                          | ✔️                                                                                 |
-| Class to import                                                                                 | `AsyncEntityDb` <br/> `RxEntityDb`                                                 |
-| Type-safe read and write                                                                        | ✔️                                                                                 |
-| Type-safe write result                                                                          | ✔️                                                                                 |
-| Returns data as                                                                                 | [table](database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities        |
-| Writes data as                                                                                  | [table](database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities        |
-| References indexes as                                                                           | [index entities](/database/data-types/index-entities/)                                         |
-| Programming interface                                                                           | [Async](/database/types-of-api/async/) or [RxJava](/database/types-of-api/rxjava/) |
-| Write (input)                                                                                   | [Modify Details](/database/helper-classes/modify-details/#entity-modify-details)                              |
-| Write (output)                                                                                  | [Write Result](/database/helper-classes/write-result/#entity-write-result)                          |
-| Subscribe                                                                                       | [Record Update](/database/helper-classes/subscription/record-update/) of entity                 |
-| Bulk or Range Subscribe                                                                         | [Bulk](/database/helper-classes/subscription/bulk/) of entity                                   |
-| Available in [Custom Event Handlers](/database/api-reference/event-handler-api/)         | ✔️                                                                                 |
-| Available in [Custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers) | ✔️                                                                                 |
+|                                                                                                        | [EntityDb](/database/database-interface/entity-db/)                                                     |
+|--------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| [Supports tables](/database/fields-tables-views/tables/tables-basics/)                                 | ✔️                                                                                                      |
+| [Supports views](/database/fields-tables-views/views/views-basics/)                                    | ✔️                                                                                                      |
+| Supports any data type                                                                                 | ✔️                                                                                                      |
+| Class to import                                                                                        | `AsyncEntityDb` <br/> `RxEntityDb`                                                                      |
+| Type-safe read and write                                                                               | ✔️                                                                                                      |
+| Type-safe write result                                                                                 | ✔️                                                                                                      |
+| Returns data as  | [table](/database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities   |
+| Writes data as   | [table](/database/data-types/table-entities/) or [view](/database/data-types/views-entities/) entities   |
+| References indexes as                                                                                  | [index entities](/database/data-types/index-entities/)                                                  |
+| Programming interface                                                                                  | [Async](/database/types-of-api/async/) or [RxJava](/database/types-of-api/rxjava/)                      |
+| Write (input)                                                                                          | [Modify Details](/database/helper-classes/modify-details/#entity-modify-details)                        |
+| Write (output)                                                                                         | [Write Result](/database/helper-classes/write-result/#entity-write-result)                              |
+| Subscribe                                                                                              | [Record Update](/database/helper-classes/subscription/record-update/) of entity                         |
+| Bulk or Range Subscribe                                                                                | [Bulk](/database/helper-classes/subscription/bulk/) of entity                                           |
+| Available in [Custom Event Handlers](/database/api-reference/event-handler-api/)                       | ✔️                                                                                                      |
+| Available in [Custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers) | ✔️                                                                                                      |
 
 
 When referring to indices in the database operations, the database accepts _index classes_ or _entity class_
@@ -56,7 +56,7 @@ in combination with _index references_. For comparison:
 | `NonUniqueEntityIndexReference<E>` | A non unique index reference of E | `Trade.ByDate` |
 | `F<E>`                             | The full table /view name for E   | `TRADE`        |
 | `Class<E>`                         | The class reference for E         | `Trade.class`  |
-| `KClass<E>`                        | The kotlin class reference for E  | `Trade::class` |
+| `KClass<E>`                        | The Kotlin class reference for E  | `Trade::class` |
 
 
 ## Read Operations
@@ -66,7 +66,7 @@ in combination with _index references_. For comparison:
 Get is a simple lookup on the database; it will return a single entity if a match is found, or no records if none is
 found.
 
-The following overloads exist for get; fields is a `Set<String>`.
+The following overloads exist for get; `fields` is a `Set<String>`.
 
 * `get(E, EntityIndexReference<E>, fields) : E?`
 * `get(E, fields) : E?`
@@ -154,22 +154,23 @@ val recordB = list[1]
 
 ### getBulk
 
-This will create a `Flow` or `Flowable` of the whole table. If the database layer supports it, these will be
-sorted in ascending order by the index provided, or by the primary key if none is provided. Currently, only
-FoundationDb and Postgres support an ordered `getBulk`. There is also the `getBulkFromEnd` function, which will
-return records in descending order. There are also a number of continuation operations, which will return
-the whole table after the provided record.
+This will create a `Flowable` of the whole table. If the database layer supports it, these will be
+sorted in ascending order by the index provided, or by the primary key if none is provided. 
+
+Currently, only FoundationDb and Postgres support an ordered `getBulk`. There is also the `getBulkFromEnd` function, which will return records in descending order. 
+
+There are also a number of continuation operations, which will return the whole table after the provided record. These methods are deprecated and should not be used going forwards.
 
 #### Overloads
 
-* `getBulk<E>(): Flow<E>` (kotlin only)
+* `getBulk<E>(): Flow<E>` (Kotlin only)
 * `getBulk([Class<E> /  KClass<E>]): Flow<E>`
 * `getBulk(UR<E>): Flow<E>`
 * `getBulk(UR<E>, fields): Flow<E>`
-* `getBulk(UR<E>, E, fields): Flow<E>` (continuation)
+* `getBulk(UR<E>, E, fields): Flow<E>` (continuation) (Deprecated)
 * `getBulkFromEnd(UR<E>): Flow<E>`
-* `getBulkFromEnd(UR<E>, E), E: Flow<E>` (continuation)
-* `getBulkFromEnd(UR<E>, E, fields), E: Flow<E>` (continuation)
+* `getBulkFromEnd(UR<E>, E), E: Flow<E>` (continuation) (Deprecated)
+* `getBulkFromEnd(UR<E>, E, fields), E: Flow<E>` (continuation) (Deprecated)
 * `getBulkFromEnd(UR<E>, fields): Flow<E>`
 
 #### Syntax
@@ -179,7 +180,7 @@ the whole table after the provided record.
 
 ```kotlin
 // we can pass in Trade as a type parameter
-val flow = db.getBulk&lt;Trade>()
+val flow = db.getBulk<Trade>()
 // we can pass in the TRADE object
 val flow = db.getBulk(TRADE)
 // or we can pass in an index reference
@@ -202,19 +203,15 @@ final var flowable = db.getBulk(Trade.ById.Companion);
 
 ### getRange
 
-Whereas a `get` operation selects a single entry from a unique index, and a `getBulk` operation selects the whole
-table, `getRange` selects a range within an index. For example, to select all trades by a single currency, there
-are a number of ways a range can be specified:
+Whereas a `get` operation selects a single entry from a unique index, and a `getBulk` operation selects the whole table, `getRange` selects a range within an index. For example, to select all trades by a single currency, there are a number of ways a range can be specified:
 
 * A non-unique index entry.
 * A range between two index entries.
 * When an index has more than one column, part of the index starting from the first column.
 
-When selecting on part of an index, the number of columns can be specified using the `numKeyFields` parameter. The fields
-are always selected in the order they are specified in the index.
+When selecting on part of an index, the number of columns can be specified using the `numKeyFields` parameter. The fields are always selected in the order they are specified in the index.
 
-There are 15 different get range functions. The records will be returned in ascending order, apart from when using
-the `fromEnd` functions, in which case the records will be returned in descending order. 
+There are 15 different get range functions. The records will be returned in ascending order, apart from when using the `fromEnd` functions, in which case the records will be returned in descending order. 
 
 The `numKeyFields` property
 specifies the number of fields to use from an index. For example, in the `TRADE` example, there is the `TRADE_BY_TYPE_ID`
@@ -276,9 +273,7 @@ db.getRange(trade1,trade2,Trade.ByTypeId.Companion,1).toList();
 
 All write operations have versions that take a single entity and versions that take multiple entries. 
 
-The return values for these operations are type-safe (see details below), provided all entries are of the same type. For example, when
-inserting multiple `Trade` entries, the return type will be `List<InsertResult<Trade>>`. Different entity types can be
-inserted in the same operation; however, the return type will be `List<InsertResult<Entity>>`. Also, modify operations
+The return values for these operations are type-safe (see details below), provided all entries are of the same type. For example, when inserting multiple `Trade` entries, the return type will be `List<InsertResult<Trade>>`. Different entity types can be inserted in the same operation; however, the return type will be `List<InsertResult<Entity>>`. Also, modify operations
 only accept table entities.
 
 ### Default and generated values
@@ -460,10 +455,10 @@ Currently, transactions are supported on **FoundationDb** and **Postgresql**. Us
 
 When code is expected to run on multiple database types, transactions should be used when available. You can use `safeReadTransaction` and `safeWriteTransaction`. These will run operations in the block in a single transaction, if supported.
 
-There is a distinction between using kotlin and java here.
+There is a distinction between using Kotlin and Java here.
 
-* When using kotlin, the transaction is the receiver in the `readTransaction` call. This means that within the block, `this` refers to the transaction. 
-* When using java world, the transaction is the first parameter of the lambda.
+* When using Kotlin, the transaction is the receiver in the `readTransaction` call. This means that within the block, `this` refers to the transaction. 
+* When using Java, the transaction is the first parameter of the lambda.
 
 ### Read transactions
 
@@ -622,20 +617,18 @@ Parameters marked with an asterisk(*) are optional.
 
 1. `bulkSubscribe([Class<E> / KClass<E>], fields*, delay*, index*, subscribeLocally*, backwardJoins*) : Flow<Bulk<E>>`
 
-These functions are available in kotlin only:
+These functions are available in Kotlin only:
 
 2. `bulkSubscribe<E>(fields*, delay*, index*, subscribeLocally*, backwardJoins*) : Flow<Bulk<E>>`
 
 ### Range subscribe
 
 Range subscribe is like bulk subscribe, but it combines a `getRange` with `subscribe`. This operation is useful when
-a class needs to read part of a table or view and then keep updated of any changes. The range will be applied to the `subscribe`
-as well. As such, the update type will reflect whether a row comes into the range or moves out of the range, rather
+a class needs to read part of a table or view and then keep updated of any changes. The range will be applied to the `subscribe` as well. As such, the update type will reflect whether a row comes into the range or moves out of the range, rather
 than what happened in the database. This means that a `ModifyResult<E>` might be converted to an `InsertResult<E>` or a
 `DeleteResult<E>`.
 
-Furthermore, `rangeSubscribe` can take a static range (for example, all USD trades) or a dynamic range (for example, all trades booked
-within the last 2 hours). The dynamic range will be updated on a schedule, either at an interval or at a time.
+Furthermore, `rangeSubscribe` can take a static range (for example, all USD trades) or a dynamic range (for example, all trades booked within the last 2 hours). The dynamic range will be updated on a schedule, either at an interval or at a time.
 
 #### Overloads
 

@@ -52,7 +52,7 @@ notify {
 
 ```
 
-## Using System Definition in the notify.kts script
+## Using system definition in the notify.kts script
 You must configure Notify in your application's **genesis-system-definition.kts** file.
 
 ```kotlin
@@ -100,7 +100,7 @@ If the incoming message is configured to publish to a topic, the file name of an
 | --- | --- |
 | GATEWAY_ID | A unique name for the gateway, which can be referenced in the `NOTIFY_ROUTE` table  |
 | GATEWAY_TYPE | For Symphony connection this might be SymphonyRoom, SymphonyByUserEmail, SymphonyRoomReqRep|
-| GATEWAY_VALUE | This is the room name specified as Symphony Conversation Id Or [Stream Id](https://docs.developers.symphony.com/building-bots-on-symphony/datafeed/overview-of-streams).|
+| GATEWAY_VALUE | This is the room name specified as Symphony Conversation Id Or [Stream Id](https://docs.developers.symphony.com/building-bots-on-symphony/datafeed/overview-of-streams)|
 | INCOMING_TOPIC | When the `GATEWAY_TYPE` is specified as SymphonyRoom, then incoming messages are directed to this `TOPIC`. <br />  When the `GATEWAY_TYPE` is specified as SymphonyRoomReqRep then it's treated as colon-separated string specifying the `PROCESS_NAME:EVENT_HANDLER_NAME`, such that incoming messages will be directed to the named Event Handler running in the named process |
 | CONNECTION_ID | This should reference the connection `id` specified in the ```notify.kts``` file. Note if no id is specified in the connection, then you should use the default id of `Symphony`
 
@@ -111,19 +111,19 @@ If the incoming message is configured to publish to a topic, the file name of an
 | SENDER | Genesis User sending message, if Symphony OBO is activated then this message will be sent 'On Behalf Of' of this user |
 | TOPIC | The Topic to broadcast this message |
 | HEADER | Header that appended to beginning of every message |
-| NOTIFY_SEVERITY |  An ENUM of either, "Information", "Warning", "Serious", "Critical", which defaults to "Information". This is simply appended to a Symphony Message Header.
+| NOTIFY_SEVERITY |  An ENUM of either, "Information", "Warning", "Serious", "Critical", which defaults to "Information". This is simply appended to a Symphony Message Header
 | BODY | Message as Symphony [MessageML](https://docs.developers.symphony.com/building-bots-on-symphony/messages/overview-of-messageml/message-format-messageml) Format |
 | NOTIFY_COMPRESSION_TYPE | Do not set. This is used internally by Genesis; it indicates if the body of the message is compressed and by which compression type |
-| DOCUMENT_ID | If set, this should refer to a server-side path and file name. This file will be attached to the outgoing message that is destined for a symphony gateway
+| DOCUMENT_ID | If set, this should refer to a server-side path and file name. This file will be attached to the outgoing message that is destined for a Symphony gateway
 
 ## Genesis Notify operations for Symphony
 
 The Notify service currently provides additional Symphony operations; these are exposed as Event Handlers.
 
-* `GATEWAY_CREATE_CHANNEL` creates a channel (to allow external users to be added to a channel, a channel should be created with `external` set to `true` and `public` to `false`).
-* `GATEWAY_ADD_MEMBER_TO_CHANNEL` adds a user to a channel (if the user is not a member of the host POD, then a connection request will be sent to that user).
-* `GATEWAY_REMOVE_MEMBER_FROM_CHANNEL` removes a user from a channel.
-* `GATEWAY_ACTION_ON_CHANNEL` allows a channel to be either reactivated or deactivated.
+* `GATEWAY_CREATE_CHANNEL` creates a channel (to allow external users to be added to a channel; a channel should be created with `external` set to `true` and `public` to `false`)
+* `GATEWAY_ADD_MEMBER_TO_CHANNEL` adds a user to a channel (if the user is not a member of the host POD, then a connection request will be sent to that user)
+* `GATEWAY_REMOVE_MEMBER_FROM_CHANNEL` removes a user from a channel
+* `GATEWAY_ACTION_ON_CHANNEL` allows a channel to be either reactivated or deactivated
 
 Where there is more than one Symphony connection defined, these operations act upon the first listed.
 
@@ -153,9 +153,9 @@ The Notify service also offers the following Request Server resource `LIST_MEMBE
 
     `USER_ID`  - Symphony User Id
 
-## Configuring Symphony On-Behalf-Of (OBO) for outgoing messages 
+## Configuring OBO for outgoing messages 
 
-To use the Symphony OBO feature, which enables messages to be sent through a configured Symphony robot as a particular user, you need to configure your application to point to the required Symphony extension app. 
+To use the Symphony On-behalf-of (OBO) feature, which enables messages to be sent through a configured Symphony robot as a particular user, you need to configure your application to point to the required Symphony extension app. 
 
 You can find out how set this up in the [Symphony Documentation](https://docs.developers.symphony.com/building-extension-applications-on-symphony/app-authentication/obo-authentication)
 

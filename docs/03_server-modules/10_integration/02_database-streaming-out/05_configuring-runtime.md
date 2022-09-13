@@ -6,14 +6,14 @@ id: configuring-runtime
 
 [Introduction](/server-modules/integration/database-streaming-out/introduction)  | [Basics](/server-modules/integration/database-streaming-out/basics) | [Advanced](/server-modules/integration/database-streaming-out/advanced) | [Examples](/server-modules/integration/database-streaming-out/examples) | [Configuring runtime](/server-modules/integration/database-streaming-out/configuring-runtime) | [Testing](/server-modules/integration/database-streaming-out/testing)
 
-GenesisToDb must be configured in your application-processes.xml file. The following is an example of how to do this:
+GenesisToDb must be configured in your **application-processes.xml** file. The following is an example of how to do this:
 
 ```xml
 <processes>
-    <process name="TRADING_APP_GENESIS_TO_DB">
+    <process name="POSITION_APP_GENESIS_TO_DB">
         <config>application-genesistodb.xml</config>
-        <description>Trading App Genesis to RDMS adapter</description>
-        <groupId>TRADING_APP</groupId>
+        <description>position App Genesis to RDMS adapter</description>
+        <groupId>POSITION_APP</groupId>
         <primaryOnly>true</primaryOnly>
         <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
         <module>genesis-genesistodb</module>

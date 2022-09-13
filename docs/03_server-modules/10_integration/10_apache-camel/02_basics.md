@@ -30,15 +30,15 @@ The `routeHandler` defines the possible routes for information to flow into and 
 
 In this instance, the File component (defined in the [File component documentation](https://camel.apache.org/components/3.16.x/file-component.html)) can take several paths and query parameters, some of which we are using:
 
-* `${pathStr}/exampledir/` is the **directoryName** mandatory path parameter. It indicates where in the file system that Apache Camel should look for files
+* `${pathStr}/exampledir/` is the **directoryName** mandatory path parameter. It indicates where in the file system that Apache Camel should look for files.
 
 * `move=.camel/\${date:now:yyyyMMdd-HHmmssSSS}-\${headers.CamelFileName}` is the **move** query parameter. This determines where the files found in the path directory should be moved to once they have been processed.
 
-* `initialDelay=5000` is the **initialDelay** query parameter. This is the time in milliseconds before the system first polls the path directory
+* `initialDelay=5000` is the **initialDelay** query parameter. This is the time in milliseconds before the system first polls the path directory.
 
-* `readLock=changed` is the **readLock** query parameter. This sets the strategy to ensure that the file being polled isn't in use
+* `readLock=changed` is the **readLock** query parameter. This sets the strategy to ensure that the file being polled isn't in use.
 
-* `readLockCheckInterval=5000` is the **readLockCheckInterval** query parameter. This sets the time between checks of the **readlock**
+* `readLockCheckInterval=5000` is the **readLockCheckInterval** query parameter. This sets the time between checks of the **readlock**.
 
 * `readLockTimeout=60000` is the **readLockTimeout** query parameter. This sets the maximum time that Apache Camel will wait when trying to acquire a **readlock** before timing out.
 
@@ -55,29 +55,29 @@ The `createProcessor` on both the `FileEventProcessorProvider` and `KafkaEventPr
 
 The parameters for `createProcessor` on the `FileEventProcessorProvider` and `KafkaEventProcessorProvider` are:
 
-* `processName` is the name of the process to which you are attempting to send a request to
+* `processName` is the name of the process to which you are attempting to send a request to.
 
-* `messageType` is the type of message sent to the above process. This is important for ensuring the correct `requestReply` in your [Request Server](/server-modules/request-server/basics/) handles this request
+* `messageType` is the type of message sent to the above process. This is important for ensuring the correct `requestReply` in your [Request Server](/server-modules/request-server/basics/) handles this request.
 
-* `dataFieldName` is the name of the parameter that contains the data of the file or kafka events, when sent to the reqrep
+* `dataFieldName` is the name of the parameter that contains the data of the file or kafka events, when sent to the Request Server.
 
-* `sourceId` is the source of this request
+* `sourceId` is the source of this request.
 
 * `replyCallback` is an optional parameter. It allows you to define a custom `Consumer` and behaviour on the response of the `requestReply`. By default, without setting this parameter, a consumer is constructed that logs `EVENT_NACK` messages from the `requestReply`, with the request set.
 
 The parameters for `createProcessor` on the `CSVEventProcessorProvider` are:
 
-* `processName` is the name of the process to which you are attempting to send a request to
+* `processName` is the name of the process to which you are attempting to send a request to.
 
-* `messageType` is the type of message sent to the above process. This is important for ensuring that the correct `requestReply`  in your [Request Server](/server-modules/request-server/basics/) handles this request
+* `messageType` is the type of message sent to the above process. This is important for ensuring that the correct `requestReply`  in your [Request Server](/server-modules/request-server/basics/) handles this request.
 
-* `sourceId` is the source of this request
+* `sourceId` is the source of this request.
 
-* `separator` allows you to define which character is used as a separator
+* `separator` allows you to define which character is used as a separator.
 
-* `ignoreHeaders` is an optional Boolean parameter, defaulting to false. If set to true, the first row of the csv will be ignored, and not parsed as part of the CSV
+* `ignoreHeaders` is an optional Boolean parameter, defaulting to false. If set to true, the first row of the csv will be ignored, and not parsed as part of the CSV.
 
-* `replyCallback` is an optional parameter. It allows you to define a custom `Consumer` and behaviour on the response of the `requestReply`. By default, without setting this parameter, a consumer is constructed that logs `EVENT_NACK` messages from the `requestReply`, with the request set
+* `replyCallback` is an optional parameter. It allows you to define a custom `Consumer` and behaviour on the response of the `requestReply`. By default, without setting this parameter, a consumer is constructed that logs `EVENT_NACK` messages from the `requestReply`, with the request set.
 
 * `charset` is an optional parameter defaulting to UTF 8. This defines which character set the CSV is using.
 

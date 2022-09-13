@@ -58,13 +58,13 @@ The process definition is made up of several fields that set up the main configu
 `options` is a field container that represents the basic behaviour and database configuration of the process.
 
 * `databaseType` can be set to ORACLE, MSSQL or POSTGRES.
-* `url` represents the database url to connect to using the JDBC driver. The url definition specifies the databaseType:
-* POSTGRES - `<url>jdbc:postgresql://IP_ADDRESS:PORT/DATABASE_NAME</url>`
-* MSSQL - `<url>jdbc:sqlserver://IP_ADDRESS:PORT;databaseName=DATABASE_NAME;</url>`
-* ORACLE - `<url>jdbc:oracle:thin:@IP_ADDRESS:PORT:DATABASE_NAME</url>`
+* `url` represents the database url to connect to using the JDBC driver. The url definition specifies the `databaseType`:
+    * POSTGRES - `<url>jdbc:postgresql://IP_ADDRESS:PORT/DATABASE_NAME</url>`
+    * MSSQL - `<url>jdbc:sqlserver://IP_ADDRESS:PORT;databaseName=DATABASE_NAME;</url>`
+    * ORACLE - `<url>jdbc:oracle:thin:@IP_ADDRESS:PORT:DATABASE_NAME</url>`
 * `user` user from RDBMS. Encrypted by command line tool `encryptUserPass`.
 * `password` password from RDBMS. Encrypted by command line tool `encryptUserPass`.
-* `dbMinConnections` represents the minimum number of RDBMS connections that will be created on startup  inside each pool partition. Default: 10.
+* `dbMinConnections` represents the minimum number of RDBMS connections that will be created on startup inside each pool partition. Default: 10.
 * `dbMaxConnections` sets the maximum number of connections to be created by the RDBMS connection pool. Default: 10.
 * `maxOutstanding` sets the threshold for the internal work queue that triggers the process to start logging warnings. Example use case: there are more than `maxOutstanding` records pending to be inserted in the RDBMS. Default: 10000.
 
@@ -83,8 +83,8 @@ The process definition is made up of several fields that set up the main configu
 `databaseStream` represents one stream from Genesis to the RDBMS. It contains the necessary logic to join different tables if necessary and it sets the fields to be inserted or modified in the RDBMS. It also specifies the stored procedures calls to be used and the parameters ordering used to call them. You can define as many databaseStreams as you want. It has a name attribute to databaseStreams from each other.
 
 * `tables` Similar to DataServer configuration, you can specify a seed Genesis table with its seed key and join it to other Genesis tables so you can get all the data you need. GenesisToDb works with a timestamp system, and it can keep track of the last timestamp processed for each record, so the seedKey should be a timestamp field (e.g. "TIMESTAMP", "DATE_TIMESTAMP", "CREATED_AT", etc.) if you want to take full advantage of GenesisToDb capabilities.
-* `fields` is the representation of the SQL row to be written inside the RDBMS. Parameters are ordered by number from first to last. In the example we could associate "TRADE_ID" with parameter 1, "TRADE_QUANTITY" with parameter 2, and so on.
-* `proc` contains the store procedure calls for each of the use cases: insert, modify and delete. The standard JDBC call to RDBMS store procedures is standardised as _{call procedure(param1,param2,param3)}_. The configuration is flexible and allows to change the parameter order depending on the current call. A stored procedure could be called like: _insertIdAndClientName(1,3)_ and _modifyQuantity(2)_.
+* `fields` is the representation of the SQL row to be written inside the RDBMS. Parameters are ordered by number from first to last. In the example, we could associate "TRADE_ID" with parameter 1, "TRADE_QUANTITY" with parameter 2, and so on.
+* `proc` contains the store procedure calls for each of the use cases: insert, modify and delete. The standard JDBC call to RDBMS store procedures is standardised as _{call procedure(param1,param2,param3)}_. The configuration is flexible and allows you to change the parameter order depending on the current call. A stored procedure could be called like this: _insertIdAndClientName(1,3)_ and _modifyQuantity(2)_.
 
 Example:
 
@@ -143,15 +143,15 @@ Use `startProcess` to start the GenesisToDb process (see [Configuring Runtime](/
 
 ### Table joins
 
-The process keeps track of the last record timestamp, so if you want to avoid reloading all records in Genesis to the RDBMS, it is very important to use a TIMESTAMP seedKey in order to make it work properly.
+The process keeps track of the last record timestamp, so if you want to avoid reloading all records in Genesis to the RDBMS, it is very important to use a TIMESTAMP seedKey in order to make this work properly.
 
 ### Stored procedures
 
 You must have a separate table for each database stream.
 
-Each database must have a table that can hold records as specified in the **fields** field. So, following the previous example with TRADE_ID, TRADE_QUANTIY, CLIENT_NAME and CURRENCY_DESCRIPTION, you must have a SQL table with those column names and matching types. Matching types in this example could be: varchar(50), int, varchar(50) and varchar(50).
+Each database must have a table that can hold records as specified in the **fields** field. So, following the previous example with TRADE_ID, TRADE_QUANTIY, CLIENT_NAME and CURRENCY_DESCRIPTION, you must have an SQL table with those column names and matching types. Matching types in this example could be: varchar(50), int, varchar(50) and varchar(50).
 
-_The stored procedures for insert, modify and delete should also be created beforehand_. This process does not create any store procedures and it just attempts to call already existing ones. Therefore, insertTrade should insert a trade into its correspondent TRADE table and likewise for the rest of the stored procedures.
+_The stored procedures for insert, modify and delete should also be created beforehand_. This process does not create any store procedures; it just attempts to call already existing ones. Therefore, `insertTrade` should insert a trade into its correspondent TRADE table and likewise for the rest of the stored procedures.
 
 ## SQL Procedures
 
@@ -163,4 +163,4 @@ Even though Genesis cannot modify these triggers/procedures and they can potenti
 
 ### Encrypting user and passwords
 
-A script called `encryptUserPass` is provided with Genesis, allowing us to encrypt our user and password before using it in GenesisToDb configuration.
+A script called `encryptUserPass` is provided with Genesis, enabling us to encrypt our user and password before using it in GenesisToDb configuration.

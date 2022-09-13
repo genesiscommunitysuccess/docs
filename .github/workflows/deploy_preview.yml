@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -36,6 +36,7 @@ jobs:
       run: npm run build
       env:
         BASE_URL: /secure/
+        GTM_ID: GTM-5GTR43J
 
     - uses: jakejarvis/s3-sync-action@master
       with:

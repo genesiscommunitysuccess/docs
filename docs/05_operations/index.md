@@ -5,16 +5,19 @@ sidebar_position: 1
 id: operations
 ---
 
-## Overview
 
-The Genesis low-code platform builds applications that run on Linux servers. Other areas have covered setting
-up development environments and the properties of the code frameworks.
+Welcome to the reference documentation on operating Genesis applications. Here, you will find details of a wide range of operating concerns, including specs of the complete Genesis command set and the use of Genesis Console.
 
-This area covers: 
 
-- setting up a server to run applications
-- installing and managing applications
-- complex server set-ups that involve clustering and environment management
-- Genesis artifact access
+- [Server set-up](/operations/server-setup/host-preparation/) - check all the things you need to consider when you want to set up and install a host server for your applications.
+
+- [Clusters](/operations/clustering/clusters/) - learn about clustering, the primary node and planning disaster recovery.
+
+- [Testing](/operations/testing/component-testing/) - get acquainted with simple approaches to component and integration testing.
+
+- [Metrics](/operations/metrics/metrics/) - learn about Genesis and JVM metrics, and check the different APIs.
+
+- [Artifactory](/operations/artifactory/artifact-access/) - see notes about accessing the Genesis artifacts and packages.
+
 
 

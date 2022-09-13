@@ -13,8 +13,6 @@ tags:
   - form
   - resource
 ---
-import ReactPlayer from 'react-player'
-
 # Entity Management
 
 ## API Reference
@@ -37,7 +35,7 @@ The other component is the form, and this is used to update an existing entity o
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
+- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again.
 
 ```javascript
 {
@@ -103,6 +101,10 @@ The functionality of the entity manager is customised through the properties you
 
 `createEvent`, `updateEvent`, `deleteEvent` are set to be the events on the back-end which handle the specific actions, such as deleting counterparty data. For the create and update functionality, these also define the resource in which the form is populated when the user is creating or updating an entity. The authorisation of the user with respect to these events are controlled with the [permissions property](#permissions).
 
+### Datasource Configuration
+
+Set this object to configure how the entity manager interacts with the resource. [See here](../foundation-entity-management_apiref/foundation-entity-management.datasourceconfiguration/#example).
+
 ### Permissions
 
 `permissions` is an array of the authorisations that the user has for interacting with the entity manager. For example, to allow the user to be able edit existing entities then this array. Permissions are controlled with [enum values](../foundation-entity-management_apiref/foundation-entity-management.permissions_2/#enumeration-members).
@@ -117,8 +119,3 @@ The default value of the `permissions` array is to all permissions, so ensure yo
 :::warning
 The string defines the key in which the serialised state of the columns is stored in an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). Therefore, if you are setting multiple entity managers in your application to persist the state you need to use unique keys or you will get undefined behaviour.
 :::
-
-An example of the behaviour of the persisted column state and resetting the columns is shown here.
-![Example of a user changing and reloading the states](/img/foundation-entity-management-persistance.mp4)
-
-<ReactPlayer controls width='100%' url='/img/foundation-entity-management-persistance.mp4' />

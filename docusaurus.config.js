@@ -1,7 +1,11 @@
+require('dotenv').config();
+
 const baseUrl = process.env.BASE_URL || '/';
 const routeBasePath = '/';
 
 const apiPullPlugin = require('./pull-api-docs');
+
+const GTM_ID =  process.env.GTM_ID || 'GTM-5GTR43J'; // default to uat GTM_ID, prod one should be set on CI (master) 
 
 module.exports = {
   title: 'Low-code Platform For Financial Markets',
@@ -13,6 +17,7 @@ module.exports = {
   projectName: 'docs', // Usually your repo name.
   trailingSlash: true,
   onBrokenLinks: 'throw', // please do NOT change this to 'warn', fix or remove your broken links instead
+  onDuplicateRoutes: 'throw',
   scripts: [
     {
       src: `${baseUrl}js/docs.iife.min.js`,
@@ -22,12 +27,8 @@ module.exports = {
 
 
   plugins: [
-    [require.resolve('@cmfcmf/docusaurus-search-local'), {
-      indexBlog: true,
-      indexPages: true,
-    }],
     [require.resolve('docusaurus-gtm-plugin'), {
-      id: 'GTM-5GTR43J',
+      id: GTM_ID,
     }],
     // Declares a local plugin, plugins array takes a set of functions to execute to 
     // load in the plugin. Anonymous function used here to simulate the same thing, and
@@ -49,28 +50,6 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           remarkPlugins: [require('mdx-mermaid')],
         },
-        blog: {
-          path: 'blog',
-          editLocalizedFiles: false,
-          blogTitle: 'Blog title',
-          blogDescription: 'Blog',
-          blogSidebarCount: 5,
-          blogSidebarTitle: 'All our posts',
-          routeBasePath: 'blog',
-          include: ['**/*.{md,mdx}'],
-          exclude: [
-            '**/_*.{js,jsx,ts,tsx,md,mdx}',
-            '**/_*/**',
-            '**/*.test.{js,jsx,ts,tsx}',
-            '**/__tests__/**',
-          ],
-          postsPerPage: 10,
-          blogListComponent: '@theme/BlogListPage',
-          blogPostComponent: '@theme/BlogPostPage',
-          blogTagsListComponent: '@theme/BlogTagsListPage',
-          blogTagsPostsComponent: '@theme/BlogTagsPostsPage',
-          showReadingTime: true,
-        },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
@@ -86,15 +65,15 @@ module.exports = {
     },
     navbar: {
       items: [
+        {type: 'docsVersionDropdown', className: "version-menu"},
         {to: 'getting-started', label: 'Learning'},
-        {to: 'database/database-landing', label: 'Database'},
+        {to: 'database', label: 'Database'},
         {to: 'server-modules', label: 'Server'},
         {to: 'front-end', label: 'Web'},
         {to: 'operations', label: 'Operations'},
         {to: 'flow/introduction', label: 'Flow'},
-        {to: 'blog', label: 'Updates'},
         {
-          href: "https://stackoverflow.com/",
+          href: "https://stackoverflow.com/c/genesis-global",
           className: "so-icon",
           "aria-label": "StackOverflow",
           position: "right"

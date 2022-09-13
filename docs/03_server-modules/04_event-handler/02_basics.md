@@ -19,7 +19,7 @@ On this page, we'll take you through the basics of creating an Event Handler in 
 - [a very simple example file](#a-simple-example-of-an-event-handler)
 - [giving each `eventHandler` codeblock a name](#adding-a-name)
 - [adding validation](#adding-validation)
-- [returning a nack](#returning-a-nack)
+- [returning a value](#returning-a-value)
 - [transactional `eventHandler` codeblocks](#transactional-event-handlers-acid)
 - [the process flow for `eventHandler` codeblocks](#processing-onvalidate-and-oncommit)
 - [more information on validation](#more-information-about-onvalidate)

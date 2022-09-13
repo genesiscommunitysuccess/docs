@@ -8,7 +8,7 @@ id: advanced
 
 ## The generateSQLToRDB script
 
-`generateSQLToRDB` is a tool which generates ".sql" files to create tables and procedures in our RDBMS system by reading the current Genesis dictionary. It also adds the pertinent databaseStream configuration to the specified genesistodb.xml configuration file.
+`generateSQLToRDB` is a tool that generates .sql files to create tables and procedures in our RDBMS system by reading the current Genesis dictionary. It also adds the pertinent databaseStream configuration to the specified **genesistodb.xml** configuration file.
 
 It is by no means mandatory, but it provides a generic, quick and working example that can be further modified or extended with ease. However, the Genesis dictionary must be appropriately configured beforehand: TABLENAME_BY_TIMESTAMP key must exist (as shown in previous section examples) inside the table, as well as having a key made of a unique field (e.g "ORDER_ID").
 

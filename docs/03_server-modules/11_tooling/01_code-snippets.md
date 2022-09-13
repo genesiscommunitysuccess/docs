@@ -6,7 +6,7 @@ id: code-snippets
 
 The following code snippets can be imported into IntelliJ to speed up repetitive development tasks, mainly around the declaration of Genesis scripts and configuration.
 
-To import the below live templates, download the Genesis [settings.zip](/file/settings.zip) file and import this into your IDE. This can be done by selecting `File > Manage IDE Settings > Import Settings`.
+To import the below live templates, download the Genesis settings.zip file and import this into your IDE. This can be done by selecting `File > Manage IDE Settings > Import Settings`.
 
 ## Fields, Tables and Views
 
@@ -245,6 +245,6 @@ xml("") {
 ## Define and tweak snippets
 
 You can define and tweak Genesis snippets within your JetBrains products.
-To do so, open the settings for your IDE of choice and search for "Live Templates".
+To do so, open the settings for your IDE of choice and search for **Live Templates**.
 
 Do you have some super fancy snippets that you think colleagues and the Genesis community could benefit from? Get in touch and we can add them to the official settings distribution!

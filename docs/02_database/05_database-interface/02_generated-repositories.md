@@ -11,8 +11,8 @@ During the code generation phase, repository classes are generated for every tab
 
 The main differences between the generated repositories and the [Entity Db](/database/database-interface/entity-db/) are:
 
-1. The entity db can handle any database entity, each repository can only handle a single entity.
-2. The generated repositories have specific methods for every index of table/view, whereas the entity db is fully generic.
+- The entity db can handle any database entity, each repository can only handle a single entity.
+- The generated repositories have specific methods for every index of table/view, whereas the entity db is fully generic.
 
 |  | [Generated Repositories](/database/database-interface/generated-repositories/) |
 | --- |--------------------------------------------------------------------------------------------------------|
@@ -30,7 +30,7 @@ The main differences between the generated repositories and the [Entity Db](/da
 | Write (output) | [Write Result](/database/helper-classes/write-result/#write-result)                                  |
 | Subscribe | [Record Update](/database/helper-classes/subscription/record-update/#write-result) of entity                |
 | Bulk or Range Subscribe | [Bulk](/database/helper-classes/subscription/bulk/) of entity                                          |
-| Available in [Event Handlers](/getting-started/learn-the-basics/modules/inside-an-event-handler/) | ❌                                                                                                      |
+| Available in [Event Handlers](/server-modules/event-handler/introduction/) | ❌                                                                                                      |
 | Available in [custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers) | ❌                                                                                                      |
 
 With generated repositories, there are two flavours of the entity db:

@@ -6,7 +6,7 @@ id: basics
 
 [Introduction](/server-modules/integration/data-pipeline/introduction/)  | [Basics](/server-modules/integration/data-pipeline/basics) | [Advanced](/server-modules/integration/data-pipeline/advanced) | [Examples](/server-modules/integration/data-pipeline/examples) | [Configuring runtime](/server-modules/integration/data-pipeline/configuring-runtime) | [Testing](/server-modules/integration/data-pipeline/testing)
 
-## Where to Define
+## Where to define
 
 You can configure data pipeline in a file called _pipeline-name_**-data-pipeline.kts**. This must be located in your application's configuration directory.
 
@@ -14,7 +14,7 @@ The configuration contains a collection of `sources` and each one has two main s
 - configuration: how to connect to the data source
 - mapper: maps the incoming data
 
-## How to Define
+## How to define
 
 A data pipeline is a collection of `sources`. Each source contains:
 - the configuration specifying how to access the data
@@ -33,16 +33,42 @@ Currently the supported sources are:
 
 ### Database
 
-#### PostgreSQL
+All databases share common configuration. 
 
 | Parameter | Default value | Sample usage | Value type | Description |
 |---|---|---|---|---|
-| name | N/A | `postgres("cdc-test")` | String | Name for the source |
-| hostname | N/A | `hostname = "localhost"` | String | Set the hostname where PostgreSQL is running |
-| port | 5432 | `port = 5432` | Integer | Set the port on which PostgreSQL is running |
+| sourceName | N/A | `postgres("cdc-test")` | String | Name for the source |
+| hostname | N/A | `hostname = "localhost"` | String | Set the hostname of the remote Database |
+| port | 5432 | `port = 5432` | Integer | Set the port on which Database is running |
 | username | N/A | `username = "postgres"` | String | Set the database user  |
 | password | N/A | `password = "db-password"` | String | Set the database user password  |
-| databaseName | N/A | `databaseName = "postgres"` | String | Set the name of the database  |
+| databaseName | N/A | `databaseName = "postgres"` | String | Set the name of the database  | 
+
+```kotlin
+sources {
+  postgres("cdc-test-psql") {
+    hostname = "localhost"
+    port = 5432
+    username = "postgres"
+    password = "db-password"
+    databaseName = "postgres"
+  }
+
+  msSql("cdc-test-mssql") {
+    ...
+  }
+
+  oracle("cdc-test-oracle") {
+    ...
+  }
+}
+```
+
+:::note
+
+Remote databases will not work by default and will require some setup/configuration to enable Change Data Capture. Find details on setup [here](/operations/pipeline-setup/)
+
+:::
 
 ### File
 
@@ -100,14 +126,14 @@ sources {
 }
 ```
 
-#### Defining file location
+### Defining file location
 
 File location denotes where to watch for files. This can be one of the following:
 - Local file system
 - SFTP
 - S3
 
-##### Local file system
+### Local file system
 
 Listening for files in a directory on the local filesystem is as simple as pointing at the directory in the `location` argument prepended by "file://".
 
@@ -121,9 +147,9 @@ You can also pass arguments to the URI to change the behaviour of the source.
 | fileName | | Only listen for files with the exact name |
 | recursive | false | Should check sub directories |
 
-##### S3
+### S3
 
-To use S3 as a file source, you will need access to an S3 like service such as AWS S3 or Dell ECS.
+To use S3 as a file source, you need access to an S3 like service such as AWS S3 or Dell ECS.
 
 `aws2-s3://bucketNameOrArn[?options]`
 
@@ -137,7 +163,7 @@ To use S3 as a file source, you will need access to an S3 like service such as A
 | accessKey | | Amazon AWS Access Key |
 | secretKey | | Amazon AWS Secret Key |
 
-##### SFTP
+### SFTP
 
 `sftp:host:port/directoryName[?options]`
 
@@ -156,9 +182,9 @@ To use S3 as a file source, you will need access to an S3 like service such as A
 The data from the defined source is read row by row and mapped to a [Table](/database/fields-tables-views/tables/) object. Each column from the incoming row is mapped to a [Field](/database/fields-tables-views/fields/).
 
 ### Mapping by column name
-If the column name of the source row is the same as the Field name, then there is no need for explicit mapping.
+If the column name of the source row is the same as the field name, then there is no need for explicit mapping.
 
-If the column name of the source row is not the same as the Field name, then it can be specified using the `sourceProperty` parameter:
+If the column name of the source row is not the same as the field name, then it can be specified using the `sourceProperty` parameter:
 
 ```kotlin
 TRADE_SIDE {
@@ -166,10 +192,10 @@ TRADE_SIDE {
 }
 ```
 
-If the type of the source row is different from the Field type, then it will be converted in the best effort.
+If the type of the source row is different from the field type, then it will be converted using best effort.
 
 ### Mapping function
-There are cases when the Field value is not directly mapped to the source row value. For example:
+There are cases when the field value is not directly mapped to the source row value. For example:
 
 - Type conversion is complex
 - Data enrichment

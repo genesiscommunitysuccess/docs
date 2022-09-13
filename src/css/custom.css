@@ -24,6 +24,8 @@
 
   --black: #161412;
   --primary-blue: #1200DE;
+  --darker-blue: #0A004A;
+
   --warm-gray-4: #F6F5F4;
   --warm-gray-3: #E3E0DD;
   --warm-gray-2: #808387;
@@ -132,10 +134,10 @@ code {
 
 /* Tables */
 .markdown table th {
-  color: var(--primary-blue);
+  color: white;
   font-family: var(--medium-font);
   font-weight: 700;
-  background-color: var(--warm-gray-3);
+  background-color: var(--darker-blue);
 }
 .markdown table tr:nth-child(2n) {
   background-color: var(--warm-gray-3);
@@ -227,13 +229,9 @@ a.navbar__item.navbar__link {
   margin: 4px 12px;
 }
 
-a.navbar__item.navbar__link:hover {
-  border-bottom: 1px solid;
-}
-
-a.navbar__item.navbar__link.navbar__link--active {
-  font-weight: 700;
-  border-bottom: 1px solid;
+a.navbar__item.navbar__link:hover, a.navbar__item.navbar__link.navbar__link--active {
+  border-bottom: 2px solid;
+  font-weight: 500;
 }
 
 .navbar__toggle > svg {
@@ -254,6 +252,12 @@ div.navbar-sidebar__item {
 }
 
 /* search bar */
+
+body > div.aa-DetachedOverlay > div {
+  top: 88px; /* Align to the bottom of the nav bar */
+  border-radius: 0;
+}
+
 div.dsla-search-field {
   width: 160px;
   height: 32px;
@@ -528,15 +532,46 @@ a.table-of-contents__link--active {
 
 /* StackOverflow navbar icon */
 .so-icon {
+  border-radius: 100%;
+  background-color: white;
   background-image: url('../../static/svg/stackoverflow.svg');
-  background-size: 24px 24px;
+  background-size: 16px 16px;
+  background-position: center;
   background-repeat: no-repeat;
   display: flex;
-  height: 24px;
-  width: 24px;
+  align-items: center;
+  height: 28px;
+  width: 28px;
 }
 
 .so-icon:hover {
   opacity: 0.7;
+}
+/**********************************************/
+
+/* Version selector */
+#__docusaurus > nav > div.navbar__inner > div:nth-child(1) > a.navbar__brand {
+  margin-right: 10px;
+}
+#__docusaurus > nav > div.navbar__inner > div:nth-child(1) > a.navbar__brand > b {
+  text-transform: lowercase;
+}
+#__docusaurus > nav > div.navbar__inner > div:nth-child(1) > a.navbar__brand > b::first-letter {
+  text-transform: capitalize;
+}
+
+/* when we have multiple versions they're wrapped in a div */
+#__docusaurus > nav > div.navbar__inner > div:nth-child(1) > div.dropdown,
+#__docusaurus > nav > div.navbar__inner > div:nth-child(1) > a.navbar__item.navbar__link.version-menu {
+  margin: 0 50px 0 0;
+  border: 0.5px solid var(--ifm-navbar-link-color);
+  border-radius: 1px;
+  padding: 0 5px;
+  font-weight: 400;
+}
+
+#__docusaurus > nav > div.navbar__inner > div:nth-child(1) > div.dropdown > a:hover,
+#__docusaurus > nav > div.navbar__inner > div:nth-child(1) > a.navbar__item.navbar__link.version-menu:hover {
+  color: var(--ifm-navbar-link-color);
 }
 /**********************************************/
