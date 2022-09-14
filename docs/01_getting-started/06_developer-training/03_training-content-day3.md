@@ -305,7 +305,7 @@ class TradeViewTest : AbstractDatabaseTest() {
 You can run the test from IntelliJ by right-clicking on the test class and selecting `Run TradeViewTest` or from the command line as well.
 
 ```shell title='Running TradeViewTest from the command line'
-./gradlew :alpha-script-config:test --tests "global.genesis.Genesis.TradeViewTest"
+./gradlew :alpha-config:test --tests "global.genesis.TradeViewTest"
 ```
 
 ## Calculated data
