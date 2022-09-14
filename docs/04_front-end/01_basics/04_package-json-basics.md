@@ -83,7 +83,15 @@ This includes **@genesislcap** dependencies. This is where you would change thei
 You can use the `lerna add` command (instead of `npm install`) if you need to add more dependencies, since the app is a [lerna managed](https://lerna.js.org/) monorepo.
 :::
 
-The `devDependencies` section is for dependencies that are only used in development - think of tools such as linters. These additional dependencies will not be added to the final production bundle and hence will not increase the download size of the application to the user's browser.
+:::warning
+You should **not** use `npm install` to install packages as advised in [the lerna documentation](https://lerna.js.org/docs/faq#how-do-i-add-a-package-to-my-lerna-repository).
+It may work initially but over time it can cause errors in the dependency tree and stop your application building.
+
+If you do run into issues due to doing this you should be able to
+recover running `$ npm run clean:all && npm run bootstrap` which will clear all dependency packages and download/link them again.
+:::
+
+The `devDependencies` section is for dependencies which are only to used in development - think of tools such as linters. These additional dependencies will not be added to the final production bundle and hence will not increase the download size of the application to the user's browser.
 
 ```javascript
   "devDependencies": {

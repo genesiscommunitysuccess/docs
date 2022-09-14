@@ -25,8 +25,7 @@ The required configuration is described in the [Server module](../../03_server-m
 
 To enable this micro-front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-reporting` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again.
-
+- Add `@genesislcap/foundation-reporting` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. For more info see the [pacakge.json basics](../01_basics/04_package-json-basics.md).
 
 ```javascript
 {
@@ -42,7 +41,7 @@ To enable this micro-front-end in your application, follow the steps below.
 
 **Synchronous example**
 
-```javascript
+```javascript {9}
 // Import
 import {Reporting} from '@genesislcap/foundation-reporting';
 
@@ -59,7 +58,10 @@ public configure() {
 
 **Asynchronous example**
 
-```javascript
+```javascript {9}
+// Import
+import {Reporting} from '@genesislcap/foundation-reporting';
+
 // Routes async configure
 public async configure() {
   ...
@@ -70,3 +72,7 @@ public async configure() {
   );
 }
 ```
+
+:::info
+You will see an error on the web page saying there are no reports to load if there are not already reports in the database - this is expected behaviour.
+:::

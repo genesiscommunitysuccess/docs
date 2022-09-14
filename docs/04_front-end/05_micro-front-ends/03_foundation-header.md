@@ -40,9 +40,20 @@ In this next example, we have put a set of example options set in the flyout men
 
 ## Header Set-up
 
+### Seed Apps
+
+A lot of the Genesis seed apps come with the header setup by default. To verify you can do a text search in the client code for the `<foundation-header>` tag.
+In this case you only need to do the customisations as mentioned in [customising the header](#customising-the-header).
+
+:::tip
+The `allRoutes` array that you need to change to set the navigation buttons on the header are found in `client/web/src/routes/config.ts`.
+:::
+
+### Manual Setup
+
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-header` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
+- Add `@genesislcap/foundation-header` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. For more info see the [pacakge.json basics](../01_basics/04_package-json-basics.md).
 
 ```javascript
 {
@@ -61,7 +72,7 @@ It is possible for you to set up routing manually, but that won't be covered in 
 :::
 
 - In the top level class of your application, import and dependency inject the Navigation class.
-```javascript
+```javascript {1,6}
 import { Navigation } from '@genesislcap/foundation-header';
 
 @customElement({ name, template, styles })
@@ -74,6 +85,10 @@ export class MainApplication extends FASTElement {
 }
 ```
 
+:::tip
+If you haven't used the `inject` annotation in your application yet you'll need to get it from the `@microsoft/fast-foundation` package.
+:::
+
 - Set a reference to the `navigation` object on the FAST router when you instantiate it, this will allow us to set up navigation functionality from the navigation bar in the [navigation items step.](#navigation-items)
 ```javascript
 // fast-router will likely have other attributes such as :config too
@@ -83,7 +98,7 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 ```
 
 - Add the `foundation-header` tag as part of the html that you set as the markup for the `defaultLayout` in your router configuration.
-```javascript
+```javascript {3}
 export const defaultLayout = new FASTElementLayout(html`
 <div class="container">
 	<!-- show-luminance-toggle-button boolean attribute added to show that button on the navigation bar -->

@@ -35,7 +35,7 @@ Example grid view when managing profiles.
 
 To enable this micro-front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
+- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. For more info see the [pacakge.json basics](../01_basics/04_package-json-basics.md).
 
 ```javascript
 {

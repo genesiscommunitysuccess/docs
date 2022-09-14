@@ -39,9 +39,13 @@ An example of the request account screen: <br/>
 
 ## Login Set-up
 
+:::info
+If you are building a project build upon one of the Genesis seed apps then the `Login` micro-frontend will already be setup for you.
+:::
+
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-login` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again.
+- Add `@genesislcap/foundation-login` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. For more info see the [pacakge.json basics](../01_basics/04_package-json-basics.md).
 
 ```javascript
 {
