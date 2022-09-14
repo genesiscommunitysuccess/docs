@@ -40,4 +40,4 @@ export const HomeTemplate = html<Home>`
 `;
 ```
 
-You can now refresh the application to display data from the server and make changes.
+You can now proceed to running the application and see the displayed data in the browser.  
