@@ -19,7 +19,7 @@ import Reporting from '../../resource/reporting_mf.md'
 ### Server configuration
 
 To enable the report micro-front-end you need to configure the reporting module on the server.
-The required configuration is described in the [Server module](../../03_server-modules/10_integration/11_data-reporting.md).
+The required configuration is described in the [Server module](docs/03_server/10_integration/11_data-reporting.md).
 
 ### Front-end configuration
 

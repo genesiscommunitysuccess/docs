@@ -19,7 +19,7 @@ To enable the plugin:
 </dependency>
 ```
 
-2. Add a dependency on the class path for the module called {applicationName}-fix-messages. This file is generated using the [fix-codegen-plugin](/03_server-modules/10_integration/04_gateways-and-streamers/04_fix-xlator.md#fix-code-generation-plugin).
+2. Add a dependency on the class path for the module called {applicationName}-fix-messages. This file is generated using the [fix-codegen-plugin](/03_server/10_integration/04_gateways-and-streamers/04_fix-xlator.md#fix-code-generation-plugin).
 
 3. Add the following code block at the beginning of the configuration file for the streamer or streamer-client:
 

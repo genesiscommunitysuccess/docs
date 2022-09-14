@@ -68,8 +68,8 @@ module.exports = {
         {type: 'docsVersionDropdown', className: "version-menu"},
         {to: 'getting-started', label: 'Learning'},
         {to: 'database', label: 'Database'},
-        {to: 'server-modules', label: 'Server'},
-        {to: 'front-end', label: 'Web'},
+        {to: 'server', label: 'Server'},
+        {to: 'web', label: 'Web'},
         {to: 'operations', label: 'Operations'},
         {
           href: "https://stackoverflow.com/c/genesis-global",
