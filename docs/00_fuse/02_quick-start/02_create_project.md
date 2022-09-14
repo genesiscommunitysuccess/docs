@@ -5,14 +5,14 @@ id: create-project
 
 # Create Project
 
-To help give a helping hand in getting started with building applications, our [GenX CLI](/flow/introduction/prerequisites/#genx-cli) tool will create seed projects.
+To expedite and simplify getting started with building applications, our [GenX CLI](/fuse/introduction/prerequisites/#genx-cli) tool will create seed projects.
 
 
-> A seed project is a productive starting point for any application using Flow. 
+> A seed project is a productive starting point for any application using Fuse. 
 > 
 > It will create an initial file structure and install any necessary dependencies, allowing us to focus on the important bits. 
 :::important
-> Install the [GenX CLI](/flow/introduction/prerequisites/#genx-cli) before proceeding with the following steps.
+> Install the [GenX CLI](/fuse/introduction/prerequisites/#genx-cli) before proceeding with the following steps.
 :::
 
 ### Expected Result
@@ -36,7 +36,7 @@ foundation-cli
 
 If this is the first time running our CLI tool, we'll need to provide artifactory credentials. 
 
-> No credentials? See our [Pre-requisites](/flow/introduction/prerequisites/)
+> No credentials? See our [Pre-requisites](/fuse/introduction/prerequisites/)
 
 ```shell
 ? Genesis Username example.username
@@ -49,11 +49,11 @@ We persist details to help speed things up, so this won't happen everytime.
 :::
 
 
-Select `create flow application`:
+Select `create fuse application`:
 
 ```shell
 ? Please select an option: (Use arrow keys)
-> create flow application - Creates a Flow application.
+> create fuse application - Creates a unified low-code DSL application.
   create workspace - Generates a local workspace to use for your Genesis based apps.
   configure workspace - Configure a local workspace.
   create application - Generates a local application.
@@ -76,6 +76,13 @@ Let's choose the location and name for our project. In this case, our current di
 ? App name alpha
 ```
 
+Select the seed you want to create.
+```shell
+? App seed (Use arrow keys)
+> Low-code Application
+  Low-code Application (Pre-release)
+```
+
 We want to have a clean install, so let's overwrite any previous installations, choosing 'Yes'.
 > If this is the first time creating an application with this name, the following prompt will be skipped.
 
@@ -89,7 +96,7 @@ The seed application is now created and dependencies are installed. Our expected
 ? Overwrite existing files Yes
 ✔ Create path alpha
 ✔ Create directory alpha
-✔ Creating from seed 'Flow Application Seed'
+✔ Creating from seed 'Low-code Application'
 ℹ Installing dependencies.
 ✔ Install success.
 ```
@@ -140,6 +147,6 @@ Now open the chosen IDE (e.g. IntelliJ) and locate the newly created alpha proje
 
 Congratulations, the local environment is now ready to build applications. We have:
 
-- Created a new Flow seed project
+- Created a new Fuse seed project
 - Configured our seed
 - Configured our application defaults

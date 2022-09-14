@@ -30,7 +30,7 @@ wsl-distro=CentOS7
 wsl-user=alpha
 ```
 
-If unsure about the above, please refer to our [Pre-requisites](/flow/introduction/prerequisites/), particularly "Do you need WSL?".
+If unsure about the above, please refer to our [Pre-requisites](/fuse/introduction/prerequisites/), particularly "Do you need WSL?".
 
 
 ### Preparing the server
@@ -39,7 +39,7 @@ Our main aim is to write less and do more.
 
 To enable this, we need to have a common task that will take what we've done and generate all the server and UI configuration. 
 
-> This is an important command and one that will be used regularly for all Flow development.
+> This is an important command and one that will be used regularly for all Fuse development.
 
 To get started with an initial server configuration, we need to run this task:
 
