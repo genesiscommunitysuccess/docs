@@ -27,6 +27,10 @@ module.exports = {
 
 
   plugins: [
+    [require.resolve('@cmfcmf/docusaurus-search-local'), {
+      indexBlog: true,
+      indexPages: true,
+    }],
     [require.resolve('docusaurus-gtm-plugin'), {
       id: GTM_ID,
     }],
