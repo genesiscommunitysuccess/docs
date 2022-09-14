@@ -342,6 +342,10 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 }
 ```
 
+:::info verify function
+The `verify` block you see above is part of the validation helper provided by the Platform to make it easier to verify conditions against the database. Outside of the `verify` block, you can write any Kotlin code to validate whatever you want to.
+:::
+
 ### Exercise 4.2: adding onValidate to event handlers
 :::info ESTIMATED TIME
 20 mins

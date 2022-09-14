@@ -56,6 +56,15 @@ views {
   }
 }
 ```
+
+:::info withPrefix and withAlias
+`withPrefix` adds a prefix to the standard field name. Giving another example, `INSTRUMENT.NAME withPrefix SYMBOL` would become `SYMBOL_NAME`.
+
+`withAlias` gives the field an alternative name on the view.
+
+More info [here](/database/fields-tables-views/views/views-basics/#overriding-a-field-name).
+:::
+
 Run **alpha-config:assemble** to make the view ready for use, then add it to the data server:​
 
 Now go to the Data Server definition (inside the **-script-config** module). Replace the `ALL_TRADES` query in the Data Server with the new `TRADE_VIEW`.
@@ -293,6 +302,11 @@ class TradeViewTest : AbstractDatabaseTest() {
 }
 ```
 
+You can run the test from IntelliJ by right-clicking on the test class and selecting `Run TradeViewTest` or from the command line as well.
+
+```shell title='Running TradeViewTest from the command line'
+./gradlew :alpha-script-config:test --tests "global.genesis.Genesis.TradeViewTest"
+```
 
 ## Calculated data
 

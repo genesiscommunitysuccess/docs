@@ -306,9 +306,10 @@ Whichever client you are using, you need to log in before you can send test requ
 
 For example, to log in using Postman:
 1. Create a new query in Postman.
-2. In front of the url, set the call to **POST**.
-3. For the url, you need to supply your server instance, then **:9064** (which sends you to the application's Router), and then **event-login-auth**. For example:
-**http://localhost:9064/event-login-auth**
+2. In front of the URL, set the call to **POST**.
+3. For the URL, you need to supply your server instance, then **:9064** (which sends you to the application's Router), and then **event-login-auth**. For example:
+**http://localhost:9064/event-login-auth**. 
+Alternatively, you can use the reverse proxy already setup on the WSL instance and go with this URL: **http://localhost/gwf/event-login-auth**
 4. Set the Body to JSON and insert the message below (substituting your correct user name and password) in the main body. 
 
 ```

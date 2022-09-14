@@ -202,6 +202,12 @@ From the Gradle menu on the right of Intellij, this is:
 
 ![](/img/build-gradle-kts-fields.png)
 
+Alternatively, you can run the gradle tasks from the command line as well - in case you can't run it from your IDE for any reason. Make sure to open your terminal and cd into `../server/jvm` to run them.
+
+```shell title='Running generateFields from the command line'
+./gradlew :alpha-dictionary-cache:genesis-generated-fields:generateFields
+```
+
 :::note Why do I have to run this Gradle task?
 
 You are editing a kts file that needs to be compiled and built to be used from other places. In this case, we want the fields to be available to the tables (and with intellisense support from the IDE).
@@ -241,6 +247,11 @@ From the Gradle menu, this is:
 **genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDAO**
 
 ![](/img/build-gradle-kts-generated-dao.png)
+
+
+```shell title='Running generateDAO from the command line'
+./gradlew :alpha-dictionary-cache:genesis-generated-dao:generateDAO
+```
 
 After running it, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
 
@@ -344,10 +355,13 @@ If you had to add application specific definitions, like an API_KEY for example,
 -->
 Finally, you can build the server.
 
-In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha**/**Tasks**/**Build/Assemble**.
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**Tasks**/**Build/Assemble**.
 
 ![](/img/assemble-server.png)
 
+```shell title='Running assemble from the command line'
+./gradlew :assemble
+```
 
 ### 5. Deployment
 
@@ -392,41 +406,40 @@ Now we are going to install the Genesis Platform (i.e. Genesis distribution) on 
 
 ##### Deploying to the server
 
-We will run `setupEnvironment` first (we only need to run it once) to set up the platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
+We will run `setupEnvironment` first (we only need to run it once) to set up the platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution. So, basically, it installs the Genesis Platform on your local server.
 
-Usage :
-```shell
-./gradlew :jvm:alpha-deploy:setupEnvironment #On the IntelliJ terminal
-```
-or from the dropdown menu:
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**setupEnvironment**.
 
 ![](/img/setup-environment.png)
+
+```shell title='Running setupEnvironment from the command line'
+./gradlew :alpha-deploy:setupEnvironment
+```
 
 After this command is completed, we will have a basic genesis server running.
 
 ### Deploying the auth module
-As our application requires authentication, we have to install the Genesis Auth module.
+As our application requires [authentication](/server-modules/access-control/introduction/), we have to install the Genesis Auth module.
 
-Usage:
-```shell
-./gradlew :jvm:alpha-deploy:install-auth-distribution.zip #On the IntelliJ terminal
-```
-
-or from the dropdown menu:
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**install-auth-distribution.zip**.
 
 ![](/img/install-auth.png)
+
+```shell title='Running install-auth-distribution.zip from the command line'
+./gradlew :alpha-deploy:install-auth-distribution.zip
+```
 
 <!-- Adjusting WSL we could remove this-->
 ### Deploying the site-specific
 As our application will override the standard definitions using the site-specific folder, we have to run this task.
 
-Usage:
-```shell
-./gradlew :jvm:alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip #On the IntelliJ terminal
-```
-or from the dropdown menu:
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip**.
 
 ![](/img/install-site-specific.png) 
+
+```shell title='Running install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip from the command line'
+./gradlew :alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip
+```
 
 <!-- END Adjusting WSL we could remove this-->
 
@@ -434,14 +447,13 @@ or from the dropdown menu:
 
 Now we have to deploy our application, the alpha product.
 
-Usage:
-```shell
-./gradlew :jvm:alpha-deploy:deploy-genesisproduct-alpha.zip #On the IntelliJ terminal
-```
-
-or from the dropdown menu:
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisdeploy**/**deploy-genesisproduct-alpha.zip**.
 
 ![](/img/deploy-alpha-product.png)
+
+```shell title='Running deploy-genesisproduct-alpha.zip from the command line'
+./gradlew :alpha-deploy:deploy-genesisproduct-alpha.zip 
+```
 
 :::tip
 This will take the last built distribution and does not run a project build as part of the task. Make sure you have done it like [described previously](/getting-started/developer-training/training-content-day1/#4-prepare-the-server-and-build).
@@ -450,7 +462,7 @@ This will take the last built distribution and does not run a project build as p
 
 ### Adding a user to login
 
-Next let´s create a user.
+Next let's create a user.
 
 :::note
 The following details will be your login details:
@@ -462,29 +474,41 @@ The following details will be your login details:
 We shall run the task `loadInitialData`. This adds the data in a file called USER.csv to be imported into the USER table in your
 database. The USER table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously. 
 
-To run the task we will call:
-
-```shell
-./gradlew :jvm:alpha-deploy:loadInitialData #On the IntelliJ terminal
-```
-
-or from the dropdown menu:
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**loadInitialData**.
 
 ![](/img/load-initial-data.png)
 
-Now we are going to use Genesis DbMon to run some queries on the database.
-
-Run `DbMon` to check that the user has been created:
-
-```shell
-./gradlew :jvm:alpha-deploy:DbMon #On the IntelliJ terminal
+```shell title='Running loadInitialData from the command line'
+./gradlew :alpha-deploy:loadInitialData
 ```
 
-or from the dropdown menu:
+Now we are going to use Genesis DbMon to run some queries on the database. 
+
+DbMon is a Genesis tool, database-engine agnostic, used to access the data stored in the DbLayer configured in the application. In our case, it's FoundationDB. But, if it was another database engine like PostgreSQL for example, you would still be able to use DbMon.
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisscripts**/**DbMon**.
 
 ![](/img/using-DbMon.png)
 
-Once you are inside the console, type 'table USER' and then 'search 1'. If imported correctly, the user JaneDee should be listed.
+```shell title='Running DbMon from the command line'
+./gradlew :alpha-deploy:DbMon
+```
+
+You should see something like this after a few seconds:
+```shell
+==================================
+Genesis Database Monitor
+Enter 'help' for a list of commands
+==================================
+```
+
+:::caution DbMon seems to be frozen?
+It's probably not frozen, as once you run DbMon it's expecting you to enter a subsequent command. We call it a ***DbMon command***. So, go ahead and try typing the commands listed below.
+:::
+
+Once you are inside DbMon console, type `table USER` and then `search 1`. If imported correctly, the user JaneDee should be listed.
+
+If you are curious, type `help` and it will list all available DbMon commands.
 
 #### Running server commands
 :::info can I run server commands from the command line rather than gradle tasks?
@@ -501,14 +525,15 @@ Try it now!
 
 :::
 
-Now, let's run the Genesis command 'mon' to see if all processes are up and running on the server:
+Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
 
-```shell
-./gradlew :jvm:alpha-deploy:mon #On the IntelliJ terminal
-```
-or from the dropdown menu:
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisscripts**/**mon**.
 
 ![](/img/using-mon.png)
+
+```shell title='Running mon from the command line'
+./gradlew :alpha-deploy:mon
+```
 
 we should see something like this
 
@@ -532,7 +557,7 @@ PID     Process Name                  Port        Status         CPU       Memor
 Try to run `mon` from the command line as well!
 :::
 
-See [here](/getting-started/prerequisites/genx/) for extra details on how to configure the Genesis deploy plugin.
+See [here](/getting-started/prerequisites/gradle-deploy-plugin/) for extra details on how to configure the Genesis deploy plugin.
 
 
 
@@ -542,8 +567,8 @@ See [here](/getting-started/prerequisites/genx/) for extra details on how to con
 There are multiple ways you can test the back end of your application. It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as HTTP endpoints automatically by the Genesis platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
 
 ### Genesis Console
-1. In your browser, go to http://genesislcap.com/console/console-next2/.
-2. Enter the IP address of your server, in this case localhost.
+1. In your browser, go to http://genesislcap.com/console/console-next2/?host=localhost:8080.
+2. Enter the IP address of your server, in this case localhost. We should also add the port, as our web server running on the WSL instance is listening on 8080, so the value to be entered here is `localhost:8080`
 3. Log in with your user name and password as [defined previously](/getting-started/developer-training/training-content-day1/#adding-a-user-to-login). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES** tab.
 5. Filter the **Resource type** to show only event handlers.
