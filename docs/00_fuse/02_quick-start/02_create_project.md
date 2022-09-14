@@ -76,7 +76,7 @@ Let's choose the location and name for our project. In this case, our current di
 ? App name alpha
 ```
 
-Select the seed you want to create.
+Select the seed from which you'd like to create an application.
 ```shell
 ? App seed (Use arrow keys)
 > Low-code Application
