@@ -1,7 +1,10 @@
 ---
-title: 'Advanced'
+title: 'Apache Camel - Advanced'
 sidebar_label: 'Advanced'
 id: advanced
+keywords: [apache camel]
+tags:
+    - apache camel
 ---
 
 [Introduction](/server-modules/integration/apache-camel/introduction/)  | [Basics](/server-modules/integration/apache-camel/basics) | [Advanced](/server-modules/integration/apache-camel/advanced) | [Examples](/server-modules/integration/apache-camel/examples) | [Configuring runtime](/server-modules/integration/apache-camel/configuring-runtime) | [Testing](/server-modules/integration/apache-camel/testing)

@@ -2,6 +2,9 @@
 title: 'Configuring Runtime'
 sidebar_label: 'Configuring Runtime'
 id: configuring-runtime
+keywords: [apache camel]
+tags:
+    - apache camel
 ---
 
 import Tabs from '@theme/Tabs';
