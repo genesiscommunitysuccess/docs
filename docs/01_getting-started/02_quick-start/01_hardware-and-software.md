@@ -18,7 +18,7 @@ This page gives you the hardware and software requirements needed in order to ru
 
 | Package	| Minimum Version | 
 |--------------|:---------------:|
-| IntelliJ	| 2022.2 and above  |
+| IntelliJ	| 2021.2.3 and above  |
 |Visual Studio Code	|     1.52.1      |
 |Java SDK|       11        |
 | NodeJS  |     16 LTS+     |

@@ -21,7 +21,7 @@ Start with the Form component, which will generate all the inputs based on the A
 To respond to the user clicking on the **Submit** button, you need to call the `EVENT_TRADE_INSERT` event:
 ```html {3} title='home.template.ts'
 <zero-form
-  resourceName="EVENT_INSERT_TRADE"
+  resourceName="EVENT_TRADE_INSERT"
   @submit=${(x, c) => x.insertTrade(c.event as CustomEvent)}
 ></zero-form>
 ```

@@ -41,11 +41,11 @@ eventHandler {
 ```
 :::info What is entityDb?
 
-The [entityDb](/database/database-interface/entity-db/) enables you to interact with the database layer, it's part of the Genesis Database API and we'll get into more details soon. For now, understand that this is the common way to access data from code. Feel free to use the intellisense of your IDE to explore the methods available from entityDb.
+The [entityDb](/database/database-interface/entity-db/) enables you to interact with the database layer. It's part of the Genesis database API and we'll get into more details soon. For now, understand that this is the common way to access data from code. Feel free to use the intellisense of your IDE to explore the methods available from entityDb.
 :::
 
 ## Prepare the server and build
-So far we have created an event handler and data server - just their definitions, but there's nothing on the runtime configuration yet. Each component, such as Eevent Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
+So far we have created an event handler and data server - just their definitions, but there's nothing on the runtime configuration yet. Each component, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
 
 - **positions-app-tutorial-processes.xml**
 - **positions-app-tutorial-service-definitions.xml**
