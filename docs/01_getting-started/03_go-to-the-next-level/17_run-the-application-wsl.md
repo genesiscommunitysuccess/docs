@@ -325,7 +325,7 @@ The url consists of:
 
 - the address or hostname of the server
 - if necessary, some extra routing; in this case **gwf** uses a proxy to access the server
-- the name of the event handler
+- the name of the Event Handler
 
 ```
 http://localhost/gwf/EVENT_COUNTERPARTY_INSERT
