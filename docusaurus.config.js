@@ -5,7 +5,7 @@ const routeBasePath = '/';
 
 const apiPullPlugin = require('./pull-api-docs');
 
-const GTM_ID =  process.env.GTM_ID || 'GTM-5GTR43J'; // default to uat GTM_ID, prod one should be set on CI (master) 
+const GTM_ID = process.env.GTM_ID || 'GTM-5GTR43J'; // default to uat GTM_ID, prod one should be set on CI (master) 
 
 module.exports = {
   title: 'Low-code Platform For Financial Markets',
@@ -86,12 +86,12 @@ module.exports = {
     },
     navbar: {
       items: [
-        {type: 'docsVersionDropdown', className: "version-menu"},
-        {to: 'getting-started', label: 'Learning'},
-        {to: 'database', label: 'Database'},
-        {to: 'server-modules', label: 'Server'},
-        {to: 'front-end', label: 'Web'},
-        {to: 'operations', label: 'Operations'},
+        { type: 'docsVersionDropdown', className: "version-menu" },
+        { to: 'getting-started', label: 'Learning' },
+        { to: 'database', label: 'Database' },
+        { to: 'server-modules', label: 'Server' },
+        { to: 'front-end', label: 'Web' },
+        { to: 'operations', label: 'Operations' },
         {
           href: "https://stackoverflow.com/c/genesis-global",
           className: "so-icon",
