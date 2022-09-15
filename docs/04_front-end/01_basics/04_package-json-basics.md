@@ -83,7 +83,7 @@ This includes **@genesislcap** dependencies. This is where you would change thei
 You can use the `lerna add` command (instead of `npm install`) if you need to add more dependencies, since the app is a [lerna managed](https://lerna.js.org/) monorepo.
 :::
 
-The `devDependencies` section is for dependencies which are only to used in development - think of tools such as linters. These additional dependencies will not be added to the final production bundle and hence will not increase the download size of the application to the user's browser.
+The `devDependencies` section is for dependencies that are only used in development - think of tools such as linters. These additional dependencies will not be added to the final production bundle and hence will not increase the download size of the application to the user's browser.
 
 ```javascript
   "devDependencies": {
@@ -112,10 +112,10 @@ When first starting to work with the `lerna` managed monorepo there can be some 
 
 2. **Adding a module command** - If you want to add a command that is specific for a module, such as a command set up the extract the API from tsdoc comments using [@microsoft/api-documenter](https://www.npmjs.com/package/@microsoft/api-documenter) you would edit the `package.json` specific to that package just as in the previous bullet point.
 
-3. **Adding a CI/workflow command** - A command you want to run as part of CI or a workflow such as during a git command you'll want to have in your client root. For example if you want to set up linting checks you'll want to add the linting command in the `client/package.json` file.
+3. **Adding a CI/workflow command** - A command you want to run as part of CI or a workflow, such as during a git command, you'll want to have in your client root. For example, if you want to set up linting checks you'll want to add the linting command in the `client/package.json` file.
 
 :::tip
-A good rule of thumb for knowing which `package.json` to update is to think of the `package.json` files and modules as a hierarchical tree, and you need to make the change in file which is or is an ancestor of the places where the change is needed.
+A good rule of thumb for knowing which `package.json` to update is to think of the `package.json` files and modules as a hierarchical tree, and you need to make the change in file which is or isn't an ancestor of the places where the change is needed.
 
 In general you only need to add changes to the top level `package.json` if the change is required across all modules, else the change would be specific to the module(s) required.
 :::
