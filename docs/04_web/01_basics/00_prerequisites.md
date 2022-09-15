@@ -34,7 +34,7 @@ If you get confused by any of the terminology we use in this section, we are pro
 - [TypeScript compiler/tsconfig](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
 - [.npmrc and getting set up](https://docs.npmjs.com/cli/v8/configuring-npm/npmrc)
 - [Installing packages](https://docs.npmjs.com/cli/v8/commands/npm-install)
-- [Starting up the app and writing npm commands](/front-end/basics/package-json-basics/#scripts)
+- [Starting up the app and writing npm commands](/web/basics/package-json-basics/#scripts)
 - [Webpack](https://webpack.js.org/concepts/)
 - [Git](https://github.com/git-guides)
 
@@ -42,7 +42,7 @@ If you get confused by any of the terminology we use in this section, we are pro
 - [Building and using components](https://www.fast.design/docs/category/building-components)
 - [Using CSS](https://www.fast.design/docs/fast-element/leveraging-css)
 - [Design tokens](https://www.fast.design/docs/design-systems/design-tokens)
-- [How to style existing components](/front-end/basics/inserting-a-grid/#going-further)
+- [How to style existing components](/web/basics/inserting-a-grid/#going-further)
 - [How to import and use a design system](https://www.fast.design/docs/category/creating-design-systems) 
 <!-- TODO: link to foundation-ui example when we have one -->
 

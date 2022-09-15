@@ -4,7 +4,7 @@ sidebar_label: 'Basics'
 id: basics
 ---
 
-[Introduction](/server-modules/evaluator/introduction) | [Basics](/server-modules/evaluator/basics) | [Examples](/server-modules/evaluator/examples) | [Configuring runtime](/server-modules/evaluator/configuring-runtime) | [Testing](/server-modules/evaluator/testing)
+[Introduction](/server/evaluator/introduction) | [Basics](/server/evaluator/basics) | [Examples](/server/evaluator/examples) | [Configuring runtime](/server/evaluator/configuring-runtime) | [Testing](/server/evaluator/testing)
 
 ## Dynamic rules
 This feature enables you to raise alarms on certain conditions or to react on specific states. Dynamic rules respond to changes in database tables. For instance, if a figure goes above a certain threshold, the rule could trigger a warning email to be sent out.
@@ -53,7 +53,7 @@ data class PositionCancel(
 
 So if the `RULE_TABLE` is set to `POSITION`, and the `RULE_EXPRESSION` is set to `(POSITION_ID = POSITION_ID)`, then this will take the `POSITION_ID` from the `POSITION` table and set it on the `PositionClass` object that gets instantiated and ultimately sent to the Event Handler.
 
-For example, if you have an Event Handler that inserts a [Notify](/server-modules/integration/notify/configuring/) email message, you could set up the Event Handler in this way in the _application_**-script-config\src\main\resources\scripts\application-eventhandler.kts** file:
+For example, if you have an Event Handler that inserts a [Notify](/server/integration/notify/configuring/) email message, you could set up the Event Handler in this way in the _application_**-script-config\src\main\resources\scripts\application-eventhandler.kts** file:
 
 
 ```kotlin
@@ -82,8 +82,8 @@ eventHandler<PositionCancel> {
 }
 
 ```
-For the example above to work, you need to set up a [Notify](/server-modules/integration/notify/configuring/) process together with inserting a GATEWAY and a NOTIFY_ROUTE in the database and add the details of the connection for the SMTP server to the **genesis-system-definition.kts** file.
-You can see an example of a dynamic rule using [Notify](/server-modules/integration/notify/configuring/) email messages being configured in our [tutorial](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#dynamic-rules-conditional-rules).
+For the example above to work, you need to set up a [Notify](/server/integration/notify/configuring/) process together with inserting a GATEWAY and a NOTIFY_ROUTE in the database and add the details of the connection for the SMTP server to the **genesis-system-definition.kts** file.
+You can see an example of a dynamic rule using [Notify](/server/integration/notify/configuring/) email messages being configured in our [tutorial](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#dynamic-rules-conditional-rules).
 ## Static rules
 Static rules are used to create scheduled activities. For instance to schedule the production of EOD reports, or to run a batch report on the hour.
 
@@ -111,7 +111,7 @@ CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,ME
 "0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 
-Load the cron rule **CRON_RULE.csv** file into the `CRON_RULE`  [table](/server-modules/evaluator/configuring-runtime/#cron_rule-table).
+Load the cron rule **CRON_RULE.csv** file into the `CRON_RULE`  [table](/server/evaluator/configuring-runtime/#cron_rule-table).
 
 Run `SendIt`
 

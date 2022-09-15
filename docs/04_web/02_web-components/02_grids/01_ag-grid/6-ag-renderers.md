@@ -13,7 +13,7 @@ We currently support the following scenarios:
 - **`built-in renderer`**: we currently have two cell renderers that are ready to use (**Actions Menu** and **Boolean**). You can use them by specifying the `cellRenderer` property and referencing them directly, or, in the `boolean` (more to be added) case, it can be configured automatically if the target AG Grid is correctly configured. <br /><br /> 
 *This may be affected if the `auto-cell-renderer-by-type` prop in the target AG Grid is set to `false`*
 
-- **`custom renderer`**: can be either a function or a full custom component. See the [Genesis AG Cell](/front-end/web-components/grids/ag-grid/ag-genesis-cell/) section for more info and examples and the official AG Grid [Cell Renderer](https://www.ag-grid.com/javascript-data-grid/component-cell-renderer/) documentation.
+- **`custom renderer`**: can be either a function or a full custom component. See the [Genesis AG Cell](/web/web-components/grids/ag-grid/ag-genesis-cell/) section for more info and examples and the official AG Grid [Cell Renderer](https://www.ag-grid.com/javascript-data-grid/component-cell-renderer/) documentation.
 
 ## Built-in examples
 

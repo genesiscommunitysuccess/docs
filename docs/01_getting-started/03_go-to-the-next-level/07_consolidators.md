@@ -4,12 +4,12 @@ sidebar_label: 'Data Aggregation using Consolidator'
 id: consolidators
 ---
 
-Following from the calculated data using [derived fields](/getting-started/go-to-the-next-level/calculated-data/), the Genesis low-code platform provides a more advanced feature to aggregate data or perform calculations whenever the underlying data is changed. That feature is called [Consolidator](/server-modules/consolidator/introduction/).
+Following from the calculated data using [derived fields](/getting-started/go-to-the-next-level/calculated-data/), the Genesis low-code platform provides a more advanced feature to aggregate data or perform calculations whenever the underlying data is changed. That feature is called [Consolidator](/server/consolidator/introduction/).
 
 In our case, Consolidators are a good fit for consolidating a position table from trades.
 
 ## Section objectives
-The goal of this section is to define and build a [Consolidator](/server-modules/consolidator/introduction/).
+The goal of this section is to define and build a [Consolidator](/server/consolidator/introduction/).
 
 
 ## Define the position-keeping logic in the Consolidator
@@ -162,4 +162,4 @@ Add a new entry to **positions-app-tutorial-service-definitions.xml** with the C
 When you finish, remember to run `generateDao` (if you made changes to the table), `assemble` and `deploy-genesisproduct-positions-app-tutorial`.
 
 ## Conclusion
-This shows a quick example of a Consolidator. If you want to see it in action, go to [Endpoints](/server-modules/integration/rest-endpoints/introduction/) for information on testing your the back end.
+This shows a quick example of a Consolidator. If you want to see it in action, go to [Endpoints](/server/integration/rest-endpoints/introduction/) for information on testing your the back end.

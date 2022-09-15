@@ -4,7 +4,7 @@ sidebar_label: 'Testing'
 id: testing
 ---
 
-[Introduction](/server-modules/event-handler/introduction)  | [Basics](/server-modules/event-handler/basics) | [Advanced](/server-modules/event-handler/advanced) | [Examples](/server-modules/event-handler/examples) | [Configuring runtime](/server-modules/event-handler/configuring-runtime) | [Testing](/server-modules/event-handler/testing) | [Java event handlers](/server-modules/event-handler/java-event-handlers) | [Testing java event handlers](/server-modules/event-handler/testing-java-event-handlers)
+[Introduction](/server/event-handler/introduction)  | [Basics](/server/event-handler/basics) | [Advanced](/server/event-handler/advanced) | [Examples](/server/event-handler/examples) | [Configuring runtime](/server/event-handler/configuring-runtime) | [Testing](/server/event-handler/testing) | [Java event handlers](/server/event-handler/java-event-handlers) | [Testing java event handlers](/server/event-handler/testing-java-event-handlers)
 
 ## Integration testing
 
@@ -201,7 +201,7 @@ Fourth, in your test set-up, let's authorise one user to be able to insert trade
     }
 ```
 
-For more information on authorisation, please see the [authorisation docs](/server-modules/access-control/authorisation-overview).
+For more information on authorisation, please see the [authorisation docs](/server/access-control/authorisation-overview).
 
 Below is a test that verifies only Traders can enter trades:
 

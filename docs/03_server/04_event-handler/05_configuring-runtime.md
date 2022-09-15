@@ -4,7 +4,7 @@ sidebar_label: 'Configuring Runtime'
 id: configuring-runtime
 ---
 
-[Introduction](/server-modules/event-handler/introduction)  | [Basics](/server-modules/event-handler/basics) | [Advanced](/server-modules/event-handler/advanced) | [Examples](/server-modules/event-handler/examples) | [Configuring runtime](/server-modules/event-handler/configuring-runtime) | [Testing](/server-modules/event-handler/testing) | [Java event handlers](/server-modules/event-handler/java-event-handlers) | [Testing java event handlers](/server-modules/event-handler/testing-java-event-handlers)
+[Introduction](/server/event-handler/introduction)  | [Basics](/server/event-handler/basics) | [Advanced](/server/event-handler/advanced) | [Examples](/server/event-handler/examples) | [Configuring runtime](/server/event-handler/configuring-runtime) | [Testing](/server/event-handler/testing) | [Java event handlers](/server/event-handler/java-event-handlers) | [Testing java event handlers](/server/event-handler/testing-java-event-handlers)
 
 There are two important files in your application that contain configuration information: 
 -  _application-name_**-processes.xml**
@@ -28,7 +28,7 @@ Here is an example of an Event Handler configuration in an application's **proce
   </process>
 ```
 
-For more information on the tags that can be set within the configuration for your application, go to our page on [processes.xml](/server-modules/configuring-runtime/processes/).
+For more information on the tags that can be set within the configuration for your application, go to our page on [processes.xml](/server/configuring-runtime/processes/).
 
 ### Configuring in service-definitions.xml
 
@@ -38,5 +38,5 @@ Here is an example of an Event Handler's service configuration:
   <service host="localhost" name="POSITION_EVENT_HANDLER" port="11002"/>
 ```
 
-For more information on the attributes that can be set here, go to our page on [service definitions](/server-modules/configuring-runtime/service-definitions/).
+For more information on the attributes that can be set here, go to our page on [service definitions](/server/configuring-runtime/service-definitions/).
 

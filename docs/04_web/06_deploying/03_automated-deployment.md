@@ -222,7 +222,7 @@ pipeline {
 }
 ```
 
-The generated builds can then be fetched and moved to the correct location on the webserver with another script or [manually](/front-end/deploying/manual-deployment/).
+The generated builds can then be fetched and moved to the correct location on the webserver with another script or [manually](/web/deploying/manual-deployment/).
 
 ## What the full pipeline might look like
 

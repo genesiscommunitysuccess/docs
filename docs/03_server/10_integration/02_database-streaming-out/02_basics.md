@@ -4,7 +4,7 @@ sidebar_label: 'Basics'
 id: basics
 ---
 
-[Introduction](/server-modules/integration/database-streaming-out/introduction)  | [Basics](/server-modules/integration/database-streaming-out/basics) | [Advanced](/server-modules/integration/database-streaming-out/advanced) | [Examples](/server-modules/integration/database-streaming-out/examples) | [Configuring runtime](/server-modules/integration/database-streaming-out/configuring-runtime) | [Testing](/server-modules/integration/database-streaming-out/testing)
+[Introduction](/server/integration/database-streaming-out/introduction)  | [Basics](/server/integration/database-streaming-out/basics) | [Advanced](/server/integration/database-streaming-out/advanced) | [Examples](/server/integration/database-streaming-out/examples) | [Configuring runtime](/server/integration/database-streaming-out/configuring-runtime) | [Testing](/server/integration/database-streaming-out/testing)
 
 ## Configuration
 
@@ -135,7 +135,7 @@ Example:
 
 ### Process arguments
 
-Use `startProcess` to start the GenesisToDb process (see [Configuring Runtime](/server-modules/integration/database-streaming-out/configuring-runtime/) for more information on how to configure this). This can take two additional optional arguments:
+Use `startProcess` to start the GenesisToDb process (see [Configuring Runtime](/server/integration/database-streaming-out/configuring-runtime/) for more information on how to configure this). This can take two additional optional arguments:
 
 `--clearText` can be passed if you want to use clear text user and passwords in the configuration file, instead of encrypted ones.
 
@@ -157,9 +157,9 @@ _The stored procedures for insert, modify and delete should also be created befo
 
 Even though Genesis cannot modify these triggers/procedures and they can potentially be implemented in any desired way as long as they behave as expected, it is always useful to have some simple working examples.
 
-* [Oracle sample](/server-modules/integration/database-streaming-out/examples/#oracle-sample)
-* [MSSQL sample](/server-modules/integration/database-streaming-out/examples/#mssql-sample)
-* [PostgreSQL sample](/server-modules/integration/database-streaming-out/examples/#postgresql-sample)
+* [Oracle sample](/server/integration/database-streaming-out/examples/#oracle-sample)
+* [MSSQL sample](/server/integration/database-streaming-out/examples/#mssql-sample)
+* [PostgreSQL sample](/server/integration/database-streaming-out/examples/#postgresql-sample)
 
 ### Encrypting user and passwords
 

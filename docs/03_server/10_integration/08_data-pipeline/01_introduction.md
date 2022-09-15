@@ -4,9 +4,9 @@ sidebar_label: 'Introduction'
 id: introduction
 ---
 
-[Introduction](/server-modules/integration/data-pipeline/introduction/)  | [Basics](/server-modules/integration/data-pipeline/basics) | [Advanced](/server-modules/integration/data-pipeline/advanced) | [Examples](/server-modules/integration/data-pipeline/examples) | [Configuring runtime](/server-modules/integration/data-pipeline/configuring-runtime) | [Testing](/server-modules/integration/data-pipeline/testing)
+[Introduction](/server/integration/data-pipeline/introduction/)  | [Basics](/server/integration/data-pipeline/basics) | [Advanced](/server/integration/data-pipeline/advanced) | [Examples](/server/integration/data-pipeline/examples) | [Configuring runtime](/server/integration/data-pipeline/configuring-runtime) | [Testing](/server/integration/data-pipeline/testing)
 
-You can define pipelines that map data from an external source (database, file) to [Tables](/database/fields-tables-views/tables/) in your application. By default, the resulting Table objects are stored in the database. However, you can define [custom operations](/server-modules/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity) as well.
+You can define pipelines that map data from an external source (database, file) to [Tables](/database/fields-tables-views/tables/) in your application. By default, the resulting Table objects are stored in the database. However, you can define [custom operations](/server/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity) as well.
 
 Each data pipeline defines a source for the data and how that data is mapped to each [Field](/database/fields-tables-views/fields/) in the Table.
 

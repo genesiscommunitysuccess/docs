@@ -30,8 +30,8 @@ The main differences between the generated repositories and the [Entity Db](/da
 | Write (output) | [Write Result](/database/helper-classes/write-result/#write-result)                                  |
 | Subscribe | [Record Update](/database/helper-classes/subscription/record-update/#write-result) of entity                |
 | Bulk or Range Subscribe | [Bulk](/database/helper-classes/subscription/bulk/) of entity                                          |
-| Available in [Event Handlers](/server-modules/event-handler/introduction/) | ❌                                                                                                      |
-| Available in [custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers) | ❌                                                                                                      |
+| Available in [Event Handlers](/server/event-handler/introduction/) | ❌                                                                                                      |
+| Available in [custom Request Servers](/server/request-server/advanced/#custom-request-servers) | ❌                                                                                                      |
 
 With generated repositories, there are two flavours of the entity db:
 

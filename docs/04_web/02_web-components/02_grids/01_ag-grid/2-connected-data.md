@@ -5,7 +5,7 @@ title: Connected data
 
 The examples below use JSX syntax. Real-world scenarions might be different, depending on the client application tooling and structure.
 
-For `foundation-ui` versions after **0.0.17** the [Genesis Datasource](/front-end/web-components/grids/ag-grid/ag-genesis-datasource/) has its own slotted component. The documentation should be valid for both usages (current vs. previous), since attributes/props are the same.
+For `foundation-ui` versions after **0.0.17** the [Genesis Datasource](/web/web-components/grids/ag-grid/ag-genesis-datasource/) has its own slotted component. The documentation should be valid for both usages (current vs. previous), since attributes/props are the same.
 
 ## Set-up
 

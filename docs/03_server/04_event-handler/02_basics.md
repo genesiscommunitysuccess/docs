@@ -4,7 +4,7 @@ sidebar_label: 'Basics'
 id: basics
 ---
 
-[Introduction](/server-modules/event-handler/introduction)  | [Basics](/server-modules/event-handler/basics) | [Advanced](/server-modules/event-handler/advanced) | [Examples](/server-modules/event-handler/examples) | [Configuring runtime](/server-modules/event-handler/configuring-runtime) | [Testing](/server-modules/event-handler/testing) | [Java event handlers](/server-modules/event-handler/java-event-handlers) | [Testing java event handlers](/server-modules/event-handler/testing-java-event-handlers)
+[Introduction](/server/event-handler/introduction)  | [Basics](/server/event-handler/basics) | [Advanced](/server/event-handler/advanced) | [Examples](/server/event-handler/examples) | [Configuring runtime](/server/event-handler/configuring-runtime) | [Testing](/server/event-handler/testing) | [Java event handlers](/server/event-handler/java-event-handlers) | [Testing java event handlers](/server/event-handler/testing-java-event-handlers)
 
 Let's make things really simple.
 - The Event Handler is the component that enables the application to write to the database.
@@ -25,9 +25,9 @@ On this page, we'll take you through the basics of creating an Event Handler in 
 - [more information on validation](#more-information-about-onvalidate)
 - [context Event Handlers](#context-event-handlers)
 
-By the end of that, you'll have some very useful knowledge, and you'll be ready to move on to the [advanced](/server-modules/event-handler/advanced/) page.
+By the end of that, you'll have some very useful knowledge, and you'll be ready to move on to the [advanced](/server/event-handler/advanced/) page.
 
-It is possible to define an Event Handler in Java, and we have included Java [examples](/server-modules/event-handler/java-event-handlers/). However, we strongly advise you to create your Event Handler using Kotlin; it is a considerably more efficient method.
+It is possible to define an Event Handler in Java, and we have included Java [examples](/server/event-handler/java-event-handlers/). However, we strongly advise you to create your Event Handler using Kotlin; it is a considerably more efficient method.
 
 ## A simple example of an Event Handler
 

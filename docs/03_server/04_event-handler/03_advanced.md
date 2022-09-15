@@ -4,7 +4,7 @@ sidebar_label: 'Advanced'
 id: advanced
 ---
 
-[Introduction](/server-modules/event-handler/introduction)  | [Basics](/server-modules/event-handler/basics) | [Advanced](/server-modules/event-handler/advanced) | [Examples](/server-modules/event-handler/examples) | [Configuring runtime](/server-modules/event-handler/configuring-runtime) | [Testing](/server-modules/event-handler/testing) | [Java event handlers](/server-modules/event-handler/java-event-handlers) | [Testing java event handlers](/server-modules/event-handler/testing-java-event-handlers)
+[Introduction](/server/event-handler/introduction)  | [Basics](/server/event-handler/basics) | [Advanced](/server/event-handler/advanced) | [Examples](/server/event-handler/examples) | [Configuring runtime](/server/event-handler/configuring-runtime) | [Testing](/server/event-handler/testing) | [Java event handlers](/server/event-handler/java-event-handlers) | [Testing java event handlers](/server/event-handler/testing-java-event-handlers)
 
 ## Custom reply message type
 If you use a custom reply message type, you won’t be able to use the default `ack()` or `validationAck()` functions.  The custom message type needs to be returned from the method.
@@ -96,7 +96,7 @@ If your message type is not a database-generated entity,  you can still define f
     }
 ```
 
-You can find out more details in our section on [authorisation](/server-modules/access-control/authorisation-overview/).
+You can find out more details in our section on [authorisation](/server/access-control/authorisation-overview/).
 
 
 ## Auto auditing
@@ -110,7 +110,7 @@ If the Event Handler message type is a database-generated entity that is auditab
 
 ## Defining state machines
 
-State machines, which define the conditions for moving from one state to another, are defined within your Event Handler files. See more details about these in the section on [Defining your state machines](/server-modules/state-machine/introduction/).
+State machines, which define the conditions for moving from one state to another, are defined within your Event Handler files. See more details about these in the section on [Defining your state machines](/server/state-machine/introduction/).
 
 ## Pending approvals
 

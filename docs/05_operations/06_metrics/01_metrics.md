@@ -11,7 +11,7 @@ The Genesis Metrics module enables you to capture metrics for specific component
 
 By default, when running the Genesis system, the metric calls will have no impact on the performance or behaviour of the system.
 
-To make use of the metric calls, you must set `MetricsEnabled` to `true` in the [system definition file](/server-modules/configuring-runtime/system-definitions/). In addition, you should define the `MetricsReportType` to include a comma-separated list of `MetricsReportType` outputs, which should include at least one of the following:
+To make use of the metric calls, you must set `MetricsEnabled` to `true` in the [system definition file](/server/configuring-runtime/system-definitions/). In addition, you should define the `MetricsReportType` to include a comma-separated list of `MetricsReportType` outputs, which should include at least one of the following:
 
 * Console - sends metrics straight to the console
 * SLF4J - will append metrics to an [SLF4J](http://www.slf4j.org/) Logger

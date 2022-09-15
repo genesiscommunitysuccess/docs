@@ -4,7 +4,7 @@ sidebar_label: 'Progress ring'
 id: progress-ring
 ---
 
-The [`Progress`](/front-end/web-components/presentation/progress/) and `Progress Ring` components are used to display one of the following:
+The [`Progress`](/web/web-components/presentation/progress/) and `Progress Ring` components are used to display one of the following:
 
 - the length of time a process will take
 - a visual percentage value (referred to as a **determinate** state)
@@ -12,7 +12,7 @@ The [`Progress`](/front-end/web-components/presentation/progress/) and `Progress
 
 `Progress` components are typically visually represented by a circular or linear animation. When the `value` attribute is passed, the state is **determinate**; otherwise, it is **indeterminate**.
 
-- For `progress` components that have a linear visual appearance, use [`alpha-progress`](/front-end/web-components/presentation/progress/). 
+- For `progress` components that have a linear visual appearance, use [`alpha-progress`](/web/web-components/presentation/progress/). 
 - For `progress` implementations that are circular, use `alpha-progress-ring`.
 
 ## Set-up

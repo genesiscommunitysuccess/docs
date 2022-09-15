@@ -4,7 +4,7 @@ sidebar_label: 'Configuring Runtime'
 id: configuring-runtime
 ---
 
-[Introduction](/server-modules/data-server/introduction) | [Basics](/server-modules/data-server/basics) |  [Advanced](/server-modules/data-server/advanced) | [More examples](/server-modules/data-server/examples) | [Configuring runtime](/server-modules/data-server/configuring-runtime) | [Testing](/server-modules/data-server/testing)
+[Introduction](/server/data-server/introduction) | [Basics](/server/data-server/basics) |  [Advanced](/server/data-server/advanced) | [More examples](/server/data-server/examples) | [Configuring runtime](/server/data-server/configuring-runtime) | [Testing](/server/data-server/testing)
 
 There are two important files in your application that contain configuration information: 
 - _application-name_**-processes.xml**
@@ -27,7 +27,7 @@ Here is an example configuration for a Data Server in an application's **process
   </process>
 ```
 
-For more information about the tags that can be used to set the process configuration, follow this [link](/server-modules/configuring-runtime/processes).
+For more information about the tags that can be used to set the process configuration, follow this [link](/server/configuring-runtime/processes).
 
 ### Configuring in service-definitions.xml
 
@@ -37,6 +37,6 @@ Here is a simple example of a service configuration for a Data Server in an appl
   <service host="localhost" name="POSITION_DATASERVER" port="11000"/>
 ```
 
-For more information about the attributes that can be used to set the service definition configuration, follow this [link](/server-modules/configuring-runtime/service-definitions).
+For more information about the attributes that can be used to set the service definition configuration, follow this [link](/server/configuring-runtime/service-definitions).
 
 Note - The name for both the service and process must be the same.

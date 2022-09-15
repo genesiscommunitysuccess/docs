@@ -4,7 +4,7 @@ sidebar_label: 'SSO Authentication'
 id: SSO-authentication
 ---
 
-[Introduction](/server-modules/access-control/introduction)  | [Authentication overview](/server-modules/access-control/authentication-overview) | [Username and Password](/server-modules/access-control/password-authentication) | [SSO](/server-modules/access-control/sso-authentication) | [Authorisation overview](/server-modules/access-control/authorisation-overview) | [Authorisation](/server-modules/access-control/authorisation)
+[Introduction](/server/access-control/introduction)  | [Authentication overview](/server/access-control/authentication-overview) | [Username and Password](/server/access-control/password-authentication) | [SSO](/server/access-control/sso-authentication) | [Authorisation overview](/server/access-control/authorisation-overview) | [Authorisation](/server/access-control/authorisation)
 
 import CodeBlock from '@theme/CodeBlock';
 
@@ -19,7 +19,7 @@ There are two different types of SSO authentication presently supported by the G
 
 To enable SSO, you will need to configure it in your _application-name_**-auth-preferences.kts** file.
 
-These following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Password Authentication section](/server-modules/access-control/password-authentication/).
+These following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Password Authentication section](/server/access-control/password-authentication/).
 
 ### sso
 The `sso` function allows you to configure and enable SSO options. It has the following variables to set:
@@ -119,7 +119,7 @@ Once SAML is enabled, a user can click on an SSO button in the GUI. This starts 
 
 For more information, see [wikipedia](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language).
 
-This workflow is described in more detail in the section on [Front-to-back flow](/server-modules/access-control/SSO-authentication/#front-to-back-flow).
+This workflow is described in more detail in the section on [Front-to-back flow](/server/access-control/SSO-authentication/#front-to-back-flow).
 
 ### Definitions
 

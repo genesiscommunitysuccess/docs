@@ -7,7 +7,7 @@ id: testing
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-[Introduction](/server-modules/integration/custom-endpoints/introduction/) | [Basics](/server-modules/integration/custom-endpoints/basics/) |  [Advanced](/server-modules/integration/custom-endpoints/advanced/) | [Examples](/server-modules/integration/custom-endpoints/examples/) | [Configuring runtime](/server-modules/integration/custom-endpoints/configuring-runtime/) | [Testing](/server-modules/integration/custom-endpoints/testing/)
+[Introduction](/server/integration/custom-endpoints/introduction/) | [Basics](/server/integration/custom-endpoints/basics/) |  [Advanced](/server/integration/custom-endpoints/advanced/) | [Examples](/server/integration/custom-endpoints/examples/) | [Configuring runtime](/server/integration/custom-endpoints/configuring-runtime/) | [Testing](/server/integration/custom-endpoints/testing/)
 
 To create integration tests for your custom endpoints, you need to create service tests by extending the `AbstractGenesisTestSupport` class and specifying the `genesis-router.kts` as the Script File Name. Examples of how you would initialise a test extending this class are provided below.
 

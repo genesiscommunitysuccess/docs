@@ -22,7 +22,7 @@ By default, FoundationDB is installed on the platform. If you need to use anothe
 
 ### 1. Edit the system configuration file
 
-Edit the [system definition file](/server-modules/configuring-runtime/system-definitions/): **\~/run/site-specific/cfg/genesis-system-definition.kts**. Before you start, make sure you know the JDBC connection string for the database, which specifies the host, the username and password.
+Edit the [system definition file](/server/configuring-runtime/system-definitions/): **\~/run/site-specific/cfg/genesis-system-definition.kts**. Before you start, make sure you know the JDBC connection string for the database, which specifies the host, the username and password.
 
 You need to make two changes.
 
@@ -63,7 +63,7 @@ systems {
     }
 ```
 
-For Aerospike, you might also want to update the **DbNamespace** and **DbMode** properties in the [system definition file](/server-modules/configuring-runtime/system-definitions/). 
+For Aerospike, you might also want to update the **DbNamespace** and **DbMode** properties in the [system definition file](/server/configuring-runtime/system-definitions/). 
 
 If you are using Postgres and you want to use a reserved keyword as a column name, then you need to add the setting below to your system definition file. This enables Quoted Identifiers to be used:
 

@@ -16,7 +16,7 @@ This day covers:
 
 A Data Server allows for reading of real-time data. Data Servers monitor specific tables or views in the database. When a change in data occurs, the Data Server sends the updates to all of its subscribers. The Data Server configuration is refreshingly light, because all the hard work is done by the table or views. A Data Server file consists of a number of queries that handle each event in the required way. You can define any number of queries. 
 
-Data Servers are conventionally defined in the file application-name-dataserver.kts So, if your application is called positions, then the file would conventionally be named positions-dataserver.kts. Note, you will also need to declare your Data Server within the [runtime configuration](/server-modules/data-server/configuring-runtime/).
+Data Servers are conventionally defined in the file application-name-dataserver.kts So, if your application is called positions, then the file would conventionally be named positions-dataserver.kts. Note, you will also need to declare your Data Server within the [runtime configuration](/server/data-server/configuring-runtime/).
 
 The simplest possible definition for Data Servers is a kotlin script file contains all the queries you create. These are wrapped in a single `dataServer` statement like the code below.
 
@@ -28,7 +28,7 @@ dataServer {
 }
 ```
 
-We saw basic concepts and common usages of Data Servers in the [Developer Training](/getting-started/developer-training/training-intro/) such as [specifying fields](/server-modules/data-server/basics/#specifying-fields), [derived fields](/server-modules/data-server/basics/#derived-fields), and [where clauses](/server-modules/data-server/basics/#where-clauses). Now we are exploring Data Servers advanced concepts like [client enriched data](#client-enriched-data), [ranged data server queries](#ranged-data-server-queries), [client side runtime options](#client-side-runtime-options), and [criteria matching](#criteria-matching).
+We saw basic concepts and common usages of Data Servers in the [Developer Training](/getting-started/developer-training/training-intro/) such as [specifying fields](/server/data-server/basics/#specifying-fields), [derived fields](/server/data-server/basics/#derived-fields), and [where clauses](/server/data-server/basics/#where-clauses). Now we are exploring Data Servers advanced concepts like [client enriched data](#client-enriched-data), [ranged data server queries](#ranged-data-server-queries), [client side runtime options](#client-side-runtime-options), and [criteria matching](#criteria-matching).
 
 ### Client enriched data
 
@@ -130,7 +130,7 @@ The `numKeyFields` property specifies the number of fields to use from an index.
 
 When a client initiates a subscription to a Data Server by sending a **DATA_LOGON** message, there are several options that can be specified such as: MAX_ROWS, MOVING_VIEW, CRITERIA_MATCH, FIELDS, ORDER_BY, REVERSE. 
 
-None of these options is mandatory; you don't have to specify any to initiate a subscription. The features of the options are explained in details [here](/server-modules/data-server/advanced/#client-side-runtime-options).
+None of these options is mandatory; you don't have to specify any to initiate a subscription. The features of the options are explained in details [here](/server/data-server/advanced/#client-side-runtime-options).
 
 ### Criteria matching
 
@@ -193,16 +193,16 @@ derivedField("IS_FAVOURITE", BOOLEAN) { row, favourite ->
 :::
 
 <!--
-Answer is pretty much here: http://localhost:8080/server-modules/data-server/examples/#enriching-query
+Answer is pretty much here: http://localhost:8080/server/data-server/examples/#enriching-query
 -->
 
 
 ## Advanced request servers
 
-Request Servers, (otherwise known as request/replies and often shortened to reqrep) retrieve a snapshot of data from a table or a view on demand and serve it up to the requesting client. They are predominantly used for serving the UI. As Data Servers, using Request Servers you can also [specify derived fields](/server-modules/request-server/basics/#specifying-derived-fields), [use an index](/server-modules/request-server/basics/#using-an-index), and add [where blocks](/server-modules/request-server/basics/#where-block).
+Request Servers, (otherwise known as request/replies and often shortened to reqrep) retrieve a snapshot of data from a table or a view on demand and serve it up to the requesting client. They are predominantly used for serving the UI. As Data Servers, using Request Servers you can also [specify derived fields](/server/request-server/basics/#specifying-derived-fields), [use an index](/server/request-server/basics/#using-an-index), and add [where blocks](/server/request-server/basics/#where-block).
 
 :::caution Request Servers are different from Data Servers
-Request Servers will reply with a single response. Once the response is received, the transaction is over (unlike a [Data Server](/server-modules/data-server/basics), which stays connected to the client and pushes updates).
+Request Servers will reply with a single response. Once the response is received, the transaction is over (unlike a [Data Server](/server/data-server/basics), which stays connected to the client and pushes updates).
 :::
 
 Request Servers have other features distinct from a Data Server, such as allowing one-to-many joins, and even completely custom request servers for serving up non-linear data (e.g. sets of disjointed data to serve up to a report).
@@ -222,7 +222,7 @@ requestReplies {
 
 Request Servers are conventionally configured in the file _application-name_**-reqrep.kts**. This file should be in the _application-name_-script-config module. So, if your application is called **positions**, the file would be named **positions-reqrep.kts**.
 
-You should also check the Request Server component in your application's system-processes and service-definition files, as described in the [Configuring runtime](/server-modules/request-server/configuring-runtime) page.
+You should also check the Request Server component in your application's system-processes and service-definition files, as described in the [Configuring runtime](/server/request-server/configuring-runtime) page.
 
 We can add some precision using `request` and `reply` blocks within a `requestReply` statement. When defining a `request` block, you must define at least one primary key or index. In the example below, the fields `ALTERNATE_TYPE` AND `INSTRUMENT_CODE` together form the primary key.
 
@@ -416,7 +416,7 @@ requestReply<Hello, World>("HELLO_WORLD_CHECK") {
 }
 ```
 
-Futher details and examples can be found [here](/server-modules/request-server/advanced/#custom-request-servers).
+Futher details and examples can be found [here](/server/request-server/advanced/#custom-request-servers).
 
 #### Exercise 3.2 ALL_COUNTERPARTIES in Request Server
 
@@ -432,9 +432,9 @@ I order to apply the knowledge you got recently, limit the number of rows return
 
 All across the financial sector, you can find operational functions sitting in Excel workbooks. And this sometimes includes functions that are mission-critical. 
 
-[ExcelToGenesis](/server-modules/integration/excel-to-genesis/excel-reference/#exceltogenesis) converts the Excel spreadsheet into the Genesis data model, which can then be used to generate a working server.
+[ExcelToGenesis](/server/integration/excel-to-genesis/excel-reference/#exceltogenesis) converts the Excel spreadsheet into the Genesis data model, which can then be used to generate a working server.
 
-There are three mandatory [options](/server-modules/integration/excel-to-genesis/excel-reference/#options) to use ExcelToGenesis: -f the name of the worksheet you are going to convert; -n the name of the project (application) you want to create.; -t the start of the table id sequence (see note after the sample below).
+There are three mandatory [options](/server/integration/excel-to-genesis/excel-reference/#options) to use ExcelToGenesis: -f the name of the worksheet you are going to convert; -n the name of the project (application) you want to create.; -t the start of the table id sequence (see note after the sample below).
 
 ```shell
 ExcelToGenesis -f euc\\ demo\\ cash\\ mgmt.xlsx -n cash -t 10000
@@ -442,7 +442,7 @@ ExcelToGenesis -f euc\\ demo\\ cash\\ mgmt.xlsx -n cash -t 10000
 
 Each table is automatically given a unique numeric ID. Supply the opening sequence number, for example, 10000. Numeric IDs are useful because they enable you to change the name of a table without losing the data. By default, the conversion process will convert each separate worksheet into a table.
 
-The conversion script turns Excel functions in the named workbook into Kotlin code. The most common [Excel functions](/server-modules/integration/excel-to-genesis/excel-functions/) are all covered. Moreover, the conversion creates a folder called `/home/core/run/_name_.cfg` where name is the application name specified in the script. This contains the default definitions to fields, tables, and views (i.e. `_name_-fields-dictionary.kts`, `_name_-tables-dictionary.kts`, `_name_-view-dictionary.kts`), and the data from each worksheet is extracted to a separate csv file.
+The conversion script turns Excel functions in the named workbook into Kotlin code. The most common [Excel functions](/server/integration/excel-to-genesis/excel-functions/) are all covered. Moreover, the conversion creates a folder called `/home/core/run/_name_.cfg` where name is the application name specified in the script. This contains the default definitions to fields, tables, and views (i.e. `_name_-fields-dictionary.kts`, `_name_-tables-dictionary.kts`, `_name_-view-dictionary.kts`), and the data from each worksheet is extracted to a separate csv file.
 
 #### Exercise 3.3 Using ExcelToGenesis
 

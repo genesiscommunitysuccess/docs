@@ -281,7 +281,7 @@ As an alternative to Genesis Console, take this opportunity to test your work wi
 - [Insomnia App](https://insomnia.rest/download)
 
 :::tip REST endpoints
-When we test our resources using an HTTP client as described here, we're taking advantage of the [REST endpoints](/server-modules/integration/rest-endpoints/introduction/) provided by the platform. Without any additional code from you, it automatically exposes all configured resources, such as Data Server queries and Event Handlers, as HTTP endpoints via the GENESIS_ROUTER service. This also enables you to do some API testing automation for all your back-end components.
+When we test our resources using an HTTP client as described here, we're taking advantage of the [REST endpoints](/server/integration/rest-endpoints/introduction/) provided by the platform. Without any additional code from you, it automatically exposes all configured resources, such as Data Server queries and Event Handlers, as HTTP endpoints via the GENESIS_ROUTER service. This also enables you to do some API testing automation for all your back-end components.
 
 :::
 

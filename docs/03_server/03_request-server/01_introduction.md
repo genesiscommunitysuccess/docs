@@ -4,12 +4,12 @@ sidebar_label: 'Introduction'
 id: introduction
 ---
 
-[Introduction](/server-modules/request-server/introduction)  | [Basics](/server-modules/request-server/basics) | [Advanced](/server-modules/request-server/advanced) | [Examples](/server-modules/request-server/examples) | [Configuring runtime](/server-modules/request-server/configuring-runtime) | [Testing](/server-modules/request-server/testing)
+[Introduction](/server/request-server/introduction)  | [Basics](/server/request-server/basics) | [Advanced](/server/request-server/advanced) | [Examples](/server/request-server/examples) | [Configuring runtime](/server/request-server/configuring-runtime) | [Testing](/server/request-server/testing)
 
 
 Request Servers, (otherwise known as request/replies and often shortened to reqrep) retrieve a snapshot of data from a table or a view on demand and serve it up to the requesting client. They are predominantly used for serving the UI.
 
-Request Servers will reply with a single response. Once the response is received, the transaction is over (unlike a [Data Server](/server-modules/data-server/basics), which stays connected to the client and pushes updates).
+Request Servers will reply with a single response. Once the response is received, the transaction is over (unlike a [Data Server](/server/data-server/basics), which stays connected to the client and pushes updates).
 
 ```mermaid
 graph TD
@@ -36,5 +36,5 @@ Request Servers are conventionally configured in the file _application-name_**-r
 
 So, if your application is called **positions**, the file would be named **positions-reqrep.kts**.
 
-You should also check the Request Server component in your application's system-processes and service-definition files, as described in the [Configuring runtime](/server-modules/request-server/configuring-runtime) page.
+You should also check the Request Server component in your application's system-processes and service-definition files, as described in the [Configuring runtime](/server/request-server/configuring-runtime) page.
 

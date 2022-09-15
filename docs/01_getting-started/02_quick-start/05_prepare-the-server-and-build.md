@@ -40,7 +40,7 @@ Add the following content to the **alpha-processes.xml** file.
 </processes>
 ```
 
-You can find more info on the **-processes.xml** file [here](/server-modules/configuring-runtime/processes/).
+You can find more info on the **-processes.xml** file [here](/server/configuring-runtime/processes/).
 
 You can then add the following content to the **alpha-service-definitions.xml** file.
 
@@ -50,7 +50,7 @@ You can then add the following content to the **alpha-service-definitions.xml** 
     <service host="localhost" name="ALPHA_EVENT_HANDLER" port="11001"/>
 </configuration>
 ```
-You can find more info on the **-service-defintions.xml** file [here](/server-modules/configuring-runtime/service-definitions/).
+You can find more info on the **-service-defintions.xml** file [here](/server/configuring-runtime/service-definitions/).
 
 If you are going to use the **Docker** solution, you also need to change the highlighted items in **genesis-system-definition.kts**.
 

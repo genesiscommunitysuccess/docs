@@ -117,7 +117,7 @@ The custom definition value will be available globally and can be accessed like 
 val permissionsField = SysDef.ADMIN_PERMISSION_ENTITY_FIELD
 ```
 
-Further information regarding the system definitions such as items defined, HashiCorp Vault, and more can be found [here](/server-modules/configuring-runtime/system-definitions/).
+Further information regarding the system definitions such as items defined, HashiCorp Vault, and more can be found [here](/server/configuring-runtime/system-definitions/).
 
 
 #### Exercise 1.1 System Definitions

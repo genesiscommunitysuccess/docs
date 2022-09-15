@@ -20,7 +20,7 @@ In system terms, Evaluators enable you to connect Event Handlers to two differen
 - __Cron Rules__  are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
 - __Dynamic Rules__, also known as Dynamic Events, are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
-In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this training, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [Defining a dynamic rule](/server-modules/evaluator/basics/#defining-a-dynamic-rule).
+In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this training, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [Defining a dynamic rule](/server/evaluator/basics/#defining-a-dynamic-rule).
 
 ### Cron rules (static events)​
 
@@ -135,7 +135,7 @@ eventHandler {
 ```
 
 #### 4.Load the cron rule on to the database
-Load the cron rule csv below into the database, [CRON_RULE](/server-modules/evaluator/basics/#cron_rule-table) Table. 
+Load the cron rule csv below into the database, [CRON_RULE](/server/evaluator/basics/#cron_rule-table) Table. 
 
 Run `SendIt`.
 
@@ -346,7 +346,7 @@ Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the i
 30 mins
 :::
 
-Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](/server-modules/evaluator/basics/#cron_rule-table) table, and insert a new role changing the CRON_EXPRESSION value. 
+Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](/server/evaluator/basics/#cron_rule-table) table, and insert a new role changing the CRON_EXPRESSION value. 
 
 :::tip 
 To delete rows you can use [DbMon](/operations/commands/server-commands/#dbmon-script) and the command `delete`. After that you can use [SendIt](/operations/commands/server-commands/#sendit-script) to insert a new row again.
@@ -413,7 +413,7 @@ This table is only automatically maintained when profile user/right entries are 
 In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in PROFILE_USER and PROFILE_RIGHT and populates RIGHT_SUMMARY withe the correct data.
 :::
 
-Further information as well as a sample system set-up can be found [here](/server-modules/access-control/authorisation/#sample-explanation)
+Further information as well as a sample system set-up can be found [here](/server/access-control/authorisation/#sample-explanation)
 
 ### The objective
 
@@ -422,7 +422,7 @@ The objective is to use dynamic permissions and permission codes so that specifi
 
 ### Set up generic permissions
 
-First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field part of the [generic permissions](/server-modules/access-control/authorisation-overview/#generic-permissions) system.
+First, you are going to make the COUNTERPARTY table and COUNTERPARTY_ID field part of the [generic permissions](/server/access-control/authorisation-overview/#generic-permissions) system.
 
 Starting with the server, set up the USER and USER_ATTRIBUTES records for the system user JaneDee.
 
@@ -526,7 +526,7 @@ If your message type is not a database-generated entity,  you can still define f
     }
 ```
 
-See [here](/server-modules/access-control/authorisation/) <!-- TODO: Is this the right link?--> for more details on authorisation.
+See [here](/server/access-control/authorisation/) <!-- TODO: Is this the right link?--> for more details on authorisation.
 
 
 After the configurations, you should execute the Genesis set-up tasks **setupEnvironment**, **install-auth-distribution** and **install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip** to prepare the database for permission. Then run **assemble** and **deploy-genesisproduct-alpha** tasks again to deploy the new version.

@@ -4,7 +4,7 @@ sidebar_label: 'Testing'
 id: testing
 ---
 
-[Introduction](/server-modules/request-server/introduction)  | [Basics](/server-modules/request-server/basics) | [Advanced](/server-modules/request-server/advanced) | [Examples](/server-modules/request-server/examples) | [Configuring runtime](/server-modules/request-server/configuring-runtime) | [Testing](/server-modules/request-server/testing)
+[Introduction](/server/request-server/introduction)  | [Basics](/server/request-server/basics) | [Advanced](/server/request-server/advanced) | [Examples](/server/request-server/examples) | [Configuring runtime](/server/request-server/configuring-runtime) | [Testing](/server/request-server/testing)
 
 ## Integration testing
 
@@ -27,7 +27,7 @@ class ReqRepTests : AbstractGenesisTestSupport<Reply<*>>(
 
 For more information about `AbstractGenesisTestSupport`, see the [testing documentation](/operations/testing/integration-testing).
 
-Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers).
+Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](/server/request-server/advanced/#custom-request-servers).
 
 ### Standard Request Servers
 
@@ -107,7 +107,7 @@ Once you click into your Request Server, you will see the current response from 
 
 ![](/img/test-console-rs-success.png)
 
-For more detailed information about using Genesis Console for manual testing, head over to the [testing documetation](/server-modules/request-server/testing).
+For more detailed information about using Genesis Console for manual testing, head over to the [testing documetation](/server/request-server/testing).
 
 ### Testing with an API client
 

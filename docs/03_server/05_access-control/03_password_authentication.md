@@ -4,7 +4,7 @@ sidebar_label: 'Username and Password Authentication'
 id: password-authentication
 ---
 
-[Introduction](/server-modules/access-control/introduction)  | [Authentication overview](/server-modules/access-control/authentication-overview) | [Username and Password](/server-modules/access-control/password-authentication) | [SSO](/server-modules/access-control/sso-authentication) | [Authorisation overview](/server-modules/access-control/authorisation-overview) | [Authorisation](/server-modules/access-control/authorisation)
+[Introduction](/server/access-control/introduction)  | [Authentication overview](/server/access-control/authentication-overview) | [Username and Password](/server/access-control/password-authentication) | [SSO](/server/access-control/sso-authentication) | [Authorisation overview](/server/access-control/authorisation-overview) | [Authorisation](/server/access-control/authorisation)
 
 We will now go through the various configuration options available for authentication. These are located in your _application-name-_**auth-preferences.kts** file.
 
@@ -33,7 +33,7 @@ The `authentication` function is used to define common features of all three typ
 
 * `type` indicates which of the three types of username and password authentication to be used. It accepts the values of: `AuthType.INTERNAL`, `AuthType.LDAP` or `AuthType.HYBRID`. Default: `AuthType.INTERNAL`.
 
-For more information on each of these three authentication types, please see the [authentication overview](/server-modules/access-control/authentication-overview/#username-and-password-authentication).
+For more information on each of these three authentication types, please see the [authentication overview](/server/access-control/authentication-overview/#username-and-password-authentication).
 
 The following variables are used to configure an LDAP connection; thus are only used when `type` is either `AuthType.LDAP` or `AuthType.HYBRID`.
 
@@ -54,7 +54,7 @@ The following variables are used to configure an LDAP connection; thus are only 
 * `bypassLoginInternalAuth` this is a boolean flag that prevents internal authorisation checks on login
 * `onLoginSuccess` this is a function which is invoked on a successful LDAP login, for example: it allows you to insert a user into the db when it exists in LDAP but not the database.
 
-For more information on the various authentication types, please see the [Authentication overview](/server-modules/access-control/authentication-overview/).
+For more information on the various authentication types, please see the [Authentication overview](/server/access-control/authentication-overview/).
 
 ### passwordValidation
 The `passwordValidation` function enables password validation, and is used to set the variables relating to this validation. 

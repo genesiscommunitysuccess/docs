@@ -15,7 +15,7 @@ More specifically, we will be adding:
  
 
 :::info
-For static data, the lightweight [DataGrid](/front-end/web-components/grids/data-grid/) is recommended instead. 
+For static data, the lightweight [DataGrid](/web/web-components/grids/data-grid/) is recommended instead. 
 :::
 
 ## The wrapper class
@@ -236,5 +236,5 @@ And so we have our result:
 ![](/img/all-trades-grid-03.png)
 
 :::info
-You can read more about our grid components and configuration options them under the ['Web UI reference' for grids.](/front-end/web-components/grids/ag-grid/ag-grid-intro/)
+You can read more about our grid components and configuration options them under the ['Web UI reference' for grids.](/web/web-components/grids/ag-grid/ag-grid-intro/)
 :::

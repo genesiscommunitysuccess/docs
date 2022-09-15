@@ -104,7 +104,7 @@ use it to call event handlers on the server. You must pass the name of the event
 
 - `getMetadata`: it retrieves the metadata of a resource, that can be an event handler, data server query or a request server. When we used the **zero-form** component previously, for example, it used internally getMetadata passing the event handler name to get all the input fields of the event.
 
-- `request`: use it to call a [request server](/server-modules/request-server/introduction/) resource. You must pass the request server resource name.
+- `request`: use it to call a [request server](/server/request-server/introduction/) resource. You must pass the request server resource name.
 
 - `snapshot` and `stream`: use them to get a snapshot of data or to stream data in real time from a resource (usually, a data server query).
 
@@ -362,7 +362,7 @@ public async insertOrder() {
 ```
 
 ### Adding a simple Orders data grid
-In the template file, let's add the Genesis [data source](/front-end/web-components/grids/ag-grid/ag-genesis-datasource/) pointing to the `ALL_ORDERS` resource and wrap it in [ag-grid](/front-end/web-components/grids/ag-grid/ag-grid-intro/).
+In the template file, let's add the Genesis [data source](/web/web-components/grids/ag-grid/ag-genesis-datasource/) pointing to the `ALL_ORDERS` resource and wrap it in [ag-grid](/web/web-components/grids/ag-grid/ag-grid-intro/).
 
 Add this code to the end of html template code:
 ```html title="order.template.ts"

@@ -4,7 +4,7 @@ sidebar_label: 'Basics'
 id: basics
 ---
 
-[Introduction](/server-modules/data-server/introduction) | [Basics](/server-modules/data-server/basics) |  [Advanced](/server-modules/data-server/advanced) | [More examples](/server-modules/data-server/examples) | [Configuring runtime](/server-modules/data-server/configuring-runtime) | [Testing](/server-modules/data-server/testing)
+[Introduction](/server/data-server/introduction) | [Basics](/server/data-server/basics) |  [Advanced](/server/data-server/advanced) | [More examples](/server/data-server/examples) | [Configuring runtime](/server/data-server/configuring-runtime) | [Testing](/server/data-server/testing)
 
 Let's make things really simple.
 - A Data Server is a component that supplies streaming real-time data to the front end of your application.

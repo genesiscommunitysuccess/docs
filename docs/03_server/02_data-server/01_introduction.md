@@ -4,7 +4,7 @@ sidebar_label: 'Introduction'
 id: introduction
 ---
 
-[Introduction](/server-modules/data-server/introduction) | [Basics](/server-modules/data-server/basics) |  [Advanced](/server-modules/data-server/advanced) | [More examples](/server-modules/data-server/examples) | [Configuring runtime](/server-modules/data-server/configuring-runtime) | [Testing](/server-modules/data-server/testing)
+[Introduction](/server/data-server/introduction) | [Basics](/server/data-server/basics) |  [Advanced](/server/data-server/advanced) | [More examples](/server/data-server/examples) | [Configuring runtime](/server/data-server/configuring-runtime) | [Testing](/server/data-server/testing)
 
 ```mermaid
 graph TD
@@ -26,4 +26,4 @@ Data Servers are conventionally defined in the file _application-name_**-dataser
 
 So, if your application is called **positions**, then the file would conventionally be named **positions-dataserver.kts**.
 
-Note, you will also need to declare your Data Server within the [runtime configuration](/server-modules/data-server/configuring-runtime/).
+Note, you will also need to declare your Data Server within the [runtime configuration](/server/data-server/configuring-runtime/).

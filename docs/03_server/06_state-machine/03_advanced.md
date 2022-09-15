@@ -134,7 +134,7 @@ suspend fun modify(trade: Trade): Transition<Trade, TradeStatus, TradeEffect>? =
 
 ## Inject state machine
 
-### Inject state machine in [Event Handler](/server-modules/event-handler/basics) file
+### Inject state machine in [Event Handler](/server/event-handler/basics) file
 
 ```kotlin
 eventHandler {
@@ -165,7 +165,7 @@ eventHandler {
 }
 ```
 
-You can also see a state machine being created in practice in our [tutorial](/server-modules/state-machine/introduction/).
+You can also see a state machine being created in practice in our [tutorial](/server/state-machine/introduction/).
 
 ### Inject state machine in event handler [API](/database/api-reference/event-handler-api/)
 

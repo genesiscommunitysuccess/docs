@@ -38,7 +38,7 @@ The `RxDb` can be injected in Kotlin and Java using `RxDb`.
 | Subscribe                                                                                       | [Record Update](/database/helper-classes/subscription/record-update/) of entity                                                 |
 | Bulk or Range Subscribe                                                                         | [Flowable](/database/types-of-api/rxjava/#flowable) of [Bulk](/database/helper-classes/subscription/bulk/) of entity            |
 | Available in [Custom Event Handlers](/database/api-reference/event-handler-api/)         | ✔️                                                                                                                              |
-| Available in [Custom Request Servers](/server-modules/request-server/advanced/#custom-request-servers) | ❌️                                                                                                                              |
+| Available in [Custom Request Servers](/server/request-server/advanced/#custom-request-servers) | ❌️                                                                                                                              |
 
 ## Read operations
 

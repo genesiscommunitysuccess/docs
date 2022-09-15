@@ -64,7 +64,7 @@ Local values can be specified in this block. **These values override the global 
 ## Items defined
 **MqLayer**: This setting defines the type of Message queue technology. You can choose between `ZeroMQ` and `Aeron` message queues.
 
-**DbLayer**: Default value is set to FDB. If you want to use PostgreSQL, MSSQL or Aerospike, then you need to change this value and then [change the value of the DbHost item](/server-modules/configuring-runtime/setting-the-database-technology/).
+**DbLayer**: Default value is set to FDB. If you want to use PostgreSQL, MSSQL or Aerospike, then you need to change this value and then [change the value of the DbHost item](/server/configuring-runtime/setting-the-database-technology/).
 **DbHost**: Contains information about the hostname/JDBC connection string pointing to local database. For example:
 
 
@@ -116,7 +116,7 @@ then the generated ID will be `000000000001TRLO1` where "LO" represents Location
 
 **LogFrameworkConfig**: Contains name of the log framework configuration file.
 
-If you want to enable SSL for your process communication, this is done in the [service definition](/server-modules/configuring-runtime/service-definitions/#enable-ssl-for-processes).
+If you want to enable SSL for your process communication, this is done in the [service definition](/server/configuring-runtime/service-definitions/#enable-ssl-for-processes).
 
 ## Setting System Definitions values from environment variables
 

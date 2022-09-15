@@ -50,9 +50,9 @@ import {ColDef} from '@ag-grid-community/core';
 ```
 :::tip ColDef and renderes
 Find out more about:
-- [ColDef and Genesis AG Column](/front-end/web-components/grids/ag-grid/ag-genesis-column/)
-- [Cell Renderers](/front-end/web-components/grids/ag-grid/ag-genesis-cell/)
-- [AG Renderers](/front-end/web-components/grids/ag-grid/ag-renderers/)
+- [ColDef and Genesis AG Column](/web/web-components/grids/ag-grid/ag-genesis-column/)
+- [Cell Renderers](/web/web-components/grids/ag-grid/ag-genesis-cell/)
+- [AG Renderers](/web/web-components/grids/ag-grid/ag-renderers/)
 :::
 
 ### Custom column config
@@ -111,7 +111,7 @@ You can add the `persist-column-state-key` to the zero-ag-grid to persist user c
 Change the row height of the data grid to '20 px'.
 
 :::tip More Genesis ag-grid attributes
-You can find all the additional attributes and props, including row height, of the Genesis ag-grid at [Genesis ag-grid documentation](/front-end/web-components/grids/ag-grid/ag-grid-intro/).
+You can find all the additional attributes and props, including row height, of the Genesis ag-grid at [Genesis ag-grid documentation](/web/web-components/grids/ag-grid/ag-grid-intro/).
 :::
 
 
@@ -246,15 +246,15 @@ Create a OrdersAgGrid extending AgGridZero and apply the same style on the `SIDE
 
 ### Adding filters to the Orders data grid
 
-The way we have been using ag-grid so far is encapsulating a Genesis datasource to have access to Data Server resources. This makes it easier to retrieve data without worrying about the connection, handling update events and so on. This is called [connected data](/front-end/web-components/grids/ag-grid/ag-grid-connected/).
+The way we have been using ag-grid so far is encapsulating a Genesis datasource to have access to Data Server resources. This makes it easier to retrieve data without worrying about the connection, handling update events and so on. This is called [connected data](/web/web-components/grids/ag-grid/ag-grid-connected/).
 
-[Genesis datasource](/front-end/web-components/grids/ag-grid/ag-genesis-datasource/) offers some [attributes](/front-end/web-components/grids/ag-grid/ag-genesis-datasource/#attributes-and-props) to parametrise how to retrieve the data. Some commonly used attributes are:
+[Genesis datasource](/web/web-components/grids/ag-grid/ag-genesis-datasource/) offers some [attributes](/web/web-components/grids/ag-grid/ag-genesis-datasource/#attributes-and-props) to parametrise how to retrieve the data. Some commonly used attributes are:
 
 - **`criteria: string`**: a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: Expr.dateIsBefore(TRADE_DATE,'20150518') or QUANTITY > 10000.
 
 - **`orderBy: string`**: This option can be used to select a data server index (defined in tables-dictionary.kts), which is especially useful if you want the data to be sorted in a specific way. By default, data server rows will be returned in order of creation (from oldest database record to newest).
 
-- **`resourceName: string`**: The target [Data Server](/server-modules/data-server/introduction/) or [Request Server](/server-modules/request-server/introduction/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
+- **`resourceName: string`**: The target [Data Server](/server/data-server/introduction/) or [Request Server](/server/request-server/introduction/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
 
 As you may have noticed, we've already used `resourceName` and `orderBy` when we used the ag-genesis-datasource for the first time. 
 
@@ -325,7 +325,7 @@ const userReq = await this.connect.snapshot('ALL_USERS', {
 });
 ```
 
-To see a list of all attributes look at [Data server client-side options](/server-modules/data-server/advanced/#client-side-runtime-options).
+To see a list of all attributes look at [Data server client-side options](/server/data-server/advanced/#client-side-runtime-options).
 
 :::info user session
 As a side note, the code above also tells us how to retrieve the current logged-in user from the session, which is actually stored in the local storage of the browser. 

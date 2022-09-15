@@ -4,7 +4,7 @@ sidebar_label: 'Basics'
 id: basics
 ---
 
-[Introduction](/server-modules/request-server/introduction)  | [Basics](/server-modules/request-server/basics) | [Advanced](/server-modules/request-server/advanced) | [Examples](/server-modules/request-server/examples) | [Configuring runtime](/server-modules/request-server/configuring-runtime) | [Testing](/server-modules/request-server/testing)
+[Introduction](/server/request-server/introduction)  | [Basics](/server/request-server/basics) | [Advanced](/server/request-server/advanced) | [Examples](/server/request-server/examples) | [Configuring runtime](/server/request-server/configuring-runtime) | [Testing](/server/request-server/testing)
 
 
 Let's make things really simple.

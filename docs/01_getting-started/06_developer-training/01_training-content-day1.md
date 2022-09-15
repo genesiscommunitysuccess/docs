@@ -249,7 +249,7 @@ We have a table; now we want to be able to see its content and create new entrie
 
 
 #### Data Server
-A [Data Server](/server-modules/data-server/introduction/) enables data to be read in real time. You must define the Data Server in the file **alpha-dataserver.kts**.
+A [Data Server](/server/data-server/introduction/) enables data to be read in real time. You must define the Data Server in the file **alpha-dataserver.kts**.
 
 ```kotlin
 dataServer {
@@ -258,7 +258,7 @@ dataServer {
 ```
 
 #### Event Handler
-Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](/server-modules/event-handler/introduction/) in the file **alpha-eventhandler.kts**.
+Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](/server/event-handler/introduction/) in the file **alpha-eventhandler.kts**.
 
 ```kotlin
 eventHandler {
@@ -322,7 +322,7 @@ Add the following content to the **alpha-service-definitions.xml** file.
 </configuration>
 ```
 
-Please see [here](/server-modules/configuring-runtime/processes/) for a detailed description of the processes configuration.
+Please see [here](/server/configuring-runtime/processes/) for a detailed description of the processes configuration.
 <!-- ADD THIS DO DAY 5 AS AN EXERCISE
 #### Overriding default configurations
 You can override the standard definitions using the site-specific folder located at ..\alpha\server\jvm\alpha-site-specific\src\main\resources\cfg\
@@ -590,7 +590,7 @@ You can go on to check the TRADE table to see if your insert is there.
 30 mins
 :::
 
-Look at the [Data Server documentation](/server-modules/data-server/introduction/) and see if you are able to modify our Data Server [defined previously](/getting-started/developer-training/training-content-day1/#data-server):
+Look at the [Data Server documentation](/server/data-server/introduction/) and see if you are able to modify our Data Server [defined previously](/getting-started/developer-training/training-content-day1/#data-server):
 - add a new query called "ALL_PRICES" on the TRADE table
 - make ALL_PRICES display only SYMBOL and PRICE fields
 - add a `where` clause so it displays only trades whose PRICE are higher than 0.0
@@ -602,7 +602,7 @@ Remember to insert a few trades using Genesis Console to test it.
 20 mins
 :::
 
-Look at the [Event Handler documentation](/server-modules/event-handler/basics/#returning-a-nack) and see if you are able to modify our Event Handler [defined previously](/getting-started/developer-training/training-content-day1/#event-handler):
+Look at the [Event Handler documentation](/server/event-handler/basics/#returning-a-nack) and see if you are able to modify our Event Handler [defined previously](/getting-started/developer-training/training-content-day1/#event-handler):
 - return `nack("Quantity must be positive")` if the quantity is lower than 0.
 
 Test it with Genesis Console.

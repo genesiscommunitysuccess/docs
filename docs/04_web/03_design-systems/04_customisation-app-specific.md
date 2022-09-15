@@ -6,7 +6,7 @@ id: customisation-app-specific
 
 When performing design system customisations, you can control the scope as follows:
 
-* [General](/front-end/design-systems/customisation-general/) - applied to all applications using the system.
+* [General](/web/design-systems/customisation-general/) - applied to all applications using the system.
 * Application-specific - only applied to a single application. This is described below.
 
 You can also choose to customise either all the components or only individual ones.

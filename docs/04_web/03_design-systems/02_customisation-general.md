@@ -9,7 +9,7 @@ Our design systems and components are highly configurable. Let's have a look at 
 Design system can be shared across multiple applications. When performing customisations, you can control the scope as follows:
 
 * General - applied to the design system itself, affecting all applications that use the system. This is described below.
-* [Application-specific](/front-end/design-systems/customisation-app-specific/) - this is only applied to a single application. Other applications using the same system are not affected.
+* [Application-specific](/web/design-systems/customisation-app-specific/) - this is only applied to a single application. Other applications using the same system are not affected.
 
 ### Configuring defaults
 
@@ -41,13 +41,13 @@ It contains configuration files that set default values for various design token
 
 You can achieve major visual changes simply by modifying token defaults. There are several categories of token available:
 
-* [Colour](/front-end/design-systems/tokens/colour/): base colours, dark/light mode, colour variants for interactive states (hover etc.)
-* [Typography](/front-end/design-systems/tokens/typography/): default font family, font size and line height hierarchy
-* [Sizing](/front-end/design-systems/tokens/sizing/): component sizing, spacing and border style
-* [Miscellaneous](/front-end/design-systems/tokens/miscellaneous/): other configuration options, such as the naming prefix (e.g. `alpha`)
+* [Colour](/web/design-systems/tokens/colour/): base colours, dark/light mode, colour variants for interactive states (hover etc.)
+* [Typography](/web/design-systems/tokens/typography/): default font family, font size and line height hierarchy
+* [Sizing](/web/design-systems/tokens/sizing/): component sizing, spacing and border style
+* [Miscellaneous](/web/design-systems/tokens/miscellaneous/): other configuration options, such as the naming prefix (e.g. `alpha`)
 
 :::tip
-To help you visualise how modifying tokens impacts the component look and feel, we have created a [live configuration preview](/front-end/design-systems/preview/).
+To help you visualise how modifying tokens impacts the component look and feel, we have created a [live configuration preview](/web/design-systems/preview/).
 :::
 
 ### Overriding default implementation

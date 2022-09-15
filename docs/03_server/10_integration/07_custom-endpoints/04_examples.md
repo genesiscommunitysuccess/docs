@@ -4,7 +4,7 @@ sidebar_label: 'Examples'
 id: examples
 ---
 
-[Introduction](/server-modules/integration/custom-endpoints/introduction/) | [Basics](/server-modules/integration/custom-endpoints/basics/) |  [Advanced](/server-modules/integration/custom-endpoints/advanced/) | [Examples](/server-modules/integration/custom-endpoints/examples/) | [Configuring runtime](/server-modules/integration/custom-endpoints/configuring-runtime/) | [Testing](/server-modules/integration/custom-endpoints/testing/)
+[Introduction](/server/integration/custom-endpoints/introduction/) | [Basics](/server/integration/custom-endpoints/basics/) |  [Advanced](/server/integration/custom-endpoints/advanced/) | [Examples](/server/integration/custom-endpoints/examples/) | [Configuring runtime](/server/integration/custom-endpoints/configuring-runtime/) | [Testing](/server/integration/custom-endpoints/testing/)
 
 The example below is a collection of custom endpoints supporting SAML authentication. The `LoginPostEndPoint`, `LoginUrlRequestEndPoint`, `LogoutEndPoint`, and `MetadataEndPoint` all extend this `AbstractSamlEndPoint`.
 

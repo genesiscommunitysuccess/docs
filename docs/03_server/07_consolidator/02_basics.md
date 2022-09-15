@@ -4,7 +4,7 @@ sidebar_label: 'Basics'
 id: basics
 ---
 
-[Introduction](/server-modules/consolidator/introduction) | [Basics](/server-modules/consolidator/basics) |  [Advanced](/server-modules/consolidator/advanced) | [Examples](/server-modules/consolidator/examples) | [Configuring runtime](/server-modules/consolidator/configuring-runtime) | [Testing](/server-modules/consolidator/testing)
+[Introduction](/server/consolidator/introduction) | [Basics](/server/consolidator/basics) |  [Advanced](/server/consolidator/advanced) | [Examples](/server/consolidator/examples) | [Configuring runtime](/server/consolidator/configuring-runtime) | [Testing](/server/consolidator/testing)
 
 You define a Consolidator service in a **consolidator.kts** file. Within the file, you can define as many Consolidators as you like. Each one is specified in a `consolidator` block of code. 
 
@@ -308,7 +308,7 @@ where(ignore = true) {
 
 ### reprocessSchedule block (optional)
 
-Some consolidations might require periodic reprocessing of data. This will trigger a [cold start](/server-modules/consolidator/basics/#the-startprocess-command-cold-start) on a selected range of data.
+Some consolidations might require periodic reprocessing of data. This will trigger a [cold start](/server/consolidator/basics/#the-startprocess-command-cold-start) on a selected range of data.
 
 
 ## Functions
@@ -321,7 +321,7 @@ Within the curly brackets of the function, you can access all fields on the row,
 
 ### Function examples
 
-There is a full reference of functions in the [Advanced](/server-modules/consolidator/advanced/) page on Consolidators.
+There is a full reference of functions in the [Advanced](/server/consolidator/advanced/) page on Consolidators.
 
 ```kotlin
 sum { feeAmount }                   // sums the FEE_AMOUNT

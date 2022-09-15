@@ -13,7 +13,7 @@ The goal of this section is to define and build:
 
 
 ## Data Server
-The component that enables data to be read in real time is called the [Data Server](/server-modules/data-server/introduction/). All the queries that a Data Server executes are defined in **positions-app-tutorial-dataserver.kts**. A Data Server can query both tables and views, so let's add two queries:
+The component that enables data to be read in real time is called the [Data Server](/server/data-server/introduction/). All the queries that a Data Server executes are defined in **positions-app-tutorial-dataserver.kts**. A Data Server can query both tables and views, so let's add two queries:
 - `ALL_POSITIONS` - that queries the `POSITION` table and returns the data stored in the table
 - `ALL_TRADES` - that queries the `TRADE_VIEW` and returns the joined data stored in the `TRADE`, `INSTRUMENT` and `COUNTERPARTY` tables
 
@@ -25,7 +25,7 @@ dataServer {
 ```
 
 ## Event Handler
-Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](/server-modules/event-handler/introduction/) in the file **positions-app-tutorial-eventhandler.kts**.
+Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](/server/event-handler/introduction/) in the file **positions-app-tutorial-eventhandler.kts**.
 
 
 ```kotlin
@@ -89,15 +89,15 @@ Add the following content to the **positions-app-tutorial-service-definitions.xm
 </configuration>
 ```
 
-Please see [here](/server-modules/configuring-runtime/processes/) for a detailed description of the processes configuration. Finally, you can build the server.
+Please see [here](/server/configuring-runtime/processes/) for a detailed description of the processes configuration. Finally, you can build the server.
 
 From the Gradle menu on the right of Intellij, this is: **genesisproduct-positions-app-tutorial**/**Tasks**/**build/assemble**.
 
 ![](/img/assemble-server-positions.png)
 
 :::info HTTP Endpoints
- It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as [HTTP endpoints](/server-modules/integration/rest-endpoints/introduction/) automatically by the Genesis platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
+ It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as [HTTP endpoints](/server/integration/rest-endpoints/introduction/) automatically by the Genesis platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
 :::
 
 ## Conclusion
-Data Server and Event Handler are the main components to interact with the server. Now that we have built our back end, it's ready to be deployed. Go to the [See it work](/getting-started/go-to-the-next-level/see-it-work) page for instructions on deploying your back end. Once you have deployed it, if you want to test what you've done so far, go to [Endpoints](/server-modules/integration/rest-endpoints/introduction/).
+Data Server and Event Handler are the main components to interact with the server. Now that we have built our back end, it's ready to be deployed. Go to the [See it work](/getting-started/go-to-the-next-level/see-it-work) page for instructions on deploying your back end. Once you have deployed it, if you want to test what you've done so far, go to [Endpoints](/server/integration/rest-endpoints/introduction/).

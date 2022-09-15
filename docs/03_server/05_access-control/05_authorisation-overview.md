@@ -4,7 +4,7 @@ sidebar_label: 'Authorisation Overview'
 id: authorisation-overview
 ---
 
-[Introduction](/server-modules/access-control/introduction)  | [Authentication overview](/server-modules/access-control/authentication-overview) | [Username and Password](/server-modules/access-control/password-authentication) | [SSO](/server-modules/access-control/sso-authentication) | [Authorisation overview](/server-modules/access-control/authorisation-overview) | [Authorisation](/server-modules/access-control/authorisation)
+[Introduction](/server/access-control/introduction)  | [Authentication overview](/server/access-control/authentication-overview) | [Username and Password](/server/access-control/password-authentication) | [SSO](/server/access-control/sso-authentication) | [Authorisation overview](/server/access-control/authorisation-overview) | [Authorisation](/server/access-control/authorisation)
 
 ## Authorisation
 Authorisation is the process by which you apply specific permissions to resources. Only users who pass the permission criteria for the resource have access.
@@ -115,7 +115,7 @@ The reference `POSITION.COUNTERPARTY_ID` in the auth snippet above refers to the
 
 Each AuthCache will map Entity Id (in our example, COUNTERPARTY_ID from the POSITION object) to a Set of users.
 
-The `mapName` parameter refers to a specific permission entity defined on the server via the [auth-permission.xml](/server-modules/access-control/authorisation/#defining-a-permission-rule) file. For example:
+The `mapName` parameter refers to a specific permission entity defined on the server via the [auth-permission.xml](/server/access-control/authorisation/#defining-a-permission-rule) file. For example:
 
 ```xml
  <dynamicPermissions>
@@ -134,7 +134,7 @@ The `mapName` parameter refers to a specific permission entity defined on the se
 
 Generic permissions is a term used to name the optional permissions configuration that is available for a Genesis application; this is included as part of the Genesis Auth Module.
 
-To fully activate Generic permissions, you need to add the following values to your [system definition file](/server-modules/configuring-runtime/system-definitions/) before you run `genesisInstall`.
+To fully activate Generic permissions, you need to add the following values to your [system definition file](/server/configuring-runtime/system-definitions/) before you run `genesisInstall`.
 These values specify which table column will be used to associate users to entities for fine-grained row permissions.
 
 

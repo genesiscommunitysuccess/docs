@@ -237,7 +237,7 @@ where { quotes ->
 send(targetProcess = "QUOTE_HANDLER", messageType = "QUOTE_EVENT")
 ```
 
-There are two types of Streamer Client: *Table or View entity streamer client* ADN * GenesisSet streamer client*. You can also set in a Streamer Client, such as `isReplayable`,  `eventHandlerBuffer`, `sentWarningRange`, and `receiveWarndingRange`. Further information can be found [here](/server-modules/integration/gateways-and-streamers/streamer-client/#properties).
+There are two types of Streamer Client: *Table or View entity streamer client* ADN * GenesisSet streamer client*. You can also set in a Streamer Client, such as `isReplayable`,  `eventHandlerBuffer`, `sentWarningRange`, and `receiveWarndingRange`. Further information can be found [here](/server/integration/gateways-and-streamers/streamer-client/#properties).
 
 In addition, for entity streamers, you can format the message in the same way as you would define the output of a view, data server or request reply. Use `sendFormatted`:
 

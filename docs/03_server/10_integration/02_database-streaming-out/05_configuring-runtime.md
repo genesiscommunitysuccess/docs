@@ -4,7 +4,7 @@ sidebar_label: 'Configuring Runtime'
 id: configuring-runtime
 ---
 
-[Introduction](/server-modules/integration/database-streaming-out/introduction)  | [Basics](/server-modules/integration/database-streaming-out/basics) | [Advanced](/server-modules/integration/database-streaming-out/advanced) | [Examples](/server-modules/integration/database-streaming-out/examples) | [Configuring runtime](/server-modules/integration/database-streaming-out/configuring-runtime) | [Testing](/server-modules/integration/database-streaming-out/testing)
+[Introduction](/server/integration/database-streaming-out/introduction)  | [Basics](/server/integration/database-streaming-out/basics) | [Advanced](/server/integration/database-streaming-out/advanced) | [Examples](/server/integration/database-streaming-out/examples) | [Configuring runtime](/server/integration/database-streaming-out/configuring-runtime) | [Testing](/server/integration/database-streaming-out/testing)
 
 GenesisToDb must be configured in your **application-processes.xml** file. The following is an example of how to do this:
 
@@ -24,4 +24,4 @@ GenesisToDb must be configured in your **application-processes.xml** file. The f
 </processes>
 ```
 
-If you wish to read more about process configuration please see the dedicated page on [Processes](/server-modules/configuring-runtime/processes).
+If you wish to read more about process configuration please see the dedicated page on [Processes](/server/configuring-runtime/processes).

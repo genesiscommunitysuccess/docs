@@ -4,7 +4,7 @@ sidebar_label: 'Basics'
 id: basics
 ---
 
-[Introduction](/server-modules/integration/rest-endpoints/introduction/) | [Where to define](/server-modules/integration/rest-endpoints/where-to-define) | [Basics](/server-modules/integration/rest-endpoints/basics/) | [Advanced](/server-modules/integration/rest-endpoints/advanced/) | [Configuring runtime](/server-modules/integration/rest-endpoints/configuring-runtime/) | [Testing](/server-modules/integration/rest-endpoints/testing/)
+[Introduction](/server/integration/rest-endpoints/introduction/) | [Where to define](/server/integration/rest-endpoints/where-to-define) | [Basics](/server/integration/rest-endpoints/basics/) | [Advanced](/server/integration/rest-endpoints/advanced/) | [Configuring runtime](/server/integration/rest-endpoints/configuring-runtime/) | [Testing](/server/integration/rest-endpoints/testing/)
 
 ## Authentication
 As mentioned in the introduction, all requests to all Genesis components require you to have done an intial log in and to have retrieved the `SESSION_AUTH_TOKEN`.
