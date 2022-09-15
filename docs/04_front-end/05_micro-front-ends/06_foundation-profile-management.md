@@ -22,7 +22,7 @@ API reference [can be found here.](../foundation-entity-management_apiref/)
 
 ## Introduction
 
-The Profile Management micro front-end used to manage the profiles on the front-end. Two core components are used to manage the profiles - the grid and the form. The grid contains an entity on each row and data in each column. Under the hood the grid uses [ag-grid](https://www.ag-grid.com/) and hence has a lot of its features such as filtering and ordering of data.
+The Profile Management micro-front-end used to manage the profiles on the front-end. Two core components are used to manage the profiles - the grid and the form. The grid contains an entity on each row and data in each column. Under the hood the grid uses [ag-grid](https://www.ag-grid.com/) and hence has a lot of its features such as filtering and ordering of data.
 
 :::info
 Profile Management is a concrete use case of the [entity management](./04_foundation-entity-management.md) micro-frontend which is provided as part of `foundation-ui`.
@@ -33,7 +33,7 @@ Example grid view when managing profiles.
 
 ## Set-up
 
-To enable this micro front-end in your application, follow the steps below.
+To enable this micro-front-end in your application, follow the steps below.
 
 - Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
 
@@ -73,7 +73,7 @@ The functionality of the profile manager is customised through the properties yo
 
 ### Permissions
 
-In contrast to entity-management, we have a different way of displaying buttons and performing actions here. In this case, they are displayed if the user has the appropriate permissions from the server.
+In contrast to entity management, we have a different way of displaying buttons and performing actions here. In this case, they are displayed if the user has the appropriate permissions from the server.
 
 - `INSERT_PROFILE` - the user can add new profiles
 - `DELETE_PROFILE` - the user can delete profiles
