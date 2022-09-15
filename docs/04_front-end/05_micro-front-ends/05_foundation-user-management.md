@@ -100,11 +100,11 @@ To see a more verbose version of this example, [see the second example here](../
 
 ### Permissions
 
-`permissions` is an array of the authorisations that the user has for interacting with the entity manager. For example, you could allow the user to edit existing entities and then this array. Permissions are controlled with [enum values](../foundation-entity-management_apiref/foundation-entity-management.permissions_2/#enumeration-members).
+In contrast to entity-management, we have a different way of displaying buttons and performing actions here. In this case, they are displayed if the user has the appropriate permissions from the server.
 
-:::info
-By default, the `permissions` are set automatically, depending on the authorisations of the user. If the user is an `ADMIN` then they will have *all* permissions; otherwise they will have *no* permissions.
-:::
+- `INSERT_USER` - the user can add new users
+- `DELETE_USER` - the user can delete users
+- `AMEND_USER` - the user can update existing users
 
 ### Persist column state
 `persist-column-state-key` is a string value, which is used to control how the column states are persisted through actions such as page changes or refreshes. When using this micro front-end, it is set to `entity_profiles_management`.
