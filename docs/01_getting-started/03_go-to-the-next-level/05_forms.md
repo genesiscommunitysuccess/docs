@@ -182,4 +182,15 @@ public async insertTrade() {
 }
 ```
 
-Now if everything has worked, you can go to your browser, insert the data for a new trade, and click the button. You will see the new trade showing up in the data grid that you set up in the [previous chapter](/getting-started/go-to-the-next-level/data-grid).
+Now if everything has worked, you can go to your browser, insert the data for a new trade, and click the button.
+You can see the new trade if you add the following data grid after the button on the `home.template.ts` files.
+
+
+```typescript title='home.template.ts' 
+  <zero-ag-grid style="width: 100%; height: 100%">
+        <ag-genesis-datasource
+                resourceName="ALL_TRADES"
+                orderBy="INSTRUMENT_ID">
+        </ag-genesis-datasource>
+    </zero-ag-grid>
+```
