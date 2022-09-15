@@ -278,7 +278,7 @@ The [entityDb](/database/database-interface/entity-db/) enables you to interact 
 :::
 
 ### 4. Prepare the server and build
-So far we have created an event handler and data server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Eevent Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
+So far we have created an event handler and data server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
 
 - **alpha-processes.xml**
 - **alpha-service-definitions.xml**
