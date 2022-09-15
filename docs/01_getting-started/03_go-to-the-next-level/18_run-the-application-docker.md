@@ -13,6 +13,10 @@ To build and start the Docker images execute the following command from the root
 docker-compose up -d
 ```
 
+:::tip
+Make sure that the `docker` daemon is running.
+:::
+
 ## Start the User interface
 
 Once the back end is running the next step is to start the User interface. To do this first you need to install your npm dependencies. Change directory to **positions-app-tutorial/client** and run the following in your terminal:
