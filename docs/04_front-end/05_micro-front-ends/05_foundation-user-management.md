@@ -36,7 +36,7 @@ Here is an example grid view for managing users:
 
 ## Set-up
 
-To enable this micro front-end in your application, follow the steps below:
+To enable this micro-front-end in your application, follow the steps below:
 
 - Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again.
 
@@ -100,7 +100,7 @@ To see a more verbose version of this example, [see the second example here](../
 
 ### Permissions
 
-In contrast to entity-management, we have a different way of displaying buttons and performing actions here. In this case, they are displayed if the user has the appropriate permissions from the server.
+In contrast to entity management, we have a different way of displaying buttons and performing actions here. In this case, they are displayed if the user has the appropriate permissions from the server.
 
 - `INSERT_USER` - the user can add new users
 - `DELETE_USER` - the user can delete users
