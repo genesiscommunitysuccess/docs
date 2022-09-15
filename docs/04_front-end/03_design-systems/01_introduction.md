@@ -1,11 +1,13 @@
 ---
-title: 'Introduction'
+title: 'Design Systems - Introduction'
 sidebar_label: 'Introduction'
 id: introduction
+keywords: [design system, frontend, ui, foundation ui]
 tags:
   - design system
   - frontend
   - ui
+  - foundation ui
 ---
 
 A design system is a collection of resources for interactive media that promotes brand alignment. Typically, it consists of the following:
