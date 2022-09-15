@@ -7,7 +7,7 @@ id: aggregation
 
 ## Introduction
 
-With Flow you can perform aggregation on your data.
+With Fuse you can perform aggregation on your data.
 
 Typical use cases are:
 

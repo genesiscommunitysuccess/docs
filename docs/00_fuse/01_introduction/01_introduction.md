@@ -1,11 +1,11 @@
 ---
-title: 'Flow'
+title: 'Fuse'
 id: 'introduction'
 ---
 
-Flow is a full stack low-code language to building applications. Delivering productive solutions quicker than ever before.
+Fuse is a full stack low-code language to building applications. Delivering productive solutions quicker than ever before.
 
-Writing up to 75% less code than prior Genesis versions, Flow allows us to:
+Writing up to 75% less code than prior Genesis versions, Fuse allows us to:
 - Model complex data objects with clear type definitions
 - View large sets of data in one or more grids with customisable cells for more complex fields
 - Create single or multiple page views of data to help make data more digestible
@@ -18,4 +18,4 @@ Writing up to 75% less code than prior Genesis versions, Flow allows us to:
 - Extend the built-in UI with the ability to utilise any HTML or custom web components
 - Supercharge development with built-in page structuring and routing.
 
-Become effective in days with our simple-to-follow guides on using Flow.
+Become effective in days with our simple-to-follow guides on using Fuse.
