@@ -140,7 +140,7 @@ public async connectedCallback() {
     super.connectedCallback();
     
     const tradeInstrumentsRequest = await this.connect.request('INSTRUMENT');
-    this.tradeInstruments = tradeInstrumentsRequest.REPLY?.map(instrument => ({value: instrument.INSTRUMENT_ID, label: instrument.NAME}));
+    this.tradeInstruments = tradeInstrumentsRequest.REPLY?.map(instrument => ({value: instrument.INSTRUMENT_ID, label: instrument.INSTRUMENT_ID}));
     this.instrument = this.tradeInstruments[0].value;
 }
 ```
