@@ -55,7 +55,7 @@ What we have done so far is good for simple forms or prototyping, but we need mu
 
 To do this, you must create each form element manually and take care of storing the data input by the user.
 
-Start by adding the elements to the template:
+Start by adding the elements to the template within the zero-form element:
 
 ```html title='home.template.ts' 
 <zero-text-field>Quantity</zero-text-field>
