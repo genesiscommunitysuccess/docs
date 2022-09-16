@@ -2,9 +2,9 @@
 title: 'Hardware and software'
 sidebar_label: 'Hardware and software'
 id: hardware-and-software
-keywords: [softward, hardware, repository, npmrc, gradle, foundation ui]
+keywords: [software, hardware, repository, npmrc, gradle, foundation ui]
 tags: 
-    - softward
+    - software
     - hardware
     - repository
     - npmrc
