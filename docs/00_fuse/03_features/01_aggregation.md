@@ -7,21 +7,21 @@ id: aggregation
 
 ## Introduction
 
-With Fuse you can perform aggregation on your data.
+With Fuse you can perform the aggregation on your data.
 
 Typical use cases are:
 
-- Calculating trade positions
-- Calculating a snapshot report of the number of trades per day
-- Calculating snapshot numbers for a chart
+- calculating trade positions
+- calculating a snapshot report of the number of trades per day
+- calculating snapshot numbers for a chart
 
-The Aggregator listens to updates on an underlying database object: either a view or a table. When there are changes to that object, those changes are aggregated and then the aggregated data is output to another table.
+The Aggregator listens to the updates on an underlying database object which is either a view or a table. When there are changes to that object, they are aggregated and then the aggregated data is sent out to another table.
 
 ## Definition
 
-You define an Aggregator as part of your data model definition.
+An Aggregator is a part of the data model.
 
-Here is an example of a simple Aggregator you could define with the input table defined below it:
+Here is an example of a simple Aggregator which can be defined with the input table defined below it:
 
 ```kotlin
 @Persist
@@ -53,26 +53,26 @@ object TRADE : Table(11_001) {
 }
 ```
 
-So, what is going on there?
+To explain the above more clearly,
 
-- The Aggregator is listening to the `TRADE` table.
-- It is publishing the aggregation results to the `ORDER` table.
-- It is grouping its aggregation by the field `tradeOrderId`.
-- It is counting the number of trades into `TRADE_COUNT` and calculating `price x quantity` into `TOTAL_NOTIONAL`.
-- It is filtering records to aggregate based on the `where` criteria. In this case records that have `tradeStatus` of CANCELLED won't be aggregated.
+- the Aggregator is listening to the `TRADE` table
+- it is publishing the aggregation results to the `ORDER` table
+- it is grouping its aggregation by the field, `tradeOrderId`
+- it is counting the number of trades into the `TRADE_COUNT` and calculating the `price x quantity` into the `TOTAL_NOTIONAL`
+- it is filtering the records to aggregate them as per the `where` criteria. In this case, the records that have the `tradeStatus` as 'CANCELLED' will not be   aggregated
 
 ## Functions
 
-To apply aggregation to fields you can use functions such as `sum { feeAmount }`. All functions require an input except for `count` and `countBig`. With those functions the input is optional. See the below table for a further description of each function.
+To apply aggregation to the fields, you can use functions such as `sum { feeAmount }`. All functions require an input except for  the `count` and the `counting` as the input is optional with these two. See the below table for further description of each function.
 
-:::tip
+:::Tip
 Within the curly brackets of the function, you can:
-- access all fields on the input table row
+- access all the fields on the input table row
 - write simple conditional statements
 - perform simple calculations using the following operators: +, -, *, /
 :::
 
-The function will be applied over the result, unless the result is null, in which case it will be ignored.
+The function is applied over the result unless the result is null, in which case it will be ignored.
 
 ### Standard functions
 
@@ -95,19 +95,19 @@ The function will be applied over the result, unless the result is null, in whic
 | last          | gets the value from the last record                                            | anything              | same as input |
 | any           | gets the value from any record                                                 | anything              | same as input |
 
-### Simple conditionals
+### Simple conditions
 
-All functions except `first`, `last` and `any` can be considered calculation functions. Within the calculation functions you can also define simple conditional statements.
-Based on a condition, you can specify which column should be used in the aggregation function.
+All the functions except the `first`, the `last` and the `any` fucntions are considered calculation functions. Within the calculation functions, you can also define simple conditional statements.
+Based on the condition, you can specify which column should be used in the aggregation function.
 
-See below for an example where if `side` equals `BUY` then `quantity` will be used, otherwise it will be `-quantity`:
+The example below shows that if `side` equals `BUY` then `quantity` will be used. If not, then `-quantity` will be used.
 ```kotlin
 check { side eq Side.BUY }
     .then { quantity }
     .orElse { -quantity }
 ```
 
-And below, which has a second condition to test when the first condition is false:
+This example shows that there will be a second condition to test when the first condition is false.
 ```kotlin
 check { quantity lt 1000 }
     .then { price }
@@ -116,7 +116,7 @@ check { quantity lt 1000 }
     .orElse { -price * quantity }
 ```
 
-The conditional expressions within `check` and `orCheck` support the following conditional operators:
+The conditional expressions within the `check` and the `orCheck` support the following conditional operators:
 
 | Conditional Operator | Description              |
 |:---------------------|--------------------------|
@@ -129,10 +129,10 @@ The conditional expressions within `check` and `orCheck` support the following c
 
 ### Where clause
 
-The `where` block will filter records prior to aggregation based on a condition. This must be defined in the object's `init` block.
-The conditional operators supported are the same as in the conditional expressions shown above.
+The `where` block will filter records prior to aggregation based on the condition. This must be defined in the object's `init` block.
+The conditional operators supported are the same as the conditional expressions shown above.
 
-Example:
+An example:
 ```kotlin
 init {
     where {
@@ -143,7 +143,7 @@ init {
 
 ## Full example
 
-Below is an example of aggregating records from the `TRADE` table into the `POSITION` table: 
+Below is an example of aggregating records from the `TRADE` table into the `POSITION` table. 
 
 ```kotlin
 @Persist
