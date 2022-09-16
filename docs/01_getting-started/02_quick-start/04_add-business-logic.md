@@ -2,6 +2,10 @@
 title: 'Add business logic'
 sidebar_label: 'Add business logic'
 id: add-business-logic
+keywords: [dataserver, event handler]
+tags:
+    - dataserver
+    - event handler
 ---
 
 We have a table; now we want to be able to see its content and create new entries.
