@@ -22,7 +22,7 @@ API reference [can be found here.](../foundation-entity-management_apiref/)
 
 ## Introduction
 
-The Profile Management micro fronted used to manage the profiles on the front-end. Two core components are used to manage the profiles - the grid and the form. The grid contains an entity on each row and data in each column. Under the hood the grid uses [ag-grid](https://www.ag-grid.com/) and hence has a lot of its features such as filtering and ordering of data.
+The Profile Management micro-front-end used to manage the profiles on the front-end. Two core components are used to manage the profiles - the grid and the form. The grid contains an entity on each row and data in each column. Under the hood the grid uses [ag-grid](https://www.ag-grid.com/) and hence has a lot of its features such as filtering and ordering of data.
 
 :::info
 Profile Management is a concrete use case of the [entity management](./04_foundation-entity-management.md) micro-frontend which is provided as part of `foundation-ui`.
@@ -33,7 +33,7 @@ Example grid view when managing profiles.
 
 ## Set-up
 
-To enable this micro front-end in your application, follow the steps below.
+To enable this micro-front-end in your application, follow the steps below.
 
 - Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
 
@@ -50,7 +50,7 @@ To enable this micro front-end in your application, follow the steps below.
 - Import and declare the class in the page of the class where you wish to use the profile manager. Then add the profile management into the template html where required:
 ```javascript
 // Import
-import { Profiles, } from '@genesislcap/foundation-entity-management';
+import { Profiles } from '@genesislcap/foundation-entity-management';
 
 // Declare class
 Profiles;
@@ -73,11 +73,11 @@ The functionality of the profile manager is customised through the properties yo
 
 ### Permissions
 
-`permissions` is an array of the authorisations that the user has for interacting with the entity manager. For example, to allow the user to be able edit existing entities then this array. Permissions are controlled with [enum values](../foundation-entity-management_apiref/foundation-entity-management.permissions_2/#enumeration-members).
+In contrast to entity management, we have a different way of displaying buttons and performing actions here. In this case, they are displayed if the user has the appropriate permissions from the server.
 
-:::info
-By default the `permissions` are set automatically depending on the authorisations of the user - if the user is an `ADMIN` then they will have *all* permissions, else they will have *no* permissions.
-:::
+- `INSERT_PROFILE` - the user can add new profiles
+- `DELETE_PROFILE` - the user can delete profiles
+- `AMEND_PROFILE` - the user can update existing profiles
 
 ### Persist Column State
 `persist-column-state-key` is a string value which is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set then the behaviour will be to _not_ persist the column state, and hence the grid will revert back to its default state every time the user navigates away from it.
