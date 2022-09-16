@@ -2,6 +2,14 @@
 title: 'Hardware and software'
 sidebar_label: 'Hardware and software'
 id: hardware-and-software
+keywords: [software, hardware, repository, npmrc, gradle, foundation ui]
+tags: 
+    - software
+    - hardware
+    - repository
+    - npmrc
+    - gradle
+    - foundation ui
 ---
 
 This page gives you the hardware and software requirements needed in order to run a development workstation for the Genesis low-code platform. It also provides instructions for accessing the Genesis repository and configuring the Genesis packages.
