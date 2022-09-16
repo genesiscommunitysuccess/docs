@@ -86,12 +86,15 @@ module.exports = {
     },
     navbar: {
       items: [
-        { type: 'docsVersionDropdown', className: "version-menu" },
-        { to: 'getting-started', label: 'Learning' },
-        { to: 'database', label: 'Database' },
-        { to: 'server-modules', label: 'Server' },
-        { to: 'front-end', label: 'Web' },
-        { to: 'operations', label: 'Operations' },
+        
+        //keep this commented out until we have multiple versions
+        // {type: 'docsVersionDropdown', className: "version-menu"},
+       
+        {to: 'getting-started', label: 'Learning'},
+        {to: 'database', label: 'Database'},
+        {to: 'server-modules', label: 'Server'},
+        {to: 'front-end', label: 'Web'},
+        {to: 'operations', label: 'Operations'},
         {
           href: "https://stackoverflow.com/c/genesis-global",
           className: "so-icon",
