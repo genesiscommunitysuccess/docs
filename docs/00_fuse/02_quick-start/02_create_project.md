@@ -1,30 +1,30 @@
 ---
-title: 'Create Project'
+title: 'Create a project'
 id: create-project
 ---
 
-# Create Project
+# Create a project
 
-To expedite and simplify getting started with building applications, our [GenX CLI](/fuse/introduction/prerequisites/#genx-cli) tool will create seed projects.
+To simplify getting started with building applications, our [GenX CLI](/fuse/introduction/prerequisites/#genx-cli) tool can create seed projects.
 
 
 > A seed project is a productive starting point for any application using Fuse. 
 > 
-> It will create an initial file structure and install any necessary dependencies, allowing us to focus on the important bits. 
+> It will create an initial file structure and install any necessary dependencies, allowing you to focus on the important bits. 
 :::important
 > Install the [GenX CLI](/fuse/introduction/prerequisites/#genx-cli) before proceeding with the following steps.
 :::
 
-### Expected Result
+## Expected Result
 By the end of this step, we should have:
-- created a new project named *alpha* with any relevant application configuration set up
+- created a new project named *alpha* with the relevant application configuration set up
 
 This will start a journey to building application functionality.
 
 ## Using GenX CLI
-####
 
-Once the GenX CLI has been installed, we are ready to generate our seed project.
+
+Once the GenX CLI has been installed, you are ready to generate our seed project.
 
 ### Choosing Project Type
 
@@ -34,7 +34,7 @@ From the terminal, run:
 foundation-cli
 ```
 
-If this is the first time running our CLI tool, we'll need to provide artifactory credentials. 
+If this is the first time running the CLI tool, you'll need to provide artifactory credentials. 
 
 > No credentials? See our [Pre-requisites](/fuse/introduction/prerequisites/)
 
@@ -45,7 +45,7 @@ If this is the first time running our CLI tool, we'll need to provide artifactor
 ```
 
 :::tip
-We persist details to help speed things up, so this won't happen everytime.
+We persist details to help speed things up, so this won't happen every time.
 :::
 
 
@@ -60,12 +60,12 @@ Select `create fuse application`:
   configure application - Configure a local app.
 ```
 
-### Configuring the Seed
-We now want to configure our seed. There will be a number of fields to fill in to help us get the best possible start.
+### Configuring the seed
+We now want to configure our seed. There are a number of fields to fill in to help us get the best possible start.
 
 
 :::tip 
-In some instances, there will be grey text reflecting possible answers to the prompted question. The capitalized option is the default, so we can just hit enter to use it. 
+In some instances, there will be grey text reflecting possible answers to the prompted question. The capitalised option is the default, so you can just hit enter to use it. 
 For example `y/N`: default here is 'N', which is equivalent to 'No'.
 :::
 
@@ -83,8 +83,8 @@ Select the seed from which you'd like to create an application.
   Low-code Application (Pre-release)
 ```
 
-We want to have a clean install, so let's overwrite any previous installations, choosing 'Yes'.
-> If this is the first time creating an application with this name, the following prompt will be skipped.
+We want to have a clean install, so let's overwrite any previous installations; choose 'Yes'.
+> If this is the first time you are creating an application with this name, the following prompt will be skipped.
 
 ```shell
 ? Overwrite existing files (y/N) Yes
@@ -112,9 +112,9 @@ This will ensure we pull our Genesis packages to help support development.
 ? NPM package name (alpha)
 ```
 
-Next, we'll be asked whether we want to configure an API host. 
+Next, you'll be asked whether we want to configure an API host. 
 
-> Our web component will attempt to connect to a local server. If we want to connect to a remote server, choose Yes and specify WebSocket URL. Otherwise, hit enter and the web component will connect to the local server by default. 
+> Our Web Component will attempt to connect to a local server. If you want to connect to a remote server, choose `Yes` and specify `WebSocket URL`. Otherwise, hit Enter and the Web Component will connect to the local server by default. 
 
 
 ```shell
@@ -141,12 +141,12 @@ At this point, the application will be configured. If successful, we will see th
 ℹ Application created successfully! 🎉 Please open the application and follow the README to complete setup.
 ```
 
-Now open the chosen IDE (e.g. IntelliJ) and locate the newly created alpha project. Have a look at **README.md** for more information about the project created. 
+Now open your chosen IDE (e.g. IntelliJ) and locate the newly created alpha project. Have a look at **README.md** for more information about the project created. 
 
 ## Recap
 
-Congratulations, the local environment is now ready to build applications. We have:
+Congratulations, the local environment is now ready to build applications. You have:
 
-- Created a new Fuse seed project
-- Configured our seed
-- Configured our application defaults
+- created a new Fuse seed project
+- configured our seed
+- configured our application defaults

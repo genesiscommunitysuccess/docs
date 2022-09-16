@@ -31,7 +31,7 @@ Ingress of files via local file system data pipelines, although a simple way to 
 
 In order to add a CSV local filesystem data pipeline, firstly, add the dependency `genesis-pal-datapipeline` to your **position-app-tutorial-script-config** module. This ensures that you are able to use the data pipeline functionality within your scripts. Ensure that gradle imports the new dependency.
 
-```
+```kotlin
 api("global.genesis:genesis-pal-datapipeline")
 ```
 
@@ -50,7 +50,7 @@ import global.genesis.gen.config.tables.TRADE.TRADE_STATUS
 
 sources {
   csv("some-name") {
-    location = "file:/home/positions/run/fileIngress?fileName=trades.csv"
+    location = "file:/home/positions/run/runtime/fileIngress?fileName=trades.csv"
 
     mapper("mapper-name", TRADE) {
       INSTRUMENT_ID {
@@ -86,7 +86,7 @@ sources {
 }
 ```
 
-In the above script, we define a CSV file source. We configure the location as a local filesystem source with an absolute path to the user account `positions`'s **run/fileIngress** directory. This directory should be created automatically the first time your application is started.
+In the above script, we define a CSV file source. We configure the location as a local filesystem source with an absolute path to the user account `positions`'s **run/runtime/fileIngress** directory. This directory should be created automatically the first time your application is started.
 
 The remaining configuration defines a mapper from our CSV to the data model of the `TRADE` table.
 

@@ -3,19 +3,19 @@ title: 'Fuse'
 id: 'introduction'
 ---
 
-Fuse is a full stack low-code language to building applications. Delivering productive solutions quicker than ever before.
+Fuse is a full-stack low-code language for building applications. By writing up to 75% less code than previous Genesis versions, you can deliver productive solutions quicker than ever.
 
-Writing up to 75% less code than prior Genesis versions, Fuse allows us to:
-- Model complex data objects with clear type definitions
-- View large sets of data in one or more grids with customisable cells for more complex fields
-- Create single or multiple page views of data to help make data more digestible
-- Join data objects together into single views to aid in data visualisation
-- Aggregate data using simple out-of-the-box calculation and conditional functions
-- Elegantly define data state transitions or workflows to maintain data integrity
-- Manipulate data through standardised create, update, and delete (CRUD) functions, with automatic validation protection and error handling
-- Leverage the power of the Genesis platform by writing one-line integration such as Auth
-- Dynamically filter grid data based on UI interactions
-- Extend the built-in UI with the ability to utilise any HTML or custom web components
-- Supercharge development with built-in page structuring and routing.
+Fuse allows you to:
+- model complex data objects with clear type definitions
+- view large sets of data in one or more grids with customisable cells for more complex fields
+- create single or multiple page views of data to help make that data more digestible
+- join together multiple data objects into single views to aid data visualisation
+- aggregate data using simple out-of-the-box calculation and conditional functions
+- elegantly define data state transitions or workflows to maintain data integrity
+- manipulate data through standardised Create, Update, and Delete (CRUD) functions, with automatic validation protection and error handling
+- capitalise on the power of the Genesis platform through one-line integration, such as Auth
+- dynamically filter grid data based on UI interactions
+- extend the built-in UI with the ability to utilise any HTML or custom Web Components
+- supercharge development with built-in page structuring and routing
 
-Become effective in days with our simple-to-follow guides on using Fuse.
+Our simple-to-follow guides will enable you to become an effective user of Fuse within days.

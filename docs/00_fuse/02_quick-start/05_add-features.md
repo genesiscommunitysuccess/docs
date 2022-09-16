@@ -1,20 +1,20 @@
 ---
-title: 'Add Features'
+title: 'Add features'
 id: add-features
 ---
 
-# Add Features
+# Add features
 
 We've now got our seed project created and configured. We've started our UI and Server, now we're ready to add features to our application.
 
-### Expected Result
+### Expected result
 
 For this part of the guide, we've picked out a few core features we can demonstrate while building a sample application. By the end of this step we will have:
 
 - **Authentication** enabled wth our app
-- Added a data **model** to describe the structure we'd like
-- Configured a **grid** to display the application data
-- Added a **form** to create data into our application
+- added a data **model** to describe the structure we'd like
+- configured a **grid** to display the application data
+- added a **form** to create data into our application
 
 ## Authentication
 
@@ -126,9 +126,9 @@ If the tasks above were successful, we will then see a grid on the UI.
 
 Finally, let's allow users to submit new trades.
 
-This is done by enabling `EntityOperations.ADD` operation.
+This is done by enabling the `EntityOperations.ADD` operation.
 
-We'll also customise the grid title to `Trades` instead.
+We'll also customise the grid title to `Trades`.
 
 To do this, we need to modify the `entityManager` parameters:
 
@@ -174,9 +174,9 @@ Now, if we click the **Add** button, we will see a form displayed in a modal:
 
 ## Recap
 
-Congratulations, with just a few lines of code and some commands, we now have:
+Congratulations, with just a few lines of code and some commands, you now have:
 
-- Authentication enabled on our application
-- A new data model for Trades
-- A grid display of all Trades
-- The ability to add new Trades via a form
+- authentication enabled on our application
+- a new data model for trades
+- a grid display of all trades
+- the ability to add new trades via a form

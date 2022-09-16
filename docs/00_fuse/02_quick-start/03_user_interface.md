@@ -1,42 +1,42 @@
 ---
-title: 'User Interface'
+title: 'User interface'
 id: user-interface
 ---
 
 # User Interface
 
-We have two key elements to our application, our user interface and our server. This section will focus on the former.
+We have two key elements to our application: our user interface and our server. This section focuses on the former.
 
-### Expected Result
+### Expected result
 
 By the end of this section we should have a local view of our application's user interface. We will have:
 
 - our UI available in a web browser
 - the ability to make changes to our UI and reflect those changes in our web browser
 
-## User Interface Set up
+## User interface set-up
 
-### Making UI available in our web browser
+### Making the UI available in our web browser
 
-Let's install front-end dependencies:
+Let's install the front-end dependencies:
 
 ```sh
 ./gradlew :npmBootstrap
 ```
 
-Next, let's start code generation service. It will run in the background while we are building our application.
+Next, let's start the code-generation service. It will run in the background while we are building our application.
 
 ```sh
 ./gradlew :generateIR -t
 ```
 
-In another terminal window, let's start a local Web server:
+In another terminal window, let's start a local web server:
 
 ```sh
 ./gradlew :npmStart
 ```
 
-Once we see a message similar to `INFO: Accepting connections at http://localhost:3000`, open the displayed URL, and we should see the following:
+Once we see a message similar to `INFO: Accepting connections at http://localhost:3000`, open the displayed URL; you should see the following:
 
 ![](/img/gpl-seed-start.png)
 
@@ -53,7 +53,7 @@ ui("Alpha Trading Dashboard") {
 }
 ```
 :::tip
-It is useful to have the code generation terminal visible, then we'll see when the changes have been processed:
+It is useful to have the code-generation terminal visible, then you'll see when the changes have been processed:
 :::
 
 ```shell
@@ -72,8 +72,8 @@ We should now see the updated `Alpha Trading Dashboard` page title as well as th
 
 ## Recap
 
-Congratulations, we now have a local view of the application's user interface. We have:
+Congratulations, you now have a local view of the application's user interface. We have:
 
-- Started a local Web server
-- Made the UI available in a web browser
-- Made changes to the UI and reflected those changes in the web browser
+- started a local Web server
+- made the UI available in a web browser
+- made changes to the UI and reflected those changes in the web browser

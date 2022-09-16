@@ -21,7 +21,7 @@ Start with the Form component, which will generate all the inputs based on the A
 To respond to the user clicking on the **Submit** button, you need to call the `EVENT_TRADE_INSERT` event:
 ```html {3} title='home.template.ts'
 <zero-form
-  resourceName="EVENT_INSERT_TRADE"
+  resourceName="EVENT_TRADE_INSERT"
   @submit=${(x, c) => x.insertTrade(c.event as CustomEvent)}
 ></zero-form>
 ```
@@ -182,4 +182,15 @@ public async insertTrade() {
 }
 ```
 
-Now if everything has worked, you can go to your browser, insert the data for a new trade, and click the button. You will see the new trade showing up in the data grid that you set up in the [previous chapter](/getting-started/go-to-the-next-level/data-grid).
+Now if everything has worked, you can go to your browser, insert the data for a new trade, and click the button.
+You can see the new trade if you add the following data grid after the button on the `home.template.ts` files.
+
+
+```typescript title='home.template.ts' 
+  <zero-ag-grid style="width: 100%; height: 100%">
+        <ag-genesis-datasource
+                resourceName="ALL_TRADES"
+                orderBy="INSTRUMENT_ID">
+        </ag-genesis-datasource>
+    </zero-ag-grid>
+```
