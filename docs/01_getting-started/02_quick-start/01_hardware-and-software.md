@@ -4,10 +4,10 @@ sidebar_label: 'Hardware and software'
 id: hardware-and-software
 ---
 
-This page gives you the hardware and software requirements needed in order to run a development workstation for the Genesis low-code platform. It also provides instructions for accessing the Genesis repository and configuring the Genesis packages.
+On this page, you can learn about the hardware and the software requirements to run a development workstation for the Genesis low-code platform. You will also find the instructions to access the Genesis repository and to configure the Genesis packages.
 
 
-## Recommended hardware and operating system
+## Recommended hardware and operating systems
 
 * Operating system : Windows 10 Pro
 * RAM : 16GB minimum, 32GB preferred (if running full applications locally)
@@ -28,27 +28,27 @@ This page gives you the hardware and software requirements needed in order to ru
 | Gradle  |       7.5       |
 | NodeJS  |     16 LTS+     |
 
-You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJ enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
+You can use a range of IDEs (like the Eclipse) with the Genesis platform but only IntelliJ enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
 
 ## Requirements
 
 * NodeJS (16 LTS+) - https://nodejs.org/en/
 * npm 8 (installed with NodeJS)
 
-## Access to the Genesis repository
+## Access to Genesis repository
 
 
-For access to Genesis packages, you need to configure the `@genesislcap` scope of `npm` to use our jfrog registry.
+To access the Genesis packages, you need to configure the `@genesislcap` scope of `npm` to use the jfrog registry.
 You will be provided with access details during your on-boarding.
 
 ### .npmrc set-up
 
 1. Create an `.npmrc` file in your user home directory.
- 2. Using your credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
- 3. Click on the `Welcome <username>` on the top right corner.
+ 2. Log in to the [Genesis repository website](http://genesisglobal.jfrog.io) with your credentials.
+ 3. Click the `Welcome <username>` on the top right corner.
  4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
  5. Select `npm` for both **Package Type** and **Repository**.
- 6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in to the Genesis repository on jfrog.) Then press **Enter**. 
+ 6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets`. This is the same password you have used to log in to the Genesis repository on jfrog. Then press **Enter**. 
 
  ![](/img/set-me-up.png)
 
@@ -73,7 +73,7 @@ You will be provided with access details during your on-boarding.
 Genesis Foundation UI
 ```
 
-Please [contact us](mailto:support@genesis.global?subject=.npmrc%20Setup) if you run into any problems.
+Please [contact us](mailto:support@genesis.global?subject=.npmrc%20Setup) in case of any questions or issues.
 
 ## gradle.properties file
 You must have a **gradle.properties** file inside a **.gradle** folder on your user directory; this file must contain your Genesis Artifactory password in clear (unencrypted) text:
