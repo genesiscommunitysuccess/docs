@@ -1,7 +1,11 @@
 ---
-title: 'Messages'
+title: 'Genesis Console - Messages'
 sidebar_label: 'Messages'
 id: messages
+keywords: [console, messages]
+tags:
+    - console
+    - messages
 ---
 
 [Introduction](/operations/console/introduction/)  | [Microservices](/operations/console/microservices/) |  [Data](/operations/console/data/) | [Resources](/operations/console/resources/) | [Packages](/operations/console/packages/) | [Messages](/operations/console/messages/)

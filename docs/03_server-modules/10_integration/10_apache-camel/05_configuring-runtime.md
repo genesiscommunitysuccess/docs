@@ -2,6 +2,9 @@
 title: 'Configuring Runtime'
 sidebar_label: 'Configuring Runtime'
 id: configuring-runtime
+keywords: [apache camel]
+tags:
+    - apache camel
 ---
 
 import Tabs from '@theme/Tabs';
@@ -25,9 +28,9 @@ The process definition may look similar to the following:
     <start>true</start>
     <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
     <module>genesis-pal-camel</module>
-    <package>global.genesis.eventhandler.pal</package>
-    <script>position-eventhandler.kts</script>
-    <description>Handles events</description>
+    <package>global.genesis.pal.camel</package>
+    <script>position-camel.kts</script>
+    <description>Camel integrations</description>
     <classpath>position-messages*,position-camel*,position-camel-libs*.jar</classpath>
     <language>pal</language>
   </process>
@@ -61,3 +64,7 @@ Where the position-camel-libs module may have similar dependencies to the follow
 
 </TabItem>
 </Tabs>
+
+:::note
+Your position-camel-libs module should be a dependency in your position-distribution module to ensure a position-camel-libs jar file is included in the Genesis application distribution
+:::
