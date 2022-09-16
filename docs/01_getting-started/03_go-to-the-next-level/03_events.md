@@ -1,5 +1,5 @@
 ---
-title: 'User interaction using Data Server and Event Handlers'
+title: 'User interaction using Data Servers, Request Servers and Event Handlers'
 sidebar_label: 'User interaction using Data Server and Event Handlers'
 id: events
 ---
@@ -44,6 +44,18 @@ eventHandler {
 The [entityDb](/database/database-interface/entity-db/) enables you to interact with the database layer. It's part of the Genesis database API and we'll get into more details soon. For now, understand that this is the common way to access data from code. Feel free to use the intellisense of your IDE to explore the methods available from entityDb.
 :::
 
+## Request Server
+
+Predominantly used for serving the UI, Request Servers retrieve a snapshot of data from your tables/views on demand.
+
+We will be using the following Request Server when we build the front end. Add the following to the file **positions-app-tutorial-reqrep.kts** and we will mention this in a later section.
+
+```kotlin
+requestReplies {
+    requestReply(INSTRUMENT)
+}
+```
+
 ## Prepare the server and build
 So far we have created an event handler and data server - just their definitions, but there's nothing on the runtime configuration yet. Each component, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
 
@@ -78,6 +90,16 @@ Add the following content to the **positions-app-tutorial-processes.xml** file.
         <classpath>positions-app-tutorial-messages*,positions-app-tutorial-eventhandler*</classpath>
         <language>pal</language>
     </process>
+    <process name="POSITIONS_APP_TUTORIAL_REQUEST_SERVER">
+        <groupId>POSITIONS_APP_TUTORIAL</groupId>
+        <start>true</start>
+        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
+        <module>genesis-pal-requestserver</module>
+        <package>global.genesis.requestreply.pal</package>
+        <script>position-app-tutorial-reqrep.kts</script>
+        <description>Server one-shot requests for details</description>
+        <language>pal</language>
+    </process>
 </processes>
 ```
 Add the following content to the **positions-app-tutorial-service-definitions.xml** file.
@@ -86,6 +108,7 @@ Add the following content to the **positions-app-tutorial-service-definitions.xm
 <configuration>
     <service host="localhost" name="POSITIONS_APP_TUTORIAL_DATASERVER" port="11000"/>
     <service host="localhost" name="POSITIONS_APP_TUTORIAL_EVENT_HANDLER" port="11001"/>
+    <service host="localhost" name="POSITIONS_APP_TUTORIAL_REQUEST_SERVER" port="11002"/>
 </configuration>
 ```
 

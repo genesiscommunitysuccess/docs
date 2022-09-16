@@ -146,6 +146,11 @@ public async connectedCallback() {
 ```
 
 Once we have the data with the list of instruments, we can make use of it in the template file. 
+
+:::note
+Here we are utilising the "INSTRUMENT" Request Server that we declared earlier
+:::
+
 To dynamically include a list of instruments, use the [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items.
 
 ```typescript title='home.template.ts' 
