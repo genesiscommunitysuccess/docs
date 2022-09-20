@@ -384,9 +384,9 @@ The first step to add basic auditing is to change the relevant table dictionary.
 table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
     sequence(TRADE_ID, "TR")
     COUNTERPARTY_ID 
-    INSTRUMENT_ID 
+    INSTRUMENT_ID not null
     QUANTITY
-    PRICE
+    PRICE not null
     SYMBOL
     DIRECTION
     SIDE
