@@ -1,10 +1,10 @@
 ---
 id: training-content-day1
-title: Day 1
-sidebar_label: Day 1
+title: Day one
+sidebar_label: Day one
 sidebar_position: 3
-
 ---
+
 This day covers:
 
 - [Quick review of the platform​](#quick-review-of-the-platform)

@@ -1,11 +1,25 @@
 ---
 id: training-content-day2
-title: Day 2
-sidebar_label: Day 2
+title: Day two
+sidebar_label: Day two
 sidebar_position: 4
-
 ---
-This covers:
+
+<details>
+  <summary>Day one recap</summary>
+  <div>
+    <div>Here are the main takeaways from <a href="/getting-started/developer-training/training-content-day1/">Day one</a>.</div>
+    <li>Genesis low-code platform is the only low-code platform for the financial markets.</li>
+    <li>Genesis platform is based on event-driven and microservice architecture.</li>
+    <li>Genesis platform resources are powered by GPAL, which plugs into IntelliJ.</li>
+    <li>We created a project from scratch using <a href="/getting-started/developer-training/training-content-day1/#1-create-a-new-project">GenX CLI</a>.</li>
+    <li>We defined our data model adding <a href="/getting-started/developer-training/training-content-day1/#add-fields">fields</a>, and a <a href="/getting-started/developer-training/training-content-day1/#add-a-table">table</a> called TRADE.</li>
+    <li>We added business logic creating a Data Server <a href="/getting-started/developer-training/training-content-day1/#data-server">query</a> and an Event Handler method to <a href="/getting-started/developer-training/training-content-day1/#event-handler">insert data</a>.</li>
+    <li> We prepared the server to <a href="/getting-started/developer-training/training-content-day1/#4-prepare-the-server-and-build">build</a> and <a href="/getting-started/developer-training/training-content-day1/#5-deployment">deploy</a>.</li>
+  </div>
+</details>
+
+This day covers:
 
 - [An introduction to UI](#intro-to-ui)
 - [Creating a user interface](#create-a-user-interface)

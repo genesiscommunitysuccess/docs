@@ -1,11 +1,22 @@
 ---
 id: training-content-day3
-title: Day 3
-sidebar_label: Day 3
+title: Day three
+sidebar_label: Day three
 sidebar_position: 5
-
 ---
-In this day we are covering:
+
+<details>
+  <summary>Day two recap</summary>
+  <div>
+    <div>Here are the main takeaways from <a href="/getting-started/developer-training/training-content-day2/">Day two</a>.</div>
+    <li>We provided an introduction to UI, describing <a href="/getting-started/developer-training/training-content-day2/#web-components">Web Components</a> and <a href="/getting-started/developer-training/training-content-day2/#micro-front-ends">Micro front-ends</a>.</li>
+    <li>The <a href="/getting-started/developer-training/training-content-day2/#genesis-packages">Genesis UI packages</a>​ were presented</li>
+    <li>We created a user interface using the Micro front-end <a href="/getting-started/developer-training/training-content-day2/#entitymanagement">EntityManagement</a>.</li>
+    <li>We <a href="/getting-started/developer-training/training-content-day2/#extending-our-initial-application">extended the application</a> by adding new tables and CRUD events.</li>
+  </div>
+</details>
+
+This day covers:
 
 - [Views](#views)
 - [Automated testing](#automated-testing)​
