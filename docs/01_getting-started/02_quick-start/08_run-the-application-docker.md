@@ -6,7 +6,16 @@ id: run-the-application-docker
 
 You have a choice of how you run the application. The instructions on this page are for using Docker. If you prefer to use WSL/CentOS as your environment, there are [separate instructions](/getting-started/quick-start/run-the-application/).
 
-## Building and composing Docker images 
+A bit of information on how we run application using Docker:
+We added Docker setup as part of seed application you choose to create your application, which performs the necessary steps to set up and run the application.
+Include following important steps:
+- Install necessary software
+- Setup Genesis distribution
+- Configure Postgres Database
+- Run [genesis install](/operations/commands/server-commands/#genesisinstall-script)
+- Run [remap](/operations/commands/server-commands/#genesisinstall-script)
+
+## Building and composing Docker images
 
 Usage:
 ```shell
