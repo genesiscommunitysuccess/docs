@@ -1,7 +1,10 @@
 ---
-title: 'Basics'
+title: 'Apache Camel - Basics'
 sidebar_label: 'Basics'
 id: basics
+keywords: [apache camel]
+tags:
+    - apache camel
 ---
 
 [Introduction](/server-modules/integration/apache-camel/introduction/)  | [Basics](/server-modules/integration/apache-camel/basics) | [Advanced](/server-modules/integration/apache-camel/advanced) | [Examples](/server-modules/integration/apache-camel/examples) | [Configuring runtime](/server-modules/integration/apache-camel/configuring-runtime) | [Testing](/server-modules/integration/apache-camel/testing)
