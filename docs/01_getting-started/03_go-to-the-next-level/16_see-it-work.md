@@ -105,9 +105,50 @@ Run genesisInstall to create the Genesis scripts.
 ```
 ![](/img/genesis-install.png)
 
-### Add a user
+### Add a user and some example data
 
-Next, let's create a user.
+Lets load some very simple example data into the tables that we have created previously.
+Copy the following into a csv files and save along with the  `USER.csv` in the *positions-app-tutorial\server\jvm\positions-app-tutorial-site-specific\src\main\resources\data* folder.
+
+```text title="TRADE.csv"
+"TRADE_ID","INSTRUMENT_ID","COUNTERPARTY_ID","QUANTITY","SIDE","PRICE","TRADE_DATETIME","ENTERED_BY","TRADE_STATUS"
+"000000000000001TRLO1","00000000002INSP0","000000000000001CLSP1","11129","BUY","643.927","2022-09-16 10:40:47.161 +0000","TestUser1","NEW"
+"000000000000002TRLO1","00000000003INSP0","000000000000001CLSP1","4142","SELL","577.515","2022-09-17 10:40:47.161 +0000","TestUser1","NEW"
+"000000000000003TRLO1","00000000003INSP0","000000000000002CLSP1","412","BUY","577.515","2022-09-10 10:40:47.161 +0000","TestUser1","ALLOCATED"
+"000000000000004TRLO1","00000000003INSP0","000000000000003CLSP1","42","SELL","577.515","2022-09-12 10:40:47.161 +0000","TestUser2","CANCELLED"
+"000000000000005TRLO1","00000000003INSP0","000000000000001CLSP1","414","BUY","577.515","2022-09-14 10:40:47.161 +0000","TestUser1","NEW"
+"000000000000006TRLO1","00000000003INSP0","000000000000002CLSP1","142","SELL","577.515","2022-09-15 10:40:47.161 +0000","TestUser1","ALLOCATED"
+```
+
+```text title="POSITION.csv"
+"INSTRUMENT_ID","POSITION_ID","QUANTITY","NOTIONAL","PNL","VALUE"
+"00000000005INSP0","000000000001802PSLO1","113100","467668019","-4858393092","7324500"
+"00000000002INSP0","000000000002002PSLO1","10299","72808786","3394758","7512307"
+"00000000004INSP0","000000000001902PSLO1","71974","2878437","-412450","24224859"
+"00000000003INSP0","000000000002102PSLO1","13010","243786450","-13184224","112133190"
+"00000000001INSP0","000000000001803PSLO1","70720","3949150","-3808573","353600"
+```
+
+```text title="INSTRUMENT.csv"
+"INSTRUMENT_ID","INSTRUMENT_SYMBOL","CURRENCY_ID"
+"00000000001INSP0","TEST_SYMBOL_1","BRL"
+"00000000002INSP0","TEST_SYMBOL_2","BRL"
+"00000000003INSP0","TEST_SYMBOL_3","USD"
+"00000000004INSP0","TEST_SYMBOL_4","USD"
+"00000000005INSP0","TEST_SYMBOL_5","BRL"
+```
+
+```text title="COUNTERPARTY.csv"
+"COUNTERPARTY_ID","COUNTERPARTY_NAME"
+"000000000000001CLSP1","HSBC"
+"000000000000002CLSP1","BOSCO"
+"000000000000003CLSP1","MERRILL"
+"000000000000004CLSP1","GENESIS"
+```
+
+
+
+Next, let's load this data along with a user from the `USER.csv` file.
 
 :::note
 The following details will be your login details:
@@ -116,7 +157,7 @@ The following details will be your login details:
 - Password: beONneON*74 (This is encrypted in the USER.csv file.)
 :::
 
-Run the task `loadInitialData`. This adds the data to a file called USER.csv to be imported into the `USER` table in your
+Run the task `loadInitialData`. This imports the data from these csv files into the database. For example the file called USER.csv will be imported into the `USER` table in your
 database. The `USER` table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously. 
 
 To run the task, call:
