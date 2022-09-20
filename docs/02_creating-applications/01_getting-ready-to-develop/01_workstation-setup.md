@@ -66,7 +66,7 @@ You will be provided with access details during your on-boarding.
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
 
 9. Save the file and open a terminal under the directory path of this `.npmrc` file and type:
-`npm info @genesislcap/foundation-ui`. If set-up was successful, you should see a response like this:
+`npm info @genesislcap/foundation-ui`. If the set-up was successful, you should see a response like this:
 
 ```shell
 @genesislcap/foundation-ui@0.0.26 | UNLICENSED | deps: 23 | versions: 111
