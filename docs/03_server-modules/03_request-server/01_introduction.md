@@ -2,6 +2,9 @@
 title: 'Request Server'
 sidebar_label: 'Introduction'
 id: introduction
+keywords: [request server]
+tags:
+  - request server
 ---
 
 [Introduction](/server-modules/request-server/introduction)  | [Basics](/server-modules/request-server/basics) | [Advanced](/server-modules/request-server/advanced) | [Examples](/server-modules/request-server/examples) | [Configuring runtime](/server-modules/request-server/configuring-runtime) | [Testing](/server-modules/request-server/testing)

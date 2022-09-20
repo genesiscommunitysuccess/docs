@@ -10,7 +10,6 @@ tags:
     - npmrc
     - gradle
     - foundation ui
-    
 ---
 
 This page gives you the hardware and software requirements needed in order to run a development workstation for the Genesis low-code platform. It also provides instructions for accessing the Genesis repository and configuring the Genesis packages.

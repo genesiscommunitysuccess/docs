@@ -1,7 +1,11 @@
 ---
-title: 'Resources'
+title: 'Genesis Console - Resources'
 sidebar_label: 'Resources'
 id: resources
+keywords: [console, resources]
+tags:
+    - console
+    - resources
 ---
 
 [Introduction](/operations/console/introduction/)  | [Microservices](/operations/console/microservices/) |  [Data](/operations/console/data/) | [Resources](/operations/console/resources/) | [Packages](/operations/console/packages/) | [Messages](/operations/console/messages/)
