@@ -95,6 +95,7 @@ module.exports = {
         {to: 'server-modules', label: 'Server'},
         {to: 'front-end', label: 'Web'},
         {to: 'operations', label: 'Operations'},
+        {to: 'fuse/introduction', label: 'Fuse'},
         {
           href: "https://stackoverflow.com/c/genesis-global",
           className: "so-icon",
