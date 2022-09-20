@@ -120,7 +120,7 @@ When first starting to work with the `lerna`-managed monorepo, there can be some
 
 -  **Adding a dependency**. As stated in the [adding dependencies](#adding-dependencies) section, you should navigate to the `package.json` that is in the directory of the module that you want to add the dependency to. For example, if you want to add the dependency `@genesislcap/foundation-login` to your web app, you probably want to add the dependency to the `client/web/package.json` file. Alternatively, if you want to add the `@genesislcap/foundation-comms` dependency to a separate module that you are building in the same repository, add it to the `package.json` of that module.
 
--  **Adding a module command**. If you want to add a command that is specific to a module, such as a command set-up, then extract the API from tsdoc comments using [@microsoft/api-documenter](https://www.npmjs.com/package/@microsoft/api-documenter), edit the `package.json` specific to that package.
+-  **Adding a module command**. If you want to add a command that is specific to a module, such as a command to extract the API from a tsdoc comment, then edit the `package.json` specific to that package.
 
 -  **Adding a CI/workflow command**. If you want to add a command to be run as part of CI or a workflow, such as during a git command, edit the file in your client root. For example, if you want to set up linting checks, add the linting command to the `client/package.json` file.
 
