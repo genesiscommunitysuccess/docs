@@ -46,7 +46,7 @@ We can confirm whether it's trying to connect to the correct URL in the browser 
 
 Now we're ready to define the fields and tables that make up the [data model](https://docs.genesis.global/secure/creating-applications/defining-your-application/data-model/data-model-overview/). This structures information in a simple way that can be viewed by users and processed by the application.
 
-Let's create a new package **model** in **src/main/kotlin/global/genesis/alpha** and add a file called **Trade.kt** with the following contents:
+Let's create a new package **model** in **src/main/kotlin/global/genesis/alpha** and add a file called **Models.kt** with the following contents:
 
 ```kotlin
 import global.genesis.gpl.api.schema.Persist
