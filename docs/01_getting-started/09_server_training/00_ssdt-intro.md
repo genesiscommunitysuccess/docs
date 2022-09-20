@@ -29,11 +29,11 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 
 ## Agenda
 
-- [Day 1](/getting-started/server_training/01_ssdt-day1/): System definitions, advanced event handlers.
-- [Day 2](/getting-started/server_training/01_ssdt-day2/): Notify, dynamic rules, advanced views.
-- [Day 3](/getting-started/server_training/03_ssdt-day3/): Advanced data Servers, advanced request servers, ExcelToGenesis.
-- [Day 4](/getting-started/server_training/04_ssdt-day4/): DictionaryBuilder, streamer, streamer client, custom endpoints.
-- [Day 5](/getting-started/server_training/05_ssdt-day5/): Custom endpoints, camel module, data pipeline​.
+- [Day one](/getting-started/server_training/01_ssdt-day1/): System definitions, advanced event handlers.
+- [Day two](/getting-started/server_training/01_ssdt-day2/): Notify, dynamic rules, advanced views.
+- [Day three](/getting-started/server_training/03_ssdt-day3/): Advanced data Servers, advanced request servers, ExcelToGenesis.
+- [Day four](/getting-started/server_training/04_ssdt-day4/): DictionaryBuilder, streamer, streamer client, custom endpoints.
+- [Day five](/getting-started/server_training/05_ssdt-day5/): Custom endpoints, camel module, data pipeline​.
 
 ## Genesis low-code platform version
 6.1.4

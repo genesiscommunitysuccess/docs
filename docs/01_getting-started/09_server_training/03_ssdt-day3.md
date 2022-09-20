@@ -1,7 +1,7 @@
 ---
 id: 03_ssdt-day3
-title: Day 3
-sidebar_label: Day 3
+title: Day three
+sidebar_label: Day three
 sidebar_position: 4
 
 ---
