@@ -65,7 +65,7 @@ To explain the above more clearly,
 
 To apply aggregation to the fields, you can use functions such as `sum { feeAmount }`. All functions require an input except for  the `count` and the `counting` as the input is optional with these two. See the below table for further description of each function.
 
-:::Tip
+:::note
 Within the curly brackets of the function, you can:
 - access all the fields on the input table row
 - write simple conditional statements
