@@ -28,7 +28,7 @@ We are going to call this example application **alpha**. We'll see this reflecte
 
 Upon completion, you should have knowledge of how to build an application using Fuse with a keen focus on:
 - setting up an environment for this and future *low-code* applications
-- creating a starting project structure using the [Fuse](/fuse/introduction/) application seed
+- creating a starting project structure using the [Fuse](/fuse) application seed
 - modelling data with clear type definitions
 - building grid views to visualise data
 - setting up forms to manipulate the data set
