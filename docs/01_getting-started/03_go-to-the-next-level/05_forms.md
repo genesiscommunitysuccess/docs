@@ -182,7 +182,7 @@ public async insertTrade() {
   });
 }
 ```
- Lets add another data grid at the bottom of the page to show the trade view `ALL_TRADES`
+ Let's add another data grid at the bottom of the page to show the trade view `ALL_TRADES`:
 
 ```html title='home.template.ts'
   <zero-ag-grid style="width: 100%; height: 100%">
