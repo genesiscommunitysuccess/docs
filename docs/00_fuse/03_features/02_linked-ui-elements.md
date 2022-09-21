@@ -7,7 +7,7 @@ id: linked-ui-elements
 
 ## Introduction
 
-With Fuse it is possible to link UI elements such as grids and form inputs. Linking allows to update one element based on the status of another element.
+With Fuse it is possible to link UI elements such as grids and form inputs. Linking allows us to update one element based on the status of another element.
 
 Common use cases are:
 
@@ -17,8 +17,8 @@ Common use cases are:
 
 Linking is a two-step process:
 
-* Assigning a name to an element
-* Referencing the name when configuring another element
+* Assign a name to an element
+* Reference the name when configuring another element
 
 Let's build a simple example to see this in practice.
 
@@ -78,7 +78,7 @@ You should now have a page similar to below. At this point, the two grids are in
 First step in linking is to give an element a name. To name an element simply assign it to a Kotlin variable.
 
 :::caution
-Note that we use `by` keyword instead of `=` here.
+Note that we use `by` keyword instead of `=` here to capture more information about the property.
 :::
 
 ```kotlin
@@ -133,7 +133,7 @@ filter {
 }
 ```
 
-Grids provide an `entity` property e.g. `instrumentGrid.entity`. It refers to the selected row in that grid (if any), for example, `instrumentGrid.entity` refers to the selected row in instrument grid.
+Grids provide an `entity` property e.g. `instrumentGrid.entity`. It refers to the selected row in that grid (if any).
 
 Entity property conforms to the same data model you have configured for your grid. In this case, `instrumentGrid` uses `INSTRUMENT` model, so you will be able access all the instrument model fields such as `instrumentGrid.entity.name`, `instrumentGrid.entity.instrumentId` and so on.
 
