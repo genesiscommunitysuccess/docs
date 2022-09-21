@@ -17,7 +17,7 @@ A problem occurred configuring project ':genesisproduct-alpha:alpha-deploy'.
 ...
 ```
 
-To resolve this issue, change the following **auth-distribution** version in **alpha/server/jvm/alpha-deploy/build.gradle.kts** to `6.1.4` as follows:
+To resolve this issue, change the **auth-distribution** version in **alpha/server/jvm/alpha-deploy/build.gradle.kts** to `6.1.4` as follows:
 
 ```kotlin {7}
 ...
