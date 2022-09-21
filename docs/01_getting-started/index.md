@@ -9,15 +9,13 @@ Welcome to the Learning area for the Genesis low-code platform.
 
 
 
-This area is aimed at people who already have some development knowledge. Ideally, you should have experience of Java and/or Javascript, but development experience in any object-oriented language is a good starting point.
+This area is aimed at people who **already have some development knowledge**. Ideally, you should have experience of Java and/or Javascript, but development experience in any object-oriented language is a good starting point.
 
+You can take the **slow road** or the **fast road** through this area.
 
+We recommend the slow road, but if you want to whizz through things, be our guest. Check out our recommended routes below. 
 
-You can take the slow road or quick road through this area.
-
-We recommend you read all the pages here to learn the basics. But if you want to whizz through things, be our guest. Check out our recommended routes below. 
-
-Depending on how fast you want to go, these should give you enough knowledge to take your first steps in developing a real application. You can use our reference documentation to help you go further.
+Either way, you should gain enough knowledge to take your first steps in developing a real application. 
 
 
 ## Fast track
