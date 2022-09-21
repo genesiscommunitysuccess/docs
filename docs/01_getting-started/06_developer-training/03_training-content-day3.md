@@ -112,7 +112,6 @@ Moving on, for our app to be able to keep positions based on the trades, we need
 Let´s add new fields to Trade table​. 
 
 ```kotlin
-field("SIDE", type = STRING)​
 field("TRADE_DATE", type = DATE)​
 field("ENTERED_BY", type = STRING)​
 field(name = "TRADE_STATUS", type = ENUM("NEW", "ALLOCATED", "CANCELLED", default = "NEW"))
@@ -121,7 +120,6 @@ field(name = "TRADE_STATUS", type = ENUM("NEW", "ALLOCATED", "CANCELLED", defaul
 ```kotlin
 table (name = "TRADE", id = 2000) {
     ...
-    SIDE
     TRADE_DATE
     ENTERED_BY
     TRADE_STATUS
@@ -262,7 +260,7 @@ class TradeViewTest : AbstractDatabaseTest() {
             .setInstrumentId("2")   // INSTRUMENT_NAME = "BAR.L"
             .setPrice(12.0)
             .setQuantity(100)
-            .setSide("BUY")
+            .setDirection(Direction.BUY)
             .setTradeId(tradeId)
             .build()
 
@@ -278,7 +276,7 @@ class TradeViewTest : AbstractDatabaseTest() {
             assertEquals(now, tradeView.tradeDate)
             assertEquals(12.0, tradeView.price)
             assertEquals((100).toInt(), tradeView.quantity)
-            assertEquals("BUY", tradeView.side)
+            assertEquals(Direction.BUY, tradeView.direction)
         }
     }
 
@@ -295,7 +293,7 @@ class TradeViewTest : AbstractDatabaseTest() {
         assertEquals(now, tradeView.tradeDate)
         assertEquals(12.0, tradeView.price)
         assertEquals((100).toInt(), tradeView.quantity)
-        assertEquals("BUY", tradeView.side)
+        assertEquals(Direction.BUY, tradeView.direction)
     }
 
     @Test
@@ -454,6 +452,7 @@ import global.genesis.gen.config.tables.POSITION.NOTIONAL
 import global.genesis.gen.config.tables.POSITION.QUANTITY
 import global.genesis.gen.config.tables.POSITION.VALUE
 import global.genesis.gen.dao.Position
+import global.genesis.gen.dao.enums.Direction
 
 consolidators {
     config {}
@@ -464,13 +463,13 @@ consolidators {
         }
         select {
             sum {
-                when(side) {
-                    "BUY" -> when(tradeStatus) {
+                when(direction) {
+                    Direction.BUY -> when(tradeStatus) {
                         TradeStatus.NEW -> quantity
                         TradeStatus.ALLOCATED -> quantity
                         TradeStatus.CANCELLED -> 0
                     }
-                    "SELL" -> when(tradeStatus) {
+                    Direction.SELL -> when(tradeStatus) {
                         TradeStatus.NEW -> -quantity
                         TradeStatus.ALLOCATED -> -quantity
                         TradeStatus.CANCELLED -> 0
@@ -479,9 +478,9 @@ consolidators {
                 }
             } into QUANTITY
             sum {
-                val quantity = when(side) {
-                    "BUY" -> quantity
-                    "SELL" -> -quantity
+                val quantity = when(direction) {
+                    Direction.BUY -> quantity
+                    Direction.SELL -> -quantity
                     else -> 0
                 }
                 quantity * price

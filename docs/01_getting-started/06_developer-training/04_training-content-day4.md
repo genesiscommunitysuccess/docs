@@ -389,7 +389,6 @@ table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
     PRICE not null
     SYMBOL
     DIRECTION
-    SIDE
     TRADE_DATE
     ENTERED_BY
     TRADE_STATUS
