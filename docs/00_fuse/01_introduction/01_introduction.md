@@ -1,5 +1,5 @@
 ---
-title: 'Fuse'
+title: 'Fuse - early access'
 id: 'introduction'
 ---
 
