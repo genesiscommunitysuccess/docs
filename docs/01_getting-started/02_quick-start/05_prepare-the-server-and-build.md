@@ -72,6 +72,27 @@ systemDefinition {
 }
 
 ```
+If you are using **H2**, you need to change/add the highlighted items in **genesis-system-definition.kts**.
+
+```kotlin {4-5,10,12}
+systemDefinition {
+    global {
+        ...
+        item(name = "DbLayer", value = "SQL")
+        item(name = "DictionarySource", value = "FILE")
+        item(name = "AliasSource", value = "DB")
+        item(name = "MetricsEnabled", value = "false")
+        item(name = "ZeroMQProxyInboundPort", value = "5001")
+        item(name = "ZeroMQProxyOutboundPort", value = "5000")
+        item(name = "DbHost", value = "jdbc:h2:file:~/run/h2;AUTO_SERVER=TRUE")
+        item(name = "DbMode", value = "VANILLA")
+        item(name = "DbQuotedIdentifiers", value = "true")
+        ...
+    }
+    
+}
+
+```
 
 Finally, you can build the server.
 

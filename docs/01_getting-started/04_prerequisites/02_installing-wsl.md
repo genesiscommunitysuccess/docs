@@ -183,7 +183,17 @@ Then to check if it's running:
 
 `systemctl status foundationdb`
 
+### Using H2 as an embedded database (not recommended for production environments or serious development)
 
+You can use an embedded H2 database for basic development. This solution creates an H2 file-based database in the same 
+environment where your app is running. The database is initiated by JDBC and does not require additional setup.
+
+To use H2, use this JDBC URL, substituting your own path name:
+```none title="CentOS"
+jdbc:h2:file:~/run/path/to/h2;AUTO_SERVER=TRUE
+```
+
+In your system configuration, set `DbLayer=SQL`, `DictionarySource=FILE` and `DbQuotedIdentifiers=true`.
 
 ### Running Aerospike from Docker
 

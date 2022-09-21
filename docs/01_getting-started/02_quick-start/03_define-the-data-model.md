@@ -8,6 +8,37 @@ Now you are ready to define the fields and tables that make up your data model. 
 
 Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/) (recommended) or your chosen IDE. In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (alpha, client, genesisproduct-alpha).
 
+If you are using **H2** and you chose `6.1.6` as your **Genesis Server** version, you will see the following error when you first open IntelliJ:
+
+```none
+A problem occurred configuring project ':genesisproduct-alpha:alpha-deploy'.
+> Could not resolve all files for configuration ':genesisproduct-alpha:alpha-deploy:compileClasspath'.
+   > Could not find global.genesis:auth-distribution:6.1.6.
+...
+```
+
+To resolve this issue, change the following **auth-distribution** version in **alpha/server/jvm/alpha-deploy/build.gradle.kts** to `6.1.4` as follows:
+
+```kotlin {7}
+...
+dependencies {
+    ...
+    implementation(
+        group = "global.genesis",
+        name = "auth-distribution",
+        version = "6.1.4",
+        classifier = "bin",
+        ext = "zip"
+    )
+    ...
+}
+...
+```
+
+After you have changed this value press the reload button in the Gradle menu on the right of Intellij:
+
+![](/img/gradle-reload.png)
+
 ### Add fields
 You define your fields in the file **alpha-fields-dictionary.kts**.
 
@@ -15,7 +46,7 @@ You define your fields in the file **alpha-fields-dictionary.kts**.
 
 :::tip
 
-Once the project is open, there are two easy ways to find this file quickly in Intellij:
+Once the project is open, there are two easy ways to find this file quickly in IntelliJ:
 
 - Press the **Shift** key twice, then type the name of the file you are looking for.
 - Press **Shift** + **Ctrl** + **N**, then type the name of the file you are looking for.

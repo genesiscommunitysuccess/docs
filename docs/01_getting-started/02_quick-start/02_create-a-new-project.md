@@ -84,6 +84,13 @@ Then there are more questions, which you can respond to as follows:
 ? Group Id global.genesis
 ? Application Version 1.0.0-SNAPSHOT
 ```
+If you plan to use **H2** as the application database, change the following two answers:
+
+```shell
+? Genesis Server version 6.1.6
+? Genesis Deploy plugin version 6.2.0-SNAPSHOT
+```
+
 At this point, the application will be configured. Assuming it is successful, you will see the following text:
 
 ```shell

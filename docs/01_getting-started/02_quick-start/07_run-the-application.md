@@ -46,7 +46,7 @@ or from the dropdown menu:
 
 ![](/img/install-auth.png)
 
-## Deploying the alpha product
+## Deploying the alpha product (FDB)
 
 Now we have to deploy the alpha product
 
@@ -59,6 +59,40 @@ or from the dropdown menu:
 
 ![](/img/deploy-alpha-product.png)
 
+## Deploying the alpha product (H2)
+
+Now we have to install the site-specific alpha product.
+
+Usage:
+```shell
+./gradlew :jvm:alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip #On the IntelliJ terminal
+```
+
+or from the dropdown menu:
+
+![](/img/install-alpha-site-specific.png)
+
+Next, we need to run `genesis-install`.
+
+Usage:
+```shell
+./gradlew :jvm:alpha-deploy:genesis-install #On the IntelliJ terminal
+```
+
+or from the dropdown menu:
+
+![](/img/alpha-genesis-install.png)
+
+Then we run `remap`.
+
+Usage:
+```shell
+./gradlew :jvm:alpha-deploy:remap #On the IntelliJ terminal
+```
+
+or from the dropdown menu:
+
+![](/img/remap.png)
 
 ## Adding a user to login
 
