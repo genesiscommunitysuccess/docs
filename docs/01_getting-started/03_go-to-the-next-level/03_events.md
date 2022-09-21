@@ -1,6 +1,6 @@
 ---
 title: 'User interaction using Data Servers, Request Servers and Event Handlers'
-sidebar_label: 'User interaction using Data Server and Event Handlers'
+sidebar_label: 'User interaction'
 id: events
 ---
 
@@ -8,14 +8,15 @@ Now that we have our data model defined, we can start adding the capabilities to
 
 ## Section objectives
 The goal of this section is to define and build:
-- an Event Handler for creating trades and a
-- Data Server for reading positions and trades.
+- an Event Handler for creating trades 
+- a Data Server for reading positions and trades
 
 
 ## Data Server
 The component that enables data to be read in real time is called the [Data Server](/server-modules/data-server/introduction/). All the queries that a Data Server executes are defined in **positions-app-tutorial-dataserver.kts**. A Data Server can query both tables and views, so let's add two queries:
-- `ALL_POSITIONS` - that queries the `POSITION` table and returns the data stored in the table
-- `ALL_TRADES` - that queries the `TRADE_VIEW` and returns the joined data stored in the `TRADE`, `INSTRUMENT` and `COUNTERPARTY` tables
+
+- `ALL_POSITIONS` - this queries the `POSITION` table and returns the data stored in the table
+- `ALL_TRADES` - this queries the `TRADE_VIEW` and returns the joined data stored in the `TRADE`, `INSTRUMENT` and `COUNTERPARTY` tables
 
 ```kotlin
 dataServer {
@@ -48,7 +49,7 @@ The [entityDb](/database/database-interface/entity-db/) enables you to interact 
 
 Predominantly used for serving the UI, Request Servers retrieve a snapshot of data from your tables/views on demand.
 
-We will be using the following Request Server when we build the front end. Add the following to the file **positions-app-tutorial-reqrep.kts** and we will mention this in a later section.
+We will be using the following Request Server when we build the front end. Add the following simple code to the file **positions-app-tutorial-reqrep.kts** and we will mention this in a later section.
 
 ```kotlin
 requestReplies {
@@ -57,7 +58,7 @@ requestReplies {
 ```
 
 ## Prepare the server and build
-So far we have created an event handler and data server - just their definitions, but there's nothing on the runtime configuration yet. Each component, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
+So far we have created an Event Handler and Data Server - just their definitions, but there's nothing on the runtime configuration yet. Each component, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
 
 - **positions-app-tutorial-processes.xml**
 - **positions-app-tutorial-service-definitions.xml**
@@ -112,7 +113,7 @@ Add the following content to the **positions-app-tutorial-service-definitions.xm
 </configuration>
 ```
 
-Please see [here](/server-modules/configuring-runtime/processes/) for a detailed description of the processes configuration. Finally, you can build the server.
+See [here](/server-modules/configuring-runtime/processes/) for a detailed description of the processes configuration. Finally, you can build the server.
 
 From the Gradle menu on the right of Intellij, this is: **genesisproduct-positions-app-tutorial**/**Tasks**/**build/assemble**.
 
