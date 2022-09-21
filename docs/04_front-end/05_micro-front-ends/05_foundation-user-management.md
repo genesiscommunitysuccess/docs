@@ -28,7 +28,7 @@ The User Management micro front-end is used to manage the users on the front end
 The grid contains an entity on each row and data in each column. Under the hood, the grid uses [ag-grid](https://www.ag-grid.com/), which gives a lot of features, such as filtering and ordering of data.
 
 :::info
-User Management is a concrete use case of the [entity management](./04_foundation-entity-management.md) micro front-end, which is provided as part of `foundation-ui`.
+User Management is a concrete use case of the [Entity Management](./04_foundation-entity-management.md) micro front-end, which is provided as part of `foundation-ui`.
 :::
 
 Here is an example grid view for managing users:
@@ -38,7 +38,7 @@ Here is an example grid view for managing users:
 
 To enable this micro-front-end in your application, follow the steps below:
 
-- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again.
+- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [pacakge.json basics](../01_basics/04_package-json-basics.md) page.
 
 ```javascript
 {
@@ -74,7 +74,7 @@ export const AdminTemplate: ViewTemplate = html`
 
 ## Config
 
-You can customise the functionality of User Management through the properties you set in the html. This section covers the main properties that you can customise. For a full list of all of the properties [see here](../foundation-entity-management_apiref/foundation-entity-management.users/#properties).
+You can customise the functionality of User Management through the properties you set in the html. This section covers the main properties that you can customise. For a full list of all of the properties, [see here](../foundation-entity-management_apiref/foundation-entity-management.users/#properties).
 
 ### Columns
 
@@ -87,7 +87,7 @@ The primary way to configure the User Management functionality is via the column
 ```
 The default columns are contained in the [UserColumnConfig](../foundation-entity-management_apiref/foundation-entity-management.userscolumnconfig) variable. The `Entity` and `Status` columns are always added to the grid.
 
-To configure the columns yourself, set the `columns` attribute when you define the User Management in the html. You can mix in your custom column config with the default user columns config using the javascript `spread` operator.
+To configure the columns yourself, set the `columns` attribute when you define the User Management in the html. You can mix in your custom column config with the default user columns config, using the javascript `spread` operator.
 ```javascript
 // Custom usage, will contain the "default" columns:
 //    username, first name, last name, email, last login
@@ -100,7 +100,7 @@ To see a more verbose version of this example, [see the second example here](../
 
 ### Permissions
 
-In contrast to entity management, we have a different way of displaying buttons and performing actions here. In this case, they are displayed if the user has the appropriate permissions from the server.
+In contrast to Entity Management, we have a different way of displaying buttons and performing actions here. In this case, they are displayed if the user has the appropriate permissions from the server.
 
 - `INSERT_USER` - the user can add new users
 - `DELETE_USER` - the user can delete users
