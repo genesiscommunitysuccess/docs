@@ -1,6 +1,8 @@
 ---
 title: 'Fuse - early access'
-id: 'introduction'
+sidebar_label: 'Fuse - early access'
+sidebar_position: 1
+id: 'intro'
 ---
 
 Fuse is a full-stack low-code language for building applications. By writing up to 75% less code than previous Genesis versions, you can deliver productive solutions quicker than ever.

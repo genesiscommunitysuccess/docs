@@ -542,6 +542,7 @@ module.exports = {
     }
   ],
   fuseSidebar: [
+    'fuse/intro',
     {
       type: 'category',
       label: 'OVERVIEW',
