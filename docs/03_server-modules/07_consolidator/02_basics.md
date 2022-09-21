@@ -1,7 +1,10 @@
 ---
-title: 'Basics'
+title: 'Consolidator - Basics'
 sidebar_label: 'Basics'
 id: basics
+keywords: [consolidator]
+tags:
+    - consolidator
 ---
 
 [Introduction](/server-modules/consolidator/introduction) | [Basics](/server-modules/consolidator/basics) |  [Advanced](/server-modules/consolidator/advanced) | [Examples](/server-modules/consolidator/examples) | [Configuring runtime](/server-modules/consolidator/configuring-runtime) | [Testing](/server-modules/consolidator/testing)

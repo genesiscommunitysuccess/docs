@@ -51,11 +51,12 @@ Define the `insertTrade` function in the file **home.ts**:
 ```
 
 ## Adding customisation
-What we have done so far is good for simple forms or prototyping, but we need much more customisation.
+What we have done so far is good for simple forms or prototyping, but what if we need much more customisation?
+Let's replace the form and code elements above with a more configurable solution.
 
 To do this, you must create each form element manually and take care of storing the data input by the user.
 
-Start by adding the elements to the template:
+Start by adding the elements to the template. Instead of the `<zero-form>` above, replace it with the following.
 
 ```html title='home.template.ts' 
 <zero-text-field>Quantity</zero-text-field>
@@ -181,5 +182,14 @@ public async insertTrade() {
   });
 }
 ```
+ Let's add another data grid at the bottom of the page to show the trade view `ALL_TRADES`:
 
-Now if everything has worked, you can go to your browser, insert the data for a new trade, and click the button. You will see the new trade showing up in the data grid that you set up in the [previous chapter](/getting-started/go-to-the-next-level/data-grid).
+```html title='home.template.ts'
+  <zero-ag-grid style="width: 100%; height: 100%">
+        <ag-genesis-datasource
+                resourceName="ALL_TRADES"
+                orderBy="INSTRUMENT_ID">
+        </ag-genesis-datasource>
+    </zero-ag-grid>
+```
+Now if everything has worked, you can go to your browser, insert the data for a new trade, and click the button. You will see the new trade showing up in the data grid of the trade view `ALL_TRADES` at the bottom of the page.

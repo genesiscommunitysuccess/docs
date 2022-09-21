@@ -1,7 +1,11 @@
 ---
-title: 'Microservices'
+title: 'Genesis Console - Microservices'
 sidebar_label: 'Microservices'
 id: microservices
+keywords: [console, microservices]
+tags:
+    - console
+    - microservices
 ---
 
 [Introduction](/operations/console/introduction/)  | [Microservices](/operations/console/microservices/) |  [Data](/operations/console/data/) | [Resources](/operations/console/resources/) | [Packages](/operations/console/packages/) | [Messages](/operations/console/messages/)

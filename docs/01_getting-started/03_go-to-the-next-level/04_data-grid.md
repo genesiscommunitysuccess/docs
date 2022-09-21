@@ -7,6 +7,7 @@ id: data-grid
 ## Prerequisites
 
 There are couple of steps that have to be done before seeing the user interface running.
+You will also need to have your database running, the back end services deployed and have imported the example data in the csv files.
 
 ### Connecting the back end and front end
 In this step, we shall configure an nginx server working as a reverse proxy.
