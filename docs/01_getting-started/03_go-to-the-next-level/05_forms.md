@@ -55,7 +55,7 @@ What we have done so far is good for simple forms or prototyping, but we need mu
 
 To do this, you must create each form element manually and take care of storing the data input by the user.
 
-Start by adding the elements to the template:
+Start by adding the elements to the template within the zero-form element:
 
 ```html title='home.template.ts' 
 <zero-text-field>Quantity</zero-text-field>
@@ -140,12 +140,17 @@ public async connectedCallback() {
     super.connectedCallback();
     
     const tradeInstrumentsRequest = await this.connect.request('INSTRUMENT');
-    this.tradeInstruments = tradeInstrumentsRequest.REPLY?.map(instrument => ({value: instrument.INSTRUMENT_ID, label: instrument.NAME}));
+    this.tradeInstruments = tradeInstrumentsRequest.REPLY?.map(instrument => ({value: instrument.INSTRUMENT_ID, label: instrument.INSTRUMENT_ID}));
     this.instrument = this.tradeInstruments[0].value;
 }
 ```
 
 Once we have the data with the list of instruments, we can make use of it in the template file. 
+
+:::note
+Here we are utilising the "INSTRUMENT" Request Server that we declared earlier
+:::
+
 To dynamically include a list of instruments, use the [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items.
 
 ```typescript title='home.template.ts' 

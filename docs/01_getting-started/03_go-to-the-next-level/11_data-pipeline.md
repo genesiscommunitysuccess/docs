@@ -107,7 +107,7 @@ We follow the data pipeline definition with the usual runtime configuration. Ens
 ```
 
 ```xml
-<service host="localhost" name="POSITIONS_APP_TUTORIAL_DATAPIPELINE" port="11005"/>
+<service host="localhost" name="POSITIONS_APP_TUTORIAL_DATAPIPELINE" port="11006"/>
 ```
 
 We are now ready to deploy the changes. Run `assemble` and then `deploy-genesisproduct-positions-app-tutorial`.
