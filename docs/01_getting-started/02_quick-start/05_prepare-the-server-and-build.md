@@ -10,7 +10,7 @@ The application has three files that contain vital configuration information:
 - **alpha-service-definitions.xml**
 - **genesis-system-definitions.kts**
 
-### Process and Service Definition
+### Process and service definition
 
 At present, they are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
 
@@ -57,13 +57,13 @@ You can then add the following content to the **alpha-service-definitions.xml** 
 
 You can find more info on the **-service-defintions.xml** file [here](/server-modules/configuring-runtime/service-definitions/).
 
-### Database Layer
+### Database layer
 
-You can specify which database to use in your application by editing **genesis-system-definition.kts** located in `genesis-product\alpha-site-specific\src\main\resources\cfg\`.
+You can specify which database to use in your application by editing **genesis-system-definition.kts** located in **genesis-product\alpha-site-specific\src\main\resources\cfg\**.
 
-You can find more info on the **genesis-system-defintions.kts** file [here](/server-modules/configuring-runtime/system-definitions/).
+You can find more information on the **genesis-system-defintions.kts** file [here](/server-modules/configuring-runtime/system-definitions/).
 
-We use Postgres Database when you choose to run application using [**Docker**](/getting-started/quick-start/run-the-application-docker/) solution and add below highlighted items **DbLayer**, **DbHost** exactly as they are specified to **genesis-system-definition.kts**
+If you are running your application using [**Docker**](/getting-started/quick-start/run-the-application-docker/), you need to use the Postgres database. Add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
 
 ```kotlin {4,10}
 systemDefinition {
@@ -84,7 +84,7 @@ systemDefinition {
 
 ```
 
-We use Foundation Database when you choose to run application using **WSL/Linux** solution, edit DbLayer as specified below
+If you are running your application using **WSL/Linux**, use FoundationDB as the database. Edit `DbLayer` as specified below:
 
 ```kotlin {4}
 systemDefinition {
