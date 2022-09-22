@@ -51,11 +51,12 @@ Define the `insertTrade` function in the file **home.ts**:
 ```
 
 ## Adding customisation
-What we have done so far is good for simple forms or prototyping, but we need much more customisation.
+What we have done so far is good for simple forms or prototyping, but what if we need much more customisation?
+Let's replace the form and code elements above with a more configurable solution.
 
 To do this, you must create each form element manually and take care of storing the data input by the user.
 
-Start by adding the elements to the template within the zero-form element:
+Start by adding the elements to the template. Instead of the `<zero-form>` above, replace it with the following.
 
 ```html title='home.template.ts' 
 <zero-text-field>Quantity</zero-text-field>
@@ -140,17 +141,12 @@ public async connectedCallback() {
     super.connectedCallback();
     
     const tradeInstrumentsRequest = await this.connect.request('INSTRUMENT');
-    this.tradeInstruments = tradeInstrumentsRequest.REPLY?.map(instrument => ({value: instrument.INSTRUMENT_ID, label: instrument.INSTRUMENT_ID}));
+    this.tradeInstruments = tradeInstrumentsRequest.REPLY?.map(instrument => ({value: instrument.INSTRUMENT_ID, label: instrument.NAME}));
     this.instrument = this.tradeInstruments[0].value;
 }
 ```
 
 Once we have the data with the list of instruments, we can make use of it in the template file. 
-
-:::note
-Here we are utilising the "INSTRUMENT" Request Server that we declared earlier
-:::
-
 To dynamically include a list of instruments, use the [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items.
 
 ```typescript title='home.template.ts' 
@@ -186,12 +182,9 @@ public async insertTrade() {
   });
 }
 ```
+ Let's add another data grid at the bottom of the page to show the trade view `ALL_TRADES`:
 
-Now if everything has worked, you can go to your browser, insert the data for a new trade, and click the button.
-You can see the new trade if you add the following data grid after the button on the `home.template.ts` files.
-
-
-```typescript title='home.template.ts' 
+```html title='home.template.ts'
   <zero-ag-grid style="width: 100%; height: 100%">
         <ag-genesis-datasource
                 resourceName="ALL_TRADES"
@@ -199,3 +192,4 @@ You can see the new trade if you add the following data grid after the button on
         </ag-genesis-datasource>
     </zero-ag-grid>
 ```
+Now if everything has worked, you can go to your browser, insert the data for a new trade, and click the button. You will see the new trade showing up in the data grid of the trade view `ALL_TRADES` at the bottom of the page.
