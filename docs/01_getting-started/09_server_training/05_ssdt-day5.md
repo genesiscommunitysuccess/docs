@@ -1,7 +1,7 @@
 ---
 id: 05_ssdt-day5
-title: Day 5
-sidebar_label: Day 5
+title: Day five
+sidebar_label: Day five
 sidebar_position: 6
 
 ---
