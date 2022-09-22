@@ -107,9 +107,9 @@ Run genesisInstall to create the Genesis scripts.
 
 ### Add a user and some example data
 
-Lets load some very simple example data into the tables that we have created previously.
-Copy the following into csv files and save them along with the `USER.csv` in the *positions-app-tutorial\server\jvm\positions-app-tutorial-site-specific\src\main\resources\data* folder.
-Please ensure that the csv file has the same name as the table, the `loadInitialData` script is case-sensitive.
+Let's load some very simple example data into the tables that we created previously.
+Copy the following into csv files and save them along with the `USER.csv` in the **positions-app-tutorial\server\jvm\positions-app-tutorial-site-specific\src\main\resources\data** folder.
+Ensure that the csv file has the same name as the table; the `loadInitialData` script is case-sensitive.
 
 ```text title="TRADE.csv"
 "TRADE_ID","INSTRUMENT_ID","COUNTERPARTY_ID","QUANTITY","SIDE","PRICE","TRADE_DATETIME","ENTERED_BY","TRADE_STATUS"
