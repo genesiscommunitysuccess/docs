@@ -84,22 +84,8 @@ systemDefinition {
 
 ```
 
-If you are running your application using **WSL/Linux**, `DbLayer` is set to FoundationDB by the seed application as specified below:
+If you are running your application using **WSL/Linux**, `DbLayer` is already set to FoundationDB by the seed application. You don't need to change the system definition file.
 
-```kotlin {4}
-systemDefinition {
-    global {
-        ...
-        item(name = "DbLayer", value = "FDB")
-        item(name = "DictionarySource", value = "DB")
-        item(name = "AliasSource", value = "DB")
-        item(name = "MetricsEnabled", value = "false")
-        item(name = "ZeroMQProxyInboundPort", value = "5001")
-        ...
-    }
-    
-}
-```
 
 Finally, you can build the server.
 
