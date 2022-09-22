@@ -8,7 +8,7 @@ You have a choice of how you run the application. The instructions on this page 
 
 ## Building and composing Docker images
 
-We've added Dockerfiles on the seed-application which builds images of the **frontend** and **backend** of the Genesis application and these images are run by following `docker-compose` command
+We've added Dockerfiles on the seed application, which builds images of the **front end** and **back end** of the Genesis application. You can run these images with the following `docker-compose` command:
 
 Usage:
 ```shell
