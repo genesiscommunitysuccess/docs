@@ -1,10 +1,23 @@
 ---
 id: training-content-day4
-title: Day 4
-sidebar_label: Day 4
+title: Day four
+sidebar_label: Day four
 sidebar_position: 6
-
 ---
+
+<details>
+  <summary>Day three recap</summary>
+  <div>
+    <div>Here are the main takeaways from <a href="/getting-started/developer-training/training-content-day3/">Day three</a>.</div>
+    <li>We introduced <a href="/getting-started/developer-training/training-content-day3/#views">Views</a> and how you can use them.</li>
+    <li>We extended our application adding <a href="/getting-started/developer-training/training-content-day3/#extending-trade-and-adding-position-table">Position</a> table.</li>
+    <li>We started writing some <a href="/getting-started/developer-training/training-content-day3/#automated-testing">automated tests</a> for our application.</li>
+    <li>We added <a href="/getting-started/developer-training/training-content-day3/#calculated-data">calculated data (derived fields)</a> into our main View.</li>
+    <li><a href="/getting-started/developer-training/training-content-day3/#consolidators">Consolidators</a> perform data aggregation and calculations, and here we created one to real-time feed the Positions table.</li>
+    <li>We added a <a href="/getting-started/developer-training/training-content-day3/#ui-configuring">grid</a> in the UI to display the Positions using AgGrid, with more flexibility to customize the HTML and CSS.</li>
+  </div>
+</details>
+
 This day covers:
 
 - [State management​](#state-management)
@@ -342,6 +355,10 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 }
 ```
 
+:::info verify function
+The `verify` block you see above is part of the validation helper provided by the Platform to make it easier to verify conditions against the database. Outside of the `verify` block, you can write any Kotlin code to validate whatever you want to.
+:::
+
 ### Exercise 4.2: adding onValidate to event handlers
 :::info ESTIMATED TIME
 20 mins
@@ -367,12 +384,11 @@ The first step to add basic auditing is to change the relevant table dictionary.
 table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
     sequence(TRADE_ID, "TR")
     COUNTERPARTY_ID 
-    INSTRUMENT_ID 
+    INSTRUMENT_ID not null
     QUANTITY
-    PRICE
+    PRICE not null
     SYMBOL
     DIRECTION
-    SIDE
     TRADE_DATE
     ENTERED_BY
     TRADE_STATUS
