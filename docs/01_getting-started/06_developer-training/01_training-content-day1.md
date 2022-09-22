@@ -456,7 +456,7 @@ In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**a
 ```
 
 :::tip
-This will take the last built distribution and does not run a project build as part of the task. Make sure you have done it like [described previously](/getting-started/developer-training/training-content-day1/#4-prepare-the-server-and-build).
+This will take the last built distribution and does not run a project build as part of the task. Make sure you have done it exactly as [described previously](/getting-started/developer-training/training-content-day1/#4-prepare-the-server-and-build).
 :::
 
 
