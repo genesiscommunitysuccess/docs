@@ -6,8 +6,10 @@ id: data-grid
 
 ## Prerequisites
 
-There are a couple of steps that have to be done before seeing the user interface running.
-You will also need to have your database running, the back end services deployed and have imported the example data in the csv files.
+There are couple of steps that have to be done before seeing the user interface running.
+- your database must be running
+- the back-end services must be deployed
+- you must have imported the example data in the csv files
 
 ### Connecting the back end and front end
 In this step, we shall configure an nginx server working as a reverse proxy.
@@ -24,7 +26,7 @@ Then enter:
 docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
 #...
 
-You can run this command from within WSL or from your workstation. If you run it from the CentOS shell, you can use the following command:
+You can run this command from WSL or from your workstation. If you run it from the CentOS shell, you can use the following command:
 #...
 docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
 
@@ -32,13 +34,13 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-ho
 
 ### Installing the dependencies
 
-Before we make any changes, you need to install your npm dependencies by running the following in your terminal:
+Before we make any changes, you need to install your npm dependencies: run the following in your terminal:
 
 ```shell title="./client"
 npm run bootstrap
 ```
 
-Once you have all dependencies installed, you can use the terminal to run your UI with the following command: 
+Once you have all dependencies installed, use the following command in the terminal to run your UI: 
 
 ```shell title="./client"
 npm run dev
@@ -48,7 +50,7 @@ The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
 
 ## Section objectives
-The goal of this section is to run our UI for the first time and add a data grid.
+The goal of this section is to run the UI for the first time and add a data grid.
 
 ## Showing all positions 
 
