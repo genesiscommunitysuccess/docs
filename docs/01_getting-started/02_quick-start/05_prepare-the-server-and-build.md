@@ -12,7 +12,7 @@ The application has three files that contain vital configuration information:
 
 ### Process and service definition
 
-At present, they are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
+At present, these files are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
 
 Add the following content to the **alpha-processes.xml** file.
 
@@ -59,7 +59,7 @@ You can find more info on the **-service-defintions.xml** file [here](/server-mo
 
 ### Database layer
 
-You can specify which database to use in your application by editing **genesis-system-definition.kts** located in **genesis-product\alpha-site-specific\src\main\resources\cfg\**.
+You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\**.
 
 You can find more information on the **genesis-system-defintions.kts** file [here](/server-modules/configuring-runtime/system-definitions/).
 
@@ -84,7 +84,7 @@ systemDefinition {
 
 ```
 
-If you are running your application using **WSL/Linux**, `DbLayer` is set to FoundationDB by seed-application as specified below:
+If you are running your application using **WSL/Linux**, `DbLayer` is set to FoundationDB by the seed application as specified below:
 
 ```kotlin {4}
 systemDefinition {
