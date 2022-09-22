@@ -124,7 +124,7 @@ Create a new file called **positionColumnDefs.ts** in the same directory.
 
 ```typescript title="positionColumnDefs.ts"
 export const positionColumnDefs = [
-  {field: 'INSTRUMENT_NAME', headerName: 'Instrument', sort: 'desc', flex: 2},
+  {field: 'INSTRUMENT_ID', headerName: 'Instrument', sort: 'desc', flex: 2},
   {field: 'QUANTITY', headerName: 'Quantity', type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
   {field: 'NOTIONAL', headerName: 'Traded Value', type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
   {field: 'VALUE', headerName: 'Market Value', type: 'rightAligned', flex: 1, enableCellChangeFlash: true},

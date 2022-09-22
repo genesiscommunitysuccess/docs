@@ -1,11 +1,13 @@
 name: Build
 
-# Triggered on PRs against master and UAT
+# Triggered on PRs against main branches
 on:
   pull_request:
     branches:
       - master
       - uat
+      - developer-training
+      - low-code
 
 jobs:
   build:

@@ -1,10 +1,20 @@
 ---
 id: training-content-day5
-title: Day 5
-sidebar_label: Day 5
+title: Day five
+sidebar_label: Day five
 sidebar_position: 7
-
 ---
+
+<details>
+  <summary>Day four recap</summary>
+  <div>
+    <div>Here are the main takeaways from <a href="/getting-started/developer-training/training-content-day4/">Day four</a>.</div>
+    <li>We implemented a <a href="/getting-started/developer-training/training-content-day4/#state-management">state machine</a> to control Trade workflow.</li>
+    <li>We added logic to the Event Handler using the <a href="/getting-started/developer-training/training-content-day4/#add-the-validation-code">onValidate</a> block.</li>
+    <li>We implemented basic <a href="/getting-started/developer-training/training-content-day4/#adding-basic-auditing">auditing</a> on the Trade table.</li>
+  </div>
+</details>
+
 This day covers:
 
 - [Schedulers](#schedulers)
