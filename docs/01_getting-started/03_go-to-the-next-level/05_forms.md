@@ -50,6 +50,10 @@ Define the `insertTrade` function in the file **home.ts**:
   }
 ```
 
+After refreshing your application, a form should be displayed. The form may sit on top of the grid or by itself depending on whether you appended to or replaced the already existing xml in **home.template.ts**
+
+![](/img/trade-insert-form.png)
+
 ## Adding customisation
 What we have done so far is good for simple forms or prototyping, but what if we need much more customisation?
 Let's replace the form and code elements above with a more configurable solution.
@@ -110,6 +114,14 @@ import {sync} from '@genesislcap/foundation-utils';
 >
 </zero-select>
 ```
+
+You can now refresh you're application, it should look somethign like this:
+
+![](/img/position-form.png)
+
+:::note
+The data in your grids may vary from the data in the example. You may also only see one grid or none at all depending on whether you replaced or appended the xml before this
+:::
 
 ## Adding selection options
 You probably realise that we don't have any options in our select components, so let's fix that now.
