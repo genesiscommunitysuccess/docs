@@ -84,7 +84,7 @@ systemDefinition {
 
 ```
 
-If you are running your application using **WSL/Linux**, use FoundationDB as the database. Edit `DbLayer` as specified below:
+If you are running your application using **WSL/Linux**, `DbLayer` is set to FoundationDB by seed-application as specified below:
 
 ```kotlin {4}
 systemDefinition {
