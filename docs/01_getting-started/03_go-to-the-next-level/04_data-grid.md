@@ -72,7 +72,9 @@ In the template file, start by adding the Genesis data source pointing to the ap
 </zero-ag-grid>
 ```
 
-This will result in a grid displaying all the columns available in the `ALL_POSITIONS` resource.
+This will result in a grid displaying all the columns available in the `ALL_POSITIONS` resource:
+
+![](/img/positions-grid.png)
 
 ## Grid interaction
 
@@ -109,6 +111,10 @@ Here you can easily swap logging the row data with some custom logic (such as ca
     pinned: 'right',
   };
 ```
+
+After refreshing the application, the grid should now also include a column containing a button:
+
+![](/img/positions-grid-with-button.png)
 
 ## Custom column config
 
@@ -149,6 +155,9 @@ import {repeat} from '@microsoft/fast-element';
     <ag-grid-column :definition="${x => x.singlePositionActionColDef}"></ag-grid-column>
 </zero-ag-grid>
 ```
+
+Columns will now flash green as the value inside of them changes:
+![](/img/positions-grid-with-cell-change-flash.png)
 
 ## Saving user preferences
 
