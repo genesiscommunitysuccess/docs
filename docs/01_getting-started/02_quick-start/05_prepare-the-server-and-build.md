@@ -72,7 +72,7 @@ systemDefinition {
 }
 
 ```
-If you are using **H2**, you need to change/add the highlighted items in **genesis-system-definition.kts**.
+If you are using **H2**, you need to change or add the highlighted items in **genesis-system-definition.kts**:
 
 ```kotlin {4-5,10,12}
 systemDefinition {
