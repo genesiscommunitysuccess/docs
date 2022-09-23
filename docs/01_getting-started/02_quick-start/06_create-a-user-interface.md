@@ -46,4 +46,4 @@ The application should look something like this:
 
 ![](/img/trades-grid.png)
 
-To add data to the grid, click the 'Add' button at the top right of the screen. 
+To add data to the grid, click on the **Add** button at the top right of the screen. 
