@@ -16,7 +16,13 @@ import TabItem from '@theme/TabItem';
 
 ## DictionaryBuilder
 
-DictionaryBuilder connects to an RDBMS, parses schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases. As a script, it reads the source database and generates the appropriate fields, tables and views in Genesis format. These are stored in two files: **-fields-dictionary.kts** and **-tables-dictionary.kts**.
+DictionaryBuilder connects to an RDBMS, parses schemas and uses the resulting information to generate a Genesis dictionary. It supports MSSQL and Oracle databases. 
+
+As a script, it reads the source database and generates the appropriate fields, tables and views in Genesis format. These are stored in three files: 
+
+- **-fields-dictionary.kts**
+- **-tables-dictionary.kts**
+- **-view-dictionary.kts**
 
 The script accepts a series of [arguments](/operations/commands/server-commands/#syntax-23) to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc). Sample below.
 
@@ -64,7 +70,7 @@ The `dictionaryBuilder` script generates the **fields-dictionary.kts** and **tab
 
 ## Streamer​
 
-Streamer and Streamer-Client components are avaible to allow the application to route messages. Streamer, representing the Server part, listens to a table or view, and streams data out to streamer clients. In almost all cases, the table or view must be an audit table. It covers both inbound and outbound messages.
+Streamer and Streamer-Client components are available to allow the application to route messages. Streamer, representing the Server part, listens to a table or view, and streams data out to streamer clients. In almost all cases, the table or view must be an audit table. It covers both inbound and outbound messages.
 
 ### Creating a Streamer
 
@@ -140,7 +146,7 @@ In this example, we only stream orders with a quantity greater than 1,000 and wh
 streams {
     stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP) {
         where { ordersOut, logonMessage ->
-            ordersOut.quanity > 1_000 && logonMessage.getString("KEY") == "SECRET"
+            ordersOut.quantity > 1_000 && logonMessage.getString("KEY") == "SECRET"
         }
     }
 }
@@ -245,7 +251,7 @@ There are two types of Streamer Client:
 - *Table or View entity Streamer Client* 
 - * GenesisSet Streamer Client*. 
 
-You can also set in a Streamer Client, such as `isReplayable`,  `eventHandlerBuffer`, `sentWarningRange`, and `receiveWarndingRange`. Further information can be found [here](/server-modules/integration/gateways-and-streamers/streamer-client/#properties).
+You can also set in a Streamer Client, such as `isReplayable`,  `eventHandlerBuffer`, `sentWarningRange`, and `receiveWarningRange`. Further information can be found [here](/server-modules/integration/gateways-and-streamers/streamer-client/#properties).
 
 In addition, for entity streamers, you can format the message in the same way as you would define the output of a view, Data Server or Request Server. Use `sendFormatted`:
 
