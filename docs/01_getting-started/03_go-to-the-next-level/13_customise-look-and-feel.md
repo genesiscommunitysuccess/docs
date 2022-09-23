@@ -74,7 +74,7 @@ Your positions grid should be customised now:
 ![](/img/positions-grid-with-customisation.png)
 
 :::tip
-Don't worry too much if the data is different to yours. As long as the grid is customised as expected.
+Don't worry too much if the data is different from yours - as long as the grid is customised as expected.
 :::
 
 ## Layout 
