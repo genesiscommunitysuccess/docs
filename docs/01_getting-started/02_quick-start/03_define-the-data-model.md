@@ -35,7 +35,7 @@ dependencies {
 ...
 ```
 
-After you have changed this value press the reload button in the Gradle menu on the right of Intellij:
+After you have changed this value, press the **reload** button in the Gradle menu on the right of Intellij:
 
 ![](/img/gradle-reload.png)
 
