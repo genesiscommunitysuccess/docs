@@ -50,7 +50,7 @@ Define the `insertTrade` function in the file **home.ts**:
   }
 ```
 
-After refreshing your application, a form should be displayed. The form may sit on top of the grid or by itself depending on whether you appended to or replaced the already existing xml in **home.template.ts**
+After refreshing your application, a form should be displayed. The form might sit on top of the grid or by itself, depending on whether you appended to or replaced the already existing xml in **home.template.ts**.
 
 ![](/img/trade-insert-form.png)
 
