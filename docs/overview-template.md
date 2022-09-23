@@ -1,5 +1,5 @@
 ---
-title: 'The Learning Area'
+title: 'The Learning area'
 sidebar_label: 'Overview'
 id: overview-template
 ---
@@ -19,6 +19,8 @@ We recommend you read all the pages here to learn the basics. But if you want to
 
 Depending on how fast you want to go, these should give you enough knowledge to take your first steps in developing a real application. You can use our reference documentation to help you go further.
 
+## Fast track
+
 <div className='card-wrapper' >
     <QuickCard heading="Very simple introduction" link="../getting-started/learn-the-basics/simple-introduction" text="This introduces you to some terminology and the basic architecture">
     </QuickCard>
@@ -29,6 +31,7 @@ Depending on how fast you want to go, these should give you enough knowledge to 
 </div>
 
 ## Take it slowly
+
 <div className='card-wrapper'>
     <QuickCard heading="Very simple introduction" link="../getting-started/learn-the-basics/simple-introduction" text="If you want to go more slowly, start right at the beginning and look at the sort of applications that have already been built on the Genesis low-code platform">
     </QuickCard>
@@ -39,6 +42,6 @@ Depending on how fast you want to go, these should give you enough knowledge to 
 <div className='card-wrapper'>
     <QuickCard heading="Pre-requisites" link="../getting-started/quick-start/hardware-and-software" text="After you have been through all those, you'll be ready to check the pre-requisites">
     </QuickCard>
-    <QuickCard heading="Start building a simple application" link="../getting-started/learn-the-basics/simple-introduction" text="Once you've completed thou'll be ready to start building a simple application">
+    <QuickCard heading="Start building a simple application" link="../getting-started/learn-the-basics/simple-introduction" text="Once you've completed each of those you'll be ready to start building a simple application">
     </QuickCard>
 </div>
