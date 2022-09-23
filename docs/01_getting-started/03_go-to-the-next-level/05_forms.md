@@ -115,12 +115,12 @@ import {sync} from '@genesislcap/foundation-utils';
 </zero-select>
 ```
 
-You can now refresh you're application, it should look somethign like this:
+You can now refresh your application; it should look something like this:
 
 ![](/img/position-form.png)
 
 :::note
-The data in your grids may vary from the data in the example. You may also only see one grid or none at all depending on whether you replaced or appended the xml before this
+The data in your grids may vary from the data in the example. You may also only see one grid or none at all, depending on whether you replaced or appended the xml before this.
 :::
 
 ## Adding selection options
