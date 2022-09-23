@@ -183,10 +183,14 @@ Then to check if it's running:
 
 `systemctl status foundationdb`
 
-### Using H2 as an embedded database (not recommended for production environments or serious development)
+### Using H2 as an embedded database
+
+:::warning only for learning purposes
+This set-up is not recommended for production environments or serious development.
+:::
 
 You can use an embedded H2 database for basic development. This solution creates an H2 file-based database in the same 
-environment where your app is running. The database is initiated by JDBC and does not require additional setup.
+environment where your app is running. The database is initiated by JDBC and does not require additional set-up.
 
 To use H2, use this JDBC URL, substituting your own path name:
 ```none title="CentOS"
@@ -205,8 +209,7 @@ docker run --name aerospike -tid -p 3000:3000 -p 3001:3001 -p 3002:3002 -p 3003:
 
 This creates a download and runs Aerospike in a Docker container.
 
-To check if the container is running, use the `docker container ls -a` command. This will show the id and name of the Aerospike
-container. You need these to interact with the container.
+To check if the container is running, use the `docker container ls -a` command. This will show the id and name of the Aerospike container. You need these to interact with the container.
 
 ```none title="CentOS"
 # docker container ls -a
