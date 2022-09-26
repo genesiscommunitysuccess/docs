@@ -29,14 +29,11 @@ This page gives you the hardware and software requirements needed in order to ru
 | IntelliJ	| 2021.2.3 and above  |
 |Visual Studio Code	|     1.52.1      |
 |Java SDK|       11        |
-| Putty	|      0.74       |
-| Chrome |      88.0       |
-| Maven	|      3.6.3      |
-| Postman	|        8        |
-| Gradle  |       7.5       |
 | NodeJS  |     16 LTS+     |
+| Postman (optional)	|        8        |
 
-You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJ enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
+
+You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJIDEA enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJIDEA.
 
 ## Requirements
 

@@ -15,7 +15,7 @@ You define your fields in the file **alpha-fields-dictionary.kts**.
 
 :::tip
 
-Once the project is open, there are two easy ways to find this file quickly in Intellij:
+Once the project is open, there are two easy ways to find this file quickly in IntelliJ:
 
 - Press the **Shift** key twice, then type the name of the file you are looking for.
 - Press **Shift** + **Ctrl** + **N**, then type the name of the file you are looking for.

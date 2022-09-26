@@ -1,14 +1,14 @@
 ---
 id: 01_ssdt-day1
-title: Day 1
-sidebar_label: Day 1
+title: Day one
+sidebar_label: Day one
 sidebar_position: 2
 
 ---
 This day covers:
 
 - [System definitions​](#system-definitions)
-- [Advanced event handlers](#advanced-event-handlers)
+- [Advanced Event Handlers](#advanced-event-handlers)
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -129,16 +129,18 @@ Answer is pretty much here: https://www.notion.so/genesisglobal/What-makes-Genes
 20 mins
 :::
 
-Let´s start the hands-on doing the first exercise. We are going create a global custom definition to set the nullability for Trade table fields. Create a new item in the system definition and use it in the fields definition file.
+Let´s start the hands-on training with the first exercise. We are going to create a global custom definition to set the nullability for the Trade table fields. 
+
+Create a new item in the system definition file and use it in the fields definition file.
 
 :::tip changing genesis-system-definition configurations 
 To do this exercise, clone the Developer Training [repository](https://github.com/genesiscommunitysuccess/devtraining-gama), go to the file **genesis-system-definition.kts** and do the changes. Then, go to the fields definition file and set the *nullable* using SysDef. 
 
-After the changes don't forget to run *build*, *install-site-specific* and *deploy* tasks.
+After the changes, don't forget to run *build*, *install-site-specific* and *deploy* tasks.
 :::
 
 
-## Advanced event handlers
+## Advanced Event Handlers
 
 The Genesis low-code platform has a real-time event-driven architecture.
 
@@ -150,9 +152,9 @@ As a rough guide, many of the tables you have created need **Insert**, **Modify*
 
 The vast majority of applications include business workflow. Event Handlers are conventionally defined in the file _application-name_**-eventhandler.kts**. 
 
-In the [Developer Training](/getting-started/developer-training/training-intro/) we defined the application Event Handler in a [Kotlin script file](/getting-started/developer-training/training-content-day1/#event-handler), as well as basic things like [enabling the application to write to the database](/getting-started/developer-training/training-content-day2/#exercise-22-extending-the-application).
+In the [Developer Training](/getting-started/developer-training/training-intro/) we defined the application Event Handler in a [Kotlin script file](/getting-started/developer-training/training-content-day1/#event-handler); this included basic things like [enabling the application to write to the database](/getting-started/developer-training/training-content-day2/#exercise-22-extending-the-application).
 
-However, there are more we can explore such as [Database API](#database-api), [Exception handling](#exception-handling), and [Custom reply message type](#custom-reply-message-type) described in the next sections.
+There are more things we can explore now, such as [Database API](#database-api), [Exception handling](#exception-handling), and [Custom reply message type](#custom-reply-message-type). These are described in the next sections.
 
 ### Database API
 
@@ -239,9 +241,9 @@ db.updateAll(Trade.class, trade -> {
 </TabItem>
 </Tabs>
 
-If the underlying database supports transactions, then the entityDb provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not supported within transactions. Currently, transactions are supported on **FoundationDb** and **Postgresql**. Using transaction on **Aerospike** will result in a failure. Further detaisl regarding transactions can be found [here](/database/database-interface/entity-db/#transactions).
+If the underlying database supports transactions, then the entityDb provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not supported within transactions. Currently, transactions are supported on **FoundationDb** and **Postgresql**. Using transaction on **Aerospike** will result in a failure. Further details regarding transactions can be found [here](/database/database-interface/entity-db/#transactions).
 
-Using entityDb it is also possible to subscribe operations starting a database listener that receives updates to tables or views. When subscribing to view updates, only updates to the root table will be published. Further details regarding subscribe operations can be found [here](/database/database-interface/entity-db/#subscribe-operations).
+Using entityDb, it is also possible to subscribe operations, starting a database listener that receives updates to tables or views. When subscribing to view updates, only updates to the root table will be published. Further details regarding subscribe operations can be found [here](/database/database-interface/entity-db/#subscribe-operations).
 
 #### Exercise 1.2 entityDb ReadOperation getBulk
 :::info ESTIMATED TIME
@@ -285,7 +287,7 @@ eventHandler {
 30 mins
 :::
 
-Add an Exception handling in *EVENT_COUNTERPARTY_INSERT*, logging and enriching the error message with the message as well as the cause and event name.
+Add an exception handler in *EVENT_COUNTERPARTY_INSERT*, logging and enriching the error message with the message as well as the cause and event name.
 
 :::tip
 Don't forget the returns, in this case `ack()` for success, and `nack(e)` for exceptions.
@@ -343,11 +345,11 @@ sealed class CustomTradeEventReply : Outbound() {
 
 The `onException` block can capture any exceptions thrown by the `onValidate` and `onCommit` blocks and returns the expected reply message type (as shown in the last example). This function is particularly useful if you are using a custom message type; by default, Event Handlers will attempt to translate exceptions automatically to an **EventNack** message, which might cause compatibility problems if you are using custom replies.
 
-#### Exercise 1.4 Event Handler Custom Message
+#### Exercise 1.4 Event Handler custom message
 :::info ESTIMATED TIME
 30 mins
 :::
 
-Now let's change change the EVENT_TRADE_INSERT to use a custom reply message type. Create the classes `CustomTradeEventReply ` and `TradeEvent` with *price* and *quantity* required greater than zero. The Event Handler onValidate should ensure that *price* * *quantity* is always greater than 10.
+Now let's change the EVENT_TRADE_INSERT to use a custom reply message type. Create the classes `CustomTradeEventReply ` and `TradeEvent` with *price* and *quantity* required greater than zero. The Event Handler `onValidate` should ensure that *price* * *quantity* is always greater than 10.
 
 

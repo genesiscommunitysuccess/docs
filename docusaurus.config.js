@@ -95,8 +95,9 @@ module.exports = {
         {to: 'server-modules', label: 'Server'},
         {to: 'front-end', label: 'Web'},
         {to: 'operations', label: 'Operations'},
+        {to: 'fuse', label: 'Early access'},
         {
-          href: "https://stackoverflow.com/c/genesis-global",
+          href: "/resource/stackoverflow-onboarding",
           className: "so-icon",
           "aria-label": "StackOverflow",
           position: "right"

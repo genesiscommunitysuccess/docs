@@ -1,11 +1,22 @@
 ---
 id: training-content-day3
-title: Day 3
-sidebar_label: Day 3
+title: Day three
+sidebar_label: Day three
 sidebar_position: 5
-
 ---
-In this day we are covering:
+
+<details>
+  <summary>Day two recap</summary>
+  <div>
+    <div>Here are the main takeaways from <a href="/getting-started/developer-training/training-content-day2/">Day two</a>.</div>
+    <li>We provided an introduction to UI, describing <a href="/getting-started/developer-training/training-content-day2/#web-components">Web Components</a> and <a href="/getting-started/developer-training/training-content-day2/#micro-front-ends">Micro front-ends</a>.</li>
+    <li>The <a href="/getting-started/developer-training/training-content-day2/#genesis-packages">Genesis UI packages</a>​ were presented</li>
+    <li>We created a user interface using the Micro front-end <a href="/getting-started/developer-training/training-content-day2/#entitymanagement">EntityManagement</a>.</li>
+    <li>We <a href="/getting-started/developer-training/training-content-day2/#extending-our-initial-application">extended the application</a> by adding new tables and CRUD events.</li>
+  </div>
+</details>
+
+This day covers:
 
 - [Views](#views)
 - [Automated testing](#automated-testing)​
@@ -56,6 +67,15 @@ views {
   }
 }
 ```
+
+:::info withPrefix and withAlias
+`withPrefix` adds a prefix to the standard field name. Giving another example, `INSTRUMENT.NAME withPrefix SYMBOL` would become `SYMBOL_NAME`.
+
+`withAlias` gives the field an alternative name on the view.
+
+More info [here](/database/fields-tables-views/views/views-basics/#overriding-a-field-name).
+:::
+
 Run **alpha-config:assemble** to make the view ready for use, then add it to the data server:​
 
 Now go to the Data Server definition (inside the **-script-config** module). Replace the `ALL_TRADES` query in the Data Server with the new `TRADE_VIEW`.
@@ -92,7 +112,6 @@ Moving on, for our app to be able to keep positions based on the trades, we need
 Let´s add new fields to Trade table​. 
 
 ```kotlin
-field("SIDE", type = STRING)​
 field("TRADE_DATE", type = DATE)​
 field("ENTERED_BY", type = STRING)​
 field(name = "TRADE_STATUS", type = ENUM("NEW", "ALLOCATED", "CANCELLED", default = "NEW"))
@@ -101,7 +120,6 @@ field(name = "TRADE_STATUS", type = ENUM("NEW", "ALLOCATED", "CANCELLED", defaul
 ```kotlin
 table (name = "TRADE", id = 2000) {
     ...
-    SIDE
     TRADE_DATE
     ENTERED_BY
     TRADE_STATUS
@@ -242,7 +260,7 @@ class TradeViewTest : AbstractDatabaseTest() {
             .setInstrumentId("2")   // INSTRUMENT_NAME = "BAR.L"
             .setPrice(12.0)
             .setQuantity(100)
-            .setSide("BUY")
+            .setDirection(Direction.BUY)
             .setTradeId(tradeId)
             .build()
 
@@ -258,7 +276,7 @@ class TradeViewTest : AbstractDatabaseTest() {
             assertEquals(now, tradeView.tradeDate)
             assertEquals(12.0, tradeView.price)
             assertEquals((100).toInt(), tradeView.quantity)
-            assertEquals("BUY", tradeView.side)
+            assertEquals(Direction.BUY, tradeView.direction)
         }
     }
 
@@ -275,7 +293,7 @@ class TradeViewTest : AbstractDatabaseTest() {
         assertEquals(now, tradeView.tradeDate)
         assertEquals(12.0, tradeView.price)
         assertEquals((100).toInt(), tradeView.quantity)
-        assertEquals("BUY", tradeView.side)
+        assertEquals(Direction.BUY, tradeView.direction)
     }
 
     @Test
@@ -293,6 +311,11 @@ class TradeViewTest : AbstractDatabaseTest() {
 }
 ```
 
+You can run the test from IntelliJ by right-clicking on the test class and selecting `Run TradeViewTest` or from the command line as well.
+
+```shell title='Running TradeViewTest from the command line'
+./gradlew :alpha-config:test --tests "global.genesis.TradeViewTest"
+```
 
 ## Calculated data
 
@@ -429,6 +452,7 @@ import global.genesis.gen.config.tables.POSITION.NOTIONAL
 import global.genesis.gen.config.tables.POSITION.QUANTITY
 import global.genesis.gen.config.tables.POSITION.VALUE
 import global.genesis.gen.dao.Position
+import global.genesis.gen.dao.enums.Direction
 
 consolidators {
     config {}
@@ -439,13 +463,13 @@ consolidators {
         }
         select {
             sum {
-                when(side) {
-                    "BUY" -> when(tradeStatus) {
+                when(direction) {
+                    Direction.BUY -> when(tradeStatus) {
                         TradeStatus.NEW -> quantity
                         TradeStatus.ALLOCATED -> quantity
                         TradeStatus.CANCELLED -> 0
                     }
-                    "SELL" -> when(tradeStatus) {
+                    Direction.SELL -> when(tradeStatus) {
                         TradeStatus.NEW -> -quantity
                         TradeStatus.ALLOCATED -> -quantity
                         TradeStatus.CANCELLED -> 0
@@ -454,9 +478,9 @@ consolidators {
                 }
             } into QUANTITY
             sum {
-                val quantity = when(side) {
-                    "BUY" -> quantity
-                    "SELL" -> -quantity
+                val quantity = when(direction) {
+                    Direction.BUY -> quantity
+                    Direction.SELL -> -quantity
                     else -> 0
                 }
                 quantity * price

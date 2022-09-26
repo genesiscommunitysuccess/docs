@@ -39,7 +39,7 @@ To start, create a process called `POSITIONS_APP_TUTORIAL_EVALUATOR` and add it 
 Add the `POSITIONS_APP_TUTORIAL_EVALUATOR` to your **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** with the code below.
 
 ```xml title="positions-app-tutorial-service-definitions.xml"
-<service host="localhost" name="POSITIONS_APP_TUTORIAL_EVALUATOR" port="11003"/>
+<service host="localhost" name="POSITIONS_APP_TUTORIAL_EVALUATOR" port="11004"/>
 ```
 
 We have just defined our Evaluator. Next we're going to add our business logic.
@@ -182,7 +182,7 @@ The **GENESIS_NOTIFY** module does not run by default. To change this, we are ad
 Add the `POSITIONS_APP_TUTORIAL_NOTIFY` process to your **positions-app-tutorial-service-definitions.xml**.
 
 ```xml title="positions-app-tutorial-service-definitions.xml"
-<service host="localhost" name="POSITIONS_APP_TUTORIAL_NOTIFY" port="11004"/>
+<service host="localhost" name="POSITIONS_APP_TUTORIAL_NOTIFY" port="11005"/>
 ```
 
 ## Set up GENESIS_NOTIFY in the database
@@ -362,7 +362,7 @@ To start, create a process called **POSITIONS_APP_TUTORIAL_EVALUATOR** and add i
 Add the `POSITIONS_APP_TUTORIAL_EVALUATOR` to the file **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** with the code below. 
 
 ```xml
-<service host="localhost" name="POSITIONS_APP_TUTORIAL_EVALUATOR" port="11003"/>
+<service host="localhost" name="POSITIONS_APP_TUTORIAL_EVALUATOR" port="11004"/>
 ```
 
 ### Create a new class

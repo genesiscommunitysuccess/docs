@@ -1,7 +1,7 @@
 ---
 id: 03_ssdt-day3
-title: Day 3
-sidebar_label: Day 3
+title: Day three
+sidebar_label: Day three
 sidebar_position: 4
 
 ---
@@ -12,13 +12,17 @@ This day covers:
 - [ExcelToGenesis](#exceltogenesis)
 
 
-## Advanced data servers
+## Advanced Data Servers
 
-A Data Server allows for reading of real-time data. Data Servers monitor specific tables or views in the database. When a change in data occurs, the Data Server sends the updates to all of its subscribers. The Data Server configuration is refreshingly light, because all the hard work is done by the table or views. A Data Server file consists of a number of queries that handle each event in the required way. You can define any number of queries. 
+A Data Server allows for reading of real-time data. Data Servers monitor specific tables or views in the database. When a change in data occurs, the Data Server sends the updates to all its subscribers.  
 
-Data Servers are conventionally defined in the file application-name-dataserver.kts So, if your application is called positions, then the file would conventionally be named positions-dataserver.kts. Note, you will also need to declare your Data Server within the [runtime configuration](/server-modules/data-server/configuring-runtime/).
+Data Servers are conventionally defined in the file _application_**-name-dataserver.kts** So, if your application is called positions, then the file would conventionally be named **positions-dataserver**.kts. 
 
-The simplest possible definition for Data Servers is a kotlin script file contains all the queries you create. These are wrapped in a single `dataServer` statement like the code below.
+Note, you will also need to declare your Data Server within the [runtime configuration](/server-modules/data-server/configuring-runtime/).
+
+The Data Server configuration is refreshingly light, because all the hard work is done by the table or views. A Data Server is a Kotlin script file that consists of a number of queries; each query handles an event in the required way. You can define any number of queries.
+
+In the file, all the queries are wrapped in a single `dataServer` statement, as you can see in this very simple example below.
 
 ```kotlin
 dataServer {
@@ -28,9 +32,9 @@ dataServer {
 }
 ```
 
-We saw basic concepts and common usages of Data Servers in the [Developer Training](/getting-started/developer-training/training-intro/) such as [specifying fields](/server-modules/data-server/basics/#specifying-fields), [derived fields](/server-modules/data-server/basics/#derived-fields), and [where clauses](/server-modules/data-server/basics/#where-clauses). Now we are exploring Data Servers advanced concepts like [client enriched data](#client-enriched-data), [ranged data server queries](#ranged-data-server-queries), [client side runtime options](#client-side-runtime-options), and [criteria matching](#criteria-matching).
+We saw basic concepts and common usages of Data Servers in the [Developer Training](/getting-started/developer-training/training-intro/) such as [specifying fields](/server-modules/data-server/basics/#specifying-fields), [derived fields](/server-modules/data-server/basics/#derived-fields), and [where clauses](/server-modules/data-server/basics/#where-clauses). Now we are exploring Data Servers advanced concepts like [client-enriched data](#client-enriched-data), [ranged Data Server queries](#ranged-data-server-queries), [client-side runtime options](#client-side-runtime-options), and [criteria matching](#criteria-matching).
 
-### Client enriched data
+### Client-enriched data
 
 In some scenarios, you might want to associate the results of Data Server queries with the user who initiated the queries. You can achieve this using the ```enrich``` feature, which enables an additional table or view join (including backwards joins). With this feature, you can provide user-specific values for each row, or even perform cell-level permissioning (for example, to hide cell values), depending on entitlements.
 
@@ -79,7 +83,7 @@ query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
 
 ```
 
-### Ranged data server queries
+### Ranged Data Server queries
 
 Ranged Data Servers only cache a defined range within a table or view. This makes the Data Server more responsive and reduces resource requirements.
 
@@ -126,7 +130,7 @@ With refresh queries, rows that move out of the filter range will be removed fro
 
 The `numKeyFields` property specifies the number of fields to use from an index. The fields are always selected in the order they are specified in the index.
 
-### Client side runtime options
+### Client-side runtime options
 
 When a client initiates a subscription to a Data Server by sending a **DATA_LOGON** message, there are several options that can be specified such as: MAX_ROWS, MOVING_VIEW, CRITERIA_MATCH, FIELDS, ORDER_BY, REVERSE. 
 
@@ -179,7 +183,7 @@ Note - When using logical OR in your filter, you will lose the ability to use in
 30 mins
 :::
 
-We are enriching ALL_TRADES Data Server query to improve the users experience. We are deriving a field on our query by bringing the user's favourite trades into the context.
+We shall enrich ALL_TRADES Data Server query to improve the users experience. We shall derive a field on our query by bringing the user's favourite trades into the context.
 
 To do that, create a table *FAVOURITE_TRADE* with the fields TRADE_ID and USER_NAME, as well as an index over the USER_NAME to be able to use the `byUserName` function over the FavouriteTrade DAO. Finally, create a derived field called "IS_FAVOURITE" to show whether the Trade is favourite or not.
 
@@ -197,7 +201,7 @@ Answer is pretty much here: http://localhost:8080/server-modules/data-server/exa
 -->
 
 
-## Advanced request servers
+## Advanced Request Servers
 
 Request Servers, (otherwise known as request/replies and often shortened to reqrep) retrieve a snapshot of data from a table or a view on demand and serve it up to the requesting client. They are predominantly used for serving the UI. As Data Servers, using Request Servers you can also [specify derived fields](/server-modules/request-server/basics/#specifying-derived-fields), [use an index](/server-modules/request-server/basics/#using-an-index), and add [where blocks](/server-modules/request-server/basics/#where-block).
 
@@ -355,7 +359,9 @@ requestReplies {
 
 ### Ranges
 
-You can specify ranges from the client of the requestReply server by postfixing the request parameter names with _FROM and _TO. The example below shows a client building a GenesisSet request based upon the requestReplies defined from previous example. This example stipulates a price range between 1,000 and 10,000. Leaving out FROM will define a top-end range, leaving out TO will define a bottom-end range. 
+You can specify ranges from the client of the requestReply server by postfixing the request parameter names with _FROM and _TO. 
+
+The example below shows a client building a GenesisSet request based upon the requestReplies defined from previous example. This example stipulates a price range between 1,000 and 10,000. Leaving out FROM will define a top-end range, leaving out TO will define a bottom-end range. 
 
 
 ```kotlin
@@ -416,7 +422,7 @@ requestReply<Hello, World>("HELLO_WORLD_CHECK") {
 }
 ```
 
-Futher details and examples can be found [here](/server-modules/request-server/advanced/#custom-request-servers).
+Further details and examples can be found [here](/server-modules/request-server/advanced/#custom-request-servers).
 
 #### Exercise 3.2 ALL_COUNTERPARTIES in Request Server
 
@@ -442,7 +448,14 @@ ExcelToGenesis -f euc\\ demo\\ cash\\ mgmt.xlsx -n cash -t 10000
 
 Each table is automatically given a unique numeric ID. Supply the opening sequence number, for example, 10000. Numeric IDs are useful because they enable you to change the name of a table without losing the data. By default, the conversion process will convert each separate worksheet into a table.
 
-The conversion script turns Excel functions in the named workbook into Kotlin code. The most common [Excel functions](/server-modules/integration/excel-to-genesis/excel-functions/) are all covered. Moreover, the conversion creates a folder called `/home/core/run/_name_.cfg` where name is the application name specified in the script. This contains the default definitions to fields, tables, and views (i.e. `_name_-fields-dictionary.kts`, `_name_-tables-dictionary.kts`, `_name_-view-dictionary.kts`), and the data from each worksheet is extracted to a separate csv file.
+The conversion script turns Excel functions in the named workbook into Kotlin code. The most common [Excel functions](/server-modules/integration/excel-to-genesis/excel-functions/) are all covered. 
+
+The conversion process creates a folder called **/home/core/run/_name_.cfg**, where _name_ is the application name specified in the script. This folder contains the default definitions to fields, tables, and views:
+- _name_**-fields-dictionary.kts**
+- _name_**-tables-dictionary.kts**
+- _name_**-view-dictionary.kts**
+
+The data from each worksheet is extracted to a separate csv file.
 
 #### Exercise 3.3 Using ExcelToGenesis
 

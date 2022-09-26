@@ -50,12 +50,17 @@ Define the `insertTrade` function in the file **home.ts**:
   }
 ```
 
+After refreshing your application, a form should be displayed. The form might sit on top of the grid or by itself, depending on whether you appended to or replaced the already existing xml in **home.template.ts**.
+
+![](/img/trade-insert-form.png)
+
 ## Adding customisation
-What we have done so far is good for simple forms or prototyping, but we need much more customisation.
+What we have done so far is good for simple forms or prototyping, but what if we need much more customisation?
+Let's replace the form and code elements above with a more configurable solution.
 
 To do this, you must create each form element manually and take care of storing the data input by the user.
 
-Start by adding the elements to the template:
+Start by adding the elements to the template. Instead of the `<zero-form>` above, replace it with the following.
 
 ```html title='home.template.ts' 
 <zero-text-field>Quantity</zero-text-field>
@@ -109,6 +114,14 @@ import {sync} from '@genesislcap/foundation-utils';
 >
 </zero-select>
 ```
+
+You can now refresh your application; it should look something like this:
+
+![](/img/position-form.png)
+
+:::note
+The data in your grids may vary from the data in the example. You may also only see one grid or none at all, depending on whether you replaced or appended the xml before this.
+:::
 
 ## Adding selection options
 You probably realise that we don't have any options in our select components, so let's fix that now.
@@ -181,5 +194,14 @@ public async insertTrade() {
   });
 }
 ```
+ Let's add another data grid at the bottom of the page to show the trade view `ALL_TRADES`:
 
-Now if everything has worked, you can go to your browser, insert the data for a new trade, and click the button. You will see the new trade showing up in the data grid that you set up in the [previous chapter](/getting-started/go-to-the-next-level/data-grid).
+```html title='home.template.ts'
+  <zero-ag-grid style="width: 100%; height: 100%">
+        <ag-genesis-datasource
+                resourceName="ALL_TRADES"
+                orderBy="INSTRUMENT_ID">
+        </ag-genesis-datasource>
+    </zero-ag-grid>
+```
+Now if everything has worked, you can go to your browser, insert the data for a new trade, and click the button. You will see the new trade showing up in the data grid of the trade view `ALL_TRADES` at the bottom of the page.
