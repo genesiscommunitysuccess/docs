@@ -14,7 +14,7 @@ tags:
 
 # Foundation Login
 
-## API Reference
+## API reference
 
 API reference [can be found here.](../foundation-login_apiref/)
 
@@ -45,7 +45,7 @@ If you build a project upon one of the Genesis seed apps, then the `Login` micro
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can see more information on the [pacakge.json basics](../01_basics/04_package-json-basics.md) page.
+- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always you run the `$ npm run bootstrap` command again. You can see more information on the [pacakge.json basics](../01_basics/04_package-json-basics.md) page.
 
 ```javascript
 {
@@ -74,7 +74,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 }
 ```
 
-- Then you want to add the required config to the router config that you use. For example, you'll want to set up the `Login` class to be used on the `/login` route, and pass in its required settings. See [customising login](#customising-login).
+- Then add the required config to the router config that you use. For example, you'll want to set up the `Login` class to be used on the `/login` route, and pass in its required settings. See [customising login](#customising-login).
 ```javascript
 { path: '', redirect: 'login' },
 {
@@ -131,9 +131,9 @@ By default, a route that isn't marked public is not. However, a non-public route
 
 ## Authentication
 
-For authentication, most configuration is set in the back-end. You should familiarise yourself with the [authentication section of the back-end](docs/03_server/05_access-control/01_introduction.md).
+For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](docs/03_server/05_access-control/01_introduction.md).
 
-### Username & Password
+### Username & password
 
 The standard authentication method is the user supplying their username and password. Even when SSO is enabled as an authentication method, the user will still have the option to sign in with their normal credentials.
 
@@ -151,7 +151,7 @@ Setting up SSO is primarily [a back-end task](docs/03_server/05_access-control/0
 The standard process of SSO is that the SSO authentication provider flow is opened via a redirect in the current page. However, many authentication providers block their system when running in an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). Because of this, if the `Login` micro front-end detects that it is running in an iframe, it opens up the authentication provider in a popup instead.
 :::
 
-## Customising Login
+## Customising login
 
 The `Login` micro front-end uses a parameterless constructor. Therefore, the configuration needs to be set via the settings javascript object in the router, as shown in the [set-up step](#login-set-up). See the full [settings API here](../foundation-login_apiref/foundation-login.settings/#remarks).
 
@@ -165,7 +165,10 @@ You will probably want to use your company's logo instead of the Genesis logo. A
 
 ### Enable SSO
 
-As mentioned in the [authentication](#sso) section, SSO must be configured on the server, but some front-end configuration is required too. Setting `ssoToggle` is required to enable the SSO authentication as an option for the user, and then the user can enable that flow with a checkbox that controls `ssoEnable`. Enabling `ssoEnable` at the route level will set the SSO flow to be the default.
+As mentioned in the [authentication](#sso) section, SSO must be configured on the server, but some front-end configuration is required too. 
 
-Finally, set `defaultRedirectUrl`, which controls where the `Login` micro front-end will take the user back to once they complete the SSO journey. For example, setting option to `/home` will take the user to the `/home` path if they successfully login via SSO.
+- Setting `ssoToggle` is required to enable the SSO authentication as an option for the user; the user can then enable that flow with a checkbox that controls `ssoEnable`. 
+- Enabling `ssoEnable` at the route-level sets the SSO flow to be the default.
+
+- Finally, set `defaultRedirectUrl`, which controls where the `Login` micro front-end will take the user back to once they complete the SSO journey. For example, setting option to `/home` will take the user to the `/home` path if they successfully login via SSO.
 
