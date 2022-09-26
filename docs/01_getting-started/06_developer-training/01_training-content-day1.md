@@ -419,7 +419,7 @@ In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**a
 After this command is completed, we will have a basic genesis server running.
 
 ### Deploying the auth module
-As our application requires [authentication](/server-modules/access-control/introduction/), we have to install the Genesis Auth module.
+As our application requires [authentication](/server/access-control/introduction/), we have to install the Genesis Auth module.
 
 In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**install-auth-distribution.zip**.
 
