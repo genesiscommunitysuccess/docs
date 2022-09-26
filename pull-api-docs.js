@@ -22,7 +22,7 @@ const copyMicroFrontendApiDocs = () => {
       return;
     }
     const readDir = `./node_modules/@genesislcap/${mf}/docs/api/`;
-    const writeDir = `./docs/04_front-end/05_micro-front-ends/${mf}_apiref`;
+    const writeDir = `./docs/04_web/05_micro-front-ends/${mf}_apiref`;
     if (!fs.existsSync(writeDir)) {
       fs.mkdirSync(writeDir);
     }

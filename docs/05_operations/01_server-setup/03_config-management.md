@@ -28,7 +28,7 @@ automation and consistency that is the mainstay of a config management system.
 Key aspects of a host prepared for Genesis applications are suitable for config management:
 * Dependency packages
 * Nginx reverse-proxy configuration
-* Environmental override configuration (needs alteration to [processes.xml](/server-modules/configuring-runtime/processes))
+* Environmental override configuration (needs alteration to [processes.xml](/server/configuring-runtime/processes))
 
 ### Dependencies
 

@@ -45,4 +45,4 @@ You then need to add the route to users to the navigation bar:
 Now you can visit `/users` in your browser, and it should take you to the **users management** page within your application.
 ![](/img/user-management.png)
 
-Read more about available micro-frontends and different types of including them in the application [here](/front-end/micro-front-ends/introduction/).
+Read more about available micro-frontends and different types of including them in the application [here](web/micro-front-ends/introduction/).

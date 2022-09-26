@@ -205,7 +205,7 @@ For actual server deployment, these are the steps that you need to follow:
 You can zip and unzip the content of `dist` to make it quicker.
 :::
 
-More information on [Web Deployment](/front-end/deploying/introduction/).
+More information on [Web Deployment](/web/deploying/introduction/).
 
 
 ### Web pages

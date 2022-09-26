@@ -92,8 +92,8 @@ module.exports = {
        
         {to: 'getting-started', label: 'Learning'},
         {to: 'database', label: 'Database'},
-        {to: 'server-modules', label: 'Server'},
-        {to: 'front-end', label: 'Web'},
+        {to: 'server', label: 'Server'},
+        {to: 'web', label: 'Web'},
         {to: 'operations', label: 'Operations'},
         {to: 'fuse', label: 'Early access'},
         {

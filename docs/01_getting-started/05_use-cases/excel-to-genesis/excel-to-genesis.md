@@ -52,7 +52,7 @@ By default, the conversion process will convert each separate worksheet into a t
 
 ### Functions
 
-The conversion script will turn the Excel functions in the workbook into Kotlin code for use by your application. The most [common Excel functions](/03_server-modules/10_integration/09_excel-to-genesis/02_excel-functions.md) are all covered.
+The conversion script will turn the Excel functions in the workbook into Kotlin code for use by your application. The most [common Excel functions](/03_server/10_integration/09_excel-to-genesis/02_excel-functions.md) are all covered.
 
 
 ### Column headings

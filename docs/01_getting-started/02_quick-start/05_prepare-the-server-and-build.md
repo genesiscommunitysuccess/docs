@@ -44,7 +44,7 @@ Add the following content to the **alpha-processes.xml** file.
 </processes>
 ```
 
-You can find more info on the **-processes.xml** file [here](/server-modules/configuring-runtime/processes/).
+You can find more info on the **-processes.xml** file [here](/server/configuring-runtime/processes/).
 
 You can then add the following content to the **alpha-service-definitions.xml** file.
 
@@ -55,13 +55,13 @@ You can then add the following content to the **alpha-service-definitions.xml** 
 </configuration>
 ```
 
-You can find more info on the **-service-defintions.xml** file [here](/server-modules/configuring-runtime/service-definitions/).
+You can find more info on the **-service-defintions.xml** file [here](/server/configuring-runtime/service-definitions/).
 
 ### Database layer
 
 You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\**.
 
-You can find more information on the **genesis-system-defintions.kts** file [here](/server-modules/configuring-runtime/system-definitions/).
+You can find more information on the **genesis-system-defintions.kts** file [here](/server/configuring-runtime/system-definitions/).
 
 If you are running your application using [**Docker**](/getting-started/quick-start/run-the-application-docker/), you need to use the Postgres database. Add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
 
@@ -83,30 +83,6 @@ systemDefinition {
 }
 
 ```
-If you are using **H2**, you need to change or add the highlighted items in **genesis-system-definition.kts**:
-
-```kotlin {4-5,10,12}
-systemDefinition {
-    global {
-        ...
-        item(name = "DbLayer", value = "SQL")
-        item(name = "DictionarySource", value = "FILE")
-        item(name = "AliasSource", value = "DB")
-        item(name = "MetricsEnabled", value = "false")
-        item(name = "ZeroMQProxyInboundPort", value = "5001")
-        item(name = "ZeroMQProxyOutboundPort", value = "5000")
-        item(name = "DbHost", value = "jdbc:h2:file:~/run/h2;AUTO_SERVER=TRUE")
-        item(name = "DbMode", value = "VANILLA")
-        item(name = "DbQuotedIdentifiers", value = "true")
-        ...
-    }
-    
-}
-
-```
-
-If you are running your application using **WSL/Linux**, `DbLayer` is already set to FoundationDB by the seed application. You don't need to change the system definition file.
-
 
 Finally, you can build the server.
 

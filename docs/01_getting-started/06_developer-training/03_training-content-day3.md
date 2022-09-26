@@ -388,7 +388,7 @@ consolidator(TRADE, ORDER) {
 }
 ```
 
-In the above example, we aggregate data from the TRADE table into the ORDER table. We group by orderId and we count the number of trades and sum the notional. For further details, please see [here](/server-modules/consolidator/introduction/).
+In the above example, we aggregate data from the TRADE table into the ORDER table. We group by orderId and we count the number of trades and sum the notional. For further details, please see [here](/server/consolidator/introduction/).
 
 Some features provided by Consolidators: 
 

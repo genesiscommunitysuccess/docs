@@ -251,7 +251,7 @@ There are two types of Streamer Client:
 - *Table or View entity Streamer Client* 
 - * GenesisSet Streamer Client*. 
 
-You can also set in a Streamer Client, such as `isReplayable`,  `eventHandlerBuffer`, `sentWarningRange`, and `receiveWarningRange`. Further information can be found [here](/server-modules/integration/gateways-and-streamers/streamer-client/#properties).
+You can also set in a Streamer Client, such as `isReplayable`,  `eventHandlerBuffer`, `sentWarningRange`, and `receiveWarningRange`. Further information can be found [here](/server/integration/gateways-and-streamers/streamer-client/#properties).
 
 In addition, for entity streamers, you can format the message in the same way as you would define the output of a view, Data Server or Request Server. Use `sendFormatted`:
 
