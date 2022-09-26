@@ -2,10 +2,9 @@ require('dotenv').config();
 
 const baseUrl = process.env.BASE_URL || '/';
 const routeBasePath = '/';
-
 const apiPullPlugin = require('./pull-api-docs');
-
-const GTM_ID = process.env.GTM_ID || 'GTM-5GTR43J'; // default to uat GTM_ID, prod one should be set on CI (master) 
+const processedMap = require('./plugins/api-docs/processedMap');
+const GTM_ID = process.env.GTM_ID || 'GTM-5GTR43J'; // default to uat GTM_ID, prod one should be set on CI (master)
 
 module.exports = {
   title: 'Low-code Platform For Financial Markets',
@@ -51,13 +50,18 @@ module.exports = {
     [require.resolve('docusaurus-gtm-plugin'), {
       id: GTM_ID,
     }],
-    // Declares a local plugin, plugins array takes a set of functions to execute to 
+    // TODO: Perhaps we move these to the api-docs manifest setup
+    // Declares a local plugin, plugins array takes a set of functions to execute to
     // load in the plugin. Anonymous function used here to simulate the same thing, and
     // return an object that declares a function to execute as part of the `loadContent`
     // step in the docusaurus lifecycle
     () => ({
       loadContent: apiPullPlugin.loadContent(),
-    })
+    }),
+    ['./plugins/api-docs', {
+      manifest: require('./plugins/api-docs/manifest.json'),
+      processedMap,
+    }],
   ],
 
   presets: [
@@ -86,10 +90,10 @@ module.exports = {
     },
     navbar: {
       items: [
-        
+
         //keep this commented out until we have multiple versions
         // {type: 'docsVersionDropdown', className: "version-menu"},
-       
+
         {to: 'getting-started', label: 'Learning'},
         {to: 'database', label: 'Database'},
         {to: 'server', label: 'Server'},
