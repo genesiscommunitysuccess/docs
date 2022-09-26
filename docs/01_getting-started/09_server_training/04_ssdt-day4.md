@@ -1,7 +1,7 @@
 ---
 id: 04_ssdt-day4
-title: Day 4
-sidebar_label: Day 4
+title: Day four
+sidebar_label: Day four
 sidebar_position: 5
 
 ---
@@ -16,7 +16,13 @@ import TabItem from '@theme/TabItem';
 
 ## DictionaryBuilder
 
-DictionaryBuilder connects to an RDBMS, parses schemas and uses this information to generate a Genesis dictionary. It supports MSSQL and Oracle databases. As a script, it reads the source database and generates the appropriate fields, tables and views in Genesis format. These are stored in two files: **-fields-dictionary.kts** and **-tables-dictionary.kts**.
+DictionaryBuilder connects to an RDBMS, parses schemas and uses the resulting information to generate a Genesis dictionary. It supports MSSQL and Oracle databases. 
+
+As a script, it reads the source database and generates the appropriate fields, tables and views in Genesis format. These are stored in three files: 
+
+- **-fields-dictionary.kts**
+- **-tables-dictionary.kts**
+- **-view-dictionary.kts**
 
 The script accepts a series of [arguments](/operations/commands/server-commands/#syntax-23) to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc). Sample below.
 
@@ -24,12 +30,15 @@ The script accepts a series of [arguments](/operations/commands/server-commands/
 DictionaryBuilder -u TAS -p my_password -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
 ```
 
-Regarding how the script behaves, it tries to connect to the RDBMS currently specified in the arguments. It generates Genesis dictionary fields for column names and their types, and it creates tables with their fields and keys.
+Tis is what the script does:
+- It tries to connect to the RDBMS currently specified in the arguments. 
+- It generates Genesis dictionary fields for column names and their types.
+- It creates tables with their fields and keys.
 
 There are a few considerations you should be aware of:
 
 - If a column name (e.g. DATE) is found in several tables, and it always has the same type, only one field will be specified in the dictionary. However, if the same column name is found in different tables with different types, a new field will be created for each type, keeping the column name and adding the table name (e.g. CALENDAR) in the following fashion: DATE_IN_CALENDAR. The script will output this event on screen so you can fix the name and/or type it manually later on.
-- The types are mapped from java types [here](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html) to Genesis dictionary types. Each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate; you must check the results for correctness.
+- The types are mapped from Java types [here](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html) to Genesis dictionary types. Each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate; you must check the results for correctness.
 - If there is no mapping available for the java.sql.Type retrieved by the column metadata query, it will be mapped by default to the Genesis dictionary type STRING. This event will be shown on standard output too, so you can know that there is an uncommon type that you should take care of.
 - Every time a table is successfully parsed, the script will give feedback: TABLE USERS complete.
 - Views are not parsed.
@@ -42,9 +51,9 @@ Primary keys will be parsed as primary keys in Genesis, whether they are single-
 25 mins
 :::
 
-From a local database availble, let's create product that we create ref_data_app. All the files we create will start with that name. Then, run `DictionaryBuilder` using a instance in which the platform is installed.
+From a local database available, let's create product that we create ref_data_app. All the files we create will start with that name. Then, run `DictionaryBuilder` using a instance in which the platform is installed.
 
-After the run, you should check these files and adjust them to suit your application. For example, look inside the fields-dictionary.kts file to see if the field definitions are correct.
+After the run, you should check these files and adjust them to suit your application. For example, look inside the **fields-dictionary.kts** file to see if the field definitions are correct.
 
 
 :::tip
@@ -56,12 +65,12 @@ DictionaryBuilder -t MSSQL -U admin -P beONneON*74 -p 1433 -H ref-data-rdb.clatr
 
 Note that we specified the names of the four source tables in the --tables argument of the command. So you could include just a subset of your source database if you wish.
 
-The dictionaryBuilder script generates the fields-dictionary.kts and tables-dictionary.kts files for the data model.
+The `dictionaryBuilder` script generates the **fields-dictionary.kts** and **tables-dictionary.kts** files for the data model.
 :::
 
 ## Streamer​
 
-Streamer and Streamer-Client components are avaible to allow the application to route messages. Streamer, representing the Server part, listens to a table or view, and streams data out to streamer clients. In almost all cases, the table or view must be an audit table. It covers both inbound and outbound messages.
+Streamer and Streamer-Client components are available to allow the application to route messages. Streamer, representing the Server part, listens to a table or view, and streams data out to streamer clients. In almost all cases, the table or view must be an audit table. It covers both inbound and outbound messages.
 
 ### Creating a Streamer
 
@@ -89,7 +98,7 @@ To create a Streamer:
 </configuration>
 ```
 
-3. Create a kotlin script file named {applicationName}-streamer.kts inside **{applicationName}-config/src/main/resources/scripts** folder. Add the following information:
+3. Create a Kotlin script file named {applicationName}-streamer.kts inside **{applicationName}-config/src/main/resources/scripts** folder. Add the following information:
     * A stream name
     * A GPAL index reference for a unique index with a single LONG field, this could refer to a table index or a view index.
 
@@ -137,7 +146,7 @@ In this example, we only stream orders with a quantity greater than 1,000 and wh
 streams {
     stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP) {
         where { ordersOut, logonMessage ->
-            ordersOut.quanity > 1_000 && logonMessage.getString("KEY") == "SECRET"
+            ordersOut.quantity > 1_000 && logonMessage.getString("KEY") == "SECRET"
         }
     }
 }
@@ -172,7 +181,7 @@ streams {
 }
 ```
 
-## Streamer client
+## Streamer Client
 
 Streamer Client receives data from a streamer server. When data is received, it transforms into the relevant format. It covers both inbound and outbound messages.
 
@@ -206,12 +215,12 @@ To create a Streamer Client:
 </configuration>
 ```
 
-2. Create a kotlin script file named {applicationName}-streamer-client.kts inside **{applicationName}-config/src/main/resources/scripts** folder, and add the following details:
+2. Create a Kotlin script file named {applicationName}-streamer-client.kts inside **{applicationName}-config/src/main/resources/scripts** folder, and add the following details:
     * A streamer client name
     * A streamer data source process and stream name
     * One or more `onMessage` tags
 
-The simplest streamer-client definition is:
+The simplest Streamer-Client definition is:
 ```kotlin
 streamerClients {
     streamerClient(clientName = "QUOTE_RESPONSE") {
@@ -237,9 +246,14 @@ where { quotes ->
 send(targetProcess = "QUOTE_HANDLER", messageType = "QUOTE_EVENT")
 ```
 
-There are two types of Streamer Client: *Table or View entity streamer client* ADN * GenesisSet streamer client*. You can also set in a Streamer Client, such as `isReplayable`,  `eventHandlerBuffer`, `sentWarningRange`, and `receiveWarndingRange`. Further information can be found [here](/server/integration/gateways-and-streamers/streamer-client/#properties).
+There are two types of Streamer Client: 
 
-In addition, for entity streamers, you can format the message in the same way as you would define the output of a view, data server or request reply. Use `sendFormatted`:
+- *Table or View entity Streamer Client* 
+- * GenesisSet Streamer Client*. 
+
+You can also set in a Streamer Client, such as `isReplayable`,  `eventHandlerBuffer`, `sentWarningRange`, and `receiveWarningRange`. Further information can be found [here](/server-modules/integration/gateways-and-streamers/streamer-client/#properties).
+
+In addition, for entity streamers, you can format the message in the same way as you would define the output of a view, Data Server or Request Server. Use `sendFormatted`:
 
 ```kotlin
 sendFormatted("QUOTE_HANDLER", "QUOTE_EVENT") {
@@ -248,21 +262,20 @@ sendFormatted("QUOTE_HANDLER", "QUOTE_EVENT") {
 }
 ```
 
-#### Exercise 4.2 Creating a Streamer solution to control TRADE_AUDIT table
+#### Exercise 4.2 Creating a Streamer solution to control the TRADE_AUDIT table
 
 :::info ESTIMATED TIME
 45 mins
 :::
 
-We are double-checking if a record in the *TRADE* table has been audited. To do it, create a boolean field in the *TRADE* table called **BEEN_AUDITED**, and create a Streamer solution (Server and Client) to update **BEEN_AUDITED** as soon as the record start the auditing process. You will also have to create an event in the EVENT_HANDLER to called by the streamer client to update **BEEN_AUDITED** to true. 
+We are going to double-check if a record in the *TRADE* table has been audited. To do this, create a boolean field in the *TRADE* table called **BEEN_AUDITED**, and create a Streamer solution (Server and Client) to update **BEEN_AUDITED** as soon as the record start the auditing process. You will also have to create an event in the EVENT_HANDLER to be called by the Streamer Client to update **BEEN_AUDITED** to true. 
 
-Remember that TRADE table has an auditing process that keeps tracking changes in 
-*TRADE_AUDIT* table.
+Remember that the TRADE table has an auditing process that keeps tracking changes in the *TRADE_AUDIT* table.
 
 :::tip
 Don't forget to change the fields file, as well as run the task to generateFields.
 
-Create a streamer called TRADE_AUDIT_OUT, based on the *TRADE_AUDIT* table. The streamer client should call the new EVENT to update the *TRADE* field **BEEN_AUDITED**.
+Create a Streamer called TRADE_AUDIT_OUT, based on the *TRADE_AUDIT* table. The Streamer Client should call the new EVENT to update the *TRADE* field **BEEN_AUDITED**.
 :::
 
 

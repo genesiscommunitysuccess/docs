@@ -156,7 +156,7 @@ This file lists all the active services for the Positions application. You can s
 Add a new entry to **positions-app-tutorial-service-definitions.xml** with the Consolidator details. Remember the port numbers should be free and, ideally, sequential.
 
 ```xml
-    <service host="localhost" name="POSITIONS_APP_TUTORIAL_CONSOLIDATOR" port="11002"/>
+    <service host="localhost" name="POSITIONS_APP_TUTORIAL_CONSOLIDATOR" port="11003"/>
 ```
 
 When you finish, remember to run `generateDao` (if you made changes to the table), `assemble` and `deploy-genesisproduct-positions-app-tutorial`.

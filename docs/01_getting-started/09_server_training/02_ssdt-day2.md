@@ -1,7 +1,7 @@
 ---
 id: 01_ssdt-day2
-title: Day 2
-sidebar_label: Day 2
+title: Day two
+sidebar_label: Day two
 sidebar_position: 3
 
 ---
@@ -13,7 +13,9 @@ This day covers:
 
 ## Notify
 
-The Genesis Platform has a notification module named by default *GENESIS_NOTIFY*. It does not run by default. To change this, we are adding a customised module to our project. To do that, create a process called `ALPHA_NOTIFY` and add it to the file **alpha-processes.xml** in your project folder **server/jvm/alpha-config/src/main/resources/cfg** using the code below.
+The Genesis platform has a notification module named by default *GENESIS_NOTIFY*. It does not run by default. To change this, we are adding a customised module to our project. 
+
+To do that, create a process called `ALPHA_NOTIFY` and add it to the file **alpha-processes.xml** in your project folder **server/jvm/alpha-config/src/main/resources/cfg**, using the code below.
 
 ```xml
 <processes>
@@ -114,7 +116,14 @@ In system terms, Evaluators enable you to connect Event Handlers to two differen
 - __Cron Rules__  are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
 - __Dynamic Rules__, also known as Dynamic Events, are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
-In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. Presuming we already did the Evaluator setup, our extended application should be able to create reports daily. Now you are going to use the Evaluator again to set up dynamic rules. In this case, you want to send an email automatically if a specified limit has been breached.
+In both cases, you define the rule in a table in the database: 
+
+- CRON_RULES for static rules
+- and DYNAMIC_RULES for dynamic rules
+
+Assuming we have already set up the Evaluator, our extended application should be able to create reports daily. 
+
+Now you are going to use the Evaluator again to set up dynamic rules. In this case, you want to send an email automatically if a specified limit has been breached.
 
 ### Preparation
 
@@ -157,7 +166,7 @@ Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the i
 
 Views enable you join related tables to create a single holistic view. In short, Views are the genesis equivalent of SQL select queries. Views are defined in the file _application-name_**-view-dictionary.kts**. If your application is called **rubicon**, then the file name will be **rubicon-view-dictionary.kts**.
 
-Unlike tables, views do not have any data of their own, they are read-only, but present a view based on one or more tables. We saw basic concepts and common usages of Views in the [Developer Training](/getting-started/developer-training/training-intro/). Now we are exploring Views advanced concepts like **INNER vc OUTER joins**, **Parameterised joins**, and **Dynamic joins**.
+Unlike tables, views do not have any data of their own, they are read-only, but present a view based on one or more tables. We saw basic concepts and common usages of views in the [Developer Training](/getting-started/developer-training/training-intro/). Now we are exploring advanced concepts for views, such as **INNER vc OUTER joins**, **Parameterised joins**, and **Dynamic joins**.
 
 ### INNER vc OUTER joins
 
@@ -218,7 +227,7 @@ view("INSTRUMENT_PARAMETERS", INSTRUMENT) {
 So for the above, if we had a Request Server using the view, it would make `ALTERNATE_TYPE` available as a field input parameter.
 
 ### Dynamic joins
-These have a shared syntax with derived fields. However, rather than specifying a field name and type, it should always return an entity index type of the table you’re joining on.
+These have a shared syntax with derived fields. However, rather than specifying a field name and type, the view should always return an entity index type of the table you’re joining on.
 
 As with derived fields, you can use the `withEntity` and the `withInput` syntax. However, the lambda should always return an entity index object or null. Also, it should always return the same type. It is not possible to switch dynamically between indices, so it should always return the same type or null. It is possible to add further `and` clauses afterwards.
 
@@ -273,4 +282,4 @@ After:
 15 mins
 :::
 
-Change the TRADE_VIEW JOINs types to INNER. Make sure the syntax is using curly brackets to link fields, and that the JOINs statements are simplified with Dictionary-joined.
+Change the TRADE_VIEW JOINs types to INNER. Make sure the syntax uses curly brackets to link fields, and that the JOINs statements are simplified with Dictionary-joined.

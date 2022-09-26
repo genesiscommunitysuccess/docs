@@ -1,7 +1,10 @@
 ---
-title: 'Advanced'
+title: 'Consolidator - Advanced'
 sidebar_label: 'Advanced'
 id: advanced
+keywords: [consolidator]
+tags:
+    - consolidator
 ---
 
 [Introduction](/server/consolidator/introduction) | [Basics](/server/consolidator/basics) |  [Advanced](/server/consolidator/advanced) | [Examples](/server/consolidator/examples) | [Configuring runtime](/server/consolidator/configuring-runtime) | [Testing](/server/consolidator/testing)

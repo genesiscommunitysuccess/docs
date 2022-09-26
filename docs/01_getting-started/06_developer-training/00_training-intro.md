@@ -35,11 +35,11 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 ## Agenda
 
 - [Environment set-up](/getting-started/developer-training/environment-setup/)
-- [Day 1](/getting-started/developer-training/training-content-day1/): Quick review of the Platform​, quick start the application and test the backend​​.
-- [Day 2](/getting-started/developer-training/training-content-day2/): Intro to UI​, create a user interface​ and REST endpoints.
-- [Day 3](/getting-started/developer-training/training-content-day3/): Views​, automated testing​, calculated data, consolidators and data grids​.
-- [Day 4](/getting-started/developer-training/training-content-day4/): State management, adding logic to the event handler​ ​and auditing​.
-- [Day 5](/getting-started/developer-training/training-content-day5/): Schedulers, notifications, permissions​, key server commands​ and how to get help​.
+- [Day one](/getting-started/developer-training/training-content-day1/): Quick review of the Platform​, quick start the application and test the backend​​.
+- [Day two](/getting-started/developer-training/training-content-day2/): Intro to UI​, create a user interface​ and REST endpoints.
+- [Day three](/getting-started/developer-training/training-content-day3/): Views​, automated testing​, calculated data, consolidators and data grids​.
+- [Day four](/getting-started/developer-training/training-content-day4/): State management, adding logic to the event handler​ ​and auditing​.
+- [Day five](/getting-started/developer-training/training-content-day5/): Schedulers, notifications, permissions​, key server commands​ and how to get help​.
 
 ## Genesis low-code platform version
 6.0.2

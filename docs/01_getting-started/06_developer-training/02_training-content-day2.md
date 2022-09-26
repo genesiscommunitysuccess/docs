@@ -1,11 +1,25 @@
 ---
 id: training-content-day2
-title: Day 2
-sidebar_label: Day 2
+title: Day two
+sidebar_label: Day two
 sidebar_position: 4
-
 ---
-This covers:
+
+<details>
+  <summary>Day one recap</summary>
+  <div>
+    <div>Here are the main takeaways from <a href="/getting-started/developer-training/training-content-day1/">Day one</a>.</div>
+    <li>Genesis low-code platform is the only low-code platform for the financial markets.</li>
+    <li>Genesis platform is based on event-driven and microservice architecture.</li>
+    <li>Genesis platform resources are powered by GPAL, which plugs into IntelliJ.</li>
+    <li>We created a project from scratch using <a href="/getting-started/developer-training/training-content-day1/#1-create-a-new-project">GenX CLI</a>.</li>
+    <li>We defined our data model adding <a href="/getting-started/developer-training/training-content-day1/#add-fields">fields</a>, and a <a href="/getting-started/developer-training/training-content-day1/#add-a-table">table</a> called TRADE.</li>
+    <li>We added business logic creating a Data Server <a href="/getting-started/developer-training/training-content-day1/#data-server">query</a> and an Event Handler method to <a href="/getting-started/developer-training/training-content-day1/#event-handler">insert data</a>.</li>
+    <li> We prepared the server to <a href="/getting-started/developer-training/training-content-day1/#4-prepare-the-server-and-build">build</a> and <a href="/getting-started/developer-training/training-content-day1/#5-deployment">deploy</a>.</li>
+  </div>
+</details>
+
+This day covers:
 
 - [An introduction to UI](#intro-to-ui)
 - [Creating a user interface](#create-a-user-interface)
@@ -306,9 +320,10 @@ Whichever client you are using, you need to log in before you can send test requ
 
 For example, to log in using Postman:
 1. Create a new query in Postman.
-2. In front of the url, set the call to **POST**.
-3. For the url, you need to supply your server instance, then **:9064** (which sends you to the application's Router), and then **event-login-auth**. For example:
-**http://localhost:9064/event-login-auth**
+2. In front of the URL, set the call to **POST**.
+3. For the URL, you need to supply your server instance, then **:9064** (which sends you to the application's Router), and then **event-login-auth**. For example:
+**http://localhost:9064/event-login-auth**. 
+Alternatively, you can use the reverse proxy already set up on the WSL instance and go with this URL: **http://localhost/gwf/event-login-auth**
 4. Set the Body to JSON and insert the message below (substituting your correct user name and password) in the main body. 
 
 ```

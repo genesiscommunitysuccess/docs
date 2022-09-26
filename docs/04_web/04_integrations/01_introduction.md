@@ -1,7 +1,10 @@
 ---
-title: 'Introduction'
+title: 'Foundation UI - Introduction'
 sidebar_label: 'Introduction'
 id: introduction
+keywords: [foundation ui]
+tags:
+    - foundation ui
 ---
 
 Genesis Foundation UI libraries can be used on their own to build modern web sites and applications, but they are also designed to be used in combination with a wide variety of existing technologies. This section of our documentation is dedicated to helping you get Genesis Foundation UI working with your existing or preferred stack.

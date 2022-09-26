@@ -1,7 +1,11 @@
 ---
-title: 'Data'
+title: 'Genesis Console - Data'
 sidebar_label: 'Data'
 id: data
+keywords: [console, data]
+tags:
+    - console
+    - data
 ---
 
 [Introduction](/operations/console/introduction/)  | [Microservices](/operations/console/microservices/) |  [Data](/operations/console/data/) | [Resources](/operations/console/resources/) | [Packages](/operations/console/packages/) | [Messages](/operations/console/messages/)

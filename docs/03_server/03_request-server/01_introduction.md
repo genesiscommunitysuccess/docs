@@ -2,6 +2,9 @@
 title: 'Request Server'
 sidebar_label: 'Introduction'
 id: introduction
+keywords: [request server]
+tags:
+  - request server
 ---
 
 [Introduction](/server/request-server/introduction)  | [Basics](/server/request-server/basics) | [Advanced](/server/request-server/advanced) | [Examples](/server/request-server/examples) | [Configuring runtime](/server/request-server/configuring-runtime) | [Testing](/server/request-server/testing)
@@ -38,3 +41,35 @@ So, if your application is called **positions**, the file would be named **posit
 
 You should also check the Request Server component in your application's system-processes and service-definition files, as described in the [Configuring runtime](/server/request-server/configuring-runtime) page.
 
+:::info
+The following examples in this section assume you have the following fields and tables present:
+
+```kotlin
+    field(name = "INSTRUMENT_ID", type = STRING)
+    field(name = "INSTRUMENT_CODE", type = STRING)
+    field(name = "INSTRUMENT_NAME", type = STRING)
+    field(name = "VWAP", type = STRING)
+    field(name = "LAST_TRADED_PRICE", type = DOUBLE)
+    field(name = "TRADED_CURRENCY", type = STRING)
+    field(name = "EXCHANGE_ID", type = STRING)
+    field(name = "SPREAD", type = DOUBLE)
+    field(name = "ALTERNATE_TYPE", type = STRING)
+```
+
+```kotlin
+    table (name = "INSTRUMENT_DETAILS", id = 11005) {
+        INSTRUMENT_CODE
+        INSTRUMENT_ID
+        INSTRUMENT_NAME
+        LAST_TRADED_PRICE
+        VWAP
+        SPREAD
+        TRADED_CURRENCY
+        EXCHANGE_ID
+        ALTERNATE_TYPE
+        primaryKey {
+            INSTRUMENT_ID
+        }
+    }
+```
+:::

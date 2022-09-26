@@ -1,7 +1,10 @@
 ---
-title: 'Introduction'
+title: 'Genesis Console - Introduction'
 sidebar_label: 'Introduction'
 id: introduction
+keywords: [console]
+tags:
+    - console
 ---
 
 [Introduction](/operations/console/introduction/)  | [Microservices](/operations/console/microservices/) |  [Data](/operations/console/data/) | [Resources](/operations/console/resources/) | [Packages](/operations/console/packages/) | [Messages](/operations/console/messages/)

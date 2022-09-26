@@ -1,7 +1,10 @@
 ---
-title: 'Configuring Runtime'
+title: 'Consolidator - Configuring Runtime'
 sidebar_label: 'Configuring Runtime'
 id: configuring-runtime
+keywords: [consolidator]
+tags:
+    - consolidator
 ---
 
 [Introduction](/server/consolidator/introduction) | [Basics](/server/consolidator/basics) |  [Advanced](/server/consolidator/advanced) | [Examples](/server/consolidator/examples) | [Configuring runtime](/server/consolidator/configuring-runtime) | [Testing](/server/consolidator/testing)

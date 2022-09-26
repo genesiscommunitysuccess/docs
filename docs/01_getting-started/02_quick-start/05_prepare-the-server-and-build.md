@@ -4,14 +4,18 @@ sidebar_label: 'Prepare the server & build'
 id: prepare-the-server-and-build
 ---
 
-The application has two files that contain vital configuration information:
+The application has three files that contain vital configuration information:
 
 - **alpha-processes.xml**
 - **alpha-service-definitions.xml**
+- **genesis-system-definitions.kts**
 
-At present, they are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
+### Process and service definition
+
+At present, these files are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
 
 Add the following content to the **alpha-processes.xml** file.
+
 
 ```xml
 <processes>
@@ -50,9 +54,16 @@ You can then add the following content to the **alpha-service-definitions.xml** 
     <service host="localhost" name="ALPHA_EVENT_HANDLER" port="11001"/>
 </configuration>
 ```
+
 You can find more info on the **-service-defintions.xml** file [here](/server/configuring-runtime/service-definitions/).
 
-If you are going to use the **Docker** solution, you also need to change the highlighted items in **genesis-system-definition.kts**.
+### Database layer
+
+You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\**.
+
+You can find more information on the **genesis-system-defintions.kts** file [here](/server-modules/configuring-runtime/system-definitions/).
+
+If you are running your application using [**Docker**](/getting-started/quick-start/run-the-application-docker/), you need to use the Postgres database. Add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
 
 ```kotlin {4,10}
 systemDefinition {
@@ -72,6 +83,30 @@ systemDefinition {
 }
 
 ```
+If you are using **H2**, you need to change or add the highlighted items in **genesis-system-definition.kts**:
+
+```kotlin {4-5,10,12}
+systemDefinition {
+    global {
+        ...
+        item(name = "DbLayer", value = "SQL")
+        item(name = "DictionarySource", value = "FILE")
+        item(name = "AliasSource", value = "DB")
+        item(name = "MetricsEnabled", value = "false")
+        item(name = "ZeroMQProxyInboundPort", value = "5001")
+        item(name = "ZeroMQProxyOutboundPort", value = "5000")
+        item(name = "DbHost", value = "jdbc:h2:file:~/run/h2;AUTO_SERVER=TRUE")
+        item(name = "DbMode", value = "VANILLA")
+        item(name = "DbQuotedIdentifiers", value = "true")
+        ...
+    }
+    
+}
+
+```
+
+If you are running your application using **WSL/Linux**, `DbLayer` is already set to FoundationDB by the seed application. You don't need to change the system definition file.
+
 
 Finally, you can build the server.
 

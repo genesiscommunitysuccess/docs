@@ -1,10 +1,10 @@
 ---
-title: 'See it work'
-sidebar_label: 'See it work'
-id: see-it-work
+title: 'Run the application (WSL/CentOS)'
+sidebar_label: 'Run the application (WSL/CentOS)'
+id: run-the-application-wsl
 ---
 
-Now that the back end of our application is built, it's time to deploy it.
+The instructions on this page are for using WSL/CentOS. If you prefer to use Docker as your environment, there are [separate instructions](/getting-started/go-to-the-next-level/run-the-application-docker/).
 
 The Genesis deploy plugin provides several tasks that help to set up the Genesis environment so that you can deploy a project to it. It can be used on Linux machines (local and over SSH) or Windows machines with WSL support.
 
@@ -325,7 +325,7 @@ The url consists of:
 
 - the address or hostname of the server
 - if necessary, some extra routing; in this case **gwf** uses a proxy to access the server
-- the name of the event handler
+- the name of the Event Handler
 
 ```
 http://localhost/gwf/EVENT_COUNTERPARTY_INSERT

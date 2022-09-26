@@ -69,6 +69,14 @@ export const positionGridStyles: ElementStyles = css`
 `
 ```
 
+Your positions grid should be customised now:
+
+![](/img/positions-grid-with-customisation.png)
+
+:::tip
+Don't worry too much if the data is different from yours - as long as the grid is customised as expected.
+:::
+
 ## Layout 
 By default, all elements on screen will use `display: block`, but we can easily customise it using our custom component that supports responsive web design.
 

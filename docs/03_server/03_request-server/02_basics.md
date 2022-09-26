@@ -100,7 +100,7 @@ The example below uses an index as the request definition. This provides additio
 ```kotlin
 requestReplies {
     requestReply(INSTRUMENT_DETAILS) {
-        request(INSTRUMENT_DETAILS.BY_ALTERNATE_TYPE_ALTERNATE_CODE)
+        request(INSTRUMENT_DETAILS.BY_INSTRUMENT_ID)
     }
 }
 ```
