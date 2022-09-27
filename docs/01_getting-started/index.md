@@ -32,11 +32,7 @@ Either way, you should gain enough knowledge to take your first steps in develop
 ## Take it slowly
 
 
-If you want to go more slowly, start right at the beginning and look at the sort of applications that have already been built on the Genesis low-code platform. Then go to our [very simple introduction](/getting-started/learn-the-basics/simple-introduction/).
 
-
-
-From there, just progress through each section so that you build up knowledge of the [data model](/getting-started/learn-the-basics/data-model/inside-a-fields-dictionary/) and all the key parts of the platform. There's nothing difficult in these sections.
 
 
 
