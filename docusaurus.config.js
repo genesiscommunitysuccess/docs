@@ -104,7 +104,7 @@ module.exports = {
         }
       ],
       logo: {
-        alt: 'Documentation',
+        alt: 'Genesis Documentation',
         src: 'img/logo-icon--light.svg',
         width: 25,
         height: 25,
