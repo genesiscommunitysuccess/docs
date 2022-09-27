@@ -1,6 +1,6 @@
 ---
-title: 'Foundation Testing'
-sidebar_label: 'Foundation Testing'
+title: 'Foundation testing'
+sidebar_label: 'Foundation testing'
 id: foundation-testing
 keywords: [genesis, foundation, ui, testing]
 tags:
@@ -15,7 +15,7 @@ tags:
   - playwright
 ---
 
-# Genesis Foundation Testing
+# Genesis Foundation testing
 
 `foundation-testing` provides shared unit and e2e testing functionality.
 
@@ -23,23 +23,23 @@ tags:
 
 ## Unit Testing with UVU
 
-Unit testing is provided by [UVU](https://github.com/lukeed/uvu)
+Unit testing is provided by [UVU](https://github.com/lukeed/uvu).
 
-### UVU Features
+### UVU features
 
 * Super [lightweight](https://npm.anvaka.com/#/view/2d/uvu)
 * Extremely [performant](https://github.com/lukeed/uvu/tree/master#benchmarks)
 * Individually executable test files
 * Supports `async`/`await` tests
-* Supports native ES Modules
-* Browser-Compatible
+* Supports native ES modules
+* Browser-compatible
 * Familiar API
 
-## E2E Testing with Playwright
+## E2E testing with Playwright
 
 E2E testing is provided by [Playwright](https://playwright.dev/docs/intro)
 
-### Playwright Features
+### Playwright features
 
 * Run tests across all browsers.
 * Execute tests in parallel.
