@@ -27,19 +27,20 @@ Unit testing is provided by [UVU](https://github.com/lukeed/uvu).
 
 ### UVU features
 
-* Super [lightweight](https://npm.anvaka.com/#/view/2d/uvu)
-* Extremely [performant](https://github.com/lukeed/uvu/tree/master#benchmarks)
-* Individually executable test files
-* Supports `async`/`await` tests
-* Supports native ES modules
-* Browser-compatible
-* Familiar API
+* super [lightweight](https://npm.anvaka.com/#/view/2d/uvu)
+* extremely [performant](https://github.com/lukeed/uvu/tree/master#benchmarks)
+* individually executable test files
+* supports `async`/`await` tests
+* supports native ES modules
+* browser-compatible
+* familiar API
 
 ## E2E testing with Playwright
 
 E2E testing is provided by [Playwright](https://playwright.dev/docs/intro)
 
 ### Playwright features
+Playwright enables you to perform a number of very useful functions.
 
 * Run tests across all browsers.
 * Execute tests in parallel.
@@ -47,7 +48,7 @@ E2E testing is provided by [Playwright](https://playwright.dev/docs/intro)
 * Capture videos, screenshots and other artifacts on failure.
 * Integrate your POMs as extensible fixtures.
 
-## Test Organisation
+## Test organisation
 
 Unit testing specific logic can be done by adding a test file alongside the source file.
 
@@ -56,7 +57,7 @@ logic.ts
 logic.test.ts
 ```
 
-If your test spans more than one file or is more of an end-to-end test, you may wish to add your test to your package's
+If your test spans more than one file or is more of an end-to-end test, you could wish to add your test to your package's
 `/test` directory instead. An example structure might be:
 
 ```
@@ -75,13 +76,13 @@ If your test spans more than one file or is more of an end-to-end test, you may 
 └── playwright.config.ts
 ```
 
-The contents of your package's `jsdom.setup.ts` may simply be:
+The contents of the **jsdom.setup.ts** file for your package could simply be:
 
 ```typescript
 export * from '@genesislcap/foundation-testing/jsdom';
 ```
 
-The contents of your package's `playwright.config.ts` may include:
+The contents of the **playwright.config.ts** file for your package could include:
 
 ```typescript
 import { PlaywrightTestConfig } from '@playwright/test';
@@ -101,9 +102,9 @@ const config: PlaywrightTestConfig = {
 export default config;
 ```
 
-## Test Scripts
+## Test scripts
 
-The test related scripts to add to your package's `package.json` file may include:
+You could add the following test-related scripts to the **package.json** file for your package:
 
 ```
 "test": "npm run test:unit && npm run test:e2e",
@@ -121,7 +122,7 @@ The test related scripts to add to your package's `package.json` file may includ
 "test:unit:watch": "watchlist src test -- npm run test:unit"
 ```
 
-To provide the dev dependencies for these test scripts you would need to install: 
+To provide the dev dependencies for these test scripts, you need to install: 
 
 ```
 @playwright/test playwright-test c8 esm jsdom tsm uvu watchlist
@@ -129,9 +130,9 @@ To provide the dev dependencies for these test scripts you would need to install
 
 _We are working on enhancing the `genx` cli to abstract test running, so you can offload this setup and tasks._
 
-## Testing Logic
+## Testing logic
 
-The `logic.test.ts` will likely leverage `createLogicSuite`, which is used to test function output given certain input
+The **logic.test.ts** will probably use `createLogicSuite`, which is used to test function output given certain input
 arguments. Based on user feedback, these arguments are now passed as an array by convention:
 
 ```typescript
@@ -157,9 +158,9 @@ Suite('myFunction should provide expected results', ({ runCases }) => {
 Suite.run();
 ```
 
-## Testing Components
+## Testing components
 
-The `component.test.ts` or any test which directly or in-directly makes use of the DI will leverage
+The **component.test.ts** file or any test that directly or indirectly uses the DI will also use
 `createComponentSuite`. Apart from setting up and tearing down your element fixture with a wrapping design system and DI
 container, this util also allows you to provide DI container mocks, which will be required for certain testing flows.
 
@@ -249,7 +250,7 @@ Suite.run();
 
 ## Testing E2E
 
-The `baseline.e2e.ts` will leverage `playwright`, and test cases will have access to the fixtures provided during setup.
+The **baseline.e2e.ts** file uses `playwright`, and test cases will have access to the fixtures provided during set-up.
 
 ```typescript
 import { expect } from '@playwright/test';
