@@ -58,7 +58,7 @@ logic.test.ts
 ```
 
 If your test spans more than one file or is more of an end-to-end test, you could wish to add your test to your package's
-`/test` directory instead. An example structure might be:
+**/test** directory instead. An example structure might be:
 
 ```
 ├── src 
