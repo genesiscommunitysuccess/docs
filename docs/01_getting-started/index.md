@@ -34,7 +34,7 @@ Either way, you should gain enough knowledge to take your first steps in develop
 <div className='card-wrapper'>
     <QuickCard heading="Prerequisites" link="../getting-started/quick-start/hardware-and-software" text="After you have been through all those, you'll be ready to check the prerequisites for getting started.">
     </QuickCard>
-    <QuickCard heading="Start building a simple application" link="../getting-started/learn-the-basics/simple-introduction" text="Once you've completed each of those, you'll be ready to start building a simple application.">
+    <QuickCard heading="Start building a simple application" link="/getting-started/quick-start/" text="Once you've completed each of those, you'll be ready to start building a simple application.">
     </QuickCard>
 </div>
 
