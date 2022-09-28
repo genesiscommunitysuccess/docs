@@ -174,9 +174,9 @@ rpm -Uvhi https://github.com/apple/foundationdb/releases/download/6.3.23/foundat
 mv /usr/bin/systemctl /usr/bin/systemctl.old
 curl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py > /usr/bin/systemctl
 chmod +x /usr/bin/systemctl
-fdbcli --exec "configure new single memory ; status"
 systemctl enable foundationdb
-systemctl start foundationdb
+fdbcli --exec "configure new single memory ; status"
+
 ```
 
 Then to check if it's running: 
