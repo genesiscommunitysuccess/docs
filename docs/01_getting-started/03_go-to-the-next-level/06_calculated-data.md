@@ -40,7 +40,7 @@ views {
         fields {
             TRADE.allFields()
 
-            COUNTERPARTY.NAME withPrefix COUNTERPARTY
+            COUNTERPARTY.COUNTERPARTY_NAME withPrefix COUNTERPARTY
             INSTRUMENT.INSTRUMENT_SYMBOL withPrefix INSTRUMENT
             INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
 
