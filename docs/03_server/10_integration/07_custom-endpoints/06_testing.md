@@ -9,7 +9,9 @@ import TabItem from '@theme/TabItem';
 
 [Introduction](/server/integration/custom-endpoints/introduction/) | [Basics](/server/integration/custom-endpoints/basics/) |  [Advanced](/server/integration/custom-endpoints/advanced/) | [Examples](/server/integration/custom-endpoints/examples/) | [Configuring runtime](/server/integration/custom-endpoints/configuring-runtime/) | [Testing](/server/integration/custom-endpoints/testing/)
 
-To create integration tests for your custom endpoints, you need to create service tests by extending the `AbstractGenesisTestSupport` class and specifying the `genesis-router.kts` as the Script File Name. Examples of how you would initialise a test extending this class are provided below.
+## Integration testing
+
+To create integration tests for your custom endpoints, you need to create service tests by extending the `AbstractGenesisTestSupport` class and specifying the `genesis-router.kts` as the Script File Name. Provide package names of genesis-router and endpoint. Examples of how you would initialise a test extending this class are provided below.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -17,7 +19,7 @@ To create integration tests for your custom endpoints, you need to create servic
 ```kotlin
 class TestEndpoint : AbstractGenesisTestSupport<GenesisSet>(
     GenesisTestConfig {
-        packageNames = mutableListOf("global.genesis.router", "org.file.processor")
+        packageNames = mutableListOf("global.genesis.router", "alpha.custom.endpoint")
         genesisHome = "/genesisHome"
         scriptFileName = "genesis-router.kts"
         parser = { it }
@@ -69,3 +71,27 @@ public class TestEndpoint extends AbstractGenesisTestSupport<GenesisSet> {
 
 </TabItem>
 </Tabs>
+
+## Manual testing
+
+### Testing with API client
+
+An API client is useful way of testing components. As a client, it is effectively a front end seeking information from the server.
+You can test these endpoints on [Postman App](https://www.postman.com/downloads/)/[Insomnia App](https://insomnia.rest/download).
+
+Before you can make any calls custom-endpoints, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/operations/testing/component-testing/#using-an-api-client) page.
+
+Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
+
+In the example below, we are using Insomnia as the API client.
+
+![](/img/custom-endpoint-test.png)
+
+In the header, you need to supply:
+
+- a SOURCE_REF (always), which identifies you; you can use any string value that suits you
+- the SESSION_AUTH_TOKEN that permissions you to access the server
+
+The url consists of: 
+- the address or hostname of the server
+- custom-endpoint name
