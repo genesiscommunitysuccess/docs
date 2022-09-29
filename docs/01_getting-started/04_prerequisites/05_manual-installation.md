@@ -25,13 +25,6 @@ By default, the installation creates an application user account called **genesi
 echo "genesis_user=foxtrot" >> /tmp/genesis_install.conf
 ```
 
-
-By default, the installation creates an application user account called **genesis**. You can change this before you start by editing the file genesis_install.conf. For example, to change the user account to be created to foxtrot, edit it as follows:
-
-```bash
-echo "genesis_user=foxtrot" >> /tmp/genesis_install.conf
-```
-
 If you want to provide a group other than **genesis**, then you can pass this on to the installation by adding:
 
 ```bash
