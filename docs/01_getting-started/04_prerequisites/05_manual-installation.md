@@ -19,11 +19,34 @@ In our example, the rpm is called **genesis-platform-6.0.1-1.x86_64.rpm**.
 
 ### 1. Give the user account a name
 
-By default, the installation creates an application user account called **genesis**. You can change this before you start by editing the file **genesis_install.conf**. For example, to change the user account to be created to foxtrot, edit it as follows:
+By default, the installation creates an application user account called **genesis**. You can change this before you start by editing the file **genesis_install.conf**. For example, if you want to create a user account called *foxtrot*, edit it as follows:
 
 ```bash
 echo "genesis_user=foxtrot" >> /tmp/genesis_install.conf
 ```
+
+
+By default, the installation creates an application user account called **genesis**. You can change this before you start by editing the file genesis_install.conf. For example, to change the user account to be created to foxtrot, edit it as follows:
+
+```bash
+echo "genesis_user=foxtrot" >> /tmp/genesis_install.conf
+```
+
+If you want to provide a group other than **genesis**, then you can pass this on to the installation by adding:
+
+```bash
+echo “genesis_grp=charlie” >> /tmp/genesis_install.conf
+```
+
+The group (here, this is called *charlie*) must already be in existence.
+
+By default, genesis code is installed under **/data**. If you want to install to a different directory, run:
+
+```bash
+echo “root_dir=opt” /tmp/genesis_install.conf
+```
+
+The folder (here, this is called *opt*) must already be in existence.
 
 ### 2. Install the rpm
 
