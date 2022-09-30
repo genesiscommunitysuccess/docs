@@ -1,10 +1,9 @@
 ---
-title: 'Configuring Runtime'
-sidebar_label: 'Configuring Runtime'
+title: 'Request Server: configuring runtime'
+sidebar_label: 'Configuring runtime'
 id: configuring-runtime
 ---
 
-[Introduction](/server/request-server/introduction)  | [Basics](/server/request-server/basics) | [Advanced](/server/request-server/advanced) | [Examples](/server/request-server/examples) | [Configuring runtime](/server/request-server/configuring-runtime) | [Testing](/server/request-server/testing)
 
 
 There are two important files in your application that contain configuration information: 

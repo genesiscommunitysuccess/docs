@@ -1,10 +1,9 @@
 ---
-title: 'Basics'
+title: 'Request Server: basics'
 sidebar_label: 'Basics'
 id: basics
 ---
 
-[Introduction](/server/request-server/introduction)  | [Basics](/server/request-server/basics) | [Advanced](/server/request-server/advanced) | [Examples](/server/request-server/examples) | [Configuring runtime](/server/request-server/configuring-runtime) | [Testing](/server/request-server/testing)
 
 
 Let's make things really simple.

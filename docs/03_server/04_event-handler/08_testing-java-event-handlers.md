@@ -4,11 +4,11 @@ sidebar_label: 'Testing Java Event Handlers'
 id: testing-java-event-handlers
 ---
 
-[Introduction](/server/event-handler/introduction)  | [Basics](/server/event-handler/basics) | [Advanced](/server/event-handler/advanced) | [Examples](/server/event-handler/examples) | [Configuring runtime](/server/event-handler/configuring-runtime) | [Testing](/server/event-handler/testing) | [Java event handlers](/server/event-handler/java-event-handlers) | [Testing java event handlers](/server/event-handler/testing-java-event-handlers)
+
 
 ## Integration testing
 
-The Genesis Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application.
+The Genesis low-code platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application.
 
 In this case, build `GenesisTestConfig` with the following information:
 
