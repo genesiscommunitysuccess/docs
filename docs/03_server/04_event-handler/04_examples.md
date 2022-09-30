@@ -1,10 +1,10 @@
 ---
-title: 'Examples'
+title: 'Event Handler: examples'
 sidebar_label: 'Examples'
 id: examples
 ---
 
-[Introduction](/server/event-handler/introduction)  | [Basics](/server/event-handler/basics) | [Advanced](/server/event-handler/advanced) | [Examples](/server/event-handler/examples) | [Configuring runtime](/server/event-handler/configuring-runtime) | [Testing](/server/event-handler/testing) | [Java event handlers](/server/event-handler/java-event-handlers) | [Testing java event handlers](/server/event-handler/testing-java-event-handlers)
+
 
 There is a nice simple example of some logic being added to an Event Handler in our [tutorial](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#update-the-event-handler). 
 

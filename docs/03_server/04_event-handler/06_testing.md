@@ -1,10 +1,10 @@
 ---
-title: 'Testing'
+title: 'Event Handler: testing'
 sidebar_label: 'Testing'
 id: testing
 ---
 
-[Introduction](/server/event-handler/introduction)  | [Basics](/server/event-handler/basics) | [Advanced](/server/event-handler/advanced) | [Examples](/server/event-handler/examples) | [Configuring runtime](/server/event-handler/configuring-runtime) | [Testing](/server/event-handler/testing) | [Java event handlers](/server/event-handler/java-event-handlers) | [Testing java event handlers](/server/event-handler/testing-java-event-handlers)
+
 
 ## Integration testing
 

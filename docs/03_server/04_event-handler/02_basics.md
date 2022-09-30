@@ -1,10 +1,10 @@
 ---
-title: 'Basics'
+title: 'Event Handler: basics'
 sidebar_label: 'Basics'
 id: basics
 ---
 
-[Introduction](/server/event-handler/introduction)  | [Basics](/server/event-handler/basics) | [Advanced](/server/event-handler/advanced) | [Examples](/server/event-handler/examples) | [Configuring runtime](/server/event-handler/configuring-runtime) | [Testing](/server/event-handler/testing) | [Java event handlers](/server/event-handler/java-event-handlers) | [Testing java event handlers](/server/event-handler/testing-java-event-handlers)
+
 
 Let's make things really simple.
 - The Event Handler is the component that enables the application to write to the database.

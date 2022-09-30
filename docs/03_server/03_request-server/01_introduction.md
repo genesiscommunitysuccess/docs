@@ -1,13 +1,13 @@
 ---
-title: 'Request Server'
-sidebar_label: 'Introduction'
+title: 'Request Server: introduction'
+sidebar_label: 'Request Server'
 id: introduction
 keywords: [request server]
 tags:
   - request server
 ---
 
-[Introduction](/server/request-server/introduction)  | [Basics](/server/request-server/basics) | [Advanced](/server/request-server/advanced) | [Examples](/server/request-server/examples) | [Configuring runtime](/server/request-server/configuring-runtime) | [Testing](/server/request-server/testing)
+
 
 
 Request Servers, (otherwise known as request/replies and often shortened to reqrep) retrieve a snapshot of data from a table or a view on demand and serve it up to the requesting client. They are predominantly used for serving the UI.

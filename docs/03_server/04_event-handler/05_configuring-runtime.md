@@ -1,13 +1,13 @@
 ---
-title: 'Configuring Runtime'
-sidebar_label: 'Configuring Runtime'
+title: 'Event Handler: configuring runtime'
+sidebar_label: 'Configuring runtime'
 id: configuring-runtime
 ---
 
-[Introduction](/server/event-handler/introduction)  | [Basics](/server/event-handler/basics) | [Advanced](/server/event-handler/advanced) | [Examples](/server/event-handler/examples) | [Configuring runtime](/server/event-handler/configuring-runtime) | [Testing](/server/event-handler/testing) | [Java event handlers](/server/event-handler/java-event-handlers) | [Testing java event handlers](/server/event-handler/testing-java-event-handlers)
+
 
 There are two important files in your application that contain configuration information: 
--  _application-name_**-processes.xml**
+- _application-name_**-processes.xml**
 - _application-name_**-service-definitions.xml**
 
 ### Configuring in processes.xml
