@@ -1,20 +1,21 @@
 ---
-title: 'Introduction'
+title: 'Data Server: introduction'
 sidebar_label: 'Introduction'
 id: introduction
 ---
 
-[Introduction](/server/data-server/introduction) | [Basics](/server/data-server/basics) |  [Advanced](/server/data-server/advanced) | [More examples](/server/data-server/examples) | [Configuring runtime](/server/data-server/configuring-runtime) | [Testing](/server/data-server/testing)
+
+
+Data Servers monitor specific tables or views in the database. When a change in data occurs, the Data Server sends the updates to all of its subscribers.
 
 ```mermaid
 graph TD
 A[UI] --> |Connection| B(DATA_SERVER)
-B -->|Inital Data| A
+B -->|Initial data| A
 B --> |Updates| A
 B -->|Connection| C[Database]
 C --> |Changes in table/view trigger a read|B
 ```
-Data Servers monitor specific tables or views in the database. When a change in data occurs, the Data Server sends the updates to all of its subscribers.
 
 The Data Server configuration is refreshingly light, because all the hard work is done by the table or views.
 

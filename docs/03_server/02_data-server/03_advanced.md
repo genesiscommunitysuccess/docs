@@ -1,10 +1,9 @@
 ---
-title: 'Advanced'
+title: 'Data Server: advanced'
 sidebar_label: 'Advanced'
 id: advanced
 ---
 
-[Introduction](/server/data-server/introduction) | [Basics](/server/data-server/basics) |  [Advanced](/server/data-server/advanced) | [More examples](/server/data-server/examples) | [Configuring runtime](/server/data-server/configuring-runtime) | [Testing](/server/data-server/testing)
 
 ### Client-enriched data
 

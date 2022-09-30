@@ -1,10 +1,9 @@
 ---
-title: 'Basics'
+title: 'Data Server: basics'
 sidebar_label: 'Basics'
 id: basics
 ---
 
-[Introduction](/server/data-server/introduction) | [Basics](/server/data-server/basics) |  [Advanced](/server/data-server/advanced) | [More examples](/server/data-server/examples) | [Configuring runtime](/server/data-server/configuring-runtime) | [Testing](/server/data-server/testing)
 
 Let's make things really simple.
 - A Data Server is a component that supplies streaming real-time data to the front end of your application.
@@ -12,13 +11,13 @@ Let's make things really simple.
 - In this file, you define specific `query` codeblocks, each of which is designed to supply different sets of data.
 - Each `query` listens to a specified table or view; when data on that source changes, it publishes the changes. 
 - A `query` can include a number of other subtleties, such as `where` clauses or ranges, so that you can create code that matches your precise requirements.
-- If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, covering all the tables and views in your data model. You can edit this file to add sophistication to the component.
+- If you use `AppGen` to build from your dictionary, then a basic kts file will be built automatically for you, covering all the tables and views in your data model. You can edit this file to add sophistication to the component.
 - Otherwise, you can build your kts by defining each `query` codeblock from scratch. 
 
 
 ## The simplest possible definition
 
-Your _application-name_-**dataserver.kts** kotlin script file contains all the queries you create. These are wrapped in a single `dataServer` statement.
+Your _application-name_-**dataserver.kts** Kotlin script file contains all the queries you create. These are wrapped in a single `dataServer` statement.
 Our example below shows a file with a single query, which publishes changes to the table INSTRUMENT_DETAILS.
 
 
@@ -164,16 +163,23 @@ If this is set to `true`, it will compress the query row data before writing it 
 If this is set to true, it will split large updates into smaller ones. Defaults to `false`.
 
 `defaultStringSize`
-This is the size to be used for string storage in the Data Server in-memory cache. Higher values lead to higher memory use and lower values lead to truncation. Defaults to `40`.
+This is the size to be used for string storage in the Data Server in-memory cache. Higher values lead to higher memory use; lower values lead to lower memory use, which can lead to string overflow. See the `onStringOverflow` setting for details of how the overflows are handled. Defaults to `40`.
 
 `batchingPeriod`
-This is the delay in milliseconds to wait before sending new data to data-server clients. Defaults to `500ms`.
+This is the delay in milliseconds to wait before sending new data to Data Server clients. Defaults to `500ms`.
 
 `linearScan`
 This enables linear scan behaviour in the query definition. If false, it will reject criteria expressions that don't hit defined indexes. Defaults to `true`.
 
 `excludedEmitters`
 This enables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored. Defaults to an empty list.
+
+`onStringOverflow` This controls how the system responds to a string overflow. A string overflow happens when the value of a String field in an index is larger than `defaultStringSize`, or the size set on the field.
+
+There are two options for handling string overflows:
+
+- `IGNORE_ROW` - rows with string overflows will be ignored. This can lead to data missing from the Data Server.
+- `TRUNCATE_FIELD` - indices with string overflows will be truncated. The data with the overflow will still be returned in full, and will be searchable. However, if multiple rows are truncated to the same value, any subsequent rows will lead to duplicate index exceptions during the insert, so these rows will not be available to the Data Server.
 
 `enableTypeAwareCriteriaEvaluator`
 This enables the type-aware criteria evaluator. Defaults to `false`. 
@@ -202,7 +208,7 @@ If you include a `where` clause in a query, the request is only processed if the
 
 Also, you can use these clauses to focus on a specific set of fields or a single field.
 
-Finally, note that `where` clauses can also be used for permissioning. In the below example, users that have the TRADER or SUPPORT permission code are able to see all trades that meet the where condition.
+Finally, note that `where` clauses can also be used for permissioning. In the below example, users that have the TRADER or SUPPORT permission code are able to see all trades that meet the `where` condition.
 
 ```kotlin
 dataServer {
