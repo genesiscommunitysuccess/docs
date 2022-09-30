@@ -1,12 +1,11 @@
 ---
-title: 'Examples'
+title: 'Data Server: examples'
 sidebar_label: 'Examples'
 id: examples
 ---
 
-[Introduction](/server/data-server/introduction) | [Basics](/server/data-server/basics) |  [Advanced](/server/data-server/advanced) | [More examples](/server/data-server/examples) | [Configuring runtime](/server/data-server/configuring-runtime) | [Testing](/server/data-server/testing)
 
-## Enriching query
+## Enriching a query
 
 Enriching data using the calling users context is a great way to build rich experiences. Below, we have the positions table and the favourite trades table. We are able to derive a field on our query by bringing the user's favourite trades into the context.
 

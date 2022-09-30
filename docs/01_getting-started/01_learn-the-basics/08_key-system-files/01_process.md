@@ -6,7 +6,7 @@ id: process
 
 Your application must have a **-processes.xml** file. If your application is called bravo, then the file will be called **bravo-processes.xml**.
 
-The purpose of this file is to specify the main characteristics of each of the services (or modules) in your application. If you don't define a module here, it will effectively not be part of the application, however good or bads you make it.
+The purpose of this file is to specify the main characteristics of each of the services (or modules) in your application. If you don't define a module here, it will effectively not be part of the application, however good or bad you make it.
 
 So, if you add a new module, you must add its details to your application's **processes.xml** file.
 
@@ -20,10 +20,10 @@ It is important to know that whenever you run the command `genesisInstall`, an e
 
 Here is an example of a generated **processes.xml** file for an application that has:
 
-- a data server
-- a request server
-- an event handler
-- a consolidator
+- a Data Server
+- a Request Server
+- an Event Handler
+- a Consolidator
 
 ```kotlin
 <processes>

@@ -1,10 +1,10 @@
 ---
-title: 'Testing'
+title: 'Data Server: testing'
 sidebar_label: 'Testing'
 id: testing
 ---
 
-[Introduction](/server/data-server/introduction) | [Basics](/server/data-server/basics) |  [Advanced](/server/data-server/advanced) | [More examples](/server/data-server/examples) | [Configuring runtime](/server/data-server/configuring-runtime) | [Testing](/server/data-server/testing)
+
 
 ## Integration testing
 
