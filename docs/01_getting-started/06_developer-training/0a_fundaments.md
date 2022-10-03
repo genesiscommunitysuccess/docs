@@ -10,21 +10,21 @@ Creating financial markets technology today is fundamentally broken – too slow
 
 The aim of this page is to give you a high-level understanding of the Genesis low-code development platform, taking you through what it is, why it is and what it does. This will include the following topics: 
 
-- Motivation of the Genesis Platform.
-- What is the Genesis Low-Code Platform?
-- Building Blocks and Components.
-- Platform Tooling.
-- Architecture & Technology.
-- Application Elements.
-- Demo
+- why we created the Genesis Low-code platform
+- what the Genesis platform is
+- building blocks and components
+- platform tooling
+- architecture and technology
+- application elements
+- demo
 
-## Genesis Low-Code Platform
+## Genesis Low-code platform
 
 ### What is a platform?
 
-Originally, a complete software programming development environment and underlying subsystem (Forbes, 2015). This could be a combination of language, runtime, libraries, and supporting tooling. It's more than just a framework but might include one. In practice, it is anything that you can build upon. 
+One definition of a platform is a complete software programming development environment and underlying subsystem (Forbes, 2015). This could be a combination of language, runtime, libraries, and supporting tooling. It's more than just a framework but might include one. In practice, it is anything that you can build upon. 
 
-The Genesis Low-code Platform is opinionated about software architecture, application design, deployment, monitoring and levels of abstraction available. These opinions help accelerate developers, which retains as much flexibility for use-cases as possible.
+The Genesis Low-code platform has specific software architecture, application design, deployment, monitoring and levels of abstraction available. These fundamentals have been purpose-built to help accelerate developers, and to offer as much flexibility for use-cases as possible.
 
 ### What is a low-code platform?
 
