@@ -76,14 +76,14 @@ public class TestEndpoint extends AbstractGenesisTestSupport<GenesisSet> {
 
 ### Testing with an API client
 
-An API client is useful way of testing components. As a client, it is effectively a front end seeking information from the server.
+An API client is a useful way of testing components. As a client, it is effectively a front end seeking information from the server.
 You can test these endpoints on [Postman App](https://www.postman.com/downloads/)/[Insomnia App](https://insomnia.rest/download).
 
-Before you can make any calls custom-endpoints, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/operations/testing/component-testing/#using-an-api-client) page.
+Before you can make any calls custom endpoints, you have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/operations/testing/component-testing/#using-an-api-client) page.
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 
-In the example below, we are using Insomnia as the API client.
+In the example below, we use Insomnia as the API client.
 
 ![](/img/custom-endpoint-test.png)
 
