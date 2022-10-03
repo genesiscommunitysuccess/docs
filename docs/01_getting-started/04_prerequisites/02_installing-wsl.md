@@ -92,15 +92,20 @@ Once you have installed CentOS, close your Windows Terminal then reopen it. Note
 
 Next, update CentOS by running:
 
-`yum check-update`
+```none title="CentOS"
+yum check-update
+yum update
+```
 
-`yum update`
 
 ### Prepare CentOS for Genesis
 
 1. Install package group:
 
-`yum groupinstall base`
+```none title="CentOS"
+yum groupinstall base
+
+```
 
 2. Install Java 11 or scp jdk from local binaries folder and install:
 
@@ -174,12 +179,13 @@ rpm -Uvhi https://github.com/apple/foundationdb/releases/download/6.3.23/foundat
 mv /usr/bin/systemctl /usr/bin/systemctl.old
 curl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py > /usr/bin/systemctl
 chmod +x /usr/bin/systemctl
+systemctl start foundationdb
 fdbcli --exec "configure new single memory ; status"
 systemctl enable foundationdb
-systemctl start foundationdb
+
 ```
 
-Then to check if it's running: 
+Then, to check if it's running: 
 
 `systemctl status foundationdb`
 
