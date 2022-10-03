@@ -104,7 +104,7 @@ When you are defining the process in your application's **process.xml**, this ta
 
 ### classpath 
 
-This tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated and need to exist within a "lib" or "bin" folder for any of the genesis products in the environment.
+This tag defines additional jar files that might be needed by the microservices. The jar files declared in this section have to be comma-separated and need to exist within a **lib** or **bin** folder for any of the genesis products in the environment.
 
 You can use wild cards in your specification. This can be seen in the **classpath** for the **POSITION_APP_DATASERVER** and **POSITION_APP_EVENT_HANDLER** configuration in the example above.
 
