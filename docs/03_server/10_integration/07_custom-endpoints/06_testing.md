@@ -11,7 +11,7 @@ import TabItem from '@theme/TabItem';
 
 ## Integration testing
 
-To create integration tests for your custom endpoints, you need to create service tests by extending the `AbstractGenesisTestSupport` class and specifying the `genesis-router.kts` as the Script File Name. Provide package names of genesis-router and endpoint. Examples of how you would initialise a test extending this class are provided below.
+To create integration tests for your custom endpoints, you need to create service tests by extending the `AbstractGenesisTestSupport` class and specifying the `genesis-router.kts` as the Script File Name. Provide the package names of genesis-router and the endpoint. Examples of how you would initialise a test extending this class are provided below.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -74,7 +74,7 @@ public class TestEndpoint extends AbstractGenesisTestSupport<GenesisSet> {
 
 ## Manual testing
 
-### Testing with API client
+### Testing with an API client
 
 An API client is useful way of testing components. As a client, it is effectively a front end seeking information from the server.
 You can test these endpoints on [Postman App](https://www.postman.com/downloads/)/[Insomnia App](https://insomnia.rest/download).
