@@ -38,7 +38,7 @@ In another terminal window, let's start a local web server:
 
 Once we see a message similar to `INFO: Accepting connections at http://localhost:3000`, open the displayed URL; you should see the following:
 
-![](/img/gpl-seed-start.png)
+![](/img/login-enabled.PNG)
 
 ### Test simple UI changes
 
@@ -47,6 +47,8 @@ To change that, open **src/main/kotlin/global/genesis/alpha/Application.kt** and
 
 ```kotlin
 ui("Alpha Trading Dashboard") {
+    service(Login)
+
     page("Home") {
         heading("Hello World")
     }

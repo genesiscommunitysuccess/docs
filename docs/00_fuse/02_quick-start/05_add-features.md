@@ -11,36 +11,9 @@ We've now got our seed project created and configured. We've started our UI and 
 
 For this part of the guide, we've picked out a few core features we can demonstrate while building a sample application. By the end of this step we will have:
 
-- **Authentication** enabled wth our app
 - added a data **model** to describe the structure we'd like
 - configured a **grid** to display the application data
 - added a **form** to create data into our application
-
-## Authentication
-
-Currently, all our pages are public. We can protect pages with sensitive data by enabling the login service.
-
-Let's reopen **src/main/kotlin/global/genesis/alpha/Application.kt** and add `service(Login)`:
-
-```kotlin
- ui("Alpha Trading Dashboard") {
-    service(Login)
-
-    page("Home") {
-        heading("Hello World")
-    }
-}
-```
-
-We should now see a login screen:
-
-![](/img/gpl-seed-login.png)
-
-:::note
-We can confirm whether it's trying to connect to the correct URL in the browser console, as seen in the image below:
-:::
-
-![](/img/gpl-seed-host.png)
 
 ## Model
 
