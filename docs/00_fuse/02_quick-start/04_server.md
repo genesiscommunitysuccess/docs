@@ -85,21 +85,10 @@ Once built, we need to deploy it:
 
 ### Adding a user to login
 
-Although we have installed, built and deployed our Auth component as part of the above server configuration, we need to add a user that we'll use to log into our new application.
-
-:::tip
-The following will be the application login details:
-
-- Username: JaneDee
-- Password: beONneON\*74 (This is encrypted in the USER.csv file.)
-:::
-
-Copy the file `user.csv` in your project's folder `data` to the following CentOS directory `$GENESIS_HOME/site-specific/data`
-
-From the CentOS terminal, run the following command:
+We shall run the task loadInitialData. This adds the data in USER.csv to the USER table in your database. To do that we will call
 
 ```shell
-SendIt -t USER -f $GENESIS_HOME/site-specific/data/user.csv
+./gradlew :jvm:alpha-deploy:loadInitialData #On the IntelliJ terminal
 ```
 
 We want to validate that the above was successful; the following commands will help with that.

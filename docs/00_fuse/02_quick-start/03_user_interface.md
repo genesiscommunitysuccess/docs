@@ -39,6 +39,12 @@ In another terminal window, let's start a local web server:
 Once we see a message similar to `INFO: Accepting connections at http://localhost:3000`, open the displayed URL; you should see the following:
 
 ![](/img/login-enabled.PNG)
+:::tip
+The following will be the default application login details:
+
+- Username: JaneDee
+- Password: beONneON\*74 (This is encrypted in the USER.csv file.)
+:::
 
 ### Test simple UI changes
 
