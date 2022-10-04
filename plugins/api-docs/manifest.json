@@ -1,0 +1,24 @@
+{
+  "packages": [
+    {
+      "name": "@genesislcap/foundation-testing",
+      "enabled": true,
+      "api_docs": "./docs/api",
+      "readme": "./README.md",
+      "output": {
+        "title": "Foundation Testing",
+        "sidebar_label": "Foundation Testing",
+        "id": "foundation-testing",
+        "directory": "./docs/04_web/06_testing",
+        "api_docs": "docs/api",
+        "readme": "01_foundation-testing.md",
+        "keywords": [
+          "genesis", "foundation", "ui", "testing"
+        ],
+        "tags": [
+          "test", "testing", "frontend", "ui", "unit", "end-to-end", "e2e", "uvu", "playwright"
+        ]
+      }
+    }
+  ]
+}

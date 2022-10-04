@@ -23,3 +23,11 @@ npm run build
 ```
 
 This command generates static content into the `build` directory.
+
+### Clear
+
+```
+npm run clear
+```
+
+This command clears the Docusaurus generated assets, caches, build artifacts etc. (useful if you're not seeing your changes in the browser).

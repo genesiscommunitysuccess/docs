@@ -1,0 +1,52 @@
+name: 'Deploy to pre-release (v2 docs)'
+
+# Triggered on new pushes to PLAT-155 (should be renamed eventually)
+on:
+  push:
+    branches: [ prerelease ]
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        registry-url: https://npm.pkg.github.com/
+        scope: '@genesislcap'
+
+    - name: Bootstrap
+      run: npm install
+      env:
+        NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
+
+    # When deploying to a subfolder, set the BASE_URL below
+    # so static assets are resolved correctly
+    - name: Build
+      run: npm run build
+      env:
+        BASE_URL: /prerelease/secure/
+        GTM_ID: GTM-5GTR43J
+
+    - uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --follow-symlinks --delete
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_S3_BUCKET: genesis-internal-web
+        AWS_REGION: 'eu-west-2'
+        SOURCE_DIR: 'build'
+        DEST_DIR: 'prerelease/secure'
+
+

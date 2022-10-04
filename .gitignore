@@ -4,9 +4,16 @@
 # Production
 /build
 
+# dotenv
+.env
+.env.*
+
 # Generated files
 .docusaurus
 .cache-loader
+
+# Documentation copied from node modules
+*_apiref/
 
 # Misc
 .DS_Store
@@ -14,6 +21,7 @@
 .env.development.local
 .env.test.local
 .env.production.local
+package-lock.json
 
 npm-debug.log*
 yarn-debug.log*

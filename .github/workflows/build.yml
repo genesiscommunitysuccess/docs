@@ -1,9 +1,13 @@
 name: Build
 
-# Triggered on PRs against master
+# Triggered on PRs against main branches
 on:
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+      - uat
+      - developer-training
+      - low-code
 
 jobs:
   build:
@@ -12,10 +16,35 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - name: log GITHUB_TOKEN
+      shell: bash
+      env:
+        MY_KEY2: ${{ secrets.GITHUB_TOKEN }}
+      if: "${{ env.MY_KEY2 != '' }}"
+      run: echo "This command is executed if GITHUB_TOKEN secret IS NOT empty"
+    - name: log GPR_READ_TOKEN
+      shell: bash
+      env:
+        MY_KEY: ${{ secrets.GPR_READ_TOKEN }}
+      if: "${{ env.MY_KEY != '' }}"
+      run: echo "This command is executed if GPR_READ_TOKEN secret IS NOT empty"
+      
+    - name: log GPR_READ_TOKEN
+      run: 'echo "$SSH_KEY:0:2" > key'
+      shell: bash
+      env:
+        SSH_KEY: ${{secrets.GPR_READ_TOKEN}}
+        
+    - name: log GITHUB_TOKEN
+      run: 'echo "$SSH_KEY:0:2" > key'
+      shell: bash
+      env:
+        SSH_KEY: ${{secrets.GITHUB_TOKEN}}
+    
     - uses: actions/checkout@v2
 
     - name: Use Node.js ${{ matrix.node-version }}
@@ -30,5 +59,8 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
 
+    # docusaurus will check for broken links as part of the build process
     - name: Build
       run: npm run build
+      env:
+          NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
