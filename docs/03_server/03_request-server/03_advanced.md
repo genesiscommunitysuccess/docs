@@ -1,12 +1,12 @@
 ---
-title: 'Advanced'
+title: 'Request Server: advanced'
 sidebar_label: 'Advanced'
 id: advanced
 ---
 
-[Introduction](/server/request-server/introduction)  | [Basics](/server/request-server/basics) | [Advanced](/server/request-server/advanced) | [Examples](/server/request-server/examples) | [Configuring runtime](/server/request-server/configuring-runtime) | [Testing](/server/request-server/testing)
 
-### Pre-processing the request
+
+## Pre-processing a request
 
 Request Server scripts can optionally transform a request parameter’s value using `withTransformation`. This takes two inputs:
 * the request parameter’s value (which is nullable)
@@ -49,7 +49,7 @@ requestReplies {
 }
 ```
 
-### Limit the number of rows returned
+## Limit the number of rows returned
 
 You can limit the number of rows returned using the property `rowReturnLimit`. In this example, we limit it to 2.
 
@@ -77,7 +77,7 @@ requestReplies {
 }
 ```
 
-### Timeout
+## Timeout
 
 You can specify a timeout (in seconds) for a Request Server using the property `timeout`. In this example, we set a timeout of 10 seconds.
 
@@ -105,7 +105,7 @@ requestReplies {
 }
 ```
 
-### Ranges
+## Ranges
 
 You can specify ranges from the client of the requestReply server by postfixing the request parameter names with _FROM and _TO. The example below shows a client building a GenesisSet request based upon
 the requestReplies defined from previous example. This example stipulates a price range between 1,000 and 10,000. Leaving out FROM will define a top-end range, leaving out TO will define a bottom-end range. 

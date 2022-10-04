@@ -1,10 +1,16 @@
 ---
-title: 'Introduction'
+title: 'Event Handler: introduction'
 sidebar_label: 'Introduction'
 id: introduction
 ---
 
-[Introduction](/server/event-handler/introduction)  | [Basics](/server/event-handler/basics) | [Advanced](/server/event-handler/advanced) | [Examples](/server/event-handler/examples) | [Configuring runtime](/server/event-handler/configuring-runtime) | [Testing](/server/event-handler/testing) | [Java event handlers](/server/event-handler/java-event-handlers) | [Testing java event handlers](/server/event-handler/testing-java-event-handlers)
+
+The Genesis low-code platform has a real-time event-driven architecture.
+
+Applications built on the system must respond immediately to different types of input: inputs from users, messages from other systems, market-data updates and internally calculated analytic signals.  These inputs are events.
+
+All the business logic for applications built on the platform is structured around these events. When an event occurs, the business logic immediately fires into action.
+
 ```mermaid
 graph TD
 A[UI] --> |Connection| B(EVENT_HANDLER)
@@ -12,11 +18,6 @@ B -->|Ack/Nack| A
 B -->|INSERT/MODIFY/DELETE| C[Database]
 C --> |Ack/Nack|B
 ```
-The Genesis low-code platform has a real-time event-driven architecture.
-
-Applications built on the system must respond immediately to different types of input: inputs from users, messages from other systems, market-data updates and internally calculated analytic signals.  These inputs are events.
-
-All the business logic for applications built on the platform is structured around these events. When an event occurs, the business logic immediately fires into action.
 
 As a rough guide, many of the tables you have created need **Insert**, **Modify** and **Delete** events, so that you can specify the processing that these events require. 
 

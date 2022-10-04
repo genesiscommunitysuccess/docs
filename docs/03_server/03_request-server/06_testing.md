@@ -1,10 +1,9 @@
 ---
-title: 'Testing'
+title: 'Request Server: testing'
 sidebar_label: 'Testing'
 id: testing
 ---
 
-[Introduction](/server/request-server/introduction)  | [Basics](/server/request-server/basics) | [Advanced](/server/request-server/advanced) | [Examples](/server/request-server/examples) | [Configuring runtime](/server/request-server/configuring-runtime) | [Testing](/server/request-server/testing)
 
 ## Integration testing
 

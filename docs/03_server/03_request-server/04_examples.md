@@ -1,10 +1,9 @@
 ---
-title: 'Examples'
+title: 'Request Server: examples'
 sidebar_label: 'Examples'
 id: examples
 ---
 
-[Introduction](/server/request-server/introduction)  | [Basics](/server/request-server/basics) | [Advanced](/server/request-server/advanced) | [Examples](/server/request-server/examples) | [Configuring runtime](/server/request-server/configuring-runtime) | [Testing](/server/request-server/testing)
 
 
 Below is a fairly simple `requestReply` codeblock with standard `request` and `reply` statements. The [`where` block](/server/request-server/basics/#where-block) below filters out any data that does not meet the conditions. All data that is returned will have an instrumentCode equal to the request parameter INSTRUMENT_CODE. 
