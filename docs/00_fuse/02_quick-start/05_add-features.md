@@ -5,7 +5,7 @@ id: add-features
 
 # Add features
 
-We've now got our seed project created and configured. We've started our UI and Server, now we're ready to add features to our application.
+We've now got our seed project created and configured. We've started our Server and UI, now we're ready to add features to our application.
 
 ### Expected result
 
@@ -149,7 +149,6 @@ Now, if we click the **Add** button, we will see a form displayed in a modal:
 
 Congratulations, with just a few lines of code and some commands, you now have:
 
-- authentication enabled on our application
 - a new data model for trades
 - a grid display of all trades
 - the ability to add new trades via a form

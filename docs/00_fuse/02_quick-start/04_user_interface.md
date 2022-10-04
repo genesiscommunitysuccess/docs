@@ -5,7 +5,7 @@ id: user-interface
 
 # User Interface
 
-We have two key elements to our application: our user interface and our server. This section focuses on the former.
+Now we have our server running, we can start working on the user interface so that it can display the data we're fetching.
 
 ### Expected result
 
@@ -13,6 +13,7 @@ By the end of this section we should have a local view of our application's user
 
 - our UI available in a web browser
 - the ability to make changes to our UI and reflect those changes in our web browser
+- a working connection between the server and UI
 
 ## User interface set-up
 
@@ -39,12 +40,6 @@ In another terminal window, let's start a local web server:
 Once we see a message similar to `INFO: Accepting connections at http://localhost:3000`, open the displayed URL; you should see the following:
 
 ![](/img/login-enabled.PNG)
-:::tip
-The following will be the default application login details:
-
-- Username: JaneDee
-- Password: beONneON\*74 (This is encrypted in the USER.csv file.)
-:::
 
 ### Test simple UI changes
 
@@ -78,6 +73,30 @@ We should now see the updated `Alpha Trading Dashboard` page title as well as th
 
 ![](/img/gpl-seed-start-first-changes.png)
 
+## Connecting the server and UI
+
+Finally, we want to connect everything together.  
+
+With this next step, we will configure an Nginx working as a reverse proxy.
+
+In the CentOS terminal, enter:
+
+```shell
+docker login genesisglobal-docker-internal.jfrog.io
+...
+
+We need to enter artifactory credentials at this point. Enter:
+
+...
+docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
+#...
+
+We can run this command from within WSL or from the workstation. If running it from the CentOS shell, use the following command:
+#...
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+
+```
+
 ## Recap
 
 Congratulations, you now have a local view of the application's user interface. We have:
@@ -85,3 +104,4 @@ Congratulations, you now have a local view of the application's user interface. 
 - started a local Web server
 - made the UI available in a web browser
 - made changes to the UI and reflected those changes in the web browser
+- a working connection between the server and UI
