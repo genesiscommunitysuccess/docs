@@ -10,8 +10,8 @@ This introductory guide enables you to use Fuse to build a full stack Genesis ap
 This guide will be split into the following steps:
 
 1. [Create Project](/fuse/quick-start/create-project/)
-3. [Server](/fuse/quick-start/server)
-2. [User Interface](/fuse/quick-start/user-interface/)
+2. [Server](/fuse/quick-start/server)
+3. [User Interface](/fuse/quick-start/user-interface/)
 4. [Add Features](/fuse/quick-start/add-features)
 5. [Summary](/fuse/quick-start/summary)
 
