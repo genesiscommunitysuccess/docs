@@ -5,7 +5,8 @@ id: server
 
 # Server
 
-We have two key elements in our application: our server and our user interface. This section focuses on the former.
+We have two key elements in our application: our Server and our User Interface. This section focuses on the former.
+
 ### Expected result
 
 By the end of this section we should have all parts of the server application running. We shall:
@@ -13,7 +14,8 @@ By the end of this section we should have all parts of the server application ru
 - generate our server configuration 
 - have our server running
 - have our local FoundationDB running
-- populate our DB with some basic user credentials, which will be utilised later.
+- populate our DB with some basic user credentials, which will be utilised later
+- add initial user credentials to the database's USER table
 
 ## Server set-up
 
@@ -83,6 +85,8 @@ Once built, we need to deploy it:
 ```
 
 ### Adding a user to login
+
+Although we have installed, built and deployed our Auth component as part of the above server configuration, we need to add a user that we'll use to log into our new application.
 
 We shall run the task loadInitialData. This adds the data in USER.csv to the USER table in your database. To do that we will call
 ```shell
