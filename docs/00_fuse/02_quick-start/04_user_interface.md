@@ -13,7 +13,7 @@ By the end of this section we should have a local view of our application's user
 
 - our user interface available in a web browser
 - the ability to make changes to the user interface and reflect those changes in the web browser
-- a working connection between the Server and User Interface
+- a working connection between the server and user interface
 
 ## User Interface set-up
 
