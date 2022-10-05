@@ -5,7 +5,7 @@ id: add-features
 
 # Add features
 
-We've now got our seed project created and configured. We've started our Server and UI, now we're ready to add features to our application.
+We've now got our seed project created and configured. We've started our server and user interface, now we're ready to add features to our application.
 
 ### Expected result
 

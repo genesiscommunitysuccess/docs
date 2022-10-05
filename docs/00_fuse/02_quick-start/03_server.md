@@ -5,7 +5,7 @@ id: server
 
 # Server
 
-We have two key elements in our application: our Server and our User Interface. This section focuses on the former.
+We have two key elements in our application: our server and our user interface. This section focuses on the former.
 
 ### Expected result
 

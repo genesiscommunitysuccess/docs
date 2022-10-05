@@ -5,19 +5,19 @@ id: user-interface
 
 # User Interface
 
-Now we have our Server running, we can start working on the User Interface so that it can display the data we're fetching.
+Now we have our server running, we can start working on the user interface so that it can display the data we're fetching.
 
 ### Expected result
 
 By the end of this section we should have a local view of our application's user interface. We will have:
 
-- our User Interface available in a web browser
-- the ability to make changes to the User Interface and reflect those changes in the web browser
+- our user interface available in a web browser
+- the ability to make changes to the user interface and reflect those changes in the web browser
 - a working connection between the Server and User Interface
 
 ## User Interface set-up
 
-### Making the User Interface available in our web browser
+### Making the UI available in our web browser
 
 Let's install the front-end dependencies:
 
@@ -102,6 +102,6 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-ho
 Congratulations, you now have a local view of the application's user interface. We have:
 
 - started a local Web Server
-- made the User Interface available in a web browser
-- made changes to the User Interface and reflected those changes in the web browser
-- a working connection between the Server and User Interface
+- made the user interface available in a web browser
+- made changes to the user interface and reflected those changes in the web browser
+- a working connection between the server and user interface
