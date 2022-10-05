@@ -16,15 +16,15 @@ Either way, you should gain enough knowledge to take your first steps in develop
 
 <Grid container>
     <Grid item xs={12} md={4} sx={{padding: '1%'}}>
-        <QuickCard heading="Simple introduction" link="../getting-started/learn-the-basics/simple-introduction" text="This introduces you to some terminology and the basic architecture.">
+        <QuickCard heading="Simple introduction" link="../getting-started/learn-the-basics/simple-introduction/" text="This introduces you to some terminology and the basic architecture.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={4} sx={{padding: '1%'}}>
-        <QuickCard heading="Prerequisites" link="../getting-started/quick-start/hardware-and-software" text="Check out our prerequisites and get the software you need onto your machine.">
+        <QuickCard heading="Prerequisites" link="../getting-started/quick-start/hardware-and-software/" text="Check out our prerequisites and get the software you need onto your machine.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={4} sx={{padding: '1%'}}>
-        <QuickCard heading="Get started" link="../getting-started/quick-start" text="Get started straight away. Build the simplest of applications in just a few careful steps.">
+        <QuickCard heading="Get started" link="../getting-started/quick-start/" text="Get started straight away. Build the simplest of applications in just a few careful steps.">
         </QuickCard>
     </Grid>
 </Grid>
@@ -33,19 +33,19 @@ Either way, you should gain enough knowledge to take your first steps in develop
 
 <Grid container>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Simple introduction" link="../getting-started/learn-the-basics/simple-introduction" text="If you want to go more slowly, start right at the beginning and look at the sort of applications that have already been built on the Genesis low-code platform.">
+        <QuickCard heading="Simple introduction" link="../getting-started/learn-the-basics/simple-introduction/" text="If you want to go more slowly, start right at the beginning and look at the sort of applications that have already been built on the Genesis low-code platform.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Data model" link="../getting-started/learn-the-basics/data-model/inside-a-fields-dictionary" text="From there, just progress through each section so that you build up knowledge of the data model and all the key parts on the platform. There's nothing difficult in these sections.">
+        <QuickCard heading="Data model" link="../getting-started/learn-the-basics/data-model/inside-a-fields-dictionary/" text="From there, just progress through each section so that you build up knowledge of the data model and all the key parts on the platform. There's nothing difficult in these sections.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Prerequisites" link="../getting-started/quick-start/hardware-and-software" text="After you have been through all those, you'll be ready to check the prerequisites for getting started.">
+        <QuickCard heading="Prerequisites" link="../getting-started/quick-start/hardware-and-software/" text="After you have been through all those, you'll be ready to check the prerequisites for getting started.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Start building a simple application" link="/getting-started/quick-start/" text="Once you've completed each of those, you'll be ready to start building a simple application.">
+        <QuickCard heading="Start building a simple application" link="../getting-started/quick-start/" text="Once you've completed each of those, you'll be ready to start building a simple application.">
         </QuickCard>
     </Grid>
 </Grid>
