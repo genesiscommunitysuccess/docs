@@ -26,6 +26,28 @@ module.exports = {
 
 
   plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        fromExtensions: ['html', 'htm'], // /myPage.html -> /myPage
+        toExtensions: ['exe', 'zip'], // /myAsset -> /myAsset.zip (if latter exists)
+        createRedirects(existingPath) {
+          if (existingPath.includes('/server-module')) {
+            // Redirect from /docs/team/X to /community/X and /docs/support/X to /community/X
+            return [
+              existingPath.replace('/server-module', '/server'),
+            ];
+          }
+          if (existingPath.includes('/front-end')) {
+            // Redirect from /docs/team/X to /community/X and /docs/support/X to /community/X
+            return [
+              existingPath.replace('/front-end', '/web'),
+            ];
+          }
+          return undefined; // Return a falsy value: no redirect created
+        },
+      },
+    ],
     [require.resolve('@cmfcmf/docusaurus-search-local'), {
       indexBlog: true,
       indexPages: true,
