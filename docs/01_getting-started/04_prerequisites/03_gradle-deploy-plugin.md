@@ -14,10 +14,10 @@ on WSL.
 
 ### Adding the deployment plugin to your project
 
-The Genesis Gradle deploy plugin uses the project classpath to resolve dependent resources. So, in order not to
+The Genesis Gradle deploy plugin uses the project classpath to resolve dependent resources. So, in order not to not
 interfere with any of your other project modules, it is best to add a **${projectName}-deploy** module to your project.
 
-If you follow the Quick Start in this Learning Area, then this module is provided for you as part of the project template.
+If you follow the Quick Start in this Learning Area, this module will provide you with part of the project template.
 
 If you want to add this module to an existing project, then this is easy. The contents need only be two files;
 
@@ -26,7 +26,7 @@ If you want to add this module to an existing project, then this is easy. The co
 
 #### Build script
 
-The build script simply defines dependencies on distributions (both internal and external to the project), so they can be
+The build script simply defines dependencies about distributions (both internal and external to the project), so that they can be
 resolved and deployed.
 
 ```kotlin
@@ -57,7 +57,7 @@ dependencies {
 }
 ```
 
-Note the special configuration option on the internal modules. If adding this configuration to a project, you will need
+Please note the special configuration option on the internal modules. If adding this configuration to a project, you will need
 to add the following code to the build script of the internal module that you wish to make available for deployment:
 
 ```kotlin
@@ -74,7 +74,7 @@ artifacts {
 }
 ```
 
-This special piece of Gradle DSL makes the zip file of the distribution available on the class path so it can be
+This special piece of Gradle DSL makes the zip file of the distribution available on the class path so that it can be
 resolved by the deploy plugin.
 
 ### Target deployments
