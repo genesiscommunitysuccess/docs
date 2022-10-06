@@ -19,11 +19,11 @@ Console monitors a specific application. To use Console, you will be provided wi
 * A username and password
 
 To log in to Console:
-Go to the URL provided and enter the hostname. Click on **Connect to host**.
+Go to the URL provided and enter the hostname. Click on **Connect to host**. 
 
 ![](/img/con-hostname.png)
 
-Then enter your username and password and click on **Login**.
+Then enter your username and password and click on **Login**. If you don't get Login page and see blank page without any response then its probably because you don't have NGINX configured, click [here](/operations/server-setup/config-management/#nginx-configuration) to configure it.
 
 ## Dashboard
 By default, you see the Dashboard when you log in. This has separate graphics showing CPU usage and memory usage. (You can scroll down to view CPU usage, if necessary.) The CPU usage chart also shows how many processes are running and how many are stopped.

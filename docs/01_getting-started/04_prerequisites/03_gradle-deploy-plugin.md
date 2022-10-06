@@ -106,16 +106,16 @@ locally.
 To configure this, open `gradle.properties` from the server/jvm folder and add the following entries:
 
 ```properties
-genesis-home=<path-to-genesis-distribution>
+genesis-home=<path-to-genesis-distribution-on-wsl>
 wsl-distro=<name-of-the-wsl-distro>
 wsl-user=<wsl-username>
 ```
 
-| Entry          | Description                                                                                     | 
-|----------------|-------------------------------------------------------------------------------------------------|
-| `genesis-home` | This is a mandatory property that is a path on the WSL distribution. Example: `/home/alpha/run` |
-| `wsl-distro`   | This is a mandatory property that is the name of the WSL distribution. Example: `CentOS7`       |
-| `wsl-user`     | This is an optional property. If omitted, the default WSL user will be used. Example: `alpha`   |
+| Entry          | Description                                                                                                             | 
+|----------------|-------------------------------------------------------------------------------------------------------------------------|
+| `genesis-home` | This is a mandatory property that is a path to genesis distribution on the WSL distribution. Example: `/home/alpha/run` |
+| `wsl-distro`   | This is a mandatory property that is the name of the WSL distribution. Example: `CentOS7`                               |
+| `wsl-user`     | This is an optional property. If omitted, the default WSL user will be used. Example: `alpha`                           |
 
 Sample configuration:
 
@@ -132,7 +132,7 @@ This is the easiest set-up, and applies if your development workstation is on a 
 To configure this, open `gradle.properties` from the server/jvm folder and add the following entry:
 
 ```properties
-genesis-home=<path-to-genesis-distribution>
+genesis-home=<path-to-genesis-distribution-on-wsl>
 ```
 
 The set-up task will create the folder (if it doesn't exist) and set up the Genesis platform there.
@@ -145,7 +145,7 @@ supported.
 To configure this, open `gradle.properties` from the server/jvm folder and add the following entries:
 
 ```properties
-genesis-home=<path-to-genesis-distribution>
+genesis-home=<path-to-genesis-distribution-on-wsl>
 ssh-username=<remote-host-username>
 ssh-password=<remote-host-password>
 ssh-host=<remote-host>
