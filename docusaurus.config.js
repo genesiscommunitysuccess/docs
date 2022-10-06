@@ -32,13 +32,13 @@ module.exports = {
       {
         createRedirects(existingPath) {
           if (existingPath.includes('/server')) {
-            // Redirect from /docs/team/X to /community/X and /docs/support/X to /community/X
+            // Redirect from /server-modules/team/X to /server/team/X
             return [
               existingPath.replace('/server', '/server-modules'),
             ];
           }
           if (existingPath.includes('/web')) {
-            // Redirect from /docs/team/X to /community/X and /docs/support/X to /community/X
+            // Redirect from /front-end/team/X to /web/team/X
             return [
               existingPath.replace('/web', '/front-end'),
             ];
