@@ -9,9 +9,9 @@ The goal of this section is to add a data chart to the UI.
 
 ## Declare a chart in the UI
 
-Charts component is wrapper for `@antv/g2plot`, allowing you to use the following types: Line, Area, Bar, Column, Pie, Dual Axes, Rose.
+Charts component is a wrapper for `@antv/g2plot`, allowing you the following types: Line, Area, Bar, Column, Pie, Dual Axes, Rose.
 
-You can quickly add charts to you application by just adding them into `template` of your route.
+You can quickly add charts to your application by adding them to `template` within your route.
 
 Example:
 
@@ -50,7 +50,7 @@ Sample configuration and data for pie chart:
 ];
 ```
 
-See more configuration examples [here](https://g2plot.antv.vision/en/examples/gallery).
+For further configuration examples please see: [here](https://g2plot.antv.vision/en/examples/gallery).
 
 ## Fetching the data
 Now you will define how to fetch the data from the server.
