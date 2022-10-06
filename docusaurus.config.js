@@ -43,7 +43,7 @@ module.exports = {
               existingPath.replace('/web', '/front-end'),
             ];
           }
-          return undefined; // Return a falsy value: no redirect created
+          return undefined; // Return a false value: no redirect created
         },
       },
     ],
