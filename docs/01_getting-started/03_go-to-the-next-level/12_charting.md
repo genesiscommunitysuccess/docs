@@ -9,7 +9,7 @@ The goal of this section is to add a data chart to the UI.
 
 ## Declare a chart in the UI
 
-Charts component is a wrapper for `@antv/g2plot`, allowing you the following types: Line, Area, Bar, Column, Pie, Dual Axes, Rose.
+Charts component is a wrapper for `@antv/g2plot`, that allows you the following types: Line, Area, Bar, Column, Pie, Dual Axes, Rose.
 
 You can quickly add charts to your application by adding them to `template` within your route.
 
