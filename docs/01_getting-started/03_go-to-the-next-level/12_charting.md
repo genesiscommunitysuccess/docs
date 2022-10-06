@@ -4,89 +4,76 @@ sidebar_label: 'Create a chart'
 id: charts
 ---
 
-Because we use Web Components, it is very easy to integrate third-party libraries with the Genesis low-code platform. 
-In this example, we shall integrate the highcharts library with Genesis data.
-
 ## Section objectives
 The goal of this section is to add a data chart to the UI.
 
-## Add, declare and bind
-Start by adding a new dependency to our project by running this command in terminal:
+## Declare a chart in the UI
 
-```shell title='/client/web/'
-npm i lerna -g
-npx lerna add highcharts
-npx lerna add highcharts-webcomponent
-```
+Charts component is wrapper for `@antv/g2plot`, allowing you to use the following types: Line, Area, Bar, Column, Pie, Dual Axes, Rose.
 
-Then you have to declare it in your `components.ts` file by adding the following lines:
+You can quickly add charts to you application by just adding them into `template` of your route.
 
-```typescript title='components.ts'
-import Highcharts from 'highcharts';
-import 'highcharts-webcomponent';
-import DarkUnica from 'highcharts/themes/dark-unica';
-
-DarkUnica(Highcharts);
-```
-
-Now go back to your template file and declare a new chart:
+Example:
 
 ```typescript title='home.template.ts'
-<highcharts-chart :options=${x => x.chartOptions}></highcharts-chart>
+<zero-charts type="pie" :config=${x => x.chartsConfiguration} :data=${x => x.chartsData}></zero-charts>
 ```
 
-As you can see, we bind `chartOptions` from our component definition to the `:options` property on the chart component.
+As you can see, we bind `chartsConfiguration`, `chartsData` from our component definition to the `:config` and `:data` properties on the chart component.
 
-You also need to declare datasource that will allow us to fetch data from the server
+Sample configuration and data for pie chart:
 
 ```typescript title='home.ts'
-import {Datasource} from '@genesislcap/foundation-comms';
-
-@observable public chartOptions = {
-    chart: {
-      type: 'pie',
+@observable chartsConfiguration = {
+  width: 600,
+  angleField: 'value',
+  colorField: 'type',
+  radius: 0.75,
+  label: {
+    type: 'spider',
+    labelHeight: 28,
+    content: '{name}\n{percentage}',
+    style: {
+      fill: 'white',
     },
-    title: {
-      text: 'Notional breakdown',
-    },
-    series: [],
+  },
+  interactions: [{ type: 'element-selected' }, { type: 'element-active' }],
 };
 
-@Datasource positionDatasource: Datasource;
+@observable chartsData = [
+  { type: 'Exam 1', value: 27 },
+  { type: 'Exam 2', value: 25 },
+  { type: 'Exam 3', value: 18 },
+  { type: 'Exam 4', value: 15 },
+  { type: 'Exam 5', value: 10 },
+  { type: 'Exam 6', value: 13 },
+];
 ```
 
+See more configuration examples [here](https://g2plot.antv.vision/en/examples/gallery).
+
 ## Fetching the data
-Now you will define how to fetch the data from the server and assign it to the `chartOptions`.
+Now you will define how to fetch the data from the server.
+
+To achieve this we can use `charts-datasource`.
 
 Use the snippet below, where:
 
-- We start by initialising the data source with the requested `resourceName` (`ALL-POSITIONS`) and the fields that we want the data for (`QUANTITY` and `INSTRUMENT NAME`).
-- Then we request a snapshot of the data and assign the result to the `series` property of chart options.
+- We start by initialising the datasource component with the requested `resourceName` (`ALL-POSITIONS`) and the fields that we want the data for (`INSTRUMENT NAME` and `VALUE`).
+- Then we specify a `charts-fields` to which we want to assign the data from the API. In this case:
+    - type = INSTRUMENT_NAME 
+    - value = VALUE
+- And finally we request a snapshot of the data.
 
-```typescript title="home.ts"
-public async connectedCallback()
-{
-    super.connectedCallback();
-
-    await this.positionDatasource.init({
-        resourceName: 'ALL_POSITIONS',
-        fields: 'QUANTITY INSTRUMENT_NAME ',
-    }, true);
-
-    const positionsRequest = await this.positionDatasource.snapshot();
-
-    this.chartOptions = {
-        ...this.chartOptions,
-        series: [{
-            name: 'Positions',
-            colorByPoint: true,
-            data: positionsRequest["ROW"].map(row => ({
-                name: row.INSTRUMENT_NAME,
-                y: row.QUANTITY,
-            }))
-        }]
-    };
-}
+```typescript title="home.template.ts"
+<zero-charts type="pie" :config=${(x) => x.chartsConfiguration}>
+  <charts-datasource
+    resourceName="ALL_POSITIONS"
+    server-fields="INSTRUMENT_NAME VALUE"
+    charts-fields="type value"
+    isSnapshot
+  ></charts-datasource>
+</zero-charts>
 ```
 
 ## Conclusion
