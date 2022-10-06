@@ -1,4 +1,5 @@
 require('dotenv').config();
+require
 
 const baseUrl = process.env.BASE_URL || '/';
 const routeBasePath = '/';
@@ -29,19 +30,17 @@ module.exports = {
     [
       '@docusaurus/plugin-client-redirects',
       {
-        fromExtensions: ['html', 'htm'], // /myPage.html -> /myPage
-        toExtensions: ['exe', 'zip'], // /myAsset -> /myAsset.zip (if latter exists)
         createRedirects(existingPath) {
-          if (existingPath.includes('/server-module')) {
+          if (existingPath.includes('/server')) {
             // Redirect from /docs/team/X to /community/X and /docs/support/X to /community/X
             return [
-              existingPath.replace('/server-module', '/server'),
+              existingPath.replace('/server', '/server-modules'),
             ];
           }
-          if (existingPath.includes('/front-end')) {
+          if (existingPath.includes('/web')) {
             // Redirect from /docs/team/X to /community/X and /docs/support/X to /community/X
             return [
-              existingPath.replace('/front-end', '/web'),
+              existingPath.replace('/web', '/front-end'),
             ];
           }
           return undefined; // Return a falsy value: no redirect created
