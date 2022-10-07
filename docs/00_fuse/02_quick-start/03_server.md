@@ -5,7 +5,7 @@ id: server
 
 # Server
 
-Now we have our basic user interface running, we need to start our server so that it can serve data for our user interface to use.
+We have two key elements in our application: our server and our user interface. This section focuses on the former.
 
 ### Expected result
 
@@ -14,7 +14,8 @@ By the end of this section we should have all parts of the server application ru
 - generate our server configuration 
 - have our server running
 - have our local FoundationDB running
-- populated our DB with some basic user credentials, which will be utilised later.
+- populate our DB with some basic user credentials, which will be utilised later
+- add initial user credentials to the database's USER table
 
 ## Server set-up
 
@@ -87,20 +88,17 @@ Once built, we need to deploy it:
 
 Although we have installed, built and deployed our Auth component as part of the above server configuration, we need to add a user that we'll use to log into our new application.
 
+We shall run the task loadInitialData. This adds the data in USER.csv to the USER table in your database. To do that we will call
+```shell
+./gradlew :jvm:alpha-deploy:loadInitialData #On the IntelliJ terminal
+```
 :::tip
-The following will be the application login details:
+The following will be the default application login details:
 
 - Username: JaneDee
 - Password: beONneON\*74 (This is encrypted in the USER.csv file.)
 :::
 
-Copy the file `user.csv` in your project's folder `data` to the following CentOS directory `$GENESIS_HOME/site-specific/data`
-
-From the CentOS terminal, run the following command:
-
-```shell
-SendIt -t USER -f $GENESIS_HOME/site-specific/data/user.csv
-```
 
 We want to validate that the above was successful; the following commands will help with that.
 
@@ -142,34 +140,11 @@ PID     Process Name                  Port        Status         CPU       Memor
 703     ALPHA_EVENT_HANDLER           11001       RUNNING        71.30     2.20
 ```
 
-## Connecting the UI and server
 
-Finally, we want to connect everything together.  
-
-With this next step, we will configure an Nginx working as a reverse proxy.
-
-In the CentOS terminal, enter:
-
-```shell
-docker login genesisglobal-docker-internal.jfrog.io
-...
-
-We need to enter artifactory credentials at this point. Enter:
-
-...
-docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
-#...
-
-We can run this command from within WSL or from the workstation. If running it from the CentOS shell, use the following command:
-#...
-docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
-
-```
 
 ## Recap
 
 Congratulations, you now have:
 
 - a server running
-- the Auth component configured
-- a working connection between the server and UI 
+- the Auth component configured 
