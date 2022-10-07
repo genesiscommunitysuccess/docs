@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, CardContent, CardMedia, Typography, CardActionArea} from '@mui/material'
+import {Card} from '@mui/material'
 import {ArrowForward} from '@mui/icons-material'
 
 export default function QuickCard({heading, link, text}){

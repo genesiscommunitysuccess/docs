@@ -126,9 +126,10 @@ If you use Genesis Console, this gives you a simple way of testing components.
 
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
 2. Enter the IP address of your server.
-3. Log in with your user name and password. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
-4. Click on the **RESOURCES** tab.
-5. Filter the **Resource type** to show only data servers.
+3. If you get blank page without any response then its probably because you don't have NGINX configured, click [here](/operations/server-setup/config-management/#nginx-configuration) to configure it. Otherwise, proceed with next step(4)
+4. Log in with your user name and password. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
+5. Click on the **RESOURCES** tab.
+6. Filter the **Resource type** to show only data servers.
 
 For example:
 

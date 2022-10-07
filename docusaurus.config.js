@@ -1,4 +1,5 @@
 require('dotenv').config();
+require
 
 const baseUrl = process.env.BASE_URL || '/';
 const routeBasePath = '/';
@@ -26,6 +27,26 @@ module.exports = {
 
 
   plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        createRedirects(existingPath) {
+          if (existingPath.includes('/server')) {
+            // Redirect from /server-modules/team/X to /server/team/X
+            return [
+              existingPath.replace('/server', '/server-modules'),
+            ];
+          }
+          if (existingPath.includes('/web')) {
+            // Redirect from /front-end/team/X to /web/team/X
+            return [
+              existingPath.replace('/web', '/front-end'),
+            ];
+          }
+          return undefined; // Return a false value: no redirect created
+        },
+      },
+    ],
     [require.resolve('@cmfcmf/docusaurus-search-local'), {
       indexBlog: true,
       indexPages: true,
