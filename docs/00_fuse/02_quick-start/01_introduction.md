@@ -7,22 +7,18 @@ id: introduction
 
 This introductory guide enables you to use Fuse to build a full stack Genesis application quickly and easily.
 
-This guide will be split into the following steps:
+It's split into the following steps:
 
-1. [Create Project](/fuse/quick-start/create-project/)
-2. [Server](/fuse/quick-start/server)
-3. [User Interface](/fuse/quick-start/user-interface/)
-4. [Add Features](/fuse/quick-start/add-features)
-5. [Summary](/fuse/quick-start/summary)
+1. [Create Application](/fuse/quick-start/create-application/)
+2. [Start Application](/fuse/quick-start/start-application)
+3. [Add Features](/fuse/quick-start/add-features)
+4. [Summary](/fuse/quick-start/summary)
 
 ## What will we build?
 
 By the end of this guide, we will have created a full stack Genesis application which will show:
+- a customisable grid surfacing application data
 - a form allowing us to insert new data
-- a customisable grid surfacing any application data
-
-We are going to call this example application **alpha**. We'll see this reflected in the file names throughout.
-
 
 ## What will we learn?
 
@@ -32,4 +28,4 @@ Upon completion, you should have knowledge of how to build an application using 
 - modelling data with clear type definitions
 - building grid views to visualise data
 - setting up forms to manipulate the data set
-- integrating with existing Genesis components, in this case the Login (auth) component 
+- integrating with existing Genesis components such as the authentication component 

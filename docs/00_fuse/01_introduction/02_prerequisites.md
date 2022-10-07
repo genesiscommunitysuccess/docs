@@ -5,29 +5,34 @@ id: 'prerequisites'
 
 # Prerequisites
 
-Fuse has the same requirements as our other Genesis platform options. 
-Those include:
- - Hardware and Software
- - WSL
- - Gradle deploy plugin
+Before you start, make sure you have the relevant [hardware and software](/getting-started/quick-start/hardware-and-software/). Fuse has the same requirements as our other Genesis platform options. 
 
-:::note
-Before progressing with our guides, make sure you check the [Introduction](/getting-started/prerequisites/introduction/) page to ensure you have the correct initial set-up.
-:::
+## Development environment
+
+You have a few options for running applications locally:
+
+* The recommended approach is to use Docker. Refer to the [Docker documentation](https://docs.docker.com/get-docker/) for installation instructions.
+* On Windows you can also use Windows Subsystem for Linux (WSL). Refer to the [WSL installation instructions](/getting-started/prerequisites/installing-wsl/).
 
 ## GenX CLI
 ####
-GenX is a CLI tool that enables you to use seed projects that adhere to best practice for development on the Genesis low-code platform.
+GenX is a CLI tool that enables you to quickly create projects that adhere to Genesis best practices.
 
 
 ### Installation
-To install GenX, use the following command in the terminal:
-:::important
-Our Fuse seed is currently only available on a particular version. If necessary, uninstall any previous version and specify the one we need.
-:::
 
 ```shell
-npm uninstall -g @genesislcap/foundation-cli
-npm install -g @genesislcap/foundation-cli@3.0.1-alpha-f18b742.0+f18b742
+npm install -g @genesislcap/foundation-cli@dsl
 ```
-There is more information in our [Genx](/getting-started/prerequisites/genx/) documentation.
+
+To update it to the latest version:
+
+```shell
+npm update -g @genesislcap/foundation-cli@dsl
+```
+
+:::important
+Updating GenX CLI gives you access to the latest Genesis functionality.
+:::
+
+There is more information in our [GenX](/getting-started/prerequisites/genx/) documentation.
