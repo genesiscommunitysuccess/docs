@@ -15,7 +15,7 @@ By the end of this section we should have a local view of our application's user
 - the ability to make changes to the user interface and reflect those changes in the web browser
 - a working connection between the server and user interface
 
-## User Interface set-up
+## User interface set-up
 
 ### Making the UI available in our web browser
 
@@ -77,7 +77,7 @@ We should now see the updated `Alpha Trading Dashboard` page title as well as th
 
 Finally, we want to connect everything together.  
 
-With this next step, we will configure an Nginx working as a reverse proxy.
+With this next step, we will configure NGINX as a reverse proxy.
 
 In the CentOS terminal, enter:
 
@@ -85,7 +85,7 @@ In the CentOS terminal, enter:
 docker login genesisglobal-docker-internal.jfrog.io
 ...
 
-We need to enter artifactory credentials at this point. Enter:
+Before proceeding with the next step, we need to enter our artifactory credentials.
 
 ...
 docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
