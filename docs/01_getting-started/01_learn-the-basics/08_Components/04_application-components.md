@@ -5,9 +5,9 @@ sidebar_position: 3
 id: application-components
 ---
 
-These application components enable you to create working event-driven applications quickly. You can configure each component as required. By doing this, you add precise control, complexity and sophistication to your application.
+The application components enable you to create the working event-driven applications quickly. You can configure each component as per your requirement and doing so will add precise control, complexity and sophistication to your application.
 
-| Name                                                                                        | Category  | Description                                                |
+| Name                                                                                        | Category  | Description                                                
 |---------------------------------------------------------------------------------------------|--------------------|------------------------------------------------------------|
 | [Data Server](docs/03_server/02_data-server/01_introduction.md)                             | Data & distribution  | Real-time, low-latency data distribution over Websockets   |
 | [Event Handler](docs/03_server/04_event-handler/01_introduction.md)                         | Data & distribution  | Processes business logic in response to system events      |
