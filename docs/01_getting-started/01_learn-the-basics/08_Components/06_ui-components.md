@@ -5,7 +5,7 @@ sidebar_position: 5
 id: ui-components
 ---
 
-These user-interface components give you the ability to create clear and usable interfaces at speed.
+With these user-interface (UI) components, you can create clear and usable interfaces quickly.
 
 | Name                                                                                         | Category      | Description                                                                                                                                                 |
 |----------------------------------------------------------------------------------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
