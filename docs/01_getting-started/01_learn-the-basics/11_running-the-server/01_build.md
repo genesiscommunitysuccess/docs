@@ -4,14 +4,14 @@ sidebar_label: 'Build'
 id: build
 ---
 
-With a database and two modules (Data Server and Event Handler) in place to supply data to the front end, we can now build our server.
+With a database and two modules (a Data Server and an Event Handler) in place to supply data to the frontend, we can now build our server.
 
-The details of the two modules need to be added to your application's:
+Below are the details of the two modules needed to be added to your application:
 
-- **processes.xml** file: effectively, this registers the module as part of your application and sets things like logging level
-- **service definitions** file: this sets port numbers for internal messaging
+- **processes.xml** file - registers the module as a part of your application and sets things like logging level
+- **service definitions** file - sets the port numbers for the internal messaging
 
-That's it. Once these files have been correctly updated, you can run a simple command to build, which is available from the gradle menu on the right of your intellij:
+This is done. Once these files have been correctly updated, you can run a simple command to build, which is available from the gradle menu on the right of your intellij.
 
 In your project directory, select **Tasks**/**Build/Assemble**.
 
