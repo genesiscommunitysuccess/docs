@@ -4,27 +4,27 @@ sidebar_label: 'genesis-system-definitions.kts'
 id: genesis-system-definitions
 ---
 
-The system-definition file **genesis-system-definition.kts** is the basis of all configurations, scripts, data model, etc. 
+The system-definition file, **genesis-system-definition.kts**, is the basis of all the configurations, scripts, data models etc. 
 
 It defines system properties such as:
 
 - the type of Message Queue technology
 - the database technology 
 - the hostname of the local database
-- database user name and encrypted password
+- the database user name and the encrypted password
 - whether or not metrics are enabled
 
 The properties can be applied at three different levels:
 
-- global properties are available to all systems 
-- system properties apply to specific systems; these setting override any similar global settings
-- host properties define the environment that the application is running in
+- the global properties are available to all systems 
+- the system properties apply to specific systems; these setting override any similar global settings
+- the host properties define the environment that the application is running in
 
 
-Here is an example of a genesis-system-definition.kts file for an application. Note the following:
+Here is an example of a **genesis-system-definition.kts** file for an application:
 
-- global properties are defined first (for example, the database technology is FoundationDB)
-- system properties are defined next - in this case, there is only one: DEV
+- the global properties are defined first (for example, the database technology is FoundationDB)
+- the system properties are defined next - in this case, there is only one: DEV
 - within DEV, the hosts are defined - in this case, only genesis-serv
 
 ```kotlin
