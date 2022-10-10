@@ -8,14 +8,11 @@ The GenX CLI tool enables you to seed projects. In this case we want to generate
 
 We also have step-by-step instructions on [how to install and use genx](/getting-started/prerequisites/genx/).
 
+Please use Windows as development environment and WSL as runtime environment for this tutorial
+
 ## Starting
-Once configured, install genx using the following command:
 
-```shell
-npm install -g @genesislcap/foundation-cli
-```
-
-Once installed, from the terminal, run:
+Once configured and installed, from the terminal, run:
 
 ```shell
 genx

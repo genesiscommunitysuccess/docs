@@ -6,18 +6,19 @@ id: genx
 
 
 
-The GenesisX CLI genx is a command-line interface tool that you can use to scaffold Genesis applications and workspaces directly from a terminal. 
+The GenesisX CLI GenX is a command-line interface tool that you can use to scaffold Genesis applications and workspaces directly from a terminal. 
 
-With genx, you can pull seed projects that adhere to best practices for development on the Genesis low-code platform. The seed projects available range from skeleton projects to example applications.
+With GenX, you can pull seed projects that adhere to best practices for development on the Genesis low-code platform. The seed projects available range from skeleton projects to example applications.
 
 ## Prerequisites
 
+- Recommended Operating system : Windows 10 Pro
 - [Node.js](https://nodejs.org/en/download/) version 16
 - Before installing GenX, you need to [configure the Genesis npm repository](/getting-started/quick-start/hardware-and-software/#npmrc-set-up)
 
 ## Installing GenX
 
-Once the repository is configured, open a terminal and install the CLI tool using this:
+Once the repository is configured, open a terminal on your Windows machine and install the CLI tool using this:
 
 ```shell
 npm install -g @genesislcap/foundation-cli
