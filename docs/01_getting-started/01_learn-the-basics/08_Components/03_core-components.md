@@ -5,7 +5,7 @@ sidebar_position: 2
 id: core-components
 ---
 
-These core components are part of the Genesis low-code platform. They run automatically, and take away the need for much of the low-level programming that is essential to creating financial markets applications. It's there for you already, so you can concentrate on developing the essential value that is specific to your application.
+These core components are part of the Genesis low-code platform which run automatically. These components eliminate the need of the manual low-level programming which is otherwise mandatory for creating financial markets applications. Hence, you can simply focus on developing the essential value specific to your application.
 
 | Name                                                                                        | Category       | Description                                                                                                             |
 |---------------------------------------------------------------------------------------------|----------------|-------------------------------------------------------------------------------------------------------------------------|
