@@ -177,11 +177,11 @@ public async insertTrade() {
  Let's add another data grid at the bottom of the page to show the trade view `ALL_TRADES`:
 
 ```html title='home.template.ts'
-  <zero-ag-grid style="width: 100%; height: 100%">
-        <ag-genesis-datasource
-                resourceName="ALL_TRADES"
-                orderBy="INSTRUMENT_ID">
-        </ag-genesis-datasource>
-    </zero-ag-grid>
+  <zero-ag-grid>
+      <ag-genesis-datasource
+          resourceName="ALL_TRADES"
+          orderBy="INSTRUMENT_ID">
+      </ag-genesis-datasource>
+  </zero-ag-grid>
 ```
 Now if everything has worked, you can go to your browser, insert the data for a new trade, and click the button. You will see the new trade showing up in the data grid of the trade view `ALL_TRADES` at the bottom of the page.

@@ -64,7 +64,7 @@ In the template file, start by adding the Genesis data source pointing to the ap
 
 [//]: # (link to ag-genesis-datasource tsdocs)
 ```html title="home.template.ts"
-<zero-ag-grid style="width: 100%; height: 100%">
+<zero-ag-grid>
     <ag-genesis-datasource
         resourceName="ALL_POSITIONS"
         orderBy="INSTRUMENT_ID">
@@ -81,7 +81,7 @@ This will result in a grid displaying all the columns available in the `ALL_POSI
 To add new columns that are not part of the API, we can add additional column definitions.
 
 ```html {6} title="home.template.ts"
-<zero-ag-grid style="width: 100%; height: 100%">
+<zero-ag-grid>
     <ag-genesis-datasource
         resourceName="ALL_POSITIONS"
         orderBy="INSTRUMENT_ID">
@@ -141,10 +141,7 @@ Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives
 import {positionColumnDefs} from './positionColumnDefs';
 import {repeat} from '@microsoft/fast-element';
 
-<zero-ag-grid
-    style="width: 100%; height: 100%"
-    only-template-col-defs
-    >
+<zero-ag-grid only-template-col-defs>
     <ag-genesis-datasource
         resourceName="ALL_POSITIONS"
         orderBy="INSTRUMENT_ID">

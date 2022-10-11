@@ -575,11 +575,6 @@ background-color: #22272a;
 font-size: 13px;
 font-weight: bold;
 }
-
-zero-ag-grid {
-width: 100%;
-height: 100%;
-}
 ```
 
 Open the file **home.ts** and import *AgGrid* and *Connect*. Then, add them as attributes to the Home class.
