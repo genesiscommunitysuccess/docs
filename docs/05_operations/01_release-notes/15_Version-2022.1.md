@@ -15,6 +15,8 @@ The basis of this version is:
 | server        | 6.0.0   |  
 | web           | 1.0.0   |   
 
+Release date: April 11, 2022.
+
 # Release notes
 
 ## New Web UI components

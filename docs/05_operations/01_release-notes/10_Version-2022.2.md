@@ -14,6 +14,8 @@ The basis of this version is:
 | server        | 6.1.0   |  
 | web           | 2.0.0   |   
 
+Release date: July 08, 2022.
+
 # Release notes
 
 ## GPAL Camel [Breaking Change]
