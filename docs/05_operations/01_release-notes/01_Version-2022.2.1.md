@@ -4,8 +4,18 @@ sidebar_label: 'Version 2022.2.1'
 sidebar_position: 1
 id: version-2022-2-1
 ---
+This is version v2022.2.1 of the documentation for the Genesis low-code platform.
 
-# Foundation UI
+The basis of this version is:
+
+| part of stack | version | 
+|---------------|---------|
+| server        | 6.2.0   |  
+| web           | 4.0.0   |  
+
+Release date: September 30, 2022.
+
+# Foundation UI (Web)
 
 ## Features:
 

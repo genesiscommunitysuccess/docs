@@ -9,10 +9,10 @@ This is version v2022.2 of the documentation for the Genesis low-code platform.
 
 The basis of this version is:
 
-|part of stack|version| 
-|---|---|
-| server   | 6.1.0  |  
-| web  | 2.0.0  |   
+| part of stack | version | 
+|---------------|---------|
+| server        | 6.1.0   |  
+| web           | 2.0.0   |   
 
 # Release notes
 
