@@ -9,15 +9,10 @@ The GenX CLI tool enables you to seed projects. In this case we want to generate
 We also have step-by-step instructions on [how to install and use genx](/getting-started/prerequisites/genx/).
 
 ## Starting
-Once configured, install genx using the following command:
 
-```shell
-npm install -g @genesislcap/foundation-cli
-```
+Once configured and installed, from the Windows terminal, run:
 
-Once installed, from the terminal, run:
-
-```shell
+```shell title="Windows Terminal"
 genx
 ```
 
@@ -31,14 +26,14 @@ In the `genx` script, there is a series of questions.
 
 First, you are asked to provide your username and password - these are the credentials you use to access Genesis Artifactory.
 
-```shell
+```shell title="Windows Terminal"
 ? Genesis Username example.username
 ? Genesis Password **************
 √ Logged into Genesis
 ```
 Then you are asked to select from a short list of seed applications. Select `create application`:
 
-```shell
+```shell title="Windows Terminal"
 ? Please select an option: (Use arrow keys)
   create workspace - Generates a local workspace to use for your Genesis based apps.
   configure workspace - Configure a local workspace.
@@ -47,7 +42,7 @@ Then you are asked to select from a short list of seed applications. Select `cre
 ```
 Now you can proceed using the following responses:
 
-```shell
+```shell title="Windows Terminal"
 ? Create a app in current directory Yes
 ? App name alpha
 ```
@@ -55,7 +50,7 @@ Now you can proceed using the following responses:
 Then you are asked to select the App Seed. Select `Quick Start Application` from the list. Do **not** select the Positions Application.
 You will be asked if you want to overwrite existing files. Select **Y**.
 
-  ```shell
+  ```shell title="Windows Terminal"
 App seed (Use arrow keys)
 > **Quick Start Application**
   Positions Application
@@ -70,7 +65,7 @@ At this point, the seed application is created and the genx dependencies are ins
 
 Then there are more questions, which you can respond to as follows:
 
-```shell
+```shell title="Windows Terminal"
 ? Package scope (without the @) genesislcap
 ? Package name alpha
 ? Create design system Yes
@@ -88,6 +83,6 @@ Then there are more questions, which you can respond to as follows:
 
 At this point, the application will be configured. Assuming it is successful, you will see the following text:
 
-```shell
+```shell title="Windows Terminal"
 i Application created successfully! 🎉 Please open the application and follow the README to complete setup.
 ```

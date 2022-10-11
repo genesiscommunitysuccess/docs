@@ -139,33 +139,13 @@ We will start with side, as it only has two static options: BUY and SELL. We jus
 </zero-select>
 ```
 
-To enable the user to select the instrument, it's more complicated, because a list of options needs to be fetched from the API.
+To enable the user to select the instrument, we can use `options-datasource`, which will fetch and add a list of options to select component from the API.
 
-We will do that in [connectedCallback](https://www.fast.design/docs/fast-element/defining-elements#the-element-lifecycle), which happens when an element is inserted into the DOM.
-First, declare `tradeInstruments`. This will be used in the template later.
-
-To get the data from the API, inject:
-```typescript title='home.ts'
-@observable tradeInstruments: Array<{value: string, label: string}>;
-@Connect connect: Connect;
-
-public async connectedCallback() {
-    super.connectedCallback();
-    
-    const tradeInstrumentsRequest = await this.connect.request('INSTRUMENT');
-    this.tradeInstruments = tradeInstrumentsRequest.REPLY?.map(instrument => ({value: instrument.INSTRUMENT_ID, label: instrument.NAME}));
-    this.instrument = this.tradeInstruments[0].value;
-}
-```
-
-Once we have the data with the list of instruments, we can make use of it in the template file. 
-To dynamically include a list of instruments, use the [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items.
+To get the data from the server, we need to define resourceName and fields we want to get. In this case we need to inject:
 
 ```typescript title='home.template.ts' 
 <zero-select :value=${sync(x=> x.instrument)}>
-  ${repeat(x => x.tradeInstruments, html`
-    <zero-option value=${x => x.value}>${x => x.label}</zero-option>
-  `)}
+  <options-datasource resourceName="ALL_INSTRUMENTS" fields="INSTRUMENT_ID"></options-datasource>
 </zero-select>
 ```
 

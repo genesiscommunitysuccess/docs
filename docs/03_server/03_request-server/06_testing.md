@@ -101,8 +101,14 @@ fun `can get hello world`() = runBlocking {
 
 ### Testing with Console
 
-In Genesis Console, select your Request Server in the Resources tab.
-Once you click into your Request Server, you will see the current response from the Request Server and any input fields that you have defined. You can change the inputs and verify that the correct behaviour is being seen. Make sure that your database has some data for you to search through.
+If you use Genesis Console, this gives you a simple way of testing components.
+
+1. In your browser, go to http://genesislcap.com/console/console-next2/.
+2. Enter the IP address of your server.
+3. If you get blank page without any response then its probably because you don't have NGINX configured, click [here](/operations/server-setup/config-management/#nginx-configuration) to configure it. Otherwise, proceed with next step(4)
+4. Log in with your user name and password. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
+5. Click on the **RESOURCES** tab.
+6. Filter the **Resource type** to show only Request Servers. Once you click into your Request Server, you will see the current response from the Request Server and any input fields that you have defined. You can change the inputs and verify that the correct behaviour is being seen. Make sure that your database has some data for you to search through.
 
 ![](/img/test-console-rs-success.png)
 

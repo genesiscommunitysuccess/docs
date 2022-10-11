@@ -4,7 +4,7 @@ sidebar_label: 'Generated versions'
 id: generated-versions
 ---
 
-One important thing about these system files is that the Genesis low-code platform uses *system-generated* versions of these files. 
+It is important to know that the Genesis low-code platform uses *system-generated* versions of these system files. 
 
 Any time you make changes to these files, you should run the command `genesisInstall` to ensure that the changes are included in the generated files.
 

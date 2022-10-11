@@ -6,26 +6,27 @@ id: genx
 
 
 
-The GenesisX CLI genx is a command-line interface tool that you can use to scaffold Genesis applications and workspaces directly from a terminal. 
+The GenesisX CLI GenX is a command-line interface tool that you can use to scaffold Genesis applications and workspaces directly from a terminal. 
 
-With genx, you can pull seed projects that adhere to best practices for development on the Genesis low-code platform. The seed projects available range from skeleton projects to example applications.
+With GenX, you can pull seed projects that adhere to best practices for development on the Genesis low-code platform. The seed projects available range from skeleton projects to example applications.
 
 ## Prerequisites
 
+- Recommended Operating system : Windows 10 Pro
 - [Node.js](https://nodejs.org/en/download/) version 16
 - Before installing GenX, you need to [configure the Genesis npm repository](/getting-started/quick-start/hardware-and-software/#npmrc-set-up)
 
 ## Installing GenX
 
-Once the repository is configured, open a terminal and install the CLI tool using this:
+Once the repository is configured, open a terminal on your Windows machine and install the CLI tool using this:
 
-```shell
+```shell title="Windows Terminal"
 npm install -g @genesislcap/foundation-cli
 ```
 
 Now you're ready to use the tool, simply type `genx` to start:
 
-```shell
+```shell title="Windows Terminal"
 genx
 ```
 
@@ -39,30 +40,30 @@ Next, follow the instructions according to the task you're wishing to carry out.
 
 The following is the most typical example, creating a new application:
 
-```shell
+```shell title="Windows Terminal"
 ? Please select an option: create application - Generates a local application.
 ```
 
 Enter the local directory you want to create the app in (where relevant, the default for these options is the letter displayed in upper case; this will be applied if nothing is entered):
 
-```shell
+```shell title="Windows Terminal"
 ? Create a app in current directory (Y/n)
 ```
 
 ... and then give it an appropriate name (e.g. **alpha**):
-```shell
+```shell title="Windows Terminal"
 ? App name alpha
 ```
 
 Next, select Seed application you wish to base your project on:
-```shell
+```shell title="Windows Terminal"
 ? App seed
 
 > Genesis Quick Start Application
 ```
 
 Choose whether to overwrite existing files. The default is **No**.
-```shell
+```shell title="Windows Terminal"
 ? Overwrite existing files (y/N)
 ```
 
@@ -72,22 +73,22 @@ This will start the download of dependencies.
 Once that is done, you will be prompted for configuring the front-end part of the project.
 
 The first prompt is the package [scope](https://docs.npmjs.com/cli/v8/using-npm/scope). The default is **genesislcap**.
-```shell
+```shell title="Windows Terminal"
 ? Package scope (without the @) genesislcap
 ```
 
 The next question is about the package name. You can use **alpha**.
-```shell
+```shell title="Windows Terminal"
 ? Package name alpha
 ```
 
 The next is whether you want to create a design system. The default is **Yes**.
-```shell
+```shell title="Windows Terminal"
 ? Create design system (Yes/no)
 ```
 
 Finally, whether you want to set an API host. The default is **Yes**.
-```shell
+```shell title="Windows Terminal"
 ? Set API Host (Yes/no)
 ```
 
@@ -95,7 +96,7 @@ Finally, whether you want to set an API host. The default is **Yes**.
 The next prompts concern the back-end part of the application.
 
 The first prompt is for which Genesis Server version is to be used:
-```shell
+```shell title="Windows Terminal"
 ? Genesis Server version 6.1.2
 ```
 
@@ -106,22 +107,22 @@ At the time of writing, the same version as the Genesis Server must be used.
 
 :::
 
-```shell
+```shell title="Windows Terminal"
 ? Genesis Deploy plugin version 6.1.2
 ```
 
 Then specify the Kotlin version. The latest tested version is 1.6.10:
-```shell
+```shell title="Windows Terminal"
 ? Kotlin version 1.6.10
 ```
 
 ... followed by the [group id](https://maven.apache.org/guides/mini/guide-naming-conventions.html)
-```shell
+```shell title="Windows Terminal"
 ? Group Id global.genesis
 ```
 
 ... and the application version:
-```shell
+```shell title="Windows Terminal"
 ? Application Version 1.0.0-SNAPSHOT
 ```
 

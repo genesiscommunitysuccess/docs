@@ -4,11 +4,11 @@ sidebar_label: 'process.xml'
 id: process
 ---
 
-Your application must have a **-processes.xml** file. If your application is called bravo, then the file will be called **bravo-processes.xml**.
+Your application must have a **-processes.xml** file. For example, if your application is called 'bravo', then the file will be called **bravo-processes.xml**.
 
-The purpose of this file is to specify the main characteristics of each of the services (or modules) in your application. If you don't define a module here, it will effectively not be part of the application, however good or bad you make it.
+The purpose of this file is to specify the main characteristics of each of the services (or modules) in your application. If you don't define a module here, it will not be a part of your application.
 
-So, if you add a new module, you must add its details to your application's **processes.xml** file.
+So, if you add a new module, you must add its details to your application's **processes.xml** file as explained in the example above.
 
 Characteristics that are defined for each module include:
 - the name of the script file
@@ -16,14 +16,14 @@ Characteristics that are defined for each module include:
 - the classpath - any additional jar files that the module needs in order to run
 - the logging level for the module
 
-It is important to know that whenever you run the command `genesisInstall`, an enriched version of this file is put in your application's **generated** folder. It is this version of the file that the system refers to whenever it starts or runs. So, if you change your version of the file, you need to run `genesisInstall` to make sure that your changes are put into effect.
+It is important to know that whenever you run the command `genesisInstall`, an enriched version of this file is put in your application's **generated** folder. And thereafter, it is this enriched version of the file that the system refers to whenever it starts or runs. So, if you change your version of the file, you need to run `genesisInstall` to make sure that your changes are put into effect.
 
 Here is an example of a generated **processes.xml** file for an application that has:
 
-- a Data Server
-- a Request Server
-- an Event Handler
-- a Consolidator
+- a data server
+- a request server
+- an event handler
+- a consolidator
 
 ```kotlin
 <processes>

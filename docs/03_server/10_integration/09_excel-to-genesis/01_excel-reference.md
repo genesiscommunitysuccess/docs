@@ -20,8 +20,8 @@ This script converts the Excel spreadsheet into a Genesis data model, which can 
 | Argument | Argument long name      | Mandatory |               Description                                 | Restricted values         |
 |----------|-------------------------|-----------|-----------------------------------------------------------|---------------------------|       
 | -f       | --file                  | Yes       | the name of the worksheet you are going to convert.       | No                        |        
-| -n       | -–name                  | Yes       | the name of the project (application) you want to create. | No                        |              
-| -t       | -–table                 | Yes       | the start of the table id sequence (see note below).       | No                        |        
+| -n       | --name                  | Yes       | the name of the project (application) you want to create. | No                        |              
+| -t       | --table                 | Yes       | the start of the table id sequence (see note below).      | No                        |        
 
 
 

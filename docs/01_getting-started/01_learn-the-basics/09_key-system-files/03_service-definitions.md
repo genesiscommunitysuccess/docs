@@ -4,9 +4,9 @@ sidebar_label: 'service definitions.xml'
 id: service-definitions
 ---
 
-Every application must have a -service-definitions.xml file. This is where you specify the ports of the various processes. The ports are used to communicate internally between processes.
+Every application must have a **-service-definitions.xml** file. This is where you specify the ports of the various processes. The ports are used to communicate internally between these various processes.
 
-Here is a simple example where port numbers have been specified for three modules:
+Here is an example where port numbers have been specified for three modules:
 
 ```xml
 <configuration>
@@ -16,7 +16,7 @@ Here is a simple example where port numbers have been specified for three module
 </configuration>
 ```
 
-When `genesisInstall` is executed, all products have their **service-definitions.xml ** files compiled into a system-wide **$GC/global-service-definitions.xml**. Here is an example of a global-service-definitions.xml file where we have the auth, genesis and gcom products installed:
+When `genesisInstall` is executed, all the products have their **service-definitions.xml ** files compiled into a system-wide **$GC/global-service-definitions.xml**. Here is an example of a **global-service-definitions.xml** file where we have the auth, genesis and gcom products installed:
 
 ```xml
 <configuration>
