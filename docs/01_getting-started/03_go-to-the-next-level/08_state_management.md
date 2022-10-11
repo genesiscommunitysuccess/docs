@@ -174,7 +174,7 @@ eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
 ```
 
 :::info
-You may have noticed we are passing a `transactional = ture` parameter into our event handler. This ensures any exception or nack returned will result in a complete rollback of all parts of the onCommit and onValidate (the transaction also covers read commands) blocks. You can read more about transactions [here](/server/event-handler/basics/#transactional-event-handlers-acid)
+You may have noticed we are passing a `transactional = true` parameter into our event handler. This ensures any exception or nack returned will result in a complete rollback of all parts of the onCommit and onValidate (the transaction also covers read commands) blocks. You can read more about transactions [here](/server/event-handler/basics/#transactional-event-handlers-acid)
 :::
 
 ## Add Event Handlers for the rest of the states
@@ -219,7 +219,7 @@ eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
 }
 ```
 
-You **positions-app-tutorial-eventhandler.kts** file at the end should look this:
+Your **positions-app-tutorial-eventhandler.kts** file at the end should look this:
 
 ```kotlin
 import global.genesis.TradeStateMachine
