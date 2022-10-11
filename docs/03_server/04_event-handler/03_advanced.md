@@ -65,13 +65,17 @@ The `onException` block can capture any exceptions thrown by the `onValidate` an
 
 ## Permissioning and permissionCodes
 
-As with other GPAL files (e.g. Request Server and Data Server), you can use a `permissioning` block to define both dynamic permissions (AUTH) and fixed permissions (based on RIGHT_SUMMARY rights) if the event message type is a generated database entity. See the example below:
+As with other GPAL files (e.g. Request Server and Data Server), you can use a `permissioning` block to define both dynamic permissions (AUTH) and fixed permissions (based on RIGHT_SUMMARY rights) on event handlers
+
+### Dynamic permissions
+For event handlers you need to use any class as event message type instead of table/view, which is similar to custom request-replies.
+In below example we used generated database entity called `Company` as message type of event `EVENT_AUTH_COMPANY_INSERT`
 
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
         permissioning {
             auth(mapName = "COMPANY"){
-                COMPANY.COMPANY_NAME
+                field { companyName } 
             }
         }
 
@@ -83,7 +87,13 @@ As with other GPAL files (e.g. Request Server and Data Server), you can use a `p
     }
 ```
 
-If your message type is not a database-generated entity,  you can still define fixed `permissionCodes` outside the permissioning block:
+If you use custom class instead of generated database entities as message-type of events, we recommend that you locate your classes within the messages module of your application. This is where we place all the custom message types for our application. You need to ensure that the _app-name_**-script-config** module has a dependency on the messages module.
+
+```bash
+    api(project(":{app-name}-messages"))
+```
+
+### Permission codes
 
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
