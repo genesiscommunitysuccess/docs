@@ -60,17 +60,17 @@ This release is 4.0.0 of `foundation-ui` . We have chosen to stick to a fixed ve
 
 # Genesis Server Framework
 
-## Important Notes
+## Important notes
 
 - After the introduction of https://genesisglobal.atlassian.net/browse/PA-142, the ‘DbNamespace’ SysDef item is now applicable to platform implementations using MSSQL and PostGres databases. Previously, this item would be ignored. Many standard system definition files specify a placeholder value for this configuration key. In order to use the default database schema (previous behaviour), this item must be removed from the system definition.
 
-## Breaking Changes
+## Breaking changes
 
 - Kotlin version has been upgraded to version 1.7.10 and projects depending on GSF 6.2.0 must upgrade as well.
 - Gradle version has been upgraded to version 7.5 and projects depending on GSF 6.2.0 must upgrade as well.
 - Field named “NAME” in genesis-fields-dictionary.kts has now a max size definition of 255. This may conflict with other projects redefining the “NAME” field.
 
-## New Features
+## New features
 
 - data-pipeline: Genesis db changes are now audited.
 - Enabling auto restart on genesis cluster and router.
@@ -125,24 +125,24 @@ This release is 4.0.0 of `foundation-ui` . We have chosen to stick to a fixed ve
 - Fixing Oracle and MSSQL support.
 - Data pipeline broken for RDBs.
 
-## Security Updates
+## Security updates
 
 - [Snyk] Upgrade org.apache.maven.wagon:wagon-http from 3.5.1 to 3.5.2.
 - [Snyk] Security upgrade org.apache.maven.plugins:maven-install-plugin from 2.5.2 to 3.0.0.
 
 # AUTH
 
-## Breaking Changes
+## Breaking changes
 
 - Updated to GSF 6.2.0, Kotlin 1.7.10 and Gradle 7.5.
 
-## New Features
+## New features
 
 - Added onLoginSuccess callback into auth-preferences GPAL.
 - Added config flag to bypass internal auth check on Login.
 - Added installHook to load new profile rights data from relevant CSV.
 
-## Bug Fixes
+## Bug fixes
 
 - Regenerate refresh token each time it is used.
 - Use correct username to resolve user attributes for entity visibility checks.
@@ -150,31 +150,31 @@ This release is 4.0.0 of `foundation-ui` . We have chosen to stick to a fixed ve
 
 # FIX
 
-## Breaking Changes
+## Breaking changes
 
 - Updated to GSF 6.2.0 and Kotlin 1.7.10.
 
-## New Features
+## New features
 
 - Add hostname to connection status table.
 - Enhance core FIX framework with various metrics.
 
-# Market Data
+# Market data
 
-## Breaking Changes
+## Breaking changes
 
 - Updated to GSF 6.2.0 and Kotlin 1.7.10.
 
-## New Features
+## New features
 
 None.
 
 # Elektron
 
-## Breaking Changes
+## Breaking changes
 
 - Updated to GSF 6.2.0 and Kotlin 1.7.10.
 
-## New Features
+## New features
 
 None.
