@@ -1,5 +1,4 @@
 require('dotenv').config();
-require
 
 const baseUrl = process.env.BASE_URL || '/';
 const routeBasePath = '/';
