@@ -320,7 +320,7 @@ Table Id start number, defaults =**2000**`
 
 The platform now supports Microsoft SQL Server as a database layer.
 
-To [enable this usage](/creating-applications/configure-runtime/database/), you need to provide a valid jdbc url pointing to an instance in the DbHost system definition property.
+To enable this usage, you need to provide a valid jdbc url pointing to an instance in the DbHost system definition property.
 
 ## GPAL Consolidators
 
