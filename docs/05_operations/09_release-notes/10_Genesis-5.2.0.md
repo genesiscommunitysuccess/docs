@@ -5,6 +5,7 @@ sidebar_label: 'Genesis-5.6.0'
 sidebar_position: 17
 
 ---
+# Genesis 5.2.0
 
 ## Feature highlights
 
@@ -66,11 +67,7 @@ vault {
 
 ### Positions Demo App
 
-Positions app now has FIX Drop Copy integration and will have Refinitiv market data within a few days.  We have integrated web and server side into a single repository with a unified toolchain to ease development, and within a few days will have the whole project runnable from a combined deployment.  We will pick up documentation and a video over Christmas and likely first week of new year.
-
-Comprehensive release notes are available on the following link:
-
-[https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/2687533059/5.2.0+Release+Key+Features+Breaking+changes](https://genesisglobal.atlassian.net/wiki/spaces/DTASERVER/pages/2687533059/5.2.0+Release+Key+Features+Breaking+changes)
+Positions app now has FIX Drop Copy integration and will have definitive market data within a few days.  We have integrated web and server side into a single repository with a unified toolchain to ease development, and within a few days will have the whole project runnable from a combined deployment.  We will pick up documentation and a video over Christmas and likely first week of new year.
 
 ## Marketing
 

@@ -1,14 +1,23 @@
 ---
-id: genesis-6.0.1
-title: 'Genesis-6.0.1'
-sidebar_label: 'Genesis-6.0.1'
-sidebar_position: 14
+id: genesis-6.0
+title: 'Genesis-6.0'
+sidebar_label: 'Genesis-6.0'
+sidebar_position: 11
 
 ---
 
-## Highlights
+# Genesis 6.0
 
-### Implemented service affinity mechanism in Consul to ensure we can prefer routing/failover to services within the same group (e.g. AZ).
+## 6.0.2
+
+- Refactoring and cleaning
+- Enhancement of deployment plugin to allow for SendIt with -t and -f options
+
+## 6.0.1
+
+### Highlights
+
+#### Implemented service affinity mechanism in Consul to ensure we can prefer routing/failover to services within the same group (e.g. AZ).
 
 You can now provide a system definition service item called "ClusterServiceAffinityGroup” with a fixed value to ensure that the new Consul based service discovery mechanism prefers connecting to services which were registered with that value as well.
 

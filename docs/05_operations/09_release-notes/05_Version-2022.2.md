@@ -89,25 +89,25 @@ The way that operations in the AUTH API are permissioned has changed. The Event 
 
 As part of the upgrade, these Event Handlers now support validation operations.
 
-| Event Handler | Permission Code | Visibility |
-| --- | --- | --- |
-| EVENT_INSERT_USER | ADD_USER | USER_VISIBILITY |
-| EVENT_AMEND_USER | AMEND_USER | USER_VISIBILITY |
-| EVENT_DELETE_USER | DELETE_USER | USER_VISIBILITY |
-| EVENT_ENABLE_USER | ENABLE_USER | USER_VISIBILITY |
-| EVENT_DISABLE_USER | DISABLE_USER | USER_VISIBILITY |
-| EVENT_USER_PROFILE_AMEND | USER_PROFILE_AMEND | USER_VISIBILITY |
-| EVENT_INSERT_PROFILE | ADD_PROFILE | |
-| EVENT_AMEND_PROFILE | AMEND_PROFILE | |
-| EVENT_DELETE_PROFILE | EVENT_DELETE_PROFILE | |
-| EVENT_RESET_USER_PASSWORD | RESET_PWD, `<SELF>` | USER_VISIBILITY |
-| EVENT_CHANGE_USER_PASSWORD | CHANGE_PWD, `<SELF>` | USER_VISIBILITY |
-| EVENT_EXPIRE_USER_PASSWORD | EXPIRE_PWD, `<SELF>` | USER_VISIBILITY |
-| EVENT_MFA_CREATE_SECRET | MFA_SECRET, `<SELF>` | USER_VISIBILITY |
-| EVENT_MFA_CONFIRM_SECRET | MFA_CONFIRM,` <SELF>` | USER_VISIBILITY |
-| EVENT_ENABLE_MFA_FOR_USER | MFA_ENABLE, `<SELF>` | USER_VISIBILITY |
+| Event Handler              | Permission Code       | Visibility      |
+|----------------------------|-----------------------|-----------------|
+| EVENT_INSERT_USER          | ADD_USER              | USER_VISIBILITY |
+| EVENT_AMEND_USER           | AMEND_USER            | USER_VISIBILITY |
+| EVENT_DELETE_USER          | DELETE_USER           | USER_VISIBILITY |
+| EVENT_ENABLE_USER          | ENABLE_USER           | USER_VISIBILITY |
+| EVENT_DISABLE_USER         | DISABLE_USER          | USER_VISIBILITY |
+| EVENT_USER_PROFILE_AMEND   | USER_PROFILE_AMEND    | USER_VISIBILITY |
+| EVENT_INSERT_PROFILE       | ADD_PROFILE           |                 |
+| EVENT_AMEND_PROFILE        | AMEND_PROFILE         |                 |
+| EVENT_DELETE_PROFILE       | EVENT_DELETE_PROFILE  |                 |
+| EVENT_RESET_USER_PASSWORD  | RESET_PWD, `<SELF>`   | USER_VISIBILITY |
+| EVENT_CHANGE_USER_PASSWORD | CHANGE_PWD, `<SELF>`  | USER_VISIBILITY |
+| EVENT_EXPIRE_USER_PASSWORD | EXPIRE_PWD, `<SELF>`  | USER_VISIBILITY |
+| EVENT_MFA_CREATE_SECRET    | MFA_SECRET, `<SELF>`  | USER_VISIBILITY |
+| EVENT_MFA_CONFIRM_SECRET   | MFA_CONFIRM,` <SELF>` | USER_VISIBILITY |
+| EVENT_ENABLE_MFA_FOR_USER  | MFA_ENABLE, `<SELF>`  | USER_VISIBILITY |
 | EVENT_DISABLE_MFA_FOR_USER | MFA_DISABLE, `<SELF>` | USER_VISIBILITY |
-| VALIDATE_JWT  |  No permission code |  |
+| VALIDATE_JWT               | No permission code    |                 |
 
 :::warning
 The new GPAL Event Handlers are transactional, as long as the underlying DB layer supports it. **If it does not, there is no central locking mechanism to prevent concurrent transactions.**
@@ -174,7 +174,7 @@ This is a high-level overview of the changes.
 - Dialog and modal behaviour improvements.
 - Minor styling improvements to Form and Zero Tabs.
 - Genx CLI improvements, code gen templating, support for multibyte characters in jfrog usernames/passwords.
-- Ability to export export component assets such as template, styles etc. consistently. This aids extension.
+- Ability to export component assets such as template, styles etc. consistently. This aids extension.
 - Improved Icon component.
 
 ### Maintenance

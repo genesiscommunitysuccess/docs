@@ -298,7 +298,7 @@ This release adds two new Gradle tasks
 
 ## Reporting component (Alpha)
 
-A new optional [Reporting component](/creating-applications/defining-your-application/user-interface/web-ui-reference/micro-front-ends/front-end-reporting/) is available, which enables users to create report specifications, run them, or save them for later use.
+A new optional Reporting component is available, which enables users to create report specifications, run them, or save them for later use.
 
 The GUI enables users to:
 
@@ -396,7 +396,7 @@ The genesis-router configuration has been upgraded from xml to GPAL. This will r
 
 - foundation-entity-management - Basic functionality for generating CRUD based on metadata coming from the server
 
-preconfigured screen of user and profile management. This is an evolution of the previous user-management, based on feedback from projects currently using user management, and to accommodate requirements from new projects.
+- Preconfigured screen of user and profile management. This is an evolution of the previous user-management, based on feedback from projects currently using user management, and to accommodate requirements from new projects.
 
 
 #### auth-preferences configuration moved to GPAL
