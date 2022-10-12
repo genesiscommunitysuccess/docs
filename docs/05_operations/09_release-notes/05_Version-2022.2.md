@@ -1,7 +1,7 @@
 ---
 title: 'Version 2022.2'
 sidebar_label: 'Version 2022.2'
-sidebar_position: 10
+sidebar_position: 5
 id: version-2022-2
 ---
 

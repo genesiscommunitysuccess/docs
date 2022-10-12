@@ -2,7 +2,7 @@
 id: genesis-5.6.0
 title: 'Genesis-5.6.0'
 sidebar_label: 'Genesis-5.6.0'
-sidebar_position: 17
+sidebar_position: 10
 
 ---
 # Genesis 5.2.0

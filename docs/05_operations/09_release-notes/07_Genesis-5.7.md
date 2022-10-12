@@ -2,7 +2,7 @@
 id: genesis-5.7
 title: 'Genesis-5.7'
 sidebar_label: 'Genesis-5.7'
-sidebar_position: 12
+sidebar_position: 7
 
 ---
 # Genesis 5.7

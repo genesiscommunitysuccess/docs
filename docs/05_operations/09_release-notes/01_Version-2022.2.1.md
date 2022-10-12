@@ -1,7 +1,7 @@
 ---
 title: 'Version 2022.2.1'
 sidebar_label: 'Version 2022.2.1'
-sidebar_position: 1
+sidebar_position: 2
 id: version-2022-2-1
 ---
 This is version v2022.2.1 of the documentation for the Genesis low-code platform.
