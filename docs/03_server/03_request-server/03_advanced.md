@@ -107,7 +107,7 @@ requestReplies {
 
 ## Ranges
 
-You can specify ranges from the client of the requestReply server by postfixing the request parameter names with _FROM and _TO. The example below shows a client building a GenesisSet request based upon
+You can specify ranges from the client of the requestReply server by post-fixing the request parameter names with _FROM and _TO. The example below shows a client building a GenesisSet request based upon
 the requestReplies defined from previous example. This example stipulates a price range between 1,000 and 10,000. Leaving out FROM will define a top-end range, leaving out TO will define a bottom-end range. 
 
 
@@ -135,7 +135,7 @@ We recommend that you locate your classes within the messages module of your app
     api(project(":{app-name}-messages"))
 ```
 
-The `requestReply` code blocks in can be as simple or complex as your requirements. They are useful, for example, if you want to request data from a number of different tables and views that are not related. By nesting and joining all the relevant data in your `requestReply` statement, you create your own metadata for the Request Server, so it can then be used anywhere in the module.
+The `requestReply` code blocks can be as simple or complex as your requirements. They are useful, for example, if you want to request data from a number of different tables and views that are not related. By nesting and joining all the relevant data in your `requestReply` statement, you create your own metadata for the Request Server, so it can then be used anywhere in the module.
 
 ### Syntax
 
@@ -145,11 +145,11 @@ The `requestReply` code blocks in can be as simple or complex as your requiremen
 requestReply<[input class], [output class]> ("{optional name}") {
   // permissioning is optional
   permissioning {
-    // multiple auth blocks can be conbined with the and operator and the or operator
+    // multiple auth blocks can be combined with the and operator and the or operator
     auth("{map name}") {
-        // use a single field
+        // use a single field of output_class
         field { fieldName }
-        // or use multiple fields
+        // or use multiple fields of output_class
         fields { listof(fieldNameA, fieldNameB) }
         
         // hide fields are supported

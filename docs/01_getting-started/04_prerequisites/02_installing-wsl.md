@@ -180,7 +180,7 @@ mv /usr/bin/systemctl /usr/bin/systemctl.old
 curl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py > /usr/bin/systemctl
 chmod +x /usr/bin/systemctl
 systemctl start foundationdb
-fdbcli --exec "configure new single memory ; status"
+fdbcli --exec "configure new single ssd ; status"
 systemctl enable foundationdb
 
 ```

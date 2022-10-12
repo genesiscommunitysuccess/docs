@@ -65,13 +65,17 @@ The `onException` block can capture any exceptions thrown by the `onValidate` an
 
 ## Permissioning and permissionCodes
 
-As with other GPAL files (e.g. Request Server and Data Server), you can use a `permissioning` block to define both dynamic permissions (AUTH) and fixed permissions (based on RIGHT_SUMMARY rights) if the event message type is a generated database entity. See the example below:
+As with other GPAL files (e.g. Request Server and Data Server), you can use a `permissioning` block to define both dynamic permissions (AUTH) and fixed permissions (based on RIGHT_SUMMARY rights) on Event Handlers.
+
+### Dynamic permissions
+For Event Handlers you need to use any class as event message type instead of table/view, which is similar to custom request-replies.
+In the below example we use a generated database entity called `Company` as message type of event `EVENT_AUTH_COMPANY_INSERT`
 
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
         permissioning {
             auth(mapName = "COMPANY"){
-                COMPANY.COMPANY_NAME
+                field { companyName } 
             }
         }
 
@@ -83,7 +87,13 @@ As with other GPAL files (e.g. Request Server and Data Server), you can use a `p
     }
 ```
 
-If your message type is not a database-generated entity,  you can still define fixed `permissionCodes` outside the permissioning block:
+If you use custom class instead of generated database entities as message-type of events, we recommend that you locate your classes within the messages module of your application. This is where we place all the custom message types for our application. You need to ensure that the _app-name_**-script-config** module has a dependency on the messages module.
+
+```bash
+    api(project(":{app-name}-messages"))
+```
+
+### Permission codes
 
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
@@ -115,7 +125,7 @@ State machines, which define the conditions for moving from one state to another
 ## Pending approvals
 
 
-The Genesis low-code platform has an in-built pending approval mechanism that can be used with event handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check". 
+The Genesis low-code platform has an in-built pending approval mechanism that can be used with Event Handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check". 
 
 
 ### Set an event to require approval
