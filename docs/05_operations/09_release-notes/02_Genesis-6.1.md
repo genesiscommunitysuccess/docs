@@ -9,8 +9,8 @@ sidebar_position: 3
 
 ## 6.1.7
 
-- Fix: added genesis-notify to the bom 
-- Feat: added viewHistory param to symphony create channel PA-180 
+- Fix: added genesis-notify to the bom.
+- Feat: added viewHistory param to symphony create channel PA-180.
 
 ## 6.1.6
 
