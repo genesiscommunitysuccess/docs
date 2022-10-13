@@ -93,7 +93,10 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
 
-**DbMode**: This setting is only needed if you use the [Aerospike](/database/database-technology/aerospike/) database.
+**DbMode**: This setting is utilized by Aerospike and PostgreSQL database only, for other databases this property will be ignored
+- For [Aerospike](/database/database-technology/aerospike/) database: This can be one of two values: VANILLA for an Aerospike Community installation and DURABLE_DELETE if you are using Aerospike Enterprise
+
+- For [PostgresSQL](/database/database-technology/sql/#postgresql): This can be one of two values: POSGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY which is default mode it always stores the dictionary in table called `dictionary` and schema called `metadata`.
 
 **ResourcePollerTimeout**: This setting controls how often the genesis daemon process keeps the processes and their metadata up to date.
 
@@ -105,7 +108,10 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **JVM_OPTIONS**: This defines common JVM options to be applied to all processes defined in the environment.
 
-**DbNamespace**: This item defines different things, depending on the databases in use and is applicable for [FoundationDB](/database/database-technology/foundationdb/) and [Aerospike](/database/database-technology/aerospike/) only.
+**DbNamespace**: This item defines different things, depending on the databases in use as specified below
+- For [FoundatioDB](/database/database-technology/foundationdb/): It will be used when creating internal DirectoryLayers
+- For [Aerospike](/database/database-technology/aerospike/), [Postgres](/database/database-technology/sql/#postgresql), [MSSQL](/database/database-technology/sql/#ms-sql) and [ORACLE](/database/database-technology/sql/#oracle): It refers to namespace/schema of database. This feature allows you to segregate data from different
+genesis apps while using single database
 
 **ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.
 
@@ -120,7 +126,7 @@ If you want to enable SSL for your process communication, this is done in the [s
 
 ## Setting System Definitions values from environment variables
 
-It's possible to load system definition values from the environments, this may be prefered if you wish to dynamically set values for a given environment.
+It's possible to load system definition values from the environments, this may be preferred if you wish to dynamically set values for a given environment.
 
 To do this, the `value` attribute of an `item` can be set to read an environment variable and fall back to a sensible default. 
 

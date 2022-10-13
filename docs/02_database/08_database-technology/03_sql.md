@@ -41,6 +41,13 @@ In addition to the standard connection parameters, the URL accepts several addit
 
 More information on connection configuration can be found [in the jdbc documentation](https://jdbc.postgresql.org/documentation/head/connect.html).
 
+If you want PostgreSQL to work with different namespaces/schemas you need to add following system definition items in your **genesis-system-definitions.kts** file:
+
+| Setting     | Description                                                                                                                                                                                                                     |
+|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| DbMode      | This can be one of two values: POSGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY which is default mode and it always stores the dictionary in table called `dictionary` and schema called `metadata`. |
+| DbNamespace | It refers to namespace/schema of database. This feature allows you to segregate data from different genesis apps while using single database                                                                                    |
+
 ### MS SQL
 
 JDBC URI takes the following form:
