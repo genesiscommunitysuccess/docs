@@ -93,7 +93,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
 
-**DbMode**: This setting is utilized by Aerospike and PostgreSQL database only, for other databases this property will be ignored
+**DbMode**: This setting is utilised by Aerospike and PostgreSQL database only, for other databases this property will be ignored
 - For [Aerospike](/database/database-technology/aerospike/) database: This can be one of two values: VANILLA for an Aerospike Community installation and DURABLE_DELETE if you are using Aerospike Enterprise
 
 - For [PostgresSQL](/database/database-technology/sql/#postgresql): This can be one of two values: POSGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY which is default mode it always stores the dictionary in table called `dictionary` and schema called `metadata`.
