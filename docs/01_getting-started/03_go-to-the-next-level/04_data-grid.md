@@ -6,7 +6,7 @@ id: data-grid
 
 ## Prerequisites
 
-There are couple of steps that have to be done before seeing the user interface running.
+There are a couple of steps that have to be done before seeing the user interface running.
 - your database must be running
 - the back-end services must be deployed
 - you must have imported the example data in the csv files

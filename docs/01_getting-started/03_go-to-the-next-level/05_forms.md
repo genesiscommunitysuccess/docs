@@ -84,7 +84,7 @@ In the file **home.ts**, add the following properties to the class: `Home`:
 
 Now we need to interact with the Event Handlers that respond to user changes and store the data that is input:
 
-We can do it in the traditional way by adding `@change` [event handler](https://www.fast.design/docs/fast-element/declaring-templates#events) - but we can also use the `sync` directive, which does that for us.
+We can do it in the traditional way by adding `@change` [Event Handler](https://www.fast.design/docs/fast-element/declaring-templates#events) - but we can also use the `sync` directive, which does that for us.
 
 Let's add it to each form element:
 

@@ -1,6 +1,6 @@
 ---
 title: 'Data Aggregation using Consolidator'
-sidebar_label: 'Data Aggregation using Consolidator'
+sidebar_label: 'Consolidators'
 id: consolidators
 ---
 
@@ -162,4 +162,4 @@ Add a new entry to **positions-app-tutorial-service-definitions.xml** with the C
 When you finish, remember to run `generateDao` (if you made changes to the table), `assemble` and `deploy-genesisproduct-positions-app-tutorial`.
 
 ## Conclusion
-This shows a quick example of a Consolidator. If you want to see it in action, go to [Endpoints](/server/integration/rest-endpoints/introduction/) for information on testing your the back end.
+This shows a quick example of a Consolidator. If you want to see it in action, go to [Endpoints](/server/integration/rest-endpoints/introduction/) for information on testing the back end.

@@ -1,12 +1,12 @@
 ---
 title: 'Track the data changes using Auditable Tables'
-sidebar_label: 'Track the data changes using Auditable Tables'
+sidebar_label: 'Using Auditable Tables'
 id: audit
 ---
 
 We want to be able to track the changes made to the various trades on the `TRADE` table, such that we are able to see the times and modifications made during the history of the trade. So, we are going to add basic auditing to the `TRADE` table to keep a record of the changing states of the trades.
 
-This is useful for historical purposes if you need to at a later date be able to produce an accurate course of events.
+This is useful, if at a later date, you need to be able to produce an accurate course of events.
 
 ## Section objectives
 The goal of this section is:
