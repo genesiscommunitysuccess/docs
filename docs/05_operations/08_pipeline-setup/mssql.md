@@ -29,7 +29,7 @@ Use the following documentation to [Start, Stop, or Pause the service](https://d
 
 ### Create a database
 
-For CDC to occur, you must have a database within your MS SQL Sever instance.
+For CDC to occur, you must have a database within your MS SQL server instance.
 
 ```sql
 CREATE DATABASE TestDB
