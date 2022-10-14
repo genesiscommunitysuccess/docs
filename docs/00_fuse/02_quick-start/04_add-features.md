@@ -77,7 +77,7 @@ enum class Side { BUY, SELL }
 enum class TradeStatus { NEW, ALLOCATED, CANCELLED }
 ```
 
-## Grid & form
+## Grid and form
 
 Grids are our primary way of displaying information. Let's add a grid to display our new `TRADE` model and a form to allow users to submit new trades. We can achieve this by adding an `entityManager` component as shown below. Specifying `EntityOperations.ADD` operation will allow us to add new trade records.
 
