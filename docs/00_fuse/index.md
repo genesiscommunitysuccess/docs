@@ -17,7 +17,7 @@ Fuse allows you to:
 - manipulate data through standardised Create, Update, and Delete (CRUD) functions, with automatic validation protection and error handling
 - capitalise on the power of the Genesis platform through one-line integration, such as Auth
 - dynamically filter grid data based on UI interactions
-- extend the built-in UI with the ability to utilise any HTML or custom Web Components
+- have both Genesis and third-party Web Components at your disposal
 - supercharge development with built-in page structuring and routing
 
 Our simple-to-follow guides will enable you to become an effective user of Fuse within days.

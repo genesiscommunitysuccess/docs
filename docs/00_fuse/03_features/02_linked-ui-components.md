@@ -1,13 +1,13 @@
 ---
-title: 'Linked UI elements'
-id: linked-ui-elements
+title: 'Linked UI components'
+id: linked-ui-components
 ---
 
-# Linked UI elements
+# Linked UI components
 
 ## Introduction
 
-With Fuse it is possible to link UI elements such as grids and form inputs. Linking allows us to update one element based on the status of another element.
+With Fuse it is possible to link UI components such as grids and form inputs. Linking allows us to update one component based on the status of another component.
 
 Common use cases are:
 
@@ -17,8 +17,8 @@ Common use cases are:
 
 Linking is a two-step process:
 
-1. Assign a name to an element.
-2. Reference the name when configuring another element.
+1. Assign a name to a component.
+2. Reference the name when configuring another component.
 
 Let's build a simple example to see this in practice.
 
@@ -26,20 +26,22 @@ Let's build a simple example to see this in practice.
 
 We need a page with two grids for this example. We will extend the [home page](/fuse/quick-start/add-features/#grid) from the quick start guide to contain one more grid.
 
-First, let's add a second model to **src/main/kotlin/global/genesis/alpha/Models.kt** file:
+First, let's add `Instrument.kt` file to `src/main/kotlin/global/genesis/alpha/model` folder.
 
 ```kotlin
+package global.genesis.alpha.model
+
 @Persist
 object INSTRUMENT : Table(11_001) {
     val instrumentId by varchar().nonNullable()
-    val name by varchar()
+    val instrumentName by varchar()
     val marketId by varchar()
     val countryCode by varchar()
     val currencyId by varchar()
     val assetClass by varchar()
 
     override val primaryKey by primaryKey(instrumentId)
-    val nameKey by uniqueIndex(name)
+    val instrumentNameKey by uniqueIndex(instrumentName)
 }
 ```
 
@@ -47,24 +49,18 @@ Now, let's update the home page layout to display both grids at the same time:
 
 ```kotlin
 page("Home") {
-    element("zero-flex-layout") {
-        attributes("class" to "flex-column split-panel")
-
+    verticalLayout {
         entityManager(
             entity = INSTRUMENT,
             title = "Instruments",
             operations = listOf(EntityOperations.ADD),
-        ) {
-            attributes("class" to "top-panel")
-        }
+        )
 
         entityManager(
             entity = TRADE,
             title = "Trades",
             operations = listOf(EntityOperations.ADD),
-        ) {
-            attributes("class" to "top-panel")
-        }
+        )
     }
 }
 ```
@@ -87,9 +83,7 @@ val instrumentGrid by entityManager(
     entity = INSTRUMENT,
     title = "Instruments",
     operations = listOf(EntityOperations.ADD),
-) {
-    attributes("class" to "top-panel")
-}
+)
 ```
 
 ## Referencing UI elements
@@ -102,8 +96,6 @@ entityManager(
     title = "Trades",
     operations = listOf(EntityOperations.ADD),
 ) {
-    attributes("class" to "top-panel")
-
     // highlight-start
     filter {
         instrumentId eq instrumentGrid.entity.instrumentId
