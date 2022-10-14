@@ -10,6 +10,9 @@ Now that you have completed the [Quick Start](/getting-started/quick-start/) and
 
 We want to build a real-time [positions](https://www.investopedia.com/terms/p/position.asp) application, where trades can be entered, and will be aggregated to maintain positions.
 
+In this tutorial we will build a positions trading application. It is a typical application usually found in the capital markets and highlights some of the typical use cases and features of the Genesis low-code platform.
+We will now create a more sophisticated form and grid for adding information than those given in the [Learn the basics](/getting-started/learn-the-basics/what-can-i-build/build-intro/) section.
+
 The application will make use of the following platform features:
 - [Data Model](/getting-started/go-to-the-next-level/data-model/)
 - [Data Server](/getting-started/go-to-the-next-level/events/#data-server) and [Event Handlers](/getting-started/go-to-the-next-level/events/#event-handler)
