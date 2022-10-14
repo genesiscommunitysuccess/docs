@@ -1,8 +1,13 @@
 ---
-title: 'Introduction'
+title: 'Release notes: introduction'
 sidebar_label: 'Introduction'
 sidebar_position: 1
 id: introduction
 ---
 
-This section details the features and fixes for each release of the Genesis low-code platform. This includes both server and web, going back to December 2021.
+Our documentation covers the following releases:
+
+- [2022.2](/operations/release-notes/version-2022-2/), which includes an update at [2022.2.1](/operations/release-notes/version-2022-2/#release-202221)
+- [2022.1](/operations/release-notes/version-2022-1/)
+
+

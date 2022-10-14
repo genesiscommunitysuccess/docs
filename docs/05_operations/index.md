@@ -19,7 +19,7 @@ Welcome to the reference documentation on operating Genesis applications. Here, 
 
 - [Artifactory](/operations/artifactory/artifact-access/) - see notes about accessing the Genesis artifacts and packages.
 
-- [Release Notes](/operations/release-notes/Version-2022-2-1/) - see notes about the previously released versions of the genesis low-code platform and their features.
+- [Release notes](/operations/release-notes/introduction/) - see notes about the various released versions of the Genesis low-code platform and their features.
 
 
 
