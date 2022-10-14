@@ -133,7 +133,7 @@ Total Results:  1
 
 We will load the **position.csv** file later when we are ready to trigger the event.
 
-Ok now we have configured our evaluator, defined our bussiness logic and loaded the dynamic rule in to the database. In order for Notify to send an email, we first need define and configure it in our system.
+Ok now we have configured our evaluator, defined our business logic and loaded the dynamic rule in to the database. In order for Notify to send an email, we first need define and configure it in our system.
 
 ## Configure Notify
 
@@ -285,7 +285,7 @@ cd $L
 tail -f POSITIONS_APP_TUTORIAL_EVALUATOR.log
 ```
 :::tip
-$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Feel free to use your favorite command to view logs such as tail, less etc.
+$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Feel free to use your favorite command to view logs such as tail, less, etc.
 :::
 
 ## Trigger the event to test the rule
@@ -320,7 +320,7 @@ In both cases, you define the rule in a table in the database: `CRON_RULES` for 
 
 Let's create a cron rule that triggers a batch job to run once every 30 seconds.
 
-The batch job will generate a position report as a csv for each counterparty. This will be stored in genesis environemnts **runtime/position-30seconds-report**. The file name of each report written will be in the format **[COUNTERPARTY_ID]-[DATE].csv**.
+The batch job will generate a position report as a csv for each counterparty. This will be stored in Genesis environments **runtime/position-30seconds-report**. The file name of each report written will be in the format **[COUNTERPARTY_ID]-[DATE].csv**.
 
 ### The rule
 
@@ -417,7 +417,7 @@ This is because the Evaluator process is set to run only on the primary node. Ou
 Run `SetPrimary` in your WSL terminal and you should be able to see all processes running.
 
 ### Load the cron rule on to the database
-Now we can load the cron rule csv below into the database, [CRON_RULE](/server/evaluator/configuring-runtime/#cron_rule-table) Table.
+Now we can load the cron rule csv below into the database, [CRON_RULE](/server/evaluator/configuring-runtime/#cron_rule-table) table.
 
 Navigate to **home/genesis/run/temp-data** in your WSL terminal and create a file called **cron-rule.csv** with the following:
 
@@ -465,7 +465,7 @@ cd $L
 tail -f POSITIONS_APP_TUTORIAL_EVALUATOR.log
 ```
 :::info What is $L?
-$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis low-code platform. Feel free to use your favourite command to view logs such as tail, less etc.
+$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis low-code platform. Feel free to use your favourite command to view logs such as tail, less, etc.
 :::
 
 ### Conclusion

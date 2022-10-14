@@ -17,7 +17,7 @@ The goal of this section is to:
 
 ## Configure Netty API in Camel
 
-To work with the Camel GPAL, we must first add the dependency `genesis-pal-camel` to your **position-app-tutorial-script-config** module. This ensures that you are able to use the camel functionality within your scripts. Ensure that gradle imports the new dependency.
+To work with the Camel GPAL, we must first add the dependency `genesis-pal-camel` to your **position-app-tutorial-script-config** module. This ensures that you are able to use the camel functionality within your scripts. Ensure that Gradle imports the new dependency.
 
 ```kotlin
 api("global.genesis:genesis-pal-camel")

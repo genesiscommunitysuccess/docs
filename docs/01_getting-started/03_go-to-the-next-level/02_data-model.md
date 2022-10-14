@@ -1,6 +1,6 @@
 ---
 title: 'Define the data model using fields, tables and views'
-sidebar_label: 'Data model: fields, tables and views'
+sidebar_label: 'Fields, tables and views'
 id: data-model
 ---
 
@@ -164,7 +164,7 @@ As we previously generated the fields, autocompletion helps you to define the ta
 
 When you set up a data model, it implies relationships between tables. For example, a `TRADE` has a `COUNTERPARTY_ID` and an `INSTRUMENT_ID`. That means it has a relationship with the `COUNTERPARTY` and `INSTRUMENT` tables.
 
-Views enable you join related tables to create a single holistic view.
+Views enables you to join related tables to create a single holistic view.
 
 In short, views are the Genesis equivalent of SQL select queries. Unlike tables, views do not have any data of their own, they are read-only, but they present a view based on one or more tables. 
 

@@ -43,7 +43,7 @@ wsl-user=genesis
 |`wsl-user`|  This is an optional property. If omitted, the default WSL user will be used. |
 :::
 
-If you haven't already, you should have a project artifact built using the following gradle task **genesisproduct-positions-app-tutorial**/**Tasks**/**build**/**assemble**.
+If you haven't already, you should have a project artifact built using the following Gradle task **genesisproduct-positions-app-tutorial**/**Tasks**/**build**/**assemble**.
 
 ![](/img/assemble-server-positions.png)
 
@@ -223,7 +223,7 @@ This will take the last built distribution. It does not run a project build as p
 :::
 
 ## Run the server commands
-:::info Can I run server commands from the command line rather than gradle tasks?
+:::info Can I run server commands from the command line rather than Gradle tasks?
 Yes. Here, we've been running server commands through the gradle tasks. But alternatively, you can run server commands directly from a command line. 
 
 Assuming you are using the provided 'TrainingCentOS' WSL distribution, open PowerShell (or Windows Command Prompt). Access your WSL instance 'TrainingCentOS' and switch to user 'genesis' to have access to the Genesis commands:
@@ -313,7 +313,7 @@ You can go on to check the `TRADE` table to see if your insert is there.
 
 ![](/img/test-console-eh-confirm-trade-alpha-2.png)
 
-Alternatively you can use `DbMon` similar to the way the `USER` table was queried
+Alternatively you can use `DbMon` similar to the way the `USER` table was queried.
 
 ### Postman
 

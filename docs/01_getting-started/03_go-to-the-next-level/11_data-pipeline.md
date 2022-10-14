@@ -10,7 +10,7 @@ Here, we shall look at how you can continuously ingest data using [Data Pipeline
 Data pipelines enable you to ingest data from an external source. You configure:
 
 - what source or sources you want to ingest
-- how these map to your Genesis application's data model
+- how they map to your Genesis application's data model
 - what to do with this mapped data.
 
 ## Section objectives
@@ -21,15 +21,15 @@ The goal of this section is to:
 
 ## Configure data pipeline
 
-We will be configuring a local filesystem based data pipeline. This will watch a directory for changes over time and consume files that fit the criteria we configure. In this example, files will be read, line by line, be transformed/mapped to our data model and then stored in the Genesis database.
+We will be configuring a local filesystem based data pipeline. This will watch a directory for changes over time and consume files that fit the criteria we configure. In this example, files will be read (line-by-line), be transformed/mapped to our data model and then stored in the Genesis database.
 
 :::note
 
-Ingress of files via local file system data pipelines, although a simple way to introduce yourself to data pipelines, is considered bad practice in production. Check the data pipelines docs for more info on file ingestion alternatives such as AWS S3 and FTP and relational database sources.
+Ingress of files via local file system data pipelines, although a simple way to introduce yourself to data pipelines, is considered bad practice in production. Check the data pipelines docs for more information about file ingestion alternatives such as AWS S3 and FTP and relational database sources.
 
 :::
 
-In order to add a CSV local filesystem data pipeline, firstly, add the dependency `genesis-pal-datapipeline` to your **position-app-tutorial-script-config** module. This ensures that you are able to use the data pipeline functionality within your scripts. Ensure that gradle imports the new dependency.
+In order to add a CSV local filesystem data pipeline, firstly, add the dependency `genesis-pal-datapipeline` to your **position-app-tutorial-script-config** module. This ensures that you are able to use the data pipeline functionality within your scripts. Ensure that Gradle imports the new dependency.
 
 ```kotlin
 api("global.genesis:genesis-pal-datapipeline")
@@ -86,7 +86,7 @@ sources {
 }
 ```
 
-In the above script, we define a CSV file source. We configure the location as a local filesystem source with an absolute path to the user account `positions`'s **run/runtime/fileIngress** directory. This directory should be created automatically the first time your application is started.
+In the above script, we define a CSV file source. We configure the location as a local filesystem source with an absolute path to the user account's `positions` **run/runtime/fileIngress** directory. This directory should be created automatically the first time your application is started.
 
 The remaining configuration defines a mapper from our CSV to the data model of the `TRADE` table.
 
@@ -118,7 +118,7 @@ We have now configured a CSV source that listens for changes on the local file s
 
 You can use the following CSV as an example to test your pipeline. Create a file named `trades.csv` and paste the contents below into a running instance of your Genesis application. This will trigger the pipeline into action. 
 
-Each row of the csv will be parsed, mapped and stored in the database. Your CSV file will disappear when the pipeline has processed the file. You can then use the `DbMon` utility to check your database for changes.
+Each row of the CSV will be parsed, mapped and stored in the database. Your CSV file will disappear when the pipeline has processed the file. You can then use the `DbMon` utility to check your database for changes.
 
 ```csv
 instrumentId,counterpartyId,amount,buySell,price,date,enteredBy
