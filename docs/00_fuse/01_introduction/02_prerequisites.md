@@ -22,13 +22,8 @@ GenX is a CLI tool that enables you to quickly create projects that adhere to Ge
 ### Installation
 
 ```shell
+npm uninstall -g @genesislcap/foundation-cli
 npm install -g @genesislcap/foundation-cli@dsl
-```
-
-To update it to the latest version:
-
-```shell
-npm update -g @genesislcap/foundation-cli@dsl
 ```
 
 :::important
