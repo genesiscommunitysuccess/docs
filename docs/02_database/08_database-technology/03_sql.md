@@ -43,10 +43,10 @@ More information on connection configuration can be found [in the jdbc documenta
 
 If you want PostgreSQL to work with different namespaces/schemas you need to add following system definition items in your **genesis-system-definitions.kts** file:
 
-| Setting     | Description                                                                                                                                                                                                                     |
-|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| DbMode      | This can be one of two values: POSGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY, which is default mode and it always stores the dictionary in a table called `dictionary` and a schema called `metadata`. |
-| DbNamespace | It refers to namespace/schema of database. This feature allows you to segregate data from different Genesis apps whilst using a single database.                                                                                  |
+| Setting     | Description                                                                                                                                                                                                                           |
+|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| DbMode      | This can be one of two values: POSTGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY, which is default mode and it always stores the dictionary in a table called `dictionary` and a schema called `metadata`. |
+| DbNamespace | It refers to namespace/schema of database. This feature allows you to segregate data from different Genesis apps whilst using a single database.                                                                                      |
 
 ### MS SQL
 
