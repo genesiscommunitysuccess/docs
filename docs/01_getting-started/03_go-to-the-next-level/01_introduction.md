@@ -10,8 +10,8 @@ Now that you have completed the [Quick Start](/getting-started/quick-start/) and
 
 We want to build a real-time [positions](https://www.investopedia.com/terms/p/position.asp) application, where trades can be entered, and will be aggregated to maintain positions.
 
-In this tutorial we will build a positions trading application. It is a typical application usually found in the capital markets and highlights some of the typical use cases and features of the Genesis low-code platform.
-We will now create a more sophisticated form and grid for adding information than those given in the [Learn the basics](/getting-started/learn-the-basics/what-can-i-build/build-intro/) section.
+In this tutorial we will build a positions trading application. This is a typical application for the capital markets and highlights some of the typical use cases and features of the Genesis low-code platform.
+In the tutorial, you will create a more sophisticated form and grid for adding information than those given in the [Learn the basics](/getting-started/learn-the-basics/what-can-i-build/build-intro/) section.
 
 The application will make use of the following platform features:
 - [Data Model](/getting-started/go-to-the-next-level/data-model/)
@@ -40,5 +40,5 @@ Follow through the series of questions. For `App name` enter `positions-app-tuto
 If this is the first time you are using the GenX CLI tool, check the [Quick Start](/getting-started/quick-start/create-a-new-project/) guide first.
 
 :::info
-this project is not a direct copy of the positions app but will contain most of it's functionality.
+This project is not a direct copy of the positions app but will contain most of its functionality.
 :::

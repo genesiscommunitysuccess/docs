@@ -9,7 +9,7 @@ So how would you go about creating something like that?
 We shall look briefly at:
 
 - how you create files of fields, tables and views to create a data model. 
-- how simple command enables you to generate database objects from those files.
+- how a simple command enables you to generate database objects from those files.
 - how each of your modules must be configured in its own file. This provides the instructions to act in the way your application needs. We shall look at a couple of very simple examples.
 - making sure all your modules are correctly added to the key system files, which we shall look at briefly.
 

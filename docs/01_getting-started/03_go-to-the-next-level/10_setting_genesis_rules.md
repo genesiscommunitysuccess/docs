@@ -221,17 +221,17 @@ Total Results:  1
 
 ### Insert NOTIFY_ROUTE
 
-Navigate to **/home/genesis/run/temp-data** in your WSL terminal and create a file called **notify_route.csv**, in the following [format](/server/integration/notify/email/#notify_route).
+Navigate to **/home/genesis/run/temp-data** in your WSL terminal and create a file called **notify-route.csv**, in the following [format](/server/integration/notify/email/#notify-route).
 
-```csv title="notify_route.csv"
+```csv title="notify-route.csv"
 ENTITY_ID,ENTITY_ID_TYPE,TOPIC_MATCH,GATEWAY_ID
-,"GATEWAY","PositionAlert","EmailDistribution1" 
+,"GATEWAY","PositionAlert","EmailDistribution1"
 ```
 
 Then run:
 
 ```bash
-SendIt -f notify_route.csv -t NOTIFY_ROUTE
+SendIt -f notify-route.csv -t NOTIFY_ROUTE
 ```
 
 To check that the file was imported correctly, run `DbMon`, `table NOTIFY_ROUTE` then `search 1`. You should see the following:
