@@ -86,7 +86,7 @@ By default, all elements on screen will use `display:block`, but we can easily c
 For further styling your components, it would make sense to start working with [Design Systems](#design-systems), which is our next topic.
 
 
-### Exercise 4.1 Styling an grid-pro
+### Exercise 4.1 Styling a Grid-Pro
 :::info ESTIMATED TIME
 20 mins
 :::
