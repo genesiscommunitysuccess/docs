@@ -17,7 +17,7 @@ A good scenario for this is when there's no need for streams or you're using a n
 This is also a scenario where our [DataGrid](/web/web-components/grids/data-grid/) could be used if the business requirements allow something more limited in features.
 :::
 
-The **simple data** use case is when you have your own data model and flow (JSON, external/custom REST APIS, etc) but still want to use a rich data grid component with all  its features (filtering, sorting, custom cell renderers, etc).
+The **simple data** use case is when you have your own data model and flow (JSON, external/custom REST APIS, etc) but still want to use a rich data grid component with all its features (filtering, sorting, custom cell renderers, etc).
 
 This use case requires the client app to handle all the data transformations/updates/deletes/cell renderers in the grid.
 
