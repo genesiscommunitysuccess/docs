@@ -96,7 +96,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 **DbMode**: This setting is utilised by Aerospike and PostgreSQL database only, for other databases this property will be ignored
 - For [Aerospike](/database/database-technology/aerospike/) database: This can be one of two values: VANILLA for an Aerospike Community installation and DURABLE_DELETE if you are using Aerospike Enterprise
 
-- For [PostgresSQL](/database/database-technology/sql/#postgresql): This can be one of two values: POSGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY which is default mode it always stores the dictionary in table called `dictionary` and schema called `metadata`.
+- For [PostgresSQL](/database/database-technology/sql/#postgresql): This can be one of two values: POSTGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY which is default mode it always stores the dictionary in table called `dictionary` and schema called `metadata`.
 
 **ResourcePollerTimeout**: This setting controls how often the genesis daemon process keeps the processes and their metadata up to date.
 
