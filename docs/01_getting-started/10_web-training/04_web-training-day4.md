@@ -10,13 +10,13 @@ sidebar_position: 6
 
 ## Styling
 
-You might want to customise look and feel using layout and styles. For instance, we can style an [ag-grid](#ag-grid) or even a [layout](#layout) that supports responsive web design.
+You might want to customise look and feel using layout and styles. For instance, we can style an [grid-pro](#grid-pro) or even a [layout](#layout) that supports responsive web design.
 
-### Ag-Grid
+### grid-pro
 
-We've seen how to create custom ag grids, now let's see another way to further style it.
+We've seen how to create custom grids, now let's see another way to further style it.
 
-Styling an ag-grid can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called **orders.styles.ts** and provide the following code:
+Styling an grid-pro can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called **orders.styles.ts** and provide the following code:
 
 ```ts title='orders.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
@@ -28,7 +28,7 @@ export const ordersGridStyles: ElementStyles = css`
 `
 ```
 
-Configure your column to have the specific class name [column config](https://ag-grid.com/javascript-data-grid/cell-styles/#cell-class):
+Configure your column to have the specific class name:
 
 ```ts
 {field: 'NOTES', cellClass: 'notes-column'},
@@ -39,11 +39,11 @@ In **order.template.ts**, in the grid tag, include utility that will inject your
 ```ts {1,5}
 import {ordersGridStyles} from "./orders-grid.styles";
 
-<zero-ag-grid>
+<zero-grid-pro>
     ...    
     <slotted-styles :styles=${() => ordersGridStyles}></slotted-styles>
     ...
-</zero-ag-grid>
+</zero-grid-pro>
 `
 ```
 
@@ -86,7 +86,7 @@ By default, all elements on screen will use `display:block`, but we can easily c
 For further styling your components, it would make sense to start working with [Design Systems](#design-systems), which is our next topic.
 
 
-### Exercise 4.1 Styling an ag-grid
+### Exercise 4.1 Styling an grid-pro
 :::info ESTIMATED TIME
 20 mins
 :::
@@ -318,7 +318,7 @@ Let's take a look at the User Management and Reporting Micro Front-ends.
 
 ### User Management
 
-The [User Management](/web/micro-front-ends/foundation-user-management/) micro front-end is used to manage the users on the front end. Two core components are used to manage the entities `grid`(uses [ag-grid](https://www.ag-grid.com/)) and `form`.
+The [User Management](/web/micro-front-ends/foundation-user-management/) micro front-end is used to manage the users on the front end. Two core components are used to manage the entities `grid-pro` and `form`.
 
 :::info
 User Management is a concrete use case of the [Entity Management](/web/micro-front-ends/foundation-entity-management/) micro front-end, which is provided as part of `foundation-ui`.
@@ -587,7 +587,7 @@ Third-party controls require a ControlValueAccessor for writing a value and list
 
 Congratulations! You're now set up to use Genesis Foundation and Angular!
 
-### Exercise 4.5 Adding a AgGrid to list Counterparties in our Angular solution
+### Exercise 4.5 Adding a Grid Pro to list Counterparties in our Angular solution
 <!--
 this is pretty much here: https://docs.genesis.global/secure/tutorials/training-resources/training-content-day3/#ui-configuring
 -->
@@ -595,4 +595,4 @@ this is pretty much here: https://docs.genesis.global/secure/tutorials/training-
 30 mins
 :::
 
-It's your time! Let's use AgGrid with connected data in the Angular app. The grid should display the data from `ALL_ORDERS`, very similar to what we did in [Adding a simple Orders data grid](/getting-started/web-training/web-training-day2/#adding-a-simple-orders-data-grid), but now in Angular.
+It's your time! Let's use Grid Pro with connected data in the Angular app. The grid should display the data from `ALL_ORDERS`, very similar to what we did in [Adding a simple Orders data grid](/getting-started/web-training/web-training-day2/#adding-a-simple-orders-data-grid), but now in Angular.

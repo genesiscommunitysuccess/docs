@@ -16,13 +16,13 @@ Let's continue the development of the order screen.
 To add new columns that are not part of the resource model (ALL_ORDERS query in this case), we can add additional column definitions.
 
 ```html {6} title="order.template.ts"
-<zero-ag-grid>
-    <ag-genesis-datasource
+<zero-grid-pro>
+    <grid-pro-genesis-datasource
             resourceName="ALL_ORDERS"
             orderBy="ORDER_ID">
-    </ag-genesis-datasource>
-    <ag-grid-column :definition="${x => x.singleOrderActionColDef}" />
-</zero-ag-grid>
+    </grid-pro-genesis-datasource>
+    <grid-pro-column :definition="${x => x.singleOrderActionColDef}" />
+</zero-grid-pro>
 
 ```
 
@@ -31,9 +31,8 @@ The example below creates a column with a button that logs data in the row to th
 Here you can easily swap logging the row data with some custom logic (such as calling a back-end API that we shall cover in more detail later on).
 
 ```typescript {3,7,10} title="order.ts"
-import {ColDef} from '@ag-grid-community/core';
 
-  public singleOrderActionColDef: ColDef = {
+  public singleOrderActionColDef = {
     headerName: 'Action',
     minWidth: 120,
     maxWidth: 120,
@@ -50,9 +49,9 @@ import {ColDef} from '@ag-grid-community/core';
 ```
 :::tip ColDef and renderes
 Find out more about:
-- [ColDef and Genesis AG Column](/web/web-components/grids/ag-grid/ag-genesis-column/)
-- [Cell Renderers](/web/web-components/grids/ag-grid/ag-genesis-cell/)
-- [AG Renderers](/web/web-components/grids/ag-grid/ag-renderers/)
+- [ColDef and Genesis Grid Pro Column](/web/web-components/grids/grid-pro/grid-pro-genesis-column/)
+- [Cell Renderers](/web/web-components/grids/grid-pro/grid-pro-genesis-cell/)
+- [Grid Pro Renderers](/web/web-components/grids/grid-pro/grid-pro-renderers/)
 :::
 
 ### Custom column config
@@ -72,7 +71,7 @@ export const orderColumnDefs: ColDef[] = [
   
 ];
 ```
-To stop automatic generation of columns, you need to add the `only-template-col-defs` attribute to the zero-ag-grid.
+To stop automatic generation of columns, you need to add the `only-template-col-defs` attribute to the zero-grid-pro.
 
 Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive) directive; this includes all the columns from our column config array.
 
@@ -80,38 +79,38 @@ Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives
 ```typescript {4,10-12} title="order.template.ts"
 import {orderColumnDefs} from './orderColumnDefs';
 
-<zero-ag-grid
+<zero-grid-pro
     only-template-col-defs
     >
-    <ag-genesis-datasource
+    <grid-pro-genesis-datasource
         resourceName="ALL_ORDERS"
         orderBy="ORDER_ID">
-    </ag-genesis-datasource>
+    </grid-pro-genesis-datasource>
     ${repeat(() => orderColumnDefs, html`
-    <ag-grid-column :definition="${x => x}" />
+    <grid-pro-column :definition="${x => x}" />
     `)}
-    <ag-grid-column :definition="${x => x.singleOrderActionColDef}" />
-</zero-ag-grid>
+    <grid-pro-column :definition="${x => x.singleOrderActionColDef}" />
+</zero-grid-pro>
 ```
 
 ### Saving user preferences
 
-You can add the `persist-column-state-key` to the zero-ag-grid to persist user changes to things such as sorting, column order, and visibility on their machine. With this, when the user reloads the browser, they get the same configuration.
+You can add the `persist-column-state-key` to the zero-grid-pro to persist user changes to things such as sorting, column order, and visibility on their machine. With this, when the user reloads the browser, they get the same configuration.
 
 ```html {2}
-<zero-ag-grid
+<zero-grid-pro
     persist-column-state-key='order-grid-settings'
 >
 ```
 
-### Exercise 3.1: getting familiar with Genesis ag-grid attributes
+### Exercise 3.1: getting familiar with Genesis grid-pro attributes
 :::info estimated time
 15min
 :::
 Change the row height of the data grid to '20 px'.
 
-:::tip More Genesis ag-grid attributes
-You can find all the additional attributes and props, including row height, of the Genesis ag-grid at [Genesis ag-grid documentation](/web/web-components/grids/ag-grid/ag-grid-intro/).
+:::tip More Genesis grid-pro attributes
+You can find all the additional attributes and props, including row height, of the Genesis grid-pro at [Genesis grid-pro documentation](/web/web-components/grids/grid-pro/grid-pro-intro/).
 :::
 
 
@@ -130,23 +129,23 @@ If you struggle, make sure to revisit this previous lesson on [calling event han
 ## Creating our own grid component
 It's possible to create your own grid component if you want something completely customized. We can do that creating a new customElement. 
 
-In the example below, the component is called `positions-ag-grid`. 
+In the example below, the component is called `positions-grid-pro`. 
 
 ```javascript {10}
-import {AgGrid as AgGridZero, zeroAgGridTemplate} from '@genesislcap/foundation-zero';
+import {ZeroGridPro, zeroGridProTemplate} from '@genesislcap/foundation-zero-grid-pro';
 import {customElement} from '@microsoft/fast-element';
-import {positionsAgGridStyles} from './ag-grid.styles';
+import {positionsGridStyles} from './grid-pro.styles';
 
 @customElement({
-  name: 'positions-ag-grid',
-  template: zeroAgGridTemplate,
-  styles: positionsAgGridStyles,
+  name: 'positions-grid-pro',
+  template: zeroGridProTemplate,
+  styles: positionsGridStyles,
 })
-export class PositionsAgGrid extends AgGridZero {
+export class PositionsAgGrid extends ZeroGridPro {
 }
 ```
 
-Note we are extending `AgGridZero`, not `FASTElement`.
+Note we are extending `ZeroGridPro`, not `FASTElement`.
 
 Now you need to provide custom styles for the custom component:
 
@@ -238,7 +237,7 @@ And so we have our result:
 
 Looks good, doesn't it?
 
-### Exercise 3.3: extending Ag Grid
+### Exercise 3.3: extending Grid Pro
 :::info estimated time
 30min
 :::
@@ -246,9 +245,9 @@ Create a OrdersAgGrid extending AgGridZero and apply the same style on the `SIDE
 
 ### Adding filters to the Orders data grid
 
-The way we have been using ag-grid so far is encapsulating a Genesis datasource to have access to Data Server resources. This makes it easier to retrieve data without worrying about the connection, handling update events and so on. This is called [connected data](/web/web-components/grids/ag-grid/ag-grid-connected/).
+The way we have been using grid-pro so far is encapsulating a Genesis datasource to have access to Data Server resources. This makes it easier to retrieve data without worrying about the connection, handling update events and so on. This is called [connected data](/web/web-components/grids/grid-pro/grid-pro-connected/).
 
-[Genesis datasource](/web/web-components/grids/ag-grid/ag-genesis-datasource/) offers some [attributes](/web/web-components/grids/ag-grid/ag-genesis-datasource/#attributes-and-props) to parametrise how to retrieve the data. Some commonly used attributes are:
+[Genesis datasource](/web/web-components/grids/grid-pro/grid-pro-genesis-datasource/) offers some [attributes](/web/web-components/grids/grid-pro/grid-pro-genesis-datasource/#attributes-and-props) to parametrise how to retrieve the data. Some commonly used attributes are:
 
 - **`criteria: string`**: a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: Expr.dateIsBefore(TRADE_DATE,'20150518') or QUANTITY > 10000.
 
@@ -256,17 +255,17 @@ The way we have been using ag-grid so far is encapsulating a Genesis datasource 
 
 - **`resourceName: string`**: The target [Data Server](/server/data-server/introduction/) or [Request Server](/server/request-server/introduction/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
 
-As you may have noticed, we've already used `resourceName` and `orderBy` when we used the ag-genesis-datasource for the first time. 
+As you may have noticed, we've already used `resourceName` and `orderBy` when we used the grid-pro-genesis-datasource for the first time. 
 
 Now, let's see how we'd use `criteria` to add some filters to the data grid. In the example below, only orders whose side is BUY would be displayed:
 
 ```ts {4} title='order.template.ts'
-<ag-genesis-datasource
+<grid-pro-genesis-datasource
     resourceName="ALL_ORDERS"
     orderBy="ORDER_ID"
     criteria="SIDE == 'BUY'"
 >
-</ag-genesis-datasource>
+</grid-pro-genesis-datasource>
 ```
 
 Having a static filter like that is not always very useful though. Let's make it more dynamic adding a button in the order screen to filter by side and make the criteria read the side to be filtered dynamically:
@@ -274,11 +273,11 @@ Having a static filter like that is not always very useful though. Let's make it
 ```ts {1,6} title='order.template.ts'
 <zero-button @click=${x=> x.toggleSideFilter()}>Toggle SIDE filter</zero-button>
 
-<ag-genesis-datasource
+<grid-pro-genesis-datasource
         resourceName="ALL_ORDERS"
         orderBy="ORDER_ID"
         criteria="SIDE == '${x=>x.sideFilter}'">
-</ag-genesis-datasource>
+</grid-pro-genesis-datasource>
 ```
 
 ```ts title='order.ts'
@@ -291,16 +290,16 @@ public toggleSideFilter() {
 
 Make sure to try it now and click on the 'Toggle SIDE filter' button to see the filter being applied.
 
-Ultimately, we can use something like the [ref directive](https://www.fast.design/docs/fast-element/using-directives/#the-ref-directive) to make our code completely override the criteria. So, let's add another button to reset the criteria to something else and use the `ref` in ag-genesis-datasource.
+Ultimately, we can use something like the [ref directive](https://www.fast.design/docs/fast-element/using-directives/#the-ref-directive) to make our code completely override the criteria. So, let's add another button to reset the criteria to something else and use the `ref` in grid-pro-genesis-datasource.
 
 ```ts {1,3} title='order.template.ts'
 <zero-button @click=${x=> x.customFilter()}>No filters</zero-button>
 
-<ag-genesis-datasource ${ref('ordersGrid')}
+<grid-pro-genesis-datasource ${ref('ordersGrid')}
         resourceName="ALL_ORDERS"
         orderBy="ORDER_ID"
         criteria="SIDE == '${x=>x.sideFilter}'">
-    </ag-genesis-datasource>
+    </grid-pro-genesis-datasource>
 ```
 
 Add the ordersGrid property and customFilter method to the Order class:
@@ -312,7 +311,7 @@ public customFilter() {
   }
 ```
 
-As you can see, there's a reference in the Order class to the ag-genesis-datasource element called `ordersGrid` and we can set its attributes, such as the ***criteria*** attribute, to any value we want.
+As you can see, there's a reference in the Order class to the grid-pro-genesis-datasource element called `ordersGrid` and we can set its attributes, such as the ***criteria*** attribute, to any value we want.
 
 ### Data server client-side options
 

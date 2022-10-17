@@ -9,8 +9,8 @@ In this example, we shall add a grid to our new page. This grid will display dat
 More specifically, we will be adding:
 
 - a simple wrapper div for styling/sizing purposes
-- a `zero-ag-grid` component, which is our Web Component wrapper for AG Grid (a feature-rich high-performance data grid optimised for real-time, fast-moving data)
-- an `ag-genesis-datasource` component, which makes the actual connection to the server resource and provides data to the grid
+- a `zero-grid-pro` grid component
+- an `grid-pro-genesis-datasource` component, which makes the actual connection to the server resource and provides data to the grid
 
  
 
@@ -42,9 +42,9 @@ Now, we need to add the grid component inside the wrapper div. In this example, 
 
 ```javascript
   <div class="wrapper">
-    <zero-ag-grid>
+    <zero-grid-pro>
       <!-- The datasource will go in here. -->
-    </zero-ag-grid>
+    </zero-grid-pro>
   </div>
 ```
 
@@ -54,9 +54,9 @@ Now we can see the same code snippet when the data source (ALL_TRADES) has been 
 
 ```javascript
   <div class="wrapper">
-    <zero-ag-grid>
-      <ag-genesis-datasource resourceName="ALL_TRADES" />
-    </zero-ag-grid>
+    <zero-grid-pro>
+      <grid-pro-genesis-datasource resourceName="ALL_TRADES" />
+    </zero-grid-pro>
   </div>
 ```
 
@@ -71,9 +71,9 @@ We just need to set a few properties on our grid and datasource components. In t
 
 ```javascript
   <div class="wrapper">
-    <zero-ag-grid rowHeight="45">
-      <ag-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
-    </zero-ag-grid>
+    <zero-grid-pro rowHeight="45">
+      <grid-pro-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
+    </zero-grid-pro>
   </div>
 ```
 
@@ -91,12 +91,11 @@ In this case, we have defined custom definitions for ten fields. For each of the
 Then, in the export, we have added the line `${repeat(() => tradeColumnDefs, html` `, which takes in all the definitions.
 
 ```javascript
-import {ColDef} from '@ag-grid-community/core';
 import {html, repeat} from '@microsoft/fast-element';
 import {formatDateLong, formatNumber} from '../../utils/formatting';
 import type {TestPage} from './test-page';
 
-export const tradeColumnDefs: ColDef[] = [
+export const tradeColumnDefs = [
   {field: 'INSTRUMENT_NAME', headerName: 'Instrument', enableCellChangeFlash: true, flex: 3},
   {field: 'SIDE', headerName: 'Side', cellClass: 'status-cell', enableCellChangeFlash: true, flex: 1},
   {field: 'QUANTITY', headerName: 'Quantity', valueFormatter: formatNumber(0), type: 'rightAligned', enableCellChangeFlash: true, flex: 1},
@@ -111,12 +110,12 @@ export const tradeColumnDefs: ColDef[] = [
 
 export const TestPageTemplate = html<TestPage>`
   <div class="wrapper">
-    <zero-ag-grid rowHeight="45" only-template-col-defs enabledRowFlashing >
-      <ag-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
+    <zero-grid-pro rowHeight="45" only-template-col-defs enabledRowFlashing >
+      <grid-pro-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
       ${repeat(() => tradeColumnDefs, html`
-        <ag-grid-column :definition="${x => x}" />
+        <grid-pro-column :definition="${x => x}" />
       `)}
-    </zero-ag-grid>
+    </zero-grid-pro>
   </div>
 `;
 ```
@@ -128,33 +127,33 @@ Here is the result:
 
 ## Going further
 
-If you want to get more complex, you can create your own grid component; you do this the same way you created the `TestPage` component. In the example below, the component is called `positions-ag-grid`. 
+If you want to get more complex, you can create your own grid component; you do this the same way you created the `TestPage` component. In the example below, the component is called `positions-grid-pro`. 
 
-Note we are extending the `zero-ag-grid`, not the `fast-element`.
+Note we are extending the `ZeroGridPro`, not the `fast-element`.
 
 
 ```javascript
-import {AgGrid as AgGridZero, zeroAgGridTemplate} from '@genesislcap/foundation-zero';
+import {ZeroGridPro, zeroGridProTemplate} from '@genesislcap/foundation-zero-grid-pro';
 import {customElement} from '@microsoft/fast-element';
-import {positionsAgGridStyles} from './ag-grid.styles';
+import {positionsGridStyles} from './grid-pro.styles';
 
 @customElement({
-  name: 'positions-ag-grid',
-  template: zeroAgGridTemplate,
-  styles: positionsAgGridStyles,
+  name: 'positions-grid-pro',
+  template: zeroGridProTemplate,
+  styles: positionsGridStyles,
 })
-export class PositionsAgGrid extends AgGridZero {
+export class PositionsAgGrid extends ZeroGridPro {
 }
 ```
 
 Now you need to provide custom styles for the custom component:
 
 ```javascript
-import {zeroAgGridStyles} from '@genesislcap/foundation-zero';
+
 import {css, ElementStyles} from '@microsoft/fast-element';
 import {BUY_SIDE, SELL_SIDE, NEW_TRADE_STATUS, CANCELLED_TRADE_STATUS} from './colors';
 
-export const positionsAgGridStyles: ElementStyles = css`
+export const positionsGridStyles: ElementStyles = css`
   ${zeroAgGridStyles}
 
   .status-cell {
@@ -236,5 +235,5 @@ And so we have our result:
 ![](/img/all-trades-grid-03.png)
 
 :::info
-You can read more about our grid components and configuration options them under the ['Web UI reference' for grids.](/web/web-components/grids/ag-grid/ag-grid-intro/)
+You can read more about our grid components and configuration options them under the ['Web UI reference' for grids.](/web/web-components/grids/grid-pro/grid-pro-intro/)
 :::

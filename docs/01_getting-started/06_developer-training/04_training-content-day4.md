@@ -14,7 +14,7 @@ sidebar_position: 6
     <li>We started writing some <a href="/getting-started/developer-training/training-content-day3/#automated-testing">automated tests</a> for our application.</li>
     <li>We added <a href="/getting-started/developer-training/training-content-day3/#calculated-data">calculated data (derived fields)</a> into our main View.</li>
     <li><a href="/getting-started/developer-training/training-content-day3/#consolidators">Consolidators</a> perform data aggregation and calculations, and here we created one to real-time feed the Positions table.</li>
-    <li>We added a <a href="/getting-started/developer-training/training-content-day3/#ui-configuring">grid</a> in the UI to display the Positions using AgGrid, with more flexibility to customize the HTML and CSS.</li>
+    <li>We added a <a href="/getting-started/developer-training/training-content-day3/#ui-configuring">grid</a> in the UI to display the Positions using Grid Pro, with more flexibility to customize the HTML and CSS.</li>
   </div>
 </details>
 

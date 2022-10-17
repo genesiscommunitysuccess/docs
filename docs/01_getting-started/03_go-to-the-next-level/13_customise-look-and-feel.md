@@ -7,7 +7,7 @@ id: customize-look-and-feel
 ## Section objectives
 The goal of this section is to customise our styles in the UI.
 
-## Styling ag-grid
+## Styling Grid Pro
 
 You might want to apply specific styles to some columns. 
 We start by creating a stylesheet document that will have some style definitions for the grid.
@@ -24,7 +24,7 @@ export const positionGridStyles: ElementStyles = css`
 `
 ```
 
-Configure your column to have the specific class name [column config](https://ag-grid.com/javascript-data-grid/cell-styles/#cell-class):
+Configure your column to have the specific class name.
 
 ```typescript title="positionColumnDefs.ts"
  {field: 'QUANTITY', cellClass: 'quantity-column'},
@@ -35,11 +35,11 @@ In home.template.ts, in the grid tag, include utility that will inject your styl
 ```html {1,4} title='home.template.ts'
 import {positionGridStyles} from "./positionsGrid.styles";
 
-<zero-ag-grid>
+<zero-grid-pro>
     <slotted-styles :styles=${() => positionGridStyles}></slotted-styles>
     ...    
     ...
-</zero-ag-grid>
+</zero-grid-pro>
 `
 ```
 

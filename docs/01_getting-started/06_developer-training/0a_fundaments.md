@@ -294,9 +294,9 @@ dataServer{
 ```
 
 ```xml
-<zero-ag-grid rowHeight="45">
-    <ag-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
-</zero-ag-grid>
+<zero-grid-pro rowHeight="45">
+    <grid-pro-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
+</zero-grid-pro>
 ```
 
 ![](/img/UI.png)

@@ -60,16 +60,16 @@ For your user interface, the `genx` process has generated the following files:
 - **home.ts**
 - **home.styles.ts**
 
-In the template file, start by adding the Genesis data source pointing to the appropriate resource name; this must be wrapped in a grid of your choice. For this example, we shall use ag-grid.
+In the template file, start by adding the Genesis data source pointing to the appropriate resource name; this must be wrapped in a grid of your choice.
 
-[//]: # (link to ag-genesis-datasource tsdocs)
+[//]: # (link to grid-pro-genesis-datasource tsdocs)
 ```html title="home.template.ts"
-<zero-ag-grid>
-    <ag-genesis-datasource
+<zero-grid-pro>
+    <grid-pro-genesis-datasource
         resourceName="ALL_POSITIONS"
         orderBy="INSTRUMENT_ID">
-    </ag-genesis-datasource>
-</zero-ag-grid>
+    </grid-pro-genesis-datasource>
+</zero-grid-pro>
 ```
 
 This will result in a grid displaying all the columns available in the `ALL_POSITIONS` resource:
@@ -81,13 +81,13 @@ This will result in a grid displaying all the columns available in the `ALL_POSI
 To add new columns that are not part of the API, we can add additional column definitions.
 
 ```html {6} title="home.template.ts"
-<zero-ag-grid>
-    <ag-genesis-datasource
+<zero-grid-pro>
+    <grid-pro-genesis-datasource
         resourceName="ALL_POSITIONS"
         orderBy="INSTRUMENT_ID">
-    </ag-genesis-datasource>
-    <ag-grid-column :definition="${x => x.singlePositionActionColDef}" />
-</zero-ag-grid>
+    </grid-pro-genesis-datasource>
+    <grid-pro-column :definition="${x => x.singlePositionActionColDef}" />
+</zero-grid-pro>
 
 ```
 
@@ -132,7 +132,7 @@ export const positionColumnDefs = [
 ];
 ```
 
-To stop automatic generation of columns, you need to add the `only-template-col-defs` attribute to the zero-ag-grid.
+To stop automatic generation of columns, you need to add the `only-template-col-defs` attribute to the zero-grid-pro.
 
 Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive) directive; this includes all the columns from our column config array.
 
@@ -141,16 +141,16 @@ Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives
 import {positionColumnDefs} from './positionColumnDefs';
 import {repeat} from '@microsoft/fast-element';
 
-<zero-ag-grid only-template-col-defs>
-    <ag-genesis-datasource
+<zero-grid-pro only-template-col-defs>
+    <grid-pro-genesis-datasource
         resourceName="ALL_POSITIONS"
         orderBy="INSTRUMENT_ID">
-    </ag-genesis-datasource>
+    </grid-pro-genesis-datasource>
     ${repeat(() => positionColumnDefs, html`
-    <ag-grid-column :definition="${x => x}"></ag-grid-column>
+    <grid-pro-column :definition="${x => x}"></grid-pro-column>
     `)}
-    <ag-grid-column :definition="${x => x.singlePositionActionColDef}"></ag-grid-column>
-</zero-ag-grid>
+    <grid-pro-column :definition="${x => x.singlePositionActionColDef}"></grid-pro-column>
+</zero-grid-pro>
 ```
 
 Columns will now flash green as the value inside of them changes:
@@ -158,15 +158,15 @@ Columns will now flash green as the value inside of them changes:
 
 ## Saving user preferences
 
-You can add the `persist-column-state-key` to the zero-ag-grid to persist user changes to things such as sorting, column order, and visibility on the user machine. With this, when the user reloads the browser, they get the same configuration.
+You can add the `persist-column-state-key` to the zero-grid-pro to persist user changes to things such as sorting, column order, and visibility on the user machine. With this, when the user reloads the browser, they get the same configuration.
 
 ```html {2}
-<zero-ag-grid
+<zero-grid-pro
     persist-column-state-key='position-grid-settings'
 >
 ```
 
 
-[//]: # (link to zero-ag-grid tsdocs)
+[//]: # (link to zero-grid-pro tsdocs)
 
 

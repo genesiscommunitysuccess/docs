@@ -40,9 +40,9 @@ dataServer {
 
 Front end
 ```html
-<zero-ag-grid rowHeight="45">
-    <ag-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
-</zero-ag-grid>
+<zero-grid-pro rowHeight="45">
+    <grid-pro-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
+</zero-grid-pro>
 ```
 
 Now let's take a closer look at the server architecture.
