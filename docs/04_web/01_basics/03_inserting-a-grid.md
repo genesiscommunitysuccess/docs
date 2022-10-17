@@ -10,7 +10,7 @@ More specifically, we will be adding:
 
 - a simple wrapper div for styling/sizing purposes
 - a `zero-grid-pro` grid component
-- an `grid-pro-genesis-datasource` component, which makes the actual connection to the server resource and provides data to the grid
+- a `grid-pro-genesis-datasource` component, which makes the actual connection to the server resource and provides data to the grid
 
  
 
