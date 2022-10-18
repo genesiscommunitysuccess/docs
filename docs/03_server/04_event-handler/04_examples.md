@@ -6,9 +6,10 @@ id: examples
 
 
 
-There is a nice simple example of some logic being added to an Event Handler in our [tutorial](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#update-the-event-handler). 
+On this page, you can find useful examples of code for an Event Handler. We start with a very basic example, and then we provide further examples to cover key functions, such as exception handling and permissioning.
 
-Below, we have some other examples of different ways to use an Event Handler.
+Also, there is a nice simple example of an `eventHandler` codeblock in our [tutorial](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#create-the-eventhandler). 
+
 
 ## Basic
 The example below is a simple Event Handler to validate input and insert a record in the database. There is an [`onValidate`](/server/event-handler/basics/#adding-validation) block that defines the validation and an [`onCommit`](/server/event-handler/basics/#a-simple-example-of-an-event-handler) block that specifies the action that is to be taken.
