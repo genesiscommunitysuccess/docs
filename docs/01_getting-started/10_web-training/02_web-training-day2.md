@@ -362,16 +362,16 @@ public async insertOrder() {
 ```
 
 ### Adding a simple Orders data grid
-In the template file, let's add the Genesis [data source](/web/web-components/grids/ag-grid/ag-genesis-datasource/) pointing to the `ALL_ORDERS` resource and wrap it in [ag-grid](/web/web-components/grids/ag-grid/ag-grid-intro/).
+In the template file, let's add the Genesis [data source](/web/web-components/grids/grid-pro/grid-pro-genesis-datasource/) pointing to the `ALL_ORDERS` resource and wrap it in [grid-pro](/web/web-components/grids/grid-pro/grid-pro-intro/).
 
 Add this code to the end of html template code:
 ```html title="order.template.ts"
-<zero-ag-grid>
-    <ag-genesis-datasource
+<zero-grid-pro>
+    <grid-pro-genesis-datasource
         resourceName="ALL_ORDERS"
         orderBy="ORDER_ID">
-    </ag-genesis-datasource>
-</zero-ag-grid>
+    </grid-pro-genesis-datasource>
+</zero-grid-pro>
 ```
 
 This will result in a grid displaying all the columns available in the for the `ALL_ORDERS` resource.

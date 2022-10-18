@@ -1,9 +1,9 @@
 ---
-id: ag-genesis-column
-title: Genesis AG Column
+id: grid-pro-genesis-column
+title: Genesis Grid Pro Column
 ---
 
-This is a `slotted` component that allows a more "visual approach" when defining columns. Each `ag-column` takes a `ColDef` typed object that is an exact match to the official AG Grid's [Column Definition](https://www.ag-grid.com/javascript-data-grid/column-definitions/).
+This is a `slotted` component that allows a more "visual approach" when defining columns. Each `grid-pro-column` takes a `ColDef` typed object.
 
 :::tip 
 Customising column definitions using this approach is useful when on **connected data** cases, where the data will be dynamic but there's still a need for extra definitions (e.g. events, transformers, etc).
@@ -51,13 +51,13 @@ public myOtherSingleCustomColumnConfigObj: ColDef = [
 When using `ColDef` objects, it's up to you to decide the approach (array of definitions + repeat or one by one; there's no right or wrong here, as the goal is flexibility):
 
 ```html title="Using the ColDef array of objects with an extra single object"
-<foundation-ag-grid>
+<foundation-grid-pro>
   ${repeat(x => x.myMultipleCustomColumnConfigArray, html`
-    <ag-grid-column :definition=${x => x}></ag-grid-column>
+    <grid-pro-column :definition=${x => x}></grid-pro-column>
   `)}
 
-  <ag-grid-column :definition=${x => x.mySingleCustomColumnConfigObj}></ag-grid-column>
-  <ag-grid-column :definition=${x => x.myOtherSingleCustomColumnConfigObj}></ag-grid-column>
+  <grid-pro-column :definition=${x => x.mySingleCustomColumnConfigObj}></grid-pro-column>
+  <grid-pro-column :definition=${x => x.myOtherSingleCustomColumnConfigObj}></grid-pro-column>
 
-</foundation-ag-grid>
+</foundation-grid-pro>
 ```

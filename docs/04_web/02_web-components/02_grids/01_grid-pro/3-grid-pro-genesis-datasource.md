@@ -1,9 +1,9 @@
 ---
-id: ag-genesis-datasource
+id: grid-pro-genesis-datasource
 title: Genesis data-source
 ---
 
-Used in [Connected Data](/web/web-components/grids/ag-grid/ag-grid-connected/) scenarios, this will fetch data from a Genesis server (or any other server that implements the Genesis protocol). <br /> <br /> *Available attributes and props may change in the future and are open for feedback but are reflecting the DATA_LOGON message options](/creating-applications/defining-your-application/integrations/rest-endpoints/#data_logon)*
+Used in [Connected Data](/web/web-components/grids/grid-pro/grid-pro-connected/) scenarios, this will fetch data from a Genesis server (or any other server that implements the Genesis protocol). <br /> <br /> *Available attributes and props may change in the future and are open for feedback but are reflecting the DATA_LOGON message options](/creating-applications/defining-your-application/integrations/rest-endpoints/#data_logon)*
 
 ## Attributes and props
 
@@ -25,16 +25,14 @@ Used in [Connected Data](/web/web-components/grids/ag-grid/ag-grid-connected/) s
 
 - **`reverse: boolean`**: This option changes the data server index iteration. For example, if you are using the default index, they query will return rows from newest database records to oldest.
 
-## Usage (0.0.18+)
-
 ```html title="Streaming data from ALL_PROCESS_STATUS data server"
 <alpha-card>
-  <alpha-ag-grid>
-    <ag-genesis-datasource 
+  <alpha-grid-pro>
+    <grid-pro-genesis-datasource 
       resourceName="ALL_PROCESSES_STATUS" 
       isSnapshot="true" 
       fields="PROCESS_NAME LOG_LEVEL" />
     ...
-  </alpha-ag-grid>
+  </alpha-grid-pro>
   ...
 </alpha-card>

@@ -546,7 +546,7 @@ Run **assemble** and **deploy-genesisproduct-alpha** tasks to verify that the ne
 
 ## UI configuring 
 
-Let's add a grid in the UI to display the Positions. We could use [Entity Management](/getting-started/developer-training/training-content-day2/#entitymanagement) again, but here we will use AgGrid in `@genesislcap/foundation-zero` [Genesis package](/getting-started/developer-training/training-content-day2/#genesis-packages) presented in [Day 2](/getting-started/developer-training/training-content-day2/), as this approach offers more flexibility to customize the HTML and CSS.
+Let's add a grid in the UI to display the Positions. We could use [Entity Management](/getting-started/developer-training/training-content-day2/#entitymanagement) again, but here we will use Grid Pro in `@genesislcap/foundation-zero-grid-pro` [Genesis package](/getting-started/developer-training/training-content-day2/#genesis-packages) presented in [Day 2](/getting-started/developer-training/training-content-day2/), as this approach offers more flexibility to customize the HTML and CSS.
 
 First, open the file **home.styles.ts** and add the code below.
 
@@ -577,18 +577,18 @@ font-weight: bold;
 }
 ```
 
-Open the file **home.ts** and import *AgGrid* and *Connect*. Then, add them as attributes to the Home class.
+Open the file **home.ts** and import *Grid Pro* and *Connect*. Then, add them as attributes to the Home class.
 
 ```ts {2,3,9,11}
 ...
-import {AgGrid} from '@genesislcap/foundation-zero';
+import {ZeroGridPro} from '@genesislcap/foundation-zero-grid-pro';
 import {Connect} from '@genesislcap/foundation-comms';
 ...
 export class Home extends FASTElement {
     @observable columns: any = COLUMNS;
     @observable permissionsTrade: Permissions[] = [];
 
-    public positionsGrid!: AgGrid;
+    public positionsGrid!: ZeroGridPro;
 
     @Connect connection: Connect;
 
@@ -604,9 +604,8 @@ Finally, go to the file **home.template.ts** and import the required components.
 ```html {1,3,5-12,15,16,25-39}
 import {html, repeat, when, ref} from '@microsoft/fast-element';
 import type {Home} from './home';
-import {ColDef} from '@ag-grid-community/core';
 
-export const positionsColumnDefs: ColDef[] = [
+export const positionsColumnDefs: any[] = [
     {field: 'POSITION_ID', headerName: 'Id'},
     {field: 'INSTRUMENT_ID', headerName: 'Instrument'},
     {field: 'QUANTITY', headerName: 'Quantity'},
@@ -630,14 +629,14 @@ export const HomeTemplate = html<Home>`
     <div class="top-layout">
         <zero-card class="positions-card">
             <span class="card-title">Positions</span>
-            <zero-ag-grid ${ref('positionsGrid')} rowHeight="45" only-template-col-defs>
+            <zero-grid-pro ${ref('positionsGrid')} rowHeight="45" only-template-col-defs>
                 ${when(x => x.connection.isConnected, html`
-                  <ag-genesis-datasource resourceName="ALL_POSITIONS"></ag-genesis-datasource>
+                  <grid-pro-genesis-datasource resourceName="ALL_POSITIONS"></grid-pro-genesis-datasource>
                   ${repeat(() => positionsColumnDefs, html`
-                    <ag-grid-column :definition="${x => x}" />
+                    <grid-pro-column :definition="${x => x}" />
                   `)}
                 `)}
-            </zero-ag-grid>
+            </zero-grid-pro>
         </zero-card>
     </div>
 </div>

@@ -1,5 +1,5 @@
 ---
-id: ag-grid-simple
+id: grid-pro-simple
 title: Simple data
 ---
 
@@ -13,8 +13,9 @@ In the examples below, we refer to a sample `@genesislcap/alpha-design-system` d
 
 ```ts
 import { provideDesignSystem, alphaAgGrid } from '@genesislcap/alpha-design-system';
+import { foundationGridComponents } from '@genesislcap/grid-pro';
 
-provideDesignSystem().register(alphaAgGrid());
+provideDesignSystem().register(alphaAgGrid(), foundationGridComponents);
 ```
 
 ## Usage
@@ -39,7 +40,7 @@ function SimpleAgGrid(props) {
   ];
   
   const loadSimpleData = () => {
-    const grid = document.querySelector('alpha-ag-grid');
+    const grid = document.querySelector('alpha-grid-pro');
 
     const gridOptions = {
       defaultColDef: {
@@ -60,8 +61,8 @@ function SimpleAgGrid(props) {
 
   return (
     <alpha-card>
-      <alpha-button onClick={() => loadSimpleData()}>Load Simple AG Grid</alpha-button>
-      <alpha-ag-grid style={gridStyle}></alpha-ag-grid>
+      <alpha-button onClick={() => loadSimpleData()}>Load Simple grid data</alpha-button>
+      <alpha-grid-pro style={gridStyle}></alpha-grid-pro>
     </alpha-card>
   );
 }

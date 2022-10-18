@@ -25,7 +25,7 @@ The User Management micro front-end is used to manage the users on the front end
 - the grid
 - the form
 
-The grid contains an entity on each row and data in each column. Under the hood, the grid uses [ag-grid](https://www.ag-grid.com/), which gives a lot of features, such as filtering and ordering of data.
+The grid contains an entity on each row and data in each column.
 
 :::info
 User Management is a concrete use case of the [Entity Management](./04_foundation-entity-management.md) micro front-end, which is provided as part of `foundation-ui`.
