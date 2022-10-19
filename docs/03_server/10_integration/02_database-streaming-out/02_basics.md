@@ -35,7 +35,7 @@ The process definition is made up of several fields that set up the main configu
 
 ```xml
 <preExpression>
-    <!\[CDATA\[
+    <![CDATA[
 
         import global.genesis.commons.model.GenesisSet
         import global.genesis.db.DbRecord
@@ -51,7 +51,7 @@ The process definition is made up of several fields that set up the main configu
             return recs
         }
 
-    \]\]>
+    ]]>
 </preExpression>
 ```
 
@@ -90,46 +90,41 @@ Example:
 
 ```xml
 <databaseStream name="ALL_TRADES">
-    <tables>
-        <table name="TRADE"
-                alias="t"
-                seedKey="TRADE_BY_TIMESTAMP" />
-        <table name="CLIENT" alias="c">
-            <join key="CLIENT_BY_ID">
-                <!\[CDATA\[ c.setString("ID", t.getString("CLIENT_ID")) \]\]>
-            </join>
-        </table>
-        <table name="CURRENCY" alias="cu">
-            <join key="CURRENCY_BY_ID">
-                <!\[CDATA\[ cu.setString("ID", t.getString("CURRENCY_ID")) \]\]>
-            </join>
-        </table>
-    </tables>
-    <fields>
-        <!\[CDATA\[
-            sproc.setParameter("TRADE_ID", t.getString("ID"))
-            sproc.setParameter("TRADE_QUANTITY", t.getInteger("QUANTITY"))
-            sproc.setParameter("CLIENT_NAME", c.getString("NAME"))
-            sproc.setParameter("CURRENCY_DESCRIPTION", cu.getString("DESCRIPTION"))
-        \]\]>
-    </fields>
-    <proc>
-        <insert>
-            <!\[CDATA\[
-                {call insertTrade(1,2,3,4)}
-            \]\]>
-        </insert>
-        <modify>
-            <!\[CDATA\[
-                {call modifyTrade(1,2,3,4)}
-            \]\]>
-        </modify>
-        <delete>
-            <!\[CDATA\[
-                {call deleteTrade(1)}
-            \]\]>
-        </delete>
-    </proc>
+  <tables>
+    <table name="TRADE"
+           alias="t"
+           seedKey="TRADE_BY_TIMESTAMP" />
+  </tables>
+  <fields>
+    <![CDATA[
+            sproc.setParameter("id", t.getString("TRADE_ID"))
+            sproc.setParameter("instrumentid", t.getString("INSTRUMENT_ID"))
+            sproc.setParameter("counterpartyid", t.getString("COUNTERPARTY_ID"))
+            sproc.setParameter("amount", t.getInteger("QUANTITY"))
+            sproc.setParameter("side", t.getString("SIDE"))
+            sproc.setParameter("price", t.getDouble("PRICE"))
+            sproc.setParameter("date", t.getLong("TRADE_DATETIME"))
+            sproc.setParameter("trader", t.getString("ENTERED_BY"))
+            sproc.setParameter("status", t.getString("TRADE_STATUS"))
+            ]]>
+  </fields>
+  <proc>
+    <insert>
+      <![CDATA[
+                {call inserttrade(1,2,3,4,5,6,7,8,9)}
+                ]]>
+    </insert>
+    <modify>
+      <![CDATA[
+                {call updatetrade(1,2,3,4,5,6,7,8,9)}
+                ]]>
+    </modify>
+    <delete>
+      <![CDATA[
+                {call deletetrade(1)}
+                ]]>
+    </delete>
+  </proc>
 </databaseStream>
 ```
 
@@ -140,6 +135,8 @@ Use `startProcess` to start the GenesisToDb process (see [Configuring Runtime](/
 `--clearText` can be passed if you want to use clear text user and passwords in the configuration file, instead of encrypted ones.
 
 `--force` if passed to the process, this  attempts to re-insert every trade found in our Genesis table to the RDBMS, ignoring previously inserted records.
+
+For more information regarding process configuration please see the dedicated page on [Processes](/server/configuring-runtime/processes).
 
 ### Table joins
 
