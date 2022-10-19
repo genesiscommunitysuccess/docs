@@ -16,7 +16,7 @@ Please follow these instructions very carefully to ensure your environment is re
 #### Recommended hardware and operating system
 
 * Operating system : Windows 10 Pro version 2004 or higher with support for [WSL v2](https://docs.microsoft.com/en-us/windows/wsl/install)
-* RAM : 16GB minimum, 32GB preferred (if running full applications locally)
+* RAM : 32GB minimum, as we running full applications locally
 * CPU : 8 Core
 * SSD : 250GB
 
@@ -31,7 +31,7 @@ Please follow these instructions very carefully to ensure your environment is re
 | Postman	| 8|
 | NodeJS  | 16 LTS+|
 | npm | 8 |
-| Gradle | 6.8 |
+| Gradle | 7.2 |
 | Windows Subsystem for Linux (WSL) | WSL 2 |
 
 You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the Genesis Platform Abstraction Language (**GPAL**) prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.

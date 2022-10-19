@@ -42,8 +42,8 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 - [Day five](/getting-started/developer-training/training-content-day5/): Schedulers, notifications, permissions​, key server commands​ and how to get help​.
 
 ## Genesis low-code platform version
-6.0.2
+6.2.3
 
 ## Source code
 The complete source code of this training is available 
-on [GitHub](https://github.com/genesiscommunitysuccess/devtraining-gama) and, alternatively, as a [ZIP file](https://genesisglobal.jfrog.io/artifactory/community-uploads/devtraining-gama.zip).
+on [GitHub](https://github.com/genesiscommunitysuccess/devtraining-alpha).
