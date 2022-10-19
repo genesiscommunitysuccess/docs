@@ -13,6 +13,7 @@ Let's make things really simple.
 - Each `eventHandler` can be invoked from the front end, from other `eventHandler` codeblocks, or from custom components in the application.
 - If you use AppGen to build from your dictionary, then a basic **.kts** file will be built automatically for you, creating basic insert, modify and delete `eventHandler` code blocks for all the tables and views in your data model. You can edit this file to customise the component.
 - Otherwise, you can build your **.kts** by defining each `eventHandler` codeblock from scratch.
+- For complex Event Handlers, you might prefer to use the [Event Handler API](/database/api-reference/event-handler-api/) to implement a set of classes.
 
 On this page, we'll take you through the basics of creating an Event Handler in simple stages:
 
