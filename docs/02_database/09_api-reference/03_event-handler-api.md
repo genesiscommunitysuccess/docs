@@ -5,19 +5,23 @@ id: event-handler-api
 ---
 
 
-Custom Event Handlers provide a way of implementing business logic in Java or Kotlin outside the Genesis GPAL Event Handler definition, in a more traditional and flexible development approach. Genesis has three different flavours of custom Event Handler:
+In most cases, you will create [Event Handlers](/server/event-handler/introduction/) in a kts file using GPAL. This offers a method with succinct code and a good degree of flexibility.
 
--   Async. This uses the Kotlin coroutine API to simplify asynchronous development. This is the underlying implementation used in GPAL Event Handlers.
--   RxJava3. This uses the RxJava3 library, which is a popular option for composing asynchronous event-based programs.
--   Sync. This creates synchronous Event Handlers.
+However, you can also implement Event Handlers as a set of classes. Typically, this is useful where you have a complex requirement for business logic and database interaction. For example, a kts file of 1,000 lines is difficult to test and maintain; in this case, a set of individual classes is much more convenient.
+
+For implementing an Event Handler as a set of classes, there are three different options:
+
+-   Async. This uses the Kotlin coroutine API to simplify asynchronous development. This is the underlying implementation used in GPAL Event Handlers. You can only create Async Event Handlers using Kotlin.
+-   RxJava3. This uses the RxJava3 library, which is a popular option for composing asynchronous event-based programs. You can create RxJava3 Event Handlers using either Kotlin or Java.
+-   Sync. This creates synchronous Event Handlers. You can create Sync Event Handlers using either Kotlin or Java.
 
 :::note
 
-Java event handlers can be implemented using [RxJava3](/database/api-reference/event-handler-api/#rx3eventhandler) and [Sync](/database/api-reference/event-handler-api/#sync) Event Handlers only. Async Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
+Java Event Handlers can be implemented using [RxJava3](/database/api-reference/event-handler-api/#rx3eventhandler) and [Sync](/database/api-reference/event-handler-api/#sync) Event Handlers only. Async Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
 
+**We recommend using Kotlin to implement Event Handlers.**
 :::
 
-We recommend using Kotlin to implement Event Handlers
 
 ## Configure in processes.xml file
 
@@ -32,8 +36,8 @@ You need to add the `global.genesis.eventhandler` package in the package tag of 
 </process>
 ```
 
-## Event Handler interface
 
+## Event Handler interface
 
 The Event Handler interface is the common supertype of AsyncEventHandler, Rx3EventHandler and SyncEventHandler, but it is not meant to be used on its own. It provides basic options for each Event Handler definition, which can be overridden. See the Kotlin methods explanation below:
 
