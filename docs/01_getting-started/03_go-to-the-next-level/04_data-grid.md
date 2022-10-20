@@ -1,6 +1,6 @@
 ---
 title: 'Show data using Data Grid'
-sidebar_label: 'Show data using Data Grid'
+sidebar_label: 'Data Grid'
 id: data-grid
 ---
 
@@ -22,14 +22,16 @@ docker login genesisglobal-docker-internal.jfrog.io
 ```
 
 2. Pull the latest version of the Genesis software:
+
 ```shell
 docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
 ```
 
 3. Run the following command:
+
 ```shell
 docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
-```shell
+```
 
 
 ### Installing the dependencies

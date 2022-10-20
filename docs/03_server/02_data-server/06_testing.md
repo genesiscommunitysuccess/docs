@@ -124,21 +124,21 @@ private fun ackDataAndUpdateReceived(): Callable<Boolean> {
 ### Testing with Console
 If you use Genesis Console, this gives you a simple way of testing components.
 
-1. In your browser, go to http://genesislcap.com/console/console-next2/.
-2. Enter the IP address of your server. If you get a blank page without any response then this is probably because you don't have [NGINX configured](/operations/server-setup/config-management/#nginx-configuration-using-docker-imagerecommended).
-3. Log in with your user name and password. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
-4. Click on the **RESOURCES** tab.
-5. Filter the **Resource type** to show only data servers.
+1.  In your browser, go to http://genesislcap.com/console/console-next2/.
+2.  Enter the IP address of your server. If you get a blank page without any response, then this is probably because you don't have [NGINX configured](/operations/server-setup/config-management/#nginx-configuration).
+3.  Log in with your user name and password. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
+4.  Click on the **RESOURCES** tab.
+5.  Filter the **Resource type** to show only Data Servers.
 
 For example:
 
 ![](/img/test-console-ds-filter.png)
 
-As well as the data servers that you have defined yourself, you will also see other data servers that have been generated automatically by the platform, anything that is a **GENESIS_AUTH** service, for example.
+As well as the Data Servers that you have defined yourself, you will also see other Data Servers that have been generated automatically by the platform, anything that is a **GENESIS_AUTH** service, for example.
 
-6. In the list, click on the data server you want to test. This displays the fields for that data server. 
+- In the list, click on the Data Server you want to test. This displays the fields for that Data Server. 
 
-7. Click on the arrow beside the data server that you want to test. This displays the current contents of the table or view that provides the data for that data server. If you can see that content, you have connected successfully to the resource.
+- Click on the arrow beside the Data Server that you want to test. This displays the current contents of the table or view that provides the data for that Data Server. If you can see that content, you have connected successfully to the resource.
 
 ![](/img/test-console-ds-success.png)
 
@@ -147,7 +147,7 @@ As well as the data servers that you have defined yourself, you will also see ot
 
 An API client is useful way of testing components. As a client, it is effectively a front end seeking information from the server.
 
-The API client enables you to create calls to the resources in your server - data servers, request servers and event handlers. Then you can just click to run a call and see what response you get.
+The API client enables you to create calls to the resources in your server - Data Servers, Request Servers and Event Handlers. Then you can just click to run a call and see what response you get.
 
 Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/operations/testing/component-testing/#using-an-api-client) page.
 
@@ -162,7 +162,7 @@ The url consists of:
 
 - the address or hostname of the server
 - if necessary, some extra routing; in this case **sm** uses a proxy to access the server
-- the name of the data server
+- the name of the Data Server
 
 
 Set the body to **JSON**. In the body, simply insert opening and closing curly brackets **{}** - nothing else. 

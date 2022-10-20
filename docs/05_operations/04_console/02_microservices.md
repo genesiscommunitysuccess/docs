@@ -1,5 +1,5 @@
 ---
-title: 'Genesis Console - Microservices'
+title: 'Genesis Console - microservices'
 sidebar_label: 'Microservices'
 id: microservices
 keywords: [console, microservices]
@@ -8,7 +8,7 @@ tags:
     - microservices
 ---
 
-[Introduction](/operations/console/introduction/)  | [Microservices](/operations/console/microservices/) |  [Data](/operations/console/data/) | [Resources](/operations/console/resources/) | [Packages](/operations/console/packages/) | [Messages](/operations/console/messages/)
+
 
 This screen enables you to view all the processes (microservices) that are running. The services are listed on the left of the page.
 
