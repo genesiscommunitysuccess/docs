@@ -35,7 +35,7 @@ The process definition is made up of several fields that set up the main configu
 
 ```xml
 <preExpression>
-    <!\[CDATA\[
+    <![CDATA[
 
         import global.genesis.commons.model.GenesisSet
         import global.genesis.db.DbRecord
@@ -51,7 +51,7 @@ The process definition is made up of several fields that set up the main configu
             return recs
         }
 
-    \]\]>
+    ]]>
 </preExpression>
 ```
 
@@ -90,46 +90,41 @@ Example:
 
 ```xml
 <databaseStream name="ALL_TRADES">
-    <tables>
-        <table name="TRADE"
-                alias="t"
-                seedKey="TRADE_BY_TIMESTAMP" />
-        <table name="CLIENT" alias="c">
-            <join key="CLIENT_BY_ID">
-                <!\[CDATA\[ c.setString("ID", t.getString("CLIENT_ID")) \]\]>
-            </join>
-        </table>
-        <table name="CURRENCY" alias="cu">
-            <join key="CURRENCY_BY_ID">
-                <!\[CDATA\[ cu.setString("ID", t.getString("CURRENCY_ID")) \]\]>
-            </join>
-        </table>
-    </tables>
-    <fields>
-        <!\[CDATA\[
-            sproc.setParameter("TRADE_ID", t.getString("ID"))
-            sproc.setParameter("TRADE_QUANTITY", t.getInteger("QUANTITY"))
-            sproc.setParameter("CLIENT_NAME", c.getString("NAME"))
-            sproc.setParameter("CURRENCY_DESCRIPTION", cu.getString("DESCRIPTION"))
-        \]\]>
-    </fields>
-    <proc>
-        <insert>
-            <!\[CDATA\[
-                {call insertTrade(1,2,3,4)}
-            \]\]>
-        </insert>
-        <modify>
-            <!\[CDATA\[
-                {call modifyTrade(1,2,3,4)}
-            \]\]>
-        </modify>
-        <delete>
-            <!\[CDATA\[
-                {call deleteTrade(1)}
-            \]\]>
-        </delete>
-    </proc>
+  <tables>
+    <table name="TRADE"
+           alias="t"
+           seedKey="TRADE_BY_TIMESTAMP" />
+  </tables>
+  <fields>
+    <![CDATA[
+            sproc.setParameter("id", t.getString("TRADE_ID"))
+            sproc.setParameter("instrumentid", t.getString("INSTRUMENT_ID"))
+            sproc.setParameter("counterpartyid", t.getString("COUNTERPARTY_ID"))
+            sproc.setParameter("amount", t.getInteger("QUANTITY"))
+            sproc.setParameter("side", t.getString("SIDE"))
+            sproc.setParameter("price", t.getDouble("PRICE"))
+            sproc.setParameter("date", t.getLong("TRADE_DATETIME"))
+            sproc.setParameter("trader", t.getString("ENTERED_BY"))
+            sproc.setParameter("status", t.getString("TRADE_STATUS"))
+            ]]>
+  </fields>
+  <proc>
+    <insert>
+      <![CDATA[
+                {call inserttrade(1,2,3,4,5,6,7,8,9)}
+                ]]>
+    </insert>
+    <modify>
+      <![CDATA[
+                {call updatetrade(1,2,3,4,5,6,7,8,9)}
+                ]]>
+    </modify>
+    <delete>
+      <![CDATA[
+                {call deletetrade(1)}
+                ]]>
+    </delete>
+  </proc>
 </databaseStream>
 ```
 
@@ -141,6 +136,8 @@ Use `startProcess` to start the GenesisToDb process (see [Configuring Runtime](/
 
 `--force` if passed to the process, this  attempts to re-insert every trade found in our Genesis table to the RDBMS, ignoring previously inserted records.
 
+For more information regarding process configuration please see the dedicated page on [Processes](/server/configuring-runtime/processes).
+
 ### Table joins
 
 The process keeps track of the last record timestamp, so if you want to avoid reloading all records in Genesis to the RDBMS, it is very important to use a TIMESTAMP seedKey in order to make this work properly.
@@ -150,6 +147,8 @@ The process keeps track of the last record timestamp, so if you want to avoid re
 You must have a separate table for each database stream.
 
 Each database must have a table that can hold records as specified in the **fields** field. So, following the previous example with TRADE_ID, TRADE_QUANTIY, CLIENT_NAME and CURRENCY_DESCRIPTION, you must have an SQL table with those column names and matching types. Matching types in this example could be: varchar(50), int, varchar(50) and varchar(50).
+
+A stored procedure is a prepared SQL code that can be saved, allowing for it to be reused many times. You can also pass parameters to a stored procedure, so that the stored procedure can act based on the parameter value(s) that is passed.
 
 _The stored procedures for insert, modify and delete should also be created beforehand_. This process does not create any store procedures; it just attempts to call already existing ones. Therefore, `insertTrade` should insert a trade into its correspondent TRADE table and likewise for the rest of the stored procedures.
 
