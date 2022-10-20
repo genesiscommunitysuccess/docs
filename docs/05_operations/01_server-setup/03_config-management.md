@@ -45,32 +45,30 @@ certificates to use.
 These are not matters specific to Genesis applications.  The Genesis-specific part is relative constant (unless the
 Router application is running on non-standard ports).
 
-#### NGINX configuration using docker image(recommended)
+### Using a Docker image (recommended)
 
-You can configure NGINX using docker image as specified below:
+To configure NGINX using a Docker image, make sure you have the your artificatory credentials to hand. Then, in your CentOS terminal, enter the following commands:
 
-In your CentOS terminal, enter following 3 commands:
+
+1. Enter your artifactory credentials.
 ```shell
-Step 1: You need to enter your artifactory credentials at this point
-...
 docker login genesisglobal-docker-internal.jfrog.io
-...
-
-Step 2:
-...
-docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
-...
-
-Step 3: You can run this command from within WSL or from your workstation. If you run it from the CentOS shell, you can use the following command
-...
-docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
-...
-
 ```
 
-#### Manual NGINX configuration
+2. Download the latest Genesis software:
 
-For manual setup this is a sample server block for Nginx config.
+```shell
+docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
+```
+
+3. Run the following command:
+```shell
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+```
+
+### Manual configuration
+
+For a manual set-up of NGINX, use this sample server block.
 
 ```text
 server {
@@ -102,9 +100,9 @@ server {
 ```
 
 The IP and port shown are for the application's Router process.  This example also shows configuration for TLS and
-listening on both port 443 for HTTPS and port 80 for plaintext traffic.
+listening on both port 443 for HTTPS and port 80 for plain-text traffic.
 
-### Environment Overrides
+### Environment overrides
 
 Each process within the application can be instructed to read another file to override the main configuration file,
 systems-definitions.
@@ -122,7 +120,7 @@ DbHost = fdb01.my.domain
 ```
 
 Note, overrides files are not able to perform environment substitutions the way system-definitions can - it is a .kts
-file (Kotlin script) and thus effectively _executed_ whereas the properties file is only read.  See
+file (Kotlin script) and thus effectively _executed_, whereas the properties file is only read.  See
 [clusters/Environment variables](/operations/clustering/clusters#Environment-variables).
 
 
