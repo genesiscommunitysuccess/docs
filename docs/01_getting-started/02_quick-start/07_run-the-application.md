@@ -15,7 +15,7 @@ If that's OK, you can deploy the server.
 
 ## Deploying to the server
 
-First, we need to configure our genesis home, distribution and user. We will do that by adding the following fields to the **gradle.properties** under **alpha/server/jvm**
+1. First, we need to configure our genesis home, distribution and user. Add the following fields to the **gradle.properties** under **alpha/server/jvm**:
 
 ```shell
 genesis-home=/home/alpha/run
@@ -23,7 +23,7 @@ wsl-distro=CentOS7
 wsl-user=alpha
 ```
 
-We will run `setupEnvironment` - this task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
+2. Run `setupEnvironment`. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
 
 Usage :
 ```shell
@@ -33,9 +33,9 @@ or from the dropdown menu:
 
 ![](/img/setup-environment.png)
 
-After this command is completed we will have a basic genesis server running
+After this command is completed, we will have a basic Genesis server running
 
-## Deploying the auth module
+## Deploying the Auth module
 
 Usage:
 ```shell
@@ -48,7 +48,7 @@ or from the dropdown menu:
 
 ## Deploying the alpha product (FDB)
 
-Now we have to deploy the alpha product
+Now we have to deploy the alpha product.
 
 Usage:
 ```shell
@@ -99,7 +99,7 @@ or from the dropdown menu:
 Next let's create a user.
 
 :::tip
-The following details will be your login details:
+These are your login details:
 
 - Username: JaneDee
 - Password: beONneON*74 (This is encrypted in the USER.csv file.)
@@ -126,7 +126,7 @@ or from the dropdown menu:
 
 ![](/img/using-DbMon.png)
 
-Once you are inside the console, type 'table USER' and then 'search 1'. If imported correctly, the user JaneDee should be listed like this:
+Once you are inside the console, type 'table USER' and then 'search 1'. If imported correctly, the details of the user JaneDee should be listed:
 
 ```
 
@@ -154,7 +154,7 @@ USER_NAME                                JaneDee                                
 -------------------------------------------------------------------------------------------
 ```
 
-After running
+After running:
 
 ```shell
 ./gradlew :jvm:alpha-deploy:mon #On the IntelliJ terminal
@@ -163,7 +163,7 @@ or from the dropdown menu:
 
 ![](/img/using-mon.png)
 
-we should see something like this
+we should see something the application's processes:
 
 ```shell
 PID     Process Name                  Port        Status         CPU       Memory    Message
@@ -183,22 +183,22 @@ PID     Process Name                  Port        Status         CPU       Memor
 
 ## Connecting the back end and front end
 
-With this next step, we will configure an nginx server working as a reverse proxy.
+In this step, we will configure an nginx server working as a reverse proxy. Make sure you have your artifcatory credentials available.
 
-In your CentOS terminal, enter following 3 commands:
+In your CentOS terminal, enter following three commands:
+
+1. Enter your artifactory credentials:
 ```shell
-Step 1: You need to enter your artifactory credentials at this point
-...
 docker login genesisglobal-docker-internal.jfrog.io
 ...
 
-Step 2:
-...
+2. Pull the latest version of the Genesis software:
+```shell
 docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
 ...
 
-Step 3: You can run this command from within WSL or from your workstation. If you run it from the CentOS shell, you can use the following command
-...
+3. Finally, run the following command:
+```shell
 docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
 ...
 
@@ -206,23 +206,19 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-ho
 
 ## Running the front end
 
-
 Now you can run the application's front end. From there, you can view the table of data and add the details of a new trade.
 
-To run the application:
+To run the application, from **client/package.json**:
 
-From **client/package.json**:
-- Run **bootstrap** script
+1. Run the**bootstrap** script.
+2. Run the **dev** script.
 
-After that:
-- Run **dev** script
-
-Now you have a fully running application. If not opened automatically, you can navigate to http://localhost:6060/login, and you should see the following:
+Now you have a fully running application. If it is not opened automatically, navigate to http://localhost:6060/login, and you should see the following:
 
 ![](/img/login-screen-quickstart.png)
 
 :::tip
-If the blue button to login is not clickable, go through the previous section again, the problem will most likely be located there.
+If the blue button to login is not clickable, go through the previous section again, the problem will most probably be located there.
 
 ::::
 
