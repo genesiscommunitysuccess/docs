@@ -45,7 +45,32 @@ certificates to use.
 These are not matters specific to Genesis applications.  The Genesis-specific part is relative constant (unless the
 Router application is running on non-standard ports).
 
-This is a sample server block for Nginx config.
+#### NGINX configuration using docker image(recommended)
+
+You can configure NGINX using docker image as specified below:
+
+In your CentOS terminal, enter following 3 commands:
+```shell
+Step 1: You need to enter your artifactory credentials at this point
+...
+docker login genesisglobal-docker-internal.jfrog.io
+...
+
+Step 2:
+...
+docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
+...
+
+Step 3: You can run this command from within WSL or from your workstation. If you run it from the CentOS shell, you can use the following command
+...
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+...
+
+```
+
+#### Manual NGINX configuration
+
+For manual setup this is a sample server block for Nginx config.
 
 ```text
 server {

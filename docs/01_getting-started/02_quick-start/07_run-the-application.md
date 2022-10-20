@@ -185,21 +185,22 @@ PID     Process Name                  Port        Status         CPU       Memor
 
 With this next step, we will configure an nginx server working as a reverse proxy.
 
-In your CentOS terminal, enter:
+In your CentOS terminal, enter following 3 commands:
 ```shell
+Step 1: You need to enter your artifactory credentials at this point
+...
 docker login genesisglobal-docker-internal.jfrog.io
 ...
 
-You need to enter your artifactory credentials at this point
-
-Then enter:
+Step 2:
 ...
 docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
-#...
+...
 
-You can run this command from within WSL or from your workstation. If you run it from the CentOS shell, you can use the following command:
-#...
+Step 3: You can run this command from within WSL or from your workstation. If you run it from the CentOS shell, you can use the following command
+...
 docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+...
 
 ```
 
