@@ -148,6 +148,8 @@ You must have a separate table for each database stream.
 
 Each database must have a table that can hold records as specified in the **fields** field. So, following the previous example with TRADE_ID, TRADE_QUANTIY, CLIENT_NAME and CURRENCY_DESCRIPTION, you must have an SQL table with those column names and matching types. Matching types in this example could be: varchar(50), int, varchar(50) and varchar(50).
 
+A stored procedure is a prepared SQL code that can be saved, allowing for it to be reused many times. You can also pass parameters to a stored procedure, so that the stored procedure can act based on the parameter value(s) that is passed.
+
 _The stored procedures for insert, modify and delete should also be created beforehand_. This process does not create any store procedures; it just attempts to call already existing ones. Therefore, `insertTrade` should insert a trade into its correspondent TRADE table and likewise for the rest of the stored procedures.
 
 ## SQL Procedures
