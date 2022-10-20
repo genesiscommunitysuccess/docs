@@ -14,33 +14,33 @@ There are a couple of steps that have to be done before seeing the user interfac
 ### Connecting the back end and front end
 In this step, we shall configure an nginx server working as a reverse proxy.
 
-In your CentOS terminal, enter:
+In your CentOS terminal, enter the following three commands:
+
+1.  Enter your artifactory credentials:
 ```shell
 docker login genesisglobal-docker-internal.jfrog.io
-...
-
-You need to enter your artifactory credentials at this point.
-
-Then enter:
-...
-docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
-#...
-
-You can run this command from WSL or from your workstation. If you run it from the CentOS shell, you can use the following command:
-#...
-docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
-
 ```
+
+2. Pull the latest version of the Genesis software:
+```shell
+docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
+```
+
+3. Run the following command:
+```shell
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+```shell
+
 
 ### Installing the dependencies
 
-Before we make any changes, you need to install your npm dependencies: run the following in your terminal:
+1. Before we make any changes, you need to install your npm dependencies; run the following in your terminal:
 
 ```shell title="./client"
 npm run bootstrap
 ```
 
-Once you have all dependencies installed, use the following command in the terminal to run your UI: 
+2. Once you have all dependencies installed, use the following command in the terminal to run your UI: 
 
 ```shell title="./client"
 npm run dev
@@ -118,7 +118,7 @@ After refreshing the application, the grid should now also include a column cont
 
 ## Custom column config
 
-If you want to customise how each column is displayed, you can provide column config for every column.
+If you want to customise how each column is displayed, you can provide a column config for every column.
 
 Create a new file called **positionColumnDefs.ts** in the same directory.
 
@@ -153,7 +153,7 @@ import {repeat} from '@microsoft/fast-element';
 </zero-grid-pro>
 ```
 
-Columns will now flash green as the value inside of them changes:
+Columns will now flash green as the value inside changes:
 ![](/img/positions-grid-with-cell-change-flash.png)
 
 ## Saving user preferences
