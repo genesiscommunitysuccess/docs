@@ -19,28 +19,28 @@ In your CentOS terminal, enter the following three commands:
 1.  Enter your artifactory credentials:
 ```shell
 docker login genesisglobal-docker-internal.jfrog.io
-...
+```
 
 2. Pull the latest version of the Genesis software:
-...
+```shell
 docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
-...
+```
 
 3. Run the following command:
 ```shell
 docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
-...
+```shell
 
 
 ### Installing the dependencies
 
-Before we make any changes, you need to install your npm dependencies; run the following in your terminal:
+1. Before we make any changes, you need to install your npm dependencies; run the following in your terminal:
 
 ```shell title="./client"
 npm run bootstrap
 ```
 
-Once you have all dependencies installed, use the following command in the terminal to run your UI: 
+2. Once you have all dependencies installed, use the following command in the terminal to run your UI: 
 
 ```shell title="./client"
 npm run dev
