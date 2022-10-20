@@ -82,7 +82,7 @@ With a lack of imagination we hope you will find trustworthy, we are going to ca
 
 To create a new project you can use the GenX CLI tool, which enables you to seed projects. Further details can be found [here](/getting-started/quick-start/create-a-new-project/).
 
-In this case, we just want to extend a blank full-stack application project, so we are using the training seed available [here](#). So, clone this repository locally using the command below. 
+In this case, we just want to extend a blank full-stack application project, so we are using the training seed [available](https://github.com/genesiscommunitysuccess/devtraining-seed). So, clone this repository locally using the command below. 
 
 ```shell title='Cloning the devtraining-seed'
 git clone https://github.com/genesiscommunitysuccess/devtraining-seed.git
@@ -426,7 +426,7 @@ In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**a
 ![](/img/using-DbMon.png)
 
 ```shell title='Running DbMon from the command line'
-./gradlew :alpha-deploy:DbMon
+./gradlew :genesisproduct-alpha:alpha-deploy:DbMon
 ```
 
 You should see something like this after a few seconds:
@@ -467,7 +467,7 @@ In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**a
 ![](/img/using-mon.png)
 
 ```shell title='Running mon from the command line'
-./gradlew :alpha-deploy:mon
+./gradlew :genesisproduct-alpha:alpha-deploy:mon
 ```
 
 we should see something like this

@@ -27,11 +27,12 @@ Please follow these instructions very carefully to ensure your environment is re
 | IntelliJ Community	| 2022.2|
 | Visual Studio Code	| 1.52.1|
 | Java SDK| 11|
+| Kotlin| 1.7.10|
 | Chrome | 88.0|
 | Postman	| 8|
 | NodeJS  | 16 LTS+|
 | npm | 8 |
-| Gradle | 7.2 |
+| Gradle | 7.5 |
 | Windows Subsystem for Linux (WSL) | WSL 2 |
 
 You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the Genesis Platform Abstraction Language (**GPAL**) prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
