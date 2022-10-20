@@ -25,56 +25,57 @@ wsl-user=alpha
 
 2. Run `setupEnvironment`. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
 
-Usage :
+By command:
 ```shell
 ./gradlew :jvm:alpha-deploy:setupEnvironment #On the IntelliJ terminal
 ```
-or from the dropdown menu:
+From the dropdown menu:
 
 ![](/img/setup-environment.png)
 
-After this command is completed, we will have a basic Genesis server running
+After this command is completed, we will have a basic Genesis server running.
 
 ## Deploying the Auth module
+You can either execute the deployment as a command or from the dropdown menu in Intellij.
 
-Usage:
+By command:
 ```shell
 ./gradlew :jvm:alpha-deploy:install-auth-distribution.zip #On the IntelliJ terminal
 ```
 
-or from the dropdown menu:
+From the dropdown menu:
 
 ![](/img/install-auth.png)
 
 ## Deploying the alpha product (FDB)
 
-Now we have to deploy the alpha product.
+Now we have to deploy the alpha product - either by command or from the dropdown menu.
 
-Usage:
+By command:
 ```shell
 ./gradlew :jvm:alpha-deploy:deploy-genesisproduct-alpha.zip #On the IntelliJ terminal
 ```
 
-or from the dropdown menu:
+From the dropdown menu:
 
 ![](/img/deploy-alpha-product.png)
 
 ## Deploying the alpha product (H2)
 
-Now we have to install the site-specific alpha product.
+1. First, we have to install the site-specific alpha product - either by command or from the dropdown menu.
 
-Usage:
+By command:
 ```shell
 ./gradlew :jvm:alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip #On the IntelliJ terminal
 ```
 
-or from the dropdown menu:
+From the dropdown menu:
 
 ![](/img/install-alpha-site-specific.png)
 
-Next, we need to run `genesis-install`.
+2. Next, we need to run `genesis-install`.
 
-Usage:
+By command:
 ```shell
 ./gradlew :jvm:alpha-deploy:genesis-install #On the IntelliJ terminal
 ```
@@ -83,20 +84,20 @@ or from the dropdown menu:
 
 ![](/img/alpha-genesis-install.png)
 
-Then we run `remap`.
+3. Finally, run `remap`.
 
-Usage:
+By command:
 ```shell
 ./gradlew :jvm:alpha-deploy:remap #On the IntelliJ terminal
 ```
 
-or from the dropdown menu:
+From the dropdown menu:
 
 ![](/img/remap.png)
 
 ## Adding a user to login
 
-Next let's create a user.
+1. First, create a user.
 
 :::tip
 These are your login details:
@@ -105,31 +106,32 @@ These are your login details:
 - Password: beONneON*74 (This is encrypted in the USER.csv file.)
 :::
 
-We shall run the task `loadInitialData`. This adds the data in USER.csv to the USER table in your
-database. To do that we will call
+2. Run the task `loadInitialData`. This adds the data in USER.csv to the USER table in your
+database. 
 
+By command:
 ```shell
 ./gradlew :jvm:alpha-deploy:loadInitialData #On the IntelliJ terminal
 ```
 
-or from the dropdown menu:
+From the dropdown menu:
 
 ![](/img/load-initial-data.png)
 
-Now  run `DbMon` to check that the user has been created:
+3. Run `DbMon` to check that the user has been created:
 
+By command:
 ```shell
 ./gradlew :jvm:alpha-deploy:DbMon #On the IntelliJ terminal
 ```
 
-or from the dropdown menu:
+From the dropdown menu:
 
 ![](/img/using-DbMon.png)
 
-Once you are inside the console, type 'table USER' and then 'search 1'. If imported correctly, the details of the user JaneDee should be listed:
+4. Once you are inside the console, type `table USER` and then `search 1`. If imported correctly, the details of the user JaneDee should be listed:
 
 ```
-
 DbMon:USER>search 1
 ==================================
 USER
@@ -154,16 +156,17 @@ USER_NAME                                JaneDee                                
 -------------------------------------------------------------------------------------------
 ```
 
-After running:
+4. Check the application's processes
 
+By command:
 ```shell
 ./gradlew :jvm:alpha-deploy:mon #On the IntelliJ terminal
 ```
-or from the dropdown menu:
+From the dropdown menu:
 
 ![](/img/using-mon.png)
 
-we should see something the application's processes:
+You should see the processes listed:
 
 ```shell
 PID     Process Name                  Port        Status         CPU       Memory    Message
@@ -183,26 +186,25 @@ PID     Process Name                  Port        Status         CPU       Memor
 
 ## Connecting the back end and front end
 
-In this step, we will configure an nginx server working as a reverse proxy. Make sure you have your artifcatory credentials available.
+In this step, we will configure an nginx server working as a reverse proxy. Make sure you have your artifactory credentials available.
 
-In your CentOS terminal, enter following three commands:
+In your CentOS terminal, enter the following commands:
 
 1. Enter your artifactory credentials:
 ```shell
 docker login genesisglobal-docker-internal.jfrog.io
-...
+```
 
 2. Pull the latest version of the Genesis software:
 ```shell
 docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
-...
+```
 
 3. Finally, run the following command:
 ```shell
 docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
-...
-
 ```
+
 
 ## Running the front end
 
