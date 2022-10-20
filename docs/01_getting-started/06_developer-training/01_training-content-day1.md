@@ -62,8 +62,9 @@ This will enable you to see the basics of the Genesis low-code platform by start
 1. [Create a new project](#1-create-a-new-project).
 2. [Define the data model](#2-define-the-data-model).
 3. [Add business logic](#3-add-business-logic).
-4. [Prepare the server and build](#4-prepare-the-server-and-build).
-5. [Deployment](#5-deployment)
+4. [Prepare the server](#4-prepare-the-server).
+5. [Build process](#5-build-process).
+6. [Deployment](#6-deployment).
 
 ### What you will build
 
@@ -131,6 +132,8 @@ fields {
 
 After you have saved this file, run [genesis-generated-fields](/database/fields-tables-views/genesisDao/).
 
+##### generateFields
+
 From the Gradle menu on the right of Intellij, this is:
 
  **genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-fields**/**Tasks**/**genesis**/**generateFields**
@@ -177,9 +180,11 @@ tables {
 
 After you have saved this file, run [genesis-generated-dao](/database/fields-tables-views/genesisDao/).
 
+##### generateDao
+
 From the Gradle menu, this is:
 
-**genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDAO**
+**genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDao**
 
 ![](/img/build-gradle-kts-generated-dao.png)
 
@@ -223,7 +228,7 @@ eventHandler {
 The [entityDb](/database/database-interface/entity-db/) enables you to interact with the database layer, it's part of the Genesis Database API and we'll get into more details soon. For now, understand that this is the common way to access data from code. Feel free to use the intellisense of your IDE to explore the methods available from entityDb.
 :::
 
-### 4. Prepare the server and build
+### 4. Prepare the server
 So far we have created an event handler and data server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
 
 - **alpha-processes.xml**
@@ -288,6 +293,9 @@ item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&p
 If you had to add application specific definitions, like an API_KEY for example, you'd have to edit ..\server\jvm\alpha-config\src\main\resources\cfg\alpha-system-definition.kts
 :::
 -->
+
+### 5. Build process
+
 Finally, you can build the server.
 
 In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**Tasks**/**build/assemble**.
@@ -298,7 +306,7 @@ In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**T
 ./gradlew :genesisproduct-alpha:assemble
 ```
 
-### 5. Deployment
+### 6. Deployment
 
 Now that the back end of our application is built, it's time to deploy it.
 
