@@ -266,8 +266,8 @@ Following that, we have a test to verify that a trade cannot be entered if the u
 If you use Genesis Console, this gives you a simple way of testing components.
 
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
-2. Enter the IP address of your server, in this case **localhost**. If you get blank page without any response, then this is probably because you don't have [NGINX configured]. 
-3. Log in with the username and password of your genesis user. This starts the Genesis Console, and you will see a list of tabs along the top of the screen.
+2. Enter the IP address of your server, in this case **localhost**. If you get a blank page without any response, then this is probably because you don't have [NGINX configured]. 
+3. Log in with the username and password of your Genesis user. This starts the Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES tab**.
 5. Filter the **Resource type** to show only Event Handlers.
 
