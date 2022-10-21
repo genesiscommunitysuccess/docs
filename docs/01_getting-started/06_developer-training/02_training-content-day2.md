@@ -264,8 +264,8 @@ As a reminder, these are the steps needed to complete this task:
 4. Add queries to the Data Server. These must point to the new tables in the **alpha-dataserver.kts** file.
 5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to run [build](/getting-started/developer-training/training-content-day1/#5-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product).​
 
-:::tip adding a new event handler block
-Example on how to add additional blocks in the eventHandler:
+:::tip adding a new `eventHandler` block
+Example on how to add additional blocks in the `eventHandler`:
 ```kotlin
 eventHandler {
     eventHandler<Trade>(name = "TRADE_INSERT") {
