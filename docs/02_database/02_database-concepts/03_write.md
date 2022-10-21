@@ -8,10 +8,10 @@ id: write
 The following database operations are available:
 
 - `insert` and `insertAll`
-- `modify` and `insertAll`
-- `upsert` and `insertAll`
-- `delete` and `insertAll`
-- `recover` and `insertAll`
+- `modify` and `modifyAll`
+- `upsert` and `upsertAll`
+- `delete` and `deleteAll`
+- `recover` and `recoverAll`
 
 :::note
 **Index clash**
