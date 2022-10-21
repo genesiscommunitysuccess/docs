@@ -140,7 +140,7 @@ From the Gradle menu on the right of Intellij, this is:
 
 ![](/img/build-gradle-kts-fields.png)
 
-Alternatively, you can run the gradle tasks from the command line as well - in case you can't run it from your IDE for any reason. Make sure to open your terminal and cd into `../server/jvm` to run them.
+Alternatively, if you can't run it from your IDE, you can run the Gradle tasks from the command line. Make sure to open your terminal and cd into **../server/jvm** to run them.
 
 ```shell title='Running generateFields from the command line'
 ./gradlew :genesisproduct-alpha:alpha-dictionary-cache:genesis-generated-fields:generateFields
