@@ -4,4 +4,8 @@ sidebar_label: 'Database concepts'
 id: database-concepts
 ---
 
-In this section, we look at the three types of database operation that you can define in your application: [Read](/database/database-concepts/read/), [Write](/database/database-concepts/write/) and [Subscribe](/database/database-concepts/subscribe/).
+This section provides you with details about the three types of operation that you can perform on the database. 
+
+- [Read](/database/database-concepts/read/)
+- [Write](/database/database-concepts/write/)
+- [Subscribe](/database/database-concepts/subscribe/).
