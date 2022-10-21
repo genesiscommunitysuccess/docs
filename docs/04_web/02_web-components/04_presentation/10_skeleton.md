@@ -1,7 +1,12 @@
 ---
-title: 'Skeleton'
+title: 'Web Components - Skeleton'
 sidebar_label: 'Skeleton'
 id: skeleton
+keywords: [web, web components, skeleton]
+tags:
+    - web
+    - web components
+    - skeleton
 ---
 
 The `skeleton` component is used as a visual placeholder for an element while it is in a loading state. It usually presents itself as a simplified wireframe-like version of the UI it is representing.

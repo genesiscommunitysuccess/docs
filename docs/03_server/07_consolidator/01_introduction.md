@@ -2,9 +2,11 @@
 title: 'Consolidator - Introduction'
 sidebar_label: 'Introduction'
 id: introduction
-keywords: [consolidator]
+keywords: [server, consolidator, introduction]
 tags:
-    - consolidator
+  - server
+  - consolidator
+  - introduction
 ---
 
 [Introduction](/server/consolidator/introduction) | [Basics](/server/consolidator/basics) |  [Advanced](/server/consolidator/advanced) | [Examples](/server/consolidator/examples) | [Configuring runtime](/server/consolidator/configuring-runtime) | [Testing](/server/consolidator/testing)

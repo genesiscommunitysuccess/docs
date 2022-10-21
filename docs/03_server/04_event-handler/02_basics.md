@@ -1,7 +1,12 @@
 ---
-title: 'Event Handler: basics'
+title: 'Event Handler - Basics'
 sidebar_label: 'Basics'
 id: basics
+keywords: [server, event handler, basics]
+tags:
+  - server
+  - event handler
+  - basics
 ---
 
 

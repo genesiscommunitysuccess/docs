@@ -1,7 +1,13 @@
 ---
-title: 'Configuring'
+title: 'Notify - Configuration'
 sidebar_label: 'Configuring'
 id: configuring
+keywords: [server, integration, notify, configuration]
+tags:
+  - server
+  - integration
+  - notify
+  - configuration
 ---
 
 The Genesis Notify module enables you to configure an application to send and receive messages to and from various messaging services.

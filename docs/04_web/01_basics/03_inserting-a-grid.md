@@ -1,7 +1,12 @@
 ---
-title: 'Inserting a grid'
+title: 'Web Basics - Inserting a grid'
 sidebar_label: 'Inserting a grid'
 id: inserting-a-grid
+keywords: [web, basics, inserting a grid]
+tags:
+    - web
+    - basics
+    - inserting a grid
 ---
 
 In this example, we shall add a grid to our new page. This grid will display data from a Data Server resource on the server. In this case, the resource is called ALL_TRADES. The logic would be the same for any other.

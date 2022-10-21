@@ -2,6 +2,10 @@
 title: 'Webpack'
 sidebar_label: 'Webpack'
 id: webpack
+keywords: [web, webpack]
+tags:
+    - web
+    - webpack
 ---
 
 Genesis Foundation works great with TypeScript and Webpack, using a fairly standard set-up. Let's take a look at how you can set up such a project, starting from scratch.

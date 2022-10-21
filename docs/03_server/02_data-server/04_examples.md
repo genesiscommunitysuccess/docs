@@ -1,7 +1,13 @@
 ---
-title: 'Data Server: examples'
+title: 'Data Server - Examples'
 sidebar_label: 'Examples'
 id: examples
+keywords: [server, data server, dataserver, examples]
+tags:
+  - server
+  - data server
+  - dataserver
+  - examples
 ---
 
 

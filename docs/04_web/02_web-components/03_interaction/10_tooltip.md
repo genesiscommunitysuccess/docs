@@ -1,7 +1,12 @@
 ---
-title: 'Tooltip'
+title: 'Web Components - Tooltip'
 sidebar_label: 'Tooltip'
 id: tooltip
+keywords: [web, web components, tooltip]
+tags:
+    - web
+    - web components
+    - tooltip
 ---
 
 <div class="tooltip-examples">

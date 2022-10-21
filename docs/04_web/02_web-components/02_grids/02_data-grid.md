@@ -2,6 +2,12 @@
 title: 'Data grid'
 sidebar_label: 'Data grid'
 id: data-grid
+keywords: [web, web components, grid, data grid]
+tags:
+    - web
+    - web components
+    - grid
+    - data grid
 ---
 
 

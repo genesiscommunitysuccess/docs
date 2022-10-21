@@ -1,7 +1,12 @@
 ---
-title: 'Horizontal scroll'
+title: 'Web Components - Horizontal scroll'
 sidebar_label: 'Horizontal scroll'
 id: horizontal-scroll
+keywords: [web, web components, horizontal scroll]
+tags:
+    - web
+    - web components
+    - horizontal scroll
 ---
 
 An implementation of a content scroller as a Web Component.

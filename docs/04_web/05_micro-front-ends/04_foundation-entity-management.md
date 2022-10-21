@@ -1,17 +1,14 @@
 ---
-title: 'Entity Management'
+title: 'Micro-front-ends - Entity Management'
 sidebar_label: 'Entity Management'
 Id: front-end-foundation-entity-management
+keywords: [web, entity management, frontend, ui, micro-front-ends]
 tags:
-  - entity
-  - management
+  - web
+  - entity management
   - frontend
   - ui
-  - mf
-  - web
-  - micro frontends
-  - form
-  - resource
+  - micro-front-ends
 ---
 # Entity Management
 

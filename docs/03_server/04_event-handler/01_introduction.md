@@ -1,7 +1,12 @@
 ---
-title: 'Event Handler: introduction'
+title: 'Event Handler - Introduction'
 sidebar_label: 'Introduction'
 id: introduction
+keywords: [server, event handler, introduction]
+tags:
+  - server
+  - event handler
+  - introduction
 ---
 
 

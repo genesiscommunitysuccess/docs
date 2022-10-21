@@ -1,10 +1,12 @@
 ---
-title: 'Request Server: introduction'
+title: 'Request Server - Introduction'
 sidebar_label: 'Request Server'
 id: introduction
-keywords: [request server]
+keywords: [server, request server, introduction]
 tags:
+  - server
   - request server
+  - introduction
 ---
 
 

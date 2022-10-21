@@ -1,7 +1,13 @@
 ---
-title: 'Testing'
+title: 'REST endpoints - Testing'
 sidebar_label: 'Testing'
 id: testing
+keywords: [server, integration, REST endpoints, testing]
+tags:
+  - server
+  - integration
+  - REST endpoints
+  - testing
 ---
 
 [Introduction](/server/integration/rest-endpoints/introduction/) | [Where to define](/server/integration/rest-endpoints/where-to-define) | [Basics](/server/integration/rest-endpoints/basics/) | [Advanced](/server/integration/rest-endpoints/advanced/) | [Configuring runtime](/server/integration/rest-endpoints/configuring-runtime/) | [Testing](/server/integration/rest-endpoints/testing/)

@@ -1,7 +1,12 @@
 ---
-title: 'Toolbar'
+title: 'Web Components - Toolbar'
 sidebar_label: 'Toolbar'
 id: toolbar
+keywords: [web, web components, toolbar]
+tags:
+    - web
+    - web components
+    - toolbar
 ---
 
 <div class="toolbar-examples">

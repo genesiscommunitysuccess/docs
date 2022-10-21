@@ -1,7 +1,13 @@
 ---
-title: 'Configuring Runtime'
+title: 'Data Pipeline - Configuring Runtime'
 sidebar_label: 'Configuring Runtime'
 id: configuring-runtime
+keywords: [server, integration, data pipeline, configuring runtime]
+tags:
+  - server
+  - integration
+  - data pipeline
+  - configuring runtime
 ---
 
 [Introduction](/server/integration/data-pipeline/introduction/)  | [Basics](/server/integration/data-pipeline/basics) | [Advanced](/server/integration/data-pipeline/advanced) | [Examples](/server/integration/data-pipeline/examples) | [Configuring runtime](/server/integration/data-pipeline/configuring-runtime) | [Testing](/server/integration/data-pipeline/testing)

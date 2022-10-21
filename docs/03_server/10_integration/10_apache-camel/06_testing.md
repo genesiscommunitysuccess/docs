@@ -2,9 +2,12 @@
 title: 'Apache Camel - Testing'
 sidebar_label: 'Testing'
 id: testing
-keywords: [apache camel]
+keywords: [server, integration, apache camel, testing]
 tags:
-    - apache camel
+  - server
+  - integration
+  - apache camel
+  - testing
 ---
 
 [Introduction](/server/integration/apache-camel/introduction/)  | [Basics](/server/integration/apache-camel/basics) | [Advanced](/server/integration/apache-camel/advanced) | [Examples](/server/integration/apache-camel/examples) | [Configuring runtime](/server/integration/apache-camel/configuring-runtime) | [Testing](/server/integration/apache-camel/testing)

@@ -1,7 +1,12 @@
 ---
-title: 'Creating a new page'
+title: 'Web Basics - Creating a new page'
 sidebar_label: 'Creating a new page'
 id: creating-a-new-page
+keywords: [web, basics, creating a new page]
+tags:
+    - web
+    - basics
+    - creating a new page
 ---
 
 Broadly speaking, the process can be summarised as follows:

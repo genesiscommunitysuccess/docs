@@ -1,7 +1,8 @@
 ---
-title: 'Http Polling Mode'
+title: 'Web - Http Polling Mode'
 sidebar_label: 'Http Polling Mode'
 id: http-mode
+keywords: [web, frontend, ui, http mode, polling]
 tags:
   - web
   - frontend

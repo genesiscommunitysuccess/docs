@@ -1,7 +1,12 @@
 ---
-title: 'Testing'
+title: 'Evaluator - Testing'
 sidebar_label: 'Testing'
 id: testing
+keywords: [server, evaluator, testing]
+tags:
+  - server
+  - evaluator
+  - testing
 ---
 
 [Introduction](/server/evaluator/introduction) | [Basics](/server/evaluator/basics) | [Examples](/server/evaluator/examples) | [Configuring runtime](/server/evaluator/configuring-runtime) | [Testing](/server/evaluator/testing)

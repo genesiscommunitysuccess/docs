@@ -1,7 +1,12 @@
 ---
-title: 'Introduction'
+title: 'What can I build? - Introduction'
 sidebar_label: 'Introduction'
 id: build-intro
+keywords: [getting started, basics, introduction]
+tags:
+    - getting started
+    - basics
+    - introduction
 ---
 
 Once you have the Genesis low-code platform, you can develop and deploy your own applications at speed, from the simplest of internal systems to complete exchanges.

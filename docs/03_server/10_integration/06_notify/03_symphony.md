@@ -1,7 +1,13 @@
 ---
-title: 'Symphony'
+title: 'Notify - Symphony'
 sidebar_label: 'Symphony'
 id: symphony
+keywords: [server, integration, notify, symphony]
+tags:
+  - server
+  - integration
+  - notify
+  - symphony
 ---
 
 [Symphony](http://symphony.com) is a secure instant messaging service focused on financial companies. 

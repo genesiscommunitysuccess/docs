@@ -1,7 +1,12 @@
 ---
-title: 'Processes'
+title: 'Server Configuration - Processes'
 sidebar_label: 'Processes'
 id: processes
+keywords: [server, configuration, processes]
+tags:
+  - server
+  - configuration
+  - processes
 ---
 
 Each application must have a **-processes.xml** file. This contains the configuration of each module (data server, request server and event-handler etc). It is generated automatically when you create a new Genesis project using  [GenX CLI tool](/getting-started/quick-start/create-a-new-project/).

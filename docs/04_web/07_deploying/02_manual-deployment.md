@@ -1,7 +1,13 @@
 ---
-title: 'Manual deployment'
+title: 'Web Deployment - Manual'
 sidebar_label: 'Manual deployment'
 id: manual-deployment
+keywords: [web, manual deployment, deployment, introduction]
+tags:
+  - web
+  - deployment
+  - manual deployment
+  - introduction
 ---
 
 To perform a manual deployment, you will have to:

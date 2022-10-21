@@ -1,7 +1,12 @@
 ---
-title: 'Anchored region'
+title: 'Web Components - Anchored region'
 sidebar_label: 'Anchored region'
 id: anchored-region
+keywords: [web, web components, anchored region]
+tags:
+    - web
+    - web components
+    - anchored-region
 ---
 
 An _anchored region_ is a container component that enables you to create layouts where the contents of the anchored region can be positioned relative to another "anchor" element. Additionally, the _anchored region_ can react to the available space between the anchor and a parent ["viewport"](https://developer.mozilla.org/en-US/docs/Glossary/viewport) element such that the region is placed on the side of the anchor with the most available space, or even resize itself based on that space.

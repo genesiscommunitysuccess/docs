@@ -1,7 +1,13 @@
 ---
-title: 'Data Server: advanced'
+title: 'Data Server - Advanced'
 sidebar_label: 'Advanced'
 id: advanced
+keywords: [server, data server, dataserver, advanced]
+tags:
+  - server
+  - data server
+  - dataserver
+  - advanced
 ---
 
 

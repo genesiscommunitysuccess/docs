@@ -1,7 +1,13 @@
 ---
-title: 'Sizing'
+title: 'Design System Tokens - Sizing'
 sidebar_label: 'Sizing'
 id: sizing
+keywords: [web, design system, tokens, sizing]
+tags:
+  - web
+  - design system
+  - tokens
+  - sizing
 ---
 
 import Tabs from '@theme/Tabs';

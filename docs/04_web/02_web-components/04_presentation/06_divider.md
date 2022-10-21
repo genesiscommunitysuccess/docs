@@ -1,7 +1,12 @@
 ---
-title: 'Divider'
+title: 'Web Components - Divider'
 sidebar_label: 'Divider'
 id: divider
+keywords: [web, web components, divider]
+tags:
+    - web
+    - web components
+    - divider
 ---
 
 A Web Component implementation of a [horizontal rule](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr).

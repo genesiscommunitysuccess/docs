@@ -1,7 +1,12 @@
 ---
-title: 'Basics'
+title: 'Evaluator - Basics'
 sidebar_label: 'Basics'
 id: basics
+keywords: [server, evaluator, basics]
+tags:
+  - server
+  - evaluator
+  - basics
 ---
 
 [Introduction](/server/evaluator/introduction) | [Basics](/server/evaluator/basics) | [Examples](/server/evaluator/examples) | [Configuring runtime](/server/evaluator/configuring-runtime) | [Testing](/server/evaluator/testing)

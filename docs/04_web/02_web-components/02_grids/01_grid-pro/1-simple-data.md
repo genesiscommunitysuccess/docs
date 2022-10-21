@@ -1,6 +1,12 @@
 ---
 id: grid-pro-simple
-title: Simple data
+title: Grid Pro - Simple data
+keywords: [web, web components, grid, grid pro]
+tags:
+    - web
+    - web components
+    - grid
+    - grid pro
 ---
 
 The examples below use JSX syntax. Real-world scenarions might be different, depending on the client application tooling and structure.

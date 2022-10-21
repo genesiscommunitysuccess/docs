@@ -1,6 +1,13 @@
 ---
 id: grid-pro-genesis-column
-title: Genesis Grid Pro Column
+title: Grid Pro - Column
+keywords: [web, web components, grid, grid pro, column]
+tags:
+    - web
+    - web components
+    - grid
+    - grid pro
+    - column
 ---
 
 This is a `slotted` component that allows a more "visual approach" when defining columns. Each `grid-pro-column` takes a `ColDef` typed object.

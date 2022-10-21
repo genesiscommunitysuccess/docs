@@ -1,7 +1,12 @@
 ---
-title: 'Excel'
+title: 'What can I build? - Excel'
 sidebar_label: 'Excel'
 id: excel
+keywords: [getting started, basics, excel]
+tags:
+    - getting started
+    - basics
+    - excel
 ---
 
 In financial organisations everywhere, there are spreadsheets that are effective tools, but which pose a significant operational and compliance risk.

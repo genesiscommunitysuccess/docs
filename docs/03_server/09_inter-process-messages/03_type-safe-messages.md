@@ -1,7 +1,12 @@
 ---
-title: 'Type-safe Messages'
+title: 'Inter-process messages - Type-safe Messages'
 sidebar_label: 'Type-safe messages'
 id: type-safe-messages
+keywords: [server, inter-process messages, type-safe messages]
+tags:
+  - server
+  - inter-process messages
+  - type-safe messages
 ---
 # Type-safe messages
 

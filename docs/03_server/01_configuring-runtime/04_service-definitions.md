@@ -1,7 +1,12 @@
 ---
-title: 'Service Definitions'
+title: 'Server Configuration - Service Definitions'
 sidebar_label: 'Service Definitions'
 id: service-definitions
+keywords: [server, configuration, service definitions]
+tags:
+  - server
+  - configuration
+  - service definitions
 ---
 
 

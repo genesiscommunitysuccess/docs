@@ -1,7 +1,12 @@
 ---
-title: 'React'
+title: 'Integrations - React'
 sidebar_label: 'React'
 id: react
+keywords: [web, integrations, angular]
+tags:
+    - web
+    - integrations
+    - angular
 ---
 
 Genesis Foundation can be used in React applications. Let's take a look at how you can set up a project, starting from scratch.

@@ -1,7 +1,13 @@
 ---
-title: 'Data Server: testing'
+title: 'Data Server - Testing'
 sidebar_label: 'Testing'
 id: testing
+keywords: [server, data server, dataserver, testing]
+tags:
+  - server
+  - data server
+  - dataserver
+  - testing
 ---
 
 

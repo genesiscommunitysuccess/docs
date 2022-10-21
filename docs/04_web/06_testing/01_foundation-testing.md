@@ -2,7 +2,7 @@
 title: 'Foundation testing'
 sidebar_label: 'Foundation testing'
 id: foundation-testing
-keywords: [genesis, foundation, ui, testing]
+keywords: [web, testing, frontend, ui, unit, end-to-end, e2e, uvu, playwright]
 tags:
   - test
   - testing

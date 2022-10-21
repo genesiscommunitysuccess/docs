@@ -1,7 +1,12 @@
 ---
-title: 'Modal'
+title: 'Web Components - Modal'
 sidebar_label: 'Modal'
 id: modal
+keywords: [web, web components, modal]
+tags:
+    - web
+    - web components
+    - modal
 ---
 
 A modal component will prevent the user from interacting with other content on the page. An alternative is the [dialog](/web/web-components/interaction/dialog/) component.

@@ -1,7 +1,12 @@
 ---
-title: 'Code snippets'
+title: 'Server Tooling - Code snippets'
 sidebar_label: 'Code snippets'
 id: code-snippets
+keywords: [server, tooling, code snippets]
+tags:
+  - server
+  - tooling
+  - code snippets
 ---
 
 The following code snippets can be imported into IntelliJ to speed up repetitive development tasks, mainly around the declaration of Genesis scripts and configuration.

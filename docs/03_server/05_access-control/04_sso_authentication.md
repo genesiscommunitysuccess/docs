@@ -1,7 +1,13 @@
 ---
-title: 'SSO Authentication'
+title: 'Access Control - SSO Authentication'
 sidebar_label: 'SSO Authentication'
 id: SSO-authentication
+keywords: [server, access control, SSO, authentication]
+tags:
+  - server
+  - access control
+  - SSO
+  - authentication
 ---
 
 [Introduction](/server/access-control/introduction)  | [Authentication overview](/server/access-control/authentication-overview) | [Username and Password](/server/access-control/password-authentication) | [SSO](/server/access-control/sso-authentication) | [Authorisation overview](/server/access-control/authorisation-overview) | [Authorisation](/server/access-control/authorisation)

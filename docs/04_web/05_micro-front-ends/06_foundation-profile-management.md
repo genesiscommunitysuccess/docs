@@ -1,17 +1,14 @@
 ---
-title: 'Profile Management'
+title: 'Micro-front-ends - Profile Management'
 sidebar_label: 'Profile Management'
 Id: front-end-foundation-profile-management
+keywords: [web, profile management, frontend, ui, micro-front-ends]
 tags:
-  - profile
-  - management
+  - web
+  - profile management
   - frontend
   - ui
-  - mf
-  - web
-  - micro frontends
-  - form
-  - resource
+  - micro-front-ends
 ---
 
 # Profile Management

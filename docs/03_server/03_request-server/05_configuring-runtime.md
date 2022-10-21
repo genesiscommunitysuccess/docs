@@ -1,7 +1,12 @@
 ---
-title: 'Request Server: configuring runtime'
+title: 'Request Server - Configuring runtime'
 sidebar_label: 'Configuring runtime'
 id: configuring-runtime
+keywords: [server, request server, configuring runtime]
+tags:
+  - server
+  - request server
+  - configuring runtime
 ---
 
 

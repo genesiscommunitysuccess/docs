@@ -1,7 +1,14 @@
 ---
-title: 'Package.json basics'
+title: 'Web Basics - package.json'
 sidebar_label: 'Package.json basics'
 id: package-json-basics
+keywords: [web, basics, package.json, scripts, dependencies]
+tags:
+    - web
+    - basics
+    - package.json
+    - scripts
+    - dependencies
 ---
 
 The `package.json` file is auto-generated for you by the CLI, based on your answers to the prompts.

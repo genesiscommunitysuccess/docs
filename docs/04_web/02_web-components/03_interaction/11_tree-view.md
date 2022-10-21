@@ -1,7 +1,12 @@
 ---
-title: 'Tree view'
+title: 'Web Components - Tree view'
 sidebar_label: 'Tree view'
 id: tree-view
+keywords: [web, web components, tree view]
+tags:
+    - web
+    - web components
+    - tree view
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria/#tree):

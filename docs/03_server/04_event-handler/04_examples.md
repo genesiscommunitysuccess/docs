@@ -1,7 +1,12 @@
 ---
-title: 'Event Handler: examples'
+title: 'Event Handler - Examples'
 sidebar_label: 'Examples'
 id: examples
+keywords: [server, event handler, examples]
+tags:
+  - server
+  - event handler
+  - examples
 ---
 
 

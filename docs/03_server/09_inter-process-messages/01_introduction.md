@@ -1,7 +1,12 @@
 ---
-title: 'Introduction'
+title: 'Inter-process messages - Introduction'
 sidebar_label: 'Introduction'
 id: introduction
+keywords: [server, inter-process messages, introduction]
+tags:
+  - server
+  - inter-process messages
+  - introduction
 ---
 
 In this area, we'll look at the standard message format sent between Genesis processes.

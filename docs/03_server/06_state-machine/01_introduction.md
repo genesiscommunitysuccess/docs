@@ -1,7 +1,12 @@
 ---
-title: 'Introduction'
+title: 'State Machine - Introduction'
 sidebar_label: 'Introduction'
 id: introduction
+keywords: [server, state machine, introduction]
+tags:
+  - server
+  - state machine
+  - introduction
 ---
 
 

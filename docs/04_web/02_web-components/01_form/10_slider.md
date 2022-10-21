@@ -1,7 +1,12 @@
 ---
-title: 'Slider'
+title: 'Web Components - Slider'
 sidebar_label: 'Slider'
 id: slider
+keywords: [web, web components, slider]
+tags:
+    - web
+    - web components
+    - slider
 ---
 
 An implementation of a [range slider](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/range) as a form-connected Web Component. 

@@ -1,7 +1,12 @@
 ---
-title: 'Introduction'
+title: 'Server Configuration - Introduction'
 sidebar_label: 'Introduction'
 id: introduction
+keywords: [server, configuration, introduction]
+tags:
+  - server
+  - configuration
+  - introduction
 ---
 
 

@@ -1,7 +1,12 @@
 ---
-title: 'Combobox'
+title: 'Web Components - Combobox'
 sidebar_label: 'Combobox'
 id: combobox
+keywords: [web, web components, combobox]
+tags:
+    - web
+    - web components
+    - combobox
 ---
 <div class="combobox-examples">
 

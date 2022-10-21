@@ -1,7 +1,12 @@
 ---
-title: 'GenesisSet'
+title: 'Inter-process messages - GenesisSet'
 sidebar_label: 'GenesisSet'
 id: genesisSet
+keywords: [server, inter-process messages, genesisSet]
+tags:
+  - server
+  - inter-process messages
+  - genesisSet
 ---
 
 import Tabs from '@theme/Tabs';

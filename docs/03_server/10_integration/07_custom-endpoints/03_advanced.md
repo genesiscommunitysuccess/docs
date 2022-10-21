@@ -1,7 +1,13 @@
 ---
-title: 'Advanced'
+title: 'Custom Endpoints - Advanced'
 sidebar_label: 'Advanced'
 id: advanced
+keywords: [server, integration, custom endpoints, advanced]
+tags:
+  - server
+  - integration
+  - custom endpoints
+  - advanced
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

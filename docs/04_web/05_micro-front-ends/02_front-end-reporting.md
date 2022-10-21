@@ -1,13 +1,14 @@
 ---
-title: 'Front-end Reporting'
+title: 'Micro-front-ends - Reporting'
 sidebar_label: 'Front-end reporting'
 id: front-end-reporting
+keywords: [web, frontend, ui, micro-front-ends, reporting]
 tags:
-  - reporting
+  - web
   - frontend
   - ui
-  - web
-  - micro frontends
+  - micro-front-ends
+  - reporting
 ---
 
 import Reporting from '../../resource/reporting_mf.md'

@@ -1,7 +1,12 @@
 ---
-title: 'Request Server: examples'
+title: 'Request Server - Examples'
 sidebar_label: 'Examples'
 id: examples
+keywords: [server, request server, examples]
+tags:
+  - server
+  - request server
+  - examples
 ---
 
 

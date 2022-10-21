@@ -1,10 +1,13 @@
 ---
-title: 'Configuring Runtime'
+title: 'Apache Camel - Configuring Runtime'
 sidebar_label: 'Configuring Runtime'
 id: configuring-runtime
-keywords: [apache camel]
+keywords: [server, integration, apache camel, configuring runtime]
 tags:
-    - apache camel
+  - server
+  - integration
+  - apache camel
+  - configuring runtime
 ---
 
 import Tabs from '@theme/Tabs';

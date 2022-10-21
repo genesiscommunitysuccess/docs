@@ -1,7 +1,13 @@
 ---
-title: 'Miscellaneous'
+title: 'Design System Tokens - Miscellaneous'
 sidebar_label: 'Miscellaneous'
 id: miscellaneous
+keywords: [web, design system, tokens, miscellaneous]
+tags:
+  - web
+  - design system
+  - tokens
+  - miscellaneous
 ---
 
 

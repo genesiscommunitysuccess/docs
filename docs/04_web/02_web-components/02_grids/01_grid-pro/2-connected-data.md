@@ -1,6 +1,12 @@
 ---
 id: grid-pro-connected
-title: Connected data
+title: Grid Pro - Connected data
+keywords: [web, web components, grid, grid pro]
+tags:
+    - web
+    - web components
+    - grid
+    - grid pro
 ---
 
 ## Set-up

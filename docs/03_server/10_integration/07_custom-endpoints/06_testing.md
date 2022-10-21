@@ -1,7 +1,13 @@
 ---
-title: 'Testing'
+title: 'Custom Endpoints - Testing'
 sidebar_label: 'Testing'
 id: testing
+keywords: [server, integration, custom endpoints, testing]
+tags:
+  - server
+  - integration
+  - custom endpoints
+  - testing
 ---
 
 import Tabs from '@theme/Tabs';

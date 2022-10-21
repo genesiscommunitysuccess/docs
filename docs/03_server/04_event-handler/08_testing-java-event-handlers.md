@@ -2,6 +2,12 @@
 title: 'Testing Java Event Handlers'
 sidebar_label: 'Testing Java Event Handlers'
 id: testing-java-event-handlers
+keywords: [server, event handler, java event handlers, testing]
+tags:
+  - server
+  - event handler
+  - java event handlers
+  - testing
 ---
 
 

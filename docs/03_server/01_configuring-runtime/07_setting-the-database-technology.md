@@ -1,7 +1,12 @@
 ---
-title: 'Setting the database technology'
+title: 'Server Configuration - Database technology'
 sidebar_label: 'Setting the database technology'
 id: setting-the-database-technology
+keywords: [server, configuration, database technology]
+tags:
+  - server
+  - configuration
+  - database technology
 ---
 
 

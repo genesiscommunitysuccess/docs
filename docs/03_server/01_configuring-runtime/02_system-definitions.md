@@ -1,7 +1,12 @@
 ---
-title: 'System Definitions'
+title: 'Server Configuration - System Definitions'
 sidebar_label: 'System Definitions'
 id: system-definitions
+keywords: [server, configuration, system definitions]
+tags:
+  - server
+  - configuration
+  - system definitions
 ---
 The system-definition file **genesis-system-definition.kts** is the basis of all configurations, scripts, data model, etc. This section explains all the different items that are contained in the file.
 

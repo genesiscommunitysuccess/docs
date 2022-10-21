@@ -1,7 +1,12 @@
 ---
-title: 'Radio group'
+title: 'Web Components - Radio group'
 sidebar_label: 'Radio group'
 id: radio-group
+keywords: [web, web components, radio group]
+tags:
+    - web
+    - web components
+    - radio group
 ---
 As defined by the [W3C](https://w3c.github.io/aria-practices/#radiobutton):
 

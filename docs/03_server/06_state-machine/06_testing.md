@@ -1,7 +1,12 @@
 ---
-title: 'Testing'
+title: 'State Machine - Testing'
 sidebar_label: 'Testing'
 id: testing
+keywords: [server, state machine, testing]
+tags:
+  - server
+  - state machine
+  - testing
 ---
 
 ## Integration testing

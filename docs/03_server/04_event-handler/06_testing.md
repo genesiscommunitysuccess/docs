@@ -1,7 +1,12 @@
 ---
-title: 'Event Handler: testing'
+title: 'Event Handler - Testing'
 sidebar_label: 'Testing'
 id: testing
+keywords: [server, event handler, testing]
+tags:
+  - server
+  - event handler
+  - testing
 ---
 
 
