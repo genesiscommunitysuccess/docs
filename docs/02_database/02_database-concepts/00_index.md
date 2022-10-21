@@ -4,7 +4,7 @@ sidebar_label: 'Database concepts'
 id: database-concepts
 ---
 
-There are three types of operation you can perform on the database. This section gives you details about each type:
+This section provides you with details about the three types of operations that you can perform on the database. 
 
 - [Read](/database/database-concepts/read/)
 - [Write](/database/database-concepts/write/)
