@@ -88,5 +88,5 @@ You can check how it is running:
 ```
 Or you can run `mon` on your previously attached terminal, where you can see that all services are down.
 
-The end
+## The end
 That's all we wanted you to try. We hope you have found this useful and that you enjoy exploring further.
