@@ -12,7 +12,7 @@ Subscriptions are limited to a single table or view.
 
 ## Types of change
 
-A subscribe operation can make three different types of change:
+A subscribe operation can make three different types of changes:
 
 - Insert - a new row is inserted
 - Delete - an existing row is deleted
@@ -26,11 +26,11 @@ Similarly, a database modify update might not show at all, or be transformed int
 
 By default, subscriptions on views only publish updates on database changes to the root table. 
 
-If you want to subscribe to changes to sub tables, you need to enable [backwards joins](/server/data-server/basics/#backwards-joins) in your view definition: `backwardsJoin = true`. Once specified, the subscription will also publish changes to the sub tables as modify updates. There is a useful example of a backwards join in the [views examples](/database/fields-tables-views/views/views-examples).
+If you want to subscribe changes to sub tables you need to enable [backwards joins](/server/data-server/basics/#backwards-joins) in your view definition: `backwardsJoin = true`. Once specified, the subscription will also publish changes to the sub tables as modify updates. Please click the link for a useful example of a backwards join in the [views examples](/database/fields-tables-views/views/views-examples).
 
 :::note
 
-Backwards join subscriptions are only supported for combined read/subscribe operations, as the subscription needs to cache the joins. This cache requires extra memory and CPU cycles to maintain.
+Backwards join subscriptions are only supported for combined read/subscribe operations, as the subscription needs to cache the joins. This cache requires extra memory and CPU cycles to be maintained.
 
 :::
 
