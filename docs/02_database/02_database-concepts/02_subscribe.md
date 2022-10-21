@@ -12,7 +12,7 @@ Subscriptions are limited to a single table or view.
 
 ## Types of change
 
-A subscribe operation can make three different types of changes:
+A subscribe operation can make three different types of change:
 
 - Insert - a new row is inserted
 - Delete - an existing row is deleted
