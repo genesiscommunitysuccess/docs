@@ -16,7 +16,7 @@ Please follow these instructions very carefully to ensure your environment is re
 #### Recommended hardware and operating system
 
 * Operating system : Windows 10 Pro version 2004 or higher with support for [WSL v2](https://docs.microsoft.com/en-us/windows/wsl/install)
-* RAM : 32GB minimum, as we running full applications locally
+* RAM : 32GB minimum, as we are running full applications locally
 * CPU : 8 Core
 * SSD : 250GB
 
