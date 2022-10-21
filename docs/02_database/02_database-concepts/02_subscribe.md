@@ -6,7 +6,7 @@ id: subscribe
 
 
 
-Subscribe operations enable code to react to database changes, rather than [polling](/getting-started/glossary/glossary/#polling) for changes. Code can either just listen to changes, or use a combined read/subscribe operation. These mixed read/subscribe operations are useful.
+Subscribe operations enable code to react to database changes, rather than [polling](/getting-started/glossary/glossary/#polling) for changes. Code can either listen to changes, or use a combined read/subscribe operation. These mixed read/subscribe operations are useful.
 
 Subscriptions are limited to a single table or view.
 
