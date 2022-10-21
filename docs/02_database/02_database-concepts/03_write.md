@@ -7,13 +7,11 @@ id: write
 
 The following database operations are available:
 
-- `insert`
-- `modify`
-- `upsert`
-- `delete`
-- `recover`
-
-All these operations also have an `...All` version (e.g. `insertAll` that accepts multiple records).
+- `insert` and `insertAll`
+- `modify` and `insertAll`
+- `upsert` and `insertAll`
+- `delete` and `insertAll`
+- `recover` and `insertAll`
 
 :::note
 **Index clash**
