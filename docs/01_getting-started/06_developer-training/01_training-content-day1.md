@@ -294,7 +294,7 @@ If you had to add application specific definitions, like an API_KEY for example,
 :::
 -->
 
-### 5. Build process
+### 5. The build process
 
 Finally, you can build the server.
 
@@ -326,7 +326,7 @@ plugins {
 ```
 
 :::caution edit gradle.properties
-Ensure the `gradle.properties` file from the server/jvm folder is properly set with the following entries:
+Ensure the **gradle.properties** file from the **server/jvm** folder is properly set with the following entries:
 
 ```properties
 genesis-home=/home/genesis/run
