@@ -31,6 +31,9 @@ First, let's add `Instrument.kt` file to `src/main/kotlin/global/genesis/alpha/m
 ```kotlin
 package global.genesis.alpha.model
 
+import global.genesis.gpl.api.schema.Persist
+import global.genesis.gpl.api.schema.Table
+
 @Persist
 object INSTRUMENT : Table(11_001) {
     val instrumentId by varchar().nonNullable()
