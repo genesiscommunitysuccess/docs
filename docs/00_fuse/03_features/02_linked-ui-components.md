@@ -53,13 +53,13 @@ page("Home") {
         entityManager(
             entity = INSTRUMENT,
             title = "Instruments",
-            operations = listOf(EntityOperations.ADD),
+            operations = listOf(ADD),
         )
 
         entityManager(
             entity = TRADE,
             title = "Trades",
-            operations = listOf(EntityOperations.ADD),
+            operations = listOf(ADD),
         )
     }
 }
@@ -82,7 +82,7 @@ Note that we use `by` keyword instead of `=` here to capture more information ab
 val instrumentGrid by entityManager(
     entity = INSTRUMENT,
     title = "Instruments",
-    operations = listOf(EntityOperations.ADD),
+    operations = listOf(ADD),
 )
 ```
 
@@ -94,7 +94,7 @@ Once we have a name, we can use it when configuring other elements. Let's config
 entityManager(
     entity = TRADE,
     title = "Trades",
-    operations = listOf(EntityOperations.ADD),
+    operations = listOf(ADD),
 ) {
     // highlight-start
     filter {
