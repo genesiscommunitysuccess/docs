@@ -150,7 +150,7 @@ or from the dropdown menu:
 
 ![](/img/using-mon-positions.png)
 
-We should see something like this
+We should see something like this:
 
 ```shell
 PID     Process Name                  Port        Status         CPU       Memory    Message
