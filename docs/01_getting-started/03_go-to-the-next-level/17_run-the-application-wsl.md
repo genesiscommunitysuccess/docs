@@ -381,3 +381,22 @@ In the header, you need to supply:
 When you have this in place, click on **Send** to make the call. You can see that the fields for the instruments have been returned on the right of the screen.
 
 ![](/img/test-eh-insert-success-alpha.png)
+
+## Connecting the back end and front end
+In this step, we shall configure an nginx server working as a reverse proxy. Make sure you have your artifcatory credentials available.
+
+1. In your CentOS terminal, enter following three commands:
+
+Enter your artifactory credentials:
+docker login genesisglobal-docker-internal.jfrog.io
+...
+
+2. Pull the latest version of the Genesis software:
+```shell
+docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
+...
+
+3. Finally, run the following command:
+```shell
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+...
