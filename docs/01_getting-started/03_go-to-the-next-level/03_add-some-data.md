@@ -104,19 +104,19 @@ DbMon:USER>
 
 Now we have to deploy our application, the positions-app-tutorial product. From Gradle, run the following commands in order:
 
-1. /genesisproduct-positions-app-tutorial/Tasks/build/assemble
+1. **/genesisproduct-positions-app-tutorial/Tasks/build/assemble**
 
     ![](/img/deploy-assemble-positions.png)
 
-2. /genesisproduct-positions-app-tutorial/positions-app-config/Tasks/build/assemble
+2. **/genesisproduct-positions-app-tutorial/positions-app-config/Tasks/build/assemble**
 
     ![](/img/deploy-config-assemble-positions.png)
 
-3.  /genesisproduct-positions-app-tutorial/positions-app-tutorial-deploy/Tasks/genesis-setup/install-positions-app-tutorial-site-specific
+3.  **/genesisproduct-positions-app-tutorial/positions-app-tutorial-deploy/Tasks/genesis-setup/install-positions-app-tutorial-site-specific**
 
     ![](/img/deploy-install-site-specific-positions.png)
 
-4. /genesisproduct-positions-app-tutorial/positions-app-tutorial-deploy/Tasks/genesisdeploy/deploy-genesisproduct-positions-app-tutorial.zip
+4. **/genesisproduct-positions-app-tutorial/positions-app-tutorial-deploy/Tasks/genesisdeploy/deploy-genesisproduct-positions-app-tutorial.zip**
 
     ![](/img/deploy-positions.png)
 
