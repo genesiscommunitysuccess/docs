@@ -20,6 +20,13 @@ module.exports = {
   clientModules: [
     './src/client-modules/genesislcap.js'
   ],
+  scripts: [
+    {
+      src: "https://feedback.fish/ff.js?pid=d642786cff63aa",
+      defer: true
+    }
+  ],
+
   plugins: [
     [
       '@docusaurus/plugin-client-redirects',
@@ -113,6 +120,7 @@ module.exports = {
         {to: 'web', label: 'Web'},
         {to: 'operations', label: 'Operations'},
         {to: 'fuse', label: 'Early access'},
+        {type: 'html', position: 'right', value: '<a class="feedback" data-feedback-fish>Give us Feedback</a>'},
         {
           href: "/resource/stackoverflow-onboarding",
           className: "so-icon",
