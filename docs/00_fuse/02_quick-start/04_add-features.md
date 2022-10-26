@@ -79,11 +79,7 @@ enum class TradeStatus { NEW, ALLOCATED, CANCELLED }
 
 ## Grid and form
 
-Grids are our primary way of displaying information. Let's add a grid to display our new `TRADE` model and a form to allow users to submit new trades. We can achieve this by adding an `entityManager` component as shown below. Specifying `EntityOperations.ADD` operation will allow us to add new trade records.
-
-:::tip
-If your IDE doesn't update import statements automatically, add `import global.genesis.gpl.ir.ui.EntityOperations` to this file.
-:::
+Grids are our primary way of displaying information. Let's add a grid to display our new `TRADE` model and a form to allow users to submit new trades. We can achieve this by adding an `entityManager` component as shown below. Specifying the `ADD` operation will allow us to add new trade records.
 
 ```kotlin
  ui("Alpha Trading Dashboard") {
@@ -94,7 +90,7 @@ If your IDE doesn't update import statements automatically, add `import global.g
         entityManager(
             entity = TRADE, 
             title = "Trades", 
-            operations = listOf(EntityOperations.ADD),
+            operations = listOf(ADD),
         )
         // highlight-end
     }
