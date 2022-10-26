@@ -42,7 +42,7 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-ho
 npm run bootstrap
 ```
 
-2. Once you have all dependencies installed, use the following command in the terminal to run your UI: 
+2. Once you have all dependencies installed, use the following command in the terminal to run your UI:
 
 ```shell title="./client"
 npm run dev
@@ -51,10 +51,14 @@ npm run dev
 The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
 
+### API Host
+
+The `API_HOST` should be set correctly by default from the `genx` CLI, but if you are having issues see [this section](../02_quick-start/07_run-the-application.md#api-host).
+
 ## Section objectives
 The goal of this section is to run the UI for the first time and add a data grid.
 
-## Showing all positions 
+## Showing all positions
 
 For your user interface, the `genx` process has generated the following files:
 

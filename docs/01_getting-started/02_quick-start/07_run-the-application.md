@@ -107,7 +107,7 @@ These are your login details:
 :::
 
 2. Run the task `loadInitialData`. This adds the data in USER.csv to the USER table in your
-database. 
+database.
 
 By command:
 ```shell
@@ -221,8 +221,20 @@ Now you have a fully running application. If it is not opened automatically, nav
 
 :::tip
 If the blue button to login is not clickable, go through the previous section again, the problem will most probably be located there.
+:::
 
-::::
+### API Host
+
+If you have followed the [genx quick start guide](../02_quick-start/02_create-a-new-project.md), then have set the `API_HOST` as the default `ws://localhost/gwf/`. This default will hit the nginx reverse proxy that you set in [the previous section](#connecting-the-back-end-and-front-end). 
+
+If you have changed the `API_HOST` from the default `ws://localhost/gwf/`at any point to connect to a different host, then you need to change this back to the default configuration.
+
+Additionally, the front end will cache the `API_HOST` and use that over the configured item; so if you have changed the host then you may need to clear this item from your cache. You can do this in your browser by opening the developer tools, going to the storage tab, going to the `Local Storage` section, and deleting the `hostUrl` key/value pair.
+
+:::tip
+If you change the host frequently, you might find it easier to configure the login screen not to auto connect to the host, which allows you to set the value in the GUI. Set this via `autoConnect: false` in the file `client/web/src/routes/config.ts`. There is more information on the configuration options in our [micro front-end documentation](../../04_web/05_micro-front-ends/07_foundation-login.md/#customising-login).
+:::
+
 
 ## Conclusion
 That’s it. You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.
