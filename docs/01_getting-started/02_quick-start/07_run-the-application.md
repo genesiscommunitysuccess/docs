@@ -225,12 +225,14 @@ If the blue button to login is not clickable, go through the previous section ag
 
 ### API Host
 
-If you have followed the [genx quick start guide](../02_quick-start/02_create-a-new-project.md) then you would have set the `API_HOST` as the default `ws://localhost/gwf/`. This default will hit the nginx reverse proxy that you set in [the previous section](#connecting-the-back-end-and-front-end). If you have changed this at any point and you've connected to a different host then you need to change this to the default configuration.
+If you have followed the [genx quick start guide](../02_quick-start/02_create-a-new-project.md), then have set the `API_HOST` as the default `ws://localhost/gwf/`. This default will hit the nginx reverse proxy that you set in [the previous section](#connecting-the-back-end-and-front-end). 
 
-Additionally, the front-end will cache the `API_HOST` and use that over the configured item so if you have changed the host then you may need to clear this item from your cache. You can do this in your browser by opening the developer tools, going to the storage tab, going to the `Local Storage` section, and deleting the `hostUrl` key/value pair.
+If you have changed the `API_HOST` from the default `ws://localhost/gwf/`at any point to connect to a different host, then you need to change this back to the default configuration.
+
+Additionally, the front end will cache the `API_HOST` and use that over the configured item; so if you have changed the host then you may need to clear this item from your cache. You can do this in your browser by opening the developer tools, going to the storage tab, going to the `Local Storage` section, and deleting the `hostUrl` key/value pair.
 
 :::tip
-If you are changing the host frequently, you might find it easier to configure the login screen not to auto connect to the host, allowing you to set the value in the GUI. Set this via `autoConnect: false` in the file `client/web/src/routes/config.ts`. See the configuration options [here](../../04_web/05_micro-front-ends/07_foundation-login.md/#customising-login) for more information.
+If you change the host frequently, you might find it easier to configure the login screen not to auto connect to the host, which allows you to set the value in the GUI. Set this via `autoConnect: false` in the file `client/web/src/routes/config.ts`. There is more information on the configuration options in our [micro front-end documentation](../../04_web/05_micro-front-ends/07_foundation-login.md/#customising-login).
 :::
 
 
