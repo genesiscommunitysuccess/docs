@@ -53,6 +53,7 @@ The following variables are used to configure an LDAP connection; thus are only 
     * using the `sAMAccountName` in Windows
 * `bypassLoginInternalAuth` this is a boolean flag that prevents internal authorisation checks on login
 * `onLoginSuccess` this is a function which is invoked on a successful LDAP login, for example: it allows you to insert a user into the db when it exists in LDAP but not the database.
+* `useTLS` this is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
 
 For more information on the various authentication types, please see the [Authentication overview](/server/access-control/authentication-overview/).
 
