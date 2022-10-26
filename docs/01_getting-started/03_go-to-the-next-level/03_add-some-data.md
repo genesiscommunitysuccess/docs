@@ -52,7 +52,7 @@ The following details will be your login details:
 -	Password: beONneON*74 (This is encrypted in the USER.csv file.)
 :::
 
-Run the task `loadInitialData`. This imports the data from these csv files into the database. For example, the file called USER.csv will be imported into the USER table in your database. The USER table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously.
+Run the task `loadInitialData`. This imports the data from these csv files into the database. For example, the file called USER.csv will be imported into the USER table in your database. The USER table, among the other users and permissioning tables, is defined by the Genesis Auth module that we installed previously.
 
 To run the task, call:
 ```shell
