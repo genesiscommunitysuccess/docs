@@ -51,7 +51,7 @@ resources {
 }
 ```
 
-To configure a file resource you need only provide the name of the file you wish to read from, and the table you wish to read into.
+To configure a file resource you must provide the name of the file you wish to read from and the table the data is being written to.
 
 The `to` parameter of the table definition must refer to an existing table object from your application. As a file can only contain a single table, only a single table definition is valid for a file resource.
 
@@ -84,15 +84,15 @@ resources {
 
 To configure a database resource you must provide the following:
 
-- hostname
-- port
-- username
-- password
-- databaseName (optional)
+- `hostname`
+- `port`
+- `username`
+- `password`
+- `databaseName` (optional)
 
-Other than databaseName, all properties are required in order to successfully connect to the external database.
+Other than `databaseName`, all properties are required in order to successfully connect to the external database.
 
-If no databaseName is provided it will be set to the default database name of the DBMS ("postgres" for PostgreSQL).
+If no `databaseName` is provided it will be set to the default database name of the DBMS ("postgres" for PostgreSQL).
 
 As a database can contain multiple tables, a definition is required for each table you wish to read data from.
 In the example above you can see two table mappings, each provides a `to` and `from` parameter.
@@ -116,7 +116,7 @@ table(to = TRADE, from = "trade-test") {
 }
 ```
 
-The above example tells the application to map all data from the "test-trade-id" column in the external database to the tradeId column in our applications TRADE table.
+The above example tells the application to map all data from the "test-trade-id" column in the external database to the `tradeId` column in our application's `TRADE` table.
 
 Within a table block, IntelliJ will provide intellisense suggestions for all fields on the given table.
 The left hand side of the `mapsTo` function must always refer to a field in your application's table.
@@ -133,7 +133,7 @@ table(to = TRADE, from = "trade-test") {
 }
 ```
 
-- `formatWith` is only valid for Date or DateTime fields
+- `formatWith` is only valid for `Date` or `DateTime` fields
 - `formatWith` accepts any string as a format, if you override the default format with an incorrect pattern your data will fail to read.
 - In order to ensure your pattern is valid, please refer to the [Joda Time Docs](https://www.joda.org/joda-time/apidocs/org/joda/time/format/DateTimeFormat.html) for constructing format patterns.
 - A set of standard date time constants are available for you to use, which should cover a majority of date time formats, these can be found in the below table:
@@ -147,7 +147,7 @@ table(to = TRADE, from = "trade-test") {
 | **SIMPLE_UK** | Simple date time in UK format, human readable, no time zone.                   | dd/MM/yyyy HH:mm:ss        | 21/10/2022 10:01:22   |
 | **SIMPLE_US** | Simple date time in US format, human readable, no time zone.                   | MM/dd/yyyy HH:mm:ss        | 10/21/2022 10:01:22   |
 
-:::note
+:::tip
 The `formatWith` and `mapsTo` functions can be chained together in any order, you can see this in the full example below.
 :::
 
@@ -286,8 +286,15 @@ If the process has failed to start, or has started but you don't see any data in
 - Logs are stored in the `run/appname/runtime/logs` directory, you can use `cd $L` to get to it.
 - The `APPNAME_DATAPIPELINE.log` will contain any stacktraces or errors caused when attempting to read the script.
 
+:::tip
+
 ### Notes on using Docker
 
-- When using Docker you will have to run the `docker exec -it {containerId} /bin/bash` command to access `DbMon` and view any logs.
-- If your external DB is also being ran in Docker, ensure the hostname you provide in the resource script is accessible from within your applications container.
-  - In the examples above you can see the hostname `host.docker.internal` is used, this allows the application container to connect to the external databases container via Dockers internal network. See [here](https://docs.docker.com/desktop/networking/) for more information.
+When using Docker you will have to run the `docker exec -it {containerId} /bin/bash` command to access `DbMon` and view any logs.
+
+If your external DB is also being ran in Docker, ensure the hostname you provide in the resource script is accessible from within your applications container.
+
+In the examples above you can see the hostname `host.docker.internal` is used, this allows the application container to connect to the external databases container via Docker's internal network.
+
+See [here](https://docs.docker.com/desktop/networking/) for more information.
+:::
