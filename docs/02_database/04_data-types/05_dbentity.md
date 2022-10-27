@@ -4,16 +4,11 @@ sidebar_label: 'DbEntity'
 id: dbentity
 ---
 
-[Introduction](/database/data-types/data-types/) |
-[Table entities](/database/data-types/table-entities/) | 
-[Index entities](/database/data-types/index-entities/) | 
-[Views entities](/database/data-types/views-entities/) | 
-[DbRecord](/database/data-types/dbrecord/) | 
-[DbEntity](/database/data-types/dbentity/) 
+ 
 
-DbEntity is the common interface implemented by table entities and view entities.
+`DbEntity` is the common interface implemented by table entities and view entities.
 
-The DbEntity methods are described below:
+The `DbEntity` methods are described below:
 
 |  Name  | Signature | Description |
 |---------------|-------------|-------------|

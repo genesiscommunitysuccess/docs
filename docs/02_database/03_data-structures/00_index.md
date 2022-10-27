@@ -4,9 +4,15 @@ sidebar_label: 'Data Structures'
 id: data-structures
 ---
 
-[Introduction](/database/data-structures/data-structures/)  | [Tables](/database/data-structures/tables/) |  [Indices](/database/data-structures/indices/) | [Views](/database/data-structures/views/) 
 
-The genesis database supports [table](/database/fields-tables-views/tables/) or [view](/database/fields-tables-views/views/). Tables contain rows of data of the same type. The data in tables support read, write and subscribe operations. A view represents a number of tables joined together. Views support read and subscribe operations.
+
+The Genesis database supports:
+- [tables](/database/fields-tables-views/tables/)
+- [views](/database/fields-tables-views/views/)
+
+ Tables contain rows of data of the same type. The data in tables support read, write and subscribe operations. 
+ 
+ A view represents a number of tables joined together. Views support read and subscribe operations.
 
 |  | [Tables](/database/data-structures/tables/)  | [Indices](/database/data-structures/indices/) | [View](/database/data-structures/views/)  |
 | --- | :-- | :-- | :-- |

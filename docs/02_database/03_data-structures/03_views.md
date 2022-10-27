@@ -4,7 +4,7 @@ sidebar_label: 'Views'
 id: views
 ---
 
-[Introduction](/database/data-structures/data-structures/)  | [Tables](/database/data-structures/tables/) |  [Indices](/database/data-structures/indices/) | [Views](/database/data-structures/views/) 
+
 
 Views are defined in the `-view-dictionary.kts` files as discussed 
 [here](/database/fields-tables-views/views/).
@@ -27,14 +27,12 @@ operations and the view will derive its indices from the root table.
 
 Depending on the view definition, a different type of view will be created.
 
-### Cardinality
+## Cardinality
 
 A view's cardinality tells us how many view records will be returned for every record in the root table. 
 
-- If a view can 
-return a maximum of 1 record for each record in the root table, the view has single cardinality. 
-- If a view can 
-return multiple records for each record in the root table, the view has multi cardinality. 
+- If a view can return a maximum of 1 record for each record in the root table, the view has single cardinality. 
+- If a view can return multiple records for each record in the root table, the view has multi cardinality. 
 
 The cardinality depends on the joins; a view with no joins, or only one-to-one joins, will be single 
 cardinality, all others will be multi cardinality
@@ -47,7 +45,7 @@ cardinality, all others will be multi cardinality
 | Supports database subscribe operations | ✔️                             | ❌                           |
 | Supports backwards joins               | ✔️                             | ❌                           |
 
-### Parameterised views
+## Parameterised views
 
 For some views, the joins are defined as input parameters, rather than on a field in another table or a constant. When 
 that happens a view is considered to be parameterised. Parameterised views can not be accessed without these parameters.
