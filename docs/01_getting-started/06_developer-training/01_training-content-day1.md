@@ -431,7 +431,7 @@ DbMon is a Genesis tool, database-engine agnostic, used to access the data store
 
 In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisscripts**/**DbMon**.
 
-![](/img/using-DbMon.png)
+![](/img/using-dbmon.png)
 
 ```shell title='Running DbMon from the command line'
 ./gradlew :genesisproduct-alpha:alpha-deploy:DbMon

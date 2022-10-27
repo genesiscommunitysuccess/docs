@@ -144,7 +144,7 @@ Run `DbMon` to check that the user has been created:
 
 or from the dropdown menu:
 
-![](/img/using-DbMon-positions.png)
+![](/img/using-dbmon-positions.png)
 
 Once you are inside the console, type `table USER` and then `search 1`. If imported correctly, the user JaneDee should be listed:
 ```

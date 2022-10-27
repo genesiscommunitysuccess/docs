@@ -127,7 +127,7 @@ By command:
 
 From the dropdown menu:
 
-![](/img/using-DbMon.png)
+![](/img/using-dbmon.png)
 
 4. Once you are inside the console, type `table USER` and then `search 1`. If imported correctly, the details of the user JaneDee should be listed:
 
