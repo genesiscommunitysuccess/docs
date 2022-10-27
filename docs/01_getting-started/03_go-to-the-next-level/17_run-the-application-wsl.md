@@ -61,7 +61,7 @@ Finally, you need to have a FoundationDB database running.
 Now we are going to install the platform (i.e. Genesis distribution) on the server and then install the back end of our application on the same server. This is all done using the Genesis deploy plugin, which comes with several tasks grouped under `genesisdeploy` and `genesissetup`.
 
 :::caution
-All the following sections are one-time operations. If you have already followed this tutorial previously, they are not necessary. Skip to [Deploying the application](/getting-started/go-to-the-next-level/see-it-work/#deploying-the-application).
+All the following sections are one-time operations. If you have already followed this tutorial previously, they are not necessary. Skip to Deploying the application.
 :::
 
 ### Set up the platform
@@ -230,7 +230,7 @@ There are multiple ways you can test the back end of your application. It's impo
 ### Genesis Console
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
 2. Enter the IP address of your server, in this case localhost.
-3. Log in with your user name and password as [defined previously](/getting-started/go-to-the-next-level/see-it-work/#add-a-user). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
+3. Log in with your user name and password as defined previously. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES** tab.
 5. Filter the **Resource type** to show only Event Handlers.
 
