@@ -14,7 +14,7 @@ sidebar_position: 6
     <li>We started writing some <a href="/getting-started/developer-training/training-content-day3/#automated-testing">automated tests</a> for our application.</li>
     <li>We added <a href="/getting-started/developer-training/training-content-day3/#calculated-data">calculated data (derived fields)</a> into our main View.</li>
     <li><a href="/getting-started/developer-training/training-content-day3/#consolidators">Consolidators</a> perform data aggregation and calculations, and here we created one to real-time feed the Positions table.</li>
-    <li>We added a <a href="/getting-started/developer-training/training-content-day3/#ui-configuring">grid</a> in the UI to display the Positions using AgGrid, with more flexibility to customize the HTML and CSS.</li>
+    <li>We added a <a href="/getting-started/developer-training/training-content-day3/#ui-configuring">grid</a> in the UI to display the Positions using Grid Pro, with more flexibility to customize the HTML and CSS.</li>
   </div>
 </details>
 
@@ -55,7 +55,7 @@ tables {
 }
 ```
 
-If the TRADE_STATUS is missing, run *genesis-generated-fields* to generate the fields, AND​ *genesis-generated-dao​* to create the DAOs.
+If the TRADE_STATUS is missing, run [genesis-generated-fields](/getting-started/developer-training/training-content-day1/#generatefields) to generate the fields, AND​ [genesis-generated-dao](/getting-started/developer-training/training-content-day1/#generatedao) to create the DAOs.
 
 ### 2. Create a new class for the state machine
 
@@ -172,7 +172,7 @@ Create two data classes that will be used in the cancel and allocated Event Hand
 * TradeAllocated
 * TradeCancelled
 
-Both classes have a single single field: **tradeId**.
+Both classes have a single field: **tradeId**.
 
 TradeAllocated:
 
@@ -243,9 +243,9 @@ To test it, you can try to modify a TRADE and see the states changing accordingl
 Modify the class TradeStateMachine to keep the `trade.price`. Removing the current rule when TradeStatus.NEW, and set the field trade.enteredBy to empty when TradeStatus.CANCELLED.
 
 :::info UI CHANGES
-Open the **home.ts** file and add the TRADE_STATUS field in the const *COLUMNS*. The Cancel button can be added using the *Permissions.delete*.
+Open the **home.ts** file and add the TRADE_STATUS field in the const *COLUMNS*.
 
-```kotlin {29-33,45}
+```kotlin {29-33}
 ...
 //grid columns that will be showed
 const COLUMNS = [
@@ -290,7 +290,6 @@ export class Home extends FASTElement {
     ...
     constructor() {
       super();
-      this.permissionsTrade = [Permissions.add, Permissions.delete]; //permissions will show the Grid buttons
     }
 }
 
@@ -310,7 +309,6 @@ export const HomeTemplate = html<Home>`
           createEvent = "EVENT_TRADE_INSERT"
           deleteEvent = "EVENT_TRADE_CANCELLED"
           :columns=${x => x.columns}
-          :permissions=${x => x.permissionsTrade}
         ></entity-management>
     ...
     </div>
@@ -319,7 +317,7 @@ export const HomeTemplate = html<Home>`
 ```
 :::
 
-Remember to run *assemble* and *deploy-genesisproduct-alpha* tasks after the changes, and test it directly in the UI.
+Remember to run [build](/getting-started/developer-training/training-content-day1/#5-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks after the changes, and test it directly in the UI.
 
 
 ## Adding logic to the Event Handler
@@ -482,7 +480,7 @@ Now you must update the **alpha-eventhandler.kts** in order to pass the `entityD
     }
 ```
 
-Run the *dao*, *build* and *deploy* tasks.
+Run the [dao], [build](/getting-started/developer-training/training-content-day1/#5-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks.
 
 ### Exercise 4.3: testing an audited table
 :::info ESTIMATED TIME

@@ -43,9 +43,9 @@ The generated entities are kotlin data classes and can be built using the primar
 
 ### Usage
 
-Create `alpha-view-dictionary.kts` file inside the folder *server\jvm\alpha-config\src\main\resources\cfg*.
+Create an **alpha-view-dictionary.kts** file inside the folder **server\jvm\alpha-config\src\main\resources\cfg**.
 
-The example below creates a view called `TRADE_VIEW`, which joins the `TRADE` table to the `INSTRUMENT` table. Edit *alpha–view-dictionary.kts* file and add the view on the TRADE table​
+The example below creates a view called `TRADE_VIEW`, which joins the `TRADE` table to the `INSTRUMENT` table. Edit the **alpha–view-dictionary.kts** file and add a view on the TRADE table:
 
 ```kotlin
 views {
@@ -61,22 +61,23 @@ views {
     fields {
       TRADE.allFields()
 
-      INSTRUMENT.NAME withPrefix INSTRUMENT
+      INSTRUMENT.INSTRUMENT_NAME
+      INSTRUMENT.MARKET_ID withPrefix INSTRUMENT
       INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
     }
   }
 }
 ```
 
-:::info withPrefix and withAlias
-`withPrefix` adds a prefix to the standard field name. Giving another example, `INSTRUMENT.NAME withPrefix SYMBOL` would become `SYMBOL_NAME`.
+:::info `withPrefix` and `withAlias`
+`withPrefix` adds a prefix to the standard field name. For example, `INSTRUMENT.MARKET_ID withPrefix SYMBOL` becomes `SYMBOL_MARKET_ID`.
 
-`withAlias` gives the field an alternative name on the view.
+`withAlias` gives the field an alternative name for the view.
 
 More info [here](/database/fields-tables-views/views/views-basics/#overriding-a-field-name).
 :::
 
-Run **alpha-config:assemble** to make the view ready for use, then add it to the data server:​
+Run [build](/getting-started/developer-training/training-content-day1/#5-build-process) to make the view ready for use, then add it to the Data Server:​
 
 Now go to the Data Server definition (inside the **-script-config** module). Replace the `ALL_TRADES` query in the Data Server with the new `TRADE_VIEW`.
 
@@ -87,12 +88,12 @@ dataServer {​
 ```
 
 :::tip
-In the example above, you are exposing a view through a data server query. It's also possible to inject a View into a request server or even in your event handler code, making it easier to access complex data from multiple tables in your Kotlin or Java code. Look at package global.genesis.gen.view.repository.*. 
+In the example above, you are exposing a view through a Data Server query. It's also possible to inject a view into a Request Server or even your Event Handler code. This makes it easier to access complex data from multiple tables in your Kotlin or Java code. Look at **package global.genesis.gen.view.repository**. 
 
 
 :::
 
-Run **alpha-deploy:deployConfig** and test the view with Postman or Console.​
+Run [build](/getting-started/developer-training/training-content-day1/#5-build-process), [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product), and test the view with Postman or Console.​
 
 ### Exercise 3.1: using views
 :::info ESTIMATED TIME
@@ -100,16 +101,16 @@ Run **alpha-deploy:deployConfig** and test the view with Postman or Console.​
 :::
 
 Extend the **TRADE_VIEW** to connect TRADE to COUNTERPARTY:
-1. Add the respective join (as we did with INSTRUMENT)​
-2. Add the COUNTERPARTY.NAME withPrefix COUNTERPARTY
-3. Test it
+1. Add the respective join (as we did with `INSTRUMENT`).​
+2. Add the `COUNTERPARTY.COUNTERPARTY_NAME`.
+3. Test it.
 
 ## Extending our application further
-Moving on, for our app to be able to keep positions based on the trades, we need to extend our data model as the next step.
+Moving on, for our app to be able to keep positions based on the trades, we now need to extend our data model.
 
 ### Adding new fields​
 
-Let´s add new fields to Trade table​. 
+Let´s add new fields to the Trade table​. 
 
 ```kotlin
 field("TRADE_DATE", type = DATE)​
@@ -130,7 +131,7 @@ table (name = "TRADE", id = 2000) {
 }
 ```
 
-And new fields to create the POSITION and INSTRUMENT_PRICE tables
+And new fields to create the POSITION and INSTRUMENT_PRICE tables:
 
 ```kotlin
 field("POSITION_ID", type = STRING)​
@@ -140,13 +141,13 @@ field("VALUE", type = DOUBLE)​
 field("PNL", type = DOUBLE)​
 ```
 
-When you finish, remember to run *genesis-generated-fields*.
+When you finish, remember to run [genesis-generated-fields](/getting-started/developer-training/training-content-day1/#generatefields).
 
-### Extending Trade and adding Position table​
+### Extending the Trade table and adding a Position table
 
-Add the new fields into the TRADE table​.
+1. Add the new fields into the TRADE table.
 
-And then create the POSITION and INSTRUMENT_PRICE tables​.
+2. Then create the POSITION and INSTRUMENT_PRICE tables.
 
 ```kotlin
 table(name = "POSITION", id = 2003) {
@@ -178,20 +179,20 @@ table(name = "INSTRUMENT_PRICE", id = 2004) {
 }
 ```
 
-When you finish, remember to  run *genesis-generated-dao​* and *genesisproduct-assemble*.​
+When you finish, remember to  run [genesis-generated-dao​](/getting-started/developer-training/training-content-day1/#generatedao) and [build](/getting-started/developer-training/training-content-day1/#5-build-process).​
 
 :::tip
 As we previously generated the fields, autocompletion helps you to define the tables more quickly, and with fewer errors. Also note that Genesis provides several autogenerated primary keys: **sequence**, **uuid**, **autoincrement**.
 :::
 
-### Automated Testing
+### Automated testing
 
 So far we have been testing our work manually, using Genesis Console or some HTTP client.
 Now the time has come to start writing some automated tests for our application.
 
 Before running tests, install the [FoundationDB](https://genesisglobal.jfrog.io/artifactory/community-uploads/foundationdb-6.2.15-x64.msi) locally to allow a proper database mocking. Further details regarding FoundationDB can be found [here](https://www.foundationdb.org/).
 
-Let's create a automated test that inserts and retrieves some data using Genesis' automated test support components, in summary:
+Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. In summary:
 * load data from a CSV file 
 * retrieve data using [Genesis Database API](/database/) <!-- TODO: Is this the right link? -->
 
@@ -212,11 +213,11 @@ description = "alpha-config"
 4. Add TEST_DATA.csv to a data folder (**alpha\server\jvm\alpha-config\src\test\resources\data**)
 ```csv
 #INSTRUMENT
-INSTRUMENT_ID,NAME
+INSTRUMENT_ID,INSTRUMENT_NAME
 1,FOO.L
 2,BAR.L
 #COUNTERPARTY
-COUNTERPARTY_ID,COUNTERPARTY_LEI,NAME,
+COUNTERPARTY_ID,COUNTERPARTY_LEI,COUNTERPARTY_NAME,
 1,335800A8HK6JBITVPA30,Test Ltd,
 2,655FG0324Q4LUVJJMS11,Testing AG,
 ```
@@ -233,6 +234,7 @@ import global.genesis.db.util.AbstractDatabaseTest
 import global.genesis.db.util.TestUtil
 import global.genesis.dictionary.GenesisDictionary
 import global.genesis.gen.dao.Trade
+import global.genesis.gen.dao.enums.Direction
 import global.genesis.gen.view.entity.TradeView
 import global.genesis.gen.view.repository.TradeViewAsyncRepository
 import kotlinx.coroutines.flow.count
@@ -274,7 +276,7 @@ class TradeViewTest : AbstractDatabaseTest() {
             assertEquals("Testing AG", tradeView.counterpartyName)
             assertEquals("FOO.L", tradeView.instrumentName)
             assertEquals(now, tradeView.tradeDate)
-            assertEquals(12.0, tradeView.price)
+            assertEquals(12.0, tradeView.price, 0.0)
             assertEquals((100).toInt(), tradeView.quantity)
             assertEquals(Direction.BUY, tradeView.direction)
         }
@@ -291,7 +293,7 @@ class TradeViewTest : AbstractDatabaseTest() {
         assertEquals("Testing AG", tradeView.counterpartyName)
         assertEquals("BAR.L", tradeView.instrumentName)
         assertEquals(now, tradeView.tradeDate)
-        assertEquals(12.0, tradeView.price)
+        assertEquals(12.0, tradeView.price, 0.0)
         assertEquals((100).toInt(), tradeView.quantity)
         assertEquals(Direction.BUY, tradeView.direction)
     }
@@ -314,7 +316,7 @@ class TradeViewTest : AbstractDatabaseTest() {
 You can run the test from IntelliJ by right-clicking on the test class and selecting `Run TradeViewTest` or from the command line as well.
 
 ```shell title='Running TradeViewTest from the command line'
-./gradlew :alpha-config:test --tests "global.genesis.TradeViewTest"
+./gradlew :genesisproduct-alpha:alpha-config:test --tests "global.genesis.TradeViewTest"
 ```
 
 ## Calculated data
@@ -329,7 +331,7 @@ derivedField("CONSIDERATION", DOUBLE) {
 }
 ```
 
-Add this derivedField to your view now.​ The final view should be like this.
+Add this `derivedField` to your view now. The final view should look like this.
 ```kotlin
 view("TRADE_VIEW", TRADE) {
 
@@ -345,8 +347,9 @@ view("TRADE_VIEW", TRADE) {
     fields {
         TRADE.allFields()
 
-        COUNTERPARTY.NAME withPrefix COUNTERPARTY
-        INSTRUMENT.NAME withPrefix INSTRUMENT
+        COUNTERPARTY.COUNTERPARTY_NAME
+        INSTRUMENT.INSTRUMENT_NAME
+        INSTRUMENT.MARKET_ID withPrefix INSTRUMENT
         INSTRUMENT.CURRENCY_ID withAlias "CURRENCY"
 
         derivedField("CONSIDERATION", DOUBLE) {
@@ -356,6 +359,7 @@ view("TRADE_VIEW", TRADE) {
         }
     }
 }
+
 ```
 
 ### Exercise 3.2: derived fields
@@ -363,18 +367,21 @@ view("TRADE_VIEW", TRADE) {
 20 mins
 :::
 
-Let's add a new derived field in the TRADE_VIEW now. The derived field should display ASSET_CLASS from the INSTRUMENT join, and if this field is null or empty the view should display "UNKNOWN".
+Let's add a new derived field in the TRADE_VIEW now. The derived field should display ASSET_CLASS from the INSTRUMENT join. If this field is null or empty, the view should display "UNKNOWN".
 
 :::tip
-After changing the files remember to run *assemble* and *deploy*
+After changing the files, remember to run [build](/getting-started/developer-training/training-content-day1/#5-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product)
 :::
 
 
 ## Consolidators
 
-Consolidators perform data aggregation and calculations that can either be real-time, when used as a service, or on-demand, when used as objects. 
+Consolidators perform data aggregation and calculations that can either be:
 
-Consolidators follow a SQL-like syntax: 
+- real-time - when used as a service
+- on-demand - when used as objects 
+
+Consolidators follow an SQL-like syntax: 
 
 ```kotlin
 consolidator(TRADE, ORDER) {
@@ -388,7 +395,7 @@ consolidator(TRADE, ORDER) {
 }
 ```
 
-In the above example, we aggregate data from the TRADE table into the ORDER table. We group by orderId and we count the number of trades and sum the notional. For further details, please see [here](/server/consolidator/introduction/).
+In the above example, we aggregate data from the TRADE table into the ORDER table. We group by orderId and we count the number of trades and sum the notional. For further details, see [here](/server/consolidator/introduction/).
 
 Some features provided by Consolidators: 
 
@@ -400,7 +407,7 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 #### Define the position-keeping logic in the consolidator
 
-Before defining the consolidator, we should insert some data in the *INSTRUMENT_PRICE* table using the command [`SendIt`](/operations/commands/server-commands/#sendit-script). To do that, let's run server commands directly from a command line using PowerShell (or Windows Command Prompt) to access your WSL instance, through user 'genesis' to have access to the Genesis Platform commands as we did [before](/getting-started/developer-training/training-content-day1/#running-server-commands).
+Before defining the Consolidator, we should insert some data in the `INSTRUMENT_PRICE` table using the command [`SendIt`](/operations/commands/server-commands/#sendit-script). To do that, let's run server commands directly from a command line using PowerShell (or Windows Command Prompt) to access your WSL instance, through user 'genesis' to have access to the Genesis Platform commands as we did [before](/getting-started/developer-training/training-content-day1/#running-server-commands).
 
 From the command line opened, in the */tmp* folder, save this csv as INSTRUMENT_PRICE.csv using your favorite editor (i.e. [vim](https://www.vim.org/) or [nano](https://www.nano-editor.org/)):
 ```csv
@@ -441,11 +448,11 @@ dataServer {
 }
 ```
 
-When you finish, remember to run *genesis-generated-dao​* and *genesisproduct-assemble*.​
+When you finish, remember to run [genesis-generated-dao​](/getting-started/developer-training/training-content-day1/#generatedao) and [build](/getting-started/developer-training/training-content-day1/#5-build-process).​
 
 So, let's define a **alpha-consolidator.kts** file inside **alpha-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
 
-The consolidator is going to increase or decrease the quantity for POSITION records, based on the TRADE table updates. It also needs to calculate the new notional.
+The Consolidator is going to increase or decrease the quantity for POSITION records, based on the TRADE table updates. It also needs to calculate the new notional.
 
 ```kotlin
 import global.genesis.gen.config.tables.POSITION.NOTIONAL
@@ -514,7 +521,7 @@ consolidators {
 
 ##### Update the processes.xml file
 
-As consolidators run on their own process, we need to add a new entry to **alpha-processes.xml** with the consolidator process definition.
+As Consolidators run on their own process, we need to add a new entry to **alpha-processes.xml** with the definition of the Consolidator process.
 
 ```xml
 <process name="ALPHA_CONSOLIDATOR">
@@ -533,7 +540,7 @@ As consolidators run on their own process, we need to add a new entry to **alpha
 
 This file lists all the active services for the Positions application. You can see entries have been added automatically when the data server, request server and event handler were generated.
 
-Add a new entry to **alpha-service-definitions.xml** with the consolidator details. Remember the ports numbers should be free and, ideally, sequential.
+Add a new entry to **alpha-service-definitions.xml** with the consolidator details. Remember the port numbers should be free and, ideally, sequential.
 
 ```xml
 <configuration>
@@ -542,11 +549,12 @@ Add a new entry to **alpha-service-definitions.xml** with the consolidator detai
 </configuration>
 ```
 
-Run **assemble** and **deploy-genesisproduct-alpha** tasks to verify that the new process works as expected.
+Run [build](/getting-started/developer-training/training-content-day1/#5-build-process)
+ and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks to verify that the new process works as expected.
 
 ## UI configuring 
 
-Let's add a grid in the UI to display the Positions. We could use [Entity Management](/getting-started/developer-training/training-content-day2/#entitymanagement) again, but here we will use AgGrid in `@genesislcap/foundation-zero` [Genesis package](/getting-started/developer-training/training-content-day2/#genesis-packages) presented in [Day 2](/getting-started/developer-training/training-content-day2/), as this approach offers more flexibility to customize the HTML and CSS.
+Let's add a grid in the UI to display the Positions. We could use [Entity Management](/getting-started/developer-training/training-content-day2/#entitymanagement) again, but here we will use Grid Pro in `@genesislcap/foundation-zero-grid-pro` [Genesis package](/getting-started/developer-training/training-content-day2/#genesis-packages) presented in [Day 2](/getting-started/developer-training/training-content-day2/), as this approach offers more flexibility to customise the HTML and CSS.
 
 First, open the file **home.styles.ts** and add the code below.
 
@@ -577,24 +585,22 @@ font-weight: bold;
 }
 ```
 
-Open the file **home.ts** and import *AgGrid* and *Connect*. Then, add them as attributes to the Home class.
+Open the file **home.ts** and import *Grid Pro* and *Connect*. Then, add them as attributes to the Home class.
 
 ```ts {2,3,9,11}
 ...
-import {AgGrid} from '@genesislcap/foundation-zero';
+import {ZeroGridPro} from '@genesislcap/foundation-zero-grid-pro';
 import {Connect} from '@genesislcap/foundation-comms';
 ...
 export class Home extends FASTElement {
     @observable columns: any = COLUMNS;
-    @observable permissionsTrade: Permissions[] = [];
 
-    public positionsGrid!: AgGrid;
+    public positionsGrid!: ZeroGridPro;
 
     @Connect connection: Connect;
 
     constructor() {
       super();
-      this.permissionsTrade = [Permissions.add]; //permissions will show the Grid buttons
     }
 }
 ```
@@ -604,9 +610,8 @@ Finally, go to the file **home.template.ts** and import the required components.
 ```html {1,3,5-12,15,16,25-39}
 import {html, repeat, when, ref} from '@microsoft/fast-element';
 import type {Home} from './home';
-import {ColDef} from '@ag-grid-community/core';
 
-export const positionsColumnDefs: ColDef[] = [
+export const positionsColumnDefs: any[] = [
     {field: 'POSITION_ID', headerName: 'Id'},
     {field: 'INSTRUMENT_ID', headerName: 'Instrument'},
     {field: 'QUANTITY', headerName: 'Quantity'},
@@ -624,20 +629,19 @@ export const HomeTemplate = html<Home>`
           entityLabel="Trades"
           createEvent = "EVENT_TRADE_INSERT"
           :columns=${x => x.columns}
-          :permissions=${x => x.permissionsTrade}
         ></entity-management>
     </div>
     <div class="top-layout">
         <zero-card class="positions-card">
             <span class="card-title">Positions</span>
-            <zero-ag-grid ${ref('positionsGrid')} rowHeight="45" only-template-col-defs>
+            <zero-grid-pro ${ref('positionsGrid')} rowHeight="45" only-template-col-defs>
                 ${when(x => x.connection.isConnected, html`
-                  <ag-genesis-datasource resourceName="ALL_POSITIONS"></ag-genesis-datasource>
+                  <grid-pro-genesis-datasource resourceName="ALL_POSITIONS"></grid-pro-genesis-datasource>
                   ${repeat(() => positionsColumnDefs, html`
-                    <ag-grid-column :definition="${x => x}" />
+                    <grid-pro-column :definition="${x => x}" />
                   `)}
                 `)}
-            </zero-ag-grid>
+            </zero-grid-pro>
         </zero-card>
     </div>
 </div>
@@ -648,13 +652,13 @@ export const HomeTemplate = html<Home>`
 :::info ESTIMATED TIME
 15 mins
 :::
-Change the Position constant to delete the POSITION_ID, as this field does not have to be in the grid. Change some CSS parameters to improve your application look and feel.
+Change the Position constant to delete the POSITION_ID, as this field does not have to be in the grid. Change some CSS parameters to improve your application's look and feel.
 
 :::tip
 Don't forget to reload the client side to see the upgrades.
 :::
 
-<!-- Apart from building a front-end, as we did [before](/tutorials/training-resources/training-content-day2/#intro-to-ui) the application user interface can be configured in various aspects such as data distribution, using Request Servers for static (reference) data, and Data Servers for streaming real-time data. -->
+<!-- Apart from building a front end, as we did [before](/tutorials/training-resources/training-content-day2/#intro-to-ui) the application user interface can be configured in various aspects such as data distribution, using Request Servers for static (reference) data, and Data Servers for streaming real-time data. -->
 
 <!-- 
 ### Request Servers
@@ -663,7 +667,7 @@ Request Servers, (otherwise known as request/replies and often shortened to reqr
 
 Request Servers will reply with a single response. Once the response is received, the transaction is over (unlike a [Data Server](/creating-applications/defining-your-application/user-interface/data-servers/data-servers/), which stays connected to the client and pushes updates).
 
-Request Servers have other features distinct from a Data Server, such as allowing one-to-many joins, and even completely custom request servers for serving up non-linear data (e.g. sets of disjointed data to serve up to a report).
+Request Servers have other features distinct from a Data Server, such as allowing one-to-many joins, and even completely custom Request Servers for serving up non-linear data (e.g. sets of disjointed data to serve up to a report).
 
 Here is the definition of a simple Request Server file.
 

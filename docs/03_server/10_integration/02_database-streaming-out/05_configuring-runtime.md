@@ -10,10 +10,10 @@ GenesisToDb must be configured in your **application-processes.xml** file. The f
 
 ```xml
 <processes>
-    <process name="POSITION_APP_GENESIS_TO_DB">
+    <process name="TRADING_APP_GENESIS_TO_DB">
         <config>application-genesistodb.xml</config>
-        <description>position App Genesis to RDMS adapter</description>
-        <groupId>POSITION_APP</groupId>
+        <description>trade App Genesis to RDMS adapter</description>
+        <groupId>TRADE_APP</groupId>
         <primaryOnly>true</primaryOnly>
         <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
         <module>genesis-genesistodb</module>

@@ -161,7 +161,7 @@ This is a high-level overview of the changes.
 - Flyout component (Menus etc.)
 - HTTP Polling functionality has been added to foundation-comms; in addition, a number of comms-related issues have been fixed, edge cases etc. The  REFRESH_AUTH_TOKEN feature has been added.
 - Updates to foundation-zero (a.k.a. Rapid) to make it both dark- and light-mode compatible. Some tokens have been removed or re-mapped. **Breaking changes** may occur in the form of app-level style shifts.
-- AG-Grid related improvements, both grid and datasource, events, styles, action-menu etc. This has introduced some **breaking changes**.
+- Grid Pro related improvements, both grid and datasource, events, styles, action-menu etc. This has introduced some **breaking changes**.
 - Auth error messaging has been improved to bring greater clarity the Login micro front-end.
 - Dialog and modal behaviour improvements.
 - Minor styling improvements to Form and Zero Tabs.
@@ -208,7 +208,7 @@ The basis of this version is:
     - [Reporting](docs/04_web/05_micro-front-ends/02_front-end-reporting.md)
 - Added multiple parameter support for Testing Suite in foundation-testing
 - More code examples in our Showcase Client App, including selecting values and labels in our combobox programmatically.
-- Added [slotted-styles](https://docs.genesis.global/secure/getting-started/go-to-the-next-level/customize-look-and-feel/#styling-ag-grid) component to allow overriding component styles.
+- Added [slotted-styles](https://docs.genesis.global/secure/getting-started/go-to-the-next-level/customize-look-and-feel/#styling-grid-pro) component to allow overriding component styles.
 
 ### Maintenance
 - Various CLI tweaks to support continuing DSL work.

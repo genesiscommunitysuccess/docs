@@ -4,34 +4,33 @@ sidebar_label: 'Subscribe'
 id: subscribe
 ---
 
-[Read](/database/database-concepts/read/) | [Subscribe](/database/database-concepts/subscribe/) | [Write](/database/database-concepts/write/) 
 
-Subscribe operations enable code to react to database changes, rather than [polling](/getting-started/glossary/glossary/#polling) for changes. Code can either just listen to changes, or use a combined read/subscribe operation. These mixed read/subscribe operations are useful.
+
+Subscribe operations enable code to react to database changes, rather than [polling](/getting-started/glossary/glossary/#polling) for changes. Code can either listen to changes, or use a combined read/subscribe operation. These mixed read/subscribe operations are useful.
 
 Subscriptions are limited to a single table or view.
 
 ## Types of change
 
-There are 3 categories of change:
+A subscribe operation can make three different types of change:
 
 - Insert - a new row is inserted
 - Delete - an existing row is deleted
 - Modify - an existing row is changed
 
-When subscribing to a view and/or a range, the change will reflect the change to the subscription -
-rather than directly correlate to a database operation. A database insert or delete update will only be published to the subscriber if the insert appears in the range and/or view. 
+When subscribing to a view and/or a range, the change will reflect the change to the subscription - rather than directly correlate to a database operation. A database insert or delete update will only be published to the subscriber if the insert appears in the range and/or view. 
 
 Similarly, a database modify update might not show at all, or be transformed into an insert or delete update, if it moves into or out of the subscription.
 
 ### Backwards joins
 
-By default, subscriptions on views will only publish updates on database changes to the root table. If you would like to subscribe to changes to sub tables, you will need to enable backwards joins in your view definition. A join to a sub table can be defined as `backwardsJoin = true`. For these joins, the subscription will also publish changes to the sub tables as modify updates.
+By default, subscriptions on views only publish updates on database changes to the root table. 
 
-See the [views examples](/database/fields-tables-views/views/views-examples) to understand how to define a backwards join on a view.
+If you want to subscribe to changes to sub tables you need to enable [backwards joins](/server/data-server/basics/#backwards-joins) in your view definition: `backwardsJoin = true`. Once specified, the subscription will also publish changes to the sub tables as modify updates. Please click the link for a useful example of a backwards join in the [views examples](/database/fields-tables-views/views/views-examples).
 
 :::note
 
-Backwards join subscriptions are only supported for combined read/subscribe operations, as the subscription needs to cache the joins. This cache will require extra memory and CPU cycles to maintain.
+Backwards join subscriptions are only supported for combined read/subscribe operations, as the subscription needs to cache the joins. This cache requires extra memory and CPU cycles to be maintained.
 
 :::
 

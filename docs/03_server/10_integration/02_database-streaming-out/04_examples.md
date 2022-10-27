@@ -141,59 +141,59 @@ N.B. Assumes that the [plpgsql](https://www.postgresql.org/docs/current/plpgsql.
 Create TRADE table:
 
 ```sql
-DROP TABLE "POSITION";
-CREATE TABLE "POSITION"("NET_POSITION" decimal  ,
-"POSITION_ID" varchar(80)  ,
+DROP TABLE "TRADE";
+CREATE TABLE "TRADE"("NET_TRADE" decimal  ,
+"TRADE_ID" varchar(80)  ,
 "LAST_UPDATED" timestamp DEFAULT clock_timestamp() ,
 "TIMESTAMP" bigint  ,
 "INSTRUMENT_ID" varchar(80)  ,
-"POSITION_VALUE" decimal  ,
-CONSTRAINT "POSITION_ID_PK" PRIMARY KEY("POSITION_ID"));
+"TRADE_VALUE" decimal  ,
+CONSTRAINT "TRADE_ID_PK" PRIMARY KEY("TRADE_ID"));
  GO
 ```
 
 Insert, modify and delete stored procedures:
 
 ```sql
-CREATE OR REPLACE FUNCTION "insertPosition"(p_NetPosition decimal,
-p_PositionId varchar(80),
+CREATE OR REPLACE FUNCTION "insertTrade"(p_NetTrade decimal,
+p_TradeId varchar(80),
 p_LastUpdated timestamp,
 p_Timestamp bigint,
 p_InstrumentId varchar(80),
-p_PositionValue decimal) RETURNS void AS $$
+p_TradeValue decimal) RETURNS void AS $$
 BEGIN
-INSERT INTO "POSITION" ("NET_POSITION","POSITION_ID","LAST_UPDATED","TIMESTAMP","INSTRUMENT_ID","POSITION_VALUE")
-VALUES (p_NetPosition,p_PositionId,p_LastUpdated,p_Timestamp,p_InstrumentId,p_PositionValue);
+INSERT INTO "TRADE" ("NET_TRADE","TRADE_ID","LAST_UPDATED","TIMESTAMP","INSTRUMENT_ID","TRADE_VALUE")
+VALUES (p_NetTrade,p_TradeId,p_LastUpdated,p_Timestamp,p_InstrumentId,p_TradeValue);
 END
 $$ LANGUAGE plpgsql;
 ```
 
 ```sql
-CREATE OR REPLACE FUNCTION  "modifyPosition"(p_NetPosition decimal,
-p_PositionId varchar(80),
+CREATE OR REPLACE FUNCTION  "modifyTrade"(p_NetTrade decimal,
+p_TradeId varchar(80),
 p_LastUpdated timestamp,
 p_Timestamp bigint,
 p_InstrumentId varchar(80),
-p_PositionValue decimal) RETURNS void AS $$
+p_TradeValue decimal) RETURNS void AS $$
 BEGIN
-UPDATE "POSITION"
+UPDATE "TRADE"
 SET
-"NET_POSITION" = p_NetPosition,
-"POSITION_ID" = p_PositionId,
+"NET_TRADE" = p_NetTrade,
+"TRADE_ID" = p_TradeId,
 "LAST_UPDATED" = p_LastUpdated,
 "TIMESTAMP" = p_Timestamp,
 "INSTRUMENT_ID" = p_InstrumentId,
-"POSITION_VALUE" = p_PositionValue
-WHERE "POSITION"."POSITION_ID"  = p_PositionId;
+"TRADE_VALUE" = p_TradeValue
+WHERE "TRADE"."TRADE_ID"  = p_TradeId;
 END
 $$ LANGUAGE plpgsql;
 ```
 
 ```sql
-CREATE OR REPLACE FUNCTION  "deletePosition"(p_paramId anyelement) RETURNS void AS $$
+CREATE OR REPLACE FUNCTION  "deleteTrade"(p_paramId anyelement) RETURNS void AS $$
 BEGIN
-DELETE FROM "POSITION"
-WHERE "POSITION"."POSITION_ID" = p_paramId;
+DELETE FROM "TRADE"
+WHERE "TRADE"."TRADE_ID" = p_paramId;
 END
 $$ LANGUAGE plpgsql;
 ```

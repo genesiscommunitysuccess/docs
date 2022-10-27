@@ -10,18 +10,11 @@ Linux system administration experience.
 
 ## Config Management vs Continuous Deployment
 
-In environments where servers are managed to a greater or lesser degree by config management systems, like Chef,
-Pupper or Ansible, there is a decision to be made about which aspects of a system are config managed, and which are
-subject to operator actions.
+In environments where servers are managed to a greater or lesser degree by config management systems, like Chef, Pupper or Ansible, there is a decision to be made about which aspects of a system are config managed, and which are subject to operator actions.
 
-When deciding about the division of responsibilities, it is worth considering development systems and production
-systems somewhat separately.
+When deciding about the division of responsibilities, it is worth considering development systems and production systems somewhat separately.
 
-During application development, it is likely that there will be frequent code releases to a development host, and
-using config management systems to enact such an upgrade is likely to be more complicated than allowing a CI/CD
-system to issue releases.  Development-phase versioning is less rigorous than when an application approaches
-readiness.  Ill-behaved versions are possible.  Releases may be frequent.  These conditions are a poor fit for the
-automation and consistency that is the mainstay of a config management system.
+During application development, it is likely that there will be frequent code releases to a development host, and using config management systems to enact such an upgrade is likely to be more complicated than allowing a CI/CD system to issue releases.  Development-phase versioning is less rigorous than when an application approaches readiness.  Ill-behaved versions are possible.  Releases may be frequent.  These conditions are a poor fit for the automation and consistency that is the mainstay of a config management system.
 
 ## Suitable elements for CM
 
@@ -38,14 +31,34 @@ All of them are off-the-shelf packages found either in OS core package repos or 
 
 ### Nginx Configuration
 
-Nginx is used as a reverse proxy as the Genesis applications' entry point.  A comparatively simple config file achieves
-this.  This file must specify the port to listen on, hostname to respond to, and if TLS is configured, the details of
-certificates to use.
+Nginx is used as a reverse proxy as the Genesis applications' entry point.  A comparatively simple config file achieves this. This file must specify the port to listen on, hostname to respond to, and if TLS is configured, the details of certificates to use.
 
-These are not matters specific to Genesis applications.  The Genesis-specific part is relative constant (unless the
-Router application is running on non-standard ports).
+These are not matters specific to Genesis applications.  The Genesis-specific part is relative constant (unless the Router application is running on non-standard ports).
 
-This is a sample server block for Nginx config.
+### Using a Docker image (recommended)
+
+To configure NGINX using a Docker image, make sure you have the your artifactory credentials to hand. Then, in your CentOS terminal, enter the following commands:
+
+
+1. Enter your artifactory credentials.
+```shell
+docker login genesisglobal-docker-internal.jfrog.io
+```
+
+2. Download the latest Genesis software:
+
+```shell
+docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
+```
+
+3. Run the following command:
+```shell
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+```
+
+### Manual configuration
+
+For a manual set-up of NGINX, use this sample server block.
 
 ```text
 server {
@@ -76,17 +89,13 @@ server {
 }
 ```
 
-The IP and port shown are for the application's Router process.  This example also shows configuration for TLS and
-listening on both port 443 for HTTPS and port 80 for plaintext traffic.
+The IP and port shown are for the application's Router process.  This example also shows configuration for TLS and listening on both port 443 for HTTPS and port 80 for plain-text traffic.
 
-### Environment Overrides
+### Environment overrides
 
-Each process within the application can be instructed to read another file to override the main configuration file,
-systems-definitions.
+Each process within the application can be instructed to read another file to override the main configuration file, systems-definitions.
 
-The overrides files can be placed anywhere that is readable to the Genesis application's run user.  Overrides files
-can be 1-to-1 with processes or re-used.  Their location is specified on a per-process basis in the processes.xml
-config file (which is part of the site-specific directory contents).
+The overrides files can be placed anywhere that is readable to the Genesis application's run user.  Overrides files can be 1-to-1 with processes or re-used.  Their location is specified on a per-process basis in the **processes.xml** config file (which is part of the site-specific directory contents).
 
 They take the form of a [Java properties file](https://www.w3schools.io/file/properties-extension-introduction/):
 
@@ -96,8 +105,7 @@ DbUser = genesisFdbUser
 DbHost = fdb01.my.domain
 ```
 
-Note, overrides files are not able to perform environment substitutions the way system-definitions can - it is a .kts
-file (Kotlin script) and thus effectively _executed_ whereas the properties file is only read.  See
+Note, overrides files are not able to perform environment substitutions the way system-definitions can - it is a .kts file (Kotlin script) and thus effectively _executed_, whereas the properties file is only read.  See
 [clusters/Environment variables](/operations/clustering/clusters#Environment-variables).
 
 

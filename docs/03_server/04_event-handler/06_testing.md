@@ -201,7 +201,7 @@ Fourth, in your test set-up, let's authorise one user to be able to insert trade
     }
 ```
 
-For more information on authorisation, please see the [authorisation docs](/server/access-control/authorisation-overview).
+For more information on authorisation, see the [authorisation docs](/server/access-control/authorisation-overview).
 
 Below is a test that verifies only Traders can enter trades:
 
@@ -266,11 +266,10 @@ Following that, we have a test to verify that a trade cannot be entered if the u
 If you use Genesis Console, this gives you a simple way of testing components.
 
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
-2. Enter the IP address of your server, in this case **localhost**.
-3. If you get blank page without any response then its probably because you don't have NGINX configured, click [here](/operations/server-setup/config-management/#nginx-configuration) to configure it. Otherwise, proceed with next step(4)
-4. Log in with the username and password of your genesis user. This starts the Genesis Console, and you will see a list of tabs along the top of the screen.
-5. Click on the RESOURCES tab.
-6. Filter the Resource type to show only Event Handlers.
+2. Enter the IP address of your server, in this case **localhost**. If you get a blank page without any response, then this is probably because you don't have [NGINX configured](/operations/server-setup/config-management/#nginx-configuration). 
+3. Log in with the username and password of your Genesis user. This starts the Genesis Console, and you will see a list of tabs along the top of the screen.
+4. Click on the **RESOURCES tab**.
+5. Filter the **Resource type** to show only Event Handlers.
 
 For example:
 
@@ -284,11 +283,11 @@ If you click on any Event Handler in the list, the fields relevant to the event 
 
 Now you need to pick the Event Handler you want to test. in this example, it is called EVENT_INSTRUMENT_INSERT.
 
-1. Find the Event Handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the Event Handler was set up.
+1.  Find the Event Handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the Event Handler was set up.
 
 ![](/img/test-console-eh-insert-instrument.png)
 
-2. Enter the details of the new instrument in the field. In our example, we are going to add the spot rate for trading the British Pound against the Euro. The code for this is GBPEUR=.
+2.  Enter the details of the new instrument in the field. In our example, we are going to add the spot rate for trading the British Pound against the Euro. The code for this is GBPEUR=.
 In the example below, we have added the INSTRUMENT_ID (mandatory), plus the ASSET_CLASS and NAME. Then we click on **COMMIT**:
 
 ![](/img/test-console-eh-insert-instrument-2.png)
@@ -300,13 +299,13 @@ If the Event Handler is working correctly, you will receive an **ACK**.
 #### Checking the insertion
 You can go on to check the INSTRUMENT table to see if your insert is there.
 
-1. Filter the list of services to show only request servers (these are the components that distribute the data).
+1.  Filter the list of services to show only request servers (these are the components that distribute the data).
 
-2. Search for the relevant resource - in our case INSTRUMENT.
+2.  Search for the relevant resource - in our case INSTRUMENT.
 
 ![](/img/test-console-eh-confirm-1.png)
 
-3. Click on the arrow beside the relevant resource. You should now see the new instrument in the list displayed on the right.
+3.  Click on the arrow beside the relevant resource. You should now see the new instrument in the list displayed on the right.
 
 ![](/img/test-console-eh-confirm-2.png)
 

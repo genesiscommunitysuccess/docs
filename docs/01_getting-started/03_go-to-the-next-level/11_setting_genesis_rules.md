@@ -88,7 +88,7 @@ Next we are going to load our rule definitions into the database.
 ### Defining the rule
 Now we can load the dynamic rule csv below into the `DYNAMIC_RULE` table.
 
-Navigate to **/home/genesis/run/temp-data/** in your WSL terminal and create a file called **dynamic-rule.csv** with the following:
+Navigate to **/home/genesis/run/position/data/** in your WSL terminal and create a file called **dynamic-rule.csv** with the following:
 
 ```csv title="dynamic-rule.csv"
 NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION

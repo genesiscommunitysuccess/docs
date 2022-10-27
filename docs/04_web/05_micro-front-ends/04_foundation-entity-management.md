@@ -27,7 +27,7 @@ The Entity Management micro-front-end is used to connect to a resource on the ba
 The buttons are conditionally accessed, based on the specified events. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to conditionally set the events based on user authorisations.
 :::
 
-Two core components are used to manage the entities - the grid and the form. The grid contains an entity on each row and data in each column. Under the hood, the grid uses [ag-grid](https://www.ag-grid.com/), and hence has a lot of its features, such as filtering and ordering of data.
+Two core components are used to manage the entities - the grid and the form. The grid contains an entity on each row and data in each column.
 
 Example grid used to manage counterparties
 ![Example entity management grid](/img/foundation-entity-management-grid.png)

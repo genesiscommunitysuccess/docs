@@ -1,14 +1,14 @@
 ---
-id: ag-genesis-cell
-title: Genesis AG Cell
+id: grid-pro-genesis-cell
+title: Genesis Grid Pro Cell
 ---
 
-This is a `slotted` component that allows a "visual approach" when configuring cell renderers. Each `ag-cell` takes an `ICellRendererFunc` typed function that is an exact match to the official AG Grid's [Cell Renderer](https://www.ag-grid.com/javascript-data-grid/component-cell-renderer/). It also takes an `ICellRendererParams` typed params object to be used with the `ICellRendererFunc`.
+This is a `slotted` component that allows a "visual approach" when configuring cell renderers. Each `grid-pro-cell` takes an `ICellRendererFunc` typed function.
 
-The `ag-cell` must be used as a slot of the [Genesis AG Column](/web/web-components/grids/ag-grid/ag-genesis-column/). It can't be used separately, since it's just an extra visual layer for defining the cell renderer (which can also be configured directly from the `ag-column` definition prop).
+The `grid-pro-cell` must be used as a slot of the [Genesis Grid Pro Column](/web/web-components/grids/grid-pro/grid-pro-genesis-column/). It can't be used separately, since it's just an extra visual layer for defining the cell renderer (which can also be configured directly from the `grid-pro-column` definition prop).
 
 :::tip
-Using `ag-cell` is not mandatory and it's for highly customised cases. Most of the features here can be achieved with just `ag-column` and/or `auto-cell-renderer-by-type` prop on a given AG Grid.
+Using `grid-pro-cell` is not mandatory and it's for highly customised cases. Most of the features here can be achieved with just `grid-pro-column` and/or `auto-cell-renderer-by-type` prop on a given Grid Pro.
 :::
 
 ## Set-up
@@ -18,9 +18,10 @@ In the examples below, we refer to a sample `@genesislcap/alpha-design-system` d
 :::
 
 ```ts
-import { provideDesignSystem, alphaAgGrid } from '@genesislcap/alpha-design-system';
+import { provideDesignSystem } from '@genesislcap/alpha-design-system';
+import { foundationGridComponents } from '@genesislcap/grid-pro';
 
-provideDesignSystem().register(alphaAgGrid());
+provideDesignSystem().register(alphaAgGrid(), foundationGridComponents);
 ```
 
 ## Usage
@@ -32,7 +33,7 @@ const multipleCustomColumnConfigArray: ColDef[] = [
   {
     headerName: 'Is Active',
     field: 'IS_ACTIVE',
-    cellRenderer: AgRendererTypes.boolean, // 'boolean' is a built-in cell renderer (will be used automatically if auto-cell-renderer-by-type is specified in the `ag-grid` config)
+    cellRenderer: GridProRendererTypes.boolean, // 'boolean' is a built-in cell renderer (will be used automatically if auto-cell-renderer-by-type is specified in the `grid-pro-grid` config)
   },
   {
     headerName: 'Pending Approval ',
@@ -70,31 +71,31 @@ const customCompleteDef: any = {
 When using `ColDef` objects it's up to the application developer to decide the approach (array of definitions + repeat or one by one, there's no right or wrong here as the goal is flexibility):
 
 ```html title="Using the ColDef (with cellRenderer/cellRendererParams) objects in different ways"
-<alpha-ag-grid auto-cell-renderer-by-type>
-  <ag-genesis-datasource resourceName="EXAMPLE_DATA_RESOURCE" />
+<alpha-grid-pro auto-cell-renderer-by-type>
+  <grid-pro-genesis-datasource resourceName="EXAMPLE_DATA_RESOURCE" />
 
   <!-- When there's a main array of ColDef objects but there are extra conditions for the custom cellRenderer -->
   ${repeat(() => multipleCustomColumnConfigArray, html`
-    <ag-grid-column :definition="${x => x}">
+    <grid-pro-column :definition="${x => x}">
       ${when(x => x.cellRenderer, html`
-        <ag-grid-cell 
+        <grid-pro-cell 
           :renderer="${x => x.cellRenderer}" 
           :rendererParams="${x => x.cellRendererParams}">
-        </ag-grid-cell>
+        </grid-pro-cell>
       `)}
-    </ag-grid-column>
+    </grid-pro-column>
   `)} 
 
-  <!-- Using separate definitions for both ag-column and ag-cell -->
-  <ag-grid-column :definition="${x => x.customLogLevelDef}">
-    <ag-grid-cell 
+  <!-- Using separate definitions for both grid-pro-column and grid-pro-cell -->
+  <grid-pro-column :definition="${x => x.customLogLevelDef}">
+    <grid-pro-cell 
       :renderer="${x => x.customLogLevelCellRenderer}" 
       :rendererParams="${x => x.customLogLevelCellRendererParams}">
-    </ag-grid-cell>
-  </ag-grid-column>
+    </grid-pro-cell>
+  </grid-pro-column>
 
-  <!-- Skipping the ag-cell usage but achieving the same result (custom cellRenderer/cellRendererParams) -->
-  <ag-grid-column :definition="${x => x.customCompleteDef}" />
+  <!-- Skipping the grid-pro-cell usage but achieving the same result (custom cellRenderer/cellRendererParams) -->
+  <grid-pro-column :definition="${x => x.customCompleteDef}" />
 
-</alpha-ag-grid>
+</alpha-grid-pro>
 ```

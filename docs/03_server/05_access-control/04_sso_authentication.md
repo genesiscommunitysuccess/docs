@@ -196,8 +196,8 @@ Additionally, you need a _application-name-_**saml-config.kts** file, as below:
     saml {
         strictMode = false
         debugMode = true
-        // this should be the externally facing genesis url:
-        loginEndpoint = "https://sso.genesislab.global" 
+        // this should be the URL of the application logon screen
+        loginEndpoint = "https://sso.genesislab.global/login" 
         tokenLifeInSeconds = 3000
     
         serviceProvider {
@@ -223,6 +223,13 @@ Additionally, you need a _application-name-_**saml-config.kts** file, as below:
             }
         }
     }
+```
+Note that the 'loginEndpoint' is the URL the front-end will be redirected to once a the full SAML workflow has completed and an SSO_TOKEN has been issued. 
+If this URL is a redirect, the SSO_TOKEN query parameter may be lost. 
+Additionally, if the web server is doing routing via scripts, navigating to this URL may throw a 404 Not Found error. The remedy in this case is to add an override for 404 errors to redirect back to your application logon screen. 
+An example of how to do this in NGINX is here:
+```
+error_page 404 =200 /index.html;
 ```
 
 Advanced configuration is defined in the file **onelogin.saml.properties**. You need to use this if - for example - you need to configure a key for signing the authn request.
