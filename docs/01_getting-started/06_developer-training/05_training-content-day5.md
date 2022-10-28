@@ -85,15 +85,14 @@ Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside y
 </configuration>
 ```
 
-Run **assemble** and **deploy-genesisproduct-alpha** tasks to verify that the new process works as expected.
+Run [build](/getting-started/developer-training/training-content-day1/#5-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks to verify that the new process works as expected.
 
-Run `monDay 2 example.
-You should be able to see the process is present, but on `Standby`.
+Run [mon](/operations/commands/server-commands/#mon-script). You should be able to see the process is present, but on `Standby`.
 ![](/img/standbysmall-alpha.png)
 
 This is because the Evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the Primary node.
 
-Run `SetPrimary` and you should be able to see all processes running.
+Run [SetPrimary](/operations/clustering/clusters/#set-the-primary-node) and you should be able to see all processes running.
 
 #### 2. Create a new class
 When the evaluator is running, create a PositionReport class to trigger the new event. This class should be created inside your project folder **server/jvm/alpha-messages/src/main/kotlin/global/genesis/alpha/message/event** as the code below. 
@@ -108,7 +107,7 @@ class PositionReport
 
 Create an event handler that will write the csv files to the runtime/position-minute-report folder. Call it EVENT_POSITION_REPORT.
 
-Open the file *alpha-eventhandler.kts* and add a variable called *tradeViewRepo* injecting the class *TradeViewAsyncRepository*. Then, add an event handler to generate the csv file:
+Open the file **alpha-eventhandler.kts** and add a variable called *tradeViewRepo* injecting the class *TradeViewAsyncRepository*. Then, add an event handler to generate the csv file:
 
 ```kotlin {8,12}
 import java.io.File
@@ -361,7 +360,7 @@ Now we want to run PositionReport every 10 seconds. To do that, remove the row y
 :::tip 
 To delete rows you can use [DbMon](/operations/commands/server-commands/#dbmon-script) and the command `delete`. After that you can use [SendIt](/operations/commands/server-commands/#sendit-script) to insert a new row again.
 
-By the way, the CRON expression for every 10 seconds is `0/10 * * * * *`. See a CRON generator [here](https://www.freeformatter.com/cron-expression-generator-quartz.html).
+By the way, the CRON expression for every 10 seconds is `0/10 0 0 ? * * *`. See a CRON generator [here](https://www.freeformatter.com/cron-expression-generator-quartz.html).
 :::
 
 ## Permissions​

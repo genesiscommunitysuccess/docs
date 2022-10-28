@@ -60,8 +60,8 @@ This next snippet is an example of how to reuse data between [onValidate](/serve
 ```
 
 ## Handling exceptions
-This is an example of how to use [`onException`](/server/event-handler/advanced/#onexception)
-in an Event Handler.
+GPAL exception handling differs from the standard Java/Kotlin method. Take a look at this example below. When an exception occurs, the [`onException`](/server/event-handler/advanced/#onexception) codeblock extracts the company name from the source request and includes it in the error message.
+
 ```kotlin
     eventHandler<Company>(name = "COMPANY_INSERT") {
         onException { event, throwable ->
@@ -112,8 +112,8 @@ And now an example with fixed permissions.
     }
 ```
 
-## Transactions
-Below is an example of how to make an Event Handler [transactional](/server/event-handler/basics/#transactional-event-handlers-acid).
+## ACID compliance
+Below is an example of how to make an Event Handler [ACID](/getting-started/glossary/glossary/#acid)-compliant. The opening line declares that this `eventHandler` codeblock is [transactional](/server/event-handler/basics/#transactional-event-handlers-acid).
 
 ```kotlin
     eventHandler<Company>(name = "COMPANY_INSERT", transactional = true) {
@@ -129,7 +129,7 @@ Below is an example of how to make an Event Handler [transactional](/server/even
 ```
 
 ## Approval requests
-The example below is a simple Event Handler that [requires approval](/server/event-handler/advanced/#pending-approvals).
+The example below is a simple `eventHandler` codeblock that [requires approval](/server/event-handler/advanced/#pending-approvals).
 ```kotlin
 
 eventHandler {

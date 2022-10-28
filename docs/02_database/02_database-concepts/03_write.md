@@ -4,21 +4,20 @@ sidebar_label: 'Write'
 id: write
 ---
 
-[Read](/database/database-concepts/read/) | [Subscribe](/database/database-concepts/subscribe/) | [Write](/database/database-concepts/write/) 
 
-Genesis supports the following database operations:
+The following database operations are available:
 
-- `insert`
-- `modify`
-- `upsert`
-- `delete`
-- `recover`
+- `insert` and `insertAll`
+- `modify` and `modifyAll`
+- `upsert` and `upsertAll`
+- `delete` and `deleteAll`
+- `recover` and `recoverAll`
 
-All these operations also have an `...All` version (e.g. `insertAll` that accepts multiple records).
-
-## Index clash
+:::note
+**Index clash**
 
 Where we refer to an index clash below, we mean that the record to be written has the same fields on a unique index as an existing record.
+:::
 
 ## Inserting
 
@@ -55,7 +54,7 @@ The following insert operations are supported:
 
 ## Deleting
 
-The delete operation removes a record from the database. The operation will fail if the record is not found.
+The `delete` operation removes a record from the database. The operation will fail if the record is not found.
 
 The following insert operations are supported:
 
@@ -64,7 +63,7 @@ The following insert operations are supported:
 
 ## Recover
 
-The recover operation enables you to insert a document into the database using the record's preset timestamp and ID.
+The `recover` operation enables you to insert a document into the database using the record's preset timestamp and ID.
 
 The following recover operations are supported:
 
@@ -73,6 +72,6 @@ The following recover operations are supported:
 
 :::danger
 
-This API must be used with caution. Integrity checks are skipped and can leave your Genesis application in a poor state if used incorrectly. Record IDs and timestamps are assumed to be unique.
+This API must be used with caution. Integrity checks are skipped, so it can leave your Genesis application in a poor state if used incorrectly. Record IDs and timestamps are assumed to be unique.
 
 :::

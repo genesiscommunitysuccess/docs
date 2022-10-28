@@ -9,7 +9,9 @@ import TabItem from '@theme/TabItem';
 
 The Genesis Metrics module enables you to capture metrics for specific components of your application. You achieve this by inserting programmatic calls into appropriate places in your code.
 
-By default, when running the Genesis system, the metric calls will have no impact on the performance or behaviour of the system.
+Any metrics system will have an effect on the performance of the application it is monitoring. The extra code (log statements, metrics, etc) will have an impact in some way. 
+
+Genesis uses the well-known [metrics](https://metrics.dropwizard.io/4.2.0/) library, which is commonly used in Java apps. In all known Genesis applications, the impact is negligible; the benefits far outweigh the very tiny impact on performance. 
 
 To make use of the metric calls, you must set `MetricsEnabled` to `true` in the [system definition file](/server/configuring-runtime/system-definitions/). In addition, you should define the `MetricsReportType` to include a comma-separated list of `MetricsReportType` outputs, which should include at least one of the following:
 
