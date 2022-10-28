@@ -1,7 +1,13 @@
 ---
-title: 'Create a user interface'
+title: 'Quick Start - Create a user interface'
 sidebar_label: 'Create a user interface'
 id: create-a-user-interface
+keywords: [getting started, quick start, ui, create a ui]
+tags:
+    - getting started
+    - quick start
+    - ui
+    - create a ui
 ---
 
 Now let's create a single page with a grid and a form for entering data.

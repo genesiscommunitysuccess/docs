@@ -1,7 +1,14 @@
 ---
-title: 'Genesis Router'
+title: 'Key system files - Genesis Router'
 sidebar_label: 'Genesis Router'
 id: other-key-files
+keywords: [getting started, basics, key system files, genesis, router]
+tags:
+    - getting started
+    - basics
+    - key system files
+    - genesis
+    - router
 ---
 
 Let us now mention another important system file, Genesis Router. The Genesis Router module controls the routing of the messages between the backend and the frontend of your application. You can configure this in the file **genesis-router.kts**.

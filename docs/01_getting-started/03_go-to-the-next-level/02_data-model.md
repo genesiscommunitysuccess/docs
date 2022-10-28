@@ -1,7 +1,17 @@
 ---
-title: 'Define the data model using fields, tables and views'
+title: 'Go to the next level - Define the data model using fields, tables and views'
 sidebar_label: 'Fields, tables and views'
 id: data-model
+keywords: [getting started, quick start, next level, data model, fields, tables, views]
+tags:
+    - getting started
+    - quick start
+    - next level
+    - introduction
+    - data model
+    - fields
+    - tables
+    - views
 ---
 
 Following on from project creation in the previous step, you have:

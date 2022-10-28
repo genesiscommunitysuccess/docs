@@ -1,7 +1,14 @@
 ---
-title: 'Camel integrations'
+title: 'Go to the next level - Camel integrations'
 sidebar_label: 'Camel integrations'
 id: camel
+keywords: [getting started, quick start, next level, apache camel, integration]
+tags:
+    - getting started
+    - quick start
+    - next level
+    - apache camel
+    - integration
 ---
 
 The Genesis low-code platform supports the use of [Apache Camel](https://camel.apache.org/) in order to integrate with external systems, using its plethora of [components](https://camel.apache.org/components/3.16.x/index.html).

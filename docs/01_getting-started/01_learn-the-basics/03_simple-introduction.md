@@ -1,7 +1,13 @@
 ---
-title: 'A very simple introduction'
+title: 'Learn the Basics - A very simple introduction'
 sidebar_label: 'Simple introduction'
 id: simple-introduction
+keywords: [getting started, basics, simple, introduction]
+tags:
+    - getting started
+    - basics
+    - simple
+    - introduction
 ---
 
 ## What is the Genesis low-code platform?

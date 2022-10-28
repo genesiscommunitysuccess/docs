@@ -1,7 +1,14 @@
 ---
-title: 'Calculated data using derived fields'
+title: 'Go to the next level - Calculated data using derived fields'
 sidebar_label: 'Calculated data using derived fields'
 id: calculated-data
+keywords: [getting started, quick start, next level, calculated data, derived fields]
+tags:
+    - getting started
+    - quick start
+    - next level
+    - calculated data
+    - derived fields
 ---
 
 ## Section objectives

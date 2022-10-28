@@ -1,7 +1,14 @@
 ---
-title: 'Data Aggregation using Consolidator'
+title: 'Go to the next level - Data Aggregation using Consolidator'
 sidebar_label: 'Consolidators'
 id: consolidators
+keywords: [getting started, quick start, next level, data aggregation, consolidators]
+tags:
+    - getting started
+    - quick start
+    - next level
+    - data aggregation
+    - consolidators
 ---
 
 Following from the calculated data using [derived fields](/getting-started/go-to-the-next-level/calculated-data/), the Genesis low-code platform provides a more advanced feature to aggregate data or perform calculations whenever the underlying data is changed. That feature is called [Consolidator](/server/consolidator/introduction/).

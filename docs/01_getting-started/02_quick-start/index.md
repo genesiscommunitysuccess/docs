@@ -3,6 +3,11 @@ title: 'Quick Start'
 sidebar_label: 'Introduction'
 sidebar_position: 1
 id: introduction
+keywords: [getting started, quick start, introduction]
+tags:
+    - getting started
+    - quick start
+    - introduction
 ---
 
 

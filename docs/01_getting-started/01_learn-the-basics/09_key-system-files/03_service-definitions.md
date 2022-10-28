@@ -1,7 +1,13 @@
 ---
-title: 'service definitions.xml'
+title: 'Key system files - service definitions.xml'
 sidebar_label: 'service definitions.xml'
 id: service-definitions
+keywords: [getting started, basics, key system files, service definitions]
+tags:
+    - getting started
+    - basics
+    - key system files
+    - service definitions
 ---
 
 Every application must have a **-service-definitions.xml** file. This is where you specify the ports of the various processes. The ports are used to communicate internally between these various processes.

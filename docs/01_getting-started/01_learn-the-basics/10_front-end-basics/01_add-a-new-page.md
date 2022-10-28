@@ -1,7 +1,14 @@
 ---
-title: 'Add a new page'
+title: 'Front-end basics - Add a new page'
 sidebar_label: 'Add a new page'
 id: add-a-new-page
+keywords: [getting started, basics, web, front-end, new page]
+tags:
+    - getting started
+    - basics
+    - web
+    - front-end
+    - new page
 ---
 
 

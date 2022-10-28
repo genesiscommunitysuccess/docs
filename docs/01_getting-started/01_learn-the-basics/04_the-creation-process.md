@@ -1,7 +1,12 @@
 ---
-title: 'Creation process'
+title: 'Learn the Basics - Creation process'
 sidebar_label: 'The creation process'
 id: creation-process
+keywords: [getting started, basics, creation process]
+tags:
+    - getting started
+    - basics
+    - creation process
 ---
 
 So how would you go about creating something like that?

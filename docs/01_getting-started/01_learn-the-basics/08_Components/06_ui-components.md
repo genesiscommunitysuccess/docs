@@ -1,8 +1,14 @@
 ---
-title: 'UI components'
+title: 'Components - UI'
 sidebar_label: 'UI components'
 sidebar_position: 5
 id: ui-components
+keywords: [getting started, basics, components, ui]
+tags:
+    - getting started
+    - basics
+    - components
+    - ui
 ---
 
 With these user-interface (UI) components, you can create clear and usable interfaces quickly.

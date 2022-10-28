@@ -1,8 +1,14 @@
 ---
-title: 'Integration components'
+title: 'Components - Integration'
 sidebar_label: 'Integration components'
 sidebar_position: 4
 id: integration-components
+keywords: [getting started, basics, components, integration]
+tags:
+    - getting started
+    - basics
+    - components
+    - integration
 ---
 
 Most financial applications have to interact with other outside systems for information exchange and smooth workflow creation within themselves. The Genesis low-code platform makes this process faster with it's growing list of components that enable you to connect quickly to market-leading services. Instead of creating the interfaces from scratch, you simply need to select your component, enable it and configure it.

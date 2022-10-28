@@ -1,8 +1,14 @@
 ---
-title: 'Genesis components'
+title: 'Components - Introduction'
 sidebar_label: 'Genesis components: introduction'
 sidebar_position: 1
 id: introduction
+keywords: [getting started, basics, components, introduction]
+tags:
+    - getting started
+    - basics
+    - components
+    - introduction
 ---
 
 

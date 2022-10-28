@@ -1,7 +1,13 @@
 ---
-title: 'Inside a Request Server'
+title: 'Modules - Inside a Request Server'
 sidebar_label: 'Inside a Request Server'
 id: inside-a-request-server
+keywords: [getting started, basics, modules, request server]
+tags:
+    - getting started
+    - basics
+    - modules
+    - request server
 ---
 
 

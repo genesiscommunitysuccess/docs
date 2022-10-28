@@ -1,7 +1,13 @@
 ---
-title: 'Run'
+title: 'Learn the basics - Running the server'
 sidebar_label: 'Run'
 id: run
+keywords: [getting started, basics, server, run]
+tags:
+    - getting started
+    - basics
+    - server
+    - run
 ---
 
 There are some simple commands that enable you to start and stop your server.

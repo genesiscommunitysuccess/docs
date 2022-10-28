@@ -1,7 +1,13 @@
 ---
-title: 'Create a chart'
+title: 'Go to the next level - Create a chart'
 sidebar_label: 'Create a chart'
 id: charts
+keywords: [getting started, quick start, next level, charts]
+tags:
+    - getting started
+    - quick start
+    - next level
+    - charts
 ---
 
 ## Section objectives

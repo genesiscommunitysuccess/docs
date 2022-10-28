@@ -1,7 +1,13 @@
 ---
-title: 'Inside a tables dictionary'
+title: 'Data model - Inside a tables dictionary'
 sidebar_label: 'Inside a tables dictionary'
 id: inside-a-tables-dictionary
+keywords: [getting started, basics, data, model, tables dictionary]
+tags:
+    - getting started
+    - basics
+    - data model
+    - tables dictionary
 ---
 
 Tables of data will be critical to your application, from simple tables of currencies or locations to more complex ones that contain trade or order information (for example).

@@ -1,7 +1,13 @@
 ---
-title: 'Introduction'
+title: 'Go to the next level - Introduction'
 sidebar_label: 'Introduction'
 id: introduction
+keywords: [getting started, quick start, next level, introduction]
+tags:
+    - getting started
+    - quick start
+    - next level
+    - introduction
 ---
 
 Now that you have completed the [Quick Start](/getting-started/quick-start/) and are comfortable with the basics, we'll build an advanced application that will demonstrate more of the Genesis platform features.

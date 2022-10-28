@@ -1,7 +1,12 @@
 ---
-title: 'Next steps'
+title: 'Learn the Basics - Next steps'
 sidebar_label: 'Next steps'
 id: next-steps
+keywords: [getting started, basics, next steps]
+tags:
+    - getting started
+    - basics
+    - next steps
 ---
 
 Now, let's just take stock.

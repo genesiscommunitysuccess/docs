@@ -1,7 +1,15 @@
 ---
-title: 'User interaction using Data Servers, Request Servers and Event Handlers'
+title: 'Go to the next level - User interaction using Data Servers, Request Servers and Event Handlers'
 sidebar_label: 'User interaction'
 id: events
+keywords: [getting started, quick start, next level, user interaction, events]
+tags:
+    - getting started
+    - quick start
+    - next level
+    - introduction
+    - user interaction
+    - events
 ---
 
 Now that we have our data model defined, we can start adding the capabilities to read and create entries.
