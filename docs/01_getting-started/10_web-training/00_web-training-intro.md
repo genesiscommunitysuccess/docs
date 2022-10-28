@@ -14,7 +14,7 @@ This is hands-on web developer training where we're going to extend the applicat
 
 ## Prerequisites and assumptions
 
-- **TypeScript**, **HTML** and **CSS** are mandatory prerequisites.​ If you're not an experienced front-end developer, check this [resources page](web/basics/prerequisites/) on the required technologies. However, with some perseverance, you should be able to follow along even if you’re coming from a different programming language, as we cover some elements of the underlying technlogy we rely on.
+- **TypeScript**, **HTML** and **CSS** are mandatory prerequisites.​ If you're not an experienced front-end developer, check this [resources page](/web/basics/prerequisites/#additional-resources) on the required technologies. However, with some perseverance, you should be able to follow along even if you’re coming from a different programming language, as we cover some elements of the underlying technlogy we rely on.
 - You have taken the Developer Training course and you understand - and have put into practice - key concepts, components and building blocks of the platform.
 - This is not a web-design course and the main focus is on how to build front end functionalities. We'll cover how to add styles to our components and you are free to style your application any way you want with proper CSS skills. We **won't** cover any CSS lessons, though, and our application will look very simple.
 
@@ -37,7 +37,7 @@ Estimated total effort: <b>Daily four-hour sessions for four days</b>.
 - [Day four](/getting-started/web-training/web-training-day4/): Design systems, styling, micro front-ends, Angular integration
 
 ## Genesis low-code platform version
-6.2.3
+Genesis Server Framework 6.2.3 and Foundation UI 5.0.1.
 
 ## Source code
 The complete source code of this training is available on [GitHub](https://github.com/genesiscommunitysuccess/web-training/tree/final) and, alternatively, as a [ZIP file](https://genesisglobal.jfrog.io/artifactory/community-uploads/web-training-gama.zip).

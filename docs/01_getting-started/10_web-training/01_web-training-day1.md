@@ -117,14 +117,14 @@ Following this, there are three key sections you need to be aware of:
 When running the app on your local machine, you can adjust a few settings under the `config` section, including which host to connect to and what port to run the dev server on.
 ```
 "config": {
-    "API_HOST": "ws://localhost/gwf/",
+    "API_HOST": "ws://localhost:8080/gwf/",
     "DEFAULT_USER": "JaneDee",
     "DEFAULT_PASSWORD": "beONneON*74",
     "PORT": 6061
   },
 ```
 
-Since our back end is running locally, we set the `API_HOST` to localhost. The **/gwf/** path is a [reverse proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) configured in a nginx web server running on the server (a WSL instance in our case). 
+Since our back end is running locally, we set the `API_HOST` to localhost. The **/gwf/** path is a [reverse proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) configured in a nginx web server running on the server (a docker container in our case). 
 
 Essentially, the front end will connect to the back end through a websocket to **localhost/gwf**, which in turn will, internally, ***proxy pass*** the connection to an internal Genesis process called GENESIS_ROUTER. This contains a web socket adapter able to communicate with other Genesis processes, such as Data Servers, Request Servers, Event Handlers, etc. Think of this as a gateway from the front end to all services on the back end.
 
@@ -171,12 +171,14 @@ This includes **@genesislcap** dependencies. This is where you can change versio
 
 ```javascript
   "dependencies": {
-    "@genesislcap/foundation-comms": "1.0.0",
-    "@genesislcap/foundation-entity-management": "1.0.0",
-    "@genesislcap/foundation-login": "1.0.0",
-    "@genesislcap/foundation-utils": "1.0.0",
-    "@genesislcap/foundation-zero": "1.0.0",
-    "@genesislcap/foundation-ui": "1.0.0",
+    "@genesislcap/foundation-comms": "^5.0.0",
+    "@genesislcap/foundation-entity-management": "^5.0.0",
+    "@genesislcap/foundation-header": "^5.0.0",
+    "@genesislcap/foundation-login": "^5.0.0",
+    "@genesislcap/foundation-utils": "^5.0.0",
+    "@genesislcap/foundation-zero": "^5.0.0",
+    "@genesislcap/foundation-zero-grid-pro": "^5.0.0",
+    "@genesislcap/grid-pro": "^5.0.0",
     "@microsoft/fast-components": "^2.16.6",
     "@microsoft/fast-element": "^1.6.2",
     "@microsoft/fast-foundation": "^2.27.1",
@@ -195,9 +197,9 @@ You can use the `lerna add` command (instead of `npm install`) if you need to ad
 
 For Genesis application servers, the web server of choice is [nginx](https://www.nginx.com/).
 
-As explained previously, we have provided a WSL instance with nginx pre-installed and running for this training. nginx is used here as a reverse proxy. We're not going to deploy our application to that nginx instance, though; we're going to simply use the local web server initiated by `npm run client:web` command. 
+As explained previously, we have provided a docker container with nginx pre-installed and running for this training. nginx is used here as a reverse proxy. We're not going to deploy our application to that nginx instance, though; we're going to simply use the local web server initiated by `npm run client:web` or `npm run dev` command. 
 
-For actual server deployment, these are the steps that you need to follow:
+For actual server deployment, these are the steps that you'd need to follow:
 1. Build the project: `npm run build` from the ..client/web folder
 2. Copy the content of the ..client/web/dist/ folder to the root folder of your web server. To find the root folder, look in the `root` directive in the server block of nginx.conf file.
 
