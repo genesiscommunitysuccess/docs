@@ -2,10 +2,6 @@
 title: 'Tables'
 sidebar_label: 'Tables'
 id: tables
----
-
-[Introduction](/database/data-structures/data-structures/)  | [Tables](/database/data-structures/tables/) |  [Indices](/database/data-structures/indices/) | [Views](/database/data-structures/views/) 
-
 
 A [table](/database/fields-tables-views/tables/) is a data structure that organises data into rows and columns.
 However, in Genesis, a table is quite different.

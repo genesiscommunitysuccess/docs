@@ -4,7 +4,7 @@ sidebar_label: 'Views - advanced'
 id: views-advanced
 ---
 
-[Introduction](/database/fields-tables-views/views/)  | [Basics](/database/fields-tables-views/views/views-basics/) |  [Advanced](/database/fields-tables-views/views/views-advanced/) | [Examples](/database/fields-tables-views/views/views-examples/) | [Generating DAOs](/database/fields-tables-views/genesisDao/) 
+
 
 ## Fields
 
@@ -12,7 +12,7 @@ id: views-advanced
 
 Derived fields are used to serve up fields that are not part of the tables that make up a given view. Their values are typically derived from fields in the tables.
 
-It is possible to specify field inputs for derived fields as well as being able to specify a single entity as input. This has a number of advantages:
+It is possible to specify field inputs for derived fields as well as being able to specify a single entity as input. This has two main advantages:
 
 - when a derived field has multiple inputs from a single table, only one input is required
 - non-null fields on the entity will be non-null
@@ -95,7 +95,7 @@ joining(TRADE.JOIN_TRADE_TO_SIDE)
 ```
 
 ### Parameterised joins
-Some join operations require external parameters that are not available in the context of the table-join definition, but will be available when the view repository is accessed (e.g. client enriched definitions), so an option exists to create parameterised joins.
+Some join operations require external parameters that are not available in the context of the table-join definition, but will be available when the view repository is accessed (e.g. client-enriched definitions), so an option exists to create parameterised joins.
 
 These are typically used in Request Server queries:
 

@@ -28,11 +28,11 @@ This page gives you the hardware and software requirements needed in order to ru
 
 | Package	| Minimum Version | 
 |--------------|:---------------:|
-| IntelliJ	| 2021.2.3 and above  |
-|Visual Studio Code	|     1.52.1      |
-|Java SDK|       11        |
-| NodeJS  |     16 LTS+     |
-| Postman (optional)	|        8        |
+| [IntelliJ](https://www.jetbrains.com/idea/download/?fromIDE=#section=windows)	| 2021.2.3 and above  |
+|[Visual Studio Code](https://code.visualstudio.com/Download)	|     1.52.1      |
+|[Java SDK](https://www.oracle.com/java/technologies/downloads/)|       11        |
+| [NodeJS](https://nodejs.org/en/download/)  |     16 LTS+     |
+| [Postman](https://www.postman.com/downloads/) (optional)	|        8        |
 
 
 You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJIDEA enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJIDEA.
@@ -44,14 +44,15 @@ You can use a range of IDEs (for example, Eclipse) with the Genesis platform, bu
 
 ## Access to the Genesis repository
 
+For access to Genesis packages, you need a valid [jfrog artifactory](https://jfrog.com/artifactory/) username and password. 
 
-For access to Genesis packages, you need to configure the `@genesislcap` scope of `npm` to use our jfrog registry.
-You will be provided with access details during your on-boarding.
+Now you can configure the `@genesislcap` scope of `npm` to use our jfrog registry.
+
 
 ### .npmrc set-up
 
 1. Create an `.npmrc` file in your user home directory.
- 2. Using your credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
+ 2. Using your jfrog credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
  3. Click on the `Welcome <username>` on the top right corner.
  4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
  5. Select `npm` for both **Package Type** and **Repository**.
@@ -83,10 +84,10 @@ Genesis Foundation UI
 Please [contact us](mailto:support@genesis.global?subject=.npmrc%20Setup) if you run into any problems.
 
 ## gradle.properties file
-You must have a **gradle.properties** file inside a **.gradle** folder on your user directory; this file must contain your Genesis Artifactory password in clear (unencrypted) text:
+Finally, you should have a **gradle.properties** file inside a **.gradle** folder on your user directory; this file must contain your Genesis Artifactory password in clear (unencrypted) text, for example:
 
 ```shell
-genesisArtifactoryUser=<your-artifactory-user>
-genesisArtifactoryPassword=<your-artifactory-password>
+genesisArtifactoryUser=<JaneDee>
+genesisArtifactoryPassword=<beONneON74>
 ```
 
