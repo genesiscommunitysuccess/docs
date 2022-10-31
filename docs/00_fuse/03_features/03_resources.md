@@ -5,7 +5,7 @@ id: resources
 
 # Resources
 
-With Fuse, you can define a resources script to read in external data to your application.
+With Fuse, you can define a resources script to read in the external data of your application.
 
 This can be used to populate your tables with seed data or to keep your application in sync with an external database.
 
