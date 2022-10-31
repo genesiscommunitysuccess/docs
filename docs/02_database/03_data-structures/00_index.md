@@ -12,7 +12,7 @@ The Genesis database supports:
 
  Tables contain rows of data of the same type. The data in tables support read, write and subscribe operations. 
  
- A view represents a number of tables joined together. Views, support read and subscribe operations.
+ A view represents a number of tables joined together. Views support read and subscribe operations.
 
 |  | [Tables](/database/data-structures/tables/)  | [Indices](/database/data-structures/indices/) | [View](/database/data-structures/views/)  |
 | --- | :-- | :-- | :-- |
