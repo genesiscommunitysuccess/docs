@@ -26,7 +26,7 @@ provideDesignSystem().register(alphaSelect(), alphaOption());
   <alpha-option value="xl">Extra Large</alpha-option>
 </alpha-select>
 ```
-By default, 'Select' only allows the user to select one of the options defined. When a user selects an option, it automatically deselects the existing selection. 
+By default, 'Select' only allows the user to select one of the options defined. When a user selects an option, it automatically removes the existing selection. 
 
 If you want to allow the user to make multiple selections, add the keyword 'multiple' to the component.
 
