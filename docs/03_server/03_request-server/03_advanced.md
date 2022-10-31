@@ -132,7 +132,7 @@ You can use a permissioning block to define both dynamic permissions (AUTH) and 
 
 ### Dynamic permission:
 
-Similar to Data Server, you can provide dynamic permissioning on Request Server by using table/view reference.
+Similar to Data-Server, you can provide dynamic permissioning on Request Server by using table/view reference.
 
 ```kotlin
     requestReply("MARKET_INSTRUMENTS", INSTRUMENT_DETAILS) {
