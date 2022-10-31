@@ -4,7 +4,6 @@ sidebar_label: 'Tables - advanced'
 id: tables-advanced
 ---
 
-[Introduction](/database/fields-tables-views/tables/)  | [Basics](/database/fields-tables-views/tables/tables-basics/) |  [Advanced](/database/fields-tables-views/tables/tables-advanced/) | [Examples](/database/fields-tables-views/tables/tables-examples/) | [Generating DAOs](/database/fields-tables-views/genesisDao/) 
 
 ## Subtables
 

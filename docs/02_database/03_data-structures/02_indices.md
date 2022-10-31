@@ -4,8 +4,6 @@ sidebar_label: 'Indices'
 id: indices
 ---
 
- 
-
 Indices are key components of any database. In the Genesis low-code platform, they are mandatory when you define a  table. Every table should have at least one index, the primary key. This is vital for controlling how data is [read](/database/database-concepts/read/) by an application.
 
 - Unique indices are required for `get` operations

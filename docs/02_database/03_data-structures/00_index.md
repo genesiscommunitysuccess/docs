@@ -4,8 +4,6 @@ sidebar_label: 'Data Structures'
 id: data-structures
 ---
 
-
-
 The Genesis database supports:
 - [tables](/database/fields-tables-views/tables/)
 - [views](/database/fields-tables-views/views/)
