@@ -145,7 +145,7 @@ To get the data from the server, we need to define resourceName and fields we wa
 
 ```typescript title='home.template.ts' 
 <zero-select :value=${sync(x=> x.instrument)}>
-  <options-datasource resourceName="ALL_INSTRUMENTS" fields="INSTRUMENT_ID"></options-datasource>
+  <options-datasource resourceName="INSTRUMENT" fields="INSTRUMENT_ID"></options-datasource>
 </zero-select>
 ```
 
