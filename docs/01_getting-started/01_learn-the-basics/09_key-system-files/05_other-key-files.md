@@ -46,3 +46,5 @@ router {
     }
 }
 ```
+
+More information about Genesis router can be found [here](/server/configuring-runtime/genesis-router/).

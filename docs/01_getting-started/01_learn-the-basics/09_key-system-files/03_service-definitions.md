@@ -30,3 +30,5 @@ When `genesisInstall` is executed, all the products have their **service-definit
     <service external="false" host="localhost" name="GCOM_REQUEST_SERVER" port="8571" secure="false"/>
 </configuration>
 ```
+
+Further system-definition information can be found [here](/server/configuring-runtime/system-definitions/).
