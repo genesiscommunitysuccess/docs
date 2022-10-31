@@ -1,7 +1,15 @@
 ---
-title: 'SFTP and encryption'
+title: 'Loading feed data - SFTP and encryption'
 sidebar_label: 'SFTP and encryption'
 id: sftp-and-encryption
+keywords: [getting started, quick start, use cases, loading feed data, sftp, encryption]
+tags:
+    - getting started
+    - quick start
+    - use cases
+    - loading feed data
+    - sftp
+    - encryption
 ---
 If you are loading static data from an external site, this page gives more detail on the SFTP method for obtaining the data. It also looks at how you could deal with encryption and decryption in higher environments.
 

@@ -1,8 +1,14 @@
 ---
-id: training-content-day2
-title: Day two
+title: Developer training - Day two
 sidebar_label: Day two
 sidebar_position: 4
+id: training-content-day2
+keywords: [getting started, quick start, developer training, day two]
+tags:
+    - getting started
+    - quick start
+    - developer training
+    - day two
 ---
 
 <details>

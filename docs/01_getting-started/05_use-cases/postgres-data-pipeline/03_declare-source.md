@@ -1,8 +1,14 @@
 ---
-id: mappers
-title: Declare Source and Mappers
+title: Postgres data pipeline - Declare Source and Mappers
 sidebar_label: Declare Source and Mappers
 sidebar_position: 4
+id: mappers
+keywords: [getting started, quick start, postgres data pipeline, mappers]
+tags:
+    - getting started
+    - quick start
+    - postgres data pipeline
+    - mappers
 ---
 
 In this part of the tutorial we will declare the PostgreSQL server as a data source and map the incoming rows to a Genesis [Table](/database/fields-tables-views/tables/) object.

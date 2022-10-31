@@ -1,8 +1,14 @@
 ---
-id: source-data
-title: Prepare the Source Data
+title: Postgres data pipeline - Prepare the Source Data
 sidebar_label: Prepare the Source Data
 sidebar_position: 3
+id: source-data
+keywords: [getting started, quick start, postgres data pipeline, source data]
+tags:
+    - getting started
+    - quick start
+    - postgres data pipeline
+    - source data
 ---
 
 The source data comes from a PostgreSQL server that has to meet the minimal configuration mentioned [here](/server/integration/data-pipeline/advanced/#postgresql-configuration-1).

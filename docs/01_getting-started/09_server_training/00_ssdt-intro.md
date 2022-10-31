@@ -1,7 +1,13 @@
 ---
-title: 'Server Specialist Developer Training'
+title: 'Server Specialist Developer Training - Introduction'
 sidebar_label: 'Introduction'
 id: ssdt-intro
+keywords: [getting started, developer training, server training, introduction]
+tags:
+    - getting started
+    - developer training
+    - server training
+    - introduction
 ---
 
 ## What you'll learn​

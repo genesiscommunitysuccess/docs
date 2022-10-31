@@ -1,7 +1,13 @@
 ---
-title: 'Define the data model'
+title: 'Faster quick start - Define the data model'
 sidebar_label: 'Define the data model'
 id: define-the-data-model
+keywords: [getting started, quick start, faster quick start, data model]
+tags:
+    - getting started
+    - quick start
+    - faster quick start
+    - data model
 ---
 
 Now you are ready to define the fields and tables that make up your data model. This structures information in a simple way that can be viewed by users and processed by the application.

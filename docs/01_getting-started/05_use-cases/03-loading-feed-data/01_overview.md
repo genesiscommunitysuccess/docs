@@ -1,7 +1,14 @@
 ---
-title: 'How to load feed data into an application'
+title: 'Loading feed data - How to load feed data into an application'
 sidebar_label: 'Loading feed data'
 id: overview
+keywords: [getting started, quick start, use cases, loading feed data, overview]
+tags:
+    - getting started
+    - quick start
+    - use cases
+    - loading feed data
+    - overview
 ---
 Some feeds provide static sets of data that you can download for processing by your application. A good example is traded data from an exchange. This exercise shows you the key points for loading these data files. In this case, we shall use Bloomberg issuance data. We shall load this, parse it to reformat it to Genesis format, then place it in a staging table in a Genesis application. Once it is in the staging table, the data can be passed to other tables within the application.
 

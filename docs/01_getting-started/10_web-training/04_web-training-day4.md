@@ -1,8 +1,14 @@
 ---
-id: web-training-day4
-title: Day 4
+title: Web Developer Training - Day 4
 sidebar_label: Day four
 sidebar_position: 6
+id: web-training-day4
+keywords: [getting started, developer training, web training, day four]
+tags:
+    - getting started
+    - developer training
+    - server training
+    - day four
 ---
 
 # Day 4 agenda

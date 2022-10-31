@@ -1,8 +1,14 @@
 ---
-id: training-content-day5
-title: Day five
+title: Developer training - Day five
 sidebar_label: Day five
 sidebar_position: 7
+id: training-content-day5
+keywords: [getting started, quick start, developer training, day five]
+tags:
+    - getting started
+    - quick start
+    - developer training
+    - day five
 ---
 
 <details>

@@ -1,8 +1,14 @@
 ---
-id: conclusion
-title: Conclusion
+title: Postgres data pipeline - Conclusion
 sidebar_label: Conclusion
 sidebar_position: 6
+id: conclusion
+keywords: [getting started, quick start, postgres data pipeline, conclusion]
+tags:
+    - getting started
+    - quick start
+    - postgres data pipeline
+    - conclusion
 ---
 
 In this tutorial you saw how to integrate with an external PostgreSQL server using the Genesis Data Pipeline configuration. 

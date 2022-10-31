@@ -1,9 +1,14 @@
 ---
-id: 01_ssdt-day1
-title: Day one
+title: Server Specialist Developer Training - Day one
 sidebar_label: Day one
 sidebar_position: 2
-
+id: 01_ssdt-day1
+keywords: [getting started, developer training, server training, day one]
+tags:
+    - getting started
+    - developer training
+    - server training
+    - day one
 ---
 This day covers:
 

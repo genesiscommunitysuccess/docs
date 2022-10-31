@@ -1,7 +1,14 @@
 ---
-title: 'Gradle deploy plugin'
+title: 'Prerequisites - Gradle deploy plugin'
 sidebar_label: 'Gradle deploy plugin'
 id: gradle-deploy-plugin
+keywords: [getting started, quick start, prerequisites, gradle, deploy plugin]
+tags:
+    - getting started
+    - quick start
+    - prerequisites
+    - gradle
+    - deploy plugin
 ---
 
 

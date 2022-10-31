@@ -1,7 +1,13 @@
 ---
-id: manual-installation
+title: Prerequisites - Manual installation
 sidebar_label: Manual installation
-title: Manual installation
+id: manual-installation
+keywords: [getting started, quick start, prerequisites, manual installation]
+tags:
+    - getting started
+    - quick start
+    - prerequisites
+    - manual installation
 
 ---
 To install the Genesis low-code platform on your server, go through the following steps.

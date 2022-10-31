@@ -1,9 +1,13 @@
 ---
-title: 'Add business logic'
+title: 'Faster quick start - Add business logic'
 sidebar_label: 'Add business logic'
 id: add-business-logic
-keywords: [dataserver, event handler]
+keywords: [getting started, quick start, faster quick start, business logic, dataserver, event handler]
 tags:
+    - getting started
+    - quick start
+    - faster quick start
+    - business logic
     - dataserver
     - event handler
 ---

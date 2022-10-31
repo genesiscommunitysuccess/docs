@@ -1,7 +1,13 @@
 ---
-title: 'Getting Started'
+title: 'Server Specialist Developer Training - Getting Started'
 sidebar_label: 'Getting Started'
 id: ssdt-getting_started
+keywords: [getting started, developer training, server training, getting started]
+tags:
+    - getting started
+    - developer training
+    - server training
+    - getting started
 ---
 
 ## Environment set-up

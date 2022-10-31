@@ -1,7 +1,13 @@
 ---
-title: 'Create a new project'
+title: 'Faster quick start - Create a new project'
 sidebar_label: 'Create a new project'
 id: create-a-new-project
+keywords: [getting started, quick start, faster quick start, new project]
+tags:
+    - getting started
+    - quick start
+    - faster quick start
+    - new project
 ---
 
 The GenX CLI tool enables you to seed projects. In this case, we just want to generate a blank full-stack application project.

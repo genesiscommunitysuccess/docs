@@ -1,9 +1,14 @@
 ---
-id: 05_ssdt-day5
-title: Day five
+title: Server Specialist Developer Training - Day five
 sidebar_label: Day five
 sidebar_position: 6
-
+id: 05_ssdt-day5
+keywords: [getting started, developer training, server training, day five]
+tags:
+    - getting started
+    - developer training
+    - server training
+    - day five
 ---
 This day covers:
 

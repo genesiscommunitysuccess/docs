@@ -1,8 +1,15 @@
 ---
-title: 'Environment setup'
+title: 'Web Developer Training - Environment setup'
 sidebar_label: 'Environment setup'
 id: web-training-environment-setup
 sidebar_position: 2
+keywords: [getting started, developer training, web training, environment, setup]
+tags:
+    - getting started
+    - developer training
+    - server training
+    - environment
+    - setup
 ---
 
 

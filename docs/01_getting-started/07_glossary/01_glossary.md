@@ -1,7 +1,11 @@
 ---
-title: 'Glossary'
+title: 'Getting Started - Glossary'
 sidebar_label: 'Glossary'
 id: glossary
+keywords: [getting started, glossary]
+tags:
+    - getting started
+    - glossary
 ---
 
 There is a lot of technology embedded in the Genesis low-code platform. So, inevitably, we have to refer to it in this documentation.

@@ -1,9 +1,15 @@
 ---
-id: environment-setup
-title: Environment setup
+title: Developer training - Environment setup
 sidebar_label: Environment setup
 sidebar_position: 2
-
+id: environment-setup
+keywords: [getting started, quick start, developer training, environment, setup]
+tags:
+    - getting started
+    - quick start
+    - developer training
+    - environment
+    - setup
 ---
 
 ---

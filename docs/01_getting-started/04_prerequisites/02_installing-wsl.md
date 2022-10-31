@@ -1,7 +1,13 @@
 ---
-title: 'Installing WSL'
+title: 'Prerequisites - Installing WSL'
 sidebar_label: 'Installing WSL'
 id: installing-wsl
+keywords: [getting started, quick start, prerequisites, wsl]
+tags:
+    - getting started
+    - quick start
+    - prerequisites
+    - wsl
 ---
 
 If you don't have a Linux box for running your Genesis platform, you can use Windows Subsystem for Linux (WSL2) to install a Linux environment on your Windows machine.

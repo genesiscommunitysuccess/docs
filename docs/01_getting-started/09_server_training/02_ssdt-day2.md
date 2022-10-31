@@ -1,9 +1,14 @@
 ---
-id: 01_ssdt-day2
-title: Day two
+title: Server Specialist Developer Training - Day two
 sidebar_label: Day two
 sidebar_position: 3
-
+id: 01_ssdt-day2
+keywords: [getting started, developer training, server training, day two]
+tags:
+    - getting started
+    - developer training
+    - server training
+    - day two
 ---
 This day covers:
 

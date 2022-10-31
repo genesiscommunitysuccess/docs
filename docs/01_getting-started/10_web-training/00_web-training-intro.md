@@ -1,9 +1,14 @@
 ---
-id: training-intro
-title: Introduction
+title: Web Developer Training - Introduction
 sidebar_label: Introduction
 sidebar_position: 1
-
+id: training-intro
+keywords: [getting started, developer training, web training, introduction]
+tags:
+    - getting started
+    - developer training
+    - server training
+    - introduction
 ---
 # Genesis Web Developer training
 ![](/img/dev-training-book-cover.png)

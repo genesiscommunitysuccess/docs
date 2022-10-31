@@ -1,7 +1,14 @@
 ---
-title: 'Example source data'
+title: 'Loading feed data - Example source data'
 sidebar_label: 'Example source data'
 id: example-source-data
+keywords: [getting started, quick start, use cases, loading feed data, example]
+tags:
+    - getting started
+    - quick start
+    - use cases
+    - loading feed data
+    - example
 ---
 Here is an edited example of a source file of issuance data from the Bloomberg feed.
 Note the following:
