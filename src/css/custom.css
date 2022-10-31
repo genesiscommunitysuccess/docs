@@ -101,7 +101,7 @@ code {
   font-weight: 700;
 }
 
-.markdown li {
+.markdown ul li {
   list-style-type: square;
 }
 /**********************************************/

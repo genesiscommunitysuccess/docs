@@ -124,6 +124,6 @@ From the Gradle menu on the right of Intellij, this is: **genesisproduct-positio
 :::
 
 ## Conclusion
-Data Server and Event Handler are the main components to interact with the server. Now that we have built our back end, we have something to interact with. Click this link if you are eager to [see it work](/getting-started/go-to-the-next-level/see-it-work). This page for instructions on deploying the back end. Once you have deployed it, if you want to test what you've done so far, go to [Endpoints](/server/integration/rest-endpoints/introduction/).
+Data Server and Event Handler are the main components to interact with the server. Now that we have built our back end, we have something to interact with. Once you have deployed it, if you want to test what you've done so far, go to [Endpoints](/server/integration/rest-endpoints/introduction/).
 
-Otherwise you can continue to the [next section](/getting-started/go-to-the-next-level/data-grid/) and deploy and test the whole application at later time.
+Otherwise, you can continue to the [next section](/getting-started/go-to-the-next-level/data-grid/) and deploy and test the whole application at later time.

@@ -27,7 +27,7 @@ operations and the view will derive its indices from the root table.
 
 Depending on the view definition, a different type of view will be created.
 
-### Cardinality
+## Cardinality
 
 A view's cardinality tells us how many view records will be returned for every record in the root table. 
 
@@ -45,7 +45,7 @@ cardinality, all others will be multi cardinality
 | Supports database subscribe operations | ✔️                             | ❌                           |
 | Supports backwards joins               | ✔️                             | ❌                           |
 
-### Parameterised views
+## Parameterised views
 
 A parameterised view is one where the join is defined as an input parameter - rather than on a field in another table or a constant. 
 There are two important characteristics of a parameterised view:

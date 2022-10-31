@@ -61,7 +61,7 @@ Finally, you need to have a FoundationDB database running.
 Now we are going to install the platform (i.e. Genesis distribution) on the server and then install the back end of our application on the same server. This is all done using the Genesis deploy plugin, which comes with several tasks grouped under `genesisdeploy` and `genesissetup`.
 
 :::caution
-All the following sections are one-time operations. If you have already followed this tutorial previously, they are not necessary. Skip to [Deploying the application](/getting-started/go-to-the-next-level/see-it-work/#deploying-the-application).
+All the following sections are one-time operations. If you have already followed this tutorial previously, they are not necessary. Skip to Deploying the application.
 :::
 
 ### Set up the platform
@@ -144,7 +144,7 @@ Run `DbMon` to check that the user has been created:
 
 or from the dropdown menu:
 
-![](/img/using-DbMon-positions.png)
+![](/img/using-dbmon-positions.png)
 
 Once you are inside the console, type `table USER` and then `search 1`. If imported correctly, the user JaneDee should be listed:
 ```
@@ -230,7 +230,7 @@ There are multiple ways you can test the back end of your application. It's impo
 ### Genesis Console
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
 2. Enter the IP address of your server, in this case localhost.
-3. Log in with your user name and password as [defined previously](/getting-started/go-to-the-next-level/see-it-work/#add-a-user). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
+3. Log in with your user name and password as defined previously. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES** tab.
 5. Filter the **Resource type** to show only Event Handlers.
 
@@ -381,3 +381,23 @@ In the header, you need to supply:
 When you have this in place, click on **Send** to make the call. You can see that the fields for the instruments have been returned on the right of the screen.
 
 ![](/img/test-eh-insert-success-alpha.png)
+
+## Connecting the back end and front end
+In this step, we shall configure an nginx server working as a reverse proxy. Make sure you have your artifcatory credentials available.
+
+In your CentOS terminal, enter following three commands:
+
+1. Enter your artifactory credentials:
+```shell
+docker login genesisglobal-docker-internal.jfrog.io
+```
+
+2. Pull the latest version of the Genesis software:
+```shell
+docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
+```
+
+3. Finally, run the following command:
+```shell
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+```
