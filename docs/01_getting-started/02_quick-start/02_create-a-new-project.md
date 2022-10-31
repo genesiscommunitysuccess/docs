@@ -63,7 +63,7 @@ App seed (Use arrow keys)
 
 At this point, the seed application is created and the genx dependencies are installed.
 
-Then there are more questions, which you can respond to as follows:
+Then there are more questions, which you can respond to as follows (we have provided some notes below):
 
 ```shell title="Windows Terminal"
 ? Package scope (without the @) genesislcap
@@ -76,6 +76,14 @@ Then there are more questions, which you can respond to as follows:
 ? Group Id global.genesis
 ? Application Version 1.0.0-SNAPSHOT
 ```
+:::note
+Here's a quick note about those questions:
+- package scope is the namespace identifier for your app
+- package name is the identifier for the app itself
+- a design system and a base design system package are necessary for the front end 
+- the API host is the address that the front end will connect to
+- Group ID is another identifier (sorry about all these)
+:::
 
 At this point, the application will be configured. Assuming it is successful, you will see the following text:
 
