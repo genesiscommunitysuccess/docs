@@ -128,11 +128,11 @@ Note that ranges that are not based on indexes perform more slowly than those th
 
 ## Permission
 
-You can use a permissioning block to define both dynamic permissions (AUTH) and permission codes(based on RIGHT_SUMMARY rights) on Request Servers which is similar to Event Handler and Data Server.
+You can use a permissioning block to define both dynamic permissions (AUTH) and permission codes (based on RIGHT_SUMMARY rights) on Request Servers, which is similar to Event Handler and Data Server.
 
 ### Dynamic permission:
 
-Similar to Data-Server you can provide dynamic permissioning on Request Server by using table/view reference
+Similar to Data-Server, you can provide dynamic permissioning on Request Server by using table/view reference.
 
 ```kotlin
     requestReply("MARKET_INSTRUMENTS", INSTRUMENT_DETAILS) {
@@ -153,8 +153,8 @@ Similar to Data-Server you can provide dynamic permissioning on Request Server b
     }
 ```
 
-Permissioning is different when you use [Custom Request Servers](/server/request-server/advanced/#custom-request-servers), which is similar to Event-Handler permissioning
-As you use any class/DAO as input and output classes you cannot use field syntax under auth block ex: Use instrumentId instead of INSTRUMENT_DETAILS.INSTRUMENT_ID
+Permissioning is different when you use [Custom Request Servers](/server/request-server/advanced/#custom-request-servers), which is similar to Event-Handler permissioning.
+As you use any class/DAO as input and output classes - you cannot use field syntax under auth block ex: Use instrumentId instead of INSTRUMENT_DETAILS.INSTRUMENT_ID
 
 ```kotlin
 requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId> {
@@ -172,7 +172,7 @@ requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId> {
 
 ### Permission codes
 
-Similar to Event handlers and Request Servers you can add permission code as specified below
+Similar to Event handlers and Request Servers you can add permission code as specified below.
 
 ```kotlin
     requestReply(INSTRUMENT_DETAILS) {
