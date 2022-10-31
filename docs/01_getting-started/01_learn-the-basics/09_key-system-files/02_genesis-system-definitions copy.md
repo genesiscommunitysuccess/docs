@@ -4,7 +4,7 @@ sidebar_label: 'genesis-system-definitions.kts'
 id: genesis-system-definitions
 ---
 
-The system-definition file, **genesis-system-definition.kts**, is the basis of all the configurations, scripts, data models etc. 
+The system-definition file, **genesis-system-definition.kts**, is the basis of all the configurations, scripts, data models, etc. 
 
 It defines system properties such as:
 
@@ -72,4 +72,4 @@ systemDefinition {
 }
 ```
 
-More information on system-definition can be found [here](/server/configuring-runtime/system-definitions/)
+Further system-definition information can be found [here](/server/configuring-runtime/system-definitions/).
