@@ -30,4 +30,4 @@ provideDesignSystem().register(alphaPicker());
 
 ## Use cases
 
-Selecting multiple options in the same input. You could have a set of broker codes, for example, and the user could select one or more of those codes.
+Selecting multiple options in the same input: You could have a set of broker codes, for example, and the user could select one or more of those codes.
