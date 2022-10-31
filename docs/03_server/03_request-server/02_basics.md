@@ -27,6 +27,11 @@ requestReplies {
 }
 ```
 
+### Adding a name
+
+Every requestReply in your .kts must have a unique name. If you do not provide one, it will be allocated automatically. In the previous example, the requestReply will automatically be named as REQ_INSTRUMENT_DETAILS.
+If you name it as "INSTRUMENT_INFO" then it will be registered as "REQ_INSTRUMENT_INFO"
+
 ### Multiple Request Servers
 
 Almost certainly, your application will need to have more than one `requestReply`. So, let us state the obvious and show you a file with two `requestReply` codeblocks. Again, each is the simplest kind you could possibly have.

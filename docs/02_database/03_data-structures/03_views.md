@@ -4,14 +4,14 @@ sidebar_label: 'Views'
 id: views
 ---
 
-[Introduction](/database/data-structures/data-structures/)  | [Tables](/database/data-structures/tables/) |  [Indices](/database/data-structures/indices/) | [Views](/database/data-structures/views/) 
+
 
 Views are defined in the `-view-dictionary.kts` files as discussed 
 [here](/database/fields-tables-views/views/).
 
-Views are the genesis equivalent of SQL select queries. Unlike [tables](/database/data-types/table-entities/), views do not have any data of 
-their own, but present a view based on one or more tables. A view always starts with a single table, the root table.
-Other tables can be joined onto the root table to present composite data. 
+In Genesis, a view is one table joined to one or more other tables. The first table is the root table. Other tables can be joined on to the root table to present composite data. 
+
+Views are the Genesis equivalent of SQL select queries. Unlike [tables](/database/data-types/table-entities/), views do not have any data of their own, but present a view based on the data in one or more tables. 
 
 ## Read-only
 
@@ -27,14 +27,12 @@ operations and the view will derive its indices from the root table.
 
 Depending on the view definition, a different type of view will be created.
 
-### Cardinality
+## Cardinality
 
 A view's cardinality tells us how many view records will be returned for every record in the root table. 
 
-- If a view can 
-return a maximum of 1 record for each record in the root table, the view has single cardinality. 
-- If a view can 
-return multiple records for each record in the root table, the view has multi cardinality. 
+- If a view can return a maximum of 1 record for each record in the root table, the view has single cardinality. 
+- If a view can return multiple records for each record in the root table, the view has multi cardinality. 
 
 The cardinality depends on the joins; a view with no joins, or only one-to-one joins, will be single 
 cardinality, all others will be multi cardinality
@@ -47,22 +45,28 @@ cardinality, all others will be multi cardinality
 | Supports database subscribe operations | ✔️                             | ❌                           |
 | Supports backwards joins               | ✔️                             | ❌                           |
 
-### Parameterised views
+## Parameterised views
 
-For some views, the joins are defined as input parameters, rather than on a field in another table or a constant. When 
-that happens a view is considered to be parameterised. Parameterised views can not be accessed without these parameters.
-Parameterised views can be both single and multi cardinality.
+A parameterised view is one where the join is defined as an input parameter - rather than on a field in another table or a constant. 
+There are two important characteristics of a parameterised view:
+- It can not be accessed without an input parameter.
+- It can have either single or multi cardinality.
 
 ## Indices on views
 
-Views do not have their own indices, however, these are derived from the root table. A view will always share the 
-primary key of the root table. It will also share any index from which at least the first field is included in the 
-view. Subsequent fields are only included in the view's index until the first missing field. Unique indices from the 
-root table will only be unique if all fields are included.
+This is what you need to know:
+
+- Views do not have their own indices; these are derived from the root table. 
+- A view will always share the primary key of the root table.
+- A view will share any index from which at least the first field is included in the view. 
+- Subsequent fields are only included in the view's index until the first missing field. 
+- Unique indices from the root table will only be unique if all fields are included.
 
 ## Entities
 
-During code generation, [view](/database/data-types/views-entities/) and [index](/database/data-types/index-entities/) entities will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
+During code generation, [view](/database/data-types/views-entities/) and [index](/database/data-types/index-entities/) entities are generated from the definitions in your application's **view-dictionary.kts** file. 
 
-The generated entities are kotlin data classes and can be built using the primary constructor. Just before the object is built, it is validated to make sure all required fields have been set.
+The name of each entity generated is the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
+
+The generated entities are Kotlin data classes and can be built using the primary constructor. Just before the object is built, it is validated to make sure all required fields have been set.
  
