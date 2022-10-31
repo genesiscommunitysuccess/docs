@@ -70,3 +70,5 @@ Here is an example of a generated **processes.xml** file for an application that
 </processes>
 
 ```
+
+More information on processes can be found [here](/server/configuring-runtime/processes/)

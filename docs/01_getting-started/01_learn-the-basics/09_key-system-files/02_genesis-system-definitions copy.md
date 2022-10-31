@@ -71,3 +71,5 @@ systemDefinition {
     }
 }
 ```
+
+More information on system-definition can be found [here](/server/configuring-runtime/system-definitions/)
