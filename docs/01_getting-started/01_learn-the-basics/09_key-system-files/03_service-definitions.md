@@ -31,4 +31,4 @@ When `genesisInstall` is executed, all the products have their **service-definit
 </configuration>
 ```
 
-More information on service definition can be found [here](/server/configuring-runtime/service-definitions/)
+More information on service-definition can be found [here](/server/configuring-runtime/service-definitions/)
