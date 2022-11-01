@@ -34,6 +34,7 @@ Check on your Docker dashboard if you have containers ***gsf*** and ***nginx*** 
 ### Building the docker images
 From the root directory of the project, run:
 ```shell
+./gradlew assemble
 docker-compose up -d
 ```
 

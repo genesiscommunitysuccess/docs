@@ -262,7 +262,7 @@ This component could be anything, like a custom button or even a business compon
 Let's add a route pointing to **playground** so we can access it from the menu.
 
 2. Edit file `config.ts` and add **playground** to **allRoutes** and **routes.map** so we'll be able to access playground from the menu:
-	```typescript {1, 3,12} title='config.ts'
+	```ts {1, 3, 12} title='config.ts'
 	import { MarketdataComponent } from './playground/playground';
 	...
 		public allRoutes = [
@@ -285,7 +285,7 @@ You should see the **Playground** menu item now.
 ### Creating an HTML template
 To create an HTML template for our element, we have to import and use the html-tagged template helper and pass the template to the @customElement decorator.
 
-```typescript {3,9} title='playground.ts'
+```ts {3,9} title='playground.ts'
 import { FASTElement, customElement, html } from "@microsoft/fast-element";
 
 const myTemplate = html<MarketdataComponent>`
@@ -307,7 +307,15 @@ Try it now!
 :::tip code editors
 You're free to use any IDE or code editor you feel most comfortable with. Some of them, however, do not support syntax highlighting and IntelliSense for html inside JavaScript and TypeScript tagged template strings - like our HTML code in the `html<MarketdataComponent>` template.
 
-As a tip, search for extensions in your IDE to support that. That's usually called `lit` or `literal`.
+As a tip, search for extensions in your IDE to support that. That's usually called `lit` or `literal`. If you're using VSCode, a few suggestions:
+
+[FAST Snippets](https://marketplace.visualstudio.com/items?itemName=kingoftac.fast-snippets) to get commonly used conventions when creating FAST Components.
+
+[literally-html](https://marketplace.visualstudio.com/items?itemName=webreflection.literally-html) to get syntax highlighting and documentation in your html blocks.
+
+[es6-string-css](https://marketplace.visualstudio.com/items?itemName=bashmish.es6-string-css) to get syntax highlighting in your css blocks.
+
+[eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) to get static analysis before building
 :::
 
 ### Adding attributes to the component
@@ -400,15 +408,16 @@ export class FriendList extends FASTElement {
 }
 ```
 
-:::info
-Please review the [directives](https://www.fast.design/docs/fast-element/using-directives) carefully, as we're going to use them in this training!
 :::
+
+Please review the [directives](https://www.fast.design/docs/fast-element/using-directives) carefully, as we're going to use them in this training!
 
 ### Styling our component
 FASTElement provides a **css** tagged template helper that allows for the creation of ElementStyles.
 
 Add this code:
-```typescript {2} title='playground.ts'
+```typescript {1,3,4,5,6,7} title='playground.ts'
+import { FASTElement, customElement, html, attr, css } from "@microsoft/fast-element";
 ...
 const marketdataComponentCSS = css`
   h4 {
@@ -472,8 +481,8 @@ Instrument AAPL 227.12
 ```
 
 Steps:
-- add a list called ***instruments*** to the MarketdataComponent. Feel free to initialise it with a few instruments, such as `@observable instruments: String[] = ["MSFT", "AAPL"];`
-- change the lastPrice attribute to a list of prices. Feel free to initialise it with corresponding prices, such as `@observable lastPrices: number[] = [101.23, 227.12];`
+- add a list called ***instruments*** to the MarketdataComponent. Feel free to initialize it with a few instruments, such as `@observable instruments: String[] = ["MSFT", "AAPL"];`
+- change the lastPrice attribute to a list of prices. Feel free to initialize it with corresponding prices, such as `@observable lastPrices: number[] = [101.23, 227.12];`
 - change `getLastPriceRealTime` to receive the instrument name now and return the corresponding price;
 - in the HTML template, make sure to loop through all the instruments and display the price for each one;
 - style it so that the instrument name is displayed in some tone of blue and the price in some tone of green.
@@ -533,18 +542,18 @@ To enable this micro front-end in our application, we'd have to follow the steps
 
 - Add `@genesislcap/foundation-header` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
 
-```javascript
+```js {4} title='package.json'
 {
   ...
   "dependencies": {
-    "@genesislcap/foundation-header": "latest"
+    "@genesislcap/foundation-header": "^5.0.0"
   },
   ...
 }
 ```
 
 - In our **web/src/main/main.ts** file, which is our top level class of our application, import and dependency inject the Navigation class.
-```javascript
+```js {1,6} title='main.ts'
 import { Navigation } from '@genesislcap/foundation-header';
 
 @customElement({ name, template, styles })
@@ -558,7 +567,7 @@ export class MainApplication extends FASTElement {
 ```
 
 - Set a reference to the `navigation` object on the FAST router when you instantiate it, this will allow us to set up navigation functionality from the navigation bar in the [navigation items step.](#navigation-items)
-```javascript
+```js {3} title='main.template.ts'
 // fast-router will likely have other attributes such as :config too
 const MainTemplate: ViewTemplate<MainApplication> = html`
   <fast-router :navigation=${(x) => x.navigation}></fast-router>
