@@ -25,7 +25,6 @@ Top level web component which is used to initialise a custom layout
 - **serialisable** : boolean attribute that if set will add controls for saving, loading, and resetting the
   layout. Default false.
 - **popout** : boolean attribute that if set will put popout buttons on the header bars. Default false.
-- **closable** : boolean attribute that if set will put close buttons on the header bars. Default false.
 - **maximise** : boolean attribute that if set will put maximise buttons on the header bars. Default false.
 
 :::info
@@ -66,8 +65,7 @@ Wrapper component that lives inside of a layout section and wraps the client con
 otherwise a runtime error will be thrown when the layout is attempted to be rendered on screen
 
 - **title**: string defining the title of the pane which contains the content
-- **closable**: boolean defining whether this element is closeable - if the root layout item is set to be **closable** but a specific
-  item is not then it will not show the close button. Default false.
+- **closable**: boolean defining whether this element is closeable - Default false.
 - **height**: number defining the height of this item, relative to the other children of its parent in percent
 - **width**: number defining the width of this item, relative to the other children of its parent in percent
 
