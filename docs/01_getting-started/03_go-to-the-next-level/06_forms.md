@@ -11,7 +11,7 @@ tags:
 ---
 
 ## Section objectives
-The goal of this section is to add a form that enables us to insert trades in to our database.
+The goal of this section is to add a form that enables us to insert trades into our database.
 
 ## Interacting with the Event Handler
 To interact with the Event Handler that you created [previously](/getting-started/go-to-the-next-level/events#event-handler), you will now create a form that will collect the data from the user.
@@ -66,7 +66,7 @@ Let's replace the form and code elements above with a more configurable solution
 
 To do this, you must create each form element manually and take care of storing the data input by the user.
 
-Start by adding the elements to the template. Instead of the `<zero-form>` above, replace it with the following.
+Start by adding the elements to the template. Instead of the `<zero-form>` above, replace it with the following:
 
 ```html title='home.template.ts' 
 <zero-text-field>Quantity</zero-text-field>
@@ -88,9 +88,9 @@ In the file **home.ts**, add the following properties to the class: `Home`:
 @observable public side: string = 'BUY';
 ```
 
-Now we need to interact with the Event Handlers that respond to user changes and store the data that is input:
+Now we need to interact with the Event Handlers that respond to user changes and also store the inputted data:
 
-We can do it in the traditional way by adding `@change` [Event Handler](https://www.fast.design/docs/fast-element/declaring-templates#events) - but we can also use the `sync` directive, which does that for us.
+We can do it in the traditional way by adding `@change` [Event Handler](https://www.fast.design/docs/fast-element/declaring-templates#events) - but we can also use the `sync` directive, which does that for us automaticallly.
 
 Let's add it to each form element:
 
@@ -145,13 +145,32 @@ We will start with side, as it only has two static options: BUY and SELL. We jus
 </zero-select>
 ```
 
-To enable the user to select the instrument, we can use `options-datasource`, which will fetch and add a list of options to select component from the API.
+To enable the user to select the instrument, it's more complicated, because a list of options needs to be fetched from the API.
 
-To get the data from the server, we need to define resourceName and fields we want to get. In this case we need to inject:
+We will do that in [connectedCallback](https://www.fast.design/docs/fast-element/defining-elements#the-element-lifecycle), which happens when an element is inserted into the DOM.
+First, declare `tradeInstruments`. This will be used in the template later.
+
+To get the data from the API, inject:
+```typescript title='home.ts'
+@observable tradeInstruments: Array<{value: string, label: string}>;
+@Connect connect: Connect;
+public async connectedCallback() {
+    super.connectedCallback();
+    
+    const tradeInstrumentsRequest = await this.connect.request('INSTRUMENT');
+    this.tradeInstruments = tradeInstrumentsRequest.REPLY?.map(instrument => ({value: instrument.INSTRUMENT_ID, label: instrument.INSTRUMENT_ID}));
+    this.instrument = this.tradeInstruments[0].value;
+}
+```
+
+Once we have the data with the list of instruments, we can make use of it in the template file. 
+To dynamically include a list of instruments, use the [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items.
 
 ```typescript title='home.template.ts' 
 <zero-select :value=${sync(x=> x.instrument)}>
-  <options-datasource resourceName="ALL_INSTRUMENTS" fields="INSTRUMENT_ID"></options-datasource>
+  ${repeat(x => x.tradeInstruments, html`
+    <zero-option value=${x => x.value}>${x => x.label}</zero-option>
+  `)}
 </zero-select>
 ```
 
@@ -190,4 +209,4 @@ public async insertTrade() {
       </grid-pro-genesis-datasource>
   </zero-grid-pro>
 ```
-Now if everything has worked, you can go to your browser, insert the data for a new trade, and click the button. You will see the new trade showing up in the data grid of the trade view `ALL_TRADES` at the bottom of the page.
+Now if everything has worked, you can go to your browser, insert the data for a new trade, and then click the button. The new trade displays in the data grid of the trade view `ALL_TRADES` at the bottom of the page.

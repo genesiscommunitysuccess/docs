@@ -131,6 +131,73 @@ the requestReplies defined from previous example. This example stipulates a pric
 ```
 Note that ranges that are not based on indexes perform more slowly than those that are.
 
+## Permission
+
+You can use a permissioning block to define both dynamic permissions (AUTH) and permission codes (based on RIGHT_SUMMARY rights) on Request Servers, which is similar to Event Handler and Data Server.
+
+### Dynamic permission:
+
+Similar to Data-Server, you can provide dynamic permissioning on Request Server by using table/view reference.
+
+```kotlin
+    requestReply("MARKET_INSTRUMENTS", INSTRUMENT_DETAILS) {
+
+        permissioning {
+            auth("EXCHANGE") {
+                INSTRUMENT_DETAILS.EXCHANGE_ID // This cannot be done on Custom request-server see ex below
+            }
+        }
+
+        request {
+            ...
+        }
+
+        reply {
+            ...
+        }
+    }
+```
+
+Permissioning is different when you use [Custom Request Servers](/server/request-server/advanced/#custom-request-servers), which is similar to Event-Handler permissioning.
+As you use any class/DAO as input and output classes - you cannot use field syntax under auth block ex: Use instrumentId instead of INSTRUMENT_DETAILS.INSTRUMENT_ID
+
+```kotlin
+requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId> {
+    permissioning {
+        auth("INSTRUMENT") {
+            field { instrumentId }
+        }
+    }
+
+    reply { byAlternateTypeAlternateCode ->
+        ...
+    }
+}
+```
+
+### Permission codes
+
+Similar to Event handlers and Request Servers you can add permission code as specified below.
+
+```kotlin
+    requestReply(INSTRUMENT_DETAILS) {
+
+        permissioning {
+            permissionCodes = listOf("LICENSE_TO_KILL", "LICENSE_TO_BILL")
+        }
+
+        request {
+            ...
+        }
+
+        reply {
+            ...
+        }
+    }
+```
+
+You can find out more details in our section on [authorisation](/server/access-control/authorisation-overview/).
+
 ## Custom Request Servers
 By defining your own Request Servers, you have maximum flexibility. You can specify any class for the input and output, similar to Event Handlers. For the request, optional fields should have a default value in the primary constructor. You cannot use native Kotlin classes. You should wrap these in custom input and output classes.
 

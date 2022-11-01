@@ -11,7 +11,7 @@ tags:
     - system definitions
 ---
 
-The system-definition file, **genesis-system-definition.kts**, is the basis of all the configurations, scripts, data models etc. 
+The system-definition file, **genesis-system-definition.kts**, is the basis of all the configurations, scripts, data models, etc. 
 
 It defines system properties such as:
 
@@ -78,3 +78,5 @@ systemDefinition {
     }
 }
 ```
+
+Further system-definition information can be found [here](/server/configuring-runtime/system-definitions/).
