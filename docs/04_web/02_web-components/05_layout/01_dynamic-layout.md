@@ -35,17 +35,17 @@ premade layouts that the user could choose from.
 
 ### Layout Sections
 
-#### `<foundation-vertical-split>`
+#### `<foundation-layout-vertical>`
 
 Indicates to the layout system that all immediate children are (by default) to be split equally among the available space of this
 component using n-1 vertical split(s). Can be nested within other horizontal and vertical splits.
 
-#### `<foundation-horizontal-split>`
+#### `<foundation-layout-horizontal>`
 
 Indicates to the layout system that all immediate children are (by default) to be split equally among the available space of this
 component using n-1 horizontal split(s). Can be nested within other horizontal and vertical splits.
 
-#### `<foundation-tab-split>`
+#### `<foundation-layout-tabs>`
 
 Indicates to the layout system that all immediate children are to be added as tabs in the available space of this component,
 with a tab for each child. The tabs will be ordered according to which child the layout item is (e.g. the second `<foundation-layout-item>`
@@ -104,14 +104,14 @@ Simple example with a vertical split and two items that will take up equal space
 
 ```html
 <foundation-layout>
-  <foundation-vertical-split>
+  <foundation-layout-vertical>
     <foundation-layout-item title="Component 1">
       <!-- Content -->
     </foundation-layout-item>
     <foundation-layout-item title="Component 2">
       <!-- Content -->
     </foundation-layout-item>
-  </foundation-vertical-split>
+  </foundation-layout-vertical>
   <foundation-layout-init></foundation-layout-init>
 </foundation-layout>
 ```
@@ -135,20 +135,20 @@ Slightly more complicated example:
 
 ```html
 <foundation-layout serialisable closeable>
-  <foundation-horizontal-split>
+  <foundation-layout-horizontal>
     <foundation-layout-item title="Component 1" width="25" closeable>
       <!-- Content -->
     </foundation-layout-item>
 
-    <foundation-vertical-split>
+    <foundation-layout-vertical>
       <foundation-layout-item title="Component 2">
         <!-- Content -->
       </foundation-layout-item>
       <foundation-layout-item title="Component 3">
         <!-- Content -->
       </foundation-layout-item>
-    </foundation-vertical-split>
-  </foundation-horizontal-split>
+    </foundation-layout-vertical>
+  </foundation-layout-horizontal>
 
   <foundation-layout-init></foundation-layout-init>
 </foundation-layout>
@@ -176,13 +176,13 @@ If instead we had:
 
 ```html
 <foundation-layout serialisable closeable>
-  <foundation-horizontal-split>
+  <foundation-layout-horizontal>
     <foundation-layout-item title="Component 1" width="25" closeable>
       <!-- Content -->
     </foundation-layout-item>
 
-    <foundation-vertical-split>
-      <foundation-horizontal-split>
+    <foundation-layout-vertical>
+      <foundation-layout-horizontal>
         <foundation-layout-item title="Component 2">
           <!-- Content -->
         </foundation-layout-item>
@@ -192,18 +192,18 @@ If instead we had:
         <foundation-layout-item title="Component 4">
           <!-- Content -->
         </foundation-layout-item>
-      </foundation-horizontal-split>
+      </foundation-layout-horizontal>
 
-      <foundation-tab-split>
+      <foundation-layout-tabs>
         <foundation-layout-item title="Component 5">
           <!-- Content -->
         </foundation-layout-item>
         <foundation-layout-item title="Component 6">
           <!-- Content -->
         </foundation-layout-item>
-      </foundation-tab-split>
-    </foundation-vertical-split>
-  </foundation-horizontal-split>
+      </foundation-layout-tabs>
+    </foundation-layout-vertical>
+  </foundation-layout-horizontal>
 
   <foundation-layout-init></foundation-layout-init>
 </foundation-layout>
@@ -231,7 +231,7 @@ takes up 25% of the initial width. Components 2,3,4 take up a third of the _rema
 The following example is invalid:
 ```html
 <foundation-layout>
-  <foundation-vertical-split>
+  <foundation-layout-vertical>
     <h1>My splits</h1>
     <foundation-layout-item title="Component 1">
       <!-- Content -->
@@ -239,7 +239,7 @@ The following example is invalid:
     <foundation-layout-item title="Component 2">
       <!-- Content -->
     </foundation-layout-item>
-  </foundation-vertical-split>
+  </foundation-layout-vertical>
   <foundation-layout-init></foundation-layout-init>
 </foundation-layout>
 ```
@@ -252,22 +252,22 @@ The following example is invalid:
 
 ```html
 <foundation-layout>
-	<foundation-tab-split>
+	<foundation-layout-tabs>
 
-		<foundation-vertical-split>
+		<foundation-layout-vertical>
 			<foundation-layout-item title="Component 1">
 				<!-- Content -->
 			</foundation-layout-item>
 			<foundation-layout-item title="Component 2">
 				<!-- Content -->
 			</foundation-layout-item>
-		</foundation-vertical-split>
+		</foundation-layout-vertical>
 
 		<foundation-layout-item title="Component 3">
 			<!-- Content -->
 		</foundation-layout-item>
 
-	</foundation-tab-split>
+	</foundation-layout-tabs>
   <foundation-layout-init></foundation-layout-init>
 </foundation-layout>
 ```
@@ -279,14 +279,14 @@ The following example is invalid:
 
 ```html
 <foundation-layout>
-  <foundation-tab-split>
+  <foundation-layout-tabs>
     <foundation-layout-item title="Component 1">
       <!-- Content -->
     </foundation-layout-item>
     <foundation-layout-item title="Component 2">
       <!-- Content -->
     </foundation-layout-item>
-  </foundation-tab-split>
+  </foundation-layout-tabs>
 </foundation-layout>
 ```
 While this would be a valid layout, we are missing `<foundation-layout-init></foundation-layout-init>` so this layout
