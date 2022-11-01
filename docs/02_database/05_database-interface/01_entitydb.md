@@ -1,7 +1,12 @@
 ---
-title: 'Entity Db'
+title: 'Database interface - Entity Db'
 sidebar_label: 'Entity Db'
 id: entity-db
+keywords: [database, database interface, entity db]
+tags:
+    - database
+    - database interface
+    - entity db
 ---
 
 [Introduction](/database/database-interface/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/)

@@ -1,7 +1,13 @@
 ---
-title: 'Record update'
+title: 'Subscription - Record update'
 sidebar_label: 'Record update'
 id: record-update
+keywords: [database, helper classes, subscription, overview]
+tags:
+    - database
+    - helper classes
+    - subscription
+    - overview
 ---
 
 ## Generic record update

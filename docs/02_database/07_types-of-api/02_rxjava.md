@@ -1,7 +1,14 @@
 ---
-title: 'RxJava API'
+title: 'Types of API - RxJava API'
 sidebar_label: 'RxJava'
 id: rxjava
+keywords: [database, types of api, api, types, rxjava]
+tags:
+    - database
+    - types of api
+    - api
+    - types
+    - rxjava
 ---
 
 [Async](/database/types-of-api/async/) |

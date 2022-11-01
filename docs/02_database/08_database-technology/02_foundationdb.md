@@ -1,7 +1,12 @@
 ---
-title: 'FoundationDb'
+title: 'Database Technology - FoundationDb'
 sidebar_label: 'FoundationDb'
 id: foundationdb
+keywords: [database, technology, foundationdb]
+tags:
+    - database
+    - technology
+    - foundationdb
 ---
 
 Genesis provides two database solutions built on FoundationDB.

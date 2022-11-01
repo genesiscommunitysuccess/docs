@@ -1,7 +1,12 @@
 ---
-title: 'SQL'
+title: 'Database Technology - SQL'
 sidebar_label: 'SQL'
 id: sql
+keywords: [database, technology, sql]
+tags:
+    - database
+    - technology
+    - sql
 ---
 
 SQL support covers PostgreSQL, MS SQL Server and Oracle.

@@ -1,7 +1,13 @@
 ---
-title: 'Authorisation API'
+title: 'API Reference - Authorisation API'
 sidebar_label: 'Authorisation API'
 id: authorisation-api
+keywords: [database, api, reference, authorisation]
+tags:
+    - database
+    - api
+    - reference
+    - authorisation
 ---
 
 The authorisation API consists of two main classes that enable you to add permission checks to your custom component.

@@ -1,7 +1,12 @@
 ---
-title: 'Overview'
+title: 'Database Technology - Overview'
 sidebar_label: 'Overview'
 id: overview
+keywords: [database, technology, overview]
+tags:
+    - database
+    - technology
+    - overview
 ---
 
 Your Genesis application data model can be configured without any concern about the database technology used to store the model and the data.

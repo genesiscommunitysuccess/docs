@@ -1,7 +1,12 @@
 ---
-title: 'FAQs'
+title: 'Database Technology - FAQs'
 sidebar_label: 'FAQs'
 id: faqs
+keywords: [database, technology, faq]
+tags:
+    - database
+    - technology
+    - faq
 ---
 
 ## Frequently asked questions

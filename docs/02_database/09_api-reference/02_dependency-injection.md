@@ -1,7 +1,14 @@
 ---
-title: 'Dependency Injection'
+title: 'API Reference - Dependency Injection'
 sidebar_label: 'Dependency Injection'
 id: dependency-injection
+keywords: [database, api, reference, dependency, injection]
+tags:
+    - database
+    - api
+    - reference
+    - dependency
+    - injection
 ---
 
 

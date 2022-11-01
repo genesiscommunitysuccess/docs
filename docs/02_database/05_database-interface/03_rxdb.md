@@ -1,7 +1,12 @@
 ---
-title: 'RxDb'
+title: 'Database interface - RxDb'
 sidebar_label: 'RxDb'
 id: rxdb
+keywords: [database, database interface, rxdb]
+tags:
+    - database
+    - database interface
+    - rxdb
 ---
 
 [Introduction](/database/database-interface/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/) 

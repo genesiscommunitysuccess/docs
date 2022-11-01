@@ -2,6 +2,10 @@
 title: 'Helper classes'
 sidebar_label: 'Helper classes'
 id: helper-classes
+keywords: [database, helper classes]
+tags:
+    - database
+    - helper classes
 ---
 
 Helper classes allow you to access common functionality and domain state within the Genesis platform.
