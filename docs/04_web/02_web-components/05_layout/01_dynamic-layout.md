@@ -48,9 +48,9 @@ component using n-1 horizontal split(s). Can be nested within other horizontal a
 #### `<foundation-tab-split>`
 
 Indicates to the layout system that all immediate children are to be added as tabs in the available space of this component,
-with a tab for each child. The tabs will be ordered by their position as the children of this tag, and the first child will
-be the one which is open by default. Can be nested within horizontal and vertical splits, but cannot have more layout sections inside
-of it.
+with a tab for each child. The tabs will be ordered according to which child the layout item is (e.g. the second `<foundation-layout-item>`
+ of the tab split will be the second tab), and the first child will be the one which is open by default. Can be nested within horizontal
+ and vertical splits, but cannot have more layout sections inside of it.
 
 #### Attributes
 
