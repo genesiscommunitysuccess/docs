@@ -1,5 +1,5 @@
 ---
-title: 'What can I build? - Introduction'
+title: 'What can I build? - introduction'
 sidebar_label: 'Introduction'
 id: build-intro
 keywords: [getting started, basics, introduction]
