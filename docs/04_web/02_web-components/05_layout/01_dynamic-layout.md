@@ -59,6 +59,11 @@ Each of the three layout sections have the same two _optional_ attributes.
 - **height**: number defining the height of this item, relative to the other children of its parent in percent
 - **width**: number defining the width of this item, relative to the other children of its parent in percent
 
+:::warning
+Currently the DSL team allow specification of sizes in more than just %, pixel width/height for example. This is something we may need to come back
+to later. I used % because that is what the Golden Layout API supports, but we could add these extra sizes as part of my substrate API (not MVP though?)
+:::
+
 ### Layout Item `<foundation-layout-item>`
 
 Wrapper component that lives inside of a layout section and wraps the client content. All content must be inside of a layout item
