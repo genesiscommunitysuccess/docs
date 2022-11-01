@@ -103,7 +103,7 @@ Simple example with a vertical split and two items that will take up equal space
       <!-- Content -->
     </foundation-layout-item>
   </foundation-vertical-split>
-  <foundation-layout-item></foundation-layout-item>
+  <foundation-layout-init></foundation-layout-init>
 </foundation-layout>
 ```
 
@@ -141,7 +141,7 @@ Slightly more complicated example:
     </foundation-vertical-split>
   </foundation-horizontal-split>
 
-  <foundation-layout-item></foundation-layout-item>
+  <foundation-layout-init></foundation-layout-init>
 </foundation-layout>
 ```
 
@@ -196,7 +196,7 @@ If instead we had:
     </foundation-vertical-split>
   </foundation-horizontal-split>
 
-  <foundation-layout-item></foundation-layout-item>
+  <foundation-layout-init></foundation-layout-init>
 </foundation-layout>
 ```
 
@@ -231,7 +231,7 @@ The following example is invalid:
       <!-- Content -->
     </foundation-layout-item>
   </foundation-vertical-split>
-  <foundation-layout-item></foundation-layout-item>
+  <foundation-layout-init></foundation-layout-init>
 </foundation-layout>
 ```
 This is because there is a child of one of the layout sections which isn't another layout section or
@@ -259,7 +259,7 @@ The following example is invalid:
 		</foundation-layout-item>
 
 	</foundation-tab-split>
-  <foundation-layout-item></foundation-layout-item>
+  <foundation-layout-init></foundation-layout-init>
 </foundation-layout>
 ```
 This is because you cannot have more layout sections nested inside of a tab split. You will get undefined behaviour.
