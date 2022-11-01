@@ -1,5 +1,5 @@
 ---
-title: 'What can I build? - New apps from scratch'
+title: 'What can I build? - new apps from scratch'
 sidebar_label: 'New apps from scratch'
 id: news-apps-from-scratch
 keywords: [getting started, basics, new apps, from scratch]
