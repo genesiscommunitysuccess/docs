@@ -1,7 +1,12 @@
 ---
-title: 'DbEntity'
+title: 'Data types - DbEntity'
 sidebar_label: 'DbEntity'
 id: dbentity
+keywords: [database, data types, dbentity]
+tags:
+    - database
+    - data types
+    - dbentity
 ---
 
  

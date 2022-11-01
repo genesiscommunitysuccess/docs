@@ -1,7 +1,12 @@
 ---
-title: 'Write'
+title: 'Database concepts - Write'
 sidebar_label: 'Write'
 id: write
+keywords: [database, concepts, write]
+tags:
+    - database
+    - concepts
+    - write
 ---
 
 

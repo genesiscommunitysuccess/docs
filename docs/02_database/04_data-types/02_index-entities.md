@@ -1,7 +1,12 @@
 ---
-title: 'Index entities'
+title: 'Data types - Index entities'
 sidebar_label: 'Index entities'
 id: index-entities
+keywords: [database, data types, index entities]
+tags:
+    - database
+    - data types
+    - index entities
 ---
 
 

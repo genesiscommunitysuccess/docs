@@ -2,6 +2,10 @@
 title: 'Data Structures'
 sidebar_label: 'Data Structures'
 id: data-structures
+keywords: [database, data structures]
+tags:
+    - database
+    - data structures
 ---
 
 The Genesis database supports:

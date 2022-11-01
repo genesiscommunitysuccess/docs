@@ -2,6 +2,11 @@
 title: 'Views - examples'
 sidebar_label: 'Views - examples'
 id: views-examples
+keywords: [database, views, examples]
+tags:
+    - database
+    - views
+    - examples
 ---
 
 

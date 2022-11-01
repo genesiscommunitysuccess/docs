@@ -2,6 +2,11 @@
 title: 'Tables - examples'
 sidebar_label: 'Tables - examples'
 id: tables-examples
+keywords: [database, tables, examples]
+tags:
+    - database
+    - tables
+    - examples
 ---
 
 

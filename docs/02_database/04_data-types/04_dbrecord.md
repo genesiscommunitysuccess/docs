@@ -1,7 +1,12 @@
 ---
-title: 'DbRecord'
+title: 'Data types - DbRecord'
 sidebar_label: 'DbRecord'
 id: dbrecord
+keywords: [database, data types, dbrecord]
+tags:
+    - database
+    - data types
+    - dbrecord
 ---
 
 

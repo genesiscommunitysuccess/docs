@@ -2,6 +2,11 @@
 title: 'Fields - advanced'
 sidebar_label: 'Fields - advanced'
 id: fields-advanced
+keywords: [database, fields, advanced]
+tags:
+    - database
+    - fields
+    - advanced
 ---
 
 
