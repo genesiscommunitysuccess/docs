@@ -1,7 +1,13 @@
 ---
-title: 'Excel reference'
+title: 'Excel - Reference'
 sidebar_label: 'Excel reference'
 id: excel-reference
+keywords: [server, integration, excel, reference]
+tags:
+  - server
+  - integration
+  - excel
+  - reference
 ---
 
 [Excel reference](/server/integration/excel-to-genesis/excel-reference/)  | [Excel functions](/server/integration/excel-to-genesis/excel-functions)

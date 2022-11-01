@@ -1,8 +1,14 @@
 ---
-id: training-content-day4
-title: Day four
+title: Developer training - Day four
 sidebar_label: Day four
 sidebar_position: 6
+id: training-content-day4
+keywords: [getting started, quick start, developer training, day four]
+tags:
+    - getting started
+    - quick start
+    - developer training
+    - day four
 ---
 
 <details>

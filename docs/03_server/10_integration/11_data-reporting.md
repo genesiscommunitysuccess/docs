@@ -2,10 +2,12 @@
 title: 'Sever Reporting'
 sidebar_label: 'Server Reporting'
 id: server-reporting
+keywords: [server, integration, micro-front-ends, reporting]
 tags:
-  - reporting
   - server
-  - micro frontends
+  - integration
+  - micro-front-ends
+  - reporting
 ---
 
 import Reporting from '../../resource/reporting_mf.md'

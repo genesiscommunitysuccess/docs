@@ -1,7 +1,13 @@
 ---
-title: 'Basics'
+title: 'Custom Endpoints - Basics'
 sidebar_label: 'Basics'
 id: basics
+keywords: [server, integration, custom endpoints, basics]
+tags:
+  - server
+  - integration
+  - custom endpoints
+  - basics
 ---
 
 import Tabs from '@theme/Tabs';

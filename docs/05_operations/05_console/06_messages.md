@@ -2,8 +2,9 @@
 title: 'Genesis Console - messages'
 sidebar_label: 'Messages'
 id: messages
-keywords: [console, messages]
+keywords: [operations, console, messages]
 tags:
+    - operations
     - console
     - messages
 ---

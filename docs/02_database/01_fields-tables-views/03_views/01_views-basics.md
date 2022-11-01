@@ -2,6 +2,11 @@
 title: 'Views - basics'
 sidebar_label: 'Views - basics'
 id: views-basics
+keywords: [database, views, basics]
+tags:
+    - database
+    - views
+    - basics
 ---
 
 

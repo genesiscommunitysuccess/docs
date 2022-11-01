@@ -1,7 +1,13 @@
 ---
-title: 'Customisation (app-specific)'
+title: 'Design Systems - Customisation (app-specific)'
 sidebar_label: 'Customisation (app-specific)'
 id: customisation-app-specific
+keywords: [web, design system, customisation, app-specific]
+tags:
+  - web
+  - design system
+  - customisation
+  - app-specific
 ---
 
 When performing design system customisations, you can control the scope as follows:

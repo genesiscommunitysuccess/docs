@@ -1,8 +1,15 @@
 ---
-title: 'Oracle DB'
+title: 'Pipeline setup - Oracle DB'
 sidebar_label: 'Oracle DB'
 id: oracle
 sidebar_position: 4
+keywords: [operations, pipeline, setup, oracle db]
+tags:
+    - operations
+    - pipeline
+    - setup
+    - introduction
+    - oracle db
 ---
 
 :::note

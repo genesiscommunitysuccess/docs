@@ -1,15 +1,15 @@
 ---
-title: 'Foundation Header'
+title: 'Micro-front-ends - Foundation Header'
 sidebar_label: 'Foundation header'
 Id: front-end-foundation-header
+keywords: [web, frontend, ui, micro-front-ends, header, sidebar]
 tags:
-  - header
-  - sidebar
+  - web
   - frontend
   - ui
-  - mf
-  - web
-  - micro frontends
+  - micro-front-ends
+  - header
+  - sidebar
 ---
 
 # Foundation Header

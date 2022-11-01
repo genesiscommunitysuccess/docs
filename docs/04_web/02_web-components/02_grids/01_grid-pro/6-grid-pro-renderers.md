@@ -1,6 +1,13 @@
 ---
 id: grid-pro-renderers
-title: Genesis Grid Pro renderers
+title: Grid Pro - Renderers
+keywords: [web, web components, grid, grid pro, renderers]
+tags:
+    - web
+    - web components
+    - grid
+    - grid pro
+    - renderers
 ---
 
 When dealing with data, you usually have to render the data in a way that is meaningful to the user. This is the purpose of the `grid-pro-renderers`. The rendering can vary from one column to another, from boolean typed columns that need to be rendered as a `checkbox` to a column that needs to be rendered as a percentage.

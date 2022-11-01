@@ -2,8 +2,9 @@
 title: 'Genesis Console - Resources'
 sidebar_label: 'Resources'
 id: resources
-keywords: [console, resources]
+keywords: [operations, console, resources]
 tags:
+    - operations
     - console
     - resources
 ---

@@ -1,7 +1,14 @@
 ---
-title: 'Add some data'
+title: 'Go to the next level - Add some data'
 sidebar_label: 'Add some data'
 id: add-some-data
+keywords: [getting started, quick start, next level, data, add data]
+tags:
+    - getting started
+    - quick start
+    - next level
+    - data
+    - add data
 ---
 
 ## Add a user and some example data

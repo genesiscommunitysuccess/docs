@@ -1,6 +1,10 @@
 ---
 title: 'Genesis Stack Overflow'
 id: stackoverflow-onboarding
+keywords: [stackoverflow, onboarding]
+tags:
+    - stackoverflow
+    - onboarding
 ---
 
 <!-- The stackoverflow icon in the top navbar redirects here, this page should be unlisted -->

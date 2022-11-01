@@ -1,7 +1,12 @@
 ---
-title: 'Badge'
+title: 'Web Components - Badge'
 sidebar_label: 'Badge'
 id: badge
+keywords: [web, web components, badge]
+tags:
+    - web
+    - web components
+    - badge
 ---
 
 The `badge` component is used to highlight an item or flag its status.

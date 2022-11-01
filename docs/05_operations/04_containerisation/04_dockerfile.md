@@ -2,9 +2,13 @@
 title: 'Genesis containerisation - using your own Dockerfile'
 sidebar_label: 'Use your own Dockerfile'
 id: dockerfile
-keywords: [containerisation, container, docker]
+keywords: [operations, containerisation, container, docker, dockerfile]
 tags:
+    - operations
     - containerisation
+    - container
+    - docker
+    - dockerfile
 ---
 
 If you want more control over the image, you can create your own Dockerfile, which gives you complete control over the base image and the versions of the underlying dependencies.

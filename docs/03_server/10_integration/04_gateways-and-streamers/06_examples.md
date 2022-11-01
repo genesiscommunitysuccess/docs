@@ -1,7 +1,14 @@
 ---
-title: 'Examples'
+title: 'Gateways and Streamers - Examples'
 sidebar_label: 'Examples'
 id: examples
+keywords: [server, integration, gateways, streamers, examples]
+tags:
+  - server
+  - integration
+  - gateways
+  - streamers
+  - examples
 ---
 Streamer example:
 

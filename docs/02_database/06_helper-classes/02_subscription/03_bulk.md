@@ -1,7 +1,13 @@
 ---
-title: 'Bulk'
+title: 'Subscription - Bulk'
 sidebar_label: 'Bulk'
 id: bulk
+keywords: [database, helper classes, subscription, bulk]
+tags:
+    - database
+    - helper classes
+    - subscription
+    - bulk
 ---
 
 

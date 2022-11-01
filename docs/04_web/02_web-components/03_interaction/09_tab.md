@@ -1,7 +1,12 @@
 ---
-title: 'Tabs'
-sidebar_label: 'Tabs'
-id: tabs
+title: 'Web Components - Tab'
+sidebar_label: 'Tab'
+id: tab
+keywords: [web, web components, tab]
+tags:
+    - web
+    - web components
+    - tab
 ---
 
 _Tabs_ are a set of layered sections of content that display one panel of content at a time. Each tab panel has an associated tab element that, when activated, displays the panel. The list of tab elements is arranged along one edge of the currently displayed panel.

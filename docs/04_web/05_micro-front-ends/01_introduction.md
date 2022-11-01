@@ -1,12 +1,14 @@
 ---
-title: 'Introduction'
+title: 'Micro-front-ends - Introduction'
 sidebar_label: 'Introduction'
 id: introduction
+keywords: [web, frontend, ui, micro-front-ends, introduction]
 tags:
   - web
   - frontend
   - ui
-  - micro frontends
+  - micro-front-ends
+  - introduction
 ---
 
 Micro-front-end architecture is a design approach in which a front-end app is decomposed into individual,

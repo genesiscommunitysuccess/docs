@@ -1,8 +1,14 @@
 ---
-title: 'UI components'
+title: 'Components - UI'
 sidebar_label: 'UI components'
 sidebar_position: 5
 id: ui-components
+keywords: [getting started, basics, components, ui]
+tags:
+    - getting started
+    - basics
+    - components
+    - ui
 ---
 
 With these user-interface (UI) components, you can create clear and usable interfaces quickly.
@@ -31,7 +37,7 @@ With these user-interface (UI) components, you can create clear and usable inter
 | [Listbox](docs/04_web/02_web-components/03_interaction/06_listbox.md) 		                     | Interaction   | A component displaying an enumerated set of items                                                                                                           |
 | [Menu](docs/04_web/02_web-components/03_interaction/07_menu.md) 		                           | Interaction   | A widget that offers a list of choices to the user                                                                                                          |
 | [Modal](docs/04_web/02_web-components/03_interaction/08_modal.md) 	                          | Interaction   | An alternative to the dialog component which will prevent the user from interacting with other content on the page                                          |
-| [Tabs](docs/04_web/02_web-components/03_interaction/09_tabs.md) 	                            | Interaction   | A set of layered sections of content that display one panel of content at a time                                                                            |
+| [Tabs](/web/web-components/interaction/tab/) 	                            | Interaction   | A set of layered sections of content that display one panel of content at a time                                                                            |
 | [Tooltip](docs/04_web/02_web-components/03_interaction/10_tooltip.md) 		                     | Interaction   | Provides extra information about another element when the user hovers over it                                                                               |
 | [Tree view](docs/04_web/02_web-components/03_interaction/11_tree-view.md) 	                  | Interaction   | Component presenting a hierarchical list                                                                                                                    |
 | [Avatar](docs/04_web/02_web-components/04_presentation/01_avatar.md) 	                       | Presentation  | Used to graphically represent a user or an object                                                                                                           |

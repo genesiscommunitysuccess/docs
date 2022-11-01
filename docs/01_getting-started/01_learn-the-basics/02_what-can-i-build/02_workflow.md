@@ -1,7 +1,12 @@
 ---
-title: 'Workflow'
+title: 'What can I build? - workflow'
 sidebar_label: 'Workflow'
 id: workflow
+keywords: [getting started, basics, workflow]
+tags:
+    - getting started
+    - basics
+    - workflow
 ---
 
 Self-contained systems (aren't you bored by the term "silo") remain a big blocker for anyone looking for efficiency.

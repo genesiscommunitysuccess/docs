@@ -2,9 +2,11 @@
 title: 'Consolidator - Testing'
 sidebar_label: 'Testing'
 id: testing
-keywords: [consolidator]
+keywords: [server, consolidator, testing]
 tags:
-    - consolidator
+  - server
+  - consolidator
+  - testing
 ---
 
 [Introduction](/server/consolidator/introduction) | [Basics](/server/consolidator/basics) |  [Advanced](/server/consolidator/advanced) | [Examples](/server/consolidator/examples) | [Configuring runtime](/server/consolidator/configuring-runtime) | [Testing](/server/consolidator/testing)

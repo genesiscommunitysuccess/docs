@@ -1,7 +1,12 @@
 ---
-title: 'Menu'
+title: 'Web Components - Menu'
 sidebar_label: 'Menu'
 id: menu
+keywords: [web, web components, menu]
+tags:
+    - web
+    - web components
+    - menu
 ---
 
 As defined by the W3C:

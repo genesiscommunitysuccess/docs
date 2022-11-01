@@ -1,7 +1,12 @@
 ---
-title: 'Configuring Runtime'
+title: 'Evaluator - Configuring Runtime'
 sidebar_label: 'Configuring Runtime'
 id: configuring-runtime
+keywords: [server, evaluator, configuring runtime]
+tags:
+  - server
+  - evaluator
+  - configuring runtime
 ---
 
 [Introduction](/server/evaluator/introduction) | [Basics](/server/evaluator/basics) | [Examples](/server/evaluator/examples) | [Configuring runtime](/server/evaluator/configuring-runtime) | [Testing](/server/evaluator/testing)

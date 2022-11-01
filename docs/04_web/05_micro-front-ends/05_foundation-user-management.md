@@ -1,17 +1,14 @@
 ---
-title: 'User Management'
+title: 'Micro-front-ends - User Management'
 sidebar_label: 'User Management'
 Id: front-end-foundation-user-management
+keywords: [web, user management, frontend, ui, micro-front-ends]
 tags:
-  - user
-  - management
+  - web
+  - user management
   - frontend
   - ui
-  - mf
-  - web
-  - micro frontends
-  - form
-  - resource
+  - micro-front-ends
 ---
 
 

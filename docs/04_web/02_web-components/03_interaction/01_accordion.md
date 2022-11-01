@@ -1,7 +1,12 @@
 ---
-title: 'Accordion'
+title: 'Web Components - Accordion'
 sidebar_label: 'Accordion'
 id: accordion
+keywords: [web, web components, accordion]
+tags:
+    - web
+    - web components
+    - accordion
 ---
 
 An accordion is a vertically stacked set of interactive headings representing a section of content. The headings function as controls that enable users to reveal or hide their associated sections of content. Accordions are commonly used to reduce the need to scroll when presenting multiple sections of content on a single page.

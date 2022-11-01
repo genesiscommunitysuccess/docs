@@ -1,7 +1,14 @@
 ---
-title: 'Ingest external data'
+title: 'Go to the next level - Ingest external data'
 sidebar_label: 'Ingest external data'
 id: data-pipeline
+keywords: [getting started, quick start, next level, data, pipeline]
+tags:
+    - getting started
+    - quick start
+    - next level
+    - data
+    - pipeline
 ---
 
 So far, we have only directed you towards manual data ingestion techniques, using gradle tasks, forms, [SendIt](/operations/commands/server-commands/#sendit-script), Genesis Console or Postman.

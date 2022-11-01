@@ -1,7 +1,12 @@
 ---
-title: 'Anchor'
+title: 'Web Components - Anchor'
 sidebar_label: 'Anchor'
 id: anchor
+keywords: [web, web components, anchor]
+tags:
+    - web
+    - web components
+    - anchor
 ---
 
 An anchor is a piece of text that marks the beginning and/or the end of a hypertext link.

@@ -1,9 +1,14 @@
 ---
-id: web-training-day1
-title: Day 1
+title: Web Developer Training - Day 1
 sidebar_label: Day one
 sidebar_position: 3
-
+id: web-training-day1
+keywords: [getting started, developer training, web training, day one]
+tags:
+    - getting started
+    - developer training
+    - server training
+    - day one
 ---
 # Day 1 agenda
 Reviewing the basics and extending our application​.

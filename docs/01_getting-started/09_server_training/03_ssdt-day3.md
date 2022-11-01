@@ -1,9 +1,14 @@
 ---
-id: 03_ssdt-day3
-title: Day three
+title: Server Specialist Developer Training - Day three
 sidebar_label: Day three
 sidebar_position: 4
-
+id: 03_ssdt-day3
+keywords: [getting started, developer training, server training, day three]
+tags:
+    - getting started
+    - developer training
+    - server training
+    - day three
 ---
 This day covers:
 

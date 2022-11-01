@@ -1,7 +1,12 @@
 ---
-title: 'WriteResult'
+title: 'Helper classes - WriteResult'
 sidebar_label: 'WriteResult'
 id: write-result
+keywords: [database, helper classes, writeresult]
+tags:
+    - database
+    - helper classes
+    - writeresult
 ---
 
 ## Entity write result

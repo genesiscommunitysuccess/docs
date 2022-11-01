@@ -1,7 +1,13 @@
 ---
-title: 'Track the data changes using Auditable Tables'
+title: 'Go to the next level - Track the data changes using Auditable Tables'
 sidebar_label: 'Using Auditable Tables'
 id: audit
+keywords: [getting started, quick start, next level, audit]
+tags:
+    - getting started
+    - quick start
+    - next level
+    - audit
 ---
 
 We want to be able to track the changes made to the various trades on the `TRADE` table, such that we are able to see the times and modifications made during the history of the trade. So, we are going to add basic auditing to the `TRADE` table to keep a record of the changing states of the trades.

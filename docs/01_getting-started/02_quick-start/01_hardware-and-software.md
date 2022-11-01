@@ -1,9 +1,11 @@
 ---
-title: 'Hardware and software'
+title: 'Quick Start - Hardware and software'
 sidebar_label: 'Hardware and software'
 id: hardware-and-software
-keywords: [software, hardware, repository, npmrc, gradle, foundation ui]
-tags: 
+keywords: [getting started, quick start, software, hardware, repository, npmrc, gradle, foundation ui]
+tags:
+    - getting started
+    - quick start
     - software
     - hardware
     - repository

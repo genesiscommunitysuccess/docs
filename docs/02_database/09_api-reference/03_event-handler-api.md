@@ -1,7 +1,13 @@
 ---
-title: 'Event Handler API'
+title: 'API Reference - Event Handler API'
 sidebar_label: 'Event Handler API'
 id: event-handler-api
+keywords: [database, api, reference, event handler]
+tags:
+    - database
+    - api
+    - reference
+    - event handler
 ---
 
 

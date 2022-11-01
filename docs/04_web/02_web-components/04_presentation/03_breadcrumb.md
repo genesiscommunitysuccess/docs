@@ -1,7 +1,12 @@
 ---
-title: 'Breadcrumb'
+title: 'Web Components - Breadcrumb'
 sidebar_label: 'Breadcrumb'
 id: breadcrumb
+keywords: [web, web components, breadcrumb]
+tags:
+    - web
+    - web components
+    - breadcrumb
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#breadcrumb):

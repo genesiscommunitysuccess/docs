@@ -1,7 +1,12 @@
 ---
-title: 'Aerospike'
+title: 'Database Technology - Aerospike'
 sidebar_label: 'Aerospike'
 id: aerospike
+keywords: [database, technology, aerospike]
+tags:
+    - database
+    - technology
+    - aerospike
 ---
 
 Genesis supports [Aerospike](https://aerospike.com/). To connect to Aerospike, use the [system definition items](/server/configuring-runtime/system-definitions/) listed below.

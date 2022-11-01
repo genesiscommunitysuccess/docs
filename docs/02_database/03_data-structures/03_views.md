@@ -1,7 +1,12 @@
 ---
-title: 'Views'
+title: 'Data Structures - Views'
 sidebar_label: 'Views'
 id: views
+keywords: [database, data structures, views]
+tags:
+    - database
+    - data structures
+    - views
 ---
 
 

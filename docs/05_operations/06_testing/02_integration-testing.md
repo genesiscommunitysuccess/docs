@@ -2,6 +2,11 @@
 title: 'Integration testing'
 sidebar_label: 'Integration testing'
 id: integration-testing
+keywords: [operations, integration, testing]
+tags:
+    - operations
+    - integration
+    - testing
 ---
 
 import Tabs from '@theme/Tabs';

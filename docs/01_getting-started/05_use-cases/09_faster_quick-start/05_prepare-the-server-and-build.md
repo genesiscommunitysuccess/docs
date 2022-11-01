@@ -1,7 +1,14 @@
 ---
-title: 'Prepare processes and services'
+title: 'Faster quick start - Prepare processes and services'
 sidebar_label: 'Prepare processes and services'
 id: prepare-processes-and-services
+keywords: [getting started, quick start, faster quick start, processes, services]
+tags:
+    - getting started
+    - quick start
+    - faster quick start
+    - processes
+    - services
 ---
 
 The application has two files that contain vital configuration information:

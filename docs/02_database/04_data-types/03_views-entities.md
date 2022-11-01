@@ -1,7 +1,12 @@
 ---
-title: 'Views entities'
+title: 'Data types - Views entities'
 sidebar_label: 'Views entities'
 id: views-entities
+keywords: [database, data types, views entities]
+tags:
+    - database
+    - data types
+    - views entities
 ---
 
 

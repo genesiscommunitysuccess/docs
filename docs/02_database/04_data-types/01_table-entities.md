@@ -1,7 +1,12 @@
 ---
-title: 'Table entities'
+title: 'Data types - Table entities'
 sidebar_label: 'Table entities'
 id: table-entities
+keywords: [database, data types, table entities]
+tags:
+    - database
+    - data types
+    - table entities
 ---
 
 

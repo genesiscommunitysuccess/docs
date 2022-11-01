@@ -1,7 +1,12 @@
 ---
-title: 'Basics'
+title: 'State Machine - Basics'
 sidebar_label: 'Basics'
 id: basics
+keywords: [server, state machine, basics]
+tags:
+  - server
+  - state machine
+  - basics
 ---
 
 You define your state machine as a specific type of Event Handler. 

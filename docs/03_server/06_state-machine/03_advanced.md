@@ -1,7 +1,12 @@
 ---
-title: 'Advanced'
+title: 'State Machine - Advanced'
 sidebar_label: 'Advanced'
 id: advanced
+keywords: [server, state machine, advanced]
+tags:
+  - server
+  - state machine
+  - advanced
 ---
 
 The state machine can be injected to the Event Handler script or API.

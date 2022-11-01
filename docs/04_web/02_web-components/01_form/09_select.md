@@ -1,7 +1,12 @@
 ---
-title: 'Select'
+title: 'Web Components - Select'
 sidebar_label: 'Select'
 id: select
+keywords: [web, web components, select]
+tags:
+    - web
+    - web components
+    - select
 ---
 
 <div class="select-examples">

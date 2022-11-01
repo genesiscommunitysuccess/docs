@@ -1,8 +1,14 @@
 ---
-title: 'Core components'
+title: 'Components - Core'
 sidebar_label: 'Core components'
 sidebar_position: 2
 id: core-components
+keywords: [getting started, basics, components, core]
+tags:
+    - getting started
+    - basics
+    - components
+    - core
 ---
 
 These core components are part of the Genesis low-code platform which run automatically. These components eliminate the need of the manual low-level programming which is otherwise mandatory for creating financial markets applications. Hence, you can simply focus on developing the essential value specific to your application.

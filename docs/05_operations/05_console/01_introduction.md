@@ -2,9 +2,11 @@
 title: 'Genesis Console - introduction'
 sidebar_label: 'Introduction'
 id: introduction
-keywords: [console]
+keywords: [operations, console, introduction]
 tags:
+    - operations
     - console
+    - introduction
 ---
 
 

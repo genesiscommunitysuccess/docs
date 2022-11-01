@@ -2,12 +2,15 @@
 title: 'Component testing'
 sidebar_label: 'Component testing'
 id: component-testing
+keywords: [operations, component, testing]
+tags:
+    - operations
+    - component
+    - testing
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-## Component testing
 
 There are two easy ways of testing components in your application:
 

@@ -2,9 +2,13 @@
 title: 'Genesis containerisation - running a container'
 sidebar_label: 'Run a container'
 id: run
-keywords: [containerisation, container, docker]
+keywords: [operations, containerisation, container, docker, run]
 tags:
+    - operations
     - containerisation
+    - container
+    - docker
+    - run
 ---
 
 If you haven’t already initialised the database, you can run the Docker container passing the environment variable `GENESIS_DB_INSTALL=true`;this will trigger a `remap` to create all the tables and will exit on completion.

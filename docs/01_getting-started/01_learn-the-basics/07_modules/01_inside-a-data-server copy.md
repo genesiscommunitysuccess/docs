@@ -1,7 +1,13 @@
 ---
-title: 'Inside a Data Server'
+title: 'Modules - Inside a Data Server'
 sidebar_label: 'Inside a Data Server'
 id: inside-a-data-server
+keywords: [getting started, basics, modules, data server]
+tags:
+    - getting started
+    - basics
+    - modules
+    - data server
 ---
 
 A Data Server supplies real-time (streaming) data to the front end of your application.

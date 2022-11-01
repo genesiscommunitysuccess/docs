@@ -1,9 +1,14 @@
 ---
-id: fundamentals
-title: Fundamentals
+title: Developer training - Fundamentals
 sidebar_label: Fundamentals
 sidebar_position: 1
-
+id: fundamentals
+keywords: [getting started, quick start, developer training, fundamentals]
+tags:
+    - getting started
+    - quick start
+    - developer training
+    - fundamentals
 ---
 
 Creating financial markets technology today is fundamentally broken – too slow, expensive and high-risk. Genesis is revolutionising software delivery within the financial markets so that any coder can create reactive, performant and compliant applications in days.

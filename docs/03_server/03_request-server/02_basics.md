@@ -1,7 +1,12 @@
 ---
-title: 'Request Server: basics'
+title: 'Request Server - Basics'
 sidebar_label: 'Basics'
 id: basics
+keywords: [server, request server, introduction]
+tags:
+  - server
+  - request server
+  - introduction
 ---
 
 

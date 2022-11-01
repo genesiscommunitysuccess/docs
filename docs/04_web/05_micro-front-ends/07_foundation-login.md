@@ -1,15 +1,15 @@
 ---
-title: 'Foundation Login'
+title: 'Micro-front-ends - Foundation Login'
 sidebar_label: 'Foundation login'
 Id: front-end-foundation-login
+keywords: [web, login, foundation login, frontend, ui, micro-front-ends]
 tags:
-  - header
-  - sidebar
+  - web
+  - login
+  - foundation login
   - frontend
   - ui
-  - mf
-  - web
-  - micro frontends
+  - micro-front-ends
 ---
 
 # Foundation Login

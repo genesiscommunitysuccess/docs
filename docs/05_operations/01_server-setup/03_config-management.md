@@ -1,9 +1,15 @@
 ---
-id: config-management
-title: 'Config Management'
+title: 'Server Setup - Config Management'
 sidebar_label: 'Config Management'
 sidebar_position: 3
-
+id: config-management
+keywords: [operations, server, setup, config, management]
+tags:
+    - database
+    - server
+    - setup
+    - config
+    - management
 ---
 This document describes the recommended uses of config management with Genesis frameworks.  It is written for a reader with some
 Linux system administration experience.

@@ -1,7 +1,12 @@
 ---
-title: 'Option'
+title: 'Web Components - Option'
 sidebar_label: 'Option'
 id: option
+keywords: [web, web components, option]
+tags:
+    - web
+    - web components
+    - option
 ---
 An implementation of an [option](https://w3c.github.io/aria/#option).
 

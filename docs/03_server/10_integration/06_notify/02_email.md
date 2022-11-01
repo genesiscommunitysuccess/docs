@@ -1,7 +1,13 @@
 ---
-title: 'Email'
+title: 'Notify - Email'
 sidebar_label: 'Email'
 id: email
+keywords: [server, integration, notify, email]
+tags:
+  - server
+  - integration
+  - notify
+  - email
 ---
 
 

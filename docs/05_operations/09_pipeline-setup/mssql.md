@@ -1,8 +1,16 @@
 ---
-title: 'Microsoft SQL Server'
+title: 'Pipeline setup - Microsoft SQL Server'
 sidebar_label: 'Microsoft SQL Server'
 id: mssql
 sidebar_position: 3
+keywords: [operations, pipeline, setup, mssql, microsoft, sql server]
+tags:
+    - operations
+    - pipeline
+    - setup
+    - mssql
+    - microsoft
+    - sql server
 ---
 
 :::note

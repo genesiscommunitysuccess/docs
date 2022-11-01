@@ -1,7 +1,12 @@
 ---
-title: 'Event Handler: configuring runtime'
+title: 'Event Handler - Configuring runtime'
 sidebar_label: 'Configuring runtime'
 id: configuring-runtime
+keywords: [server, event handler, configuring runtime]
+tags:
+  - server
+  - event handler
+  - configuring runtime
 ---
 
 

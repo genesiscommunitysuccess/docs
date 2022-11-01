@@ -2,6 +2,11 @@
 title: 'Fields - examples'
 sidebar_label: 'Fields - examples'
 id: fields-examples
+keywords: [database, fields, examples]
+tags:
+    - database
+    - fields
+    - examples
 ---
 
  

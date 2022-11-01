@@ -1,7 +1,13 @@
 ---
-title: 'Introduction'
+title: 'Data Pipeline - Introduction'
 sidebar_label: 'Introduction'
 id: introduction
+keywords: [server, integration, data pipeline, introduction]
+tags:
+  - server
+  - integration
+  - data pipeline
+  - introduction
 ---
 
 [Introduction](/server/integration/data-pipeline/introduction/)  | [Basics](/server/integration/data-pipeline/basics) | [Advanced](/server/integration/data-pipeline/advanced) | [Examples](/server/integration/data-pipeline/examples) | [Configuring runtime](/server/integration/data-pipeline/configuring-runtime) | [Testing](/server/integration/data-pipeline/testing)

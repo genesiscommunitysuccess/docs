@@ -1,7 +1,12 @@
 ---
-title: 'Avatar'
+title: 'Web Components - Avatar'
 sidebar_label: 'Avatar'
 id: avatar
+keywords: [web, web components, avatar]
+tags:
+    - web
+    - web components
+    - avatar
 ---
 
 The `avatar` component is used to graphically represent a user or an object.

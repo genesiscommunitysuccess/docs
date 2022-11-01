@@ -1,7 +1,13 @@
 ---
-title: 'State Management'
+title: 'Go to the next level - State Management'
 sidebar_label: 'State Management'
 id: state-management
+keywords: [getting started, quick start, next level, state management]
+tags:
+    - getting started
+    - quick start
+    - next level
+    - state management
 ---
 
 [State machines](/server/state-machine/introduction/) enable you to control workflow by defining the transitions from state to state. This example enables you to build a very simple state machine so that you can add new trades. We shall use the `TRADE_STATUS` field, which can have three possible states: `NEW`, `ALLOCATED`, or `CANCELLED`.

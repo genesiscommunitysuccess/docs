@@ -2,6 +2,10 @@
 title: 'Generating DAOs'
 sidebar_label: 'Generating DAOs'
 id: genesisDao
+keywords: [database, DAOs]
+tags:
+    - database
+    - DAOs
 ---
 
 [Introduction](/database/fields-tables-views/fields-tables-views/)  | [Fields](/database/fields-tables-views/fields/)  | [Tables](/database/fields-tables-views/tables/)  |

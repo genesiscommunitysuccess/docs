@@ -2,9 +2,14 @@
 title: 'Genesis containerisation - pushing the image to a registry'
 sidebar_label: 'Pushing your image'
 id: pushing
-keywords: [containerisation, container, docker]
+keywords: [operations, containerisation, container, docker, image, registry]
 tags:
+    - operations
     - containerisation
+    - container
+    - docker
+    - image
+    - registry
 ---
 
 If you choose to use the Gradle plugin to build the image, the Genesis low-code platform also offers a Gradle task that pushes your built image to your chosen repository.

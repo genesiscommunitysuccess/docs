@@ -2,6 +2,11 @@
 title: 'Customisation (general)'
 sidebar_label: 'Customisation (general)'
 id: customisation-general
+keywords: [web, design system, customisation]
+tags:
+  - web
+  - design system
+  - customisation
 ---
 
 Our design systems and components are highly configurable. Let's have a look at how you can take advantage.

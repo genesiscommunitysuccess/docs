@@ -1,7 +1,12 @@
 ---
-title: 'Button'
+title: 'Web Components - Button'
 sidebar_label: 'Button'
 id: button
+keywords: [web, web components, button]
+tags:
+    - web
+    - web components
+    - button
 ---
 
 <div class="button-examples">

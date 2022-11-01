@@ -1,7 +1,12 @@
 ---
-title: 'Disclosure'
+title: 'Web Components - Disclosure'
 sidebar_label: 'Disclosure'
 id: disclosure
+keywords: [web, web components, disclosure]
+tags:
+    - web
+    - web components
+    - disclosure
 ---
 
 

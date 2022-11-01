@@ -1,7 +1,13 @@
 ---
-title: 'Introduction'
+title: 'Prerequisites - Introduction'
 sidebar_label: 'Introduction'
 id: introduction
+keywords: [getting started, quick start, prerequisites, introduction]
+tags:
+    - getting started
+    - quick start
+    - prerequisites
+    - introduction
 ---
 To set up a full-functioning developer workstation, you need to check out the hardware and software requirements first. It's worth checking through all the rest of these pages after that.
 

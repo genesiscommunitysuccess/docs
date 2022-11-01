@@ -1,7 +1,12 @@
 ---
-title: 'Genesis Router'
+title: 'Server Configuration - Genesis Router'
 sidebar_label: 'Genesis Router'
 id: genesis-router
+keywords: [server, configuration, genesis router]
+tags:
+  - server
+  - configuration
+  - genesis router
 ---
 
 

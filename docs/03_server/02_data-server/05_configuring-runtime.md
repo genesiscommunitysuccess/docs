@@ -1,7 +1,14 @@
 ---
-title: 'Data Server: configuring runtime'
+title: 'Data Server - configuring runtime'
 sidebar_label: 'Configuring runtime'
 id: configuring-runtime
+keywords: [server, data server, dataserver, introduction, configuring runtime]
+tags:
+  - server
+  - data server
+  - dataserver
+  - introduction
+  - configuring runtime
 ---
 
 

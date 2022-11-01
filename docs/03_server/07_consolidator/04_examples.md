@@ -2,9 +2,11 @@
 title: 'Consolidator - Examples'
 sidebar_label: 'Examples'
 id: examples
-keywords: [consolidator]
+keywords: [server, consolidator, examples]
 tags:
-    - consolidator
+  - server
+  - consolidator
+  - examples
 ---
 
 [Introduction](/server/consolidator/introduction) | [Basics](/server/consolidator/basics) |  [Advanced](/server/consolidator/advanced) | [Examples](/server/consolidator/examples) | [Configuring runtime](/server/consolidator/configuring-runtime) | [Testing](/server/consolidator/testing)

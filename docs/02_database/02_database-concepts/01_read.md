@@ -1,7 +1,12 @@
 ---
-title: 'Read'
+title: 'Database concepts - Read'
 sidebar_label: 'Read'
 id: read
+keywords: [database, concepts, read]
+tags:
+    - database
+    - concepts
+    - read
 ---
 
 

@@ -2,8 +2,9 @@
 title: 'Design Systems - Introduction'
 sidebar_label: 'Introduction'
 id: introduction
-keywords: [design system, frontend, ui, foundation ui]
+keywords: [web, design system, frontend, ui, foundation ui]
 tags:
+  - web
   - design system
   - frontend
   - ui

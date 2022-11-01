@@ -1,7 +1,13 @@
 ---
-title: 'Basics'
+title: 'DB Streaming Out - Basics'
 sidebar_label: 'Basics'
 id: basics
+keywords: [server, integration, database streaming out, basics]
+tags:
+  - server
+  - integration
+  - database streaming out
+  - basics
 ---
 
 [Introduction](/server/integration/database-streaming-out/introduction)  | [Basics](/server/integration/database-streaming-out/basics) | [Advanced](/server/integration/database-streaming-out/advanced) | [Examples](/server/integration/database-streaming-out/examples) | [Configuring runtime](/server/integration/database-streaming-out/configuring-runtime) | [Testing](/server/integration/database-streaming-out/testing)

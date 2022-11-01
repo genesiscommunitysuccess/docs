@@ -1,7 +1,13 @@
 ---
-title: 'Generated repositories'
+title: 'Database interface - Generated repositories'
 sidebar_label: 'Generated repositories'
 id: generated-repositories
+keywords: [database, database interface, generated, repositories]
+tags:
+    - database
+    - database interface
+    - generated
+    - repositories
 ---
 
 

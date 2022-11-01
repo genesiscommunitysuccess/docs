@@ -1,7 +1,13 @@
 ---
-title: 'Overview'
+title: 'Subscription -  - Overview'
 sidebar_label: 'Overview'
 id: overview
+keywords: [database, helper classes, subscription, overview]
+tags:
+    - database
+    - helper classes
+    - subscription
+    - overview
 ---
 
 When database updates are distributed, they are wrapped in helper classes: 

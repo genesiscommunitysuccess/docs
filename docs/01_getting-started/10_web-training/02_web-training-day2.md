@@ -1,9 +1,14 @@
 ---
-id: web-training-day2
-title: Day 2
+title: Web Developer Training - Day 2
 sidebar_label: Day two
 sidebar_position: 4
-
+id: web-training-day2
+keywords: [getting started, developer training, web training, day two]
+tags:
+    - getting started
+    - developer training
+    - server training
+    - day two
 ---
 # Day 2 agenda
 Complex forms, data entry components, introduction to Genesis Foundation Comms lib.

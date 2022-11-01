@@ -30,13 +30,13 @@ module.exports = {
       '@docusaurus/plugin-client-redirects',
       {
         createRedirects(existingPath) {
-          if (existingPath.includes('/server')) {
+          if (existingPath.includes('/server') && !existingPath.includes('/tags')) {
             // Redirect from /server-modules/team/X to /server/team/X
             return [
               existingPath.replace('/server', '/server-modules'),
             ];
           }
-          if (existingPath.includes('/web')) {
+          if (existingPath.includes('/web') && !existingPath.includes('/tags')) {
             // Redirect from /front-end/team/X to /web/team/X
             return [
               existingPath.replace('/web', '/front-end'),

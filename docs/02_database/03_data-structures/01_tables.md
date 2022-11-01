@@ -1,7 +1,12 @@
 ---
-title: 'Tables'
+title: 'Data Structures - Tables'
 sidebar_label: 'Tables'
 id: tables
+keywords: [database, data structures, tables]
+tags:
+    - database
+    - data structures
+    - tables
 ---
 
 A [table](/database/fields-tables-views/tables/) is a data structure that organises data into rows and columns.

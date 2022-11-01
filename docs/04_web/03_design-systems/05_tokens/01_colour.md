@@ -1,7 +1,13 @@
 ---
-title: 'Colour'
+title: 'Design System Tokens - Colour'
 sidebar_label: 'Colour'
 id: colour
+keywords: [web, design system, tokens, colour]
+tags:
+  - web
+  - design system
+  - tokens
+  - colour
 ---
 
 Genesis design systems implement an adaptive colour system that provides some unique advantages:

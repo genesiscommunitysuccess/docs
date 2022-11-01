@@ -1,7 +1,12 @@
 ---
-title: 'Listbox'
+title: 'Web Components - Listbox'
 sidebar_label: 'Listbox'
 id: listbox
+keywords: [web, web components, listbox]
+tags:
+    - web
+    - web components
+    - listbox
 ---
 
 An implementation of a [listbox](https://w3c.github.io/aria-practices/#Listbox). While any DOM content is permissible as a child of the listbox, only [`alpha-option`](/web/web-components/form/option/) elements, `option` elements, and slotted items with `role="option"` will be treated as options and receive keyboard support.

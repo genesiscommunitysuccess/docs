@@ -1,7 +1,12 @@
 ---
-title: 'Switch'
+title: 'Web Components - Switch'
 sidebar_label: 'Switch'
 id: switch
+keywords: [web, web components, switch]
+tags:
+    - web
+    - web components
+    - switch
 ---
 
 An implementation of a [switch](https://w3c.github.io/aria/#switch) as a form-connected Web Component.

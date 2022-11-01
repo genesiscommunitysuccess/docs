@@ -1,7 +1,12 @@
 ---
-title: 'Authorisation'
+title: 'Access Control - Authorisation'
 sidebar_label: 'Authorisation'
 id: authorisation
+keywords: [server, access control, authorisation]
+tags:
+  - server
+  - access control
+  - authorisation
 ---
 
 [Introduction](/server/access-control/introduction)  | [Authentication overview](/server/access-control/authentication-overview) | [Username and Password](/server/access-control/password-authentication) | [SSO](/server/access-control/sso-authentication) | [Authorisation overview](/server/access-control/authorisation-overview) | [Authorisation](/server/access-control/authorisation)

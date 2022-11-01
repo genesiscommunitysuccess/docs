@@ -2,6 +2,11 @@
 title: 'Java Event Handlers'
 sidebar_label: 'Java Event Handlers'
 id: java-event-handlers
+keywords: [server, event handler, java event handlers]
+tags:
+  - server
+  - event handler
+  - java event handlers
 ---
 
 

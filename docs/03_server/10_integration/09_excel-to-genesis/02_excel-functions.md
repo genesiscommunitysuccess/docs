@@ -1,7 +1,13 @@
 ---
-title: 'Excel functions'
+title: 'Excel - Functions'
 sidebar_label: 'Excel functions'
 id: excel-functions
+keywords: [server, integration, excel, functions]
+tags:
+  - server
+  - integration
+  - excel
+  - functions
 ---
 
 [Excel reference](/server/integration/excel-to-genesis/excel-reference/)  | [Excel functions](/server/integration/excel-to-genesis/excel-functions) 

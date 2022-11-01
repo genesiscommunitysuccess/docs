@@ -1,7 +1,12 @@
 ---
-title: 'Checkbox'
+title: 'Web Components - Checkbox'
 sidebar_label: 'Checkbox'
 id: checkbox
+keywords: [web, web components, checkbox]
+tags:
+    - web
+    - web components
+    - checkbox
 ---
 
 An implementation of a [checkbox](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/checkbox) as a form-connected Web Component.

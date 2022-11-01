@@ -1,7 +1,12 @@
 ---
-title: 'Dialog'
+title: 'Web Components - Dialog'
 sidebar_label: 'Dialog'
 id: dialog
+keywords: [web, web components, dialog]
+tags:
+    - web
+    - web components
+    - dialog
 ---
 
 A dialog component presents content to the user. Unlike [modal](/web/web-components/interaction/modal/) it doesn't prevent the user from interacting with other content on the page.

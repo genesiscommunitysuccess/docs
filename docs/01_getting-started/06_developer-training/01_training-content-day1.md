@@ -1,8 +1,14 @@
 ---
-id: training-content-day1
-title: Day one
+title: Developer training - Day one
 sidebar_label: Day one
 sidebar_position: 3
+id: training-content-day1
+keywords: [getting started, quick start, developer training, day one]
+tags:
+    - getting started
+    - quick start
+    - developer training
+    - day one
 ---
 
 This day covers:

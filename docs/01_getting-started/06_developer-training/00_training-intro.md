@@ -1,8 +1,14 @@
 ---
-id: training-intro
-title: Introduction
+title: Developer training - Introduction
 sidebar_label: Introduction
+id: training-intro
 sidebar_position: 1
+keywords: [getting started, quick start, developer training, introduction]
+tags:
+    - getting started
+    - quick start
+    - developer training
+    - introduction
 
 ---
 # Genesis developer training

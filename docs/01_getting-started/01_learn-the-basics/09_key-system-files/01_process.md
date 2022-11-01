@@ -1,7 +1,13 @@
 ---
-title: 'process.xml'
+title: 'Key system files - process.xml'
 sidebar_label: 'process.xml'
 id: process
+keywords: [getting started, basics, key system files, process]
+tags:
+    - getting started
+    - basics
+    - key system files
+    - process
 ---
 
 Your application must have a **-processes.xml** file. For example, if your application is called 'bravo', then the file will be called **bravo-processes.xml**.

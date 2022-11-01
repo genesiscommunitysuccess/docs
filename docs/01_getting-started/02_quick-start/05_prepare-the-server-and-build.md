@@ -1,7 +1,13 @@
 ---
-title: 'Prepare the server & build'
+title: 'Quick Start - Prepare the server & build'
 sidebar_label: 'Prepare the server & build'
 id: prepare-the-server-and-build
+keywords: [getting started, quick start, server, build]
+tags:
+    - getting started
+    - quick start
+    - server
+    - build
 ---
 
 The application has three files that contain vital configuration information:

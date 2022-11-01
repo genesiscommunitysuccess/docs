@@ -1,7 +1,13 @@
 ---
-title: 'Inside a view dictionary'
+title: 'Data model - Inside a view dictionary'
 sidebar_label: 'Inside a view dictionary'
 id: inside-a-view-dictionary
+keywords: [getting started, basics, data, model, view dictionary]
+tags:
+    - getting started
+    - basics
+    - data model
+    - view dictionary
 ---
 
 Whereas tables tend to be groups of related information, a view is a way of looking at data - in many cases, literally. If you want to show all the trades you have done, then you might want to take some of that data from a table of trades, but you might want to add data from one or more other tables - currency details or counterparty IDs, for example.

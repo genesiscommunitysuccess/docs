@@ -1,7 +1,13 @@
 ---
-title: 'Advanced'
+title: 'DB Streaming Out - Advanced'
 sidebar_label: 'Advanced'
 id: advanced
+keywords: [server, integration, database streaming out, advanced]
+tags:
+  - server
+  - integration
+  - database streaming out
+  - advanced
 ---
 
 [Introduction](/server/integration/database-streaming-out/introduction)  | [Basics](/server/integration/database-streaming-out/basics) | [Advanced](/server/integration/database-streaming-out/advanced) | [Examples](/server/integration/database-streaming-out/examples) | [Configuring runtime](/server/integration/database-streaming-out/configuring-runtime) | [Testing](/server/integration/database-streaming-out/testing)

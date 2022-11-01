@@ -1,8 +1,14 @@
 ---
-id: deploy
-title: Deploy the Application
+title: Postgres data pipeline - Deploy the Application
 sidebar_label: Deploy the Application
 sidebar_position: 5
+id: deploy
+keywords: [getting started, quick start, postgres data pipeline, deploy]
+tags:
+    - getting started
+    - quick start
+    - postgres data pipeline
+    - deploy
 ---
 
 To deploy your application to your local Linux or WSL environment, see this [guide](/getting-started/quick-start/run-the-application/).

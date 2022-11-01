@@ -1,7 +1,12 @@
 ---
-title: 'Text field'
+title: 'Web Components - Text field'
 sidebar_label: 'Text field'
 id: text-field
+keywords: [web, web components, text field]
+tags:
+    - web
+    - web components
+    - text field
 ---
 An implementation of a [text field](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/text) as a form-connected Web Component. The `alpha-text-field` supports two visual appearances: outline and filled, with the control defaulting to the outline appearance.
 

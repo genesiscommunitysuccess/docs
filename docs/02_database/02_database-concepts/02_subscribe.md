@@ -1,7 +1,12 @@
 ---
-title: 'Subscribe'
+title: 'Database concepts - Subscribe'
 sidebar_label: 'Subscribe'
 id: subscribe
+keywords: [database, concepts, subscribe]
+tags:
+    - database
+    - concepts
+    - subscribe
 ---
 
 

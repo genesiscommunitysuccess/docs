@@ -1,7 +1,11 @@
 ---
-title: 'Front-end basics'
+title: 'Web Basics - Front-end'
 sidebar_label: 'Front-end basics'
 id: front-end-basics
+keywords: [web, basics]
+tags:
+    - web
+    - basics
 ---
 
 To view or use your Genesis application, you need to create one or more web pages. On each of these pages, you need to have components that display information or enable the user to interact with the application. For example:

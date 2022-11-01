@@ -1,7 +1,12 @@
 ---
-title: 'Number field'
+title: 'Web Components - Number field'
 sidebar_label: 'Number field'
 id: number-field
+keywords: [web, web components, number field]
+tags:
+    - web
+    - web components
+    - number field
 ---
 A text field for numeric entry.
 

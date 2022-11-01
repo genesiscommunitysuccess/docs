@@ -2,6 +2,11 @@
 title: 'Views - advanced'
 sidebar_label: 'Views - advanced'
 id: views-advanced
+keywords: [database, views, advanced]
+tags:
+    - database
+    - views
+    - advanced
 ---
 
 

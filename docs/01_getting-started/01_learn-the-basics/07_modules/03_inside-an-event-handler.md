@@ -1,7 +1,13 @@
 ---
-title: 'Inside an Event Handler'
+title: 'Modules - Inside an Event Handler'
 sidebar_label: 'Inside an Event Handler'
 id: inside-an-event-handler
+keywords: [getting started, basics, modules, event handler]
+tags:
+    - getting started
+    - basics
+    - modules
+    - event handler
 ---
 
 Applications must respond immediately to different types of input: inputs from users, messages from other systems, market-data updates and internally calculated analytic signals.  These inputs are events.

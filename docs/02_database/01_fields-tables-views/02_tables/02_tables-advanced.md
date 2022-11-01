@@ -2,6 +2,11 @@
 title: 'Tables - advanced'
 sidebar_label: 'Tables - advanced'
 id: tables-advanced
+keywords: [database, tables, advanced]
+tags:
+    - database
+    - tables
+    - advanced
 ---
 
 

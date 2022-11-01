@@ -1,7 +1,13 @@
 ---
-title: 'System definition API'
+title: 'API Reference - System definition API'
 sidebar_label: 'System definition API'
 id: system-definition-api
+keywords: [database, api, reference, system definition]
+tags:
+    - database
+    - api
+    - reference
+    - system definition
 ---
 
 

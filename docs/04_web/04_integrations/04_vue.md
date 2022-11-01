@@ -1,7 +1,12 @@
 ---
-title: 'Vue'
+title: 'Integrations - Vue'
 sidebar_label: 'Vue'
 id: vue
+keywords: [web, integrations, angular]
+tags:
+    - web
+    - integrations
+    - angular
 ---
 
 Genesis Foundation works great with Vue. Let's take a look at how you can set up a Vue project, starting from scratch.

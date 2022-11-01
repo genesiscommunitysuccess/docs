@@ -2,6 +2,10 @@
 title: 'Data types'
 sidebar_label: 'Data types'
 id: data-types
+keywords: [database, data types]
+tags:
+    - database
+    - data types
 ---
 
 The following objects and classes encapsulate your data within your Genesis application, so that you can process it and add value as you see fit.

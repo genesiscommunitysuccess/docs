@@ -1,9 +1,14 @@
 ---
-id: 04_ssdt-day4
-title: Day four
+title: Server Specialist Developer Training - Day four
 sidebar_label: Day four
 sidebar_position: 5
-
+id: 04_ssdt-day4
+keywords: [getting started, developer training, server training, day four]
+tags:
+    - getting started
+    - developer training
+    - server training
+    - day four
 ---
 This day covers:
 

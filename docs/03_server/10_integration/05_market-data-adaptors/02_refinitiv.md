@@ -1,7 +1,13 @@
 ---
-title: 'Refinitiv'
+title: 'Market data adaptors - Refinitiv'
 sidebar_label: 'Refinitiv'
 id: refinitiv
+keywords: [server, integration, market data adaptors, refinitiv]
+tags:
+  - server
+  - integration
+  - market data adaptors
+  - refinitiv
 ---
 
 

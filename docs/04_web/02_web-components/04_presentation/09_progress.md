@@ -1,7 +1,12 @@
 ---
-title: 'Progress'
+title: 'Web Components - Progress'
 sidebar_label: 'Progress'
 id: progress
+keywords: [web, web components, progress]
+tags:
+    - web
+    - web components
+    - progress
 ---
 
 The `Progress` and [`Progress Ring`](/web/web-components/presentation/progress-ring/) components are used to display

@@ -1,6 +1,13 @@
 ---
 id: grid-pro-genesis-cell
-title: Genesis Grid Pro Cell
+title: Grid Pro - Cell
+keywords: [web, web components, grid, grid pro, cell]
+tags:
+    - web
+    - web components
+    - grid
+    - grid pro
+    - cell
 ---
 
 This is a `slotted` component that allows a "visual approach" when configuring cell renderers. Each `grid-pro-cell` takes an `ICellRendererFunc` typed function.

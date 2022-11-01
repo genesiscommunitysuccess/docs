@@ -1,6 +1,13 @@
 ---
 id: grid-pro-intro
-title: Introduction
+title: Grid Pro - Introduction
+keywords: [web, web components, grid, grid pro, introduction]
+tags:
+    - web
+    - web components
+    - grid
+    - grid pro
+    - introduction
 ---
 
 ## Use cases

@@ -1,7 +1,13 @@
 ---
-title: 'Genx'
+title: 'Prerequisites - Genx'
 sidebar_label: 'Genx'
 id: genx
+keywords: [getting started, quick start, prerequisites, genx]
+tags:
+    - getting started
+    - quick start
+    - prerequisites
+    - genx
 ---
 
 

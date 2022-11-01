@@ -1,7 +1,12 @@
 ---
-title: 'Event Handler: advanced'
+title: 'Event Handler - Advanced'
 sidebar_label: 'Advanced'
 id: advanced
+keywords: [server, event handler, advanced]
+tags:
+  - server
+  - event handler
+  - advanced
 ---
 
 

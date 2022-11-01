@@ -1,7 +1,13 @@
 ---
-title: 'Micro-frontends'
+title: 'Go to the next level - Micro-frontends'
 sidebar_label: 'Micro-frontends'
 id: micro-frontends
+keywords: [getting started, quick start, next level, micro-frontends]
+tags:
+    - getting started
+    - quick start
+    - next level
+    - micro-frontends
 ---
 
 ## Section objectives

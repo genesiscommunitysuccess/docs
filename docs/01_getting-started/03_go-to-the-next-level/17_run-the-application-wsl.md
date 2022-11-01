@@ -1,7 +1,15 @@
 ---
-title: 'Run the application (WSL/CentOS)'
+title: 'Go to the next level - Run the application (WSL/CentOS)'
 sidebar_label: 'Run the application (WSL/CentOS)'
 id: run-the-application-wsl
+keywords: [getting started, quick start, next level, run the app, wsl, centos]
+tags:
+    - getting started
+    - quick start
+    - next level
+    - run the app
+    - wsl
+    - centos
 ---
 
 The instructions on this page are for using WSL/CentOS. If you prefer to use Docker as your environment, there are [separate instructions](/getting-started/go-to-the-next-level/run-the-application-docker/).

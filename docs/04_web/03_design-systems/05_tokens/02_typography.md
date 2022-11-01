@@ -1,7 +1,13 @@
 ---
-title: 'Typography'
+title: 'Design System Tokens - Typography'
 sidebar_label: 'Typography'
 id: typography
+keywords: [web, design system, tokens, typography]
+tags:
+  - web
+  - design system
+  - tokens
+  - typography
 ---
 
 import Tabs from '@theme/Tabs';

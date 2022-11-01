@@ -1,7 +1,13 @@
 ---
-title: 'New e-platforms'
+title: 'What can I build? - new e-platforms'
 sidebar_label: 'New e-platforms'
 id: complete-exchanges
+keywords: [getting started, basics, e-platforms, exchanges]
+tags:
+    - getting started
+    - basics
+    - e-platforms
+    - exchanges
 ---
 
 You can build complete new trading platforms that integrate with multiple internal and external systems. These are applications with clear user interfaces, highly sophisticated features; they can be specified and built to meet exactly the security and regulatory requirements you require. 

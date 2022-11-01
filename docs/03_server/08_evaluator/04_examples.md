@@ -1,7 +1,12 @@
 ---
-title: 'Examples'
+title: 'Evaluator - Examples'
 sidebar_label: 'Examples'
 id: examples
+keywords: [server, evaluator, introduction]
+tags:
+  - server
+  - evaluator
+  - introduction
 ---
 
 [Introduction](/server/evaluator/introduction) | [Basics](/server/evaluator/basics) | [Examples](/server/evaluator/examples) | [Configuring runtime](/server/evaluator/configuring-runtime) | [Testing](/server/evaluator/testing)

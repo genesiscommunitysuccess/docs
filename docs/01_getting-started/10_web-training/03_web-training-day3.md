@@ -1,9 +1,14 @@
 ---
-id: web-training-day3
-title: Day 3
+title: Web Developer Training - Day 3
 sidebar_label: Day three
 sidebar_position: 5
-
+id: web-training-day3
+keywords: [getting started, developer training, web training, day three]
+tags:
+    - getting started
+    - developer training
+    - server training
+    - day three
 ---
 # Day 3 agenda
 Custom data grids, client-side options and filters.

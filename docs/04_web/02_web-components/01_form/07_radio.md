@@ -1,7 +1,12 @@
 ---
-title: 'Radio'
+title: 'Web Components - Radio'
 sidebar_label: 'Radio'
 id: radio
+keywords: [web, web components, radio]
+tags:
+    - web
+    - web components
+    - radio
 ---
 
 A selection input with support for selection of multiple options.

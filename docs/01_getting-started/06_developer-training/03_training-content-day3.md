@@ -1,8 +1,14 @@
 ---
-id: training-content-day3
-title: Day three
+title: Developer training - Day three
 sidebar_label: Day three
 sidebar_position: 5
+id: training-content-day3
+keywords: [getting started, quick start, developer training, day three]
+tags:
+    - getting started
+    - quick start
+    - developer training
+    - day three
 ---
 
 <details>

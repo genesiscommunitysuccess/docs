@@ -1,7 +1,13 @@
 ---
-title: 'Generated versions'
+title: 'Key system files - Generated versions'
 sidebar_label: 'Generated versions'
 id: generated-versions
+keywords: [getting started, basics, key system files, generated versions]
+tags:
+    - getting started
+    - basics
+    - key system files
+    - generated versions
 ---
 
 It is important to know that the Genesis low-code platform uses *system-generated* versions of these system files. 

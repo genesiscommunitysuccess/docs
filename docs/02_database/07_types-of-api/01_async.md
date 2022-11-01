@@ -1,7 +1,14 @@
 ---
-title: 'Async API'
+title: 'Types of API - Async API'
 sidebar_label: 'Async'
 id: async
+keywords: [database, types of api, api, types, async]
+tags:
+    - database
+    - types of api
+    - api
+    - types
+    - async
 ---
 
 [Async](/database/types-of-api/async/) |

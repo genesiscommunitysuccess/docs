@@ -1,7 +1,13 @@
 ---
-title: 'Build'
+title: 'Learn the basics - Building the server'
 sidebar_label: 'Build'
 id: build
+keywords: [getting started, basics, server, build]
+tags:
+    - getting started
+    - basics
+    - server
+    - build
 ---
 
 With a database and two modules (a Data Server and an Event Handler) in place to supply data to the frontend, we can now build our server.

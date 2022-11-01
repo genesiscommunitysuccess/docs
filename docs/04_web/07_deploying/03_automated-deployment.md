@@ -1,7 +1,13 @@
 ---
-title: 'Automated Deployment'
+title: 'Web Deployment - Automated'
 sidebar_label: 'Automated Deployment'
 id: automated-deployment
+keywords: [web, automated deployment, deployment, introduction]
+tags:
+  - web
+  - deployment
+  - automated deployment
+  - introduction
 ---
 
 Ideally, an automated pipeline such as a github workflow should be put in place to *build, test and deploy* the front end every time the master or develop branches are updated.

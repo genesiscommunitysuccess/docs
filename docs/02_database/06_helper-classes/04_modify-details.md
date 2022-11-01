@@ -1,7 +1,13 @@
 ---
-title: 'ModifyDetails'
+title: 'Helper classes - ModifyDetails'
 sidebar_label: 'ModifyDetails'
 id: modify-details
+keywords: [database, helper classes, modify, details]
+tags:
+    - database
+    - helper classes
+    - modify
+    - details
 ---
 
 ## Entity Modify details

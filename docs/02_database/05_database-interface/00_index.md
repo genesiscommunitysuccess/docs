@@ -2,6 +2,10 @@
 title: 'Database interface'
 sidebar_label: 'Database interface'
 id: database-interface
+keywords: [database, database interface]
+tags:
+    - database
+    - database interface
 ---
 
 [Introduction](/database/database-interface/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/) 

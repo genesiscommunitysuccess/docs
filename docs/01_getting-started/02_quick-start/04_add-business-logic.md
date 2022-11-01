@@ -1,11 +1,14 @@
 ---
-title: 'Add business logic'
+title: 'Quick Start - Add business logic'
 sidebar_label: 'Add business logic'
 id: add-business-logic
-keywords: [dataserver, event handler]
+keywords: [getting started, quick start, dataserver, event handler, business logic]
 tags:
+    - getting started
+    - quick start
     - dataserver
     - event handler
+    - business logic
 ---
 
 We have a table; now we want to be able to see its content and create new entries.

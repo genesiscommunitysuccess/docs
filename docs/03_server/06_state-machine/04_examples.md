@@ -1,7 +1,12 @@
 ---
-title: 'Examples'
+title: 'State Machine - Examples'
 sidebar_label: 'Examples'
 id: examples
+keywords: [server, state machine, examples]
+tags:
+  - server
+  - state machine
+  - examples
 ---
 
 The following example of a state machine defines five events that control the transition of trades from one state to another.

@@ -1,8 +1,15 @@
 ---
+title: 'Components - Architecture overview'
 id: component-architecture-overview
 sidebar_label: 'Architecture overview'
 sidebar_position: 1
-title: 'Component architecture overview'
+keywords: [getting started, basics, components, architecture, overview]
+tags:
+    - getting started
+    - basics
+    - components
+    - architecture
+    - overview
 ---
 
 Every Genesis application is different, but all Genesis applications share a common architecture. The best way to understand the purpose of all the main elements of this architecture is to familiarise yourself with the server components and the web front-end.

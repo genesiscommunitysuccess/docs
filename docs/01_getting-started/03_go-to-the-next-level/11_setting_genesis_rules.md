@@ -1,7 +1,14 @@
 ---
-title: 'Setting Genesis Evaluator rules'
+title: 'Go to the next level - Setting Genesis Evaluator rules'
 sidebar_label: 'Setting Genesis Evaluator rules'
 id: setting-genesis-evaluator-rules
+keywords: [getting started, quick start, next level, evaluator, rules]
+tags:
+    - getting started
+    - quick start
+    - next level
+    - evaluator
+    - rules
 ---
 
 It is often useful to run tasks periodically - for example, to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](/server/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 

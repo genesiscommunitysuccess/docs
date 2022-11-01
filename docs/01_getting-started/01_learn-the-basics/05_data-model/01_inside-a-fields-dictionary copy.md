@@ -1,7 +1,13 @@
 ---
-title: 'Inside a fields dictionary'
+title: 'Data model - Inside a fields dictionary'
 sidebar_label: 'Inside a fields dictionary'
 id: inside-a-fields-dictionary
+keywords: [getting started, basics, data, model, fields dictionary]
+tags:
+    - getting started
+    - basics
+    - data model
+    - fields dictionary
 ---
 
 The fields dictionary is where you specify all the fields you need for your data model.

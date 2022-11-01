@@ -1,7 +1,13 @@
 ---
-title: 'Microsoft teams'
+title: 'Notify - Microsoft teams'
 sidebar_label: 'Microsoft teams'
 id: microsoft-teams
+keywords: [server, integration, notify, microsoft teams]
+tags:
+  - server
+  - integration
+  - notify
+  - microsoft teams
 ---
 
 Microsoft Teams provides a mechanism for exposing its channels to a remote system via webhooks. A webhook url can be created as described [here](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook)

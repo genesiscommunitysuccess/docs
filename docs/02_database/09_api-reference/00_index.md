@@ -1,7 +1,13 @@
 ---
-title: 'Overview'
+title: 'API Reference - Overview'
 sidebar_label: 'Overview'
 id: overview
+keywords: [database, api, reference, overview]
+tags:
+    - database
+    - api
+    - reference
+    - overview
 ---
 
 Genesis is a low-code solution for financial markets. We try to provide as much of the platform via [GPAL](/getting-started/glossary/glossary/#gpal) as possible, while allowing you to extend the platform with more powerful custom components and functionality.
