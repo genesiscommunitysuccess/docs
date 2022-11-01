@@ -1,9 +1,14 @@
 ---
-id: host-preparation
-title: 'Host Preparation'
+title: 'Server Setup - Host Preparation'
 sidebar_label: 'Host Preparation'
 sidebar_position: 1
-
+id: host-preparation
+keywords: [operations, server, setup, preparation]
+tags:
+    - database
+    - server
+    - setup
+    - preparation
 ---
 This document describes preparing a host to run applications built with Genesis frameworks.  It is written for a
 reader with some Linux system administration experience.

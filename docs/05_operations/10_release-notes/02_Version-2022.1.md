@@ -1,9 +1,13 @@
 ---
-title: 'Version 2022.1'
+title: 'Release notes - Version 2022.1'
 sidebar_label: 'Version 2022.1'
 sidebar_position: 3
 id: version-2022-1
-
+keywords: [operations, release notes, v-2022.1]
+tags:
+    - operations
+    - release notes
+    - v-2022.1
 ---
 
 This is version v2022.1 of the documentation for the Genesis low-code platform.

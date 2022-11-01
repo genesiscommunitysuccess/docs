@@ -1,9 +1,16 @@
 ---
-id: initial-application-install
-title: 'Initial Application Install'
+title: 'Server Setup - Initial Application Install'
 sidebar_label: 'Initial Application Install'
 sidebar_position: 2
-
+id: initial-application-install
+keywords: [operations, server, setup, initial, application, install]
+tags:
+    - database
+    - server
+    - setup
+    - initial
+    - application
+    - install
 ---
 This document describes installing an application built with Genesis frameworks.  It is written for a reader with some
 Linux system administration experience.

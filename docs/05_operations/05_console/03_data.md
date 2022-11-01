@@ -2,8 +2,9 @@
 title: 'Genesis Console - Data'
 sidebar_label: 'Data'
 id: data
-keywords: [console, data]
+keywords: [operations, console, data]
 tags:
+    - operations
     - console
     - data
 ---

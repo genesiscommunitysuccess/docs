@@ -1,7 +1,11 @@
 ---
-title: 'Clusters'
+title: 'Operations - Clusters'
 sidebar_label: 'Clusters'
 id: clusters
+keywords: [operations, clusters]
+tags:
+    - database
+    - clusters
 ---
 The Genesis low-code platform is highly resilient and easy to cluster for a High Availability (HA) setup. This area takes you through the steps required to establish a HOT-HOT setup.
 

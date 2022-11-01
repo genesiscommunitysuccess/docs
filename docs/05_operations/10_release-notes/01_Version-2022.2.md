@@ -1,8 +1,13 @@
 ---
-title: 'Version 2022.2'
+title: 'Release notes - Version 2022.2'
 sidebar_label: 'Version 2022.2'
 sidebar_position: 2
 id: version-2022-2
+keywords: [operations, release notes, v-2022.2]
+tags:
+    - operations
+    - release notes
+    - v-2022.2
 ---
 
 ## Release notes

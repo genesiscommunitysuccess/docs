@@ -2,9 +2,13 @@
 title: 'Genesis containerisation - introduction'
 sidebar_label: 'Introduction'
 id: introduction
-keywords: [containerisation, container, docker]
+keywords: [operations, containerisation, container, docker, introduction]
 tags:
+    - operations
     - containerisation
+    - container
+    - docker
+    - introduction
 ---
 
 Yu can run a full Genesis application in a self-contained Docker container.

@@ -2,9 +2,13 @@
 title: 'Genesis Containerisation - configutation'
 sidebar_label: 'Configuration options'
 id: configuration
-keywords: [containerisation, container, docker]
+keywords: [operations, containerisation, container, docker, configuration]
 tags:
+    - operations
     - containerisation
+    - container
+    - docker
+    - configuration
 ---
 
 ## Configuration options

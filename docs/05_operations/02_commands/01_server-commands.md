@@ -1,7 +1,12 @@
 ---
-title: 'Server Commands'
+title: 'Operations - Server Commands'
 sidebar_label: 'Server Commands'
 id: server-commands
+keywords: [operations, server, commands]
+tags:
+    - database
+    - server
+    - commands
 ---
 
 Genesis has numerous built-in commands that have their own individual functions.

@@ -1,8 +1,13 @@
 ---
-title: 'Release notes: introduction'
+title: 'Release notes - Introduction'
 sidebar_label: 'Introduction'
 sidebar_position: 1
 id: introduction
+keywords: [operations, release notes, introduction]
+tags:
+    - operations
+    - release notes
+    - introduction
 ---
 
 Our documentation covers the following releases:

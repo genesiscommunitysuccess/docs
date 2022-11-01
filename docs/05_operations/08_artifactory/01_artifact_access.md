@@ -1,9 +1,13 @@
 ---
-id: artifact-access
 title: 'Artifact access'
 sidebar_label: 'Artifact access'
 sidebar_position: 1
-
+id: artifact-access
+keywords: [operations, artifacts, artifactory]
+tags:
+    - operations
+    - artifacts
+    - artifactory
 ---
 
 This document covers the Genesis artifact store, which is an instance of JFrog's Artifactory.

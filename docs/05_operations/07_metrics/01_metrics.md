@@ -2,6 +2,10 @@
 title: 'Metrics'
 sidebar_label: 'Metrics'
 id: metrics
+keywords: [operations, metrics]
+tags:
+    - operations
+    - metrics
 ---
 
 import Tabs from '@theme/Tabs';

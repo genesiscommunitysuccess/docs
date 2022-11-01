@@ -2,8 +2,9 @@
 title: 'Genesis Console - packages'
 sidebar_label: 'Packages'
 id: packages
-keywords: [console, packages]
+keywords: [operations, console, packages]
 tags:
+    - operations
     - console
     - packages
 ---

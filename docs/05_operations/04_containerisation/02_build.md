@@ -2,9 +2,13 @@
 title: 'Genesis Containerisation - building a container'
 sidebar_label: 'Building a Container'
 id: build
-keywords: [containerisation, container, docker]
+keywords: [operations, containerisation, container, docker, build]
 tags:
+    - operations
     - containerisation
+    - container
+    - docker
+    - build
 ---
 
 import Tabs from '@theme/Tabs';

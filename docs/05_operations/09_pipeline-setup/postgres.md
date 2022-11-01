@@ -1,8 +1,15 @@
 ---
-title: 'Postgres'
+title: 'Pipeline setup - Postgres'
 sidebar_label: 'PostgreSQL'
 id: postgres
 sidebar_position: 2
+keywords: [operations, pipeline, setup, postgres, postgresql]
+tags:
+    - operations
+    - pipeline
+    - setup
+    - postgres
+    - postgresql
 ---
 
 ## PostgreSQL configuration
