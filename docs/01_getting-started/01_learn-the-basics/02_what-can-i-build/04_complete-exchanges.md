@@ -1,5 +1,5 @@
 ---
-title: 'What can I build? - New e-platforms'
+title: 'What can I build? - new e-platforms'
 sidebar_label: 'New e-platforms'
 id: complete-exchanges
 keywords: [getting started, basics, e-platforms, exchanges]
