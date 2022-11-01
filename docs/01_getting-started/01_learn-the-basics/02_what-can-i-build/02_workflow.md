@@ -1,5 +1,5 @@
 ---
-title: 'What can I build? - Workflow'
+title: 'What can I build? - workflow'
 sidebar_label: 'Workflow'
 id: workflow
 keywords: [getting started, basics, workflow]
