@@ -71,6 +71,12 @@ otherwise a runtime error will be thrown when the layout is attempted to be rend
 
 ### Initialisation `<foundation-layout-init>`
 
+:::info
+After discussion with Artur we are thinking that I might be able to add this `<foundation-layout-init>` as part of the template of the
+top level component which will make the whole process automatic. The rest of this document will still explicitly define this element
+in the html but my hope is we won't need to.
+:::
+
 Component which bubbles up an event to the root element to initalise the layout component. This will be the last child of the root element
 and if it isn't present then the layout will not correctly instantiate.
 
