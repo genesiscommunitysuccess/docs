@@ -11,12 +11,10 @@ import TabItem from '@theme/TabItem';
 
 With Fuse we can determine our own layouts. This way, we can reimplement our existing layout designs or if we're adventurous, create new ones. This is achieved by utilizing two basic layout components (vertical & horizontal layout) along with their various parameters. The vertical and horizontal layout render their contents vertically and horizontally respectively. 
 
-What layouts allow you to do:
+With layouts you can:
 
-- displaying your elements in any layout you like by using the vertical and horizontal compoenents
-- determining the numbers of elements you would like to see on your screen
-- rely on the default options or override them for more control
-- control the amount of space each element takes up
+- display your elements in any layout you like by using the vertical and horizontal components
+- use default options or override them for more control
 
 Using the layouts is as easy as updating the syntax to use the components you would like along with the parameters.
 
@@ -38,14 +36,14 @@ ui("Vertical Layout") {
 ```
 
 :::tip
-  Vertical Layout places components top-to-bottom in a column. By default it stretches the children to the entire length but we can explicitly set the width to control that.
+  Vertical layout places components top-to-bottom in a column. By default it stretches the children to the entire length but we can explicitly set the width or height to control that.
 :::
 
-> The image below shows a vertical layout of two elements with default parameters
+> The image below shows a vertical layout of two elements with default parameters.
 
 ![](/img/vl-em2.PNG)
 
-> The image below shows a vertical layout of two elements. The first element has its width set to 50%
+> The image below shows a vertical layout of two elements. The first element has its width set to 50%.
 
 ![](/img/vl-em-attr.PNG)
 
@@ -64,7 +62,7 @@ ui("Horizontal Layout") {
 ```
 
 :::tip
-  Horizontal Layout places components left-to-right in a row. By default it stretches the children to the entire length but we can explicitly set the height to control that.
+  Horizontal layout places components left-to-right in a row. By default it stretches the children to the entire length but we can explicitly set the width or height to control that.
 :::
 
 > The image below shows a horizontal layout of two elements with default parameters
@@ -126,7 +124,7 @@ Vertical and horizontal components can also be used together for a more complex 
 ```kotlin
 ui("Vertical Layout") {
     page("Layout") {
-        verticallayout(...) {
+        verticalLayout(...) {
             horizontalLayout(...) {
                 verticalLayout(...) {
                     form {}
@@ -181,7 +179,7 @@ ui("Vertical Layout") {
 
 Now that we've seen some basic examples of page and component layouts, let's dive a little deeper.
 Not only can we determine the direction of our elements but also their positioning within a given space. 
-Click on the tabs below for more detail.
+Click on the tabs below for more details.
 
 <Tabs>
 <TabItem value="vertical" label="Vertical Layout" default >
@@ -203,11 +201,11 @@ ui("Vertical Layout") {
 }
 ```
 
-> As mentioned above, children elements of the vertical layout component, stretch to the entire length by default. For the following examples, we will set the width of the buttons to `100px`
+> As mentioned above, children elements of the vertical and horizontal layout components, stretch to the entire length by default. For the following examples, we will set the width of the buttons to `100px`.
 
 <zero-design-system-provider style={{ display: 'flex', justifyContent: 'center', borderRadius: '5px' }}>
     <zero-card style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'rgba( 207, 207, 207, 1)' }}>
-        <p style={{ color: 'black', padding: '4px'}}>Button width is set to 100px. By default the position of the children element will be at the top left. The same as <b>items.Start</b> and <b>content-start</b></p>
+        <p style={{ color: 'black', padding: '4px'}}>By default the position of the children element will be at the top left. The same as <b>items-tart</b> and <b>content-start</b></p>
         <zero-card>
             <zero-flex-layout class="flex-column">
                 <zero-button style={{ width: '100px' }}
@@ -506,8 +504,3 @@ ui("Horizontal Layout") {
 
 </TabItem>
 </Tabs>
-
-
-
-
-
