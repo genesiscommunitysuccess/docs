@@ -33,24 +33,24 @@ in the DOM and manually saving/loading themselves. This will allow functionality
 premade layouts that the user could choose from.
 :::
 
-### Layout Sections
+### Layout Regions
 
-#### `<foundation-layout-vertical>`
-
-Indicates to the layout system that all immediate children are (by default) to be split equally among the available space of this
-component using n-1 vertical split(s). Can be nested within other horizontal and vertical splits.
-
-#### `<foundation-layout-horizontal>`
+#### `<foundation-layout-region type="vertical">`
 
 Indicates to the layout system that all immediate children are (by default) to be split equally among the available space of this
-component using n-1 horizontal split(s). Can be nested within other horizontal and vertical splits.
+component using n-1 vertical split(s). Can be nested within other horizontal and vertical regions.
 
-#### `<foundation-layout-tabs>`
+#### `<foundation-layout-region type="horizontal">`
+
+Indicates to the layout system that all immediate children are (by default) to be split equally among the available space of this
+component using n-1 horizontal split(s). Can be nested within other horizontal and vertical regions.
+
+#### `<foundation-layout-region type="tabs">`
 
 Indicates to the layout system that all immediate children are to be added as tabs in the available space of this component,
 with a tab for each child. The tabs will be ordered according to which child the layout item is (e.g. the second `<foundation-layout-item>`
  of the tab split will be the second tab), and the first child will be the one which is open by default. Can be nested within horizontal
- and vertical splits, but cannot have more layout sections inside of it.
+ and vertical regions, but cannot have more layout sections inside of it.
 
 #### Attributes
 
@@ -70,33 +70,9 @@ Wrapper component that lives inside of a layout section and wraps the client con
 otherwise a runtime error will be thrown when the layout is attempted to be rendered on screen
 
 - **title**: string defining the title of the pane which contains the content
-- **closable**: boolean defining whether this element is closeable - Default false.
+- **closable**: boolean defining whether this element is closable - Default false.
 - **height**: number defining the height of this item, relative to the other children of its parent in percent
 - **width**: number defining the width of this item, relative to the other children of its parent in percent
-
-### Initialisation `<foundation-layout-init>`
-
-:::info
-After discussion with Artur we are thinking that I might be able to add this `<foundation-layout-init>` as part of the template of the
-top level component which will make the whole process automatic. The rest of this document will still explicitly define this element
-in the html but my hope is we won't need to.
-:::
-
-Component which bubbles up an event to the root element to initalise the layout component. This will be the last child of the root element
-and if it isn't present then the layout will not correctly instantiate.
-
-#### Discussion
-
-This item is required so solve the issue of knowing when all of the elements are instantiated so we can move them into the layout. To implement
-this declarative API we allow the browser to instantiate all of the elements according to the html, and then we use the DOM API to move them into
-the layout items that Golden Layout uses. We clearly only want to do this when all the items are instantiated, if we do it in the connected callback
-of the root element this runs before all it's children are instantiated so it doesn't work. I theorised three solutions to this, ranked from my least to
-most favourite:
-
-1. Let the client handle it - they can grab a reference to the top level element in the DOM and run the golden layout init
-2. Use `setTimeout` to have a delay so the child elements have time to instantiate. Could be a configurable length and show a placeholder loading icon.
-3. Use the `<foundation-layout-init>` component which will bubble up an event when it is instantiated to the layout root, and at that point it knows
-   that all child elements will be on the DOM and the layout can be initiated automatically.
 
 ## Examples
 
@@ -104,15 +80,14 @@ Simple example with a vertical split and two items that will take up equal space
 
 ```html
 <foundation-layout>
-  <foundation-layout-vertical>
+  <foundation-layout-region type="vertical">
     <foundation-layout-item title="Component 1">
       <!-- Content -->
     </foundation-layout-item>
     <foundation-layout-item title="Component 2">
       <!-- Content -->
     </foundation-layout-item>
-  </foundation-layout-vertical>
-  <foundation-layout-init></foundation-layout-init>
+  </foundation-layout-region type="vertical">
 </foundation-layout>
 ```
 
@@ -134,23 +109,22 @@ Will be rendered as:
 Slightly more complicated example:
 
 ```html
-<foundation-layout serialisable closeable>
-  <foundation-layout-horizontal>
-    <foundation-layout-item title="Component 1" width="25" closeable>
+<foundation-layout serialisable>
+  <foundation-layout-region type="horizontal">
+    <foundation-layout-item title="Component 1" width="25" closable>
       <!-- Content -->
     </foundation-layout-item>
 
-    <foundation-layout-vertical>
+    <foundation-layout-region type="vertical">
       <foundation-layout-item title="Component 2">
         <!-- Content -->
       </foundation-layout-item>
       <foundation-layout-item title="Component 3">
         <!-- Content -->
       </foundation-layout-item>
-    </foundation-layout-vertical>
-  </foundation-layout-horizontal>
+    </foundation-layout-region type="vertical">
+  </foundation-layout-region type="horizontal">
 
-  <foundation-layout-init></foundation-layout-init>
 </foundation-layout>
 ```
 
@@ -175,14 +149,14 @@ as the width of component 1 layout item.
 If instead we had:
 
 ```html
-<foundation-layout serialisable closeable>
-  <foundation-layout-horizontal>
-    <foundation-layout-item title="Component 1" width="25" closeable>
+<foundation-layout serialisable>
+  <foundation-layout-region type="horizontal">
+    <foundation-layout-item title="Component 1" width="25" closable>
       <!-- Content -->
     </foundation-layout-item>
 
-    <foundation-layout-vertical>
-      <foundation-layout-horizontal>
+    <foundation-layout-region type="vertical">
+      <foundation-layout-region type="horizontal">
         <foundation-layout-item title="Component 2">
           <!-- Content -->
         </foundation-layout-item>
@@ -192,20 +166,19 @@ If instead we had:
         <foundation-layout-item title="Component 4">
           <!-- Content -->
         </foundation-layout-item>
-      </foundation-layout-horizontal>
+      </foundation-layout-region type="horizontal">
 
-      <foundation-layout-tabs>
+      <foundation-layout-region type="tabs">
         <foundation-layout-item title="Component 5">
           <!-- Content -->
         </foundation-layout-item>
         <foundation-layout-item title="Component 6">
           <!-- Content -->
         </foundation-layout-item>
-      </foundation-layout-tabs>
-    </foundation-layout-vertical>
-  </foundation-layout-horizontal>
+      </foundation-layout-region type="tabs">
+    </foundation-layout-region type="vertical">
+  </foundation-layout-region type="horizontal">
 
-  <foundation-layout-init></foundation-layout-init>
 </foundation-layout>
 ```
 
@@ -231,7 +204,7 @@ takes up 25% of the initial width. Components 2,3,4 take up a third of the _rema
 The following example is invalid:
 ```html
 <foundation-layout>
-  <foundation-layout-vertical>
+  <foundation-layout-region type="vertical">
     <h1>My splits</h1>
     <foundation-layout-item title="Component 1">
       <!-- Content -->
@@ -239,11 +212,10 @@ The following example is invalid:
     <foundation-layout-item title="Component 2">
       <!-- Content -->
     </foundation-layout-item>
-  </foundation-layout-vertical>
-  <foundation-layout-init></foundation-layout-init>
+  </foundation-layout-region type="vertical">
 </foundation-layout>
 ```
-This is because there is a child of one of the layout sections which isn't another layout section or
+This is because there is a child of one of the layout regions which isn't another layout region or
 layout item (the `<h1>`). This will throw a runtime error.
 
 <br/>
@@ -252,42 +224,23 @@ The following example is invalid:
 
 ```html
 <foundation-layout>
-	<foundation-layout-tabs>
+	<foundation-layout-region type="tabs">
 
-		<foundation-layout-vertical>
+		<foundation-layout-region type="vertical">
 			<foundation-layout-item title="Component 1">
 				<!-- Content -->
 			</foundation-layout-item>
 			<foundation-layout-item title="Component 2">
 				<!-- Content -->
 			</foundation-layout-item>
-		</foundation-layout-vertical>
+		</foundation-layout-region type="vertical">
 
 		<foundation-layout-item title="Component 3">
 			<!-- Content -->
 		</foundation-layout-item>
 
-	</foundation-layout-tabs>
-  <foundation-layout-init></foundation-layout-init>
+	</foundation-layout-region type="tabs">
 </foundation-layout>
 ```
-This is because you cannot have more layout sections nested inside of a tab split. You will get undefined behaviour.
+This is because you cannot have more layout regions nested inside of a tab regions. You will get undefined behaviour.
 
-<br/>
-
-The following example is invalid:
-
-```html
-<foundation-layout>
-  <foundation-layout-tabs>
-    <foundation-layout-item title="Component 1">
-      <!-- Content -->
-    </foundation-layout-item>
-    <foundation-layout-item title="Component 2">
-      <!-- Content -->
-    </foundation-layout-item>
-  </foundation-layout-tabs>
-</foundation-layout>
-```
-While this would be a valid layout, we are missing `<foundation-layout-init></foundation-layout-init>` so this layout
-will never initialise.
