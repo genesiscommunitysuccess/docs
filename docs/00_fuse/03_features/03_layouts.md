@@ -110,11 +110,11 @@ The example below implements a form vertically
 ui("Vertical Layout") {
     page("Layout") {
         verticalLayout(...) {
-                form {
-                    verticalLayout(...) {
-                        div {}
-                        div {}
+            verticalLayout(...) {
+                    form {...}
+                    form {...}
                 }
+            button(...) {}
             }
         }
     }
@@ -150,19 +150,17 @@ Vertical and horizontal components can also be used together for a more complex 
 ```kotlin
 ui("Vertical Layout") {
     page("Layout") {
-        verticalLayout(...) {
-            horizontalLayout(...) {
-                verticalLayout(...) {
-                    form {}
-                    form {}
-                }
-                verticalLayout(...) {
-                    form {}
-                    form {}
-                }
+        horizontalLayout(...) {
+            verticalLayout(...) {
+                form {}
+                form {}
             }
-            button {...}
+            verticalLayout(...) {
+                form {}
+                form {}
+            }
         }
+        button {...}
     }
 }
 ```
@@ -217,11 +215,9 @@ Click on the tabs below for more details.
 ui("Vertical Layout") {
     page("Layout") {
         verticalLayout(...) {
-            div {
-                button {...}
-                button {...}
-                button {...}
-            }
+            button {...}
+            button {...}
+            button {...}
         }
     }
 }
@@ -415,11 +411,9 @@ ui("Vertical Layout") {
 ui("Horizontal Layout") {
     page("Layout") {
         horizontalLayout(...) {
-            div {
-                button {...}
-                button {...}
-                button {...}
-            }
+            button {...}
+            button {...}
+            button {...}
         }
     }
 }
