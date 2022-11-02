@@ -205,7 +205,7 @@ ui("Vertical Layout") {
 
 <zero-design-system-provider style={{ display: 'flex', justifyContent: 'center', borderRadius: '5px' }}>
     <zero-card style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'rgba( 207, 207, 207, 1)' }}>
-        <p style={{ color: 'black', padding: '4px'}}>By default the position of the children element will be at the top left. The same as <b>items-tart</b> and <b>content-start</b></p>
+        <p style={{ color: 'black', padding: '4px'}}>By default the position of the children element will be at the top left. The same as <b>items-start</b> and <b>content-start</b></p>
         <zero-card>
             <zero-flex-layout class="flex-column">
                 <zero-button style={{ width: '100px' }}
@@ -229,8 +229,8 @@ ui("Vertical Layout") {
 | **content-start** | Positions items at the top left |
 | **content-center** | Centers content along the x-axis. It also applies flex-wrap which means, depending on the height of the parent element, the children may take up the height equally distributed among each other. However, if the height is smaller, they would be spread out in a row instead. This applies to the following alignments of content as well |
 | **content-end** | Positions content on the far right.|
-| **content-evenly** | Distributes space equally among the content. From the left of the first item, between items and on the right of the last item |
-| **content-around** | Distributes the space equally between items. The space before the first item, and after the last, is half of that between items. |
+| **content-evenly** | Distributes space equally among the content. From the left of the first item, between items and on the right of the last item. |
+| **content-around** | Distributes the space equally between items. The space before the first item, and after the last, is half of that between them. |
 | **content-between** | The space is distributed evenly between items, with no space before the first item or after the last. |
 
 
@@ -419,13 +419,13 @@ ui("Horizontal Layout") {
 
 | Value | Description | 
 | --- | --- | 
-| **items-start** | Positions items at the top left |
-| **items-center** | Centers items along the y-axis |
-| **items-end** | Positions items at the bottom left |
-| **content-start** | Positions items at the top left |
+| **items-start** | Positions items at the top left. |
+| **items-center** | Centers items along the y-axis. |
+| **items-end** | Positions items at the bottom left. |
+| **content-start** | Positions content at the top left. |
 | **content-center** | Centers content along the y-axis. 
 | **content-end** | Positions content at the bottom left.|
-| **content-evenly** | Distributes space equally among the content. From the top of the first item, between items and on the bottom |
+| **content-evenly** | Distributes space equally among the content. From the top of the first item, between items and on the bottom. |
 | **content-around** | Distributes the space equally between items. The space before the first item, and after the last, is half of that between items. |
 | **content-between** | The space is distributed evenly between items, with no space before the first item or after the last. |
 
