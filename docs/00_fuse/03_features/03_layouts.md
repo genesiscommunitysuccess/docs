@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 ## Introduction
 
-With Fuse we can determine our own layouts. This way, we can reimplement our existing layout designs or if we're adventurous, create new ones. This is achieved by utilizing two basic layout components (vertical & horizontal) along with their various parameters. The verticalLayout and horizontalLayout render their contents vertically and horizontally respectively. 
+With Fuse we can determine our own layouts. This is achieved by utilizing two basic layout components (vertical & horizontal) along with their various parameters. The verticalLayout and horizontalLayout render their contents vertically and horizontally respectively. 
 
 With layouts you can:
 
