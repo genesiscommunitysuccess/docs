@@ -9,16 +9,12 @@ import TabItem from '@theme/TabItem';
 
 ## Introduction
 
-With Fuse we can determine our own layouts. This way, we can reimplement our existing layout designs or if we're adventurous, create new ones. This is achieved by utilizing two basic layout components (vertical & horizontal layout) along with their various parameters. The vertical and horizontal layout render their contents vertically and horizontally respectively. 
+With Fuse we can determine our own layouts. This way, we can reimplement our existing layout designs or if we're adventurous, create new ones. This is achieved by utilizing two basic layout components (vertical & horizontal) along with their various parameters. The verticalLayout and horizontalLayout render their contents vertically and horizontally respectively. 
 
 With layouts you can:
 
 - display your elements in any layout you like by using the vertical and horizontal components
 - use default options or override them for more control
-
-Using the layouts is as easy as updating the syntax to use the components you would like along with the parameters.
-
-The examples below show what layouts can do for us. 
 
 ## Laying out pages
 
@@ -36,14 +32,29 @@ ui("Vertical Layout") {
 ```
 
 :::tip
-  Vertical layout places components top-to-bottom in a column. By default it stretches the children to the entire length but we can explicitly set the width or height to control that.
+  verticalLayout places components top-to-bottom in a column. By default it stretches the children to the entire length but we can explicitly set the width or height to control that.
 :::
 
-> The image below shows a vertical layout of two elements with default parameters.
+> The image below shows a verticalLayout of two elements with default parameters.
 
 ![](/img/vl-em2.PNG)
 
-> The image below shows a vertical layout of two elements. The first element has its width set to 50%.
+> The image below shows a verticalLayout of two elements. The first element has its width set to 50%.
+
+```kotlin
+ui("Vertical Layout") {
+    page("Page layout example") {
+            verticalLayout(...) {
+                entityManager (...) {
+                    attributes (
+                        "width" to "50%"
+                    )
+                },
+                entityManager (...) {}
+            }
+        }    
+    }
+```
 
 ![](/img/vl-em-attr.PNG)
 
@@ -62,15 +73,30 @@ ui("Horizontal Layout") {
 ```
 
 :::tip
-  Horizontal layout places components left-to-right in a row. By default it stretches the children to the entire length but we can explicitly set the width or height to control that.
+  horizontalLayout places components left-to-right in a row. By default it stretches the children to the entire length but we can explicitly set the width or height to control that.
 :::
 
-> The image below shows a horizontal layout of two elements with default parameters
+> The image below shows a horizontalLayout of two elements with default parameters
 
 ![](/img/hl-em1.PNG)
 
-> The image below shows a horizontal layout of two elements. The first element has its height set to 50%
+> The image below shows a horizontalLayout of two elements. The first element has its height set to 50%
 
+```kotlin
+ui("Horizontal Layout") {
+    page("Page Layout Example") {
+            horizontalLayout(...) {
+                entityManager (...) {
+                    attributes(
+                        "height" to "50%"
+                    )
+                },
+                entityManager (...) {}
+            }
+        }    
+    }
+}
+```
 
 ![](/img/hl-em-attr.PNG)
 
@@ -101,11 +127,11 @@ ui("Vertical Layout") {
             <zero-flex-layout class="flex-column">
                 <zero-flex-layout class="flex-column spacing-2x">
                     <form style={{ display: 'flex', flexDirection: 'column', padding: '3px' }}>
-                        <label for="i1">Input 1</label>
+                        <label htmlFor="i1">Input 1</label>
                         <input type="text" id="i1" name="i1" placeholder="placeholder" style={{ backgroundColor: ' rgba(135, 155, 166, 0.06) ' , borderRadius: '4px', height: '40px', border: '0', marginTop: '4px' }}></input>
                     </form>
                     <form style={{ display: 'flex', flexDirection: 'column', padding: '3px' }}>
-                        <label for="i1">Input 2</label>
+                        <label htmlFor="i1">Input 2</label>
                         <input type="text" id="i1" name="i1" placeholder="placeholder" style={{ backgroundColor: ' rgba(135, 155, 166, 0.06) ' , borderRadius: '4px', height: '40px', border: '0', marginTop: '4px' }}></input>
                     </form>
                 </zero-flex-layout>
@@ -117,9 +143,9 @@ ui("Vertical Layout") {
     </div>
 </zero-design-system-provider>
 
-### Horizontally & Vertical
+### Horizontal & Vertical
 
-Vertical and horizontal components can also be used together for a more complex layout.
+Vertical and horizontal components can also be used together for a more complex structure.
 
 ```kotlin
 ui("Vertical Layout") {
@@ -148,21 +174,21 @@ ui("Vertical Layout") {
                 <zero-flex-layout class="flex-row spacing-2x">
                     <zero-flex-layout class="flex-column spacing-2x" >
                         <form style={{ display: 'flex', flexDirection: 'column', padding: '3px' }}>
-                            <label for="i1">Input 1</label>
+                            <label htmlFor="i1">Input 1</label>
                             <input type="text" id="i1" name="i1" placeholder="placeholder" style={{ backgroundColor: ' rgba(135, 155, 166, 0.06) ' , borderRadius: '4px', height: '40px', border: '0', marginTop: '4px' }}></input>
                         </form>
                         <form style={{ display: 'flex', flexDirection: 'column', padding: '3px' }}>
-                            <label for="i2">Input 2</label>
+                            <label htmlFor="i2">Input 2</label>
                             <input type="text" id="i2" name="i2" placeholder="placeholder" style={{ backgroundColor: ' rgba(135, 155, 166, 0.06) ' , borderRadius: '4px', height: '40px', border: '0', marginTop: '4px' }}></input>
                         </form>
                     </zero-flex-layout>
                     <zero-flex-layout class="flex-column spacing-2x">
                         <form style={{ display: 'flex', flexDirection: 'column', padding: '3px' }}>
-                            <label for="i3">Input 3</label>
+                            <label htmlFor="i3">Input 3</label>
                             <input type="text" id="i3" name="i3" placeholder="placeholder" style={{ backgroundColor: ' rgba(135, 155, 166, 0.06) ' , borderRadius: '4px', height: '40px', border: '0', marginTop: '4px' }}></input>
                         </form>
                         <form style={{ display: 'flex', flexDirection: 'column', padding: '3px' }}>
-                            <label for="i4">Input 4</label>
+                            <label htmlFor="i4">Input 4</label>
                             <input type="text" id="i4" name="i4" placeholder="placeholder" style={{ backgroundColor: ' rgba(135, 155, 166, 0.06) ' , borderRadius: '4px', height: '40px', border: '0', marginTop: '4px' }}></input>
                         </form>
                     </zero-flex-layout>
@@ -201,7 +227,7 @@ ui("Vertical Layout") {
 }
 ```
 
-> As mentioned above, children elements of the vertical and horizontal layout components, stretch to the entire length by default. For the following examples, we will set the width of the buttons to `100px`.
+> As mentioned above, children elements of the verticalLayout and horizontalLayout components, stretch to the entire length by default. For the following examples, we will set the width of the buttons to `100px`.
 
 <zero-design-system-provider style={{ display: 'flex', justifyContent: 'center', borderRadius: '5px' }}>
     <zero-card style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'rgba( 207, 207, 207, 1)' }}>
