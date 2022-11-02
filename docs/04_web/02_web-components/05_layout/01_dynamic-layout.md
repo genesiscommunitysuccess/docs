@@ -199,6 +199,52 @@ Where there is a button to save/load/reset the layout, and component 1 has a clo
 takes up 25% of the initial width. Components 2,3,4 take up a third of the _remaining_ width between them
 (default behaviour) and 5 and 6 are tabbed.
 
+### Using Directives
+
+You should be able to use [FAST template directives](https://www.fast.design/docs/fast-element/using-directives) such as `repeat`
+
+```javascript
+interface Position {
+	symbol: string;
+}
+
+class Commodities extends FASTElement {
+	@observable positions: Position[]
+
+	...
+}
+
+const template = html<Commodities>`
+<foundation-layout>
+	<foundation-layout-region type="horizontal">
+		${when(x => x.positions, html<Position>`
+			<foundation-layout-item title="${x => x.symbol}">
+				<chart symbol="${x => x.symbol}"></chart>
+			</foundation-layout-item>`)}
+	</foundation-layout-region>
+</foundation-layout>`;
+```
+
+For an example where the `Commodities` object has three positions you will see the following output:
+```
++-----------------------------------------------------+
+|              Component 1 Contents                   |
++-----------------------------------------------------+
+|              Component 2 Contents                   |
++-----------------------------------------------------+
+|              Component 3 Contents                   |
++-----------------------------------------------------+
+```
+
+
+:::note
+`<chart>` is just an example component, it doesn't exist within `foundation-ui`.
+:::
+
+:::Note to self
+I need to check `when` directives
+:::
+
 ### Incorrect Examples
 
 The following example is invalid:
