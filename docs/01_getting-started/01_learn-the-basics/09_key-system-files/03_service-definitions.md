@@ -37,4 +37,4 @@ When `genesisInstall` is executed, all the products have their **service-definit
 </configuration>
 ```
 
-Further system-definition information can be found [here](/server/configuring-runtime/system-definitions/).
+Further information can be found on our [system definitions](/server/configuring-runtime/system-definitions/) page.
