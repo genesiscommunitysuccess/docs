@@ -24,6 +24,7 @@
     "@genesislcap/foundation-header": "3.0.0-docs.13",
     "@genesislcap/foundation-login": "3.0.0-docs.13",
     "@genesislcap/foundation-testing": "3.0.0-docs.13",
+    "@genesislcap/foundation-zero": "^5.0.2-alpha-f9e2a9b.0",
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.8",
     "classnames": "^2.3.2",

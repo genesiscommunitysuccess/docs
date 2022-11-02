@@ -17,14 +17,9 @@ module.exports = {
   trailingSlash: true,
   onBrokenLinks: 'throw', // please do NOT change this to 'warn', fix or remove your broken links instead
   onDuplicateRoutes: 'throw',
-  scripts: [
-    {
-      src: `${baseUrl}js/docs.iife.min.js`,
-      async: true,
-    }
+  clientModules: [
+    require.resolve('./src/design-systems/zero.js')
   ],
-
-
   plugins: [
     [
       '@docusaurus/plugin-client-redirects',
@@ -83,7 +78,6 @@ module.exports = {
       processedMap,
     }],
   ],
-
   presets: [
     [
       '@docusaurus/preset-classic',
@@ -101,9 +95,7 @@ module.exports = {
       }
     ],
   ],
-
   themes: ['@docusaurus/theme-live-codeblock'],
-
   themeConfig: {
     colorMode: {
       disableSwitch: true
@@ -145,7 +137,6 @@ module.exports = {
       additionalLanguages: ['java', 'kotlin', 'powershell', 'groovy'],
     },
   },
-
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -155,6 +146,5 @@ module.exports = {
       },
     },
   },
-
 };
 
