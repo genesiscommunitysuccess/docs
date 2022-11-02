@@ -87,7 +87,7 @@ Simple example with a vertical split and two items that will take up equal space
     <foundation-layout-item title="Component 2">
       <!-- Content -->
     </foundation-layout-item>
-  </foundation-layout-region type="vertical">
+  </foundation-layout-region>
 </foundation-layout>
 ```
 
@@ -122,8 +122,8 @@ Slightly more complicated example:
       <foundation-layout-item title="Component 3">
         <!-- Content -->
       </foundation-layout-item>
-    </foundation-layout-region type="vertical">
-  </foundation-layout-region type="horizontal">
+    </foundation-layout-region>
+  </foundation-layout-region>
 
 </foundation-layout>
 ```
@@ -166,7 +166,7 @@ If instead we had:
         <foundation-layout-item title="Component 4">
           <!-- Content -->
         </foundation-layout-item>
-      </foundation-layout-region type="horizontal">
+      </foundation-layout-region>
 
       <foundation-layout-region type="tabs">
         <foundation-layout-item title="Component 5">
@@ -175,9 +175,9 @@ If instead we had:
         <foundation-layout-item title="Component 6">
           <!-- Content -->
         </foundation-layout-item>
-      </foundation-layout-region type="tabs">
-    </foundation-layout-region type="vertical">
-  </foundation-layout-region type="horizontal">
+      </foundation-layout-region>
+    </foundation-layout-region>
+  </foundation-layout-region>
 
 </foundation-layout>
 ```
@@ -258,7 +258,7 @@ The following example is invalid:
     <foundation-layout-item title="Component 2">
       <!-- Content -->
     </foundation-layout-item>
-  </foundation-layout-region type="vertical">
+  </foundation-layout-region>
 </foundation-layout>
 ```
 This is because there is a child of one of the layout regions which isn't another layout region or
@@ -279,13 +279,13 @@ The following example is invalid:
 			<foundation-layout-item title="Component 2">
 				<!-- Content -->
 			</foundation-layout-item>
-		</foundation-layout-region type="vertical">
+		</foundation-layout-region>
 
 		<foundation-layout-item title="Component 3">
 			<!-- Content -->
 		</foundation-layout-item>
 
-	</foundation-layout-region type="tabs">
+	</foundation-layout-region>
 </foundation-layout>
 ```
 This is because you cannot have more layout regions nested inside of a tab regions. You will get undefined behaviour.
