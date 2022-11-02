@@ -31,3 +31,18 @@ npm run clear
 ```
 
 This command clears the Docusaurus generated assets, caches, build artifacts etc. (useful if you're not seeing your changes in the browser).
+
+### Regenerating `bundle`
+
+To generate a new bundled file simply run the following command from the package you wish to access.
+
+```
+npm run build
+``` 
+
+For example in the foundation-ui repo we run the command above on the `documentation-components` under the `showcase` folder. 
+
+***
+Ensure the package you intend to regenerate the file from, has all the necessary dependencies. 
+***
+One you have the new regenerated file paste the contents to [docs.iife.min.js]( static/js/docs.iife.min.js)
