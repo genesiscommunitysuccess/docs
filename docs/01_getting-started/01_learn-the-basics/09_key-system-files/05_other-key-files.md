@@ -48,4 +48,4 @@ router {
 ```
 
 
-Further information can be found on our [Genesis router](/server/configuring-runtime/genesis-router/) page.
+Further information can be found on our [Genesis Router](/server/configuring-runtime/genesis-router/) page.
