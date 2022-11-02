@@ -13,7 +13,7 @@ With Fuse we can determine our own layouts. This way, we can reimplement our exi
 
 What layouts allow you to do:
 
-- displaying your elements in any layout you like by using the Vertical and Horizontal compoenents
+- displaying your elements in any layout you like by using the vertical and horizontal compoenents
 - determining the numbers of elements you would like to see on your screen
 - rely on the default options or override them for more control
 - control the amount of space each element takes up
