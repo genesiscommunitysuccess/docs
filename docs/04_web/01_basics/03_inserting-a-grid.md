@@ -9,236 +9,170 @@ tags:
     - inserting a grid
 ---
 
-In this example, we shall add a grid to our new page. This grid will display data from a Data Server resource on the server. In this case, the resource is called ALL_TRADES. The logic would be the same for any other.
+## Prerequisites
 
-More specifically, we will be adding:
+There are a couple of steps that have to be done before seeing the user interface running.
+- your database must be running
+- the back-end services must be deployed
+- you must have imported the example data in the csv files
 
-- a simple wrapper div for styling/sizing purposes
-- a `zero-grid-pro` grid component
-- a `grid-pro-genesis-datasource` component, which makes the actual connection to the server resource and provides data to the grid
+### Connecting the back end and front end
+In this step, we shall configure an nginx server working as a reverse proxy.
 
- 
+In your CentOS terminal, enter the following three commands:
 
-:::info
-For static data, the lightweight [DataGrid](/web/web-components/grids/data-grid/) is recommended instead. 
-:::
-
-## The wrapper class
-
-Keeping this one simple, just add a `div` with class `wrapper` to our template:  **src/routes/test-page/test-page.template.ts**.
-
-```javascript
-  <div class="wrapper">
-    <!-- The grid will go in here. -->
-  </div>
+1.  Enter your artifactory credentials:
+```shell
+docker login genesisglobal-docker-internal.jfrog.io
 ```
 
-And to make it full size, add this code to the file **src/routes/test-page/test-page.styles.ts**:
+2. Pull the latest version of the Genesis software:
 
-```css
-  .wrapper {
-    height: 100%;
-    width: 100%;
-  }
+```shell
+docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
 ```
 
-## Adding the grid component
-Now, we need to add the grid component inside the wrapper div. In this example, we have left a comment to show where the data source will be added:
+3. Run the following command:
 
-```javascript
-  <div class="wrapper">
-    <zero-grid-pro>
-      <!-- The datasource will go in here. -->
-    </zero-grid-pro>
-  </div>
+```shell
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
 ```
 
-## Adding the data source
-Now we can see the same code snippet when the data source (ALL_TRADES) has been added:
- 
 
-```javascript
-  <div class="wrapper">
-    <zero-grid-pro>
-      <grid-pro-genesis-datasource resourceName="ALL_TRADES" />
-    </zero-grid-pro>
-  </div>
+### Installing the dependencies
+
+1. Before we make any changes, you need to install your npm dependencies; run the following in your terminal:
+
+```shell title="./client"
+npm run bootstrap
 ```
 
-With these few lines of code, we already have a fully functional grid:
-![](/img/all-trades-grid-01.png)
+2. Once you have all dependencies installed, use the following command in the terminal to run your UI:
 
-## Configuring the datasource and customising the grid  
-
-Let's say we want the incoming data from the server ordered by a specific column, and we also want a custom height for our rows.  
-
-We just need to set a few properties on our grid and datasource components. In this case, we add a `rowHeight` to our grid and specify `orderBy` in our connection to the resource:
-
-```javascript
-  <div class="wrapper">
-    <zero-grid-pro rowHeight="45">
-      <grid-pro-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
-    </zero-grid-pro>
-  </div>
+```shell title="./client"
+npm run dev
 ```
 
-## Custom column definitions
-Here are some more ways to customise the grid:
+The application will open at `http://localhost:6060/login`.
+![](/img/btfe--positions-example--login.png)
 
-- show only a subset of the columns 
-- provide custom headers and value formatters
-- enable flashing on updates
+## Section objectives
+The goal of this section is to run the UI for the first time and add a data grid.
 
-We can achieve this by providing our own custom column definitions.
+## Showing all positions
 
-In this case, we have defined custom definitions for ten fields. For each of these, we have specified  a value for `headerName` and we have set `enableCellChangeFlash: true`.
+For your user interface, the `genx` process has generated the following files:
 
-Then, in the export, we have added the line `${repeat(() => tradeColumnDefs, html` `, which takes in all the definitions.
+- **home.template.ts**
+- **home.ts**
+- **home.styles.ts**
 
-```javascript
-import {html, repeat} from '@microsoft/fast-element';
-import {formatDateLong, formatNumber} from '../../utils/formatting';
-import type {TestPage} from './test-page';
+In the template file, start by adding the Genesis data source pointing to the appropriate resource name; this must be wrapped in a grid of your choice.
 
-export const tradeColumnDefs = [
-  {field: 'INSTRUMENT_NAME', headerName: 'Instrument', enableCellChangeFlash: true, flex: 3},
-  {field: 'SIDE', headerName: 'Side', cellClass: 'status-cell', enableCellChangeFlash: true, flex: 1},
-  {field: 'QUANTITY', headerName: 'Quantity', valueFormatter: formatNumber(0), type: 'rightAligned', enableCellChangeFlash: true, flex: 1},
-  {field: 'CURRENCY', headerName: 'Ccy', enableCellChangeFlash: true, flex: 1},
-  {field: 'PRICE', headerName: 'Price', valueFormatter: formatNumber(2), type: 'rightAligned', enableCellChangeFlash: true, flex: 2},
-  {field: 'CONSIDERATION', headerName: 'Consideration', valueFormatter: formatNumber(2), type: 'rightAligned', enableCellChangeFlash: true, flex: 2},
-  {field: 'TRADE_DATETIME', headerName: 'Date', valueFormatter: rowData => formatDateLong(rowData.data.TRADE_DATETIME), sort: 'desc', enableCellChangeFlash: true, flex: 2},
-  {field: 'COUNTERPARTY_NAME', headerName: 'Counterparty', enableCellChangeFlash: true, flex: 2},
-  {field: 'TRADE_STATUS', headerName: 'Trade State', cellClass: 'status-cell', enableCellChangeFlash: true, flex: 2},
-  {field: 'ENTERED_BY', headerName: 'Entered By', enableCellChangeFlash: true, flex: 2},
-];
-
-export const TestPageTemplate = html<TestPage>`
-  <div class="wrapper">
-    <zero-grid-pro rowHeight="45" only-template-col-defs enabledRowFlashing >
-      <grid-pro-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
-      ${repeat(() => tradeColumnDefs, html`
-        <grid-pro-column :definition="${x => x}" />
-      `)}
-    </zero-grid-pro>
-  </div>
-`;
+[//]: # (link to grid-pro-genesis-datasource tsdocs)
+```html title="home.template.ts"
+<zero-grid-pro>
+    <grid-pro-genesis-datasource
+        resourceName="ALL_POSITIONS"
+        orderBy="INSTRUMENT_ID">
+    </grid-pro-genesis-datasource>
+</zero-grid-pro>
 ```
 
-Here is the result:
+This will result in a grid displaying all the columns available in the `ALL_POSITIONS` resource:
 
-![](/img/all-trades-grid-02.png)
+![](/img/positions-grid.png)
 
+## Grid interaction
 
-## Going further
+To add new columns that are not part of the API, we can add additional column definitions.
 
-If you want to get more complex, you can create your own grid component; you do this the same way you created the `TestPage` component. In the example below, the component is called `positions-grid-pro`. 
+```html {6} title="home.template.ts"
+<zero-grid-pro>
+    <grid-pro-genesis-datasource
+        resourceName="ALL_POSITIONS"
+        orderBy="INSTRUMENT_ID">
+    </grid-pro-genesis-datasource>
+    <grid-pro-column :definition="${x => x.singlePositionActionColDef}" />
+</zero-grid-pro>
 
-Note we are extending the `ZeroGridPro`, not the `fast-element`.
-
-
-```javascript
-import {ZeroGridPro, zeroGridProTemplate} from '@genesislcap/foundation-zero-grid-pro';
-import {customElement} from '@microsoft/fast-element';
-import {positionsGridStyles} from './grid-pro.styles';
-
-@customElement({
-  name: 'positions-grid-pro',
-  template: zeroGridProTemplate,
-  styles: positionsGridStyles,
-})
-export class PositionsAgGrid extends ZeroGridPro {
-}
 ```
 
-Now you need to provide custom styles for the custom component:
+In the component definition file, we can provide a method that enables us to interact with the rest of the class.
+The example below creates a column with a button that logs data in the row to the console.
+Here you can easily swap logging the row data with some custom logic (such as calling a back-end API, which we shall cover in more detail later on).
 
-```javascript
-
-import {css, ElementStyles} from '@microsoft/fast-element';
-import {BUY_SIDE, SELL_SIDE, NEW_TRADE_STATUS, CANCELLED_TRADE_STATUS} from './colors';
-
-export const positionsGridStyles: ElementStyles = css`
-  ${zeroAgGridStyles}
-
-  .status-cell {
-    display:flex;
-    align-items: center;
-    margin-left: 6px;
-  }
-  
-  .status-cell::after {
-    content: "";
-    position: absolute;
-    left: 6px;
-    height: 100%;
-    width: 3px;
-  }
-
-  .buy-side-trade.status-cell::after {
-    background-color: ${BUY_SIDE};
-  }
-
-  .buy-side-trade {
-    color: ${BUY_SIDE};
-  }
-
-  .sell-side-trade.status-cell::after {
-    background-color: ${SELL_SIDE};
-  }
-
-  .sell-side-trade {
-    color: ${SELL_SIDE};
-  }
-
-  .new-status-trade.status-cell::after {
-    background-color: ${NEW_TRADE_STATUS};
-  }
-
-  .new-status-trade {
-    color: ${NEW_TRADE_STATUS};
-  }
-
-  .cancel-status-trade.status-cell::after {
-    background-color: ${CANCELLED_TRADE_STATUS};
-  }
-
-  .cancel-status-trade {
-    color: ${CANCELLED_TRADE_STATUS};
-  }
-`;
+```typescript title="home.ts"
+  public singlePositionActionColDef = {
+    headerName: 'Action',
+    minWidth: 120,
+    maxWidth: 120,
+    cellRenderer: 'action',
+    cellRendererParams: {
+      actionClick: async (rowData) => {
+        console.log(rowData);
+      },
+      actionName: 'Add Trade',
+      appearance: 'primary-gradient',
+    },
+    pinned: 'right',
+  };
 ```
 
-This allows us to enhance the column definitions by adding conditional classes:
+After refreshing the application, the grid should also include a column containing a button:
 
-```javascript
-const tradeCellClassRules = {
-  'buy-side-trade': params => params.value === 'BUY',
-  'sell-side-trade': params => params.value === 'SELL',
-  'new-status-trade': params => params.value === 'NEW',
-  'cancel-status-trade': params => params.value === 'CANCELLED',
-};
+![](/img/positions-grid-with-button.png)
 
-export const tradeColumnDefs: ColDef[] = [
-  {field: 'INSTRUMENT_NAME', headerName: 'Instrument', enableCellChangeFlash: true, flex: 3},
-  {field: 'SIDE', headerName: 'Side', cellClass: 'status-cell', cellClassRules: tradeCellClassRules, enableCellChangeFlash: true, flex: 1},
-  {field: 'QUANTITY', headerName: 'Quantity', valueFormatter: formatNumber(0), type: 'rightAligned', enableCellChangeFlash: true, flex: 1},
-  {field: 'CURRENCY', headerName: 'Ccy', enableCellChangeFlash: true, flex: 1},
-  {field: 'PRICE', headerName: 'Price', valueFormatter: formatNumber(2), type: 'rightAligned', enableCellChangeFlash: true, flex: 2},
-  {field: 'CONSIDERATION', headerName: 'Consideration', valueFormatter: formatNumber(2), type: 'rightAligned', enableCellChangeFlash: true, flex: 2},
-  {field: 'TRADE_DATETIME', headerName: 'Date', valueFormatter: rowData => formatDateLong(rowData.data.TRADE_DATETIME), sort: 'desc', enableCellChangeFlash: true, flex: 2},
-  {field: 'COUNTERPARTY_NAME', headerName: 'Counterparty', enableCellChangeFlash: true, flex: 2},
-  {field: 'TRADE_STATUS', headerName: 'Trade State', cellClass: 'status-cell', cellClassRules: tradeCellClassRules, enableCellChangeFlash: true, flex: 2},
-  {field: 'ENTERED_BY', headerName: 'Entered By', enableCellChangeFlash: true, flex: 2},
+## Custom column config
+
+If you want to customise how each column is displayed, you can provide a column config for every column.
+
+Create a new file called **positionColumnDefs.ts** in the same directory.
+
+```typescript title="positionColumnDefs.ts"
+export const positionColumnDefs = [
+  {field: 'INSTRUMENT_ID', headerName: 'Instrument', sort: 'desc', flex: 2},
+  {field: 'QUANTITY', headerName: 'Quantity', type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
+  {field: 'NOTIONAL', headerName: 'Traded Value', type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
+  {field: 'VALUE', headerName: 'Market Value', type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
+  {field: 'PNL', headerName: 'PNL', type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
 ];
 ```
 
-## Final result
+To stop automatic generation of columns, you need to add the `only-template-col-defs` attribute to the zero-grid-pro.
 
-And so we have our result:
+Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive) directive; this includes all the columns from our column config array.
 
-![](/img/all-trades-grid-03.png)
 
-:::info
-You can read more about our grid components and configuration options them under the [Web UI reference](/web/web-components/grids/grid-pro/grid-pro-intro/) for grids.
-:::
+```typescript {1,2,6,12-14} title="home.template.ts"
+import {positionColumnDefs} from './positionColumnDefs';
+import {repeat} from '@microsoft/fast-element';
+
+<zero-grid-pro only-template-col-defs>
+    <grid-pro-genesis-datasource
+        resourceName="ALL_POSITIONS"
+        orderBy="INSTRUMENT_ID">
+    </grid-pro-genesis-datasource>
+    ${repeat(() => positionColumnDefs, html`
+    <grid-pro-column :definition="${x => x}"></grid-pro-column>
+    `)}
+    <grid-pro-column :definition="${x => x.singlePositionActionColDef}"></grid-pro-column>
+</zero-grid-pro>
+```
+
+Columns will now flash green as the value inside changes:
+![](/img/positions-grid-with-cell-change-flash.png)
+
+## Saving user preferences
+
+You can add the `persist-column-state-key` to the zero-grid-pro to persist user changes to things such as sorting, column order, and visibility on the user machine. With this, when the user reloads the browser, they get the same configuration.
+
+```html {2}
+<zero-grid-pro
+    persist-column-state-key='position-grid-settings'
+>
+```
+
+
+[//]: # (link to zero-grid-pro tsdocs)
+
