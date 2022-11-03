@@ -16,9 +16,9 @@ With layouts you can:
 - display your elements in any layout you like by using the vertical and horizontal components
 - use default options or override them for more control
 
-## Examples
+## Layout Examples
 
-### Vertical page layout
+### Vertical Page
 
 ```kotlin
 ui("Vertical Layout") {
@@ -58,7 +58,7 @@ ui("Vertical Layout") {
 
 ![](/img/vl-em-attr.PNG)
 
-### Horizontal page layout
+### Horizontal Page
 
 ```kotlin
 ui("Horizontal Layout") {
@@ -101,11 +101,11 @@ ui("Horizontal Layout") {
 ![](/img/hl-em-attr.PNG)
 
 
-## Component examples
+## Component Examples
 
-### Vertical implementation
+### Vertical
 
-Here we have the implementation of `verticalLayout` within a form:
+Here we have an implementation of `verticalLayout` within a form:
 
 ```kotlin
 verticalLayout(...) {
@@ -123,7 +123,7 @@ verticalLayout(...) {
 <zero-design-system-provider style={{ justifyContent: 'center' }}>
     <div style={{ flexDirection: 'column', margin: '10px', width: '80%' }}>
         <zero-card id="zero-form-card" style= {{ display: 'flex', flexDirection: 'column' }}>
-            <zero-flex-layout class="flex-column">
+            <zero-flex-layout class="flex-column spacing-2x">
                 <zero-flex-layout class="flex-column spacing-2x">
                     <form style={{ display: 'flex', flexDirection: 'column', padding: '3px' }}>
                         <label htmlFor="i1">Input 1</label>
@@ -142,7 +142,50 @@ verticalLayout(...) {
     </div>
 </zero-design-system-provider>
 
-### Nested implementation
+### Horizontal
+
+Implementation of `horizontalLayout` within a form:
+
+```kotlin
+horizontalLayout(...) {
+    form(...) {
+        horizontalLayout(...) {
+            input{...},
+            input{...}
+            }
+        }
+    button(...) {}
+    }
+}
+```
+
+<zero-design-system-provider style={{ justifyContent: 'center' }}>
+    <div style={{ flexDirection: 'column', margin: '10px', width: '80%' }}>
+        <zero-card id="zero-form-card" style= {{ display: 'flex', flexDirection: 'column' }}>
+            <zero-flex-layout class="flex-column spacing-2x">
+                <zero-flex-layout class="flex-row spacing-2x">
+                    <form style={{ display: 'flex', flexDirection: 'column', padding: '3px', flex: '1 1 auto' }}>
+                        <label htmlFor="i1">Input 1</label>
+                        <input type="text" id="i1" name="i1" placeholder="placeholder" style={{ backgroundColor: ' rgba(135, 155, 166, 0.06) ' , borderRadius: '4px', height: '40px', border: '0', marginTop: '4px' }}></input>
+                    </form>
+                    <form style={{ display: 'flex', flexDirection: 'column', padding: '3px', flex: '1 1 auto' }}>
+                        <label htmlFor="i2">Input 2</label>
+                        <input type="text" id="i2" name="i2" placeholder="placeholder" style={{ backgroundColor: ' rgba(135, 155, 166, 0.06) ' , borderRadius: '4px', height: '40px', border: '0', marginTop: '4px' }}></input>
+                    </form>
+                    <form style={{ display: 'flex', flexDirection: 'column', padding: '3px', flex: '1 1 auto' }}>
+                        <label htmlFor="i3">Input 3</label>
+                        <input type="text" id="i3" name="i3" placeholder="placeholder" style={{ backgroundColor: ' rgba(135, 155, 166, 0.06) ' , borderRadius: '4px', height: '40px', border: '0', marginTop: '4px' }}></input>
+                    </form>
+                </zero-flex-layout>
+                <div style={{ display: 'flex', justifyContent: 'right'}}>
+                    <zero-button appearance="primary-gradient" style={{ width: '100px', display: 'flex', justifyContent: 'right' }}>Submit</zero-button>
+                </div>
+            </zero-flex-layout>
+        </zero-card>
+    </div>
+</zero-design-system-provider>
+
+### Nested
 
 Vertical and horizontal components can also be used together for a more complex structure.
 
@@ -168,7 +211,7 @@ verticalLayout(...) {
 <zero-design-system-provider style={{ justifyContent: 'center' }}>
     <div style={{ flexDirection: 'column', margin: '10px', width: '80%' }}>
         <zero-card id="zero-form-card" style= {{ display: 'flex', flexDirection: 'column' }}>
-            <zero-flex-layout class="flex-column">
+            <zero-flex-layout class="flex-column spacing-2x">
                 <zero-flex-layout class="flex-row spacing-2x">
                     <zero-flex-layout class="flex-column spacing-2x" >
                         <form style={{ display: 'flex', flexDirection: 'column', padding: '3px' }}>
@@ -209,7 +252,7 @@ Click on the tabs below for more details.
 <TabItem value="vertical" label="Vertical Layout" default >
 
 ## Alignment Examples
-### Vertical Alignment
+### Vertical
 
 
 ```kotlin
@@ -406,7 +449,7 @@ ui("Vertical Layout") {
 </TabItem>
 <TabItem value="horizontal" label="Horizontal Layout">
 
-### Horizontal Alignment
+### Horizontal
 
 ```kotlin
 ui("Horizontal Layout") {
