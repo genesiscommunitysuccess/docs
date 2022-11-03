@@ -132,7 +132,7 @@ Here is the result:
 
 ## Going further
 
-If you want to get more complex, you can create your own grid component; you do this the same way you created the `TestPage` component. In the example below, the component is called `positions-grid-pro`. 
+If you want to get more complex, you can create your own grid component; you do this in the same way that you created the `TestPage` component. In the example below, the component is called `positions-grid-pro`. 
 
 Note we are extending the `ZeroGridPro`, not the `fast-element`.
 
@@ -240,5 +240,5 @@ And so we have our result:
 ![](/img/all-trades-grid-03.png)
 
 :::info
-You can read more about our grid components and configuration options them under the [Web UI reference](/web/web-components/grids/grid-pro/grid-pro-intro/) for grids.
+You can read more about our grid components and configuration options under the [Web UI reference](/web/web-components/grids/grid-pro/grid-pro-intro/) for grids.
 :::
