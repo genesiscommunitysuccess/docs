@@ -1,3 +1,3 @@
 {
-    "app": "node iac/index"
+    "app": "npx ts-node --prefer-ts-exts iac/bin/entry-point.ts"
 }

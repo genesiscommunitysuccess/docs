@@ -19,8 +19,6 @@ exports.DocsStack = void 0;
 var cdk = require("aws-cdk-lib");
 var aws_cdk_lib_1 = require("aws-cdk-lib");
 var BUCKET_ID = 'test-bucket-1';
-var STACK_ID = 'GenesisDocsStack';
-var ACCOUNT_ID = '785277322110';
 var DocsStack = /** @class */ (function (_super) {
     __extends(DocsStack, _super);
     function DocsStack(scope, id, props) {
@@ -33,22 +31,3 @@ var DocsStack = /** @class */ (function (_super) {
     return DocsStack;
 }(cdk.Stack));
 exports.DocsStack = DocsStack;
-var app = new cdk.App();
-new DocsStack(app, STACK_ID, {
-    /**
-     * This is required for our use of hosted-zone lookup.
-     *
-     * Lookups do not work at all without an explicit environment
-     * specified; to use them, you must specify env.
-     * @see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
-     */
-    env: {
-        account: ACCOUNT_ID,
-        /**
-         * Stack must be in us-east-1, because the ACM certificate for a
-         * global CloudFront distribution must be requested in us-east-1.
-         */
-        region: 'us-east-1'
-    }
-});
-app.synth();

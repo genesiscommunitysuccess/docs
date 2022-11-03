@@ -12,8 +12,11 @@
     "start": "docusaurus start --port 8080 --host 0.0.0.0",
     "swizzle": "docusaurus swizzle",
     "cdk": "cdk",
-    "cdk:build": "tsc iac/**.ts",
-    "cdk:synth": "cdk synth"
+    "cdk:build": "tsc iac/**/*.ts",
+    "cdk:synth": "cdk synth",
+    "cdk:diff": "cdk diff",
+    "cdk:bootstrap": "cdk bootstrap",
+    "cdk:deploy": "cdk deploy"
   },
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^0.11.0",
