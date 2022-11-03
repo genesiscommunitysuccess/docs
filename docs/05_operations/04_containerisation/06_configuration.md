@@ -13,7 +13,7 @@ tags:
 
 ## Configuration options
 
-## Docker plugin extension
+### Docker plugin extension
 
 To customise how the Docker plugin behaves, the Genesis low-code platform provides a Gradle plugin extension.
 
@@ -42,7 +42,7 @@ dockerImage {
 }
 ```
 
-## Local plugin configuration
+### Local plugin configuration
 
 The Genesis low-code platform also supports overrides of the Docker extension configuration, allowing for different values for different environments. This means that you can set your own values without changing any files that are tracked in SCM.
 
@@ -57,7 +57,7 @@ This is done by adding **server/jvm/***appname***-deploy/gradle.properties** and
 | `useGenesisContainerLogConfig` | `dockerUseGenesisContainerLogConfig` | N/A |
 | `preCompileScripts` | `dockerPreCompileScripts` | N/A |
 
-## Environment variables
+### Environment variables
 
 Below is a list of environment variables that can be passed to the Docker container at runtime.
 
@@ -67,4 +67,4 @@ Below is a list of environment variables that can be passed to the Docker contai
 | `GENESIS_DB_INSTALL` | Runs a remap and then a `genesisInstallHooks --init` to mark the migration hooks so they do not run again.<br/>This should only be used during the initial DB setup, as it will ignore the migration hooks.<br/>GENESIS_DB_UPGRADE should be used for any further DB schema changes.<br/>The container will exit on completion and will not run any Genesis processes. | false |
 | `GENESIS_DB_UPGRADE` | Runs `genesisInstallHooks` to run any migration hooks, then runs a `remap`<br/>The container will exit on completion and will not run any Genesis processes | false |
 
-You can also [set System Definitions values from environment variables](https://docs.genesis.global/secure/server/configuring-runtime/system-definitions/#setting-system-definitions-values-from-environment-variables), which allows you to change the location of external dependencies (such as the database) between your production and non-production environments.
+You can also [set System Definitions values from environment variables](/server/configuring-runtime/system-definitions/#setting-system-definitions-values-from-environment-variables), which allows you to change the location of external dependencies (such as the database) between your production and non-production environments.
