@@ -1,12 +1,13 @@
 ---
-title: 'Web Basics - Prerequisites'
-sidebar_label: 'Prerequisites'
-id: prerequisites
-keywords: [web, basics, prerequisites]
+title: 'Web Basics - Before you start'
+sidebar_label: 'Before you start'
+id: before-you-start
+keywords: [web, basics, prerequisites, before-you-start]
 tags:
     - web
     - basics
     - prerequisites
+    - before-you-start
 ---
 
 ## What you need to know to start
