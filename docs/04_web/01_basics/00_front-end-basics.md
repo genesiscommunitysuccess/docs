@@ -1,7 +1,7 @@
 ---
 title: 'Web Basics - Front-end'
 sidebar_label: 'Front-end basics'
-id: front-end-basics
+id: prerequisites
 keywords: [web, basics]
 tags:
     - web
