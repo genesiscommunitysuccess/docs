@@ -1,7 +1,7 @@
 ---
 title: 'Web Basics - Before you start'
 sidebar_label: 'Before you start'
-id: before-you-start
+id: prerequisites
 keywords: [web, basics, prerequisites, before-you-start]
 tags:
     - web
