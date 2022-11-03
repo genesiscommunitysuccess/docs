@@ -1,0 +1,6 @@
+{
+    "ignore": [
+        "iac/**",
+        "iac/index.ts"
+    ]
+}

@@ -2,10 +2,12 @@
   "compilerOptions": {
     "jsx": "react",
     "experimentalDecorators": true,
-    "importHelpers": true
+    "importHelpers": true,
+    "target": "ES6"
   },
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "cdk.out"
   ]
 }
