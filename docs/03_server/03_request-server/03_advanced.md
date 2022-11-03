@@ -177,7 +177,7 @@ requestReply<AltInstrumentId.ByAlternateTypeAlternateCode, AltInstrumentId> {
 
 ### Permission codes
 
-Similar to Event handlers and Request Servers you can add permission code as specified below.
+Similar to Event Handlers and Request Servers you can add permission code as specified below.
 
 ```kotlin
     requestReply(INSTRUMENT_DETAILS) {
@@ -348,3 +348,15 @@ Helpers exist to assist interacting with the Kotlin Flow type, which is the retu
 * T.sorted() - Returns a Flow of all sorted values
 * T.sortedBy(selector: (T) -> K?) - Returns a Flow of all sorted values given a selector
 
+## Client-side (runtime) options
+
+When a client initiates a request to a Request Server with a request message, there are several options that can be specified. None of these options is mandatory; you don't have to specify any to send a request.
+The features of the options are explained below.
+
+
+| Option         | Default                                                                               | Description                                                                                                                                                                                     |
+| -------------- |---------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| MAX_ROWS       | Equal to the rowReturnLimit configuration value defined for the target Request Server | Maximum number of rows to be returned as part of the reply message                                                                                                                              |
+| CRITERIA_MATCH |                                                                                       | Clients can send a Groovy expression to filter specific rows on the reply message provided by the Request Server. For example: `Expr.dateIsBefore(TRADE_DATE,'20150518')` or `QUANTITY > 10000` |
+
+You can find out more details about the CRITERIA_MATCH parameter [here](/server/data-server/advanced/#criteria-matching).
