@@ -71,21 +71,23 @@ This includes **@genesislcap** dependencies. This is where you can change the de
 :::
 
 ```javascript
-  "dependencies": {
-    "@genesislcap/foundation-comms": "1.0.0",
-    "@genesislcap/foundation-entity-management": "1.0.0",
-    "@genesislcap/foundation-login": "1.0.0",
-    "@genesislcap/foundation-utils": "1.0.0",
-    "@genesislcap/foundation-zero": "1.0.0",
-    "@genesislcap/foundation-ui": "1.0.0",
-    "@microsoft/fast-components": "^2.16.6",
-    "@microsoft/fast-element": "^1.6.2",
-    "@microsoft/fast-foundation": "^2.27.1",
-    "@microsoft/fast-router": "^0.2.11",
-    "@microsoft/fast-web-utilities": "^5.0.1",
-    "rxjs": "^7.4.0",
-    "tslib": "^2.3.1"
-  }
+"dependencies": {
+    "@genesislcap/foundation-comms": "^5.0.0",
+        "@genesislcap/foundation-entity-management": "^5.0.0",
+        "@genesislcap/foundation-header": "^5.0.0",
+        "@genesislcap/foundation-login": "^5.0.0",
+        "@genesislcap/foundation-ui": "^5.0.0",
+        "@genesislcap/foundation-utils": "^5.0.0",
+        "@genesislcap/foundation-zero": "^5.0.0",
+        "@genesislcap/foundation-zero-grid-pro": "^5.0.0",
+        "@microsoft/fast-components": "^2.21.6",
+        "@microsoft/fast-element": "^1.7.0",
+        "@microsoft/fast-foundation": "^2.33.4",
+        "@microsoft/fast-router": "^0.4.2",
+        "@microsoft/fast-web-utilities": "^5.1.0",
+        "rxjs": "^7.5.4",
+        "tslib": "^2.3.1"
+}
 ```
 
 :::tip
