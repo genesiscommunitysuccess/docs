@@ -100,7 +100,7 @@ To add new columns that are not part of the API, we can add additional column de
 
 In the component definition file, we can provide a method that enables us to interact with the rest of the class.
 The example below creates a column with a button that logs data in the row to the console.
-Here you can easily swap logging the row data with some custom logic (such as calling a back-end api, which we shall cover in more detail later on).
+Here you can easily swap logging the row data with some custom logic (such as calling a back-end API, which we shall cover in more detail later on).
 
 ```typescript title="home.ts"
   public singlePositionActionColDef = {
@@ -119,7 +119,7 @@ Here you can easily swap logging the row data with some custom logic (such as ca
   };
 ```
 
-After refreshing the application, the grid should now also include a column containing a button:
+After refreshing the application, the grid should also include a column containing a button:
 
 ![](/img/positions-grid-with-button.png)
 
