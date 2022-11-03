@@ -71,23 +71,21 @@ This includes **@genesislcap** dependencies. This is where you can change the de
 :::
 
 ```javascript
-"dependencies": {
-    "@genesislcap/foundation-comms": "^5.0.0",
-        "@genesislcap/foundation-entity-management": "^5.0.0",
-        "@genesislcap/foundation-header": "^5.0.0",
-        "@genesislcap/foundation-login": "^5.0.0",
-        "@genesislcap/foundation-ui": "^5.0.0",
-        "@genesislcap/foundation-utils": "^5.0.0",
-        "@genesislcap/foundation-zero": "^5.0.0",
-        "@genesislcap/foundation-zero-grid-pro": "^5.0.0",
-        "@microsoft/fast-components": "^2.21.6",
-        "@microsoft/fast-element": "^1.7.0",
-        "@microsoft/fast-foundation": "^2.33.4",
-        "@microsoft/fast-router": "^0.4.2",
-        "@microsoft/fast-web-utilities": "^5.1.0",
-        "rxjs": "^7.5.4",
-        "tslib": "^2.3.1"
-}
+  "dependencies": {
+    "@genesislcap/foundation-comms": "1.0.0",
+    "@genesislcap/foundation-entity-management": "1.0.0",
+    "@genesislcap/foundation-login": "1.0.0",
+    "@genesislcap/foundation-utils": "1.0.0",
+    "@genesislcap/foundation-zero": "1.0.0",
+    "@genesislcap/foundation-ui": "1.0.0",
+    "@microsoft/fast-components": "^2.16.6",
+    "@microsoft/fast-element": "^1.6.2",
+    "@microsoft/fast-foundation": "^2.27.1",
+    "@microsoft/fast-router": "^0.2.11",
+    "@microsoft/fast-web-utilities": "^5.0.1",
+    "rxjs": "^7.4.0",
+    "tslib": "^2.3.1"
+  }
 ```
 
 :::tip
@@ -101,7 +99,7 @@ It might work initially, but over time it can cause errors in the dependency tre
 If you do run into issues after running `npm install`, you should be able to recover by running `$ npm run clean:all && npm run bootstrap`. This will clear all dependency packages and download/link them again.
 :::
 
-The `devDependencies` section is for dependencies that are only to used in development - think of tools such as linters. These additional dependencies will not be added to the final production bundle and so will not increase the download size of the application to the user's browser.
+The `devDependencies` section is for dependencies that are only to used in development - think of tools such as linters. These additional dependencies will not be added to the final production bundle and therefore will not increase the download size of the application to the user's browser.
 
 ```javascript
   "devDependencies": {
@@ -143,7 +141,7 @@ A good rule of thumb for knowing which `package.json` to update is to think of t
 
 The following example shows a project that has two apps (a spot trading app and a derivatives trading app).
 
-There are also two custom packages, one which is a theme that takes `@genesislcap/foundation-ui` and customises it, and one that is used for common calculations that are required across both the apps.
+There are also two custom packages, one that is a theme that takes `@genesislcap/foundation-ui` and customises it, and one that is used for common calculations that are required across both the apps.
 
 ```mermaid
 classDiagram
