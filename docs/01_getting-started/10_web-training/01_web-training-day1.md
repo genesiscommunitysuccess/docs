@@ -536,7 +536,7 @@ In this next example, we have put a set of example options set in the flyout men
 
 #### Header Set-up
 
-We have already enabled this micro front-end when we created the initial structure of the application in the Developer Training. But for learning purposes, let's review what needs to be done to set up the foundation-header from scratch - compare this with the existing code to get a better understanding.
+**We have already enabled this micro front-end when we created the initial structure of the application in the Developer Training.** But for learning purposes, let's review what needs to be done to set up the foundation-header from scratch - compare this with the existing code to get a better understanding.
 
 To enable this micro front-end in our application, we'd have to follow the steps below.
 
@@ -575,11 +575,10 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 ```
 
 - Add the `foundation-header` tag as part of the html that you set as the markup for the `defaultLayout` in your router configuration.
-```javascript
+```js {3} title='default.ts'
 export const defaultLayout = new FASTElementLayout(html`
 <div class="container">
-	<!-- show-luminance-toggle-button boolean attribute added to show that button on the navigation bar -->
-	<foundation-header show-luminance-toggle-button></foundation-header>
+	<foundation-header></foundation-header>
 	<!-- Other markup -->
 </div>`);
 
@@ -599,12 +598,18 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 
 ##### Icon
 
-By default, the navigation bar and flyout menu show the Genesis logo. You can override this by setting the `logoSrc` attribute. For example:
+By default, the navigation bar and flyout menu show the Genesis logo. You can override this by setting the `logo-src` attribute. For example:
 
 ```html
-<foundation-header logoSrc="https://icotar.com/avatar/genesis"></foundation-header>
+<foundation-header logo-src="https://icotar.com/avatar/genesis"></foundation-header>
 ```
-The `logoSrc` defines the image that you want to display. Adding this attribute will update the logo on both the flyout and navigation bar. Omit the attribute to leave the Genesis logo.
+The `logo-src` defines the image that you want to display. Adding this attribute will update the logo on both the flyout and navigation bar. Omit the attribute to leave the Genesis logo.
+
+### Exercise 1.2: customising the logo
+:::info estimated time
+10min
+:::
+Change the logo of the header so it uses this image: `https://icotar.com/avatar/webtraining`
 
 ##### Navigation items
 
@@ -624,8 +629,8 @@ The `navigation` object referenced via the `parent` object is why the `navigatio
 
 Moving on from this basic example, a dynamic set of routes can be configured, using the `repeat` directive from FAST.
 
-- Add the routes configuration into an array in the router configuration class.
-```javascript
+- Look at the routes configuration in the `config.ts` and you'll see an array in the router configuration class.
+```js {4} title='config.ts'
 export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 
 	// New configuration added to existing MainRouterConfig class
@@ -639,11 +644,11 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 }
 ```
 
-- When setting the navigation items, use the `repeat` directive to iterate over the defined routes and create a navigation item for each.
+- Now, when setting the navigation items, we can use the `repeat` directive to iterate over the defined routes and create a navigation item for each.
 
-The following example creates a button with an associated logo for each of the three defined routes:
+Look at the `default.ts` and you'll see how we create a button with an associated logo for each of the three defined routes:
 
-```javascript
+```js {3,4} title='default.ts'
 html`
 <foundation-header
 	${repeat(
@@ -662,6 +667,8 @@ html`
 	)}
 ></foundation-header>`;
 ```
+
+That's why when you add a new route to the allRoutes attribute it's automatically added as a menu item - in other words, the `repeat` directive is iterating over the allRoutes and adding the buttons for each one of them.
 
 ##### Control buttons
 
@@ -698,6 +705,13 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 	</fast-router>
 `;
 ```
+### Exercise 1.3: adding the light and dark mode toggle
+:::info estimated time
+15min
+:::
+Add the Moon control button to the header that when clicked calls the `onDarkModeToggle` function which is already defined in `main.ts`.
+
+
 
 ##### Menu contents
 
@@ -731,8 +745,26 @@ To set the content of the flyout menu, add the content in the html within an ele
 	</div>
 </foundation-header>
 ```
+### Exercise 1.4: adding items to the flyout menu
+:::info estimated time
+20min
+:::
+Add an item pointing to the playground page.
 
-### Exercise 1.2: customising the header
+:::tip
+Look at the [interaction components](/web/web-components/interaction/anchor/) to see a list of available components you can use for the menu item.
+A good suggestion would be to use `Anchor`, which can be simply used as `<zero-anchor>`:
+```ts
+<zero-anchor @click=${(x) => x.navigation.navigateTo("/PUT_YOUR_ROUTE_HERE")}>
+Playground
+</zero-anchor>
+```
+
+By the way, we're using by default the Zero Design Systems. We are going to talk more about Design Systems later in this course.
+:::
+
+
+### Exercise 1.5: adding new routes
 :::info estimated time
 30min
 :::
