@@ -41,7 +41,8 @@ Insert, edit and cancel.
 
 Let's start with the simplest way to create a form, using the `zero-form` component:
 
-```ts {6} title='order.template.ts'
+```ts {5-9} title='order.template.ts'
+import {html} from '@microsoft/fast-element';
 import type {Order} from './order';
 
 export const OrderTemplate = html<Order>`
@@ -68,23 +69,32 @@ This is related to binding as we briefly explained in the previous day. If it's 
 
 We define `insertOrder` function in order.ts
 
-```typescript {1,3,7} title='order.ts'
+```typescript {2,6,12-23} title='order.ts'
+  ...
   import {Connect} from '@genesislcap/foundation-comms';
   
-  @Connect connect: Connect;
+  ...
+  export class Order extends FASTElement {
+    @Connect connect: Connect;
 
-  public async insertOrder(event) {
-    const formData = event.detail;
-    const insertOrderEvent = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
-      DETAILS: {
-        INSTRUMENT_ID: formData.INSTRUMENT_ID,
-        QUANTITY: formData.QUANTITY,
-        PRICE: formData.PRICE,
-        SIDE: formData.SIDE,
-        NOTES: formData.NOTES,
-      },
-    });
+    constructor() {
+      super();
+    }
+
+    public async insertOrder(event) {
+      const formData = event.detail;
+      const insertOrderEvent = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
+        DETAILS: {
+          INSTRUMENT_ID: formData.INSTRUMENT_ID,
+          QUANTITY: formData.QUANTITY,
+          PRICE: formData.PRICE,
+          SIDE: formData.SIDE,
+          NOTES: formData.NOTES,
+        },
+      });
+    }
   }
+
 ```
 
 ### Introducing Genesis Foundation Comms lib
