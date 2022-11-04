@@ -792,7 +792,7 @@ Customise our header in such a way that we end up with these menu items:
 Feel free to display only empty content when you create the new pages (Orders and Reporting). We're just interested in the navigation for now.
 
 :::tip 
-Feel free to follow the pattern of creating a **.template.ts**, **.styles.ts** and **.ts** files for each component.
+Use the pattern of creating a **.template.ts**, **.styles.ts** and **.ts** files for each component.
 
 Also, make sure to configure **client/web/src/main/main.ts** and **client/web/src/routes/config.ts** accordingly.
 :::
