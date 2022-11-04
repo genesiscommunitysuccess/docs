@@ -114,7 +114,7 @@ Once `INFO: Accepting connections` message is shown, we are ready to load our UI
 
 ### Accessing user interface
 
-We can now open <a href="http://localhost:5000/" target="_blank">http://localhost:5000/</a>.
+We can now open <a href="http://localhost:9000/" target="_blank">http://localhost:9000/</a>.
 
 ![](/img/gpl-seed-login.png)
 
