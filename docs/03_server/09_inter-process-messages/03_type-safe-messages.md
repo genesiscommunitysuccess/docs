@@ -10,7 +10,7 @@ tags:
 ---
 # Type-safe messages
 
-The Genesis low-code platform uses type-safe messages to perform message serialiSation and deserialiSation. In addition to this, it automatically extracts relevant metadata information to expose this to the front end. These type-safe messages are most commonly used in custom request servers, GPAL Event Handlers and custom Event Handlers.
+The Genesis low-code platform uses type-safe messages to perform message serialization and deserialization. In addition to this, it automatically extracts relevant metadata information to expose this to the front end. These type-safe messages are most commonly used in custom request servers, GPAL Event Handlers and custom Event Handlers.
 
 ## Input messages
 
@@ -60,6 +60,52 @@ data class SetLogLevel(
     }
 }
 ```
+
+### Deserialized fields support
+
+The main disadvantage of using type-safe messages with support for default values is the fact that once the message has been deserialized we don't have any certainties about what the original payload contained.
+
+Following the previous message example with the `SetLogLevel` data class, it is possible to receive a message with just a `processName` value and we will still have default values for all the other fields due to the automatic defaulting mechanism. This might present a problem if we are only planning on performing business logic if and only if those fields were part of the original payload. For example in the scenario in which we receive a value for the field `expiration` set as 0, we could give it a different treatment than if the value was never sent in the first place, even though 0 is the same value as the default value.
+
+In order to solve this problem there is a class called `DeserializedFieldsSupport` that can be extended by any type-safe data class. This additional functionality is available for both event handler definitions or custom request server definitions. The previous `SetLogLevel` data class would now look like this:
+
+```kotlin
+data class SetLogLevel(
+    @Title("Process name")
+    val processName: String,
+    @Description("Represents the target logging level")
+    val logLevel: LogLevel? = null,
+    val datadump: Boolean = false,
+    val expiration: Int = 0
+) : DeserializedFieldsSupport() {
+    companion object ReadOnly {
+        val defaultLogLevel: LogLevel = LogLevel.INFO
+    }
+}
+```
+
+Any message extending this class will have access to a property called `deserializedFields` of type `Map<String, DeserializedField>` which will provide enough information to reconstruct what values were part of the original payload.
+
+The `DeserializedField` sealed class definition looks like this:
+
+```kotlin
+sealed class DeserializedField {
+    object Simple : DeserializedField()
+    data class Array(val fields: List<DeserializedField>) : DeserializedField()
+    data class Object(val fields: Map<String, DeserializedField>) : DeserializedField()
+}
+```
+
+So, if we revisit a real-life example for `SetLogLevel` in which we only receive field values for `processName` and `datadump`, the content of `deserializedFields` will be a `Map` with the following key-values:
+```
+{
+  "PROCESS_NAME" : DeserializedField.Simple
+  "DATADUMP" : DeserializedField.Simple
+}
+```
+
+If your message has nested arrays or objects, the `deserializedFields` property will also contain nested structures in the shape of `DeserializedField.Array` and `DeserializedField.Object` types.
+
 
 ## Output messages
 
