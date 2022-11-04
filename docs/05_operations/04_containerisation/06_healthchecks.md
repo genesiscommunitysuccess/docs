@@ -11,7 +11,7 @@ tags:
     - healthchecks
 ---
 
-The Genesis low-code platform Docker image provides a health check endpoint which reports the status of the container.
+The Genesis low-code platform Docker image provides a health check endpoint, which reports the status of the container.
 
 This endpoint can be used for your liveliness/readiness checks if you are using container orchestration, or you can use it in your own checks if you are managing your containers yourself.
 
