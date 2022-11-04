@@ -9,16 +9,17 @@ tags:
     - inserting a grid
 ---
 
-The goal of this section is to run the UI for the first time and add a data grid.
+Previously, we showed you how to create a new page. Now we shall add a data grid.
 
-## Showing all positions
+## The new page
 
-For your user interface, the `genx` process has generated the following files:
+To remind you, the new page that we created has the following files:
 
-- **home.template.ts**
-- **home.ts**
-- **home.styles.ts**
+- **/test-page/test-page.template.ts**
+- **/test-page/test-page.ts**
+- **/test-page/test-page.styles.ts**
 
+## Add a grid with all columns
 In the template file, start by adding the Genesis data source pointing to the appropriate resource name; this must be wrapped in a grid of your choice.
 
 [//]: # (link to grid-pro-genesis-datasource tsdocs)
@@ -31,7 +32,7 @@ In the template file, start by adding the Genesis data source pointing to the ap
 </zero-grid-pro>
 ```
 
-This will result in a grid displaying all the columns available in the `ALL_POSITIONS` resource:
+This gives you a grid displaying all the columns available in the `ALL_POSITIONS` resource:
 
 ![](/img/positions-grid.png)
 
