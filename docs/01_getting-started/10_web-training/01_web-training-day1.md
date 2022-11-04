@@ -261,13 +261,13 @@ This component could be anything, like a custom button or even a business compon
 ### Adding a route to the new component
 Let's add a route pointing to **playground** so we can access it from the menu.
 
-2. Edit file `config.ts` and add **playground** to **allRoutes** and **routes.map** so we'll be able to access playground from the menu:
-	```ts {1, 3, 12} title='config.ts'
+2. Edit file `client\web\src\routes\config.ts` and add **playground** to **allRoutes** and **routes.map** so we'll be able to access playground from the menu:
+	```ts {1,5,14} title='config.ts'
 	import { MarketdataComponent } from './playground/playground';
 	...
 		public allRoutes = [
 			...
-			{ index: 3, path: 'playground', title: 'Playground', icon: 'home', variant: 'solid' },
+			{ index: 2, path: 'playground', title: 'Playground', icon: 'home', variant: 'solid' },
 		];
 
 		...
@@ -285,7 +285,7 @@ You should see the **Playground** menu item now.
 ### Creating an HTML template
 To create an HTML template for our element, we have to import and use the html-tagged template helper and pass the template to the @customElement decorator.
 
-```ts {3,9} title='playground.ts'
+```ts {1,3,9} title='playground.ts'
 import { FASTElement, customElement, html } from "@microsoft/fast-element";
 
 const myTemplate = html<MarketdataComponent>`
@@ -321,18 +321,18 @@ As a tip, search for extensions in your IDE to support that. That's usually call
 ### Adding attributes to the component
 Let's add an attribute to our MarketdataComponent. Use @attr for primitive properties (string, bool, number) that are intended to be surfaced on your element as HTML attributes. Use @observable for all other property types on an HTMLElement and all observable properties on plain classes.
 
-```typescript {5} title='playground.ts'
+```typescript {1,5} title='playground.ts'
 import { FASTElement, customElement, html, attr } from "@microsoft/fast-element";
 
 @customElement({name: "marketdata-component", template: myTemplate})
 export class MarketdataComponent extends FASTElement {
-    @attr lastPrice: Number = 0;
+    @attr lastPrice: number = 0;
 }
 ```
 
 Having the lastPrice always as zero doesn't make our MarketdataComponent very useful. Let's change the HTML template to display the price in real time and add some behaviour to the component, so that it gets the price in real time (in this example, we're simulating the exchange behaviour with a Math.random function):
 
-```typescript {6,12} title='playground.ts'
+```typescript {6,14-20} title='playground.ts'
 import { FASTElement, customElement, html, attr } from "@microsoft/fast-element";
 
 const myTemplate = html<MarketdataComponent>`
@@ -437,20 +437,20 @@ This is the final code:
 ```typescript title='playground.ts'
 import { FASTElement, customElement, html, attr, css } from "@microsoft/fast-element";
 
-const myTemplate = html<MarketdataComponent>`
-  <div class="header">
-    <h3>My Marketdata component</h3>
-    <h4>Last price: ${x => x.getLastPriceRealTime()}</h4>
-  </div>
-`;
-
 const marketdataComponentCSS = css`
   h4 {
     color: #00ffff;
   }
 `;
 
-@customElement({name: "marketdata-component", template: myTemplate, styles: marketdataComponentCSS})
+const myTemplate = html<MarketdataComponent>`
+  <div class="header">
+    <h3>My marketdata component</h3>
+    <h4>Last price: ${x => x.getLastPriceRealTime()}</h4>
+  </div>
+`;
+
+@customElement({name: "marketdata-component", template: myTemplate, styles: marketdataComponentCSS}) // custom element being created
 export class MarketdataComponent extends FASTElement {
     @attr lastPrice: number = 0;
 
@@ -481,6 +481,7 @@ Instrument AAPL 227.12
 ```
 
 Steps:
+- import *observable* and *repeat* from from `@microsoft/fast-element`
 - add a list called ***instruments*** to the MarketdataComponent. Feel free to initialize it with a few instruments, such as `@observable instruments: String[] = ["MSFT", "AAPL"];`
 - change the lastPrice attribute to a list of prices. Feel free to initialize it with corresponding prices, such as `@observable lastPrices: number[] = [101.23, 227.12];`
 - change `getLastPriceRealTime` to receive the instrument name now and return the corresponding price;
@@ -536,11 +537,11 @@ In this next example, we have put a set of example options set in the flyout men
 
 #### Header Set-up
 
-**We have already enabled this micro front-end when we created the initial structure of the application in the Developer Training.** But for learning purposes, let's review what needs to be done to set up the foundation-header from scratch - compare this with the existing code to get a better understanding.
+**We have already enabled this micro front-end when we created the initial structure of the application in the [Developer Training](/getting-started/developer-training/training-intro/).** But for learning purposes, let's review what needs to be done to set up the foundation-header from scratch - compare this with the existing code to get a better understanding.
 
 To enable this micro front-end in our application, we'd have to follow the steps below.
 
-- Add `@genesislcap/foundation-header` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
+- Make sure you have `@genesislcap/foundation-header` as a dependency in your *client/web/package.json* file.
 
 ```js {4} title='package.json'
 {
@@ -552,7 +553,15 @@ To enable this micro front-end in our application, we'd have to follow the steps
 }
 ```
 
-- In our **web/src/main/main.ts** file, which is our top level class of our application, import and dependency inject the Navigation class.
+:::tip
+Whenever you change the dependencies of your project, ensure you run the bootstrap command again - from the *client* folder:
+
+```shell
+npm run bootstrap
+```
+:::
+
+- In our **web/src/main/main.ts** file, which is our top level class of our application, make sure you imported and dependency injected the Navigation class.
 ```js {1,6} title='main.ts'
 import { Navigation } from '@genesislcap/foundation-header';
 
@@ -566,16 +575,19 @@ export class MainApplication extends FASTElement {
 }
 ```
 
-- Set a reference to the `navigation` object on the FAST router when you instantiate it, this will allow us to set up navigation functionality from the navigation bar in the [navigation items step.](#navigation-items)
-```js {3} title='main.template.ts'
-// fast-router will likely have other attributes such as :config too
-const MainTemplate: ViewTemplate<MainApplication> = html`
-  <fast-router :navigation=${(x) => x.navigation}></fast-router>
+- Make sure you got a reference to the `navigation` object on the FAST router when you instantiate it, this will allow us to set up navigation functionality from the navigation bar in the [navigation items step.](#navigation-items)
+```js {5} title='main.template.ts'
+...
+export const MainTemplate: ViewTemplate<MainApplication> = html`
+  <fast-router
+    :config=${(x) => x.config}
+    :navigation=${(x) => x.navigation}
+  ></fast-router>
 `;
 ```
 
-- Add the `foundation-header` tag as part of the html that you set as the markup for the `defaultLayout` in your router configuration.
-```js {3} title='default.ts'
+- Make sure the `foundation-header` tag is part of the html that you set as the markup for the `defaultLayout` in your router configuration.
+```js {3} title='client/web/src/layouts/default.ts'
 export const defaultLayout = new FASTElementLayout(html`
 <div class="container">
 	<foundation-header></foundation-header>
@@ -630,15 +642,14 @@ The `navigation` object referenced via the `parent` object is why the `navigatio
 Moving on from this basic example, a dynamic set of routes can be configured, using the `repeat` directive from FAST.
 
 - Look at the routes configuration in the `config.ts` and you'll see an array in the router configuration class.
-```js {4} title='config.ts'
+```js {4} title='client/web/src/routes/config.ts'
 export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 
 	// New configuration added to existing MainRouterConfig class
-	public allRoutes = [
-		{ index: 1, path: 'protected', title: 'Home', icon: 'home', variant: 'solid' },
-		{ index: 2, path: 'admin', title: 'Admin', icon: 'cog', variant: 'solid' },
-		{ index: 3, path: 'reporting', title: 'Reporting', variant: 'solid' },
-	];
+  public allRoutes = [
+    { index: 1, path: 'home', title: 'Home', icon: 'home', variant: 'solid' },
+    { index: 2, path: 'playground', title: 'Playground', icon: 'home', variant: 'solid' },
+  ];
 
 	...
 }
@@ -648,7 +659,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 
 Look at the `default.ts` and you'll see how we create a button with an associated logo for each of the three defined routes:
 
-```js {3,4} title='default.ts'
+```js {3,4} title='client/web/src/layouts/default.ts'
 html`
 <foundation-header
 	${repeat(

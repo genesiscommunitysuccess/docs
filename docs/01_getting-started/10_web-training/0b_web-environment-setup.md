@@ -13,23 +13,15 @@ You must have completed the environment setup from the previous Developer Traini
 
 ## Start the project baseline
 
-Clone the Web Training repo from [here](https://github.com/genesiscommunitysuccess/webtraining-seed). Alternatively, you can download a zip file with the project from [here](https://genesisglobal.jfrog.io/artifactory/community-uploads/webtraining-seed.zip).
+Clone the Web Training repo from [here](https://github.com/genesiscommunitysuccess/webtraining-seed).
 
 Open the project using your favorite IDE such as IntelliJ or Visual Studio Code.
 
 ## Running the backend
-You're not going to change any backend code, but we must have the server running to make our application work. To do that, we can simply spin-up a docker from either pre-built images or build them on your workstation.
+You're not going to change any backend code, but we must have the server running to make our application work. To do that, we can simply build a docker image from the project you just cloned.
 
 You must have Docker installed and running on your workstation.
 
-### Using pre-built docker images
-Download a zip file from [here](https://genesisglobal.jfrog.io/artifactory/community-uploads/webtraining-docker.zip) and unzip it. Then, from the directory where you unzipped it, run:
-```shell
-docker load -i genesis.tar
-docker-compose up -d
-```
-
-Check on your Docker dashboard if you have containers ***gsf*** and ***nginx*** running.
 
 ### Building the docker images
 From the root directory of the project, run:
@@ -38,8 +30,24 @@ From the root directory of the project, run:
 docker-compose up -d
 ```
 
-This may take a while, but is the recommended approach for non-Windows users to get a container on their computer architecture such as Mac M1.
+Check on your Docker dashboard if you have containers ***gsf*** and ***nginx*** running.
 
+### Attaching a terminal to a docker container
+
+Attaching a terminal to a docker container is as easy as running:
+
+```shell
+docker exec -it gsf bash
+```
+
+Now try logging as "alpha" and running "mon" to monitor the platform services.
+```shell
+su - alpha
+
+mon
+```
+
+You must see all processes up and running or in stand by mode.
 
 <!-- Download this [WSL distro](https://genesisglobal.jfrog.io/artifactory/community-uploads/web-training-wsl.zip), unzip it and import it into WSL:
 - As a reminder, create a local folder where you want to run the distro, e.g., "C:\wsl\distros\web-training-distro\". Unzip the package downloaded there and, from a command line, cd into that folder then run:
