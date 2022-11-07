@@ -290,3 +290,40 @@ The following example is invalid:
 ```
 This is because you cannot have more layout regions nested inside of a tab regions. You will get undefined behaviour.
 
+
+<br/>
+
+The following example is invalid:
+
+```html
+<foundation-layout>
+		<foundation-layout-item title="Component 1">
+			<!-- Content -->
+		</foundation-layout-item>
+		<foundation-layout-item title="Component 2">
+			<!-- Content -->
+		</foundation-layout-item>
+		<foundation-layout-item title="Component 3">
+			<!-- Content -->
+		</foundation-layout-item>
+</foundation-layout>
+```
+This is because you cannot have multiple layout elements as the immediate child of the layout root. You will get a runtime error.
+
+<br/>
+
+The following example is invalid:
+
+```html
+<foundation-layout>
+		<foundation-layout-item title="Component 1">
+			<foundation-layout-item title="Component 2">
+				<!-- Content -->
+			</foundation-layout-item>
+			<foundation-layout-item title="Component 3">
+				<!-- Content -->
+			</foundation-layout-item>
+		</foundation-layout-item>
+</foundation-layout>
+```
+This is because you cannot have `<foundation-layout-item>` inside of other `<foundation-layout-item>`. You will get a runtime error.
