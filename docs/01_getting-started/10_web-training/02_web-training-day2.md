@@ -69,9 +69,10 @@ This is related to binding as we briefly explained in the previous day. If it's 
 
 We define `insertOrder` function in order.ts
 
-```typescript {2,6,12-23} title='order.ts'
+```typescript {2,3,7,13-25} title='order.ts'
   ...
   import {Connect} from '@genesislcap/foundation-comms';
+  import {logger} from '../../utils';
   
   ...
   export class Order extends FASTElement {
@@ -82,7 +83,7 @@ We define `insertOrder` function in order.ts
     }
 
     public async insertOrder(event) {
-      const formData = event.detail;
+      const formData = event.detail.payload;
       const insertOrderEvent = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
         DETAILS: {
           INSTRUMENT_ID: formData.INSTRUMENT_ID,
@@ -92,6 +93,7 @@ We define `insertOrder` function in order.ts
           NOTES: formData.NOTES,
         },
       });
+      logger.debug('EVENT_ORDER_INSERT result -> ', insertOrderEvent);
     }
   }
 
