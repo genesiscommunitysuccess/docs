@@ -80,7 +80,7 @@ Simple example with a vertical split and two items that will take up equal space
 
 ```html
 <foundation-layout>
-  <foundation-layout-region type="vertical">
+  <foundation-layout-region type="horizontal">
     <foundation-layout-item title="Component 1">
       <!-- Content -->
     </foundation-layout-item>
@@ -110,12 +110,12 @@ Slightly more complicated example:
 
 ```html
 <foundation-layout serialisable>
-  <foundation-layout-region type="horizontal">
+  <foundation-layout-region type="vertical">
     <foundation-layout-item title="Component 1" width="25" closable>
       <!-- Content -->
     </foundation-layout-item>
 
-    <foundation-layout-region type="vertical">
+    <foundation-layout-region type="horizontal">
       <foundation-layout-item title="Component 2">
         <!-- Content -->
       </foundation-layout-item>
@@ -150,13 +150,13 @@ If instead we had:
 
 ```html
 <foundation-layout serialisable>
-  <foundation-layout-region type="horizontal">
+  <foundation-layout-region type="vertical">
     <foundation-layout-item title="Component 1" width="25" closable>
       <!-- Content -->
     </foundation-layout-item>
 
-    <foundation-layout-region type="vertical">
-      <foundation-layout-region type="horizontal">
+    <foundation-layout-region type="horizontal">
+      <foundation-layout-region type="vertical">
         <foundation-layout-item title="Component 2">
           <!-- Content -->
         </foundation-layout-item>
@@ -216,7 +216,7 @@ class Commodities extends FASTElement {
 
 const template = html<Commodities>`
 <foundation-layout>
-	<foundation-layout-region type="horizontal">
+	<foundation-layout-region type="vertical">
 		${when(x => x.positions, html<Position>`
 			<foundation-layout-item title="${x => x.symbol}">
 				<chart symbol="${x => x.symbol}"></chart>
@@ -250,7 +250,7 @@ I need to check `when` directives
 The following example is invalid:
 ```html
 <foundation-layout>
-  <foundation-layout-region type="vertical">
+  <foundation-layout-region type="horizontal">
     <h1>My splits</h1>
     <foundation-layout-item title="Component 1">
       <!-- Content -->
