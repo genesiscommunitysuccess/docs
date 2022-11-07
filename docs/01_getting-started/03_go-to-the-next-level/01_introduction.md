@@ -47,4 +47,6 @@ If this is the first time you are using the GenX CLI tool, check the [Quick Star
 
 :::info
 This project is not a direct copy of the positions app but will contain most of its functionality.
+
+The [positions app tutorial repository](https://github.com/genesiscommunitysuccess/positions-app-tutorial) can be used as a reference point for this tutorial. 
 :::
