@@ -12,6 +12,6 @@ tags:
 
 This section outlines two types of API for interacting with the database:
 
-- async
+- Async
 - RxJava
 

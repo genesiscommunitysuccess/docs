@@ -35,8 +35,8 @@ To create a Streamer Client:
 For more information on the above process tags, see the page on [configuring runtime processes](03_server/02_data-server/05_configuring-runtime.md).
 
 2. Create a Kotlin script file named **{app-name}-streamer-client.kts** under **jvm/{app-name}-script-config**. Add the following information:
-    * A streamer client name
-    * A streamer data source process and stream name
+    * A Streamer Client name
+    * A Streamer data source process and stream name
     * One or more `onMessage` tags
 
 The simplest streamer-client definition is:
@@ -54,7 +54,7 @@ streamerClients {
 This example takes a message from a Streamer and sends it to `QUOTE_EVENT_HANDLER` as a `QUOTE_UPDATE_EVENT`.
 
 ### Properties
-You can also specify the following optional parameters in a streamer client:
+You can also specify the following optional parameters in a Streamer Client:
 
 * `isReplayable`. This flag determines if the stream is replayable. Default value is `false`.
 
@@ -66,9 +66,9 @@ You can also specify the following optional parameters in a streamer client:
 
 ## Types of Streamer Client
 
-There are two types of streamer client:
+There are two types of Streamer Client:
 
-* Table or View entity streamer client
+* Table or View entity Streamer Client
 ```kotlin
 // builds a type safe QUOTES streamer client
 streamerClient(clientName = "{name}", source = QUOTES) { ... }
@@ -142,9 +142,9 @@ For example:
 send(targetProcess = "QUOTE_HANDLER", messageType = "QUOTE_EVENT")
 ```
 
-This will send the full content of the streamer message on to the target.
+This will send the full content of the Streamer message on to the target.
 
-In addition, for entity streamers, you can format the message in the same way as you would define the output of a view, data server or request reply. Use `sendFormatted`:
+In addition, for entity Streamers, you can format the message in the same way as you would define the output of a view, Data Server or request reply. Use `sendFormatted`:
 
 ```kotlin
 sendFormatted("QUOTE_HANDLER", "QUOTE_EVENT") {
