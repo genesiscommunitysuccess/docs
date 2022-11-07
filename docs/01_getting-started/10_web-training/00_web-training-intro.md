@@ -19,7 +19,7 @@ This is hands-on web developer training where we're going to extend the applicat
 
 ## Prerequisites and assumptions
 
-- **TypeScript**, **HTML** and **CSS** are mandatory prerequisites.​ If you're not an experienced front-end developer, check this [resources page](web/basics/prerequisites/) on the required technologies. However, with some perseverance, you should be able to follow along even if you’re coming from a different programming language, as we cover some elements of the underlying technlogy we rely on.
+- **TypeScript**, **HTML** and **CSS** are mandatory prerequisites.​ If you're not an experienced front end developer, check this [resources page](web/basics/prerequisites/) about the required technologies. With some perseverance, you should be able to follow along even if you’re coming from a different programming language, as we cover some elements of the underlying technlogy we rely on.
 - You have taken the Developer Training course and you understand - and have put into practice - key concepts, components and building blocks of the platform.
 - This is not a web-design course and the main focus is on how to build front end functionalities. We'll cover how to add styles to our components and you are free to style your application any way you want with proper CSS skills. We **won't** cover any CSS lessons, though, and our application will look very simple.
 

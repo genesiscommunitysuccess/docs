@@ -11,12 +11,12 @@ tags:
   - fix-xlator
 ---
 
-The FIX Xlator is a plugin for the streamer and streamer client, which enables type-safe handling of FIX messages. It also gives access to a set of vital integration features, such as FIX_IN, EXECUTION_REPORT and CUSTOM_FIX.
+The FIX Xlator is a plugin for the Streamer and Streamer client, which enables type-safe handling of FIX messages. It also gives access to a set of vital integration features, such as FIX_IN, EXECUTION_REPORT and CUSTOM_FIX.
 
 ### Enabling the FIX Xlator
 
 To enable the plugin:
-1. Add an Xlator plugin dependency to the module pom for the streamer or streamer-client.
+1. Add an Xlator plugin dependency to the module pom for the Streamer or Streamer-Client.
 
 ```xml
 <dependency> 
@@ -28,7 +28,7 @@ To enable the plugin:
 
 2. Add a dependency on the class path for the module called {applicationName}-fix-messages. This file is generated using the [fix-codegen-plugin](/03_server/10_integration/04_gateways-and-streamers/04_fix-xlator.md#fix-code-generation-plugin).
 
-3. Add the following code block at the beginning of the configuration file for the streamer or streamer-client:
+3. Add the following code block at the beginning of the configuration file for the Streamer or Streamer Client:
 
 ```kotlin
 plugins {
@@ -45,7 +45,7 @@ The `plugins` tag enables the plugin, and the `fixConfiguration` tag specifies t
 
 ### Streamer
 
-Enabling the plugin in a streamer definition enables the `fixStream` definition.
+Enabling the plugin in a treamer definition enables the `fixStream` definition.
 
 **FIX Streams**:
 FIX Streams are enhanced stream definitions that come with a few useful defaults, enhanced fixed handling and automatic conversion to GenesisSet.
@@ -82,7 +82,7 @@ fixStream<ExecutionReport>("EXECUTION_REPORT_VODL") {
 
 ### Streamer Client
 
-The FIX-Xlator plugin enables a number of extension functions for the streamer client. These are explained below.
+The FIX-Xlator plugin enables a number of extension functions for the Streamer Client. These are explained below.
 
 #### Message extension functions
 
