@@ -86,3 +86,5 @@ Use the snippet below, where:
 You should have a data chart that resembles something like this:
 
 ![](/img/charts.png)
+
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for this chapter.
