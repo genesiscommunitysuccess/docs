@@ -26,6 +26,10 @@ Top level web component which is used to initialise a custom layout
   layout. Default false.
 - **popout** : boolean attribute that if set will put popout buttons on the header bars. Default false.
 - **maximise** : boolean attribute that if set will put maximise buttons on the header bars. Default false.
+- **reload-buffer** : numerical attribute that controls the buffer between how long the layout is reloaded. The default
+is 500ms and in this case the layout will only be reloaded if the child elements of the layout region are manipulated
+once every 500ms. This is to stop the layout being reloaded over and over for every single item during initialisation.
+The higher the value is the more performant the component is, but the first load will appear to take longer.
 
 :::info
 Even if the layout is not set to serialisable, this would not stop the client from grabbing a reference to the layout
