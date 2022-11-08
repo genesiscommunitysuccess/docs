@@ -18,7 +18,7 @@ module.exports = {
   onBrokenLinks: 'throw', // please do NOT change this to 'warn', fix or remove your broken links instead
   onDuplicateRoutes: 'throw',
   clientModules: [
-    require.resolve('./src/design-systems/zero.js')
+    './src/client-modules/genesislcap.js'
   ],
   plugins: [
     [
