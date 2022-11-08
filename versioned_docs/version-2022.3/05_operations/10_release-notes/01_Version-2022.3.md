@@ -96,7 +96,7 @@ Features
 - genesis-pal-requestserver: added criteria support for pal Request Server 
 - oracle db workflow has been adapted so that it can be called from another workflow
 - changes to how we register our name in Hashicorp Consul; we now use pattern for the service name 
-- we now support deserialised fields in our deserialization layer 
+- we now support deserialised fields in our deserialisation layer 
 - added initial sink operations for external database 
 - we now allow processing of HTTP headers without underscores 
 - dynamic rule notification functionality added 
@@ -143,7 +143,7 @@ The following fixes have been made
 - genesis-db: retry transaction after SQL server deadlock 
 - quoted identifier strategy for oracle has been updated
 - we now register the SLF4J and console reporters in `MetricService` 
-- do not include schema in call to SP_RENAME storec proc for mssql
+- schema not included in call to `SP_RENAME` storec proc for mssql; this fixes a bug that prevented renaming database tables working when using MSSQL as a DB layer
 - fixed: daemon shows `unknown` when there is no `PROCESS_STATUS_MESSAGE` in the `GENESIS_PROCESS` table 
 
 ## Foundation UI changes

@@ -35,7 +35,7 @@ In this example, the `SetLogLevel` data class has a single constructor that also
 - **Mandatory metadata field**. `processName` does not have a default value associated with it; therefore, a value is mandatory to construct this message. So, it will be exposed as a *mandatory* metadata field. 
 - **optional metadata fields**. `logLevel`, `datadump` and `expiration` all have default values; they will therefore be exposed as optional metadata fields.
 
- You are free to use all the following types as long as they are composed using the same elements: 
+You are free to use all the following types as long as they are composed using the same elements: 
 
 - Genesis metadata field basic types (Boolean, Short, Int, Long, Double, String, BigDecimal or Joda DateTime)
 - enumerated types (as you can see defined in `LogLevel` above)
@@ -75,9 +75,11 @@ data class SetLogLevel(
 
 There is a significant disadvantage in using type-safe messages with support for default values; once the message has been deserialised, you don't know what the original payload contained.
 
-Following the previous example with the `SetLogLevel` data class, it is possible to receive a message with just a `processName` value; you will still have default values for all the other fields due to the automatic defaulting mechanism. This might present a problem where you have business logic where those fields were part of the original payload. For example, if you receive a value for the field `expiration` set as 0, you might want to define different business logic than if the value was never sent in the first place - even though 0 is the same value as the default value.
+Following the previous example with the `SetLogLevel` data class, it is possible to receive a message with just a `processName` value; you will still have default values for all the other fields because of the automatic defaults. This causes problems where you have business logic where those fields were part of the original payload. 
 
-In order to solve this problem, there is a class called `DeserializedFieldsSupport`. This class can be extended by any type-safe data class. It is available for both Event Handler definitions and Request Server definitions. The previous `SetLogLevel` data class would now look like this:
+For example, if you receive a value for the field `expiration` set as 0, you might want to define different business logic than if the value was never sent in the first place - even though 0 is the same value as the default value.
+
+In order to solve this problem, there is a class called `DeserializedFieldsSupport`. This class can be extended by any type-safe data class. It is available for both Event Handler definitions and Request Server definitions. The `SetLogLevel` data class in the previous example would now look like this:
 
 ```kotlin
 data class SetLogLevel(
@@ -94,7 +96,7 @@ data class SetLogLevel(
 }
 ```
 
-Any message extending this class will have access to a property called `deserializedFields` of type `Map<String, DeserializedField>`, which will provide enough information to reconstruct the values that were part of the original payload.
+Any message extending this class will have access to a property called `deserializedFields` of type `Map<String, DeserializedField>` This property provides enough information to reconstruct the values that were part of the original payload.
 
 The `DeserializedField` sealed class definition looks like this:
 
@@ -106,7 +108,7 @@ sealed class DeserializedField {
 }
 ```
 
-So, if we revisit a real-life example for `SetLogLevel` in which we only receive field values for `processName` and `datadump`, the content of `deserializedFields` will be a `Map` with the following key-values:
+So, if we revisit a real-life example for `SetLogLevel` in which we only receive field values for `processName` and `datadump`, the content of `deserializedFields` will be a `Map` with the following key values:
 ```
 {
   "PROCESS_NAME" : DeserializedField.Simple
@@ -144,7 +146,7 @@ sealed class EventSetLogLevelReply : Outbound() {
 }
 ```
 
-These custom reply types allow a predetermined number of customised replies for a single `eventHandler` codeblock, with their type information exposed in the metadata system. However, they need to be handled carefully, as the internal error-handling mechanism for the Event Handler is only able to handle `EventReply` messages. Therefore, non-captured exceptions and errors will break the type-safety guarantees of the reply. 
+These custom reply types allow a predetermined number of customised replies for a single `eventHandler` codeblock, with their type information exposed in the metadata system. They need to be handled carefully, as the internal error-handling mechanism for the Event Handler is only able to handle `EventReply` messages. Therefore, non-captured exceptions and errors will break the type-safety guarantees of the reply. 
 
 :::warning
 IMPORTANT! The success message should always end in `Ack` in order for the internal `eventandler` logic to handle validation correctly.
