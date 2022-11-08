@@ -63,3 +63,6 @@ views {
 
 ## Conclusion
 We just added a derived field. To see it in action, follow the steps on the next page that will show you how to glue the consolidator and view together.
+
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-config/src/main/resources/cfg) as a reference point for the view. 
+

@@ -104,3 +104,6 @@ curl http://localhost:8080/foo
 You should now see "Hello World" returned.
 
 There are a countless number of choices when it comes to [Camel components](https://camel.apache.org/components/3.16.x/index.html). Take a look at the list to see if there is something that works with your own use cases.
+
+
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-script-config/src/main/resources/scripts) as a reference point for this chapter.
