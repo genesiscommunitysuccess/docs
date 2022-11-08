@@ -68,17 +68,17 @@ The jvm default Kotlin Compiler option must be `-Xjvm-default=all`
 - fix: remove the task outputs for wsl paths
 - fix: fix concurrent modification exception
 - feat(docker): wait until cluster is running before running setPrimary
-- feat: [DVOP-277] Allow use of authenticated MQTT brokers by adding options for username and password
+- feat: Allow use of authenticated MQTT brokers by adding options for username and password
 - fix: Reverts the change made to use PID files
-- fix: [DVOP-259] Don't require a / at the end of GENESIS_HOME
-- feat: [DVOP-276] Allow tls certificate verification to be disabled for mqtt connection
+- fix: Don't require a / at the end of GENESIS_HOME
+- feat: Allow tls certificate verification to be disabled for mqtt connection
 - fix: processRestarter.py use python2 syntax
 - fix: setting GENESIS_HOME env variable doesn't depend on site-specific
-- fix(remap) : Adding support for SQL column resizing
+- fix(remap): Adding support for SQL column resizing
 - fix: Make Remap tests use DictionaryCreatedAliasStore instead of SqlAliasStore
 - fix: revert changes in sys def script; this is causing issues in the maven build
 - feat: initial gpal script for auth permissions
-- fix: [DVOP-294] Remove feature switch for docker gradle tasks
+- fix: Remove feature switch for docker gradle tasks
 - fix: Adding genesis-pal-permissions to the distribution
 - fix: Auth Perms GPAL fixes
 - feat: Use types with Unicode data support for MSSQL
