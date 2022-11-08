@@ -10,6 +10,7 @@ tags:
     - scripts
     - dependencies
 ---
+import FoundationUi from "/src/versioning/foundationui.mdx"
 
 The `package.json` file is auto-generated for you by the CLI, based on your answers to the prompts.
 
@@ -70,14 +71,15 @@ Last but not least, the `dependencies` section contains a list of your app's dep
 This includes **@genesislcap** dependencies. This is where you can change the dependency versions to upgrade to a newer version of the platform.
 :::
 
-```javascript
-  "dependencies": {
-    "@genesislcap/foundation-comms": "1.0.0",
-    "@genesislcap/foundation-entity-management": "1.0.0",
-    "@genesislcap/foundation-login": "1.0.0",
-    "@genesislcap/foundation-utils": "1.0.0",
-    "@genesislcap/foundation-zero": "1.0.0",
-    "@genesislcap/foundation-ui": "1.0.0",
+<code>
+
+"dependencies" {
+    "@genesislcap/foundation-comms": <FoundationUi/>,
+    "@genesislcap/foundation-entity-management": <FoundationUi/>,
+    "@genesislcap/foundation-login": <FoundationUi/>,
+    "@genesislcap/foundation-utils": <FoundationUi/>,
+    "@genesislcap/foundation-zero": <FoundationUi/>,
+    "@genesislcap/foundation-ui": <FoundationUi/>,
     "@microsoft/fast-components": "^2.16.6",
     "@microsoft/fast-element": "^1.6.2",
     "@microsoft/fast-foundation": "^2.27.1",
@@ -85,8 +87,8 @@ This includes **@genesislcap** dependencies. This is where you can change the de
     "@microsoft/fast-web-utilities": "^5.0.1",
     "rxjs": "^7.4.0",
     "tslib": "^2.3.1"
-  }
-```
+    }
+</code>
 
 :::tip
 You can use the `lerna add` command (instead of `npm install`) if you need to add more dependencies, because the app is a [lerna-managed](https://lerna.js.org/) monorepo.
