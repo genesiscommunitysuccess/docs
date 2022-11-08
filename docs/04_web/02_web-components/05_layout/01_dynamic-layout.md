@@ -39,15 +39,17 @@ premade layouts that the user could choose from.
 
 ### Layout Regions
 
+If you don't specify the `type` of the layout region it will default to `type="horizontal"`;
+
 #### `<foundation-layout-region type="vertical">`
 
 Indicates to the layout system that all immediate children are (by default) to be split equally among the available space of this
-component using n-1 vertical split(s). Can be nested within other horizontal and vertical regions.
+component using n-1 row split(s). Can be nested within other horizontal and vertical regions.
 
 #### `<foundation-layout-region type="horizontal">`
 
 Indicates to the layout system that all immediate children are (by default) to be split equally among the available space of this
-component using n-1 horizontal split(s). Can be nested within other horizontal and vertical regions.
+component using n-1 column split(s). Can be nested within other horizontal and vertical regions.
 
 #### `<foundation-layout-region type="tabs">`
 
@@ -73,12 +75,14 @@ to later. I used % because that is what the Golden Layout API supports, but we c
 Wrapper component that lives inside of a layout section and wraps the client content. All content must be inside of a layout item
 otherwise a runtime error will be thrown when the layout is attempted to be rendered on screen
 
-- **title**: string defining the title of the pane which contains the content
+- **title**: string defining the title of the pane which contains the content. Defaults to `Item x`, where `x` is the pane number.
 - **closable**: boolean defining whether this element is closable - Default false.
 - **height**: number defining the height of this item, relative to the other children of its parent in percent
 - **width**: number defining the width of this item, relative to the other children of its parent in percent
 
 ## Examples
+
+### Simple Example
 
 Simple example with a vertical split and two items that will take up equal space.
 
@@ -109,7 +113,8 @@ Will be rendered as:
 +-----------------------------------------------------+
 ```
 
-<br/>
+### Nested Example
+
 Slightly more complicated example:
 
 ```html
@@ -149,6 +154,8 @@ Would render the following:
 Where there is a button to save/load/reset the layout, and component 1 has a close button. By default
 component 1 would be 50% width and 2 and 3 would take up the other 50% width, but here we set `25` (percent)
 as the width of component 1 layout item.
+
+### Multi-Nested Example
 
 If instead we had:
 
@@ -203,9 +210,9 @@ Where there is a button to save/load/reset the layout, and component 1 has a clo
 takes up 25% of the initial width. Components 2,3,4 take up a third of the _remaining_ width between them
 (default behaviour) and 5 and 6 are tabbed.
 
-### Using Directives
+### `repeat` Directive
 
-You should be able to use [FAST template directives](https://www.fast.design/docs/fast-element/using-directives) such as `repeat`
+You can use [FAST template directives](https://www.fast.design/docs/fast-element/using-directives) such as `repeat`
 
 ```javascript
 interface Position {
@@ -213,7 +220,7 @@ interface Position {
 }
 
 class Commodities extends FASTElement {
-	@observable positions: Position[]
+	positions: Position[] // Not @observable - see following section
 
 	...
 }
@@ -245,11 +252,59 @@ For an example where the `Commodities` object has three positions you will see t
 `<chart>` is just an example component, it doesn't exist within `foundation-ui`.
 :::
 
-:::Note to self
-I need to check `when` directives
+### `when` Directive
+
+Using the `when` directive:
+
+```javascript
+@customElement({
+	name: 'my-element',
+	template,
+})
+class Analytics extends FASTElement {
+	showIndexFunds = true; // not @observable
+}
+
+var template = html<Analytics>`
+	<button class="toggle">Toggle Index</button>
+	<foundation-layout>
+		<foundation-layout-region>
+			<foundation-layout-item>
+				<chart type="stocks"></chart>
+			</foundation-layout-item>
+
+			${when(x => x.showIndexFunds, html`
+				<foundation-layout-item>
+					<chart type="index-funds"></chart>
+				</foundation-layout-item>
+			`)}
+
+		</foundation-layout-region>
+	</foundation-layout>
+`;
+```
+
+You would see both items rendered like this:
+```
++---------------------------------------------+
+|              Stocks Chart                   |
++---------------------------------------------+
+|              Index  Chart                   |
++---------------------------------------------+
+```
+
+If you had `showIndexFunds = false;` then only the `Stocks Chart` would be rendered.
+
+:::danger
+Directives are for initialising the layout only and should *not* be used with changing `@observable` attributes which would cause the
+layout to reinitialise incorrectly - this will duplicate the panels and remove their contents. For example, you can use the
+`when` directive to conditionally render a pane during initialisation, but not to toggle whether to show/hide the pane afterwards.
+See [this example](#observables-with-directives).
 :::
 
-### Incorrect Examples
+## Incorrect Examples
+
+### Non-Layout Child
 
 The following example is invalid:
 ```html
@@ -268,7 +323,7 @@ The following example is invalid:
 This is because there is a child of one of the layout regions which isn't another layout region or
 layout item (the `<h1>`). This will throw a runtime error.
 
-<br/>
+### Layout Region in Tabs
 
 The following example is invalid:
 
@@ -295,7 +350,7 @@ The following example is invalid:
 This is because you cannot have more layout regions nested inside of a tab regions. You will get undefined behaviour.
 
 
-<br/>
+### Multiple Items in Root
 
 The following example is invalid:
 
@@ -314,7 +369,7 @@ The following example is invalid:
 ```
 This is because you cannot have multiple layout elements as the immediate child of the layout root. You will get a runtime error.
 
-<br/>
+### Nested Item
 
 The following example is invalid:
 
@@ -331,3 +386,56 @@ The following example is invalid:
 </foundation-layout>
 ```
 This is because you cannot have `<foundation-layout-item>` inside of other `<foundation-layout-item>`. You will get a runtime error.
+
+### Observables with Directives
+
+The following is invalid:
+
+```javascript
+@customElement({
+	name: 'my-element',
+	template,
+})
+class Analytics extends FASTElement {
+	@observable showIndexFunds = true;
+
+	toggleShowIndexFunds() {
+		this.showIndexFunds = !this.showIndexFunds;
+	}
+}
+
+var template = html<Analytics>`
+	<button
+		class="toggle"
+		@click=${x => x.toggleShowIndexFunds()}
+	>Toggle Index</button>
+	<foundation-layout>
+		<foundation-layout-region>
+			<foundation-layout-item>
+				<chart type="stocks"></chart>
+			</foundation-layout-item>
+
+			${when(x => x.showIndexFunds, html`
+				<foundation-layout-item>
+					<chart type="index-funds"></chart>
+				</foundation-layout-item>
+			`)}
+
+		</foundation-layout-region>
+	</foundation-layout>
+`;
+```
+
+Initially you will see both items correctly rendered like this:
+```
++---------------------------------------------+
+|              Stocks Chart                   |
++---------------------------------------------+
+|              Index  Chart                   |
++---------------------------------------------+
+```
+But as the user clicks the toggle button the `Index Chart` will not be taken away and added back in.
+Instead it will be added as a duplicate every time the observable is set true. Additionally the contents
+of the panel will be wiped as duplicates are added.
+
+You would correctly implement this behaviour by interacting with the JavaScript API.
