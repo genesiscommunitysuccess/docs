@@ -17,7 +17,7 @@ The basis of this version is:
 
 | part of stack | version | 
 |---------------|---------|
-| server        | 6.2.3   |  
+| server        | 6.3.0   |  
 | web           | 5.0.0   |   
 
 Release date: November 07, 2022. 
@@ -30,10 +30,79 @@ Build changes mean that applications relying on version 2022.3 will also need to
 The jvm default Kotlin Compiler option must be `-Xjvm-default=all`
 :::
 
+### GSF 6.3.0 changes
+
+- fix: deploy plugin finding zip files
+- fix: deploy jar file task created for non jar files
+- fix: added genesis-notify to the bom
+- feat: Add viewHistory param to symphony create channel
+- feat: Resource Daemon support for using consul for healthchecks
+- fix(webmon): fixing guice provider injection
+- fix(genesis-environment): Improve robustness of MigrateFDBCounter
+- feat: use consul from docker
+- fix(remap): Fix incorrect check for free space in FoundationDB
+- feature(genesis-environment): Add new FDBKeyValueCount command line tool
+- fix: Prevent double registration of unreplied_messages custom gauge
+- build: Changes to H2 and other SQL GitHub workflows
+- fix: Include streamer client name and target process in metric identifier to ensure uniqueness
+- fix(ExcelToGenesis): fixing a null println
+- feat: Allow processes to be compacted or aggregated as part of the genesis install process
+- fix: Removing if statements from services
+- fix(genesis-jackson): Avoid printing warning messages when using the JsonSchema Jackson factory
+- feat: create mqtt database update queue
+- fix: upgrade to fix critical vulnerability in okhttp3
+- feat: update artifactory dependency to bouncy castle version
+- feat(docker): add flag for starting process in verbose mode
+- fix(remap): Fix logger and stack trace issues
+- feat: drive docker image config from sys def in site-specific
+- fix(remap): Fix issues with table counter changes when renaming a table and/or removing/readding with the same name
+- fix: Remove need for a seperate module for compacted processes
+- fix(remap): fixed underflow errors happening when using FDBIndexWriterHelper on FDB2
+- feat(genesis-db): Introduce parallel get bulk operations for FDB and FDB2 storage engines
+- fix: Use TransactSQL syntax for rename when MSSQL
+- feat(genesis-criteria): Provide a generic mechanism to analyse and compile criteria expressions
+- fix: rename db workflow runners
+- feat: add category flag to select DB tests
+- fix: updated apache shiro version, using latest owasp checker version
+- fix: use bounded thread pool to prevent out of memory error
+- fix: remove the task outputs for wsl paths
+- fix: fix concurrent modification exception
+- feat(docker): wait until cluster is running before running setPrimary
+- feat: Allow use of authenticated MQTT brokers by adding options for username and password
+- fix: Reverts the change made to use PID files
+- fix: Don't require a / at the end of GENESIS_HOME
+- feat: Allow tls certificate verification to be disabled for mqtt connection
+- fix: processRestarter.py use python2 syntax
+- fix: setting GENESIS_HOME env variable doesn't depend on site-specific
+- fix(remap): Adding support for SQL column resizing
+- fix: Make Remap tests use DictionaryCreatedAliasStore instead of SqlAliasStore
+- fix: revert changes in sys def script; this is causing issues in the maven build
+- feat: initial gpal script for auth permissions
+- fix: Remove feature switch for docker gradle tasks
+- fix: Adding genesis-pal-permissions to the distribution
+- fix: Auth Perms GPAL fixes
+- feat: Use types with Unicode data support for MSSQL
+- feat(genesis-pal-requestserver): Add criteria support for pal req/rep
+- fix: fix handling of fdb column to row mapper
+- fix: handle standby status for consul to prevent processes getting marked as down
+- feat: use pattern for service name in consul
+- feat: Add support for deserialized fields for in our deserialization layer
+- fix(genesis-db): retry transaction after SQL server deadlock
+- feat: Added initial sink operations for external database
+- fix: update quoted identifier strategy for oracle
+- feat(data-pipeline): data pipeline genesis source
+- feat: Allow processing of HTTP headers without underscores
+- fix: Register the SLF4J and console reporters in MetricService
+- fix(genesis-db): Do not include schema in call to SP_RENAME storec proc for mssql
+- feat: data pipeline genesis to db sink GPAL
+- fix: daemon shows unknown when there is no PROCESS_STATUS_MESSAGE in the GENESIS_PROCESS table
+- feat: Adds dynamic rule notification functionality PTC-566
+- feat: updated 'USER' table with unique indices for 'REFRESH_TOKEN'
+- feat: Add support for sql server instance name in the data pipeline scripts
+
 ### GSF 6.2.3 changes
 - fix: [processRestarter.py](http://processrestarter.py/) use python2 syntax 
 - fix: setting `GENESIS_HOME` environment variable doesn't depend on site-specific
-
 
 ### GSF 6.2.2 changes
 
@@ -44,6 +113,17 @@ The jvm default Kotlin Compiler option must be `-Xjvm-default=all`
 - fix: use bounded pool to prevent out of memory issues due to too many threads 
 - fix: remove the task outputs for wsl paths 
 
+## Auth 6.3.0 changes
+
+- fix: Ensure entity map table record is created on user insert
+- fix: Ensure PROFILE_USER and RIGHTS_SUMMARY records are correctly cleared down on user deletion 
+- fix: Correct logic for use of bypassLoginInternalAuth
+- fix: removing fields, tables and view coming from gsf
+- fix: Correct metric identifiers for session count and received messages
+- feat: Add support for LDAP over TLS (LDAPS)
+- feat: GPAL support for Dynamic Auth Permissions
+- fix: Add USER_VISIBILITY permissioning to USER_PROFILES endpoint
+
 ## Auth 6.2.3 changes
 - fix: correct logic for use of `bypassLoginInternalAuth`
 
@@ -51,7 +131,6 @@ The jvm default Kotlin Compiler option must be `-Xjvm-default=all`
 
 - fix: ensure entity map table record is created on user insert 
 - fix: ensure `PROFILE_USER` and `RIGHTS_SUMMARY` records are correctly cleared down on user deletion
-
 
 ## GSF changes in full
 
@@ -146,26 +225,13 @@ The following fixes have been made
 - schema not included in call to `SP_RENAME` storec proc for mssql; this fixes a bug that prevented renaming database tables working when using MSSQL as a DB layer
 - fixed: daemon shows `unknown` when there is no `PROCESS_STATUS_MESSAGE` in the `GENESIS_PROCESS` table 
 
-## Foundation UI changes
-This is a high-level overview of the changes.
+## Foundation UI 5.0.0 changes
 
-## Maintenance
-
-- we have removed ag-grid enterprise as a project dependency
-- ag-grid/grid-pro has been moved to a separate package to avoid unnecessary load when it is not used
-
-
-
-### Breaking changes 
-
-- All enterprise functionalities of ag-grid must be directly included in your client app . Code snipped that needs to be added to the codebase can be found here [https://gist.github.com/skawian/2e30e08f01820384ab8fef91d08681dd](https://gist.github.com/skawian/2e30e08f01820384ab8fef91d08681dd)
-- ag-grid has been renamed across the project and is now wrapped under grid-pro to support multiple grids in the application. For existing applications, you need to go through your codebase and rename every instance of 'ag-grid' to 'grid-pro' (e.g. zero-ag-grid → zero-grid-pro, zero-ag-column → zero-grid-pro-column etc.)
-- grid-pro/ag-grid is now bundled separately to avoid unnecessary load when it is not used. This means if you imported it from zero or foundation components, it will no longer be there.
-    
-    To import zero-grid-pro and register it, you need to do the following:
-    
-    `import { ***zeroGridComponents*** } from '@genesislcap/foundation-zero-grid-pro';`
-    
-    `provideDesignSystem().register(***zeroGridComponents***)`
-
-
+- New options-datasource component for connected dropdowns
+- foundation-testing package release for app developer / external usage
+- Added new charting component covering various types, including: Area, Bar, Column, DualAxes, Line, Pie, Rose
+- New charts-datasource component for connected charts
+- foundation-header micro frontend restyling
+- CLI optimisations for faster app creation
+- foundation-reporting micro frontend improvements
+- Number / precision work relating to smart forms and zero-number-field
