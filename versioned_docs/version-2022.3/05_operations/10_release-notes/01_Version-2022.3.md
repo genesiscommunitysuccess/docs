@@ -32,7 +32,73 @@ The jvm default Kotlin Compiler option must be `-Xjvm-default=all`
 
 ### GSF 6.3.0 changes
 
-- need porting from Notion: https://www.notion.so/genesisglobal/Genesis-v6-3-0-GSF-98c706a710de46c0b60496331e1cb665
+- fix: deploy plugin finding zip files
+- fix: deploy jar file task created for non jar files
+- fix: added genesis-notify to the bom
+- feat: Add viewHistory param to symphony create channel
+- feat: Resource Daemon support for using consul for healthchecks
+- fix(webmon): fixing guice provider injection
+- fix(genesis-environment): Improve robustness of MigrateFDBCounter
+- feat: use consul from docker
+- fix(remap): Fix incorrect check for free space in FoundationDB
+- feature(genesis-environment): Add new FDBKeyValueCount command line tool
+- fix: Prevent double registration of unreplied_messages custom gauge
+- build: Changes to H2 and other SQL GitHub workflows
+- fix: Include streamer client name and target process in metric identifier to ensure uniqueness
+- fix(ExcelToGenesis): fixing a null println
+- feat: Allow processes to be compacted or aggregated as part of the genesis install process
+- fix: Removing if statements from services
+- fix(genesis-jackson): Avoid printing warning messages when using the JsonSchema Jackson factory
+- feat: create mqtt database update queue
+- fix: upgrade to fix critical vulnerability in okhttp3
+- feat: update artifactory dependency to bouncy castle version
+- feat(docker): add flag for starting process in verbose mode
+- fix(remap): Fix logger and stack trace issues
+- feat: drive docker image config from sys def in site-specific
+- fix(remap): Fix issues with table counter changes when renaming a table and/or removing/readding with the same name
+- fix: Remove need for a seperate module for compacted processes
+- fix(remap): fixed underflow errors happening when using FDBIndexWriterHelper on FDB2
+- feat(genesis-db): Introduce parallel get bulk operations for FDB and FDB2 storage engines
+- fix: Use TransactSQL syntax for rename when MSSQL
+- feat(genesis-criteria): Provide a generic mechanism to analyse and compile criteria expressions
+- fix: rename db workflow runners
+- feat: add category flag to select DB tests
+- fix: updated apache shiro version, using latest owasp checker version
+- fix: use bounded thread pool to prevent out of memory error
+- fix: remove the task outputs for wsl paths
+- fix: fix concurrent modification exception
+- feat(docker): wait until cluster is running before running setPrimary
+- feat: [DVOP-277] Allow use of authenticated MQTT brokers by adding options for username and password
+- fix: Reverts the change made to use PID files
+- fix: [DVOP-259] Don't require a / at the end of GENESIS_HOME
+- feat: [DVOP-276] Allow tls certificate verification to be disabled for mqtt connection
+- fix: processRestarter.py use python2 syntax
+- fix: setting GENESIS_HOME env variable doesn't depend on site-specific
+- fix(remap) : Adding support for SQL column resizing
+- fix: Make Remap tests use DictionaryCreatedAliasStore instead of SqlAliasStore
+- fix: revert changes in sys def script; this is causing issues in the maven build
+- feat: initial gpal script for auth permissions
+- fix: [DVOP-294] Remove feature switch for docker gradle tasks
+- fix: Adding genesis-pal-permissions to the distribution
+- fix: Auth Perms GPAL fixes
+- feat: Use types with Unicode data support for MSSQL
+- feat(genesis-pal-requestserver): Add criteria support for pal req/rep
+- fix: fix handling of fdb column to row mapper
+- fix: handle standby status for consul to prevent processes getting marked as down
+- feat: use pattern for service name in consul
+- feat: Add support for deserialized fields for in our deserialization layer
+- fix(genesis-db): retry transaction after SQL server deadlock
+- feat: Added initial sink operations for external database
+- fix: update quoted identifier strategy for oracle
+- feat(data-pipeline): data pipeline genesis source
+- feat: Allow processing of HTTP headers without underscores
+- fix: Register the SLF4J and console reporters in MetricService
+- fix(genesis-db): Do not include schema in call to SP_RENAME storec proc for mssql
+- feat: data pipeline genesis to db sink GPAL
+- fix: daemon shows unknown when there is no PROCESS_STATUS_MESSAGE in the GENESIS_PROCESS table
+- feat: Adds dynamic rule notification functionality PTC-566
+- feat: updated 'USER' table with unique indices for 'REFRESH_TOKEN'
+- feat: Add support for sql server instance name in the data pipeline scripts
 
 ### GSF 6.2.3 changes
 - fix: [processRestarter.py](http://processrestarter.py/) use python2 syntax 
