@@ -49,7 +49,14 @@ The jvm default Kotlin Compiler option must be `-Xjvm-default=all`
 
 ## Auth 6.3.0 changes
 
-- need porting from Notion: https://www.notion.so/genesisglobal/Genesis-v6-3-0-Auth-ad4131ea20464a17abf4d5175b30fd26
+- fix: Ensure entity map table record is created on user insert
+- fix: Ensure PROFILE_USER and RIGHTS_SUMMARY records are correctly cleared down on user deletion 
+- fix: Correct logic for use of bypassLoginInternalAuth
+- fix: removing fields, tables and view coming from gsf
+- fix: Correct metric identifiers for session count and received messages
+- feat: Add support for LDAP over TLS (LDAPS)
+- feat: GPAL support for Dynamic Auth Permissions
+- fix: Add USER_VISIBILITY permissioning to USER_PROFILES endpoint
 
 ## Auth 6.2.3 changes
 - fix: correct logic for use of `bypassLoginInternalAuth`
@@ -155,16 +162,14 @@ The following fixes have been made
 ## Foundation UI changes
 This is a high-level overview of the changes.
 
-## Maintenance
+### Maintenance
 
 - we have removed ag-grid enterprise as a project dependency
 - ag-grid/grid-pro has been moved to a separate package to avoid unnecessary load when it is not used
 
+#### Breaking changes 
 
-
-### Breaking changes 
-
-- All enterprise functionalities of ag-grid must be directly included in your client app . Code snipped that needs to be added to the codebase can be found here [https://gist.github.com/skawian/2e30e08f01820384ab8fef91d08681dd](https://gist.github.com/skawian/2e30e08f01820384ab8fef91d08681dd)
+- All enterprise functionalities of ag-grid must be directly included in your client app. Code snipped that needs to be added to the codebase can be found here [https://gist.github.com/skawian/2e30e08f01820384ab8fef91d08681dd](https://gist.github.com/skawian/2e30e08f01820384ab8fef91d08681dd)
 - ag-grid has been renamed across the project and is now wrapped under grid-pro to support multiple grids in the application. For existing applications, you need to go through your codebase and rename every instance of 'ag-grid' to 'grid-pro' (e.g. zero-ag-grid → zero-grid-pro, zero-ag-column → zero-grid-pro-column etc.)
 - grid-pro/ag-grid is now bundled separately to avoid unnecessary load when it is not used. This means if you imported it from zero or foundation components, it will no longer be there.
     
