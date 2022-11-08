@@ -96,3 +96,5 @@ By default, all elements on screen will use `display: block`, but we can easily 
 
 ## Styling other parts of application
 This was only small part of the platform's capabilities in terms of styling. You can read more about design-system configuration [here](web/design-systems/introduction/).
+
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for this chapter.

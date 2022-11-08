@@ -120,3 +120,5 @@ Finally we can run `generateDao`, `assemble` and `deploy-genesisproduct-position
 
 ### Conclusion
 With this, any changes made to `TRADE` are tracked to `TRADE_AUDIT`. To try it out, insert a new `TRADE` and see what's stored in the `TRADE_AUDIT` table via `DbMon`. Go to your terminal and run `DbMon`, `table TRADE_AUDIT` and `search 1`. For more information on testing, go to [Endpoints](/server/integration/rest-endpoints/introduction/).
+
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm) as a reference point for this chapter. 

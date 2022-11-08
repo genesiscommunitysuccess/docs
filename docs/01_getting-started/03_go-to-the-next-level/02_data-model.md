@@ -228,5 +228,7 @@ During code generation, [view](/database/data-structures/views/) and [index enti
 
 
 ## Conclusion
-With this, our data model is defined. As a next step, we shall add some data to the tables in the database.
+With this, our data model is defined. You can use the [positions app tutorial repository](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-config/src/main/resources/cfg) as a reference.
+
+As a next step, we shall add some data to the tables in the database.
 

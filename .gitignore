@@ -12,8 +12,6 @@
 .docusaurus
 .cache-loader
 
-# Documentation copied from node modules
-*_apiref/
 
 # Misc
 .DS_Store
