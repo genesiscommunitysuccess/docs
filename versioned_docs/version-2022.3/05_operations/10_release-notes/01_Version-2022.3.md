@@ -17,7 +17,7 @@ The basis of this version is:
 
 | part of stack | version | 
 |---------------|---------|
-| server        | 6.2.3   |  
+| server        | 6.3.0   |  
 | web           | 5.0.0   |   
 
 Release date: November 07, 2022. 
@@ -30,10 +30,13 @@ Build changes mean that applications relying on version 2022.3 will also need to
 The jvm default Kotlin Compiler option must be `-Xjvm-default=all`
 :::
 
+### GSF 6.3.0 changes
+
+- need porting from Notion: https://www.notion.so/genesisglobal/Genesis-v6-3-0-GSF-98c706a710de46c0b60496331e1cb665
+
 ### GSF 6.2.3 changes
 - fix: [processRestarter.py](http://processrestarter.py/) use python2 syntax 
 - fix: setting `GENESIS_HOME` environment variable doesn't depend on site-specific
-
 
 ### GSF 6.2.2 changes
 
@@ -44,6 +47,10 @@ The jvm default Kotlin Compiler option must be `-Xjvm-default=all`
 - fix: use bounded pool to prevent out of memory issues due to too many threads 
 - fix: remove the task outputs for wsl paths 
 
+## Auth 6.3.0 changes
+
+- need porting from Notion: https://www.notion.so/genesisglobal/Genesis-v6-3-0-Auth-ad4131ea20464a17abf4d5175b30fd26
+
 ## Auth 6.2.3 changes
 - fix: correct logic for use of `bypassLoginInternalAuth`
 
@@ -51,7 +58,6 @@ The jvm default Kotlin Compiler option must be `-Xjvm-default=all`
 
 - fix: ensure entity map table record is created on user insert 
 - fix: ensure `PROFILE_USER` and `RIGHTS_SUMMARY` records are correctly cleared down on user deletion
-
 
 ## GSF changes in full
 
