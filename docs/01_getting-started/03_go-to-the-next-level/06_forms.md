@@ -210,3 +210,7 @@ public async insertTrade() {
   </zero-grid-pro>
 ```
 Now if everything has worked, you can go to your browser, insert the data for a new trade, and then click the button. The new trade displays in the data grid of the trade view `ALL_TRADES` at the bottom of the page.
+
+
+## Conclusion
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for the forms. 

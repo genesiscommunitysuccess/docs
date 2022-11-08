@@ -181,4 +181,5 @@ You can add the `persist-column-state-key` to the zero-grid-pro to persist user 
 
 [//]: # (link to zero-grid-pro tsdocs)
 
-
+## Conclusion
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for the grids. 

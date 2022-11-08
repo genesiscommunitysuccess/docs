@@ -134,4 +134,6 @@ From the Gradle menu on the right of Intellij, this is: **genesisproduct-positio
 ## Conclusion
 Data Server and Event Handler are the main components to interact with the server. Now that we have built our back end, we have something to interact with. Once you have deployed it, if you want to test what you've done so far, go to [Endpoints](/server/integration/rest-endpoints/introduction/).
 
+For a reference point for these components checkout the [positions app turotial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-script-config/src/main/resources/scripts). 
+
 Otherwise, you can continue to the [next section](/getting-started/go-to-the-next-level/data-grid/) and deploy and test the whole application at later time.

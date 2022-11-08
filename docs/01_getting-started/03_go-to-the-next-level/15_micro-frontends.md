@@ -52,3 +52,5 @@ Now you can visit `/users` in your browser, and it should take you to the **user
 ![](/img/user-management.png)
 
 Read more about available micro-frontends and different types of including them in the application [here](web/micro-front-ends/introduction/).
+
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes) as a reference point for this chapter.
