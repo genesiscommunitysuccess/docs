@@ -683,7 +683,7 @@ That's why when you add a new route to the allRoutes attribute it's automaticall
 
 ##### Control buttons
 
-There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (these are hidden by default). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined. Each one dispatches an associated event when clicked.
+There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (these are hidden by default). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined. Each one dispatches an associated event when clicked. 
 
 | Logo          | Toggle Attribute             | Dispatched Event          |
 |---------------|------------------------------|---------------------------|
@@ -691,11 +691,27 @@ There are three control buttons that can be shown or hidden on the right-hand si
 | Misc          | show-misc-toggle-button      | misc-icon-clicked         |
 | Notifications | show-notification-button     | notification-icon-clicked |
 
-Implementing the functionality of the buttons is up to the client. For example:
+For instance, adding the Misc logo would look like this:
+
+```html {5} title='default.ts'
+...
+export const defaultLayout = new FASTElementLayout(
+  html`
+    <div class="container">
+      <foundation-header logo-src="https://icotar.com/avatar/webtraining" show-misc-toggle-button>
+        ...
+      </foundation-header>
+...
+  `,
+  ...
+);
+```
+
+To implement the functionality of the button in the client you should follow the steps:
 
 - Define the functionality of the event callback in the class of a class which is a parent to the router.
 
-```javascript
+```javascript title='main.ts'
 export class MainApplication extends FASTElement {
 
 	onMiscButtonPressed() {
@@ -706,7 +722,7 @@ export class MainApplication extends FASTElement {
 ```
 
 - Set the event listener in the parent html to call the defined functionality.
-```javascript
+```javascript title='main.template.ts'
 // fast-router will likely have other attributes such as :config too
 const MainTemplate: ViewTemplate<MainApplication> = html`
   <fast-router
@@ -720,8 +736,12 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 :::info estimated time
 15min
 :::
+
 Add the Moon control button to the header that when clicked calls the `onDarkModeToggle` function which is already defined in `main.ts`.
 
+:::tip
+The last example we showed how to add the Misc Control button, now you need to do it considering the Moon one.
+:::
 
 
 ##### Menu contents

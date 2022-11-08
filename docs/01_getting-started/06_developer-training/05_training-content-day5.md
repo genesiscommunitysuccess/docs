@@ -360,7 +360,7 @@ Now we want to run PositionReport every 10 seconds. To do that, remove the row y
 :::tip 
 To delete rows you can use [DbMon](/operations/commands/server-commands/#dbmon-script) and the command `delete`. After that you can use [SendIt](/operations/commands/server-commands/#sendit-script) to insert a new row again.
 
-By the way, the CRON expression for every 10 seconds is `0/10 0 0 ? * * *`. See a CRON generator [here](https://www.freeformatter.com/cron-expression-generator-quartz.html).
+By the way, the CRON expression for every 10 seconds is `0/10 * * * * ? *`. See a CRON generator [here](https://www.freeformatter.com/cron-expression-generator-quartz.html).
 :::
 
 ## Permissions​

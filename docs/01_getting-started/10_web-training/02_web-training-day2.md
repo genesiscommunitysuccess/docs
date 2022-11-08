@@ -150,13 +150,18 @@ Then, define the variables that will hold the values that are entered.
 
 In the file **order.ts**, add the following properties to the class: `Order`:
 
-```ts title='order.ts'
+```ts {1,4-9} title='order.ts'
+import {customElement, FASTElement, observable} from '@microsoft/fast-element';
+...
+
 @observable public instrument: string;
 @observable public lastPrice: number;
 @observable public quantity: number;
 @observable public price: number;
 @observable public side: string;
 @observable public notes: string;
+
+...
 ```
 
 Now we need to add event handlers that would respond to user changes and store the inputted data.
@@ -165,7 +170,9 @@ We can do it in the traditional way by adding `@change` [event handler](https://
 
 Let's add it to each form element:
 
-```ts title='order.template.ts'
+```ts {3,6-17} title='order.template.ts'
+import {html} from '@microsoft/fast-element';
+import type {Order} from './order';
 import { sync } from '@genesislcap/foundation-utils';
 
 export const OrderTemplate = html<Order>`
@@ -191,8 +198,16 @@ Let's start with **instrument** field. We want to load the data once Order the c
 
 Order is a Web Component and, as such, it supports a series of [lifecycle events](https://www.fast.design/docs/fast-element/defining-elements/#the-element-lifecycle) that you can tap into to execute custom code at specific points in time. To make the Order component load data on initilization, we can override one of the lifecycle events called `connectedCallback` that runs when the element is inserted into the DOM.
 
-```typescript {6} title='order.ts'
-@observable public allInstruments: Array<{value: string, label: string}>; //add this property
+```typescript {5,11-18} title='order.ts'
+...
+export class Order extends FASTElement {
+  @Connect connect: Connect;
+  ...
+  @observable public allInstruments: Array<{value: string, label: string}>; //add this property
+
+  constructor() {
+    super();
+  }
 
 public async connectedCallback() { //add this method to Order class
     super.connectedCallback(); //FASTElement implementation
@@ -200,8 +215,10 @@ public async connectedCallback() { //add this method to Order class
     const msg = await this.connect.snapshot('ALL_INSTRUMENTS'); //get a snapshot of data from ALL_INTRUMENTS data server
     console.log(msg); //add this to look into the data returned and understand its structure
     this.allInstruments = msg.ROW?.map(instrument => ({
-      value: instrument.INSTRUMENT_ID, label: instrument.NAME}));
+      value: instrument.INSTRUMENT_ID, label: instrument.INSTRUMENT_NAME}));
   }
+  ...
+}
 ```
 :::tip async and await
 If you're not entirely familiar with [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function), it is a modern JavaScript function to enable asynchronous behavior and the await keyword is permitted within it. They enable asynchronous, promise-based behavior to be written in a cleaner style, avoiding the need to explicitly configure promise chains.
@@ -215,28 +232,45 @@ Once we have the list of instruments from the server we can make use of it in th
 
 To dynamically include list of options we use [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items.
 
-```ts title='order.template.ts'
+```ts {1,5-9} title='order.template.ts'
+import {html, repeat} from '@microsoft/fast-element';
+...
+export const OrderTemplate = html<Order>`
+<span>Instrument</span>
 <zero-select :value=${sync(x=> x.instrument)}>
   ${repeat(x => x.allInstruments, html`
     <zero-option value=${x => x.value}>${x => x.label}</zero-option>
   `)}
 </zero-select>
+...
+<zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
+`;
 ```
 
 You should see the instrument field populated now with the instruments from the server.
 
 Now let's get the **side** field sorted. We could just add two static options BUY and SELL like this:
 
-```html title='order.template.ts' 
+```html {5-8} title='order.template.ts' 
+...
+export const OrderTemplate = html<Order>`
+...
+<span>Side</span>
 <zero-select :value=${sync(x=> x.side)}>
     <zero-option>BUY</zero-option>
     <zero-option>SELL</zero-option>
 </zero-select>
+<zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
+`;
 ```
 
 However, any changes on the backend would require a change in the options. Wouldn't it be much better if we could just retrieve all ***side*** options from the server? We already know how to get data from a data server resource, now let's use the `getMetadata` method from ***Connect*** to get some metadata of a field, ***side field*** in our case.
 
-```ts {10,11,12,13} title='order.ts' 
+```ts {3,14-17} title='order.ts' 
+...
+  @observable public allInstruments: Array<{value: string, label: string}>; //add this property
+  @observable public sideOptions: Array<{value: string, label: string}>; //add this property
+...
 public async connectedCallback() {
     super.connectedCallback(); //FASTElement implementation
 
@@ -248,20 +282,26 @@ public async connectedCallback() {
 
     const metadata = await this.connect.getMetadata('ALL_ORDERS');
     console.log(metadata);
-    const sideField = metadata.FIELD?.find(field => field.NAME == 'SIDE');
+    const sideField = metadata.FIELD?.find(field => field.NAME == 'DIRECTION');
     this.sideOptions = Array.from(sideField.VALID_VALUES).map(v => ({value: v, label: v}));
   }
-
+...
 ```
 
 Next, let's just use the ***repeat*** directive again to iterate through the ***sideOptions***:
 
-```typescript title='order.template.ts' 
+```typescript {5-10} title='order.template.ts' 
+...
+export const OrderTemplate = html<Order>`
+...
+<span>Side</span>
 <zero-select :value=${sync(x=> x.side)}>
   ${repeat(x => x.sideOptions, html`
     <zero-option value=${x => x.value}>${x => x.label}</zero-option>
   `)}
 </zero-select>
+<zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
+`;
 ```
 
 Reload your screen and should see the select fields being populated now!
@@ -283,20 +323,26 @@ We already know how to get data from data servers, now let's see how to get data
 
 Add this method to the Order class:
 
-```ts {2} title='order.ts'
-public async getMarketData() {
-    const msg = await this.connect.request('INSTRUMENT_MARKET_DATA', {
-      REQUEST: {
-        INSTRUMENT_ID: this.instrument,
-      }});
-    console.log(msg);
+```ts {4-12} title='order.ts'
+...
+export class Order extends FASTElement {
+  ...
+  public async getMarketData() {
+      const msg = await this.connect.request('INSTRUMENT_MARKET_DATA', {
+        REQUEST: {
+          INSTRUMENT_ID: this.instrument,
+        }});
+      console.log(msg);
 
-    this.lastPrice = msg.REPLY[0].LAST_PRICE;
-  }
+      this.lastPrice = msg.REPLY[0].LAST_PRICE;
+    }
+}
 ```
 
 And change the template to make the ***instrument field*** like this:
-```ts {2} title='order.template.ts'
+```ts {4-9} title='order.template.ts'
+...
+export const OrderTemplate = html<Order>`
 <span>Instrument</span>
 <zero-select :value=${sync(x=> x.instrument)} @change=${x => x.getMarketData()}>
   <zero-option :selected=${sync(x => x.instrument==undefined)}>-- Select --</zero-option>
@@ -304,6 +350,8 @@ And change the template to make the ***instrument field*** like this:
     <zero-option value=${x => x.value}>${x => x.label}</zero-option>
   `)}
 </zero-select>
+...
+`;
 ```
 
 Note that we used the `@change` binding to call `getMarketData()` when the value selected changed.
@@ -327,12 +375,22 @@ Server resources to be used: ALL_INSTRUMENTS and INSTRUMENT_MARKET_DATA.
 Now when we gathered all the data we're ready to send it over the wire:
 
 Let's add a simple button with click event handler:
-```html title='order.template.ts'
+```html {6} title='order.template.ts'
+...
+export const OrderTemplate = html<Order>`
+  ...
+  ...
+<zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
 <zero-button @click=${x=> x.insertOrder()}>Add Order</zero-button>
+`;
+  
 ```
 
 Then let's amend our insertOrder function to work with the custom form now:
-```typescript title='order.ts'
+```typescript {4-15} title='order.ts'
+...
+export class Order extends FASTElement {
+  ...
 public async insertOrder() {
       const insertOrderEvent = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
         DETAILS: {
@@ -345,45 +403,57 @@ public async insertOrder() {
       });
       console.log(insertOrderEvent);
     }
+  ...
+}
 ```
 
 Reload your screen and try to insert a new order. For now, just check your browser console and see if you find the result of the `insertOrder()` call.
 
 Let's improve our screen a little bit and add a simple success or error message based on the result from the `EVENT_ORDER_INSERT` event to showcase how to handle the response from the server.
 
-```ts {14,15,16,17,18,19} title='order.ts'
-public async insertOrder() {
-      const insertOrderEvent = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
-        DETAILS: {
-          INSTRUMENT_ID: this.instrument,
-          QUANTITY: this.quantity,
-          PRICE: this.price,
-          SIDE: this.side,
-          NOTES: this.notes,
-        },
-      });
-      console.log(insertOrderEvent);
+```ts {16-21} title='order.ts'
+...
+export class Order extends FASTElement {
+  ...
+  public async insertOrder() {
+        const insertOrderEvent = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
+          DETAILS: {
+            INSTRUMENT_ID: this.instrument,
+            QUANTITY: this.quantity,
+            PRICE: this.price,
+            SIDE: this.side,
+            NOTES: this.notes,
+          },
+        });
+        console.log(insertOrderEvent);
 
-      if (insertOrderEvent.MESSAGE_TYPE == 'EVENT_NACK') {
-        const errorMsg = insertOrderEvent.ERROR[0].TEXT;
-        alert(errorMsg);
-      } else {
-        alert("Order inserted successfully.")
+        if (insertOrderEvent.MESSAGE_TYPE == 'EVENT_NACK') {
+          const errorMsg = insertOrderEvent.ERROR[0].TEXT;
+          alert(errorMsg);
+        } else {
+          alert("Order inserted successfully.")
+        }
       }
-    }
+  ...
+}
 ```
 
 ### Adding a simple Orders data grid
 In the template file, let's add the Genesis [data source](/web/web-components/grids/grid-pro/grid-pro-genesis-datasource/) pointing to the `ALL_ORDERS` resource and wrap it in [grid-pro](/web/web-components/grids/grid-pro/grid-pro-intro/).
 
 Add this code to the end of html template code:
-```html title="order.template.ts"
+```html {4-9} title="order.template.ts"
+...
+export const OrderTemplate = html<Order>`
+  ...
 <zero-grid-pro>
     <grid-pro-genesis-datasource
         resourceName="ALL_ORDERS"
         orderBy="ORDER_ID">
     </grid-pro-genesis-datasource>
 </zero-grid-pro>
+  ...
+`;
 ```
 
 This will result in a grid displaying all the columns available in the for the `ALL_ORDERS` resource.
@@ -397,6 +467,20 @@ Take a moment to play around, insert new orders and see the orders in the grid.
 Implement these changes in the order entry form:
 - there's a field ORDER_ID in the ORDER table which is generated automatically by the server. However, if a value is given, it will use the given value instead. Generate a random value on the frontend and pass the value to the EVENT_ORDER_INSERT event.
 - Fields instrument, quantity and price are mandatory on the server. Whenever a null or empty value is passed, make sure to capture the error response from the server and paint the missing field label in red.
+:::tip
+To generate the ORDER_ID value you can use the function below
+:::
+```typescript
+private getGUID(): string {
+  let d = new Date().getTime();
+  const guid = "RNDxxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      const r = (d + Math.random() * 16) % 16 | 0;
+      d = Math.floor(d / 16);
+      return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+  return guid;
+}
+```
 
 ### Exercise 2.3: revamp the Trade screen
 :::info estimated time
