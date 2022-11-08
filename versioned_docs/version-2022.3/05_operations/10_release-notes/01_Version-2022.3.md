@@ -225,24 +225,13 @@ The following fixes have been made
 - schema not included in call to `SP_RENAME` storec proc for mssql; this fixes a bug that prevented renaming database tables working when using MSSQL as a DB layer
 - fixed: daemon shows `unknown` when there is no `PROCESS_STATUS_MESSAGE` in the `GENESIS_PROCESS` table 
 
-## Foundation UI changes
-This is a high-level overview of the changes.
+## Foundation UI 5.0.0 changes
 
-### Maintenance
-
-- we have removed ag-grid enterprise as a project dependency
-- ag-grid/grid-pro has been moved to a separate package to avoid unnecessary load when it is not used
-
-#### Breaking changes 
-
-- All enterprise functionalities of ag-grid must be directly included in your client app. Code snipped that needs to be added to the codebase can be found here [https://gist.github.com/skawian/2e30e08f01820384ab8fef91d08681dd](https://gist.github.com/skawian/2e30e08f01820384ab8fef91d08681dd)
-- ag-grid has been renamed across the project and is now wrapped under grid-pro to support multiple grids in the application. For existing applications, you need to go through your codebase and rename every instance of 'ag-grid' to 'grid-pro' (e.g. zero-ag-grid → zero-grid-pro, zero-ag-column → zero-grid-pro-column etc.)
-- grid-pro/ag-grid is now bundled separately to avoid unnecessary load when it is not used. This means if you imported it from zero or foundation components, it will no longer be there.
-    
-    To import zero-grid-pro and register it, you need to do the following:
-    
-    `import { ***zeroGridComponents*** } from '@genesislcap/foundation-zero-grid-pro';`
-    
-    `provideDesignSystem().register(***zeroGridComponents***)`
-
-
+- New options-datasource component for connected dropdowns
+- foundation-testing package release for app developer / external usage
+- Added new charting component covering various types, including: Area, Bar, Column, DualAxes, Line, Pie, Rose
+- New charts-datasource component for connected charts
+- foundation-header micro frontend restyling
+- CLI optimisations for faster app creation
+- foundation-reporting micro frontend improvements
+- Number / precision work relating to smart forms and zero-number-field
