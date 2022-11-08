@@ -10,7 +10,7 @@ tags:
     - introduction
 ---
 
-Our documentation covers the following releases:
+The documentation for the Genesis low-code platform covers the following releases:
 
 - [2022.3](/operations/release-notes/version-2022-3/)
 - [2022.2](/operations/release-notes/version-2022-2/), which includes an update at [2022.2.1](/operations/release-notes/version-2022-2/#release-202221)
