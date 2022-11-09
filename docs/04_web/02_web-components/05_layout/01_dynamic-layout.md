@@ -438,4 +438,5 @@ But as the user clicks the toggle button the `Index Chart` will not be taken awa
 Instead it will be added as a duplicate every time the observable is set true. Additionally the contents
 of the panel will be wiped as duplicates are added.
 
-You would correctly implement this behaviour by interacting with the JavaScript API.
+To work around this you would use of FAST directives inside of custom web components inside of the layout.
+<!-- In future you would correctly implement this behaviour by interacting with the JavaScript API. -->
