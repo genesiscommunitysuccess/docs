@@ -1,6 +1,6 @@
 ---
-title: 'Access Control - Username and Password Authentication'
-sidebar_label: 'Username and Password Authentication'
+title: 'Access control - username and password authentication'
+sidebar_label: 'Username and password authentication'
 id: password-authentication
 keywords: [server, access control, password, authentication]
 tags:
@@ -10,7 +10,6 @@ tags:
   - authentication
 ---
 
-[Introduction](/server/access-control/introduction)  | [Authentication overview](/server/access-control/authentication-overview) | [Username and Password](/server/access-control/password-authentication) | [SSO](/server/access-control/sso-authentication) | [Authorisation overview](/server/access-control/authorisation-overview) | [Authorisation](/server/access-control/authorisation)
 
 We will now go through the various configuration options available for authentication. These are located in your _application-name-_**auth-preferences.kts** file.
 
