@@ -82,6 +82,7 @@ module.exports = {
       manifest: require('./plugins/api-docs/manifest.json'),
       processedMap,
     }],
+    'docusaurus-plugin-matomo'
   ],
 
   presets: [
@@ -143,6 +144,12 @@ module.exports = {
     },
     prism: {
       additionalLanguages: ['java', 'kotlin', 'powershell', 'groovy'],
+    },
+    matomo: {
+      matomoUrl: 'https://newgenesisglobal.matomo.cloud/',
+      siteId: '2',
+      phpLoader: 'matomo.php',
+      jsLoader: 'matomo.js',
     },
   },
 
