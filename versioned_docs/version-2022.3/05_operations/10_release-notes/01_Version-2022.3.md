@@ -238,17 +238,17 @@ The following fixes have been made
 
 ## Early access - DSL changes
 
-- Data Integration
+- Data integration
   - Real-time streaming data integration from a Postgres database
   - CSV and JSON files can also be ingested from a local file system
 - Aggregations
   - Calculations using literal numbers (e.g. int, double) are now supported
-- Flexible UI Layouts
+- Flexible UI layouts
   - A multitude of flexible layout components can now be combined with existing UI components, such as grids and forms
   - Layouts can be nested to create specific sections within pages or elegant form structures
-  - The default component settings can also be easily customized using parameters
-- Developer Experience
+  - The default component settings can also be easily customised using parameters
+- Developer experience
   - Reduction in 'clutter' of new projects at the top level to improve clarity and ease of navigation
   - Login (auth) component is now included by default but can still be overridden if needed
 
-For more information see [here](/fuse/)
+For more information, see [here](/fuse/)
