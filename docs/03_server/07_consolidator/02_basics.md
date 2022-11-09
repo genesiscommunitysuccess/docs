@@ -1,5 +1,5 @@
 ---
-title: 'Consolidator - Basics'
+title: 'Consolidator - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, consolidator, basics]
@@ -9,9 +9,7 @@ tags:
   - basics
 ---
 
-[Introduction](/server/consolidator/introduction) | [Basics](/server/consolidator/basics) |  [Advanced](/server/consolidator/advanced) | [Examples](/server/consolidator/examples) | [Configuring runtime](/server/consolidator/configuring-runtime) | [Testing](/server/consolidator/testing)
-
-You define a Consolidator service in a **consolidator.kts** file. Within the file, you can define as many Consolidators as you like. Each one is specified in a `consolidator` block of code. 
+You define a Consolidator service in a **consolidator.kts** file. Within the file, you can define as many Consolidators as you like. Each one is specified in a `Consolidator` block of code. 
 
 
 
@@ -36,7 +34,7 @@ So, what was going on there?
 - It is counting the number of trades into `TRADE_COUNT` and calculating price x quantity into `TOTAL_NOTIONAL`. 
 
 ## Elements of a Consolidator
-In each `consolidator` block, you must at least provide:
+In each `Consolidator` block, you must at least provide:
 
 - a name
 - an input table or view
@@ -44,7 +42,7 @@ In each `consolidator` block, you must at least provide:
 
 In most cases, you will need a lot more than that. Let us look at the elements you can use to create a sophisticated, effective Consolidator.
 
-The empty structure below shows the optional and mandatory code blocks in a single `consolidator` block.  
+The empty structure below shows the optional and mandatory code blocks in a single `Consolidator` block.  
 Comments are included to provide further information:
 
 ```kotlin

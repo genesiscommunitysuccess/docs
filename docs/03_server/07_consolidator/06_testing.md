@@ -1,5 +1,5 @@
 ---
-title: 'Consolidator - Testing'
+title: 'Consolidator - testing'
 sidebar_label: 'Testing'
 id: testing
 keywords: [server, consolidator, testing]
@@ -8,8 +8,6 @@ tags:
   - consolidator
   - testing
 ---
-
-[Introduction](/server/consolidator/introduction) | [Basics](/server/consolidator/basics) |  [Advanced](/server/consolidator/advanced) | [Examples](/server/consolidator/examples) | [Configuring runtime](/server/consolidator/configuring-runtime) | [Testing](/server/consolidator/testing)
 
 ## Integration testing
 
@@ -132,7 +130,7 @@ private fun trade(
 
 ### Nested consolidation test
 
-To test this, add the consolidator below to the consolidator definition above:
+To test this, add the Consolidator below to the Consolidator definition above:
 
 ```kotlin
     consolidator(ORDER, ORDER_SUMMARY) {

@@ -1,5 +1,5 @@
 ---
-title: 'State Machine - Basics'
+title: 'State Machine - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, state machine, basics]
@@ -9,7 +9,7 @@ tags:
   - basics
 ---
 
-You define your state machine as a specific type of Event Handler. 
+You define your State Machine as a specific type of Event Handler. 
 
 Within your application's **eventhandler.kts**, you must define the conditions for each possible change of state. Remember, if you don't the conditions for changing from state to another, then it will not be possible for the application to make that transition.
 

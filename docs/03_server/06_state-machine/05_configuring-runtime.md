@@ -1,6 +1,6 @@
 ---
-title: 'State Machine - Configuring Runtime'
-sidebar_label: 'Configuring Runtime'
+title: 'State Machine - configuring runtime'
+sidebar_label: 'Configuring runtime'
 id: configuring-runtime
 keywords: [server, state machine, configuring runtime]
 tags:
@@ -9,4 +9,4 @@ tags:
   - configuring runtime
 ---
 
-State machines are defined as Event Handlers in your application's *eventhandler.kts* file. Ensure that your Event Handler is correctly [configured for runtime](/server/event-handler/configuring-runtime/).
+State Machines are defined as Event Handlers in your application's *eventhandler.kts* file. Ensure that your Event Handler is correctly [configured for runtime](/server/event-handler/configuring-runtime/).

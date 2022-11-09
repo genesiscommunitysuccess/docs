@@ -9,15 +9,13 @@ tags:
   - examples
 ---
 
-[Introduction](/server/consolidator/introduction) | [Basics](/server/consolidator/basics) |  [Advanced](/server/consolidator/advanced) | [Examples](/server/consolidator/examples) | [Configuring runtime](/server/consolidator/configuring-runtime) | [Testing](/server/consolidator/testing)
-
 Here is an example Consolidator file that defines two Consolidators:
 
 * CON_ORDER_FROM_TRADES.
   This Consolidator builds the ORDER table using the CONSOLIDATOR_TRADE table. It uses max, min, sum and count functions and groups by field ```ORDER.ORDER_ID``` to build a new row for the output table ORDER.
 
 * CON_ORDER_SUMMARY_FROM_ORDER.  This Consolidator builds the ORDER_SUMMARY table using the ORDER table and groups by the field ```ORDER.ORDER_DATE``` from the ```ORDER``` table. You can give multiple `groupBy` conditions based on your requirement.
-  In this second Consolidator,  we store all the consolidations grouped by ORDER_DATE year and ORDER_DATE year and month in database, (which are defined right at the end of the Consolidator). This avoids duplication of consolidator code if you need to group the same consolidation based on different `groupBy` conditions.
+  In this second Consolidator,  we store all the consolidations grouped by ORDER_DATE year and ORDER_DATE year and month in database, (which are defined right at the end of the Consolidator). This avoids duplication of Consolidator code if you need to group the same consolidation based on different `groupBy` conditions.
 
 ```kotlin
 consolidators {
@@ -69,7 +67,7 @@ The example below comes from the Consolidator exercise in our [tutorial](/gettin
 
 To give you some basic pointers to the content, the main code blocks in this Consolidator are:
 
-- The `config` block contains consolidator level configuration
+- The `config` block contains Consolidator level configuration
 - The `select` block to specify some calculations and assign to output fields
 - The `onCommit` block to amend the output row
 - The `groupBy` block groups by `INSTRUMENT_ID`

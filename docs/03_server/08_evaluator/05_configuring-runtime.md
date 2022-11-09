@@ -1,6 +1,6 @@
 ---
-title: 'Evaluator - Configuring Runtime'
-sidebar_label: 'Configuring Runtime'
+title: 'Evaluator - configuring runtime'
+sidebar_label: 'Configuring runtime'
 id: configuring-runtime
 keywords: [server, evaluator, configuring runtime]
 tags:
@@ -8,8 +8,6 @@ tags:
   - evaluator
   - configuring runtime
 ---
-
-[Introduction](/server/evaluator/introduction) | [Basics](/server/evaluator/basics) | [Examples](/server/evaluator/examples) | [Configuring runtime](/server/evaluator/configuring-runtime) | [Testing](/server/evaluator/testing)
 
 ## Enabling the Evaluator
 The Evaluator process is not enabled by default. Before you can use the process, you must add/enable it in your _application_**-genesis-processes.xml** file.

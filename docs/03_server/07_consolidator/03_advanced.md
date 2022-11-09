@@ -1,5 +1,5 @@
 ---
-title: 'Consolidator - Advanced'
+title: 'Consolidator - advanced'
 sidebar_label: 'Advanced'
 id: advanced
 keywords: [server, consolidator, advanced]
@@ -9,9 +9,7 @@ tags:
   - advanced
 ---
 
-[Introduction](/server/consolidator/introduction) | [Basics](/server/consolidator/basics) |  [Advanced](/server/consolidator/advanced) | [Examples](/server/consolidator/examples) | [Configuring runtime](/server/consolidator/configuring-runtime) | [Testing](/server/consolidator/testing)
-
-In this page, we look in more detail at the functions that are the building blocks of the select statement in a `consolidator` specification.
+In this page, we look in more detail at the functions that are the building blocks of the select statement in a `Consolidator` specification.
 
 ## Standard functions
 
@@ -161,4 +159,4 @@ be no change written to the database. Conversely, returning `IndexScan` will cau
 
 A similar example to the above would be to use the `max` function. 
 - If the new maximum value is less than the current maximum, then no data needs to be written to the database.
-- If the current maximum value leaves the `consolidator` group, then all values should be evaluated to determine the new maximum value.
+- If the current maximum value leaves the `Consolidator` group, then all values should be evaluated to determine the new maximum value.

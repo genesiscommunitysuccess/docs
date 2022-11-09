@@ -1,5 +1,5 @@
 ---
-title: 'State Machine - Advanced'
+title: 'State Machine - advanced'
 sidebar_label: 'Advanced'
 id: advanced
 keywords: [server, state machine, advanced]
@@ -9,12 +9,12 @@ tags:
   - advanced
 ---
 
-The state machine can be injected to the Event Handler script or API.
+The State Machine can be injected to the Event Handler script or API.
 
 ## StateMachineBuilder
 
-You can build state machine using this interface by providing following:
-- Entity of the state machine. In below example it is called Trade.
+You can build State Machine using this interface by providing following:
+- Entity of the State Machine. In below example it is called Trade.
 - State of entity field to manage, this field needs to be ENUM field. In the below example it is called TradeStatus
 - The side effect of a state change, is something you can subscribe to when the state changes. In below example it is called TradeEffect.
 
@@ -41,17 +41,17 @@ This is the method where you define how to handle the state of the table. Handli
 || Signature    | Description |
 |--------------|-------------|---|
 | isMutable    | `var isMutable: Boolean` | When set to false, any modification to the  entity while in this state will be rejected|
-| initialState | `fun initialState(sideEffect: E, transitionBuilder: TransitionBuilderInit<T>? = null)` | The state machine will accept the specified state on creation |
-| initialState | `fun initialState(sideEffect: E,priority: Int,transitionBuilder: TransitionBuilderInit<T>? = null)` | The state machine will accept the specified state on creation and you can specify priority for this transition |
-| initialStateWithContext | `fun <C : Any> initialStateWithContext(sideEffect: E,transitionBuilder: ContextTransitionBuilder<T, C>.() -> Unit,)` | The state machine will accept the current state on creation. The validation will share a context. |
-| initialStateWithContext | `fun <C : Any> initialStateWithContext(sideEffect: E,priority: Int,transitionBuilder: ContextTransitionBuilder<T, C>.() -> Unit,)` | The state machine will accept the current state on creation and you can specify priority for this transition. The validation will share a context. |
-| transition | `fun transition(newState: S,sideEffect: E,transitionBuilder: TransitionBuilderInit<T>? = null,)` | The state machine will a transition from the current state to [newState] |
-| transition | `fun transition(newState: S,sideEffect: E,priority: Int,transitionBuilder: TransitionBuilderInit<T>? = null,)` | The state machine will a transition from the current state to [newState]  and you can specify priority for this transition|
-| transitionWithContext | `fun <C : Any> transitionWithContext(newState: S,sideEffect: E,transitionBuilder: ContextTransitionBuilder<T, C>.() -> Unit,) ` | The state machine will a transition from the current state to [newState] |
-| transitionWithContext | `fun <C : Any> transitionWithContext(newState: S,sideEffect: E,priority: Int,transitionBuilder: ContextTransitionBuilder<T, C>.() -> Unit,)` | The state machine will a transition from the current state to [newState] and you can specify priority for this transition. The validation will share a context|
+| initialState | `fun initialState(sideEffect: E, transitionBuilder: TransitionBuilderInit<T>? = null)` | The State Machine will accept the specified state on creation |
+| initialState | `fun initialState(sideEffect: E,priority: Int,transitionBuilder: TransitionBuilderInit<T>? = null)` | The State Machine will accept the specified state on creation and you can specify priority for this transition |
+| initialStateWithContext | `fun <C : Any> initialStateWithContext(sideEffect: E,transitionBuilder: ContextTransitionBuilder<T, C>.() -> Unit,)` | The State Machine will accept the current state on creation. The validation will share a context. |
+| initialStateWithContext | `fun <C : Any> initialStateWithContext(sideEffect: E,priority: Int,transitionBuilder: ContextTransitionBuilder<T, C>.() -> Unit,)` | The State Machine will accept the current state on creation and you can specify priority for this transition. The validation will share a context. |
+| transition | `fun transition(newState: S,sideEffect: E,transitionBuilder: TransitionBuilderInit<T>? = null,)` | The State Machine will transition from the current state to [newState] |
+| transition | `fun transition(newState: S,sideEffect: E,priority: Int,transitionBuilder: TransitionBuilderInit<T>? = null,)` | The State Machine will transition from the current state to [newState]  and you can specify priority for this transition|
+| transitionWithContext | `fun <C : Any> transitionWithContext(newState: S,sideEffect: E,transitionBuilder: ContextTransitionBuilder<T, C>.() -> Unit,) ` | The State Machine will transition from the current state to [newState] |
+| transitionWithContext | `fun <C : Any> transitionWithContext(newState: S,sideEffect: E,priority: Int,transitionBuilder: ContextTransitionBuilder<T, C>.() -> Unit,)` | The State Machine will transition from the current state to [newState] and you can specify priority for this transition. The validation will share a context|
 
 
-State machine creation is explained with the example below.
+State Machine creation is explained with the example below.
 
 ```kotlin
 @Module
@@ -110,7 +110,7 @@ class TradeStateMachine @Inject constructor(
 
 ## StateMachine
 
-State machine properties and functions:
+State Machine properties and functions:
 
 |                           | Signature                                                                                                                                                                                     | Description                                                                                                                                                                                                                                                                          |
 |---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -123,10 +123,10 @@ State machine properties and functions:
 | update                    | `suspend fun update(uniqueEntityIndex: UniqueEntityIndex<T, *>,updateEntity: suspend (entity: T, transaction: AsyncMultiEntityReadWriteGenericSupport) -> Unit,): Transition<T, S, E>?`       | Accepts a [UniqueEntityIndex] and a update lambda and validates and writes [value] to the database. Returns a [Transition] if the update caused a transition, else null and throws IllegalArgumentException if the value is not valid, or if the item doesn't exist in the database. |
 | updateIfExists            | `suspend fun updateIfExists(uniqueEntityIndex: UniqueEntityIndex<T, *>,updateEntity: suspend (entity: T, transaction: AsyncMultiEntityReadWriteGenericSupport) -> Unit,): Transition<T, S, E>?` | Accepts a [UniqueEntityIndex] and a update lambda and validates and writes [value] to the database. Returns a [Transition] if the update caused a transition, else null and throws IllegalArgumentException if the value is not valid                                                |
 | validate                  | `suspend fun validate(value: T,newState: S,): ValidationResult<S>`                                                                                                                            | Validates if [value] can successfully transition to [newState]                                                                                                                                                                                                                       |
-| withTransaction | `suspend fun <O : Any?> withTransaction(transaction: AsyncMultiEntityReadWriteGenericSupport,handling: suspend StateMachine<T, S, E>.() -> O,): O` | Will take a transaction and will handle all state machine calls within [handling] within the provided transaction  |
-| withTransaction | `suspend fun <O : Any?> withTransaction(handling: suspend StateMachine<T, S, E>.() -> O,): O` | Will create a transaction and will handle all state machine calls within [handling] within the provided transaction |
+| withTransaction | `suspend fun <O : Any?> withTransaction(transaction: AsyncMultiEntityReadWriteGenericSupport,handling: suspend StateMachine<T, S, E>.() -> O,): O` | Will take a transaction and will handle all State Machine calls within [handling] within the provided transaction  |
+| withTransaction | `suspend fun <O : Any?> withTransaction(handling: suspend StateMachine<T, S, E>.() -> O,): O` | Will create a transaction and will handle all State Machine calls within [handling] within the provided transaction |
 
-Example for above state machine usage:
+Example for above State Machine usage:
 
 ```kotlin
 suspend fun insert(trade: Trade): Transition<Trade, TradeStatus, TradeEffect> = internalState.create(trade)
@@ -137,9 +137,9 @@ suspend fun modify(tradeId: String, modify: suspend (Trade) -> Unit): Transition
 suspend fun modify(trade: Trade): Transition<Trade, TradeStatus, TradeEffect>? = internalState.update(trade)
 ```
 
-## Inject state machine
+## Inject State Machine
 
-### Inject state machine in [Event Handler](/server/event-handler/basics) file
+### Inject State Machine in [Event Handler](/server/event-handler/basics) file
 
 ```kotlin
 eventHandler {
@@ -170,9 +170,9 @@ eventHandler {
 }
 ```
 
-You can also see a state machine being created in practice in our [tutorial](/server/state-machine/introduction/).
+You can also see a State Machine being created in practice in our [tutorial](/server/state-machine/introduction/).
 
-### Inject state machine in event handler [API](/database/api-reference/event-handler-api/)
+### Inject State Machine in event handler [API](/database/api-reference/event-handler-api/)
 
 ```kotlin
 @Module
