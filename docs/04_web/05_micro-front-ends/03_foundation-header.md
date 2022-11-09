@@ -53,7 +53,7 @@ The `allRoutes` array, which you need to change to set the navigation buttons on
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-header` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. There is more information in the [pacakge.json basics](../01_basics/04_package-json-basics.md) page.
+- Add `@genesislcap/foundation-header` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. There is more information in the [pacakge.json basics](../01_basics/04_package-json-basics.mdx) page.
 
 ```javascript
 {
