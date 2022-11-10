@@ -1,5 +1,5 @@
 ---
-title: 'Excel - Functions'
+title: 'Excel - functions'
 sidebar_label: 'Excel functions'
 id: excel-functions
 keywords: [server, integration, excel, functions]
@@ -9,8 +9,6 @@ tags:
   - excel
   - functions
 ---
-
-[Excel reference](/server/integration/excel-to-genesis/excel-reference/)  | [Excel functions](/server/integration/excel-to-genesis/excel-functions) 
 
 The following Excel functions are currently supported by `ExcelToGenesis`.
 
