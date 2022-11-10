@@ -1,5 +1,5 @@
 ---
-title: 'Data Pipeline - Basics'
+title: 'Data pipeline - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, integration, data pipeline, basics]
@@ -9,8 +9,6 @@ tags:
   - data pipeline
   - basics
 ---
-
-[Introduction](/server/integration/data-pipeline/introduction/)  | [Basics](/server/integration/data-pipeline/basics) | [Advanced](/server/integration/data-pipeline/advanced) | [Examples](/server/integration/data-pipeline/examples) | [Configuring runtime](/server/integration/data-pipeline/configuring-runtime) | [Testing](/server/integration/data-pipeline/testing)
 
 ## Where to define
 

@@ -1,5 +1,5 @@
 ---
-title: 'Data Pipeline - Advanced'
+title: 'Data pipeline - advanced'
 sidebar_label: 'Advanced'
 id: advanced
 keywords: [server, integration, data pipeline, advanced]
@@ -9,8 +9,6 @@ tags:
   - data pipeline
   - advanced
 ---
-
-[Introduction](/server/integration/data-pipeline/introduction/)  | [Basics](/server/integration/data-pipeline/basics) | [Advanced](/server/integration/data-pipeline/advanced) | [Examples](/server/integration/data-pipeline/examples) | [Configuring runtime](/server/integration/data-pipeline/configuring-runtime) | [Testing](/server/integration/data-pipeline/testing)
 
 ## PostgreSQL
 
