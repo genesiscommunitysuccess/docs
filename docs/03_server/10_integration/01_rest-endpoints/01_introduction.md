@@ -27,6 +27,7 @@ As well as these resources, there are also endpoints available for:
 For more information on exposing endpoints for resources not listed above, see [Custom Endpoints](/server/integration/custom-endpoints/introduction/).
 
 
+## Where to define
 The Genesis platform makes defining REST Endpoints easy. Instead of needing to configure individual endpoints, you only have to declare the relevant resources, and configure the [Genesis Router](/server/configuring-runtime/genesis-router/).
 
 The following resources support automatic route registration:
