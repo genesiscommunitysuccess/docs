@@ -1,5 +1,5 @@
 ---
-title: 'Market data adaptors - Refinitiv'
+title: 'Market data adaptors - refinitiv'
 sidebar_label: 'Refinitiv'
 id: refinitiv
 keywords: [server, integration, market data adaptors, refinitiv]

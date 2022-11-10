@@ -1,5 +1,5 @@
 ---
-title: 'Notify - Email'
+title: 'Notify - email'
 sidebar_label: 'Email'
 id: email
 keywords: [server, integration, notify, email]
