@@ -155,6 +155,6 @@ At the moment our home page is virtually empty - we will fix that in the next st
 Congratulations, you now have:
 
 - API, Web and database servers running
-- auth component loaded and configured 
+- auth component loaded and configured
 - user interface available in the browser
 - a working connection between the server and user interface
