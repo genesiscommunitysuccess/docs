@@ -139,3 +139,6 @@ APPL,Z233,100,S,400,2022-09-12 16:20:20,TraderA
 In this section, we have created a working data pipeline. Given everything is working as expected, `DbMon` will show the following 4 entries in your database.
 
 ![DbMon screenshot](/img/dbmon-datapipeline.PNG)
+
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-script-config/src/main/resources/scripts) as a reference point for this chapter. 
+

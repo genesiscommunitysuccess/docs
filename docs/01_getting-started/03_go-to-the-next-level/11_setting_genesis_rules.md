@@ -477,3 +477,6 @@ $L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis l
 
 ### Conclusion
 This concludes generating reports for the positions application. In the next section you will see how to trigger based on a condition in the database.
+
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-script-config/src/main/resources/scripts) as a reference point for this chapter. 
+
