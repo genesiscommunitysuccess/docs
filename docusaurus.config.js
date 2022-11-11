@@ -17,14 +17,9 @@ module.exports = {
   trailingSlash: true,
   onBrokenLinks: 'throw', // please do NOT change this to 'warn', fix or remove your broken links instead
   onDuplicateRoutes: 'throw',
-  scripts: [
-    {
-      src: `${baseUrl}js/docs.iife.min.js`,
-      async: true,
-    }
+  clientModules: [
+    './src/client-modules/genesislcap.js'
   ],
-
-
   plugins: [
     [
       '@docusaurus/plugin-client-redirects',
@@ -84,7 +79,6 @@ module.exports = {
     }],
     'docusaurus-plugin-matomo'
   ],
-
   presets: [
     [
       '@docusaurus/preset-classic',
@@ -102,9 +96,7 @@ module.exports = {
       }
     ],
   ],
-
   themes: ['@docusaurus/theme-live-codeblock'],
-
   themeConfig: {
     colorMode: {
       disableSwitch: true
@@ -152,7 +144,6 @@ module.exports = {
       jsLoader: 'matomo.js',
     },
   },
-
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -162,6 +153,5 @@ module.exports = {
       },
     },
   },
-
 };
 
