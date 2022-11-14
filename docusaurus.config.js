@@ -110,10 +110,7 @@ module.exports = {
     },
     navbar: {
       items: [
-
-        //keep this commented out until we have multiple versions
-        // {type: 'docsVersionDropdown', className: "version-menu"},
-
+        {type: 'docsVersionDropdown', className: "version-menu"},
         {to: 'getting-started', label: 'Learning'},
         {to: 'database', label: 'Database'},
         {to: 'server', label: 'Server'},
