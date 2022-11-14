@@ -1,5 +1,5 @@
 ---
-title: 'Server Configuration - Genesis Router'
+title: 'Server configuration - Genesis Router'
 sidebar_label: 'Genesis Router'
 id: genesis-router
 keywords: [server, configuration, genesis router]
@@ -14,10 +14,15 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-![](/img/router_diagram.png)
+
 Genesis Router is responsible for all communication between front end and back end. 
 On the Genesis low-code platform, the front end connects to the back end through HTTPS or secure Websockets via a reverse proxy.
-This must run on the same instance as the back end. The GENESIS_ROUTER service on the server acts as the endpoint for all API calls and listens (by default) to port 9064.
+This must run on the same instance as the back end. 
+
+![](/img/router_diagram.png)
+
+The GENESIS_ROUTER service on the server acts as the endpoint for all API calls and listens (by default) to port 9064.
+
 This is configured in the file **genesis-router.kts**.
 
 Here is an example:
@@ -53,7 +58,7 @@ router {
 }
 ```
 
-## Configuring Runtime
+## Configuring runtime
 
 There are two important files in your application that contain configuration information:
 -  _application-name_**-processes.xml**
@@ -83,7 +88,7 @@ For more information on the tags that can be set within the configuration for yo
 
 ### Configuring in service-definitions.xml
 
-Here is an example of the Genesis-router's service configuration:
+Here is an example of the Genesis Router's service configuration:
 
 ```xml
   <service host="localhost" name="GENESIS_ROUTER" port="9017"/>
@@ -107,7 +112,7 @@ Let's have a look at the different options for configuring this file. You have s
 **Netty configuration**:
 
 `httpServerCodecDefinition`: A combination of HttpRequestDecoder and HttpResponseEncoder, which enables easier server-side HTTP implementation.
-For more information, follow this [link](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpServerCodec.html).
+You can find more information in the [netty documentation](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpServerCodec.html).
 
 Different decoder options
   * `maxInitialLineLength`: default value: 4096
@@ -117,7 +122,8 @@ Different decoder options
   * `initialBufferSize`: default value: 128
 
 `httpObjectAggregatorDefinition`: A ChannelHandler that aggregates an HttpMessage and its following HttpContents into a single FullHttpRequest or FullHttpResponse (depending on if it used to handle requests or responses) with no following HttpContents.
-For more information, follow this [link](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpObjectAggregator.html).
+
+There is more information in the [netty documentation](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpObjectAggregator.html).
 
   * `maxContentLength`: the maximum length of the aggregated content in bytes. Default value: 262144
   * `closeOnExpectationFailed`: If a 100-continue response is detected but the content length is too large, then true means close the connection. Otherwise, the connection will remain open and data will be consumed and discarded until the next request is received. Default value: false
@@ -131,6 +137,7 @@ For more information, follow this [link](https://netty.io/4.1/api/io/netty/handl
 **Allowed resources**:
 
 `allowList`:  You can limit the resources exposed by the Genesis Router. Without at least one `entry` block, every resource will be available. It is important to note that the following message types will always be allowed by default, regardless of the allowList definition:
+
 EVENT_LOGIN_AUTH, EVENT_LOGOUT, MORE_ROWS, MORE_COLUMNS, DATA_LOGOFF, DATA_GET
 
 `entry:` Is the additional accepted `messageType`.
