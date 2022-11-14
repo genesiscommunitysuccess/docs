@@ -11,7 +11,7 @@ tags:
     - rules
 ---
 
-It is often useful to run tasks periodically - for example, to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](/server/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
+It is often useful to run tasks periodically - for example, to schedule the production of EOD reports, to change a field in the database if another field has a certain value, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](/server/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
 
 - [Dynamic Rules](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#setting-up-the-dynamic-rules), also known as dynamic events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 - [Static Rules](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#static-rules-cron-rules) are scheduling rules; these are static events, defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression).
@@ -24,7 +24,7 @@ The goal of this section is to:
 - create `eventHandler` codeblocks for both static and dynamic events
 - load our static and dynamic events to their given tables
 - update our system definitions
-- configure and define our Notify process
+- show how you can use our dynamic rule notification endpoint to create a notification when a rule is triggered by a change in the database tables entry.
 
 ## Configure the Evaluator
 
@@ -49,7 +49,7 @@ Add the `POSITIONS_APP_TUTORIAL_EVALUATOR` to your **positions-app-tutorial-serv
 <service host="localhost" name="POSITIONS_APP_TUTORIAL_EVALUATOR" port="11004"/>
 ```
 
-We have just defined our Evaluator. Next we're going to add our business logic.
+We have just defined our App Evaluator. Next we're going to add our business logic.
 
 ## Define the business logic
 
