@@ -1,5 +1,5 @@
 ---
-title: 'Notify - Configuration'
+title: 'Notify - configuration'
 sidebar_label: 'Configuring'
 id: configuring
 keywords: [server, integration, notify, configuration]

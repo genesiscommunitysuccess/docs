@@ -1,5 +1,5 @@
 ---
-title: 'Custom Endpoints - Introduction'
+title: 'Custom endpoints - introduction'
 sidebar_label: 'Introduction'
 id: introduction
 keywords: [server, integration, custom endpoints, introduction]
@@ -9,8 +9,6 @@ tags:
   - custom endpoints
   - introduction
 ---
-
-[Introduction](/server/integration/custom-endpoints/introduction/) | [Basics](/server/integration/custom-endpoints/basics/) |  [Advanced](/server/integration/custom-endpoints/advanced/) | [Examples](/server/integration/custom-endpoints/examples/) | [Configuring runtime](/server/integration/custom-endpoints/configuring-runtime/) | [Testing](/server/integration/custom-endpoints/testing/)
 
 The Genesis low-code platform provides a series of [REST endpoints](/server/integration/rest-endpoints/introduction/).
 You can extend the Platform by creating custom endpoints, which make it easy to integrate with existing systems.

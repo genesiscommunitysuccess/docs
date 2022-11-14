@@ -1,5 +1,5 @@
 ---
-title: 'Access Control - Introduction'
+title: 'Access control - introduction'
 sidebar_label: 'Introduction'
 id: introduction
 keywords: [server, access control, introduction]
@@ -9,7 +9,6 @@ tags:
   - introduction
 ---
 
-[Introduction](/server/access-control/introduction)  | [Authentication overview](/server/access-control/authentication-overview) | [Username and Password](/server/access-control/password-authentication) | [SSO](/server/access-control/sso-authentication) | [Authorisation overview](/server/access-control/authorisation-overview) | [Authorisation](/server/access-control/authorisation)
 
 The Genesis low-code platform has a collection of access control mechanisms to limit usage of your application and access to specific data and functions dynamically.
 

@@ -1,5 +1,5 @@
 ---
-title: 'Apache Camel - Advanced'
+title: 'Apache Camel - advanced'
 sidebar_label: 'Advanced'
 id: advanced
 keywords: [server, integration, apache camel, advanced]
@@ -9,8 +9,6 @@ tags:
   - apache camel
   - advanced
 ---
-
-[Introduction](/server/integration/apache-camel/introduction/)  | [Basics](/server/integration/apache-camel/basics) | [Advanced](/server/integration/apache-camel/advanced) | [Examples](/server/integration/apache-camel/examples) | [Configuring runtime](/server/integration/apache-camel/configuring-runtime) | [Testing](/server/integration/apache-camel/testing)
 
 ## Automatic import
 

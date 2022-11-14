@@ -1,5 +1,5 @@
 ---
-title: 'State Machine - Examples'
+title: 'State Machine - examples'
 sidebar_label: 'Examples'
 id: examples
 keywords: [server, state machine, examples]
@@ -9,7 +9,7 @@ tags:
   - examples
 ---
 
-The following example of a state machine defines five events that control the transition of trades from one state to another.
+The following example of a State Machine defines five events that control the transition of trades from one state to another.
 
 ```kotlin
 eventHandler {

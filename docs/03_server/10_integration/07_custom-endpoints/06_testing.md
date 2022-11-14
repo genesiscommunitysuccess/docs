@@ -1,5 +1,5 @@
 ---
-title: 'Custom Endpoints - Testing'
+title: 'Custom endpoints - testing'
 sidebar_label: 'Testing'
 id: testing
 keywords: [server, integration, custom endpoints, testing]
@@ -12,8 +12,6 @@ tags:
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-[Introduction](/server/integration/custom-endpoints/introduction/) | [Basics](/server/integration/custom-endpoints/basics/) |  [Advanced](/server/integration/custom-endpoints/advanced/) | [Examples](/server/integration/custom-endpoints/examples/) | [Configuring runtime](/server/integration/custom-endpoints/configuring-runtime/) | [Testing](/server/integration/custom-endpoints/testing/)
 
 ## Integration testing
 

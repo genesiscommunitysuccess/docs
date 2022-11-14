@@ -1,5 +1,5 @@
 ---
-title: 'Evaluator - Basics'
+title: 'Evaluator - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, evaluator, basics]
@@ -9,7 +9,6 @@ tags:
   - basics
 ---
 
-[Introduction](/server/evaluator/introduction) | [Basics](/server/evaluator/basics) | [Examples](/server/evaluator/examples) | [Configuring runtime](/server/evaluator/configuring-runtime) | [Testing](/server/evaluator/testing)
 
 ## Dynamic rules
 This feature enables you to raise alarms on certain conditions or to react on specific states. Dynamic rules respond to changes in database tables. For instance, if a figure goes above a certain threshold, the rule could trigger a warning email to be sent out.

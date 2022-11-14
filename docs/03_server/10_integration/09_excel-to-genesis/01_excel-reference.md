@@ -1,5 +1,5 @@
 ---
-title: 'Excel - Reference'
+title: 'Excel - reference'
 sidebar_label: 'Excel reference'
 id: excel-reference
 keywords: [server, integration, excel, reference]
@@ -9,8 +9,6 @@ tags:
   - excel
   - reference
 ---
-
-[Excel reference](/server/integration/excel-to-genesis/excel-reference/)  | [Excel functions](/server/integration/excel-to-genesis/excel-functions)
 
 The Genesis low-code platform enables you to convert existing Excel spreadsheets into Genesis data models. 
 

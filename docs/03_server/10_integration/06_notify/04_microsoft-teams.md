@@ -1,6 +1,6 @@
 ---
-title: 'Notify - Microsoft teams'
-sidebar_label: 'Microsoft teams'
+title: 'Notify - Microsoft Teams'
+sidebar_label: 'Microsoft Teams'
 id: microsoft-teams
 keywords: [server, integration, notify, microsoft teams]
 tags:

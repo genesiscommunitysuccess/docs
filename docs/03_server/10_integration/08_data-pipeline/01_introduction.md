@@ -1,5 +1,5 @@
 ---
-title: 'Data Pipeline - Introduction'
+title: 'Data pipeline - introduction'
 sidebar_label: 'Introduction'
 id: introduction
 keywords: [server, integration, data pipeline, introduction]
@@ -9,8 +9,6 @@ tags:
   - data pipeline
   - introduction
 ---
-
-[Introduction](/server/integration/data-pipeline/introduction/)  | [Basics](/server/integration/data-pipeline/basics) | [Advanced](/server/integration/data-pipeline/advanced) | [Examples](/server/integration/data-pipeline/examples) | [Configuring runtime](/server/integration/data-pipeline/configuring-runtime) | [Testing](/server/integration/data-pipeline/testing)
 
 You can define pipelines that map data from an external source (database, file) to [Tables](/database/fields-tables-views/tables/) in your application. By default, the resulting Table objects are stored in the database. However, you can define [custom operations](/server/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity) as well.
 

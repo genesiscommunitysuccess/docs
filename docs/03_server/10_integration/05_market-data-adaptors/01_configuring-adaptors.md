@@ -1,6 +1,6 @@
 ---
-title: 'Market data adaptors - Configuration'
-sidebar_label: 'Configuring Adaptors'
+title: 'Market data adaptors - configuration'
+sidebar_label: 'Configuring adaptors'
 id: configuring-adaptors
 keywords: [server, integration, market data adaptors, configuration]
 tags:
