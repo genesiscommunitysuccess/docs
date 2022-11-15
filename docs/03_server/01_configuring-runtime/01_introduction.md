@@ -12,7 +12,11 @@ tags:
 
 Some files are essential to the development and running of your application. You need to know what they are for and how to configure them. The pages in this section provide the details.
 
-- system-definition.md
-
+- system definition.md
+- [system processes](/server/configuring-runtime/system-definitions/)
+- service definitions
 - [Genesis Router](/server/configuring-runtime/genesis-router/)
+- [Cache](/server/configuring-runtime/cache/)
+- [Database technology](/server/configuring-runtime/setting-the-database-technology/)
+
 

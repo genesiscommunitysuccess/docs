@@ -1,5 +1,5 @@
 ---
-title: 'Server Configuration - Cache'
+title: 'Server configuration - Cache'
 sidebar_label: 'Cache'
 id: cache
 keywords: [server, configuration, cache]
