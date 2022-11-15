@@ -9,7 +9,7 @@ tags:
   - processes
 ---
 
-Each application must have a **-processes.xml** file. This contains the configuration of each module (data server, request server and event-handler etc). It is generated automatically when you create a new Genesis project using  [GenX CLI tool](/getting-started/quick-start/create-a-new-project/).
+Each application must have a **-processes.xml** file. This contains the configuration of each module (Data Server, Request Server, Event Handler, etc). It is generated automatically when you create a new Genesis project using  [GenX CLI tool](/getting-started/quick-start/create-a-new-project/).
 
 If you add new processes, you need to add their details to the _application_**-processes.xml** file. See the section on [adding processes](/getting-started/quick-start/prepare-the-server-and-build/) for more details on how to do this.
 

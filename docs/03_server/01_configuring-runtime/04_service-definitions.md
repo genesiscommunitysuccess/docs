@@ -1,6 +1,6 @@
 ---
 title: 'Server configuration - service definitions'
-sidebar_label: 'Service definition'
+sidebar_label: 'Service definitions'
 id: service-definitions
 keywords: [server, configuration, service definitions]
 tags:
