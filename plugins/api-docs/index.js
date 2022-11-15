@@ -2,10 +2,26 @@ const fs = require('fs-extra');
 const path = require('path');
 
 /**
- * Docusaurus build can't process empty comments in markdown
+ * Docusaurus / mdx build can't process empty comments in markdown.
+ *
+ * In MDX 1 there is a behaviour that will lead to links not being rendered as clickable links. See
+ * https://github.com/mdx-js/mdx/issues/1571#issuecomment-853384939
+ *
+ * This causes:
+ *  <b>Implements:</b> [Percentage](./foundation-filters.percentage.md)
+ *  <b>Extends:</b> [ClientFilter](./foundation-filters.clientfilter.md)&lt;[NodeEnvParams](./foundation-filters.nodeenvparams.md)&gt;
+ *  etc.
+ *
+ * ...to render unlinked, so users actually see text like this instead:
+ *
+ * Implements: [NodeEnv](/web/filters/docs/api/foundation-filters.nodeenv)
+ *
+ * Replacing html tags like <b> with their markdown equivalent `**` fixes the issue, as the line starts with markdown.
  */
 function cleanseMarkdownContent(input) {
-    return input.replace(/<!-- -->/g, '');
+    return input
+        .replace(/<!-- -->/g, '')
+        .replace(/<b>|<\/b>/g, '**');
 }
 
 async function createApiDoc(inputFile, outputFile) {

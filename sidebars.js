@@ -464,7 +464,18 @@ module.exports = {
         },
 
       ],
-    }
+    },
+    {
+      type: 'category',
+      label: 'FILTERING',
+      collapsed: true,
+      items: [
+        {
+          type: 'doc',
+          id: 'web/filters/foundation-filters',
+        },
+      ],
+    },
   ],
   operationsSidebar: [
     'operations/operations',
