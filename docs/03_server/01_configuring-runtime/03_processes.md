@@ -9,16 +9,16 @@ tags:
   - processes
 ---
 
-Each application must have a **-processes.xml** file. This contains the configuration of each module (Data Server, Request Server, Event Handler, etc). It is generated automatically when you create a new Genesis project using  [GenX CLI tool](/getting-started/quick-start/create-a-new-project/).
+Your application must have a **-processes.xml** file. This contains the configuration of each module in the application (Data Server, Request Server, Event Handler, etc). It is created automatically when you start a new Genesis project using  [GenX CLI tool](/getting-started/quick-start/create-a-new-project/), but you might well want to update it - and you certainly want to take a good look at it.
 
-If you add new processes, you need to add their details to the _application_**-processes.xml** file. See the section on [adding processes](/getting-started/quick-start/prepare-the-server-and-build/) for more details on how to do this.
+Every process (module) in your application needs to have an entry in this **-processes.xml** file. If you add a new process, then you must add its details to this file. Otherwise, it will simply not be part pof the built application.
 
-When you run the command `genesisInstall`, the details of this file are aggregated along with details from internal Genesis files (for example, **auth-processes.xml**) into a single newly-generated **processes.xml** file in the **generated** folder.
+## The generated file
+When you run the command `genesisInstall`, the details of the **processes.xml** file are aggregated with details from internal Genesis files (for example, **auth-processes.xml**) into a single newly-generated **processes.xml** file in the **generated** folder.
 
 Very important commands like **startServer**, **killServer**, **startProcess** and **killProcess** all refer to the generated file to check which processes they need to act on.
 
-
-Here is an example of a generated processes.xml file for an application that has:
+Below is an example of a generated processes.xml file for an application that has:
 
 * a Data Server
 * a Request Server

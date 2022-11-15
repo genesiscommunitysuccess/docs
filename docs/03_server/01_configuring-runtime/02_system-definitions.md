@@ -8,7 +8,7 @@ tags:
   - configuration
   - system definitions
 ---
-The system-definition file **genesis-system-definition.kts** is the basis of all configurations, scripts, data model, etc. This section explains all the different items that are contained in the file.
+The system-definition file **genesis-system-definition.kts** is the main configuration file for your application. This section explains all the different items that can be contained in the file.
 
 Here is an example of a **genesis-system-definition.kts** file for an application:
 
