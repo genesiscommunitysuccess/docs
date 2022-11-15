@@ -1,5 +1,5 @@
 ---
-title: 'Server Configuration - Processes'
+title: 'Server configuration - processes'
 sidebar_label: 'Processes'
 id: processes
 keywords: [server, configuration, processes]
@@ -20,11 +20,11 @@ Very important commands like **startServer**, **killServer**, **startProcess** a
 
 Here is an example of a generated processes.xml file for an application that has:
 
-* a data server
-* a request server
-* an event handler
-* a consolidator
-* a streamer and streamer-client
+* a Data Server
+* a Request Server
+* an Event Handler
+* a Consolidator
+* a Streamer and Streamer Client
 
 You can see that this file has separate code blocks for each of the application's processes. Each code block has tags that define the characteristics of the process.
 

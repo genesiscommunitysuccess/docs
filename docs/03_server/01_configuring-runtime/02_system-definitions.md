@@ -1,6 +1,6 @@
 ---
-title: 'Server Configuration - System Definitions'
-sidebar_label: 'System Definitions'
+title: 'Server configuration - System definitions'
+sidebar_label: 'System definitions'
 id: system-definitions
 keywords: [server, configuration, system definitions]
 tags:
