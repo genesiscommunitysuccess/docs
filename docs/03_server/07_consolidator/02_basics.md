@@ -433,9 +433,11 @@ If you simply restart the Consolidator process, then any changes to data that oc
 
 A cold start avoids the danger of losing your calculated data. To make a cold start, run the command 
 
-`startProcess --coldStart`
+`startProcess GENESIS_CONSOLIDATOR --coldStart`
 
-This consolidates all records in the system before starting the real-time event-driven consolidations. 
+In this case, the Consolidator process is called `GENESIS_CONSOLIDATOR`. If in doubt, you can find the exact name of your consolidator in the [service-definitions](https://docs.genesis.global/secure/server/configuring-runtime/service-definitions/) file.
+
+This command consolidates all records in the system before starting the real-time event-driven consolidations. 
 
 At the beginning of a cold start, all fields in `consolidationFields` of the consolidation table are zeroed (or deleted, if transient) before initiating the re-consolidation of all the records in the database.
 
