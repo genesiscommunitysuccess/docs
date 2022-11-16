@@ -21,7 +21,7 @@ In order to implement a chart for our data, it needs 3 parameters at minimum. An
 
 
 <zero-card style={{backgroundColor: "#101628"}}>
-<h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Line / Default Chart</b></h4>
+<h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Bar / Default Chart</b></h4>
 
 
 ```kotlin
@@ -32,13 +32,14 @@ ui("Chart Element") {
     }
 }
 ```
-![](/img/default-chart.PNG)
+![](/img/bar-chart.PNG)
+<!-- ![](/img/default-chart.PNG) -->
 
 </zero-card>
 <br/>
 
 :::tip
-The default type of a chart is `Line`. Therefore, if we do not enter a specific parameter specifying the type of chart we want, it will default to `Line` as the image above.
+The default type of a chart is `bar`. Therefore, if we do not enter a specific parameter specifying the type of chart we want, it will default to `Bar` as the image above.
 :::
 
 > The examples below have an additional parameter that allows us to specify the chart type.
@@ -61,16 +62,16 @@ ui("Chart Element") {
 <br/>
 
 <zero-card style={{backgroundColor: "#101628", padding: "4px"}}>
-<h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Bar Chart</b></h4>
+<h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Line Chart</b></h4>
 
 ```kotlin
 ui("Chart Element") {
     page("Chart Example") {
-        chart(TRADE, TRADE.quantity, TRADE.instrument_id, ChartType.COLUMN)
+        chart(TRADE, TRADE.quantity, TRADE.instrument_id, ChartType.LINE)
     }
 }
 ```
-![](/img/bar-chart.PNG)
+![](/img/line-chart.PNG)
 
 </zero-card>
 
