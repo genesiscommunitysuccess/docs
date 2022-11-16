@@ -174,7 +174,7 @@ ui("Chart Element") {
 
 ### Linked charts
 
-So far we have seen what charts look like when we feed them our data. But what if we wanted to filter the data represented, based on a specific componenet? Similar to [Linked Ui Components](/fuse/features/linked-i-components/), we can update our charts based on the status of another component. See example below for more detail:
+So far we have seen what charts look like when we feed them our data. But what if we wanted to filter the data represented, based on a specific component? Similar to [Linked Ui Components](/fuse/features/linked-i-components/), we can update our charts based on the status of another component. See example below for more detail:
 
 <zero-card style={{backgroundColor: "#101628", padding: "4px"}}>
 <h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Linked Chart</b></h4>
@@ -193,76 +193,3 @@ ui("Chart Element") {
 ![](/img/linked-chart.PNG)
 
 </zero-card>
-
-<!-- ```kotlin
-ui("Chart Element") {
-    page("Chart Example With Aggregation Table and attributes") {
-        chart(TEST_AGGREGATION_TABLE, TEST_AGGREGATION_TABLE.price, TEST_AGGREGATION_TABLE.currency) {
-            attributes(
-                "height" to "500px",
-                "width" to "1000px"
-            )
-        }
-    }
-}
-``` -->
-
-<!-- <Tabs>
-    <TabItem value="area" label="Area" default >
-
-    - Summary of Area graph use examples 
-    - kotlin code 
-    - images
-
-    ```kotlin
-    Area Graph
-    ```
-    </TabItem>
-    <TabItem value="bar" label="Bar" >
-
-    ```kotlin
-    Bar Graph
-    ```
-    </TabItem>
-    <TabItem value="line" label="Line" >
-
-    ```kotlin
-    Line Graph
-    ```
-    </TabItem>
-    </Tabs>
-
-    ### Charts
-
-    <Tabs>
-    <TabItem value="column " label="Column" default >
-
-    ```kotlin
-    Column Chart
-    ```
-    </TabItem>
-    <TabItem value="dualaxes" label="DualAxes" >
-
-    ```kotlin
-    DualAxes Chart
-    ```
-    </TabItem>
-    <TabItem value="pie" label="Pie" >
-
-    ```kotlin
-    Pie Chart
-    ```
-    </TabItem>
-    <TabItem value="rose" label="Rose" >
-
-    ```kotlin
-    Rose Chart
-    ```
-    </TabItem>
-    <TabItem value="donut" label="Donut" >
-
-    ```kotlin
-    Donut Chart
-    ```
-    </TabItem>
-</Tabs> -->
