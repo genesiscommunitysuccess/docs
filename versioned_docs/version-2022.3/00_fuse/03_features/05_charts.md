@@ -2,22 +2,27 @@
 title: 'Charts'
 id: charts
 ---
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+
+## Introduction
 
 With Fuse, we can also implement charts in order to represent data more accurately.
 
-With charts you can:
+With charts we can:
 - display data utilizing any of the chart types we provide
-- use standalone charts or connected/linked charts
+- use standalone charts or linked charts
 
-## Examples
+![](/img/all-charts.PNG)
 
-### Basic charts example
+## Types of charts
 
-In order to implement a chart for our data, it needs 3 parameters at minimum. An entity, a value and a groupBy. The entity refers to the table of data we want the chart to reflect. The value refers to the specific value we want to see visually and the groupBy refers to the categorization of the elements represented. 
+### Standalone charts
 
-Line or Default
+In order to implement a chart for our data, it needs 3 parameters at minimum. An `entity`, a `value` and a `groupBy`. The entity refers to the table of data we want the chart to reflect. The `value` refers to the values being measured or compared and the `groupBy` otherwise known as (category axis) displays the names of the chart's categories. See examples below for more details:
+
+
+<zero-card style={{backgroundColor: "#101628"}}>
+<h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Line / Default Chart</b></h4>
+
 
 ```kotlin
 ui("Chart Element") {
@@ -29,11 +34,15 @@ ui("Chart Element") {
 ```
 ![](/img/default-chart.PNG)
 
+</zero-card>
+<br/>
+
 :::tip
-The default type of a chart is `Line`
+The default type of a chart is `Line`. Therefore, if we do not enter a specific parameter specifying the type of chart we want, it will default to `Line` as the image above.
 :::
 
-### Types of charts available:
+> The examples below have an additional parameter that allows us to specify the chart type.
+
 
 <zero-card style={{backgroundColor: "#101628"}}>
 <h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Pie Chart</b></h4>
@@ -114,7 +123,7 @@ ui("Chart Element") {
 ```kotlin
 ui("Chart Element") {
     page("Chart Example") {
-        chart(TRADE, TRADE.price, TRADE.instrument_id, ChartType.ROSE)
+        chart(TRADE, TRADE.quantity, TRADE.instrument_id, ChartType.ROSE)
     }
 }
 ```
@@ -153,18 +162,37 @@ ui("Chart Element") {
 ```kotlin
 ui("Chart Element") {
     page("Chart Example") {
-        chart(TRADE, TRADE.price, TRADE.instrument_id, ChartType.DUALAXES)
+        chart(TRADE, TRADE.quantity, TRADE.instrument_id, ChartType.DUALAXES)
     }
 }
 ```
-![](/img/dual-chart.PNG)
+![](/img/dual-chart-2.PNG)
 
 </zero-card>
 
 <br/>
 
+### Linked charts
 
-### Meaning of GroupBy and Value
+So far we have seen what charts look like when we feed them our data. But what if we wanted to filter the data represented, based on a specific componenet? Similar to [Linked Ui Components](/fuse/features/linked-i-components/), we can update our charts based on the status of another component. See example below for more detail:
+
+<zero-card style={{backgroundColor: "#101628", padding: "4px"}}>
+<h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Linked Chart</b></h4>
+
+```kotlin
+ui("Chart Element") {
+    page("Chart Example") {
+        chart(TRADE, TRADE.quantity, TRADE.instrument_id, ChartType.PIE, ) {
+            filter {
+                intrumentId eq instrumentId
+            }
+        }
+    }
+}
+```
+![](/img/linked-chart.PNG)
+
+</zero-card>
 
 <!-- ```kotlin
 ui("Chart Element") {
