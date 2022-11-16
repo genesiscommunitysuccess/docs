@@ -32,7 +32,7 @@ See examples below for more details:
 <TabItem value="bar" label="Default / Bar" default >
 
 :::important
-Chart type parameter is optional. If not specified, it will default to `BAR`.
+Chart type parameter is optional. If not specified, it will default to `ChartType.BAR`
 :::
     
 :::tip
@@ -131,7 +131,7 @@ chart(
 <TabItem value="column" label="Column" >
 
 :::tip
-With column charts you could compare values for different categories or compare value changes over a period of time for a single category. For column charts, the numerical axis must start at zero. Our eyes are very sensitive to the height of columns, and we can draw inaccurate conclusions when those bars are truncated.
+Column charts are useful to compare values for different categories. For these, the numerical axis must start at zero. Our eyes are sensitive to the height of columns, and we could draw inaccurate conclusions as a result.
 :::
 <zero-card style={{backgroundColor: "#101628", padding: "4px"}}>
 <h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Column Chart</b></h4>
@@ -176,7 +176,7 @@ chart(
 <TabItem value="donut" label="Donut" >
 
 :::tip
-The donut chart can help you compare individual categories or dimensions to the larger whole, just like a pie chart, but with a couple of advantages. Donut charts can make it easier for users to compare individual dimensions.
+The donut chart can help you compare individual categories in relation to the whole. Similar to  a pie chart, but with a few advantages. They can make it easier for users to compare individual dimensions.
 :::
 <zero-card style={{backgroundColor: "#101628", padding: "4px"}}>
 <h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Donut Chart</b></h4>
@@ -221,7 +221,7 @@ chart(
 
 ### Linked charts
 
-So far we have seen what charts look like when we feed them our data. But what if we wanted to filter the data represented, based on a specific component? Similar to [Linked Ui Components](/fuse/features/linked-ui-components/), we can update our charts based on the status of another component. See example below for more detail:
+So far we have seen what charts look like when we feed them our data. But what if we wanted to filter the data represented, based on a specific component? Similar to [Linked Ui Components](/fuse/features/linked-ui-components/), we can update our charts based on the status of another component.
 
 <zero-card style={{backgroundColor: "#101628", padding: "4px"}}>
 <h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Linked Chart</b></h4>
@@ -230,8 +230,8 @@ So far we have seen what charts look like when we feed them our data. But what i
 verticalLayout {
     val instrumentGrid by entityManager(
         entity = INSTRUMENT,
-        title = "Instruments",
-        operations = listOf(ADD),
+        title = "Instrument",
+        addRows = true,
     )
 
     chart(
