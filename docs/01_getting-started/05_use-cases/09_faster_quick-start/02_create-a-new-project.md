@@ -65,7 +65,7 @@ Then there are more questions, which you can respond to as follows:
 ? Set API Host (Y/n) Yes
 ? API Host (with websocket prefix and suffix if any) (ws://localhost/gwf/)
 ? Genesis Server version 6.1.2
-? Genesis Deploy plugin version 6.1.2
+? Genesis Deploy plugin version 
 ? Kotlin version 1.6.10
 ? Group Id global.genesis
 ? Application Version 1.0.0-SNAPSHOT

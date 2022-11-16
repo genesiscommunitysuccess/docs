@@ -15,7 +15,10 @@ Let's continue the development of the order screen.
 
 To add new columns that are not part of the resource model (ALL_ORDERS query in this case), we can add additional column definitions.
 
-```html {6} title="order.template.ts"
+```html {9} title="order.template.ts"
+...
+export const OrderTemplate = html<Order>`
+  ...
 <zero-grid-pro>
     <grid-pro-genesis-datasource
             resourceName="ALL_ORDERS"
@@ -23,19 +26,22 @@ To add new columns that are not part of the resource model (ALL_ORDERS query in 
     </grid-pro-genesis-datasource>
     <grid-pro-column :definition="${x => x.singleOrderActionColDef}" />
 </zero-grid-pro>
-
+  ...
+`;
 ```
 
 In the component definition file, we can provide a method that enables us to interact with the rest of the class.
 The example below creates a column with a button that logs data in the row to the console.
 Here you can easily swap logging the row data with some custom logic (such as calling a back-end API that we shall cover in more detail later on).
 
-```typescript {3,7,10} title="order.ts"
-
+```typescript {4-17} title="order.ts"
+...
+export class Order extends FASTElement {
+  ...
   public singleOrderActionColDef = {
     headerName: 'Action',
-    minWidth: 120,
-    maxWidth: 120,
+    minWidth: 150,
+    maxWidth: 150,
     cellRenderer: 'action',
     cellRendererParams: {
       actionClick: async (rowData) => {
@@ -46,6 +52,7 @@ Here you can easily swap logging the row data with some custom logic (such as ca
     },
     pinned: 'right',
   };
+}
 ```
 :::tip ColDef and renderes
 Find out more about:
@@ -58,17 +65,20 @@ Find out more about:
 
 If you want to customise how each column is displayed, you can provide column config for every column.
 
-Create a new file called orderColumnDefs.ts in the same directory.
+Create a new file called **orderColumnDefs.ts** in the same directory.
 
 ```typescript title="orderColumnDefs.ts"
+import {ColDef} from '@ag-grid-community/core';
+import {formatNumber} from '../../utils/formatting';
+
 export const orderColumnDefs: ColDef[] = [
-  {field: 'INSTRUMENT_ID', headerName: 'Instrument', sort: 'desc', flex: 2},
-  {field: 'QUANTITY', headerName: 'Quantity', valueFormatter: formatNumber(0), type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
-  {field: 'ORDER_ID', headerName: 'Order ID', flex: 1, enableCellChangeFlash: true},
-  {field: 'PRICE', headerName: 'Price', valueFormatter: formatNumber(2), type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
-  {field: 'ORDER_SIDE', headerName: 'Order Side', sort: 'desc', flex: 2},
-  {field: 'NOTES', headerName: 'Notes', sort: 'desc', flex: 2},
-  
+    {field: 'INSTRUMENT_ID', headerName: 'Instrument', sort: 'desc', flex: 2},
+    {field: 'QUANTITY', headerName: 'Quantity', valueFormatter: formatNumber(0), type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
+    {field: 'ORDER_ID', headerName: 'Order ID', flex: 1, enableCellChangeFlash: true},
+    {field: 'PRICE', headerName: 'Price', valueFormatter: formatNumber(2), type: 'rightAligned', flex: 1, enableCellChangeFlash: true},
+    {field: 'DIRECTION', headerName: 'Order Side', sort: 'desc', flex: 2},
+    {field: 'NOTES', headerName: 'Notes', sort: 'desc', flex: 2},
+    
 ];
 ```
 To stop automatic generation of columns, you need to add the `only-template-col-defs` attribute to the zero-grid-pro.
@@ -76,9 +86,12 @@ To stop automatic generation of columns, you need to add the `only-template-col-
 Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive) directive; this includes all the columns from our column config array.
 
 
-```typescript {4,10-12} title="order.template.ts"
+```typescript {2,7,13-15} title="order.template.ts"
+...
 import {orderColumnDefs} from './orderColumnDefs';
-
+...
+export const OrderTemplate = html<Order>`
+...
 <zero-grid-pro
     only-template-col-defs
     >
@@ -91,6 +104,8 @@ import {orderColumnDefs} from './orderColumnDefs';
     `)}
     <grid-pro-column :definition="${x => x.singleOrderActionColDef}" />
 </zero-grid-pro>
+...
+`;
 ```
 
 ### Saving user preferences

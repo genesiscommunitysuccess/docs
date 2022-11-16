@@ -468,19 +468,8 @@ Implement these changes in the order entry form:
 - there's a field ORDER_ID in the ORDER table which is generated automatically by the server. However, if a value is given, it will use the given value instead. Generate a random value on the frontend and pass the value to the EVENT_ORDER_INSERT event.
 - Fields instrument, quantity and price are mandatory on the server. Whenever a null or empty value is passed, make sure to capture the error response from the server and paint the missing field label in red.
 :::tip
-To generate the ORDER_ID value you can use the function below
+To generate the ORDER_ID value you can use the Date.now()
 :::
-```typescript
-private getGUID(): string {
-  let d = new Date().getTime();
-  const guid = "RNDxxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
-      const r = (d + Math.random() * 16) % 16 | 0;
-      d = Math.floor(d / 16);
-      return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
-  });
-  return guid;
-}
-```
 
 ### Exercise 2.3: revamp the Trade screen
 :::info estimated time
