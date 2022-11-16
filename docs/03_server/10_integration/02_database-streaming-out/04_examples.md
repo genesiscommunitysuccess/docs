@@ -1,5 +1,5 @@
 ---
-title: 'DB Streaming Out - Examples'
+title: 'DB streaming out - examples'
 sidebar_label: 'Examples'
 id: examples
 keywords: [server, integration, database streaming out, examples]
@@ -9,8 +9,6 @@ tags:
   - database streaming out
   - examples
 ---
-
-[Introduction](/server/integration/database-streaming-out/introduction)  | [Basics](/server/integration/database-streaming-out/basics) | [Advanced](/server/integration/database-streaming-out/advanced) | [Examples](/server/integration/database-streaming-out/examples) | [Configuring runtime](/server/integration/database-streaming-out/configuring-runtime) | [Testing](/server/integration/database-streaming-out/testing)
 
 ## Oracle Sample
 

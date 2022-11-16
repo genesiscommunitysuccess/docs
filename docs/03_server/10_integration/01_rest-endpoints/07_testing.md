@@ -1,5 +1,5 @@
 ---
-title: 'REST endpoints - Testing'
+title: 'REST endpoints - testing'
 sidebar_label: 'Testing'
 id: testing
 keywords: [server, integration, REST endpoints, testing]
@@ -9,9 +9,6 @@ tags:
   - REST endpoints
   - testing
 ---
-
-[Introduction](/server/integration/rest-endpoints/introduction/) | [Where to define](/server/integration/rest-endpoints/where-to-define) | [Basics](/server/integration/rest-endpoints/basics/) | [Advanced](/server/integration/rest-endpoints/advanced/) | [Configuring runtime](/server/integration/rest-endpoints/configuring-runtime/) | [Testing](/server/integration/rest-endpoints/testing/)
-
 
 The REST Endpoints created by the Genesis low-code platform reflect your application's business logic. These endpoints can be configured through the [Genesis Router](/server/configuring-runtime/genesis-router/).
 

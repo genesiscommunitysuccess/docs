@@ -1,6 +1,6 @@
 ---
-title: 'Custom Endpoints - Configuring Runtime'
-sidebar_label: 'Configuring Runtime'
+title: 'Custom endpoints - configuring runtime'
+sidebar_label: 'Configuring runtime'
 id: configuring-runtime
 keywords: [server, integration, custom endpoints, configuring runtime]
 tags:
@@ -9,8 +9,6 @@ tags:
   - custom endpoints
   - configuring runtime
 ---
-
-[Introduction](/server/integration/custom-endpoints/introduction/) | [Basics](/server/integration/custom-endpoints/basics/) |  [Advanced](/server/integration/custom-endpoints/advanced/) | [Examples](/server/integration/custom-endpoints/examples/) | [Configuring runtime](/server/integration/custom-endpoints/configuring-runtime/) | [Testing](/server/integration/custom-endpoints/testing/)
 
 ### Configure Genesis Router
 

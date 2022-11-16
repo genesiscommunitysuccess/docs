@@ -1,6 +1,6 @@
 ---
-title: 'Access Control - Authentication Overview'
-sidebar_label: 'Authentication Overview'
+title: 'Access control - authentication overview'
+sidebar_label: 'Authentication overview'
 id: authentication-overview
 keywords: [server, access control, authentication, overview]
 tags:
@@ -10,7 +10,6 @@ tags:
   - overview
 ---
 
-[Introduction](/server/access-control/introduction)  | [Authentication overview](/server/access-control/authentication-overview) | [Username and Password](/server/access-control/password-authentication) | [SSO](/server/access-control/sso-authentication) | [Authorisation overview](/server/access-control/authorisation-overview) | [Authorisation](/server/access-control/authorisation)
 
 Authentication can be performed within applications built on the Genesis low-code platform through many techniques. All of these techniques support [Multi-factor Authentication (MFA)](https://en.wikipedia.org/wiki/Multi-factor_authentication) to bring additional security.
 

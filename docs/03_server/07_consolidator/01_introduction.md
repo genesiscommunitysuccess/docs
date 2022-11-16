@@ -1,5 +1,5 @@
 ---
-title: 'Consolidator - Introduction'
+title: 'Consolidator - introduction'
 sidebar_label: 'Introduction'
 id: introduction
 keywords: [server, consolidator, introduction]
@@ -7,9 +7,13 @@ tags:
   - server
   - consolidator
   - introduction
+
+
+
+
+
 ---
 
-[Introduction](/server/consolidator/introduction) | [Basics](/server/consolidator/basics) |  [Advanced](/server/consolidator/advanced) | [Examples](/server/consolidator/examples) | [Configuring runtime](/server/consolidator/configuring-runtime) | [Testing](/server/consolidator/testing)
 
 A Consolidator exists to aggregate data or perform calculations whenever the underlying data is changed.
 
@@ -40,7 +44,7 @@ This is the standard method of using Consolidators. The Consolidator runs as a p
 
 ## Consolidator on-demand (objects)
 
-Consolidators objects are classes that can be used in code elsewhere in your application. They can be used in custom services, as well as in Request Servers and Event Handlers. 
+Consolidator objects are classes that can be used in code elsewhere in your application. They can be used in custom services, as well as in Request Servers and Event Handlers. 
 
 These Consolidators perform on-demand consolidations where the input can be one of the following:
 
@@ -48,7 +52,7 @@ These Consolidators perform on-demand consolidations where the input can be one 
 - it can be provided at runtime
 - it can be a combination of both of these. 
 
-Effectively, that gives you three types of Consolidator object, which we shall introduce after the following simple example:
+Effectively, that gives you three types of Consolidator objects, which we shall introduce after the following simple example:
 
 ```kotlin
 // consolidate database records:

@@ -17,13 +17,15 @@ module.exports = {
   trailingSlash: true,
   onBrokenLinks: 'throw', // please do NOT change this to 'warn', fix or remove your broken links instead
   onDuplicateRoutes: 'throw',
+  clientModules: [
+    './src/client-modules/genesislcap.js'
+  ],
   scripts: [
     {
-      src: `${baseUrl}js/docs.iife.min.js`,
-      async: true,
+      src: "https://feedback.fish/ff.js?pid=d642786cff63aa",
+      defer: true
     }
   ],
-
 
   plugins: [
     [
@@ -84,7 +86,6 @@ module.exports = {
     }],
     'docusaurus-plugin-matomo'
   ],
-
   presets: [
     [
       '@docusaurus/preset-classic',
@@ -102,9 +103,7 @@ module.exports = {
       }
     ],
   ],
-
   themes: ['@docusaurus/theme-live-codeblock'],
-
   themeConfig: {
     colorMode: {
       disableSwitch: true
@@ -121,6 +120,7 @@ module.exports = {
         {to: 'web', label: 'Web'},
         {to: 'operations', label: 'Operations'},
         {to: 'fuse', label: 'Early access'},
+        {type: 'html', position: 'right', value: '<a class="feedback" data-feedback-fish>Give us Feedback</a>'},
         {
           href: "/resource/stackoverflow-onboarding",
           className: "so-icon",
@@ -152,7 +152,6 @@ module.exports = {
       jsLoader: 'matomo.js',
     },
   },
-
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -162,6 +161,5 @@ module.exports = {
       },
     },
   },
-
 };
 

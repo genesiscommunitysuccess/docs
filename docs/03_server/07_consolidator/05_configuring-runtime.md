@@ -1,6 +1,6 @@
 ---
-title: 'Consolidator - Configuring Runtime'
-sidebar_label: 'Configuring Runtime'
+title: 'Consolidator - Configuring runtime'
+sidebar_label: 'Configuring runtime'
 id: configuring-runtime
 keywords: [server, consolidator, configuring runtime]
 tags:
@@ -8,8 +8,6 @@ tags:
   - consolidator
   - configuring runtime
 ---
-
-[Introduction](/server/consolidator/introduction) | [Basics](/server/consolidator/basics) |  [Advanced](/server/consolidator/advanced) | [Examples](/server/consolidator/examples) | [Configuring runtime](/server/consolidator/configuring-runtime) | [Testing](/server/consolidator/testing)
 
 For your Consolidator to run, it must be defined as a process and included as a service definition. Make sure you update the following files in your application:
 

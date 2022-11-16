@@ -1,5 +1,5 @@
 ---
-title: 'REST endpoints - Advanced'
+title: 'REST endpoints - advanced'
 sidebar_label: 'Advanced'
 id: advanced
 keywords: [server, integration, REST endpoints, advanced]
@@ -9,8 +9,6 @@ tags:
   - REST endpoints
   - advanced
 ---
-
-[Introduction](/server/integration/rest-endpoints/introduction/) | [Where to define](/server/integration/rest-endpoints/where-to-define) | [Basics](/server/integration/rest-endpoints/basics/) | [Advanced](/server/integration/rest-endpoints/advanced/) | [Configuring runtime](/server/integration/rest-endpoints/configuring-runtime/) | [Testing](/server/integration/rest-endpoints/testing/)
 
 ## Authentication
 

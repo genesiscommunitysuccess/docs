@@ -1,6 +1,6 @@
 ---
-title: 'Access Control - SSO Authentication'
-sidebar_label: 'SSO Authentication'
+title: 'Access control - SSO authentication'
+sidebar_label: 'SSO authentication'
 id: SSO-authentication
 keywords: [server, access control, SSO, authentication]
 tags:
@@ -10,7 +10,6 @@ tags:
   - authentication
 ---
 
-[Introduction](/server/access-control/introduction)  | [Authentication overview](/server/access-control/authentication-overview) | [Username and Password](/server/access-control/password-authentication) | [SSO](/server/access-control/sso-authentication) | [Authorisation overview](/server/access-control/authorisation-overview) | [Authorisation](/server/access-control/authorisation)
 
 import CodeBlock from '@theme/CodeBlock';
 

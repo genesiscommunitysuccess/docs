@@ -1,6 +1,6 @@
 ---
-title: 'DB Streaming Out - Configuring Runtime'
-sidebar_label: 'Configuring Runtime'
+title: 'DB streaming out - configuring runtime'
+sidebar_label: 'Configuring runtime'
 id: configuring-runtime
 keywords: [server, integration, database streaming out, configuring runtime]
 tags:
@@ -9,8 +9,6 @@ tags:
   - database streaming out
   - configuring runtime
 ---
-
-[Introduction](/server/integration/database-streaming-out/introduction)  | [Basics](/server/integration/database-streaming-out/basics) | [Advanced](/server/integration/database-streaming-out/advanced) | [Examples](/server/integration/database-streaming-out/examples) | [Configuring runtime](/server/integration/database-streaming-out/configuring-runtime) | [Testing](/server/integration/database-streaming-out/testing)
 
 GenesisToDb must be configured in your **application-processes.xml** file. The following is an example of how to do this:
 

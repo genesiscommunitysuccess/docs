@@ -25,7 +25,7 @@ Symphony must be configured in your **notify.kts** file. Here is an example conf
 notify {
 
     // note: the connection 'id' will default to 'Symphony' if it's not specified, however if you have multiple connections
-    //       of the same type (in this case symphony) then it will need to be specified. 
+    //       of the same type (in this case Symphony) then it will need to be specified. 
     symphony(id = "symphony1") {
 
         sessionAuthHost = "76680.p.symphony.com"

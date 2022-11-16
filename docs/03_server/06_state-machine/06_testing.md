@@ -1,5 +1,5 @@
 ---
-title: 'State Machine - Testing'
+title: 'State Machine - testing'
 sidebar_label: 'Testing'
 id: testing
 keywords: [server, state machine, testing]
@@ -11,8 +11,9 @@ tags:
 
 ## Integration testing
 
-As state machine is another layer on Event Handler, so the test configuration is same as Event Handlers
-The Genesis Platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Event Handler configuration is used to create our Event Handler. We also need to add the required packages, genesis home and separately set the "IS_SCRIPT" System Definition property to true (This is required as part of the Event Handler initialisation.).
+As State Machine is another layer on Event Handler, the test configuration is same as for Event Handlers.
+
+The Genesis low-code platform provides the `AbstractGenesisTestSupport` abstract class that enables end-to-end testing of specific areas of your application. In this case, we want to ensure that we have a database, seeded with information, and that our Event Handler configuration is used to create our Event Handler. We also need to add the required packages, genesis home and separately set the `IS_SCRIPT` System Definition property to true (This is required as part of the Event Handler initialisation.).
 
 ```kotlin
 class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
@@ -30,7 +31,7 @@ class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 
 For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing/#abstractgenesistestsupport).
 
-Once you have set up your configuration, you can start writing tests against State machine.
+Once you have set up your configuration, you can start writing tests against State Machine.
 
 ## Writing tests
 

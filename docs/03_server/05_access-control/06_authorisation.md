@@ -1,5 +1,5 @@
 ---
-title: 'Access Control - Authorisation'
+title: 'Access control - authorisation'
 sidebar_label: 'Authorisation'
 id: authorisation
 keywords: [server, access control, authorisation]
@@ -9,9 +9,8 @@ tags:
   - authorisation
 ---
 
-[Introduction](/server/access-control/introduction)  | [Authentication overview](/server/access-control/authentication-overview) | [Username and Password](/server/access-control/password-authentication) | [SSO](/server/access-control/sso-authentication) | [Authorisation overview](/server/access-control/authorisation-overview) | [Authorisation](/server/access-control/authorisation)
 
-### Types of control
+## Types of control
 Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:
 
 * An entire grid from the UI
@@ -20,18 +19,18 @@ Authorisation is achieved by permissioning dynamically. This means you can contr
 
 Effectively, you have two levels of control.
 
-#### High-level
+### High-level
 
 You could hide an entire grid from the UI. So one group of users could view reference data, but other groups would not see this. Or, you could hide an entire data server. To achieve this, you use `RIGHT_CODE`. This is like a switch – you can either see it or not, depending on whether the code is **TRUE** or **FALSE**.
 
-#### Entity-level
+### Entity-level
 
 This is row or column level access to information. Different users can all view the same grid, but each one sees different data. This is best explained with these simple scenarios:
 
 * You can have user A, user B and user C all having the RIGHT_CODE to view a specific grid, but each one sees different trades in that grid. This enables you to separate different trading desks.
 * Each user might only have access to trades for specific clients.
 
-### Users, profiles and right codes
+## Users, profiles and right codes
 
 Genesis has the concept of users, profiles and right codes. For each one, there is a table to store the related entity data:
 
@@ -59,7 +58,7 @@ This table is only automatically maintained when profile user/right entries are 
 In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in `PROFILE_USER` and `PROFILE_RIGHT` and populates `RIGHT_SUMMARY` withe the correct data.
 :::
 
-#### Sample explanation
+### Sample explanation
 
 See the following simple system set-up. We have a set of entities (our user, rights and profiles), a set of profile mappings (to users and rights) and, finally, the resultant set of right entries we would see in `RIGHT_SUMMARY`
 
@@ -77,11 +76,11 @@ Note how we now have an extra profile, and edits to the `PROFILE_USER` and `PROF
 
 As you can tell, this enables you to build powerful combinations, and since **Users**, **Profiles**, **Profile_Users** and **Profile_Rights** are all editable by system administrators, they can build their own set-up that makes sense for their organisation.
 
-#### Good design practice
+### Good design practice
 
 Having profiles as an intemediary between users and rights enables admin users of the system to create complex permission models with no code change. Rights codes generally need to be added to the code.  Although this is simple to do, it requires a code change. Our advice is to design applications with enough granularity in the rights to ensure that code changes aren't required.
 
-### Entity-level (row-level)
+## Entity-level (row-level)
 
 The `GENESIS_AUTH_PERMS` process runs automatically on start-up and creates a memory-mapped file that acts as a big key-value pair.
 For example, User A has access to Counterparty 1, User B has access to Counterparty 2, User C has access to Counterparty 1, User D has access to Counterparty 4, etc. If there is no appropriate entry in the file, the user won’t have access.
