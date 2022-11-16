@@ -48,7 +48,7 @@ ui("Chart Element") {
         chart(
             entity = TRADE, 
             value = TRADE.price, 
-            groupBy = TRADE.trade_status
+            groupBy = TRADE.tradeStatus
         )
     }
 }
@@ -75,7 +75,7 @@ A pie chart typically represents numbers in percentages, used to visualize a par
 chart(
     entity = TRADE, 
     value = TRADE.quantity,
-    groupBy = TRADE.instrument_id, 
+    groupBy = TRADE.instrumentId, 
     type = ChartType.PIE
 )
 ```
@@ -96,7 +96,7 @@ Line charts are best suited for trend-based visualizations of data over a period
 chart(
     entity = TRADE, 
     value = TRADE.quantity,
-    groupBy = TRADE.instrument_id, 
+    groupBy = TRADE.instrumentId, 
     type = ChartType.LINE
 )
 ```
@@ -118,7 +118,7 @@ Area charts will fill up the area below the line, so the best use for this type 
 chart(
     entity = TRADE, 
     value = TRADE.quantity, 
-    groupBy = TRADE.instrument_id, 
+    groupBy = TRADE.instrumentId, 
     type = ChartType.AREA
 )
 ```
@@ -141,7 +141,7 @@ Column charts are useful to compare values for different categories. For these, 
 chart(
     entity = TRADE, 
     value = TRADE.price, 
-    groupBy = TRADE.instrument_id, 
+    groupBy = TRADE.instrumentId, 
     type = ChartType.COLUMN
 )
 ```
@@ -163,7 +163,7 @@ A rose chart shows the circular distribution of directional data.
 chart(
     entity = TRADE, 
     value = TRADE.quantity,
-    groupBy = TRADE.instrument_id, 
+    groupBy = TRADE.instrumentId, 
     type = ChartType.ROSE
 )
 ```
@@ -186,7 +186,7 @@ The donut chart can help you compare individual categories in relation to the wh
 chart(
     entity = TRADE, 
     value = TRADE.price, 
-    groupBy = TRADE.instrument_id, 
+    groupBy = TRADE.instrumentId, 
     type = ChartType.DONUT
 )
 ```
@@ -208,7 +208,7 @@ This chart is used to present the relationship between two variables. More speci
 chart(
     entity = TRADE,
     value = TRADE.quantity, 
-    groupBy = TRADE.instrument_id, 
+    groupBy = TRADE.instrumentId, 
     type = ChartType.DUALAXES
 )
 ```
@@ -237,7 +237,7 @@ verticalLayout {
     chart(
         entity = TRADE,
         value = TRADE.quantity,
-        groupBy = TRADE.instrument_id,
+        groupBy = TRADE.instrumentId,
         type = ChartType.PIE,
     ) {
         filter {
