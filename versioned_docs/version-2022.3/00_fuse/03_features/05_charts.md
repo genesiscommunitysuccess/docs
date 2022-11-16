@@ -174,7 +174,7 @@ ui("Chart Element") {
 
 ### Linked charts
 
-So far we have seen what charts look like when we feed them our data. But what if we wanted to filter the data represented, based on a specific component? Similar to [Linked Ui Components](/fuse/features/linked-i-components/), we can update our charts based on the status of another component. See example below for more detail:
+So far we have seen what charts look like when we feed them our data. But what if we wanted to filter the data represented, based on a specific component? Similar to [Linked Ui Components](/fuse/features/linked-ui-components/), we can update our charts based on the status of another component. See example below for more detail:
 
 <zero-card style={{backgroundColor: "#101628", padding: "4px"}}>
 <h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Linked Chart</b></h4>
