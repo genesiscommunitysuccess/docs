@@ -165,7 +165,7 @@ Sample response:
 This request will return all the metadata associated with a given resource.
 
 Metadata requests are accessed via GET requests to
-`[host]:[genesis_router_port]/meta-request?details[FEATURE]=[RESOURCE_NAME]`.
+`[host]:[genesis_router_port]/meta-request?DETAILS[FEATURE]=[RESOURCE_NAME]`.
 
 * Request Server resources will return the request and reply fields available to the resource and their associated metadata.
 
@@ -178,10 +178,14 @@ Metadata requests require:
 * `SOURCE_REF` header
 * `SESSION_AUTH_TOKEN` header
 
+:::info
+The details query string should be capitalized otherwise, the server will not recognise the resource path.
+:::
+
 Sample request:
 
 ```json
-GET /meta-request?details[FEATURE]=MY_TRADES HTTP/1.1
+GET /meta-request?DETAILS[FEATURE]=MY_TRADES HTTP/1.1
 Host: localhost:9064
 Content-Type: application/json
 SOURCE_REF: 123456-789052
