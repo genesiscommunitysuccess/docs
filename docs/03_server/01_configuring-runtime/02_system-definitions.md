@@ -1,6 +1,6 @@
 ---
-title: 'Server Configuration - System Definitions'
-sidebar_label: 'System Definitions'
+title: 'Server configuration - System definition'
+sidebar_label: 'System definition'
 id: system-definitions
 keywords: [server, configuration, system definitions]
 tags:
@@ -8,7 +8,7 @@ tags:
   - configuration
   - system definitions
 ---
-The system-definition file **genesis-system-definition.kts** is the basis of all configurations, scripts, data model, etc. This section explains all the different items that are contained in the file.
+The system-definition file **genesis-system-definition.kts** is the main configuration file for your application. This section explains all the different items that can be contained in the file.
 
 Here is an example of a **genesis-system-definition.kts** file for an application:
 
@@ -63,7 +63,7 @@ As you can see from the example, you can define items at global, system and host
 * **Global**: These properties will be available to all systems. 
 * **System**: These properties contain information about a particular system and can have a free text field. Each system is associated with a host or hosts. The content should specify the type of environment the system is running in. 
 Local values can be specified in this block. **These values override the global values**.
-* **Host**: In this section you can define properties of host or hosts (if running in a cluster environment). Host block can exist under the system section as shown in the above example.
+* **Host**: In this section you can define the properties of the host or hosts (if running in a cluster environment). A Host block can only exist under the system section, as you can see in the above example.
   The host name defines what environment you are running in. By default, only one host will be used and change its value to current machine hostname.
 
 ## Items defined
