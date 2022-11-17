@@ -1,5 +1,5 @@
 ---
-title: 'Server Configuration - Introduction'
+title: 'Server configuration - introduction'
 sidebar_label: 'Introduction'
 id: introduction
 keywords: [server, configuration, introduction]

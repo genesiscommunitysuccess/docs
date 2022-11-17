@@ -61,7 +61,7 @@ router {
 ## Configuring runtime
 
 There are two important files in your application that contain configuration information:
--  _application-name_**-processes.xml**
+- _application-name_**-processes.xml**
 - _application-name_**-service-definitions.xml**
 
 ### Configuring in processes.xml
@@ -136,9 +136,13 @@ There is more information in the [netty documentation](https://netty.io/4.1/api/
 
 **Allowed resources**:
 
+<<<<<<< HEAD
 `allowList`:  You can limit the resources exposed by the Genesis Router. Without at least one `entry` block, every resource will be available. It is important to note that the following message types will always be allowed by default, regardless of the allowList definition:
 
 EVENT_LOGIN_AUTH, EVENT_LOGOUT, MORE_ROWS, MORE_COLUMNS, DATA_LOGOFF, DATA_GET
+=======
+`allowList`:  You can limit the resources exposed by the Genesis Router. Without at least one `entry` block, every resource will be available. It is important to note that the following message types will always be allowed by default, regardless of the `allowList` definition: EVENT_LOGIN_AUTH, EVENT_LOGOUT, MORE_ROWS, MORE_COLUMNS, DATA_LOGOFF, DATA_GET
+>>>>>>> c793ff9d (unknown ticket: restored changes)
 
 `entry:` Is the additional accepted `messageType`.
 
