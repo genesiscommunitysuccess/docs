@@ -50,7 +50,7 @@ chart(
 </zero-card>
 </TabItem>
 
-<TabItem value="pie" label="Pie" default >
+<TabItem value="pie" label="Pie" >
 
 :::important
 Note the additional parameter specifying the chart type. If we want to use a specific chart, we must use the type parameter. 
