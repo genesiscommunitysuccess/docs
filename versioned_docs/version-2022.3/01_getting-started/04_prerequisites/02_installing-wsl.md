@@ -191,7 +191,11 @@ systemctl enable foundationdb
 
 ```
 
+<<<<<<< HEAD:docs/02_creating-applications/01_getting-ready-to-develop/01_running-applications/02_options/01_using-wsl.md
+Then to run it, we can use systemctl: `systemctl start foundationdb`
+=======
 Then, to check if it's running: 
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/01_getting-started/04_prerequisites/02_installing-wsl.md
 
 `systemctl status foundationdb`
 
@@ -307,7 +311,7 @@ Run the following Docker command:
 docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=docker" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 ```
 
-This downloads and runs an MSSQL image for version 2019-latest. Other versions are available; for more
+This download and runs an MSSQL image for version 2019-latest. Other versions are available; for more
 details [see here](https://hub.docker.com/_/microsoft-mssql-server).
 
 To connect, use this JDBC URL:
@@ -315,3 +319,49 @@ To connect, use this JDBC URL:
 ```none title="CentOS"
 jdbc:sqlserver://localhost:1433;database=master;user=sa;password=docker
 ```
+<<<<<<< HEAD:docs/02_creating-applications/01_getting-ready-to-develop/01_running-applications/02_options/01_using-wsl.md
+
+### Running Oracle from Docker
+
+To download and run the latest Oracle image, use the following command: 
+
+```
+docker run -tid --name genesis_oracle -p 1521:1521 -p 5500:5500 -e ORACLE_PWD=docker container-registry.oracle.com/database/express:latest
+```
+
+You can find other Oracle images on the [Oracle container registry](https://container-registry.oracle.com/ords/f?p=113:1:104797711976252:::1:P1_BUSINESS_AREA:3&cs=3uRGdpwNnFZIRlaYazsfUdo_1_tog2-i94uJzqg9HztrVE-nWMEZAfgYBPWLL1CVjZXDqQmkSTjJoD7Vi5trxOQ).
+
+:::note
+The Oracle Docker image is ~12GB in size. Ensure that you have enough disk space to download the image.
+The Docker container for Oracle uses between 2-3GB or RAM at rest. Ensure you have enough RAM to run Oracle locally.
+:::
+
+To set up a user account for your locally running Oracle instance, follow the steps below:
+
+First, enable SQL*Plus using the following command with the /nolog argument. This enables you to open a connectionless command-line session:
+
+```
+docker exec -it genesis_oracle bash -c "source /home/oracle/.bashrc; sqlplus /nolog"
+```
+
+Change the SYSTEM user to have a new password "genesis", which you can use to connect with. 
+
+To unlock the user:
+
+```sql
+CONNECT sys AS sysdba;
+oracle
+```
+
+```sql
+ALTER USER SYSTEM IDENTIFIED BY genesis ACCOUNT UNLOCK;
+EXIT
+```
+
+You are now able to connect. Use this JDBC URL:
+
+```
+jdbc:oracle:thin:system/genesis@localhost:1521/XE
+```
+=======
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/01_getting-started/04_prerequisites/02_installing-wsl.md

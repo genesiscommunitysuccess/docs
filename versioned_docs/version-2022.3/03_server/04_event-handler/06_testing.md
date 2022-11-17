@@ -30,6 +30,18 @@ class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 }
 ```
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD:docs/02_creating-applications/04_defining-your-application/03_business-logic/01_event-handlers/07_eh-testing.mdx
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/managing-applications/test/integration-testing/).
+
+Once you have set up your configuration, you can start writing tests against our Event Handler.
+
+## Writing tests
+
+Let's write some tests for this simple Event Handler, defined below. If you are looking for a Java event, then ignore the `onValidate` method for now
+=======
+>>>>>>> Stashed changes
 For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing/#abstractgenesistestsupport).
 
 Once you have added your config above, you can start writing tests against our Event Handler.
@@ -37,6 +49,10 @@ Once you have added your config above, you can start writing tests against our E
 ## Writing tests
 
 Let's write some tests for this simple Event Handler, defined below
+<<<<<<< Updated upstream
+=======
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/03_server/04_event-handler/06_testing.md
+>>>>>>> Stashed changes
 
 ```kotlin
     eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -135,6 +151,14 @@ In the example below, we expect the response to be of type `EventNack`, which ha
 
 ### Testing with authorisation
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD:docs/02_creating-applications/04_defining-your-application/03_business-logic/01_event-handlers/07_eh-testing.mdx
+#### Set-up
+
+=======
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/03_server/04_event-handler/06_testing.md
+>>>>>>> Stashed changes
 To test that the Event Handler authorisation works correctly, you need to do some setting up.
 
 First, make sure that your authorisation set-up is designed to behave as follows:
@@ -143,7 +167,15 @@ First, make sure that your authorisation set-up is designed to behave as follows
 
 Second, you need to modify the previous example Event Handler so that only authorised users can insert trades.
 
+<<<<<<< Updated upstream
 You can find a [Java event example](/database/api-reference/authorisation-api) in our Authorization API pages.
+=======
+<<<<<<< HEAD:docs/02_creating-applications/04_defining-your-application/03_business-logic/01_event-handlers/07_eh-testing.mdx
+You can find a [Java event example](/reference/developer/api/authorisation-api) in our Authorization API pages.
+=======
+You can find a [Java event example](/database/api-reference/authorisation-api) in our Authorization API pages.
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/03_server/04_event-handler/06_testing.md
+>>>>>>> Stashed changes
 
 ```kotlin
 eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -206,7 +238,19 @@ Fourth, in your test set-up, let's authorise one user to be able to insert trade
     }
 ```
 
+<<<<<<< Updated upstream
 For more information on authorisation, see the [authorisation docs](/server/access-control/authorisation-overview).
+=======
+<<<<<<< HEAD:docs/02_creating-applications/04_defining-your-application/03_business-logic/01_event-handlers/07_eh-testing.mdx
+For more information on authorisation, please see the [authorisation docs](/creating-applications/defining-your-application/access-control/authorisation-over/).
+
+### Tests
+
+After you have set things up. Now you can create the tests themselves.
+=======
+For more information on authorisation, see the [authorisation docs](/server/access-control/authorisation-overview).
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/03_server/04_event-handler/06_testing.md
+>>>>>>> Stashed changes
 
 Below is a test that verifies only Traders can enter trades:
 
@@ -288,7 +332,15 @@ If you click on any Event Handler in the list, the fields relevant to the event 
 
 Now you need to pick the Event Handler you want to test. in this example, it is called EVENT_INSTRUMENT_INSERT.
 
+<<<<<<< Updated upstream
 1.  Find the Event Handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the Event Handler was set up.
+=======
+<<<<<<< HEAD:docs/02_creating-applications/04_defining-your-application/03_business-logic/01_event-handlers/07_eh-testing.mdx
+1. Find the Event Handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the Event Handler was set up.
+=======
+1.  Find the Event Handler in the list, then click on the arrow beside it. On the right, this displays the relevant input fields for the event. Some are mandatory, while others are optional - depending on how the Event Handler was set up.
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/03_server/04_event-handler/06_testing.md
+>>>>>>> Stashed changes
 
 ![](/img/test-console-eh-insert-instrument.png)
 

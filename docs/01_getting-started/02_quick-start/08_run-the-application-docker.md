@@ -14,11 +14,19 @@ You have a choice of how you run the application. The instructions on this page 
 
 ## Building and composing Docker images
 
+<<<<<<< Updated upstream
 The seed application includes the Dockerfiles you need; these build images of the **front end** and **back end** of the Genesis application. You can run these images with the following `docker-compose` command:
 
 Usage:
 ```shell title="Intellij terminal"
 docker-compose up -d
+=======
+We've added Dockerfiles on the seed application, which builds images of the **front end** and **back end** of the Genesis application. You can run these images with the following `docker-compose` command:
+
+Usage:
+```shell
+docker-compose up -d #On the IntelliJ terminal
+>>>>>>> Stashed changes
 ```
 
 ## Accessing the application
@@ -26,7 +34,11 @@ docker-compose up -d
 After the Docker containers are up and running, the front end is accessible on: `http://localhost:6060`
 
 
+<<<<<<< Updated upstream
 Wait until all the processes are running on the server container (it takes a couple of minutes); after this, you can log in.
+=======
+Wait until all the processes are running on the server container (it takes a couple of minutes), you can log in.
+>>>>>>> Stashed changes
 
 ## Conclusion
 That’s it. You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.

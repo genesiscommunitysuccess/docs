@@ -13,7 +13,15 @@ tags:
 
 Let's make things really simple.
 - A Data Server is a component that supplies streaming real-time data to the front end of your application.
+<<<<<<< Updated upstream
 - You define your application's Data Server in a Kotlin script file named _application-name_**-dataserver.kts**. This file can be found inside the _application-name_**-script-config** module (_application-name_\\_application-name_-script-config\src\main\resources\scripts\\_application-name_-dataserver.kts). 
+=======
+<<<<<<< HEAD:docs/02_creating-applications/04_defining-your-application/05_user-interface/03_data-servers/03_ds-technical-details.mdx
+- You define your application's Data Server in a Kotlin script file.
+=======
+- You define your application's Data Server in a Kotlin script file named _application-name_**-dataserver.kts**. This file can be found inside the _application-name_**-script-config** module (_application-name_\\_application-name_-script-config\src\main\resources\scripts\\_application-name_-dataserver.kts). 
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/03_server/02_data-server/02_basics.md
+>>>>>>> Stashed changes
 - In this file, you define specific `query` codeblocks, each of which is designed to supply different sets of data.
 - Each `query` listens to a specified table or view; when data on that source changes, it publishes the changes. 
 - A `query` can include a number of other subtleties, such as `where` clauses or ranges, so that you can create code that matches your precise requirements.
@@ -169,7 +177,15 @@ If this is set to `true`, it will compress the query row data before writing it 
 If this is set to true, it will split large updates into smaller ones. Defaults to `false`.
 
 `defaultStringSize`
+<<<<<<< Updated upstream
 This is the size to be used for string storage in the Data Server in-memory cache. Higher values lead to higher memory use; lower values lead to lower memory use, which can lead to string overflow. See the `onStringOverflow` setting for details of how the overflows are handled. Defaults to `40`.
+=======
+<<<<<<< HEAD:docs/02_creating-applications/04_defining-your-application/05_user-interface/03_data-servers/03_ds-technical-details.mdx
+A string overflow happens when the value of a `String` field in an index is larger than `defaultStringSize`, or the size set on the field.
+=======
+This is the size to be used for string storage in the Data Server in-memory cache. Higher values lead to higher memory use; lower values lead to lower memory use, which can lead to string overflow. See the `onStringOverflow` setting for details of how the overflows are handled. Defaults to `40`.
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/03_server/02_data-server/02_basics.md
+>>>>>>> Stashed changes
 
 `batchingPeriod`
 This is the delay in milliseconds to wait before sending new data to Data Server clients. Defaults to `500ms`.
@@ -180,12 +196,27 @@ This enables linear scan behaviour in the query definition. If false, it will re
 `excludedEmitters`
 This enables update filtering for a list of process names. Any database updates that originate from one of these processes will be ignored. Defaults to an empty list.
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD:docs/02_creating-applications/04_defining-your-application/05_user-interface/03_data-servers/03_ds-technical-details.mdx
+`onStringOverflow`
+A string overflow happens when the value of a `String` field in an index is larger than `defaultStringSize`, or the size set on the field.
+
+Available options:
+* `IGNORE_ROW` - rows with string overflows will be ignored. This can lead to data missing from the Data Server.
+* `TRUNCATE_FIELD` - indices with string overflows will be truncated. The data with the overflow will still be returned in full, and will be searchable. However, if multiple rows are truncated to the same value, any subsequent rows will lead to duplicate index exceptions during the insert, and will not be available to the Data Server.
+=======
+>>>>>>> Stashed changes
 `onStringOverflow` This controls how the system responds to a string overflow. A string overflow happens when the value of a String field in an index is larger than `defaultStringSize`, or the size set on the field.
 
 There are two options for handling string overflows:
 
 - `IGNORE_ROW` - rows with string overflows will be ignored. This can lead to data missing from the Data Server.
 - `TRUNCATE_FIELD` - indices with string overflows will be truncated. The data with the overflow will still be returned in full, and will be searchable. However, if multiple rows are truncated to the same value, any subsequent rows will lead to duplicate index exceptions during the insert, so these rows will not be available to the Data Server.
+<<<<<<< Updated upstream
+=======
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/03_server/02_data-server/02_basics.md
+>>>>>>> Stashed changes
 
 `enableTypeAwareCriteriaEvaluator`
 This enables the type-aware criteria evaluator. Defaults to `false`. 

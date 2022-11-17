@@ -1,7 +1,16 @@
 ---
 title: 'Release notes - Version 2022.1'
 sidebar_label: 'Version 2022.1'
+<<<<<<< Updated upstream
 sidebar_position: 3
+=======
+<<<<<<<< HEAD:docs/05_reference/02_version-2022-1.md
+sidebar_position: 2
+
+========
+sidebar_position: 3
+>>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/05_operations/10_release-notes/03_Version-2022.1.md
+>>>>>>> Stashed changes
 id: version-2022-1
 keywords: [operations, release notes, v-2022.1]
 tags:

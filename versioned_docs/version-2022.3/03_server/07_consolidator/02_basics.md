@@ -10,7 +10,20 @@ tags:
 ---
 
 [Introduction](/server/consolidator/introduction) | [Basics](/server/consolidator/basics) |  [Advanced](/server/consolidator/advanced) | [Examples](/server/consolidator/examples) | [Configuring runtime](/server/consolidator/configuring-runtime) | [Testing](/server/consolidator/testing)
+<<<<<<< Updated upstream:versioned_docs/version-2022.3/03_server/07_consolidator/02_basics.md
+=======
 
+<<<<<<< HEAD:docs/02_creating-applications/04_defining-your-application/03_business-logic/03_consolidators/03_cons-technical-details.md
+[Introduction](/creating-applications/defining-your-application/business-logic/consolidators/consolidators/)  | [Where to define](/creating-applications/defining-your-application/business-logic/consolidators/cons-where-to-define/) | [Basics](/creating-applications/defining-your-application/business-logic/consolidators/cons-technical-details/) |  [Advanced](/creating-applications/defining-your-application/business-logic/consolidators/cons-advanced-technical-details/) | [More examples](/creating-applications/defining-your-application/business-logic/consolidators/cons-more-examples/) | [Configuring runtime](/creating-applications/defining-your-application/business-logic/consolidators/cons-configuring-runtime/) | [Testing](/creating-applications/defining-your-application/business-logic/consolidators/cons-testing/)
+
+
+
+
+
+>>>>>>> Stashed changes:docs/02_creating-applications/04_defining-your-application/03_business-logic/03_consolidators/03_cons-technical-details.md
+
+=======
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/03_server/07_consolidator/02_basics.md
 You define a Consolidator service in a **consolidator.kts** file. Within the file, you can define as many Consolidators as you like. Each one is specified in a `consolidator` block of code. 
 
 

@@ -15,11 +15,21 @@ module.exports = {
   organizationName: 'genesislcap', // Usually your GitHub org/user name.
   projectName: 'docs', // Usually your repo name.
   trailingSlash: true,
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+  noIndex: true, // belt and braces along with robots.txt to disable crawling of archived content
+=======
+>>>>>>> Stashed changes
   onBrokenLinks: 'throw', // please do NOT change this to 'warn', fix or remove your broken links instead
   onDuplicateRoutes: 'throw',
   clientModules: [
     './src/client-modules/genesislcap.js'
   ],
+<<<<<<< Updated upstream
+=======
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec
+>>>>>>> Stashed changes
   scripts: [
     {
       src: "https://feedback.fish/ff.js?pid=d642786cff63aa",

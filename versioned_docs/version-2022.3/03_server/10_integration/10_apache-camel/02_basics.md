@@ -1,5 +1,13 @@
 ---
+<<<<<<< Updated upstream
 title: 'Apache Camel - Basics'
+=======
+<<<<<<< Updated upstream:docs/03_server/10_integration/10_apache-camel/02_basics.md
+title: 'Apache Camel - basics'
+=======
+title: 'Apache Camel - Basics'
+>>>>>>> Stashed changes:versioned_docs/version-2022.3/03_server/10_integration/10_apache-camel/02_basics.md
+>>>>>>> Stashed changes
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, integration, apache camel, basics]
@@ -10,8 +18,16 @@ tags:
   - basics
 ---
 
+<<<<<<< Updated upstream
 [Introduction](/server/integration/apache-camel/introduction/)  | [Basics](/server/integration/apache-camel/basics) | [Advanced](/server/integration/apache-camel/advanced) | [Examples](/server/integration/apache-camel/examples) | [Configuring runtime](/server/integration/apache-camel/configuring-runtime) | [Testing](/server/integration/apache-camel/testing)
 
+=======
+<<<<<<< Updated upstream:docs/03_server/10_integration/10_apache-camel/02_basics.md
+=======
+[Introduction](/server/integration/apache-camel/introduction/)  | [Basics](/server/integration/apache-camel/basics) | [Advanced](/server/integration/apache-camel/advanced) | [Examples](/server/integration/apache-camel/examples) | [Configuring runtime](/server/integration/apache-camel/configuring-runtime) | [Testing](/server/integration/apache-camel/testing)
+
+>>>>>>> Stashed changes:versioned_docs/version-2022.3/03_server/10_integration/10_apache-camel/02_basics.md
+>>>>>>> Stashed changes
 Apache Camel integrations are defined within your application's **jvm/{app-name}-script-config/{app-name}-camel.kts** file.
 
 ## A simple Camel configuration

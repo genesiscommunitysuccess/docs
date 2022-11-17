@@ -39,7 +39,15 @@ The main steps in loading the data are:
 1.	Examine the format of the source data. You need to be able to map the data into a table in Genesis format.
 2.	Define a Camel config (in the CFG module) to listen to a staging directory and push the file as a new event.
 3.	Create a new Event Handler to process the event and push the data to the data server.
+<<<<<<< Updated upstream
 4.	Create some unit tests around the Event Handler to verify the load process.
+=======
+<<<<<<<< HEAD:docs/04_tutorials/04_quick-guides/03_loading-feed-data/01_loading-feed-data.md
+4.	Create some unit tests around the Event Handler to verify the load process. 
+========
+4.	Create some unit tests around the Event Handler to verify the load process.
+>>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/01_getting-started/05_use-cases/03-loading-feed-data/01_overview.md
+>>>>>>> Stashed changes
 
 
 ## Source data
@@ -127,7 +135,18 @@ An Event Handler handles a specific single event. In this case, the Event Handle
 @Module
 public class BbgIssuanceFileImport extends AbstractEventHandler {
 ```
+<<<<<<< Updated upstream
 In the Event Handler, there are two code blocks that you need to specify:
+=======
+<<<<<<<< HEAD:docs/04_tutorials/04_quick-guides/03_loading-feed-data/01_loading-feed-data.md
+
+
+In the Event Handler, there are two code blocks that you need to specify:
+
+========
+In the Event Handler, there are two code blocks that you need to specify:
+>>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/01_getting-started/05_use-cases/03-loading-feed-data/01_overview.md
+>>>>>>> Stashed changes
 - `onValidate`. This is where you validate the message before processing; return an **ACK** or **NAK**. If you do not want to add any validation, simply return an **ACK**.
 - `onCommit`. This is where you specify the parsing that converts the raw data to Genesis format and sends it to a staging table for use in the application.
   You also need to define a construct that passes the details to the parent class. This must identify the `EventManager`, the `EventType`, and `MetaData`, as well as any additional modules that are required to perform the work, such as a data table repository.
@@ -212,7 +231,16 @@ Other examples of event handlers that load files probably have a different **onC
 for (GenesisSet row : Objects.requireNonNull(Objects.requireNonNull(details).getArray("ROW", GenesisSet.class))) {
 ```
 ## Testing
+<<<<<<< Updated upstream
 It is wise to create some tests around the Event Handler.
+=======
+<<<<<<<< HEAD:docs/04_tutorials/04_quick-guides/03_loading-feed-data/01_loading-feed-data.md
+It is wise to create some tests around the Event Handler. 
+
+========
+It is wise to create some tests around the Event Handler.
+>>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/01_getting-started/05_use-cases/03-loading-feed-data/01_overview.md
+>>>>>>> Stashed changes
 ### Unit Tests
 Due to the complexity of the Bloomberg feed, we create unit tests around the parsing of the feed file (the `BbgFileImportReader` class). Again, we use the `onCommit` block of the `BbgIssuanceFileImport` class.
 ```java
@@ -265,7 +293,16 @@ Once you have deployed the new build, if it does not work first time, here is a 
 -	On start-up, look at the **Logs** directory for errors in **ISSUANCE_CAMEL.log** and **ISSUANCE_EVENT_HANDLER.log**.
 -	Check that the Camel log has registered your route.
 -	Check in the Event Handler log file that your new event has been registered.
+<<<<<<< Updated upstream
 -	Drop a test file into the staging directory and see the logs consume the file in the Camel log and log the contents with the Event Handler logs. In the BBG example below, the handler log shows the file contents and then an NACK error. In this example, we can see **^M** characters are causing parse failures on dates. Copying between email attachments and downloads, DOS and LINUX copies, we have introduced a EOLN issue on split-line file contents.
+=======
+<<<<<<<< HEAD:docs/04_tutorials/04_quick-guides/03_loading-feed-data/01_loading-feed-data.md
+-	Drop a test file into the staging directory and see the logs consume the file in the Camel log and log the contents with the Event Handler logs. In the BBG example below, the handler log shows the file contents and then an NACK error. In this example, we can see **^M** characters are causing parse failures on dates. Copying between email attachments and downloads, DOS and LINUX copies, we have introduced a EOLN issue on split-line file contents. 
+
+========
+-	Drop a test file into the staging directory and see the logs consume the file in the Camel log and log the contents with the Event Handler logs. In the BBG example below, the handler log shows the file contents and then an NACK error. In this example, we can see **^M** characters are causing parse failures on dates. Copying between email attachments and downloads, DOS and LINUX copies, we have introduced a EOLN issue on split-line file contents.
+>>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/01_getting-started/05_use-cases/03-loading-feed-data/01_overview.md
+>>>>>>> Stashed changes
 ```bash
 |60.71| |N.S.|200000000.00|;2;3;3;13;200000.00;1; ;5;10/21/2021;13;150000.00;1; ;5;10/21/2021;13;100000.00;1; ;5;10/21/2021;|N.D.| |MIDSWAPS|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|N.S.|^M
 END-OF-DATA^M

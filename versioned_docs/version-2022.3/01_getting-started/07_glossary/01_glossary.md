@@ -1,6 +1,17 @@
 ---
+<<<<<<< Updated upstream
 title: 'Getting Started - Glossary'
 sidebar_label: 'Glossary'
+=======
+<<<<<<<< HEAD:docs/05_reference/05_glossary.md
+sidebar_position: 5
+title: Glossary
+sidebar_label: Glossary
+========
+title: 'Getting Started - Glossary'
+sidebar_label: 'Glossary'
+>>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/01_getting-started/07_glossary/01_glossary.md
+>>>>>>> Stashed changes
 id: glossary
 keywords: [getting started, glossary]
 tags:

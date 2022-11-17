@@ -1,4 +1,13 @@
 ---
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD:docs/02_creating-applications/01_getting-ready-to-develop/01_running-applications/02_options/03_install-in-three-steps.md
+id: install-in-three-steps
+sidebar_label: Install in four easy steps
+sidebar_position: 3
+title: Install in four easy steps
+=======
+>>>>>>> Stashed changes
 title: Prerequisites - Manual installation
 sidebar_label: Manual installation
 id: manual-installation
@@ -8,6 +17,10 @@ tags:
     - quick start
     - prerequisites
     - manual installation
+<<<<<<< Updated upstream
+=======
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/01_getting-started/04_prerequisites/05_manual-installation.md
+>>>>>>> Stashed changes
 
 ---
 To install the Genesis low-code platform on your server, go through the following steps.
@@ -22,6 +35,26 @@ That is it. Once you have an installed platform in the correct environment, you 
 You must start with a server with the operating system and relevant packages installed. Genesis supplies the rpm to simplify the installation. Everything you need is in the rpm, and nothing is downloaded when you install it.
 To install the rpm, you need a privileged user account.
 In our example, the rpm is called **genesis-platform-6.0.1-1.x86_64.rpm**.
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD:docs/02_creating-applications/01_getting-ready-to-develop/01_running-applications/02_options/03_install-in-three-steps.md
+
+If you need to provide a group other than genesis, then you can pass the group name to the installation by adding:
+
+```bash
+echo “genesis_grp=charlie” >> /tmp/genesis_install.conf
+```
+By default, Genesis code is installed under **/data**. You can also provide a new directory to install by running:
+
+```bash
+echo “root_dir=opt” /tmp/genesis_install.conf
+```
+
+For these to work, you need a valid group (we have used`charlie`), and the directory you supply (here we have used  **/opt** ) must already be present. 
+
+=======
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/01_getting-started/04_prerequisites/05_manual-installation.md
+>>>>>>> Stashed changes
 
 ### 1. Give the user account a name
 
@@ -93,7 +126,15 @@ auth    genesis
 
 ### 3. Update system definition
 
+<<<<<<< Updated upstream
 We must make a small edit to the system configuration file found at the following URI: **site-specific/cfg/genesis-system-definition.kts**.
+=======
+<<<<<<< HEAD:docs/02_creating-applications/01_getting-ready-to-develop/01_running-applications/02_options/03_install-in-three-steps.md
+We must make a small edit to the system configuration file found at the following URI: `site-specific/cfg/genesis-system-definition.kts`.
+=======
+We must make a small edit to the system configuration file found at the following URI: **site-specific/cfg/genesis-system-definition.kts**.
+>>>>>>> 276bb586b0d5ebf6655fddaa397b845b525adeec:versioned_docs/version-2022.3/01_getting-started/04_prerequisites/05_manual-installation.md
+>>>>>>> Stashed changes
 Remove the current host configuration items and replace them with the name of your own host.
 
 ### 4. Run genesisInstall
