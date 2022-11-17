@@ -46,9 +46,6 @@ export const HomeTemplate = html<Home>`
 `;
 ```
 
-<<<<<<< Updated upstream
-Now you have ((Laura))
-=======
 You can now proceed to running the application and see the displayed data in the browser.  
 
 The application should look something like this:
@@ -56,4 +53,3 @@ The application should look something like this:
 ![](/img/trades-grid.png)
 
 To add data to the grid, click on the **Add** button at the top right of the screen. 
->>>>>>> Stashed changes
