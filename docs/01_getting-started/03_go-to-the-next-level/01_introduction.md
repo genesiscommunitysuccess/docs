@@ -35,7 +35,7 @@ The application will make use of the following platform features:
 We are going to call this example application **positions-app-tutorial**. You will see this reflected in the file names throughout.
 
 ## Create a new project
-Using the GenX CLI tool, we want to generate a blank full-stack application project. Go to a folder where you want your project to reside, and run:
+Using the genx CLI tool, we want to generate a blank full-stack application project. Go to a folder where you want your project to reside, and run:
 
 ```
 npx genx
