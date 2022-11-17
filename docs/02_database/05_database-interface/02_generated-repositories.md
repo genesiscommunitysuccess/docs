@@ -44,6 +44,7 @@ With generated repositories, there are two flavours of the entity db:
 
 * the other flavour has an [Async API](/database/types-of-api/async/) signature, for use by Kotlin
 
-If you have a table called **POSITION**, then two repositories called **PositionRx3Repository** and **PositionAsyncRepository** will be generated as part of [generateDao](/database/fields-tables-views/genesisDao/) task.
+If you have a table called **POSITION**, then, when you run a [generateDao](/database/fields-tables-views/genesisDao/), two repositories will be generated:
+**PositionRx3Repository** and **PositionAsyncRepository**.
 
 You can perform CRUD operations on Table/View by its primary key and indices.
