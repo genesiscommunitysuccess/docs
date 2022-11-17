@@ -28,3 +28,5 @@ yarn-error.log*
 .DS_Store
 tmp
 .idea
+
+cdk.out

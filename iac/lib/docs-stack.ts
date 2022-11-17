@@ -15,23 +15,19 @@ import * as targets from 'aws-cdk-lib/aws-route53-targets';
  * The site redirects from HTTP to HTTPS, using a CloudFront distribution,
  * Route53 alias record, and ACM certificate.
  */
-
-export interface StaticSiteProps {
-  domainName: 'https://docs.genesis.global';
-  siteSubDomain: 'https://learn.genesis.global';
+const StaticSiteProps = {
+  domainName: 'learn.genesis.global'
 }
 
 export class DocsStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const zone = route53.HostedZone.fromLookup(this, 'Zone', { domainName: StaticSiteProps.domainName});
+    const zone = route53.HostedZone.fromHostedZoneAttributes(this, 'Zone', {zoneName : StaticSiteProps.domainName, hostedZoneId: 'Z00892613KX1P98M08IKK'});
     const BUCKET_ID = 'test-bucket-1';
-    const cloudfrontOAI = new cloudfront.OriginAccessIdentity(this, 'cloudfront-OAI', {
-      comment: `OAI for ${name}`
-    });
+    const cloudfrontOAI = new cloudfront.OriginAccessIdentity(this, 'cloudfront-OAI');
 
-    new CfnOutput(this, 'Site', { value: 'https://docs.genesis.global'});
+    new CfnOutput(this, 'Site', { value: 'https://learn.genesis.global'});
 
     const docsTestBucket = new s3.Bucket(this, BUCKET_ID, {
       versioned: true,
@@ -49,9 +45,10 @@ export class DocsStack extends cdk.Stack {
     new CfnOutput(this, 'Bucket', { value: docsTestBucket.bucketName });
 
     // TLS certificate
-    // TLS certificate
     const certificate = new acm.DnsValidatedCertificate(this, 'SiteCertificate', {
       region: 'us-east-1', // Cloudfront only checks this region for certificates.
+      hostedZone: zone,
+      domainName: StaticSiteProps.domainName
     });
     new CfnOutput(this, 'Certificate', { value: certificate.certificateArn });
 
@@ -59,6 +56,7 @@ export class DocsStack extends cdk.Stack {
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
       certificate: certificate,
+      domainNames: [...StaticSiteProps.domainName],
       defaultRootObject: "index.html",
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
       errorResponses:[
@@ -81,14 +79,14 @@ export class DocsStack extends cdk.Stack {
 
     // Route53 alias record for the CloudFront distribution
     new route53.ARecord(this, 'SiteAliasRecord', {
-      recordName: siteDomain,
+      recordName: StaticSiteProps.domainName,
       target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution)),
       zone
     });
 
     // Deploy site contents to S3 bucket
     new s3deploy.BucketDeployment(this, 'DeployWithInvalidation', {
-      sources: [s3deploy.Source.asset('./site-contents')],
+      sources: [s3deploy.Source.asset('./build')],
       destinationBucket: docsTestBucket,
       distribution,
       distributionPaths: ['/*'],
