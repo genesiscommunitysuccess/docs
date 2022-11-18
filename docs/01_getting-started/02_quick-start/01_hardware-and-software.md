@@ -59,15 +59,13 @@ First, you need configure the `@genesislcap` scope of `npm` to use our jfrog reg
 
  ![](/img/set-me-up.png)
 
- 6. At the bottom of the window is a code snippet of 5 lines (highlighted in the picture above. This includes an encrypted version of your password (which we have blocked in thie picture). Copy this and paste it into the empty.npmrc file you created earlier. 
-
-
+ 6. At the bottom of the window is a code snippet of 5 lines (highlighted in the picture above. This includes an encrypted version of your password (which we have blocked in thie picture). Copy this and paste it into the empty **.npmrc** file you created earlier. 
 
 7. In the file, replace `<SCOPE>` with `genesislcap`, so that the line reads:
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
 
 8. Save the file and open a terminal under the directory path `.npmrc` file and type:
-`npm info @genesislcap/foundation-ui`. If set-up was successful, you should see a response like this:
+`npm info @genesislcap/foundation-ui`. If the set-up was successful, you should see a response like this:
 
 ```shell
 @genesislcap/foundation-ui@5.0.1 | UNLICENSED | deps: 13 | versions: 306
