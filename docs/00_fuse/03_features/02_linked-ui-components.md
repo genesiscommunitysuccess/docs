@@ -132,6 +132,47 @@ Grids provide an `entity` property e.g. `instrumentGrid.entity`. It refers to th
 
 Entity property conforms to the same data model you have configured for your grid. In this case, `instrumentGrid` uses `INSTRUMENT` model, so you will be able to access all the instrument model fields such as `instrumentGrid.entity.name`, `instrumentGrid.entity.instrumentId` and so on.
 
+###
+Additionally, if you need to use the same filter, you can do so by simply storing it into a variable. See example below for implementation: 
+
+<zero-card style={{backgroundColor: "#101628", padding: "4px"}}>
+<h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Linked Chart <p style={{color: 'grey'}}>(reusable filter)</p></b></h4>
+
+```kotlin
+horizontalLayout {
+    val instrumentGrid by entityManager(
+        entity = INSTRUMENT,
+        title = “Instrument”,
+        addRows = true,
+    )
+    val reusableFilter = filter(TRADE) { instrumentId eq instrumentGrid.entity.instrumentId }
+    chart(
+        entity = TRADE,
+        value = TRADE.quantity,
+        groupBy = TRADE.instrumentId,
+        type = ChartType.PIE,
+    ) {
+        filter {
+            reusableFilter()
+        }
+    }
+    chart(
+        entity = TRADE,
+        value = TRADE.price,
+        groupBy = TRADE.instrumentId,
+        type = ChartType.DONUT,
+    ) {
+        filter {
+            reusableFilter()
+        }
+    }
+}
+```
+
+![](/img/linked-filter.PNG)
+
+</zero-card>
+
 ## Wrap-up
 
 You should now see a page with two linked grids. Whenever instrument selection changes, the trade grid will refresh to display only the relevant trades:
