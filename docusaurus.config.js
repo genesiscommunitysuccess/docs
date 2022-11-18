@@ -114,12 +114,12 @@ module.exports = {
         //keep this commented out until we have multiple versions
         // {type: 'docsVersionDropdown', className: "version-menu"},
 
-        {to: 'getting-started', label: 'Learning'},
-        {to: 'database', label: 'Database'},
-        {to: 'server', label: 'Server'},
-        {to: 'web', label: 'Web'},
-        {to: 'operations', label: 'Operations'},
-        {to: 'fuse', label: 'Early access'},
+        {type: 'doc', docId: 'getting-started/introduction', label: 'Learning'},
+        {type: 'doc', docId: 'database/database-landing', label: 'Database'},
+        {type: 'doc', docId: 'server/server-modules', label: 'Server'},
+        {type: 'doc', docId: 'web/front-end', label: 'Web'},
+        {type: 'doc', docId: 'operations/operations', label: 'Operations'},
+        {type: 'doc', docId: 'fuse/intro', label: 'Early access'},
         {type: 'html', position: 'right', value: '<a class="feedback" data-feedback-fish>Give us Feedback</a>'},
         {
           href: "/resource/stackoverflow-onboarding",
