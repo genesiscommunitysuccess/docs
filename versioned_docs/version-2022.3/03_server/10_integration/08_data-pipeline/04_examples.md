@@ -17,7 +17,7 @@ Here is a full example of ingesting trades:
 ```kotlin
 pipelines {
 
-    postgres("cdc-test") {
+    postgresSource("cdc-test") {
         hostname = "localhost"
         port = 5432
         username = "postgres"

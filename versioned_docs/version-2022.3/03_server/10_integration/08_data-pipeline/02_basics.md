@@ -40,7 +40,7 @@ All databases share common configuration.
 
 | Parameter | Default value | Sample usage | Value type | Description |
 |---|---|---|---|---|
-| sourceName | N/A | `postgres("cdc-test")` | String | Name for the source |
+| sourceName | N/A | `postgresSource("cdc-test")` | String | Name for the source |
 | hostname | N/A | `hostname = "localhost"` | String | Set the hostname of the remote Database |
 | port | 5432 | `port = 5432` | Integer | Set the port on which Database is running |
 | username | N/A | `username = "postgres"` | String | Set the database user  |
