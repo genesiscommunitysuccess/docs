@@ -234,36 +234,3 @@ horizontalLayout {
 ![](/img/linked-chart.PNG)
 
 </zero-card>
-
-###
-> Alternatively we can reuse a filter declared previously. 
-
-<zero-card style={{backgroundColor: "#101628", padding: "4px"}}>
-<h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Linked Chart <p style={{color: 'grey'}}>(reusable filter)</p></b></h4>
-
-```kotlin
-horizontalLayout {
-    val instrumentGrid by entityManager(
-        entity = INSTRUMENT,
-        title = "Instrument",
-        addRows = true,
-    )
-
-    val reusableFilter = filter(TRADE) { instrumentId eq instrumentGrid.entity.instrumentId }
-
-    chart(
-        entity = TRADE,
-        value = TRADE.quantity,
-        groupBy = TRADE.instrumentId,
-        type = ChartType.PIE,
-    ) {
-        filter {
-            reusableFilter()
-        }
-    }
-}
-```
-
-![](/img/linked-chart.PNG)
-
-</zero-card>
