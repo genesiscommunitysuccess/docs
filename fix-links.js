@@ -9,35 +9,64 @@ const fs = require("fs")
  *   [links like this](http://foo/bar)
  *   [links like this](/img/foo/bar.png)
  */
-const regex = /\[([^\]]+)\]\(\/(?!img)([^)]+)\)/g
+const regex = /\[([^\]]+)\]\(\/(?!img)([^)]+(?<!md#?(.*)))\)/g
 const replaceWith = "../"
 const walkDirectory = (root, depth = 1) => {
-    const entries = fs.readdirSync(root, {withFileTypes: true})
-
+    const entries = fs.readdirSync(root, { withFileTypes: true })
     const dirs = entries.filter(e => e.isDirectory())
     const files = entries.filter(e => e.isFile() && e.name.endsWith(".md"))
 
-    const replacedPath = replaceWith.repeat(depth)
-
+    let paths = []
+    for (const dir of dirs) {
+        paths = paths.concat(walkDirectory(`${root}/${dir.name}`, depth + 1))
+    }
     for (const file of files) {
         const path = `${root}/${file.name}`
-        const data = fs.readFileSync(path).toString()
-        const hasMatches = regex.test(data)
-        if (hasMatches) {
-            const replaced = data.replaceAll(regex, "[$1](" + replacedPath + "$2)")
-            console.log(replaced)
-            console.log(path)
-            process.exit(0)
+        const data = fs.readFileSync(path).toString('utf8')
+        if (regex.test(data)) {
+            paths.push({path, depth})
         }
-        // for (const match of matches) {
-        //     console.log(replacedPath, depth, path, match[2])
-        // }
     }
+    return paths
+}
 
-    for (const dir of dirs) {
-        walkDirectory(`${root}/${dir.name}`, depth + 1)
+const replacePath = (path, depth) => {
+    const data = fs.readFileSync(path).toString('utf8')
+    const replaced = replaceString(data, depth)
+    fs.writeFileSync(path, replaced)
+}
+
+const replaceString = (data, depth) => {
+    const replacedPath = replaceWith.repeat(depth)
+    return data.replaceAll(regex, "[$1](" + replacedPath + "$2)")
+}
+
+const run = () => {
+    const paths = [].concat(
+        walkDirectory("./docs"),
+        // walkDirectory("./versioned_docs/version-2022.3")
+    )
+    console.log(paths.length)
+
+    for (const {path, depth} of paths) {
+        replacePath(path, depth)
     }
 }
 
-walkDirectory("./docs")
-walkDirectory("./versioned_docs/version-2022.3")
+const test = () => {
+    const assert = require('node:assert')
+    const check = (actual, expected) => {
+        console.log(`Testing '${actual}'`)
+        assert.equal(replaceString(actual, 1), expected)
+    }
+    check("foo [bar](/baz)", "foo [bar](../baz)")
+    check("foo [bar](/baz) boo [fish](/test)", "foo [bar](../baz) boo [fish](../test)")
+    check("[bar](/f/baz.md)", "[bar](/f/baz.md)")
+    check("[bar](/f/baz.md#test)", "[bar](/f/baz.md#test)")
+}
+
+if (process.argv[2] === "--test") {
+    test()
+} else {
+    run()
+}
