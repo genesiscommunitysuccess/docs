@@ -92,6 +92,10 @@ For further styling your components, it would make sense to start working with [
 :::
 Style the `quantity` field of the orders grid in such a way that if the value is bigger than 100 it will be in green, otherwise red.
 
+:::tip
+Here you can use specific conditions providing a function to the cellClass column config.
+:::
+
 
 ## Design systems
 
@@ -304,6 +308,20 @@ We've been using components from Genesis Zero Design System, such as ***zero-sel
 Override the Zero design system, registering a new style for the ***zero-button*** so that its background color is green.
 
 Additionally, register your own design system called **ui-training** and a new component `<ui-training-text-field>` whose font color is blue. Use this component in the order screen.
+
+:::tip
+Remember we already provided you a folder with the main components (*client\web\src\_ui-training-design-system*), so you need to select the required ones and customize them.
+
+To register your own design system name, you have to edit the file *client\web\src\_ui-training-design-system\provide-design-system.ts* and then change the attribute **provideDesignSystem.prefix**. Thus, the components will get the defined prefix to declare (e.g. *ui-training*-text-field, *ui-training*-text-field, and so on).
+
+Lastly, to keep the best practices and avoid conflits, always open the system provider tag prior using the design system components like the example below.
+```html {1,4}
+<ui-training-design-system-provider>
+  <ui-training-text-field required :value=${sync(x=> x.quantity)}>Quantity</ui-training-text-field>
+  <ui-training-text-field :value=${sync(x=> x.price)}>Price</ui-training-text-field>
+</ui-training-design-system-provider>
+```
+:::
 
 
 ## Micro Front-ends
