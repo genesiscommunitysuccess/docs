@@ -8,10 +8,12 @@ const fs = require("fs")
  *   [links like this](./foo/bar)
  *   [links like this](http://foo/bar)
  *   [links like this](/img/foo/bar.png)
+ *   [links like this](/foo/bar.md)
  */
-const regex = /\[([^\]]+)\]\(\/(?!img)([^)]+(?<!md#?(.*)))\)/g
+const regex = /\[([^\]]+)\]\(\/(?!img)([^)]+(?<!md#?(.*)))\)/
 const replaceWith = "../"
-const walkDirectory = (root, depth = 1) => {
+
+const walkDirectory = (root, depth = 0) => {
     const entries = fs.readdirSync(root, { withFileTypes: true })
     const dirs = entries.filter(e => e.isDirectory())
     const files = entries.filter(e => e.isFile() && e.name.endsWith(".md"))
@@ -30,43 +32,44 @@ const walkDirectory = (root, depth = 1) => {
     return paths
 }
 
-const replacePath = (path, depth) => {
+const replaceFile = (path, depth) => {
     const data = fs.readFileSync(path).toString('utf8')
     const replaced = replaceString(data, depth)
     fs.writeFileSync(path, replaced)
 }
 
 const replaceString = (data, depth) => {
+    const globalRegex = new RegExp(regex, "g")
     const replacedPath = replaceWith.repeat(depth)
-    return data.replaceAll(regex, "[$1](" + replacedPath + "$2)")
+    return data.replaceAll(globalRegex, "[$1](" + replacedPath + "$2)")
 }
 
-const run = () => {
+const runMain = () => {
     const paths = [].concat(
         walkDirectory("./docs"),
-        // walkDirectory("./versioned_docs/version-2022.3")
+        walkDirectory("./versioned_docs/version-2022.3")
     )
-    console.log(paths.length)
 
     for (const {path, depth} of paths) {
-        replacePath(path, depth)
+        replaceFile(path, depth)
     }
 }
 
-const test = () => {
+const runTests = () => {
     const assert = require('node:assert')
-    const check = (actual, expected) => {
+    const test = (actual, expected) => {
         console.log(`Testing '${actual}'`)
         assert.equal(replaceString(actual, 1), expected)
     }
-    check("foo [bar](/baz)", "foo [bar](../baz)")
-    check("foo [bar](/baz) boo [fish](/test)", "foo [bar](../baz) boo [fish](../test)")
-    check("[bar](/f/baz.md)", "[bar](/f/baz.md)")
-    check("[bar](/f/baz.md#test)", "[bar](/f/baz.md#test)")
+    test("foo [bar](/baz)", "foo [bar](../baz)")
+    test("foo [bar](../baz)", "foo [bar](../baz)")
+    test("foo [bar](/baz) boo [fish](/test)", "foo [bar](../baz) boo [fish](../test)")
+    test("[bar](/f/baz.md)", "[bar](/f/baz.md)")
+    test("[bar](/f/baz.md#test)", "[bar](/f/baz.md#test)")
 }
 
 if (process.argv[2] === "--test") {
-    test()
+    runTests()
 } else {
-    run()
+    runMain()
 }
