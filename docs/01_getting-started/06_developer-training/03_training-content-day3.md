@@ -77,13 +77,14 @@ views {
 More info [here](/database/fields-tables-views/views/views-basics/#overriding-a-field-name).
 :::
 
-Run [build](/getting-started/developer-training/training-content-day1/#5-build-process) to make the view ready for use, then add it to the Data Server:​
+Run [build](/getting-started/developer-training/training-content-day1/#5-the-build-process) to make the view ready for use, then add it to the Data Server:​
 
-Now go to the Data Server definition (inside the **-script-config** module). Replace the `ALL_TRADES` query in the Data Server with the new `TRADE_VIEW`.
+Now go to the Data Server definition (open **alpha-dataserver.kts**). Replace the `ALL_TRADES` query in the Data Server with the new `TRADE_VIEW`.
 
 ```kotlin
 dataServer {​
      query("ALL_TRADES", TRADE_VIEW)​
+     ...
 }​
 ```
 
@@ -102,7 +103,7 @@ Run [build](/getting-started/developer-training/training-content-day1/#5-build-p
 
 Extend the **TRADE_VIEW** to connect TRADE to COUNTERPARTY:
 1. Add the respective join (as we did with `INSTRUMENT`).​
-2. Add the `COUNTERPARTY.COUNTERPARTY_NAME`.
+2. Add the field `COUNTERPARTY.COUNTERPARTY_NAME`.
 3. Test it.
 
 ## Extending our application further
@@ -191,6 +192,34 @@ So far we have been testing our work manually, using Genesis Console or some HTT
 Now the time has come to start writing some automated tests for our application.
 
 Before running tests, install the [FoundationDB](https://genesisglobal.jfrog.io/artifactory/community-uploads/foundationdb-6.2.15-x64.msi) locally to allow a proper database mocking. Further details regarding FoundationDB can be found [here](https://www.foundationdb.org/).
+
+:::tip FoundationDB
+FoundationDB comes with a command line interface tool called [fdbcli](https://apple.github.io/foundationdb/command-line-interface.html). You can invoke fdbcli at the command line simply by typing it. If everything is ok, you should see a message *The database is available.*
+
+```
+$ fdbcli
+Using cluster file `/etc/foundationdb/fdb.cluster'.
+
+The database is available.
+
+Welcome to the fdbcli. For help, type `help'.
+fdb>
+```
+
+In case of any issue, please double check how the FoundationDB [configuration](https://apple.github.io/foundationdb/configuration.html) can be done. E.g., each FDB cluster needs to be told some configuration information about what kind of redundancy mode it should be using, what storage engine, etc. For local development, you’ll probably want to run the command below.
+
+```shell
+fdbcli --exec "configure new single memory ; status"
+```
+
+Last but not least, feel free to try different versions of FoundationDB [here](https://apple.github.io/foundationdb/downloads.html). You may also want to re-start your local FoundationDB.
+
+```shell
+pkill fdb
+/usr/lib/foundationdb/fdbmonitor >> /tmp/fdbmonitor.log 2>&1 &
+fdbserver -p 127.0.0.1:4500 >> /tmp/fdb.log 2>&1 &
+```
+:::
 
 Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. In summary:
 * load data from a CSV file 

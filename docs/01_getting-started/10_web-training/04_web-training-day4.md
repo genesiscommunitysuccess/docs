@@ -423,7 +423,8 @@ To enable this micro front-end in your application, follow the steps below.
 {
   ...
   "dependencies": {
-    "@genesislcap/foundation-reporting": "1.0.1-alpha-7ea7de2.0"
+    ...
+    "@genesislcap/foundation-reporting": "^5.0.0"
   },
   ...
 }
@@ -468,6 +469,8 @@ public async configure() {
 :::
 Create a new report using the ALL_POSITIONS query in the Data Server.
 
+
+<!-- 
 
 ## Angular integration
 
@@ -588,11 +591,13 @@ Third-party controls require a ControlValueAccessor for writing a value and list
 Congratulations! You're now set up to use Genesis Foundation and Angular!
 
 ### Exercise 4.5 Adding a Grid Pro to list Counterparties in our Angular solution
-<!--
 this is pretty much here: https://docs.genesis.global/secure/tutorials/training-resources/training-content-day3/#ui-configuring
--->
+
+
 :::info ESTIMATED TIME
 30 mins
 :::
 
 It's your time! Let's use Grid Pro with connected data in the Angular app. The grid should display the data from `ALL_ORDERS`, very similar to what we did in [Adding a simple Orders data grid](/getting-started/web-training/web-training-day2/#adding-a-simple-orders-data-grid), but now in Angular.
+
+-->
