@@ -1,5 +1,5 @@
 ---
-title: 'Database interface - Generated repositories'
+title: 'Database interface - generated repositories'
 sidebar_label: 'Generated repositories'
 id: generated-repositories
 keywords: [database, database interface, generated, repositories]
