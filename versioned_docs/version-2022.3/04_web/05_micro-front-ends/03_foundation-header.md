@@ -1,15 +1,15 @@
 ---
-title: 'Micro-front-ends - Foundation Header'
+title: 'Foundation Header'
 sidebar_label: 'Foundation header'
 Id: front-end-foundation-header
-keywords: [web, frontend, ui, micro-front-ends, header, sidebar]
 tags:
-  - web
-  - frontend
-  - ui
-  - micro-front-ends
   - header
   - sidebar
+  - frontend
+  - ui
+  - mf
+  - web
+  - micro frontends
 ---
 
 # Foundation Header
@@ -188,7 +188,7 @@ html`
 
 ### Control buttons
 
-There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (these are hidden by default). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined. Each one dispatches an associated event when clicked.
+There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (these are hidden by default). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined. .
 
 | Logo          | Toggle Attribute             | Dispatched Event          |
 |---------------|------------------------------|---------------------------|

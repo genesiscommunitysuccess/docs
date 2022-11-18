@@ -1,17 +1,10 @@
 ---
-title: Web Developer Training - Day 1
+id: web-training-day1
+title: Day 1
 sidebar_label: Day one
 sidebar_position: 3
-id: web-training-day1
-keywords: [getting started, developer training, web training, day one]
-tags:
-    - getting started
-    - developer training
-    - server training
-    - day one
----
-import FoundationUi from "/src/versioning/foundationui.mdx"
 
+---
 # Day 1 agenda
 Reviewing the basics and extending our application​.
 
@@ -124,14 +117,14 @@ Following this, there are three key sections you need to be aware of:
 When running the app on your local machine, you can adjust a few settings under the `config` section, including which host to connect to and what port to run the dev server on.
 ```
 "config": {
-    "API_HOST": "ws://localhost/gwf/",
+    "API_HOST": "ws://localhost:8080/gwf/",
     "DEFAULT_USER": "JaneDee",
     "DEFAULT_PASSWORD": "beONneON*74",
     "PORT": 6061
   },
 ```
 
-Since our back end is running locally, we set the `API_HOST` to localhost. The **/gwf/** path is a [reverse proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) configured in a nginx web server running on the server (a WSL instance in our case). 
+Since our back end is running locally, we set the `API_HOST` to localhost. The **/gwf/** path is a [reverse proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) configured in a nginx web server running on the server (a docker container in our case). 
 
 Essentially, the front end will connect to the back end through a websocket to **localhost/gwf**, which in turn will, internally, ***proxy pass*** the connection to an internal Genesis process called GENESIS_ROUTER. This contains a web socket adapter able to communicate with other Genesis processes, such as Data Servers, Request Servers, Event Handlers, etc. Think of this as a gateway from the front end to all services on the back end.
 
@@ -176,15 +169,16 @@ This includes **@genesislcap** dependencies. This is where you can change versio
 :::
 
 
-<code>
-
-"dependencies": {
-    "@genesislcap/foundation-comms": <FoundationUi/>,
-    "@genesislcap/foundation-entity-management": <FoundationUi/>,
-    "@genesislcap/foundation-login": <FoundationUi/>,
-    "@genesislcap/foundation-utils": <FoundationUi/>,
-    "@genesislcap/foundation-zero": <FoundationUi/>,
-    "@genesislcap/foundation-ui": <FoundationUi/>,
+```javascript
+  "dependencies": {
+    "@genesislcap/foundation-comms": "^5.0.0",
+    "@genesislcap/foundation-entity-management": "^5.0.0",
+    "@genesislcap/foundation-header": "^5.0.0",
+    "@genesislcap/foundation-login": "^5.0.0",
+    "@genesislcap/foundation-utils": "^5.0.0",
+    "@genesislcap/foundation-zero": "^5.0.0",
+    "@genesislcap/foundation-zero-grid-pro": "^5.0.0",
+    "@genesislcap/grid-pro": "^5.0.0",
     "@microsoft/fast-components": "^2.16.6",
     "@microsoft/fast-element": "^1.6.2",
     "@microsoft/fast-foundation": "^2.27.1",
@@ -192,8 +186,8 @@ This includes **@genesislcap** dependencies. This is where you can change versio
     "@microsoft/fast-web-utilities": "^5.0.1",
     "rxjs": "^7.4.0",
     "tslib": "^2.3.1"
-}
-</code>
+  }
+```
 
 :::tip
 You can use the `lerna add` command (instead of `npm install`) if you need to add more dependencies, since the app is a [lerna managed](https://lerna.js.org/) monorepo.
@@ -203,9 +197,9 @@ You can use the `lerna add` command (instead of `npm install`) if you need to ad
 
 For Genesis application servers, the web server of choice is [nginx](https://www.nginx.com/).
 
-As explained previously, we have provided a WSL instance with nginx pre-installed and running for this training. nginx is used here as a reverse proxy. We're not going to deploy our application to that nginx instance, though; we're going to simply use the local web server initiated by `npm run client:web` command. 
+As explained previously, we have provided a docker container with nginx pre-installed and running for this training. nginx is used here as a reverse proxy. We're not going to deploy our application to that nginx instance, though; we're going to simply use the local web server initiated by `npm run client:web` or `npm run dev` command. 
 
-For actual server deployment, these are the steps that you need to follow:
+For actual server deployment, these are the steps that you'd need to follow:
 1. Build the project: `npm run build` from the ..client/web folder
 2. Copy the content of the ..client/web/dist/ folder to the root folder of your web server. To find the root folder, look in the `root` directive in the server block of nginx.conf file.
 
@@ -267,13 +261,13 @@ This component could be anything, like a custom button or even a business compon
 ### Adding a route to the new component
 Let's add a route pointing to **playground** so we can access it from the menu.
 
-2. Edit file `config.ts` and add **playground** to **allRoutes** and **routes.map** so we'll be able to access playground from the menu:
-	```typescript {1, 3,12} title='config.ts'
+2. Edit file `client\web\src\routes\config.ts` and add **playground** to **allRoutes** and **routes.map** so we'll be able to access playground from the menu:
+	```ts {1,5,14} title='config.ts'
 	import { MarketdataComponent } from './playground/playground';
 	...
 		public allRoutes = [
 			...
-			{ index: 3, path: 'playground', title: 'Playground', icon: 'home', variant: 'solid' },
+			{ index: 2, path: 'playground', title: 'Playground', icon: 'home', variant: 'solid' },
 		];
 
 		...
@@ -291,7 +285,7 @@ You should see the **Playground** menu item now.
 ### Creating an HTML template
 To create an HTML template for our element, we have to import and use the html-tagged template helper and pass the template to the @customElement decorator.
 
-```typescript {3,9} title='playground.ts'
+```ts {1,3,9} title='playground.ts'
 import { FASTElement, customElement, html } from "@microsoft/fast-element";
 
 const myTemplate = html<MarketdataComponent>`
@@ -313,24 +307,32 @@ Try it now!
 :::tip code editors
 You're free to use any IDE or code editor you feel most comfortable with. Some of them, however, do not support syntax highlighting and IntelliSense for html inside JavaScript and TypeScript tagged template strings - like our HTML code in the `html<MarketdataComponent>` template.
 
-As a tip, search for extensions in your IDE to support that. That's usually called `lit` or `literal`.
+As a tip, search for extensions in your IDE to support that. That's usually called `lit` or `literal`. If you're using VSCode, a few suggestions:
+
+[FAST Snippets](https://marketplace.visualstudio.com/items?itemName=kingoftac.fast-snippets) to get commonly used conventions when creating FAST Components.
+
+[literally-html](https://marketplace.visualstudio.com/items?itemName=webreflection.literally-html) to get syntax highlighting and documentation in your html blocks.
+
+[es6-string-css](https://marketplace.visualstudio.com/items?itemName=bashmish.es6-string-css) to get syntax highlighting in your css blocks.
+
+[eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) to get static analysis before building
 :::
 
 ### Adding attributes to the component
 Let's add an attribute to our MarketdataComponent. Use @attr for primitive properties (string, bool, number) that are intended to be surfaced on your element as HTML attributes. Use @observable for all other property types on an HTMLElement and all observable properties on plain classes.
 
-```typescript {5} title='playground.ts'
+```typescript {1,5} title='playground.ts'
 import { FASTElement, customElement, html, attr } from "@microsoft/fast-element";
 
 @customElement({name: "marketdata-component", template: myTemplate})
 export class MarketdataComponent extends FASTElement {
-    @attr lastPrice: Number = 0;
+    @attr lastPrice: number = 0;
 }
 ```
 
 Having the lastPrice always as zero doesn't make our MarketdataComponent very useful. Let's change the HTML template to display the price in real time and add some behaviour to the component, so that it gets the price in real time (in this example, we're simulating the exchange behaviour with a Math.random function):
 
-```typescript {6,12} title='playground.ts'
+```typescript {6,14-20} title='playground.ts'
 import { FASTElement, customElement, html, attr } from "@microsoft/fast-element";
 
 const myTemplate = html<MarketdataComponent>`
@@ -406,15 +408,16 @@ export class FriendList extends FASTElement {
 }
 ```
 
-:::info
-Please review the [directives](https://www.fast.design/docs/fast-element/using-directives) carefully, as we're going to use them in this training!
 :::
+
+Please review the [directives](https://www.fast.design/docs/fast-element/using-directives) carefully, as we're going to use them in this training!
 
 ### Styling our component
 FASTElement provides a **css** tagged template helper that allows for the creation of ElementStyles.
 
 Add this code:
-```typescript {2} title='playground.ts'
+```typescript {1,3,4,5,6,7} title='playground.ts'
+import { FASTElement, customElement, html, attr, css } from "@microsoft/fast-element";
 ...
 const marketdataComponentCSS = css`
   h4 {
@@ -434,20 +437,20 @@ This is the final code:
 ```typescript title='playground.ts'
 import { FASTElement, customElement, html, attr, css } from "@microsoft/fast-element";
 
-const myTemplate = html<MarketdataComponent>`
-  <div class="header">
-    <h3>My Marketdata component</h3>
-    <h4>Last price: ${x => x.getLastPriceRealTime()}</h4>
-  </div>
-`;
-
 const marketdataComponentCSS = css`
   h4 {
     color: #00ffff;
   }
 `;
 
-@customElement({name: "marketdata-component", template: myTemplate, styles: marketdataComponentCSS})
+const myTemplate = html<MarketdataComponent>`
+  <div class="header">
+    <h3>My marketdata component</h3>
+    <h4>Last price: ${x => x.getLastPriceRealTime()}</h4>
+  </div>
+`;
+
+@customElement({name: "marketdata-component", template: myTemplate, styles: marketdataComponentCSS}) // custom element being created
 export class MarketdataComponent extends FASTElement {
     @attr lastPrice: number = 0;
 
@@ -478,8 +481,9 @@ Instrument AAPL 227.12
 ```
 
 Steps:
-- add a list called ***instruments*** to the MarketdataComponent. Feel free to initialise it with a few instruments, such as `@observable instruments: String[] = ["MSFT", "AAPL"];`
-- change the lastPrice attribute to a list of prices. Feel free to initialise it with corresponding prices, such as `@observable lastPrices: number[] = [101.23, 227.12];`
+- import *observable* and *repeat* from from `@microsoft/fast-element`
+- add a list called ***instruments*** to the MarketdataComponent. Feel free to initialize it with a few instruments, such as `@observable instruments: String[] = ["MSFT", "AAPL"];`
+- change the lastPrice attribute to a list of prices. Feel free to initialize it with corresponding prices, such as `@observable lastPrices: number[] = [101.23, 227.12];`
 - change `getLastPriceRealTime` to receive the instrument name now and return the corresponding price;
 - in the HTML template, make sure to loop through all the instruments and display the price for each one;
 - style it so that the instrument name is displayed in some tone of blue and the price in some tone of green.
@@ -533,24 +537,32 @@ In this next example, we have put a set of example options set in the flyout men
 
 #### Header Set-up
 
-We have already enabled this micro front-end when we created the initial structure of the application in the Developer Training. But for learning purposes, let's review what needs to be done to set up the foundation-header from scratch - compare this with the existing code to get a better understanding.
+**We have already enabled this micro front-end when we created the initial structure of the application in the [Developer Training](/getting-started/developer-training/training-intro/).** But for learning purposes, let's review what needs to be done to set up the foundation-header from scratch - compare this with the existing code to get a better understanding.
 
 To enable this micro front-end in our application, we'd have to follow the steps below.
 
-- Add `@genesislcap/foundation-header` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
+- Make sure you have `@genesislcap/foundation-header` as a dependency in your *client/web/package.json* file.
 
-```javascript
+```js {4} title='package.json'
 {
   ...
   "dependencies": {
-    "@genesislcap/foundation-header": "latest"
+    "@genesislcap/foundation-header": "^5.0.0"
   },
   ...
 }
 ```
 
-- In our **web/src/main/main.ts** file, which is our top level class of our application, import and dependency inject the Navigation class.
-```javascript
+:::tip
+Whenever you change the dependencies of your project, ensure you run the bootstrap command again - from the *client* folder:
+
+```shell
+npm run bootstrap
+```
+:::
+
+- In our **web/src/main/main.ts** file, which is our top level class of our application, make sure you imported and dependency injected the Navigation class.
+```js {1,6} title='main.ts'
 import { Navigation } from '@genesislcap/foundation-header';
 
 @customElement({ name, template, styles })
@@ -563,20 +575,22 @@ export class MainApplication extends FASTElement {
 }
 ```
 
-- Set a reference to the `navigation` object on the FAST router when you instantiate it, this will allow us to set up navigation functionality from the navigation bar in the [navigation items step.](#navigation-items)
-```javascript
-// fast-router will likely have other attributes such as :config too
-const MainTemplate: ViewTemplate<MainApplication> = html`
-  <fast-router :navigation=${(x) => x.navigation}></fast-router>
+- Make sure you got a reference to the `navigation` object on the FAST router when you instantiate it, this will allow us to set up navigation functionality from the navigation bar in the [navigation items step.](#navigation-items)
+```js {5} title='main.template.ts'
+...
+export const MainTemplate: ViewTemplate<MainApplication> = html`
+  <fast-router
+    :config=${(x) => x.config}
+    :navigation=${(x) => x.navigation}
+  ></fast-router>
 `;
 ```
 
-- Add the `foundation-header` tag as part of the html that you set as the markup for the `defaultLayout` in your router configuration.
-```javascript
+- Make sure the `foundation-header` tag is part of the html that you set as the markup for the `defaultLayout` in your router configuration.
+```js {3} title='client/web/src/layouts/default.ts'
 export const defaultLayout = new FASTElementLayout(html`
 <div class="container">
-	<!-- show-luminance-toggle-button boolean attribute added to show that button on the navigation bar -->
-	<foundation-header show-luminance-toggle-button></foundation-header>
+	<foundation-header></foundation-header>
 	<!-- Other markup -->
 </div>`);
 
@@ -596,12 +610,18 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 
 ##### Icon
 
-By default, the navigation bar and flyout menu show the Genesis logo. You can override this by setting the `logoSrc` attribute. For example:
+By default, the navigation bar and flyout menu show the Genesis logo. You can override this by setting the `logo-src` attribute. For example:
 
 ```html
-<foundation-header logoSrc="https://icotar.com/avatar/genesis"></foundation-header>
+<foundation-header logo-src="https://icotar.com/avatar/genesis"></foundation-header>
 ```
-The `logoSrc` defines the image that you want to display. Adding this attribute will update the logo on both the flyout and navigation bar. Omit the attribute to leave the Genesis logo.
+The `logo-src` defines the image that you want to display. Adding this attribute will update the logo on both the flyout and navigation bar. Omit the attribute to leave the Genesis logo.
+
+### Exercise 1.2: customising the logo
+:::info estimated time
+10min
+:::
+Change the logo of the header so it uses this image: `https://icotar.com/avatar/webtraining`
 
 ##### Navigation items
 
@@ -621,26 +641,25 @@ The `navigation` object referenced via the `parent` object is why the `navigatio
 
 Moving on from this basic example, a dynamic set of routes can be configured, using the `repeat` directive from FAST.
 
-- Add the routes configuration into an array in the router configuration class.
-```javascript
+- Look at the routes configuration in the `config.ts` and you'll see an array in the router configuration class.
+```js {4} title='client/web/src/routes/config.ts'
 export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 
 	// New configuration added to existing MainRouterConfig class
-	public allRoutes = [
-		{ index: 1, path: 'protected', title: 'Home', icon: 'home', variant: 'solid' },
-		{ index: 2, path: 'admin', title: 'Admin', icon: 'cog', variant: 'solid' },
-		{ index: 3, path: 'reporting', title: 'Reporting', variant: 'solid' },
-	];
+  public allRoutes = [
+    { index: 1, path: 'home', title: 'Home', icon: 'home', variant: 'solid' },
+    { index: 2, path: 'playground', title: 'Playground', icon: 'home', variant: 'solid' },
+  ];
 
 	...
 }
 ```
 
-- When setting the navigation items, use the `repeat` directive to iterate over the defined routes and create a navigation item for each.
+- Now, when setting the navigation items, we can use the `repeat` directive to iterate over the defined routes and create a navigation item for each.
 
-The following example creates a button with an associated logo for each of the three defined routes:
+Look at the `default.ts` and you'll see how we create a button with an associated logo for each of the three defined routes:
 
-```javascript
+```js {3,4} title='client/web/src/layouts/default.ts'
 html`
 <foundation-header
 	${repeat(
@@ -660,9 +679,11 @@ html`
 ></foundation-header>`;
 ```
 
+That's why when you add a new route to the allRoutes attribute it's automatically added as a menu item - in other words, the `repeat` directive is iterating over the allRoutes and adding the buttons for each one of them.
+
 ##### Control buttons
 
-There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (these are hidden by default). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined. Each one dispatches an associated event when clicked.
+There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (these are hidden by default). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined. Each one dispatches an associated event when clicked. 
 
 | Logo          | Toggle Attribute             | Dispatched Event          |
 |---------------|------------------------------|---------------------------|
@@ -670,11 +691,27 @@ There are three control buttons that can be shown or hidden on the right-hand si
 | Misc          | show-misc-toggle-button      | misc-icon-clicked         |
 | Notifications | show-notification-button     | notification-icon-clicked |
 
-Implementing the functionality of the buttons is up to the client. For example:
+For instance, adding the Misc logo would look like this:
+
+```html {5} title='default.ts'
+...
+export const defaultLayout = new FASTElementLayout(
+  html`
+    <div class="container">
+      <foundation-header logo-src="https://icotar.com/avatar/webtraining" show-misc-toggle-button>
+        ...
+      </foundation-header>
+...
+  `,
+  ...
+);
+```
+
+To implement the functionality of the button in the client you should follow the steps:
 
 - Define the functionality of the event callback in the class of a class which is a parent to the router.
 
-```javascript
+```javascript title='main.ts'
 export class MainApplication extends FASTElement {
 
 	onMiscButtonPressed() {
@@ -685,7 +722,7 @@ export class MainApplication extends FASTElement {
 ```
 
 - Set the event listener in the parent html to call the defined functionality.
-```javascript
+```javascript title='main.template.ts'
 // fast-router will likely have other attributes such as :config too
 const MainTemplate: ViewTemplate<MainApplication> = html`
   <fast-router
@@ -695,6 +732,17 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 	</fast-router>
 `;
 ```
+### Exercise 1.3: adding the light and dark mode toggle
+:::info estimated time
+15min
+:::
+
+Add the Moon control button to the header that when clicked calls the `onDarkModeToggle` function which is already defined in `main.ts`.
+
+:::tip
+The last example we showed how to add the Misc Control button, now you need to do it considering the Moon one.
+:::
+
 
 ##### Menu contents
 
@@ -728,8 +776,26 @@ To set the content of the flyout menu, add the content in the html within an ele
 	</div>
 </foundation-header>
 ```
+### Exercise 1.4: adding items to the flyout menu
+:::info estimated time
+20min
+:::
+Add an item pointing to the playground page.
 
-### Exercise 1.2: customising the header
+:::tip
+Look at the [interaction components](/web/web-components/interaction/anchor/) to see a list of available components you can use for the menu item.
+A good suggestion would be to use `Anchor`, which can be simply used as `<zero-anchor>`:
+```ts
+<zero-anchor @click=${(x) => x.navigation.navigateTo("/PUT_YOUR_ROUTE_HERE")}>
+Playground
+</zero-anchor>
+```
+
+By the way, we're using by default the Zero Design Systems. We are going to talk more about Design Systems later in this course.
+:::
+
+
+### Exercise 1.5: adding new routes
 :::info estimated time
 30min
 :::
@@ -746,7 +812,7 @@ Customise our header in such a way that we end up with these menu items:
 Feel free to display only empty content when you create the new pages (Orders and Reporting). We're just interested in the navigation for now.
 
 :::tip 
-Feel free to follow the pattern of creating a **.template.ts**, **.styles.ts** and **.ts** files for each component.
+Use the pattern of creating a **.template.ts**, **.styles.ts** and **.ts** files for each component.
 
 Also, make sure to configure **client/web/src/main/main.ts** and **client/web/src/routes/config.ts** accordingly.
 :::

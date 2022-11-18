@@ -1,14 +1,8 @@
 ---
-title: Developer training - Day two
+id: training-content-day2
+title: Day two
 sidebar_label: Day two
 sidebar_position: 4
-id: training-content-day2
-keywords: [getting started, quick start, developer training, day two]
-tags:
-    - getting started
-    - quick start
-    - developer training
-    - day two
 ---
 
 <details>
@@ -108,7 +102,8 @@ We want to be able to insert a Trade grid with data into our project. For this, 
 
 First, open the file **home.ts** to import the Micro front-ends needed, as well as declaring EntityManagement after the imports.
 
-```ts {2,4}
+```ts {1,3,5}
+import {customElement, FASTElement, observable} from '@microsoft/fast-element';
 ...
 import {EntityManagement, Permissions} from '@genesislcap/foundation-entity-management';
 
@@ -216,6 +211,14 @@ npm run dev
 
 The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
+
+:::tip
+If you try to run the application and for some reason there is already a process using the same port and you are sure it should not be run, perhaps caching or old runs, you can run the command-line below as Administrator to search the process and kill it. 
+```shell
+netstat -ano | findstr :<yourPortNumber>
+taskkill /PID <typeyourPIDhere> /F
+```
+:::
 
 ### CONGRATULATIONS
 You have completed your first application with the Genesis Platform! 
