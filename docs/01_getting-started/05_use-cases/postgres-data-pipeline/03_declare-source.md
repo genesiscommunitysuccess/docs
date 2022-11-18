@@ -20,9 +20,9 @@ To define the data pipeline, start by defining the data source. Create a new Kot
 In this example the `hostname` needs to be set to the address of the PostgreSQL server.
 
 ```kotlin
-sources {
+pipelines {
 
-    postgres("trade-pipeline") {
+    postgresSource("trade-pipeline") {
         hostname = "alpha.west.master"
         port = 5432
         username = "postgres"
@@ -51,9 +51,9 @@ The next step is to declare the mapper for each table. In our case we are only i
 Enter the code from the next section. Don't worry if it looks confusing now. We'll go through it in a bit.
 
 ```kotlin
-sources {
+pipelines {
 
-    postgres("trade-pipeline") {
+    postgresSource("trade-pipeline") {
         hostname = "alpha.west.master"
         port = 5432
         username = "postgres"
@@ -61,7 +61,7 @@ sources {
         databaseName = "postgres"
 
         table {
-            "public.trades" to mapper("e2e-test", TRADE) {
+            "public.trades" to map("e2e-test", TRADE) {
 
                 val tradeId = stringValue("trd_id")
                 val instrument = stringValue("inst")
@@ -105,11 +105,11 @@ sources {
                     }
 
                     PRICE {
-                        sourceProperty = "price"
+                        property = "price"
                     }
 
                     QUANTITY {
-                        sourceProperty = "quantity"
+                        property = "quantity"
                     }
 
                     SIDE {
@@ -133,7 +133,7 @@ sources {
                     }
 
                     ENTERED_BY {
-                        sourceProperty = "trader"
+                        property = "trader"
                     }
 
                     TRADE_STATUS {
@@ -149,11 +149,11 @@ sources {
                     }
 
                     UNSOLICITED {
-                        sourceProperty = "unsolicited"
+                        property = "unsolicited"
                     }
 
                     PREV_TRADE_ID {
-                        sourceProperty = "orig_trd_id"
+                        property = "orig_trd_id"
                     }
                 }
             }
@@ -164,7 +164,7 @@ sources {
 
 When declaring a mapper the first thing is to give it a name. This is just to identify it and doesn't have any functionality associated with it. The second argument is the [Table](/database/fields-tables-views/tables/) to be mapped to. In our case this is the `TRADE` table. Following are mappings for each [Field](/database/fields-tables-views/fields/) of the [Table](/database/fields-tables-views/tables/). There are three ways to define a [Field](/database/fields-tables-views/fields/) mapping:
 - when the source property name is the same as the [Field](/database/fields-tables-views/fields/) name then there is no need to specify anything
-- when the source property name is different from the [Field](/database/fields-tables-views/fields/) name, however, the type is the same as the [Field](/database/fields-tables-views/fields/) type or is one that can be converted out of the box. In this case only the name has to be mapped and this is done by specifying the `sourceProperty` field
+- when the source property name is different from the [Field](/database/fields-tables-views/fields/) name, however, the type is the same as the [Field](/database/fields-tables-views/fields/) type or is one that can be converted out of the box. In this case only the name has to be mapped and this is done by specifying the `property` field
 - when the source property name and type are different from the [Field](/database/fields-tables-views/fields/) name and type - in this case a `transform` function can be used to calculate the mapped value
 
 Looking at the code above you can notice that `TRADE_ID`, `INSTRUMENT_ID`, `SIDE`, `TRADE_DATETIME`, `TRADE_DATE` and `TRADE_STATUS` are calculated [Fields](/database/fields-tables-views/fields/) and all the rest are mapped by name.

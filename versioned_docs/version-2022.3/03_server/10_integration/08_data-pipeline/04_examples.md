@@ -15,7 +15,7 @@ tags:
 Here is a full example of ingesting trades:
 
 ```kotlin
-sources {
+pipelines {
 
     postgres("cdc-test") {
         hostname = "localhost"
@@ -25,7 +25,7 @@ sources {
         databaseName = "postgres"
 
         table {
-            "public.trades" to mapper("e2e-test", TRADE) {
+            "public.trades" to map("e2e-test", TRADE) {
 
                 val tradeId = stringValue("trd_id")
                 val instrument = stringValue("inst")
@@ -69,15 +69,15 @@ sources {
                     }
 
                     PRICE {
-                        sourceProperty = "price"
+                        property = "price"
                     }
 
                     QUANTITY {
-                        sourceProperty = "quantity"
+                        property = "quantity"
                     }
 
                     SIDE {
-                        sourceProperty = "side"
+                        property = "side"
                     }
 
                     TRADE_DATETIME {
@@ -93,19 +93,19 @@ sources {
                     }
 
                     ENTERED_BY {
-                        sourceProperty = "trader"
+                        property = "trader"
                     }
 
                     TRADE_STATUS {
-                        sourceProperty = "trade_state"
+                        property = "trade_state"
                     }
 
                     UNSOLICITED {
-                        sourceProperty = "unsolicited"
+                        property = "unsolicited"
                     }
 
                     PREV_TRADE_ID {
-                        sourceProperty = "orig_trd_id"
+                        property = "orig_trd_id"
                     }
                 }
             }
@@ -117,9 +117,9 @@ sources {
 A source definition for a CSV file with the same data would look like the following:
 
 ```kotlin
-sources {
-    csv("cdc-test") {
-        mapper("e2e-test", TRADE) {
+pipelines {
+    csvSource("cdc-test") {
+        map("e2e-test", TRADE) {
             val tradeId = stringValue("trd_id")
             val instrument = stringValue("inst")
             val tradedAt = dateValue(name = "traded_at", format = "yyyy-MM-dd H-m-s")
@@ -162,15 +162,15 @@ sources {
                 }
 
                 PRICE {
-                    sourceProperty = "price"
+                    property = "price"
                 }
 
                 QUANTITY {
-                    sourceProperty = "quantity"
+                    property = "quantity"
                 }
 
                 SIDE {
-                    sourceProperty = "side"
+                    property = "side"
                 }
 
                 TRADE_DATETIME {
@@ -186,19 +186,19 @@ sources {
                 }
 
                 ENTERED_BY {
-                    sourceProperty = "trader"
+                    property = "trader"
                 }
 
                 TRADE_STATUS {
-                    sourceProperty = "trade_state"
+                    property = "trade_state"
                 }
 
                 UNSOLICITED {
-                    sourceProperty = "unsolicited"
+                    property = "unsolicited"
                 }
 
                 PREV_TRADE_ID {
-                    sourceProperty = "orig_trd_id"
+                    property = "orig_trd_id"
                 }
             }
         }
