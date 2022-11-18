@@ -7,11 +7,13 @@ import TabItem from '@theme/TabItem';
 
 ### Introduction
 
-With Fuse, we can also implement charts, in order to condense our data into easy-to-understand formats and effectively communicate important points.
+With Fuse, we have rich data-driven visualization through chart components.
 
 With charts we can:
-- display data utilizing any of the chart types we provide
-- use standalone charts or linked charts
+- condense our data into easy-to-understand formats
+- effectively communicate important points
+- display our data utilizing different chart types
+- implement the filter feature to better analyze our data 
 
 ![](/img/all-charts.PNG)
 
