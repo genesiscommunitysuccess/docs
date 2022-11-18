@@ -34,7 +34,7 @@ In both cases, you define the rule in a table in the database: CRON_RULES for st
 
 ### Cron rules (static events)​
 
-Let's create a cron rule that triggesr a batch job to run once every minute.
+Let's create a cron rule that triggers a batch job to run once every minute.
 
 The batch job will generate a position report as a csv for each counterparty. This will be stored in **runtime/position-minute-report**. The file name of each report written will have the form COUNTERPARTY_ID-DATE.csv.
 
@@ -157,13 +157,13 @@ CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,ME
 To do this, run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command:
 
 ```shell
-LogLevel -p GENESIS_EVALUATOR -DATADUMP_ON -l DEBUG
+LogLevel -p ALPHA_EVALUATOR -DATADUMP_ON -l DEBUG
 ```
 
 And then to see the logs run:
 ```shell
 cd $L
-tail -f GENESIS_EVALUATOR.log
+tail -f ALPHA_EVALUATOR.log
 ```
 :::info What is $L?
 $L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Feel free to use your favorite command to view logs such as tail, less etc.
@@ -576,7 +576,7 @@ Set up a permission code for Trade inserting. The permission code should be call
 :::tip
 Remember to change the **alpha-eventhandler.kts** file, as well as inserting the record via `SendIt` command in the configuration table *RIGHT_SUMMARY* too.
 
-After the configurations, you should run **assemble** and **deploy-genesisproduct-alpha** tasks again to deploy the new version.
+After the configurations, you should run [build](/getting-started/developer-training/training-content-day1/#5-the-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks again to deploy the new version.
 :::
 
 <!-- ## Generating data model from existing sources
