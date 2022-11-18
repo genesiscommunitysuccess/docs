@@ -1,5 +1,5 @@
 ---
-title: 'Server configuration - System definition'
+title: 'Server configuration - system definition'
 sidebar_label: 'System definition'
 id: system-definitions
 keywords: [server, configuration, system definitions]

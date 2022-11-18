@@ -10,7 +10,7 @@ tags:
 ---
 
 
-Just as each application must have  a *-processes.xml* config file, it must also have a *-service-definitions.xml* file. This is where you specify the ports of the various processes. These  are used to communicate internally between processes.
+Every application must have  a **-service-definitions.xml** file. This is where you specify the ports of the various processes. These are used to communicate internally between processes.
 
 ```xml
 <configuration>
@@ -20,7 +20,7 @@ Just as each application must have  a *-processes.xml* config file, it must also
 </configuration>
 ```
 
-When `genesisInstall` is executed, all products have their *-service-definitions.xml* files compiled into a system-wide **$GC/global-service-definitions.xml**. Here is an example of a global-service-definitions.xml file where we have the _auth_, _genesis_ and _gcom_ products installed:
+When `genesisInstall` is executed, all products have their **-service-definitions.xml** files compiled into a system-wide **$GC/global-service-definitions.xml**. Here is an example of a global-service-definitions.xml file where we have the _auth_, _genesis_ and _gcom_ products installed:
 
 ```xml
 <configuration>
@@ -44,7 +44,7 @@ For example:
 </configuration>
 ```
 
-## Enable SSL for processes
+## Enabling SSL for processes
 To enable SSL for a process, set the `secure` attribute to  "true" on the process in the **-service-definitions.xml** file.
 For example:
 
