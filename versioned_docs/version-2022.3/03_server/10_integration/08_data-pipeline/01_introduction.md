@@ -26,7 +26,7 @@ You can define pipelines that map data from an external source (database, file) 
 
 Each data pipeline defines a source for the data and how that data is mapped to each [Field](/database/fields-tables-views/fields/) in the Table.
 
-If a field mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a `transform` function that can return `Any`.
+If a field mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a `transform` function that returns `Any`.
 
 Here is a sample configuration:
 ```kotlin
