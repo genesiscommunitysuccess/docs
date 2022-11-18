@@ -1,5 +1,5 @@
 ---
-title: 'Data pipeline - testing'
+title: 'Data Pipeline - Testing'
 sidebar_label: 'Testing'
 id: testing
 keywords: [server, integration, data pipeline, testing]
@@ -10,13 +10,15 @@ tags:
   - testing
 ---
 
+[Introduction](/server/integration/data-pipeline/introduction/)  | [Basics](/server/integration/data-pipeline/basics) | [Advanced](/server/integration/data-pipeline/advanced) | [Examples](/server/integration/data-pipeline/examples) | [Configuring runtime](/server/integration/data-pipeline/configuring-runtime) | [Testing](/server/integration/data-pipeline/testing)
+
 To test a data pipeline you need:
 
 - source data e.g. PostgreSQL
 - a data pipeline script
 - a test case class that extends `AbstractGenesisTestSupport`
 
-This is an example test case that asserts that six trades are ingested from source PostgreSQL:
+This is an example test case that asserts six trades are ingested from source PostgreSQL. We use the (Testcontainers)[https://www.testcontainers.org/] library to stand up a database and tear it down once the test has finished. Other approaches are also mentioned below:
 
 ```kotlin
 class DataPipelineTest : AbstractGenesisTestSupport<GenesisSet>(
@@ -28,54 +30,67 @@ class DataPipelineTest : AbstractGenesisTestSupport<GenesisSet>(
     }
 ) {
 
-    override fun createDictionary() = testDictionary()
+    override fun systemDefinition(): Map<String, Any> {
+        return mapOf<String, Any>(
+            "postgres_sink_port" to postgreSqlContainer.firstMappedPort
+        )
+    }
 
-    companion object {
-
-        private val SOURCE_DATABASE_CONNECTION = DriverManager.getConnection("jdbc:postgresql://localhost:5432/?user=postgres&password=docker")
+    private companion object {
+        lateinit var con: Connection
 
         @JvmStatic
         @BeforeClass
-        fun setupSourceTable() {
-            dbExecute(
-                """
-                CREATE TYPE source_trades_valid_sides AS ENUM ('buy', 'sell');
-                CREATE TYPE source_trades_valid_states AS ENUM ('new', 'mod', 'canc');
+        fun beforeClass() {
+            postgreSqlContainer.start()
 
-                CREATE TABLE source_trades (
-                	trd_id  VARCHAR ( 12 ) PRIMARY KEY,
-                	inst VARCHAR ( 5 ) NOT NULL,
-                	price DOUBLE PRECISION NOT NULL,
-                	quantity INTEGER NOT NULL,
-                	side VALID_SIDES NOT NULL,
+            val properties = Properties().also {
+                it["password"] = postgreSqlContainer.password
+                it["user"] = postgreSqlContainer.username
+            }
+            con = postgreSqlContainer.jdbcDriverInstance.connect(postgreSqlContainer.jdbcUrl, properties)
+
+            con.createStatement().execute(
+                "CREATE TYPE source_trades_valid_sides AS ENUM ('buy', 'sell');"
+            )
+
+            con.createStatement().execute(
+                "CREATE TYPE source_trades_valid_states AS ENUM ('new', 'mod', 'canc');"
+            )
+
+            con.createStatement().execute(
+                """CREATE TABLE source_trades (
+                    trd_id VARCHAR(12) PRIMARY KEY,
+                    inst VARCHAR (5) NOT NULL,
+                    price DOUBLE PRECISION NOT NULL,
+                    quantity INTEGER NOT NULL,
+                    side source_trades_valid_sides NOT NULL,
                     traded_at TIMESTAMP NOT NULL,
                     trader VARCHAR (30) NOT NULL,
-                    trade_state valid_states NOT NULL,
+                    trade_state source_trades_valid_states NOT NULL,
                     unsolicited BOOL,
-                    orig_trd_id VARCHAR (12)
-                );
-            """.trimIndent()
+                    orig_trd_id VARCHAR (12));
+                """.trimIndent()
             )
         }
 
         @JvmStatic
         @AfterClass
-        fun closeConnection() {
-            dbExecute("DROP TABLE IF EXISTS source_trades;")
-            dbExecute("DROP TYPE IF EXISTS source_trades_valid_sides;")
-            dbExecute("DROP TYPE IF EXISTS source_trades_valid_states;")
-            SOURCE_DATABASE_CONNECTION.close()
+        fun afterClass() {
+            postgreSqlContainer.close()
         }
 
-        private fun dbExecute(statement: String) {
-            SOURCE_DATABASE_CONNECTION.execute(statement).blockingGet()
-        }
+        @JvmField
+        @ClassRule
+        var postgreSqlContainer: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:12.6-alpine")
+            .withCommand("postgres", "-c", "fsync=off", "-c", "wal_level=logical")
+            .withExposedPorts(5432)
     }
 
     @Test
     fun dataPipelineExecution() {
         Assume.assumeTrue(DB_LAYER == DbLayers.SQL)
-        dbExecute(
+        con.createStatement().execute(
             """
              INSERT INTO source_trades(trd_id, inst, price, quantity, side, traded_at, trader, trade_state, unsolicited, orig_trd_id)
              VALUES
@@ -113,17 +128,17 @@ class DataPipelineTest : AbstractGenesisTestSupport<GenesisSet>(
 And this is the data pipeline configuration that is tested:
 
 ```kotlin
-sources {
+pipelines {
 
-    postgres("cdc-test") {
+    postgresSource("cdc-test") {
         hostname = "localhost"
-        port = 5432
+        port = systemDefinition.getItem("postgres_sink_port") as Int,
         username = "postgres"
         password = "docker"
         databaseName = "postgres"
 
         table {
-            "public.source_trades" to mapper("incoming_trades", TRADE) {
+            "public.source_trades" to map("incoming_trades", TRADE) {
                 val tradeId = stringValue("trd_id")
                 val instrument = stringValue("inst")
                 val tradedAt = longValue("traded_at")
@@ -138,7 +153,7 @@ sources {
                     }
 
                     TRADE_TYPE {
-                        sourceProperty = "side"
+                        property = "side"
                     }
 
                     TRADE_DATE {
@@ -160,11 +175,11 @@ sources {
                     }
 
                     QUANTITY {
-                        sourceProperty = "quantity"
+                        property = "quantity"
                     }
 
                     PRICE {
-                        sourceProperty = "price"
+                        property = "price"
                     }
 
                     RECORD_ID {
@@ -183,8 +198,6 @@ sources {
         }
     }
 }
-
-
 ```
 
 ## Starting source PostgreSQL

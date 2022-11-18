@@ -93,12 +93,12 @@ consolidator($LISTEN_TABLE$, $AGGREGATION_TABLE$) {
 <td>
 
 ```kt
-csv("") {
+csvSource("") {
     location = ""
     delimiter = ','
     hasHeader = true
     
-    mapper("", $TABLE$) {
+    map("", $TABLE$) {
         where { true }
     }
 }
@@ -128,10 +128,10 @@ eventHandler<$TYPE$>("$NAME$") {
 <td>
 
 ```kt
-json("") {
+jsonSource("") {
     location = ""
 
-    mapper("", $TABLE$) {
+    map("", $TABLE$) {
         where { true }
     }
 }
@@ -145,7 +145,7 @@ json("") {
 <td>
 
 ```kt
-msSql("") {
+msSqlSource("") {
     hostname = ""
     port = 1433
     username = ""
@@ -165,7 +165,7 @@ msSql("") {
 <td>
 
 ```kt
-oracle("") {
+oracleSource("") {
     hostname = ""
     port = 1433
     username = ""
@@ -185,7 +185,7 @@ oracle("") {
 <td>
 
 ```kt
-postgres("") {
+postgresSource("") {
     hostname = ""
     port = 5432
     username = ""
@@ -205,11 +205,11 @@ postgres("") {
 <td>
 
 ```kt
-xml("") {
+xmlSource("") {
     location = ""
     tagName = ""
 
-    mapper("", $TABLE$) {
+    map("", $TABLE$) {
         where { true }
     }
 }
