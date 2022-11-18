@@ -34,7 +34,7 @@ The Gradle plugin provides the easiest and quickest way to get Genesis running i
 
 1. Create or use an existing Genesis project. See our [Quick Start guide](/getting-started/quick-start/create-a-new-project/) for details of creating a new project.
 
-2. Make sure the necessary changes to the **genesis-system-defintions.kts** are made for your dependencies, such as the location of the database. You can find more details in our page on [preparing and biolding the server](/getting-started/quick-start/prepare-the-server-and-build/) for more info).
+2. Make sure the necessary changes to the **genesis-system-defintions.kts** are made for your dependencies, such as the location of the database. You can find more details in our page on [preparing and building the server](/getting-started/quick-start/prepare-the-server-and-build/).
 
 Add your dependencies to the Deploy plugin **build.gradle.kts** (default location for the Blank App Seed is **server/jvm/***appname***-deploy/build.gradle.kts**)
 
