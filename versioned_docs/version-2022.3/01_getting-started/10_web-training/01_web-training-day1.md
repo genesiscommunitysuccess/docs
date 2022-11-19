@@ -1,10 +1,21 @@
 ---
+title: Web Developer training - Day one
 id: web-training-day1
-title: Day 1
 sidebar_label: Day one
 sidebar_position: 3
-
+keywords: [reviewing the basics, extending our application, web developer training, day one]
+tags:
+    - reviewing the basics
+    - extending our application
+    - web developer training
+    - day one
 ---
+
+This day covers:
+
+- [Reviewing the basics​](#reviewing-basic-concepts)
+- [Extending our application](#extending-our-application)
+
 # Day 1 agenda
 Reviewing the basics and extending our application​.
 

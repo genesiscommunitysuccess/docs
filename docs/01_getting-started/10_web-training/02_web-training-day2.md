@@ -1,12 +1,21 @@
 ---
+title: Web Developer training - Day two
 id: web-training-day2
-title: Day 2
 sidebar_label: Day two
 sidebar_position: 4
-
+keywords: [complex forms, data entry components, introduction to Genesis Foundation Comms lib, web developer training, day two]
+tags:
+    - complex forms
+    - data entry components
+    - introduction to Genesis Foundation Comms lib
+    - web developer training
+    - day two
 ---
-# Day 2 agenda
-Complex forms, data entry components, introduction to Genesis Foundation Comms lib.
+
+This day covers:
+
+- [Complex forms and data entry components through Orders screen](#orders-screen) 
+- [Introduction to Genesis Foundation Comms lib](#introducing-genesis-foundation-comms-lib)
 
 ## Orders screen
 Let's continue the development of our web app creating an order screen. We're going to work on these files:

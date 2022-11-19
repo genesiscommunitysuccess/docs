@@ -1,12 +1,20 @@
 ---
+title: Web Developer training - Day three
 id: web-training-day3
-title: Day 3
 sidebar_label: Day three
 sidebar_position: 5
-
+keywords: [custom data grids, client-side options and filters, web developer training, day three]
+tags:
+    - custom data grids
+    - client-side options and filters
+    - web developer training
+    - day three
 ---
-# Day 3 agenda
-Custom data grids, client-side options and filters.
+
+This day covers:
+
+- [Custom data grids through Order entry screen​](#order-entry-screen)
+- [Client-side options and filters](#creating-our-own-grid-component)
 
 ## Order entry screen
 Let's continue the development of the order screen.

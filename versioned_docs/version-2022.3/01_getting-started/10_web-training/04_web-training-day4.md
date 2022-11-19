@@ -1,12 +1,22 @@
 ---
+title: Web Developer training - Day four
 id: web-training-day4
-title: Day 4
 sidebar_label: Day four
 sidebar_position: 6
+keywords: [styling, design systems, micro front ends, web developer training, day four]
+tags:
+    - styling
+    - design systems
+    - micro front ends
+    - web developer training
+    - day four
 ---
 
-# Day 4 agenda
-[Styling](#styling), [Design systems](#design-systems), [Micro Front-ends](#micro-front-ends) and [Angular integration​](#angular-integration).
+This day covers:
+
+- [Styling](#styling)
+- [Design systems](#design-systems)
+- [Micro Front-ends](#micro-front-ends)
 
 ## Styling
 

@@ -1,12 +1,20 @@
 ---
+title: Web Developer training - Day one
 id: web-training-day1
-title: Day 1
 sidebar_label: Day one
 sidebar_position: 3
-
+keywords: [reviewing the basics, extending our application, web developer training, day one]
+tags:
+    - reviewing the basics
+    - extending our application
+    - web developer training
+    - day one
 ---
-# Day 1 agenda
-Reviewing the basics and extending our application​.
+
+This day covers:
+
+- [Reviewing the basics​](#reviewing-basic-concepts)
+- [Extending our application](#extending-our-application)
 
 ## Reviewing basic concepts
 As introduced in the Developer Training, Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](https://www.fast.design/), which is a lightweight abstraction that enables you to easily build performant, memory-efficient, standards-compliant Web Components. 
