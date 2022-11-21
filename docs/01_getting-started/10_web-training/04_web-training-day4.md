@@ -322,7 +322,7 @@ Additionally, register your own design system called **ui-training** and a new c
 :::tip
 Remember, we have already provided you a folder with the main components (**client\web\src\_ui-training-design-system**), so you need to select the required ones and customize them.
 
-To register your own design system name, you have to edit the file **client\web\src\_ui-training-design-system\provide-design-system.ts** and then change the attribute `provideDesignSystem.prefix`. Thus, the components will get the defined prefix to declare (e.g. *ui-training*-text-field, *ui-training*-text-field, and so on).
+To register your own design system name, you have to edit the file **client\web\src\_ui-training-design-system\provide-design-system.ts** and then change the attribute `provideDesignSystem.prefix`. Thus, the components will get the defined prefix to declare (e.g. *ui-training*-text-field, *ui-training*-button, and so on).
 
 Lastly, to keep the best practices and avoid conflits, always open the system provider tag prior using the design system components like the example below.
 ```html {1,4}
