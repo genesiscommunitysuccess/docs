@@ -95,7 +95,7 @@ It is vital to ensure that any system definition variables that are used by the 
 
 ## Declaring multiple pipelines
 
-You may declare multiple pipelines in the same kts file. All sources should be placed within a single `pipelines` block.
+You may declare multiple pipelines in the same .kts file. All sources should be placed within a single `pipelines` block.
 
 ```kotlin
 pipelines {
@@ -151,7 +151,7 @@ pipelines {
 
 ## Auditable sink operations
 
-All database operations are audited if the table is declared as [auditable](/database/data-types/table-entities/#auditable-tables). Each sink operation is then stored to the audit table with the default event type of `custom-sink-operation`. However, you can change this by passing another type as argument to the `sink` function:
+All database operations are audited if the table is declared as [auditable](/database/data-types/table-entities/#auditable-tables). Each sink operation is then stored to the audit table with the default event type of `custom-sink-operation`. However, you can change this by passing another type as an argument to the `sink` function:
 
 ```kotlin
 pipelines {
