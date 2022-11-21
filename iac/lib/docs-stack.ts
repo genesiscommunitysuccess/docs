@@ -16,7 +16,8 @@ import * as targets from 'aws-cdk-lib/aws-route53-targets';
  * Route53 alias record, and ACM certificate.
  */
 const StaticSiteProps = {
-  domainName: 'learn.genesis.global'
+  domainName: 'learn.genesis.global',
+  siteSubDomain: 'ismail-test'
 }
 
 export class DocsStack extends cdk.Stack {
@@ -24,12 +25,14 @@ export class DocsStack extends cdk.Stack {
     super(scope, id, props);
 
     const zone = route53.HostedZone.fromHostedZoneAttributes(this, 'Zone', {zoneName : StaticSiteProps.domainName, hostedZoneId: 'Z00892613KX1P98M08IKK'});
+    const siteDomain = StaticSiteProps.siteSubDomain + '.' + StaticSiteProps.domainName;
     const BUCKET_ID = 'test-bucket-1';
     const cloudfrontOAI = new cloudfront.OriginAccessIdentity(this, 'cloudfront-OAI');
 
-    new CfnOutput(this, 'Site', { value: 'https://learn.genesis.global'});
+    new CfnOutput(this, 'Site', { value: 'https://' + siteDomain});
 
     const docsTestBucket = new s3.Bucket(this, BUCKET_ID, {
+
       versioned: true,
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
@@ -48,7 +51,7 @@ export class DocsStack extends cdk.Stack {
     const certificate = new acm.DnsValidatedCertificate(this, 'SiteCertificate', {
       region: 'us-east-1', // Cloudfront only checks this region for certificates.
       hostedZone: zone,
-      domainName: StaticSiteProps.domainName
+      domainName: siteDomain
     });
     new CfnOutput(this, 'Certificate', { value: certificate.certificateArn });
 
@@ -56,7 +59,7 @@ export class DocsStack extends cdk.Stack {
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
       certificate: certificate,
-      domainNames: [...StaticSiteProps.domainName],
+      domainNames: [siteDomain],
       defaultRootObject: "index.html",
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
       errorResponses:[
@@ -91,6 +94,5 @@ export class DocsStack extends cdk.Stack {
       distribution,
       distributionPaths: ['/*'],
     });
-
   }
 }
