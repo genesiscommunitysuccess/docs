@@ -16,7 +16,7 @@ import * as targets from 'aws-cdk-lib/aws-route53-targets';
  * Route53 alias record, and ACM certificate.
  */
 const StaticSiteProps = {
-  domainName: 'learn.genesis.global',
+  hostedZone: 'learn.genesis.global',
   siteSubDomain: 'ismail-test'
 }
 
@@ -24,8 +24,8 @@ export class DocsStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const zone = route53.HostedZone.fromHostedZoneAttributes(this, 'Zone', {zoneName : StaticSiteProps.domainName, hostedZoneId: 'Z00892613KX1P98M08IKK'});
-    const siteDomain = StaticSiteProps.siteSubDomain + '.' + StaticSiteProps.domainName;
+    const zone = route53.HostedZone.fromHostedZoneAttributes(this, 'Zone', {zoneName : StaticSiteProps.hostedZone, hostedZoneId: 'Z00892613KX1P98M08IKK'});
+    const siteDomain = StaticSiteProps.siteSubDomain + '.' + StaticSiteProps.hostedZone;
     const BUCKET_ID = 'test-bucket-1';
     const cloudfrontOAI = new cloudfront.OriginAccessIdentity(this, 'cloudfront-OAI');
 
@@ -82,7 +82,7 @@ export class DocsStack extends cdk.Stack {
 
     // Route53 alias record for the CloudFront distribution
     new route53.ARecord(this, 'SiteAliasRecord', {
-      recordName: StaticSiteProps.domainName,
+      recordName: siteDomain,
       target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution)),
       zone
     });
