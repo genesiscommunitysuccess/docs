@@ -90,7 +90,7 @@ Grids are our primary way of displaying information. Let's add a grid to display
         entityManager(
             entity = TRADE, 
             title = "Trades", 
-            operations = listOf(ADD),
+            addRows = true,
         )
         // highlight-end
     }

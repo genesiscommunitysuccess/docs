@@ -104,43 +104,19 @@ Application is now created and dependencies are installed. Our expected output s
 ✔ Install success.
 ```
 
-### Package and environment settings
-
-We can now configure the NPM package scope (typically name of your organisation) and name (defaults to your chosen application name):
-
-```shell
-? NPM package scope (genesislcap)
-? NPM package name (alpha)
-```
-
-You will then be able to choose whether to use Docker (highly recommended) or WSL/CentOS environment.
+We can now configure whether to use Docker (highly recommended) or a WSL/CentOS environment.
 
 ```shell
 Use Docker (Y/n)
 ```
 
-Next, you will be asked whether we want to configure a custom API host. Hit Enter unless you need to override the default.
-
-:::info
-Web front end will attempt to connect to your local Genesis server by default. If you want to connect to a remote server instead, choose `Yes` and specify a WebSocket URL.
-:::
+Next you will be asked to provide a Group ID, this determines the package names in your application:
 
 ```shell
-? (Optional) Override the default API Host URL (N/y)
-```
-
-Continue with the remaining prompts:
-
-```shell
-? Genesis Server version
-? Auth Server version
-? GPL version
-? Kotlin version
 ? Group Id global.genesis
-? Application Version 1.0.0-SNAPSHOT
 ```
 
-Next, you will be able to set the login details:
+Then, you will be able to set the login details:
 
 ```
 ? User Name
