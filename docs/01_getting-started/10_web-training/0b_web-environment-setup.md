@@ -30,7 +30,7 @@ From the root directory of the project, run:
 docker-compose up -d
 ```
 
-Check on your Docker dashboard if you have containers ***gsf*** and ***nginx*** running.
+Check on your Docker dashboard if you have the containers **gsf** and **nginx** running.
 
 ### Attaching a terminal to a docker container
 
@@ -40,14 +40,14 @@ Attaching a terminal to a docker container is as easy as running:
 docker exec -it gsf bash
 ```
 
-Now try logging as "alpha" and running "mon" to monitor the platform services.
+Now try logging in as **alpha** and running `mon` to monitor the platform services.
 ```shell
 su - alpha
 
 mon
 ```
 
-You must see all processes up and running or in stand by mode.
+You must see all processes up and running or in standby mode.
 
 <!-- Download this [WSL distro](https://genesisglobal.jfrog.io/artifactory/community-uploads/web-training-wsl.zip), unzip it and import it into WSL:
 - As a reminder, create a local folder where you want to run the distro, e.g., "C:\wsl\distros\web-training-distro\". Unzip the package downloaded there and, from a command line, cd into that folder then run:
