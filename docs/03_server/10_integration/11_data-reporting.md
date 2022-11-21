@@ -1,6 +1,6 @@
 ---
-title: 'Sever Reporting'
-sidebar_label: 'Server Reporting'
+title: 'Sever reporting'
+sidebar_label: 'Server reporting'
 id: server-reporting
 tags:
   - reporting
