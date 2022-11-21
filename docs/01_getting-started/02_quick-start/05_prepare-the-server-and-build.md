@@ -99,3 +99,9 @@ Finally, you can build the server.
 In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha**/**Tasks**/**Build/Assemble**.
 
 ![](/img/assemble-server.png)
+
+You can procede to the next step whilst loading.
+
+After loading is completed you have a functional server.
+
+Congratulations! you have completed the prepare and build.

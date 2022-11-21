@@ -215,7 +215,7 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-ho
 
 ## Running the front end
 
-Now you can run the application's front end. From there, you can view the table of data and add the details of a new trade.
+Now you can run the application's front end. From there, you can view the data table and add the details of a new trade.
 
 To run the application, from **client/package.json**:
 

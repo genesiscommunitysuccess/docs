@@ -46,4 +46,8 @@ export const HomeTemplate = html<Home>`
 `;
 ```
 
-Now you have ((Laura))
+  
+Now you have created a web application that knows how to connect to the server you have built. You are ready to run the application. You have an exciting choice:
+
+- run using [Docker](/getting-started/quick-start/run-the-application-docker/) (very highly recommended - this is a very simple process)
+- run using [WSL/Linux](/getting-started/quick-start/run-the-application/) (as you might have guessed, this is more complex)
