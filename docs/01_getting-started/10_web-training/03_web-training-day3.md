@@ -264,10 +264,10 @@ Looks good, doesn't it?
 :::info estimated time
 45min
 :::
-Create a new component called OrdersAgGrid extending ZeroGridPro and apply the same style on the `SIDE` field of the PositionsAgGrid in the OrdersAgGrid - i.e., SIDE will be green when ***BUY*** and red when ***SELL***.
+Create a new component called `OrdersAgGrid` extending `ZeroGridPro`. Apply the same style on the `SIDE` field of the `PositionsAgGrid` in the `OrdersAgGrid` - so that SIDE will be green when ***BUY*** and red when ***SELL***.
 
 :::tip
-To do that, create a *order-grid* folder below **client\web\src\components** and create the needed files to create a class, template and styles (e.g. order-grid.ts, order-grid.template.ts, order-grid.styles.ts). Apply the needed changes as we saw above. 
+To do this, create an **order-grid** folder below **client\web\src\components** and create the files needed to create a class, template and styles (e.g. **order-grid.ts**, **order-grid.template.ts** and **order-grid.styles.ts**). Apply the necessary changes that we saw above. 
 
 Finally, create a new route called custom-order (as we did with playground, order, etc) and then add the order-grid you just created.
 :::
