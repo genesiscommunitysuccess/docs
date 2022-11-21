@@ -492,7 +492,7 @@ Steps:
 - import *observable* and *repeat* from from `@microsoft/fast-element`
 - add a list called ***instruments*** to the MarketdataComponent. Feel free to initialize it with a few instruments, such as `@observable instruments: String[] = ["MSFT", "AAPL"];`
 - change the `lastPrice` attribute to a list of prices. Feel free to initialize it with corresponding prices, such as `@observable lastPrices: number[] = [101.23, 227.12];`
-- change `getLastPriceRealTime` to receive the instrument name now and return the corresponding price;
+- change `getLastPriceRealTime` to receive the instrument name and return the corresponding price;
 - in the HTML template, make sure to loop through all the instruments and display the price for each one;
 - style it so that the instrument name is displayed in some tone of blue and the price in some tone of green.
 
