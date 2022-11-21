@@ -141,7 +141,7 @@ api(project(":alpha-eventhandler"))
 
 ### 4. Edit the event handler to add an integrated state machine
 
-Let's edit the event handler to add an integrated state machine. First, in the **alpha-eventhandler.kts** file, add the imports below and declare a variable to be visible to all events by injecting the class `TradeStateMachine` that we have just created. 
+Let's edit the event handler to add an integrated state machine. First, in the **alpha-eventhandler.kts** file, add the imports below and declare a variable to be visible to all events by injecting the class `TradeStateMachine`, which we have just created. 
 
 ```kotlin {1-9,11}
 import java.io.File
