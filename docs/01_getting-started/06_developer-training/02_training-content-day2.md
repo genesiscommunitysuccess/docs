@@ -213,7 +213,8 @@ The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
 
 :::tip
-If you try to run the application and for some reason there is already a process using the same port and you are sure it should not be run, perhaps caching or old runs, you can run the command-line below as Administrator to search the process and kill it. 
+If you try to run the application and there is already a process using the same port, check the process. If you are certain that it should not be running (for example, if it is the result of caching or old runs), you can run the command-line below as Administrator to search the process and kill it. 
+
 ```shell
 netstat -ano | findstr :<yourPortNumber>
 taskkill /PID <typeyourPIDhere> /F
