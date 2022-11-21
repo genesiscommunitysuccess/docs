@@ -46,10 +46,8 @@ export const HomeTemplate = html<Home>`
 `;
 ```
 
-You can now proceed to running the application and see the displayed data in the browser.  
+  
+Now you have created a web application that knows how to connect to the server you have built. You are ready to run the application. You have an exciting choice:
 
-The application should look something like this:
-
-![](/img/trades-grid.png)
-
-To add data to the grid, click on the **Add** button at the top right of the screen. 
+- run using [Docker](/getting-started/quick-start/run-the-application-docker/) (very highly recommended - this is a very simple process)
+- run using [WSL/Linux](/getting-started/quick-start/run-the-application/) (as you might have guessed, this is more complex)
