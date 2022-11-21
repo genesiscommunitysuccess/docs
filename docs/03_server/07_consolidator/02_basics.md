@@ -435,7 +435,7 @@ A cold start avoids the danger of losing your calculated data. To make a cold st
 
 `startProcess GENESIS_CONSOLIDATOR --coldStart`
 
-In this case, the Consolidator process is called `GENESIS_CONSOLIDATOR`. If in doubt, you can find the exact name of your consolidator in the [service-definitions](https://docs.genesis.global/secure/server/configuring-runtime/service-definitions/) file.
+In this case, the Consolidator process is called `GENESIS_CONSOLIDATOR`. If in doubt, you can find the exact name of your consolidator in the [service-definitions](/server/configuring-runtime/service-definitions/) file.
 
 This command consolidates all records in the system before starting the real-time event-driven consolidations. 
 
