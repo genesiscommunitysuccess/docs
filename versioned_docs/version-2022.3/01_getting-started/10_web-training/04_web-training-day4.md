@@ -103,7 +103,7 @@ For further styling your components, it would make sense to start working with [
 Style the `quantity` field of the orders grid in such a way that if the value is bigger than 100 it will be in green, otherwise red.
 
 :::tip
-Here you can use specific conditions providing a function to the cellClass column config.
+Here you can use specific conditions providing a function to the `cellClass` column config.
 :::
 
 
@@ -320,7 +320,7 @@ Override the Zero design system, registering a new style for the ***zero-button*
 Additionally, register your own design system called **ui-training** and a new component `<ui-training-text-field>` whose font color is blue. Use this component in the order screen.
 
 :::tip
-Remember we already provided you a folder with the main components (*client\web\src\_ui-training-design-system*), so you need to select the required ones and customize them.
+Remember, we already provided you a folder with the main components (**client\web\src\_ui-training-design-system**), so you need to select the required ones and customize them.
 
 To register your own design system name, you have to edit the file *client\web\src\_ui-training-design-system\provide-design-system.ts* and then change the attribute **provideDesignSystem.prefix**. Thus, the components will get the defined prefix to declare (e.g. *ui-training*-text-field, *ui-training*-text-field, and so on).
 
@@ -336,7 +336,7 @@ Lastly, to keep the best practices and avoid conflits, always open the system pr
 
 ## Micro Front-ends
 
-The [Micro-front-end](/web/micro-front-ends/introduction/) architecture is a design approach in which a front-end app is decomposed into individual, semi-independent **micro applications** working loosely together. There are re-usable micro-front-ends that can be used by Genesis-powered applications, such as [Foundation Header](/web/micro-front-ends/foundation-header/) (covered in [Day 1](#)), [Entity Management](/web/micro-front-ends/foundation-entity-management/) (pretty much covered in the [Developer Training](#)), [User Management](#user-management), and [Front-end reporting](#front-end-reporting).
+The [Micro front-end](/web/micro-front-ends/introduction/) architecture is a design approach in which a front-end app is decomposed into individual, semi-independent **micro applications** working loosely together. There are re-usable micro-front-ends that can be used by Genesis-powered applications, such as [Foundation Header](/web/micro-front-ends/foundation-header/) (covered in [Day 1](#)), [Entity Management](/web/micro-front-ends/foundation-entity-management/) (pretty much covered in the [Developer Training](#)), [User Management](#user-management), and [Front-end reporting](#front-end-reporting).
 
 Let's take a look at the User Management and Reporting Micro Front-ends.
 
