@@ -132,7 +132,7 @@ When running the app on your local machine, you can adjust a few settings under 
   },
 ```
 
-Since our back end is running locally, we set the `API_HOST` to localhost. The **/gwf/** path is a [reverse proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) configured in a nginx web server running on the server (a docker container in our case). 
+Since our back end is running locally, we set the `API_HOST` to localhost. The **/gwf/** path is a [reverse proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/), configured in an nginx web server thta is running on the server (a docker container, in our case). 
 
 Essentially, the front end will connect to the back end through a websocket to **localhost/gwf**, which in turn will, internally, ***proxy pass*** the connection to an internal Genesis process called GENESIS_ROUTER. This contains a web socket adapter able to communicate with other Genesis processes, such as Data Servers, Request Servers, Event Handlers, etc. Think of this as a gateway from the front end to all services on the back end.
 
@@ -491,7 +491,7 @@ Instrument AAPL 227.12
 Steps:
 - import *observable* and *repeat* from from `@microsoft/fast-element`
 - add a list called ***instruments*** to the MarketdataComponent. Feel free to initialize it with a few instruments, such as `@observable instruments: String[] = ["MSFT", "AAPL"];`
-- change the lastPrice attribute to a list of prices. Feel free to initialize it with corresponding prices, such as `@observable lastPrices: number[] = [101.23, 227.12];`
+- change the `lastPrice` attribute to a list of prices. Feel free to initialize it with corresponding prices, such as `@observable lastPrices: number[] = [101.23, 227.12];`
 - change `getLastPriceRealTime` to receive the instrument name now and return the corresponding price;
 - in the HTML template, make sure to loop through all the instruments and display the price for each one;
 - style it so that the instrument name is displayed in some tone of blue and the price in some tone of green.
@@ -583,7 +583,7 @@ export class MainApplication extends FASTElement {
 }
 ```
 
-- Make sure you got a reference to the `navigation` object on the FAST router when you instantiate it, this will allow us to set up navigation functionality from the navigation bar in the [navigation items step.](#navigation-items)
+- Make sure you have got a reference to the `navigation` object on the FAST router when you instantiate it. This will allow us to set up navigation functionality from the navigation bar in the [navigation items step.](#navigation-items)
 ```js {5} title='main.template.ts'
 ...
 export const MainTemplate: ViewTemplate<MainApplication> = html`
@@ -623,7 +623,7 @@ By default, the navigation bar and flyout menu show the Genesis logo. You can ov
 ```html
 <foundation-header logo-src="https://icotar.com/avatar/genesis"></foundation-header>
 ```
-The `logo-src` defines the image that you want to display. Adding this attribute will update the logo on both the flyout and navigation bar. Omit the attribute to leave the Genesis logo.
+The `logo-src` defines the image that you want to display. Adding this attribute will update the logo on both the flyout and navigation bar. If you omit the attribute, this will leave out the Genesis logo.
 
 ### Exercise 1.2: customising the logo
 :::info estimated time
@@ -687,11 +687,11 @@ html`
 ></foundation-header>`;
 ```
 
-That's why when you add a new route to the allRoutes attribute it's automatically added as a menu item - in other words, the `repeat` directive is iterating over the allRoutes and adding the buttons for each one of them.
+That's why, when you add a new route to the `allRoutes` attribute, it's automatically added as a menu item. In other words, the `repeat` directive is iterating over the `allRoutes` and adding the buttons for each one of them.
 
 ##### Control buttons
 
-There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (these are hidden by default). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined. Each one dispatches an associated event when clicked. 
+There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (by default, these are hidden). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined. Each one dispatches an associated event when clicked. 
 
 | Logo          | Toggle Attribute             | Dispatched Event          |
 |---------------|------------------------------|---------------------------|
@@ -715,9 +715,9 @@ export const defaultLayout = new FASTElementLayout(
 );
 ```
 
-To implement the functionality of the button in the client you should follow the steps:
+To implement the functionality of the button in the client, you should follow the steps below:
 
-- Define the functionality of the event callback in the class of a class which is a parent to the router.
+- Define the functionality of the event `callback` in the class of a class which is a parent to the router.
 
 ```javascript title='main.ts'
 export class MainApplication extends FASTElement {
@@ -745,10 +745,10 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 15min
 :::
 
-Add the Moon control button to the header that when clicked calls the `onDarkModeToggle` function which is already defined in `main.ts`.
+Add the Moon control button to the header that, when clicked, calls the `onDarkModeToggle`. This function is already defined in **main.ts**.
 
 :::tip
-The last example we showed how to add the Misc Control button, now you need to do it considering the Moon one.
+In the last example we showed how to add the Misc Control button. Now you need to do this considering the Moon one.
 :::
 
 
