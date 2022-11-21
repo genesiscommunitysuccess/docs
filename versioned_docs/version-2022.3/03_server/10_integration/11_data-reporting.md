@@ -2,12 +2,10 @@
 title: 'Sever Reporting'
 sidebar_label: 'Server Reporting'
 id: server-reporting
-keywords: [server, integration, micro-front-ends, reporting]
 tags:
-  - server
-  - integration
-  - micro-front-ends
   - reporting
+  - server
+  - micro frontends
 ---
 
 import Reporting from '../../resource/reporting_mf.md'
@@ -22,7 +20,7 @@ See the web section of the documentation to [see the micro front-end documentati
 
 ## Server configuration
 
-To enable this component on the server, pull in the [reporting-distribution-6.1.0-bin.zip](https://https://genesisglobal.jfrog.io/ui/native/libs-release-local/global/genesis/reporting-distribution/6.1.0/reporting-distribution-6.1.0-bin.zip) from Artifactory, and `unzip` it alongside genesis and auth modules in the standard genesis deployment server directory.
+To enable this component on the server, pull in the [reporting-distribution-6.1.0-bin.zip](https://genesisglobal.jfrog.io/ui/native/libs-release-local/global/genesis/reporting-distribution/6.1.0/reporting-distribution-6.1.0-bin.zip) from Artifactory, and `unzip` it alongside genesis and auth modules in the standard genesis deployment server directory.
 
 To make data available to users so that they can create reports, you must insert entries into the `REPORT_DATASOURCES` table. This table determines which data resources can be reported on. In most cases, you will have already set up queries in your [Data Server](/server/data-server/basics/) to provide the data, but you can add new sources by creating new queries in your _application_**-dataserver.kts**.
 

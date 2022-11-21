@@ -1,15 +1,15 @@
 ---
-title: 'Micro-front-ends - Foundation Header'
+title: 'Foundation Header'
 sidebar_label: 'Foundation header'
 Id: front-end-foundation-header
-keywords: [web, frontend, ui, micro-front-ends, header, sidebar]
 tags:
-  - web
-  - frontend
-  - ui
-  - micro-front-ends
   - header
   - sidebar
+  - frontend
+  - ui
+  - mf
+  - web
+  - micro frontends
 ---
 
 # Foundation Header
@@ -53,7 +53,7 @@ The `allRoutes` array, which you need to change to set the navigation buttons on
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-header` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. There is more information in the [pacakge.json basics](../01_basics/04_package-json-basics.mdx) page.
+- Add `@genesislcap/foundation-header` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. There is more information in the [package.json basics](/web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -188,7 +188,7 @@ html`
 
 ### Control buttons
 
-There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (these are hidden by default). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined. Each one dispatches an associated event when clicked.
+There are three control buttons that can be shown or hidden on the right-hand side of the navigation bar (these are hidden by default). Each one of them is a boolean attribute that can be added where the `<foundation-header>` tag is defined. .
 
 | Logo          | Toggle Attribute             | Dispatched Event          |
 |---------------|------------------------------|---------------------------|
