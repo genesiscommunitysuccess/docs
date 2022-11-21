@@ -494,13 +494,14 @@ Instrument AAPL 227.12
 Steps:
 - import *observable* and *repeat* from from `@microsoft/fast-element`
 - add a list called ***instruments*** to the MarketdataComponent. Feel free to initialize it with a few instruments, such as `@observable instruments: String[] = ["MSFT", "AAPL"];`
-- change the lastPrice attribute to a list of prices. Feel free to initialize it with corresponding prices, such as `@observable lastPrices: number[] = [101.23, 227.12];`
+- change the `lastPrice` attribute to a list of prices. Feel free to initialize it with corresponding prices, such as `@observable lastPrices: number[] = [101.23, 227.12];`
 - change `getLastPriceRealTime` to receive the instrument name now and return the corresponding price;
 - in the HTML template, make sure to loop through all the instruments and display the price for each one;
 - style it so that the instrument name is displayed in some tone of blue and the price in some tone of green.
 
 :::tip repeat directive
-You may find it useful: https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive, make sure to check the special context object as well. Example:
+You may find this useful: https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive 
+Make sure to check the special context object as well. Example:
 ```typescript
 ${(x,c) => c.PROPERTY_OF_THE_CONTEXT
 ```
@@ -572,7 +573,7 @@ npm run bootstrap
 ```
 :::
 
-- In our **web/src/main/main.ts** file, which is our top level class of our application, make sure you imported and dependency injected the Navigation class.
+- In our **web/src/main/main.ts** file, which is the top-level class of our application, make sure you imported and dependency-injected the Navigation class.
 ```js {1,6} title='main.ts'
 import { Navigation } from '@genesislcap/foundation-header';
 
@@ -586,7 +587,7 @@ export class MainApplication extends FASTElement {
 }
 ```
 
-- Make sure you got a reference to the `navigation` object on the FAST router when you instantiate it, this will allow us to set up navigation functionality from the navigation bar in the [navigation items step.](#navigation-items)
+- Make sure you have got a reference to the `navigation` object on the FAST router when you instantiate it. This will allow us to set up navigation functionality from the navigation bar in the [navigation items step.](#navigation-items)
 ```js {5} title='main.template.ts'
 ...
 export const MainTemplate: ViewTemplate<MainApplication> = html`
@@ -690,7 +691,7 @@ html`
 ></foundation-header>`;
 ```
 
-That's why when you add a new route to the allRoutes attribute it's automatically added as a menu item - in other words, the `repeat` directive is iterating over the allRoutes and adding the buttons for each one of them.
+That's why, when you add a new route to the `allRoutes` attribute, it's automatically added as a menu item. In other words, the `repeat` directive is iterating over the `allRoutes` and adding the buttons for each one of them.
 
 ##### Control buttons
 
@@ -748,10 +749,10 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 15min
 :::
 
-Add the Moon control button to the header that when clicked calls the `onDarkModeToggle` function which is already defined in `main.ts`.
+Add the Moon control button to the header that, when clicked, calls the `onDarkModeToggle` function. This function is already defined in **main.ts**.
 
 :::tip
-The last example we showed how to add the Misc Control button, now you need to do it considering the Moon one.
+In the last example, we showed how to add the Misc Control button, now you need to do the same thing for the Moon button.
 :::
 
 
@@ -794,15 +795,15 @@ To set the content of the flyout menu, add the content in the html within an ele
 Add an item pointing to the playground page.
 
 :::tip
-Look at the [interaction components](/web/web-components/interaction/anchor/) to see a list of available components you can use for the menu item.
-A good suggestion would be to use `Anchor`, which can be simply used as `<zero-anchor>`:
+Look at the [interaction components](/web/web-components/interaction/anchor/) to see a list of available components that you can use for the menu item.
+A good suggestion would be to use `Anchor`, which can simply be used as `<zero-anchor>`:
 ```ts
 <zero-anchor @click=${(x) => x.navigation.navigateTo("/PUT_YOUR_ROUTE_HERE")}>
 Playground
 </zero-anchor>
 ```
 
-By the way, we're using by default the Zero Design Systems. We are going to talk more about Design Systems later in this course.
+By the way, we're using the Zero Design Systems by default. We are going to talk more about Design Systems later in this course.
 :::
 
 
