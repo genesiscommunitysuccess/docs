@@ -13,7 +13,7 @@ tags:
 
 You have a choice of how you run the application. The instructions on this page are for using WSL/CentOS. If you prefer to use Docker as your environment, there are [separate instructions](/getting-started/quick-start/run-the-application-docker/).
 
-Before you start this, make sure that:
+Before you start, make sure that:
 
 - you have a user with the name of the application (alpha)
 - foundationdb is running (if it is not, run `systemctl start foundationdb` from Centos07)
@@ -33,8 +33,8 @@ wsl-user=alpha
 2. Run `setupEnvironment`. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution.
 
 By command:
-```shell
-./gradlew :jvm:alpha-deploy:setupEnvironment #On the IntelliJ terminal
+```shell title="Intellij terminal"
+./gradlew :jvm:alpha-deploy:setupEnvironment 
 ```
 From the dropdown menu:
 
@@ -215,7 +215,7 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-ho
 
 ## Running the front end
 
-Now you can run the application's front end. From there, you can view the table of data and add the details of a new trade.
+Now you can run the application's front end. From there, you can view the data table and add the details of a new trade.
 
 To run the application, from **client/package.json**:
 

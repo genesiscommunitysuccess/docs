@@ -1,5 +1,5 @@
 ---
-title: 'Database interface - Generated repositories'
+title: 'Database interface - generated repositories'
 sidebar_label: 'Generated repositories'
 id: generated-repositories
 keywords: [database, database interface, generated, repositories]
@@ -11,7 +11,6 @@ tags:
 ---
 
 
-[Introduction](/database/database-interface/database-interface/)  | [EntityDb](/database/database-interface/entity-db/) |  [Generated repositories](/database/database-interface/generated-repositories/) | [RxDb](/database/database-interface/rxdb/) 
 
 During the code generation phase, repository classes are generated for every table and view in the system. These repositories provide a type-safe way of accessing the database.
 
@@ -41,9 +40,11 @@ The main differences between the generated repositories and the [Entity Db](/da
 
 With generated repositories, there are two flavours of the entity db:
 
-* One has a [RxJava API](/database/types-of-api/rxjava/) signatures, for use from Java
+* one has a [RxJava API](/database/types-of-api/rxjava/) signatures, for use from Java
 
-* The other flavour has an [Async API](/database/types-of-api/async/) signatures, for use from Kotlin.
+* the other flavour has an [Async API](/database/types-of-api/async/) signature, for use by Kotlin
 
-If you have a table called **POSITION** and two repositories called **PositionRx3Repository** and **PositionAsyncRepository** will be generated as part of [generateDao](/database/fields-tables-views/genesisDao/) task
-You can perform CRUD operations on Table/View by its primary key and indices
+If you have a table called **POSITION**, then, when you run a [generateDao](/database/fields-tables-views/genesisDao/), two repositories will be generated:
+**PositionRx3Repository** and **PositionAsyncRepository**.
+
+You can perform CRUD operations on Table/View by its primary key and indices.

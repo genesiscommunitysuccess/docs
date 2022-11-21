@@ -1,14 +1,8 @@
 ---
-title: Developer training - Day four
+id: training-content-day4
+title: Day four
 sidebar_label: Day four
 sidebar_position: 6
-id: training-content-day4
-keywords: [getting started, quick start, developer training, day four]
-tags:
-    - getting started
-    - quick start
-    - developer training
-    - day four
 ---
 
 <details>
@@ -147,9 +141,18 @@ api(project(":alpha-eventhandler"))
 
 ### 4. Edit the event handler to add an integrated state machine
 
-Let's edit the event handler to add an integrated state machine. First, in the **alpha-eventhandler.kts** file, declare a variable to be visible to all events by injecting the class `TradeStateMachine` that we have just created. 
+Let's edit the event handler to add an integrated state machine. First, in the **alpha-eventhandler.kts** file, add the imports below and declare a variable to be visible to all events by injecting the class `TradeStateMachine` that we have just created. 
 
-```kotlin {2}
+```kotlin {1-9,11}
+import java.io.File
+import java.time.LocalDate
+import global.genesis.TradeStateMachine
+import global.genesis.commons.standards.GenesisPaths
+import global.genesis.gen.dao.repository.PositionAsyncRepository
+import global.genesis.gen.view.repository.TradeViewAsyncRepository
+import global.genesis.jackson.core.GenesisJacksonMapper
+import global.genesis.jackson.core.GenesisJacksonMapper.Companion.toJsonString
+...
 eventHandler {
     val stateMachine = inject<TradeStateMachine>()
 
@@ -486,7 +489,7 @@ Now you must update the **alpha-eventhandler.kts** in order to pass the `entityD
     }
 ```
 
-Run the [dao], [build](/getting-started/developer-training/training-content-day1/#5-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks.
+Run the [dao](/getting-started/developer-training/training-content-day1/#generatedao), [build](/getting-started/developer-training/training-content-day1/#5-the-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks.
 
 ### Exercise 4.3: testing an audited table
 :::info ESTIMATED TIME

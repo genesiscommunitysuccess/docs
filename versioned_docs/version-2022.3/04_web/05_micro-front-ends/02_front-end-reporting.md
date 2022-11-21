@@ -26,7 +26,7 @@ The required configuration is described in the [Server documentation](docs/03_se
 
 To enable this micro-front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-reporting` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. There is more information on this in the [pacakge.json basics](../01_basics/04_package-json-basics.md) page.
+- Add `@genesislcap/foundation-reporting` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. There is more information on this in the [package.json basics](/web/basics/package-json-basics/) page.
 
 ```javascript
 {

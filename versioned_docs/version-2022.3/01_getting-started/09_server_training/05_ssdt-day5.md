@@ -345,24 +345,23 @@ Currently, the supported sources are: *PostgreSQL*, *MS SQL Server*, *Oracle Ent
 
 - Create a Kotlin script file named **{applicationName}-datapipeline.kts** file. Here is a sample configuration using *PostgreSQL*:
 ```kotlin
-sources {
+pipelines {
 
-    postgres("cdc-test") {
+    postgresSource("cdc-test") {
         hostname = "localhost"
         port = 5432
         username = "postgres"
         password = "docker"
         databaseName = "postgres"
 
-        table {
-            "public.source_trades" to mapper("incoming_trades", TRADE) {
+            "public.source_trades" to map("incoming_trades", TRADE) {
                 val tradeId = stringValue("trd_id")
                 val tradedAt = longValue("traded_at")
 
                 TRADE {
 
                     TRADE_TYPE {
-                        sourceProperty = "side"
+                        property = "side"
                     }
 
                     TRADE_DATE {

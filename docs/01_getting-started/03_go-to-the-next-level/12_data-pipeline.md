@@ -55,25 +55,25 @@ import global.genesis.gen.config.tables.TRADE.SIDE
 import global.genesis.gen.config.tables.TRADE.TRADE_DATETIME
 import global.genesis.gen.config.tables.TRADE.TRADE_STATUS
 
-sources {
-  csv("some-name") {
+pipelines {
+  csvSource("some-name") {
     location = "file:/home/positions/run/runtime/fileIngress?fileName=trades.csv"
 
-    mapper("mapper-name", TRADE) {
+    map("mapper-name", TRADE) {
       INSTRUMENT_ID {
-        sourceProperty = "instrumentId"
+        property = "instrumentId"
       }
       COUNTERPARTY_ID {
-        sourceProperty = "counterpartyId"
+        property = "counterpartyId"
       }
       QUANTITY {
-        sourceProperty = "amount"
+        property = "amount"
       }
       SIDE {
-        sourceProperty = "buySell"
+        property = "buySell"
       }
       PRICE {
-        sourceProperty = "price"
+        property = "price"
       }
       TRADE_DATETIME {
         transform {
@@ -81,7 +81,7 @@ sources {
         }
       }
       ENTERED_BY {
-        sourceProperty = "enteredBy"
+        property = "enteredBy"
       }
       TRADE_STATUS {
         transform {
@@ -141,4 +141,3 @@ In this section, we have created a working data pipeline. Given everything is wo
 ![DbMon screenshot](/img/dbmon-datapipeline.PNG)
 
 You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-script-config/src/main/resources/scripts) as a reference point for this chapter. 
-

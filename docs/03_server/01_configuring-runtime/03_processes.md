@@ -18,7 +18,6 @@ When you run the command `genesisInstall`, the details of the **processes.xml** 
 
 Very important commands like **startServer**, **killServer**, **startProcess** and **killProcess** all refer to the generated file to check which processes they need to act on.
 
-
 Below is an example of a generated processes.xml file for an application that has:
 
 * a Data Server
