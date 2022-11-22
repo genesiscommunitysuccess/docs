@@ -7,7 +7,7 @@ import TabItem from '@theme/TabItem';
 
 ### Introduction
 
-With Fuse, we have rich data-driven visualization through chart components.
+With Fuse, we have rich data-driven visualisation through chart components.
 
 With charts we can:
 - condense our data into easy-to-understand formats
@@ -24,7 +24,7 @@ In order to implement a chart, there are a minimum of 3 parameters required.
 
 > `value` is the field we’re displaying on the chart. This field should always be numeric.
 
-> `groupBy` otherwise known as (category axis), is the field used for grouping. 
+> `groupBy` (otherwise known as category axis) is the field used for grouping. 
 
 See examples below for more details:
 
@@ -58,7 +58,7 @@ chart(
 Note the additional parameter specifying the chart type. If we want to use a specific chart, we must use the type parameter. 
 :::
 
-> A pie chart typically represents numbers in percentages used to visualize a part to a whole relationship or a composition. 
+> A pie chart typically represents numbers in percentages. This is used to visualise a part to a whole relationship or a composition. 
 
 <zero-card style={{backgroundColor: "#101628"}}>
 <h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Pie Chart</b></h4>
@@ -78,7 +78,7 @@ chart(
 
 <TabItem value="line" label="Line" >
 
-> Line charts are best suited for trend-based visualizations of data over a period of time. With line charts, the emphasis is on the continuation or the flow of the values (a trend).
+> Line charts are best suited for trend-based visualisations of data over a period of time. With line charts, the emphasis is on the continuation or the flow of the values (a trend).
 
 <zero-card style={{backgroundColor: "#101628", padding: "4px"}}>
 <h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Line Chart</b></h4>
@@ -163,7 +163,7 @@ chart(
 
 <TabItem value="donut" label="Donut" >
 
-> The donut chart can help you compare individual categories in relation to the whole. Similar to  a pie chart, but with a few advantages. They can make it easier for users to compare individual dimensions.
+> The donut chart can help you compare individual categories in relation to the whole. This is similar to a pie chart, but with a few advantages. They can make it easier for users to compare individual dimensions.
 
 <zero-card style={{backgroundColor: "#101628", padding: "4px"}}>
 <h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Donut Chart</b></h4>
@@ -206,7 +206,7 @@ chart(
 
 ### Linked charts
 
-So far we have seen what charts look like when we feed them our data. But what if we wanted to filter the data represented, based on a specific component? Similar to [Linked Ui Components](/fuse/features/linked-ui-components/), we can update our charts based on the status of another component.
+So far we have seen what charts look like when we feed them our data. But what if we wanted to filter the represented data based on a specific component? Similar to [Linked Ui Components](/fuse/features/linked-ui-components/), we can update our charts based on the status of another component.
 
 <zero-card style={{backgroundColor: "#101628", padding: "4px"}}>
 <h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Linked Chart</b></h4>
