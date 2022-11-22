@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunk_genesislcap_docs=self.webpackChunk_genesislcap_docs||[]).push([[53237],{69754:function(e,n,s){s.r(n);var t=s(67294),c=s(44996);n.default=function(){var e=(0,c.Z)("/getting-started/");return t.useEffect((function(){window.location.href=e}),[]),null}}}]);
