@@ -162,6 +162,10 @@ In this example, we have specified the name of the primary key in the `name` par
     }
 ```
 
+:::warning
+When you apply ```autoincrement``` to the same field in more than one table, they will share the same value.
+:::
+
 Indices work the same way; either you specify the name in the `name` parameter or the name will be automatically inferred.
 
 
