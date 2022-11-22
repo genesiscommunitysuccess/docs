@@ -10,7 +10,7 @@ tags:
 - genesis screen
 ---
 
-Genesis provides a mechanism for creating pop up toast notifications on screen in app. Any notifications sent to the Genesis Screen will be sent as toast pop up notification either on a company-wide or profile basis.
+The Genesis low-code platform provides a mechanism for creating pop-up toast notifications on screen in app. Any notifications sent to the Genesis Screen will be sent as a toast pop-up notification either on a company-wide or profile basis.
 
 ## System configuration
 
@@ -20,14 +20,14 @@ The application will require a simple .ts file to process the alert. Any new ALE
 
 ### GATEWAY
 
-You'll need to set up a GATEWAY entry for each of the channels the app needs to send messages to.
+You'll need to set up a GATEWAY entry for each of the channels that the app needs to send messages to.
 
 | Field Name | Usage                                                                                                                                                                       |
 | --- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | GATEWAY_ID | A unique identifier for this gateway, which will be referenced in the NOTIFY_ROUTE table when sending a message to the channel: for example, the Channel name could be used |
 | GATEWAY_TYPE | Should be set to `GenesisScreen`                                                                                                                                            |
-| GATEWAY_VALUE | This should be set to the PROFILE that contains the list of users that you would like the pop up notificatins to go to.                                                     |
-| INCOMING_TOPIC | N/A - Notify does not currently support inbound messages from the channel                                                                                                   |
+| GATEWAY_VALUE | This should be set to the PROFILE that contains the list of users that you would like the pop-up notificatins to go to.                                                     |
+| INCOMING_TOPIC | N/A - Notify does not currently support inbound messages from the channel.                                                                                                  |
 | CONNECTION_ID | N/A                                                                                                                                                                         |
 
 Here is an example GATEWAY entry:
@@ -56,8 +56,8 @@ You need at least one NOTIFY_ROUTE entry set up to point to the GATEWAY record, 
 | ENTITY_ID | N/A                                                                                                                                                                                                                                                     |
 | ENTITY_ID_TYPE | `GATEWAY` `PROFILE_NAME` `USER_NAME`                                                                                                                                                                                                                                    |
 | GATEWAY_ID | Should match GATEWAY_ID in the corresponding GATEWAY record                                                                                                                                                                                             |
-| NOTIFY_ROUTE_ID | This will be auto generated if left blank, else be sure to give it a unique value with respect to other records                                                                                                                                         |
-| TOPIC_MATCH | This can be anything, NOTIFY records will target this via the TOPIC field, and messages will be routed to all gateways with a matching TOPIC_MATCH value. In a simple/typical setup we make it match the GATEWAY_ID in the corresponding GATEWAY record |
+| NOTIFY_ROUTE_ID | This will be auto generated if left blank. If populated be sure to include a unique value with respect to other records                                                                                                                                         |
+| TOPIC_MATCH | This can be anything. NOTIFY records will target this via the TOPIC field, and messages will be routed to all gateways with a matching TOPIC_MATCH value. In a simple/typical setup we make it match the GATEWAY_ID in the corresponding GATEWAY record |
 
 Here is an example NOTIFY_ROUTE entry:
 
@@ -84,7 +84,7 @@ TOPIC_MATCH                              TOPIC2                                 
 
 ### NOTIFY
 
-Writing a record to this table which correctly points to a TOPIC, will result in a popup toast being sent to the list of users the GATEWAY record is pointed to.
+Writing a record to this table that correctly points to a TOPIC will result in a pop-up toast being sent to the list of users the GATEWAY record is pointed to.
 
 Equally, EVENT_NOTIFY_INSERT can be used, as opposed to a direct table write (and is the encouraged form of interaction), this event allows for the same set of fields as the DbRecord. The input fields detailed below cater for either approach.
 
@@ -123,6 +123,6 @@ TOPIC                                    TOPIC1                                 
 -------------------------------------------------------------------------------------------
 ```
 
-This example results in a toast popup message, such as:
+This example results in a toast pop-up message, such as:
 
 ![](/img/notify-genesis-screen-example.png)
