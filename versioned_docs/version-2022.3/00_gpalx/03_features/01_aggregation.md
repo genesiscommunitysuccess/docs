@@ -7,7 +7,7 @@ id: aggregation
 
 ## Introduction
 
-With Fuse you can perform the aggregation on your data.
+With GPALX you can perform the aggregation on your data.
 
 Typical use cases are:
 

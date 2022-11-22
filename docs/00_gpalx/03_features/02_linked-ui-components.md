@@ -7,7 +7,7 @@ id: linked-ui-components
 
 ## Introduction
 
-With Fuse it is possible to link UI components such as grids and form inputs. Linking allows us to update one component based on the status of another component.
+With GPALX it is possible to link UI components such as grids and form inputs. Linking allows us to update one component based on the status of another component.
 
 Common use cases are:
 
@@ -24,7 +24,7 @@ Let's build a simple example to see this in practice.
 
 ## Linked grids
 
-We need a page with two grids for this example. We will extend the [home page](/fuse/quick-start/add-features/#grid) from the quick start guide to contain one more grid.
+We need a page with two grids for this example. We will extend the [home page](/gpalx/quick-start/add-features/#grid) from the quick start guide to contain one more grid.
 
 First, let's add `Instrument.kt` file to `src/main/kotlin/global/genesis/alpha/model` folder.
 
@@ -119,7 +119,7 @@ filter {
 }
 ```
 
-We can combine multiple conditions and use the same [conditional operators](/fuse/features/aggregation/#simple-conditions) as when configuring aggregation (`eq`, `neq`, `gt` etc.):
+We can combine multiple conditions and use the same [conditional operators](/gpalx/features/aggregation/#simple-conditions) as when configuring aggregation (`eq`, `neq`, `gt` etc.):
 
 ```kotlin
 filter {

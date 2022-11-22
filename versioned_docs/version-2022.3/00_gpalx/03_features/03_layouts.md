@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 ## Introduction
 
-With Fuse you have full control over your layouts. This is achieved by utilizing two basic layout components (**vertical** & **horizontal**) along with their various parameters. The `verticalLayout` and `horizontalLayout` render their contents vertically and horizontally respectively. 
+With GPALX you have full control over your layouts. This is achieved by utilizing two basic layout components (**vertical** & **horizontal**) along with their various parameters. The `verticalLayout` and `horizontalLayout` render their contents vertically and horizontally respectively. 
 
 With layouts you can:
 

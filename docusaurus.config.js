@@ -119,7 +119,7 @@ module.exports = {
         {to: 'server', label: 'Server'},
         {to: 'web', label: 'Web'},
         {to: 'operations', label: 'Operations'},
-        {to: 'fuse', label: 'Early access'},
+        {to: 'gpalx', label: 'Early access'},
         {type: 'html', position: 'right', value: '<a class="feedback" data-feedback-fish>Give us Feedback</a>'},
         {
           href: "/resource/stackoverflow-onboarding",

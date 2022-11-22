@@ -5,7 +5,7 @@ id: 'prerequisites'
 
 # Prerequisites
 
-Before you start, make sure you have the relevant [hardware and software](/getting-started/quick-start/hardware-and-software/). Fuse has the same requirements as our other Genesis platform options. 
+Before you start, make sure you have the relevant [hardware and software](/getting-started/quick-start/hardware-and-software/). GPALX has the same requirements as our other Genesis platform options. 
 
 ## Development environment
 
