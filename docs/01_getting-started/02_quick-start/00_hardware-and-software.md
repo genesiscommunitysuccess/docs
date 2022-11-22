@@ -2,6 +2,7 @@
 title: 'Quick Start - Hardware and software'
 sidebar_label: 'Hardware and software'
 id: hardware-and-software
+sidebar_position: 2
 keywords: [getting started, quick start, software, hardware, repository, npmrc, gradle, foundation ui]
 tags:
     - getting started
