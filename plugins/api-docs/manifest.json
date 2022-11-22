@@ -19,6 +19,26 @@
           "test", "testing", "frontend", "ui", "unit", "end-to-end", "e2e", "uvu", "playwright"
         ]
       }
+    },
+    {
+      "name": "@genesislcap/foundation-filters",
+      "enabled": true,
+      "api_docs": "./docs/api",
+      "readme": "./README.md",
+      "output": {
+        "title": "Foundation Filters",
+        "sidebar_label": "Foundation Filters",
+        "id": "foundation-filters",
+        "directory": "./docs/04_web/09_filters",
+        "api_docs": "docs/api",
+        "readme": "01_foundation-filters.md",
+        "keywords": [
+          "genesis", "foundation", "ui", "filters"
+        ],
+        "tags": [
+          "filter", "feature", "flags", "conditions"
+        ]
+      }
     }
   ]
 }
