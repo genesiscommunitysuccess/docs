@@ -440,6 +440,17 @@
           "dirName": "04_web/08_http-mode"
         }
       ]
+    },
+    {
+      "type": "category",
+      "label": "FILTERING",
+      "collapsed": true,
+      "items": [
+        {
+          "type": "doc",
+          "id": "web/filters/foundation-filters"
+        }
+      ]
     }
   ],
   "operationsSidebar": [
