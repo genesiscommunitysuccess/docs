@@ -5,7 +5,7 @@ import * as amplify from '@aws-cdk/aws-amplify-alpha';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import { SecretValue } from 'aws-cdk-lib';
 
-const targetDomain = 'npcdktest.learn.genesis.global'
+const targetDomain = 'npcdktest.learn.genesislab.global'
 
 export class AmplifyDocsStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
