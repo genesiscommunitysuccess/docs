@@ -41,6 +41,9 @@ premade layouts that the user could choose from.
 
 If you don't specify the `type` of the layout region it will default to `type="horizontal"`;
 
+- **type**: `vertical`, `horizontal`, `tabs` (default `horizontal`).
+- **size**: optional string parameter defining size, [see here](#sizing).
+
 #### `<foundation-layout-region type="vertical">`
 
 Indicates to the layout system that all immediate children are (by default) to be split equally among the available space of this
@@ -58,18 +61,6 @@ with a tab for each child. The tabs will be ordered according to which child the
  of the tab split will be the second tab), and the first child will be the one which is open by default. Can be nested within horizontal
  and vertical regions, but cannot have more layout sections inside of it.
 
-#### Attributes
-
-Each of the three layout sections have the same two _optional_ attributes.
-
-- **height**: number defining the height of this item, relative to the other children of its parent in percent
-- **width**: number defining the width of this item, relative to the other children of its parent in percent
-
-:::warning
-Currently the DSL team allow specification of sizes in more than just %, pixel width/height for example. This is something we may need to come back
-to later. I used % because that is what the Golden Layout API supports, but we could add these extra sizes as part of my substrate API (not MVP though?)
-:::
-
 ### Layout Item `<foundation-layout-item>`
 
 Wrapper component that lives inside of a layout section and wraps the client content. All content must be inside of a layout item
@@ -77,8 +68,26 @@ otherwise a runtime error will be thrown when the layout is attempted to be rend
 
 - **title**: string defining the title of the pane which contains the content. Defaults to `Item x`, where `x` is the pane number.
 - **closable**: boolean defining whether this element is closable - Default false.
-- **height**: number defining the height of this item, relative to the other children of its parent in percent
-- **width**: number defining the width of this item, relative to the other children of its parent in percent
+- **size**: optional string parameter defining size, [see here](#sizing).
+
+### Sizing
+
+The layout sections and layout item all have an _optional_ attribute:
+
+- **size**: string defining the size. For rows, it specifies height. For columns, it specifies width. Has format `<number><size-unit>`.
+	Currently only supports units `fr` and `%`. Space is first proportionally allocated to items with sizeUnit `%`. If there is any space
+	left over (less than 100% allocated), then the remainder is allocated to the items with unit `fr` according to the fractional size.
+	If more than 100% is allocated, then an extra 50% is allocated to items with unit `fr` and is allocated to each item according to its
+	fractional size. All item sizes are then adjusted to bring the total back to 100%.
+
+:::info
+The size is defining the size of the component _compared_ to the siblings _within_ the context of the component's parent.
+:::
+
+:::warning
+Currently the DSL team allow specification of sizes in more than just %, pixel width/height for example. This is something we may need to come back
+to later. I used % because that is what the Golden Layout API supports, but we could add these extra sizes as part of my substrate API (not MVP though?)
+:::
 
 ## Examples
 
@@ -120,7 +129,7 @@ Slightly more complicated example:
 ```html
 <foundation-layout serialisable>
   <foundation-layout-region type="vertical">
-    <foundation-layout-item title="Component 1" width="25" closable>
+    <foundation-layout-item title="Component 1" size="25%" closable>
       <!-- Content -->
     </foundation-layout-item>
 
@@ -152,8 +161,8 @@ Would render the following:
 ```
 
 Where there is a button to save/load/reset the layout, and component 1 has a close button. By default
-component 1 would be 50% width and 2 and 3 would take up the other 50% width, but here we set `25` (percent)
-as the width of component 1 layout item.
+component 1 would be 50% width and 2 and 3 would take up the other 50% width, but here we set `25%`
+as the width of component 1 layout item (width because it is the size in the context of a vertical split).
 
 ### Multi-Nested Example
 
@@ -162,7 +171,7 @@ If instead we had:
 ```html
 <foundation-layout serialisable>
   <foundation-layout-region type="vertical">
-    <foundation-layout-item title="Component 1" width="25" closable>
+    <foundation-layout-item title="Component 1" size="25%" closable>
       <!-- Content -->
     </foundation-layout-item>
 
