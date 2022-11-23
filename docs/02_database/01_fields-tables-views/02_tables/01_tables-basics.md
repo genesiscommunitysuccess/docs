@@ -165,5 +165,5 @@ In this example, we have specified the name of the primary key in the `name` par
 Indices work the same way; either you specify the name in the `name` parameter or the name will be automatically inferred.
 
 :::warning
-When you apply ```autoincrement``` to the same field in more than one table, they will share the same value.
+When you apply ```the field modifier, autoincrement``` to the same field in more than one table, those fields share the same value, i.e., they will work in a sequence despite being in different tables. But this behaviour is not what users expect and may confuse them.
 :::
