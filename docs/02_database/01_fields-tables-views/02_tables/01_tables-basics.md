@@ -166,4 +166,20 @@ Indices work the same way; either you specify the name in the `name` parameter o
 
 :::warning
 When you apply ```the field modifier, autoincrement``` to the same field in more than one table, those fields share the same value, i.e., they will work in a sequence despite being in different tables. But this behaviour is not what users expect and may confuse them.
+Below is an example of how the same field in different tables have ashared value when autoincrement is applied:
+
+Say, we have,
+
+Table 1
+Field A (autoincrement)
+
+Table 2
+Field A (autoincrement)
+
+Now, in the above, the sequence counting will be shared between the fields with autoincrement. 
+
+So, when a row is added to table 1, field A will be assigned 1.
+Another row in the same table 1, will be assigned 2.
+Now, if a new row is inserted in table 2, then field A of table 2 will be assigned 3. 
+
 :::
