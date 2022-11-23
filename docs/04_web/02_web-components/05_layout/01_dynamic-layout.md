@@ -311,6 +311,52 @@ layout to reinitialise incorrectly - this will duplicate the panels and remove t
 See [this example](#observables-with-directives).
 :::
 
+### Multiple Instances
+
+Consider the following example:
+```html
+<div class="container" style="display: grid; grid-template-columns: 1fr; grid-auto-rows: minmax(46vh, auto)">
+	<div style="display: block; position: relative;">
+		<foundation-layout>
+			<foundation-layout-region>
+				<foundation-layout-item><h1>Item 1</h1></foundation-layout-item>
+				<foundation-layout-item><h1>Item 2</h1></foundation-layout-item>
+			</foundation-layout-region>
+		</foundation-layout>
+	</div>
+	<div style="display: block; position: relative;">
+		<foundation-layout>
+			<foundation-layout-region type="vertical">
+				<foundation-layout-item><h1>Item 3</h1></foundation-layout-item>
+				<foundation-layout-item><h1>Item 4</h1></foundation-layout-item>
+			</foundation-layout-region>
+		</foundation-layout>
+	</div>
+</div>
+```
+
+This describes the following layout:
+```
++---------------------------------------------+
+|                   Item 1                    |
++---------------------------------------------+
+|                   Item 2                    |
++---------------------------------------------+
+
++----------------------+----------------------+
+|                      |                      |
+|       Item 3         |        Item 4        |
+|                      |                      |
++----------------------+----------------------+
+```
+Here a grid region has been used to style two completely separate instances of the dynamic layout. Even though we have named each
+`<h1>` sequentially, the two layouts are completely separate and the default titles of each tab (Item 1 and Item 2 for both layouts),
+will reflect this. You can configure each layout separately, and you cannot drag layout items from one layout into the other one.
+
+:::info
+This is just an example, you could have more than two layouts on a page or style them with a different method to the grid.
+:::
+
 ## Incorrect Examples
 
 ### Non-Layout Child
