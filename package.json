@@ -5,11 +5,13 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "build": "docusaurus build",
+    "build:next": "SHOW_NEXT=true docusaurus build",
     "build:base_url": "BASE_URL=/secure/ docusaurus build",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve",
     "start": "docusaurus start --port 8080 --host 0.0.0.0",
+    "start:next": "SHOW_NEXT=true docusaurus start --port 8080 --host 0.0.0.0",
     "swizzle": "docusaurus swizzle"
   },
   "dependencies": {
