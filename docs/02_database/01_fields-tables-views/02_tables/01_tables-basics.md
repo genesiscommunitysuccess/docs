@@ -165,20 +165,17 @@ In this example, we have specified the name of the primary key in the `name` par
 Indices work the same way; either you specify the name in the `name` parameter or the name will be automatically inferred.
 
 :::warning
-When you apply ```the field modifier, autoincrement``` to the same field in more than one table, those fields share the same value, i.e., they will work in a sequence despite being in different tables. But this behaviour is not what users expect and may confuse them.
-Below is an example of how the same field in different tables have ashared value when autoincrement is applied:
+When you apply ```the field modifier, autoincrement``` to the same field in more than one table, those fields share the same value, i.e., they will work in a sequence despite being in different tables. 
+Here is an example: 
 
 Say, we have,
 
-Table 1
-Field A (autoincrement)
+- Table 1 has Field A (autoincrement)
+- Table 2 has Field A (autoincrement)
 
-Table 2
-Field A (autoincrement)
+In this case, the sequence counting will be shared between the fields with autoincrement. 
 
-Now, in the above, the sequence counting will be shared between the fields with autoincrement. 
-
-So, when a row is added to table 1, field A will be assigned 1.
-Another row in the same table 1, will be assigned 2.
-Now, if a new row is inserted in table 2, then field A of table 2 will be assigned 3. 
+- When a row is added to table 1, field A will be assigned 1.
+- The next row in table 1, will be assigned 2.
+- When a new row is then inserted in table 2, field A of that table will be assigned 3. 
 :::
