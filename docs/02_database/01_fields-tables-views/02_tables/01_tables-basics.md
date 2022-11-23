@@ -181,5 +181,4 @@ Now, in the above, the sequence counting will be shared between the fields with 
 So, when a row is added to table 1, field A will be assigned 1.
 Another row in the same table 1, will be assigned 2.
 Now, if a new row is inserted in table 2, then field A of table 2 will be assigned 3. 
-
 :::
