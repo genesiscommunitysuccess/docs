@@ -168,14 +168,9 @@ Indices work the same way; either you specify the name in the `name` parameter o
 When you apply the field modifier ```autoincrement``` to the same field in more than one table, those fields work in a single sequence. 
 Here is an example: 
 
-Say, we have,
+Field A (autoincrement) is in Table 1 and Table 2. The sequence counting is shared between the autoincremented fields. So: 
 
-- Table 1 has Field A (autoincrement)
-- Table 2 has Field A (autoincrement)
-
-In this case, the sequence counting is shared between the autoincremented fields. 
-
-- When a row is added to table 1, field A is assigned 1.
-- The next row in table 1, will be assigned 2.
-- When a new row is then inserted in table 2, field A of that table will be assigned 3. 
+- A row is added to table 1; field A is assigned **1**.
+- Another row is added to table 1; field A is assigned **2**.
+- A new row is added to table 2; field A in that table is assigned **3**. 
 :::
