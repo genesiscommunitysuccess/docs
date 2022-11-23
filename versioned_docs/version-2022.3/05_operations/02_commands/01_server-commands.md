@@ -631,7 +631,7 @@ GetAutoIncrementCount
 
 This enables you to change a sequence number, or to do a bulk change for a whole sequence in a .csv file. In most cases, this will be a file that you have exported previously using either `GetNextSequenceNumbers` or `GetSequenceCount`.
 
-In almost all cases, `SetSequence` must be run while the system processes have been stopped. After running `SetSequence` - like all processes that write to the table - you  need restart the server.
+In almost all cases, `SetSequence` must be run while the system processes have been stopped. After running `SetSequence` - like all processes that write to the table - you need to restart the server.
 
 ### Syntax
 
