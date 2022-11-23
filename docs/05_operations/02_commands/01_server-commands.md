@@ -629,7 +629,9 @@ GetAutoIncrementCount
 
 ## SetSequence
 
-This enables you to change a sequence number, or to do a bulk change for all the sequence in a ".csv" file. In mpst cases, this will be one that you have exported previously using either `GetNextSequenceNumbers` or `GetSequenceCount`.
+This enables you to change a sequence number, or to do a bulk change for a whole sequence in a .csv file. In most cases, this file will be one that you have exported previously using either `GetNextSequenceNumbers` or `GetSequenceCount`.
+
+In almost all cases, `SetSequence` must be run while the system processes have been stopped. After running `SetSequence` - like all processes that write to the table - you  need restart the server.
 
 ### Syntax
 
@@ -648,7 +650,7 @@ Options:
 
 ## SetAutoIncrement
 
-This works in a smilar way to `SetSequence` but for auto increment INT values.
+This works in a similar way to `SetSequence` but for auto increment INT values.
 
 ### Syntax
 
