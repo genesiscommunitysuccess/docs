@@ -36,7 +36,7 @@ Please follow these instructions very carefully to ensure your environment is re
 | Kotlin| 1.7.10|
 | Chrome | 88.0|
 | Postman	| 8|
-| NodeJS  | 16 LTS+|
+| NodeJS  | 16 LTS|
 | npm | 8 |
 | Gradle | 7.5 |
 | Windows Subsystem for Linux (WSL) | WSL 2 |
