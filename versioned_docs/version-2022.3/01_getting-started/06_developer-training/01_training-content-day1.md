@@ -89,11 +89,7 @@ With a lack of imagination we hope you will find trustworthy, we are going to ca
 
 To create a new project you can use the GenX CLI tool, which enables you to seed projects. Further details can be found [here](/getting-started/quick-start/create-a-new-project/).
 
-In this case, we just want to extend a blank full-stack application project, so we are using the training seed [available](https://github.com/genesiscommunitysuccess/devtraining-seed). So, clone this repository locally using the command below. 
-
-```shell title='Cloning the devtraining-seed'
-git clone https://github.com/genesiscommunitysuccess/devtraining-seed.git
-```
+In our case, we just want to extend a blank full-stack application project, so we are using the training seed [available](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you followed the Environment setup and did the step [Start the project baseline](http://localhost:9090/getting-started/developer-training/environment-setup/#start-the-project-baseline), cloning the repository locally. 
 
 Here's a quick overview of the repository you just cloned:
 
@@ -300,191 +296,30 @@ If you had to add application specific definitions, like an API_KEY for example,
 :::
 -->
 
-### 5. The build process
+### 5. The build and deploy process
 
-Finally, you can build the server.
+Finally, you can build and deploy the server.
 
-In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**Tasks**/**build/assemble**.
+The seed application includes the Dockerfiles you need; these build images of the **front end** and **back end** of the Genesis application. After assemble the application, you can run these images with the following  commands:
 
-![](/img/assemble-server.png)
-
-```shell title='Running assemble from the command line'
-./gradlew :genesisproduct-alpha:assemble
+Usage:
+```shell title="Intellij terminal"
+./gradlew assemble
+docker-compose build
+docker-compose up -d
 ```
-
-### 6. Deployment
-
-Now that the back end of our application is built, it's time to deploy it.
-
-The Genesis deploy plugin provides several tasks that help to set up the Genesis environment so that you can deploy a project to it. It can be used on Linux machines (local and over SSH) or Windows machines with WSL support.
-
-
-#### Pre-requisites
-
-You should hava a sub-module called alpha-deploy under ../server/jvm.
-
-Ensure the **build.gradle.kts** in this sub-module has the following entry
-
-```kotlin
-plugins {
-    id("global.genesis.deploy") version "6.3.0"
-}
-```
-
-:::caution edit gradle.properties
-Ensure the **gradle.properties** file from the **server/jvm** folder is properly set with the following entries:
-
-```properties
-genesis-home=/home/genesis/run
-wsl-distro=TrainingCentOS
-wsl-user=genesis
-```
-
-| Entry  |  Description | 
-|---|---|
-|`genesis-home`|  This is a mandatory property that is a path on the WSL distribution. |
-|`wsl-distro`|  This is a mandatory property that is the name of the WSL distribution. |
-|`wsl-user`|  This is an optional property. If omitted, the default WSL user will be used. |
-
-
-:::
-
-#### Deployment of the back end
-
-Now we are going to install the Genesis Platform (i.e. Genesis distribution) on the server and then install the back end of our application on the same server. This is all done using the Genesis deploy plugin that comes with several tasks grouped under `genesisdeploy` and `genesissetup`.
-
-##### Deploying to the server
-
-We will run `setupEnvironment` first (we only need to run it once) to set up the platform on the server. This task executes `install-genesis-distribution` (copies and unzips the Genesis distribution specified as a dependency) and then configures the installed distribution. So, basically, it installs the Genesis Platform on your local server.
-
-In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**setupEnvironment**.
-
-![](/img/setup-environment.png)
-
-```shell title='Running setupEnvironment from the command line'
-./gradlew :genesisproduct-alpha:alpha-deploy:setupEnvironment
-```
-
-After this command is completed, we will have a basic genesis server running.
-
-### Deploying the auth module
-As our application requires [authentication](/server/access-control/introduction/), we have to install the Genesis Auth module.
-
-In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**install-auth-distribution.zip**.
-
-![](/img/install-auth.png)
-
-```shell title='Running install-auth-distribution.zip from the command line'
-./gradlew :genesisproduct-alpha:alpha-deploy:install-auth-distribution.zip
-```
-
-<!-- Adjusting WSL we could remove this-->
-### Deploying the site-specific
-As our application will override the standard definitions using the site-specific folder, we have to run this task.
-
-In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip**.
-
-![](/img/install-site-specific.png) 
-
-```shell title='Running install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip from the command line'
-./gradlew :genesisproduct-alpha:alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip
-```
-
-<!-- END Adjusting WSL we could remove this-->
-
-### Deploying the alpha product
-
-Now we have to deploy our application, the alpha product.
-
-In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisdeploy**/**deploy-genesisproduct-alpha.zip**.
-
-![](/img/deploy-alpha-product.png)
-
-```shell title='Running deploy-genesisproduct-alpha.zip from the command line'
-./gradlew :genesisproduct-alpha:alpha-deploy:deploy-genesisproduct-alpha.zip 
-```
-
-:::tip
-This will take the last built distribution and does not run a project build as part of the task. Make sure you have done it exactly as [described previously](/getting-started/developer-training/training-content-day1/#4-prepare-the-server-and-build).
-:::
-
-
-### Adding a user to login
-
-Next let's create a user.
-
-:::note
-The following details will be your login details:
-
-- Username: JaneDee
-- Password: beONneON*74 (This is encrypted in the USER.csv file.)
-:::
-
-We shall run the task `loadInitialData`. This adds the data in a file called USER.csv to be imported into the USER table in your
-database. The USER table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously. 
-
-In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesissetup**/**loadInitialData**.
-
-![](/img/load-initial-data.png)
-
-```shell title='Running loadInitialData from the command line'
-./gradlew :genesisproduct-alpha:alpha-deploy:loadInitialData
-```
-
-Now we are going to use Genesis DbMon to run some queries on the database. 
-
-DbMon is a Genesis tool, database-engine agnostic, used to access the data stored in the DbLayer configured in the application. In our case, it's FoundationDB. But, if it was another database engine like PostgreSQL for example, you would still be able to use DbMon.
-
-In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisscripts**/**DbMon**.
-
-![](/img/using-dbmon.png)
-
-```shell title='Running DbMon from the command line'
-./gradlew :genesisproduct-alpha:alpha-deploy:DbMon
-```
-
-You should see something like this after a few seconds:
-```shell
-==================================
-Genesis Database Monitor
-Enter 'help' for a list of commands
-==================================
-```
-
-:::caution DbMon seems to be frozen?
-It's probably not frozen, as once you run DbMon it's expecting you to enter a subsequent command. We call it a ***DbMon command***. So, go ahead and try typing the commands listed below.
-:::
-
-Once you are inside DbMon console, type `table USER` and then `search 1`. If imported correctly, the user JaneDee should be listed.
-
-If you are curious, type `help` and it will list all available DbMon commands.
 
 #### Running server commands
 :::info can I run server commands from the command line rather than gradle tasks?
 Yes. We've been running server commands through the gradle tasks. Alternatively, you can run server commands directly from a command line. 
 
-Open PowerShell (or Windows Command Prompt), access your WSL instance 'TrainingCentOS' and switch to user 'genesis' to have access to the Genesis Platform commands:
+Open the gsf docker container terminal as explained [here](/getting-started/developer-training/environment-setup/#attaching-a-terminal-to-a-docker-container), and you can have access to the Genesis Platform commands:
 ```shell
-wsl -d TrainingCentOS
-su genesis
+su alpha
 DbMon
 ```
 
-Try it now!
-
-:::
-
-Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
-
-In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**alpha-deploy**/**Tasks**/**genesisscripts**/**mon**.
-
-![](/img/using-mon.png)
-
-```shell title='Running mon from the command line'
-./gradlew :genesisproduct-alpha:alpha-deploy:mon
-```
-
-we should see something like this
+Try it now using the [mon](/operations/commands/server-commands/#mon-script)! We should see something like this
 
 ```shell
 PID     Process Name                  Port        Status         CPU       Memory    Message
@@ -502,12 +337,7 @@ PID     Process Name                  Port        Status         CPU       Memor
 703     ALPHA_EVENT_HANDLER           11001       RUNNING        71.30     2.20
 ```
 
-:::note server commands
-Try to run `mon` from the command line as well!
 :::
-
-See [here](/getting-started/prerequisites/gradle-deploy-plugin/) for extra details on how to configure the Genesis deploy plugin.
-
 
 
 ## Testing the back end

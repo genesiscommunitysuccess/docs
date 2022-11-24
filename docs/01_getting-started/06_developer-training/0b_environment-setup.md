@@ -40,6 +40,7 @@ Please follow these instructions very carefully to ensure your environment is re
 | npm | 8 |
 | Gradle | 7.5 |
 | Windows Subsystem for Linux (WSL) | WSL 2 |
+| Docker Desktop | 4.11.1 |
 
 You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the Genesis Platform Abstraction Language (**GPAL**) prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
 
@@ -157,6 +158,7 @@ More information [here](https://docs.gradle.org/current/userguide/build_environm
 
 ### Local server set-up
 
+<!--
 Make sure you have completed the [Workstation setup](#workstation-setup) prior to this.
 
 We are going to set up Windows Subsystem for Linux (WSL 2) to deploy and run the application locally.
@@ -188,6 +190,47 @@ Welcome to Genesis WSL training distro!
 :::note
 From now on, whenever you see things like "from the terminal or command line" or "run this command", it means from the WSL Linux instance command line as user 'genesis' ('su genesis').
 :::
+-->
+#### Start the project baseline
+
+Clone the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed).
+
+Open the project using your favorite IDE such as IntelliJ or Visual Studio Code.
+
+#### Running the backend
+We are going to change the backend and frontend code, so ideally we should have the server running to make our application work. To do that, we can simply build a docker image from the project you just cloned.
+
+You must have Docker installed and running on your workstation.
+
+##### Building the docker images
+From the root directory of the project, run:
+```shell
+./gradlew assemble
+docker-compose up -d
+```
+
+Check on your Docker dashboard if you have the containers **gsf** and **nginx** running.
+
+##### Attaching a terminal to a docker container
+
+Attaching a terminal to a docker container is as easy as running:
+
+```shell
+docker exec -it gsf bash
+```
+
+Now try logging in as **alpha** and running `mon` to monitor the platform services.
+```shell
+su - alpha
+
+mon
+```
+
+:::tip
+Alternatively, you can use Docker Desktop Integrated Terminal for the Containers you just created as explained [here](https://www.docker.com/blog/integrated-terminal-for-running-containers-extended-integration-with-containerd-and-more-in-docker-desktop-4-12/).
+:::
+
+You must see all processes up and running or in standby mode.
 
 You are good to go!
 

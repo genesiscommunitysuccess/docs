@@ -19,7 +19,7 @@ This day covers:
 
 - [Schedulers](#schedulers)
 - [Permissions​](#permissions)
-- [Operating the platform](#operating-the-genesis-platform)
+- [Operating the platform](#operating-the-genesis-low-code-platform)
 - [Navigating the documentation and how to get help​](#navigating-the-documentation-and-how-to-get-help​)
 
 ## Schedulers​
@@ -85,7 +85,7 @@ Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside y
 </configuration>
 ```
 
-Run [build](/getting-started/developer-training/training-content-day1/#5-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks to verify that the new process works as expected.
+Run [build and deploy](/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) to verify that the new process works as expected.
 
 Run [mon](/operations/commands/server-commands/#mon-script). You should be able to see the process is present, but on `Standby`.
 ![](/img/standbysmall-alpha.png)
@@ -316,7 +316,7 @@ systemDefinition {
 }
 ```
 
-Run the *build*, *install-alpha-site-specific* and *deploy* tasks again.
+Run [build and deploy](/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) again.
 
 #### 7. Switch on data dumps
 
@@ -576,7 +576,7 @@ Set up a permission code for Trade inserting. The permission code should be call
 :::tip
 Remember to change the **alpha-eventhandler.kts** file, as well as inserting the record via `SendIt` command in the configuration table *RIGHT_SUMMARY* too.
 
-After the configurations, you should run [build](/getting-started/developer-training/training-content-day1/#5-the-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks again to deploy the new version.
+After the configurations, you should run [build and deploy](/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) again to deploy the new version.
 :::
 
 <!-- ## Generating data model from existing sources
@@ -707,6 +707,7 @@ When deploying files manually like this, remember to push the change to version 
 
 An exhaustive list of commands can be found [here](/operations/commands/server-commands/). <!-- TODO: What is the proper link for this?-->
 
+<!--
 ### Exercise 5.3: manual deployment of the application distribution
 :::info ESTIMATED TIME
 30 mins
@@ -724,7 +725,7 @@ eventHandler<Trade>(name = "TRADE_INSERT") {
 ...
 ```
 
-Next, build the application as you usually do.
+Next, [build and deploy](/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) the application as you usually do.
 
 Then copy the `genesisproduct-alpha-1.0.0-SNAPSHOT-bin.zip` from .\server\jvm\alpha-distribution\build\distributions\ to the /home/genesis/run/ folder in the server (i.e., your WSL instance, where you can access its file system from Windows Explorer navigating to `\\wsl$`).
 
@@ -733,7 +734,7 @@ Once the zip file is in the ~/run/ folder, unzip it (use unzip command) and run 
 Change the log level of the ALPHA_EVENT_HANDLER process to INFO with `LogLevel` and insert a new trade from the UI.
 
 To test it, check if you can see the new log you added in the alpha event handler log file.
-
+-->
 
 ## Navigating the documentation and how to get help​
 
