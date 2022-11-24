@@ -131,7 +131,7 @@ module.exports = {
           routeBasePath,
           sidebarPath: require.resolve('./sidebars.js'),
           remarkPlugins: [require('mdx-mermaid')],
-          includeCurrentVersion: SHOW_NEXT,
+          includeCurrentVersion: true, // should be SHOW_NEXT but we need to fix the broken links for that first
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
