@@ -49,6 +49,7 @@ mon
 
 You must see all processes up and running or in standby mode.
 
+<!-- 
 Download this [WSL distro](https://genesisglobal.jfrog.io/artifactory/community-uploads/web-training-wsl.zip), unzip it and import it into WSL:
 - As a reminder, create a local folder where you want to run the distro, e.g., "C:\wsl\distros\web-training-distro\". Unzip the package downloaded there and, from a command line, cd into that folder then run:
 
@@ -65,6 +66,7 @@ mon
 ```
 
 You should see all processes up and running. Remember to start the server processes every time you re-start your machine. 
+-->
 
 ## Running the front end
 Next, [run the web application locally](/getting-started/developer-training/training-content-day2/#running-the-application-locally).

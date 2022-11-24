@@ -327,7 +327,7 @@ Ensure the **build.gradle.kts** in this sub-module has the following entry
 
 ```kotlin
 plugins {
-    id("global.genesis.deploy") version "6.2.3"
+    id("global.genesis.deploy") version "6.3.0"
 }
 ```
 
