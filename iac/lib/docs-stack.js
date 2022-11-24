@@ -82,7 +82,7 @@ var DocsStack = /** @class */ (function (_super) {
                     httpStatus: 403,
                     responseHttpStatus: 403,
                     responsePagePath: '/error.html',
-                    ttl: aws_cdk_lib_2.Duration.minutes(30)
+                    ttl: aws_cdk_lib_2.Duration.minutes(0.1)
                 }
             ],
             defaultBehavior: {

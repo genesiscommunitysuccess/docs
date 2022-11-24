@@ -27,7 +27,8 @@ export class DocsStack extends cdk.Stack {
     const zone = route53.HostedZone.fromHostedZoneAttributes(this, 'Zone', {zoneName : StaticSiteProps.hostedZone, hostedZoneId: 'Z00892613KX1P98M08IKK'});
     const siteDomain = StaticSiteProps.siteSubDomain + '.' + StaticSiteProps.hostedZone;
     const BUCKET_ID = 'test-bucket-1';
-    const cloudfrontOAI = new cloudfront.OriginAccessIdentity(this, 'cloudfront-OAI');
+    const cloudfrontOAI = new cloudfront.OriginAccessIdentity(this, 'cloudfront-OAI', {
+      comment: `OAI for ${"GenesisDocsStack"}`});
 
     new CfnOutput(this, 'Site', { value: 'https://' + siteDomain});
 
@@ -67,7 +68,7 @@ export class DocsStack extends cdk.Stack {
           httpStatus: 403,
           responseHttpStatus: 403,
           responsePagePath: '/error.html',
-          ttl: Duration.minutes(30),
+          ttl: Duration.minutes(0.1),
         }
       ],
       defaultBehavior: {
