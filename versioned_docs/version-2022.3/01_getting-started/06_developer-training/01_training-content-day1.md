@@ -99,7 +99,7 @@ Above, we have expanded the **client** folder. This contains all the UI-related 
 
 The **server** folder follows the same structure. This contains all the server-side projects.
 
-### 2. Define the data model
+## 2. Define the data model
 Now you are ready to define the fields and tables that make up your [data model](/database/fields-tables-views/fields-tables-views/). This structures information in a simple way that can be viewed by users and processed by the application.
 
 Open IntelliJ (or your chosen IDE) and open the alpha project (the devtraining-seed you cloned). After importing and indexing, you should see the files and project structure ready.
@@ -197,7 +197,7 @@ From the Gradle menu, this is:
 
 After running it, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
 
-### 3. Add business logic
+## 3. Add business logic
 We have a table; now we want to be able to see its content and create new entries.
 
 
@@ -230,7 +230,7 @@ eventHandler {
 The [entityDb](/database/database-interface/entity-db/) enables you to interact with the database layer, it's part of the Genesis Database API and we'll get into more details soon. For now, understand that this is the common way to access data from code. Feel free to use the intellisense of your IDE to explore the methods available from entityDb.
 :::
 
-### 4. Prepare the server
+## 4. Prepare the server
 So far we have created an event handler and data server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
 
 - **alpha-processes.xml**
@@ -279,11 +279,11 @@ Please see [here](/server/configuring-runtime/processes/) for a detailed descrip
 <!-- ADD THIS DO DAY 5 AS AN EXERCISE
 
 ### Overriding default configurations
-You can override the standard definitions using the site-specific folder located at ..\alpha\server\jvm\alpha-site-specific\src\main\resources\cfg\
+You can override the standard definitions using the site-specific folder located at **..\alpha\server\jvm\alpha-site-specific\src\main\resources\cfg\**
 
-Once deployed into the server, the files from that folder get installed in the runtime folder under a sub-folder called 'site-specific'. This is an area of the run directory, i.e. the Platform installation directory, where you can override the standard definitions found elsewhere in the application. You supply the standard definition name and your own definition. Your application will then only use your definition.
+Once deployed to the server, the files from that folder are installed in the runtime folder under a sub-folder called **site-specific**. This is an area of the run directory, i.e. the Platform installation directory, where you can override the standard definitions found elsewhere in the application. You supply the standard definition name and your own definition. Your application will then only use your definition.
 
-This is useful where you have used standard modules such as Auth, FIX or even the Genesis distribution itself; you should never change these modules. Any files or definitions that are listed in the site-specific area automatically take their places. In our case, the genesis-system-definition.kts must be edited to use postgres database engine instead of the default one (FDB) as follows: 
+This is useful where you have used standard modules such as Auth, FIX or even the Genesis distribution itself; you should never change these modules. Any files or definitions that are listed in the site-specific area automatically take their places. In our case, the **genesis-system-definition.kts** must be edited to use postgres database engine instead of the default one (FDB) as follows: 
 
 ```kotlin
 ...
@@ -293,15 +293,15 @@ item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&p
 
 ```
 :::tip
-If you had to add application specific definitions, like an API_KEY for example, you'd have to edit ..\server\jvm\alpha-config\src\main\resources\cfg\alpha-system-definition.kts
+If you had to add application-specific definitions, such as an API_KEY, you'd have to edit **..\server\jvm\alpha-config\src\main\resources\cfg\alpha-system-definition.kts**
 :::
 -->
 
-### 5. The build and deploy process
+## 5. The build and deploy process
 
 Finally, you can build and deploy the server.
 
-The seed application includes the Dockerfiles you need; these build images of the **front end** and **back end** of the Genesis application. After assemble the application, you can run these images with the following  commands:
+The seed application includes the Dockerfiles you need; these build images of the **front end** and **back end** of the Genesis application. After assembling the application, you can run these images with the following  commands:
 
 Usage:
 ```shell title="Intellij terminal"
@@ -311,10 +311,10 @@ docker-compose up -d
 ```
 
 ### Running server commands
-:::info can I run server commands from the command line rather than gradle tasks?
-Yes. We've been running server commands through the gradle tasks. Alternatively, you can run server commands directly from a command line. 
+:::info can I run server commands from the command line rather than Gradle tasks?
+Yes. We've been running server commands through the Gradle tasks. Alternatively, you can run server commands directly from a command line. 
 
-Open the gsf docker container terminal as explained [here](/getting-started/developer-training/environment-setup/#attaching-a-terminal-to-a-docker-container), and you can have access to the Genesis Platform commands:
+Open the gsf docker container terminal as explained [here](/getting-started/developer-training/environment-setup/#attaching-a-terminal-to-a-docker-container), and you can have access to the Genesis commands:
 ```shell
 su alpha
 DbMon
