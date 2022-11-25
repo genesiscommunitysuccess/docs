@@ -15,18 +15,18 @@ tags:
 ---
 ## Setting up your workstation and a local server
 
-### Workstation setup
+### Workstation set-up
 
-Please follow these instructions very carefully to ensure your environment is ready for a productive training. It's not necessary to have admin rights on your workstation to develop with the Genesis low-code platform, but you may have to check with your System Administrator how to install the required third-party software listed here.
+Please follow these instructions very carefully to ensure your environment is ready for a productive training. It's not necessary to have admin rights on your workstation to develop with the Genesis low-code platform, but you might have to check with your System Administrator how to install the required third-party software listed here.
 
-#### Recommended hardware and operating system
+### Recommended hardware and operating system
 
 * Operating system : Windows 10 Pro version 2004 or higher with support for [WSL v2](https://docs.microsoft.com/en-us/windows/wsl/install)
 * RAM : 32GB minimum, as we are running full applications locally
 * CPU : 8 Core
 * SSD : 250GB
 
-#### Required software packages
+### Required software packages
 
 | Package	| Minimum Version| 
 |--------------|:-----:|
@@ -44,7 +44,7 @@ Please follow these instructions very carefully to ensure your environment is re
 
 You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the Genesis Platform Abstraction Language (**GPAL**) prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
 
-####  Accessing the Genesis repository and configuring the Genesis packages
+###  Accessing the Genesis repository and configuring the Genesis packages
 #### .npmrc set-up
 
 For access to Genesis packages, you need to configure the `@genesislcap` scope of `npm` to use our jfrog registry.
@@ -156,7 +156,7 @@ If you are unsure on what settings to use, please contact your IT support.
 More information [here](https://docs.gradle.org/current/userguide/build_environment.html#sec:accessing_the_web_via_a_proxy).
 :::
 
-### Local server set-up
+## Local server set-up
 
 <!--
 Make sure you have completed the [Workstation setup](#workstation-setup) prior to this.
@@ -191,18 +191,18 @@ Welcome to Genesis WSL training distro!
 From now on, whenever you see things like "from the terminal or command line" or "run this command", it means from the WSL Linux instance command line as user 'genesis' ('su genesis').
 :::
 -->
-#### Start the project baseline
+### Start the project baseline
 
 Clone the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed).
 
 Open the project using your favorite IDE such as IntelliJ or Visual Studio Code.
 
-#### Running the backend
-We are going to change the backend and frontend code, so ideally we should have the server running to make our application work. To do that, we can simply build a docker image from the project you just cloned.
+### Running the back end
+We are going to change the back-end and front-end code, so ideally we should have the server running to make our application work. To do that, we can simply build a Docker image from the project you just cloned.
 
 You must have Docker installed and running on your workstation.
 
-##### Building the docker images
+### Building the docker images
 From the root directory of the project, run:
 ```shell
 ./gradlew assemble
@@ -212,7 +212,7 @@ docker-compose up -d
 
 Check on your Docker dashboard if you have the containers **gsf** and **nginx** running.
 
-##### Attaching a terminal to a docker container
+### Attaching a terminal to a Docker container
 
 Attaching a terminal to a docker container is as easy as running:
 
