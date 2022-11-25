@@ -1,13 +1,13 @@
 ---
-title: 'Fuse - early access'
-sidebar_label: 'Fuse - early access'
+title: 'GPALX - early access'
+sidebar_label: 'GPALX - early access'
 sidebar_position: 1
 id: 'intro'
 ---
 
-Fuse is a full-stack low-code language for building applications. By writing up to 75% less code than previous Genesis versions, you can deliver productive solutions quicker than ever.
+GPALX is a full-stack low-code language for building applications. By writing up to 75% less code than previous Genesis versions, you can deliver productive solutions quicker than ever.
 
-Fuse allows you to:
+GPALX allows you to:
 - model complex data objects with clear type definitions
 - view large sets of data in one or more grids with customisable cells for more complex fields
 - create single or multiple page views of data to help make that data more digestible
@@ -20,4 +20,4 @@ Fuse allows you to:
 - have both Genesis and third-party Web Components at your disposal
 - supercharge development with built-in page structuring and routing
 
-Our simple-to-follow guides will enable you to become an effective user of Fuse within days.
+Our simple-to-follow guides will enable you to become an effective user of GPALX within days.
