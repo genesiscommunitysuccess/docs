@@ -206,6 +206,7 @@ You must have Docker installed and running on your workstation.
 From the root directory of the project, run:
 ```shell
 ./gradlew assemble
+docker-compose build
 docker-compose up -d
 ```
 
