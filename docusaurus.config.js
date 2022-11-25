@@ -6,6 +6,41 @@ const apiPullPlugin = require('./pull-api-docs');
 const processedMap = require('./plugins/api-docs/processedMap');
 const GTM_ID = process.env.GTM_ID || 'GTM-5GTR43J'; // default to uat GTM_ID, prod one should be set on CI (master)
 
+/** 
+ * For local / debug purposes.
+ * If truthy it will include the current version (labeled as Next).
+ * Adds the version dropdown to the navbar as needed.
+**/
+const SHOW_NEXT = !!process.env.SHOW_NEXT;
+
+const NAVBAR_ITEMS = [
+  { to: "getting-started", label: "Learning" },
+  { to: "database", label: "Database" },
+  { to: "server", label: "Server" },
+  { to: "web", label: "Web" },
+  { to: "operations", label: "Operations" },
+  { to: "gpalx", label: "Early access" },
+  {
+    type: "html",
+    position: "right",
+    value: '<a class="feedback" data-feedback-fish>Give us Feedback</a>',
+  },
+  {
+    href: "/resource/stackoverflow-onboarding",
+    className: "so-icon",
+    "aria-label": "StackOverflow",
+    position: "right",
+  },
+];
+
+//  Will not have to do this as soon as we have 2+ versions, for now only add the dropdown when SHOW_NEXT == true.
+if (SHOW_NEXT) {
+  NAVBAR_ITEMS.unshift({
+    type: "docsVersionDropdown",
+    className: "version-menu",
+  });
+}
+
 module.exports = {
   title: 'Low-code Platform For Financial Markets',
   tagline: 'The Platform with 50+ Modern Building Blocks to Accelerate App Development.',
@@ -96,6 +131,7 @@ module.exports = {
           routeBasePath,
           sidebarPath: require.resolve('./sidebars.js'),
           remarkPlugins: [require('mdx-mermaid')],
+          includeCurrentVersion: true, // should be SHOW_NEXT but we need to fix the broken links for that first
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -109,25 +145,7 @@ module.exports = {
       disableSwitch: true
     },
     navbar: {
-      items: [
-
-        //keep this commented out until we have multiple versions
-        // {type: 'docsVersionDropdown', className: "version-menu"},
-
-        {to: 'getting-started', label: 'Learning'},
-        {to: 'database', label: 'Database'},
-        {to: 'server', label: 'Server'},
-        {to: 'web', label: 'Web'},
-        {to: 'operations', label: 'Operations'},
-        {to: 'gpalx', label: 'Early access'},
-        {type: 'html', position: 'right', value: '<a class="feedback" data-feedback-fish>Give us Feedback</a>'},
-        {
-          href: "/resource/stackoverflow-onboarding",
-          className: "so-icon",
-          "aria-label": "StackOverflow",
-          position: "right"
-        }
-      ],
+      items: [...NAVBAR_ITEMS], // preconfigured as we need to conditionally add docsVersionDropdown
       logo: {
         alt: 'Genesis Documentation',
         src: 'img/logo-icon--light.svg',
