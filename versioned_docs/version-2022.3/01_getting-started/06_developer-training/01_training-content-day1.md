@@ -72,7 +72,7 @@ This will enable you to see the basics of the Genesis low-code platform by start
 5. [Build process](#5-build-process).
 6. [Deployment](#6-deployment).
 
-### What you will build
+## What you will build
 
 The very simple application you will build will look like this:
 
@@ -85,26 +85,26 @@ Once you finish this lesson, you will extend this initial simple application int
 
 With a lack of imagination we hope you will find trustworthy, we are going to call this example application **alpha**. You will see this reflected in the file names throughout.
 
-### 1. Create a new project
+## 1. Create a new project
 
 To create a new project you can use the GenX CLI tool, which enables you to seed projects. Further details can be found [here](/getting-started/quick-start/create-a-new-project/).
 
-In our case, we just want to extend a blank full-stack application project, so we are using the training seed [available](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you followed the Environment setup and did the step [Start the project baseline](http://localhost:9090/getting-started/developer-training/environment-setup/#start-the-project-baseline), cloning the repository locally. 
+In our case, we just want to extend a blank full-stack application project, so we are using the [training seed](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you followed the Environment set-up and did the step [Start the project baseline](http://localhost:9090/getting-started/developer-training/environment-setup/#start-the-project-baseline), where you cloned the repository locally. 
 
 Here's a quick overview of the repository you just cloned:
 
 ![](/img/create-application-folder-overview.png)
 
-Above, we have expanded the `client` folder. This contains all the UI-related projects.
+Above, we have expanded the **client** folder. This contains all the UI-related projects.
 
-The `server` folder follows the same structure. This contains all the server-side projects.
+The **server** folder follows the same structure. This contains all the server-side projects.
 
 ### 2. Define the data model
 Now you are ready to define the fields and tables that make up your [data model](/database/fields-tables-views/fields-tables-views/). This structures information in a simple way that can be viewed by users and processed by the application.
 
 Open IntelliJ (or your chosen IDE) and open the alpha project (the devtraining-seed you cloned). After importing and indexing, you should see the files and project structure ready.
 
-#### Add fields
+### Add fields
 You define your [fields](/database/fields-tables-views/fields/) in the file **alpha-fields-dictionary.kts**.
 
 
@@ -134,7 +134,7 @@ fields {
 
 After you have saved this file, run [genesis-generated-fields](/database/fields-tables-views/genesisDao/).
 
-##### generateFields
+### generateFields
 
 From the Gradle menu on the right of Intellij, this is:
 
@@ -155,7 +155,7 @@ You are editing a kts file that needs to be compiled and built to be used from o
 As we go, you'll see we have different Gradle tasks, depending on the artifact we want to build.
 :::
 
-#### Add a table
+### Add a table
 Now we have our fields, let's define a [table](/database/fields-tables-views/tables/) in the file **alpha-tables-dictionary.kts**.
 
 We are defining one single table, containing all our fields.
@@ -182,7 +182,7 @@ tables {
 
 After you have saved this file, run [genesis-generated-dao](/database/fields-tables-views/genesisDao/).
 
-##### generateDao
+### generateDao
 
 From the Gradle menu, this is:
 
@@ -201,7 +201,7 @@ After running it, you have the DAOs (i.e. data repos) automatically generated fr
 We have a table; now we want to be able to see its content and create new entries.
 
 
-#### Data Server
+### Data Server
 A [Data Server](/server/data-server/introduction/) enables data to be read in real time. You must define the Data Server in the file **alpha-dataserver.kts**.
 
 ```kotlin
@@ -210,7 +210,7 @@ dataServer {
 }
 ```
 
-#### Event Handler
+### Event Handler
 Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](/server/event-handler/introduction/) in the file **alpha-eventhandler.kts**.
 
 ```kotlin
@@ -277,7 +277,8 @@ Add the following content to the **alpha-service-definitions.xml** file.
 
 Please see [here](/server/configuring-runtime/processes/) for a detailed description of the processes configuration.
 <!-- ADD THIS DO DAY 5 AS AN EXERCISE
-#### Overriding default configurations
+
+### Overriding default configurations
 You can override the standard definitions using the site-specific folder located at ..\alpha\server\jvm\alpha-site-specific\src\main\resources\cfg\
 
 Once deployed into the server, the files from that folder get installed in the runtime folder under a sub-folder called 'site-specific'. This is an area of the run directory, i.e. the Platform installation directory, where you can override the standard definitions found elsewhere in the application. You supply the standard definition name and your own definition. Your application will then only use your definition.
@@ -309,7 +310,7 @@ docker-compose build
 docker-compose up -d
 ```
 
-#### Running server commands
+### Running server commands
 :::info can I run server commands from the command line rather than gradle tasks?
 Yes. We've been running server commands through the gradle tasks. Alternatively, you can run server commands directly from a command line. 
 
@@ -376,7 +377,7 @@ If the Event Handler is working correctly, you will receive an **ACK**.
 
 ![](/img/test-console-eh-insert-instrument-ack.png)
 
-#### Checking the insertion
+### Checking the insertion
 You can go on to check the TRADE table to see if your insert is there.
 
 1. Filter the list of services to show only Data Servers (these are the components that distribute the data).
