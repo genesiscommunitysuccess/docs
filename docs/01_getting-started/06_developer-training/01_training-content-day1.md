@@ -72,7 +72,7 @@ This will enable you to see the basics of the Genesis low-code platform by start
 5. [Build process](#5-build-process).
 6. [Deployment](#6-deployment).
 
-### What you will build
+## What you will build
 
 The very simple application you will build will look like this:
 
@@ -85,26 +85,26 @@ Once you finish this lesson, you will extend this initial simple application int
 
 With a lack of imagination we hope you will find trustworthy, we are going to call this example application **alpha**. You will see this reflected in the file names throughout.
 
-### 1. Create a new project
+## 1. Create a new project
 
-To create a new project you can use the GenX CLI tool, which enables you to seed projects. Further details can be found [here](/getting-started/quick-start/create-a-new-project/).
+To create a new project, you can use the `genx` CLI tool, which enables you to seed projects. Further details can be found [here](/getting-started/quick-start/create-a-new-project/).
 
-In our case, we just want to extend a blank full-stack application project, so we are using the training seed [available](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you followed the Environment setup and did the step [Start the project baseline](http://localhost:9090/getting-started/developer-training/environment-setup/#start-the-project-baseline), cloning the repository locally. 
+In our case, we just want to extend a blank full-stack application project, so we are using the [training seed](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you followed the Environment setup and did the step [Start the project baseline](http://localhost:9090/getting-started/developer-training/environment-setup/#start-the-project-baseline), where you cloned the repository locally. 
 
-Here's a quick overview of the repository you just cloned:
+Here's a quick overview of the repository that you cloned:
 
 ![](/img/create-application-folder-overview.png)
 
-Above, we have expanded the `client` folder. This contains all the UI-related projects.
+Above, we have expanded the **client** folder. This contains all the UI-related projects.
 
-The `server` folder follows the same structure. This contains all the server-side projects.
+The **server** folder follows the same structure. This contains all the server-side projects.
 
-### 2. Define the data model
+## 2. Define the data model
 Now you are ready to define the fields and tables that make up your [data model](/database/fields-tables-views/fields-tables-views/). This structures information in a simple way that can be viewed by users and processed by the application.
 
 Open IntelliJ (or your chosen IDE) and open the alpha project (the devtraining-seed you cloned). After importing and indexing, you should see the files and project structure ready.
 
-#### Add fields
+### Add fields
 You define your [fields](/database/fields-tables-views/fields/) in the file **alpha-fields-dictionary.kts**.
 
 
@@ -134,7 +134,7 @@ fields {
 
 After you have saved this file, run [genesis-generated-fields](/database/fields-tables-views/genesisDao/).
 
-##### generateFields
+### generateFields
 
 From the Gradle menu on the right of Intellij, this is:
 
@@ -142,7 +142,7 @@ From the Gradle menu on the right of Intellij, this is:
 
 ![](/img/build-gradle-kts-fields.png)
 
-Alternatively, if you can't run it from your IDE, you can run the Gradle tasks from the command line. Make sure to open your terminal and cd into **../server/jvm** to run them.
+Alternatively, if you can't run the command from your IDE, you can run the Gradle tasks from the command line. Make sure to open your terminal and cd into **../server/jvm** to run them.
 
 ```shell title='Running generateFields from the command line'
 ./gradlew :genesisproduct-alpha:alpha-dictionary-cache:genesis-generated-fields:generateFields
@@ -155,7 +155,7 @@ You are editing a kts file that needs to be compiled and built to be used from o
 As we go, you'll see we have different Gradle tasks, depending on the artifact we want to build.
 :::
 
-#### Add a table
+### Add a table
 Now we have our fields, let's define a [table](/database/fields-tables-views/tables/) in the file **alpha-tables-dictionary.kts**.
 
 We are defining one single table, containing all our fields.
@@ -182,7 +182,7 @@ tables {
 
 After you have saved this file, run [genesis-generated-dao](/database/fields-tables-views/genesisDao/).
 
-##### generateDao
+### generateDao
 
 From the Gradle menu, this is:
 
@@ -197,11 +197,11 @@ From the Gradle menu, this is:
 
 After running it, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
 
-### 3. Add business logic
+## 3. Add business logic
 We have a table; now we want to be able to see its content and create new entries.
 
 
-#### Data Server
+### Data Server
 A [Data Server](/server/data-server/introduction/) enables data to be read in real time. You must define the Data Server in the file **alpha-dataserver.kts**.
 
 ```kotlin
@@ -210,7 +210,7 @@ dataServer {
 }
 ```
 
-#### Event Handler
+### Event Handler
 Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](/server/event-handler/introduction/) in the file **alpha-eventhandler.kts**.
 
 ```kotlin
@@ -227,11 +227,11 @@ eventHandler {
 ```
 :::info What is entityDb?
 
-The [entityDb](/database/database-interface/entity-db/) enables you to interact with the database layer, it's part of the Genesis Database API and we'll get into more details soon. For now, understand that this is the common way to access data from code. Feel free to use the intellisense of your IDE to explore the methods available from entityDb.
+The [entityDb](/database/database-interface/entity-db/) enables you to interact with the database layer. It's part of the Genesis Database API and we'll get into more details soon. For now, understand that this is the common way to access data from code. Feel free to use the intellisense of your IDE to explore the methods available from entityDb.
 :::
 
-### 4. Prepare the server
-So far we have created an event handler and data server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
+## 4. Prepare the server
+So far we have created an Event Handler and Data Server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
 
 - **alpha-processes.xml**
 - **alpha-service-definitions.xml**
@@ -278,11 +278,11 @@ Add the following content to the **alpha-service-definitions.xml** file.
 Please see [here](/server/configuring-runtime/processes/) for a detailed description of the processes configuration.
 <!-- ADD THIS DO DAY 5 AS AN EXERCISE
 #### Overriding default configurations
-You can override the standard definitions using the site-specific folder located at ..\alpha\server\jvm\alpha-site-specific\src\main\resources\cfg\
+You can override the standard definitions using the site-specific folder located at **..\alpha\server\jvm\alpha-site-specific\src\main\resources\cfg\**
 
-Once deployed into the server, the files from that folder get installed in the runtime folder under a sub-folder called 'site-specific'. This is an area of the run directory, i.e. the Platform installation directory, where you can override the standard definitions found elsewhere in the application. You supply the standard definition name and your own definition. Your application will then only use your definition.
+Once deployed on the server, the files from that folder are installed in the runtime folder under a sub-folder called **site-specific**. This is an area of the run directory, i.e. the Platform installation directory, where you can override the standard definitions found elsewhere in the application. You supply the standard definition name and your own definition. Your application will then only use your definition.
 
-This is useful where you have used standard modules such as Auth, FIX or even the Genesis distribution itself; you should never change these modules. Any files or definitions that are listed in the site-specific area automatically take their places. In our case, the genesis-system-definition.kts must be edited to use postgres database engine instead of the default one (FDB) as follows: 
+This is useful where you have used standard modules such as Auth, FIX or even the Genesis distribution itself; you should never change these modules. Any files or definitions that are listed in the site-specific area automatically take their places. In our case, the **genesis-system-definition.kts** must be edited to use postgres database engine instead of the default one (FDB) as follows: 
 
 ```kotlin
 ...
@@ -292,15 +292,15 @@ item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&p
 
 ```
 :::tip
-If you had to add application specific definitions, like an API_KEY for example, you'd have to edit ..\server\jvm\alpha-config\src\main\resources\cfg\alpha-system-definition.kts
+If you wanted to add application-specific definitions, such as an API_KEY, you'd have to edit **..\server\jvm\alpha-config\src\main\resources\cfg\alpha-system-definition.kts**
 :::
 -->
 
-### 5. The build and deploy process
+## 5. The build and deploy process
 
 Finally, you can build and deploy the server.
 
-The seed application includes the Dockerfiles you need; these build and deploy images of the **front end** and **back end** of the Genesis application. After assemble the application, you can run these images with the following  commands:
+The seed application includes the Dockerfiles you need; these build and deploy images of the **front end** and **back end** of the Genesis application. After assembling the application, you can run these images with the following  commands:
 
 Usage:
 ```shell title="Intellij terminal"
@@ -309,11 +309,12 @@ docker-compose build
 docker-compose up -d
 ```
 
-#### Running server commands
+### Running server commands
 :::info can I run server commands from the command line rather than gradle tasks?
-Yes. We've been running server commands through the gradle tasks. Alternatively, you can run server commands directly from a command line. 
+Yes. We've been running server commands through the Gradle tasks. Alternatively, you can run server commands directly from a command line. 
 
-Open the gsf docker container terminal as explained [here](/getting-started/developer-training/environment-setup/#attaching-a-terminal-to-a-docker-container), and you can have access to the Genesis Platform commands:
+Open the gsf docker container terminal as explained [here](/getting-started/developer-training/environment-setup/#attaching-a-terminal-to-a-docker-container), and you can have access to the Genesis commands:
+
 ```shell
 su alpha
 DbMon
@@ -342,14 +343,16 @@ PID     Process Name                  Port        Status         CPU       Memor
 ## Testing the back end
 
 
-There are multiple ways you can test the back end of your application. It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as HTTP endpoints automatically by the Genesis platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
+There are multiple ways you can test the back end of your application. It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as HTTP endpoints automatically by the Genesis low-code platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. 
+
+Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
 
 ### Genesis Console
 1. In your browser, go to http://genesislcap.com/console/console-next2/?host=localhost:8080.
-2. Enter the IP address of your server, in this case localhost. We should also add the port, as our web server running on the WSL instance is listening on 8080, so the value to be entered here is `localhost:8080`
+2. Enter the IP address of your server, in this case localhost. We should also add the port, as our web server running on the WSL instance is listening on 8080; so, the value to be entered here is `localhost:8080`
 3. Log in with your user name and password as [defined previously](/getting-started/developer-training/training-content-day1/#adding-a-user-to-login). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES** tab.
-5. Filter the **Resource type** to show only event handlers.
+5. Filter the **Resource type** to show only Event Handlers.
 
 For example:
 
@@ -375,7 +378,7 @@ If the Event Handler is working correctly, you will receive an **ACK**.
 
 ![](/img/test-console-eh-insert-instrument-ack.png)
 
-#### Checking the insertion
+### Checking the insertion
 You can go on to check the TRADE table to see if your insert is there.
 
 1. Filter the list of services to show only Data Servers (these are the components that distribute the data).
@@ -394,6 +397,7 @@ You can go on to check the TRADE table to see if your insert is there.
 :::
 
 Look at the [Data Server documentation](/server/data-server/introduction/) and see if you are able to modify our Data Server [defined previously](/getting-started/developer-training/training-content-day1/#data-server):
+
 - add a new query called "ALL_PRICES" on the TRADE table
 - make ALL_PRICES display only SYMBOL and PRICE fields
 - add a `where` clause so it displays only trades whose PRICE are higher than 0.0
