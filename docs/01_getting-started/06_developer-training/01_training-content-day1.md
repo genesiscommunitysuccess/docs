@@ -89,7 +89,7 @@ With a lack of imagination we hope you will find trustworthy, we are going to ca
 
 To create a new project, you can use the `genx` CLI tool, which enables you to seed projects. Further details can be found [here](/getting-started/quick-start/create-a-new-project/).
 
-In our case, we just want to extend a blank full-stack application project, so we are using the [training seed](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you followed the Environment setup and did the step [Start the project baseline](http://localhost:9090/getting-started/developer-training/environment-setup/#start-the-project-baseline), where you cloned the repository locally. 
+In our case, we just want to extend a blank full-stack application project, so we are using the [training seed](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you have followed the Environment setup and done the step [Start the project baseline](http://localhost:9090/getting-started/developer-training/environment-setup/#start-the-project-baseline), where you cloned the repository locally. 
 
 Here's a quick overview of the repository that you cloned:
 
