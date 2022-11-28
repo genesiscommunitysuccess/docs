@@ -326,7 +326,7 @@ export const HomeTemplate = html<Home>`
 ```
 :::
 
-Remember to run [build](/getting-started/developer-training/training-content-day1/#5-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks after the changes, and test it directly in the UI.
+Remember to run [build and deploy](/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) after the changes, and test it directly in the UI.
 
 
 ## Adding logic to the Event Handler
@@ -489,7 +489,7 @@ Now you must update the **alpha-eventhandler.kts** in order to pass the `entityD
     }
 ```
 
-Run the [dao](/getting-started/developer-training/training-content-day1/#generatedao), [build](/getting-started/developer-training/training-content-day1/#5-the-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks.
+Run the [dao](/getting-started/developer-training/training-content-day1/#generatedao), [build and deploy](/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 
 ### Exercise 4.3: testing an audited table
 :::info ESTIMATED TIME

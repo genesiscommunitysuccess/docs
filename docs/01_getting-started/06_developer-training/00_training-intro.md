@@ -48,7 +48,7 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 - [Day five](/getting-started/developer-training/training-content-day5/): Schedulers, notifications, permissions​, key server commands​ and how to get help​.
 
 ## Genesis low-code platform version
-6.2.3
+6.3.0
 
 ## Source code
 The complete source code of this training is available 

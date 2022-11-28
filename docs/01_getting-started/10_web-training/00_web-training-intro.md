@@ -37,7 +37,7 @@ Estimated total effort: <b>Daily four-hour sessions for four days</b>.
 - [Day four](/getting-started/web-training/web-training-day4/): Design systems, styling, micro front-ends, Angular integration
 
 ## Genesis low-code platform version
-Genesis Server Framework 6.2.3 and Foundation UI 5.0.1.
+Genesis Server Framework 6.3.0 and Foundation UI 5.0.1.
 
 ## Source code
 The complete source code of this training is available on [GitHub](https://github.com/genesiscommunitysuccess/web-training/tree/final) and, alternatively, as a [ZIP file](https://genesisglobal.jfrog.io/artifactory/community-uploads/web-training-gama.zip).
