@@ -231,7 +231,7 @@ The [entityDb](/database/database-interface/entity-db/) enables you to interact 
 :::
 
 ## 4. Prepare the server
-So far we have created an event handler and data server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
+So far we have created an Event Handler and Data Server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
 
 - **alpha-processes.xml**
 - **alpha-service-definitions.xml**
@@ -301,7 +301,7 @@ If you had to add application-specific definitions, such as an API_KEY, you'd ha
 
 Finally, you can build and deploy the server.
 
-The seed application includes the Dockerfiles you need; these build images of the **front end** and **back end** of the Genesis application. After assembling the application, you can run these images with the following  commands:
+The seed application includes the Dockerfiles you need; these build images of the **front end** and **back end** of the Genesis application. After assembling the application, you can run these images with the following commands:
 
 Usage:
 ```shell title="Intellij terminal"
