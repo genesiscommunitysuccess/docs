@@ -169,20 +169,21 @@ The following example creates a button with an associated logo for each of the t
 ```javascript
 html`
 <foundation-header
-	${repeat(
-		(x) => x.config.allRoutes,
-		html`
-			<zero-button
-				appearance="neutral-grey"
-				slot="routes"
-				value="${(x) => x.index}"
-				@click=${(x, c) => c.parent.navigation.navigateTo(x.path)}
-			>
-				<zero-icon variant="${(x) => x.variant}" name="${(x) => x.icon}"></zero-icon>
-				${(x) => x.title}
-			</zero-button>
-		`
-	)}
+    <div slot="routes">
+        ${repeat(
+            (x) => x.config.allRoutes,
+            html`
+                <zero-button
+                    appearance="neutral-grey"
+                    value="${(x) => x.index}"
+                    @click=${(x, c) => c.parent.navigation.navigateTo(x.path)}
+                >
+                    <zero-icon variant="${(x) => x.variant}" name="${(x) => x.icon}"></zero-icon>
+                    ${(x) => x.title}
+                </zero-button>
+            `
+        )}
+	</div>
 ></foundation-header>`;
 ```
 
