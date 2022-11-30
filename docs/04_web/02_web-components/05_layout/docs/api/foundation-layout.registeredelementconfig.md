@@ -14,7 +14,7 @@ export interface RegisteredElementConfig
 
 ## Remarks
 
-`elements` - array of Elements that are the content of the new item `title` - optional string which is used as the new title of the tab (defaults to be the registered name) `closable` - optional boolean which allows the item to be closed with the X button if set and true `size` - optional string describing the size of the new item (see the written documentation for more info) `id` - optional string configuring the registration ID of the new item (defaults to sequential IDs)
+`elements` - array of Elements that are the content of the new item `title` - optional string which is used as the new title of the tab (defaults to be the registered name) `closable` - optional boolean which allows the item to be closed with the X button if set and true `size` - optional string describing the size of the new item (see the written documentation for more info) `registration` - optional string configuring the registration ID of the new item (defaults to sequential IDs)
 
 ## Properties
 
@@ -22,7 +22,7 @@ export interface RegisteredElementConfig
 |  --- | --- | --- | --- |
 |  [closable?](./foundation-layout.registeredelementconfig.closable.md) |  | boolean | <i>(Optional)</i> |
 |  [elements](./foundation-layout.registeredelementconfig.elements.md) |  | Element\[\] |  |
-|  [id?](./foundation-layout.registeredelementconfig.id.md) |  | string | <i>(Optional)</i> |
+|  [registration?](./foundation-layout.registeredelementconfig.registration.md) |  | string | <i>(Optional)</i> |
 |  [size?](./foundation-layout.registeredelementconfig.size.md) |  | string | <i>(Optional)</i> |
 |  [title?](./foundation-layout.registeredelementconfig.title.md) |  | string | <i>(Optional)</i> |
 

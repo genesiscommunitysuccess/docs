@@ -8,14 +8,48 @@ This page is a current PoC of the declarative API to live on top of golden layou
 
 ### [API Docs](./docs/api/index.md)
 
-## Declarative API
+## Declarative HTML API
 
-:::info
-All names are subject to change until we have agreement. The main purpose of this document is to agree upon the
-different components and what their attributes will be.
-:::
+The following example shows the usage of the declarative API with `zero-charts` and the output it will produce.
+```html
+<foundation-layout>
+	<foundation-layout-region>
+		<foundation-layout-item closable title="Pie">
+			<zero-charts
+				type="rose"
+				:config=${(x) => x.roseConfig}
+				:data=${(x) => x.roseData}
+			></zero-charts>
+		</foundation-layout-item>
+		<foundation-layout-region type="vertical">
+			<foundation-layout-item title="Positions Area Chart">
+				<zero-charts type="area" :config=${(x) => x.areaConfig}>
+					<charts-datasource
+						resourceName="ALL_POSITIONS"
+						server-fields="INSTRUMENT_NAME QUANTITY"
+						charts-fields="type value"
+						isSnapshot="true"
+					></charts-datasource>
+				</zero-charts>
+			</foundation-layout-item>
+			<foundation-layout-item title="Positions Column Chart">
+				<zero-charts type="column" :config=${(x) => x.columnConfig}>
+					<charts-datasource
+						resourceName="ALL_POSITIONS"
+						server-fields="INSTRUMENT_NAME QUANTITY"
+						charts-fields="type value"
+						isSnapshot="true"
+					></charts-datasource>
+				</zero-charts>
+			</foundation-layout-item>
+		</foundation-layout-region>
+	</foundation-layout-region>
+</foundation-layout>
+```
 
-### Top Level Component `<foundation-layout>`
+![Example output of the declarative API with the zero charts](/img/foundation-layout-example.png)
+
+### [Top Level Component `<foundation-layout>`](./docs/api/foundation-layout.foundationlayout.md)
 
 Top level web component which is used to initialise a custom layout
 
@@ -27,7 +61,7 @@ is 500ms and in this case the layout will only be reloaded if the child elements
 once every 500ms. This is to stop the layout being reloaded over and over for every single item during initialisation.
 The higher the value is the more performant the component is, but the first load will appear to take longer.
 
-### Layout Regions
+### [Layout Regions](./docs/api/foundation-layout.foundationlayoutregion.md)
 
 If you don't specify the `type` of the layout region it will default to `type="horizontal"`;
 
@@ -51,7 +85,7 @@ with a tab for each child. The tabs will be ordered according to which child the
  of the tab split will be the second tab), and the first child will be the one which is open by default. Can be nested within horizontal
  and vertical regions, but cannot have more layout sections inside of it.
 
-### Layout Item `<foundation-layout-item>`
+### [Layout Item `<foundation-layout-item>`](./docs/api/foundation-layout.foundationlayoutitem.md)
 
 Wrapper component that lives inside of a layout section and wraps the client content. All content must be inside of a layout item
 otherwise a runtime error will be thrown when the layout is attempted to be rendered on screen
@@ -59,6 +93,7 @@ otherwise a runtime error will be thrown when the layout is attempted to be rend
 - **title**: string defining the title of the pane which contains the content. Defaults to `Item x`, where `x` is the pane number.
 - **closable**: boolean defining whether this element is closable - Default false.
 - **size**: optional string parameter defining size, [see here](#sizing).
+- **registration**: optional string which manually sets the registered name for the pane- [see here](#dynamic-registration-and-adding-items). By default each item that doesn't have the `registration` attribute set will be a string registered sequentially starting at `"1"`.
 
 ### Sizing
 
@@ -80,6 +115,42 @@ to later. I used % because that is what the Golden Layout API supports, but we c
 :::
 
 ## JavaScript API
+
+The JavaScript API is [accessed through the methods on the root layout object](./docs/api/foundation-layout.foundationlayout.md) and allows for saving/loading the layout state, and dynamically adding items to the layout at runtime.
+
+### Dynamic Registration and Adding Items
+
+To have pane displayed on the layout system it must be *registered* with the layout system. When using the [declarative API](#declarative-html-api) the layout system takes care of this for you, but as you start to dynamically add items and then serialise the layout you need to consider which panes are registered.
+
+:::tip
+If you are only using the declarative API then you shouldn't need to set the registration names of any items as all the same items will be registered when you load a previously saved layout. If you are dynamically adding items too though it is highly recommended to manually set the registration names of items to make it easier to figure out what is and is not registered.
+* When using the declarative API use the `registration` attribute on the `<foundation-layout-item>` component
+* When using the JavaScript API set the `registration` optional parameter on the [registered element config](./docs/api/foundation-layout.registeredelementconfig.md).
+:::
+
+#### [Register Item](./docs/api/foundation-layout.foundationlayout.registeritem.md)
+
+This API allows you to register an item at runtime, but it will not be displayed in the layout. This could be used to register components in anticipation of displaying them when loading a serialised layout - [see this example](#loading-serialised-layouts).
+
+#### [Add Item](./docs/api/foundation-layout.foundationlayout.additem.md)
+
+Register and add a pane to the layout at runtime.
+
+#### [Get Registered Items](./docs/api/foundation-layout.foundationlayout.getregisterednames.md)
+
+Static function to read a layout and return all of the registered names it requires to be loaded. [See this example](#loading-serialised-layouts).
+
+### Serialising Layout
+
+The JavaScript API can be used to save and load layout states. This only describes the state of the dynamic layout itself, it is the responsibility of any components contained within their layout to serialise their own state if required.
+
+#### [Get Layout](./docs/api/foundation-layout.foundationlayout.getlayout.md)
+
+Get an object describing the current layout so it can be restored at a later date. This does not save any data internally to the layout, it is up to the client to store this state where appropriate for later recall (browser local storage, persistence layer, etc.)
+
+#### [Load Layout](./docs/api/foundation-layout.foundationlayout.loadlayout.md)
+
+Loads a serialised layout. All items that are described in the config to load must already be registered with the layout system either with the declarative or JavaScript API. If there are items missing (could either be due to missing items or registered names mismatc) then a `LayoutUsageError` will be thrown containing the names of the missing items.
 
 ## Examples
 
@@ -349,7 +420,94 @@ will reflect this. You can configure each layout separately, and you cannot drag
 This is just an example, you could have more than two layouts on a page or style them with a different method to the grid.
 :::
 
+### Loading Serialised Layouts
+
+This is an elaborate example of using the JavaScript API with consideration of the registered names. Before reading this example you should familiarise yourself with the [API Section](#javascript-api).
+
+Consider the following example:
+```html
+<foundation-layout>
+  <foundation-layout-region type="horizontal">
+    <foundation-layout-item title="Trades" registration="trades">
+      <!-- Content -->
+    </foundation-layout-item>
+    <foundation-layout-item title="Users" registration="users">
+      <!-- Content -->
+    </foundation-layout-item>
+  </foundation-layout-region>
+</foundation-layout>
+```
+We can use `getRegisteredNames()` on the config returned from `getLayout()` to see the registered names required to load the layout.
+```javascript
+const layout = document.querySelector('foundation-layout'); // as FoundatonLayout in TypeScript;
+const layoutConfig = layout.getLayout();
+console.log(FoundatonLayout.getRegisteredNames(layoutConfig))
+```
+This will log `['trades','users']` because these are the two registered panes. You can then load any layout that only contains either/both of these items.
+
+Consider the situation where we dynamically add an item to the right hand side of the layout.
+```javascript
+const newItem = document.createElement('p'); //simple example
+newItem.innerText = 'Test';
+
+layout.addItem({
+	elements: [newItem],
+	registration: 'test',
+});
+const layoutConfigTwo = layout.getLayout()
+console.log(FoundationLayout.getRegisteredNames(layoutConfigTwo));
+```
+Now we get `[ "test", "trades", "users"]` as the output, because to load `layoutConfigTwo` we now need all three of those registered panes.
+
+Consider now where the user refreshes the page so are back to the original state of the layout with just the two elements added but we then try and load `layoutConfigTwo`:
+```javascript
+// User has refreshed page
+
+console.log(FoundatonLayout.getRegisteredNames(layout.getLayout()));
+// Ouputs ['trades','users']
+
+layout.loadLayout(layoutConfigTwo);
+// Uncaught Error: Trying to load layout with extra components. The component(s) not currently loaded are "test"
+```
+Notice the error message says that the `test` component is missing, this is because it was required as part of the layout when we used `getLayout()` but it hasn't been added as part of the layout now. If we added the item using either `registerItem()` or `addItem()` (which uses `registerItem` as part of the process of adding it to the layout) we could subsequently run `layout.loadLayout(layoutConfigTwo);` to successfully load the layout.
+
+#### Proactively Registering Items
+
+A simple approach you could take to ensure all items are registered for when you load a layout is to loop through all of your possible items that you could load and register them.
+```javascript
+const allItems = [
+	{registration: 'trades', elements: [...], },
+	{registration: 'users', elements: [...], },
+	{registration: 'profiles', elements: [...], },
+	{registration: 'notifications', elements: [...], },
+];
+
+allItems.forEach((reg) => {
+	layout.registerItem(reg);
+})
+```
+Now all of those items will be registered with the layout for potential use when calling `loadLayout()`.
+
+#### Reactively Registering Items
+
+Alternatively you could query the current layout and the layout we want to load to see if there are any missing registered items, and if so we can register them. Using our previous examples:
+```javascript
+const currentRegistrations = FoundatonLayout.getRegisteredNames(layout.getLayout());
+// ['trades','users']
+const requiredRegistrations = FoundatonLayout.getRegisteredNames(layoutConfigTwo);
+// ['test','trades','users']
+
+// We can see 'test' is missing and therefore we should register it
+layout.registerItem({registration: 'test', elements: [...]});
+```
+
+:::info
+Only items _missing_ from the `requiredRegistrations` is an issue. If there are items in the `currentRegistrations` that are not in `requiredRegistrations` this is *not* an issue because these will simply be unused registrations.
+:::
+
 ## Incorrect Examples
+
+The following section contains examples of incorrect usage for troubleshooting.
 
 ### Non-Layout Child
 

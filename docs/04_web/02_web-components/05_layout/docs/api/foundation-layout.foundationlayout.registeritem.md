@@ -9,14 +9,14 @@ Register an item with the layout system for later use
 <b>Signature:</b>
 
 ```typescript
-registerItem(config: RegisteredElementConfig): string;
+registerItem(config: Pick<RegisteredElementConfig, 'elements' | 'registration'>): string;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  config | [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) | [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) configuration items for the new pane |
+|  config | Pick&lt;[RegisteredElementConfig](./foundation-layout.registeredelementconfig.md), 'elements' \| 'registration'&gt; | [RegisteredElementConfig](./foundation-layout.registeredelementconfig.md) configuration items for the new pane |
 
 <b>Returns:</b>
 
