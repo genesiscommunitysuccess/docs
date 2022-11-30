@@ -19,6 +19,26 @@
           "test", "testing", "frontend", "ui", "unit", "end-to-end", "e2e", "uvu", "playwright"
         ]
       }
+    },
+    {
+      "name": "@genesislcap/foundation-layout",
+      "enabled": true,
+      "api_docs": "./docs/api",
+      "readme": "./README.md",
+      "output": {
+        "title": "Foundation Layout",
+        "sidebar_label": "Foundation Layout",
+        "id": "foundation-testing",
+        "directory": "./docs/04_web/02_web-components/05_layout/",
+        "api_docs": "docs/api",
+        "readme": "01_foundation-layout.md",
+        "keywords": [
+          "genesis", "foundation", "ui", "layout"
+        ],
+        "tags": [
+          "test", "layout", "frontend", "ui", "dynamic"
+        ]
+      }
     }
   ]
 }

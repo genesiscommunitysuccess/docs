@@ -6,12 +6,9 @@ id: dynamic-layout
 
 This page is a current PoC of the declarative API to live on top of golden layout using custom web components
 
-:::info
-The client can still access the Golden Layout object in order to use it's base API such as for adding new
-components into the layout dynamically.
-:::
+### [API Docs](./docs/api/index.md)
 
-## Defintion
+## Declarative API
 
 :::info
 All names are subject to change until we have agreement. The main purpose of this document is to agree upon the
@@ -22,7 +19,6 @@ different components and what their attributes will be.
 
 Top level web component which is used to initialise a custom layout
 
-- **serialisable** : boolean attribute that if set will add controls for saving, loading, and resetting the
   layout. Default false.
 - **popout** : boolean attribute that if set will put popout buttons on the header bars. Default false.
 - **maximise** : boolean attribute that if set will put maximise buttons on the header bars. Default false.
@@ -30,12 +26,6 @@ Top level web component which is used to initialise a custom layout
 is 500ms and in this case the layout will only be reloaded if the child elements of the layout region are manipulated
 once every 500ms. This is to stop the layout being reloaded over and over for every single item during initialisation.
 The higher the value is the more performant the component is, but the first load will appear to take longer.
-
-:::info
-Even if the layout is not set to serialisable, this would not stop the client from grabbing a reference to the layout
-in the DOM and manually saving/loading themselves. This will allow functionality such as being able to have multiple
-premade layouts that the user could choose from.
-:::
 
 ### Layout Regions
 
@@ -88,6 +78,8 @@ The size is defining the size of the component _compared_ to the siblings _withi
 Currently the DSL team allow specification of sizes in more than just %, pixel width/height for example. This is something we may need to come back
 to later. I used % because that is what the Golden Layout API supports, but we could add these extra sizes as part of my substrate API (not MVP though?)
 :::
+
+## JavaScript API
 
 ## Examples
 
