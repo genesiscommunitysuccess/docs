@@ -6,14 +6,14 @@ import { AmplifyDocsStack } from '../lib/amplify-docs-stack';
 const app = new cdk.App();
 
 const env = {
-  account: process.env.AWS_ACCOUNT_ID,
-  region: process.env.AWS_REGION
+  account: process.env.AWS_ACCOUNT_ID || '785277322110',
+  region: process.env.AWS_REGION || 'eu-west-2'
 };
 
 if (!env.account || !env.region) {
   throw new Error('Please specify AWS_ACCOUNT_ID and AWS_REGION')
 }
-new AmplifyDocsStack(app, 'NpInfraStack', {
+new AmplifyDocsStack(app, 'DocsStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
