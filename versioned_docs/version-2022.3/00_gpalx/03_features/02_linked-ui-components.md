@@ -37,7 +37,7 @@ import global.genesis.gpl.api.schema.Table
 @Persist
 object INSTRUMENT : Table(11_001) {
     val instrumentId by varchar().nonNullable()
-    val instrumentName by varchar()
+    val instrumentName by varchar().nonNullable()
     val marketId by varchar()
     val countryCode by varchar()
     val currencyId by varchar()
