@@ -8,6 +8,6 @@ export interface StackOptions {
 }
 
 export default interface StackProperties {
-    cdkProps: cdk.StackProps,
+    cdkProps?: cdk.StackProps,
     stackOptions: StackOptions
 }

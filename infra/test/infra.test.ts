@@ -1,17 +1,34 @@
-// import * as cdk from 'aws-cdk-lib';
-// import { Template } from 'aws-cdk-lib/assertions';
-// import * as Infra from '../lib/infra-stack';
+import * as cdk from 'aws-cdk-lib'
+import { Template } from 'aws-cdk-lib/assertions'
+import { AmplifyDocsStack } from '../lib/amplify-docs-stack'
 
-// example test. To run these tests, uncomment this file along with the
-// example resource in lib/infra-stack.ts
-test('SQS Queue Created', () => {
-//   const app = new cdk.App();
-//     // WHEN
-//   const stack = new Infra.InfraStack(app, 'MyTestStack');
-//     // THEN
-//   const template = Template.fromStack(stack);
+describe('Documentation Stack', () => {
+    let template: Template
+    beforeEach(() => {
+        const app = new cdk.App();
+        const stack = new AmplifyDocsStack(app, 'TestStack', {
+            stackOptions: {
+                stackPrefix: 'Test',
+                subdomain: 'test',
+                zone: 'genesistest.com',
+                gtmId: 'GTM-1234'
+            }
+        })
+        template = Template.fromStack(stack);
+    })
+    test('points at the correct source repository', () => {
+        template.hasResourceProperties('AWS::Amplify::App', {
+            Repository: 'https://github.com/genesislcap/docs'
+        })
+    })
 
-//   template.hasResourceProperties('AWS::SQS::Queue', {
-//     VisibilityTimeout: 300
-//   });
-});
+    test('generates the correct domain name from the provided options', () => {
+        template.hasResourceProperties('AWS::Amplify::Domain', {
+            DomainName: 'test.genesistest.com'
+        })
+    })
+
+    test('configures two branches', () => {
+        template.resourceCountIs('AWS::Amplify::Branch', 2)
+    })
+})
