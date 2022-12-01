@@ -4,14 +4,16 @@ import { Construct } from 'constructs';
 import * as amplify from '@aws-cdk/aws-amplify-alpha';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import { SecretValue } from 'aws-cdk-lib';
-
-const targetDomain = 'learn.genesis.global'
+import StackProperties from './stack-properties';
 
 export class AmplifyDocsStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+  constructor(scope: Construct, id: string, stackProps: StackProperties) {
+    const { cdkProps, stackOptions } = stackProps
+    super(scope, id, cdkProps);
 
-    const amplifyApp = new amplify.App(this, 'DocsAmplifyApp', {
+    const targetDomain = `${stackOptions.subdomain}.${stackOptions.zone}`
+
+    const amplifyApp = new amplify.App(this, stackOptions.stackPrefix + 'DocsAmplifyApp', {
       // Connect Amplify directly with a source repository on GitHub. This allows it
       // to clone and build the repository for us
       sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
@@ -33,12 +35,22 @@ export class AmplifyDocsStack extends cdk.Stack {
           phases: {
             preBuild: {
               commands: [
+                'npm config set @genesislcap:registry https://npm.pkg.github.com',
+                // this isn't ideal, but the only rights this token has are packages:read. No amount of
+                // indirection gymnastics gets us away from the fact Amplify doesn't have the concept of
+                // environmental secrets, so however we pass this token value in, it will ultimately be visible
+                // in plaintext in the AWS Amplify console. We accept that because:
+                // 1. it's a *lot* better than leaking the token in code
+                // 2. it's a token we will rotate frequently
+                // 3. it's a token which only grants read-only access to our private npm packages (@genesislcap stuff)
+                // 4. it's only visible in the AWS console to authenticated users, just as normal secrets are
+                'npm config set //npm.pkg.github.com/:_authToken ' + SecretValue.secretsManager('genesislcap-package-token').unsafeUnwrap(),
                 'npm install',
               ],
             },
             build: {
               commands: [
-                'BASE_URL=/docs/ npm run build',
+                'BASE_URL=/docs/ GTM_ID=$GTM_ID npm run build',
               ],
             },
           },
@@ -60,9 +72,13 @@ export class AmplifyDocsStack extends cdk.Stack {
     })
 
     const mainBranch = amplifyApp.addBranch('master', {
-      // we need to explicitly tag this branch as the prod branch to iron out some kinks in
+      // we need to explicitly tag this branch as the prod branch to iron out some visual kinks in
       // the AWS console (@see https://github.com/aws/aws-cdk/issues/18863)
-      stage: 'PRODUCTION'
+      stage: 'PRODUCTION',
+      environmentVariables: {
+        // make sure that only the main branch gets the live Google Analytics tracking code
+        GTM_ID: stackOptions.gtmId
+      }
     })
     const archiveBranch = amplifyApp.addBranch('archive')
 
@@ -79,19 +95,20 @@ export class AmplifyDocsStack extends cdk.Stack {
       target: `https://archive.${targetDomain}/<*>`,
       status: amplify.RedirectStatus.TEMPORARY_REDIRECT
     })
-    // we've configured docusaurus to think it's being served from `/docs` per A/C, but the doc root
+    // We've configured docusaurus to think it's being served from `/docs` per A/C, but the doc root
     // is actually `/` (if you could inspect the Amplify file system, all the generated HTML would
     // start at `/`, not `/docs`).
-    // in order to honour the A/C and serve the docs from a sub path, we need to transparently rewrite
-    // any incoming request under `/docs/*` to `/*` so that they go to the right place on the file system
-    // The key here is the `status`. This is a REWRITE, not a REDIRECT, so it happens under the hood
-    // rather than redirecting the request.
+    //
+    // In order to honour the A/C and serve the docs from a sub path, we need to transparently rewrite
+    // any incoming request for `/docs/*` to `/*` so that they go to the right place on the file system.
+    // The key here is the `status` we specify: this is a REWRITE, not a REDIRECT, so it happens in-process;
+    // Amplify transparently 'rewrites' the request from /docs/foo to /foo rather then redirecting the user
     amplifyApp.addCustomRule({
       source: '/docs/<*>',
       target: '/<*>',
       status: amplify.RedirectStatus.REWRITE
     })
-    // convenience redirect: bump requests for the root domain onto the /docs sub path
+    // This is just a convenience redirect: bump requests for the root home page onto the /docs sub path
     amplifyApp.addCustomRule({
       source: '/',
       target: '/docs',

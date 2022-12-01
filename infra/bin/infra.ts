@@ -2,29 +2,27 @@
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { AmplifyDocsStack } from '../lib/amplify-docs-stack';
+import { StackOptions } from '../lib/stack-properties';
+import { Environments } from '../lib/environments';
 
 const app = new cdk.App();
 
 const env = {
-  account: process.env.AWS_ACCOUNT_ID || '785277322110',
-  region: process.env.AWS_REGION || 'eu-west-2'
+  account: process.env.AWS_ACCOUNT_ID,
+  region: process.env.AWS_REGION
 };
 
 if (!env.account || !env.region) {
   throw new Error('Please specify AWS_ACCOUNT_ID and AWS_REGION')
 }
-new AmplifyDocsStack(app, 'DocsStack', {
-  /* If you don't specify 'env', this stack will be environment-agnostic.
-   * Account/Region-dependent features and context lookups will not work,
-   * but a single synthesized template can be deployed anywhere. */
 
-  /* Uncomment the next line to specialize this stack for the AWS Account
-   * and Region that are implied by the current CLI configuration. */
-  // env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
+const stackOptions: StackOptions | undefined = Environments[process.env.ENVIRONMENT as string]
 
-  /* Uncomment the next line if you know exactly what Account and Region you
-   * want to deploy the stack to. */
-  env,
+if (!stackOptions) {
+  throw new Error('Please specify an ENVIRONMENT value of TEST or PROD')
+}
 
-  /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
-});
+new AmplifyDocsStack(app, stackOptions.stackPrefix + 'DocsStack', {
+  cdkProps: { env },
+  stackOptions
+})
