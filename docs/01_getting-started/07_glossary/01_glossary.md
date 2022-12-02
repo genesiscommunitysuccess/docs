@@ -158,6 +158,26 @@ That means no change in your holdings or risk, plus a profit for your trading de
 
 A binary object is a wrapper over the binary representation of an entry stored in a cache. Each binary object has the `field (name)` method, which returns the value of the given field, and the `type ()` method, which extracts the information about the type of the object. Binary objects are useful when you want to work only with some fields of the objects and do not need to deserialize the entire content set.
 
+## Kotlin function libraries
+
+Camel definition
+Genesis PAL
+Purge
+Notify
+Consolidator
+Data Pipeline definition
+Data Server
+Event Handler
+ReqRep
+Streamer
+Streamer Client
+Router definition
+Sys Def
+Fields
+Tables
+Process Config
+View
+
 ## LDAP
 
 [Lightweight Directory Access Protocol](https://ldap.com/basic-ldap-concepts/)
