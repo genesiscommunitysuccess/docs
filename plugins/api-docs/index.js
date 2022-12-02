@@ -27,6 +27,11 @@ async function createApiDoc(inputFile, outputFile) {
   return fs.writeFile(outputFile, cleanseMarkdownContent(content));
 }
 
+async function copyImgFile(inputFile, outputFile) {
+  const content = await fs.readFile(inputFile);
+  return fs.writeFile(outputFile, content);
+}
+
 async function createReadme(inputFile, outputDir, output) {
   const tags = output.tags
     ? output.tags.map((tag) => `  - ${tag}`).join("\n")
@@ -57,6 +62,24 @@ id: ${output.id}
   await readStream.pipe(writeStream);
 }
 
+function copyDirectoryFiles(packageRootDir, outputRootDir) {
+  return async function ({ inputDir, outputDir, copyFn }) {
+    const inputFullDir = path.join(packageRootDir, inputDir);
+    const outputFullDir = path.join(outputRootDir, outputDir);
+    await fs.ensureDir(outputFullDir);
+
+    /**
+     * Copy files using copyFn
+     */
+    const filesInDir = await fs.readdir(inputFullDir);
+    for await (const fileName of filesInDir) {
+      const inputFile = path.join(inputFullDir, fileName);
+      const outputFile = path.join(outputFullDir, fileName);
+      await copyFn(inputFile, outputFile);
+    }
+  };
+}
+
 async function copyApiDocs(manifest, processedMap) {
   const { packages } = manifest;
   const packagesToProcess = packages.filter(
@@ -67,41 +90,39 @@ async function copyApiDocs(manifest, processedMap) {
     return;
   }
   for await (const pkg of packagesToProcess) {
-    /**
-     * Package inputs
-     */
     const packageRootDir = path.join(process.cwd(), "node_modules", pkg.name);
-    const packageJson = await fs.readJson(
-      path.join(packageRootDir, "package.json")
-    );
-    const packageApiDocsDir = path.join(packageRootDir, pkg.api_docs);
-    const packageReadmeFile = path.join(packageRootDir, pkg.readme);
-    /**
-     * Docusaurus outputs
-     */
     const outputRootDir = path.join(process.cwd(), pkg.output.directory);
     await fs.ensureDir(outputRootDir);
-    const outputApiDocsDir = path.join(outputRootDir, pkg.output.api_docs);
-    await fs.ensureDir(outputApiDocsDir);
 
-    /**
-     * Write api docs
-     */
-    const packageApiDocs = await fs.readdir(packageApiDocsDir);
-    for await (const fileName of packageApiDocs) {
-      const inputFile = path.join(packageApiDocsDir, fileName);
-      const outputFile = path.join(outputApiDocsDir, fileName);
-      await createApiDoc(inputFile, outputFile);
+		const copyDirFiles = copyDirectoryFiles(packageRootDir, outputRootDir)
+
+    if (pkg.api_docs && pkg.output.api_docs) {
+      await copyDirFiles({
+        inputDir: pkg.api_docs,
+        outputDir: pkg.output.api_docs,
+        copyFn: createApiDoc,
+      });
+    }
+    if (pkg.img_dir && pkg.output.img_dir) {
+      await copyDirFiles({
+        inputDir: pkg.img_dir,
+        outputDir: pkg.output.img_dir,
+        copyFn: copyImgFile,
+      });
     }
 
     /**
      * Write readme file, use git to merge in acceptable changes to existing file after write occurs
      */
+    const packageReadmeFile = path.join(packageRootDir, pkg.readme);
     await createReadme(packageReadmeFile, outputRootDir, pkg.output);
 
     /**
      * Mark as processed
      */
+    const packageJson = await fs.readJson(
+      path.join(packageRootDir, "package.json")
+    );
     processedMap[pkg.name] = packageJson.version;
   }
 }
@@ -135,3 +156,4 @@ module.exports = async function (context, options) {
     },
   };
 };
+
