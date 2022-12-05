@@ -17,11 +17,11 @@ All of these configuration settings are wrapped within the `security` function.
 
 ## security 
 
-The `security` function wraps all other variable and functions within the **auth-preferences.kts** file. From this top level the following variables can be set.
+The `security` function wraps all other variable and functions within the **auth-preferences.kts** file. From this top level the following variables can be set:
 
 * `sessionTimeoutMins` specifies a time out for the session. Sessions are timed out (logged out) after the value defined here. The front end of your application can monitor web movement, page changes, etc. and perform an [automatic refresh](/server/integration/rest-endpoints/advanced/#event_login_refresh) - in which case, the user is not aware of the logout and the start of the new session. Default: 30 minutes.
 * `expiryCheckMins` specifies the time interval (in minutes) used to check for idle sessions in the system. Default: 5 minutes.
-* `maxSimultaneousUserLogins` specifies the maximum number of concurrent, active sessions a user can maintain. Once this limit has been reached, the user cannot log in again until another session has been logged out. If the value zero is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
+* `maxSimultaneousUserLogins` specifies the maximum number of concurrent active sessions a user can maintain. Once this limit has been reached the user cannot activate additional sessions until one or more of the active sessions has been logged out of. If the value zero is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
 
 ```kotlin
 security {
@@ -36,11 +36,11 @@ From within `security` we can also invoke the further functions in order to conf
 ### authentication
 The `authentication` function is used to define common features of all three types of authentication. Within it, many variables can be set, but their use depends on the value given to the `type` variable.
 
-* `type` indicates which of the three types of username and password authentication to be used. It accepts the values of: `AuthType.INTERNAL`, `AuthType.LDAP` or `AuthType.HYBRID`. Default: `AuthType.INTERNAL`.
+* `type` indicates which of the three types of username and password authentication are to be used. It accepts the values of: `AuthType.INTERNAL`, `AuthType.LDAP` or `AuthType.HYBRID`. Default: `AuthType.INTERNAL`.
 
-For more information on each of these three authentication types, please see the [authentication overview](/server/access-control/authentication-overview/#username-and-password-authentication).
+For more information about each of these three authentication types please see the [authentication overview](/server/access-control/authentication-overview/#username-and-password-authentication).
 
-The following variables are used to configure an LDAP connection; thus are only used when `type` is either `AuthType.LDAP` or `AuthType.HYBRID`.
+The following variables are used to configure an LDAP connection; these are only used when the `type` is either `AuthType.LDAP` or `AuthType.HYBRID`.
 
 * `url` specifies the LDAP server hostname. Default: `localhost`.
 * `port` specifies the LDAP server port. Default: 389.
@@ -60,7 +60,7 @@ The following variables are used to configure an LDAP connection; thus are only 
 * `onLoginSuccess` this is a function which is invoked on a successful LDAP login, for example: it allows you to insert a user into the db when it exists in LDAP but not the database.
 * `useTLS` this is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
 
-For more information on the various authentication types, please see the [Authentication overview](/server/access-control/authentication-overview/).
+For more information about the various authentication types, please see the [Authentication overview](/server/access-control/authentication-overview/).
 
 ### passwordValidation
 The `passwordValidation` function enables password validation, and is used to set the variables relating to this validation. 
@@ -90,7 +90,7 @@ Within this function, the following variables can be set:
 * `illegalCharacters` specifies which characters are not permitted in user passwords. Default: empty.
 * `historicalCheck` specifies how many previous passwords to check against, in order to prevent password re-use. If null or undefined no historical check is performed. Default: null.
 * `restrictPassword` specifies if the password should differ from a list of the worst passwords stored within the application. Default: false.
-* `restrictDictionarySubstring` specifies if any dictionary word of 4 or more characters can be included in a password (either forwards or backwards). Default: false.
+* `restrictDictionarySubstring` specifies if any dictionary word of four or more characters can be included in a password (either forwards or backwards). Default: false.
 * `restrictUserName` specifies if the user's username is restricted as part of their password. Default: false.
 * `repeatCharacterRestrictSize` specifies the number of consecutive repeated characters that make a password restricted. If null or undefined this assumes there is no limit. Default: null.
 * `passwordExpiryDays` specifies how many days before a password expires. If null or undefined this assumes there is no limit. Default: null.
@@ -100,7 +100,7 @@ Within this function, the following variables can be set:
 The `passwordRetry` function allows you to configure settings for limiting the rate at which a user can retry passwords. It allows the following variables to be set:
 
 * `maxAttempts` specifies the maximum number of attempts allowed if a user enters a wrong password. Default: 3 attempts.
-* `waitTimeMins` specifies the time to wait in minutes when the maximum number of incorrect attempts is reached, before allowing a user to try again. Default: 5 minutes.
+* `waitTimeMins` specifies the time to wait in minutes when the maximum number of incorrect attempts is reached before allowing a user to try again. Default: 5 minutes.
 
 ### mfa
 The `mfa` function allows you to configure Multi-factor Authentication (MFA). For more information on MFA please see [Wikipedia](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function the following variables can be set:
@@ -112,8 +112,8 @@ The `mfa` function allows you to configure Multi-factor Authentication (MFA). Fo
 * `issuer` specifies a reference to the Organisation or Entity issuing the MFA. Default: Genesis.
 * `label` specifies a label for the MFA. This is typically an email address of the issuing Entity or Organisation. Default: genesis.global.
 * `confirmWaitPeriodSecs` specifies the period of time in seconds before a secret has to be confirmed. Default: 300 seconds.
-* `secretEncryptKey` specifies a key with which Secrets will be encrypted in the database. If this is null or undefined Secrets will not be encrypted in the database. Default: null.
-* `usernameTableLookUpSalt` specifies the salt with which a username is hashed, when stored in the database with the above Secret. If this is null or undefined the username will not be hashed in the database. Default: null.
+* `secretEncryptKey` specifies the key that Secrets will be encrypted in the database. If this is null or undefined Secrets will not be encrypted in the database. Default: null.
+* `usernameTableLookUpSalt` specifies the salt with which a username is hashed when stored in the database with the above Secret. If this is null or undefined the username will not be hashed in the database. Default: null.
 
 ### loginAck
 The `loginAck` function allows you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message. When you call the `loginAck` function, you have to supply a table or view as a parameter. This is the table or view upon which the following functions will be invoked.
@@ -239,7 +239,7 @@ Currently, this is the only preference published.
 ---
 
 ## Authentication
-Once you have a list of preferences, you can show the correct login dialog and let the user make a login attempt.  The password is provided in plain text, as it is expected you will secure the connection using TLS.
+Once you have a list of preferences you can show the correct login dialogue and let the user make a login attempt.  The password is provided in plain text, as it is expected you will secure the connection using TLS.
 ### Login request
 
     MESSAGE_TYPE = EVENT_LOGIN_AUTH
@@ -257,7 +257,7 @@ If successful:
     DETAILS.SYSTEM.PRODUCT[1].NAME = AUTH
     DETAILS.SYSTEM.PRODUCT[1].VERSION = 1.0.1.RELEASE
 
-If there is a problem, the server will return the standard error set with CODE/TEXT details and the error code `LOGIN_AUTH_NACK`.  The following error codes can be provided:
+If there is a problem the server will return the standard error set with CODE/TEXT details and the error code `LOGIN_AUTH_NACK`.  The following error codes can be provided:
 
 - `UNKNOWN_ACCOUNT` - User is unknown
 - `INCORRECT_CREDENTIALS` - User/password combination is invalid
