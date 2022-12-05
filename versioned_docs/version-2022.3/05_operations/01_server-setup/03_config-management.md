@@ -37,13 +37,13 @@ All of them are off-the-shelf packages found either in OS core package repos or 
 
 ### Nginx Configuration
 
-Nginx is used as a reverse proxy as the Genesis applications' entry point.  A comparatively simple config file achieves this. This file must specify the port to listen on, hostname to respond to, and if TLS is configured, the details of certificates to use.
+nginx is used as a reverse proxy as the Genesis application's entry point. A comparatively simple config file achieves this. This file must specify the port to listen on, hostname to respond to, and if TLS is configured, the details of certificates to use.
 
-These are not matters specific to Genesis applications.  The Genesis-specific part is relative constant (unless the Router application is running on non-standard ports).
+These are not matters specific to Genesis applications.  The Genesis-specific part is relatively constant (unless the Router application is running on non-standard ports).
 
 ### Using a Docker image (recommended)
 
-To configure NGINX using a Docker image, make sure you have the your artifactory credentials to hand. Then, in your CentOS terminal, enter the following commands:
+To configure nginx using a Docker image, make sure you have the your artifactory credentials to hand. Then, in your CentOS terminal, enter the following commands:
 
 
 1. Enter your artifactory credentials.
@@ -64,11 +64,20 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-ho
 
 ### Manual configuration
 
-For a manual set-up of NGINX, use this sample server block.
+For a manual set-up of nginx, you need add the following to the http block to the **nginx.conf** file:
+
+```
+http {
+    map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''     close;
+        }
+    }
+```
+Additionally, you need a **** file with a server block. You can use the following example:
 
 ```text
-server {
-
+    server {
     listen 443 ssl;
     listen 80;
     server_name _;
