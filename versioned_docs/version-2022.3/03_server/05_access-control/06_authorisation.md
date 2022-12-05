@@ -581,9 +581,9 @@ The `user` handle readily available will contain all fields and their values fro
 ```
 
 
-## Defining a permission rule using Groovy and XML
+## Defining a permission rule using Groovy and xml
 
-All permission rules are held in the file **auth-permissions.xml**.  In this file, you define rules against a specific entity, and each entity is defined against a database table.
+All permission rules are held in the **auth-permissions.xml** file.  In this file, you define rules against a specific entity, and each entity is defined against a database table.
 
 We have a preExpression block inside our file, which is applied to all entities. This makes the definition `isUserEnabled` available to all entities.
 
@@ -616,7 +616,7 @@ You must define an entity block for every entity you want to authorise.  Each bl
 | averageUsers         | Average number of users on the system. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                                  | No. Default = 1,000                    |
 | updateOn             | Custom logic to trigger authorisation updates in specific scenarios. When tables defined in this section are modified, the authorisation map is refreshed following the configuration logic. See the example. | No                                     |
 
-### Data server snippet
+### Data Server snippet
 ```kotlin
 dataServer {
 
@@ -630,7 +630,7 @@ dataServer {
 }
 ```
 
-### Request server snippet
+### Request Server snippet
 ```kotlin
 requestReplies {
 
@@ -646,7 +646,7 @@ requestReplies {
 
 ## Defining a permission rule using GPAL
 
-Permission rules can be held in GPAL files as well. GPAL permission files must have suffix of **auth-preferences.kts**.  In this file, you define rules against a specific entity, and each entity is defined against a database table or view.
+Permission rules can be held in GPAL files as well. GPAL permission files must have the suffix **auth-preferences.kts**.  In this file, you define rules against a specific entity. Each entity is defined against a database table or view.
 
 You must define an entity block for every entity you want to authorise.  Each block can have the following attributes:
 
@@ -715,7 +715,7 @@ dataServer {
 }
 ```
 
-### Request server snippet
+### Request Server snippet
 ```kotlin
 requestReplies {
 
