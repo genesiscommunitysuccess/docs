@@ -212,6 +212,15 @@ npm run dev
 The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
 
+:::warning Node.js 17 issue
+After running, if you receive an error message similar to this `digital envelope routines::unsupported`, please double-check this Node.js 17 issue [reported](https://github.com/webpack/webpack/issues/14532).
+
+The solution described in this issue's history [here](https://github.com/webpack/webpack/issues/14532#issuecomment-947012063) is pretty much exporting an environment variable NODE_OPTIONS setting the value below
+```shell
+export NODE_OPTIONS=--openssl-legacy-provider
+```
+:::
+
 :::tip
 If you try to run the application and for some reason there is already a process using the same port, check that this is a process that you don't need running (for example, caching or old runs). You can run the command-line below as Administrator to search for the process and kill it. 
 ```shell
