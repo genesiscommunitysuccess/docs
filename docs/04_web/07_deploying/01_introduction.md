@@ -9,7 +9,7 @@ tags:
   - introduction
 ---
 
-## Default web server setup:
+## Default web server setup
 
 For Genesis application servers, the web server of choice is [nginx](https://www.nginx.com/).
 
