@@ -52,11 +52,13 @@ export class AmplifyDocsStack extends cdk.Stack {
             build: {
               commands: [
                 'BASE_URL=/docs/ GTM_ID=$GTM_ID npm run build',
+                'mkdir output',
+                'cp -a build output/docs',
               ],
             },
           },
           artifacts: {
-            baseDirectory: 'build',
+            baseDirectory: 'output',
             files: ['**/*'],
           },
         },
@@ -99,19 +101,6 @@ export class AmplifyDocsStack extends cdk.Stack {
       target: `https://archive.${targetDomain}/<*>`,
       status: amplify.RedirectStatus.TEMPORARY_REDIRECT
     })
-    // We've configured docusaurus to think it's being served from `/docs` per A/C, but the doc root
-    // is actually `/` (if you could inspect the Amplify file system, all the generated HTML would
-    // start at `/`, not `/docs`).
-    
-    // In order to honour the A/C and serve the docs from a sub path, we need to transparently rewrite
-    // any incoming request for `/docs/*` to `/*` so that they go to the right place on the file system.
-    // The key here is the `status` we specify: this is a REWRITE, not a REDIRECT, so it happens in-process;
-    // Amplify transparently 'rewrites' the request from /docs/foo to /foo rather then redirecting the user
-    amplifyApp.addCustomRule({
-      source: '/docs/<*>',
-      target: '/<*>',
-      status: amplify.RedirectStatus.REWRITE
-    })
     // This is just a convenience redirect: bump requests for the root home page onto the /docs sub path
     amplifyApp.addCustomRule({
       source: '/',
@@ -122,7 +111,7 @@ export class AmplifyDocsStack extends cdk.Stack {
     // and so we should fall back to serving the 404 page
     amplifyApp.addCustomRule({
       source: '/<*>',
-      target: '/404.html',
+      target: '/docs/404.html',
       status: amplify.RedirectStatus.NOT_FOUND_REWRITE
     })
   }
