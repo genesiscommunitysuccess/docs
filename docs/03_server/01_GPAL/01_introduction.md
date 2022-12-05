@@ -16,6 +16,10 @@ Some functions are generic (available to all modules) other functions are specif
 
 Once you define an object in GPAL (such as a View), you can use it in multiple components.
 
+## Kotlin functions libraries
+
+![](/img/kotlin-functions.png)
+
 ## Kotlin function examples
 
 The following imports are automatically available inside GPAL Event Handlers:
