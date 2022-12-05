@@ -10,7 +10,7 @@ tags:
   - overview
 ---
 
-[Introduction](/server/access-control/introduction)  | [Authentication overview](/server/access-control/authentication-overview) | [Username and Password](/server/access-control/password-authentication) | [SSO](/server/access-control/sso-authentication) | [Authorisation overview](/server/access-control/authorisation-overview) | [Authorisation](/server/access-control/authorisation)
+
 
 ## Authorisation
 Authorisation is the process by which you apply specific permissions to resources. Only users who pass the permission criteria for the resource have access.

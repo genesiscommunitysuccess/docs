@@ -555,7 +555,7 @@ Each `endpoints` configuration has the following properties:
 | token | The OIDC provider `token` endpoint | Yes | No default value | String |
 | authorization | The OIDC provider `authorization` endpoint | Yes | No default value | String |
 
-Each `verification` configuratio has the following properties:
+Each `verification` configuration has the following properties:
 
 | Property name | Description | Mandatory | Default value | Type |
 | --- | ------ | --- | --- | --- |
@@ -566,9 +566,9 @@ Each `verification` configuratio has the following properties:
 If `verification` is defined either `publicKey` or `publicKeyUrl` must be defined.
 :::
 
-### Sample Configurations
+### Sample configurations
 
-### Minimal Configuration
+### Minimal configuration
 
 ```kotlin
 oidc{
@@ -591,7 +591,7 @@ oidc{
 ```
 
 
-### Full Configuration
+### Full configuration
 
 ```kotlin
 oidc{
