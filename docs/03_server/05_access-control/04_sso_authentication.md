@@ -13,7 +13,7 @@ tags:
 
 import CodeBlock from '@theme/CodeBlock';
 
-Single sign-on (SSO) authentication uses the underlying SSO technology. SSO is a mechanism that allows a user to be authenticated against a single system, and use that across multiple applications - including those built on the Genesis low-code platform. This has the advantage that a user is required to log in only once, rather than once per system.
+Single sign-on (SSO) authentication uses the underlying SSO technology. SSO is a mechanism that allows a user to be authenticated against a single system, and use that authenticated id across multiple applications - including those built on the Genesis low-code platform. This has the advantage that a user is required to log in only once, rather than once per system.
 
 There are two different types of SSO authentication presently supported by the Genesis low-code platform. These are as follows:
 
@@ -54,7 +54,7 @@ The IT infrastructure or security team at your organisation is usually responsib
 
 :::
 
-### Configuration details
+## Configuration details
 
 The following data points need to be shared with Genesis to complete the solution. These data points are stored in the database of your Genesis application. These are all stored on the `JWT_CONFIG` table.
 
@@ -64,11 +64,11 @@ The following data points need to be shared with Genesis to complete the solutio
 * The `REDIRECT_URL` must contain the URL for which the user is redirected to log in, should they not possess a valid JWT.
 * The `KEY_ALGORITHM` should be set either to `KeyAlgorithm.RSA` or `KeyAlgorithm.HMAC`.
 
-### How Genesis JWT SSO works
+## How Genesis JWT SSO works
 
 The SSO workflow depends on whether CORS is configured on your internal authentication service to allow the Genesis low-code platform to make direct authentication requests, or not.
 
-#### CORS enabled
+### CORS enabled
 
 If CORS is enabled, the SSO workflow is:
 
@@ -79,7 +79,7 @@ If CORS is enabled, the SSO workflow is:
 5. The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends it back to the Genesis web platform.
 6. With the signed JWT, the Genesis web platform makes an SSO authentication request for the specific organisation. If this is successful, an active Session token is returned.
 
-#### CORS not configured
+### CORS not configured
 
 This set-up uses the browser’s redirect functionality, so the user experience might not be as seamless.
 
@@ -92,7 +92,7 @@ If CORS is not enabled, the SSO workflow is:
 5. The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends a redirect trigger to the browser for **https://your-subdomain.genesisapplication.com/**, which includes the JWT as a request parameter.
 6. The Genesis platform is reloaded. It recognises that SSO is enabled, but now with the JWT as a parameter. The platform sends an SSO authentication request with the JWT for the specific organisation. If this is successful, an active Session token is returned.
 
-### JWT revalidation
+## JWT revalidation
 
 The Auth service provides an Event Handler to clients, which allows for periodic updating and revalidation of a JWT token.
 
@@ -323,7 +323,7 @@ this.routes.map(
 
 ### Testing SAML
 
-#### Server - setting up local SAML
+### Server - setting up local SAML
 
 In order to test the SAML flow, first, you need to run SAML locally. You can do this using a docker container, for example:
 
@@ -397,7 +397,7 @@ USER_NAME = user1@example.com
 
 5. With the users set up, you can run your server.
 
-#### Running the user interface
+### Running the user interface
 
 
 1. Run an NGINX proxy docker container: for example:
@@ -568,7 +568,7 @@ If `verification` is defined either `publicKey` or `publicKeyUrl` must be define
 
 ### Sample Configurations
 
-#### Minimal Configuration
+### Minimal Configuration
 
 ```kotlin
 oidc{
@@ -591,7 +591,7 @@ oidc{
 ```
 
 
-#### Full Configuration
+### Full Configuration
 
 ```kotlin
 oidc{
