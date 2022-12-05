@@ -61,7 +61,7 @@ We also use the AWS Free Tier (known as S3).
 
 A development tool.
 
-An engine that automates cloud provisioning, configuration management, application deployment, intra-service orchestration, and many other IT needs.
+Ansible is engine that automates cloud provisioning, configuration management, application deployment, intra-service orchestration, and many other IT needs.
 
 A basic Ansible command or playbook:
 
@@ -148,7 +148,7 @@ It means that you have access to autocompletion, Help and error highlighting as 
 
 ## HFT
 
-High Frequency Trading (HFT) relates to software-enabled trading of large numbers of orders within a fraction of a second. This can be achieved using technologies such as low-latency caching and high-expense infrastructure. In this world, the trader who can execute the quickest has an advantage, being able to buy low and sell high (or sell high and buy back lower) within milliseconds or less. For example:
+High Frequency Trading (HFT) relates to software-enabled trading of large numbers of orders within a fraction of a second. This can be achieved using technology such as low-latency caching and high-expense infrastructure. In this world, the trader who can execute the quickest has an advantage, being able to buy low and sell high (or sell high and buy back lower) within milliseconds or less. For example:
 - You have an algorithm that "sniffs" the arrival of a new large buy order in the market; this order is likely to push the price up.
 - You can execute a lot of buy trades on the instrument within milliseconds and offer these at a higher price because the market has moved up - partly as a result of your buying.
 - You get to sell these back to the market at a new higher price.
@@ -156,7 +156,7 @@ That means no change in your holdings or risk, plus a profit for your trading de
 
 ## Java Binary Object
 
-A binary object is a wrapper over the binary representation of an entry stored in a cache. Each binary object has the `field (name)` method, which returns the value of the given field, and the `type ()` method, which extracts the information about the type of the object. Binary objects are useful when you want to work only with some fields of the objects and do not need to deserialize the entire content set.
+A binary object is a wrapper over the binary representation of an entry stored in a cache. Each binary object has the `field (name)` method, which returns the value of the given field, and the `type ()` method, which extracts the information about the type of the object. Binary objects are useful when you want to work only with some fields of the objects and do not need to deserialise the entire content set.
 
 ## Kotlin function libraries
 
@@ -183,7 +183,7 @@ View
 [Lightweight Directory Access Protocol](https://ldap.com/basic-ldap-concepts/)
 Industry-standard application protocol for accessing and maintaining distributed directory information services over an Internet Protocol (IP) network.
 
-A common use of LDAP is to provide a central store of usernames and passwords. This allows many different applications and services to connect to the LDAP server to validate users.
+A common use of LDAP is to provide a central store of usernames and passwords. This allows many different applications and services to connect to the LDAP server so that you can validate users.
 
 ## MarkitWire
 
