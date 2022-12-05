@@ -105,7 +105,9 @@ Genesis components are standards-based Web Components, making them compatible wi
 
 Thus, it's important to note that under the client/web folder you can run pretty much any modern web framework you want, as long you set it up.
 
+<!--
 During this training, we are trying to be framework-agnostic but an Angular integration example will be given at the end of the course.
+-->
 :::
 
 
@@ -140,7 +142,7 @@ Essentially, the front end will connect to the back end through a websocket to *
 Alternatively, you can connect to **ws://localhost:9064** to bypass the proxy, but this is not encouraged - it could cause firewall issues.
 
 :::tip
-On your WSL server, the nginx configuration is at /etc/nginx/nginx.conf.
+On your server, the nginx configuration is at /etc/nginx/nginx.conf.
 :::
 
 #### Scripts
@@ -499,7 +501,7 @@ Steps:
 :::tip repeat directive
 You may find it useful: https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive, make sure to check the special context object as well. Example:
 ```typescript
-${(x,c) => c.PROPERTY_OF_THE_CONTEXT
+${(x,c) => c.parent.PROPERTY_OF_THE_CONTEXT
 ```
 :::
 
@@ -519,7 +521,7 @@ Some of the non-functional requirements we're going to address along with the im
 -   **override a design system to promote brand alignment and a reusable component library**
 -   **components styling**
 -   **async communication with the server with Genesis Foundation Comms**
--   **Angular integration**
+<!-- -   **Angular integration** -->
 
 Now, let's get down to business!
 
@@ -627,7 +629,7 @@ The `logo-src` defines the image that you want to display. Adding this attribute
 
 ### Exercise 1.2: customising the logo
 :::info estimated time
-10min
+5 min
 :::
 Change the logo of the header so it uses this image: `https://icotar.com/avatar/webtraining`
 
@@ -786,7 +788,7 @@ To set the content of the flyout menu, add the content in the html within an ele
 ```
 ### Exercise 1.4: adding items to the flyout menu
 :::info estimated time
-20min
+10 min
 :::
 Add an item pointing to the playground page.
 
@@ -805,7 +807,7 @@ By the way, we're using by default the Zero Design Systems. We are going to talk
 
 ### Exercise 1.5: adding new routes
 :::info estimated time
-30min
+30 min
 :::
 Customise our header in such a way that we end up with these menu items:
 
