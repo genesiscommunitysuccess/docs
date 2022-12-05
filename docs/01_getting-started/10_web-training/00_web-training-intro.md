@@ -34,7 +34,7 @@ Estimated total effort: <b>Daily four-hour sessions for four days</b>.
 - [Day one](/getting-started/web-training/web-training-day1/): Reviewing basic concepts, extending our web application, navigation menu
 - [Day two](/getting-started/web-training/web-training-day2/): Complex forms, data-entry components, using Genesis Foundation Comms
 - [Day three](/getting-started/web-training/web-training-day3/): Custom data grids, client-side options and filters
-- [Day four](/getting-started/web-training/web-training-day4/): Design systems, styling, micro front-ends, Angular integration
+- [Day four](/getting-started/web-training/web-training-day4/): Design systems, styling, micro front-ends
 
 ## Genesis low-code platform version
 Genesis Server Framework 6.3.0 and Foundation UI 5.0.1.
