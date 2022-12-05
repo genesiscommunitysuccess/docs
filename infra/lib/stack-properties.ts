@@ -5,6 +5,7 @@ export interface StackOptions {
   subdomain: string,
   zone: string,
   gtmId: string,
+  enablePullRequestPreviews: boolean,
 }
 
 export default interface StackProperties {

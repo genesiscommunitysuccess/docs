@@ -79,9 +79,12 @@ export class AmplifyDocsStack extends cdk.Stack {
       environmentVariables: {
         // make sure that only the main branch gets the live Google Analytics tracking code
         GTM_ID: stackOptions.gtmId
-      }
+      },
+      pullRequestPreview: stackOptions.enablePullRequestPreviews
     })
-    const archiveBranch = amplifyApp.addBranch('archive')
+    const archiveBranch = amplifyApp.addBranch('archive', {
+      pullRequestPreview: stackOptions.enablePullRequestPreviews
+    })
 
     // map the main/master branch to the root of targetDomain
     domain.mapRoot(mainBranch)
