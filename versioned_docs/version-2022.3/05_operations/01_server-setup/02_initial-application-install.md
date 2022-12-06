@@ -1,6 +1,6 @@
 ---
-title: 'Server Setup - Initial Application Install'
-sidebar_label: 'Initial Application Install'
+title: 'Server set-up - initial application install'
+sidebar_label: 'Initial application install'
 sidebar_position: 2
 id: initial-application-install
 keywords: [operations, server, setup, initial, application, install]
