@@ -31,7 +31,7 @@ This page gives you the hardware and software requirements needed in order to ru
 | [IntelliJ](https://www.jetbrains.com/idea/download/?fromIDE=#section=windows)	| 2021.2.3 and above  |
 |[Visual Studio Code](https://code.visualstudio.com/Download)	|     1.52.1      |
 |[Java SDK](https://www.oracle.com/java/technologies/downloads/)|       11        |
-| [NodeJS](https://nodejs.org/en/download/)  |     16 LTS+     |
+| [NodeJS](https://nodejs.org/download/release/latest-gallium/)  |     16 LTS     |
 | [Postman](https://www.postman.com/downloads/) (optional)	|        8        |
 
 
@@ -39,7 +39,7 @@ You can use a range of IDEs (for example, Eclipse) with the Genesis platform, bu
 
 ## Requirements
 
-* NodeJS (16 LTS+) - https://nodejs.org/en/
+* NodeJS (16 LTS) - https://nodejs.dev/en/
 * npm 8 (installed with NodeJS)
 
 ## Access to the Genesis repository

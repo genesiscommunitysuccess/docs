@@ -15,7 +15,7 @@ sidebar_position: 4
     <li>We created a project from scratch using <a href="/getting-started/developer-training/training-content-day1/#1-create-a-new-project">GenX CLI</a>.</li>
     <li>We defined our data model adding <a href="/getting-started/developer-training/training-content-day1/#add-fields">fields</a>, and a <a href="/getting-started/developer-training/training-content-day1/#add-a-table">table</a> called TRADE.</li>
     <li>We added business logic creating a Data Server <a href="/getting-started/developer-training/training-content-day1/#data-server">query</a> and an Event Handler method to <a href="/getting-started/developer-training/training-content-day1/#event-handler">insert data</a>.</li>
-    <li> We prepared the server to <a href="/getting-started/developer-training/training-content-day1/#4-prepare-the-server-and-build">build</a> and <a href="/getting-started/developer-training/training-content-day1/#5-deployment">deploy</a>.</li>
+    <li> We prepared the server to <a href="/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process">build and deploy</a>.</li>
   </div>
 </details>
 
@@ -271,7 +271,7 @@ As a reminder, these are the steps needed to complete this task:
 2. Edit **alpha-fields-dictionary.kts** first, and don't forget to run the [generateFields](/getting-started/developer-training/training-content-day1/#generatefields) gradle task when you finish this. Remember that fields are defined separately from tables, so that they (including their meta-data) can be re-used across multiple tables and show linkage.​
 3.  Then edit **alpha-tables-dictionary.kts** to add the new tables and the fields you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [genesis-generated-dao](/getting-started/developer-training/training-content-day1/#generatedao).
 4. Add queries to the Data Server. These must point to the new tables in the **alpha-dataserver.kts** file.
-5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to run [build](/getting-started/developer-training/training-content-day1/#5-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product).​
+5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to [build and deploy](/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).​
 
 :::tip adding a new `eventHandler` block
 Example on how to add additional blocks in the `eventHandler`:
@@ -301,7 +301,7 @@ eventHandler {
 ```
 :::
 
-- [Build](/getting-started/developer-training/training-content-day1/#5-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product). You can test by using Postman or Console (see more details in the next section) to insert:
+- [Build and deploy](/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process). You can test by using Postman or Console (see more details in the next section) to insert:
   - a new counterparty
   - a new instrument
   - a new trade
