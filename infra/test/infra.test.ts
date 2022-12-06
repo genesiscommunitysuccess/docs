@@ -1,20 +1,29 @@
 import * as cdk from 'aws-cdk-lib'
 import { Template } from 'aws-cdk-lib/assertions'
 import { AmplifyDocsStack } from '../lib/amplify-docs-stack'
+import StackProperties from '../lib/stack-properties'
+
+const standardOptions = {
+    stackPrefix: 'Test',
+    subdomain: 'test',
+    zone: 'genesistest.com',
+    gtmId: 'GTM-1234',
+    enablePullRequestPreviews: false
+}
+
+const createStack = (overrides: any = {}) => {
+    const stackOptions = Object.assign({}, standardOptions, overrides)
+    const app = new cdk.App();
+    const stack = new AmplifyDocsStack(app, 'TestStack', {
+        stackOptions
+    })
+    return Template.fromStack(stack);
+}
 
 describe('Documentation Stack', () => {
     let template: Template
     beforeEach(() => {
-        const app = new cdk.App();
-        const stack = new AmplifyDocsStack(app, 'TestStack', {
-            stackOptions: {
-                stackPrefix: 'Test',
-                subdomain: 'test',
-                zone: 'genesistest.com',
-                gtmId: 'GTM-1234'
-            }
-        })
-        template = Template.fromStack(stack);
+        template = createStack()
     })
     test('points at the correct source repository', () => {
         template.hasResourceProperties('AWS::Amplify::App', {
@@ -30,5 +39,23 @@ describe('Documentation Stack', () => {
 
     test('configures two branches', () => {
         template.resourceCountIs('AWS::Amplify::Branch', 2)
+    })
+
+    test('disables pull request previews on both branches', () => {
+        template.resourcePropertiesCountIs('AWS::Amplify::Branch', {
+            EnablePullRequestPreview: false
+        }, 2)
+    })
+
+    describe('When PR previews are enabled', () => {
+        beforeEach(() => {
+            template = createStack({ enablePullRequestPreviews: true })
+        })
+
+        test('enables pull request previews on both branches', () => {
+            template.resourcePropertiesCountIs('AWS::Amplify::Branch', {
+                EnablePullRequestPreview: true
+            }, 2)
+        })
     })
 })

@@ -20,31 +20,6 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - name: log GITHUB_TOKEN
-      shell: bash
-      env:
-        MY_KEY2: ${{ secrets.GITHUB_TOKEN }}
-      if: "${{ env.MY_KEY2 != '' }}"
-      run: echo "This command is executed if GITHUB_TOKEN secret IS NOT empty"
-    - name: log GPR_READ_TOKEN
-      shell: bash
-      env:
-        MY_KEY: ${{ secrets.GPR_READ_TOKEN }}
-      if: "${{ env.MY_KEY != '' }}"
-      run: echo "This command is executed if GPR_READ_TOKEN secret IS NOT empty"
-      
-    - name: log GPR_READ_TOKEN
-      run: 'echo "$SSH_KEY:0:2" > key'
-      shell: bash
-      env:
-        SSH_KEY: ${{secrets.GPR_READ_TOKEN}}
-        
-    - name: log GITHUB_TOKEN
-      run: 'echo "$SSH_KEY:0:2" > key'
-      shell: bash
-      env:
-        SSH_KEY: ${{secrets.GITHUB_TOKEN}}
-    
     - uses: actions/checkout@v2
 
     - name: Use Node.js ${{ matrix.node-version }}
@@ -54,13 +29,20 @@ jobs:
         registry-url: https://npm.pkg.github.com/
         scope: '@genesislcap'
 
-    - name: Bootstrap
+    - name: Install CDK dependencies
+      working-directory: ./infra
+      run: npm install
+
+    - name: Run CDK tests
+      working-directory: ./infra
+      run: npm test
+
+    - name: Install Docusaurus dependencies
       run: npm install
       env:
         NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
 
-    # docusaurus will check for broken links as part of the build process
-    - name: Build
+    - name: Build Docusaurus and check for broken links
       run: npm run build
       env:
           NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
