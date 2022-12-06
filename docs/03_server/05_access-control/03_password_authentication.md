@@ -112,7 +112,7 @@ The `mfa` function allows you to configure Multi-factor Authentication (MFA). Fo
 * `issuer` specifies a reference to the Organisation or Entity issuing the MFA. Default: Genesis.
 * `label` specifies a label for the MFA. This is typically an email address of the issuing Entity or Organisation. Default: genesis.global.
 * `confirmWaitPeriodSecs` specifies the period of time in seconds before a secret has to be confirmed. Default: 300 seconds.
-* `secretEncryptKey` specifies the key that Secrets will be encrypted in the database. If this is null or undefined, Secrets will not be encrypted in the database. Default: null.
+* `secretEncryptKey` specifies the key that is used to encrypt Secrets in the database. If this is null or undefined, Secrets will not be encrypted in the database. Default: null.
 * `usernameTableLookUpSalt` specifies the salt with which a username is hashed when stored in the database with the above Secret. If this is null or undefined the username will not be hashed in the database. Default: null.
 
 ### loginAck
