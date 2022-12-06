@@ -18,7 +18,24 @@ Once you define an object in GPAL (such as a View), you can use it in multiple c
 
 ## Kotlin functions libraries
 
-![](/img/kotlin-functions.png)
+![](/img/kotlin-functions-edit.png)
+
+Camel
+Purge
+Notify
+Consolidator
+Data Pipeline
+Data Server
+Event Handler
+ReqRep
+Streamer
+Streamer Client
+Router
+Sys Def
+Fields
+Tables
+Process Config
+View
 
 ## Kotlin function examples
 
