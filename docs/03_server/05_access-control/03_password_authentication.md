@@ -112,7 +112,7 @@ The `mfa` function allows you to configure Multi-factor Authentication (MFA). Fo
 * `issuer` specifies a reference to the Organisation or Entity issuing the MFA. Default: Genesis.
 * `label` specifies a label for the MFA. This is typically an email address of the issuing Entity or Organisation. Default: genesis.global.
 * `confirmWaitPeriodSecs` specifies the period of time in seconds before a secret has to be confirmed. Default: 300 seconds.
-* `secretEncryptKey` specifies the key that Secrets will be encrypted in the database. If this is null or undefined Secrets will not be encrypted in the database. Default: null.
+* `secretEncryptKey` specifies the key that Secrets will be encrypted in the database. If this is null or undefined, Secrets will not be encrypted in the database. Default: null.
 * `usernameTableLookUpSalt` specifies the salt with which a username is hashed when stored in the database with the above Secret. If this is null or undefined the username will not be hashed in the database. Default: null.
 
 ### loginAck
@@ -239,7 +239,7 @@ Currently, this is the only preference published.
 ---
 
 ## Authentication
-Once you have a list of preferences you can show the correct login dialogue and let the user make a login attempt.  The password is provided in plain text, as it is expected you will secure the connection using TLS.
+Once you have a list of preferences, you can show the correct login dialog and let the user make a login attempt.  The password is provided in plain text, as it is expected you will secure the connection using TLS.
 ### Login request
 
     MESSAGE_TYPE = EVENT_LOGIN_AUTH
@@ -300,7 +300,7 @@ This can only be called by an administrator; it simply specifies a user name and
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD_ACK
 
 ## Post-authentication
-Once the user has been authenticated, the server expects heartbeat messages, as defined in the interval setting on the ACK message.  If the GUI misses a configurable number of heartbeats, the session will be expired. In response to a heartbeat, the GUI will receive a list of available services and their details.
+Once the user has been authenticated, the server expects heartbeat messages, as defined in the interval setting on the ACK message.  If the GUI misses a configurable number of heartbeats, the session will automatically expire. In response to a heartbeat, the GUI will receive a list of available services and their details.
 
 These services should be contacted on the hosts in the order they are defined in the list. The ordering may change if the server implements a load-balancing strategy. Existing connections can simply ignore the ordering changes, but in a failover or reconnection scenario, the ordering should be adhered to.
 
