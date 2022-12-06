@@ -60,7 +60,7 @@ import {ordersGridStyles} from "./orders-grid.styles";
 If you need to provide different class names for specific conditions, you can provide a function to the `cellClass` column config, as shown in the example below:
 
 ```ts
-{field: 'SIDE', cellClass: (params) => params.value === 'BUY' ? : 'buy-side', 'sell-side'},
+{field: 'DIRECTION', cellClass: (params) => params.value === 'BUY' ? 'buy-direction' : 'sell-direction'},
 ```
 
 Remember to add the new styles to your stylesheet file.
@@ -73,11 +73,11 @@ export const tradesGridStyles: ElementStyles = css`
   color: blue;     
 }
 
-.buy-side {
+.buy-direction {
   color: green;
 }    
 
-.sell-side {
+.sell-direction {
   color: red;
 }
 `
@@ -378,13 +378,7 @@ Users;
 // Example html with the user management
 // You can customise this with additional fields, see futher in this documentation
 export const AdminTemplate: ViewTemplate = html`
-  <zero-tabs>
-    <zero-tab-panel slot="tabpanel">
-      <zero-error-boundary>
-        <user-management></user-management>
-      </zero-error-boundary>
-    </zero-tab-panel>
-  </zero-tabs>
+    <user-management></user-management>
 `;
 ```
 
@@ -417,7 +411,7 @@ Further information about User Management API Ref (such as `Permissions` or `per
 30 mins
 :::
 
-Add the User Management into the application.
+Add the User Management into the application. To do that create a new route and add the User Management micro front-end.
 
 
 ### Front-end reporting
@@ -452,7 +446,7 @@ To enable this micro front-end in your application, follow the steps below.
   ...
   "dependencies": {
     ...
-    "@genesislcap/foundation-reporting": "^5.0.0"
+    "@genesislcap/foundation-reporting": "^5.0.1"
   },
   ...
 }

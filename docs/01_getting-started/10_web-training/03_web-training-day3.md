@@ -14,7 +14,7 @@ tags:
 This day covers:
 
 - [Custom data grids through Order entry screen​](#order-entry-screen)
-- [Client-side options and filters](#creating-our-own-grid-component)
+- [Client-side options and filters](#an-example-of-own-grid-component)
 
 ## Order entry screen
 Let's continue the development of the order screen.
@@ -149,7 +149,7 @@ Note that the event will actually delete the order.
 If you struggle, make sure to revisit this previous lesson on [calling event handlers](/getting-started/web-training/web-training-day2/#sending-the-data).
 :::
 
-## Creating our own grid component
+## An example of own grid component
 It's possible to create your own grid component if you want something completely customized. We can do that creating a new customElement. 
 
 In the example below, the component is called `positions-grid-pro`. 
