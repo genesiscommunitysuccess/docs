@@ -54,13 +54,20 @@ jobs:
         registry-url: https://npm.pkg.github.com/
         scope: '@genesislcap'
 
-    - name: Bootstrap
+    - name: Install CDK dependencies
+      working-directory: ./infra
+      run: npm install
+
+    - name: Run CDK tests
+      working-directory: ./infra
+      run: npm test
+
+    - name: Install Docusaurus dependencies
       run: npm install
       env:
         NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
 
-    # docusaurus will check for broken links as part of the build process
-    - name: Build
+    - name: Build Docusaurus and check for broken links
       run: npm run build
       env:
           NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
