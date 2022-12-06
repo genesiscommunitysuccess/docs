@@ -43,7 +43,6 @@
     {
       "name": "@genesislcap/foundation-reporting",
       "enabled": true,
-      "api_docs": "./docs/api",
 			"img_dir": "docs/img",
       "readme": "./README.md",
       "output": {
@@ -51,7 +50,6 @@
         "sidebar_label": "Foundation Reporting",
         "id": "foundation-reporting",
         "directory": "./docs/04_web/05_micro-front-ends/02_front-end-reporting",
-        "api_docs": "docs/api",
         "img_dir": "docs/img",
         "readme": "02_foundation-reporting.md",
         "keywords": [
