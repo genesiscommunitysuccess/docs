@@ -53,7 +53,7 @@ export class AmplifyDocsStack extends cdk.Stack {
               commands: [
                 'BASE_URL=/docs/ GTM_ID=$GTM_ID npm run build',
                 'mkdir output',
-                'cp -a build output/docs',
+                'mv build output/docs',
               ],
             },
           },
