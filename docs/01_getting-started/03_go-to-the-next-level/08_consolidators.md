@@ -11,17 +11,17 @@ tags:
     - consolidators
 ---
 
-Following from the calculated data using [derived fields](/getting-started/go-to-the-next-level/calculated-data/), the Genesis low-code platform provides a more advanced feature to aggregate data or perform calculations whenever the underlying data is changed. That feature is called [Consolidator](/server/consolidator/introduction/).
+Following from the calculated data using [derived fields](../../../getting-started/go-to-the-next-level/calculated-data/), the Genesis low-code platform provides a more advanced feature to aggregate data or perform calculations whenever the underlying data is changed. That feature is called [Consolidator](../../../server/consolidator/introduction/).
 
 In our case, Consolidators are a good fit for consolidating a position table from trades.
 
 ## Section objectives
-The goal of this section is to define and build a [Consolidator](/server/consolidator/introduction/).
+The goal of this section is to define and build a [Consolidator](../../../server/consolidator/introduction/).
 
 
 ## Define the position-keeping logic in the Consolidator
 
-We will use the query `ALL_POSITIONS` that was [previously defined](/getting-started/go-to-the-next-level/events/#data-server) to show all the positions calculated by the Consolidator.
+We will use the query `ALL_POSITIONS` that was [previously defined](../../../getting-started/go-to-the-next-level/events/#data-server) to show all the positions calculated by the Consolidator.
 
 Make sure that the `INSTRUMENT_ID` field is not nullable in the `TRADE` and `POSITION` tables, as the consolidations will use it.
 
@@ -169,6 +169,6 @@ Add a new entry to **positions-app-tutorial-service-definitions.xml** with the C
 When you finish, remember to run `generateDao` (if you made changes to the table), `assemble` and `deploy-genesisproduct-positions-app-tutorial`.
 
 ## Conclusion
-This shows a quick example of a Consolidator. If you want to see it in action, go to [Endpoints](/server/integration/rest-endpoints/introduction/) for information on testing the back end.
+This shows a quick example of a Consolidator. If you want to see it in action, go to [Endpoints](../../../server/integration/rest-endpoints/introduction/) for information on testing the back end.
 
 You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm) as a reference point for the consolidators. 

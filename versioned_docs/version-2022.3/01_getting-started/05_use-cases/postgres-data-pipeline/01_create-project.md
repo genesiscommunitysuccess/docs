@@ -12,13 +12,13 @@ tags:
 ---
 
 ## Create new Genesis project
-At this point you should have `genx` installed on your machine. If you don't, then follow this [guide](/getting-started/prerequisites/genx/) to set it up.
+At this point you should have `genx` installed on your machine. If you don't, then follow this [guide](../../../../getting-started/prerequisites/genx/) to set it up.
 
-Use `genx` to create new blank project following the instructions [here](/getting-started/quick-start/create-a-new-project/). For the rest of the tutorial `datapipeline-trades` will be used for project name but feel free to choose any name you like.
+Use `genx` to create new blank project following the instructions [here](../../../../getting-started/quick-start/create-a-new-project/). For the rest of the tutorial `datapipeline-trades` will be used for project name but feel free to choose any name you like.
 
 ## The Genesis data model
 
-Now following the steps [here](/getting-started/quick-start/define-the-data-model/) we'll define our data model. Don't forget that the project name is `datapipeline-trades` (or the one you chose). The model for the application is the following:
+Now following the steps [here](../../../../getting-started/quick-start/define-the-data-model/) we'll define our data model. Don't forget that the project name is `datapipeline-trades` (or the one you chose). The model for the application is the following:
 
 A trade has:
 - `TRADE_ID` of type `STRING`
@@ -84,9 +84,9 @@ From the Gradle menu on the right of IntelliJ, this is:
 
 The build step will generate the fields that can be referenced from the tables and data pipelines configuration.
 
-You can find more information on Fields [here](/database/fields-tables-views/fields-tables-views/).
+You can find more information on Fields [here](../../../../database/fields-tables-views/fields-tables-views/).
 
-The next step is to add the relevant [Fields](/database/fields-tables-views/fields/) to [Tables](/database/fields-tables-views/tables/). Open `datapipeline-trades-tables-dictionary.kts` under `datapipeline-trades/server/jvm/datapipeline-trades-config/src/main/resources/cfg` (if you chose another project name don't forget to replace `datapipeline-trades` with it) and enter the following:
+The next step is to add the relevant [Fields](../../../../database/fields-tables-views/fields/) to [Tables](../../../../database/fields-tables-views/tables/). Open `datapipeline-trades-tables-dictionary.kts` under `datapipeline-trades/server/jvm/datapipeline-trades-config/src/main/resources/cfg` (if you chose another project name don't forget to replace `datapipeline-trades` with it) and enter the following:
 
 ```kotlin
 tables {
@@ -161,4 +161,4 @@ From the Gradle menu, this is:
 
 The build step will generate the tables definitions along with data access objects (DAO) that will be referenced from the data pipeline configuration.
 
-You can find more information on Tables [here](/database/fields-tables-views/fields-tables-views/).
+You can find more information on Tables [here](../../../../database/fields-tables-views/fields-tables-views/).

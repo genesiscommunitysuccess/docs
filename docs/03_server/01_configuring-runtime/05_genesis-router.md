@@ -85,7 +85,7 @@ Here is an example of the Genesis Router's configuration in an application's **p
 </process>
 ```
 
-For more information on the tags that can be set within the configuration for your application, go to our page on [processes.xml](/server/configuring-runtime/processes/).
+For more information on the tags that can be set within the configuration for your application, go to our page on [processes.xml](../../../server/configuring-runtime/processes/).
 
 ### Configuring in service-definitions.xml
 
@@ -95,7 +95,7 @@ Here is an example of the Genesis Router's service configuration:
   <service host="localhost" name="GENESIS_ROUTER" port="9017"/>
 ```
 
-For more information on the attributes that can be set here, go to our page on [service definitions](/server/configuring-runtime/service-definitions/).
+For more information on the attributes that can be set here, go to our page on [service definitions](../../../server/configuring-runtime/service-definitions/).
 
 ## Router configuration
 Let's have a look at the different options for configuring this file. You have seen some, but not all of these in the example above.
@@ -298,7 +298,7 @@ public class FileProcessor implements WebEndpoint {
 
 To create unit tests for Genesis Router, you can extend the `AbstractGenesisTestSupport` class and specify the `genesis-router.kts` as the Script file name. Examples of how you would initialise a test extending this class are provided below.
 
-More information about how testing works is in our section on [Integration testing](/operations/testing/integration-testing/).
+More information about how testing works is in our section on [Integration testing](../../../operations/testing/integration-testing/).
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">

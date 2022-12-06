@@ -22,9 +22,9 @@ Each data pipeline defines a source, some mapping operation and a sink.
 
 ## Data pipeline ingress
 
-You can define pipelines that map data from an external source (database, file) to [Tables](/database/fields-tables-views/tables/) in your application. By default, the resulting Table objects are stored in the application database. Should you want to change this behaviour, you can define [custom sink operations](/server/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity).
+You can define pipelines that map data from an external source (database, file) to [Tables](../../../../database/fields-tables-views/tables/) in your application. By default, the resulting Table objects are stored in the application database. Should you want to change this behaviour, you can define [custom sink operations](../../../../server/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity).
 
-Each data pipeline defines a source for the data and how that data is mapped to each [Field](/database/fields-tables-views/fields/) in the Table.
+Each data pipeline defines a source for the data and how that data is mapped to each [Field](../../../../database/fields-tables-views/fields/) in the Table.
 
 If a field mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a `transform` function that returns `Any`.
 

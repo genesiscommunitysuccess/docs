@@ -10,4 +10,4 @@ tags:
 ---
 
 
-To see a working example of both static and dynamic Evaluators, please go to the [Setting Genesis Rules](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/) page, where there is a working example of both.
+To see a working example of both static and dynamic Evaluators, please go to the [Setting Genesis Rules](../../../getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/) page, where there is a working example of both.

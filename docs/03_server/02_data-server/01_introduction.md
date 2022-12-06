@@ -33,4 +33,4 @@ Data Servers are conventionally defined in the file _application-name_**-dataser
 
 So, if your application is called **positions**, then the file would conventionally be named **positions-dataserver.kts**.
 
-Note, you will also need to declare your Data Server within the [runtime configuration](/server/data-server/configuring-runtime/).
+Note, you will also need to declare your Data Server within the [runtime configuration](../../../server/data-server/configuring-runtime/).

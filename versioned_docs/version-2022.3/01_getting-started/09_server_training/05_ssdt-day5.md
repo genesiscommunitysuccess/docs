@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 
 ## Custom endpoints
 
-The Genesis low-code platform provides a series of REST endpoints exposing all configured resources (like Event Handlers, Request Server, Data Servers, Authentication) as HTTP endpoints via the [GENESIS_ROUTER](/server/configuring-runtime/genesis-router/) service. 
+The Genesis low-code platform provides a series of REST endpoints exposing all configured resources (like Event Handlers, Request Server, Data Servers, Authentication) as HTTP endpoints via the [GENESIS_ROUTER](../../../server/configuring-runtime/genesis-router/) service. 
 
 You can extend the platform by creating custom endpoints, which make it easy to integrate with existing systems. Likely uses for these custom endpoints include: file upload and download, and integration into external authentication systems.
 
@@ -206,7 +206,7 @@ We are going to create a new endpoint where the result of Trade.getBulk should w
 Use the knowledge you have acquired so far to create a class implementing the interface `WebEndpoint`.
 
 :::tip
-There is a similar sample [here](/server/integration/custom-endpoints/advanced/#attachmentdownloadendpoint), which defines Attachments Download Endpoint.
+There is a similar sample [here](../../../server/integration/custom-endpoints/advanced/#attachmentdownloadendpoint), which defines Attachments Download Endpoint.
 :::
 
 
@@ -220,7 +220,7 @@ Likely uses for Apache Camel include:
 - sending data to an external location
 
 :::info
-Note that Camel's power and flexibility comes at the cost of some complexity and configuration overhead. If you simply want to ingest and transform data from the most common sources (e.g. CSV files and certain relational databases), you should first investigate the new [Genesis Data Pipeline](/server/integration/data-pipeline/introduction/), which offers a higher-level ingestion workflow than the Apache Camel DSL.
+Note that Camel's power and flexibility comes at the cost of some complexity and configuration overhead. If you simply want to ingest and transform data from the most common sources (e.g. CSV files and certain relational databases), you should first investigate the new [Genesis Data Pipeline](../../../server/integration/data-pipeline/introduction/), which offers a higher-level ingestion workflow than the Apache Camel DSL.
 :::
 
 Apache Camel integrations are defined within your application's **-camel.kts** file. This is located in the **src/main/resources/scripts** directory within your application's **-script-config** submodule.
@@ -272,7 +272,7 @@ camel {
 }
 ```
 
-The `routeHandler` defines the possible routes for information to flow into and out of our system.  The example above defines one route. First, it defines the `pathStr` using the `GenesisPaths` class to find the `GENESIS_HOME` system environment variable. Next, it defines the route itself. The route in the example comes from the filesystem determined by the `file:` specifier at the start of the string. This could be any [Apache Camel component](https://camel.apache.org/components/3.16.x/index.html) that can act as a [consumer](https://camel.apache.org/manual/camelcontext.html#_consumer). Further `routeHandler` parameters and explanation can be found [here](/server/integration/apache-camel/basics/#routehandler).
+The `routeHandler` defines the possible routes for information to flow into and out of our system.  The example above defines one route. First, it defines the `pathStr` using the `GenesisPaths` class to find the `GENESIS_HOME` system environment variable. Next, it defines the route itself. The route in the example comes from the filesystem determined by the `file:` specifier at the start of the string. This could be any [Apache Camel component](https://camel.apache.org/components/3.16.x/index.html) that can act as a [consumer](https://camel.apache.org/manual/camelcontext.html#_consumer). Further `routeHandler` parameters and explanation can be found [here](../../../server/integration/apache-camel/basics/#routehandler).
 
 
 #### Exercise 5.2 Reading and writing using an SFTP server
@@ -300,13 +300,13 @@ You can see some samples [here](https://camel.apache.org/components/3.18.x/ftp-c
 Feature included in the Genesis low-code platform version 6.1.1
 :::
 
-You can define data pipelines that map data from an external source (database, file) to [Tables](/database/fields-tables-views/tables/) in your application. By default, the resulting table objects are stored in the database. However, you can define [custom operations](/server/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity) as well.
+You can define data pipelines that map data from an external source (database, file) to [Tables](../../../database/fields-tables-views/tables/) in your application. By default, the resulting table objects are stored in the database. However, you can define [custom operations](../../../server/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity) as well.
 
-Each data pipeline defines a source for the data and how that data is mapped to each [Field](/database/fields-tables-views/fields/) in the Table. If a field mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a `transform` function that has a return value that is mapped to the required field.
+Each data pipeline defines a source for the data and how that data is mapped to each [Field](../../../database/fields-tables-views/fields/) in the Table. If a field mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a `transform` function that has a return value that is mapped to the required field.
 
 Once your Genesis application is running, data ingestion will take place.
 
-Currently, the supported sources are: *PostgreSQL*, *MS SQL Server*, *Oracle Enterprise*, and *Files* that originate from the local filesystem or S3 (CSV, XML, JSON). The parameters and sample usage for each supported data source can be found [here](/server/integration/data-pipeline/basics/#data-source).
+Currently, the supported sources are: *PostgreSQL*, *MS SQL Server*, *Oracle Enterprise*, and *Files* that originate from the local filesystem or S3 (CSV, XML, JSON). The parameters and sample usage for each supported data source can be found [here](../../../server/integration/data-pipeline/basics/#data-source).
 
 ### Configuration
 
@@ -393,7 +393,7 @@ this is pretty much here: https://docs.genesis.global/secure/creating-applicatio
 We are now creating  a Data Pipeline to ingest trades using CSV. To do that, consider the same layout we showed in the *PostgreSQL* configuration.
 
 :::tip
-Check the CSV options [here](/server/integration/data-pipeline/basics/#csv).
+Check the CSV options [here](../../../server/integration/data-pipeline/basics/#csv).
 :::
 
 

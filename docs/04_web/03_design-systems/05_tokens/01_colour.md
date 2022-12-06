@@ -31,7 +31,7 @@ flowchart LR
 You don't have to follow the steps in this exact order e.g. you could set set dark/light mode first if you prefer.
 
 :::tip
-To help you visualise how modifying tokens impacts the component look and feel, we have created a [live configuration preview](/web/design-systems/preview/).
+To help you visualise how modifying tokens impacts the component look and feel, we have created a [live configuration preview](../../../../web/design-systems/preview/).
 :::
 
 ### Choose base colours

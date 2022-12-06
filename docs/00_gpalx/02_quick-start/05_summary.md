@@ -11,7 +11,7 @@ We have created a full-stack application using the Genesis *low-code* developmen
 
 We have also learned how to: 
 - set up the environment for this and future *low-code* applications
-- create a starting project structure using our [GPALX](/gpalx) application seed
+- create a starting project structure using our [GPALX](../../../gpalx) application seed
 - model data with clear type definitions
 - build grid views to visualise data
 - set up forms to manipulate the data set

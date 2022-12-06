@@ -44,7 +44,7 @@ You are not restricted to a single design system within a project - it is possib
 
 ### Genesis Foundation UI
 
-When you generate a design system using the [CLI](/getting-started/quick-start/create-a-new-project/) it will automatically extend a base design system that we have provided.
+When you generate a design system using the [CLI](../../../getting-started/quick-start/create-a-new-project/) it will automatically extend a base design system that we have provided.
 
 This highly configurable design system is called Genesis Foundation UI. It is made up of a set of web components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options as necessary for your application.
 

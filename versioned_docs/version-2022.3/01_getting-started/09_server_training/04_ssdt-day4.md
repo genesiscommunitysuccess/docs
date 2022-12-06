@@ -29,7 +29,7 @@ As a script, it reads the source database and generates the appropriate fields, 
 - **-tables-dictionary.kts**
 - **-view-dictionary.kts**
 
-The script accepts a series of [arguments](/operations/commands/server-commands/#syntax-23) to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc). Sample below.
+The script accepts a series of [arguments](../../../operations/commands/server-commands/#syntax-23) to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc). Sample below.
 
 ```shell
 DictionaryBuilder -u TAS -p my_password -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
@@ -48,7 +48,7 @@ There are a few considerations you should be aware of:
 - Every time a table is successfully parsed, the script will give feedback: TABLE USERS complete.
 - Views are not parsed.
 
-Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based. Only unique indexes will be parsed as secondary keys. There is no concept of foreign keys in Genesis, so these are ignored. Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE). Further details and type mapping are available [here](/operations/commands/server-commands/#type-mapping).
+Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based. Only unique indexes will be parsed as secondary keys. There is no concept of foreign keys in Genesis, so these are ignored. Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE). Further details and type mapping are available [here](../../../operations/commands/server-commands/#type-mapping).
 
 #### Exercise 4.1 Running DictionaryBuilder from a local database
 
@@ -256,7 +256,7 @@ There are two types of Streamer Client:
 - *Table or View entity Streamer Client* 
 - * GenesisSet Streamer Client*. 
 
-You can also set in a Streamer Client, such as `isReplayable`,  `eventHandlerBuffer`, `sentWarningRange`, and `receiveWarningRange`. Further information can be found [here](/server/integration/gateways-and-streamers/streamer-client/#properties).
+You can also set in a Streamer Client, such as `isReplayable`,  `eventHandlerBuffer`, `sentWarningRange`, and `receiveWarningRange`. Further information can be found [here](../../../server/integration/gateways-and-streamers/streamer-client/#properties).
 
 In addition, for entity streamers, you can format the message in the same way as you would define the output of a view, Data Server or Request Server. Use `sendFormatted`:
 

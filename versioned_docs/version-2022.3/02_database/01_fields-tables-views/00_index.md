@@ -5,8 +5,8 @@ sidebar_position: 1
 id: 'fields-tables-views'
 ---
 
-[Fields](/database/fields-tables-views/fields/)  | [Tables](/database/fields-tables-views/tables/)  |
- [Views](/database/fields-tables-views/views/)  | [Generating DAOs](/database/fields-tables-views/genesisDao/) 
+[Fields](../../../database/fields-tables-views/fields/)  | [Tables](../../../database/fields-tables-views/tables/)  |
+ [Views](../../../database/fields-tables-views/views/)  | [Generating DAOs](../../../database/fields-tables-views/genesisDao/) 
 
 
 For any Genesis application, everything starts with the data model. 
@@ -17,9 +17,9 @@ Once you have this in place, you will find all the other steps are much easier a
 
 In Genesis, we structure our data in the following way:
 
-* [Fields](/database/fields-tables-views/fields/)
-* [Tables](/database/fields-tables-views/tables/)
-* [Views](/database/fields-tables-views/views/) (a view can draw data from more than one table)
+* [Fields](../../../database/fields-tables-views/fields/)
+* [Tables](../../../database/fields-tables-views/tables/)
+* [Views](../../../database/fields-tables-views/views/) (a view can draw data from more than one table)
 
 Each of these must be specified in a separate file on the file system:
 
