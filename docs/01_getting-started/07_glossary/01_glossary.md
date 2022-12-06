@@ -61,7 +61,7 @@ We also use the AWS Free Tier (known as S3).
 
 A development tool.
 
-Ansible is engine that automates cloud provisioning, configuration management, application deployment, intra-service orchestration, and many other IT needs.
+Ansible is an engine that automates cloud provisioning, configuration management, application deployment, intra-service orchestration, and many other IT needs.
 
 A basic Ansible command or playbook:
 
