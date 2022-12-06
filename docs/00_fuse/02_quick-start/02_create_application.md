@@ -5,7 +5,7 @@ id: create-application
 
 # Create application
 
-To simplify getting started, [GenX CLI](/fuse/introduction/prerequisites/#genx-cli) tool can create  projects from a number of available seeds (application templates). We will use a seed tailored for Fuse in this guide.
+To simplify getting started, [GenX CLI](../../../fuse/introduction/prerequisites/#genx-cli) tool can create  projects from a number of available seeds (application templates). We will use a seed tailored for Fuse in this guide.
 
 > A project seed takes care of the initial file structure and dependencies, allowing you to focus on the task at hand.
 
@@ -18,7 +18,7 @@ This will allow us to start building application functionality.
 ## Using GenX CLI
 
 :::important
-> Install the [GenX CLI](/fuse/introduction/prerequisites/#genx-cli) before proceeding with the following steps.
+> Install the [GenX CLI](../../../fuse/introduction/prerequisites/#genx-cli) before proceeding with the following steps.
 :::
 
 You are now ready to generate a new project.
@@ -33,7 +33,7 @@ foundation-cli
 
 If this is the first time running the CLI tool, you'll need to provide Artifactory credentials. 
 
-> No credentials? See our [Pre-requisites](/fuse/introduction/prerequisites/)
+> No credentials? See our [Pre-requisites](../../../fuse/introduction/prerequisites/)
 
 ```shell
 ? Genesis Username example.username

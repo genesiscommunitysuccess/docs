@@ -158,7 +158,7 @@ Similar to Data-Server, you can provide dynamic permissioning on Request Server 
     }
 ```
 
-Permissioning is different when you use [Custom Request Servers](/server/request-server/advanced/#custom-request-servers), which is similar to Event-Handler permissioning.
+Permissioning is different when you use [Custom Request Servers](../../../server/request-server/advanced/#custom-request-servers), which is similar to Event-Handler permissioning.
 As you use any class/DAO as input and output classes - you cannot use field syntax under auth block ex: Use instrumentId instead of INSTRUMENT_DETAILS.INSTRUMENT_ID
 
 ```kotlin
@@ -196,7 +196,7 @@ Similar to Event Handlers and Request Servers you can add permission code as spe
     }
 ```
 
-You can find out more details in our section on [authorisation](/server/access-control/authorisation-overview/).
+You can find out more details in our section on [authorisation](../../../server/access-control/authorisation-overview/).
 
 ## Custom Request Servers
 By defining your own Request Servers, you have maximum flexibility. You can specify any class for the input and output, similar to Event Handlers. For the request, optional fields should have a default value in the primary constructor. You cannot use native Kotlin classes. You should wrap these in custom input and output classes.
@@ -359,4 +359,4 @@ The features of the options are explained below.
 | MAX_ROWS       | Equal to the rowReturnLimit configuration value defined for the target Request Server | Maximum number of rows to be returned as part of the reply message                                                                                                                              |
 | CRITERIA_MATCH |                                                                                       | Clients can send a Groovy expression to filter specific rows on the reply message provided by the Request Server. For example: `Expr.dateIsBefore(TRADE_DATE,'20150518')` or `QUANTITY > 10000` |
 
-You can find out more details about the CRITERIA_MATCH parameter [here](/server/data-server/advanced/#criteria-matching).
+You can find out more details about the CRITERIA_MATCH parameter [here](../../../server/data-server/advanced/#criteria-matching).

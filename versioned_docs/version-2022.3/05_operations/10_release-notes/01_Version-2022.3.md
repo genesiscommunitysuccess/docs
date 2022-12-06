@@ -251,4 +251,4 @@ The following fixes have been made
   - Reduction in 'clutter' of new projects at the top level to improve clarity and ease of navigation
   - Login (auth) component is now included by default but can still be overridden if needed
 
-For more information, see [here](/fuse/)
+For more information, see [here](../../../fuse/)

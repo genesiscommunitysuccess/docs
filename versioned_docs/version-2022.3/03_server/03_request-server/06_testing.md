@@ -29,9 +29,9 @@ class ReqRepTests : AbstractGenesisTestSupport<Reply<*>>(
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [testing documentation](/operations/testing/integration-testing).
+For more information about `AbstractGenesisTestSupport`, see the [testing documentation](../../../operations/testing/integration-testing).
 
-Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](/server/request-server/advanced/#custom-request-servers).
+Once you have set up your configuration, we can start writing tests against our Request Server. Your tests will look a little different, depending on if you are using the standard approach to Request Servers or using [custom Request Servers](../../../server/request-server/advanced/#custom-request-servers).
 
 ### Standard Request Servers
 
@@ -109,14 +109,14 @@ fun `can get hello world`() = runBlocking {
 If you use Genesis Console, this gives you a simple way of testing components.
 
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
-2. Enter the IP address of your server. If you get a blank page without any response, then this is probably because you don't have [NGINX configured](/operations/server-setup/config-management/#nginx-configuration).
+2. Enter the IP address of your server. If you get a blank page without any response, then this is probably because you don't have [NGINX configured](../../../operations/server-setup/config-management/#nginx-configuration).
 3. Log in with your user name and password. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES** tab.
 5. Filter the **Resource type** to show only Request Servers. Once you click into your Request Server, you will see the current response from the Request Server and any input fields that you have defined. You can change the inputs and verify that the correct behaviour is being seen. Make sure that your database has some data for you to search through.
 
 ![](/img/test-console-rs-success.png)
 
-For more detailed information about using Genesis Console for manual testing, head over to the [testing documetation](/server/request-server/testing).
+For more detailed information about using Genesis Console for manual testing, head over to the [testing documetation](../../../server/request-server/testing).
 
 ### Testing with an API client
 
@@ -124,7 +124,7 @@ An API client is useful way of testing components. As a client, it is effectivel
 
 The API client enables you to create calls to the resources in your server - Data Servers, Request Servers and Event Handlers. Then you can just click to run a call and see what response you get.
 
-Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/operations/testing/component-testing/#using-an-api-client) page.
+Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](../../../operations/testing/component-testing/#using-an-api-client) page.
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 

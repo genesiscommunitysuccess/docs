@@ -14,7 +14,7 @@ tags:
 
 Request Servers, (otherwise known as request/replies and often shortened to reqrep) retrieve a snapshot of data from a table or a view on demand and serve it up to the requesting client. They are predominantly used for serving the UI.
 
-Request Servers will reply with a single response. Once the response is received, the transaction is over (unlike a [Data Server](/server/data-server/basics), which stays connected to the client and pushes updates).
+Request Servers will reply with a single response. Once the response is received, the transaction is over (unlike a [Data Server](../../../server/data-server/basics), which stays connected to the client and pushes updates).
 
 ```mermaid
 graph TD
@@ -41,7 +41,7 @@ Request Servers are conventionally configured in the file _application-name_**-r
 
 So, if your application is called **positions**, the file would be named **positions-reqrep.kts**.
 
-You should also check the Request Server component in your application's system-processes and service-definition files, as described in the [Configuring runtime](/server/request-server/configuring-runtime) page.
+You should also check the Request Server component in your application's system-processes and service-definition files, as described in the [Configuring runtime](../../../server/request-server/configuring-runtime) page.
 
 :::info
 The following examples in this section assume you have the following fields and tables present:

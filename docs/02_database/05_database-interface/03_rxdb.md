@@ -16,34 +16,34 @@ import TabItem from '@theme/TabItem';
 
 :::warning
 
-Using `RxDb` instead of [entityDb](/database/database-interface/entity-db/) or [generated repositories](/database/database-interface/generated-repositories/) will circumvent compile-time validation of database interactions. This means that errors might not appear until runtime or might lead to unexpected results.
+Using `RxDb` instead of [entityDb](../../../database/database-interface/entity-db/) or [generated repositories](../../../database/database-interface/generated-repositories/) will circumvent compile-time validation of database interactions. This means that errors might not appear until runtime or might lead to unexpected results.
 
 :::
 
-The `RxDb` enables you to interact with the database layer, but you do not have any level of type-safety when doing so, as it uses [DbRecord](/database/data-types/dbrecord/). 
+The `RxDb` enables you to interact with the database layer, but you do not have any level of type-safety when doing so, as it uses [DbRecord](../../../database/data-types/dbrecord/). 
 
 The interface supports the same operations as the generated repositories, but will accept any entity represented as `DbRecord`. It supports read and write operations for tables only.
 
 The `RxDb` can be injected in Kotlin and Java using `RxDb`.
 
-|                                                                                                 | [RxDb](/database/database-interface/rxdb/)                                                                                      |
+|                                                                                                 | [RxDb](../../../database/database-interface/rxdb/)                                                                                      |
 |-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|
-| [Supports tables](/database/fields-tables-views/tables/tables-basics/)                          | ✔️                                                                                                                              |
-| [Supports views](/database/fields-tables-views/views/views-basics/)                             | ❌️                                                                                                                              |
+| [Supports tables](../../../database/fields-tables-views/tables/tables-basics/)                          | ✔️                                                                                                                              |
+| [Supports views](../../../database/fields-tables-views/views/views-basics/)                             | ❌️                                                                                                                              |
 | Supports any data type                                                                          | ✔️                                                                                                                              |
 | Class to import                                                                                 | `RxDb`                                                                                                                          |
 | Type-safe read and write                                                                        | ❌️                                                                                                                              |
 | Type-safe write result                                                                          | ❌️                                                                                                                              |
-| Returns data as                                                                                 | [RxJava return type](/database/types-of-api/rxjava/#rxjava-return-types) of [DbRecord](/database/data-types/dbrecord/) entities |
-| Writes data as                                                                                  | [DbRecord](/database/data-types/dbrecord/) entities                                                                             |
+| Returns data as                                                                                 | [RxJava return type](../../../database/types-of-api/rxjava/#rxjava-return-types) of [DbRecord](../../../database/data-types/dbrecord/) entities |
+| Writes data as                                                                                  | [DbRecord](../../../database/data-types/dbrecord/) entities                                                                             |
 | References indexes as                                                                           | Strings                                                                                                                         |
-| Programming interface                                                                           | [RxJava](/database/types-of-api/rxjava/)                                                                                        |
-| Write (input)                                                                                   | [Modify Details](/database/helper-classes/modify-details/#entity-modify-details)                                                |
-| Write (output)                                                                                  | [Write Result](/database/helper-classes/write-result/#entity-write-result)                                                      |
-| Subscribe                                                                                       | [Record Update](/database/helper-classes/subscription/record-update/) of entity                                                 |
-| Bulk or Range Subscribe                                                                         | [Flowable](/database/types-of-api/rxjava/#flowable) of [Bulk](/database/helper-classes/subscription/bulk/) of entity            |
-| Available in [Custom Event Handlers](/database/api-reference/event-handler-api/)         | ✔️                                                                                                                              |
-| Available in [Custom Request Servers](/server/request-server/advanced/#custom-request-servers) | ❌️                                                                                                                              |
+| Programming interface                                                                           | [RxJava](../../../database/types-of-api/rxjava/)                                                                                        |
+| Write (input)                                                                                   | [Modify Details](../../../database/helper-classes/modify-details/#entity-modify-details)                                                |
+| Write (output)                                                                                  | [Write Result](../../../database/helper-classes/write-result/#entity-write-result)                                                      |
+| Subscribe                                                                                       | [Record Update](../../../database/helper-classes/subscription/record-update/) of entity                                                 |
+| Bulk or Range Subscribe                                                                         | [Flowable](../../../database/types-of-api/rxjava/#flowable) of [Bulk](../../../database/helper-classes/subscription/bulk/) of entity            |
+| Available in [Custom Event Handlers](../../../database/api-reference/event-handler-api/)         | ✔️                                                                                                                              |
+| Available in [Custom Request Servers](../../../server/request-server/advanced/#custom-request-servers) | ❌️                                                                                                                              |
 
 ## Read operations
 
@@ -394,7 +394,7 @@ getRxDb().getRangeFromEnd(startRec, endRec,"TRADE_BY_ID", 1, Set.of("TRADE_PRICE
 
 ### Insert
 
-Single/Multiple records can be inserted into database at a time and returns [WriteResult](/database/helper-classes/write-result/)
+Single/Multiple records can be inserted into database at a time and returns [WriteResult](../../../database/helper-classes/write-result/)
 
 #### Default values
 When writing a record to the database, typically all non-null properties should be set on the DbRecord. An entity property
@@ -415,7 +415,7 @@ Please note that the [Single] return value of this method is cold. That is, the 
 
 ### Modify
 
-Modifies single/multiple record in the database, which accepts [ModifyDetails](/database/helper-classes/modify-details/) and returns [WriteResult](/database/helper-classes/write-result/)
+Modifies single/multiple record in the database, which accepts [ModifyDetails](../../../database/helper-classes/modify-details/) and returns [WriteResult](../../../database/helper-classes/write-result/)
 
 #### Overloads
 
@@ -427,7 +427,7 @@ Please note that the [Single] return value of this method is cold. That is, the 
 
 ### Upsert
 
-Inserts single/multiple [DbRecord] into the database if it does not exist, and modifies it otherwise. Which accepts [ModifyDetails](/database/helper-classes/modify-details/) and returns [WriteResult](/database/helper-classes/write-result/)
+Inserts single/multiple [DbRecord] into the database if it does not exist, and modifies it otherwise. Which accepts [ModifyDetails](../../../database/helper-classes/modify-details/) and returns [WriteResult](../../../database/helper-classes/write-result/)
 
 #### Overloads
 
@@ -439,7 +439,7 @@ Please note that the [Single] return value of this method is cold. That is, the 
 
 ### Delete
 
-Deletes a record/records from the database and returns [WriteResult](/database/helper-classes/write-result/)
+Deletes a record/records from the database and returns [WriteResult](../../../database/helper-classes/write-result/)
 
 #### Overloads
 
@@ -451,7 +451,7 @@ Please note that the [Single] return value of this method is cold. That is, the 
 
 ### Recover
 
-Performs recover operations on provided record/records and returns [WriteResult](/database/helper-classes/write-result/). This is a special operation meant to preserve the original timestamps
+Performs recover operations on provided record/records and returns [WriteResult](../../../database/helper-classes/write-result/). This is a special operation meant to preserve the original timestamps
 
 #### Overloads
 

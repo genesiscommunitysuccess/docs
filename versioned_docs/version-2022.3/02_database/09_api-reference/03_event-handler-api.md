@@ -11,7 +11,7 @@ tags:
 ---
 
 
-In most cases, you will create [Event Handlers](/server/event-handler/introduction/) in a kts file using GPAL. This offers a method with succinct code and a good degree of flexibility.
+In most cases, you will create [Event Handlers](../../../server/event-handler/introduction/) in a kts file using GPAL. This offers a method with succinct code and a good degree of flexibility.
 
 However, you can also implement Event Handlers as a set of classes. Typically, this is useful where you have a complex requirement for business logic and database interaction. For example, a kts file of 1,000 lines is difficult to test and maintain; in this case, a set of individual classes is much more convenient.
 
@@ -23,7 +23,7 @@ For implementing an Event Handler as a set of classes, there are three different
 
 :::note
 
-Java Event Handlers can be implemented using [RxJava3](/database/api-reference/event-handler-api/#rx3eventhandler) and [Sync](/database/api-reference/event-handler-api/#sync) Event Handlers only. Async Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
+Java Event Handlers can be implemented using [RxJava3](../../../database/api-reference/event-handler-api/#rx3eventhandler) and [Sync](../../../database/api-reference/event-handler-api/#sync) Event Handlers only. Async Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
 
 **We recommend using Kotlin to implement Event Handlers.**
 :::
@@ -53,7 +53,7 @@ The Event Handler interface is the common supertype of AsyncEventHandler, Rx3Eve
 | includeMetadataFields | `fun includeMetadataFields(): Set<String>` | emptySet() | Contains a list of metadata fields that need to be included in the event metadata; this must be available in input `I`. A non-empty list will exclude the other fields.                                                                                                                                  |
 | messageType | `fun messageType(): String?` | null | Contains the name of the Event Handler. If undefined, the Event Handler name will become `EVENT_*INPUT_CLASS_NAME*`. So, for an Event Handler using an input type called `TradeInsert`, the message type will become `EVENT_TRADE_INSERT`.                                                               |
 | overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I`                                                                                        |
-| requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them ([pending approval](/server/event-handler/advanced/#pending-approvals) in order to take effect) |
+| requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them ([pending approval](../../../server/event-handler/advanced/#pending-approvals) in order to take effect) |
 
 Each custom Event Handler must define an input message type `I` and an output message type `O` (these need to be data classes), as GPAL Event Handlers do). In the examples below, `Company` is the input message and `EventReply` is the output message. The `message` object contains event message and has the following properties :
 
@@ -63,20 +63,20 @@ Each custom Event Handler must define an input message type `I` and an output me
 | messageType |  | Name of the Event Handler                                                                                                                                                                                                                                                             |
 | userName |  | Name of logged-in user                                                                                                                                                                                                                                                                |
 | ignoreWarnings | false | If set to false, events will not be processed if there are any warnings; you will get EventNack with warning message. If set to true, warning messages will be ignored; processing of events will be stopped only if there are any errors                                             |
-| requiresApproval | false | This particular event needs approval from a second user if set to true. For more details, check [Pending Approval](/server/event-handler/advanced/#pending-approvals) |
-| approvalKey | null | Auto-generated key ID for particular approval request. For more details, check [Pending Approval](/server/event-handler/advanced/#pending-approvals)                  |
-| approvalMessage | null | Optional message for approval request. For more details, check [Pending Approval](/server/event-handler/advanced/#pending-approvals)                                  |
+| requiresApproval | false | This particular event needs approval from a second user if set to true. For more details, check [Pending Approval](../../../server/event-handler/advanced/#pending-approvals) |
+| approvalKey | null | Auto-generated key ID for particular approval request. For more details, check [Pending Approval](../../../server/event-handler/advanced/#pending-approvals)                  |
+| approvalMessage | null | Optional message for approval request. For more details, check [Pending Approval](../../../server/event-handler/advanced/#pending-approvals)                                  |
 | reason | null | Optional reason sent as part of event message                                                                                                                                                                                                                                         |
 
 ## Inject objects
 
 
-Use [@Inject](/database/api-reference/dependency-injection/) to provide instances for any objects needed as part of the dependency injection stage
+Use [@Inject](../../../database/api-reference/dependency-injection/) to provide instances for any objects needed as part of the dependency injection stage
 
-Async[​](/database/api-reference/event-handler-api/#asyncdirect-link-to-heading)
+Async[​](../../../database/api-reference/event-handler-api/#asyncdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------
 
-### AsyncEventHandler[​](/database/api-reference/event-handler-api/#asynceventhandlerdirect-link-to-heading)
+### AsyncEventHandler[​](../../../database/api-reference/event-handler-api/#asynceventhandlerdirect-link-to-heading)
 
 This is the most basic definition of an Async Event Handler. You can define an `AsyncEventHandler` by implementing the `AsyncEventHandler` interface, which is defined as: `interface AsyncEventHandler<I : Any, O : Outbound> : AsyncEventWorkflowProcessor<I, O>, EventHandler`
 
@@ -228,11 +228,11 @@ import global.genesis.message.core.event.ValidationResult
 ## Rx3
 
 
-The mechanism explained in [Async](/database/api-reference/event-handler-api/#async) can be recycled and reapplied in Rx3 Event Handlers.
+The mechanism explained in [Async](../../../database/api-reference/event-handler-api/#async) can be recycled and reapplied in Rx3 Event Handlers.
 
 ### Rx3EventHandler
 
-In a similar fashion to `AsyncEventHandler`, there is an Rx3 implementation flavour. It works in a very similar way to [`AsyncEventHandler`](/database/api-reference/event-handler-api/#asynceventhandler), but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
+In a similar fashion to `AsyncEventHandler`, there is an Rx3 implementation flavour. It works in a very similar way to [`AsyncEventHandler`](../../../database/api-reference/event-handler-api/#asynceventhandler), but requires different return types (i.e. we expect to return RxJava3 `Single<O>` type, instead of just the `O` type).
 
 See the interface definition below: `interface Rx3EventHandler<I : Any, O : Outbound> : Rx3EventWorkflowProcessor<I, O>, EventHandler`
 
@@ -277,7 +277,7 @@ class TestCompanyHandlerRx3 : Rx3EventHandler<Company, EventReply> {
 ### Rx3ValidatingEventHandler
 
 
-The same applies to an Rx3ValidatingEventHandler. It is similar to [AsyncValidatingEventHandler](/database/api-reference/event-handler-api/#asyncvalidatingeventhandler) in every way, but the return type is still `Single<O>`.
+The same applies to an Rx3ValidatingEventHandler. It is similar to [AsyncValidatingEventHandler](../../../database/api-reference/event-handler-api/#asyncvalidatingeventhandler) in every way, but the return type is still `Single<O>`.
 
 `interface Rx3ValidatingEventHandler<I : Any, O : Outbound> : Rx3EventHandler<I, O>`
 
@@ -319,7 +319,7 @@ class TestCompanyHandlerRx3 : Rx3ValidatingEventHandler<Company, EventReply> {
 
 ### Rx3ContextValidatingEventHandler
 
-And the same goes for `Rx3ContextValidatingEventHandler` in relation to [AsyncContextValidatingEventHandler](/database/api-reference/event-handler-api/#asynccontextvalidatingeventhandler).
+And the same goes for `Rx3ContextValidatingEventHandler` in relation to [AsyncContextValidatingEventHandler](../../../database/api-reference/event-handler-api/#asynccontextvalidatingeventhandler).
 
 `interface Rx3ContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : Rx3EventHandler<I, O>`
 
@@ -374,19 +374,19 @@ class TestCompanyHandlerRx3 : Rx3ContextValidatingEventHandler<Company, EventRep
 ## Sync
 
 
-Sync works similarly to [Async](/database/api-reference/event-handler-api/#async) and [Rx3](/database/api-reference/event-handler-api/#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
+Sync works similarly to [Async](../../../database/api-reference/event-handler-api/#async) and [Rx3](../../../database/api-reference/event-handler-api/#rx3), but in this case, there is no `Single<O>` returned and no `suspend` modifier used for Kotlin coroutines. The expected output of the Event Handler logic is just the `O` type.
 
-### SyncEventHandler[​](/database/api-reference/event-handler-api/#synceventhandlerdirect-link-to-heading)
+### SyncEventHandler[​](../../../database/api-reference/event-handler-api/#synceventhandlerdirect-link-to-heading)
 
 `interface SyncEventHandler<I : Any, O : Outbound> : SyncEventWorkflowProcessor<I, O>, EventHandler`
 
-### Implementation[​](/database/api-reference/event-handler-api/#implementationdirect-link-to-heading-5)
+### Implementation[​](../../../database/api-reference/event-handler-api/#implementationdirect-link-to-heading-5)
 
 | Name | Signature |
 | --- | --- |
 | process | `fun process(message: Event<I>) : O` |
 
-### Helper methods[​](/database/api-reference/event-handler-api/#helper-methodsdirect-link-to-heading-2)
+### Helper methods[​](../../../database/api-reference/event-handler-api/#helper-methodsdirect-link-to-heading-2)
 
 | Name | Signature |
 | --- | --- |
@@ -414,11 +414,11 @@ Here is an example:
     }
 ```
 
-## SyncValidatingEventHandler[​](/database/api-reference/event-handler-api/#syncvalidatingeventhandlerdirect-link-to-heading)
+## SyncValidatingEventHandler[​](../../../database/api-reference/event-handler-api/#syncvalidatingeventhandlerdirect-link-to-heading)
 
 `interface SyncValidatingEventHandler<I : Any, O : Outbound> : SyncEventHandler<I, O>`
 
-### Implementation[​](/database/api-reference/event-handler-api/#implementationdirect-link-to-heading-6)
+### Implementation[​](../../../database/api-reference/event-handler-api/#implementationdirect-link-to-heading-6)
 
 | Name | Signature |
 | --- | --- |
@@ -451,18 +451,18 @@ Here is an example:
     }
 ```
 
-## SyncContextValidatingEventHandler[​](/database/api-reference/event-handler-api/#synccontextvalidatingeventhandlerdirect-link-to-heading)
+## SyncContextValidatingEventHandler[​](../../../database/api-reference/event-handler-api/#synccontextvalidatingeventhandlerdirect-link-to-heading)
 
 `interface SyncContextValidatingEventHandler<I : Any, O : Outbound, C : Any> : SyncEventHandler<I, O>`
 
-### Implementation[​](/database/api-reference/event-handler-api/#implementationdirect-link-to-heading-7)
+### Implementation[​](../../../database/api-reference/event-handler-api/#implementationdirect-link-to-heading-7)
 
 | Name | Signature |
 | --- | --- |
 | onValidate | `fun onValidate(message: Event<I>): ValidationResult<O, C>` |
 | onCommit | `fun onCommit(message: Event<I>, context: C?): O` |
 
-### Helper methods[​](/database/api-reference/event-handler-api/#helper-methodsdirect-link-to-heading-3)
+### Helper methods[​](../../../database/api-reference/event-handler-api/#helper-methodsdirect-link-to-heading-3)
 
 | Name | Signature |
 | --- | --- |

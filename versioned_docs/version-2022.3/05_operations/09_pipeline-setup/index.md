@@ -15,6 +15,6 @@ Using Genesis Data Pipelines often requires some set-up/configuration of your ex
 
 The following databases are supported:
 
-- [PostgreSQL](/operations/pipeline-setup/postgres)
-- [Microsoft SQL Server](/operations/pipeline-setup/mssql)
-- [Oracle DB](/operations/pipeline-setup/oracle)
+- [PostgreSQL](../../../operations/pipeline-setup/postgres)
+- [Microsoft SQL Server](../../../operations/pipeline-setup/mssql)
+- [Oracle DB](../../../operations/pipeline-setup/oracle)

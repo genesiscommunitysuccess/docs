@@ -10,12 +10,12 @@ tags:
   - conditions
 ---
 
-## Genesis Foundation Filters
+# Genesis Foundation Filters
 
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 
-`foundation-filters` provide a collection of client-side filters, including:
+`foundation-filters` provides a collection of client side filters, including:
 
 * [nodeEnv](./docs/api/foundation-filters.nodeenvfilter.md)
 * [percentage](./docs/api/foundation-filters.percentagefilter.md)
@@ -26,18 +26,18 @@ tags:
 
 These can be run in isolation or as part of a chain using the [runner](./docs/api/foundation-filters.runner.md) function.
 
-## [API Docs](./docs/api/index.md)
+### [API Docs](./docs/api/index.md)
 
-Client-side filters generally take primitive input parameters, and will return `true` or `false` based these
-values. They may also access runtime data or state to provide an outcome. The filters can be used for simple tasks like array
-or input filtering, or for more advanced use cases, such as driving feature flags, behaviors, directives, etc.
+Client side filters generally take primitive input parameters, and will return `true` or `false` based these
+values. They may also access runtime data or state to provide an outcome. They can be used for simple tasks like array
+or input filtering, to for more advanced use-cases such as driving feature flags, behaviors, directives etc.
 
-Filters can be chained using the utilities provided in this package, to handle more complex scenarios. When a filter is
-used without all the input parameters needed, we log a warning and return `true` by convention, so the chain can continue.
-This is currently controlled at an individual filter level, and might change in time.
+Filters can be chained using the utilities provided in this package to handle more complex scenarios. When a filter is
+used without all the input parameters needed, we log a warning and return `true` by convention so the chain can continue.
+This is currently controlled at an individual filter level, and may change in time.
 
 :::important
-It's important to highlight that filters are purposely decoupled from any `effect`, like pairing with a `when()`
+It's important to highlight that filters are purposefully decoupled from any `effect`, like pairing with a `when()`
 directive or custom effect logic. This flexibility allows these filters to be reused for numerous purposes.
 :::
 
@@ -66,8 +66,8 @@ const outcome = this.timeWindow.filter({
 });
 ```
 
-The function version is pretty self-explanatory, and you might be thinking, why would you use the DI injected version? The
-reason is that, at the point of calling a filter, either directly or indirectly (as, say, part of a chain), you might not know what
+The function version is pretty self-explanatory, and you may be thinking why would you use the DI injected version. The
+reason is at the point of calling a filter, either directly or indirectly as say part of a chain, you may not know what
 data or state from the application it needs to provide its outcome. The DI versions encapsulate this complexity, which
 aids later refactoring, and leaves callers free to pass only primitive input parameters where possible.
 
@@ -83,11 +83,12 @@ const outcome = this.userTargeting.filter({
 });
 ```
 
-In the example above,  we've used the `UserTargeting` filter without the need to provide the current user or other data points directly to
-the underlying function. If you change the source of the current user at a later date, you can refactor centrally.
+Here we've leveraged the `UserTargeting` filter without the need to provide the current user or other data points to
+the underlying function directly. If where we source the current user from changes over time, the author of the filter
+can refactor centrally.
 
-All DI-based filters implement the [ClientFilter](./docs/api/foundation-filters.clientfilter.md) interface. They
-can provide other APIs for convenience, to abstract underlying implementation details. For example, `UserTargeting`
+All DI based filters implement the [ClientFilter](./docs/api/foundation-filters.clientfilter.md) interface, however they
+may provide other APIs for convenience to abstract underlying implementation details. For example, `UserTargeting`
 provides a `hasAdminProfile` API, so the previous example can be re-written as:
 
 ```ts
@@ -98,9 +99,9 @@ import { UserTargeting } from '@genesislcap/foundation-filters';
 const outcome = this.userTargeting.hasAdminProfile();
 ```
 
-This is quite a simplistic example, but it helps to highlight that common parameters can be predefined in the
-filters themselves, where needed. It is also worth mentioning that DI-based filters are registered as transient, meaning
-you will get a new instance for every dependency request or `container.get()`. The `ClientFilterRunner` used to run chained
+This is quite a simplistic example, but hopefully helps to highlight that common parameters can be predefined in the
+filters themselves where needed. It is also worth mentioning that DI based filters are registered as transient, meaning
+you will get a new instance for every dependency request or container.get(). The ClientFilterRunner used to run chained
 filters is also transient.
 
 ### Client Filter Runner

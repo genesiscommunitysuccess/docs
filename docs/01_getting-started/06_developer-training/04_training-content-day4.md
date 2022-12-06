@@ -55,7 +55,7 @@ tables {
 }
 ```
 
-If the TRADE_STATUS is missing, run [genesis-generated-fields](/getting-started/developer-training/training-content-day1/#generatefields) to generate the fields, AND​ [genesis-generated-dao](/getting-started/developer-training/training-content-day1/#generatedao) to create the DAOs.
+If the TRADE_STATUS is missing, run [genesis-generated-fields](../../../getting-started/developer-training/training-content-day1/#generatefields) to generate the fields, AND​ [genesis-generated-dao](../../../getting-started/developer-training/training-content-day1/#generatedao) to create the DAOs.
 
 ### 2. Create a new class for the state machine
 
@@ -326,7 +326,7 @@ export const HomeTemplate = html<Home>`
 ```
 :::
 
-Remember to run [build](/getting-started/developer-training/training-content-day1/#5-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks after the changes, and test it directly in the UI.
+Remember to run [build](../../../getting-started/developer-training/training-content-day1/#5-build-process) and [deploy](../../../getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks after the changes, and test it directly in the UI.
 
 
 ## Adding logic to the Event Handler
@@ -373,7 +373,7 @@ The `verify` block you see above is part of the validation helper provided by th
 Add the same verification `onValidate` as in TRADE_INSERT to the TRADE_MODIFY event handler.
 
 
-Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](/getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL *http://localhost/gwf/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
+Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](../../../getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL *http://localhost/gwf/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
 
 ## Auditing​
 
@@ -489,7 +489,7 @@ Now you must update the **alpha-eventhandler.kts** in order to pass the `entityD
     }
 ```
 
-Run the [dao](/getting-started/developer-training/training-content-day1/#generatedao), [build](/getting-started/developer-training/training-content-day1/#5-the-build-process) and [deploy](/getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks.
+Run the [dao](../../../getting-started/developer-training/training-content-day1/#generatedao), [build](../../../getting-started/developer-training/training-content-day1/#5-the-build-process) and [deploy](../../../getting-started/developer-training/training-content-day1/#deploying-the-alpha-product) tasks.
 
 ### Exercise 4.3: testing an audited table
 :::info ESTIMATED TIME

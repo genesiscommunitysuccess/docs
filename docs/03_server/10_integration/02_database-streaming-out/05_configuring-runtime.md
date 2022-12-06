@@ -28,4 +28,4 @@ GenesisToDb must be configured in your **application-processes.xml** file. The f
 </processes>
 ```
 
-If you wish to read more about process configuration please see the dedicated page on [Processes](/server/configuring-runtime/processes).
+If you wish to read more about process configuration please see the dedicated page on [Processes](../../../../server/configuring-runtime/processes).

@@ -118,14 +118,14 @@ Alternatively, you could use any HTTP client to access the server resources as t
 
 One of the key objects provided by the Foundation Comms is the `Connect` object whose main methods are:
 - `connect`: 
-connects to the server through a web socket (when WS is available or http as fallback). You must pass the server host URL. In most apps, such as the one we're building in this training, the connection is already handled by the MainApplication component on initilization relying on the [config](/getting-started/web-training/web-training-day1/#config) provided by the app.
+connects to the server through a web socket (when WS is available or http as fallback). You must pass the server host URL. In most apps, such as the one we're building in this training, the connection is already handled by the MainApplication component on initilization relying on the [config](../../../getting-started/web-training/web-training-day1/#config) provided by the app.
 
 - `commitEvent`: 
 use it to call event handlers on the server. You must pass the name of the event and an object with the input data required by the event. This data must be in JSON format with key **DETAILS**. See the example above of the `insertOrder` function.
 
 - `getMetadata`: it retrieves the metadata of a resource, that can be an event handler, data server query or a request server. When we used the **zero-form** component previously, for example, it used internally getMetadata passing the event handler name to get all the input fields of the event.
 
-- `request`: use it to call a [request server](/server/request-server/introduction/) resource. You must pass the request server resource name.
+- `request`: use it to call a [request server](../../../server/request-server/introduction/) resource. You must pass the request server resource name.
 
 - `snapshot` and `stream`: use them to get a snapshot of data or to stream data in real time from a resource (usually, a data server query).
 
@@ -448,7 +448,7 @@ export class Order extends FASTElement {
 ```
 
 ### Adding a simple Orders data grid
-In the template file, let's add the Genesis [data source](/web/web-components/grids/grid-pro/grid-pro-genesis-datasource/) pointing to the `ALL_ORDERS` resource and wrap it in [grid-pro](/web/web-components/grids/grid-pro/grid-pro-intro/).
+In the template file, let's add the Genesis [data source](../../../web/web-components/grids/grid-pro/grid-pro-genesis-datasource/) pointing to the `ALL_ORDERS` resource and wrap it in [grid-pro](../../../web/web-components/grids/grid-pro/grid-pro-intro/).
 
 Add this code to the end of html template code:
 ```html {4-9} title="order.template.ts"

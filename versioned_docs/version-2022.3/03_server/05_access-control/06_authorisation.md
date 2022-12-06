@@ -9,7 +9,7 @@ tags:
   - authorisation
 ---
 
-[Introduction](/server/access-control/introduction)  | [Authentication overview](/server/access-control/authentication-overview) | [Username and Password](/server/access-control/password-authentication) | [SSO](/server/access-control/sso-authentication) | [Authorisation overview](/server/access-control/authorisation-overview) | [Authorisation](/server/access-control/authorisation)
+[Introduction](../../../server/access-control/introduction)  | [Authentication overview](../../../server/access-control/authentication-overview) | [Username and Password](../../../server/access-control/password-authentication) | [SSO](../../../server/access-control/sso-authentication) | [Authorisation overview](../../../server/access-control/authorisation-overview) | [Authorisation](../../../server/access-control/authorisation)
 
 ### Types of control
 Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:

@@ -18,7 +18,7 @@ Download and install all the relevant requirements.
 ## The genx script
 `genx` is a CLI tool that enables you to seed projects. In this case, we shall generate a full-stack application project; the key files will be empty so that you can define the details of the application.
 
-We also have step-by-step instructions on [how to install and use genx](/getting-started/prerequisites/genx/).
+We also have step-by-step instructions on [how to install and use genx](../../../getting-started/prerequisites/genx/).
 
 ## Starting
 

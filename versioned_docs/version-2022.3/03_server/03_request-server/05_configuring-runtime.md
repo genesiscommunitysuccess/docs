@@ -34,7 +34,7 @@ Here is an example of a Request Server configuration in an application's **proce
   </process>
 ```
 
-For more information of what can be configured by each tag in the configuration, follow this [link](/server/configuring-runtime/processes).
+For more information of what can be configured by each tag in the configuration, follow this [link](../../../server/configuring-runtime/processes).
 
 ### Configuring service-definitions.xml
 
@@ -44,6 +44,6 @@ Here is a simple example of a service configuration for a Request Server in an a
   <service host="localhost" name="POSITION_REQUEST_SERVER" port="11001"/>
 ```
 
-For more information about the attributes that can be used to set the service definition configuration, follow this [link](/server/configuring-runtime/service-definitions).
+For more information about the attributes that can be used to set the service definition configuration, follow this [link](../../../server/configuring-runtime/service-definitions).
 
 Note - The name for both the service and process must be the same.

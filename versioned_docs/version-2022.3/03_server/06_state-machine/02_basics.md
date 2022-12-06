@@ -152,4 +152,4 @@ eventHandler {
 **fromStates** : With this method you can specify what is the possible transition of Trade status. In above example possible transitions are: DRAFT to OPEN, DRAFT to CLOSED, DRAFT to CANCELLED
 **onEvent** : It provides event information, which can be used to get information like event user, event time, etc.
 
-You can click to view the [whole file for this example state machine](/server/state-machine/examples/) and see how each of the events is handled.
+You can click to view the [whole file for this example state machine](../../../server/state-machine/examples/) and see how each of the events is handled.

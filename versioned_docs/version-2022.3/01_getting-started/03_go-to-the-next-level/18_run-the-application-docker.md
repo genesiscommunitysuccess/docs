@@ -11,7 +11,7 @@ tags:
     - docker
 ---
 
-The instructions on this page are for using Docker. If you prefer to use WSL/CentOS as your environment, there are [separate instructions](/getting-started/go-to-the-next-level/run-the-application-wsl/).
+The instructions on this page are for using Docker. If you prefer to use WSL/CentOS as your environment, there are [separate instructions](../../../getting-started/go-to-the-next-level/run-the-application-wsl/).
 
 ## Building and composing Docker images 
 

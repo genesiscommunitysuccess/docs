@@ -13,7 +13,7 @@ const fs = require("fs")
 const regex = /\[([^\]]+)\]\(\/(?!img)([^)]+(?<!md#?(.*)))\)/
 const replaceWith = "../"
 
-const walkDirectory = (root, depth = 0) => {
+const walkDirectory = (root, depth = 1) => {
     const entries = fs.readdirSync(root, { withFileTypes: true })
     const dirs = entries.filter(e => e.isDirectory())
     const files = entries.filter(e => e.isFile() && e.name.endsWith(".md"))

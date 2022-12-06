@@ -17,7 +17,7 @@ Any metrics system will have an effect on the performance of the application it 
 
 Genesis uses the well-known [metrics](https://metrics.dropwizard.io/4.2.0/) library, which is commonly used in Java apps. In all known Genesis applications, the impact is negligible; the benefits far outweigh the very tiny impact on performance. 
 
-To make use of the metric calls, you must set `MetricsEnabled` to `true` in the [system definition file](/server/configuring-runtime/system-definitions/). In addition, you should define the `MetricsReportType` to include a comma-separated list of `MetricsReportType` outputs, which should include at least one of the following:
+To make use of the metric calls, you must set `MetricsEnabled` to `true` in the [system definition file](../../../server/configuring-runtime/system-definitions/). In addition, you should define the `MetricsReportType` to include a comma-separated list of `MetricsReportType` outputs, which should include at least one of the following:
 
 * Console - sends metrics straight to the console
 * SLF4J - will append metrics to an [SLF4J](http://www.slf4j.org/) Logger
