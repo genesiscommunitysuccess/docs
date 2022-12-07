@@ -80,7 +80,7 @@ a minimum of 16GB and 32GB is better; CPU demands vary greatly by application, a
 
 Resilience options involve some customisation of set-up; the platform can integrate with [Consul](https://www.consul.io/) to handle multi-host setups. Some larger Genesis-built projects have spread out across more than a dozen hosts to accomplish scaling and resilience. Consul at a known-good version can also be downloaded from our Artifactory using the link above.
 
-Clustering is native to Genesis applications and the details of configuring it are covered in our section on [Clustering](/operations/clustering/clusters).
+Clustering is native to Genesis applications and the details of configuring it are covered in our section on [Clustering](../../../operations/clustering/clusters).
 
 Disk space required is very application-dependent. Genesis applications log locally by default; log volumes are determined by application activity levels.  Genesis applications also use local disk to create local LMDB files to help coordinate data. These are mmap()'d by the processes. Writes are coalesced by the Linux kernel, so iops are kept low, but disk usage is still affected by application activity.
 

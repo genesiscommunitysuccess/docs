@@ -29,13 +29,13 @@ class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](../../../operations/testing/integration-testing/#abstractgenesistestsupport).
 
 Once you have set up your configuration, you can start writing tests against State Machine.
 
 ## Writing tests
 
-Let's write some tests for this [example](/server/state-machine/examples/) of State Machine.
+Let's write some tests for this [example](../../../server/state-machine/examples/) of State Machine.
 
 Add these helper functions for test:
 

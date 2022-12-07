@@ -84,7 +84,7 @@ Genesis Foundation UI
 ```
 :::caution trouble running npm?
 Please make sure:
-- you have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](/getting-started/developer-training/environment-setup/#required-software-packages). If you have an older version of npm (run 'npm -v'), make sure you uninstall it first.
+- you have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](../../../getting-started/developer-training/environment-setup/#required-software-packages). If you have an older version of npm (run 'npm -v'), make sure you uninstall it first.
 - if you're behind a corporate network, you may need to setup a proxy:
 ```shell
 npm config set proxy http://proxy_host:port

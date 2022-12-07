@@ -81,7 +81,7 @@ Local values can be specified in this block. **These values override the global 
 
 In the system definitions file, there are several items to be used as default values or even change configurations to adapt the application. 
 
-For instance, to change the database configuration to any one of the [technologies supported](/database/database-technology/overview/), you should change the items `DbLayer`, `DbHost`, and possibly `system/hosts`. The code bellow show us how we could do this.
+For instance, to change the database configuration to any one of the [technologies supported](../../../database/database-technology/overview/), you should change the items `DbLayer`, `DbHost`, and possibly `system/hosts`. The code bellow show us how we could do this.
 
 ```kotlin {6,8,13-16}
 package genesis.cfg
@@ -122,7 +122,7 @@ The custom definition value will be available globally and can be accessed like 
 val permissionsField = SysDef.ADMIN_PERMISSION_ENTITY_FIELD
 ```
 
-Further information regarding the system definitions such as items defined, HashiCorp Vault, and more can be found [here](/server/configuring-runtime/system-definitions/).
+Further information regarding the system definitions such as items defined, HashiCorp Vault, and more can be found [here](../../../server/configuring-runtime/system-definitions/).
 
 
 #### Exercise 1.1 System Definitions
@@ -157,19 +157,19 @@ As a rough guide, many of the tables you have created need **Insert**, **Modify*
 
 The vast majority of applications include business workflow. Event Handlers are conventionally defined in the file _application-name_**-eventhandler.kts**. 
 
-In the [Developer Training](/getting-started/developer-training/training-intro/) we defined the application Event Handler in a [Kotlin script file](/getting-started/developer-training/training-content-day1/#event-handler); this included basic things like [enabling the application to write to the database](/getting-started/developer-training/training-content-day2/#exercise-22-extending-the-application).
+In the [Developer Training](../../../getting-started/developer-training/training-intro/) we defined the application Event Handler in a [Kotlin script file](../../../getting-started/developer-training/training-content-day1/#event-handler); this included basic things like [enabling the application to write to the database](../../../getting-started/developer-training/training-content-day2/#exercise-22-extending-the-application).
 
 There are more things we can explore now, such as [Database API](#database-api), [Exception handling](#exception-handling), and [Custom reply message type](#custom-reply-message-type). These are described in the next sections.
 
 ### Database API
 
-The [entityDb](/database/database-interface/entity-db/) enables you to interact with the database layer; you can use any generated type-safe entities for tables and views. The interface supports the same operations as the generated repositories, but will accept any entity. It supports read operations for views and tables and write operations for tables only.
+The [entityDb](../../../database/database-interface/entity-db/) enables you to interact with the database layer; you can use any generated type-safe entities for tables and views. The interface supports the same operations as the generated repositories, but will accept any entity. It supports read operations for views and tables and write operations for tables only.
 
 The entityDb differs from the generated repositories in that it can handle any table and most view entities. The entityDb is available in the kotlin Event Handler. 
 
-When referring to indices in the database operations, the database accepts _index classes_ or _entity class_ in combination with _index references_. Further details and conventions can be found [here](/database/database-interface/entity-db/#type-convention).
+When referring to indices in the database operations, the database accepts _index classes_ or _entity class_ in combination with _index references_. Further details and conventions can be found [here](../../../database/database-interface/entity-db/#type-convention).
 
-EntityDb offers Read and Write Operations. Using [Read Operations](/database/database-interface/entity-db/#read-operations) it is possible to get a simple lookup on the database through the method [get](/database/database-interface/entity-db/#get), or even create a [Flow](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/) or [Flowable](http://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Flowable.html) of the whole table as the code below.
+EntityDb offers Read and Write Operations. Using [Read Operations](../../../database/database-interface/entity-db/#read-operations) it is possible to get a simple lookup on the database through the method [get](../../../database/database-interface/entity-db/#get), or even create a [Flow](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/) or [Flowable](http://reactivex.io/RxJava/3.x/javadoc/io/reactivex/rxjava3/core/Flowable.html) of the whole table as the code below.
 
 #### Syntax
 
@@ -199,7 +199,7 @@ final var flowable = db.getBulk(Trade.ById.Companion);
 </TabItem>
 </Tabs>
 
-On the other hand, [Write Operations](/database/database-interface/entity-db/#write-operations) have versions that take a single entity and versions that take multiple entries. The return values for these operations are type-safe (see details below), provided all entries are of the same type. There are [Default and generated values](/database/database-interface/entity-db/#default-and-generated-values), as well as CRUD methods and variations: [Insert](/database/database-interface/entity-db/#insert), [Modify](/database/database-interface/entity-db/#modify), [Upsert](/database/database-interface/entity-db/#upsert), [Delete](/database/database-interface/entity-db/#delete), [Update](/database/database-interface/entity-db/#update) as the code below. 
+On the other hand, [Write Operations](../../../database/database-interface/entity-db/#write-operations) have versions that take a single entity and versions that take multiple entries. The return values for these operations are type-safe (see details below), provided all entries are of the same type. There are [Default and generated values](../../../database/database-interface/entity-db/#default-and-generated-values), as well as CRUD methods and variations: [Insert](../../../database/database-interface/entity-db/#insert), [Modify](../../../database/database-interface/entity-db/#modify), [Upsert](../../../database/database-interface/entity-db/#upsert), [Delete](../../../database/database-interface/entity-db/#delete), [Update](../../../database/database-interface/entity-db/#update) as the code below. 
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -246,19 +246,19 @@ db.updateAll(Trade.class, trade -> {
 </TabItem>
 </Tabs>
 
-If the underlying database supports transactions, then the entityDb provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not supported within transactions. Currently, transactions are supported on **FoundationDb** and **Postgresql**. Using transaction on **Aerospike** will result in a failure. Further details regarding transactions can be found [here](/database/database-interface/entity-db/#transactions).
+If the underlying database supports transactions, then the entityDb provides type-safe access to these. A read transaction will support the same read operations as the entity db, and a write transaction will support the same read and write operations. If a write transaction fails, all operations will be reverted. Subscribe operations are not supported within transactions. Currently, transactions are supported on **FoundationDb** and **Postgresql**. Using transaction on **Aerospike** will result in a failure. Further details regarding transactions can be found [here](../../../database/database-interface/entity-db/#transactions).
 
-Using entityDb, it is also possible to subscribe operations, starting a database listener that receives updates to tables or views. When subscribing to view updates, only updates to the root table will be published. Further details regarding subscribe operations can be found [here](/database/database-interface/entity-db/#subscribe-operations).
+Using entityDb, it is also possible to subscribe operations, starting a database listener that receives updates to tables or views. When subscribing to view updates, only updates to the root table will be published. Further details regarding subscribe operations can be found [here](../../../database/database-interface/entity-db/#subscribe-operations).
 
 #### Exercise 1.2 entityDb ReadOperation getBulk
 :::info ESTIMATED TIME
 40 mins
 :::
 
-Create a new event called **TRADE_STANDARDIZATION** to perform a standardization in the Trade table, setting all negative *Trade.Quantity* records to zero. This method can use the ReadOperation [getBulk](/database/database-interface/entity-db/#getbulk) method to list all Trades and then use the [filter](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/filter.html) method Kotlin Flow class offers.
+Create a new event called **TRADE_STANDARDIZATION** to perform a standardization in the Trade table, setting all negative *Trade.Quantity* records to zero. This method can use the ReadOperation [getBulk](../../../database/database-interface/entity-db/#getbulk) method to list all Trades and then use the [filter](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/filter.html) method Kotlin Flow class offers.
 
 :::tip
-After selecting the Trade records you can use the *forEach* method to set the quantities to zero, and then use entityDb method [modifyAll](/database/database-interface/entity-db/#modify) to update everything.
+After selecting the Trade records you can use the *forEach* method to set the quantities to zero, and then use entityDb method [modifyAll](../../../database/database-interface/entity-db/#modify) to update everything.
 :::
 
 <!-- 

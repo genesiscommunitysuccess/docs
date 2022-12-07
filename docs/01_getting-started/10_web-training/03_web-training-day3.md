@@ -64,9 +64,9 @@ export class Order extends FASTElement {
 ```
 :::tip ColDef and renderes
 Find out more about:
-- [ColDef and Genesis Grid Pro Column](/web/web-components/grids/grid-pro/grid-pro-genesis-column/)
-- [Cell Renderers](/web/web-components/grids/grid-pro/grid-pro-genesis-cell/)
-- [Grid Pro Renderers](/web/web-components/grids/grid-pro/grid-pro-renderers/)
+- [ColDef and Genesis Grid Pro Column](../../../web/web-components/grids/grid-pro/grid-pro-genesis-column/)
+- [Cell Renderers](../../../web/web-components/grids/grid-pro/grid-pro-genesis-cell/)
+- [Grid Pro Renderers](../../../web/web-components/grids/grid-pro/grid-pro-renderers/)
 :::
 
 ### Custom column config
@@ -133,7 +133,7 @@ You can add the `persist-column-state-key` to the zero-grid-pro to persist user 
 Change the row height of the data grid to '20 px'.
 
 :::tip More Genesis grid-pro attributes
-You can find all the additional attributes and props, including row height, of the Genesis grid-pro at [Genesis grid-pro documentation](/web/web-components/grids/grid-pro/grid-pro-intro/).
+You can find all the additional attributes and props, including row height, of the Genesis grid-pro at [Genesis grid-pro documentation](../../../web/web-components/grids/grid-pro/grid-pro-intro/).
 :::
 
 
@@ -146,7 +146,7 @@ Add a new action column called 'Cancel' that calls `EVENT_ORDER_CANCEL` event ha
 Note that the event will actually delete the order.
 
 :::tip calling event handlers
-If you struggle, make sure to revisit this previous lesson on [calling event handlers](/getting-started/web-training/web-training-day2/#sending-the-data).
+If you struggle, make sure to revisit this previous lesson on [calling event handlers](../../../getting-started/web-training/web-training-day2/#sending-the-data).
 :::
 
 ## An example of own grid component
@@ -274,15 +274,15 @@ Finally, create a new route called custom-order (as we did with playground, orde
 
 ### Adding filters to the Orders data grid
 
-The way we have been using grid-pro so far is encapsulating a Genesis datasource to have access to Data Server resources. This makes it easier to retrieve data without worrying about the connection, handling update events and so on. This is called [connected data](/web/web-components/grids/grid-pro/grid-pro-connected/).
+The way we have been using grid-pro so far is encapsulating a Genesis datasource to have access to Data Server resources. This makes it easier to retrieve data without worrying about the connection, handling update events and so on. This is called [connected data](../../../web/web-components/grids/grid-pro/grid-pro-connected/).
 
-[Genesis datasource](/web/web-components/grids/grid-pro/grid-pro-genesis-datasource/) offers some [attributes](/web/web-components/grids/grid-pro/grid-pro-genesis-datasource/#attributes-and-props) to parametrise how to retrieve the data. Some commonly used attributes are:
+[Genesis datasource](../../../web/web-components/grids/grid-pro/grid-pro-genesis-datasource/) offers some [attributes](../../../web/web-components/grids/grid-pro/grid-pro-genesis-datasource/#attributes-and-props) to parametrise how to retrieve the data. Some commonly used attributes are:
 
 - **`criteria: string`**: a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: Expr.dateIsBefore(TRADE_DATE,'20150518') or QUANTITY > 10000.
 
 - **`orderBy: string`**: This option can be used to select a data server index (defined in tables-dictionary.kts), which is especially useful if you want the data to be sorted in a specific way. By default, data server rows will be returned in order of creation (from oldest database record to newest).
 
-- **`resourceName: string`**: The target [Data Server](/server/data-server/introduction/) or [Request Server](/server/request-server/introduction/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
+- **`resourceName: string`**: The target [Data Server](../../../server/data-server/introduction/) or [Request Server](../../../server/request-server/introduction/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
 
 As you may have noticed, we've already used `resourceName` and `orderBy` when we used the grid-pro-genesis-datasource for the first time. 
 
@@ -353,7 +353,7 @@ const userReq = await this.connect.snapshot('ALL_USERS', {
 });
 ```
 
-To see a list of all attributes look at [Data server client-side options](/server/data-server/advanced/#client-side-runtime-options).
+To see a list of all attributes look at [Data server client-side options](../../../server/data-server/advanced/#client-side-runtime-options).
 
 :::info user session
 As a side note, the code above also tells us how to retrieve the current logged-in user from the session, which is actually stored in the local storage of the browser. 

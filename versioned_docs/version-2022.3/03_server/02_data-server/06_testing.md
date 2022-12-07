@@ -54,7 +54,7 @@ class DataServerTests : AbstractGenesisTestSupport<Reply<*>>(
     }
 ```
 
-There is more information about `AbstractGenesisTestSupport` in the section on [Integration testing](/operations/testing/integration-testing/#abstractgenesistestsupport).
+There is more information about `AbstractGenesisTestSupport` in the section on [Integration testing](../../../operations/testing/integration-testing/#abstractgenesistestsupport).
 
 Let's load some test data into the `seed-data.csv` in the root of the resources folder for your tests.
 
@@ -131,7 +131,7 @@ private fun ackDataAndUpdateReceived(): Callable<Boolean> {
 If you use Genesis Console, this gives you a simple way of testing components.
 
 1.  In your browser, go to http://genesislcap.com/console/console-next2/.
-2.  Enter the IP address of your server. If you get a blank page without any response, then this is probably because you don't have [NGINX configured](/operations/server-setup/config-management/#nginx-configuration).
+2.  Enter the IP address of your server. If you get a blank page without any response, then this is probably because you don't have [NGINX configured](../../../operations/server-setup/config-management/#nginx-configuration).
 3.  Log in with your user name and password. This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4.  Click on the **RESOURCES** tab.
 5.  Filter the **Resource type** to show only Data Servers.
@@ -155,7 +155,7 @@ An API client is useful way of testing components. As a client, it is effectivel
 
 The API client enables you to create calls to the resources in your server - Data Servers, Request Servers and Event Handlers. Then you can just click to run a call and see what response you get.
 
-Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/operations/testing/component-testing/#using-an-api-client) page.
+Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](../../../operations/testing/component-testing/#using-an-api-client) page.
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 

@@ -69,7 +69,7 @@ pipelines {
 
 :::note
 
-Remote databases will not work with Data Pipelines by default and will require some setup/configuration to enable Change Data Capture functionality. Find details on setup [here](/operations/pipeline-setup/)
+Remote databases will not work with Data Pipelines by default and will require some setup/configuration to enable Change Data Capture functionality. Find details on setup [here](../../../../operations/pipeline-setup/)
 
 :::
 
@@ -392,7 +392,7 @@ A `sink` function is where you will define the logic to do something with the da
 
 ### Ingress
 
-The default behaviour of a ingress data pipeline is to store the mapped [Table](/database/fields-tables-views/tables/) object to the Genesis database. However, there are times when you might want to delete or modify that entity, or do other conditional operations that do not interact with the database at all. For those cases, the `sink` function can be used. The function has two parameters:
+The default behaviour of a ingress data pipeline is to store the mapped [Table](../../../../database/fields-tables-views/tables/) object to the Genesis database. However, there are times when you might want to delete or modify that entity, or do other conditional operations that do not interact with the database at all. For those cases, the `sink` function can be used. The function has two parameters:
 
 - `entityDb` - object to access the underlying Genesis database
 - `mappedEntity` - the mapped Table object

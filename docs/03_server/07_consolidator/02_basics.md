@@ -311,7 +311,7 @@ where(ignore = true) {
 
 ### reprocessSchedule block (optional)
 
-Some consolidations might require periodic reprocessing of data. This will trigger a [cold start](/server/consolidator/basics/#the-startprocess-command-cold-start) on a selected range of data.
+Some consolidations might require periodic reprocessing of data. This will trigger a [cold start](../../../server/consolidator/basics/#the-startprocess-command-cold-start) on a selected range of data.
 
 
 ## Functions
@@ -324,7 +324,7 @@ Within the curly brackets of the function, you can access all fields on the row,
 
 ### Function examples
 
-There is a full reference of functions in the [Advanced](/server/consolidator/advanced/) page on Consolidators.
+There is a full reference of functions in the [Advanced](../../../server/consolidator/advanced/) page on Consolidators.
 
 ```kotlin
 sum { feeAmount }                   // sums the FEE_AMOUNT
@@ -435,7 +435,7 @@ A cold start avoids the danger of losing your calculated data. To make a cold st
 
 `startProcess GENESIS_CONSOLIDATOR --coldStart`
 
-In this case, the Consolidator process is called `GENESIS_CONSOLIDATOR`. If in doubt, you can find the exact name of your consolidator in the [service-definitions](/server/configuring-runtime/service-definitions) file.
+In this case, the Consolidator process is called `GENESIS_CONSOLIDATOR`. If in doubt, you can find the exact name of your consolidator in the [service-definitions](../../../server/configuring-runtime/service-definitions) file.
 
 This command consolidates all records in the system before starting the real-time event-driven consolidations. 
 At the beginning of a cold start, all fields in `consolidationFields` of the consolidation table are zeroed (or deleted, if transient) before initiating the re-consolidation of all the records in the database.

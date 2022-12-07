@@ -69,7 +69,7 @@ Local values can be specified in this block. **These values override the global 
 ## Items defined
 **MqLayer**: This setting defines the type of Message queue technology. You can choose between `ZeroMQ` and `Aeron` message queues.
 
-**DbLayer**: Default value is set to FDB. If you want to use PostgreSQL, MSSQL or Aerospike, then you need to change this value and then [change the value of the DbHost item](/server/configuring-runtime/setting-the-database-technology/).
+**DbLayer**: Default value is set to FDB. If you want to use PostgreSQL, MSSQL or Aerospike, then you need to change this value and then [change the value of the DbHost item](../../../server/configuring-runtime/setting-the-database-technology/).
 **DbHost**: Contains information about the hostname/JDBC connection string pointing to local database. For example:
 
 
@@ -77,7 +77,7 @@ Local values can be specified in this block. **These values override the global 
 item(name = “DbHost”, value = “jdbc:postgresql://localhost:5432/postgres?user=postgres&password=Password5432”)
 ```
 
-See our pages on [database technology](/database/database-technology/overview/) for more information on how to configure a specific database.
+See our pages on [database technology](../../../database/database-technology/overview/) for more information on how to configure a specific database.
 
 **Database username and password encryption**
 You can add an encrypted username and password for the database system.
@@ -94,14 +94,14 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 
 **AliasSource**: This setting defines where you want to store dictionary alias schema. The alias schema maps aliases to fields and to tables, and it is updated every time we change the data schema. You can choose between DB alias source and FILE alias source using this setting. Accepted values `DB` and `FILE`. DB alias source is preferred, because if you are running a cluster all nodes will refer to the same alias dictionary. FILE alias source has the problem of being only available on each node.
 
-**MetricsEnabled**: Default value is false. For more information, go to the page on [Metrics](/operations/metrics/metrics/).
+**MetricsEnabled**: Default value is false. For more information, go to the page on [Metrics](../../../operations/metrics/metrics/).
 
 **ZeroMQProxyInboundPort** and **ZeroMQProxyOutboundPort** are required for the processes that use GENESIS_CLUSTER as a proxy for the update queue (eg.: DbMon, PurgeTables, etc...).
 
 **DbMode**: This setting is utilised by Aerospike and PostgreSQL database only, for other databases this property will be ignored
-- For [Aerospike](/database/database-technology/aerospike/) database: This can be one of two values: VANILLA for an Aerospike Community installation and DURABLE_DELETE if you are using Aerospike Enterprise
+- For [Aerospike](../../../database/database-technology/aerospike/) database: This can be one of two values: VANILLA for an Aerospike Community installation and DURABLE_DELETE if you are using Aerospike Enterprise
 
-- For [PostgresSQL](/database/database-technology/sql/#postgresql): This can be one of two values: POSTGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY which is default mode it always stores the dictionary in table called `dictionary` and schema called `metadata`.
+- For [PostgresSQL](../../../database/database-technology/sql/#postgresql): This can be one of two values: POSTGRESQL if you want PostgreSQL to work with namespaces/schemas and LEGACY which is default mode it always stores the dictionary in table called `dictionary` and schema called `metadata`.
 
 **ResourcePollerTimeout**: This setting controls how often the genesis daemon process keeps the processes and their metadata up to date.
 
@@ -114,8 +114,8 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 **JVM_OPTIONS**: This defines common JVM options to be applied to all processes defined in the environment.
 
 **DbNamespace**: This item defines different things, depending on the databases in use as specified below
-- For [FoundatioDB](/database/database-technology/foundationdb/): It will be used when creating internal DirectoryLayers
-- For [Aerospike](/database/database-technology/aerospike/), [Postgres](/database/database-technology/sql/#postgresql), [MSSQL](/database/database-technology/sql/#ms-sql) and [ORACLE](/database/database-technology/sql/#oracle): It refers to namespace/schema of database. This feature allows you to segregate data from different
+- For [FoundatioDB](../../../database/database-technology/foundationdb/): It will be used when creating internal DirectoryLayers
+- For [Aerospike](../../../database/database-technology/aerospike/), [Postgres](../../../database/database-technology/sql/#postgresql), [MSSQL](../../../database/database-technology/sql/#ms-sql) and [ORACLE](../../../database/database-technology/sql/#oracle): It refers to namespace/schema of database. This feature allows you to segregate data from different
 genesis apps while using single database
 
 **ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.
@@ -127,7 +127,7 @@ then the generated ID will be `000000000001TRLO1` where "LO" represents Location
 
 **LogFrameworkConfig**: Contains name of the log framework configuration file.
 
-If you want to enable SSL for your process communication, this is done in the [service definition](/server/configuring-runtime/service-definitions/#enable-ssl-for-processes).
+If you want to enable SSL for your process communication, this is done in the [service definition](../../../server/configuring-runtime/service-definitions/#enable-ssl-for-processes).
 
 ## Setting System Definitions values from environment variables
 
