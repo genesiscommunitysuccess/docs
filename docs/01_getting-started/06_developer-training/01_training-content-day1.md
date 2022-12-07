@@ -62,14 +62,13 @@ You will get familiar with all these concepts in the next lessons.
 
 ## Developing your first application​​
 
-This will enable you to see the basics of the Genesis low-code platform by starting with a very simple application. It is designed simply to get from start to finish as quickly as possible. It is in six main steps:
+This will enable you to see the basics of the Genesis low-code platform by starting with a very simple application. It is designed simply to get from start to finish as quickly as possible. It is in five main steps:
 
 1. [Create a new project](#1-create-a-new-project).
 2. [Define the data model](#2-define-the-data-model).
 3. [Add business logic](#3-add-business-logic).
 4. [Prepare the server](#4-prepare-the-server).
-5. [Build process](#5-build-process).
-6. [Deployment](#6-deployment).
+5. [Build and Deploy process](#5-the-build-and-deploy-process).
 
 ## What you will build
 
