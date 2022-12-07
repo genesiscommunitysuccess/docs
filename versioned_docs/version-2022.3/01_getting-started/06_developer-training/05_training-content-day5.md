@@ -20,7 +20,7 @@ This day covers:
 - [Schedulers](#schedulers)
 - [Permissions​](#permissions)
 - [Operating the platform](#operating-the-genesis-low-code-platform)
-- [Navigating the documentation and how to get help​](#navigating-the-documentation-and-how-to-get-help​)
+- [How to get help​](#how-to-get-help​)
 
 ## Schedulers​
 You can use the Evaluator to schedule the production of EOD reports (for example), or to send warnings when a defined limit is breached.
@@ -736,9 +736,9 @@ Change the log level of the ALPHA_EVENT_HANDLER process to INFO with `LogLevel` 
 To test it, check if you can see the new log you added in the alpha event handler log file.
 -->
 
-## Navigating the documentation and how to get help​
+## How to get help​
 
-Remember that the Search function in the documentation is your friend.
+Remember that the Search function in the [documentation](https://docs.genesis.global/) is your friend.
 
 A new developer portal is on the way with features such as forum (internal Stack overflow), technical blogs, articles and more detailed documentation. 
 

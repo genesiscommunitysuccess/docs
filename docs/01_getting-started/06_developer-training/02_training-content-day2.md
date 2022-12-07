@@ -21,7 +21,7 @@ sidebar_position: 4
 
 This day covers:
 
-- [An introduction to UI](#intro-to-ui)
+- [An introduction to UI](#introducing-the-ui)
 - [Creating a user interface](#create-a-user-interface)
 - [Extending the data model](#extending-our-initial-application)
 

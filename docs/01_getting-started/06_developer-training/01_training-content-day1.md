@@ -14,9 +14,8 @@ tags:
 This day covers:
 
 - [Quick review of the platform​](#quick-review-of-the-platform)
-- [Setting up Workstation and Environment](#setting-up-workstation-and-environment)
 - [Developing your first application​​](#developing-your-first-application)
-- [Testing the back end​​](#testing-the-backend)
+- [Testing the back end​​](#testing-the-back-end)
 
 
 ## Quick review of the platform
@@ -63,7 +62,7 @@ You will get familiar with all these concepts in the next lessons.
 
 ## Developing your first application​​
 
-This will enable you to see the basics of the Genesis low-code platform by starting with a very simple application. It is designed simply to get from start to finish as quickly as possible. It is in five main steps:
+This will enable you to see the basics of the Genesis low-code platform by starting with a very simple application. It is designed simply to get from start to finish as quickly as possible. It is in six main steps:
 
 1. [Create a new project](#1-create-a-new-project).
 2. [Define the data model](#2-define-the-data-model).
