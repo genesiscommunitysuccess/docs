@@ -13,7 +13,10 @@ const fs = require("fs")
 const regex = /\[([^\]]+)\]\(\/(?!img)([^)]+(?<!md#?(.*)))\)/
 const replaceWith = "../"
 
-const walkDirectory = (root, depth = 0) => {
+const indexFilenames = ['index.md', 'excel-to-genesis.md']
+const isIndexFile = file => indexFilenames.indexOf(file) !== -1
+
+const walkDirectory = (root, depth = 1) => {
     const entries = fs.readdirSync(root, { withFileTypes: true })
     const dirs = entries.filter(e => e.isDirectory())
     const files = entries.filter(e => e.isFile() && e.name.endsWith(".md"))
@@ -26,6 +29,11 @@ const walkDirectory = (root, depth = 0) => {
         const path = `${root}/${file.name}`
         const data = fs.readFileSync(path).toString('utf8')
         if (regex.test(data)) {
+            // index files aren't served from /folder/index/, they're served from /folder/ - so we need
+            // to decrease the depth accordingly
+            if (isIndexFile(file.name)) {
+                depth -= 1
+            }
             paths.push({path, depth})
         }
     }
