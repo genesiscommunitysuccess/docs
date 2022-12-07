@@ -144,7 +144,7 @@ From the Gradle menu on the right of Intellij, this is:
 Alternatively, if you can't run the command from your IDE, you can run the Gradle tasks from the command line. Make sure to open your terminal and cd into **../server/jvm** to run them.
 
 ```shell title='Running generateFields from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:genesis-generated-fields:generateFields
+./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-fields:generateFields
 ```
 
 :::note Why do I have to run this Gradle task?
@@ -191,7 +191,7 @@ From the Gradle menu, this is:
 
 
 ```shell title='Running generateDAO from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:genesis-generated-dao:generateDao
+./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-dao:generateDao
 ```
 
 After running it, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
@@ -308,6 +308,13 @@ docker-compose build
 docker-compose up -d
 ```
 
+### User name and password
+Building and using Docker from the repo you [cloned](https://github.com/genesiscommunitysuccess/devtraining-seed), by default the following will be your login details:
+
+- Username: JaneDee
+- Password: beONneON*74 (This is encrypted in the user.csv file.)
+
+
 ### Running server commands
 :::info can I run server commands from the command line rather than gradle tasks?
 Yes. We've been running server commands through the Gradle tasks. Alternatively, you can run server commands directly from a command line. 
@@ -349,7 +356,7 @@ Alternatively, you can use Genesis Console, which gives you a simple way of test
 ### Genesis Console
 1. In your browser, go to http://genesislcap.com/console/console-next2/?host=localhost:8080.
 2. Enter the IP address of your server, in this case localhost. We should also add the port, as our web server running on the WSL instance is listening on 8080; so, the value to be entered here is `localhost:8080`
-3. Log in with your user name and password as [defined previously](/getting-started/developer-training/training-content-day1/#adding-a-user-to-login). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
+3. Log in with your user name and password as [defined previously](/getting-started/developer-training/training-content-day1/#user-name-and-password). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES** tab.
 5. Filter the **Resource type** to show only Event Handlers.
 
