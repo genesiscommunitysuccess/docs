@@ -101,33 +101,12 @@ Finally, whether you want to set an API host. The default is **Yes**.
 ### Back-end prompts
 The next prompts concern the back-end part of the application.
 
-The first prompt is for which Genesis Server version is to be used:
-```shell title="Windows Terminal"
-? Genesis Server version 6.1.2
-```
-
-... followed by the Gradle deploy plugin version.
-:::note
-
-At the time of writing, the same version as the Genesis Server must be used.
-
-:::
-
-```shell title="Windows Terminal"
-? Genesis Deploy plugin version 6.1.2
-```
-
-Then specify the Kotlin version. The latest tested version is 1.6.10:
-```shell title="Windows Terminal"
-? Kotlin version 1.6.10
-```
-
-... followed by the [group id](https://maven.apache.org/guides/mini/guide-naming-conventions.html)
+The first prompt is for the [group id](https://maven.apache.org/guides/mini/guide-naming-conventions.html):
 ```shell title="Windows Terminal"
 ? Group Id global.genesis
 ```
 
-... and the application version:
+... and this is followed by the application version:
 ```shell title="Windows Terminal"
 ? Application Version 1.0.0-SNAPSHOT
 ```
