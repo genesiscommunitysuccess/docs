@@ -533,13 +533,26 @@ Each `identityProvider` configuration has the following properties:
 | Property name | Description | Mandatory | Default value | Type |
 | --- | ------ | --- | --- | --- |
 | client | The client id and secret | Yes | No default value | Object |
-| endpoints | Holds the token and authorization endpoints | Yes | No default value | Object |
-| verification | Holds configuration for the public key of the JWT issuer | No | No JWT verification | Object |
+| config | Holds the endpoint and verification configuration for the OIDC provider | Yes if `remoteConfig` is not present | No default value | Object |
+| remoteConfig | If the OIDC provider has configuration endpoint `remoteConfig` can be used to point to that endpoint for automatic `endpoint` and `verfication` configuration | Yes if `config` is not present | No default value | Object |
 | scopes | Requested scopes on authorization | No | `openid profile email` | Set |
 | onNewUser | Predefined action when a new user logs in | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
 | usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
 | tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | Yes | No default value | Int |
 | redirectUri | The URI to handle the code authorization. | Yes | No default value | String |
+
+Each `config` configuration has the following properties:
+
+| Property name | Description | Mandatory | Default value | Type |
+| --- | ------ | --- | --- | --- |
+| endpoints | Holds the token and authorization endpoints | Yes | No default value | Object |
+| verification | Holds configuration for the public key of the JWT issuer | No | No JWT verification | Object |
+
+Each `remoteConfig` configuration has the following properties:
+
+| Property name | Description | Mandatory | Default value | Type |
+| --- | ------ | --- | --- | --- |
+| url | The OIDC provider configuration endpoint. | Yes | No default value | String |
 
 Each `client` configuration has the following properties:
 
@@ -566,9 +579,9 @@ Each `verification` configuration has the following properties:
 If `verification` is defined either `publicKey` or `publicKeyUrl` must be defined.
 :::
 
-### Sample configurations
+### Sample Configurations
 
-### Minimal configuration
+#### Minimal Configuration
 
 ```kotlin
 oidc{
@@ -579,19 +592,44 @@ oidc{
       secret = "application-secret"
     }
 
-    endpoints{
-      token = "uat-oidc:1337/token"
-      authorization = "uat-odic:1337/auth"
+    config {
+      endpoints{
+        token = "uat-oidc:1337/token"
+        authorization = "uat-odic:1337/auth"
+      }
     }
 
     tokenLifeInSeconds = 5000
 
     redirectUri = "http://genesis-uat-host/gwf/logon"
+  }
+}
+```
+
+#### Minimal Remote Configuration
+
+```kotlin
+oidc{
+  loginEndpoint = "http://uat-host/login"
+  identityProvider("uat-oidc"){
+    client{
+      id = "appplication-id"
+      secret = "application-secret"
+    }
+
+    remoteConfig {
+      url = "http://uat-oidc/.well-known/openid-configuration"
+    }
+
+    tokenLifeInSeconds = 5000
+
+    redirectUri = "http://genesis-uat-host/gwf/logon"
+  }
 }
 ```
 
 
-### Full configuration
+#### Full Configuration
 
 ```kotlin
 oidc{
@@ -620,5 +658,6 @@ oidc{
     tokenLifeInSeconds = 5000
 
     redirectUri = "http://genesis-uat-host/gwf/logon"
+  }
 }
 ```
