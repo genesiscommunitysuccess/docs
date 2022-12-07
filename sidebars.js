@@ -418,27 +418,19 @@ module.exports = {
         },
         {
           type: 'doc',
-					id: 'web/micro-front-ends/front-end-reporting'
+					id: 'web/micro-front-ends/front-end-reporting/foundation-reporting'
         },
         {
           type: 'doc',
-					id: 'web/micro-front-ends/foundation-header'
+					id: 'web/micro-front-ends/foundation-header/foundation-header'
         },
         {
           type: 'doc',
-					id: 'web/micro-front-ends/foundation-entity-management'
+					id: 'web/micro-front-ends/foundation-entity-management/foundation-entity-management'
         },
         {
           type: 'doc',
-					id: 'web/micro-front-ends/foundation-user-management'
-        },
-        {
-          type: 'doc',
-					id: 'web/micro-front-ends/foundation-profile-management'
-        },
-        {
-          type: 'doc',
-					id: 'web/micro-front-ends/foundation-login'
+					id: 'web/micro-front-ends/foundation-login/foundation-login'
         },
       ],
     },

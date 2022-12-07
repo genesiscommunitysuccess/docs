@@ -15,10 +15,10 @@ This is version v2022.2 of the documentation for the Genesis low-code platform.
 
 The basis of this version is:
 
-| part of stack | version | 
+| part of stack | version |
 |---------------|---------|
-| server        | 6.1.0   |  
-| web           | 2.0.0   |   
+| server        | 6.1.0   |
+| web           | 2.0.0   |
 
 Release date: July 08, 2022. Note that there is sub-release, [2022.2.1](/operations/release-notes/version-2022-2/#release-202221), which is dated September 30, 2022.
 
@@ -186,10 +186,10 @@ This is version 6.2.0 of the documentation for the Genesis low-code platform.
 
 The basis of this version is:
 
-| part of stack | version | 
+| part of stack | version |
 |---------------|---------|
-| server        | 6.2.0   |  
-| web           | 4.0.0   |  
+| server        | 6.2.0   |
+| web           | 4.0.0   |
 
 ## Foundation UI (Web)
 ### Features
@@ -205,12 +205,12 @@ The basis of this version is:
 - A number of (`foundation-header`, `foundation-reporting`) styling improvements to micro front-ends.
 - The `foundation-header` for micro front-ends is more configurable.
 - Created How-To and API documentation for several of our micro front-ends:
-    - [Header](docs/04_web/05_micro-front-ends/03_foundation-header.md)
-    - [Entity Management](docs/04_web/05_micro-front-ends/04_foundation-entity-management.md)
-    - [User Management](docs/04_web/05_micro-front-ends/05_foundation-user-management.md)
-    - [Profile Management](docs/04_web/05_micro-front-ends/06_foundation-profile-management.md)
-    - [Login](docs/04_web/05_micro-front-ends/07_foundation-login.md)
-    - [Reporting](docs/04_web/05_micro-front-ends/02_front-end-reporting.md)
+    - [Header](/web/micro-front-ends/foundation-header)
+    - [Entity Management](/web/micro-front-ends/foundation-entity-management)
+    - [User Management](/web/micro-front-ends/foundation-user-management)
+    - [Profile Management](/web/micro-front-ends/foundation-profile-management)
+    - [Login](/web/micro-front-ends/foundation-login)
+    - [Reporting](/web/micro-front-ends/front-end-reporting)
 - Added multiple parameter support for Testing Suite in foundation-testing
 - More code examples in our Showcase Client App, including selecting values and labels in our combobox programmatically.
 - Added [slotted-styles](https://docs.genesis.global/secure/getting-started/go-to-the-next-level/customize-look-and-feel/#styling-grid-pro) component to allow overriding component styles.
@@ -229,7 +229,7 @@ The basis of this version is:
 ## Important notes
 - After the introduction of support for MSSQL and Postgres namespaces (schemas) in genesis-db, the `DbNamespace` SysDef item is now applicable to platform implementations using MSSQL and Postgres databases. Previously, this item would be ignored. Many standard system definition files specify a placeholder value for this configuration key. In order to use the default database schema (previous behaviour), this item must be removed from the system definition.
 - MSSQL and Postgres namespaces (schemas) are supported in genesis-db. You can now use namespaces/schemas to segregate data from different Genesis apps while still using the same logical database. This means that you do not need a separate database for Genesis app. You don't need the additional set-up effort and you can save on operations costs.
-- The `DbNamespace` item in the system definition file is now applicable to platform implementations using MSSQL and Postgres databases. Previously, this item would be ignored. Many standard system definition files specify a placeholder value for this configuration key. In order to use the default database schema (previous behaviour), this item must be removed from the system definition. 
+- The `DbNamespace` item in the system definition file is now applicable to platform implementations using MSSQL and Postgres databases. Previously, this item would be ignored. Many standard system definition files specify a placeholder value for this configuration key. In order to use the default database schema (previous behaviour), this item must be removed from the system definition.
 ## Breaking changes
 - Kotlin has been upgraded to version 1.7.10. Any applications that depend on GSF 6.2.0 must upgrade their Kotlin version.
 - Gradle has been upgraded to version 7.5. Any applications that depend on GSF 6.2.0 must upgrade their Gradle version.

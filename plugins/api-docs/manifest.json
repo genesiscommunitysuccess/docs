@@ -39,6 +39,92 @@
           "filter", "feature", "flags", "conditions"
         ]
       }
+    },
+    {
+      "name": "@genesislcap/foundation-reporting",
+      "enabled": true,
+			"img_dir": "docs/img",
+      "readme": "./README.md",
+      "output": {
+        "title": "Foundation Reporting",
+        "sidebar_label": "Foundation Reporting",
+        "id": "foundation-reporting",
+        "directory": "./docs/04_web/05_micro-front-ends/02_front-end-reporting",
+        "img_dir": "docs/img",
+        "readme": "02_foundation-reporting.md",
+        "keywords": [
+					"web", "frontend", "ui", "micro-front-ends", "reporting"
+        ],
+        "tags": [
+					"web" ,"frontend" ,"ui" ,"micro-front-ends" ,"reporting"
+				]
+      }
+    },
+    {
+      "name": "@genesislcap/foundation-header",
+      "enabled": true,
+      "api_docs": "./docs/api",
+			"img_dir": "docs/img",
+      "readme": "./README.md",
+      "output": {
+        "title": "Foundation Header",
+        "sidebar_label": "Foundation Header",
+        "id": "foundation-header",
+        "directory": "./docs/04_web/05_micro-front-ends/03_foundation-header",
+        "api_docs": "docs/api",
+        "img_dir": "docs/img",
+        "readme": "03_foundation-header.md",
+        "keywords": [
+					"header" ,"sidebar" ,"frontend" ,"ui" ,"mf" ,"web" ,"micro frontends"
+        ],
+        "tags": [
+					"header" ,"sidebar" ,"frontend" ,"ui" ,"mf" ,"web" ,"micro frontends"
+				]
+      }
+    },
+    {
+      "name": "@genesislcap/foundation-entity-management",
+      "enabled": true,
+      "api_docs": "./docs/api",
+			"img_dir": "docs/img",
+      "readme": "./README.md",
+      "output": {
+        "title": "Foundation Entity Management",
+        "sidebar_label": "Foundation Entity Management",
+        "id": "foundation-entity-management",
+        "directory": "./docs/04_web/05_micro-front-ends/04_foundation-entity-management",
+        "api_docs": "docs/api",
+        "img_dir": "docs/img",
+        "readme": "04_foundation-entity-management.md",
+        "keywords": [
+					"entity management" ,"frontend" ,"micro-front-ends" ,"profile management" ,"ui" ,"user management" ,"web"
+        ],
+        "tags": [
+					"entity management" ,"frontend" ,"micro-front-ends" ,"profile management" ,"ui" ,"user management" ,"web"
+				]
+      }
+    },
+    {
+      "name": "@genesislcap/foundation-login",
+      "enabled": true,
+      "api_docs": "./docs/api",
+			"img_dir": "docs/img",
+      "readme": "./README.md",
+      "output": {
+        "title": "Foundation Login",
+        "sidebar_label": "Foundation Login",
+        "id": "foundation-login",
+        "directory": "./docs/04_web/05_micro-front-ends/05_foundation-login",
+        "api_docs": "docs/api",
+        "img_dir": "docs/img",
+        "readme": "05_foundation-login.md",
+        "keywords": [
+					"web" ,"login" ,"foundation login" ,"frontend" ,"ui" ,"micro-front-ends"
+        ],
+        "tags": [
+					"web" ,"login" ,"foundation login" ,"frontend" ,"ui" ,"micro-front-ends"
+				]
+      }
     }
   ]
 }
