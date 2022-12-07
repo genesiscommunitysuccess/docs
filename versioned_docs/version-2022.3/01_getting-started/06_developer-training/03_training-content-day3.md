@@ -77,8 +77,6 @@ views {
 More info [here](/database/fields-tables-views/views/views-basics/#overriding-a-field-name).
 :::
 
-Run [build and deploy](/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) to make the view ready for use, then add it to the Data Server:​
-
 Now go to the Data Server definition (open **alpha-dataserver.kts**). Replace the `ALL_TRADES` query in the Data Server with the new `TRADE_VIEW`.
 
 ```kotlin
@@ -436,7 +434,7 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 #### Define the position-keeping logic in the consolidator
 
-Before defining the Consolidator, we should insert some data in the `INSTRUMENT_PRICE` table using the command [`SendIt`](/operations/commands/server-commands/#sendit-script). To do that, let's run server commands directly from a command line using PowerShell (or Windows Command Prompt) to access your WSL instance, through user 'genesis' to have access to the Genesis Platform commands as we did [before](/getting-started/developer-training/training-content-day1/#running-server-commands).
+Before defining the Consolidator, we should insert some data in the `INSTRUMENT_PRICE` table using the command [`SendIt`](/operations/commands/server-commands/#sendit-script). To do that, let's run server commands directly from a command line using PowerShell (or Windows Command Prompt) as we did [before](/getting-started/developer-training/training-content-day1/#running-server-commands).
 
 From the command line opened, in the */tmp* folder, save this csv as INSTRUMENT_PRICE.csv using your favorite editor (i.e. [vim](https://www.vim.org/) or [nano](https://www.nano-editor.org/)):
 ```csv
@@ -615,7 +613,7 @@ font-weight: bold;
 
 Open the file **home.ts** and import *Grid Pro* and *Connect*. Then, add them as attributes to the Home class.
 
-```ts {2,3,9,11}
+```ts {2,3,8,10}
 ...
 import {ZeroGridPro} from '@genesislcap/foundation-zero-grid-pro';
 import {Connect} from '@genesislcap/foundation-comms';
@@ -635,7 +633,7 @@ export class Home extends FASTElement {
 
 Finally, go to the file **home.template.ts** and import the required components. Then, add a constant holding the Position columns, and some `<div>`s to format the final HTML.
 
-```html {1,3,5-12,15,16,25-39}
+```html {1,2,4-11,14,15,23-37}
 import {html, repeat, when, ref} from '@microsoft/fast-element';
 import type {Home} from './home';
 

@@ -365,7 +365,7 @@ By the way, the CRON expression for every 10 seconds is `0/10 * * * * ? *`. See 
 
 ## Permissions​
 
-At this stage, the app has a Consolidator to calculate the positions, Event Handlers to control changes to the database and Data Servers and Request Servers to distribute the data to the front end.
+At this stage, the app has a Consolidator to calculate the positions, Event Handlers to control changes to the database and Data Servers to distribute the data to the front end.
 
 For this part of the tutorial, you want to permission users so that each one has access to the correct parts of the system.
 
@@ -439,17 +439,26 @@ Starting with the server, set up the USER and USER_ATTRIBUTES records for the sy
 If you are not sure how to read and write information from the Genesis database, see reference page covering the [`DbMon`](/operations/commands/server-commands/#dbmon-script) and [`SendIt`](/operations/commands/server-commands/#sendit-script) commands.
 :::
 
-Set two new key values in **site-specific/cfg/genesis-system-definition.kts** file. This enables the COUNTERPARTY table and COUNTERPARTY_ID field to become part of the generic permissions system:
+Set two new key values in **site-specific/cfg/genesis-system-definition.kts** file in systemDefinition-global block This enables the COUNTERPARTY table and COUNTERPARTY_ID field to become part of the generic permissions system:
 
-```kotlin
-item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
+```kotlin {6,7}
+package genesis.cfg
 
-item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
+systemDefinition {
+    global {
+        ...
+        item(name = "ADMIN_PERMISSION_ENTITY_TABLE", value = "COUNTERPARTY")
+        item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
+    }
+    ...
+}
 ```
 
-### Configure dynamic permissions
+Run [build and deploy](/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) to apply these changes.
 
-You can now configure dynamic permissions for trades in our IDE. You need to make these changes to the code for the Request Server, Data Server and Event Handler.
+### How to configure dynamic permissions
+
+You can configure dynamic permissions for trades in our IDE. You need to make these changes to the code for the Request Server, Data Server and Event Handler.
 For example, here we add permissioning to a query in the data server file - *alpha-dataserver.kts*:
 
 ```kotlin
@@ -537,8 +546,12 @@ If your message type is not a database-generated entity,  you can still define f
 
 See [here](/server/access-control/authorisation/) <!-- TODO: Is this the right link?--> for more details on authorisation.
 
+### Exercise 5.2: using permissions
+:::info ESTIMATED TIME
+30 mins
+:::
 
-After the configurations, you should execute the Genesis set-up tasks **setupEnvironment**, **install-auth-distribution** and **install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip** to prepare the database for permission. Then run **assemble** and **deploy-genesisproduct-alpha** tasks again to deploy the new version.
+Set up a permission code for Trade inserting. The permission code should be called *TRADE_INSERT* and be part of the **alpha-eventhandler.kts** file accordingly.
 
 Using the command [`SendIt`](/operations/commands/server-commands/#dbmon-script), make the following three configurations below.
 
@@ -553,24 +566,17 @@ JaneDee,USER,ENTITY,1
 
 ```
 USER_NAME,COUNTERPARTY_ID
-JaneDee,1
+JaneDee,2
 ```
 
 3. Add the authorization code to the table RIGHT_SUMMARY.
 
 ```
 USER_NAME,RIGHT_CODE
-JaneDee,TRADER
+JaneDee,INSERT_TRADE
 ```
 
 That is it! You can now insert some trades and see the permissions happening in the application.
-
-### Exercise 5.2: using permissions
-:::info ESTIMATED TIME
-30 mins
-:::
-
-Set up a permission code for Trade inserting. The permission code should be called *TRADE_INSERT* and be part of the **alpha-eventhandler.kts** file accordingly.
 
 
 :::tip
@@ -668,7 +674,6 @@ Understanding the file structure:
 - `runtime` contains important files used by the platform at run time. Do **not** change its content manually, but use commands like `ClearCodegenCache` (if you run into problems updating the data model) to manage some of its content. The `logs` folder contains all the logs, including logs from your modules (such as `alpha`) and from the platform itself.
 - `site-specific` is very useful when you want to override files from standard modules, such as `genesis` and `auth`.
 
-A more detailed explanation on the file structure can be found here. <!-- TODO: What is the proper link for this?-->
 
 ### Key server commands
 

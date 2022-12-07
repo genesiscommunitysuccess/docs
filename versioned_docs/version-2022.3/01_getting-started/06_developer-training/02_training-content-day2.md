@@ -105,7 +105,7 @@ First, open the file **home.ts** to import the Micro front-ends needed, as well 
 ```ts {1,3,5}
 import {customElement, FASTElement, observable} from '@microsoft/fast-element';
 ...
-import {EntityManagement, Permissions} from '@genesislcap/foundation-entity-management';
+import {EntityManagement} from '@genesislcap/foundation-entity-management';
 
 EntityManagement; //imported from '@genesislcap/foundation-entity-management' to display Trade grid
 
