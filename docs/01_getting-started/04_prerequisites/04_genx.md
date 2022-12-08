@@ -1,5 +1,5 @@
 ---
-title: 'Prerequisites - Genx'
+title: 'Prerequisites - genx'
 sidebar_label: 'Genx'
 id: genx
 keywords: [getting started, quick start, prerequisites, genx]
@@ -12,17 +12,17 @@ tags:
 
 
 
-The GenesisX CLI GenX is a command-line interface tool that you can use to scaffold Genesis applications and workspaces directly from a terminal. 
+The GenesisX CLI genx is a command-line interface tool that you can use to scaffold Genesis applications and workspaces directly from a terminal. 
 
-With GenX, you can pull seed projects that adhere to best practices for development on the Genesis low-code platform. The seed projects available range from skeleton projects to example applications.
+With genx, you can pull seed projects that adhere to best practices for development on the Genesis low-code platform. The seed projects available range from skeleton projects to example applications.
 
 ## Prerequisites
 
 - Recommended Operating system : Windows 10 Pro
 - [Node.js](https://nodejs.org/en/download/) version 16
-- Before installing GenX, you need to [configure the Genesis npm repository](/getting-started/quick-start/hardware-and-software/#npmrc-set-up)
+- Before installing genx, you need to [configure the Genesis npm repository](/getting-started/quick-start/hardware-and-software/#npmrc-set-up)
 
-## Installing GenX
+## Installing genx
 
 Once the repository is configured, open a terminal on your Windows machine and install the CLI tool using this:
 
@@ -38,19 +38,17 @@ genx
 
 This command presents you with a sequence of choices for creating and configuring applications.
 
-## Using GenX
+## Using genx
 
 First, you'll be prompted to supply your Genesis artifactory credentials [used when setting up your .npmrc](/getting-started/quick-start/hardware-and-software/#npmrc-set-up)
 
-Next, follow the instructions according to the task you're wishing to carry out.
-
-The following is the most typical example, creating a new application:
+Next, you just need to respond to the questions, which depend on the task you initially select. For example, if you want to create a new application:
 
 ```shell title="Windows Terminal"
 ? Please select an option: create application - Generates a local application.
 ```
 
-Enter the local directory you want to create the app in (where relevant, the default for these options is the letter displayed in upper case; this will be applied if nothing is entered):
+Enter the local directory you want to create the app (where relevant, the default for these options is the letter displayed in upper case; this will be applied if nothing is entered):
 
 ```shell title="Windows Terminal"
 ? Create a app in current directory (Y/n)
@@ -61,14 +59,14 @@ Enter the local directory you want to create the app in (where relevant, the def
 ? App name alpha
 ```
 
-Next, select Seed application you wish to base your project on:
+Next, select the Seed application you wish to base your project on:
 ```shell title="Windows Terminal"
 ? App seed
 
 > Genesis Quick Start Application
 ```
 
-Choose whether to overwrite existing files. The default is **No**.
+Choose whether to overwrite existing files. Note that the default is **No**.
 ```shell title="Windows Terminal"
 ? Overwrite existing files (y/N)
 ```
@@ -76,7 +74,7 @@ Choose whether to overwrite existing files. The default is **No**.
 This will start the download of dependencies.
 
 ### Front-end prompts
-Once that is done, you will be prompted for configuring the front-end part of the project.
+Once that has been completed, you will be prompted for configuring the front-end part of the project.
 
 The first prompt is the package [scope](https://docs.npmjs.com/cli/v8/using-npm/scope). The default is **genesislcap**.
 ```shell title="Windows Terminal"
@@ -135,8 +133,8 @@ Workspaces are top-level client monorepos that contains various packages, such a
 
 The workspace generator automates the following steps for you:
 
-- creates a local workspace from a local or remote seed and configures it.
-- persists the information captured during your CLI session within the workspace filesystem for future use.
+- It creates a local workspace from a local or remote seed and configures it.
+- It persists the information captured during your CLI session within the workspace filesystem for future use.
 
 ### Workspaces and application filesystem
 Your apps are local to workspaces; they don't exist in isolation.

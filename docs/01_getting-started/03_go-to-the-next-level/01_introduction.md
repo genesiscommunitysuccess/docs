@@ -1,6 +1,6 @@
 ---
-title: 'Go to the next level - Introduction'
-sidebar_label: 'Introduction'
+title: 'Go to the next level - introduction'
+sidebar_label: 'introduction'
 id: introduction
 keywords: [getting started, quick start, next level, introduction]
 tags:
@@ -11,6 +11,8 @@ tags:
 ---
 
 Now that you have completed the [Quick Start](/getting-started/quick-start/) and are comfortable with the basics, we'll build an advanced application that will demonstrate more of the Genesis platform features.
+
+Before you get going, you will need a [full developer set-up](/getting-started/prerequisites/introduction/) for this exercise. Make sure you check the requirements and set up what is necessary.
 
 ## What you will build
 
