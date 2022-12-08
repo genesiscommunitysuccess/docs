@@ -109,7 +109,7 @@ Here you can use specific conditions providing a function to the `cellClass` col
 
 ## Design systems
 
-A design system is a collection of resources for interactive media that promotes brand alignment of [UX assets](../../../web/design-systems/introduction/#ux-assets), [Design tokens](../../../web/design-systems/introduction/#design-tokens), [Component libary](../../../web/design-systems/introduction/#component-library), and [Documentation](../../../web/design-systems/introduction/#documentation-site).
+A design system is a collection of resources for interactive media that promotes brand alignment of [UX assets](../../../web/design-systems/introduction/#ux-assets), [Design tokens](../../../web/design-systems/introduction/#design-tokens), [Component library](../../../web/design-systems/introduction/#component-library), and [Documentation](../../../web/design-systems/introduction/#documentation-site).
 
 The Genesis [design system](../../../web/design-systems/introduction/) implementation provides the elements listed above, as well as a few additional features, such as:
 - set of reusable UI components
