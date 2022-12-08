@@ -16,7 +16,7 @@ Linux system administration experience.
 
 ## Config management vs continuous deployment
 
-In environments where servers are managed to a greater or lesser degree by config-management systems, like Chef, Pupper or Ansible, there is a decision to be made about which aspects of a system are config-managed, and which are subject to operator actions.
+In environments where servers are managed to a greater or lesser degree by config-management systems, like Chef, Puppet or Ansible, there is a decision to be made about which aspects of a system are config-managed, and which are subject to operator actions.
 
 When deciding about the division of responsibilities, it is worth considering development systems and production systems separately.
 
@@ -96,7 +96,7 @@ server {
         proxy_set_header        Upgrade $http_upgrade;
         proxy_set_header        Connection $connection_upgrade;
     }
-    
+
     ssl_certificate             /etc/ssl/certs/certs.crt;
     ssl_certificate             /etc/ssl/certs/certs.key;
     ssl_protocols               TLSv1.2;
@@ -120,7 +120,7 @@ DbUser = genesisFdbUser
 DbHost = fdb01.my.domain
 ```
 
-Note, override files are not able to perform environment substitutions in the way that system-definitions can. The override file must be a .kts file (Kotlin script), so it is _executed_, whereas the properties file is only read. See [clusters/Environment variables](../../../operations/clustering/clusters#Environment-variables).
+Note, override files are not able to perform environment substitutions in the way that system-definitions can. The override file must be a .kts file (Kotlin script), so it is _executed_, whereas the properties file is only read. See [clusters/Environment variables](../../../operations/clustering/genesis#Environment-variables).
 
 
 

@@ -73,4 +73,13 @@ The global-service-definitions.xml file and the processes.xml file are are erase
 Therefore, it is essential that you set the **service-definitions.xml** file this way for every service or module for which you want to enable SSL.
 :::
 
+## Overriding Ports at Runtime
+The ports that each service uses can be overridden at runtime with an environment variable.
 
+This is particularly useful when you want to run a single build across multiple environments that may have different port requirements (i.e. multiple apps running on a single host).
+
+To override the port, just use the environment variable `{PROCESS_NAME}_PORT={PORT}`.
+
+So for example, if you wanted the `GENESIS_ROUTER` to run on port 22222 you would use `GENESIS_ROUTER_PORT=22222`.
+
+This guide doesn't cover how to use environment variables, but there are many guides online such as [How to Set an Environment Variable in Linux](https://www.freecodecamp.org/news/how-to-set-an-environment-variable-in-linux/) that explain how they work.

@@ -11,7 +11,7 @@ Welcome to the reference documentation on operating Genesis applications. Here, 
 
 - [Server set-up](../operations/server-setup/host-preparation/) - check all the things you need to consider when you want to set up and install a host server for your applications.
 
-- [Clusters](../operations/clustering/clusters/) - learn about clustering, the primary node and planning disaster recovery.
+- [Clusters](../operations/clustering/overview/) - learn about clustering, the primary node and planning disaster recovery.
 
 - [Testing](../operations/testing/component-testing/) - get acquainted with simple approaches to component and integration testing.
 
