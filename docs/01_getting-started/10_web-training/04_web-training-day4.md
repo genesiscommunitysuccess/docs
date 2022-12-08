@@ -346,7 +346,7 @@ Let's take a look at the User Management and Reporting Micro Front-ends.
 
 ### User Management
 
-The [User Management](../../../web/micro-front-ends/foundation-user-management/) micro front-end is used to manage the users on the front end. Two core components are used to manage the entities `grid-pro` and `form`.
+The [User Management](../../../web/micro-front-ends/foundation-entity-management#User-management) micro front-end is used to manage the users on the front end. Two core components are used to manage the entities `grid-pro` and `form`.
 
 :::info
 User Management is a concrete use case of the [Entity Management](../../../web/micro-front-ends/foundation-entity-management/) micro front-end, which is provided as part of `foundation-ui`.
@@ -391,7 +391,7 @@ You can customise the functionality of User Management through the properties yo
 <user-management></user-management>
 ```
 
-The default columns are contained in the [UserColumnConfig](../../../web/micro-front-ends/foundation-entity-management_apiref/foundation-entity-management.userscolumnconfig) variable. The `Entity` and `Status` columns are always added to the grid.
+The default columns are contained in the [UserColumnConfig](../../../web/micro-front-ends/foundation-entity-management/docs/api/foundation-entity-management.userscolumnconfig/) variable. The `Entity` and `Status` columns are always added to the grid.
 
 To configure the columns yourself, set the `columns` attribute when you define the User Management in the html. You can mix in your custom column config with the default user columns config using the javascript `spread` operator.
 ```javascript
@@ -403,7 +403,7 @@ To configure the columns yourself, set the `columns` attribute when you define t
 </user-management>
 ```
 
-Further information about User Management API Ref (such as `Permissions` or `persist-column-state-key`) can be found [here](../../../web/micro-front-ends/foundation-entity-management_apiref).
+Further information about User Management API Ref (such as `Permissions` or `persist-column-state-key`) can be found [here](../../../web/micro-front-ends/foundation-entity-management/docs/api/).
 
 
 ### Exercise 4.3 Add the User Management into the application
@@ -416,7 +416,7 @@ Add the User Management into the application. To do that create a new route and 
 
 ### Front-end reporting
 
-The [Front-end reporting](../../../web/micro-front-ends/front-end-reporting/) component enables your users to create report specifications, run them, or save them for later use. From the GUI, users can:
+The [Front-end reporting](../../../web/micro-front-ends/front-end-reporting/foundation-reporting) component enables your users to create report specifications, run them, or save them for later use. From the GUI, users can:
 
 - select columns from existing data sources
 - save the report with a name and retrieve it for future use

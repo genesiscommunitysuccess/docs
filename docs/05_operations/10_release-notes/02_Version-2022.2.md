@@ -207,10 +207,10 @@ The basis of this version is:
 - Created How-To and API documentation for several of our micro front-ends:
     - [Header](../../../web/micro-front-ends/foundation-header)
     - [Entity Management](../../../web/micro-front-ends/foundation-entity-management)
-    - [User Management](../../../web/micro-front-ends/foundation-user-management)
-    - [Profile Management](../../../web/micro-front-ends/foundation-profile-management)
+    - [User Management](../../../web/micro-front-ends/foundation-entity-management#User-management)
+    - [Profile Management](../../../web/micro-front-ends/foundation-entity-management/#profile-management)
     - [Login](../../../web/micro-front-ends/foundation-login)
-    - [Reporting](../../../web/micro-front-ends/front-end-reporting)
+    - [Reporting](../../../web/micro-front-ends/front-end-reporting/foundation-reporting)
 - Added multiple parameter support for Testing Suite in foundation-testing
 - More code examples in our Showcase Client App, including selecting values and labels in our combobox programmatically.
 - Added [slotted-styles](https://docs.genesis.global/secure/getting-started/go-to-the-next-level/customize-look-and-feel/#styling-grid-pro) component to allow overriding component styles.
