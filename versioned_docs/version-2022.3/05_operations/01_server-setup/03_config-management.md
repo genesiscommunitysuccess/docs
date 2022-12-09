@@ -20,7 +20,7 @@ In environments where servers are managed to a greater or lesser degree by confi
 
 When deciding about the division of responsibilities, it is worth considering development systems and production systems separately.
 
-During application development, it is likely that there will be frequent code releases to a development host, and using config-management systems to enact such an upgrade is likely to be more complicated than allowing a CI/CD system to issue releases. Development-phase versioning is less rigorous than when an application approaches readiness. Ill-behaved versions are possible. Releases may be frequent. These conditions are a poor fit for the automation and consistency that is the mainstay of a config-management system.
+During application development, it is likely that there will be frequent code releases to a development host. Using config-management systems to enact such an upgrade is likely to be more complicated than allowing a CI/CD system to issue releases. Development-phase versioning is less rigorous than when an application approaches readiness. Ill-behaved versions are possible. Releases may be frequent. These conditions are a poor fit for the automation and consistency that is the mainstay of a config-management system.
 
 ## Suitable elements for CM
 
@@ -33,11 +33,11 @@ On a host prepared for Genesis applications, the following key elements are suit
 ### Dependencies
 
 The packages that are needed to run a Genesis application are covered in more detail in [host preparation](/operations/server-setup/host-preparation).
-These are all off-the-shelf packages found either in OS core package repos or extended repo,s such as EPEL.
+These are all off-the-shelf packages found either in OS core package repos or extended repos such as EPEL.
 
 ### Nginx configuration
 
-Nginx is used as a reverse proxy as the Genesis applications' entry point.  A comparatively simple config file achieves this. This file must specify:
+Nginx is used as a reverse proxy as the entry point to your application.  A comparatively simple config file achieves this. This file must specify:
 
 - the port to listen to
 - the hostname to respond to
@@ -104,7 +104,10 @@ server {
 }
 ```
 
-The IP and port shown are for the application's Router process. The example above also shows configuration for TLS, and listening on both port 443 for HTTPS and port 80 for plain-text traffic.
+In the example above:
+
+- The IP and port shown are for the application's Router process. 
+- You can see the configuration for TLS, and listening on both port 443 for HTTPS and port 80 for plain-text traffic.
 
 ### Environment overrides
 
