@@ -111,5 +111,5 @@ You will need this information if you want to [deploy](/web/deploying/manual-dep
 Ideally, the deployment process should be [automated](/web/deploying/automated-deployment/).
 
 :::note
-Apps hosted across multiple nodes or production/UAT (client facing) apps, would be accessed via a load balancer (also nginx), which performs round-robin load balancing. where this is the case, the nginx config described above is bypassed.
+Apps hosted across multiple nodes or production/UAT (client facing) apps, would be accessed via a load balancer (also nginx), which performs round-robin load balancing. Where this is the case, the nginx config described above is bypassed.
 :::
