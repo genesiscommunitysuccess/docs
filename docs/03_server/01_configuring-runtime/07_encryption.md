@@ -14,8 +14,8 @@ Service traffic encryption is meant to enhance the security of exchanges and to 
 
 ### Setting secure to be true
 
-All Genesis modules are defined inside the service definition files. Therefore, in order to allow for service-service encryption you must edit the _application_ *gpal-system-definitions.xml* file.
 Firstly, we must enable processes to communicate via SSL. In order to do this, we must ensure that the secure element is set to "true". Without this, your application would send communications along with any non-encrypted HTTP requests to your domain.
+All Genesis modules are defined inside the service definition files. Therefore, in order to allow for service-service encryption you must make this change in the _application_ *gpal-system-definitions.xml* file.
 
 ```xml
 <configuration>
