@@ -445,7 +445,10 @@ All across the financial sector, you can find operational functions sitting in E
 
 [ExcelToGenesis](../../../server/integration/excel-to-genesis/excel-reference/#exceltogenesis) converts the Excel spreadsheet into the Genesis data model, which can then be used to generate a working server.
 
-There are three mandatory [options](../../../server/integration/excel-to-genesis/excel-reference/#options) to use ExcelToGenesis: -f the name of the worksheet you are going to convert; -n the name of the project (application) you want to create.; -t the start of the table id sequence (see note after the sample below).
+There are three mandatory [options](../../../server/integration/excel-to-genesis/excel-reference/#options) to use ExcelToGenesis: 
+- **-f** the name of the worksheet you are going to convert
+- **-n** the name of the project (application) you want to create
+- **-t** the start of the table id sequence (see note after the sample below).
 
 ```shell
 ExcelToGenesis -f euc\\ demo\\ cash\\ mgmt.xlsx -n cash -t 10000
