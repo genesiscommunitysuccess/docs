@@ -93,6 +93,32 @@ export class AmplifyDocsStack extends cdk.Stack {
     // map the archive branch to archive.${targetDomain}
     domain.mapSubDomain(archiveBranch, 'archive')
 
+    // we model the concept of an 'old' domain which exists solely to redirect requests onto
+    // the 'new' one. Those requests might come from stale search engine results, old links
+    // from other websites, or users typing things into their address bar from their browser history
+    // Neither of these domains have any special priority over the other as far as Amplify is concerned,
+    // they're just aliases of the auto-generated *.amplifyapp.com domain. It's our custom redirect
+    // rules added later which promotes the use of one over the other
+    const oldDomain = amplifyApp.addDomain(stackOptions.oldDomain, {
+      enableAutoSubdomain: false
+    })
+    // while we never intend to actually serve any content on the old domain, we have to map a branch
+    // to it to generate a valid Cloudformation template
+    oldDomain.mapRoot(mainBranch)
+
+    // bump requests for the old 'docs' domain onto the new 'learn' domain. Note that we don't specify
+    // a path in the rule so Amplify will preserve whatever it was in the redirected URL
+    amplifyApp.addCustomRule({
+      source: `https://${stackOptions.oldDomain}`,
+      target: `https://${targetDomain}`,
+      status: amplify.RedirectStatus.PERMANENT_REDIRECT
+    })
+    // an old-style docs URL will come in on /secure/* which translates to /docs/* on the new site
+    amplifyApp.addCustomRule({
+      source: '/secure/<*>',
+      target: '/docs/<*>',
+      status: amplify.RedirectStatus.PERMANENT_REDIRECT
+    })
     // the current site serves the archive a sub path of the main domain, under /archive. We host
     // it on a separate *subdomain* instead. As a convenience, let's redirect requests in the old
     // format to the correct destination
