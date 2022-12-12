@@ -182,7 +182,7 @@ In short, views are the Genesis equivalent of SQL select queries. Unlike tables,
 
 A view always starts with a single table, the root table. Other tables can be joined onto the root table to present composite data. 
 
-Views are very powerful and here we are going to cover just the basics. When you have a chance, have a look at the [documentation](/database/fields-tables-views/views/).
+Views are very powerful and here we are going to cover just the basics. When you have a chance, have a look at the [documentation](../../../database/fields-tables-views/views/).
 
 The code below creates a view called `TRADE_VIEW`, which joins the `TRADE` table to the `INSTRUMENT` and `COUNTERPARTY` tables. Edit **positions-app-tutorial–view-dictionary.kts** file and add the view on the `TRADE` table:
 
@@ -224,7 +224,7 @@ From the Gradle menu, this is:
 
 ## Entities
 
-During code generation, [view](/database/data-structures/views/) and [index entities](/database/data-structures/indices/) will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
+During code generation, [view](../../../database/data-structures/views/) and [index entities](../../../database/data-structures/indices/) will be generated from the definitions in your application's **view-dictionary.kts** file. The name of each entity will be the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
 
 
 ## Conclusion

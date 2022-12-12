@@ -20,10 +20,10 @@ Each mode has implications in terms of database limitations, as FDB can only sto
 
 Therefore, for applications using small table records, FDB2 will be more efficient. For applications using large table records, FDB will be more efficient.
 
-System definitions[​](/database/database-technology/foundationdb/#system-definitionsdirect-link-to-heading)
+System definitions[​](../../../database/database-technology/foundationdb/#system-definitionsdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-For FDB and FDB2 layers, there are additional system definition items that you can apply in the [genesis-system-definitions.kts](/database/database-technology/sql/#system-definitions) file:
+For FDB and FDB2 layers, there are additional system definition items that you can apply in the [genesis-system-definitions.kts](../../../database/database-technology/sql/#system-definitions) file:
 
 | Setting | Description |
 | --- | --- |
@@ -33,10 +33,10 @@ For FDB and FDB2 layers, there are additional system definition items that you c
 | `DbThreadsMax` | The maximum number of threads to be created in the FDB layer thread pool. Defaults to the maximum of 4 or the number of processing units multiplied by 2 |
 | `DbThreadKeepAliveSeconds` | Sets how many seconds a thread created over the `DbThreadsMin` value can live. If a thread is idle for a total of `DbThreadKeepAliveSeconds` and it was created as an additional thread (i.e. outside the `DbThreadsMin` threshold), it will be destroyed. Defaults to 5 minutes |
 
-Sample configurations[​](/database/database-technology/foundationdb/#sample-configurationsdirect-link-to-heading)
+Sample configurations[​](../../../database/database-technology/foundationdb/#sample-configurationsdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### Min and max thread count[​](/database/database-technology/foundationdb/#min-and-max-thread-countdirect-link-to-heading)
+### Min and max thread count[​](../../../database/database-technology/foundationdb/#min-and-max-thread-countdirect-link-to-heading)
 
 ```kotlin
 systemDefinition {
@@ -50,7 +50,7 @@ systemDefinition {
 }
 ```
 
-### Thread timeouts to two minutes[​](/database/database-technology/foundationdb/#thread-timeouts-to-two-minutesdirect-link-to-heading)
+### Thread timeouts to two minutes[​](../../../database/database-technology/foundationdb/#thread-timeouts-to-two-minutesdirect-link-to-heading)
 
 ```kotlin
 systemDefinition {
@@ -63,7 +63,7 @@ systemDefinition {
 }
 ```
 
-### Cluster file location on windows[​](/database/database-technology/foundationdb/#cluster-file-location-on-windowsdirect-link-to-heading)
+### Cluster file location on windows[​](../../../database/database-technology/foundationdb/#cluster-file-location-on-windowsdirect-link-to-heading)
 
 ```kotlin
 systemDefinition {

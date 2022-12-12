@@ -8,7 +8,7 @@ sidebar_position: 2
 
 # Environment set-up
 
-You must have completed the environment setup from the previous Developer Training. If that's not the case, please [do that](/getting-started/developer-training/environment-setup/) before continuing this guide.
+You must have completed the environment setup from the previous Developer Training. If that's not the case, please [do that](../../../getting-started/developer-training/environment-setup/) before continuing this guide.
 
 
 ## Start the project baseline
@@ -70,7 +70,7 @@ You should see all processes up and running. Remember to start the server proces
 -->
 
 ## Running the front end
-Next, [run the web application locally](/getting-started/developer-training/training-content-day2/#running-the-application-locally).
+Next, [run the web application locally](../../../getting-started/developer-training/training-content-day2/#running-the-application-locally).
 
 If you don't get any errors, you're all set!
 

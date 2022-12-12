@@ -17,6 +17,6 @@ This endpoint can be used for your liveliness/readiness checks if you are using 
 
 | Path | Port | Response |
 | --- | --- | --- |
-| /health/status | This is set in the [System Definition](/server/integration/data-pipeline/advanced/#system-definition-properties) with the item `DaemonHealthPort` | Either `200` for HEALTHY or `503` for UNHEALTHY<br/><br/>(Note: the endpoint doesn't return a response body)|
+| /health/status | This is set in the [System Definition](../../../server/integration/data-pipeline/advanced/#system-definition-properties) with the item `DaemonHealthPort` | Either `200` for HEALTHY or `503` for UNHEALTHY<br/><br/>(Note: the endpoint doesn't return a response body)|
 
 Note: You will need to ensure the port is accessible with either the Docker `--port` option, or check the documentation for whichever container orchestration system you use.

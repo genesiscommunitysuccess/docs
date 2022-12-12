@@ -28,14 +28,17 @@ On a host prepared for Genesis applications, the following key elements are suit
 
 * Dependency packages
 * Nginx reverse-proxy configuration
-* Environmental override configuration (which requires changes to [processes.xml](/server/configuring-runtime/processes))
+
+* Environmental override configuration (which requires changes to [processes.xml](../../../server/configuring-runtime/processes))
 
 ### Dependencies
 
-The packages that are needed to run a Genesis application are covered in more detail in [host preparation](/operations/server-setup/host-preparation).
+The packages that are needed to run a Genesis application are covered in more detail in [host preparation](../../../operations/server-setup/host-preparation).
 These are all off-the-shelf packages found either in OS core package repos or extended repos such as EPEL.
 
+
 ### Nginx configuration
+
 
 Nginx is used as a reverse proxy as the entry point to your application.  A comparatively simple config file achieves this. This file must specify:
 
@@ -123,7 +126,10 @@ DbUser = genesisFdbUser
 DbHost = fdb01.my.domain
 ```
 
-Note, override files are not able to perform environment substitutions in the way that system-definitions can. The override file must be a .kts file (Kotlin script), so it is _executed_, whereas the properties file is only read. See [clusters/Environment variables](/operations/clustering/clusters#Environment-variables).
+
+Note, overrides files are not able to perform environment substitutions in the way that system-definitions can. The override file must be a .kts file (Kotlin script), so it is _executed_, whereas the properties file is only read.  See
+[clusters/Environment variables](../../../operations/clustering/clusters#Environment-variables).
+
 
 
 

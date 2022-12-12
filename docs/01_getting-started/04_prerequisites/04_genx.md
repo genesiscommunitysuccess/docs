@@ -20,7 +20,9 @@ With genx, you can pull seed projects that adhere to best practices for developm
 
 - Recommended Operating system : Windows 10 Pro
 - [Node.js](https://nodejs.org/en/download/) version 16
-- Before installing genx, you need to [configure the Genesis npm repository](/getting-started/quick-start/hardware-and-software/#npmrc-set-up)
+
+- Before installing genx, you need to [configure the Genesis npm repository](../../../getting-started/quick-start/hardware-and-software/#npmrc-set-up)
+
 
 ## Installing genx
 
@@ -40,7 +42,7 @@ This command presents you with a sequence of choices for creating and configurin
 
 ## Using genx
 
-First, you'll be prompted to supply your Genesis artifactory credentials [used when setting up your .npmrc](/getting-started/quick-start/hardware-and-software/#npmrc-set-up)
+First, you'll be prompted to supply your Genesis artifactory credentials [used when setting up your .npmrc](../../../getting-started/quick-start/hardware-and-software/#npmrc-set-up)
 
 Next, you just need to respond to the questions, which depend on the task you initially select. For example, if you want to create a new application:
 

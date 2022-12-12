@@ -20,7 +20,7 @@ The basis of this version is:
 | server        | 6.1.0   |
 | web           | 2.0.0   |
 
-Release date: July 08, 2022. Note that there is sub-release, [2022.2.1](/operations/release-notes/version-2022-2/#release-202221), which is dated September 30, 2022.
+Release date: July 08, 2022. Note that there is sub-release, [2022.2.1](../../../operations/release-notes/version-2022-2/#release-202221), which is dated September 30, 2022.
 
 ## Genesis Server Framework (GSF)
 
@@ -196,7 +196,7 @@ The basis of this version is:
 - New flex-layout component added for easy-to-use Flexbox layouts (there’s also an upcoming app-layout component with UI persistence features).
 - **IMPORTANT** select / combobox / multiselect now have their own datasource adapters, allowing quick and easy integration with back-end data (this is the same as in our grids, but for list elements!)
 - New error-boundary component, which enables improved error management for UI elements.
-- [Grid column persistence](/getting-started/go-to-the-next-level/data-grid/#saving-user-preferences) to restore a user’s column preferences between app reloads.
+- [Grid column persistence](../../../getting-started/go-to-the-next-level/data-grid/#saving-user-preferences) to restore a user’s column preferences between app reloads.
 - **IMPORTANT** charts component wrapper for [@ant-design/charts](https://github.com/ant-design/ant-design-charts/) added, allowing the following types: Line, Area, Bar, Column, Pie, Dual Axes, Rose.
 - Added SSO login support for Symphony. WebSocket connection addresses now fully configurable (auto assignment of ws: or wss:, and allowing other extensions - default still /gwf/)
 - New CLI tasks to help end users analyse their component usage and switch design-system prefixes. These generate sample code for users to copy from the terminal to their projects.
@@ -205,12 +205,12 @@ The basis of this version is:
 - A number of (`foundation-header`, `foundation-reporting`) styling improvements to micro front-ends.
 - The `foundation-header` for micro front-ends is more configurable.
 - Created How-To and API documentation for several of our micro front-ends:
-    - [Header](/web/micro-front-ends/foundation-header)
-    - [Entity Management](/web/micro-front-ends/foundation-entity-management)
-    - [User Management](/web/micro-front-ends/foundation-user-management)
-    - [Profile Management](/web/micro-front-ends/foundation-profile-management)
-    - [Login](/web/micro-front-ends/foundation-login)
-    - [Reporting](/web/micro-front-ends/front-end-reporting)
+    - [Header](../../../web/micro-front-ends/foundation-header)
+    - [Entity Management](../../../web/micro-front-ends/foundation-entity-management)
+    - [User Management](../../../web/micro-front-ends/foundation-entity-management#User-management)
+    - [Profile Management](../../../web/micro-front-ends/foundation-entity-management/#profile-management)
+    - [Login](../../../web/micro-front-ends/foundation-login)
+    - [Reporting](../../../web/micro-front-ends/front-end-reporting/foundation-reporting)
 - Added multiple parameter support for Testing Suite in foundation-testing
 - More code examples in our Showcase Client App, including selecting values and labels in our combobox programmatically.
 - Added [slotted-styles](https://docs.genesis.global/secure/getting-started/go-to-the-next-level/customize-look-and-feel/#styling-grid-pro) component to allow overriding component styles.

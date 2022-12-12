@@ -103,7 +103,7 @@ If they are all empty, you can omit the entire `emailDistribution` JSON object.
 ```
 
 
-When you use [`SendIt`](/operations/commands/server-commands/#sendit-script) to send data to the database, keep two things in mind:
+When you use [`SendIt`](../../../../operations/commands/server-commands/#sendit-script) to send data to the database, keep two things in mind:
 
 * `SendIt` uses quotes to delimit strings. So, if there quotes within any string in your data, you need to escape them.
 * `SendIt` interprets a new line as a new row in the database. So, make sure all the relevant data is on one single line - remove any unwanted line breaks.

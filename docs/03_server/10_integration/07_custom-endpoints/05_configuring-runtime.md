@@ -12,7 +12,7 @@ tags:
 
 ### Configure Genesis Router
 
-If you are going to use custom endpoints, it is essential that you configure the [Genesis Router](/server/configuring-runtime/genesis-router/).
+If you are going to use custom endpoints, it is essential that you configure the [Genesis Router](../../../../server/configuring-runtime/genesis-router/).
 
 Here is an example configuration:
 
@@ -35,13 +35,13 @@ router {
 }
 ```
 
-With the above configuration, you can access the endpoint at `http://{your_host}:9064/custom_endpoint`. For the file upload example shown [here](/server/integration/custom-endpoints/basics/#a-simple-example-of-a-custom-endpoint), the custom endpoint URL is `http://{your_host}:9064/file-handler/upload`.
+With the above configuration, you can access the endpoint at `http://{your_host}:9064/custom_endpoint`. For the file upload example shown [here](../../../../server/integration/custom-endpoints/basics/#a-simple-example-of-a-custom-endpoint), the custom endpoint URL is `http://{your_host}:9064/file-handler/upload`.
 
 ### Configure processes.xml
 
 You need to alter the GENESIS_ROUTER process configuration, which is defined in the **genesis-processes.xml** file located in the **~/run/genesis/cfg** folder.
-- Add the name of the package, where the custom endpoint is defined in the [package](/server/configuring-runtime/processes/#package) tag. In the example below, this is `alpha.custom.endpoint`.
-- Add the Jar file of the submodule containing the custom endpoint to the [classpath](/server/configuring-runtime/processes/#classpath) tag. In the example below, this is `alpha-file-processor-*.jar`.
+- Add the name of the package, where the custom endpoint is defined in the [package](../../../../server/configuring-runtime/processes/#package) tag. In the example below, this is `alpha.custom.endpoint`.
+- Add the Jar file of the submodule containing the custom endpoint to the [classpath](../../../../server/configuring-runtime/processes/#classpath) tag. In the example below, this is `alpha-file-processor-*.jar`.
 
 
 ```xml {6,10}
@@ -59,4 +59,4 @@ You need to alter the GENESIS_ROUTER process configuration, which is defined in 
 </process>
 ```
 
-There is more information on how we define processes, in our page on [process.xml](/server/configuring-runtime/processes).
+There is more information on how we define processes, in our page on [process.xml](../../../../server/configuring-runtime/processes).

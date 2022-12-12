@@ -97,7 +97,7 @@ across more than a dozen hosts to accomplish scaling and resilience.  Consul at 
 downloaded from our Artifactory at the link above.
 
 Clustering is native to Genesis applications and the details of configuring it are covered
-[later](/operations/clustering/clusters).
+[later](../../../operations/clustering/clusters).
 
 Disk space required is very application dependent.  Genesis applications will by default log locally; log volumes are
 determined by application activity levels.  Genesis applications also use local disk to create local LMDB files to help

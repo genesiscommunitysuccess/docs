@@ -26,7 +26,7 @@ This picture gives an overview of how it all ties together:
 ![](/img/WebUIDiagram.png)
 
 :::tip confused with any term used here? Revisit the Developer Training!
-Feel free to revisit the UI chapter of the [Developer Training](/getting-started/developer-training/training-content-day2/) before we get into other aspects of the underlying technology used by Genesis in the next sections.
+Feel free to revisit the UI chapter of the [Developer Training](../../../getting-started/developer-training/training-content-day2/) before we get into other aspects of the underlying technology used by Genesis in the next sections.
 :::
 
 ## Why Web Components?
@@ -217,7 +217,7 @@ For actual server deployment, these are the steps that you'd need to follow:
 You can zip and unzip the content of `dist` to make it quicker.
 :::
 
-More information on [Web Deployment](/web/deploying/introduction/).
+More information on [Web Deployment](../../../web/deploying/introduction/).
 
 
 ### Web pages
@@ -547,7 +547,7 @@ In this next example, we have put a set of example options set in the flyout men
 
 #### Header Set-up
 
-**We have already enabled this micro front-end when we created the initial structure of the application in the [Developer Training](/getting-started/developer-training/training-intro/).** But for learning purposes, let's review what needs to be done to set up the foundation-header from scratch - compare this with the existing code to get a better understanding.
+**We have already enabled this micro front-end when we created the initial structure of the application in the [Developer Training](../../../getting-started/developer-training/training-intro/).** But for learning purposes, let's review what needs to be done to set up the foundation-header from scratch - compare this with the existing code to get a better understanding.
 
 To enable this micro front-end in our application, we'd have to follow the steps below.
 
@@ -793,7 +793,7 @@ To set the content of the flyout menu, add the content in the html within an ele
 Add an item pointing to the playground page.
 
 :::tip
-Look at the [interaction components](/web/web-components/interaction/anchor/) to see a list of available components you can use for the menu item.
+Look at the [interaction components](../../../web/web-components/interaction/anchor/) to see a list of available components you can use for the menu item.
 A good suggestion would be to use `Anchor`, which can be simply used as `<zero-anchor>`:
 ```ts
 <zero-anchor @click=${(x) => x.navigation.navigateTo("/PUT_YOUR_ROUTE_HERE")}>

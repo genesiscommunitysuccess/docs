@@ -20,7 +20,7 @@ We currently support the following scenarios:
 - **`built-in renderer`**: we currently have two cell renderers that are ready to use (**Actions Menu** and **Boolean**). You can use them by specifying the `cellRenderer` property and referencing them directly, or, in the `boolean` (more to be added) case, it can be configured automatically if the target Grid Pro is correctly configured. <br /><br /> 
 *This may be affected if the `auto-cell-renderer-by-type` prop in the target Grid Pro is set to `false`*
 
-- **`custom renderer`**: can be either a function or a full custom component. See the [Genesis Grid Pro Cell](/web/web-components/grids/grid-pro/grid-pro-genesis-cell/) section for more info and examples.
+- **`custom renderer`**: can be either a function or a full custom component. See the [Genesis Grid Pro Cell](../../../../../web/web-components/grids/grid-pro/grid-pro-genesis-cell/) section for more info and examples.
 
 ## Built-in examples
 

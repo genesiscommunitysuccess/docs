@@ -10,7 +10,7 @@ tags:
   - testing
 ---
 
-[Introduction](/server/integration/apache-camel/introduction/)  | [Basics](/server/integration/apache-camel/basics) | [Advanced](/server/integration/apache-camel/advanced) | [Examples](/server/integration/apache-camel/examples) | [Configuring runtime](/server/integration/apache-camel/configuring-runtime) | [Testing](/server/integration/apache-camel/testing)
+[Introduction](../../../../server/integration/apache-camel/introduction/)  | [Basics](../../../../server/integration/apache-camel/basics) | [Advanced](../../../../server/integration/apache-camel/advanced) | [Examples](../../../../server/integration/apache-camel/examples) | [Configuring runtime](../../../../server/integration/apache-camel/configuring-runtime) | [Testing](../../../../server/integration/apache-camel/testing)
 
 To create integration tests for your Apache Camel routes, you need to create service tests by extending the `AbstractGenesisTestSupport` class and specifying the relevant _application-name_**-camel.kts** file as the `scriptFileName`.
 

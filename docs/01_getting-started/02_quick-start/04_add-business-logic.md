@@ -15,7 +15,7 @@ So far, we have a table; now we want to be able to see its content and create ne
 
 
 ## Data Server
-A [Data Server](/server/data-server/introduction/) allows for reading of real-time data. You must define the Data Server in the file **alpha-dataserver.kts**.
+A [Data Server](../../../server/data-server/introduction/) allows for reading of real-time data. You must define the Data Server in the file **alpha-dataserver.kts**.
 
 ```kotlin
 dataServer {
@@ -24,7 +24,7 @@ dataServer {
 ```
 
 ## Event Handler
-Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](/server/event-handler/introduction/) in the file **alpha-eventhandler.kts**.
+Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](../../../server/event-handler/introduction/) in the file **alpha-eventhandler.kts**.
 
 ```kotlin
 eventHandler {

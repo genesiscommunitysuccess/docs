@@ -29,7 +29,7 @@ class ConsolidatorTest : AbstractGenesisTestSupport<GenesisSet>(
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](../../../operations/testing/integration-testing/#abstractgenesistestsupport).
 
 Once you have set up your configuration, you can start writing tests against our Consolidators.
 

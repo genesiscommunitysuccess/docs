@@ -106,9 +106,11 @@ In this example, by looking at the 5th line we can tell that:
 - the _web root_ is `/data/client-x/web`
 - _product user_ is `client-x`
 
-You will need this information if you want to deploy the front end [manually](/web/deploying/manual-deployment/) from your machine to the web server.
 
-Ideally, the deployment process should be [automated](/web/deploying/automated-deployment/).
+You will need this information if you want to [manually deploy](../../../web/deploying/manual-deployment/) the front Eend from your machine to the web server.
+
+
+Ideally, the deployment process should be [automated](../../../web/deploying/automated-deployment/).
 
 :::note
 For apps hosted across multiple nodes or production/UAT (client facing) apps, these nodes would be accessed via a load balancer (also nginx), which performs round-robin load balancing. Where this is the case, the nginx config described above is bypassed.

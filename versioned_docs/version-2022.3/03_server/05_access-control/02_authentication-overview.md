@@ -84,7 +84,7 @@ For LDAP authentication, a username must exist inside the internal records of th
 
 To set up LDAP authentication the `authentication` block of the **auth-preferences.kts** file will need to be configured.
 
-For more information on configuring LDAP authentication, please see [Username and password authentication](/server/access-control/password-authentication/#authentication).
+For more information on configuring LDAP authentication, please see [Username and password authentication](../../../server/access-control/password-authentication/#authentication).
 
 The example below shows LDAP authentication specified, with `userIdType` set to `cn` for the search for the username.
 
@@ -132,6 +132,6 @@ The configuration file takes the same fields as LDAP. You can see this in the ex
 
 SSO authentication allows users to use a single set of credentials to access a range of applications, including those built on the Genesis low-code platform. For more information on SSO technology, please visit the [Single-sign on Wikipedia page](https://en.wikipedia.org/wiki/Single_sign-on).
 
-SSO authentication is a more involved process to enable; thus requires additional file changes detailed in [SSO Authentication](/server/access-control/SSO-authentication/).
+SSO authentication is a more involved process to enable; thus requires additional file changes detailed in [SSO Authentication](../../../server/access-control/SSO-authentication/).
 
 Both SSO and password authentication can be used concurrently by applications built on the platform; the use of one does not mandate nor prevent the use of the other.

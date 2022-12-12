@@ -26,7 +26,7 @@ eventHandler {
 }
 ```
 
-- **Method 2**. Provide the field of table which holds the state, and choose whether you want to make the event Transactional or not by providing boolean value.
+- **Method 2**. Provide the field of table that holds the state, and choose whether you want to make the event Transactional or not by providing boolean value.
 ```kotlin
 eventHandler {
     stateMachine(tableField = TRADE.TRADE_STATUS, transactional = true) {
@@ -161,4 +161,4 @@ Let's look at the codeblocks inside `transitionEvent`:
 - **fromStates** : this enables you to specify the transitions (from and to). In the above example, the transitions are: DRAFT to OPEN, DRAFT to CLOSED, DRAFT to CANCELLED. No other transitions are possible.
 - **onEvent** : this provides event information, which can be used to get information such as event user, event time, etc.
 
-You can click to view the [whole file for this example state machine](/server/state-machine/examples/) and see how each of the events is handled.
+You can click to view the [whole file for this example State Machine](../../../server/state-machine/examples/) and see how each of the events is handled.

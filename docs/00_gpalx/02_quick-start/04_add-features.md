@@ -48,7 +48,7 @@ We should now see the updated page title and heading text:
 
 ## Model
 
-Now we're ready to define the fields and tables that make up the [data model](/getting-started/quick-start/define-the-data-model/).
+Now we're ready to define the fields and tables that make up the [data model](../../../getting-started/quick-start/define-the-data-model/).
 
 Right-click on `src/main/kotlin/global/genesis/alpha/model` folder in your IDE and add a new file called `Trade.kt`:
 

@@ -60,7 +60,7 @@ Before starting with the server set-up, make sure that:
 - We have set up a user with name of the application (`alpha` in our case)
 - FoundationDB is running (if it is not, run `systemctl start foundationdb` from WSL terminal)
 
-If unsure about the above, refer to [WSL installation instructions](/getting-started/prerequisites/installing-wsl/).
+If unsure about the above, refer to [WSL installation instructions](../../../getting-started/prerequisites/installing-wsl/).
 
 ### Preparing the server
 

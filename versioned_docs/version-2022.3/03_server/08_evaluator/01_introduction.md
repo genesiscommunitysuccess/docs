@@ -9,7 +9,7 @@ tags:
   - introduction
 ---
 
-[Introduction](/server/evaluator/introduction) | [Basics](/server/evaluator/basics) |   [Examples](/server/evaluator/examples) | [Configuring runtime](/server/evaluator/configuring-runtime) | [Testing](/server/evaluator/testing)
+[Introduction](../../../server/evaluator/introduction) | [Basics](../../../server/evaluator/basics) |   [Examples](../../../server/evaluator/examples) | [Configuring runtime](../../../server/evaluator/configuring-runtime) | [Testing](../../../server/evaluator/testing)
 
 It is often useful to run tasks periodically - for example to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the **Evaluator**.
 

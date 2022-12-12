@@ -11,7 +11,7 @@ tags:
     - source data
 ---
 
-The source data comes from a PostgreSQL server that has to meet the minimal configuration mentioned [here](/server/integration/data-pipeline/advanced/#postgresql-configuration-1).
+The source data comes from a PostgreSQL server that has to meet the minimal configuration mentioned [here](../../../../server/integration/data-pipeline/advanced/#postgresql-configuration-1).
 
 ## PostgreSQL in Docker
 

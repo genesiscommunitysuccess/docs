@@ -109,14 +109,14 @@ Here you can use specific conditions providing a function to the `cellClass` col
 
 ## Design systems
 
-A design system is a collection of resources for interactive media that promotes brand alignment of [UX assets](/web/design-systems/introduction/#ux-assets), [Design tokens](/web/design-systems/introduction/#design-tokens), [Component libary](/web/design-systems/introduction/#component-library), and [Documentation](/web/design-systems/introduction/#documentation-site).
+A design system is a collection of resources for interactive media that promotes brand alignment of [UX assets](../../../web/design-systems/introduction/#ux-assets), [Design tokens](../../../web/design-systems/introduction/#design-tokens), [Component library](../../../web/design-systems/introduction/#component-library), and [Documentation](../../../web/design-systems/introduction/#documentation-site).
 
-The Genesis [design system](/web/design-systems/introduction/) implementation provides the elements listed above, as well as a few additional features, such as:
+The Genesis [design system](../../../web/design-systems/introduction/) implementation provides the elements listed above, as well as a few additional features, such as:
 - set of reusable UI components
 - configuration files which allow you to control colours, typography, sizing and various other aspects
 - building blocks for creating your own custom components on top of the design system
 
-When you generate a design system using the Genesis scaffolding CLI tool [GenX](/getting-started/quick-start/create-a-new-project/) it will automatically extend a base design system that we have provided. This highly configurable design system is called Genesis Foundation UI. Our design system starts in [Axure](https://www.axure.com/) and has been lab-tested to meet the needs of financial markets.
+When you generate a design system using the Genesis scaffolding CLI tool [GenX](../../../getting-started/quick-start/create-a-new-project/) it will automatically extend a base design system that we have provided. This highly configurable design system is called Genesis Foundation UI. Our design system starts in [Axure](https://www.axure.com/) and has been lab-tested to meet the needs of financial markets.
 
 Design system are highly configurable and can be shared across multiple applications. When performing customisations, you can control the scope as follows:
 
@@ -125,7 +125,7 @@ Design system are highly configurable and can be shared across multiple applicat
 
 ### Customisation (general)
 
-The starting point for making [general customisations](/web/design-systems/customisation-general/) is the `src/_config` folder:
+The starting point for making [general customisations](../../../web/design-systems/customisation-general/) is the `src/_config` folder:
 
 ```bash
 alpha-design-system
@@ -151,13 +151,13 @@ alpha-design-system
 
 It contains configuration files that set default values for various design tokens, as well as a few other settings. You can achieve major visual changes simply by modifying token defaults. There are several categories of token available:
 
-* [Colour](/web/design-systems/tokens/colour/): base colours, dark/light mode, colour variants for interactive states (hover etc.)
-* [Typography](/web/design-systems/tokens/typography/): default font family, font size and line height hierarchy
-* [Sizing](/web/design-systems/tokens/sizing/): component sizing, spacing and border style
-* [Miscellaneous](/web/design-systems/tokens/miscellaneous/): other configuration options, such as the naming prefix (e.g. `alpha`)
+* [Colour](../../../web/design-systems/tokens/colour/): base colours, dark/light mode, colour variants for interactive states (hover etc.)
+* [Typography](../../../web/design-systems/tokens/typography/): default font family, font size and line height hierarchy
+* [Sizing](../../../web/design-systems/tokens/sizing/): component sizing, spacing and border style
+* [Miscellaneous](../../../web/design-systems/tokens/miscellaneous/): other configuration options, such as the naming prefix (e.g. `alpha`)
 
 :::tip
-To help you visualise how modifying tokens impacts the component look and feel, we offer a [live configuration preview](/web/design-systems/preview/).
+To help you visualise how modifying tokens impacts the component look and feel, we offer a [live configuration preview](../../../web/design-systems/preview/).
 :::
 
 To go beyond adjusting token values, you can override the default component implementation. You can choose only to  override certain aspects of a component (such as template, styles or [shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM) options) or provide a completely custom implementation. By default, components in your design simply re-export components from the underlying foundation design system as is (exact code can vary):
@@ -198,7 +198,7 @@ export const alphaButton = Button.compose<ButtonDefinition>({
 
 ### Customisation (app-specific)
 
-In the [Customisation (app-specific)](/web/design-systems/customisation-app-specific/) you can also choose to customise either [all the components](#customising-all-components) or only [individual ones](#customising-individual-components).
+In the [Customisation (app-specific)](../../../web/design-systems/customisation-app-specific/) you can also choose to customise either [all the components](#customising-all-components) or only [individual ones](#customising-individual-components).
 
 #### Customising all components
 
@@ -228,7 +228,7 @@ provideDesignSystem()
     .register(/* ... */)
 ```
 
-As a best practice, one should try to avoid registering the same component more than once. If your architecture makes this difficult or impossible, you can provide a custom callback to handle disambiguating the duplicate elements. Further details can be found [here](/web/design-systems/customisation-app-specific/#name-disambiguation).
+As a best practice, one should try to avoid registering the same component more than once. If your architecture makes this difficult or impossible, you can provide a custom callback to handle disambiguating the duplicate elements. Further details can be found [here](../../../web/design-systems/customisation-app-specific/#name-disambiguation).
 
 #### Customising individual components
 
@@ -336,20 +336,20 @@ Lastly, to keep the best practices and avoid conflits, always open the system pr
 
 ## Micro Front-ends
 
-The [Micro-front-end](/web/micro-front-ends/introduction/) architecture is a design approach in which a front-end app is decomposed into individual, semi-independent **micro applications** working loosely together. There are re-usable micro-front-ends that can be used by Genesis-powered applications, such as [Foundation Header](/web/micro-front-ends/foundation-header/) (covered in [Day 1](#)), [Entity Management](/web/micro-front-ends/foundation-entity-management/) (pretty much covered in the [Developer Training](#)), [User Management](#user-management), and [Front-end reporting](#front-end-reporting).
+The [Micro-front-end](../../../web/micro-front-ends/introduction/) architecture is a design approach in which a front-end app is decomposed into individual, semi-independent **micro applications** working loosely together. There are re-usable micro-front-ends that can be used by Genesis-powered applications, such as [Foundation Header](../../../web/micro-front-ends/foundation-header/) (covered in [Day 1](#)), [Entity Management](../../../web/micro-front-ends/foundation-entity-management/) (pretty much covered in the [Developer Training](#)), [User Management](#user-management), and [Front-end reporting](#front-end-reporting).
 
 Let's take a look at the User Management and Reporting Micro Front-ends.
 
 :::info list of all available Micro Front-ends
-[All micro Front-ends](/web/micro-front-ends/introduction/)
+[All micro Front-ends](../../../web/micro-front-ends/introduction/)
 :::
 
 ### User Management
 
-The [User Management](/web/micro-front-ends/foundation-user-management/) micro front-end is used to manage the users on the front end. Two core components are used to manage the entities `grid-pro` and `form`.
+The [User Management](../../../web/micro-front-ends/foundation-entity-management#User-management) micro front-end is used to manage the users on the front end. Two core components are used to manage the entities `grid-pro` and `form`.
 
 :::info
-User Management is a concrete use case of the [Entity Management](/web/micro-front-ends/foundation-entity-management/) micro front-end, which is provided as part of `foundation-ui`.
+User Management is a concrete use case of the [Entity Management](../../../web/micro-front-ends/foundation-entity-management/) micro front-end, which is provided as part of `foundation-ui`.
 :::
 
 To enable this micro front-end in your application, follow the steps below:
@@ -391,7 +391,7 @@ You can customise the functionality of User Management through the properties yo
 <user-management></user-management>
 ```
 
-The default columns are contained in the [UserColumnConfig](/web/micro-front-ends/foundation-entity-management_apiref/foundation-entity-management.userscolumnconfig) variable. The `Entity` and `Status` columns are always added to the grid.
+The default columns are contained in the [UserColumnConfig](../../../web/micro-front-ends/foundation-entity-management/docs/api/foundation-entity-management.userscolumnconfig/) variable. The `Entity` and `Status` columns are always added to the grid.
 
 To configure the columns yourself, set the `columns` attribute when you define the User Management in the html. You can mix in your custom column config with the default user columns config using the javascript `spread` operator.
 ```javascript
@@ -403,7 +403,7 @@ To configure the columns yourself, set the `columns` attribute when you define t
 </user-management>
 ```
 
-Further information about User Management API Ref (such as `Permissions` or `persist-column-state-key`) can be found [here](/web/micro-front-ends/foundation-entity-management_apiref).
+Further information about User Management API Ref (such as `Permissions` or `persist-column-state-key`) can be found [here](../../../web/micro-front-ends/foundation-entity-management/docs/api/).
 
 
 ### Exercise 4.3 Add the User Management into the application
@@ -416,7 +416,7 @@ Add the User Management into the application. To do that create a new route and 
 
 ### Front-end reporting
 
-The [Front-end reporting](/web/micro-front-ends/front-end-reporting/) component enables your users to create report specifications, run them, or save them for later use. From the GUI, users can:
+The [Front-end reporting](../../../web/micro-front-ends/front-end-reporting/foundation-reporting) component enables your users to create report specifications, run them, or save them for later use. From the GUI, users can:
 
 - select columns from existing data sources
 - save the report with a name and retrieve it for future use
@@ -620,6 +620,6 @@ this is pretty much here: https://docs.genesis.global/secure/tutorials/training-
 30 mins
 :::
 
-It's your time! Let's use Grid Pro with connected data in the Angular app. The grid should display the data from `ALL_ORDERS`, very similar to what we did in [Adding a simple Orders data grid](/getting-started/web-training/web-training-day2/#adding-a-simple-orders-data-grid), but now in Angular.
+It's your time! Let's use Grid Pro with connected data in the Angular app. The grid should display the data from `ALL_ORDERS`, very similar to what we did in [Adding a simple Orders data grid](../../../getting-started/web-training/web-training-day2/#adding-a-simple-orders-data-grid), but now in Angular.
 
 -->

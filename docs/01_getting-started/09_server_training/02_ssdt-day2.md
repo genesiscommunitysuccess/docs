@@ -98,7 +98,7 @@ Run the `build`, `install-alpha-site-specific` and `deploy` tasks again.
 
 Data dumps need to be switched on for both EVALUATOR and NOTIFY so we can see some additional data in the logs.
 
-Run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command to do this:
+Run the [LogLevel](../../../operations/commands/server-commands/#loglevel-script) command to do this:
 
 ```shell
 LogLevel -p ALPHA_EVALUATOR -DATADUMP_ON -l DEBUG
@@ -132,7 +132,7 @@ Now you are going to use the Evaluator again to set up dynamic rules. In this ca
 
 ### Preparation
 
-First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron rule](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#configure-the-evaluator).
+First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron rule](../../../getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#configure-the-evaluator).
 
 You need to create two csv files for this. The first is the file with your rule in the correct format, similar to the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
 
@@ -171,9 +171,9 @@ Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the i
 
 Views enable you join related tables to create a single holistic view. In short, Views are the genesis equivalent of SQL select queries. Views are defined in the file _application-name_**-view-dictionary.kts**. If your application is called **rubicon**, then the file name will be **rubicon-view-dictionary.kts**.
 
-Unlike tables, views do not have any data of their own, they are read-only, but present a view based on one or more tables. We saw basic concepts and common usages of views in the [Developer Training](/getting-started/developer-training/training-intro/). Now we are exploring advanced concepts for views, such as **INNER vc OUTER joins**, **Parameterised joins**, and **Dynamic joins**.
+Unlike tables, views do not have any data of their own, they are read-only, but present a view based on one or more tables. We saw basic concepts and common usages of views in the [Developer Training](../../../getting-started/developer-training/training-intro/). Now we are exploring advanced concepts for views, such as **INNER vc OUTER joins**, **Parameterised joins**, and **Dynamic joins**.
 
-### INNER vc OUTER joins
+### INNER and OUTER joins
 
 Available join types are INNER and OUTER. If you do not specify the type, it defaults to OUTER.
 

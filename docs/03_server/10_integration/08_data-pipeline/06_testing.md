@@ -10,7 +10,7 @@ tags:
   - testing
 ---
 
-[Introduction](/server/integration/data-pipeline/introduction/)  | [Basics](/server/integration/data-pipeline/basics) | [Advanced](/server/integration/data-pipeline/advanced) | [Examples](/server/integration/data-pipeline/examples) | [Configuring runtime](/server/integration/data-pipeline/configuring-runtime) | [Testing](/server/integration/data-pipeline/testing)
+[Introduction](../../../../server/integration/data-pipeline/introduction/)  | [Basics](../../../../server/integration/data-pipeline/basics) | [Advanced](../../../../server/integration/data-pipeline/advanced) | [Examples](../../../../server/integration/data-pipeline/examples) | [Configuring runtime](../../../../server/integration/data-pipeline/configuring-runtime) | [Testing](../../../../server/integration/data-pipeline/testing)
 
 To test a data pipeline you need:
 
