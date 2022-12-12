@@ -21,7 +21,7 @@ With genx, you can pull seed projects that adhere to best practices for developm
 - Recommended Operating system : Windows 10 Pro
 - [Node.js](https://nodejs.org/en/download/) version 16
 
-- Before installing GenX, you need to [configure the Genesis npm repository](../../../getting-started/quick-start/hardware-and-software/#npmrc-set-up)
+- Before installing genx, you need to [configure the Genesis npm repository](../../../getting-started/quick-start/hardware-and-software/#npmrc-set-up)
 
 
 ## Installing genx
