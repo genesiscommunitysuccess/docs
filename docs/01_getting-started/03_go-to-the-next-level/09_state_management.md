@@ -225,7 +225,7 @@ eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
 }
 ```
 
-Your **positions-app-tutorial-eventhandler.kts** file at the end should look this:
+Your **positions-app-tutorial-eventhandler.kts** file at the end should look like this:
 
 ```kotlin
 import global.genesis.TradeStateMachine

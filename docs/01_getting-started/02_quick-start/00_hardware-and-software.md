@@ -83,4 +83,5 @@ Finally, you should have a **gradle.properties** file inside a **.gradle** folde
 genesisArtifactoryUser=<JaneDee>
 genesisArtifactoryPassword=<beONneON74>
 ```
-
+Installing genx
+To follow our Quick Start, you need to [install our genx CLI tool](/getting-started/prerequisites/genx/#installing-genx). This is a simple process that you can do relatively quickly.

@@ -47,7 +47,7 @@ These are not matters specific to Genesis applications. The Genesis-specific par
 
 ### Using a Docker image (recommended)
 
-To configure NGINX using a Docker image, make sure you have the your artifactory credentials to hand. Then, in your CentOS terminal, enter the following commands:
+To configure nginx using a Docker image, make sure you have your artifactory credentials to hand. Then, in your CentOS terminal, enter the following commands:
 
 
 1. Enter your artifactory credentials.
@@ -68,9 +68,14 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-ho
 
 ### Manual configuration
 
-For a manual set-up of NGINX, use this sample server block.
+For a manual set-up of nginx, use this nginx.conf file:
 
 ```text
+map $http_upgrade $connection_upgrade {
+      default upgrade;
+      ''      close;
+    }
+
 server {
 
     listen 443 ssl;

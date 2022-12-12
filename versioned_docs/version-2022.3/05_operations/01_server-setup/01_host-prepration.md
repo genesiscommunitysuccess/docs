@@ -1,6 +1,6 @@
 ---
-title: 'Server Setup - Host Preparation'
-sidebar_label: 'Host Preparation'
+title: 'Server set-up - host preparation'
+sidebar_label: 'Host preparation'
 sidebar_position: 1
 id: host-preparation
 keywords: [operations, server, setup, preparation]
@@ -14,7 +14,7 @@ This document describes preparing a host to run applications built with Genesis 
 reader with some Linux system administration experience.
 
 
-## OS Choice
+## OS choice
 
 Genesis runs a set of JVM processes and a few external pieces of software, notably [nginx](https://nginx.org/en/).  It
 requires (in all likelihood) one of a set of supported databases and Genesis Global can provide RPM packages for them

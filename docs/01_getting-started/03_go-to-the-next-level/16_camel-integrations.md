@@ -90,7 +90,7 @@ Ensure that you add the following config to your **-processes.xml** and **-servi
 ```
 
 ```xml
-<service host="localhost" name="POSITIONS_APP_TUTORIAL_CAMEL" port="11006"/>
+<service host="localhost" name="POSITIONS_APP_TUTORIAL_CAMEL" port="11007"/>
 ```
 
 We are now ready to deploy the changes. Run `assemble` and then `deploy-genesisproduct-positions-app-tutorial`.
