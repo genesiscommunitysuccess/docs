@@ -18,7 +18,7 @@ This will allow us to start building application functionality.
 ## Using GenX CLI
 
 :::important
-> Install the [GenX CLI](../../../gpalx/introduction/prerequisites/#genx-cli) before proceeding with the following steps.
+> Install the [genx CLI](../../../gpalx/introduction/prerequisites/#genx-cli) before proceeding with the following steps.
 :::
 
 You are now ready to generate a new project.
