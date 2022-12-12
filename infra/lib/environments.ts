@@ -17,7 +17,7 @@ export const Environments: EnvironmentOptions = {
     'PROD': {
         stackPrefix: 'Prod',
         subdomain: 'learn',
-        zone: 'genesis.gptlobal',
+        zone: 'genesis.global',
         gtmId: 'GTM-56ZW86Q',
         enablePullRequestPreviews: true,
         oldDomain: 'docs.genesis.global',

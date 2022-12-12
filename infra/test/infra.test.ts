@@ -33,7 +33,7 @@ describe('Documentation Stack', () => {
     })
 
     test('configures two domains', () => {
-        template.resourceCountIs('AWS::Amplify::Branch', 2)
+        template.resourceCountIs('AWS::Amplify::Domain', 2)
     })
 
     test('generates the correct domain name from the provided options', () => {
