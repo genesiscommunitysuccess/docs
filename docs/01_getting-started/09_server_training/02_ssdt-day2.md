@@ -173,7 +173,7 @@ Views enable you join related tables to create a single holistic view. In short,
 
 Unlike tables, views do not have any data of their own, they are read-only, but present a view based on one or more tables. We saw basic concepts and common usages of views in the [Developer Training](../../../getting-started/developer-training/training-intro/). Now we are exploring advanced concepts for views, such as **INNER vc OUTER joins**, **Parameterised joins**, and **Dynamic joins**.
 
-### INNER vc OUTER joins
+### INNER and OUTER joins
 
 Available join types are INNER and OUTER. If you do not specify the type, it defaults to OUTER.
 
