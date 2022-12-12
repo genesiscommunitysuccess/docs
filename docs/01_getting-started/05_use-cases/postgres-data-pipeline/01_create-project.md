@@ -14,7 +14,7 @@ tags:
 ## Create new Genesis project
 At this point you should have `genx` installed on your machine. If you don't, then follow this [guide](../../../../getting-started/prerequisites/genx/) to set it up.
 
-Use `genx` to create new blank project following the instructions [here](../../../../getting-started/quick-start/create-a-new-project/). For the rest of the tutorial `datapipeline-trades` will be used for project name but feel free to choose any name you like.
+Use `genx` to create new blank project following the instructions [here](../../../../getting-started/quick-start/create-a-new-project/). For the rest of the tutorial, **datapipeline-trades** will be used for the project name, but feel free to choose any name you like.
 
 ## The Genesis data model
 
@@ -47,7 +47,7 @@ An alternate instrument has:
 - `ALTERNATE_TYPE` of type `STRING`
 - `INSTRUMENT_CODE` of type `STRING`
 
-To define that model first start with the fields. Open `datapipeline-trades-fields-dictionary.kts` under `datapipeline-sandbox/server/jvm/datapipeline-trades-config/src/main/resources/cfg` (if you chose another project name don't forget to replace `datapipeline-trades` with it) and enter the following:
+To define that model first start with the fields. Open **datapipeline-trades-fields-dictionary.kts** under **datapipeline-sandbox/server/jvm/datapipeline-trades-config/src/main/resources/cfg** (if you chose another project name, then these files will have different names - starting with your application name) and enter the following:
 
 ```kotlin
 fields {
@@ -86,7 +86,7 @@ The build step will generate the fields that can be referenced from the tables a
 
 You can find more information on Fields [here](../../../../database/fields-tables-views/fields-tables-views/).
 
-The next step is to add the relevant [Fields](../../../../database/fields-tables-views/fields/) to [Tables](../../../../database/fields-tables-views/tables/). Open `datapipeline-trades-tables-dictionary.kts` under `datapipeline-trades/server/jvm/datapipeline-trades-config/src/main/resources/cfg` (if you chose another project name don't forget to replace `datapipeline-trades` with it) and enter the following:
+The next step is to add the relevant [Fields](../../../../database/fields-tables-views/fields/) to [Tables](../../../../database/fields-tables-views/tables/). Open **datapipeline-trades-tables-dictionary.kts** under **datapipeline-trades/server/jvm/datapipeline-trades-config/src/main/resources/cfg** (if you chose another project name, then these files will have different names - starting with your application name) and enter the following:
 
 ```kotlin
 tables {
