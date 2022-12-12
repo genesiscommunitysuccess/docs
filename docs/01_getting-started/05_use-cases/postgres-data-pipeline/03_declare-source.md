@@ -162,15 +162,18 @@ pipelines {
 }
 ```
 
-When declaring a mapper the first thing is to give it a name. This is just to identify it and doesn't have any functionality associated with it. The second argument is the [Table](../../../../database/fields-tables-views/tables/) to be mapped to. In our case this is the `TRADE` table. Following are mappings for each [Field](../../../../database/fields-tables-views/fields/) of the [Table](../../../../database/fields-tables-views/tables/). There are three ways to define a [Field](../../../../database/fields-tables-views/fields/) mapping:
-- when the source property name is the same as the [Field](../../../../database/fields-tables-views/fields/) name then there is no need to specify anything
-- when the source property name is different from the [Field](../../../../database/fields-tables-views/fields/) name, however, the type is the same as the [Field](../../../../database/fields-tables-views/fields/) type or is one that can be converted out of the box. In this case only the name has to be mapped and this is done by specifying the `property` field
-- when the source property name and type are different from the [Field](../../../../database/fields-tables-views/fields/) name and type - in this case a `transform` function can be used to calculate the mapped value
+When declaring a mapper, the first thing is to give it a name. This is just to identify it; it doesn't have any functionality associated with it. The second argument is the [Table](../../../../database/fields-tables-views/tables/) to be mapped to. In our case this is the `TRADE` table. 
 
-Looking at the code above you can notice that `TRADE_ID`, `INSTRUMENT_ID`, `SIDE`, `TRADE_DATETIME`, `TRADE_DATE` and `TRADE_STATUS` are calculated [Fields](../../../../database/fields-tables-views/fields/) and all the rest are mapped by name.
+Here are the mappings for each [Field](../../../../database/fields-tables-views/fields/) of the [Table](../../../../database/fields-tables-views/tables/). There are three ways to define a [Field](../../../../database/fields-tables-views/fields/) mapping:
+
+- when the source property name is the same as the [Field](../../../../database/fields-tables-views/fields/) name, then there is no need to specify anything
+- when the source property name is different from the [Field](../../../../database/fields-tables-views/fields/) name, however, the type is the same as the [Field](../../../../database/fields-tables-views/fields/) type or is one that can be converted out of the box. In this case, only the name has to be mapped and this is done by specifying the `property` field
+- when the source property name and type are different from the [Field](../../../../database/fields-tables-views/fields/) name and type, a `transform` function can be used to calculate the mapped value
+
+Looking at the code above, you can notice that `TRADE_ID`, `INSTRUMENT_ID`, `SIDE`, `TRADE_DATETIME`, `TRADE_DATE` and `TRADE_STATUS` are calculated [Fields](../../../../database/fields-tables-views/fields/) and all the rest are mapped by name.
 
 The `transform` function for `INSTRUMENT_ID` is the most complex one as it actually performs additional operations based on the current state of the Genesis database. On the first three lines in the function we try to map the incoming instrument code to a instrument that's already in the Genesis database. If such an instrument exists then its ID is returned, however, if it's not there a new instrument is created.
 
 Follow the links for more information on [mapping](../../../../server/integration/data-pipeline/basics/#mapper-for-the-incoming-data) and the [`transform`](../../../../server/integration/data-pipeline/advanced/#interacting-with-the-database) function.
 
-Finally, to ensure your Genesis application picks up your new script, we must declare the runtime as defined [here](../../../../server/integration/data-pipeline/configuring-runtime/#configure-processesxml-file).
+Finally, to ensure your Genesis application picks up your new script, we must [declare the runtime](../../../../server/integration/data-pipeline/configuring-runtime/#configure-processesxml-file).
