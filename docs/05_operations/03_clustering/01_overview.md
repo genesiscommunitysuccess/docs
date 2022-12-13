@@ -1,5 +1,5 @@
 ---
-title: 'Operations - Clustering Overview'
+title: 'Operations - clustering overview'
 sidebar_label: 'Overview'
 id: overview
 keywords: [operations, clusters]
