@@ -11,7 +11,7 @@ tags:
 
 The Consul cluster mode uses Hashicorp's Consul for service discovery.
 
-Combining this with the use of an MQTT broker will give you a dynamically scalable Genesis app with automatic failover.
+Combining this with the use of an MQTT broker gives you a dynamically scalable Genesis app with automatic failover.
 
 ## Prerequisites
 ### Services
@@ -43,12 +43,12 @@ The default Genesis services and their ports are:
 
 See [Server configuration - service definitions](../../03_server/01_configuring-runtime/04_service-definitions.md) for information on how to set the ports for user-defined services, and how to override the ports dynamically.
 
-The Consul Agents must also be able to access all of the services on their defined ports.
+The Consul Agents must also be able to access all the services on their defined ports.
 
-## Configuring the App
+## Configuring the app
 
-### Basic Configuration
-If Consul agent is running locally to the app on the default port of 8500, then the only config required is:
+### Basic configuration
+If a Consul agent is running locally to the app on the default port of 8500, then the only config required is:
 ```kotlin {title="genesis-system-definition.kts"}
 systemDefinition {
     global {
@@ -59,7 +59,7 @@ systemDefinition {
 }
 ```
 
-### Extended Configuration
+### Extended configuration
 | Item | Description | Default |
 | --- | --- | --- |
 | `ConsulHostAddress` | IP or hostname of the Consul Agent | `localhost` |
