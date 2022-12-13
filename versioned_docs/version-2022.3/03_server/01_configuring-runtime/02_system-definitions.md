@@ -127,6 +127,12 @@ then the generated ID will be `000000000001TRLO1` where "LO" represents Location
 
 **LogFrameworkConfig**: Contains name of the log framework configuration file.
 
+**DisableHeapDumps**: By default, Genesis microservices are configured to dump the contents of the JVM heap to disk when they run out of memory to assist in troubleshooting.
+This key allows the disabling of this feature. A value of 'TRUE' (case-insensitive) will disable this functionality.
+
+**HeapDumpPath**: Allows finer-grained control of the location on the file system that heap dumps will be written. The path should represent a directory on the file system. The file
+format will be `<processName>_<timestamp>.hprof`. If not specified, the default write location is `$GENESIS_HOME/runtime/heapdump/`.
+
 If you want to enable SSL for your process communication, this is done in the [service definition](../../../server/configuring-runtime/service-definitions/#enable-ssl-for-processes).
 
 ## Setting System Definitions values from environment variables
