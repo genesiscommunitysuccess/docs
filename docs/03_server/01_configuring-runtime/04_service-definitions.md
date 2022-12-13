@@ -73,10 +73,10 @@ The global-service-definitions.xml file and the processes.xml file are are erase
 Therefore, it is essential that you set the **service-definitions.xml** file this way for every service or module for which you want to enable SSL.
 :::
 
-## Overriding Ports at Runtime
+## Overriding ports at runtime
 The ports that each service uses can be overridden at runtime with an environment variable.
 
-This is particularly useful when you want to run a single build across multiple environments that may have different port requirements (i.e. multiple apps running on a single host).
+This is particularly useful when you want to run a single build across multiple environments that have different port requirements (i.e. multiple apps running on a single host).
 
 To override the port, just use the environment variable `{PROCESS_NAME}_PORT={PORT}`.
 
