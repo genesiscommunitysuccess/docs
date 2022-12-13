@@ -35,7 +35,7 @@ Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](ht
 
 Web Components are custom html elements that completely encapsulate their logic to create self-contained reusable components, which do not clash or interfere with the rest of application. They are future-proof and interoperable with traditional web frameworks such as Angular, React and Vue.
 
-We currently offer around 40 Web Components such as [Button](/web/web-components/form/button/) and [Text Field](/web/web-components/form/text-field/), which are ready to go. That number is growing (and we can work with you if you need to create bespoke web components for specific needs). 
+We currently offer around 40 Web Components such as [Button](../../../web/web-components/form/button/) and [Text Field](../../../web/web-components/form/text-field/), which are ready to go. That number is growing (and we can work with you if you need to create bespoke web components for specific needs). 
 
 Frameworks like React, Angular, Vue and so on, have traditionally offered component models to developers. However, Web Components are literally the standard component model of the web, written into the html specification. Applications themselves can be fully encapsulated web components too; for example, YouTube is a Web Component, made up of many smaller Web Components.
 
