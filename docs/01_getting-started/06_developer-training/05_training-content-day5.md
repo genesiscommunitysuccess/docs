@@ -25,9 +25,9 @@ This day covers:
 ## Schedulers​
 You can use the Evaluator to schedule the production of EOD reports (for example), or to send warnings when a defined limit is breached.
 
-In system terms, Evaluators enable you to connect Event Handlers to two different kinds of event: dynamic and static (cron rules): 
+In system terms, Evaluators enable you to connect Event Handlers to two different kinds of event: dynamic and static (cron rules):
 
-- __Cron Rules__  are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
+- __Cron Rules__  are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression).
 - __Dynamic Rules__, also known as Dynamic Events, are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
 In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this training, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [Defining a dynamic rule](../../../server/evaluator/basics/#defining-a-dynamic-rule).
@@ -58,7 +58,7 @@ Let's look at the most important fields:
 
 #### 1. Configure the Evaluator
 
-An Evaluator is a process that runs cron jobs. 
+An Evaluator is a process that runs cron jobs.
 To start, create a process called *GENESIS_EVALUATOR* and add it to the file **alpha-processes.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below.
 
 ```xml
@@ -76,7 +76,7 @@ To start, create a process called *GENESIS_EVALUATOR* and add it to the file **a
 </processes>
 ```
 
-Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** with the code below. 
+Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** with the code below.
 
 ```xml
 <configuration>
@@ -92,10 +92,10 @@ Run [mon](../../../operations/commands/server-commands/#mon-script). You should 
 
 This is because the Evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the Primary node.
 
-Run [SetPrimary](../../../operations/clustering/clusters/#set-the-primary-node) and you should be able to see all processes running.
+Run [SetPrimary](../../../operations/clustering/genesis/#set-the-primary-node) and you should be able to see all processes running.
 
 #### 2. Create a new class
-When the evaluator is running, create a PositionReport class to trigger the new event. This class should be created inside your project folder **server/jvm/alpha-messages/src/main/kotlin/global/genesis/alpha/message/event** as the code below. 
+When the evaluator is running, create a PositionReport class to trigger the new event. This class should be created inside your project folder **server/jvm/alpha-messages/src/main/kotlin/global/genesis/alpha/message/event** as the code below.
 
 ```kotlin
 package global.genesis.alpha.message.event
@@ -144,7 +144,7 @@ eventHandler {
 ```
 
 #### 4.Load the cron rule on to the database
-Load the cron rule csv below into the database, [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) Table. 
+Load the cron rule csv below into the database, [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) Table.
 
 Run `SendIt`.
 
@@ -260,7 +260,7 @@ The module GENESIS_NOTIFY does not run by default. To change this, we are adding
     </process>
 </processes>
 ```
-Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below. 
+Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below.
 
 ```xml
 <configuration>
@@ -292,7 +292,7 @@ Create a file NOTIFY_ROUTE.csv as shown below, then insert it in the table NOTIF
 
 ```csv
 ENTITY_ID,ENTITY_ID_TYPE,TOPIC_MATCH,GATEWAY_ID
-,"GATEWAY","PositionAlert","EmailDistribution1" 
+,"GATEWAY","PositionAlert","EmailDistribution1"
 ```
 
 #### 6. Add connection details to the system definition
@@ -355,9 +355,9 @@ Go to https://www.wpoven.com/tools/free-smtp-server-for-testing and access the i
 30 mins
 :::
 
-Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) table, and insert a new role changing the CRON_EXPRESSION value. 
+Now we want to run PositionReport every 10 seconds. To do that, remove the row you just inserted in [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) table, and insert a new role changing the CRON_EXPRESSION value.
 
-:::tip 
+:::tip
 To delete rows you can use [DbMon](../../../operations/commands/server-commands/#dbmon-script) and the command `delete`. After that you can use [SendIt](../../../operations/commands/server-commands/#sendit-script) to insert a new row again.
 
 By the way, the CRON expression for every 10 seconds is `0/10 * * * * ? *`. See a CRON generator [here](https://www.freeformatter.com/cron-expression-generator-quartz.html).
@@ -369,7 +369,7 @@ At this stage, the app has a Consolidator to calculate the positions, Event Hand
 
 For this part of the tutorial, you want to permission users so that each one has access to the correct parts of the system.
 
-### Authorisation 
+### Authorisation
 
 Authorisation is achieved by permissioning dynamically. This means you can control access to information in increasingly precise ways, for example:
 
@@ -707,7 +707,7 @@ startServer
 ```
 
 :::note
-When deploying files manually like this, remember to push the change to version control as well, otherwise the next deployment will override the changes. Ideally, you'd change the file first in your IDE and then copy it to the server and run the commands. 
+When deploying files manually like this, remember to push the change to version control as well, otherwise the next deployment will override the changes. Ideally, you'd change the file first in your IDE and then copy it to the server and run the commands.
 :::
 
 An exhaustive list of commands can be found [here](../../../operations/commands/server-commands/). <!-- TODO: What is the proper link for this?-->
@@ -745,6 +745,6 @@ To test it, check if you can see the new log you added in the alpha event handle
 
 Remember that the Search function in the [documentation](https://docs.genesis.global/) is your friend.
 
-A new developer portal is on the way with features such as forum (internal Stack overflow), technical blogs, articles and more detailed documentation. 
+A new developer portal is on the way with features such as forum (internal Stack overflow), technical blogs, articles and more detailed documentation.
 
 Stay tuned!
