@@ -37,7 +37,7 @@ Web Components are custom html elements that completely encapsulate their logic 
 
 We currently offer around 40 Web Components such as [Button](/web/web-components/form/button/) and [Text Field](/web/web-components/form/text-field/), which are ready to go. That number is growing (and we can work with you if you need to create bespoke web components for specific needs). 
 
-Frameworks like React, Angular, Vue and so on, have traditionally offered component models to developers. However, Web Components are literally the standard component model of the web, written into the HTML specification. Applications themselves can be fully encapsulated web components too; for example, YouTube is a Web Component, made up of many smaller Web Components.
+Frameworks like React, Angular, Vue and so on, have traditionally offered component models to developers. However, Web Components are literally the standard component model of the web, written into the html specification. Applications themselves can be fully encapsulated web components too; for example, YouTube is a Web Component, made up of many smaller Web Components.
 
 ### Micro front-ends
 
