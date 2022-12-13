@@ -74,6 +74,10 @@ Genesis Foundation UI
 https://github.com/genesislcap/foundation-ui#readme
 ```
 
+import StrictSSL from '../../_includes/_strict-ssl.md'
+
+<StrictSSL />
+
 Please [contact us](mailto:support@genesis.global?subject=.npmrc%20Setup) if you run into any problems.
 
 ## gradle.properties file

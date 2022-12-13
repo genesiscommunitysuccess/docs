@@ -81,6 +81,10 @@ Now you can configure the `@genesislcap` scope of `npm` to use our jfrog registr
 Genesis Foundation UI
 ```
 
+import StrictSSL from '../../_includes/_strict-ssl.md'
+
+<StrictSSL />
+
 Please [contact us](mailto:support@genesis.global?subject=.npmrc%20Setup) if you run into any problems.
 
 ## gradle.properties file
