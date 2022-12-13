@@ -1,5 +1,5 @@
 ---
-title: 'Update Queue - MQTT'
+title: 'Update queue - MQTT'
 sidebar_label: 'MQTT'
 id: mqtt
 keywords: [operations, update queue, mqtt]
@@ -13,9 +13,9 @@ The Genesis low-code platform provides the option to use an external MQTT broker
 
 Using a centralised external broker is highly recommended for complex, large or dynamically scaled clusters, as it reduces the complexity and overhead of peer-to-peer connectivity.
 
-### MQTT Configuration Options
+### MQTT configuration options
 
-To use MQTT in your Genesis application, you will need to set the `MqLayer` in the system definition.
+To use MQTT in your Genesis application, you need to set the `MqLayer` in the system definition.
 
 ```kotlin {title="genesis-system-definition.kts"}
 systemDefinition {
