@@ -3,7 +3,7 @@ title: 'Release notes - Version 2022.4'
 sidebar_label: 'Version 2022.4'
 sidebar_position: 2
 id: version-2022-4
-keywords: [operations, release notes, v-2022.3]
+keywords: [operations, release notes, v-2022.4]
 tags:
     - operations
     - release notes
