@@ -54,11 +54,11 @@ This requires credentials for accessing Genesis Artifactory. If you have not bee
 :::
 
 1. Create an `.npmrc` file in your user home directory (usually at 'C:\Users\YOUR_LOGIN_NAME\').
- 2. Using your credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
- 3. Click on the `Welcome <username>` in the top right corner.
- 4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns.
- 5. Select `npm` for both **Package Type** and **Repository**.
- 6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in to the Genesis repository on jfrog.) Then press **Enter**.
+2. Using your credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
+3. Click on the `Welcome <username>` in the top right corner.
+4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns.
+5. Select `npm` for both **Package Type** and **Repository**.
+6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in to the Genesis repository on jfrog.) Then press **Enter**.
 
 ![](/img/set-me-up.png)
 
@@ -92,7 +92,7 @@ npm config set https-proxy https://proxy_host:port
 ```
 :::
 
-import StrictSSL from '../../_includes/_strict-ssl.md'
+Then, import StrictSSL from '../../_includes/_strict-ssl.md'
 
 <StrictSSL />
 
