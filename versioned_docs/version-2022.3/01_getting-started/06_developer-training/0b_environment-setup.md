@@ -92,7 +92,7 @@ npm config set https-proxy https://proxy_host:port
 ```
 :::
 
-import StrictSSL from '../../_includes/_strict-ssl.md'
+Then, import StrictSSL from '../../_includes/_strict-ssl.md'
 
 <StrictSSL />
 
