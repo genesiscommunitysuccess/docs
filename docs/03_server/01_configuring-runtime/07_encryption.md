@@ -15,7 +15,7 @@ Service traffic encryption is meant to enhance the security of exchanges and to 
 ### Setting secure to be true
 
 Firstly, we must enable processes to communicate via SSL. In order to do this, we must ensure that the secure element is set to "true". Without this, your application would send communications along with any non-encrypted HTTP requests to your domain.
-All Genesis modules are defined inside the service definition files. Therefore, in order to allow for service-service encryption you must make this change in the _application_ **-service-definitions.xml* file.
+All Genesis modules are defined inside the service definition files. Therefore, in order to allow for service-service encryption you must make this change in the _application_ **-service-definitions.xml** file.
 
 ```xml
 <configuration>
@@ -60,6 +60,6 @@ When you press Enter, keytool prompts you to enter the server name, organization
 
 You must type the server name in response to keytool’s first prompt, in which it asks for first and last names. 
 
-When you run the example applications, the host (server name) specified in the keystore must match the host identified in the javaee.server.name property specified in the file tut-install/examples/bp-project/build.properties.
+When you run the example applications, the host (server name) specified in the keystore must match the host identified in the javaee.server.name property specified in the file **build.properties**.
 
 
