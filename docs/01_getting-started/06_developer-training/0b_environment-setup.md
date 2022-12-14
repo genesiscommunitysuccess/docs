@@ -128,7 +128,7 @@ Enter the same password you used in step 6 and then you should see this message:
 
 Feel free to abort this program for now - we'll use genx later on.
 
-import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
+Import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
 
 <InsecureFlag />
 
@@ -138,7 +138,7 @@ As an alternative, you can [download the project structure that would be generat
 
 :::
 
-#### Gradle setup
+### Gradle set-up
 Make sure you have a **gradle.properties** file inside a **.gradle** folder in your user directory; this file must contain your password in clear (unencrypted) text:
 
 ```shell
