@@ -12,6 +12,9 @@ tags:
 
 Service traffic encryption is meant to enhance the security of exchanges and to protect user privacy against attacks carried out from networks. This can be configured for your genesis applications and the means to do this will be detailed in this document.
 
+In order to achieve this, we will create a certificate and a Java Keystore. A file with the extension **.jks** serves as a keystore. It can store keys such as public key certificates, authorisation certificates or private keys.
+
+Here are some [instructions](https://support.globalsign.com/digital-certificates/digital-certificate-installation/java-keytool-create-keystore#:~:text=Use%20the%20chart%20below%20to%20guide%20you%20through,on%20hash%20algorithm%20and%20product%20type.%20See%20More) on how to create a Java keystore file.
 ### Setting secure to be true
 
 Firstly, we must enable processes to communicate via SSL. In order to do this, we must ensure that the secure element is set to "true". Without this, your application would send communications along with any non-encrypted HTTP requests to your domain.
@@ -58,7 +61,7 @@ Type the keytool command all on one line:
 
 When you press Enter, keytool prompts you to enter the server name, organizational unit, organization, locality, state, and country code.
 
-You must type the server name in response to keytool’s first prompt, in which it asks for first and last names. 
+You must type the server name in response to keytool’s first prompt, in which it asks for first and last names.
 
 When you run the example applications, the host (server name) specified in the keystore must match the host identified in the javaee.server.name property specified in the file **build.properties**.
 
