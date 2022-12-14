@@ -24,7 +24,7 @@ In the `genx` script, there are a series of questions.
 
 First, you are asked to provide your username and password - these are the credentials you use to access Genesis Artifactory.
 
-import InsecureFlag from '../../../_includes/_cli-insecure-flag.md'
+Then, import InsecureFlag from '../../../_includes/_cli-insecure-flag.md'
 
 <InsecureFlag />
 
