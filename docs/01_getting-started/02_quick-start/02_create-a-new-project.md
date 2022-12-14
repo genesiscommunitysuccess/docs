@@ -34,7 +34,7 @@ If this does not work, use the command `npx genx`.
 
 :::
 
-import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
+The, import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
 
 <InsecureFlag />
 
