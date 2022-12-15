@@ -20,7 +20,7 @@ The application has three files that contain vital configuration information:
 
 At present, these files are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
 
-Add the following content to the **alpha-processes.xml** file.
+Add the following content to the **alpha-processes.xml** file:
 
 
 ```xml
@@ -50,7 +50,7 @@ Add the following content to the **alpha-processes.xml** file.
 </processes>
 ```
 
-You can find more info on the **-processes.xml** file [here](/server/configuring-runtime/processes/).
+Further information can be found in the **-processes.xml** [file](../../../server/configuring-runtime/processes/).
 
 You can then add the following content to the **alpha-service-definitions.xml** file.
 
@@ -61,13 +61,13 @@ You can then add the following content to the **alpha-service-definitions.xml** 
 </configuration>
 ```
 
-You can find more info on the **-service-defintions.xml** file [here](/server/configuring-runtime/service-definitions/).
+Further information can be found in the **-service-defintions.xml** [file](../../../server/configuring-runtime/service-definitions/).
 
 ## Database layer
 
-You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\**.
+You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\\**.
 
-You can find more information on the **genesis-system-defintions.kts** file [here](/server/configuring-runtime/system-definitions/).
+Further information can be found in the **genesis-system-defintions.kts** [file](../../../server/configuring-runtime/system-definitions/).
 
 ### Using WSL/Linux? Don't change the database layer.
 You can ignore the next section! In fact, you must not make the changes on that section. (But please note, we highly recommend using Docker.)
@@ -104,4 +104,4 @@ You can procede to the next step whilst loading.
 
 After loading is completed you have a functional server.
 
-Congratulations! you have completed the prepare and build.
+Congratulations! You have completed the prepare and build.

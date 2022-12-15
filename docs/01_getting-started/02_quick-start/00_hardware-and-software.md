@@ -21,7 +21,7 @@ This page gives you the hardware and software requirements needed in order to ru
 ## Recommended hardware and operating system
 
 * Operating system : Windows 10 Pro
-* RAM : 16GB minimum, 32GB preferred (if running full applications locally)
+* RAM : 32GB minimum
 * CPU : 8 Core
 * SSD : 250GB
 
@@ -49,7 +49,7 @@ For access to Genesis packages, you need a valid [jfrog artifactory](https://jfr
 
 ### .npmrc set-up
 
-First, you need configure the `@genesislcap` scope of `npm` to use our jfrog registry.
+First, you need to configure the `@genesislcap` scope of `npm` in order to use our jfrog registry.
 
 
 1. Create an empty `.npmrc` file in your user home directory.
@@ -60,7 +60,7 @@ First, you need configure the `@genesislcap` scope of `npm` to use our jfrog reg
 
  ![](/img/set-me-up.png)
 
- 6. At the bottom of the window is a code snippet of 5 lines (highlighted in the picture above. This includes an encrypted version of your password (which we have blocked in thie picture). Copy this and paste it into the empty **.npmrc** file you created earlier. 
+ 6. At the bottom of the window is a code snippet of 5 lines (highlighted in the picture above. This includes an encrypted version of your password (that we have blocked in thie picture). Copy this and paste it into the empty **.npmrc** file you created earlier. 
 
 7. In the file, replace `<SCOPE>` with `genesislcap`, so that the line reads:
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
@@ -83,5 +83,6 @@ Finally, you should have a **gradle.properties** file inside a **.gradle** folde
 genesisArtifactoryUser=<JaneDee>
 genesisArtifactoryPassword=<beONneON74>
 ```
-Installing genx
-To follow our Quick Start, you need to [install our genx CLI tool](/getting-started/prerequisites/genx/#installing-genx). This is a simple process that you can do relatively quickly.
+## Installing genx
+
+To follow our Quick Start, you need to [install our genx CLI tool](../../../getting-started/prerequisites/genx/#installing-genx). This is a simple process that you can do relatively quickly.

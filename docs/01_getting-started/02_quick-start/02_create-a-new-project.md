@@ -10,7 +10,7 @@ tags:
 ---
 
 :::info
-Before you start, make sure you have checked out the [hardware and software requirements(/getting-started/quick-start/hardware-and-software/). 
+Before you start, make sure you have checked out the [hardware and software requirements(../../../getting-started/quick-start/hardware-and-software/). 
 
 Download and install all the relevant requirements.
 :::
@@ -18,7 +18,7 @@ Download and install all the relevant requirements.
 ## The genx script
 `genx` is a CLI tool that enables you to seed projects. In this case, we shall generate a full-stack application project; the key files will be empty so that you can define the details of the application.
 
-We also have step-by-step instructions on [how to install and use genx](/getting-started/prerequisites/genx/).
+We also have step-by-step instructions on [how to install and use genx](../../../getting-started/prerequisites/genx/).
 
 ## Starting
 
@@ -52,7 +52,10 @@ Now you can proceed using the following responses:
 ? App name alpha
 ```
 
-Then you are asked to select the App Seed. Select `Quick Start Application` from the list. Do **not** select the Positions Application.
+Then you are asked to select the App Seed. Select `Quick Start Application` from the list. 
+
+Do **not** select the Positions Application.
+
 You will be asked if you want to overwrite existing files. Select **Y**.
 
   ```shell title="Windows Terminal"

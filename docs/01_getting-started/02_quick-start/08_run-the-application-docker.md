@@ -84,13 +84,13 @@ ssh-port=1337
 On your IntelliJ terminal, try running the gradle task `killServer`.
 
 ```shell
-./gradlew :genesisproduct-alpha:alpha-deploy:killServer #On the IntelliJ terminal
+./gradlew :genesisproduct-alpha:alpha-deploy:killServer
 ```
 
 You can check how it is running:
 
 ```shell
-./gradlew :genesisproduct-alpha:alpha-deploy:mon #On the IntelliJ terminal
+./gradlew :genesisproduct-alpha:alpha-deploy:mon 
 ```
 Or you can run `mon` on your previously attached terminal, where you can see that all services are down.
 

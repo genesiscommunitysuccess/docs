@@ -11,18 +11,18 @@ tags:
     - linux
 ---
 
-You have a choice of how you run the application. The instructions on this page are for using WSL/CentOS. If you prefer to use Docker as your environment, there are [separate instructions](/getting-started/quick-start/run-the-application-docker/).
+You have a choice of how you run the application. The instructions on this page are for using WSL/CentOS. If you prefer to use Docker (highly recommended) as your environment, there are [separate instructions](../../../getting-started/quick-start/run-the-application-docker/).
 
 Before you start, make sure that:
 
 - you have a user with the name of the application (alpha)
 - foundationdb is running (if it is not, run `systemctl start foundationdb` from Centos07)
 
-If that's OK, you can deploy the server.
+After both of the steps are completed you can deploy the server.
 
 ## Deploying to the server
 
-1. First, we need to configure our genesis home, distribution and user. Add the following fields to the **gradle.properties** under **alpha/server/jvm**:
+1. First, we need to configure our Genesis home, distribution and user. Add the following fields to the **gradle.properties** under **alpha/server/jvm**:
 
 ```shell
 genesis-home=/home/alpha/run
@@ -47,7 +47,7 @@ You can either execute the deployment as a command or from the dropdown menu in 
 
 By command:
 ```shell
-./gradlew :jvm:alpha-deploy:install-auth-distribution.zip #On the IntelliJ terminal
+./gradlew :jvm:alpha-deploy:install-auth-distribution.zip 
 ```
 
 From the dropdown menu:
@@ -60,7 +60,7 @@ Now we have to deploy the alpha product - either by command or from the dropdown
 
 By command:
 ```shell
-./gradlew :jvm:alpha-deploy:deploy-genesisproduct-alpha.zip #On the IntelliJ terminal
+./gradlew :jvm:alpha-deploy:deploy-genesisproduct-alpha.zip
 ```
 
 From the dropdown menu:
@@ -73,7 +73,7 @@ From the dropdown menu:
 
 By command:
 ```shell
-./gradlew :jvm:alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip #On the IntelliJ terminal
+./gradlew :jvm:alpha-deploy:install-alpha-site-specific-1.0.0-SNAPSHOT-bin.zip-distribution.zip
 ```
 
 From the dropdown menu:
@@ -84,7 +84,7 @@ From the dropdown menu:
 
 By command:
 ```shell
-./gradlew :jvm:alpha-deploy:genesis-install #On the IntelliJ terminal
+./gradlew :jvm:alpha-deploy:genesis-install
 ```
 
 or from the dropdown menu:
@@ -95,7 +95,7 @@ or from the dropdown menu:
 
 By command:
 ```shell
-./gradlew :jvm:alpha-deploy:remap #On the IntelliJ terminal
+./gradlew :jvm:alpha-deploy:remap
 ```
 
 From the dropdown menu:
@@ -118,7 +118,7 @@ database.
 
 By command:
 ```shell
-./gradlew :jvm:alpha-deploy:loadInitialData #On the IntelliJ terminal
+./gradlew :jvm:alpha-deploy:loadInitialData
 ```
 
 From the dropdown menu:
@@ -129,7 +129,7 @@ From the dropdown menu:
 
 By command:
 ```shell
-./gradlew :jvm:alpha-deploy:DbMon #On the IntelliJ terminal
+./gradlew :jvm:alpha-deploy:DbMon
 ```
 
 From the dropdown menu:
@@ -167,7 +167,7 @@ USER_NAME                                JaneDee                                
 
 By command:
 ```shell
-./gradlew :jvm:alpha-deploy:mon #On the IntelliJ terminal
+./gradlew :jvm:alpha-deploy:mon 
 ```
 From the dropdown menu:
 
@@ -232,14 +232,14 @@ If the blue button to login is not clickable, go through the previous section ag
 
 ### API Host
 
-If you have followed the [genx quick start guide](../02_quick-start/02_create-a-new-project.md), then have set the `API_HOST` as the default `ws://localhost/gwf/`. This default will hit the nginx reverse proxy that you set in [the previous section](#connecting-the-back-end-and-front-end).
+If you have followed the [genx quick start guide](../../../getting-started/quick-start/create-a-new-project/), then have set the `API_HOST` as the default `ws://localhost/gwf/`. This default will hit the nginx reverse proxy that you set in [the previous section](#connecting-the-back-end-and-front-end).
 
 If you have changed the `API_HOST` from the default `ws://localhost/gwf/`at any point to connect to a different host, then you need to change this back to the default configuration.
 
 Additionally, the front end will cache the `API_HOST` and use that over the configured item; so if you have changed the host then you may need to clear this item from your cache. You can do this in your browser by opening the developer tools, going to the storage tab, going to the `Local Storage` section, and deleting the `hostUrl` key/value pair.
 
 :::tip
-If you change the host frequently, you might find it easier to configure the login screen not to auto connect to the host, which allows you to set the value in the GUI. Set this via `autoConnect: false` in the file `client/web/src/routes/config.ts`. There is more information on the configuration options in our [micro front-end documentation](/web/micro-front-ends/foundation-login/#customising-login).
+If you change the host frequently, you might find it easier to configure the login screen not to auto connect to the host, which allows you to set the value in the GUI. Set this via `autoConnect: false` in the file `client/web/src/routes/config.ts`. There is more information on the configuration options in our [micro front-end documentation](../../../web/micro-front-ends/foundation-login/#customising-login).
 :::
 
 
