@@ -44,7 +44,8 @@ This command presents you with a sequence of choices for creating and configurin
 
 First, you'll be prompted to supply your Genesis artifactory credentials [used when setting up your .npmrc](../../../getting-started/quick-start/hardware-and-software/#npmrc-set-up)
 
-Then, import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
+<!-- NO EDIT (NEXT 4 LINES) -->
+import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
 
 <InsecureFlag />
 

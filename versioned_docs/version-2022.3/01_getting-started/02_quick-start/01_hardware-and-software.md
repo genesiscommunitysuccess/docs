@@ -81,7 +81,8 @@ Now you can configure the `@genesislcap` scope of `npm` to use our jfrog registr
 Genesis Foundation UI
 ```
 
-10. Import StrictSSL from '../../_includes/_strict-ssl.md'
+<!-- NO EDIT (NEXT 4 LINES) -->
+import StrictSSL from '../../_includes/_strict-ssl.md'
 
 <StrictSSL />
 

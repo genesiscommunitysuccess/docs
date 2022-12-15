@@ -92,7 +92,8 @@ npm config set https-proxy https://proxy_host:port
 ```
 :::
 
-Then, import StrictSSL from '../../_includes/_strict-ssl.md'
+<!-- NO EDIT (NEXT 4 LINES) -->
+import StrictSSL from '../../_includes/_strict-ssl.md'
 
 <StrictSSL />
 
@@ -128,7 +129,8 @@ Enter the same password you used in step 6 and then you should see this message:
 
 Feel free to abort this program for now - we'll use genx later on.
 
-Import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
+<!-- NO EDIT (NEXT 4 LINES) -->
+import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
 
 <InsecureFlag />
 

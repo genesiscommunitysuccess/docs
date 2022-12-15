@@ -43,7 +43,8 @@ Using the GenX CLI tool, we want to generate a blank full-stack application proj
 npx genx
 ```
 
-Then, import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
+<!-- NO EDIT (NEXT 4 LINES) -->
+import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
 
 <InsecureFlag />
 
