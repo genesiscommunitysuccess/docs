@@ -15,22 +15,22 @@ The goal of this section is to add a data chart to the UI.
 
 ## Declare a chart in the UI
 
-Charts component is a wrapper for `@antv/g2plot`, that allows you the following types: Line, Area, Bar, Column, Pie, Dual Axes, Rose.
+g2plot-chart component is a wrapper for `@antv/g2plot`, that allows you the following types: Line, Area, Bar, Bubble, Column, Pie, Dual Axes, Rose, Scatter.
 
 You can quickly add charts to your application by adding them to `template` within your route.
 
 Example:
 
 ```typescript title='home.template.ts'
-<zero-charts type="pie" :config=${x => x.chartsConfiguration} :data=${x => x.chartsData}></zero-charts>
+<zero-g2plot-chart type="pie" :config=${x => x.chartConfiguration} :data=${x => x.chartData}></zero-g2plot-chart>
 ```
 
-As you can see, we bind `chartsConfiguration`, `chartsData` from our component definition to the `:config` and `:data` properties on the chart component.
+As you can see, we bind `chartConfiguration`, `chartData` from our component definition to the `:config` and `:data` properties on the chart component.
 
 Sample configuration and data for pie chart:
 
 ```typescript title='home.ts'
-@observable chartsConfiguration = {
+@observable chartConfiguration = {
   width: 600,
   angleField: 'value',
   colorField: 'type',
@@ -46,7 +46,7 @@ Sample configuration and data for pie chart:
   interactions: [{ type: 'element-selected' }, { type: 'element-active' }],
 };
 
-@observable chartsData = [
+@observable chartData = [
   { type: 'Exam 1', value: 27 },
   { type: 'Exam 2', value: 25 },
   { type: 'Exam 3', value: 18 },
@@ -61,25 +61,21 @@ For further configuration examples please see: [here](https://g2plot.antv.vision
 ## Fetching the data
 Now you will define how to fetch the data from the server.
 
-To achieve this we can use `charts-datasource`.
+To achieve this we can use `chart-datasource`.
 
 Use the snippet below, where:
 
 - We start by initialising the datasource component with the requested `resourceName` (`ALL-POSITIONS`) and the fields that we want the data for (`INSTRUMENT NAME` and `VALUE`).
-- Then we specify a `charts-fields` to which we want to assign the data from the API. In this case:
-    - type = INSTRUMENT_NAME 
-    - value = VALUE
 - And finally we request a snapshot of the data.
 
 ```typescript title="home.template.ts"
-<zero-charts type="pie" :config=${(x) => x.chartsConfiguration}>
-  <charts-datasource
+<zero-g2plot-chart type="pie" :config=${(x) => x.chartConfiguration}>
+  <chart-datasource
     resourceName="ALL_POSITIONS"
     server-fields="INSTRUMENT_NAME VALUE"
-    charts-fields="type value"
     isSnapshot
-  ></charts-datasource>
-</zero-charts>
+  ></chart-datasource>
+</zero-g2plot-chartharts>
 ```
 
 ## Conclusion
