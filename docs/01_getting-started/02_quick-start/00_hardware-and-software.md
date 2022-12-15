@@ -74,7 +74,8 @@ Genesis Foundation UI
 https://github.com/genesislcap/foundation-ui#readme
 ```
 
-9. Import StrictSSL from '../../_includes/_strict-ssl.md'
+<!-- NO EDIT (NEXT 4 LINES) -->
+import StrictSSL from '../../_includes/_strict-ssl.md'
 
 <StrictSSL />
 
