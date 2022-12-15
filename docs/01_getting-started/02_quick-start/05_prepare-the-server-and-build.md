@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start - Prepare the server & build'
+title: 'Quick start - prepare the server and build'
 sidebar_label: 'Prepare the server & build'
 id: prepare-the-server-and-build
 keywords: [getting started, quick start, server, build]

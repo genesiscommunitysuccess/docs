@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start - Define the data model'
+title: 'Quick start - define the data model'
 sidebar_label: 'Define the data model'
 id: define-the-data-model
 keywords: [getting started, quick start, data model]

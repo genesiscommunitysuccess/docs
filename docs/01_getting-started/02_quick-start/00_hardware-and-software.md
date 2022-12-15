@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start - Hardware and software'
+title: 'Quick start - hardware and software'
 sidebar_label: 'Hardware and software'
 id: hardware-and-software
 sidebar_position: 2
