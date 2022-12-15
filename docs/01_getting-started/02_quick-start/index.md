@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start'
+title: 'Quick start Preparation'
 sidebar_label: 'Preparation'
 sidebar_position: 1
 id: landing

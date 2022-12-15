@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start'
+title: 'Quick start - what you will build'
 sidebar_label: 'What you will build'
 id: introduction
 sidebar_position: 2

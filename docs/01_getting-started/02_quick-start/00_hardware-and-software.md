@@ -85,4 +85,10 @@ genesisArtifactoryPassword=<beONneON74>
 ```
 ## Installing genx
 
-To follow our Quick Start, you need to [install our genx CLI tool](../../../getting-started/prerequisites/genx/#installing-genx). This is a simple process that you can do relatively quickly.
+Once the repository is configured, open a terminal on your Windows machine and install the CLI tool using this:
+
+```shell title="Windows Terminal"
+npm install -g @genesislcap/foundation-cli
+```
+
+
