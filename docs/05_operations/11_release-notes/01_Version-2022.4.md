@@ -57,16 +57,44 @@ The following fixes have been made
 ## Foundation UI changes
 This is a high-level overview of the changes.
 
-## Maintenance
+### Features:
+* Added a `foundation-layout` package to provide application and route-based layout functionality similar to [Golden Layout](https://golden-layout.com/). Most APIs are in [@beta](https://api-extractor.com/pages/tsdoc/tag_beta/), but feel free to test before full public release.
+* Added a `foundation-criteria` package to provide a type-safe criteria builder for generating queries.
+* Added a `foundation-filters` package to provide a collection of client-side filters that can be used in complex logic chains ([docs](https://docs.genesis.global/secure/web/filters/foundation-filters/)).
+* Added support for OpenID SSO in `foundation-login`.
+* Added bubble and scatter chart types.
+* Added drag-n-drop field ordering functionality to `foundation-reporting`.
+* Added `genx --insecure` mode to deal with corporate proxy/networks that use self-signed or missing certificates.
+* Provided more real-world examples of how to test using `foundation-testing`, see [here](https://github.com/genesislcap/foundation-ui/tree/v2022.4/packages/foundation/foundation-filters/src) and [here](https://github.com/genesislcap/foundation-ui/tree/v2022.4/packages/foundation/foundation-criteria/src). E2E testing pattern will follow shortly.
 
-- 
-- 
+### Maintenance:
+* Datasource refinements.
+* Logout cookie/data cleanup improvements.
+* Charting memory cleanup improvements.
+* Entity-management styling improvements.
+* Flyout improvements.
+* General multiselect improvements including memory cleanup.
+* Documentation updates.
 
+### Mapping:
+This release maps to 6.0.0 of foundation ui packages.
 
+### Migration guide:
+* if you use ag-grid in your project please update to v28
+* options-datasource now accepts both value and label 
+ ```
+<options-datasource
+  resourceName="COUNTERPARTY"
+  value-field="COUNTERPARTY_ID"
+  label-field="NAME"
+></options-datasource>
+```
+*  if you’re using flyout component you will no longer have access to `openFlyout` and `closeFlyout` fuctions. Instead you should use `closed` attribute on the component to drive visibility
+* util `formatDate` should be changed to `formatDateTimestamp`
+* util `formatDateTime` should be changed to `formatDateTimeTimestamp`
+* util `formatEpochToDate` should be changed to `formatTimestamp`
+* if entity-management component is suddenly not showing up make sure the enclosing component has set width and hight or check what display css option it has
 
-### Breaking changes 
-
-- 
 
 
 ## Early access - DSL changes
