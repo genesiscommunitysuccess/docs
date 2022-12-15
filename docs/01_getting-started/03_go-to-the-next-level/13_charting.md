@@ -75,7 +75,7 @@ Use the snippet below, where:
     server-fields="INSTRUMENT_NAME VALUE"
     isSnapshot
   ></chart-datasource>
-</zero-g2plot-chartharts>
+</zero-g2plot-chart>
 ```
 
 ## Conclusion
