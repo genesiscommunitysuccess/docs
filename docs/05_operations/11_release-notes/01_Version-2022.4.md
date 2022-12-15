@@ -24,8 +24,8 @@ Release date: December 21, 2022.
 
 ## Genesis Server Framework (GSF)
 
-
-
+### Features:
+Added OpenID Connect Integration - Application Developers can now use GPAL to configure integration with OpenID Connect Provider
 
 
 ### GSF 6.2.x changes
@@ -43,7 +43,6 @@ Release date: December 21, 2022.
 
 
 ## GSF changes in full
-- Feat: OpenID Connect Integration - Application Developers can now use GPAL to configure integration with OpenID Connect Provider
 
 Features
 
