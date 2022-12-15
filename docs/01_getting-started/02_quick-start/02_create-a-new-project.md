@@ -34,6 +34,10 @@ If this does not work, use the command `npx genx`.
 
 :::
 
+Then, import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
+
+<InsecureFlag />
+
 In the `genx` script, there is a series of questions.
 
 First, you are asked to select from a short list of seed applications. Select `create application`:

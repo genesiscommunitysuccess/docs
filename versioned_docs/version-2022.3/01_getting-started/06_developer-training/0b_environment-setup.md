@@ -84,14 +84,17 @@ Genesis Foundation UI
 ```
 :::caution trouble running npm?
 Please make sure:
-- you have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](../../../getting-started/developer-training/environment-setup/#required-software-packages). If you have an older version of npm (run 'npm -v'), make sure you uninstall it first.
-- if you're behind a corporate network, you may need to setup a proxy:
+- You have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](../../../getting-started/developer-training/environment-setup/#required-software-packages). If you have an older version of npm (run 'npm -v'), make sure you uninstall it first.
+- If you're behind a corporate network, you may need to setup a proxy:
 ```shell
 npm config set proxy http://proxy_host:port
 npm config set https-proxy https://proxy_host:port
-npm config set https-proxy http://proxy_host:port
 ```
 :::
+
+Then, import StrictSSL from '../../_includes/_strict-ssl.md'
+
+<StrictSSL />
 
 10. Install GenX CLI; this is a Genesis tool that enables you to seed projects.
 ```shell
