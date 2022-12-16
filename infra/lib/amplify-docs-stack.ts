@@ -61,6 +61,9 @@ export class AmplifyDocsStack extends cdk.Stack {
             baseDirectory: 'output',
             files: ['**/*'],
           },
+          cache: {
+            paths: ['node_modules/**/*']
+          }
         },
       })
     });
