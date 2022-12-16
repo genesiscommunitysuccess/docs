@@ -22,68 +22,64 @@ The basis of this version is:
 
 Release date: December 19, 2022. 
 
+## Features
+* **OpenID Connect Integration** - The Genesis low-code platform now supports OpenId Connect as an authentication mechanism. The configuration of OpenId Connect providers is done through GPAL, with all of its benefits, including intellisense, autocompletion and compile-time errors. An application can have move than one OpenId Connect provider configured.
+* **GPAL for Dynamic Permissions** - You can now use GPAL to define dynamic permissions with a strongly typed data model, intellisense and autocompletion. Dynamic permissions can now be defined for tables and views.
+* **DevOps/Containerisation**
+  - Allow Consul service names to be configured via the new system definition value `ConsulServiceNamePattern`.
+  - Allow service ports to be overridden via environment variable in the format of `{Process_name}_PORT`.
+
 ## Genesis Server Framework (GSF)
 
-### Features:
-* OpenID Connect Integration - The Genesis low-code platform now supports OpenId Connect as an authentication mechanism. The configuration of OpenId Connect providers is done through GPAL, with all of its benefits, including intellisense, autocompletion and compile-time errors. An application can have move than one OpenId Connect provider configured.
-* GPAL for Dynamic Permissions - Application Developers can now use GPAL to define dynamic permissions with a strongly typed data model, intellisense and autocompletion. Dynamic permissions can now be defined for tables and views.
+### Features
+
+- Genesis as a source functionality E2E
+    - Reuse database configuration in sources
+- Add userCacheBatchingPeriod option to auth-perms GPAL
+
+### Bugfixes
+
+- Fix issue with notifications thread dying in some scenarios.
+- dictionary-cache dependency has been changed to `compileOnly` in the messages module in server project template to ensure correct project generation.
+- When resolving search paths for code generations, use the absolute path of the config module rather than assuming it is an immediate child of the root project directory.
+- Hyphens are now allowed in product names.
+- Prevent HTTP timeouts when using MORE_ROWS messages for dataserver queries via HTTP API.
+- Ensure permission codes supplied for Request Servers are respected.
+- Renamed ALERT table, used in notification rules to prevent clashes with other products.
+- Fixed error on Data Server when using negated absolute values for BigDecimal types
+- GPAL usage of dynamic permissions (e.g. Data Servers, Request Servers, Event Handlers, etc).  These will now also read all GPAL auth perms definitions available.
+- HTTP Request Server requests have been made case-insensitive.
+- Added `showValue` to help command output in `DbMon`.
+- Ensure the minimum batching period for backward joins internal cache is always higher than 0 to avoid maxing out a single CPU.
+- `ClearCodegenCache`: added args to main method so compiler recognises it as a valid main method.
+
+### Other changes
+- Removed usage of khttp library.
+- Upgraded Ivy version to 2.5.1 (used in groovy scripts).
+- Upgraded org.codehaus.plexus:plexus-utils from 3.4.2 to 3.5.0 (maven plugins).
+- Upgraded org.apache.maven.plugins:maven-install-plugin from 3.0.0 to 3.0.1 (maven plugins).
+- Upgraded org.apache.maven.plugin-tools:maven-plugin-annotations from 3.6.4 to 3.7.0 (maven plugins).
+- Upgraded Apache Commons Text to 1.10
+- Use JVM args and sysdef flags to control heap dump on OOM instead of defunct jmap cmd.
+- Reduced excessive logging in Data Servers
+- Upgraded camel-bom to version 3.18.4 and symphony-bom to version 2.11.1 to avoid critical vulnerabilities.
+- Excluded snakeyaml from the build to avoid vulnerabilities.
+- Improved Auth Perms performance.
+- Views `USER_INSERT_VIEW` and `USER_AMEND_VIEW` now support a new `DOMAIN` field.
+
+### Known issues
+
+- An issue has been identified, which requires the application of the following setting,
+
+```jsx
+tasks.withType<Jar> {
+    duplicatesStrategy = DuplicatesStrategy.WARN
+}
+```
+
+This must be applied to the `build.grandle.kts`. It has been applied to the blank-app-seed project. Later versions of the blank-app-seed might remove this setting.
 
 
-### GSF 6.3.2 changes
-
-
-### GSF 6.3.x changes
-
-- 
-
-## Auth 6.2.1 changes
-- 
-
-## Auth 6.2.x changes
-
-
-
-## GSF changes in full
-
-Features
-* data-pipeline: Genesis as a source functionality E2E 
-* When resolving search paths for code gen, you can now use the absolute path of the config module rather than assuming it is an immediate child of the root project directory.
-* db configuration can be reused in sources. 
-* userCacheBatchingPeriod has been added to perms. 
-* [Snyk] Upgrade org.codehaus.plexus:plexus-utils from 3.4.2 to 3.5.0 
-* [Snyk] Upgrade org.apache.maven.plugins:maven-install-plugin from 3.0.0 to 3.0.1 
-* [Snyk] Upgrade org.apache.maven.plugin-tools:maven-plugin-annotations from 3.6.4 to 3.7.0 
-* chore: sonar qube now includes subscore in code analysis  
-* chore: commons configuration version bump by 
-* chore: deleted obsolete class 
-* chore: allow overrides for the ports which the processes run on 
-* chore: upgrade ivy version to 2.5.1
-* build: Add genesis-pal-permissions to maven submodules gradle config to enforce build task order 
-
-The following fixes have been made
-
-* Removed usage of khttp 
-* Linting ((**Detail needed, or this will be removed**))
-* Issue with notifications thread dying  
-* Dictionary-cache dependency changed to compileOnly in messages module in the server project template 
-* Allow hyphens in product names 
-* Prevent HTTP timeouts when using MORE_ROWS via HTTP 
-* Ensure permission codes supplied for CustomReqReps are respected 
-* Backwards-compatible map configuration 
-* Rename ALERT table to prevent clash, add to checklist, fix review guidance link
-* Error on Data Server when using bigdecimal abs negated 
-* Reading all gpal auth perms available 
-* Make HTTP ReqRep requests case-insensitive 
-* Update nginx config used in containers to support http requests 
-* Use JVM args and sysdef flags to control heap dump on OOM instead of the defunct jmap cmd 
-* Add showValue to help command output in DbMon PTC-769
-* Ensure the minimum batching period is always higher than 0 to avoid maxing out a single CPU. 
-* Use correct JVM arg syntax in python3 startProcess  
-* Reduce excessive logging in Data Servers.
-* (ClearCodegenCache): Add args to main method so compiler recognises it as a valid main method.
-* Upgrade camel-bom and symphony-bom to avoid critical vulnerabilities.
-* Revertion. A new feature where mssql fields can take max length has been reverted.
-* Revertion. A new feature where the 'USER' table has been updated with unique indices for 'REFRESH_TOKEN' has been reverted.
 
 ## Foundation UI changes
 This is a high-level overview of the changes.
@@ -124,8 +120,7 @@ This release maps to 6.0.0 of foundation ui packages.
 * util `formatDate` should be changed to `formatDateTimestamp`
 * util `formatDateTime` should be changed to `formatDateTimeTimestamp`
 * util `formatEpochToDate` should be changed to `formatTimestamp`
-* if entity-management component is suddenly not showing up make sure the enclosing component has set width and hight or check what display css option it has
-
+* If the entity-management component is suddenly not showing up, make sure the enclosing component has set width and hight, or check what its display css option is.
 
 
 ## Early access - Gpalx (Fuse) changes
@@ -136,7 +131,7 @@ This release maps to 6.0.0 of foundation ui packages.
 
 ### Fixes
 * Updated the default Web server port 9000 from 5000 to prevent clashing with the Airplay service on OSX.
-* Allow users to declare a field in the DSL with the same name as a field in the Genesis fields dictionary - even if the two fields don't have the same type and property. 
-* Fixed issue where the Web server was intermittently crashing during application deployment.
+* Users can now declare a field in the DSL with the same name as a field in the Genesis fields dictionary - even if the two fields don't have the same type and property. 
+* We have fixed an issue where the Web server was intermittently crashing during application deployment.
 * When an end user of an application built with the DSL performs an 'update' action, the correct State Transition will occur and the Grid component will still display further updates.
 * Selecting an item on a Linked Grid or Chart now returns the required data.
