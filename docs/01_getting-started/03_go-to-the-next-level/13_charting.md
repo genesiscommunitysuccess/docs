@@ -65,7 +65,7 @@ To achieve this we can use `chart-datasource`.
 
 Use the snippet below, where:
 
-- We start by initialising the datasource component with the requested `resourceName` (`ALL-POSITIONS`) and the fields that we want the data for (`INSTRUMENT_ID` and `VALUE`).
+- We start by initialising the datasource component with the requested `resourceName` (`ALL_POSITIONS`) and the fields that we want the data for (`INSTRUMENT_ID` and `VALUE`).
 - And finally we request a snapshot of the data.
 
 ```typescript title="home.template.ts"
