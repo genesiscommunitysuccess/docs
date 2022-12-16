@@ -180,7 +180,7 @@ Now you must update the **alpha-eventhandler.kts** in order to pass the `entityD
     }
 ```
 
-Run the [dao](../../../getting-started/developer-training/training-content-day1/#generatedao), [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
+Run the dao, build and deploy.
 
 
 
