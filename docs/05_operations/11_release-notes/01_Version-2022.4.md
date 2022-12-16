@@ -26,8 +26,8 @@ Release date: December 19, 2022.
 * **OpenID Connect Integration** - The Genesis low-code platform now supports OpenId Connect as an authentication mechanism. The configuration of OpenId Connect providers is done through GPAL, with all of its benefits, including intellisense, autocompletion and compile-time errors. An application can have move than one OpenId Connect provider configured.
 * **GPAL for Dynamic Permissions** - You can now use GPAL to define dynamic permissions with a strongly typed data model, intellisense and autocompletion. Dynamic permissions can now be defined for tables and views.
 * **DevOps/Containerisation**
-  - Allow Consul service names to be configured via the new system definition value `ConsulServiceNamePattern`.
-  - Allow service ports to be overridden via environment variable in the format of `{Process_name}_PORT`.
+  - Now allows Consul service names to be configured via the new system definition value `ConsulServiceNamePattern`.
+  - Now allows service ports to be overridden via environment variable in the format of `{Process_name}_PORT`.
 
 ## Genesis Server Framework (GSF)
 
@@ -39,13 +39,13 @@ Release date: December 19, 2022.
 
 ### Bugfixes
 
-- Fix issue with notifications thread dying in some scenarios.
+- Fixed issue with notifications thread dying in some scenarios.
 - dictionary-cache dependency has been changed to `compileOnly` in the messages module in server project template to ensure correct project generation.
 - When resolving search paths for code generations, use the absolute path of the config module rather than assuming it is an immediate child of the root project directory.
 - Hyphens are now allowed in product names.
-- Prevent HTTP timeouts when using MORE_ROWS messages for dataserver queries via HTTP API.
-- Ensure permission codes supplied for Request Servers are respected.
-- Renamed ALERT table, used in notification rules to prevent clashes with other products.
+- We now prevent HTTP timeouts when using MORE_ROWS messages for dataserver queries via HTTP API.
+- The permission codes supplied for Request Servers are now correctly respected.
+- The name of the ALERT table, used in notification rules, has been changed to prevent clashes with other products.
 - Fixed error on Data Server when using negated absolute values for BigDecimal types
 - GPAL usage of dynamic permissions (e.g. Data Servers, Request Servers, Event Handlers, etc).  These will now also read all GPAL auth perms definitions available.
 - HTTP Request Server requests have been made case-insensitive.
@@ -61,9 +61,9 @@ Release date: December 19, 2022.
 - Upgraded org.apache.maven.plugin-tools:maven-plugin-annotations from 3.6.4 to 3.7.0 (maven plugins).
 - Upgraded Apache Commons Text to 1.10
 - Use JVM args and sysdef flags to control heap dump on OOM instead of defunct jmap cmd.
-- Reduced excessive logging in Data Servers
-- Upgraded camel-bom to version 3.18.4 and symphony-bom to version 2.11.1 to avoid critical vulnerabilities.
-- Excluded snakeyaml from the build to avoid vulnerabilities.
+- We have reduced excessive logging in Data Servers
+- We have upgraded camel-bom to version 3.18.4 and symphony-bom to version 2.11.1 to avoid critical vulnerabilities.
+- We have now excluded snakeyaml from the build to avoid vulnerabilities.
 - Improved Auth Perms performance.
 - Views `USER_INSERT_VIEW` and `USER_AMEND_VIEW` now support a new `DOMAIN` field.
 
