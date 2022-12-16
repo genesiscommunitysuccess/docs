@@ -65,14 +65,14 @@ To achieve this we can use `chart-datasource`.
 
 Use the snippet below, where:
 
-- We start by initialising the datasource component with the requested `resourceName` (`ALL-POSITIONS`) and the fields that we want the data for (`INSTRUMENT NAME` and `VALUE`).
+- We start by initialising the datasource component with the requested `resourceName` (`ALL-POSITIONS`) and the fields that we want the data for (`INSTRUMENT_ID` and `VALUE`).
 - And finally we request a snapshot of the data.
 
 ```typescript title="home.template.ts"
 <zero-g2plot-chart type="pie" :config=${(x) => x.chartConfiguration}>
   <chart-datasource
     resourceName="ALL_POSITIONS"
-    server-fields="INSTRUMENT_NAME VALUE"
+    server-fields="INSTRUMENT_ID VALUE"
     isSnapshot
   ></chart-datasource>
 </zero-g2plot-chart>
