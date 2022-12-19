@@ -109,14 +109,16 @@ This release maps to 6.0.0 of foundation ui packages.
 ### Migration guide
 * If you use ag-grid in your project, please update to v28.
 * options-datasource now accepts both value and label 
- ```
+ 
+```jsx
 <options-datasource
   resourceName="COUNTERPARTY"
   value-field="COUNTERPARTY_ID"
   label-field="NAME"
 ></options-datasource>
 ```
-*  If you’re using the flyout component, you no longer have access to the `openFlyout` and `closeFlyout` functions. Use the `closed` attribute on the component to drive visibility. 
+
+* If you’re using the flyout component, you no longer have access to the `openFlyout` and `closeFlyout` functions. Use the `closed` attribute on the component to drive visibility. 
 * util `formatDate` should be changed to `formatDateTimestamp`
 * util `formatDateTime` should be changed to `formatDateTimeTimestamp`
 * util `formatEpochToDate` should be changed to `formatTimestamp`
