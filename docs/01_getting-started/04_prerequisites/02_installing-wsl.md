@@ -304,7 +304,7 @@ jdbc:postgresql://localhost:5432/?user=postgres&password=docker
 Run the following Docker command:
 
 ```none title="CentOS"
-docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=docker" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Docker@111" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
 ```
 
 This downloads and runs an MSSQL image for version 2019-latest. Other versions are available; for more
@@ -313,5 +313,5 @@ details [see here](https://hub.docker.com/_/microsoft-mssql-server).
 To connect, use this JDBC URL:
 
 ```none title="CentOS"
-jdbc:sqlserver://localhost:1433;database=master;user=sa;password=docker
+jdbc:sqlserver://localhost:1433;trustServerCertificate=true;database=master;user=sa;password=Docker@111
 ```
