@@ -43,6 +43,11 @@ Using the GenX CLI tool, we want to generate a blank full-stack application proj
 npx genx
 ```
 
+<!-- NO EDIT (NEXT 4 LINES) -->
+import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
+
+<InsecureFlag />
+
 Follow through the series of questions. For `App name` enter `positions-app-tutorial` and for `App seed` enter `Quick Start Application`.
 
 If this is the first time you are using the GenX CLI tool, check the [Quick Start](../../../getting-started/quick-start/create-a-new-project/) guide first.

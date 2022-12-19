@@ -129,7 +129,6 @@ query("TRADE_RANGED_LAST_2_HOURS", TRADE) {
         from {
             Trade.ByTradeDateTime(now().minusHours(2), "")
         }
-        // optionally end key
         to {
             Trade.ByTradeDateTime(now().plusHours(1), "")
         }
@@ -143,7 +142,7 @@ Examples:
 // all dollar trades:
 query("TRADE_RANGED_TRADE_RANGE_USD", TRADE) {
     ranged(Trade.ByCurrencyId, 1) {
-        from {
+        where {
             Trade.ByCurrencyId("USD")
         }
     }
@@ -180,6 +179,8 @@ With refresh queries, rows that move out of the filter range will be removed fro
 
 The `numKeyFields` property specifies the number of fields to use from an index. The fields
 are always selected in the order they are specified in the index.
+
+The `index` property can have unique and non-unique [indexes](../../../database/data-types/index-entities/#types)
 
 ## Client-side (runtime) options
 

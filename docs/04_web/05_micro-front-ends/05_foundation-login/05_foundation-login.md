@@ -18,7 +18,7 @@ tags:
 
 ## Introduction
 
-This micro front-end includes a set of identity management functions: authentication (including via SSO) and password reset, for example. Many of the features can be turned on and off as desired, and parts of the login screen (such as the logo) can be customised.
+This micro front-end includes a set of identity management functions such as, authentication (including via SSO). Many of the features can be turned on and off as desired, and parts of the login screen (such as the logo) can be customised.
 
 An example of the main login screen: <br/>
 ![Main login screen example](./docs/img/foundation-login_login-standard.png)
@@ -31,9 +31,6 @@ An example of the forgotten password screen: <br/>
 
 An example of the change password screen: <br/>
 ![Main login screen example](./docs/img/foundation-login_change-password.png)
-
-An example of the request account screen: <br/>
-![Main login screen example](./docs/img/foundation-login_request-account.png)
 
 ## Login set-up
 
@@ -73,27 +70,6 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 ```
 
 - Then add the required config to the router config that you use. For example, you'll want to set up the `Login` class to be used on the `/login` route, and pass in its required settings. See [customising login](#customising-login).
-```javascript
-{ path: '', redirect: 'login' },
-{
-	path: 'login',
-	element: Login,
-	title: 'Login',
-	name: 'login',
-	layout: loginLayout,
-	// Login settings that are defined in the LoginSettings type
-	settings: {
-		defaultRedirectUrl: 'protected',
-		public: true,
-		resetPassword: true,
-		forgotPassword: true,
-		requestAccount: true,
-		ssoToggle: true,
-		ssoEnable: false,
-	},
-	childRouters: true,
-},
-```
 
 - You'll also want to set up things like the `NavigationContributor` in this class.
 
@@ -152,10 +128,6 @@ The standard process of SSO is that the SSO authentication provider flow is open
 ## Customising login
 
 The `Login` micro front-end uses a parameterless constructor. Therefore, the configuration needs to be set via the settings javascript object in the router, as shown in the [set-up step](#login-set-up). See the full [settings API here](./docs/api/foundation-login.settings/#remarks).
-
-### Enabled functionality
-
-In the [introduction section](#introduction), the reset password, request account, and forgotten password functionalities are shown. However, these flows must be enabled with the `resetPassword`, `requestAccount`, `forgotPassword` options.
 
 ### Logo
 

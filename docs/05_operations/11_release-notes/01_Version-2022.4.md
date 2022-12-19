@@ -79,8 +79,6 @@ tasks.withType<Jar> {
 
 This must be applied to the `build.gradle.kts`. It has been applied to the blank-app-seed project. Later versions of the blank-app-seed might remove this setting.
 
-
-
 ## Foundation UI changes
 This is a high-level overview of the changes.
 

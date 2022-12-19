@@ -44,6 +44,11 @@ This command presents you with a sequence of choices for creating and configurin
 
 First, you'll be prompted to supply your Genesis artifactory credentials [used when setting up your .npmrc](../../../getting-started/quick-start/hardware-and-software/#npmrc-set-up)
 
+<!-- NO EDIT (NEXT 4 LINES) -->
+import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
+
+<InsecureFlag />
+
 Next, you just need to respond to the questions, which depend on the task you initially select. For example, if you want to create a new application:
 
 ```shell title="Windows Terminal"
