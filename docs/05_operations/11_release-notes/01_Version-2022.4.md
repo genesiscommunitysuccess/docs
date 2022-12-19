@@ -17,13 +17,13 @@ The basis of this version is:
 
 | part of stack | version | 
 |---------------|---------|
-| server        | 6.3.2   |  
-| web           | x.0.0   |   
+| server        | 6.4.0   |  
+| web           | 6.0.0   |   
 
 Release date: December 19, 2022. 
 
 ## Features
-* **OpenID Connect Integration** - The Genesis low-code platform now supports OpenId Connect as an authentication mechanism. The configuration of OpenId Connect providers is done through GPAL, with all of its benefits, including intellisense, autocompletion and compile-time errors. An application can have move than one OpenId Connect provider configured.
+* **OpenID Connect Integration** - The Genesis low-code platform now supports OpenId Connect as an authentication mechanism. The configuration of OpenId Connect providers is done through GPAL, with all of its benefits, including intellisense, autocompletion and compile-time errors. An application can have more than one OpenId Connect provider configured.
 * **GPAL for Dynamic Permissions** - You can now use GPAL to define dynamic permissions with a strongly typed data model, intellisense and autocompletion. Dynamic permissions can now be defined for tables and views.
 * **DevOps/Containerisation**
   - Now allows Consul service names to be configured via the new system definition value `ConsulServiceNamePattern`.
@@ -40,18 +40,18 @@ Release date: December 19, 2022.
 ### Bugfixes
 
 - Fixed issue with notifications thread dying in some scenarios.
-- dictionary-cache dependency has been changed to `compileOnly` in the messages module in server project template to ensure correct project generation.
-- When resolving search paths for code generations, use the absolute path of the config module rather than assuming it is an immediate child of the root project directory.
+- We changed the dictionary-cache dependency to `compileOnly` in the messages module in server project template to ensure correct project generation.
+- When resolving search paths for code generations, we now use the absolute path of the config module rather than assuming it is an immediate child of the root project directory.
 - Hyphens are now allowed in product names.
 - We now prevent HTTP timeouts when using MORE_ROWS messages for dataserver queries via HTTP API.
 - The permission codes supplied for Request Servers are now correctly respected.
 - The name of the ALERT table, used in notification rules, has been changed to prevent clashes with other products.
 - Fixed error on Data Server when using negated absolute values for BigDecimal types
-- GPAL usage of dynamic permissions (e.g. Data Servers, Request Servers, Event Handlers, etc).  These will now also read all GPAL auth perms definitions available.
+- GPAL usage of dynamic permissions (e.g. Data Servers, Request Servers, Event Handlers, etc.) now also read all GPAL auth perms definitions available.
 - HTTP Request Server requests have been made case-insensitive.
 - Added `showValue` to help command output in `DbMon`.
-- Ensure the minimum batching period for backward joins internal cache is always higher than 0 to avoid maxing out a single CPU.
-- `ClearCodegenCache`: added args to main method so compiler recognises it as a valid main method.
+- We now ensure that the minimum batching period for backward joins internal cache is always higher than 0 to avoid maxing out a single CPU.
+- `ClearCodegenCache`: added args to main method so the compiler recognises it as a valid main method.
 
 ### Other changes
 - Removed usage of khttp library.
@@ -60,8 +60,8 @@ Release date: December 19, 2022.
 - Upgraded org.apache.maven.plugins:maven-install-plugin from 3.0.0 to 3.0.1 (maven plugins).
 - Upgraded org.apache.maven.plugin-tools:maven-plugin-annotations from 3.6.4 to 3.7.0 (maven plugins).
 - Upgraded Apache Commons Text to 1.10
-- Use JVM args and sysdef flags to control heap dump on OOM instead of defunct jmap cmd.
-- We have reduced excessive logging in Data Servers
+- We now use JVM args and sysdef flags to control heap dump on OOM instead of defunct jmap cmd.
+- We have reduced excessive logging in Data Servers.
 - We have upgraded camel-bom to version 3.18.4 and symphony-bom to version 2.11.1 to avoid critical vulnerabilities.
 - We have now excluded snakeyaml from the build to avoid vulnerabilities.
 - Improved Auth Perms performance.
@@ -95,13 +95,13 @@ This is a high-level overview of the changes.
 * Provided more real-world examples of how to test using `foundation-testing`, see [here](https://github.com/genesislcap/foundation-ui/tree/v2022.4/packages/foundation/foundation-filters/src) and [here](https://github.com/genesislcap/foundation-ui/tree/v2022.4/packages/foundation/foundation-criteria/src). E2E testing pattern will follow shortly.
 
 ### Maintenance
-* datasource refinements
-* logout cookie/data cleanup improvements
-* charting memory cleanup improvements
-* entity-management styling improvements
-* flyout improvements
-* general multiselect improvements including memory cleanup
-* documentation updates
+* Datasource refinements
+* Logout cookie/data cleanup improvements
+* Charting memory cleanup improvements
+* Entity-management styling improvements
+* Flyout improvements
+* General multiselect improvements including memory cleanup
+* Documentation updates
 
 ### Mapping
 This release maps to 6.0.0 of foundation ui packages.
