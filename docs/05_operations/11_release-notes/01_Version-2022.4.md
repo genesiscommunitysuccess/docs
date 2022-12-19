@@ -125,7 +125,7 @@ This release maps to 6.0.0 of foundation ui packages.
 * If the entity-management component is suddenly not showing up, make sure the enclosing component has set width and hight, or check what its display css option is.
 
 
-## Early access - Gpalx (Fuse) changes
+## Early access - DSL changes
 
 ### Data visualisation and charting
   - The following chart types can now be implemented using existing data sources: Area, Bar, Column, Dual Axes, Line, Pie, Donut and Rose.
