@@ -77,7 +77,7 @@ tasks.withType<Jar> {
 }
 ```
 
-This must be applied to the `build.grandle.kts`. It has been applied to the blank-app-seed project. Later versions of the blank-app-seed might remove this setting.
+This must be applied to the `build.gradle.kts`. It has been applied to the blank-app-seed project. Later versions of the blank-app-seed might remove this setting.
 
 
 
