@@ -97,7 +97,7 @@ table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR")) {
 
 The id parameter indicates the id of the newly created audit table, and will need to be different from any other table id.
 
-As we are using the GPAL event handlers, this is sufficient to enable auditing on this table. A new table is created by the name of the original table, with the **_AUDIT** suffix added to the end. In this instance that would be the **TRADE_AUDIT** table.
+As we are using the GPAL Event Handlers, this is sufficient to enable auditing on this table. A new table is created by the name of the original table, with the **_AUDIT** suffix added to the end. In this instance that would be the **TRADE_AUDIT** table.
 
 ### Updating the state machine to use auditing
 
@@ -179,7 +179,7 @@ Now you must update the **alpha-eventhandler.kts** in order to pass the `entityD
 ```
 
 ### Conclusion
-With this, any changes made to `TRADE` are tracked to `TRADE_AUDIT`. To try it out, insert a new `TRADE` and see what's stored in the `TRADE_AUDIT` table via `DbMon`. Go to your terminal and run `DbMon`, `table TRADE_AUDIT` and `search 1`. For more information on testing, go to [Endpoints](docs/03_server/10_integration/01_rest-endpoints/01_introduction.md).
+With this, any changes made to `TRADE` are tracked to `TRADE_AUDIT`. To try it out, insert a new `TRADE` and see what's stored in the `TRADE_AUDIT` table via `DbMon`. Go to your terminal and run `DbMon`, `table TRADE_AUDIT` and `search 1`. For more information on testing, go to [Endpoints](../../../03_server/10_integration/01_rest-endpoints/01_introduction.md).
 
 You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm) as a reference point for this. 
 
