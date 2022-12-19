@@ -14,9 +14,8 @@ tags:
 This day covers:
 
 - [Quick review of the platform​](#quick-review-of-the-platform)
-- [Setting up Workstation and Environment](#setting-up-workstation-and-environment)
 - [Developing your first application​​](#developing-your-first-application)
-- [Testing the back end​​](#testing-the-backend)
+- [Testing the back end​​](#testing-the-back-end)
 
 
 ## Quick review of the platform
@@ -69,8 +68,7 @@ This will enable you to see the basics of the Genesis low-code platform by start
 2. [Define the data model](#2-define-the-data-model).
 3. [Add business logic](#3-add-business-logic).
 4. [Prepare the server](#4-prepare-the-server).
-5. [Build process](#5-build-process).
-6. [Deployment](#6-deployment).
+5. [Build and Deploy process](#5-the-build-and-deploy-process).
 
 ## What you will build
 
@@ -87,7 +85,7 @@ With a lack of imagination we hope you will find trustworthy, we are going to ca
 
 ## 1. Create a new project
 
-To create a new project you can use the GenX CLI tool, which enables you to seed projects. Further details can be found [here](/getting-started/quick-start/create-a-new-project/).
+To create a new project you can use the GenX CLI tool, which enables you to seed projects. Further details can be found [here](../../../getting-started/quick-start/create-a-new-project/).
 
 In our case, we just want to extend a blank full-stack application project, so we are using the [training seed](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you have followed the Environment set-up and did the step [Start the project baseline](http://localhost:9090/getting-started/developer-training/environment-setup/#start-the-project-baseline), where you cloned the repository locally. 
 
@@ -100,12 +98,12 @@ Above, we have expanded the **client** folder. This contains all the UI-related 
 The **server** folder follows the same structure. This contains all the server-side projects.
 
 ## 2. Define the data model
-Now you are ready to define the fields and tables that make up your [data model](/database/fields-tables-views/fields-tables-views/). This structures information in a simple way that can be viewed by users and processed by the application.
+Now you are ready to define the fields and tables that make up your [data model](../../../database/fields-tables-views/fields-tables-views/). This structures information in a simple way that can be viewed by users and processed by the application.
 
 Open IntelliJ (or your chosen IDE) and open the alpha project (the devtraining-seed you cloned). After importing and indexing, you should see the files and project structure ready.
 
 ### Add fields
-You define your [fields](/database/fields-tables-views/fields/) in the file **alpha-fields-dictionary.kts**.
+You define your [fields](../../../database/fields-tables-views/fields/) in the file **alpha-fields-dictionary.kts**.
 
 
 :::tip
@@ -132,7 +130,7 @@ fields {
 }
 ```
 
-After you have saved this file, run [genesis-generated-fields](/database/fields-tables-views/genesisDao/).
+After you have saved this file, run [genesis-generated-fields](../../../database/fields-tables-views/genesisDao/).
 
 ### generateFields
 
@@ -145,7 +143,7 @@ From the Gradle menu on the right of Intellij, this is:
 Alternatively, if you can't run it from your IDE, you can run the Gradle tasks from the command line. Make sure to open your terminal and cd into **../server/jvm** to run them.
 
 ```shell title='Running generateFields from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:genesis-generated-fields:generateFields
+./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-fields:generateFields
 ```
 
 :::note Why do I have to run this Gradle task?
@@ -156,7 +154,7 @@ As we go, you'll see we have different Gradle tasks, depending on the artifact w
 :::
 
 ### Add a table
-Now we have our fields, let's define a [table](/database/fields-tables-views/tables/) in the file **alpha-tables-dictionary.kts**.
+Now we have our fields, let's define a [table](../../../database/fields-tables-views/tables/) in the file **alpha-tables-dictionary.kts**.
 
 We are defining one single table, containing all our fields.
 
@@ -180,7 +178,7 @@ tables {
 }
 ```
 
-After you have saved this file, run [genesis-generated-dao](/database/fields-tables-views/genesisDao/).
+After you have saved this file, run [genesis-generated-dao](../../../database/fields-tables-views/genesisDao/).
 
 ### generateDao
 
@@ -192,7 +190,7 @@ From the Gradle menu, this is:
 
 
 ```shell title='Running generateDAO from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:genesis-generated-dao:generateDao
+./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-dao:generateDao
 ```
 
 After running it, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
@@ -202,7 +200,7 @@ We have a table; now we want to be able to see its content and create new entrie
 
 
 ### Data Server
-A [Data Server](/server/data-server/introduction/) enables data to be read in real time. You must define the Data Server in the file **alpha-dataserver.kts**.
+A [Data Server](../../../server/data-server/introduction/) enables data to be read in real time. You must define the Data Server in the file **alpha-dataserver.kts**.
 
 ```kotlin
 dataServer {
@@ -211,7 +209,7 @@ dataServer {
 ```
 
 ### Event Handler
-Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](/server/event-handler/introduction/) in the file **alpha-eventhandler.kts**.
+Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](../../../server/event-handler/introduction/) in the file **alpha-eventhandler.kts**.
 
 ```kotlin
 eventHandler {
@@ -227,7 +225,7 @@ eventHandler {
 ```
 :::info What is entityDb?
 
-The [entityDb](/database/database-interface/entity-db/) enables you to interact with the database layer, it's part of the Genesis Database API and we'll get into more details soon. For now, understand that this is the common way to access data from code. Feel free to use the intellisense of your IDE to explore the methods available from entityDb.
+The [entityDb](../../../database/database-interface/entity-db/) enables you to interact with the database layer, it's part of the Genesis Database API and we'll get into more details soon. For now, understand that this is the common way to access data from code. Feel free to use the intellisense of your IDE to explore the methods available from entityDb.
 :::
 
 ## 4. Prepare the server
@@ -275,7 +273,7 @@ Add the following content to the **alpha-service-definitions.xml** file.
 </configuration>
 ```
 
-Please see [here](/server/configuring-runtime/processes/) for a detailed description of the processes configuration.
+Please see [here](../../../server/configuring-runtime/processes/) for a detailed description of the processes configuration.
 <!-- ADD THIS DO DAY 5 AS AN EXERCISE
 
 ### Overriding default configurations
@@ -310,17 +308,23 @@ docker-compose build
 docker-compose up -d
 ```
 
+### User name and password
+Building and using Docker from the repo you [cloned](https://github.com/genesiscommunitysuccess/devtraining-seed), by default the following will be your login details:
+
+- Username: JaneDee
+- Password: beONneON*74 (This is encrypted in the user.csv file.)
+
 ### Running server commands
 :::info can I run server commands from the command line rather than Gradle tasks?
 Yes. We've been running server commands through the Gradle tasks. Alternatively, you can run server commands directly from a command line. 
 
-Open the gsf docker container terminal as explained [here](/getting-started/developer-training/environment-setup/#attaching-a-terminal-to-a-docker-container), and you can have access to the Genesis commands:
+Open the gsf docker container terminal as explained [here](../../../getting-started/developer-training/environment-setup/#attaching-a-terminal-to-a-docker-container), and you can have access to the Genesis commands:
 ```shell
 su alpha
 DbMon
 ```
 
-Try it now using the [mon](/operations/commands/server-commands/#mon-script)! We should see something like this
+Try it now using the [mon](../../../operations/commands/server-commands/#mon-script)! We should see something like this
 
 ```shell
 PID     Process Name                  Port        Status         CPU       Memory    Message
@@ -349,7 +353,7 @@ There are multiple ways you can test the back end of your application. It's impo
 ### Genesis Console
 1. In your browser, go to http://genesislcap.com/console/console-next2/?host=localhost:8080.
 2. Enter the IP address of your server, in this case localhost. We should also add the port, as our web server running on the WSL instance is listening on 8080, so the value to be entered here is `localhost:8080`
-3. Log in with your user name and password as [defined previously](/getting-started/developer-training/training-content-day1/#adding-a-user-to-login). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
+3. Log in with your user name and password as [defined previously](../../../getting-started/developer-training/training-content-day1/#user-name-and-password). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES** tab.
 5. Filter the **Resource type** to show only event handlers.
 
@@ -395,7 +399,7 @@ You can go on to check the TRADE table to see if your insert is there.
 30 mins
 :::
 
-Look at the [Data Server documentation](/server/data-server/introduction/) and see if you are able to modify our Data Server [defined previously](/getting-started/developer-training/training-content-day1/#data-server):
+Look at the [Data Server documentation](../../../server/data-server/introduction/) and see if you are able to modify our Data Server [defined previously](../../../getting-started/developer-training/training-content-day1/#data-server):
 - add a new query called "ALL_PRICES" on the TRADE table
 - make ALL_PRICES display only SYMBOL and PRICE fields
 - add a `where` clause so it displays only trades whose PRICE are higher than 0.0
@@ -407,7 +411,7 @@ Remember to insert a few trades using Genesis Console to test it.
 20 mins
 :::
 
-Look at the [Event Handler documentation](/server/event-handler/basics/#returning-a-nack) and see if you are able to modify our Event Handler [defined previously](/getting-started/developer-training/training-content-day1/#event-handler):
+Look at the [Event Handler documentation](../../../server/event-handler/basics/#returning-a-nack) and see if you are able to modify our Event Handler [defined previously](../../../getting-started/developer-training/training-content-day1/#event-handler):
 - return `nack("Quantity must be positive")` if the quantity is lower than 0.
 
 Test it with Genesis Console.

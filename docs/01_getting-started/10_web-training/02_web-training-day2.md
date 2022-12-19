@@ -39,7 +39,7 @@ The goal of our app is to list all the orders with some filters and actions to i
 | Quantity          | Integer      | Yes | Must be positive
 | Price          | Double      | Yes | Must be positive
 | Total          | Double      | No | Display Quantity * Price
-| Side          | Dropdown      | Yes | Display types from ENUM SIDE
+| Direction          | Dropdown      | Yes | Display types from ENUM DIRECTION
 | Notes          | String      | Yes | Free text up to 50 chars
 
 #### Actions
@@ -63,12 +63,12 @@ export const OrderTemplate = html<Order>`
 `;
 ```
 
-This component is able to retrieve the meta-data from the `EVENT_INSERT_ORDER` backend resource (an Event Handler) and automatically builds a simple form for you. In simple scenarios, it can be good enough.
+This component is able to retrieve the meta-data from the `EVENT_ORDER_INSERT` backend resource (an Event Handler) and automatically builds a simple form for you. In simple scenarios, it can be good enough.
 
 Try to run it now and you'll notice that, even though the form is displayed, nothing happens when you click on Submit. We have to bind the submit button to a function, like this:
 ```html {3} title='order.template.ts'
 <zero-form
-  resourceName="EVENT_INSERT_ORDER"
+  resourceName="EVENT_ORDER_INSERT"
   @submit=${(x, c) => x.insertOrder(c.event as CustomEvent)}
 ></zero-form>
 ```
@@ -98,7 +98,7 @@ We define `insertOrder` function in order.ts
           INSTRUMENT_ID: formData.INSTRUMENT_ID,
           QUANTITY: formData.QUANTITY,
           PRICE: formData.PRICE,
-          SIDE: formData.SIDE,
+          DIRECTION: formData.DIRECTION,
           NOTES: formData.NOTES,
         },
       });
@@ -118,14 +118,14 @@ Alternatively, you could use any HTTP client to access the server resources as t
 
 One of the key objects provided by the Foundation Comms is the `Connect` object whose main methods are:
 - `connect`: 
-connects to the server through a web socket (when WS is available or http as fallback). You must pass the server host URL. In most apps, such as the one we're building in this training, the connection is already handled by the MainApplication component on initilization relying on the [config](/getting-started/web-training/web-training-day1/#config) provided by the app.
+connects to the server through a web socket (when WS is available or http as fallback). You must pass the server host URL. In most apps, such as the one we're building in this training, the connection is already handled by the MainApplication component on initilization relying on the [config](../../../getting-started/web-training/web-training-day1/#config) provided by the app.
 
 - `commitEvent`: 
 use it to call event handlers on the server. You must pass the name of the event and an object with the input data required by the event. This data must be in JSON format with key **DETAILS**. See the example above of the `insertOrder` function.
 
 - `getMetadata`: it retrieves the metadata of a resource, that can be an event handler, data server query or a request server. When we used the **zero-form** component previously, for example, it used internally getMetadata passing the event handler name to get all the input fields of the event.
 
-- `request`: use it to call a [request server](/server/request-server/introduction/) resource. You must pass the request server resource name.
+- `request`: use it to call a [request server](../../../server/request-server/introduction/) resource. You must pass the request server resource name.
 
 - `snapshot` and `stream`: use them to get a snapshot of data or to stream data in real time from a resource (usually, a data server query).
 
@@ -146,7 +146,7 @@ export const OrderTemplate = html<Order>`
 <zero-text-field type="number">Quantity</zero-text-field>
 <zero-text-field type="number">Price</zero-text-field>
 <label>Total</label>
-<zero-select>Side</zero-select>
+<zero-select>Direction</zero-select>
 <zero-text-area>Notes</zero-text-area>
 `;
 ```
@@ -167,7 +167,7 @@ import {customElement, FASTElement, observable} from '@microsoft/fast-element';
 @observable public lastPrice: number;
 @observable public quantity: number;
 @observable public price: number;
-@observable public side: string;
+@observable public direction: string;
 @observable public notes: string;
 
 ...
@@ -192,8 +192,8 @@ export const OrderTemplate = html<Order>`
 <zero-text-field :value=${sync(x=> x.quantity)}>Quantity</zero-text-field>
 <zero-text-field :value=${sync(x=> x.price)}>Price</zero-text-field>
 <span>Total: ${x => x.quantity * x.price}</span>
-<span>Side</span>
-<zero-select :value=${sync(x=> x.side)}>Side</zero-select>
+<span>Direction</span>
+<zero-select :value=${sync(x=> x.direction)}>Direction</zero-select>
 <zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
 `;
 ```
@@ -258,14 +258,14 @@ export const OrderTemplate = html<Order>`
 
 You should see the instrument field populated now with the instruments from the server.
 
-Now let's get the **side** field sorted. We could just add two static options BUY and SELL like this:
+Now let's get the **direction** field sorted. We could just add two static options BUY and SELL like this:
 
 ```html {5-8} title='order.template.ts' 
 ...
 export const OrderTemplate = html<Order>`
 ...
-<span>Side</span>
-<zero-select :value=${sync(x=> x.side)}>
+<span>Direction</span>
+<zero-select :value=${sync(x=> x.direction)}>
     <zero-option>BUY</zero-option>
     <zero-option>SELL</zero-option>
 </zero-select>
@@ -273,12 +273,12 @@ export const OrderTemplate = html<Order>`
 `;
 ```
 
-However, any changes on the backend would require a change in the options. Wouldn't it be much better if we could just retrieve all ***side*** options from the server? We already know how to get data from a data server resource, now let's use the `getMetadata` method from ***Connect*** to get some metadata of a field, ***side field*** in our case.
+However, any changes on the backend would require a change in the options. Wouldn't it be much better if we could just retrieve all ***direction*** options from the server? We already know how to get data from a data server resource, now let's use the `getMetadata` method from ***Connect*** to get some metadata of a field, ***direction field*** in our case.
 
 ```ts {3,14-17} title='order.ts' 
 ...
   @observable public allInstruments: Array<{value: string, label: string}>; //add this property
-  @observable public sideOptions: Array<{value: string, label: string}>; //add this property
+  @observable public directionOptions: Array<{value: string, label: string}>; //add this property
 ...
 public async connectedCallback() {
     super.connectedCallback(); //FASTElement implementation
@@ -291,21 +291,21 @@ public async connectedCallback() {
 
     const metadata = await this.connect.getMetadata('ALL_ORDERS');
     console.log(metadata);
-    const sideField = metadata.FIELD?.find(field => field.NAME == 'DIRECTION');
-    this.sideOptions = Array.from(sideField.VALID_VALUES).map(v => ({value: v, label: v}));
+    const directionField = metadata.FIELD?.find(field => field.NAME == 'DIRECTION');
+    this.directionOptions = Array.from(directionField.VALID_VALUES).map(v => ({value: v, label: v}));
   }
 ...
 ```
 
-Next, let's just use the ***repeat*** directive again to iterate through the ***sideOptions***:
+Next, let's just use the ***repeat*** directive again to iterate through the ***directionOptions***:
 
 ```typescript {5-10} title='order.template.ts' 
 ...
 export const OrderTemplate = html<Order>`
 ...
-<span>Side</span>
-<zero-select :value=${sync(x=> x.side)}>
-  ${repeat(x => x.sideOptions, html`
+<span>Direction</span>
+<zero-select :value=${sync(x=> x.direction)}>
+  ${repeat(x => x.directionOptions, html`
     <zero-option value=${x => x.value}>${x => x.label}</zero-option>
   `)}
 </zero-select>
@@ -406,7 +406,7 @@ public async insertOrder() {
           INSTRUMENT_ID: this.instrument,
           QUANTITY: this.quantity,
           PRICE: this.price,
-          SIDE: this.side,
+          DIRECTION: this.direction,
           NOTES: this.notes,
         },
       });
@@ -430,7 +430,7 @@ export class Order extends FASTElement {
             INSTRUMENT_ID: this.instrument,
             QUANTITY: this.quantity,
             PRICE: this.price,
-            SIDE: this.side,
+            DIRECTION: this.direction,
             NOTES: this.notes,
           },
         });
@@ -448,7 +448,7 @@ export class Order extends FASTElement {
 ```
 
 ### Adding a simple Orders data grid
-In the template file, let's add the Genesis [data source](/web/web-components/grids/grid-pro/grid-pro-genesis-datasource/) pointing to the `ALL_ORDERS` resource and wrap it in [grid-pro](/web/web-components/grids/grid-pro/grid-pro-intro/).
+In the template file, let's add the Genesis [data source](../../../web/web-components/grids/grid-pro/grid-pro-genesis-datasource/) pointing to the `ALL_ORDERS` resource and wrap it in [grid-pro](../../../web/web-components/grids/grid-pro/grid-pro-intro/).
 
 Add this code to the end of html template code:
 ```html {4-9} title="order.template.ts"

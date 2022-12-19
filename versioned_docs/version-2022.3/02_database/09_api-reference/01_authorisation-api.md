@@ -12,10 +12,10 @@ tags:
 
 The authorisation API consists of two main classes that enable you to add permission checks to your custom component.
 
--   `RightSummaryCache` is a Kotlin class whose instance can be obtained by simply injecting it into your custom component. This functionality relates directly to the permission codes functionality covered in more detail in the [Authorisation Overview](/server/access-control/authorisation-overview/). The method `userHasRight(userName: String, rightCode: String): Boolean` is used to determine if a particular user has the permission to a rights code.
+-   `RightSummaryCache` is a Kotlin class whose instance can be obtained by simply injecting it into your custom component. This functionality relates directly to the permission codes functionality covered in more detail in the [Authorisation Overview](../../../server/access-control/authorisation-overview/). The method `userHasRight(userName: String, rightCode: String): Boolean` is used to determine if a particular user has the permission to a rights code.
 
 -   `AuthCache` is a Kotlin class whose instance should be created by calling the static method `AuthCache.newReader(mapName: String, updateQueue: UpdateQueue): AuthCache`.
-    An `UpdateQueue` instance can be obtained from an injected RxDb connection: `rxDb.updateQueue`. A permission check for the entity is done by calling `isAuthorised(entityId: String?, userName: String): Boolean`. How this works is also covered in more detail in the [Authorisation Overview](/server/access-control/authorisation-overview/).
+    An `UpdateQueue` instance can be obtained from an injected RxDb connection: `rxDb.updateQueue`. A permission check for the entity is done by calling `isAuthorised(entityId: String?, userName: String): Boolean`. How this works is also covered in more detail in the [Authorisation Overview](../../../server/access-control/authorisation-overview/).
 
 ### Permission code API
 

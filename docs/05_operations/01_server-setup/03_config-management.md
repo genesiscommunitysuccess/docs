@@ -16,7 +16,7 @@ Linux system administration experience.
 
 ## Config management vs continuous deployment
 
-In environments where servers are managed to a greater or lesser degree by config-management systems, like Chef, Pupper or Ansible, there is a decision to be made about which aspects of a system are config-managed, and which are subject to operator actions.
+In environments where servers are managed to a greater or lesser degree by config-management systems, like Chef, Puppet or Ansible, there is a decision to be made about which aspects of a system are config-managed, and which are subject to operator actions.
 
 When deciding about the division of responsibilities, it is worth considering development systems and production systems separately.
 
@@ -28,11 +28,11 @@ On a host prepared for Genesis applications, the following key elements are suit
 
 * Dependency packages
 * Nginx reverse-proxy configuration
-* Environmental override configuration (which requires changes to [processes.xml](/server/configuring-runtime/processes))
+* Environmental override configuration (which requires changes to [processes.xml](../../../server/configuring-runtime/processes))
 
 ### Dependencies
 
-The packages that are needed to run a Genesis application are covered in more detail in [host preparation](/operations/server-setup/host-preparation).
+The packages that are needed to run a Genesis application are covered in more detail in [host preparation](../../../operations/server-setup/host-preparation).
 These are all off-the-shelf packages found either in OS core package repos or extended repo,s such as EPEL.
 
 ### Nginx configuration
@@ -47,7 +47,7 @@ These are not matters specific to Genesis applications. The Genesis-specific par
 
 ### Using a Docker image (recommended)
 
-To configure NGINX using a Docker image, make sure you have the your artifactory credentials to hand. Then, in your CentOS terminal, enter the following commands:
+To configure nginx using a Docker image, make sure you have your artifactory credentials to hand. Then, in your CentOS terminal, enter the following commands:
 
 
 1. Enter your artifactory credentials.
@@ -68,9 +68,14 @@ docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-ho
 
 ### Manual configuration
 
-For a manual set-up of NGINX, use this sample server block.
+For a manual set-up of nginx, use this nginx.conf file:
 
 ```text
+map $http_upgrade $connection_upgrade {
+      default upgrade;
+      ''      close;
+    }
+
 server {
 
     listen 443 ssl;
@@ -91,7 +96,7 @@ server {
         proxy_set_header        Upgrade $http_upgrade;
         proxy_set_header        Connection $connection_upgrade;
     }
-    
+
     ssl_certificate             /etc/ssl/certs/certs.crt;
     ssl_certificate             /etc/ssl/certs/certs.key;
     ssl_protocols               TLSv1.2;
@@ -103,9 +108,9 @@ The IP and port shown are for the application's Router process. The example abov
 
 ### Environment overrides
 
-Each process within the application can be instructed to read another file to override the main configuration file, [system-definitions](/server-modules/configuring-runtime/system-definitions/).
+Each process within the application can be instructed to read another file to override the main configuration file, [system-definitions](../../../server/configuring-runtime/system-definitions/).
 
-The override files can be placed anywhere that is readable to the Genesis application's run user. Override files can be 1-to-1 with processes or re-used. Their location is specified on a per-process basis in the [processes.xml](/server-modules/configuring-runtime/processes/) config file (which is part of the site-specific directory contents).
+The override files can be placed anywhere that is readable to the Genesis application's run user. Override files can be 1-to-1 with processes or re-used. Their location is specified on a per-process basis in the [processes.xml](../../../server/configuring-runtime/processes/) config file (which is part of the site-specific directory contents).
 
 They take the form of a [Java properties file](https://www.w3schools.io/file/properties-extension-introduction/):
 
@@ -115,7 +120,7 @@ DbUser = genesisFdbUser
 DbHost = fdb01.my.domain
 ```
 
-Note, override files are not able to perform environment substitutions in the way that system-definitions can. The override file must be a .kts file (Kotlin script), so it is _executed_, whereas the properties file is only read. See [clusters/Environment variables](/operations/clustering/clusters#Environment-variables).
+Note, override files are not able to perform environment substitutions in the way that system-definitions can. The override file must be a .kts file (Kotlin script), so it is _executed_, whereas the properties file is only read. See [clusters/Environment variables](../../../operations/clustering/genesis#Environment-variables).
 
 
 

@@ -21,7 +21,7 @@ sidebar_position: 4
 
 This day covers:
 
-- [An introduction to UI](#intro-to-ui)
+- [An introduction to UI](#introducing-the-ui)
 - [Creating a user interface](#create-a-user-interface)
 - [Extending the data model](#extending-our-initial-application)
 
@@ -105,7 +105,7 @@ First, open the file **home.ts** to import the Micro front-ends needed, as well 
 ```ts {1,3,5}
 import {customElement, FASTElement, observable} from '@microsoft/fast-element';
 ...
-import {EntityManagement, Permissions} from '@genesislcap/foundation-entity-management';
+import {EntityManagement} from '@genesislcap/foundation-entity-management';
 
 EntityManagement; //imported from '@genesislcap/foundation-entity-management' to display Trade grid
 
@@ -212,6 +212,15 @@ npm run dev
 The application will open at `http://localhost:6060/login`.
 ![](/img/btfe--positions-example--login.png)
 
+:::warning Node.js 17 issue
+After running, if you receive an error message similar to this `digital envelope routines::unsupported`, please double-check this Node.js 17 issue [reported](https://github.com/webpack/webpack/issues/14532).
+
+The solution described in this issue's history [here](https://github.com/webpack/webpack/issues/14532#issuecomment-947012063) is pretty much exporting an environment variable NODE_OPTIONS setting the value below
+```shell
+export NODE_OPTIONS=--openssl-legacy-provider
+```
+:::
+
 :::tip
 If you try to run the application and for some reason there is already a process using the same port, check that this is a process that you don't need running (for example, caching or old runs). You can run the command-line below as Administrator to search for the process and kill it. 
 ```shell
@@ -267,11 +276,11 @@ Use all the previous knowledge you've got.
 
 As a reminder, these are the steps needed to complete this task:
 
-1. Remove all TRADE records using the [DropTable](/operations/commands/server-commands/#droptable) server command. To do that, remember the explanation on how to [run server commands](/getting-started/developer-training/training-content-day1/#running-server-commands).
-2. Edit **alpha-fields-dictionary.kts** first, and don't forget to run the [generateFields](/getting-started/developer-training/training-content-day1/#generatefields) gradle task when you finish this. Remember that fields are defined separately from tables, so that they (including their meta-data) can be re-used across multiple tables and show linkage.​
-3.  Then edit **alpha-tables-dictionary.kts** to add the new tables and the fields you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [genesis-generated-dao](/getting-started/developer-training/training-content-day1/#generatedao).
+1. Remove all TRADE records using the [DropTable](../../../operations/commands/server-commands/#droptable) server command. To do that, remember the explanation on how to [run server commands](../../../getting-started/developer-training/training-content-day1/#running-server-commands).
+2. Edit **alpha-fields-dictionary.kts** first, and don't forget to run the [generateFields](../../../getting-started/developer-training/training-content-day1/#generatefields) gradle task when you finish this. Remember that fields are defined separately from tables, so that they (including their meta-data) can be re-used across multiple tables and show linkage.​
+3.  Then edit **alpha-tables-dictionary.kts** to add the new tables and the fields you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [genesis-generated-dao](../../../getting-started/developer-training/training-content-day1/#generatedao).
 4. Add queries to the Data Server. These must point to the new tables in the **alpha-dataserver.kts** file.
-5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to [build and deploy](/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).​
+5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).​
 
 :::tip adding a new `eventHandler` block
 Example on how to add additional blocks in the `eventHandler`:
@@ -301,7 +310,7 @@ eventHandler {
 ```
 :::
 
-- [Build and deploy](/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process). You can test by using Postman or Console (see more details in the next section) to insert:
+- [Build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process). You can test by using Postman or Console (see more details in the next section) to insert:
   - a new counterparty
   - a new instrument
   - a new trade
@@ -316,7 +325,7 @@ As an alternative to Genesis Console, take this opportunity to test your work wi
 - [Insomnia App](https://insomnia.rest/download)
 
 :::tip REST endpoints
-When we test our resources using an HTTP client as described here, we're taking advantage of the [REST endpoints](/server/integration/rest-endpoints/introduction/) provided by the platform. Without any additional code from you, it automatically exposes all configured resources, such as Data Server queries and Event Handlers, as HTTP endpoints via the GENESIS_ROUTER service. This also enables you to do some API testing automation for all your back-end components.
+When we test our resources using an HTTP client as described here, we're taking advantage of the [REST endpoints](../../../server/integration/rest-endpoints/introduction/) provided by the platform. Without any additional code from you, it automatically exposes all configured resources, such as Data Server queries and Event Handlers, as HTTP endpoints via the GENESIS_ROUTER service. This also enables you to do some API testing automation for all your back-end components.
 
 :::
 

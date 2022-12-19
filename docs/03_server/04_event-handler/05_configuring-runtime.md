@@ -33,7 +33,7 @@ Here is an example of an Event Handler configuration in an application's **proce
   </process>
 ```
 
-For more information on the tags that can be set within the configuration for your application, go to our page on [processes.xml](/server/configuring-runtime/processes/).
+For more information on the tags that can be set within the configuration for your application, go to our page on [processes.xml](../../../server/configuring-runtime/processes/).
 
 ### Configuring in service-definitions.xml
 
@@ -43,5 +43,5 @@ Here is an example of an Event Handler's service configuration:
   <service host="localhost" name="POSITION_EVENT_HANDLER" port="11002"/>
 ```
 
-For more information on the attributes that can be set here, go to our page on [service definitions](/server/configuring-runtime/service-definitions/).
+For more information on the attributes that can be set here, go to our page on [service definitions](../../../server/configuring-runtime/service-definitions/).
 

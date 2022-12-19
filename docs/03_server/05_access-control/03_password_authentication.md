@@ -17,11 +17,11 @@ All of these configuration settings are wrapped within the `security` function.
 
 ## security 
 
-The `security` function wraps all other variable and functions within the **auth-preferences.kts** file. From this top level the following variables can be set.
+The `security` function wraps all other variable and functions within the **auth-preferences.kts** file. From this top level the following variables can be set:
 
-* `sessionTimeoutMins` specifies a time out for the session. Sessions are timed out (logged out) after the value defined here. The front end of your application can monitor web movement, page changes, etc. and perform an [automatic refresh](/server/integration/rest-endpoints/advanced/#event_login_refresh) - in which case, the user is not aware of the logout and the start of the new session. Default: 30 minutes.
+* `sessionTimeoutMins` specifies a time out for the session. Sessions are timed out (logged out) after the value defined here. The front end of your application can monitor web movement, page changes, etc. and perform an [automatic refresh](../../../server/integration/rest-endpoints/advanced/#event_login_refresh) - in which case, the user is not aware of the logout and the start of the new session. Default: 30 minutes.
 * `expiryCheckMins` specifies the time interval (in minutes) used to check for idle sessions in the system. Default: 5 minutes.
-* `maxSimultaneousUserLogins` specifies the maximum number of concurrent, active sessions a user can maintain. Once this limit has been reached, the user cannot log in again until another session has been logged out. If the value zero is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
+* `maxSimultaneousUserLogins` specifies the maximum number of concurrent active sessions a user can maintain. Once this limit has been reached the user cannot activate additional sessions until one or more of the active sessions has been logged out. If the value zero is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
 
 ```kotlin
 security {
@@ -36,11 +36,11 @@ From within `security` we can also invoke the further functions in order to conf
 ### authentication
 The `authentication` function is used to define common features of all three types of authentication. Within it, many variables can be set, but their use depends on the value given to the `type` variable.
 
-* `type` indicates which of the three types of username and password authentication to be used. It accepts the values of: `AuthType.INTERNAL`, `AuthType.LDAP` or `AuthType.HYBRID`. Default: `AuthType.INTERNAL`.
+* `type` indicates which of the three types of username and password authentication are to be used. It accepts the values of: `AuthType.INTERNAL`, `AuthType.LDAP` or `AuthType.HYBRID`. Default: `AuthType.INTERNAL`.
 
-For more information on each of these three authentication types, please see the [authentication overview](/server/access-control/authentication-overview/#username-and-password-authentication).
+For more information about each of these three authentication types please see the [authentication overview](../../../server/access-control/authentication-overview/#username-and-password-authentication).
 
-The following variables are used to configure an LDAP connection; thus are only used when `type` is either `AuthType.LDAP` or `AuthType.HYBRID`.
+The following variables are used to configure an LDAP connection; these are only used when the `type` is either `AuthType.LDAP` or `AuthType.HYBRID`.
 
 * `url` specifies the LDAP server hostname. Default: `localhost`.
 * `port` specifies the LDAP server port. Default: 389.
@@ -60,7 +60,7 @@ The following variables are used to configure an LDAP connection; thus are only 
 * `onLoginSuccess` this is a function which is invoked on a successful LDAP login, for example: it allows you to insert a user into the db when it exists in LDAP but not the database.
 * `useTLS` this is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
 
-For more information on the various authentication types, please see the [Authentication overview](/server/access-control/authentication-overview/).
+For more information about the various authentication types, please see the [Authentication overview](../../../server/access-control/authentication-overview/).
 
 ### passwordValidation
 The `passwordValidation` function enables password validation, and is used to set the variables relating to this validation. 
@@ -90,7 +90,7 @@ Within this function, the following variables can be set:
 * `illegalCharacters` specifies which characters are not permitted in user passwords. Default: empty.
 * `historicalCheck` specifies how many previous passwords to check against, in order to prevent password re-use. If null or undefined no historical check is performed. Default: null.
 * `restrictPassword` specifies if the password should differ from a list of the worst passwords stored within the application. Default: false.
-* `restrictDictionarySubstring` specifies if any dictionary word of 4 or more characters can be included in a password (either forwards or backwards). Default: false.
+* `restrictDictionarySubstring` specifies if any dictionary word of four or more characters can be included in a password (either forwards or backwards). Default: false.
 * `restrictUserName` specifies if the user's username is restricted as part of their password. Default: false.
 * `repeatCharacterRestrictSize` specifies the number of consecutive repeated characters that make a password restricted. If null or undefined this assumes there is no limit. Default: null.
 * `passwordExpiryDays` specifies how many days before a password expires. If null or undefined this assumes there is no limit. Default: null.
@@ -100,7 +100,7 @@ Within this function, the following variables can be set:
 The `passwordRetry` function allows you to configure settings for limiting the rate at which a user can retry passwords. It allows the following variables to be set:
 
 * `maxAttempts` specifies the maximum number of attempts allowed if a user enters a wrong password. Default: 3 attempts.
-* `waitTimeMins` specifies the time to wait in minutes when the maximum number of incorrect attempts is reached, before allowing a user to try again. Default: 5 minutes.
+* `waitTimeMins` specifies the time to wait in minutes when the maximum number of incorrect attempts is reached before allowing a user to try again. Default: 5 minutes.
 
 ### mfa
 The `mfa` function allows you to configure Multi-factor Authentication (MFA). For more information on MFA please see [Wikipedia](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function the following variables can be set:
@@ -112,8 +112,8 @@ The `mfa` function allows you to configure Multi-factor Authentication (MFA). Fo
 * `issuer` specifies a reference to the Organisation or Entity issuing the MFA. Default: Genesis.
 * `label` specifies a label for the MFA. This is typically an email address of the issuing Entity or Organisation. Default: genesis.global.
 * `confirmWaitPeriodSecs` specifies the period of time in seconds before a secret has to be confirmed. Default: 300 seconds.
-* `secretEncryptKey` specifies a key with which Secrets will be encrypted in the database. If this is null or undefined Secrets will not be encrypted in the database. Default: null.
-* `usernameTableLookUpSalt` specifies the salt with which a username is hashed, when stored in the database with the above Secret. If this is null or undefined the username will not be hashed in the database. Default: null.
+* `secretEncryptKey` specifies the key that is used to encrypt Secrets in the database. If this is null or undefined, Secrets will not be encrypted in the database. Default: null.
+* `usernameTableLookUpSalt` specifies the salt with which a username is hashed when stored in the database with the above Secret. If this is null or undefined the username will not be hashed in the database. Default: null.
 
 ### loginAck
 The `loginAck` function allows you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message. When you call the `loginAck` function, you have to supply a table or view as a parameter. This is the table or view upon which the following functions will be invoked.
@@ -225,29 +225,28 @@ All requests below are capable of returning an error with a code of INTERNAL_ERR
 
 ---
 
-### Pre-authentication
+## Pre-authentication
 Pre-authentication messages can be sent by a client without the user being logged in.
-#### Login preferences
+### Login preferences
 You need make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knows this before any user logs in.
 Currently, this is the only preference published.
-##### Request
+### Request
     MESSAGE_TYPE = EVENT_LOGIN_PREFS
-##### Response
+### Response
     MESSAGE_TYPE = EVENT_LOGIN_PREFS_ACK
         DETAILS.PASSWORD_RESET_TYPE = ADMIN/EMAIL
 
 ---
 
-### Authentication
+## Authentication
 Once you have a list of preferences, you can show the correct login dialog and let the user make a login attempt.  The password is provided in plain text, as it is expected you will secure the connection using TLS.
-#### Login
-##### Request
+### Login request
 
     MESSAGE_TYPE = EVENT_LOGIN_AUTH
     DETAILS.USER_NAME = JohnDoe
     DETAILS.PASSWORD = Password123
 
-##### Response
+### Login response
 If successful:
 
     MESSAGE_TYPE = EVENT_LOGIN_AUTH_ACK
@@ -258,7 +257,7 @@ If successful:
     DETAILS.SYSTEM.PRODUCT[1].NAME = AUTH
     DETAILS.SYSTEM.PRODUCT[1].VERSION = 1.0.1.RELEASE
 
-If there is a problem, the server will return the standard error set with CODE/TEXT details and the error code `LOGIN_AUTH_NACK`.  The following error codes can be provided:
+If there is a problem the server will return the standard error set with CODE/TEXT details and the error code `LOGIN_AUTH_NACK`.  The following error codes can be provided:
 
 - `UNKNOWN_ACCOUNT` - User is unknown
 - `INCORRECT_CREDENTIALS` - User/password combination is invalid
@@ -266,16 +265,16 @@ If there is a problem, the server will return the standard error set with CODE/T
 - `PASSWORD_EXPIRED` - Password must be changed
 - `LOGIN_FAIL` - Generic error code
 
-#### Password change
+### Password change
 If the response is `PASSWORD_EXPIRED`, then the GUI can allow the user to change the password, provided they know their existing password.
 
-##### Request
+### Change request
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD
     DETAILS.USER_NAME = JohnDoe
     DETAILS.OLD_PASSWORD = Password123
     DETAILS.NEW_PASSWORD = Password456
 
-##### Response
+### Change response
 If successful:
 
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD_ACK
@@ -290,27 +289,27 @@ If there's a problem, you will receive a standard error set with type
 - `INSUFFICIENT_CHARACTERISTICS` - May be provided if you have configured passwords to be successful if only 2 of 5.strength checks pass.  Should be provided alongside "real" error codes.
 - `ILLEGAL_SEQUENCE` - Numerical/alphabetical sequence detected.
 
-#### Reset password
+### Reset password
 This can only be called by an administrator; it simply specifies a user name and sets the password to blank.
 
-##### Request
+### Reset request
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD
     DETAILS.USER_NAME = JohnDoe
 
-##### Response
+#### Reset response
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD_ACK
 
-### Post-authentication
-Once the user has been authenticated, the server expects heartbeat messages, as defined in the interval setting on the ACK message.  If the GUI misses a configurable number of heartbeats, the session will be expired.  In response to a heartbeat, the GUI will receive a list of available services and their details.
+## Post-authentication
+Once the user has been authenticated, the server expects heartbeat messages, as defined in the interval setting on the ACK message.  If the GUI misses a configurable number of heartbeats, the session will automatically expire. In response to a heartbeat, the GUI will receive a list of available services and their details.
 
-These services should be contacted on the hosts in the order they are defined in the list.  The ordering may change if the server implements a load-balancing strategy.  Existing connections can simply ignore the ordering changes, but in a failover or reconnection scenario, the ordering should be adhered to.
+These services should be contacted on the hosts in the order they are defined in the list. The ordering may change if the server implements a load-balancing strategy. Existing connections can simply ignore the ordering changes, but in a failover or reconnection scenario, the ordering should be adhered to.
 
-##### Request
+### Heartbeat request
 
     MESSAGE_TYPE = EVENT_HEARTBEAT
     USER_NAME = JohnDoe
 
-##### Response
+### Heartbeat response
     MESSAGE_TYPE = EVENT_HEARTBEAT_ACK
     DETAILS.SERVICE[0].NAME = SBL_EVENT_HANDLER
     DETAILS.SERVICE[0].ENCRYPTED = false
@@ -326,10 +325,10 @@ These services should be contacted on the hosts in the order they are defined in
     DETAILS.SERVICE[1].HOST[1].PORT = 9002
 
 
-#### Rights polling
+### Rights polling
 The GUI can receive rights from a process called `AUTH_DATASERVER`. The view `USER_RIGHTS` displays all users and codes. A logged-in user should automatically set the Filter expression to be `USER_NAME`=='xxx' to receive push updates to user privileges.
 
-#### Entity management
+### Entity management
 In the Genesis low-code platform, there are profiles, users and rights.  A profile is a group of users, which can be permissioned.  For example, you could have a SALES_TRADER group in which all users must have the same permissions.  In all cases where you specify either a right for a user/profile, or a user in a profile, the event represents what you want the entity to look like; i.e. if you amend a profile and don't supply a user that previously was part of that profile, then that user will be removed from that profile on the server.
 
 Note the following:
@@ -340,9 +339,9 @@ Note the following:
   `PASSWORD_EXPIRED` should prompt the user to enter a new password.
   `PASSWORD_RESET` should do the same but the server expects a blank "current password" field.
 
-#### Insert profile
+### Insert profile
 
-##### Request
+### Insert request
 
     MESSAGE_TYPE = EVENT_INSERT_PROFILE
     USER_NAME = JohnDoe
@@ -358,43 +357,81 @@ Note the following:
     DETAILS.USER[1].ID = 00000000000002USSP0
     DETAILS.USER[1].USER_NAME = james
 
-##### Response
+### Insert response
     MESSAGE_TYPE = EVENT_INSERT_PROFILE_ACK
 
-#### Amend Profile
+### Amend profile
 
-##### Request
-    MESSAGE_TYPE = EVENT_AMEND_PROFILE
-    USER_NAME = JohnDoe
-    DETAILS.ID = 000000000001PRSP0
-    DETAILS.NAME = SALES_TRADERS_AMEND
-    DETAILS.DESCRIPTION = Sales Traders (Amended)
-    DETAILS.STATUS = ENABLED
-    DETAILS.RIGHT[0].ID = 00000000000001RISP0
-    DETAILS.RIGHT[0].CODE = ORDEN
-    DETAILS.RIGHT[1].ID = 00000000000002RISP0
-    DETAILS.RIGHT[1].CODE = ORDAM
-    DETAILS.RIGHT[2].ID = 00000000000003RISP0
-    DETAILS.RIGHT[2].CODE = ORDEL
-    DETAILS.USER[0].ID = 00000000000001USSP0
-    DETAILS.USER[0].USER_NAME = JohnDoe
+### Amend request
+  In the example below, the logged-in user (in the second line) is JohnDoe, who is modifying the profile of JaneDoe to give her the profile name JANE SMITH. 
 
-##### Response
-    MESSAGE_TYPE = EVENT_AMEND_PROFILE_ACK
+```
+    {
+  "SOURCE_REF": "1786d2ca-23fd-40c8-a52b-fe002a0fa1f6",
+  "USER_NAME": "JohnDoe",
+  "SESSION_AUTH_TOKEN": "sIsXX3IBqyIESUD38AgA71ycR8W7KVzg",
+  "MESSAGE_TYPE": "EVENT_AMEND_USER",
+  "DETAILS": {
+    "USER_NAME": "JaneDoe",
+    "LAST_LOGIN": 1670236873948,
+    "LAST_NAME": "Smith",
+    "FIRST_NAME": "Jane",
+    "ONLINE": true,
+    "COMPANY_NAME": null,
+    "STATUS": "ENABLED",
+    "EMAIL_ADDRESS": "jane.doe@genesis.global",
+    "COMPANY_ID": null,
+    "USER_TYPE": "USER",
+    "ACCESS_TYPE": "ENTITY",
+    "ADDRESS_LINE1": null,
+    "ADDRESS_LINE2": null,
+    "ADDRESS_LINE3": null,
+    "ADDRESS_LINE4": null,
+    "CITY": null,
+    "REGION": null,
+    "POSTAL_CODE": null,
+    "COUNTRY": null,
+    "TITLE": null,
+    "WEBSITE": null,
+    "MOBILE_NUMBER": null,
+    "TELEPHONE_NUMBER_DIRECT": null,
+    "TELEPHONE_NUMBER_OFFICE": null,
+    "COUNTERPARTY_ID": null,
+    "ROW_REF": "6889579003422704324",
+    "USER_PROFILES": [
+      "SUPPORT",
+      "TRADER",
+      "USER_ADMIN"
+    ]
+  },
+  "IGNORE_WARNINGS": true,
+  "VALIDATE": false
+}
+```
 
-#### Delete Profile
+### Amend response
 
-##### Request
+```
+{
+  "GENERATED": [],
+  "MESSAGE_TYPE": "EVENT_ACK",
+  "SOURCE_REF": "1786d2ca-23fd-40c8-a52b-fe002a0fa1f6"
+}
+```
+
+### Delete profile
+
+### Delete request
     MESSAGE_TYPE = EVENT_DELETE_PROFILE
     USER_NAME = JohnDoe
     DETAILS.NAME = SALES_TRADERS
 
-##### Response
+### Delete response
     MESSAGE_TYPE = EVENT_DELETE_PROFILE_ACK
 
-#### Insert User
+### Insert User
 
-##### Request
+### Insert request
     MESSAGE_TYPE = EVENT_INSERT_USER
     USER_NAME = mthompson
     DETAILS.USER_NAME = JohnDoe
@@ -407,12 +444,12 @@ Note the following:
     DETAILS.RIGHT[1].ID = 00000000000002RISP0
     DETAILS.RIGHT[1].CODE = ORDAM
 
-##### Response
+### Insert response
     MESSAGE_TYPE = EVENT_INSERT_USER_ACK
 
-#### Amend User
+### Amend user
 
-##### Request
+### Amend request
     MESSAGE_TYPE = EVENT_AMEND_USER
     USER_NAME = mthompson
     DETAILS.ID = 00000000000001USSP0
@@ -426,15 +463,15 @@ Note the following:
     DETAILS.RIGHT[1].ID = 00000000000002RISP0
     DETAILS.RIGHT[1].CODE = ORDAM
 
-##### Response
+### Amend response
     MESSAGE_TYPE = EVENT_AMEND_USER_ACK
 
-#### Delete User
+### Delete user
 
-##### Request
+### Delete request
     MESSAGE_TYPE = EVENT_DELETE_USER
     USER_NAME = JohnDoe
     DETAILS.USER_NAME = james
 
-##### Response
+### Delete response
     MESSAGE_TYPE = EVENT_DELETE_USER_ACK

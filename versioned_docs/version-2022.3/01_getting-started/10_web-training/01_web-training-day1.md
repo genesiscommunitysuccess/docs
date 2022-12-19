@@ -29,7 +29,7 @@ This picture gives an overview of how it all ties together:
 ![](/img/WebUIDiagram.png)
 
 :::tip confused with any term used here? Revisit the Developer Training!
-Feel free to revisit the UI chapter of the [Developer Training](/getting-started/developer-training/training-content-day2/) before we get into other aspects of the underlying technology used by Genesis in the next sections.
+Feel free to revisit the UI chapter of the [Developer Training](../../../getting-started/developer-training/training-content-day2/) before we get into other aspects of the underlying technology used by Genesis in the next sections.
 :::
 
 ## Why Web Components?
@@ -107,8 +107,9 @@ This is a [lerna managed](https://lerna.js.org/) monorepo. One possible definiti
 Genesis components are standards-based Web Components, making them compatible with almost any modern web framework such as Angular, React or Vue. 
 
 Thus, it's important to note that under the client/web folder you can run pretty much any modern web framework you want, as long you set it up.
-
+<!--
 During this training, we are trying to be framework-agnostic but an Angular integration example will be given at the end of the course.
+-->
 :::
 
 
@@ -143,7 +144,7 @@ Essentially, the front end will connect to the back end through a websocket to *
 Alternatively, you can connect to **ws://localhost:9064** to bypass the proxy, but this is not encouraged - it could cause firewall issues.
 
 :::tip
-On your WSL server, the nginx configuration is at /etc/nginx/nginx.conf.
+On your server, the nginx configuration is at /etc/nginx/nginx.conf.
 :::
 
 #### Scripts
@@ -218,7 +219,7 @@ For actual server deployment, these are the steps that you'd need to follow:
 You can zip and unzip the content of `dist` to make it quicker.
 :::
 
-More information on [Web Deployment](/web/deploying/introduction/).
+More information on [Web Deployment](../../../web/deploying/introduction/).
 
 
 ### Web pages
@@ -503,7 +504,7 @@ Steps:
 You may find this useful: https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive 
 Make sure to check the special context object as well. Example:
 ```typescript
-${(x,c) => c.PROPERTY_OF_THE_CONTEXT
+${(x,c) => c.parent.PROPERTY_OF_THE_CONTEXT
 ```
 :::
 
@@ -523,7 +524,7 @@ Some of the non-functional requirements we're going to address along with the im
 -   **override a design system to promote brand alignment and a reusable component library**
 -   **components styling**
 -   **async communication with the server with Genesis Foundation Comms**
--   **Angular integration**
+<!-- -   **Angular integration** -->
 
 Now, let's get down to business!
 
@@ -549,7 +550,7 @@ In this next example, we have put a set of example options set in the flyout men
 
 #### Header Set-up
 
-**We have already enabled this micro front-end when we created the initial structure of the application in the [Developer Training](/getting-started/developer-training/training-intro/).** But for learning purposes, let's review what needs to be done to set up the foundation-header from scratch - compare this with the existing code to get a better understanding.
+**We have already enabled this micro front-end when we created the initial structure of the application in the [Developer Training](../../../getting-started/developer-training/training-intro/).** But for learning purposes, let's review what needs to be done to set up the foundation-header from scratch - compare this with the existing code to get a better understanding.
 
 To enable this micro front-end in our application, we'd have to follow the steps below.
 
@@ -631,7 +632,7 @@ The `logo-src` defines the image that you want to display. Adding this attribute
 
 ### Exercise 1.2: customising the logo
 :::info estimated time
-10min
+5 min
 :::
 Change the logo of the header so it uses this image: `https://icotar.com/avatar/webtraining`
 
@@ -790,12 +791,12 @@ To set the content of the flyout menu, add the content in the html within an ele
 ```
 ### Exercise 1.4: adding items to the flyout menu
 :::info estimated time
-20min
+10 min
 :::
 Add an item pointing to the playground page.
 
 :::tip
-Look at the [interaction components](/web/web-components/interaction/anchor/) to see a list of available components that you can use for the menu item.
+Look at the [interaction components](../../../web/web-components/interaction/anchor/) to see a list of available components that you can use for the menu item.
 A good suggestion would be to use `Anchor`, which can simply be used as `<zero-anchor>`:
 ```ts
 <zero-anchor @click=${(x) => x.navigation.navigateTo("/PUT_YOUR_ROUTE_HERE")}>
@@ -809,7 +810,7 @@ By the way, we're using the Zero Design Systems by default. We are going to talk
 
 ### Exercise 1.5: adding new routes
 :::info estimated time
-30min
+30 min
 :::
 Customise our header in such a way that we end up with these menu items:
 

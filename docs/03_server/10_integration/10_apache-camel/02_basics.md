@@ -52,7 +52,7 @@ Both the `$` signs are escaped (`\$`) to prevent Kotlin from injecting a variabl
 
 The route then processes the file using the `FileEventHandlerProcessor` created by the `createProcessor` method through the `fileEventProcessorProvider`. A similar method and class exists for handling the processing of [Kafka](https://kafka.apache.org/) messages and CSV files.
 
-This processing will then send an **EVENT_FILE_IMPORT_EXAMPLE** message to the **EXAMPLE_EVENT_HANDLER** process, with a `dataFieldName` of **FILE**, expecting it to be handled by an appropriate `requestReply` in your [Request Server](/server/request-server/basics/).
+This processing will then send an **EVENT_FILE_IMPORT_EXAMPLE** message to the **EXAMPLE_EVENT_HANDLER** process, with a `dataFieldName` of **FILE**, expecting it to be handled by an appropriate `requestReply` in your [Request Server](../../../../server/request-server/basics/).
 
 ### createProcessor
 The `createProcessor` on both the `FileEventProcessorProvider` and `KafkaEventProcessorProvider` has the same parameters. However, the `createProcessor` of the `CSVEventProcessorProvider` has slightly different parameters.
@@ -61,7 +61,7 @@ The parameters for `createProcessor` on the `FileEventProcessorProvider` and `Ka
 
 * `processName` is the name of the process to which you are attempting to send a request to.
 
-* `messageType` is the type of message sent to the above process. This is important for ensuring the correct `requestReply` in your [Request Server](/server/request-server/basics/) handles this request.
+* `messageType` is the type of message sent to the above process. This is important for ensuring the correct `requestReply` in your [Request Server](../../../../server/request-server/basics/) handles this request.
 
 * `dataFieldName` is the name of the parameter that contains the data of the file or kafka events, when sent to the Request Server.
 
@@ -73,7 +73,7 @@ The parameters for `createProcessor` on the `CSVEventProcessorProvider` are:
 
 * `processName` is the name of the process to which you are attempting to send a request to.
 
-* `messageType` is the type of message sent to the above process. This is important for ensuring that the correct `requestReply`  in your [Request Server](/server/request-server/basics/) handles this request.
+* `messageType` is the type of message sent to the above process. This is important for ensuring that the correct `requestReply`  in your [Request Server](../../../../server/request-server/basics/) handles this request.
 
 * `sourceId` is the source of this request.
 
@@ -86,5 +86,5 @@ The parameters for `createProcessor` on the `CSVEventProcessorProvider` are:
 * `charset` is an optional parameter defaulting to UTF 8. This defines which character set the CSV is using.
 
 :::info
-If you want to ingest a CSV directly into GenesisDB rather than calling a Request Server, you might want to investigate the Genesis Data Pipeline [CSV source](/server/integration/data-pipeline/basics/#csv) first.
+If you want to ingest a CSV directly into GenesisDB rather than calling a Request Server, you might want to investigate the Genesis Data Pipeline [CSV source](../../../../server/integration/data-pipeline/basics/#csv) first.
 :::

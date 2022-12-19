@@ -9,7 +9,7 @@ tags:
     - dialog
 ---
 
-A dialog component presents content to the user. Unlike [modal](/web/web-components/interaction/modal/) it doesn't prevent the user from interacting with other content on the page.
+A dialog component presents content to the user. Unlike [modal](../../../../web/web-components/interaction/modal/) it doesn't prevent the user from interacting with other content on the page.
 
 ## Set-up
 

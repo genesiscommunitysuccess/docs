@@ -11,7 +11,7 @@ tags:
 
 
 
-Below is a fairly simple `requestReply` codeblock with standard `request` and `reply` statements. The [`where` block](/server/request-server/basics/#where-block) below filters out any data that does not meet the conditions. All data that is returned will have an instrumentCode equal to the request parameter INSTRUMENT_CODE. 
+Below is a fairly simple `requestReply` codeblock with standard `request` and `reply` statements. The [`where` block](../../../server/request-server/basics/#where-block) below filters out any data that does not meet the conditions. All data that is returned will have an instrumentCode equal to the request parameter INSTRUMENT_CODE. 
 
 ```kotlin
 requestReplies {
@@ -67,7 +67,7 @@ requestReplies {
 }
 ```
 
-Below is an example of a file where the single `eventHandler` code block includes a `where` clause. You can find out more about this example on the [Basics](/server/request-server/basics/#where-block) page.
+Below is an example of a file where the single `eventHandler` code block includes a `where` clause. You can find out more about this example on the [Basics](../../../server/request-server/basics/#where-block) page.
 
 ```kotlin
 requestReplies {

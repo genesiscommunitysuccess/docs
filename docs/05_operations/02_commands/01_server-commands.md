@@ -587,7 +587,27 @@ It is potentially dangerous to switch the `DictionarySource` property. If you ru
 
 ## GetNextSequenceNumbers
 
-This finds all the dictionary sequences and prints the next sequence number for each one of them. It displays the results on screen in csv format, so it is easy to redirect the output and reuse it with the `SetSequence` script (see below).
+This gives you the next sequence number of every table in the application. The numbers are provided in table format (csv), for example:
+
+```
+"Table","Sequence","Value"
+"USER_AUDIT","UA","104"
+"PROFILE_AUDIT","PR","804"
+"PROFILE_USER_AUDIT","PA","104"
+```
+
+By default, this is sent to the screen, but you can redirect the output to a file, for example:
+
+```bash
+GetNextSequenceNumbers >> /tmp/NextSeqNumbers.txt 
+```
+
+The `GetNextSequenceNumbers` command is often used with the `SetSequence` script [see below](../../../operations/commands/server-commands/#setsequence), for example, if you suspect that you have an error in one of your tables:
+
+1. Stop all the processes and run `GetNextSequenceNumbers` to fnd the next sequence numbers of the tables.
+2. Check the table contents. You might find that a row is missing or needs to be added. Make this change on the database manually. This affects the sequence numbers in those tables.
+3. Run `SetSequence` to reset the sequence numbers where relevant. 
+4. Now you can [restart your processes](../../../operations/commands/server-commands/#startserver-script).
 
 ### Syntax
 
@@ -629,9 +649,11 @@ GetAutoIncrementCount
 
 ## SetSequence
 
-This enables you to change a sequence number, or to do a bulk change for a whole sequence in a .csv file. In most cases, this file will be one that you have exported previously using either `GetNextSequenceNumbers` or `GetSequenceCount`.
 
-In almost all cases, `SetSequence` must be run while the system processes have been stopped. After running `SetSequence` - like all processes that write to the table - you need to restart the server.
+This enables you to set a sequence number for a table. ALternatively, you can perform a bulk change of sequence numbers for a whole csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
+
+`SetSequence` must only be run when the system processes have been stopped. After running `SetSequence` - like all processes that write to the table - you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
+
 
 ### Syntax
 

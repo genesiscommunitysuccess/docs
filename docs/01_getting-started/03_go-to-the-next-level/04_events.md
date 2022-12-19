@@ -21,7 +21,7 @@ The goal of this section is to define and build:
 
 
 ## Data Server
-The component that enables data to be read in real time is called the [Data Server](/server/data-server/introduction/). All the queries that a Data Server executes are defined in **positions-app-tutorial-dataserver.kts**. A Data Server can query both tables and views, so let's add two queries:
+The component that enables data to be read in real time is called the [Data Server](../../../server/data-server/introduction/). All the queries that a Data Server executes are defined in **positions-app-tutorial-dataserver.kts**. A Data Server can query both tables and views, so let's add two queries:
 
 - `ALL_POSITIONS` - this queries the `POSITION` table and returns the data stored in the table
 - `ALL_TRADES` - this queries the `TRADE_VIEW` and returns the joined data stored in the `TRADE`, `INSTRUMENT` and `COUNTERPARTY` tables
@@ -34,7 +34,7 @@ dataServer {
 ```
 
 ## Event Handler
-Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](/server/event-handler/introduction/) in the file **positions-app-tutorial-eventhandler.kts**.
+Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](../../../server/event-handler/introduction/) in the file **positions-app-tutorial-eventhandler.kts**.
 
 
 ```kotlin
@@ -50,7 +50,7 @@ eventHandler {
 ```
 :::info What is entityDb?
 
-The [entityDb](/database/database-interface/entity-db/) enables you to interact with the database layer. It's part of the Genesis database API and we'll get into more details soon. For now, understand that this is the common way to access data from code. Feel free to use the intellisense of your IDE to explore the methods available from entityDb.
+The [entityDb](../../../database/database-interface/entity-db/) enables you to interact with the database layer. It's part of the Genesis database API and we'll get into more details soon. For now, understand that this is the common way to access data from code. Feel free to use the intellisense of your IDE to explore the methods available from entityDb.
 :::
 
 ## Request Server
@@ -121,19 +121,19 @@ Add the following content to the **positions-app-tutorial-service-definitions.xm
 </configuration>
 ```
 
-See [here](/server/configuring-runtime/processes/) for a detailed description of the processes configuration. Finally, you can build the server.
+See [here](../../../server/configuring-runtime/processes/) for a detailed description of the processes configuration. Finally, you can build the server.
 
 From the Gradle menu on the right of Intellij, this is: **genesisproduct-positions-app-tutorial**/**Tasks**/**build/assemble**.
 
 ![](/img/assemble-server-positions.png)
 
 :::info HTTP Endpoints
- It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as [HTTP endpoints](/server/integration/rest-endpoints/introduction/) automatically by the Genesis platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
+ It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as [HTTP endpoints](../../../server/integration/rest-endpoints/introduction/) automatically by the Genesis platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
 :::
 
 ## Conclusion
-Data Server and Event Handler are the main components to interact with the server. Now that we have built our back end, we have something to interact with. Once you have deployed it, if you want to test what you've done so far, go to [Endpoints](/server/integration/rest-endpoints/introduction/).
+Data Server and Event Handler are the main components to interact with the server. Now that we have built our back end, we have something to interact with. Once you have deployed it, if you want to test what you've done so far, go to [Endpoints](../../../server/integration/rest-endpoints/introduction/).
 
 For a reference point for these components checkout the [positions app turotial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-script-config/src/main/resources/scripts). 
 
-Otherwise, you can continue to the [next section](/getting-started/go-to-the-next-level/data-grid/) and deploy and test the whole application at later time.
+Otherwise, you can continue to the [next section](../../../getting-started/go-to-the-next-level/data-grid/) and deploy and test the whole application at later time.

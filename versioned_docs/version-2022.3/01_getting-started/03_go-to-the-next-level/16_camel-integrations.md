@@ -15,7 +15,7 @@ The Genesis low-code platform supports the use of [Apache Camel](https://camel.a
 
 Genesis makes this easy to configure and set up, allowing new processors to be defined and used within GPAL.
 
-Should you wish to ingest data from a file or database, it is worth first checking out [Genesis Data Pipelines](/server/integration/data-pipeline/introduction/), which offers a higher-level ingestion workflow than the Apache Camel DSL.
+Should you wish to ingest data from a file or database, it is worth first checking out [Genesis Data Pipelines](../../../server/integration/data-pipeline/introduction/), which offers a higher-level ingestion workflow than the Apache Camel DSL.
 
 ## Section objectives
 The goal of this section is to:
@@ -90,7 +90,7 @@ Ensure that you add the following config to your **-processes.xml** and **-servi
 ```
 
 ```xml
-<service host="localhost" name="POSITIONS_APP_TUTORIAL_CAMEL" port="11006"/>
+<service host="localhost" name="POSITIONS_APP_TUTORIAL_CAMEL" port="11007"/>
 ```
 
 We are now ready to deploy the changes. Run `assemble` and then `deploy-genesisproduct-positions-app-tutorial`.

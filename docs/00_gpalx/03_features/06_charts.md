@@ -206,7 +206,7 @@ chart(
 
 ### Linked charts
 
-So far we have seen what charts look like when we feed them our data. But what if we wanted to filter the represented data based on a specific component? Similar to [Linked Ui Components](/gpalx/features/linked-ui-components/), we can update our charts based on the status of another component.
+So far we have seen what charts look like when we feed them our data. But what if we wanted to filter the represented data based on a specific component? Similar to [Linked Ui Components](../../../gpalx/features/linked-ui-components/), we can update our charts based on the status of another component.
 
 <zero-card style={{backgroundColor: "#101628", padding: "4px"}}>
 <h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Linked Chart</b></h4>

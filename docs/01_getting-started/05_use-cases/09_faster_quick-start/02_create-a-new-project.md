@@ -24,6 +24,11 @@ In the `genx` script, there are a series of questions.
 
 First, you are asked to provide your username and password - these are the credentials you use to access Genesis Artifactory.
 
+<!-- NO EDIT (NEXT 4 LINES) -->
+import InsecureFlag from '../../../_includes/_cli-insecure-flag.md'
+
+<InsecureFlag />
+
 You are then asked to select from a short list of seed applications. Select `create application`:
 
 
@@ -64,9 +69,6 @@ Then there are more questions, which you can respond to as follows:
 ? Base design system package (@latest will be used) @genesislcap/foundation-ui
 ? Set API Host (Y/n) Yes
 ? API Host (with websocket prefix and suffix if any) (ws://localhost/gwf/)
-? Genesis Server version 6.1.2
-? Genesis Deploy plugin version 
-? Kotlin version 1.6.10
 ? Group Id global.genesis
 ? Application Version 1.0.0-SNAPSHOT
 ```

@@ -62,7 +62,7 @@ Add `CustomTradeEventReply` under **{app-name}-messages** and assemble. Once you
     }
 ```
 
-The following code assumes you have built your fields and tables after you created your `TradeEvent` under **jvm/{app-name}-config** with a primary key of `tradeId`. If intelliJ can't find you `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](/getting-started/learn-the-basics/data-model/).
+The following code assumes you have built your fields and tables after you created your `TradeEvent` under **jvm/{app-name}-config** with a primary key of `tradeId`. If intelliJ can't find you `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](../../../getting-started/learn-the-basics/data-model/).
 
 ### onException
 
@@ -111,7 +111,7 @@ If you use custom class instead of generated database entities as message-type o
     }
 ```
 
-You can find out more details in our section on [authorisation](/server/access-control/authorisation-overview/).
+You can find out more details in our section on [authorisation](../../../server/access-control/authorisation-overview/).
 
 
 ## Auto auditing
@@ -125,7 +125,7 @@ If the Event Handler message type is a database-generated entity that is auditab
 
 ## Defining state machines
 
-State machines, which define the conditions for moving from one state to another, are defined within your Event Handler files. See more details about these in the section on [Defining your state machines](/server/state-machine/introduction/).
+State machines, which define the conditions for moving from one state to another, are defined within your Event Handler files. See more details about these in the section on [Defining your state machines](../../../server/state-machine/introduction/).
 
 ## Pending approvals
 

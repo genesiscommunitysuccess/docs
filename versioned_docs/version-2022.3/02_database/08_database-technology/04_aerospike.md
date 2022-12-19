@@ -9,7 +9,7 @@ tags:
     - aerospike
 ---
 
-Genesis supports [Aerospike](https://aerospike.com/). To connect to Aerospike, use the [system definition items](/server/configuring-runtime/system-definitions/) listed below.
+Genesis supports [Aerospike](https://aerospike.com/). To connect to Aerospike, use the [system definition items](../../../server/configuring-runtime/system-definitions/) listed below.
 
 | Setting | Description |
 | --- | --- |
@@ -20,10 +20,10 @@ Genesis supports [Aerospike](https://aerospike.com/). To connect to Aerospike, 
 | `DbUsername` | This must be the db username. Supports encrypted values. |
 | `DbPassword` | This must be the db password. Supports encrypted values. |
 
-Sample configurations[​](/database/database-technology/aerospike/#sample-configurationsdirect-link-to-heading)
+Sample configurations[​](../../../database/database-technology/aerospike/#sample-configurationsdirect-link-to-heading)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-### Connection configuration with plain text credentials[​](/database/database-technology/aerospike/#connection-configuration-with-plain-text-credentialsdirect-link-to-heading)
+### Connection configuration with plain text credentials[​](../../../database/database-technology/aerospike/#connection-configuration-with-plain-text-credentialsdirect-link-to-heading)
 
 ```kotlin
 systemDefinition {
@@ -48,7 +48,7 @@ systemDefinition {
 }
 ```
 
-### Connection configuration with encrypted credentials[​](/database/database-technology/aerospike/#connection-configuration-with-encrypted-credentialsdirect-link-to-heading)
+### Connection configuration with encrypted credentials[​](../../../database/database-technology/aerospike/#connection-configuration-with-encrypted-credentialsdirect-link-to-heading)
 
 ```kotlin
 systemDefinition {

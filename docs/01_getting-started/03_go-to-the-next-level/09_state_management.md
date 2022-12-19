@@ -10,7 +10,7 @@ tags:
     - state management
 ---
 
-[State machines](/server/state-machine/introduction/) enable you to control workflow by defining the transitions from state to state. This example enables you to build a very simple state machine so that you can add new trades. We shall use the `TRADE_STATUS` field, which can have three possible states: `NEW`, `ALLOCATED`, or `CANCELLED`.
+[State machines](../../../server/state-machine/introduction/) enable you to control workflow by defining the transitions from state to state. This example enables you to build a very simple state machine so that you can add new trades. We shall use the `TRADE_STATUS` field, which can have three possible states: `NEW`, `ALLOCATED`, or `CANCELLED`.
 
 Based on below state machine:
 * TradeStatus `NEW` can change to `ALLOCATED` or `CANCELLED`.
@@ -180,7 +180,7 @@ eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
 ```
 
 :::info
-You may have noticed we are passing a `transactional = true` parameter into our event handler. This ensures any exception or nack returned will result in a complete rollback of all parts of the onCommit and onValidate (the transaction also covers read commands) blocks. You can read more about transactions [here](/server/event-handler/basics/#transactional-event-handlers-acid).
+You may have noticed we are passing a `transactional = true` parameter into our event handler. This ensures any exception or nack returned will result in a complete rollback of all parts of the onCommit and onValidate (the transaction also covers read commands) blocks. You can read more about transactions [here](../../../server/event-handler/basics/#transactional-event-handlers-acid).
 :::
 
 ## Add Event Handlers for the rest of the states
@@ -225,7 +225,7 @@ eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
 }
 ```
 
-Your **positions-app-tutorial-eventhandler.kts** file at the end should look this:
+Your **positions-app-tutorial-eventhandler.kts** file at the end should look like this:
 
 ```kotlin
 import global.genesis.TradeStateMachine
@@ -279,6 +279,6 @@ You want to manage the state of the trade, so we don't want a delete Event Handl
 To test it, you can try to modify a `TRADE` (assuming you already have at least one trade in the database) and see the state change accordingly. 
 
 ## Conclusion
-With this, we finish showing how an application can add state management. If you want to see it in action, go to [Endpoints](/server/integration/rest-endpoints/introduction/) for information about testing the back end.
+With this, we finish showing how an application can add state management. If you want to see it in action, go to [Endpoints](../../../server/integration/rest-endpoints/introduction/) for information about testing the back end.
 
 You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm) as a reference point for the event handlers. 

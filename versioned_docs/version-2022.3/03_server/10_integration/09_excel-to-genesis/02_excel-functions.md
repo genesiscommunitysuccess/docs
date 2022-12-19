@@ -10,7 +10,7 @@ tags:
   - functions
 ---
 
-[Excel reference](/server/integration/excel-to-genesis/excel-reference/)  | [Excel functions](/server/integration/excel-to-genesis/excel-functions) 
+[Excel reference](../../../../server/integration/excel-to-genesis/excel-reference/)  | [Excel functions](../../../../server/integration/excel-to-genesis/excel-functions) 
 
 The following Excel functions are currently supported by `ExcelToGenesis`.
 

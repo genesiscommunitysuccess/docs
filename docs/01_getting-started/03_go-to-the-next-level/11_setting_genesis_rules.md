@@ -11,10 +11,10 @@ tags:
     - rules
 ---
 
-It is often useful to run tasks periodically - for example, to schedule the production of EOD reports, to change a field in the database if another field has a certain value, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](/server/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
+It is often useful to run tasks periodically - for example, to schedule the production of EOD reports, to change a field in the database if another field has a certain value, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](../../../server/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](../../../server/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
 
-- [Dynamic Rules](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#setting-up-the-dynamic-rules), also known as dynamic events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
-- [Static Rules](/getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#static-rules-cron-rules) are scheduling rules; these are static events, defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression).
+- [Dynamic Rules](../../../getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#setting-up-the-dynamic-rules), also known as dynamic events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
+- [Static Rules](../../../getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#static-rules-cron-rules) are scheduling rules; these are static events, defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression).
 
 In both cases, you define the rules in a table in the database: `DYNAMIC_RULES` for dynamic rules and `CRON_RULES` for static rules. We're going start with dynamic rules.
 
@@ -144,7 +144,7 @@ Ok now we have configured our evaluator, defined our business logic and loaded t
 
 ## Configure Notify
 
-For a more detailed explanation of **GENESIS_NOTIFY** and **GATEWAY**, see our [Integration section](/server/integration/notify/configuring/).
+For a more detailed explanation of **GENESIS_NOTIFY** and **GATEWAY**, see our [Integration section](../../../server/integration/notify/configuring/).
 
 ### Add connection details
 
@@ -195,7 +195,7 @@ Add the `POSITIONS_APP_TUTORIAL_NOTIFY` process to your **positions-app-tutorial
 ## Set up GENESIS_NOTIFY in the database
 
 ### Insert a gateway route
-Navigate to **/home/genesis/run/temp-data** in your WSL terminal and create a file called **gateway.csv**, in the following [format](/server/integration/notify/email/#gateway).
+Navigate to **/home/genesis/run/temp-data** in your WSL terminal and create a file called **gateway.csv**, in the following [format](../../../server/integration/notify/email/#gateway).
 
 ```csv title="gateway.csv"
 GATEWAY_ID,GATEWAY_TYPE,GATEWAY_VALUE,INCOMING_TOPIC
@@ -228,7 +228,7 @@ Total Results:  1
 
 ### Insert NOTIFY_ROUTE
 
-Navigate to **/home/genesis/run/temp-data** in your WSL terminal and create a file called **notify-route.csv**, in the following [format](/server/integration/notify/email/#notify-route).
+Navigate to **/home/genesis/run/temp-data** in your WSL terminal and create a file called **notify-route.csv**, in the following [format](../../../server/integration/notify/email/#notify-route).
 
 ```csv title="notify-route.csv"
 ENTITY_ID,ENTITY_ID_TYPE,TOPIC_MATCH,GATEWAY_ID
@@ -278,7 +278,7 @@ Run `SetPrimary` in your WSL terminal and you should be able to see all processe
 
 Data dumps need to be switched on for both EVALUATOR and NOTIFY so that we can see some additional data in the logs.
 
-Run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command for that:
+Run the [LogLevel](../../../operations/commands/server-commands/#loglevel-script) command for that:
 <!-- TODO: add LogLevel section to Server Commands -->
 
 ```shell title="From the WSL Distribution"
@@ -316,7 +316,7 @@ This section showed how to trigger events based on a condition in the database. 
 
 ## Static rules (Cron rules)
 
-It is often useful to run tasks periodically - for example, to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](/server/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](/server/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
+It is often useful to run tasks periodically - for example, to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](../../../server/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](../../../server/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
 
 - __Cron Rules__  are scheduling rules; these are static events, defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
 - __Dynamic Rules__, also known as dynamic events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
@@ -424,7 +424,7 @@ This is because the Evaluator process is set to run only on the primary node. Ou
 Run `SetPrimary` in your WSL terminal and you should be able to see all processes running.
 
 ### Load the cron rule on to the database
-Now we can load the cron rule csv below into the database, [CRON_RULE](/server/evaluator/configuring-runtime/#cron_rule-table) table.
+Now we can load the cron rule csv below into the database, [CRON_RULE](../../../server/evaluator/configuring-runtime/#cron_rule-table) table.
 
 Navigate to **home/genesis/run/temp-data** in your WSL terminal and create a file called **cron-rule.csv** with the following:
 
@@ -460,7 +460,7 @@ Total Results:  1
 ```
 
 ### Change the log level
-You can now change the log level to verify the execution of the events. To do this, run the [LogLevel](/operations/commands/server-commands/#loglevel-script) command:
+You can now change the log level to verify the execution of the events. To do this, run the [LogLevel](../../../operations/commands/server-commands/#loglevel-script) command:
 
 ```shell
 LogLevel -p POSITIONS_APP_TUTORIAL_EVALUATOR -DATADUMP_ON -l DEBUG

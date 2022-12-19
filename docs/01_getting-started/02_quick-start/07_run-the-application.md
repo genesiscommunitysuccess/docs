@@ -11,7 +11,7 @@ tags:
     - linux
 ---
 
-You have a choice of how you run the application. The instructions on this page are for using WSL/CentOS. If you prefer to use Docker as your environment, there are [separate instructions](/getting-started/quick-start/run-the-application-docker/).
+You have a choice of how you run the application. The instructions on this page are for using WSL/CentOS. If you prefer to use Docker as your environment, there are [separate instructions](../../../getting-started/quick-start/run-the-application-docker/).
 
 Before you start, make sure that:
 
@@ -34,7 +34,7 @@ wsl-user=alpha
 
 By command:
 ```shell title="Intellij terminal"
-./gradlew :jvm:alpha-deploy:setupEnvironment 
+./gradlew :jvm:alpha-deploy:setupEnvironment
 ```
 From the dropdown menu:
 
@@ -232,14 +232,14 @@ If the blue button to login is not clickable, go through the previous section ag
 
 ### API Host
 
-If you have followed the [genx quick start guide](../02_quick-start/02_create-a-new-project.md), then have set the `API_HOST` as the default `ws://localhost/gwf/`. This default will hit the nginx reverse proxy that you set in [the previous section](#connecting-the-back-end-and-front-end). 
+If you have followed the [genx quick start guide](../02_quick-start/02_create-a-new-project.md), then have set the `API_HOST` as the default `ws://localhost/gwf/`. This default will hit the nginx reverse proxy that you set in [the previous section](#connecting-the-back-end-and-front-end).
 
 If you have changed the `API_HOST` from the default `ws://localhost/gwf/`at any point to connect to a different host, then you need to change this back to the default configuration.
 
 Additionally, the front end will cache the `API_HOST` and use that over the configured item; so if you have changed the host then you may need to clear this item from your cache. You can do this in your browser by opening the developer tools, going to the storage tab, going to the `Local Storage` section, and deleting the `hostUrl` key/value pair.
 
 :::tip
-If you change the host frequently, you might find it easier to configure the login screen not to auto connect to the host, which allows you to set the value in the GUI. Set this via `autoConnect: false` in the file `client/web/src/routes/config.ts`. There is more information on the configuration options in our [micro front-end documentation](../../04_web/05_micro-front-ends/07_foundation-login.md/#customising-login).
+If you change the host frequently, you might find it easier to configure the login screen not to auto connect to the host, which allows you to set the value in the GUI. Set this via `autoConnect: false` in the file `client/web/src/routes/config.ts`. There is more information on the configuration options in our [micro front-end documentation](../../../web/micro-front-ends/foundation-login/#customising-login).
 :::
 
 

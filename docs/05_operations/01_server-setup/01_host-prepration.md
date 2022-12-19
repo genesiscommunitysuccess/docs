@@ -15,7 +15,7 @@ This section describes preparing a host to run applications built with the Genes
 
 ## OS choice
 
-Genesis runs a set of JVM processes and a few external pieces of software, notably [nginx](https://nginx.org/en/). It requires (in all likelihood) one of a set of supported databases; Genesis Global can provide RPM packages for them, if required. 
+Genesis runs a set of JVM processes and a few external pieces of software, notably [nginx](https://nginx.org/en/). It requires (in all likelihood) one of a set of supported databases; Genesis Global can provide RPM packages for them, if required.
 
 Our existing build pipeline favours producing either ZIP files or RPM packages. We recommend an OS from the RedHat family: either CentOS 7 or RHEL 7. We have seen good results with AmazonLinux 2.
 
@@ -25,9 +25,9 @@ Choosing a different Linux variant will require the operator to locate suitable 
 
 For applications built on the platform, there are some dependencies that any running host must meet.
 
-Genesis applications include both server-side and web code.  
+Genesis applications include both server-side and web code.
 
-- The server-side processes are Java and Kotlin.  
+- The server-side processes are Java and Kotlin.
 - The web framework is built as NPMs, and web application code is served to the client by the server.
 
 ### Java/Kotlin
@@ -80,7 +80,7 @@ a minimum of 16GB and 32GB is better; CPU demands vary greatly by application, a
 
 Resilience options involve some customisation of set-up; the platform can integrate with [Consul](https://www.consul.io/) to handle multi-host setups. Some larger Genesis-built projects have spread out across more than a dozen hosts to accomplish scaling and resilience. Consul at a known-good version can also be downloaded from our Artifactory using the link above.
 
-Clustering is native to Genesis applications and the details of configuring it are covered in our section on [Clustering](/operations/clustering/clusters).
+Clustering is native to Genesis applications and the details of configuring it are covered in our section on [Clustering](../../../operations/clustering/overview).
 
 Disk space required is very application-dependent. Genesis applications log locally by default; log volumes are determined by application activity levels.  Genesis applications also use local disk to create local LMDB files to help coordinate data. These are mmap()'d by the processes. Writes are coalesced by the Linux kernel, so iops are kept low, but disk usage is still affected by application activity.
 
