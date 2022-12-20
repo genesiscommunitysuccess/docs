@@ -48,7 +48,7 @@ Next, you just need to respond to the questions, which depend on the task you in
 ? Please select an option: create application - Generates a local application.
 ```
 
-Enter the local directory you want to create the app (where relevant, the default for these options is the letter displayed in upper case; this will be applied if nothing is entered):
+Enter the local directory where you want to create the app (where relevant, the default for these options is the letter displayed in upper case; this will be applied if nothing is entered):
 
 ```shell title="Windows Terminal"
 ? Create a app in current directory (Y/n)
