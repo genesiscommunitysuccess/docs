@@ -140,6 +140,10 @@ File location denotes where to watch for files. This can be one of the following
 
 Listening for files in a directory on the local filesystem is as simple as pointing at the directory in the `location` argument prepended by "file://".
 
+You can define a path as absolute or relative, but we recommend that you specify the absolute filepath; this ensures that you get the right files in the right place. 
+
+If you use a relative file path and there is a mistake in the file path, no error message is generated. A new folder is created if the one specified does not exist, for example. The Data Pipeline is based on Apache Camel and you can find further details of this in the [Camel documentation](https://camel.apache.org/components/3.18.x/languages/file-language.html).
+
 You can also pass arguments to the URI to change the behaviour of the source.
 
 `file:directoryName[?options]`
