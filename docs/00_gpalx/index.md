@@ -5,19 +5,34 @@ sidebar_position: 1
 id: 'intro'
 ---
 
-GPALX is a full-stack low-code language for building applications. By writing up to 75% less code than previous Genesis versions, you can deliver productive solutions quicker than ever.
+import QuickCard from '@site/src/components/Card';
+import { Grid } from '@mui/material'
 
-GPALX allows you to:
-- model complex data objects with clear type definitions
-- view large sets of data in one or more grids with customisable cells for more complex fields
-- create single or multiple page views of data to help make that data more digestible
-- join together multiple data objects into single views to aid data visualisation
-- aggregate data using simple out-of-the-box calculation and conditional functions
-- elegantly define data state transitions or workflows to maintain data integrity
-- manipulate data through standardised Create, Update, and Delete (CRUD) functions, with automatic validation protection and error handling
-- capitalise on the power of the Genesis platform through one-line integration, such as Auth
-- dynamically filter grid data based on UI interactions
-- have both Genesis and third-party Web Components at your disposal
-- supercharge development with built-in page structuring and routing
+GPALX is a full-stack low-code language for building applications. By writing up to 75% less code than previous Genesis versions, you can deliver solutions quicker than ever. 
 
-Our simple-to-follow guides will enable you to become an effective user of GPALX within days.
+<Grid container>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Quick start" link="../gpalx/quick-start/introduction/" text="Start by building a simple application.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="User interface" link="../gpalx/user-interface/layouts/" text="Design rich, interactive UIs with the Genesis design system.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Business logic" link="../gpalx/business-logic/aggregation/" text="Create business logic as well-defined Events, Transitions & Materialized Views.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Integrations" link="../gpalx/integrations/resources/" text="Leverage external data sources and systems in real-time or request / reply.">
+        </QuickCard>
+    </Grid>
+        <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Data model" link="../gpalx/data-model/tables/" text="Define and map business objects as Fields, Tables & States.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Configuration" link="../gpalx/configuration/overview/" text="Learn how to configure your application settings.">
+        </QuickCard>
+    </Grid>
+</Grid>

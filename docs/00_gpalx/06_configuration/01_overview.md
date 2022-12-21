@@ -1,6 +1,6 @@
 ---
-title: 'Configure application'
-id: configure-application
+title: Overview
+id: overview
 ---
 
 # Configure application
