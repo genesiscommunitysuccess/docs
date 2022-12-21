@@ -2,7 +2,7 @@
 title: 'Quick start - what you will build'
 sidebar_label: 'What you will build'
 id: introduction
-sidebar_position: 2
+sidebar_position: 3
 keywords: [getting started, quick start, introduction]
 tags:
     - getting started
