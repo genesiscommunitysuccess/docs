@@ -60,8 +60,7 @@ First, you need to configure the `@genesislcap` scope of `npm` in order to use o
 
  ![](/img/set-me-up.png)
 
- 6. At the bottom of the window is a code snippet of 5 lines (highlighted in the picture above. This includes an encrypted version of your password (that we have blocked in thie picture). Copy this and paste it into the empty **.npmrc** file you created earlier. 
-6. At the bottom of the window is a code snippet of 5 lines (highlighted in the picture above. This includes an encrypted version of your password (which we have blocked in thie picture). Copy this and paste it into the empty **.npmrc** file you created earlier. 
+ 6. At the bottom of the window is a code snippet of 5 lines (highlighted in the picture above. This includes an encrypted version of your password (that we have blocked in this picture). Copy this and paste it into the empty **.npmrc** file you created earlier. 
 
 7. In the file, replace `<SCOPE>` with `genesislcap`, so that the line reads:
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
