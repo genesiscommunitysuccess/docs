@@ -20,6 +20,8 @@ A pipeline configuration contains a collection of `sources`, one or many `map` f
 
 Each data pipeline source contains the configuration specifying how to access the data and the associated mapping and sink functionality.
 
+Remote databases do not work with Data Pipelines by default and will require some setup/configuration to enable Change Data Capture functionality. More details can be found in the pages on [Pipeline set-up](https://learn.genesis.global/docs/operations/pipeline-setup/).
+
 The currently supported sources are:
 
 **Ingress:**
@@ -68,8 +70,6 @@ pipelines {
 ```
 
 :::note
-
-Remote databases will not work with Data Pipelines by default and will require some setup/configuration to enable Change Data Capture functionality. Find details on setup [here](../../../../operations/pipeline-setup/)
 
 :::
 
