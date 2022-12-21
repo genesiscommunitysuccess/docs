@@ -30,7 +30,7 @@ class EventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 }
 ```
 
-For more information about `AbstractGenesisTestSupport`, see the [Testing pages](/operations/testing/integration-testing/#abstractgenesistestsupport).
+For more information about `AbstractGenesisTestSupport`, see the [Testing pages](../../../operations/testing/integration-testing/#abstractgenesistestsupport).
 
 Once you have added your config above, you can start writing tests against our Event Handler.
 
@@ -143,7 +143,7 @@ First, make sure that your authorisation set-up is designed to behave as follows
 
 Second, you need to modify the previous example Event Handler so that only authorised users can insert trades.
 
-You can find a [Java event example](/database/api-reference/authorisation-api) in our Authorization API pages.
+You can find a [Java event example](../../../database/api-reference/authorisation-api) in our Authorization API pages.
 
 ```kotlin
 eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -206,7 +206,7 @@ Fourth, in your test set-up, let's authorise one user to be able to insert trade
     }
 ```
 
-For more information on authorisation, see the [authorisation docs](/server/access-control/authorisation-overview).
+For more information on authorisation, see the [authorisation docs](../../../server/access-control/authorisation-overview).
 
 Below is a test that verifies only Traders can enter trades:
 
@@ -271,7 +271,7 @@ Following that, we have a test to verify that a trade cannot be entered if the u
 If you use Genesis Console, this gives you a simple way of testing components.
 
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
-2. Enter the IP address of your server, in this case **localhost**. If you get a blank page without any response, then this is probably because you don't have [NGINX configured](/operations/server-setup/config-management/#nginx-configuration). 
+2. Enter the IP address of your server, in this case **localhost**. If you get a blank page without any response, then this is probably because you don't have [NGINX configured](../../../operations/server-setup/config-management/#nginx-configuration). 
 3. Log in with the username and password of your Genesis user. This starts the Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES tab**.
 5. Filter the **Resource type** to show only Event Handlers.
@@ -320,7 +320,7 @@ An API client is useful way of testing components. As a client, it is effectivel
 
 The API client enables you to create calls to the resources in your server - Data Servers, Request Servers and Event Handlers. Then you can just click to run a call and see what response you get.
 
-Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](/operations/testing/component-testing/#using-an-api-client) page.
+Before you can make any calls on these resources, you will have to permission yourself by obtaining a SESSION_AUTH_TOKEN. The details of how to do this are on our separate [Testing](../../../operations/testing/component-testing/#using-an-api-client) page.
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 

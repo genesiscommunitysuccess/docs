@@ -6,6 +6,7 @@ export interface StackOptions {
   zone: string,
   gtmId: string,
   enablePullRequestPreviews: boolean,
+  oldDomain: string,
 }
 
 export default interface StackProperties {

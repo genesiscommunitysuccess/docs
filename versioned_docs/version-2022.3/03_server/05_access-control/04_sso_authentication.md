@@ -24,7 +24,7 @@ There are two different types of SSO authentication presently supported by the G
 
 To enable SSO, you will need to configure it in your _application-name_**-auth-preferences.kts** file.
 
-These following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Password Authentication section](/server/access-control/password-authentication/).
+These following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Password Authentication section](../../../server/access-control/password-authentication/).
 
 ### sso
 The `sso` function allows you to configure and enable SSO options. It has the following variables to set:
@@ -124,7 +124,7 @@ Once SAML is enabled, a user can click on an SSO button in the GUI. This starts 
 
 For more information, see [wikipedia](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language).
 
-This workflow is described in more detail in the section on [Front-to-back flow](/server/access-control/SSO-authentication/#front-to-back-flow).
+This workflow is described in more detail in the section on [Front-to-back flow](../../../server/access-control/SSO-authentication/#front-to-back-flow).
 
 ### Definitions
 
@@ -452,173 +452,3 @@ Here is some test metadata you can use:
 </md:EntityDescriptor>
 ```
 
-## OpenID Connect SSO
-
-[OpenID Connect](https://openid.net/connect/) is a simple identity layer on top of the [OAuth 2.0 protocol](https://oauth.net/2/). It allows applications to verify the identity of the End-User based on the authentication performed by an Authorization Server, as well as to obtain basic profile information about the End-User in an interoperable and REST-like manner. It works by connecting the Genesis application and the OpenID Connect (OIDC) provider. The Genesis application must be able to connect to the OIDC provider and the OIDC provder needs to be aware of the application(s) that can connect to it. 
-
-Once OIDC is configured and enabled, a user can click on an SSO button in the GUI. This starts the OIDC authentication flow:
-1. The user is re-directed to the OpenID provider authentication window
-2. The user identifies him or herself to the OIDC provider
-3. After succesful authentication the OIDC provider sends authentication code to the Genesis application
-4. Using the sent code the Genesis application retrieves user information and validates it
-5. Upon successful validation the user is redirected back to the Genesis login endpoint with a token
-6. The front end starts the login process into Genesis using this token
-
-### Pre-requisites
-
-Before starting, ensure you have access to the OIDC provider. Once you have checked this, there are two things you need to do:
-
-1. Enable OIDC support in the Router
-2. Configure OIDC.
-
-We shall now look at these in detail.
-
-### How to enable OIDC in the Genesis Router
-
-You must enable OIDC on the Genesis Router process. Do this by changing the router config in your _application-name-_**processes.xml** file. The process name is `GENESIS_ROUTER`.
-
-Specifically, you have to add:
-- `genesis.auth.oidc` and `global.genesis.auth.sso.endpoint` to the `<package .../>` tag
-- `auth-oidc-*.jar` and `auth-sso-endpoint-*.jar` to the `<classpath .../>` tag
-- add the GPAL configuration to the `<script ../>` tag
-- make sure that the `<language ../>` tag say `pal`
-
-:::note
-Adding `genesis.auth.oidc` to the `packages` and `auth-oidc-*.jar` to the `classpath` enables the OIDC integration. And adding `global.genesis.auth.sso.endpoint` and `auth-sso-endpoint-*.jar` enables the required endpoints by the front-end
-:::
-
-You can see these additions in the example below:
-```xml
-<process name="GENESIS_ROUTER">
-    <start>true</start>
-    <groupId>GENESIS</groupId>
-    <options>-Xmx512m -DXSD_VALIDATE=false</options>
-    <module>router</module>
-    <package>global.genesis.router,global.genesis.console,global.genesis.auth.oidc,global.genesis.auth.sso.endpoint</package>
-    <config>router-process-config.kts</config>
-    <script>genesis-router.kts,position-oidc-config.kts</script>
-    <language>pal</language>
-    <classpath>genesis-console-*.jar,auth-oidc-*.jar,auth-sso-endpoint-*.jar</classpath>
-    <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
-</process>
-```
-
-If you require JWT validation you will need the following jars on the `classpath` as well - `jjwt-impl-*.jar,jjwt-jackson-*.jar`
-
-Example having the required jars for JWT validation:
-```xml
-<process name="GENESIS_ROUTER">
-    <start>true</start>
-    <groupId>GENESIS</groupId>
-    <options>-Xmx512m -DXSD_VALIDATE=false</options>
-    <module>router</module>
-    <package>global.genesis.router,global.genesis.console,global.genesis.auth.oidc,global.genesis.auth.sso.endpoint</package>
-    <config>router-process-config.kts</config>
-    <script>genesis-router.kts,position-oidc-config.kts</script>
-    <language>pal</language>
-    <classpath>genesis-console-*.jar,auth-oidc-*.jar,auth-sso-endpoint-*.jar,jjwt-impl-*.jar,jjwt-jackson-*.jar</classpath>
-    <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
-</process>
-```
-
-Additionally, you need a _application-name-_**oidc-config.kts** file. This file contains the GPAL configuration. Each OIDC configuration has the following properties:
-
-| Property name | Description | Mandatory | Default value | Type |
-| --- | ------ | --- | --- | --- |
-| loginEndpoint | The URI to be re-directed after successful authentication | Yes | No default value | String |
-| identityProvider | Configuration for each OIDC Provider. Can be repeated if multiple providers have to be configured | Yes | No default value | Object |
-
-Each `identityProvider` configuration has the following properties:
-
-| Property name | Description | Mandatory | Default value | Type |
-| --- | ------ | --- | --- | --- |
-| client | The client id and secret | Yes | No default value | Object |
-| endpoints | Holds the token and authorization endpoints | Yes | No default value | Object |
-| verification | Holds configuration for the public key of the JWT issuer | No | No JWT verification | Object |
-| scopes | Requested scopes on authorization | No | `openid profile email` | Set |
-| onNewUser | Predefined action when a new user logs in | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
-| usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
-| tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | Yes | No default value | Int |
-| redirectUri | The URI to handle the code authorization. | Yes | No default value | String |
-
-Each `client` configuration has the following properties:
-
-| Property name | Description | Mandatory | Default value | Type |
-| --- | ------ | --- | --- | --- |
-| id | The client id provided by the OIDC Provider when application was registered | Yes | No default value | String |
-| secret | The client secret provided by the OIDC Provider when application was registered | Yes | No default value | String |
-
-Each `endpoints` configuration has the following properties:
-
-| Property name | Description | Mandatory | Default value | Type |
-| --- | ------ | --- | --- | --- |
-| token | The OIDC provider `token` endpoint | Yes | No default value | String |
-| authorization | The OIDC provider `authorization` endpoint | Yes | No default value | String |
-
-Each `verification` configuration has the following properties:
-
-| Property name | Description | Mandatory | Default value | Type |
-| --- | ------ | --- | --- | --- |
-| publicKey  | The public key to be used to validate the JWT | No | No default value | String |
-| publicKeyUrl | URL to the public key to be used to validate the JWT | No | No default value | String |
-
-:::note
-If `verification` is defined either `publicKey` or `publicKeyUrl` must be defined.
-:::
-
-### Sample configurations
-
-### Minimal configuration
-
-```kotlin
-oidc{
-  loginEndpoint = "http://uat-host/login"
-  identityProvider("uat-oidc"){
-    client{
-      id = "appplication-id"
-      secret = "application-secret"
-    }
-
-    endpoints{
-      token = "uat-oidc:1337/token"
-      authorization = "uat-odic:1337/auth"
-    }
-
-    tokenLifeInSeconds = 5000
-
-    redirectUri = "http://genesis-uat-host/gwf/logon"
-}
-```
-
-
-### Full configuration
-
-```kotlin
-oidc{
-  loginEndpoint = "http://uat-host/login"
-  identityProvider("uat-oidc"){
-    client{
-      id = "appplication-id"
-      secret = "application-secret"
-    }
-
-    endpoints{
-      token = "uat-oidc:1337/token"
-      authorization = "uat-odic:1337/auth"
-    }
-    
-    verification {
-      publicKeyUrl = "http://uat-oidc:1377/.well_known/certs.jwks"
-    }
-    
-    scopes("openid", "profile")
-
-    onNewUser = NewUserStrategy.ALWAYS_ALLOW
-
-    usernameClaim = "name"
-
-    tokenLifeInSeconds = 5000
-
-    redirectUri = "http://genesis-uat-host/gwf/logon"
-}
-```

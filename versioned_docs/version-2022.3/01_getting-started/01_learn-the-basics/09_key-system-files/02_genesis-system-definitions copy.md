@@ -79,4 +79,4 @@ systemDefinition {
 }
 ```
 
-Further information can be found on our [system definitions](/server/configuring-runtime/system-definitions/) page.
+Further information can be found on our [system definitions](../../../../server/configuring-runtime/system-definitions/) page.

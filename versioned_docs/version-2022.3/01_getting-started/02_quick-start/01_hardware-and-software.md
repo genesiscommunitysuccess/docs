@@ -52,15 +52,15 @@ Now you can configure the `@genesislcap` scope of `npm` to use our jfrog registr
 ### .npmrc set-up
 
 1. Create an `.npmrc` file in your user home directory.
- 2. Using your jfrog credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
- 3. Click on the `Welcome <username>` on the top right corner.
- 4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
- 5. Select `npm` for both **Package Type** and **Repository**.
- 6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in to the Genesis repository on jfrog.) Then press **Enter**. 
+2. Using your jfrog credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
+3. Click on the `Welcome <username>` on the top right corner.
+4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns. 
+5. Select `npm` for both **Package Type** and **Repository**.
+6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in to the Genesis repository on jfrog.) Then press **Enter**. 
 
  ![](/img/set-me-up.png)
 
- 7. Scroll down _inside_ the Set Me Up dialog. At the bottom of the page, you will find a code sample for .npmrc, which contains your scope information, including user name an encrypted password. Copy this and paste it into the file you created in the previous step. For reference, the snippet should look something like this (**Do not** copy the below example directly - because it contains dummy information!):
+7. Scroll down _inside_ the Set Me Up dialog. At the bottom of the page, you will find a code sample for .npmrc, which contains your scope information, including user name an encrypted password. Copy this and paste it into the file you created in the previous step. For reference, the snippet should look something like this (**Do not** copy the below example directly - because it contains dummy information!):
 
 ```shell
 @<SCOPE>:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/
@@ -80,6 +80,11 @@ Now you can configure the `@genesislcap` scope of `npm` to use our jfrog registr
 @genesislcap/foundation-ui@0.0.26 | UNLICENSED | deps: 23 | versions: 111
 Genesis Foundation UI
 ```
+
+<!-- NO EDIT (NEXT 4 LINES) -->
+import StrictSSL from '../../_includes/_strict-ssl.md'
+
+<StrictSSL />
 
 Please [contact us](mailto:support@genesis.global?subject=.npmrc%20Setup) if you run into any problems.
 

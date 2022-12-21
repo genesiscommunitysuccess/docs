@@ -45,7 +45,7 @@ If you build a project upon one of the Genesis seed apps, then the `Login` micro
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always you run the `$ npm run bootstrap` command again. You can see more information on the [package.json basics](/web/basics/package-json-basics/) page.
+- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always you run the `$ npm run bootstrap` command again. You can see more information on the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {

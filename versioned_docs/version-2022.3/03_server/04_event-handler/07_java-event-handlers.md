@@ -11,7 +11,7 @@ tags:
 
 
 
-Event Handlers can be written in Java using Event Handler [APIs](/database/api-reference/event-handler-api). On this page, we look at Event Handlers written using the [Rx3 Event handlers](/database/api-reference/event-handler-api/#rx3eventhandler)
+Event Handlers can be written in Java using Event Handler [APIs](../../../database/api-reference/event-handler-api). On this page, we look at Event Handlers written using the [Rx3 Event handlers](../../../database/api-reference/event-handler-api/#rx3eventhandler)
 
 :::note
 
@@ -147,7 +147,7 @@ So far, we have seen `ack` and `nack.  There is a third reply type: `warningNack
 
 ## Transactional Event Handlers (ACID)
 
-If you want your  `eventHandler` to comply with ACID, you need to use the RxEntityDb [writeTransaction](/database/database-interface/entity-db/#write-transactions). Any exception or nack returned will result in a complete rollback of all parts of the `onCommit` and `onValidate` (the transaction also covers read commands) methods.
+If you want your  `eventHandler` to comply with ACID, you need to use the RxEntityDb [writeTransaction](../../../database/database-interface/entity-db/#write-transactions). Any exception or nack returned will result in a complete rollback of all parts of the `onCommit` and `onValidate` (the transaction also covers read commands) methods.
 
 ```java
 
