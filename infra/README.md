@@ -13,6 +13,12 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `cdk synth`       emits the synthesized CloudFormation template
 * `npm test`        tests your infrastructure chagnes
 
+## Pre-requisites
+
+Ensure you have the CDK toolkit available:
+
+* `npm install -g aws-cdk`
+
 ## Environment variables
 
 Note that you'll need to set three mandatory environment variables in order to run any of the above commands. Those environment variables are:

@@ -567,6 +567,14 @@ a.table-of-contents__link--active {
   color: var(--ifm-navbar-link-color);
 }
 
+/*
+ * Less than ideal: hide the 'Next' link in the dropdown if we don't want users to see it. Doesn't remove it from the
+ * markup and won't stop the link being crawled or indexed
+ */
+.version-menu--hide-next + .dropdown__menu > li:first-child {
+  display:none;
+}
+
 /* Styles for the 404 page */
 .heading-404 {
   font-size: 32px;
