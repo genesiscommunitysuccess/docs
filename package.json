@@ -7,6 +7,7 @@
     "build": "docusaurus build",
     "build:next": "SHOW_NEXT=true docusaurus build",
     "build:base_url": "BASE_URL=/secure/ docusaurus build",
+    "build:production": "BASE_URL=/docs/ BRANCH=master docusaurus build",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve",

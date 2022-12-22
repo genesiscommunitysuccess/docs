@@ -51,7 +51,7 @@ export class AmplifyDocsStack extends cdk.Stack {
             },
             build: {
               commands: [
-                'BASE_URL=/docs/ GTM_ID=$GTM_ID npm run build',
+                'BASE_URL=/docs/ GTM_ID=$GTM_ID BRANCH=$AWS_BRANCH npm run build',
                 'mkdir output',
                 'mv build output/docs',
               ],
@@ -62,7 +62,11 @@ export class AmplifyDocsStack extends cdk.Stack {
             files: ['**/*'],
           },
         },
-      })
+      }),
+      environmentVariables: {
+        // With versioning enabled our Docusaurus builds are getting big, slow, and memory-hungry
+        'NODE_OPTIONS': '--max_old_space_size=6144'
+      }
     });
 
     // Add our custom domain to the application. As long as the domain resolves to a locally
