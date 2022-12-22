@@ -5,6 +5,10 @@ const routeBasePath = '/';
 const processedMap = require('./plugins/api-docs/processedMap');
 const GTM_ID = process.env.GTM_ID || 'GTM-5GTR43J'; // default to uat GTM_ID, prod one should be set on CI (master)
 
+const DEV_ANALYTICS = 'https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS_dev_faea79accbcd255c7f124004.js';
+const PROD_ANALYTICS = 'https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS.js';
+const MATOMO_JSLOADER = GTM_ID ===  'GTM-5GTR43J' ? DEV_ANALYTICS : PROD_ANALYTICS;
+
 /**
  * For local / debug purposes.
  * If truthy it will include the current version (labeled as Next).
@@ -155,10 +159,7 @@ module.exports = {
       additionalLanguages: ['java', 'kotlin', 'powershell', 'groovy'],
     },
     matomo: {
-      matomoUrl: 'https://newgenesisglobal.matomo.cloud/',
-      siteId: '2',
-      phpLoader: 'matomo.php',
-      jsLoader: 'matomo.js',
+      jsLoader: MATOMO_JSLOADER,
     },
   },
   i18n: {

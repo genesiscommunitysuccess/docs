@@ -12,7 +12,8 @@
     "serve": "docusaurus serve",
     "start": "docusaurus start --port 8080 --host 0.0.0.0",
     "start:next": "SHOW_NEXT=true docusaurus start --port 8080 --host 0.0.0.0",
-    "swizzle": "docusaurus swizzle"
+    "swizzle": "docusaurus swizzle",
+    "postinstall": "patch-package --error-on-fail"
   },
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^0.11.0",
@@ -57,6 +58,7 @@
     ]
   },
   "devDependencies": {
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "patch-package": "^6.5.0"
   }
 }
