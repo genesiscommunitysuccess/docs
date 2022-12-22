@@ -20,7 +20,7 @@ GPALX is a full-stack low-code language for building applications. By writing up
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Business logic" link="../gpalx/business-logic/aggregation/" text="Create business logic as well-defined Events, Transitions & Materialized Views.">
+        <QuickCard heading="Business logic" link="../gpalx/business-logic/aggregation/" text="Create business logic as well-defined events, transitions & materialized views.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
@@ -28,7 +28,7 @@ GPALX is a full-stack low-code language for building applications. By writing up
         </QuickCard>
     </Grid>
         <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Data model" link="../gpalx/data-model/tables/" text="Define and map business objects as Fields, Tables & States.">
+        <QuickCard heading="Data model" link="../gpalx/data-model/tables/" text="Define and map business objects as fields, tables & states.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
