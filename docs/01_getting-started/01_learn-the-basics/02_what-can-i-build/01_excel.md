@@ -1,6 +1,6 @@
 ---
-title: 'What can I build? - Excel'
-sidebar_label: 'Excel'
+title: 'What can I build? - EUC replacement'
+sidebar_label: 'EUC replacement'
 id: excel
 keywords: [getting started, basics, excel]
 tags:
