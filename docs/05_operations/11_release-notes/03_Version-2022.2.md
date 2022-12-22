@@ -213,7 +213,7 @@ The basis of this version is:
     - [Reporting](../../../web/micro-front-ends/front-end-reporting/foundation-reporting)
 - Added multiple parameter support for Testing Suite in foundation-testing
 - More code examples in our Showcase Client App, including selecting values and labels in our combobox programmatically.
-- Added [slotted-styles](https://docs.genesis.global/secure/getting-started/go-to-the-next-level/customize-look-and-feel/#styling-grid-pro) component to allow overriding component styles.
+- Added [slotted-styles](../../../getting-started/go-to-the-next-level/customize-look-and-feel/#styling-grid-pro) component to allow overriding component styles.
 
 ### Maintenance
 - Various CLI tweaks to support continuing DSL work.
