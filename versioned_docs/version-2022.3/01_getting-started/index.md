@@ -6,7 +6,7 @@ id: introduction
 import QuickCard from '@site/src/components/Card';
 import { Grid } from '@mui/material'
 
-The Learning area for the Genesis low-code platform is aimed at people who **already have some development knowledge**. Ideally, you should have experience of Java and/or Javascript, but development experience in any object-oriented language is a good starting point.
+The Learning area for the Genesis low-code platform is aimed at people who **already have some development knowledge**. Ideally, you should have experience of Java and/or JavaScript, but development experience in any object-oriented language is a good starting point.
 
 You can take the **slow road** or the **fast track** through this area. We recommend the slow road, but if you want to whizz through things, be our guest.  
 
