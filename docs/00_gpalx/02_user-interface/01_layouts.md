@@ -1,6 +1,6 @@
 ---
 title: 'Layouts'
-id: layouts
+id: Layouts
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -9,16 +9,16 @@ import TabItem from '@theme/TabItem';
 
 ## Introduction
 
-With GPALX you have full control over your layouts. This is achieved by utilizing two basic layout components (**vertical** & **horizontal**) along with their various parameters. The `verticalLayout` and `horizontalLayout` render their contents vertically and horizontally respectively. 
+With GPALX you have full control over your layouts. This is achieved by utilising two basic layout components (**vertical** & **horizontal**) along with their various parameters. The `verticalLayout` and `horizontalLayout` render their contents vertically and horizontally, respectively. 
 
 With layouts you can:
 
 - display your elements in any layout you like by using the vertical and horizontal components
 - use default options or override them for more control
 
-## Layout Examples
+## Layout examples
 
-### Vertical Page
+### Vertical page
 
 ```kotlin
 ui("Vertical Layout") {
@@ -101,7 +101,7 @@ ui("Horizontal Layout") {
 ![](/img/hl-em-attr.PNG)
 
 
-## Component Examples
+## Component examples
 
 ### Vertical
 
@@ -251,7 +251,7 @@ Click on the tabs below for more details.
 <Tabs>
 <TabItem value="vertical" label="Vertical Layout" default >
 
-## Alignment Examples
+## Alignment examples
 ### Vertical
 
 
