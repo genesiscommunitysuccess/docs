@@ -1,15 +1,15 @@
 ---
 title: 'Create application'
-id: create-application
+id: Create-application
 ---
 
 # Create application
 
-To simplify getting started, [GenX CLI](../../../gpalx/quick-start/introduction/#genx-cli) tool can create  projects from a number of available seeds (application templates). We will use a seed tailored for GPALX in this guide.
+To simplify getting started, [GenX CLI](../../../gpalx/quick-start/introduction/#genx-cli) tool can create projects from a number of available seeds (application templates). We will use a seed tailored for GPALX in this guide.
 
 > A project seed takes care of the initial file structure and dependencies, allowing you to focus on the task at hand.
 
-## Expected Result
+## Expected result
 By the end of this step, we should have:
 - created and configured a new project
 
@@ -23,7 +23,7 @@ This will allow us to start building application functionality.
 
 You are now ready to generate a new project.
 
-### Choosing Project Type
+### Choosing project type
 
 From the terminal, run:
 
@@ -58,7 +58,7 @@ Select `create GPALX application`:
 ```
 
 ### Configuration
-We now want to configure our project. There are a number of fields to fill in to help us get the best possible start.
+You are now ready to configure your project. There are a number of fields to fill in to help us get the best possible start.
 
 
 :::tip
@@ -70,7 +70,7 @@ For example `y/N`: default here is 'N' (No).
 We will use `alpha` in our examples from now on, but you are free to choose any name. 
 :::
 
-Let's choose the target directory and name for our project:
+Let's choose the target directory and name for your project:
 
 ```shell
 ? Create an app in current directory Yes
@@ -104,13 +104,13 @@ Application is now created and dependencies are installed. Our expected output s
 ✔ Install success.
 ```
 
-We can now configure whether to use Docker (highly recommended) or a WSL/CentOS environment.
+You can now configure whether to use Docker (highly recommended) or a WSL/CentOS environment.
 
 ```shell
 Use Docker (Y/n)
 ```
 
-Next you will be asked to provide a Group ID, this determines the package names in your application:
+Next, you will be asked to provide a Group ID. This determines the package names in your application:
 
 ```shell
 ? Group Id global.genesis
