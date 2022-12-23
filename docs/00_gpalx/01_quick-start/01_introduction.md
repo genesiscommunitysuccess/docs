@@ -1,6 +1,6 @@
 ---
 title: 'Introduction'
-id: Introduction
+id: introduction
 ---
 
 # Introduction
