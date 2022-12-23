@@ -1,6 +1,6 @@
 ---
 title: 'Add features'
-id: add features
+id: add-features
 ---
 
 # Add features
