@@ -1,6 +1,6 @@
 ---
 title: 'Summary'
-id: Summary
+id: summary
 ---
 
 **That’s it** 🎉👏🏻
