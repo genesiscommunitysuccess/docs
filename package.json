@@ -23,7 +23,7 @@
     "@docusaurus/theme-live-codeblock": "^2.1.0",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
-    "@genesislcap/documentation-components": "5.0.2-alpha-37e13b7.0+37e13b7",
+    "@genesislcap/documentation-components": "6.0.1-alpha-8c81145.0+8c81145",
     "@genesislcap/foundation-entity-management": "5.0.1-docs.19",
     "@genesislcap/foundation-filters": "5.0.1-docs.19",
     "@genesislcap/foundation-header": "5.0.1-docs.19",
