@@ -1,6 +1,6 @@
 ---
 title: 'Introduction'
-id: introduction
+id: Introduction
 ---
 
 # Introduction
@@ -56,7 +56,7 @@ There is more information in our [GenX](../../../getting-started/prerequisites/g
 Upon completion, you should have knowledge of how to build an application using GPALX with a keen focus on:
 - setting up an environment for this and future *low-code* applications
 - creating a starting project structure using the [GPALX](../../../gpalx) application seed
-- modelling data with clear type definitions
+- modelling data with clear definitions
 - building grid views to visualise data
 - setting up forms to manipulate the data set
 - integrating with existing Genesis components such as the authentication component 
