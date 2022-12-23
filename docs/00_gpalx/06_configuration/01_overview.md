@@ -5,14 +5,14 @@ id: overview
 
 # Configure application
 
-When you first created your app via the GenX CLI we applied some defaults to get you started quickly.
+When you first created your app via the GenX CLI, we applied some defaults to get you started quickly.
 This section will show you where to configure some of the different parts of your application.
 
 :::tip
 After you change any config, make sure to do a clean build of your application (`genx app reassemble`) to see the effects.
 :::
 
-## Application Version
+## Application version
 
 The application version defaults to `1.0.0-SNAPSHOT` and can be found in the `build.gradle.kts` as highlighted in the below code snippet:
 
@@ -35,7 +35,7 @@ group = "global.genesis"
 version = "1.0.0-SNAPSHOT"
 ```
 
-## Gradle Properties
+## Gradle properties
 
 The rest of the config can be found in the `gradle.properties` file of your application.
 
@@ -67,6 +67,6 @@ ssh-port=1337
 Changing JVM arguments is for advanced users only, update this config with care.
 :::
 
-### API Host
+### API host
 
 The web front end will attempt to connect to your local Genesis server by default. If you want to connect to a remote server instead, update the `apiHostUrl` property in `gradle.properties`.
