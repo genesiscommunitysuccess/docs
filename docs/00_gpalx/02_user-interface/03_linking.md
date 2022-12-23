@@ -1,6 +1,6 @@
 ---
-title: 'Linked UI components'
-id: linked-ui-components
+title: 'Linking'
+id: linking
 ---
 
 # Linked UI components
@@ -119,7 +119,7 @@ filter {
 }
 ```
 
-We can combine multiple conditions and use the same [conditional operators](../../../gpalx/features/aggregation/#simple-conditions) as when configuring aggregation (`eq`, `neq`, `gt` etc.):
+We can combine multiple conditions and use the same [conditional operators](../../../gpalx/business-logic/aggregation/#simple-conditions) as when configuring aggregation (`eq`, `neq`, `gt` etc.):
 
 ```kotlin
 filter {

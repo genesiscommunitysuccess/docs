@@ -5,21 +5,21 @@ id: add-features
 
 # Add features
 
-We've now got our project created and configured. We've started our servers, now we're ready to add features to our application.
+You've now got our project created and configured. You've started your servers, now you're ready to add features to your application.
 
 ### Expected result
 
-For this part of the guide, we've picked out a few core features we can demonstrate while building a sample application. By the end of this step we will have:
+For this part of the guide, we've picked out a few core features we can demonstrate while building a sample application. By the end of this step you will have:
 
 - the ability to make changes to the user interface and reflect those changes in the browser
-- added a data **model** to describe the structure we'd like
+- added a data **model** to describe the structure you'd like
 - configured a **grid** to display the application data
-- added a **form** to insert new records into our database
+- added a **form** to insert new records into your database
 
 
 ### Simple UI changes
 
-Our page title has been auto-generated based on our application name. Let's modify it and add simple text heading to our page. We'll start by opening `app-ui.kts`:
+Your page title has been auto-generated based on your application name. Let's modify it and add simple text heading to your page. We'll start by opening `app-ui.kts`:
 
 * In IntelliJ press the `Shift` key twice and start typing the filename
 * In VS Code press `Ctrl + P` (`Cmd + P` on a Mac) and start typing the filename
@@ -42,13 +42,13 @@ ui("Alpha Trading Dashboard") {
 }
 ```
 
-We should now see the updated page title and heading text:
+You should now see the updated page title and heading text:
 
 ![](/img/gpl-seed-start-first-changes.png)
 
 ## Model
 
-Now we're ready to define the fields and tables that make up the [data model](../../../getting-started/quick-start/define-the-data-model/).
+Now you're ready to define the fields and tables that make up the [data model](../../../getting-started/quick-start/define-the-data-model/).
 
 Right-click on `src/main/kotlin/global/genesis/alpha/model` folder in your IDE and add a new file called `Trade.kt`:
 
@@ -79,7 +79,7 @@ enum class TradeStatus { NEW, ALLOCATED, CANCELLED }
 
 ## Grid and form
 
-Grids are our primary way of displaying information. Let's add a grid to display our new `TRADE` model and a form to allow users to submit new trades. We can achieve this by adding an `entityManager` component as shown below. Specifying the `ADD` operation will allow us to add new trade records.
+Grids are our primary way of displaying information. Let's add a grid to display our new `TRADE` model and a form to allow users to submit new trades. You can achieve this by adding an `entityManager` component as shown below. Specifying the `ADD` operation will allow you to add new trade records.
 
 ```kotlin
  ui("Alpha Trading Dashboard") {
@@ -99,7 +99,7 @@ Grids are our primary way of displaying information. Let's add a grid to display
 
 ## Deploy
 
-Adding an entity manager component will require new server resources to be generated. We can generate and deploy them with the following command:
+Adding an entity manager component will require new server resources to be generated. You can generate and deploy them with the following command:
 
 ```shell
 genx app deploy
@@ -107,7 +107,7 @@ genx app deploy
 
 Deployment involves restarting a server, which typically takes several minutes. You can check progress with `genx app status`. You can ignore any `Unsupported key type (ssh-ed25519)` warnings if present.
 
-Once deployment has been completed, we will see a grid. Yours will be empty at this stage - to populate it with trades, click the **Add** button.
+Once deployment has been completed, you will see a grid. Yours will be empty at this stage - to populate it with trades, click the **Add** button.
 
 ![](/img/gpl-seed-grid.png)
 
