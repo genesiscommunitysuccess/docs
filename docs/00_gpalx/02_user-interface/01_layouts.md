@@ -1,6 +1,6 @@
 ---
 title: 'Layouts'
-id: Layouts
+id: layouts
 ---
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
