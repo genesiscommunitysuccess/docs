@@ -1,6 +1,6 @@
 ---
 title: 'Create application'
-id: Create-application
+id: create-application
 ---
 
 # Create application
