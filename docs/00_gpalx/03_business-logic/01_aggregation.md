@@ -1,6 +1,6 @@
 ---
 title: 'Aggregation'
-id: Aggregation
+id: aggregation
 ---
 
 # Aggregation
