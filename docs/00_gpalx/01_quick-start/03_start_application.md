@@ -1,6 +1,6 @@
 ---
 title: 'Start application'
-id: Start-application
+id: start-application
 ---
 
 import Tabs from '@theme/Tabs';
@@ -58,7 +58,7 @@ genx app stop
 Before starting with the server set-up, make sure that:
 
 - you have set up a user with the name of the application (`alpha` in our case)
-- foundationDB is running (if it is not, run `systemctl start foundationdb` from WSL terminal)
+- FoundationDB is running (if it is not, run `systemctl start foundationdb` from WSL terminal)
 
 If unsure about the above, refer to [WSL installation instructions](../../../getting-started/prerequisites/installing-wsl/).
 
