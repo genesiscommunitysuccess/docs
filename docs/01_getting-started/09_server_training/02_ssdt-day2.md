@@ -1,5 +1,5 @@
 ---
-title: Server Specialist Developer Training - Day two
+title: Server Developer Training - Day two
 sidebar_label: Day two
 sidebar_position: 3
 id: 01_ssdt-day2

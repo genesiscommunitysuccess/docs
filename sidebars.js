@@ -73,7 +73,7 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Server Specialist Developer Training',
+      label: 'Server Developer Training',
       collapsed: true,
       items: [
         {
