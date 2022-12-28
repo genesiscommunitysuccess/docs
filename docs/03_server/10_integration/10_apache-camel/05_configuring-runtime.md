@@ -29,7 +29,7 @@ The process definition may look similar to the following:
     <start>true</start>
     <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
     <module>genesis-pal-camel</module>
-    <package>global.genesis.pal.camel</package>
+    <package>global.genesis.camel.pal</package>
     <script>position-camel.kts</script>
     <description>Camel integrations</description>
     <classpath>position-messages*,position-camel*,position-camel-libs*.jar</classpath>
