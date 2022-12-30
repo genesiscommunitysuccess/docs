@@ -26,7 +26,7 @@ You'll need to set up a GATEWAY entry for each of the channels that the app need
 | --- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | GATEWAY_ID | A unique identifier for this gateway, which will be referenced in the NOTIFY_ROUTE table when sending a message to the channel: for example, the Channel name could be used |
 | GATEWAY_TYPE | Should be set to `GenesisScreen`                                                                                                                                            |
-| GATEWAY_VALUE | This should be set to the PROFILE that contains the list of users that you would like the pop-up notificatins to go to.                                                     |
+| GATEWAY_VALUE | N/A                                                                                                                                                                         |
 | INCOMING_TOPIC | N/A - Notify does not currently support inbound messages from the channel.                                                                                                  |
 | CONNECTION_ID | N/A                                                                                                                                                                         |
 
