@@ -148,7 +148,7 @@ The data is all on one single line. It has three strings, and the third string h
     "to": ["jason <jason@email.com>", "carol@email.com>"],
     "cc": ["susan@email.com", "Tom <tom@email.com>"],
     "bcc": [],
-    "contents" : "Content of Message Here"
+    "content" : "Content of Message Here"
   }
 } 
 ```
