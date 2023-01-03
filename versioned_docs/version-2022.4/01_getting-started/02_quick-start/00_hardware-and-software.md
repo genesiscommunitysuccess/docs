@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start - Hardware and software'
+title: 'Quick start - hardware and software'
 sidebar_label: 'Hardware and software'
 id: hardware-and-software
 sidebar_position: 2
@@ -21,7 +21,7 @@ This page gives you the hardware and software requirements needed in order to ru
 ## Recommended hardware and operating system
 
 * Operating system : Windows 10 Pro
-* RAM : 16GB minimum, 32GB preferred (if running full applications locally)
+* RAM : 32GB minimum
 * CPU : 8 Core
 * SSD : 250GB
 
@@ -49,6 +49,7 @@ For access to Genesis packages, you need a valid [jfrog artifactory](https://jfr
 
 
 ### jFrog artifactory with SAML 
+
 
 **Pre-requisite**
 
@@ -84,7 +85,6 @@ Genesis Foundation UI
 https://github.com/genesislcap/foundation-ui#readme
 ```
 
-<!-- NO EDIT (NEXT 4 LINES) -->
 import StrictSSL from '../../_includes/_strict-ssl.md'
 
 <StrictSSL />
