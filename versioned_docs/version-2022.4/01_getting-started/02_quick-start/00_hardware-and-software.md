@@ -47,10 +47,19 @@ You can use a range of IDEs (for example, Eclipse) with the Genesis platform, bu
 
 For access to Genesis packages, you need a valid [jfrog artifactory](https://jfrog.com/artifactory/) username and password. 
 
-### .npmrc set-up
+
+### jFrog artifactory with SAML 
+
+
+**Pre-requisite**
+
+Install JDK11
+
+Install node.js (npm 8)
+
+## .npmrc set-up
 
 First, you need to configure the `@genesislcap` scope of `npm` in order to use our jfrog registry.
-
 
 1. Create an empty `.npmrc` file in your user home directory.
 2. Using your jfrog credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
@@ -60,7 +69,9 @@ First, you need to configure the `@genesislcap` scope of `npm` in order to use o
 
  ![](/img/set-me-up.png)
 
- 6. At the bottom of the window is a code snippet of 5 lines (highlighted in the picture above. This includes an encrypted version of your password (that we have blocked in this picture). Copy this and paste it into the empty **.npmrc** file you created earlier. 
+ 6. Note: if you have two **.npmrc** files use the type NPMRC file (not Text Document file) when completing these steps.
+ 
+ At the bottom of the window is a code snippet of 5 lines (highlighted in the picture above. This includes an encrypted version of your password (that we have blocked in this picture). Copy this and paste it into the empty **.npmrc** file you created earlier. 
 
 7. In the file, replace `<SCOPE>` with `genesislcap`, so that the line reads:
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
@@ -87,4 +98,3 @@ Finally, you should have a **gradle.properties** file inside a **.gradle** folde
 genesisArtifactoryUser=<JaneDee>
 genesisArtifactoryPassword=<beONneON74>
 ```
-
