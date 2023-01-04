@@ -15,8 +15,8 @@ The application components enable you to create the working event-driven applica
 
 | Name                                                                                        | Category  | Description                                                
 |---------------------------------------------------------------------------------------------|--------------------|------------------------------------------------------------|
-| [Data Server](server/data-server/introduction/)                                             | Data & distribution  | Real-time, low-latency data distribution over Websockets   |
-| [Event Handler](server/event-handler/introduction/) .                                       | Data & distribution  | Processes business logic in response to system events      |
-| [Request Server](server/request-server/introduction/)                                       | Data & distribution  | Request / reply-based data distribution exposed over REST  |
-| [Consolidation Manager](server/consolidator/introduction/)                                  | Data processing & analytics  | Efficient, real-time data aggregation and analytics        |
-| [Evaluator](server/evaluator/introduction/)                                                 | Data processing & analytics  | Triggering events based on time or rule-based conditions   |
+| [Data Server](../../../03_server/02_data-server/01_introduction.md)                             | Data & distribution  | Real-time, low-latency data distribution over Websockets   |
+| [Event Handler](../../../03_server/04_event-handler/01_introduction.md)                         | Data & distribution  | Processes business logic in response to system events      |
+| [Request Server](../../../03_server/03_request-server/01_introduction.md)                       | Data & distribution  | Request / reply-based data distribution exposed over REST  |
+| [Consolidation Manager](../../../03_server/07_consolidator/01_introduction.md)                  | Data processing & analytics  | Efficient, real-time data aggregation and analytics        |
+| [Evaluator](../../../03_server/08_evaluator/01_introduction.md)                                 | Data processing & analytics  | Triggering events based on time or rule-based conditions   |

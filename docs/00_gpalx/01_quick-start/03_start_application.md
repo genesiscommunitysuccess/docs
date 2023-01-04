@@ -8,7 +8,7 @@ import TabItem from '@theme/TabItem';
 
 # Start application
 
-By the end of this section we should have all parts of our application running. We shall:
+By the end of this section you should have all parts of our application running. You shall:
 
 - have our API, Web and database servers running
 - load user interface in the browser
@@ -19,18 +19,18 @@ By the end of this section we should have all parts of our application running. 
 <Tabs>
   <TabItem value="docker" label="Docker" default>
 
-We can now start the servers:
+You can now start the servers:
 
 ```shell
 genx app run
 ```
 
 :::info
-You can ocassionally run into intermittent network issues such as `npm ERR! Invalid response body` or database connectivity issues such as `Failure initialising SQL client... Database is unavailable`. If you are experiencing any of the above, simply re-run `genx app run`.
+You can ocassionally run into intermittent network issues such as `npm ERR! Invalid response body` or database connectivity issues such as `Failure initialising SQL client... Database is unavailable`. If you are experiencing any of these, simply re-run `genx app run`.
 
 If they persist, you can run `genx app restart`. This will rebuild Docker images.
 
-Finally, if none of the above steps have helped, you can run `genx app run clear-docker-cache` to clear your cache and try running `genx app run` again.
+Finally, if none of the above steps help, you can run `genx app run clear-docker-cache` to clear your cache and try running `genx app run` again.
 :::
 
 It will take a few minutes to get everything ready. Eventually, you should see the following message:
@@ -57,7 +57,7 @@ genx app stop
 
 Before starting with the server set-up, make sure that:
 
-- We have set up a user with name of the application (`alpha` in our case)
+- you have set up a user with the name of the application (`alpha` in our case)
 - FoundationDB is running (if it is not, run `systemctl start foundationdb` from WSL terminal)
 
 If unsure about the above, refer to [WSL installation instructions](../../../getting-started/prerequisites/installing-wsl/).
@@ -84,18 +84,18 @@ genx app dbmon
 
 ### Build and deploy
 
-Next, let's build and deploy our application:
+Next, let's build and deploy your application:
 
 ```shell
 genx app deploy
 ```
 
-After this command is completed, we will have a basic Genesis server running.
+After this command is completed, you will have a basic Genesis server running.
 
 
-### Making the UI available in our web browser
+### Making the UI available in your web browser
 
-Next, let's start automatic UI configuration regeneration:
+Next, start the automatic UI configuration regeneration:
 
 ```shell
 genx app watch
@@ -118,7 +118,7 @@ We can now open <a href="http://localhost:9000/" target="_blank">http://localhos
 
 ![](/img/gpl-seed-login.png)
 
-Our server is running, however the individual services it provides are still starting up. The login button will stay disabled until they are fully up and running, which can take a few minutes. To check progress, you can open another terminal window and run:
+Your server is running, however the individual services it provides are still starting up. The login button will stay disabled until they are fully up and running, which can take a few minutes. To check progress, you can open another terminal window and run:
 
 ```shell
 genx app status
@@ -154,7 +154,7 @@ At the moment our home page is virtually empty - we will fix that in the next st
 
 Congratulations, you now have:
 
-- API, Web and database servers running
+- API, web and database servers running
 - auth component loaded and configured
 - user interface available in the browser
 - a working connection between the server and user interface

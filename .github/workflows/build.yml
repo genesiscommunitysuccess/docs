@@ -5,9 +5,6 @@ on:
   pull_request:
     branches:
       - master
-      - uat
-      - developer-training
-      - low-code
 
 jobs:
   build:
@@ -46,4 +43,5 @@ jobs:
       run: npm run build
       env:
           NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
-          BASE_URL: /secure/
+          BRANCH: ${{ github.base_ref }}
+          BASE_URL: /docs/

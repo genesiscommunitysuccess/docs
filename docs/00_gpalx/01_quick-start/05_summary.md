@@ -15,4 +15,4 @@ We have also learned how to:
 - model data with clear type definitions
 - build grid views to visualise data
 - set up forms to manipulate the data set
-- Integrate with our existing components, in this case our Login (auth) component 
+- integrate with our existing components, in this case, our Login (auth) component 

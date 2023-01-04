@@ -344,7 +344,7 @@ consolidator(TRADE, ORDER) {
 }
 ```
 
-In the above example, we aggregate data from the TRADE table into the ORDER table. We group by orderId and we count the number of trades and sum the notional. For further details, please see [here](https://docs.genesis.global/secure/creating-applications/defining-your-application/business-logic/consolidators/consolidators/).
+In the above example, we aggregate data from the TRADE table into the ORDER table. We group by orderId and we count the number of trades and sum the notional. For further details, please see [here](../../03_server/07_consolidator/01_introduction.md).
 
 The main advantages over the previous consolidator syntax are:
 
