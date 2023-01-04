@@ -36,7 +36,7 @@ docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
 3. Run the following command:
 
 ```shell
-docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host host.docker.internal:host-gateway genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
 ```
 
 
