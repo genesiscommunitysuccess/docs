@@ -11,9 +11,10 @@ tags:
     - introduction
 ---
 
-You can run a full Genesis application in a self-contained Docker container.
+You can run a full Genesis application in a self-contained Docker container. There are two simple ways:
 
-This page describes how to run the application in Docker, either with our helpful plugin, or creating the Dockerfile and image yourself.
+- using our helpful plugin
+- by creating the Dockerfile and image yourself
 
 ## Prerequisites
 
@@ -33,4 +34,4 @@ This means that you will **not** be able to achieve the following:
 
 - horizontal scaling
 - zero-downtime High Availability
-- multi-ontainer applications
+- multi-container applications

@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start - Hardware and software'
+title: 'Quick start - hardware and software'
 sidebar_label: 'Hardware and software'
 id: hardware-and-software
 sidebar_position: 2
@@ -21,7 +21,7 @@ This page gives you the hardware and software requirements needed in order to ru
 ## Recommended hardware and operating system
 
 * Operating system : Windows 10 Pro
-* RAM : 16GB minimum, 32GB preferred (if running full applications locally)
+* RAM : 32GB minimum
 * CPU : 8 Core
 * SSD : 250GB
 
@@ -47,10 +47,19 @@ You can use a range of IDEs (for example, Eclipse) with the Genesis platform, bu
 
 For access to Genesis packages, you need a valid [jfrog artifactory](https://jfrog.com/artifactory/) username and password. 
 
-### .npmrc set-up
 
-First, you need configure the `@genesislcap` scope of `npm` to use our jfrog registry.
+### jFrog artifactory with SAML 
 
+
+**Pre-requisite**
+
+Install JDK11
+
+Install node.js (npm 8)
+
+## .npmrc set-up
+
+First, you need to configure the `@genesislcap` scope of `npm` in order to use our jfrog registry.
 
 1. Create an empty `.npmrc` file in your user home directory.
 2. Using your jfrog credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
@@ -60,7 +69,9 @@ First, you need configure the `@genesislcap` scope of `npm` to use our jfrog reg
 
  ![](/img/set-me-up.png)
 
-6. At the bottom of the window is a code snippet of 5 lines (highlighted in the picture above. This includes an encrypted version of your password (which we have blocked in thie picture). Copy this and paste it into the empty **.npmrc** file you created earlier. 
+ 6. Note: if you have two **.npmrc** files use the type NPMRC file (not Text Document file) when completing these steps.
+ 
+ At the bottom of the window is a code snippet of 5 lines (highlighted in the picture above. This includes an encrypted version of your password (that we have blocked in this picture). Copy this and paste it into the empty **.npmrc** file you created earlier. 
 
 7. In the file, replace `<SCOPE>` with `genesislcap`, so that the line reads:
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
@@ -74,7 +85,6 @@ Genesis Foundation UI
 https://github.com/genesislcap/foundation-ui#readme
 ```
 
-<!-- NO EDIT (NEXT 4 LINES) -->
 import StrictSSL from '../../_includes/_strict-ssl.md'
 
 <StrictSSL />
@@ -88,5 +98,3 @@ Finally, you should have a **gradle.properties** file inside a **.gradle** folde
 genesisArtifactoryUser=<JaneDee>
 genesisArtifactoryPassword=<beONneON74>
 ```
-Installing genx
-To follow our Quick Start, you need to [install our genx CLI tool](/getting-started/prerequisites/genx/#installing-genx). This is a simple process that you can do relatively quickly.
