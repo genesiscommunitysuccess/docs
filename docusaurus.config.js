@@ -7,7 +7,7 @@ const GTM_ID = process.env.GTM_ID || 'GTM-5GTR43J'; // default to uat GTM_ID, pr
 
 const DEV_ANALYTICS = 'https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS_dev_faea79accbcd255c7f124004.js';
 const PROD_ANALYTICS = 'https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS.js';
-const MATOMO_JSLOADER = GTM_ID ===  'GTM-5GTR43J' ? DEV_ANALYTICS : PROD_ANALYTICS;
+const MATOMO_URL = GTM_ID ===  'GTM-5GTR43J' ? DEV_ANALYTICS : PROD_ANALYTICS;
 
 /**
  * For local / debug purposes.
@@ -162,7 +162,7 @@ module.exports = {
       additionalLanguages: ['java', 'kotlin', 'powershell', 'groovy'],
     },
     matomo: {
-      jsLoader: MATOMO_JSLOADER,
+      matomoUrl: MATOMO_URL,
     },
   },
   i18n: {
