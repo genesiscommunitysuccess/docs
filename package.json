@@ -6,14 +6,15 @@
     "docusaurus": "docusaurus",
     "build": "docusaurus build",
     "build:next": "SHOW_NEXT=true docusaurus build",
-    "build:base_url": "BASE_URL=/secure/ docusaurus build",
+    "build:base_url": "BASE_URL=/docs/ docusaurus build",
     "build:production": "BASE_URL=/docs/ BRANCH=master docusaurus build",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve",
     "start": "docusaurus start --port 8080 --host 0.0.0.0",
     "start:next": "SHOW_NEXT=true docusaurus start --port 8080 --host 0.0.0.0",
-    "swizzle": "docusaurus swizzle"
+    "swizzle": "docusaurus swizzle",
+    "postinstall": "patch-package --error-on-fail"
   },
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^0.11.0",
@@ -58,6 +59,7 @@
     ]
   },
   "devDependencies": {
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "patch-package": "^6.5.0"
   }
 }
