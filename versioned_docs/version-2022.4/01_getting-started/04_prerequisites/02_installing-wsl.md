@@ -49,7 +49,10 @@ Conversion complete.
 If you are prompted to restart your machine, do that.
 
 
-**If you are installing WSL for the first time,** you need to run the command ```wsl --install``.
+**If you are installing WSL for the first time,** you need to run the command: 
+```
+wsl --install
+```
 
 You will then be prompted to restart your machine. Do that.
 
