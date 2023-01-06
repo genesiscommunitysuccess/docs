@@ -278,13 +278,13 @@ Use all the previous knowledge you've got.
 As a reminder, these are the steps needed to complete this task:
 
 1. Remove all TRADE records using the [DropTable](../../../operations/commands/server-commands/#droptable) server command. To do that, remember the explanation on how to [run server commands](../../../getting-started/developer-training/training-content-day1/#running-server-commands).
-2. Edit **alpha-fields-dictionary.kts** first, and don't forget to run the [generateFields](../../../getting-started/developer-training/training-content-day1/#generatefields) gradle task when you finish this. Remember that fields are defined separately from tables, so that they (including their meta-data) can be re-used across multiple tables and show linkage.​
-3.  Then edit **alpha-tables-dictionary.kts** to add the new tables and the fields you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [genesis-generated-dao](../../../getting-started/developer-training/training-content-day1/#generatedao).
-4. Add queries to the Data Server. These must point to the new tables in the **alpha-dataserver.kts** file. Besides, add TRADE_ID and INSTRUMENT_ID fields in the `ALL_PRICES` query as these fields are not null.
-5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).​
+2. Edit **alpha-fields-dictionary.kts** first, and don't forget to run the [generateFields](../../../getting-started/developer-training/training-content-day1/#generatefields) gradle task when you finish this. Remember that fields are defined separately from tables, so that they (and their meta-data) can be re-used across multiple tables and show linkage.​
+3.  Then edit **alpha-tables-dictionary.kts** to add the new tables and the fields you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID to the TRADE table. When you finish, remember to run [genesis-generated-dao](../../../getting-started/developer-training/training-content-day1/#generatedao).
+4. Add queries to the Data Server. These must point to the new tables in the **alpha-dataserver.kts** file. Also, add the TRADE_ID and INSTRUMENT_ID fields to the `ALL_PRICES` query, as these fields are not null.
+5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities in the **alpha-eventhandler.kts** file. When you finish, remember to [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).​
 
 :::tip adding a new `eventHandler` block
-Example on how to add additional blocks in the `eventHandler`:
+Example on how to add additional `eventHandler` blocks:
 ```kotlin
 eventHandler {
     eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -311,7 +311,7 @@ eventHandler {
 ```
 :::
 
-- [Build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process). You can test by using Postman or Console (see more details in the next section) to insert:
+- [Build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process). You can test using Postman or Console (see more details in the next section) to insert:
   - a new counterparty
   - a new instrument
   - a new trade
