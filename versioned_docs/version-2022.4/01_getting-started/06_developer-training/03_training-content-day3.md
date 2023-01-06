@@ -211,13 +211,14 @@ subprojects  {
 
 #### Adding Testing: AlphaTradeViewTest
 
-Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. We are exteding the class [AbstractDatabaseTest](/operations/testing/integration-testing/#abstractdatabasetest) to allow a proper integration testing, as well as using the [TradeView](/getting-started/developer-training/training-content-day3/#usage) we created to assert results. In summary the new test will:
+Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. We are extending the class [AbstractDatabaseTest](/operations/testing/integration-testing/#abstractdatabasetest) to allow a proper integration testing, as well as using the [TradeView](/getting-started/developer-training/training-content-day3/#usage) we created to assert results. In summary, the new test will:
 * load the necessary data inputs from a CSV file 
 * retrieve data using [Genesis Database API](/database/)
 
 So, first, let's do the following:
-1. Add a new test class to the *alpha-config* module (**alpha\server\jvm\alpha-config\src\test\kotlin**) called `AlphaTradeViewTest.kt`
+1. Add a new test class to the **alpha-config** module (**alpha\server\jvm\alpha-config\src\test\kotlin**) called `AlphaTradeViewTest.kt`
 2. Add TEST_DATA.csv to a data folder (**alpha\server\jvm\alpha-config\src\test\resources\data**)
+
 ```csv
 #INSTRUMENT
 INSTRUMENT_ID,INSTRUMENT_NAME
@@ -228,7 +229,7 @@ COUNTERPARTY_ID,COUNTERPARTY_LEI,COUNTERPARTY_NAME,
 1,335800A8HK6JBITVPA30,Test Ltd,
 2,655FG0324Q4LUVJJMS11,Testing AG,
 ```
-The directory tree should like below:
+The directory tree should like this:
 
 ![](/img/dir-tree-alpha-v2.png)
 
@@ -320,7 +321,7 @@ class AlphaTradeViewTest : AbstractDatabaseTest() {
 }
 ```
 
-You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaTradeViewTest` or from the command line as well.
+You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaTradeViewTest` or from the command line.
 
 ```shell title='Running AlphaTradeViewTest from the command line'
 ./gradlew :genesisproduct-alpha:alpha-config:test --tests "global.genesis.AlphaTradeViewTest"
