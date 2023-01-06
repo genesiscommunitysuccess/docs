@@ -328,14 +328,15 @@ You can run the test from IntelliJ by right-clicking on the test class and selec
 
 #### Adding Testing: AlphaEventHandlerTest
 
-Now we will add a new automated test for checking the Trade insert method we [created](http://localhost:8080/getting-started/developer-training/training-content-day1/#event-handler). We are exteding the class [AbstractGenesisTestSupport](/operations/testing/integration-testing/#abstractgenesistestsupport) to allow a proper integration testing. In summary the new test will:
+Now we will add a new automated test for checking the Trade insert method we [created](http://localhost:8080/getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](/operations/testing/integration-testing/#abstractgenesistestsupport) to allow a proper integration testing. In summary, the new test will:
 * load the necessary data inputs from a CSV file 
-* using the network API [Genesis MessageClient](/database/api-reference/network-api/#genesismessageclient) to call the Event Handler methods.
+* use the network API [Genesis MessageClient](/database/api-reference/network-api/#genesismessageclient) to call the Event Handler methods.
 * retrieve data using [Genesis Database API](/database/)
 
 So, first, let's do the following:
-1. Add a new test class to the *alpha-script-config* module (alpha\server\jvm\alpha-script-config\src\test\kotlin) called `AlphaEventHandlerTest.kt`.
+1. Add a new test class to the **alpha-script-config** module (alpha\server\jvm\alpha-script-config\src\test\kotlin) called `AlphaEventHandlerTest.kt`.
 2. Add TEST_DATA.csv to a data folder (**alpha\server\jvm\alpha-script-config\src\test\resources\data**)
+
 ```csv
 #INSTRUMENT
 INSTRUMENT_ID,INSTRUMENT_NAME
@@ -353,7 +354,7 @@ TRADE_ID,COUNTERPARTY_ID,INSTRUMENT_ID,QUANTITY,PRICE,SYMBOL,DIRECTION,TRADE_DAT
 00000000004TRSP0,2,2,7,644.927,BRL,SELL,1636987969135,JaneDee,NEW
 00000000005TRSP0,2,2,70,0.0,BRL,SELL,1636987969135,JaneDee,NEW
 ```
-The directory tree should like below:
+The directory tree should like this:
 
 ![](/img/dir-tree-alpha-script-config.png)
 
@@ -435,7 +436,7 @@ class AlphaEventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 }
 ```
 
-You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaEventHandlerTest` or from the command line as well.
+You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaEventHandlerTest` or from the command line.
 
 ```shell title='Running AlphaTradeViewTest from the command line'
 ./gradlew :genesisproduct-alpha:alpha-script-config:test --tests "global.genesis.AlphaEventHandlerTest"
@@ -443,7 +444,7 @@ You can run the test from IntelliJ by right-clicking on the test class and selec
 
 #### Find out more about testing
 
-You can find out more about testing double-checking our [Component testing](/operations/testing/component-testing/), [Integration testing](/operations/testing/integration-testing/), and [Unit testing](/operations/testing/unit-testing/) pages. 
+You can find out more about testing by double-checking our [Component testing](/operations/testing/component-testing/), [Integration testing](/operations/testing/integration-testing/), and [Unit testing](/operations/testing/unit-testing/) pages. 
 
 Additionally, you can see more testing examples by looking at the complete source code of this training available on [GitHub](https://github.com/genesiscommunitysuccess/devtraining-alpha). 
 
