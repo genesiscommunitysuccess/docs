@@ -1,5 +1,5 @@
 ---
-title: 'Prerequisites - Installing WSL'
+title: 'Prerequisites - installing WSL'
 sidebar_label: 'Installing WSL'
 id: installing-wsl
 keywords: [getting started, quick start, prerequisites, wsl]
@@ -12,9 +12,7 @@ tags:
 
 If you don't have a Linux box for running your Genesis platform, you can use Windows Subsystem for Linux (WSL2) to install a Linux environment on your Windows machine.
 
-The Windows Subsystem for Linux enables you to run a GNU/Linux environment - including most command-line tools,
-utilities, and applications - directly on Windows, unmodified, without the overhead of a virtual machine or
-dual-boot setup.
+The Windows Subsystem for Linux enables you to run a GNU/Linux environment - including most command-line tools, utilities and applications - directly on Windows, unmodified, without the overhead of a virtual machine or dual-boot setup.
 
 In short, if your development environment is Windows, we recommend installing WSL2.
 
@@ -27,11 +25,11 @@ The recommended Linux OS is CentOS7. Here is how to set it up.
 
 If you haven’t already, please install [Windows Terminal](https://www.microsoft.com/store/productId/9N0DX20HK701). This provides a tabbed single Window from which you can open different command line tools.
 
-### Install WSL2
-
 Your Windows install must be 2004+ ([2020 May feature release or higher](https://support.microsoft.com/en-us/topic/windows-10-update-history-24ea91f4-36e7-d8fd-0ddb-d79d9d0cdbda)).
 
-If you have previously enabled WSL, you need to set the default version to 2 and (optionally) convert existing distros:
+### Install WSL2
+
+**If you have previously enabled WSL,** you need to set the default version to 2 and (optionally) convert existing distros:
 
 ```none title="PowerShell"
 > wsl -l -v
@@ -48,11 +46,22 @@ Conversion complete.
 * Ubuntu    Stopped         2
 ```
 
+If you are prompted to restart your machine, do that.
+
+
+**If you are installing WSL for the first time,** you need to run the command: 
+```
+wsl --install
+```
+
+You will then be prompted to restart your machine. Do that.
+
+Ubuntu will automatically be installed in your machine after the restart.
+
 ### Install Ubuntu
 
-Available in the Microsoft App store, the [Ubuntu app](https://www.microsoft.com/store/productId/9PDXGNCFSCZV) utilises
-WSL2 and enables you to open an Ubuntu terminal, which helps with Microsoft's guide on installing CentOS7 (in the section
-below).
+If for any reason you need to install Ubuntu manually, this is available in the [Microsoft App store](https://www.microsoft.com/store/productId/9PDXGNCFSCZV). Ubuntu uses WSL2 and enables you to open an Ubuntu terminal, which helps with Microsoft's guide on installing CentOS7 (in the section below).
+
 
 
 ### Install Docker Desktop for Windows
