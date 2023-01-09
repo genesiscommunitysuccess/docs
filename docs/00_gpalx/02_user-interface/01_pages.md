@@ -53,7 +53,6 @@ ui("alpha") {
 When an application is first generated, a `page` is automatically created.
 :::
 
-<!-- Let's talk about page options and what they can do. A page accepts a numbers of parameters: -->
 A `page` accepts the following options: 
 - ***title*** (this has been generated with the title: `Home` when the application was created but can be changed to any title we chose).
 ```kotlin
