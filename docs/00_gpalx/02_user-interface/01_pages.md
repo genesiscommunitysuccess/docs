@@ -45,6 +45,7 @@ ui("alpha") {
 
 ![](/img/home-about.PNG)
 
+## Types of pages
 
 <Tabs>
 <TabItem value="Page" label="Page" default >
@@ -119,17 +120,6 @@ page("Contact") {
 }
 ```
 
-
-### Summary
-A `page` has the following properties:
-
-- title
-- icon
-- iconVariant
-- public
-<!-- - build -->
-- **_hidden default value set to false_**
-
 </TabItem>
 
 <TabItem value="DefaltPage" label="DefaultPage" >
@@ -160,16 +150,17 @@ defaultPage("About") {
     div {}
 }
 ```
-
-
-### Summary
-A `defaultPage` has the following properties:
-
-- title
-- icon
-- iconVariant
-<!-- - build -->
-- ***_hidden default value set to true_***
-
 </TabItem>
 </Tabs>
+
+## Summary
+
+A `page` and a `defaultPage` are very similar except for some slight differences. 
+
+| page | defaultPage | 
+| :---: | :---: |
+| `title` | `title` |
+| `icon` | `icon` |
+| `iconVariant` | `iconVariant` |
+| `default` (hidden value set to ***false***) | `default` (hidden value set to ***true***) |
+| `public` |
