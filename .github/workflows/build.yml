@@ -28,14 +28,14 @@ jobs:
 
     - name: Install CDK dependencies
       working-directory: ./infra
-      run: npm install
+      run: npm ci
 
     - name: Run CDK tests
       working-directory: ./infra
       run: npm test
 
     - name: Install Docusaurus dependencies
-      run: npm install
+      run: npm ci
       env:
         NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
 
