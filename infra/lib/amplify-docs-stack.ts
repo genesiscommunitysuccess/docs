@@ -46,7 +46,7 @@ export class AmplifyDocsStack extends cdk.Stack {
                 // 3. it's a token which only grants read-only access to our private npm packages (@genesislcap stuff)
                 // 4. it's only visible in the AWS console to authenticated users, just as normal secrets are
                 'npm config set //npm.pkg.github.com/:_authToken ' + SecretValue.secretsManager('genesislcap-package-token').unsafeUnwrap(),
-                'npm install',
+                'npm ci',
               ],
             },
             build: {
