@@ -1,5 +1,5 @@
 ---
-title: 'Server Specialist Developer Training - Getting Started'
+title: 'Server Developer Training - Getting Started'
 sidebar_label: 'Getting Started'
 id: ssdt-getting_started
 keywords: [getting started, developer training, server training, getting started]
