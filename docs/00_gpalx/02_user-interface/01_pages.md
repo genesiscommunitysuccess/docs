@@ -10,24 +10,10 @@ import TabItem from '@theme/TabItem';
 
 ## Introduction
 
-Now that we've created an app using the quick start guide, we can continue building upon the [auto-generated](../../../gpalx/quick-start/add-features/#simple-ui-changes) basic ui-structure.
+Pages are an essential part of our ui structure. In this section we'll be exploring the parameters available in a page and how we can use them to get the structure we want.
 
-The example below is a reflection of a basic ui structure created from an application called **_alpha_**, with an added `defaultPage`. In this section we will be focusing on **Pages**.
+The example below is a reflection of a basic ui structure generated from an application called **_alpha_**.
 
-:::note
-- Pages can only have a single top-level element. As seen in the code block below, there is only one `div {}` element. However, we can have as many items inside the top level element as we like. 
-- A page accepts a number of parameters. These parameters differ slightly between the types of pages there are available.
-- There are two types of pages we can use: `page` & `defaultPage`.
-:::
-<!-- ```kotlin
-ui("alpha") {
-    service(Login)
-
-    page("Home") {
-        div {}
-    }
-}
-``` -->
 ```kotlin
 ui("alpha") {
     service(Login)
@@ -35,76 +21,171 @@ ui("alpha") {
     page("Home") {
         div {}
     }
+}
+```
 
-    defaultPage("About") {
-        div{}
+![](/img/home.PNG)
+
+- Pages can only have a single top-level element. However, we can have as many items inside the top level element as we like.
+- A page accepts a number of parameters.
+- We can determine the landing page.
+
+## Page structure
+
+> In the example below we show only **_one_** top-level element: `div`. As you can see we can have many elements inside the `div` element, like `heading`, `h2` and `element("zero-card")`. The top level element is not limitied to a `div`. It can be any of the elements available.
+
+```kotlin
+ui("alpha") {
+    service(Login)
+
+    page("Home") {
+        div("div") {
+            heading("heading")
+            h2("h2")
+            element("zero-card") {
+                heading("Card")
+            }
+        }
+
     }
 }
 ```
-<!-- ![](/img/home.PNG) -->
 
-![](/img/home-about.PNG)
+![](/img/nested-2.PNG)
 
-## Types of pages
+:::important
+The following syntax, where we have more than one top level element, would not be valid. This would result in a build error.
+:::
 
-<Tabs>
-<TabItem value="Page" label="Page" default >
+```kotlin
+ui("alpha") {
+    service(Login)
+
+    page("Home") {
+        heading("heading")
+        h2("h2")
+        element("zero-card") {
+            heading("Card")
+        }
+    }
+
+}
+```
+
+## Page parameters
 
 :::tip
 When an application is first generated, a `page` is automatically created.
 :::
 
-A `page` accepts the following options: 
-- ***title*** (this has been generated with the title: `Home` when the application was created but can be changed to any title we chose).
+A `page` accepts the following options:
+
+- **_title_** is the only mandatory parameter. When the application is first created **_title_** is generated with the value: `Home`, but that can be changed to any title we chose.
+
 ```kotlin
 page("Home") {
     div {}
 }
 ```
+
 ![](/img/home.PNG)
 
-- ***icon*** is always the name of the [font awesome icon](https://fontawesome.com/icons). In this case we can use `home`
-```kotlin
-page("Home", "home") {
-    div {}
-}
-```
-![](/img/home-icon.PNG)
+- **_icon_** is always the name of the [font awesome icon](https://fontawesome.com/icons). In this case we can use `home`
 
-- ***iconVariant*** refers to the type of variant for the icon. The default value is `solid`. 
-:::important
-`iconVariant` parameter currently only supports `solid`. This will be expanded in the future.
-:::
 :::tip
 It can be difficult to remember the order of the parameters, therefore you can always use the following syntax to specify which parameter you'd like to apply.
-::: 
+:::
+
 ```kotlin
-page("Home", "home", iconVariant="solid") {
+page("Home", icon="home") {
     div {}
 }
 ```
+
 ![](/img/home-icon.PNG)
 
-- ***public*** refers to accessibility of the pages. You can set this to `true` or `false` depending whether or not you want others to be able to view the page you've just created.
+- **_iconVariant_** refers to the type of variant for the icon. The default value is `solid`.
+
+  :::important
+  `iconVariant` parameter currently only supports `solid`. This will be expanded in the future.
+  :::
+
+```kotlin
+page("Home", icon="home", iconVariant="solid") {
+    div {}
+}
+```
+
+![](/img/home-icon.PNG)
+
+- **_public_** refers to accessibility of the pages.
 
 :::note
-- This option is ***not*** available in `defaultPage`. A `defaultPage` is the landing page of the application, therefore  users should always see it. 
+You can set this parameter to `true` or `false`. If a page is public (`public=true`) the user does not have to be authorised to access it. If however the `public` parameter is set to false, the user must be logged in to be able to see the page.
 :::
-> In this case the ***Home*** page will not be seen by others.
+
+> In this case the **_Home_** page will not be seen by those that are not logged in. Authorised users will see both the `Home` and the `About` page.
 
 ```kotlin
-page("Home", "home", iconVariant="solid", public=false) {
+page("Home", icon="home", iconVariant="solid", public=false) {
     div {}
 }
 page("About") {
     div {}
 }
 ```
-- A `page` has an additional parameter which we do not see, and that is `default`. On a `page`, `default` is always set to false. This means that it will not be the landing page of the application unless it is the only one, or the first one in a list of pages.
 
-<!-- - ***build*** is another parameter that we do not need to worry about. This is a lambda function where the page structure is defined -->
+- A `page` has an additional parameter and that is `default`. Setting this parameter to `true` ensures this is our landing page. Setting the `default` value of `page` to `false` is not necessary because that is already the default value.
+  > In the example below, **_About_** will be the landing page.
 
-> In the example below, ***Home*** will be the landing page. If it was the only page, it would also be the landing page. 
+```kotlin
+page("Home") {
+    div {}
+}
+page("About", default=true) {
+    div {}
+}
+```
+
+## Landing page
+
+There are a number of ways we can set our landing page. As seen above, one way would be by utilizing the `default` parameter.
+
+However there are a few more details to know about setting the landing or default page. Some instances to account for are seen in the examples below.
+
+> In this example, **_Home_** will be the landing page because it is the only page.
+
+```kotlin
+page("Home") {
+    heading("Home Page")
+}
+```
+
+![](/img/home-alone.PNG)
+
+> In this example **_Home_** would still be the landing page because the default page is always the first one of a list.
+
+```kotlin
+page("Home") {
+    heading("Home Page")
+}
+
+page("About") {
+    heading("About Page")
+}
+
+page("Contact") {
+    heading("Contact Page")
+}
+```
+
+![](/img/home-list.PNG)
+
+> In this example the landing page will be **_Contact_** because we have used `defaultPage` to determine that.
+
+:::note
+Best use case for `defaultPage` is when we want to maintain the order of the pages in the navigation but want the user to land on a specific page.
+:::
 
 ```kotlin
 page("Home") {
@@ -115,52 +196,9 @@ page("About") {
     div {}
 }
 
-page("Contact") {
+defaultPage("Contact") {
     div {}
 }
 ```
 
-</TabItem>
-
-<TabItem value="DefaltPage" label="DefaultPage" >
-
-A `defaultPage` sets the landing/home page. 
-
-:::important
-Contrary to a `page`, its hiddden `default` property is set to true. 
-:::
-
-A `defaultPage` is very similar to a `page`, with only the following differences: 
-
-- ***public*** is not available as an option, because a `defaultPage` is always public. 
-- When there is a `defaultPage` present, it takes priority as a landing page. 
-
-> In this case ***About***, is the landing page.
-
-```kotlin
-page("Home") {
-    div {}
-}
-
-page("Contact") {
-    div {}
-}
-
-defaultPage("About") {
-    div {}
-}
-```
-</TabItem>
-</Tabs>
-
-## Summary
-
-A `page` and a `defaultPage` are very similar except for some slight differences. 
-
-| page | defaultPage | 
-| :---: | :---: |
-| `title` | `title` |
-| `icon` | `icon` |
-| `iconVariant` | `iconVariant` |
-| `default` (hidden value set to ***false***) | `default` (hidden value set to ***true***) |
-| `public` |
+![](/img/contact-default.PNG)
