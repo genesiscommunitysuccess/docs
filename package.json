@@ -60,6 +60,7 @@
   },
   "devDependencies": {
     "dotenv": "^16.0.3",
+    "esbuild-loader": "^2.20.0",
     "patch-package": "^6.5.0"
   }
 }
