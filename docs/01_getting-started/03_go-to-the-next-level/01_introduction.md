@@ -14,7 +14,6 @@ Now that you have completed the [Quick Start](../../../getting-started/quick-sta
 
 Before you get going, you will need a [full developer set-up](/getting-started/prerequisites/introduction/) for this exercise. Make sure you check the requirements and set up what is necessary.
 
-Before you get going, you will need a [full developer set-up](/getting-started/prerequisites/introduction/) for this exercise. Make sure you check the requirements and set up what is necessary.
 
 ## What you will build
 
