@@ -28,11 +28,11 @@ ui("alpha") {
 
 - Pages can only have a single top-level element. However, we can have as many items inside the top-level element as we like.
 - A page accepts a number of parameters.
-- We can determine the landing page.
+- We can specify the landing page.
 
 ## Page structure
 
-> In the example below we show only **_one_** top-level element: `div`. As you can see we can have many elements inside the `div` element, like `heading`, `h2` and `element("zero-card")`. The top-level element is not limited to a `div`. It can be any of the elements available.
+In the example below we show only **_one_** top-level element: `div`. As you can see we can have many elements inside the `div` element, like `heading`, `h2` and `element("zero-card")`. The top-level element is not limited to a `div`. It can be any of the elements available.
 
 ```kotlin
 ui("alpha") {
@@ -53,9 +53,7 @@ ui("alpha") {
 
 ![](/img/nested-2.PNG)
 
-:::important
 The following syntax, where we have more than one top-level element, would not be valid. This would result in a build error.
-:::
 
 ```kotlin
 ui("alpha") {
@@ -80,7 +78,7 @@ When an application is first generated, a `page` is automatically created.
 
 A `page` accepts the following options:
 
-- **_title_** is the only mandatory parameter. When the application is first created, **_title_** will have a default value: ***Home***, which can be changed to any title we chose.
+- **_title_** is the only mandatory parameter. When the application is first created, **_title_** will have a default value: **_Home_**, which can be changed to any title we chose.
 
 ```kotlin
 page("Home") {
@@ -90,7 +88,7 @@ page("Home") {
 
 ![](/img/home.PNG)
 
-- **_icon_** is always the name of the [Font Awesome icon](https://fontawesome.com/icons). In this case we can use `home`
+- **_icon_** is always the name of the [Font Awesome icon](https://fontawesome.com/icons). In this case we are using `home`.
 
 :::tip
 It can be difficult to remember the order of the parameters, therefore you can always use the following syntax to specify which parameter you'd like to apply.
@@ -106,9 +104,9 @@ page("Home", icon="home") {
 
 - **_iconVariant_** refers to the type of variant for the icon. The default value is `solid`.
 
-  :::important
-  `iconVariant` parameter currently only supports `solid`. This will be expanded in the future.
-  :::
+:::important
+`iconVariant` parameter currently only supports `solid`. This will be expanded in the future.
+:::
 
 ```kotlin
 page("Home", icon="home", iconVariant="solid") {
@@ -118,10 +116,10 @@ page("Home", icon="home", iconVariant="solid") {
 
 ![](/img/home-icon.PNG)
 
-- **_public_** refers to accessibility of the pages.
+- **_public_** refers to accessibility of the pages. You can set this parameter to `true` or `false`. If a page is public (`public=true`) the user does not have to be authorised to access it. If however the `public` parameter is set to false, the user must be logged in to be able to see the page.
 
 :::note
-You can set this parameter to `true` or `false`. If a page is public (`public=true`) the user does not have to be authorised to access it. If however the `public` parameter is set to false, the user must be logged in to be able to see the page.
+Ensure you have used the Login service in order to be able to assert the public property of a page. If `service(Login)` is not used, all pages will be public.
 :::
 
 > In this case the **_Home_** page will not be seen by those that are not logged in. Authorised users will see both the `Home` and the `About` page.
@@ -137,7 +135,7 @@ page("About") {
 
 - A `page` has an additional parameter and that is `default`. Setting this parameter to `true` ensures this is our landing page. Setting the `default` value of `page` to `false` is not necessary because that is already the default value.
 
-  > In the example below, **_About_** will be the landing page.
+> In the example below, **_About_** will be the landing page.
 
 ```kotlin
 page("Home") {
