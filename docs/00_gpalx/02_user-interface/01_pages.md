@@ -10,9 +10,9 @@ import TabItem from '@theme/TabItem';
 
 ## Introduction
 
-Pages are an essential part of our ui structure. In this section we'll be exploring the parameters available in a page and how we can use them to get the structure we want.
+Pages form a key part of an application interface. In this section we'll be exploring the parameters available in a page and how we can use them to get the structure we want.
 
-The example below is a reflection of a basic ui structure generated from an application called **_alpha_**.
+The example below is a reflection of a basic UI structure generated from an application called **_alpha_**.
 
 ```kotlin
 ui("alpha") {
@@ -26,13 +26,13 @@ ui("alpha") {
 
 ![](/img/home.PNG)
 
-- Pages can only have a single top-level element. However, we can have as many items inside the top level element as we like.
+- Pages can only have a single top-level element. However, we can have as many items inside the top-level element as we like.
 - A page accepts a number of parameters.
 - We can determine the landing page.
 
 ## Page structure
 
-> In the example below we show only **_one_** top-level element: `div`. As you can see we can have many elements inside the `div` element, like `heading`, `h2` and `element("zero-card")`. The top level element is not limitied to a `div`. It can be any of the elements available.
+> In the example below we show only **_one_** top-level element: `div`. As you can see we can have many elements inside the `div` element, like `heading`, `h2` and `element("zero-card")`. The top-level element is not limited to a `div`. It can be any of the elements available.
 
 ```kotlin
 ui("alpha") {
@@ -54,7 +54,7 @@ ui("alpha") {
 ![](/img/nested-2.PNG)
 
 :::important
-The following syntax, where we have more than one top level element, would not be valid. This would result in a build error.
+The following syntax, where we have more than one top-level element, would not be valid. This would result in a build error.
 :::
 
 ```kotlin
@@ -80,7 +80,7 @@ When an application is first generated, a `page` is automatically created.
 
 A `page` accepts the following options:
 
-- **_title_** is the only mandatory parameter. When the application is first created **_title_** is generated with the value: `Home`, but that can be changed to any title we chose.
+- **_title_** is the only mandatory parameter. When the application is first created, **_title_** will have a default value: ***Home***, which can be changed to any title we chose.
 
 ```kotlin
 page("Home") {
@@ -90,7 +90,7 @@ page("Home") {
 
 ![](/img/home.PNG)
 
-- **_icon_** is always the name of the [font awesome icon](https://fontawesome.com/icons). In this case we can use `home`
+- **_icon_** is always the name of the [Font Awesome icon](https://fontawesome.com/icons). In this case we can use `home`
 
 :::tip
 It can be difficult to remember the order of the parameters, therefore you can always use the following syntax to specify which parameter you'd like to apply.
@@ -136,6 +136,7 @@ page("About") {
 ```
 
 - A `page` has an additional parameter and that is `default`. Setting this parameter to `true` ensures this is our landing page. Setting the `default` value of `page` to `false` is not necessary because that is already the default value.
+
   > In the example below, **_About_** will be the landing page.
 
 ```kotlin
