@@ -10,7 +10,7 @@ tags:
     - build
 ---
 
-With a database and two modules (a Data Server and an Event Handler) in place to supply data to the frontend, we can now build our server.
+With a database and two modules (a Data Server and an Event Handler) in place to supply data to the front-end, we can now build our server.
 
 You need to add the details of the two modules to two key configuration files in your application:
 
