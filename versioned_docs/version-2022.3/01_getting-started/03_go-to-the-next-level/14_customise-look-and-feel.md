@@ -19,7 +19,7 @@ The goal of this section is to customise our styles in the UI.
 You might want to apply specific styles to some columns. 
 We start by creating a stylesheet document that will have some style definitions for the grid.
 
-Create a stylesheet file called `positionsGrid.styles.ts` and provide the following code:
+Create a stylesheet file called **positionsGrid.styles.ts** and provide the following code:
 
 ```typescript title='positionsGrid.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
