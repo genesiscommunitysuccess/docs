@@ -19,7 +19,7 @@ The goal of this section is to customise our styles in the UI.
 You might want to apply specific styles to some columns. 
 We start by creating a stylesheet document that will have some style definitions for the grid.
 
-Create a stylesheet file called `positionsGrid.styles.ts` and provide the following code:
+Create a stylesheet file called **positionsGrid.styles.ts** and provide the following code:
 
 ```typescript title='positionsGrid.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
@@ -37,7 +37,7 @@ Configure your column to have the specific class name.
  {field: 'QUANTITY', cellClass: 'quantity-column'},
 ```
 
-In home.template.ts, in the grid tag, include utility that will inject your stylesheet to the component:
+In **home.template.ts**, in the grid tag, include the utility that will inject your stylesheet to the component:
 
 ```html {1,4} title='home.template.ts'
 import {positionGridStyles} from "./positionsGrid.styles";
@@ -95,6 +95,6 @@ By default, all elements on screen will use `display: block`, but we can easily 
 
 
 ## Styling other parts of application
-This was only small part of the platform's capabilities in terms of styling. You can read more about design-system configuration [here](web/design-systems/introduction/).
+This was only a small part of the platform's capabilities in terms of styling. You can read more about design-system configuration [here](web/design-systems/introduction/).
 
 You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for this chapter.
