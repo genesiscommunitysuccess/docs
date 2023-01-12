@@ -1,5 +1,5 @@
 ---
-title: 'Go to the next level - Customise look and feel using layout and styles'
+title: 'Go to the next level - customise look and feel using layout and styles'
 sidebar_label: 'Customise look and feel'
 id: customize-look-and-feel
 keywords: [getting started, quick start, next level, customisation, look and feel]
