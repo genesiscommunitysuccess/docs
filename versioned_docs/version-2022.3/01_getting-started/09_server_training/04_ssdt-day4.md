@@ -1,5 +1,5 @@
 ---
-title: Server Specialist Developer Training - Day four
+title: Server Developer Training - Day four
 sidebar_label: Day four
 sidebar_position: 5
 id: 04_ssdt-day4
