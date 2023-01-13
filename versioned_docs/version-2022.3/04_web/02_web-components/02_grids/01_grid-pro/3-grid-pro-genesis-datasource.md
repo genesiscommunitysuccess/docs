@@ -24,13 +24,13 @@ Used in [Connected Data](../../../../../web/web-components/grids/grid-pro/grid-p
 
 - **`maxView: number`**: Maximum number of rows to track as part of a client "view"
 
-- **`orderBy: string`**: This option can be used to select a data server index (defined in xml), which is especially useful if you want the data to be sorted in a specific way. By default, data server rows will be returned in order of creation (from oldest database record to newest).
+- **`orderBy: string`**: This option can be used to select a [Data Server index](../../../../../database/data-types/index-entities/) (defined in xml), which is especially useful if you want the data to be sorted in a specific way. By default, data server rows will be returned in order of creation (from oldest database record to newest).
 
 - **`request: any`**: Similar to `fields` but for [Request Server](../../../../../server/request-server/introduction/) scenarios. This optional parameter allow you to specify request fields which can include wildcards. Example: you could request all RIC Codes for example, or all RIC Codes beginning with "V" for example.
 
 - **`resourceName: string`**: The target [Data Server](../../../../../server/data-server/introduction/) or [Request Server](../../../../../server/request-server/introduction/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
 
-- **`reverse: boolean`**: This option changes the data server index iteration. For example, if you are using the default index, they query will return rows from newest database records to oldest.
+- **`reverse: boolean`**: This option changes the [Data Server index](../../../../../database/data-types/index-entities/) iteration. For example, if you are using the default index, they query will return rows from newest database records to oldest.
 
 ```html title="Streaming data from ALL_PROCESS_STATUS data server"
 <alpha-card>
