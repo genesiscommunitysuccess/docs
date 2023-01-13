@@ -1,5 +1,5 @@
 ---
-title: 'API Reference - Dependency Injection'
+title: 'API reference - dependency injection'
 sidebar_label: 'Dependency Injection'
 id: dependency-injection
 keywords: [database, api, reference, dependency, injection]
@@ -18,13 +18,13 @@ Genesis supports some of the key annotations from javax.annotation and javax.inj
 
 ## @Module
 
-All classes that need to be created on microservice startup need to be annotated with the @Module annotation. This  also ensures the instance is created as singleton.
+All classes that need to be created on microservice start-up need to be annotated with @Module. This ensures the instance is created as singleton.
 
 ## @ProviderOf
 
-This is used to annotate a class that is responsible for acting as Factory for a specified type. Adding the @Singleton annotation ensures only one Factory class is created.
+This is used to annotate a class that is responsible for acting as Factory for a specified type. Adding the `@Singleton` annotation ensures only one Factory class is created.
 
-Example:-
+Example:
 ```kotlin
 import com.google.inject.Provider
 import com.google.inject.Singleton
@@ -39,11 +39,11 @@ class PriceFeedProvider : Provider<PriceFeedProvider> {
 ```
 
 ## @Inject
-This is used to annotate a field or constructor to indicate to Genesis that it should inject an object of matching type during the dependency injection stage. These types can be provided with the aforementioned **@Module** and **@ProviderOf** annotations. You should use the [Java](https://docs.oracle.com/javaee/7/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.) **@Inject** annotation for best practice.
+This is used to annotate a field or constructor to indicate to Genesis that it should inject an object of matching type during the dependency injection stage. These types can be provided with the aforementioned `@Module` and `@ProviderOf` annotations. You should use the [Java](https://docs.oracle.com/javaee/7/api/javax/inject/Inject.html#:~:text=Injectable%20constructors%20are%20annotated%20with,most%20one%20constructor%20per%20class.&text=%40Inject%20is%20optional%20for%20public,injectors%20to%20invoke%20default%20constructors.) `@Inject` annotation for best practice.
 
 ## @Named
 
-This annotation is used to provide Genesis system definition properties as part of the dependency injection mechanism, and should be used alongside @Inject.
+This annotation is used to provide Genesis system definition properties as part of the dependency injection mechanism, and should be used alongside `@Inject`.
 
 ## @PostConstruct
 
@@ -55,7 +55,7 @@ The Genesis microservice runtime environment will call this only once, just befo
 
 ## Example
 
-This example combines a **@Module**, **@Named** and **@Inject** annotation on a constructor and on a field, and  uses **@PostConstruct** and **@PreDestroy**
+The example below combines an `@Module`, `@Named` and `@Inject` annotation on a constructor and on a field, and it uses `@PostConstruct` and `@PreDestroy`.
 
 ```kotlin
 @Module
@@ -79,7 +79,7 @@ class PriceFeed @Inject constructor(@Named("CONNECTION_URL") private val connect
 
 ## Conditional annotations
 ### Conditional on property
-You can define a module as conditional, based on system definition properties. As an example, the AeronDriverModule will only be instantiated if the MqLayer property is set to AERON. See the example annotations below:
+You can define a module as conditional, based on system definition properties. In the example below, the AeronDriverModule will only be instantiated if the MqLayer property is set to AERON: 
 
 ```kotlin
 @Module
