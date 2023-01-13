@@ -120,7 +120,7 @@ class ProductMessageTracer : MessageTracer{
     override fun onMessageReceived(msg: Message) = println("Hi $msg")
 }
 ```
-If the package for this class is available in the classpath (i.e.``` <classpath>``` section in processes.xml) and is also being scanned (i.e. ```<package>``` section in processes.xml), `ProductMessageTracer` will take precedence when starting the process and `DefaultMessageTracer` will be ignored. Otherwise, `DefaultMessageTracer` will be instantiated.
+If the package for this class is available in the classpath (``` <classpath>``` section in processes.xml) and is also being scanned (i.e. ```<package>``` section in processes.xml), `ProductMessageTracer` will take precedence when starting the process and `DefaultMessageTracer` will be ignored. Otherwise, `DefaultMessageTracer` will be instantiated.
 
 ### Conditional on property and missing class
 Lastly, we have a combination of both “conditional on property” and “conditional on missing class“ annotations. Referring to the previous example, we could use both features at once like this:
