@@ -335,7 +335,7 @@ In the above command, you need to replace:
 - _IP_ with the address/IP of your Genesis instance
 - _test_  with the name of the IDP
 
-Then, make sure that auth saml has been added to the genesis router configuration in **processes.xml**, for example:
+Then, make sure that auth saml has been added to the Genesis Router configuration in **processes.xml**, for example:
 
 ```xml
 <process name="GENESIS_ROUTER">
@@ -606,7 +606,7 @@ oidc{
 }
 ```
 
-### Minimal Remote Configuration
+### Minimal remote configuration
 
 ```kotlin
 oidc{
@@ -628,7 +628,7 @@ oidc{
 }
 ```
 
-### Full Configuration
+### Full configuration
 
 ```kotlin
 oidc{
