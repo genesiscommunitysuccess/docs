@@ -478,13 +478,13 @@ We shall now look at these in detail.
 You must enable OIDC on the Genesis Router process. Do this by changing the router config in your _application-name-_**processes.xml** file. The process name is `GENESIS_ROUTER`.
 
 Specifically, you have to add:
-- `genesis.auth.oidc` and `global.genesis.auth.sso.endpoint` to the `<package .../>` tag
+- `global.genesis.auth.oidc` and `global.genesis.auth.sso.endpoint` to the `<package .../>` tag
 - `auth-oidc-*.jar` and `auth-sso-endpoint-*.jar` to the `<classpath .../>` tag
 - add the GPAL configuration to the `<script ../>` tag
 - make sure that the `<language ../>` tag say `pal`
 
 :::note
-Adding `genesis.auth.oidc` to the `packages` and `auth-oidc-*.jar` to the `classpath` enables the OIDC integration. And adding `global.genesis.auth.sso.endpoint` and `auth-sso-endpoint-*.jar` enables the required endpoints by the front-end
+Adding `global.genesis.auth.oidc` to the `packages` and `auth-oidc-*.jar` to the `classpath` enables the OIDC integration. And adding `global.genesis.auth.sso.endpoint` and `auth-sso-endpoint-*.jar` enables the required endpoints by the front-end
 :::
 
 You can see these additions in the example below:
@@ -639,14 +639,16 @@ oidc{
       id = "appplication-id"
       secret = "application-secret"
     }
-
-    endpoints{
-      token = "uat-oidc:1337/token"
-      authorization = "uat-odic:1337/auth"
-    }
     
-    verification {
-      publicKeyUrl = "http://uat-oidc:1377/.well_known/certs.jwks"
+    config {
+      endpoints{
+        token = "uat-oidc:1337/token"
+        authorization = "uat-odic:1337/auth"
+      }
+    
+      verification {
+        publicKeyUrl = "http://uat-oidc:1377/.well_known/certs.jwks"
+      }
     }
     
     scopes("openid", "profile")
