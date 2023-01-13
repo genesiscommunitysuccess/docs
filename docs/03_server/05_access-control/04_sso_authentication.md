@@ -24,7 +24,7 @@ There are two different types of SSO authentication presently supported by the G
 
 To enable SSO, you will need to configure it in your _application-name_**-auth-preferences.kts** file.
 
-These following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Password Authentication section](/server/access-control/password-authentication/).
+These following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Password Authentication section](../../../server/access-control/password-authentication/).
 
 ### sso
 The `sso` function allows you to configure and enable SSO options. It has the following variables to set:
@@ -124,7 +124,7 @@ Once SAML is enabled, a user can click on an SSO button in the GUI. This starts 
 
 For more information, see [wikipedia](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language).
 
-This workflow is described in more detail in the section on [Front-to-back flow](/server/access-control/SSO-authentication/#front-to-back-flow).
+This workflow is described in more detail in the section on [Front-to-back flow](../../../server/access-control/SSO-authentication/#front-to-back-flow).
 
 ### Definitions
 
@@ -503,7 +503,7 @@ You can see these additions in the example below:
 </process>
 ```
 
-If you require JWT validation you will need the following jars on the `classpath` as well - `jjwt-impl-*.jar,jjwt-jackson-*.jar`
+If you require JWT validation, you need the following jars on the `classpath` as well - `jjwt-impl-*.jar,jjwt-jackson-*.jar`
 
 Example having the required jars for JWT validation:
 ```xml
@@ -521,7 +521,7 @@ Example having the required jars for JWT validation:
 </process>
 ```
 
-Additionally, you need a _application-name-_**oidc-config.kts** file. This file contains the GPAL configuration. Each OIDC configuration has the following properties:
+Additionally, you need an _application-name-_**oidc-config.kts** file. This file contains the GPAL configuration. Each OIDC configuration has the following properties:
 
 | Property name | Description | Mandatory | Default value | Type |
 | --- | ------ | --- | --- | --- |
@@ -534,7 +534,7 @@ Each `identityProvider` configuration has the following properties:
 | --- | ------ | --- | --- | --- |
 | client | The client id and secret | Yes | No default value | Object |
 | config | Holds the endpoint and verification configuration for the OIDC provider | Yes if `remoteConfig` is not present | No default value | Object |
-| remoteConfig | If the OIDC provider has configuration endpoint `remoteConfig` can be used to point to that endpoint for automatic `endpoint` and `verfication` configuration | Yes if `config` is not present | No default value | Object |
+| remoteConfig | If the OIDC provider has the configuration endpoint `remoteConfig`, this can be used to point to that endpoint for automatic `endpoint` and `verfication` configuration | Yes if `config` is not present | No default value | Object |
 | scopes | Requested scopes on authorization | No | `openid profile email` | Set |
 | onNewUser | Predefined action when a new user logs in | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
 | usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
@@ -579,9 +579,9 @@ Each `verification` configuration has the following properties:
 If `verification` is defined either `publicKey` or `publicKeyUrl` must be defined.
 :::
 
-### Sample Configurations
+### Sample configurations
 
-#### Minimal Configuration
+#### Minimal configuration
 
 ```kotlin
 oidc{
@@ -606,7 +606,7 @@ oidc{
 }
 ```
 
-#### Minimal Remote Configuration
+### Minimal Remote Configuration
 
 ```kotlin
 oidc{
@@ -628,7 +628,7 @@ oidc{
 }
 ```
 
-#### Full Configuration
+### Full Configuration
 
 ```kotlin
 oidc{
