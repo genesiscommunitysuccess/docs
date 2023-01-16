@@ -106,11 +106,24 @@ Let's have a look at the different options for configuring this file. You have s
 
 `dataserverPollingTimeout`: This setting contains the timeout for polling the data-server resources in the system in seconds. Default value is 60 seconds.
 
-`authDisabled`: If set to true, this setting disables all authentication, and is used for development mode. Default value is false.
+`authDisabled`: This is a dangerous setting! If set to true, this setting disables all authentication on the router. Typically, it is used for development mode. Default value is false.
 
-`nettyLoggingEnabled`: This setting if set to true, enables internal netty logging. Default value false.
+`nettyLoggingEnabled`: If set to true, this setting enables internal netty logging. Default value false.
 
-**Netty configuration**:
+**Non-authenticated routers**
+As we have noted, the `authDisabled` setting is dangerous. One way or another, it is essential to make your Genesis Router secure. If you want to disable authentication for any other reason than local testing, take the greatest care to ensure security:
+
+- Use unique ports, and make sure there is no clash with other modules. By default, GENESIS_ROUTER uses 9064/9065.
+- Make sure that the firewall settings for these ports are limited, so that unwanted external traffic cannot reach it.
+- In your Genesis Router's **genesis-router.kts** file, list the event/dataserver/reqrep resource names in a `whitelist` block (one entry per item) to specify the resources that can be hit. These are the only resources that can be hit.  This is critical to ensuring security. 
+
+For example:
+
+```
+   <whitelist name="ALL_TRADES">
+   
+```
+**Netty configuration**
 
 `httpServerCodecDefinition`: A combination of HttpRequestDecoder and HttpResponseEncoder, which enables easier server-side HTTP implementation.
 You can find more information in the [netty documentation](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpServerCodec.html).
