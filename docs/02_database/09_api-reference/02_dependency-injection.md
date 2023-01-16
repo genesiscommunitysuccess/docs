@@ -1,6 +1,6 @@
 ---
 title: 'API reference - dependency injection'
-sidebar_label: 'Dependency Injection'
+sidebar_label: 'Dependency injection'
 id: dependency-injection
 keywords: [database, api, reference, dependency, injection]
 tags:
@@ -18,7 +18,7 @@ Genesis supports some of the key annotations from javax.annotation and javax.inj
 
 ## @Module
 
-All classes that need to be created on microservice start-up need to be annotated with @Module. This ensures the instance is created as singleton.
+All classes that need to be created on microservice start-up must be annotated with @Module. This ensures the instance is created as singleton.
 
 ## @ProviderOf
 
