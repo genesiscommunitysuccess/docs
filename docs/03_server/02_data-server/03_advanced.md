@@ -11,7 +11,7 @@ tags:
 ---
 
 
-### Client-enriched data
+## Client-enriched data
 
 In some scenarios, you might want to associate the results of Data Server queries with the user who initiated the queries. You can achieve this using the ```enrich``` feature, which enables an additional table or view join (including backwards joins). With this feature, you can provide user-specific values for each row, or even perform cell-level permissioning (for example, to hide cell values), depending on entitlements.
 
@@ -106,20 +106,22 @@ query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
 
 ```
 
-### Ranged Data Server queries
+## Ranged Data Server queries
 
-Ranged Data Servers only cache a defined range within a table or view and only this data is monitored for any updates instead of whole table/view. This makes the Data Server more responsive and reduces resource requirements.
-It internally uses [getRange](../../../database/database-interface/entity-db/#getrange) method of database interface.
+Ranged Data Server queries only cache a defined range within a table or view, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. Internally, it uses the [getRange](../../../database/database-interface/entity-db/#getrange) method of database interface.
 
-Following conditions can be used in ranged dataservers:
+Tthe following conditions apply to a ranged Data Server query:
 
-`from`: This specifies start of ranged data. This is mandatory condition.
-`to`: This specifies end of ranged data. This is optional condition. When `to` is not specified `from` clause works similar to `where` clause internally
-`where`: This gives range of data by applying where clause on provided index field value
-`refresh`: You can refresh keys periodically using this keyword as shown in examples below
+`from`: specifies the start of the data range. It is mandatory.
+`to`: specifies the end of the data range. It is optional. When `to` is not specified, the `from` clause works in a similar way to a Genesis `where` clause 
+`where`: gives the range of data by applying a where clause on an index field value, which must be provided
+`refresh`: triggers a refresh of keys periodically using the keyword provided, as shown in examples below
 
-Below example shows how ranged queries differ from normal queries
-Ex: When you want to get trade records when currencyId is USD, you can write dataserver in two ways as specified in example below. Below two methods differ in data served at initial run of the dataserver i.e method 1 caches whole table data and applies where clause, where as method 2 caches only specified range of data and where clause is applied only on that data
+The example below shows how ranged queries differ from normal queries.
+When you want to get trade records where the `currencyId` is `USD`, you can write a Data Server query in two ways. The two methods differ in the data served at the initial run of the query:
+
+- Method 1 caches all the table data and thenapplies the where clause.
+- Method 2 caches only the specified range of data, and where clause is applied only on that data
 
 ```kotlin
 // Method 1:
@@ -146,7 +148,7 @@ query("TRADE_RANGED_LAST_2_HOURS", TRADE) {
     // the ranged key word makes this a ranged query
     //    the index and the number of key fields needs to be specified
     ranged(index = Trade.ByTradeDateTimeAndType, numKeyFields = 1) {
-        // optionally refresh keys periodically, for example when we are doing a
+        // optionally refresh keys periodically, for example, when we are doing a
         // range on dates
         refresh {
             // either every
@@ -232,25 +234,25 @@ The features of the options are explained below.
 Used to perform filters on the server, you can send a Groovy expression as part of your Data Server request for client-side filtering. Criteria matching supports Groovy expressions and some common expressions. All expressions must return a boolean value (`true` or `false`).
 You can mix and match both common expressions and custom groovy expressions using the && (logical AND) and || (logical OR) boolean operators. These are explained in more detail below.
 
-### Common expressions
+## Common expressions
 
 The platform provides common expressions that are especially helpful for `Date` and `DateTime` client-side filtering. Common expressions are called using the `Expr` binding and take one or two parameters:
 
 - The first parameter is always a query field. In the case of date/datetime, this can either represent the epoch time in milliseconds or a `String` value representing the actual `Date` and `DateTime` in the supported formats.
 - The second parameter (if applicable) is a predefined `String` value
 
-#### String operations
+## String operations
 
-##### containsIgnoreCase(String, String)
+### containsIgnoreCase(String, String)
 This returns `true` when our field contains the string. Casing is ignored.
 
 For example:
 `Expr.containsIgnoreCase(EXCHANGE_NAME, 'oves')`
 
-##### containsWordsStartingWithIgnoreCase(String, String)
+### containsWordsStartingWithIgnoreCase(String, String)
 This returns `true` when our field starts with the string. Casing is ignored.
 
-#### Date operations
+## Date operations
 
 The allowed String formats are:
 - DateTime with milliseconds precision: _yyyyMMdd-HH:mm:ss.SSS_
@@ -258,68 +260,68 @@ The allowed String formats are:
 - DateTime with minutes precision: _yyyyMMdd-HH:mm_
 - DateTime as Date: _yyyyMMdd_
 
-##### dateIsBefore(date as DateTime|String|Long, String)
+### dateIsBefore(date as DateTime|String|Long, String)
 This returns `true` when the date in the given field is before the date specified.
 
 For example:
 `Expr.dateIsBefore(TRADE_DATE,'20150518')`
 
-##### dateIsAfter(date as DateTime|String|Long, String)
+### dateIsAfter(date as DateTime|String|Long, String)
 This returns true when the date in the given field is after the date specified.
 
 For example:
 `Expr.dateIsAfter(TRADE_DATE,'20150518')`
 
-##### dateIsGreaterEqual(date as DateTime|String|Long, String)
+### dateIsGreaterEqual(date as DateTime|String|Long, String)
 
 This returns `true` when the date in the given field is greater or equal to the date specified.
 
 For example:
 `Expr.dateIsGreaterEqual(TRADE_DATE,'20150518')`
 
-##### dateIsLessEqual(date as DateTime|String|Long, String)
+### dateIsLessEqual(date as DateTime|String|Long, String)
 
 This returns `true` when the date in the given field is less or equal to the date specified.
 
 For example:
 `Expr.dateIsLessEqual(TRADE_DATE,'20150518')`
 
-##### dateIsEqual(date as DateTime|String|Long, String)
+### dateIsEqual(date as DateTime|String|Long, String)
 This returns `true` when the date in the given field is equal to the date specified
 
 For example:
 `Expr.dateIsEqual(TRADE_DATE,'20150518')`
 
-##### dateIsToday(date as DateTime|String|Long)
+### dateIsToday(date as DateTime|String|Long)
 This returns `true` when the data in the given field is equal to today's date (using system local time).
 
 For example:
 `Expr.dateIsToday(TRADE_DATE)`
 
-#### DateTime operations
+## DateTime operations
 
-##### dateTimeIsBefore(datetime as DateTime|String|Long, String)
+### dateTimeIsBefore(datetime as DateTime|String|Long, String)
 
 This returns `true` when the datetime in the given field is before the datetime specified.
 
 For example:
 `Expr.dateTimeIsBefore(TRADE_DATETIME,'20150518-10:50:24')`
 
-##### dateTimeIsAfter(datetime as DateTime|String|Long, String)
+### dateTimeIsAfter(datetime as DateTime|String|Long, String)
 
 This returns `true` when the datetime in the given field is after the datetime specified.
 
 For example:
 `Expr.dateTimeIsAfter(TRADE_DATETIME,'20150518-10:50:24')`
 
-##### dateTimeIsGreaterEqual(datetime as DateTime|String|Long, String)
+### dateTimeIsGreaterEqual(datetime as DateTime|String|Long, String)
 
 This returns `true` when the datetime in the given field is greater or equal to the datetime specified.
 
 For example:
 `Expr.dateTimeIsGreaterEqual(TRADE_DATETIME,'20150518-10:50:24')`
 
-##### dateTimeIsLessEqual(datetime as DateTime|String|Long, String)
+### dateTimeIsLessEqual(datetime as DateTime|String|Long, String)
 
 
 This returns `true` when the datetime in the given field is less or equal to the datetime specified.
@@ -327,7 +329,7 @@ This returns `true` when the datetime in the given field is less or equal to the
 For example:
 `Expr.dateTimeIsLessEqual(TRADE_DATETIME,'20150518-10:50:24')`
 
-### Groovy expression
+## Groovy expressions
 
 Groovy expressions provide the most flexibility for client-side filtering. This approach allows you to use complex boolean logic to filter over your fields using Java syntax.
 
