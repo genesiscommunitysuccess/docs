@@ -5,12 +5,6 @@ id: components
 
 # Components
 
-<!-- in pages
--- pages, layouts, charts, linking
-
-in jira
--- pages, services, components, linking, layouts, charts -->
-
 ## Introduction
 
 Let's talk about components. There are a number of helper components/elements supported in kotlin that we can use to create the application we want.
