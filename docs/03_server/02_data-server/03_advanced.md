@@ -108,7 +108,36 @@ query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
 
 ### Ranged Data Server queries
 
-Ranged Data Servers only cache a defined range within a table or view. This makes the Data Server more responsive and reduces resource requirements.
+Ranged Data Servers only cache a defined range within a table or view and only this data is monitored for any updates instead of whole table/view. This makes the Data Server more responsive and reduces resource requirements.
+It internally uses [getRange](../../../database/database-interface/entity-db/#getrange) method of database interface.
+
+Following conditions can be used in ranged dataservers:
+
+`from`: This specifies start of ranged data. This is mandatory condition.
+`to`: This specifies end of ranged data. This is optional condition. When `to` is not specified `from` clause works similar to `where` clause internally
+`where`: This gives range of data by applying where clause on provided index field value
+`refresh`: You can refresh keys periodically using this keyword as shown in examples below
+
+Below example shows how ranged queries differ from normal queries
+Ex: When you want to get trade records when currencyId is USD, you can write dataserver in two ways as specified in example below. Below two methods differ in data served at initial run of the dataserver i.e method 1 caches whole table data and applies where clause, where as method 2 caches only specified range of data and where clause is applied only on that data
+
+```kotlin
+// Method 1:
+query("TRADE_USD", TRADE) {
+    where {
+        it.currencyId == "USD"
+    }
+}
+
+// Method 2:
+query("TRADE_RANGED_USD", TRADE) {
+    ranged(Trade.ByCurrencyId, 1) {
+            where {
+                Trade.ByCurrencyId("USD")
+            }
+        }
+}
+```
 
 The example below includes comments to ease understanding:
 

@@ -45,6 +45,20 @@ dataServer {
 }
 ```
 
+## Naming
+
+Providing name to data server is optional. Explicitly provided name will be used for dataserver, otherwise it will be named as "ALL_{table/view name}S"
+
+```kotlin
+dataserver {
+    // Name of the dataserver: INSTRUMENT_DETAILS
+    query("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS)
+
+    // Name of the dataserver: ALL_COUNTERPARTYS
+    query(COUNTERPARTY)
+}
+```
+
 ## Specifying fields
 
 By default, all table or view fields in a query definition will be exposed. If you don't want them all to be available, you must define the fields that are required. In the example below, we specify eight fields:
