@@ -1,5 +1,5 @@
 ---
-title: 'API Reference - Service provider API'
+title: 'API reference - service provider API'
 sidebar_label: 'Service provider API'
 id: service-provider-api
 keywords: [database, api, reference, service provider]
