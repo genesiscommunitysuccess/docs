@@ -49,8 +49,8 @@ dataServer {
 
 You don't have to give each `query` a name. If you do provide one, it will be used exactly as you specify. If you don't, then a name is allocated automatically when the data object is created. The syntax for this allocation is "ALL_{table/view name}S". So, in the example below:
 
-- The first query is called `INSTRUMENT_DETAILS`, as it's name is specified.
-- The second query is called `ALL_COUNTERPARTYS`, because it has not been named and it queries the COUNTERPARTY table.
+- The first query is called `INSTRUMENT_DETAILS`, as this name has been specified.
+- The second query is called `ALL_COUNTERPARTYS`, because it has not had a name specified. The allacted name is based on the COUNTERPARTY table, which it queries.
 
 
 ```kotlin
