@@ -1,5 +1,5 @@
 ---
-title: 'API Reference - System definition API'
+title: 'API reference - system definition API'
 sidebar_label: 'System definition API'
 id: system-definition-api
 keywords: [database, api, reference, system definition]
