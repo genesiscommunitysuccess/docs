@@ -128,7 +128,7 @@ heading("Default Heading Size")
 We can determine the text size by applying the following syntax.
 
 :::note
-The heading elements are all sorrounded by a `div` element. This is necessary because a `page` can only have on top-level element.
+The heading elements are all sorrounded by a `div` element. This is necessary because a `page` can only have one top-level element.
 :::
 
 ```kotlin
@@ -156,8 +156,6 @@ h1("h1")
 ```
 
 ![](/img/h1.PNG)
-
-<!-- h1("this is in an h1 element") -->
 
 ```kotlin
 div() {
