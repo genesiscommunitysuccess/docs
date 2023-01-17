@@ -186,58 +186,39 @@ As we previously generated the fields, autocompletion helps you to define the ta
 
 ### Automated testing
 
-So far we have been testing our work manually, using Genesis Console or some HTTP client.
-Now the time has come to start writing some automated tests for our application.
+So far we have been testing our work manually, using Genesis Console or some HTTP client. Now the time has come to start writing some automated tests for our application. We are going to test our [TradeView](/getting-started/developer-training/training-content-day3/#usage) and the Trade insert method we [created](/getting-started/developer-training/training-content-day1/#event-handler).
 
-Before running tests, install the [FoundationDB](https://genesisglobal.jfrog.io/artifactory/community-uploads/foundationdb-6.2.15-x64.msi) locally to allow a proper database mocking. Further details regarding FoundationDB can be found [here](https://www.foundationdb.org/).
+#### Configuration
 
-:::tip FoundationDB
-FoundationDB comes with a command line interface tool called [fdbcli](https://apple.github.io/foundationdb/command-line-interface.html). You can invoke fdbcli at the command line simply by typing it. If everything is ok, you should see a message *The database is available.*
+To test our classes we need to mock the database, as there are integrations and configurations managed by Genesis behind the scenes. To avoid any additional installation locally we will use [H2 in-memory database](https://www.h2database.com/), changing the **server/jvm/build.gradle.kts** configuration for the tests tasks like the code below. You already have the configuration needed if you cloned the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed).
 
+```kotlin {6-10} title='server/jvm/build.gradle.kts'
+...
+subprojects  {
+	...
+	tasks {
+		...
+		test {
+            systemProperty("DbLayer", "SQL")
+            systemProperty("DbHost", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+            systemProperty("DbQuotedIdentifiers", "true")
+        }  
+	}
+	...
+}
+...
 ```
-$ fdbcli
-Using cluster file `/etc/foundationdb/fdb.cluster'.
 
-The database is available.
+#### Adding Testing: AlphaTradeViewTest
 
-Welcome to the fdbcli. For help, type `help'.
-fdb>
-```
-
-In case of any issue, please double check how the FoundationDB [configuration](https://apple.github.io/foundationdb/configuration.html) can be done. E.g., each FDB cluster needs to be told some configuration information about what kind of redundancy mode it should be using, what storage engine, etc. For local development, you’ll probably want to run the command below.
-
-```shell
-fdbcli --exec "configure new single memory ; status"
-```
-
-Last but not least, feel free to try different versions of FoundationDB [here](https://apple.github.io/foundationdb/downloads.html). You may also want to re-start your local FoundationDB.
-
-```shell
-pkill fdb
-/usr/lib/foundationdb/fdbmonitor >> /tmp/fdbmonitor.log 2>&1 &
-fdbserver -p 127.0.0.1:4500 >> /tmp/fdb.log 2>&1 &
-```
-:::
-
-Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. In summary:
-* load data from a CSV file 
-* retrieve data using [Genesis Database API](../../../database/) <!-- TODO: Is this the right link? -->
-
+Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. We are extending the class [AbstractDatabaseTest](/operations/testing/integration-testing/#abstractdatabasetest) to allow a proper integration testing, as well as using the [TradeView](/getting-started/developer-training/training-content-day3/#usage) we created to assert results. In summary, the new test will:
+* load the necessary data inputs from a CSV file 
+* retrieve data using [Genesis Database API](/database/)
 
 So, first, let's do the following:
-1. Add the test implementation dependencies in the file **alpha\server\jvm\alpha-config\build.gradle.kts**
-```kotlin
-dependencies {
-    ...
-    testImplementation("global.genesis:genesis-dbtest")
-    testImplementation(project(path = ":alpha-dictionary-cache", configuration = "codeGen"))
-}
+1. Add a new test class to the **alpha-config** module (**alpha\server\jvm\alpha-config\src\test\kotlin**) called `AlphaTradeViewTest.kt`
+2. Add TEST_DATA.csv to a data folder (**alpha\server\jvm\alpha-config\src\test\resources\data**)
 
-description = "alpha-config"
-```
-2. Add a new test class to the *alpha-config* module (**alpha\server\jvm\alpha-config\src\test\kotlin**) called `TradeViewTest.kt`
-3. Add an empty txt file *donotdelete.txt* to the genesis home folder (**alpha\server\jvm\alpha-config\src\test\resources\GenesisHome**). This folder is needed for automated tests. 
-4. Add TEST_DATA.csv to a data folder (**alpha\server\jvm\alpha-config\src\test\resources\data**)
 ```csv
 #INSTRUMENT
 INSTRUMENT_ID,INSTRUMENT_NAME
@@ -248,14 +229,13 @@ COUNTERPARTY_ID,COUNTERPARTY_LEI,COUNTERPARTY_NAME,
 1,335800A8HK6JBITVPA30,Test Ltd,
 2,655FG0324Q4LUVJJMS11,Testing AG,
 ```
-The directory tree should like below:
+The directory tree should like this:
 
-![](/img/dir-tree-alpha.png)
+![](/img/dir-tree-alpha-v2.png)
 
 The test class should look like below:
 
-### Test class setup
-```kotlin
+```kotlin title='AlphaTradeViewTest.kt'
 package global.genesis
 import global.genesis.db.util.AbstractDatabaseTest
 import global.genesis.db.util.TestUtil
@@ -273,9 +253,10 @@ import org.junit.Before
 import org.junit.Test
 import javax.inject.Inject
 
-class TradeViewTest : AbstractDatabaseTest() {
+class AlphaTradeViewTest : AbstractDatabaseTest() {
     @Inject
     lateinit var enhancedTradeViewRepository: TradeViewAsyncRepository
+
     override fun createMockDictionary(): GenesisDictionary = prodDictionary()
 
     @Before
@@ -340,11 +321,134 @@ class TradeViewTest : AbstractDatabaseTest() {
 }
 ```
 
-You can run the test from IntelliJ by right-clicking on the test class and selecting `Run TradeViewTest` or from the command line as well.
+You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaTradeViewTest` or from the command line.
 
-```shell title='Running TradeViewTest from the command line'
-./gradlew :genesisproduct-alpha:alpha-config:test --tests "global.genesis.TradeViewTest"
+```shell title='Running AlphaTradeViewTest from the command line'
+./gradlew :genesisproduct-alpha:alpha-config:test --tests "global.genesis.AlphaTradeViewTest"
 ```
+
+#### Adding Testing: AlphaEventHandlerTest
+
+Now we will add a new automated test for checking the Trade insert method we [created](http://localhost:8080/getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](/operations/testing/integration-testing/#abstractgenesistestsupport) to allow a proper integration testing. In summary, the new test will:
+* load the necessary data inputs from a CSV file 
+* use the network API [Genesis MessageClient](/database/api-reference/network-api/#genesismessageclient) to call the Event Handler methods.
+* retrieve data using [Genesis Database API](/database/)
+
+So, first, let's do the following:
+1. Add a new test class to the **alpha-script-config** module (alpha\server\jvm\alpha-script-config\src\test\kotlin) called `AlphaEventHandlerTest.kt`.
+2. Add TEST_DATA.csv to a data folder (**alpha\server\jvm\alpha-script-config\src\test\resources\data**)
+
+```csv
+#INSTRUMENT
+INSTRUMENT_ID,INSTRUMENT_NAME
+1,FOO.L
+2,BAR.L
+#COUNTERPARTY
+COUNTERPARTY_ID,COUNTERPARTY_LEI,COUNTERPARTY_NAME
+1,335800A8HK6JBITVPA30,Test Ltd
+2,655FG0324Q4LUVJJMS11,Testing AG
+#TRADE
+TRADE_ID,COUNTERPARTY_ID,INSTRUMENT_ID,QUANTITY,PRICE,SYMBOL,DIRECTION,TRADE_DATE,ENTERED_BY,TRADE_STATUS
+00000000001TRSP0,1,1,10,641.927,BRL,BUY,1636987969135,JaneDee,NEW
+00000000002TRSP0,1,1,3,642.927,BRL,SELL,1636987969135,JaneDee,NEW
+00000000003TRSP0,2,2,10,643.927,BRL,BUY,1636987969135,JaneDee,NEW
+00000000004TRSP0,2,2,7,644.927,BRL,SELL,1636987969135,JaneDee,NEW
+00000000005TRSP0,2,2,70,0.0,BRL,SELL,1636987969135,JaneDee,NEW
+```
+The directory tree should like this:
+
+![](/img/dir-tree-alpha-script-config.png)
+
+The test class should look like below:
+
+```kotlin title='AlphaEventHandlerTest.kt'
+package global.genesis
+
+import global.genesis.commons.model.GenesisSet
+import global.genesis.db.DbRecord
+import global.genesis.gen.dao.Trade
+import global.genesis.gen.dao.enums.Direction
+import global.genesis.gen.dao.enums.TradeStatus
+import global.genesis.message.core.event.Event
+import global.genesis.message.core.event.EventReply
+import global.genesis.testsupport.AbstractGenesisTestSupport
+import global.genesis.testsupport.GenesisTestConfig
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.runBlocking
+import org.joda.time.DateTime
+import org.junit.Before
+import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+
+class AlphaEventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
+    GenesisTestConfig {
+        packageName = "global.genesis.eventhandler.pal"
+        genesisHome = "/GenesisHome/"
+        scriptFileName = "alpha-eventhandler.kts"
+        parser = { it }
+        initialDataFile = "data/TEST_DATA.csv"
+        addAuthCacheOverride("ENTITY_VISIBILITY")
+    }
+) {
+    override fun systemDefinition(): Map<String, Any> = mapOf("IS_SCRIPT" to "true")
+
+    @Before
+    fun setUp() {
+        authorise("ENTITY_VISIBILITY", "1", "JaneDee")
+
+        val trader = DbRecord.dbRecord("RIGHT_SUMMARY") {
+            "USER_NAME" with "JaneDee"
+            "RIGHT_CODE" with "INSERT_TRADE"
+        }
+        rxDb.insert(trader).blockingGet()
+    }
+
+    @Test
+    fun `test insert trade`(): Unit = runBlocking {
+        val message = Event(
+            details = Trade {
+                counterpartyId = "1"
+                instrumentId = "2"
+                direction = Direction.BUY
+                price = 1.123
+                quantity = 1000
+                enteredBy = "JohnDoe"
+                tradeDate = DateTime.now()
+            },
+            messageType = "EVENT_TRADE_INSERT",
+            userName = "JaneDee"
+        )
+
+        val result: EventReply? = messageClient.suspendRequest(message)
+
+        result.assertedCast<EventReply.EventAck>()
+        val trades = entityDb.getBulk<Trade>().toList()
+        val trade = trades[5]
+        assertNotNull(trade)
+        assertEquals(6, trades.size)
+        assertEquals("1", trade.counterpartyId)
+        assertEquals("2", trade.instrumentId)
+        assertEquals(TradeStatus.NEW, trade.tradeStatus)
+        assertEquals(Direction.BUY, trade.direction)
+        assertEquals(1.123, trade.price)
+        assertEquals(1000, trade.quantity)
+    }
+}
+```
+
+You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaEventHandlerTest` or from the command line.
+
+```shell title='Running AlphaTradeViewTest from the command line'
+./gradlew :genesisproduct-alpha:alpha-script-config:test --tests "global.genesis.AlphaEventHandlerTest"
+```
+
+#### Find out more about testing
+
+You can find out more about testing by double-checking our [Component testing](/operations/testing/component-testing/), [Integration testing](/operations/testing/integration-testing/), and [Unit testing](/operations/testing/unit-testing/) pages. 
+
+Additionally, you can see more testing examples by looking at the complete source code of this training available on [GitHub](https://github.com/genesiscommunitysuccess/devtraining-alpha). 
+
 
 ## Calculated data
 
