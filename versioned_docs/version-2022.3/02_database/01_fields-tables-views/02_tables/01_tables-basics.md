@@ -165,10 +165,10 @@ In this example, we have specified the name of the primary key in the `name` par
 Indices work the same way; either you specify the name in the `name` parameter or the name will be automatically inferred.
 
 :::warning
-When you apply the field modifier ```autoincrement``` to the same field in more than one table, those fields work in a single sequence. 
+When you apply the field modifier ```autoIncrement``` to the same field in more than one table, those fields work in a single sequence. 
 Here is an example: 
 
-Field A (autoincrement) is in Table 1 and Table 2. The sequence counting is shared between the autoincremented fields. So: 
+Field A (autoIncrement) is in Table 1 and Table 2. The sequence counting is shared between the auto incremented fields. So: 
 
 - A row is added to table 1; field A is assigned **1**.
 - Another row is added to table 1; field A is assigned **2**.
