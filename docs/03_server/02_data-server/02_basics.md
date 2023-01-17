@@ -35,7 +35,7 @@ dataServer {
 
 And here is a simple example that has two queries:
 
-Note that each query is subscribed to separately.
+Note that each query is a separate subscription.
 
 ```kotlin
 dataServer {
@@ -47,7 +47,11 @@ dataServer {
 
 ## Naming
 
-Providing name to data server is optional. Explicitly provided name will be used for dataserver, otherwise it will be named as "ALL_{table/view name}S"
+You don't have to give each `query` a name. If you do provide one, it will be used exactly as you specify. If you don't, then a name is allocated automatically when the data object is created. The syntax for this allocation is "ALL_{table/view name}S". So, in the example below:
+
+- The first query is called `INSTRUMENT_DETAILS`, as it's name is specified.
+- The second query is called `ALL_COUNTERPARTYS`, because it has not been named and it queries the COUNTERPARTY table.
+
 
 ```kotlin
 dataserver {
