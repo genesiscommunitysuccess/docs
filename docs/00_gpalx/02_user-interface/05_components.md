@@ -180,7 +180,7 @@ div() {
 
 The elements `div` and `span` correspond to the `div` and `span` HTML tags. 
 
-`div` defines a devision or a section of the page. It accepts the following parameters:
+`div` defines a section of the page. It accepts the following parameters:
 - ***text*** refers to the text we wish to display.
 - ***id*** specifies a unique id for an element.
 - optional configuration block - can be used to perform further customisation / configuration.
