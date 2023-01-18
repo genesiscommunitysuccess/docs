@@ -317,10 +317,17 @@ The Genesis deploy plugin provides several tasks that help to set up the Genesis
 
 #### Pre-requisites
 
-:::caution edit gradle.properties
-Ensure the **gradle.properties** file from the **server/jvm** folder is properly set with the following entries:
+:::caution Adding the WSL configuration in the gradle.properties file
+Please add the last three highlighted lines in your  **gradle.properties** file from the **server/jvm** folder. The final file should be like this: :
 
-```properties
+```properties {8-10}
+kotlin.code.style=official
+org.gradle.jvmargs=-Xmx6g -Xss512k -XX:+HeapDumpOnOutOfMemoryError -XX:+UseG1GC -XX:+UseStringDeduplication -XX:ReservedCodeCacheSize=512m -Dkotlin.daemon.jvm.options=-Xmx2g -Dfile.encoding=UTF-8
+bundleGeneratedClasses=true
+genesisVersion=6.4.2
+authVersion=6.4.0
+deployPluginVersion=6.4.2
+genesisArtifactoryPath=https://genesisglobal.jfrog.io/genesisglobal/libs-release-client
 genesis-home=/home/genesis/run
 wsl-distro=TrainingCentOS
 wsl-user=genesis
