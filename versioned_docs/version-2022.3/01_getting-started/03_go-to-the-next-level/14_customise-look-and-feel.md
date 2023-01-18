@@ -1,5 +1,5 @@
 ---
-title: 'Go to the next level - Customise look and feel using layout and styles'
+title: 'Go to the next level - customise look and feel using layout and styles'
 sidebar_label: 'Customise look and feel'
 id: customize-look-and-feel
 keywords: [getting started, quick start, next level, customisation, look and feel]
@@ -19,7 +19,7 @@ The goal of this section is to customise our styles in the UI.
 You might want to apply specific styles to some columns. 
 We start by creating a stylesheet document that will have some style definitions for the grid.
 
-Create a stylesheet file called `positionsGrid.styles.ts` and provide the following code:
+Create a stylesheet file called **positionsGrid.styles.ts** and provide the following code:
 
 ```typescript title='positionsGrid.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
@@ -37,7 +37,7 @@ Configure your column to have the specific class name.
  {field: 'QUANTITY', cellClass: 'quantity-column'},
 ```
 
-In home.template.ts, in the grid tag, include utility that will inject your stylesheet to the component:
+In **home.template.ts**, in the grid tag, include the utility that will inject your stylesheet to the component:
 
 ```html {1,4} title='home.template.ts'
 import {positionGridStyles} from "./positionsGrid.styles";
@@ -85,7 +85,7 @@ Don't worry too much if the data is different from yours - as long as the grid i
 :::
 
 ## Layout 
-By default, all elements on screen will use `display: block`, but we can easily customise it using our custom component that supports responsive web design.
+By default, all elements on screen use `display: block`, but we can easily customise it using our custom component that supports responsive web design.
 
 ```html
 <foundation-flex-layout class="flex-row flex-sm-column spacing-2x">
@@ -95,4 +95,4 @@ By default, all elements on screen will use `display: block`, but we can easily 
 
 
 ## Styling other parts of application
-This was only small part of the platform's capabilities in terms of styling. You can read more about design-system configuration [here](web/design-systems/introduction/).
+This was only a small part of the platform's capabilities in terms of styling. You can read more about design-system configuration [here](web/design-systems/introduction/).

@@ -10,11 +10,45 @@ tags:
     - genx
 ---
 
+## Seed and Genx
+
+A seed is a user-friendly, buildable template by Genesis for generating an application/platform project. It can be an approved baseline for multiple applications with, of course, different owners and parameters and not just one.
+
+It is important to note that a seed acts like a standard baseline; even though it can be modified by seed owners, it should not be. However, developers and testers are free to experiment on the applications that they build on a seed.
 
 
-The GenesisX CLI genx is a command-line interface tool that you can use to scaffold Genesis applications and workspaces directly from a terminal. 
+## Correlation between a seed and Genx
 
-With genx, you can pull seed projects that adhere to best practices for development on the Genesis low-code platform. The seed projects available range from skeleton projects to example applications.
+Genx is a Genesis command-line utility that enables you to access a parameterised seed and generate a new project from it.
+
+This blank-app-seed is called the Quick Start Application; it is used to create a basic Genesis project.
+
+When you create an application with Genx, you will see seed listings in different versions. There are only two seed versions approved by Genesis:
+- Seed A
+- Seed A (Next/Pre-Release)
+
+When presented, these choices enable you to build on the official Seed A baseline, which is stable and provides early access to what is being prepared. The Seed A (Next/Pre-Release) version of the official seed A is for experiment or testing only.
+
+You should ignore any other seed version listings.
+
+
+**Main differences between the two seed versions**
+
+|                Seed A                                     |     Seed A (Next/Pre-Release)   |
+|                 :--:                                      |          :--------------:       |
+| Official seed for the actual application development      | For test/experimentation purpose|
+| Ongoing support, upstream fixes and upgrades available    | No support available            |
+
+
+**Some important points to note about seeds used by Genx:**
+- Any local directory/project can become a seed by adding a root level **.genx** directory (CLI API)
+- Developers may clone an existing seed to form a new one
+- Developers contribute to official seeds by cloning that seed repo
+- Select code owners manage merges
+- Available to all Genesis users
+
+
+
 
 ## Prerequisites
 
@@ -129,7 +163,7 @@ The **Quick Start Application** seed will generate:
 :::
 
 ## Workspaces
-Workspaces are top-level client monorepos that contains various packages, such as components, micro front-ends, design systems, and at least one application. All these packages can be versioned and released independently. This set-up provides an enhanced developer experience.
+Workspaces are top-level client monorepos that contain various packages, such as components, micro front-ends, design systems, and at least one application. All these packages can be versioned and released independently. This set-up provides an enhanced developer experience.
 
 The workspace generator automates the following steps for you:
 
