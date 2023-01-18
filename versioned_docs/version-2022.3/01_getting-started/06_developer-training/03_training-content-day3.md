@@ -209,7 +209,7 @@ subprojects  {
 ...
 ```
 
-#### Adding Testing: AlphaTradeViewTest
+#### Adding testing: AlphaTradeViewTest
 
 Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. We are extending the class [AbstractDatabaseTest](/operations/testing/integration-testing/#abstractdatabasetest) to allow a proper integration testing, as well as using the [TradeView](/getting-started/developer-training/training-content-day3/#usage) we created to assert results. In summary, the new test will:
 * load the necessary data inputs from a CSV file 
@@ -321,15 +321,15 @@ class AlphaTradeViewTest : AbstractDatabaseTest() {
 }
 ```
 
-You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaTradeViewTest` or from the command line.
+You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaTradeViewTest`, or from the command line.
 
 ```shell title='Running AlphaTradeViewTest from the command line'
 ./gradlew :genesisproduct-alpha:alpha-config:test --tests "global.genesis.AlphaTradeViewTest"
 ```
 
-#### Adding Testing: AlphaEventHandlerTest
+#### Adding testing: AlphaEventHandlerTest
 
-Now we will add a new automated test for checking the Trade insert method we [created](http://localhost:8080/getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](/operations/testing/integration-testing/#abstractgenesistestsupport) to allow a proper integration testing. In summary, the new test will:
+Now we will add a new automated test for checking the Trade insert method we have [created](http://localhost:8080/getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](/operations/testing/integration-testing/#abstractgenesistestsupport) to allow a proper integration testing. In summary, the new test will:
 * load the necessary data inputs from a CSV file 
 * use the network API [Genesis MessageClient](/database/api-reference/network-api/#genesismessageclient) to call the Event Handler methods.
 * retrieve data using [Genesis Database API](/database/)
@@ -437,7 +437,7 @@ class AlphaEventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 }
 ```
 
-You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaEventHandlerTest` or from the command line.
+You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaEventHandlerTest`, or from the command line.
 
 ```shell title='Running AlphaTradeViewTest from the command line'
 ./gradlew :genesisproduct-alpha:alpha-script-config:test --tests "global.genesis.AlphaEventHandlerTest"
@@ -814,7 +814,7 @@ Here is the definition of a simple Request Server file.
 
 Request Servers are conventionally configured in the file _application-name_**-reqrep.kts**. This file should be in the _application-name_-script-config module.
 
-So, if this case the application is called **alpha**, the file would be named **alpha-reqrep.kts** and will be kept in the path *server/jvm/alpha-script-config/src/main/resources/scripts*.
+So, if the application is called **alpha**, the file would be named **alpha-reqrep.kts** and will be kept in the path *server/jvm/alpha-script-config/src/main/resources/scripts*.
 
 You should also check the Request Server component in your application's system-processes and service-definition files, as described in the [Configuring runtime](../../../creating-applications/defining-your-application/user-interface/request-servers/rs-configure-runtime/) page.
 
