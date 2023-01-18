@@ -23,6 +23,7 @@ Here is a summary of the helpers we will be looking at. You can scroll through t
 | Helper       | Description |
 | ------------ | :----------------------------: |
 | [entityManager](../../../gpalx/user-interface/components/#entitymanager) | A helper component designed to quickly add support for CRUD operations (Create, Read, Update, Delete) by automatically generating grid and form.|
+| [chart](../../../gpalx/user-interface/components/#chart) | `chart` is a helper component used for data visualiation.|
 | [heading](../../../gpalx/user-interface/components/#heading) | With this element you can determine the size of the heading/text. If you don't specify, the default is `h1` |
 | [h1 - h6](../../../gpalx/user-interface/components/#h1-h6) | Corresponds to HTML  `h1` to `h6` tags respectively. |
 | [div](../../../gpalx/user-interface/components/#div--span) | Corresponds to HTML  `div` tag |
@@ -66,7 +67,7 @@ Uppon clicking `Submit`, a new record is added and we can see the `Delete` and `
 
 So far we have looked at a pretty basic `entityManager` element but let's look a little further. The following syntax exposes the columns in the grid. 
 
-The fields exposed inside the columns are all available in the [Table](../../../gpalx/quick-start/add-features/#model) in the Models.kt file.
+The fields exposed inside the columns are all available in the [Table](../../../gpalx/quick-start/add-features/#model) in the `Models.kt` file.
 We can use the following syntax to:
  - Apply a renderer in the already existing columns. In this case we have applied the `BuySell` renderer to the `side` column and the `TradeStatus` renderer to the `tradeStatus` column.
  - Modify the title in the already existing columns. In this case we have updated the title of `tradeStatus` to **Status** instead of its previous name **Trade Status**.
@@ -111,9 +112,13 @@ actionColumn {
 ```
 ![](/img/enabled.PNG)
 
+### chart
+
+Charts have a dedicated [page](../../../gpalx/user-interface/charts) in the documentation, laying out implementation and properties in detail. 
+
 ### heading
 
-As the name suggests, this element can be used to control the size and apperance of the text. This element accepts a number of parameters. 
+As the name suggests, this helper is for adding titles/subtitles to a page. This element accepts a number of parameters and optional configurations. 
 - ***text*** refers to the text we wish to display. This is a mandatory parameter.
 - ***headingSize*** refers to the size for the text. This accepts a range of values from 1 to 6. They are equivalent to `h1` to `h6` HTML tags.
 - ***id*** refers to a unique id for an element which sets the "id" attribute in an HTML tag.
@@ -152,7 +157,7 @@ div() {
 
 ### h1-h6
 
-Elements `h1`, `h2`, `h3`, `h4`, `h5` and `h6` correspond to HTML `h1`, `h2`, `h3`, `h4`, `h5` and `h6` tags respectively. Each element accepts the following parameters:
+Elements `h1`, `h2`, `h3`, `h4`, `h5`, `h6` are pre-sized headings and correspond to HTML `h1`, `h2`, `h3`, `h4`, `h5`, `h6` tags respectively. Each element accepts the following parameters:
 
 - ***text*** refers to the text we wish to display. This is a mandatory parameter.
 - ***id*** refers to a unique id for an element which sets the "id" attribute in an HTML tag.
