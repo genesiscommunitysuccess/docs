@@ -167,7 +167,7 @@ Clone the Developer Training starting repo from [here](https://github.com/genesi
 
 Open the project using your favorite IDE, such as IntelliJ or Visual Studio Code.
 
-### WSL 2 set up
+### WSL 2 set-up
 
 Make sure you have completed the [Workstation setup](#workstation-setup) prior to this.
 
