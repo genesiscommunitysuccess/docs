@@ -1,5 +1,5 @@
 ---
-title: 'API Reference - Network API'
+title: 'API reference - network API'
 sidebar_label: 'Network API'
 id: network-api
 keywords: [database, api, reference, network]
