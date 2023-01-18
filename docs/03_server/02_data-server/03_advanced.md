@@ -110,18 +110,18 @@ query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
 
 Ranged Data Server queries only cache a defined range within a table or view, and only this data is monitored for updates (not the whole table or view). This makes the Data Server more responsive and reduces resource requirements. Internally, it uses the [getRange](../../../database/database-interface/entity-db/#getrange) method of database interface.
 
-Tthe following conditions apply to a ranged Data Server query:
+The following conditions apply to a ranged Data Server query:
 
-`from`: specifies the start of the data range. It is mandatory.
-`to`: specifies the end of the data range. It is optional. When `to` is not specified, the `from` clause works in a similar way to a Genesis `where` clause 
-`where`: gives the range of data by applying a where clause on an index field value, which must be provided
-`refresh`: triggers a refresh of keys periodically using the keyword provided, as shown in examples below
+`from` specifies the start of the data range. It is mandatory.
+`to` specifies the end of the data range. It is optional. When `to` is not specified, the `from` clause works in a similar way to a Genesis `where` clause 
+`where` gives the range of data by applying a `where` clause on an index field value, which must be provided
+`refresh` sets a periodic refresh of keys using the keyword provided, as shown in examples below
 
-The example below shows how ranged queries differ from normal queries.
-When you want to get trade records where the `currencyId` is `USD`, you can write a Data Server query in two ways. The two methods differ in the data served at the initial run of the query:
+The example below shows how ranged queries can differ from normal queries.
+The scenario is this: you want to get trade records where the `currencyId` is `USD`. You can write a Data Server query in two ways, which affects how much data is cached:
 
-- Method 1 caches all the table data and thenapplies the where clause.
-- Method 2 caches only the specified range of data, and where clause is applied only on that data
+- Method 1 is not a ranged query. It initially caches all the table data (which could be very large) and then applies the `where` clause to confine the range to USD.
+- Method 2 is a ranged query. It initially caches only the specified range of data, and the `where` clause is applied only on that data
 
 ```kotlin
 // Method 1:
@@ -141,7 +141,9 @@ query("TRADE_RANGED_USD", TRADE) {
 }
 ```
 
-The example below includes comments to ease understanding:
+The examples below include comments to ease understanding.
+
+
 
 ```kotlin
 query("TRADE_RANGED_LAST_2_HOURS", TRADE) {
