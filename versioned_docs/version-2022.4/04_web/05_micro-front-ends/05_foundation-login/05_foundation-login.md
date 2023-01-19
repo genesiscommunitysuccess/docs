@@ -26,24 +26,27 @@ An example of the main login screen: <br/>
 An example of authentication via SSO: <br/>
 ![Main login screen example](./docs/img/foundation-login_login-sso.png)
 
-An example of the forgotten password screen: <br/>
-![Main login screen example](./docs/img/foundation-login_forgotten-password.png)
+<!-- An example of the forgotten password screen: <br/>
+![Main login screen example](./docs/img/foundation-login_forgotten-password.png) -->
 
 An example of the change password screen: <br/>
 ![Main login screen example](./docs/img/foundation-login_change-password.png)
 
-An example of the request account screen: <br/>
-![Main login screen example](./docs/img/foundation-login_request-account.png)
+<!-- An example of the request account screen: <br/>
+![Main login screen example](./docs/img/foundation-login_request-account.png) -->
 
 ## Login set-up
 
 :::info
-If you build a project upon one of the Genesis seed apps, then the `Login` micro front-end will already be set-up for you.
+If you build a project upon one of the Genesis seed apps, then the `Login` micro front-end will already be set up for you.
 :::
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always you run the `$ npm run bootstrap` command again. You can see more information on the [package.json basics](../../01_basics/04_package-json-basics.mdx) page.
+- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. 
+- Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` command again. 
+
+You can see more information on the [package.json basics](https://docs.genesis.global/secure/web/micro-front-ends/foundation-login/) page.
 
 ```javascript
 {
@@ -65,7 +68,7 @@ This page assumes you're using the Routing systems that are part of `foundation-
 import { Login, Settings as LoginSettings } from '@genesislcap/foundation-login';
 ```
 
-- Next you'll want to ensure that your router config uses your `LoginSettings` as its generic type so you can configure the login route.
+- Next you'll want to ensure that your router config uses your `LoginSettings` as its generic type so that you can configure the login route.
 ```javascript
 export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 	...
@@ -86,8 +89,6 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 		defaultRedirectUrl: 'protected',
 		public: true,
 		resetPassword: true,
-		forgotPassword: true,
-		requestAccount: true,
 		ssoToggle: true,
 		ssoEnable: false,
 	},
@@ -129,21 +130,21 @@ By default, a route that isn't marked public is not. However, a non-public route
 
 ## Authentication
 
-For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](../../../03_server/05_access-control/01_introduction.md).
+For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](docs/03_server/05_access-control/01_introduction.md).
 
 ### Username & password
 
-The standard authentication method is the user supplying their username and password. Even when SSO is enabled as an authentication method, the user will still have the option to sign in with their normal credentials.
+The standard authentication method is where the user supplies their username and password. Even when SSO is enabled as an authentication method, the user will still have the option to sign in with their normal credentials.
 
 :::noteTip
-Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables will automatically populate the credentials in the login form, which can be useful during development so developers don't need to write out their credentials continuously.
+Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables automatically populates the credentials in the login form. This is useful during development, so that developers don't need to write out their credentials continuously.
 :::
 
 ### SSO
 
-SSO functionality allows the `Login` micro front-end to work with your company's existing authentication system, enabling them to have a single set of credentials - incluidng those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
+SSO allows the `Login` micro front-end to work with your company's existing authentication system, enabling users to have a single set of credentials - incluidng those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
 
-Setting up SSO is primarily [a back-end task](../../../03_server/05_access-control/04_sso_authentication.md); however, there is a small amount of configuration covered in [the customisation part of this documentation](#enable-sso).
+Setting up SSO is primarily [a back-end task](docs/03_server/05_access-control/04_sso_authentication.md); however, there is a small amount of configuration covered in [the customisation part of this documentation](#enable-sso).
 
 :::noteInfo
 The standard process of SSO is that the SSO authentication provider flow is opened via a redirect in the current page. However, many authentication providers block their system when running in an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). Because of this, if the `Login` micro front-end detects that it is running in an iframe, it opens up the authentication provider in a popup instead.
@@ -153,9 +154,9 @@ The standard process of SSO is that the SSO authentication provider flow is open
 
 The `Login` micro front-end uses a parameterless constructor. Therefore, the configuration needs to be set via the settings javascript object in the router, as shown in the [set-up step](#login-set-up). See the full [settings API here](./docs/api/foundation-login.settings/#remarks).
 
-### Enabled functionality
+### Enabling reset password
 
-In the [introduction section](#introduction), the reset password, request account, and forgotten password functionalities are shown. However, these flows must be enabled with the `resetPassword`, `requestAccount`, `forgotPassword` options.
+In the [introduction section](#introduction), the reset password functionality is shown. However, not that this workflow are only enabled if you set the `resetPassword` option to `true`.
 
 ### Logo
 
