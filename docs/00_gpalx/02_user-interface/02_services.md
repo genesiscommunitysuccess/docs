@@ -27,7 +27,7 @@ ui("Alpha Trading Dashboard") {
 }
 ```
 
-![](/img/login-screen.PNG).
+![](/img/login-screen.PNG)
 
 :::tip
 Depending on whether you used Docker, you can apply the credentials you entered while creating the application.
