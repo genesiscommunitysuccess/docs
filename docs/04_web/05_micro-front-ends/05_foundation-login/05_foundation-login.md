@@ -38,12 +38,15 @@ An example of the change password screen: <br/>
 ## Login set-up
 
 :::info
-If you build a project upon one of the Genesis seed apps, then the `Login` micro front-end will already be set-up for you.
+If you build a project upon one of the Genesis seed apps, then the `Login` micro front-end will already be set up for you.
 :::
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always you run the `$ npm run bootstrap` command again. You can see more information on the [package.json basics](https://docs.genesis.global/secure/web/micro-front-ends/foundation-login/) page.
+- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. 
+- Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` command again. 
+
+You can see more information on the [package.json basics](https://docs.genesis.global/secure/web/micro-front-ends/foundation-login/) page.
 
 ```javascript
 {
@@ -65,7 +68,7 @@ This page assumes you're using the Routing systems that are part of `foundation-
 import { Login, Settings as LoginSettings } from '@genesislcap/foundation-login';
 ```
 
-- Next you'll want to ensure that your router config uses your `LoginSettings` as its generic type so you can configure the login route.
+- Next you'll want to ensure that your router config uses your `LoginSettings` as its generic type so that you can configure the login route.
 ```javascript
 export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 	...
@@ -131,15 +134,15 @@ For authentication, most configuration is set in the back end. You should famili
 
 ### Username & password
 
-The standard authentication method is the user supplying their username and password. Even when SSO is enabled as an authentication method, the user will still have the option to sign in with their normal credentials.
+The standard authentication method is where the user supplyies their username and password. Even when SSO is enabled as an authentication method, the user will still have the option to sign in with their normal credentials.
 
 :::noteTip
-Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables will automatically populate the credentials in the login form, which can be useful during development so developers don't need to write out their credentials continuously.
+Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables automatically populates the credentials in the login form. This is useful during development, so that developers don't need to write out their credentials continuously.
 :::
 
 ### SSO
 
-SSO functionality allows the `Login` micro front-end to work with your company's existing authentication system, enabling them to have a single set of credentials - incluidng those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
+SSO allows the `Login` micro front-end to work with your company's existing authentication system, enabling users to have a single set of credentials - incluidng those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
 
 Setting up SSO is primarily [a back-end task](docs/03_server/05_access-control/04_sso_authentication.md); however, there is a small amount of configuration covered in [the customisation part of this documentation](#enable-sso).
 
