@@ -115,7 +115,7 @@ The following conditions apply to a ranged Data Server query:
    `from` specifies the start of the data range. It is mandatory when you use `from-to` condition.
    `to` specifies the end of the data range. It is optional. When `to` is not specified, the `from` clause works in a same way as `where` clause specified below
 - You can specify a particular index value using this keyword:
-   `where` gives the range of data on a specified index field value, which must be provided
+   `where` gives the range of data on a specified index field value, which must be provided.
 - You can optionally refresh keys using the `refresh` keyword, which sets a periodic refresh of keys, as shown in examples below
 
 The example below shows how using the `where` clause in ranged queries differs from normal queries.
