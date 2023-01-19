@@ -8,8 +8,6 @@ id: services
 Services are **cross-cutting concerns** that provide functionality that is not specific to one page but multiple pages. Some common examples of cross-cutting concerns are:
 > **monitoring**, **logging**, **security**, **caching**, **data** **validation**, **event-handling**, **communications**, **notifications**, **localization**
 
-<!-- encompass a specific function with a well defined purpose. They are available to any component in the application and are used for jobs that don't involve application logic. Differentiating between services and components increases modularity but there are **_cross-cutting concerns_** we need to keep any eye out for. These can result in scattering (code duplication) or tangling (significant dependencies between systems). -->
-
 ## GPALX services
 Services are made available by the implementation of the `service` helper. It only accepts one parameter at this time: 
 - **service** refers to the name of a service, like **Login** or **Analytics**
