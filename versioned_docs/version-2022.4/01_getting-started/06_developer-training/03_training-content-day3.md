@@ -216,7 +216,7 @@ Let's create an automated test that inserts and retrieves some data using the pl
 * retrieve data using [Genesis Database API](/database/)
 
 So, first, let's do the following:
-1. Add a new test class to the **alpha-config** module (**alpha\server\jvm\alpha-config\src\test\kotlin**) called `AlphaTradeViewTest.kt`
+1. Add a new test class to the **alpha-config** module (**alpha\server\jvm\alpha-config\src\test\kotlin\global\genesis**) called `AlphaTradeViewTest.kt`
 2. Add TEST_DATA.csv to a data folder (**alpha\server\jvm\alpha-config\src\test\resources\data**)
 
 ```csv
