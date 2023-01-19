@@ -335,7 +335,7 @@ Now we will add a new automated test for checking the Trade insert method we [cr
 * retrieve data using [Genesis Database API](/database/)
 
 So, first, let's do the following:
-1. Add a new test class to the **alpha-script-config** module (alpha\server\jvm\alpha-script-config\src\test\kotlin) called `AlphaEventHandlerTest.kt`.
+1. Add a new test class to the **alpha-script-config** module (alpha\server\jvm\alpha-script-config\src\test\kotlin\global\genesis) called `AlphaEventHandlerTest.kt`.
 2. Add TEST_DATA.csv to a data folder (**alpha\server\jvm\alpha-script-config\src\test\resources\data**)
 
 ```csv
