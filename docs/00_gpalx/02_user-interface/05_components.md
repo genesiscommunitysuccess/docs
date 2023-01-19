@@ -9,22 +9,22 @@ id: components
 
 GPALX supports a number of UI components for building a variety of applications.
 
-In this section we will look at:
+In this section we shall look at:
 
 - [**Dedicated helpers**](../../../gpalx/user-interface/components/#dedicated-helpers)
-> All of the components supported by GPALX that have their own dedicated helper.
+> All the components supported by GPALX, which have their own dedicated helper.
 - [**General helper element**](../../../gpalx/user-interface/components/#helper-element): 
-> A helper element that can be used for **_HTML tags_** and **_[Foundation Zero design system](https://pr-927.d3i6ahf2flvvg.amplifyapp.com/docs/next/web/web-components/overview/) components_** that don't have their own dedicated helper.
+> A helper element that can be used for **_HTML tags_** and **_[Foundation Zero design system](https://pr-927.d3i6ahf2flvvg.amplifyapp.com/docs/next/web/web-components/overview/) components_**, which don't have their own dedicated helper.
 - [**Attributes helper**](../../../gpalx/user-interface/components/#attributes-helper):
 > An `attributes` helper that assigns specific attributes to the elements. 
 
-Here is a summary of the helpers we will be looking at. You can scroll through the documentation as it is layed out or jump to the preferred sections by clicking on the links on the left column.
+Here is a summary of the helpers we shall be looking at. You can scroll through the documentation as it is layed out or jump to the preferred sections by clicking on the links in the left column.
 
 | Helper       | Description |
 | ------------ | :----------------------------: |
 | [entityManager](../../../gpalx/user-interface/components/#entitymanager) | A helper component designed to quickly add support for CRUD operations (Create, Read, Update, Delete) by automatically generating grid and form.|
-| [chart](../../../gpalx/user-interface/components/#chart) | `chart` is a helper component used for data visualiation.|
-| [heading](../../../gpalx/user-interface/components/#heading) | With this element you can determine the size of the heading/text. If you don't specify, the default is `h1` |
+| [chart](../../../gpalx/user-interface/components/#chart) | This is a helper component used for data visualisation.|
+| [heading](../../../gpalx/user-interface/components/#heading) | With this element you can determine the size of the heading/text. If you don't specify it, the default is `h1` |
 | [h1 - h6](../../../gpalx/user-interface/components/#h1-h6) | Corresponds to HTML  `h1` to `h6` tags respectively. |
 | [div](../../../gpalx/user-interface/components/#div--span) | Corresponds to HTML  `div` tag |
 | [span](../../../gpalx/user-interface/components/#div--span) | Corresponds to HTML  `span` tag |
