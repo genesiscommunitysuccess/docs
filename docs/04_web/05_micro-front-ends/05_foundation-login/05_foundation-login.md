@@ -154,9 +154,9 @@ The standard process of SSO is that the SSO authentication provider flow is open
 
 The `Login` micro front-end uses a parameterless constructor. Therefore, the configuration needs to be set via the settings javascript object in the router, as shown in the [set-up step](#login-set-up). See the full [settings API here](./docs/api/foundation-login.settings/#remarks).
 
-### Enabled functionality
+### Enabling reset password
 
-In the [introduction section](#introduction), the reset password functionality is shown. However, this flow must be enabled with the `resetPassword` option.
+In the [introduction section](#introduction), the reset password functionality is shown. However, not that this workflow are only enabled if you set the `resetPassword` option to `true`.
 
 ### Logo
 
