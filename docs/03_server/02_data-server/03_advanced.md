@@ -112,8 +112,8 @@ Ranged Data Server queries only read a defined range within a table or view, and
 
 The following conditions apply to a ranged Data Server query:
 - You can specify the start index and end index using these keywords:
-   `from` specifies the start of the data range. If you are going to use this keyword is mandatory.
-   `to` specifies the end of the data range. It is optional. When `to` is not specified, the `from` clause works in a similar way to a Genesis `where` clause
+   `from` specifies the start of the data range. It is mandatory when you use `from-to` condition.
+   `to` specifies the end of the data range. It is optional. When `to` is not specified, the `from` clause works in a same way as `where` clause specified below
 - You can specify a particular index value using this keyword:
    `where` gives the range of data on a specified index field value, which must be provided
 - You can optionally refresh keys using the `refresh` keyword, which sets a periodic refresh of keys, as shown in examples below
