@@ -37,7 +37,7 @@ Depending on whether you used Docker, you can apply the credentials you entered 
 
 ### Future services
 
-In the future we will be able to write our own services as long as we comply with the service interface. This in turn could be integrated with your own internal systems. When this is a possiblity it's important to look out for services that may be cross-cutting concers.
+In the future we will be able to write our own services as long as we comply with the service interface. This in turn could be integrated with your own internal systems. When this is a possiblity it's important to look out for services that may be cross-cutting concerns.
 
 :::tip
 Some frequently occurring cross-cutting concerns are:
