@@ -40,8 +40,8 @@ It is possible to define an Event Handler in Java, and we have included Java [ex
 Here is a simple example of an Event Handler file. It defines a single `eventHandler`, which inserts a counterparty into the database, using the [entityDb](../../../database/database-interface/entity-db/).
 
 - First, note that there is an `eventHandler` statement for containing all your `eventHandler`codeblocks. This is necessary whether the file contains one `eventHandler`, or hundreds.
-- The single `eventHandler` is of type `<Counterparty>`, which has been created in advance for the COUNTERPARTY table. It defines a single `eventHandler` of type `<Counterparty>`.
-- The `eventHandler` inserts a counterparty into the database, using the [entityDb](../../../database/database-interface/entity-db/).
+- For this example, the file defines a single  `eventHandler` of type `<Counterparty>`. ( `<Counterparty>` is an object that was created from the COUNTERPARTY table in the schema; this object defines the input that should be expected, such as Counterparty name and Counterparty ID.)
+- The `eventHandler` performs a single action - it inserts a counterparty as a new row into the database, using the [entityDb](../../../database/database-interface/entity-db/).
 
 ```kotlin
     eventHandler {
