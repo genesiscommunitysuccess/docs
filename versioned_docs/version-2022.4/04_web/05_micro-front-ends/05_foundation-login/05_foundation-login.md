@@ -156,7 +156,7 @@ The `Login` micro front-end uses a parameterless constructor. Therefore, the con
 
 ### Enabling reset password
 
-In the [introduction section](#introduction), the reset password functionality is shown. However, not that this workflow are only enabled if you set the `resetPassword` option to `true`.
+In the [introduction section](#introduction), the reset password functionality is shown. However, note that this workflow is only enabled if you set the `resetPassword` option to `true`.
 
 ### Logo
 
