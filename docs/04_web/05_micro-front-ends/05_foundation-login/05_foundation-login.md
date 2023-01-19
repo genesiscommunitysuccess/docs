@@ -134,7 +134,7 @@ For authentication, most configuration is set in the back end. You should famili
 
 ### Username & password
 
-The standard authentication method is where the user supplyies their username and password. Even when SSO is enabled as an authentication method, the user will still have the option to sign in with their normal credentials.
+The standard authentication method is where the user supplies their username and password. Even when SSO is enabled as an authentication method, the user will still have the option to sign in with their normal credentials.
 
 :::noteTip
 Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables automatically populates the credentials in the login form. This is useful during development, so that developers don't need to write out their credentials continuously.
