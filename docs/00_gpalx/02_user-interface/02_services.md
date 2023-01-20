@@ -23,7 +23,6 @@ ui("Alpha Trading Dashboard") {
     service(Analytics) // not currently available
 }
 ```
-
 - optional configuration - refers to an options object/map which allows for any custom logic a service may need.
 
 The example below shows an `Analytics` service. Note the additional options map parameter.
@@ -38,16 +37,16 @@ ui("Alpha Trading Dashboard") {
     )
 }
 ```
-
 ### Login service
 
-Currently GPALX only offers one service, `Login`. This will be extended to other services in the future. The `Login` service integrates with the [authentication module](../../../../server/access-control/introduction/) in the backend which in turn:
+Currently GPALX only offers one service, `Login`. This will be extended to other services in the future. The `Login` service is a **_cross-cutting concern_** because it is needed in almost every module of an application. 
+
+It integrates with the [authentication module](../../../../server/access-control/introduction/) in the backend which in turn:
 - Prompts a screen through which the user is authenticated.
 - Dictates the default page based on the configuration in the route parameter.
-- Collaborates with the `public` parameter in [pages](../../../gpalx/user-interface/pages/#page-structure) to determine accessibility for the user. If the `public` parameter is set to false, the `Login` service, ensures that the page will only be viewed by authenticated users. 
+- Collaborates with the `public` parameter in [pages](../../../gpalx/user-interface/pages/#page-structure) to determine accessibility for the user. If the `public` parameter is set to false, the `Login` service ensures that the page will only be viewed by authenticated users. 
 
-The login service is a cross-cutting concern because it is needed in almost every module of an application. 
-As mentioned above, the `service` helper currently supports one parameter:
+The `Login` service only supports one parameter:
 - **_service_** refers to the name of the service. In this case `Login`.
 
 ```kotlin
