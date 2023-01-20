@@ -97,7 +97,7 @@ BROKER
 ```
 ### Table
 
-To look at the data held in a specific table you use the [`table`](#dbmon-commands) command followed by the table name, for example table BROKER. Once you select a table, the DbMon Prompt will change to show the table name you are looking at:
+To look at the data held in a specific table you use the [`table`](#dbmon-commands) command followed by the table name, for example table `BROKER`. Once you select a table, the DbMon Prompt will change to show the table name you are looking at:
 
 ```javascript
 DbMon>table BROKER
@@ -106,7 +106,7 @@ DbMon:BROKER>
 
 ### Show
 
-To see the columns available in the selected table use the [`show`](#dbmon-commands) command. This will display the Current Record in the selected table - as you haven’t selected a Record yet, it will display an empty Record (notice the value column is not populated):
+To see the columns available in the selected table use the [`show`](#dbmon-commands) command. This will display the Current Record in the selected table. As you haven’t selected a Record yet, it will display an empty Record (notice the value column is not populated):
 
 ```javascript
 ==================================
@@ -342,6 +342,13 @@ Field Name                               Value                                  
 -------------------------------------------------------------------------------------------
 Total Results:  3
 ```
+
+## DATETIME
+
+When setting a DATE or DATETIME, the format will need to be as specified below:
+
+- DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS Z"
+- DATE_FORMAT = "yyyy-MM-dd"
 
 ### Searching a Datetime
 
