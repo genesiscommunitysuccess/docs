@@ -190,7 +190,7 @@ So far we have been testing our work manually, using Genesis Console or an HTTP 
 
 #### Configuration
 
-To test our classes we need to mock the database, as there are integrations and configurations managed by Genesis behind the scenes. To avoid any additional installation locally we will use [H2 in-memory database](https://www.h2database.com/), changing the **server/jvm/build.gradle.kts** configuration for the tests tasks like the code below. You already have the configuration needed if you cloned the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed).
+To test our classes we need to mock the database, as there are integrations and configurations managed by Genesis behind the scenes. To avoid any additional installation locally we will use [H2 in-memory database](https://www.h2database.com/), changing the **server/jvm/build.gradle.kts** configuration for the tests tasks like the code below. You already have the configuration needed if you cloned the Developer Training starting repository from [here](https://github.com/genesiscommunitysuccess/devtraining-seed).
 
 ```kotlin {6-10} title='server/jvm/build.gradle.kts'
 ...
