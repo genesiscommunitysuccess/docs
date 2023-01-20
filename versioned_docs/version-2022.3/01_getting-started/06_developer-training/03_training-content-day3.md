@@ -186,7 +186,7 @@ As we previously generated the fields, autocompletion helps you to define the ta
 
 ### Automated testing
 
-So far we have been testing our work manually, using Genesis Console or some HTTP client. Now the time has come to start writing some automated tests for our application. We are going to test our [TradeView](/getting-started/developer-training/training-content-day3/#usage) and the Trade insert method we [created](/getting-started/developer-training/training-content-day1/#event-handler).
+So far we have been testing our work manually, using Genesis Console or an HTTP client. Now the time has come to start writing some automated tests for our application. We are going to test our [TradeView](/getting-started/developer-training/training-content-day3/#usage) and the Trade insert method we [created](/getting-started/developer-training/training-content-day1/#event-handler).
 
 #### Configuration
 
