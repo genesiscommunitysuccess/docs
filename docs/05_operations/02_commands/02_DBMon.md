@@ -18,7 +18,7 @@ DbMon is the Genesis database client. It provides a unified interface to the und
 
 ## DbMon Commands
 
-There are many commands that can be used with DbMon. We have listed them all for you below. Please use this table as reference if ever in doubt about which commands can be used. In this article we will go over a few of these, demonstrating their use and allowing you to put them into practice.
+There are many commands that can be used with DbMon. We have listed some of them for you below. Please use this table as reference if ever in doubt about which commands can be used. In this article we will go over DbMon Commands, demonstrating their use and allowing you to put them into practice.
 
 | Command                  | Argument                                    | Description                                     |
 |--------------------------|---------------------------------------------|-------------------------------------------------|
@@ -155,7 +155,7 @@ REGION                                                              STRING
 DbMon:BROKER>displayFields
 Display fields reset!
 ```
-### Count
+### Count rows
 
 If you would like to know how many rows of data there are in a table, then you can use the [`count`](#dbmon-commands) command, but be aware for large tables this may take some time to return:
 
@@ -323,47 +323,7 @@ The Logical Operators available are as follows:
 | &&     | Logical And                 |
 | //     | Logical Or                  |
 
-
-
-
-### Counting Records
-
-Let’s assume that we need to know how many BROKER Records there are for each unique COUNTRY_CODE, we can use the **distinct** command, but again **BEWARE** as for large tables this can have an impact on the database performance for frontend users.
-
-```jsx
-DbMon:BROKER>distinct COUNTRY_CODE
-Distinct Value                           Count
-===========================================================================================
-AUS                                      1
-BEL                                      1
-DEU                                      1
-FRA                                      2
-GBR                                      114
-IRL                                      1
-NLD                                      2
-USA                                      6
--------------------------------------------------------------------------------------------
-Total Results:  128
-Total Distinct Values Count:  8
-```
-
-The **distinct** command also accepts a **-where** parameter which allows us to filter the rows that are counted - so if require a count of unique COUNTRY_CODE for BROKER Records which have a REGION of UK, but not do not have the value of GBP for COUNTRY_CODE, we can use the following command -
-
-```jsx
-count
-countcountDbMon:BROKER>distinct COUNTRY_CODE -where REGION=='UK'&&COUNTRY_CODE!='GBR'
-Distinct Value                           Count
-===========================================================================================
-AUS                                      1
-BEL                                      1
-DEU                                      1
-FRA                                      2
-IRL                                      1
-NLD                                      2
--------------------------------------------------------------------------------------------
-Total Results:  8
-Total Distinct Values Count:  6
-```
+## Searching
 
 ### Searching with Wildcards
 
@@ -398,19 +358,54 @@ You can search for a specific date using a where clause such as:
 ```
 
 
-## Getting into DBMon
+## Counting Records
 
-In order to run queries in the database, we will need to run `DbMon`. In order to get into DBMon please run the following command, filling in the correct application name:
+### Distinct
 
-`./gradlew :jvm:[application-name]:DbMon`
+Let’s assume that we need to know how many `BROKER` Records there are for each unique `COUNTRY_CODE`, we can use the [`distinct`](#dbmon-commands) command.
 
-## Using DBMon
+:::warning
+**BEWARE** as for large tables this can have an impact on the database performance for frontend users.
+:::
 
-In this section we will give you some practical examples of how to use DBMon.
+```jsx
+DbMon:BROKER>distinct COUNTRY_CODE
+Distinct Value                           Count
+===========================================================================================
+AUS                                      1
+BEL                                      1
+DEU                                      1
+FRA                                      2
+GBR                                      114
+IRL                                      1
+NLD                                      2
+USA                                      6
+-------------------------------------------------------------------------------------------
+Total Results:  128
+Total Distinct Values Count:  8
+```
 
-### Help
+The [`distinct`](#dbmon-commands) command also accepts a **-where** parameter which allows us to filter the rows that are counted. If you require a count of unique `COUNTRY_CODE` for `BROKER` Records which have a `REGION` of UK, but not do not have the value of `GBP` for `COUNTRY_CODE`, we can use the following command:
 
-Once inside `DbMon`, you can run the command 'help', which shows all the available DbMon commands.
+```jsx
+count
+countcountDbMon:BROKER>distinct COUNTRY_CODE -where REGION=='UK'&&COUNTRY_CODE!='GBR'
+Distinct Value                           Count
+===========================================================================================
+AUS                                      1
+BEL                                      1
+DEU                                      1
+FRA                                      2
+IRL                                      1
+NLD                                      2
+-------------------------------------------------------------------------------------------
+Total Results:  8
+Total Distinct Values Count:  6
+```
+
+## Help
+
+Once inside `DbMon`, you can run the command [`help`](#dbmon-commands), which shows all the available `DbMon` commands.
 To get help on a specific command, run `help _command_`.
 
 `DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
@@ -430,93 +425,3 @@ Enter 'help' for a list of commands
 
 ==================================
 ```
-
-### Creating a new user
-
-Next, let's create a user.
-
-:::note
-The following details will be your login details:
-
-- Username: JaneDee
-- Password: beONneON*74 (This is encrypted in the USER.csv file.)
-  :::
-
-Run the task `loadInitialData`. This adds the data to a file called USER.csv to be imported into the `USER` table in your
-database. The `USER` table, among other users and permissioning tables, is defined by the Genesis Auth module that we installed previously.
-
-To run the task, call:
-
-```shell
-./gradlew :genesisproduct-positions-app-tutorial:positions-app-tutorial-deploy:loadInitialData #On the IntelliJ terminal
-```
-
-or from the dropdown menu:
-
-![](/img/load-initial-data-positions.png)
-
-Now we are going to use Genesis `DbMon` to run some queries on the database.
-
-
-:::info DbMon
-DbMon is the Genesis database client. It provides a unified interface to the underlying database and hides the details about the database vendor.
-:::
-
-Run `DbMon` to check that the user has been created:
-
-```shell
-./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:DbMon #On the IntelliJ terminal
-```
-
-or from the dropdown menu:
-
-![](/img/using-dbmon-positions.png)
-
-Once you are inside the console, type `table USER` and then `search 1`. If imported correctly, the user JaneDee should be listed:
-```
-DbMon>table USER
-DbMon:USER>search 1
-==================================
-USER
-==================================
-Field Name                               Value                                    Type                
-===========================================================================================
-...
-USER_NAME                                JaneDee                                  STRING              
--------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------
-Total Results:  1
-DbMon:USER>
-```
-
-### Running some queries
-
-Now we are going to use Genesis `DbMon` to run some queries on the database.
-
-Run `DbMon` to check that the user has been created:
-
-```
-./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:DbMon #On the IntelliJ terminal
-```
-or from the dropdown menu:
-
-![](/img/using-dbmon-positions.png)
-
-Once you are inside the console, type table `USER` and then `search 1`. If imported correctly, the user JaneDee should be listed:
-
-```shell
-DbMon>table USER
-DbMon:USER>search 1
-==================================
-USER
-==================================
-Field Name                               Value                                    Type                
-===========================================================================================
-...
-USER_NAME                                JaneDee                                  STRING              
--------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------
-Total Results:  1
-DbMon:USER>
-```
-
