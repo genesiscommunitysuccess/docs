@@ -55,7 +55,7 @@ To start a DbMon Session you first need to sudo to the appropriate application a
 
 
 ==================================
-Genesis Database Monitor
+Genesis database Monitor
 Enter 'help' for a list of commands
 ==================================
 DbMon>
@@ -65,15 +65,15 @@ As you can see, once you are in a DbMon Session, the prompt will display DbMon>
 
 ## Exiting DbMon
 
-To end a DbMon Session just type [`quit`](#dbmon-commands) at the DbMon Prompt.
+To end a DbMon Session just type [`quit`](#dbmon-commands) at the DbMon prompt.
 
-## Working with Tables
+## Working with tables
 
-The starting point for any work you will need to do in DbMon will be the Tables. 
+The starting point for any work you will need to do in DbMon will be the tables. 
 
-### Show Tables
+### Show tables
 
-To see a list of the available Tables you can use the [`showTables`](#dbmon-commands) command. This will display an alphabetical list of the available tables, as follows:
+To see a list of the available tables you can use the [`showtables`](#dbmon-commands) command. This will display an alphabetical list of the available tables, as follows:
 
 ```javascript
 ==================================
@@ -95,9 +95,9 @@ AUDIT_TRAIL
 BROKER
 <<List Snipped For Primer>>
 ```
-### Table
+### table
 
-To look at the data held in a specific table you use the [`table`](#dbmon-commands) command followed by the table name, for example table `BROKER`. Once you select a table, the DbMon Prompt will change to show the table name you are looking at:
+To look at the data held in a specific table you use the [`table`](#dbmon-commands) command followed by the table name, for example table `BROKER`. Once you select a table, the DbMon prompt will change to show the table name you are looking at:
 
 ```javascript
 DbMon>table BROKER
@@ -155,7 +155,7 @@ REGION                                                              STRING
 DbMon:BROKER>displayFields
 Display fields reset!
 ```
-### Count Rows
+### Count rows
 
 If you would like to know how many rows of data there are in a table, then you can use the [`count`](#dbmon-commands) command, but be aware for large tables this may take some time to return:
 
@@ -164,7 +164,7 @@ DbMon:BROKER>count
 The table BROKER contains 114 records
 ```
 
-## Finding Data in a Table
+## Finding data in a table
 
 ### Find
 
@@ -192,7 +192,7 @@ BROKER_BY_VIEW_CODE                VIEW_CODE                                Seco
 
 ### Displaying a Record - Set
 
-To display a particular record from a Table, you need to use the [`set`](#dbmon-commands) command to populate an Index field with the value you are searching for, and then use the [`find`](#dbmon-commands) command providing the appropriate Index name.
+To display a particular record from a table, you need to use the [`set`](#dbmon-commands) command to populate an Index field with the value you are searching for, and then use the [`find`](#dbmon-commands) command providing the appropriate Index name.
 
 So for example if we are looking for a Broker that has a `VIEW_CODE` value of “HSBC” we would want to use the Key named `BROKER_BY_VIEW_CODE` and to use that key we would need to set the `VIEW_CODE` to the value `HSBC`. Hence, the commands we would use are as follows:
 
