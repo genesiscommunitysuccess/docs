@@ -184,7 +184,7 @@ Linux CentOS 7 base, Java 11 SDK, genesis user, nginx, FoundationDB.
 
 Now create a local folder where you want to run the distro, e.g., "C:\wsl\distros\training-distro\". Unzip the package downloaded there and from that folder, run:
 ```
-wsl --import TrainingCentOS . training-wsl.backup
+wsl --import TrainingCentOS . training-wsl-fdb.backup
 ```
 
 Run the distro:
@@ -204,7 +204,7 @@ From now on, whenever you see things like "from the terminal or command line" or
 You are good to go!
 
 :::tip FoundationDB
-In our Genesis WSL training distro we are using [FoundationDB](https://www.foundationdb.org/) as the database provider. FoundationDB comes with a command line interface tool called [fdbcli](https://apple.github.io/foundationdb/command-line-interface.html). You can invoke fdbcli at the command line simply by typing it. If everything is ok, you should see a message *The database is available.*
+In our Genesis WSL training distro we are using [FoundationDB](https://github.com/apple/foundationdb) as the database provider. FoundationDB comes with a command line interface tool called [fdbcli](https://apple.github.io/foundationdb/command-line-interface.html). You can invoke fdbcli at the command line simply by typing it. If everything is ok, you should see a message *The database is available.*
 
 ```
 $ fdbcli
