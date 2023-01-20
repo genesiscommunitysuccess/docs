@@ -21,9 +21,9 @@ This is hands-on training for developers who are server specialists. We're going
 
 ## Programme
 
-This training is divided into 5 sessions, or days; each session covers specific advanced resources of the platform. To achieve that, we are extending the  Trade & Positions application that was created during the Developer Training; the application is available [here](https://github.com/genesiscommunitysuccess/devtraining-gama).
+This training is divided into 5 sessions, or days; each session covers specific advanced resources of the platform. To achieve that, we are extending the  Trade & Positions application that was created during the Developer Training; the application is available [here](https://github.com/genesiscommunitysuccess/devtraining-alpha).
 
-Should you need it along the course, feel free to use the [final application](https://github.com/genesiscommunitysuccess/devtraining-gama-server-spc) as a reference.
+Should you need it along the course, feel free to use the [final application](https://github.com/genesiscommunitysuccess/servertraining-alpha) as a reference.
 
 Also, at any point, use the search function of the documentation for extra information.
 
@@ -42,8 +42,8 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 - [Day five](../../../getting-started/server_training/05_ssdt-day5/): Custom endpoints, camel module, data pipeline​.
 
 ## Genesis low-code platform version
-6.1.4
+6.4.2
 
 ## Source code
 The complete source code of this training is available 
-on [GitHub](https://github.com/genesiscommunitysuccess/devtraining-gama-server-spc).
+on [GitHub](https://github.com/genesiscommunitysuccess/servertraining-alpha).
