@@ -199,10 +199,10 @@ subprojects  {
 	tasks {
 		...
 		test {
-            systemProperty("DbLayer", "SQL")
-            systemProperty("DbHost", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
-            systemProperty("DbQuotedIdentifiers", "true")
-        }  
+            		systemProperty("DbLayer", "SQL")
+            		systemProperty("DbHost", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1")
+            		systemProperty("DbQuotedIdentifiers", "true")
+        	}  
 	}
 	...
 }
