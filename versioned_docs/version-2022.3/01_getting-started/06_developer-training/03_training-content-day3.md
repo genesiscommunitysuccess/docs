@@ -209,9 +209,9 @@ subprojects  {
 ...
 ```
 
-#### Adding Testing: AlphaTradeViewTest
+#### Adding testing: AlphaTradeViewTest
 
-Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. We are extending the class [AbstractDatabaseTest](/operations/testing/integration-testing/#abstractdatabasetest) to allow a proper integration testing, as well as using the [TradeView](/getting-started/developer-training/training-content-day3/#usage) we created to assert results. In summary, the new test will:
+Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. We are extending the class [AbstractDatabaseTest](../../../operations/testing/integration-testing/#abstractdatabasetest) to allow a proper integration testing, as well as using the [TradeView](/getting-started/developer-training/training-content-day3/#usage) we created to assert results. In summary, the new test will:
 * load the necessary data inputs from a CSV file 
 * retrieve data using [Genesis Database API](/database/)
 
@@ -327,7 +327,7 @@ You can run the test from IntelliJ by right-clicking on the test class and selec
 ./gradlew :genesisproduct-alpha:alpha-config:test --tests "global.genesis.AlphaTradeViewTest"
 ```
 
-#### Adding Testing: AlphaEventHandlerTest
+#### Adding testing: AlphaEventHandlerTest
 
 Now we will add a new automated test for checking the Trade insert method we [created](http://localhost:8080/getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](/operations/testing/integration-testing/#abstractgenesistestsupport) to allow a proper integration testing. In summary, the new test will:
 * load the necessary data inputs from a CSV file 
