@@ -188,7 +188,7 @@ As we previously generated the fields, autocompletion helps you to define the ta
 
 So far we have been testing our work manually, using Genesis Console or some HTTP client. Now the time has come to start writing some automated tests for our application. We are going to test our [TradeView](/getting-started/developer-training/training-content-day3/#usage) and the Trade insert method we [created](/getting-started/developer-training/training-content-day1/#event-handler).
 
-#### Configuration
+### Configuration
 
 To test our classes we need to mock the database, as there are integrations and configurations managed by Genesis behind the scenes. To avoid any additional installation locally we will use [H2 in-memory database](https://www.h2database.com/), changing the **server/jvm/build.gradle.kts** configuration for the tests tasks like the code below. You already have the configuration needed if you cloned the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed).
 
@@ -209,7 +209,7 @@ subprojects  {
 ...
 ```
 
-#### Adding Testing: AlphaTradeViewTest
+### Adding Testing: AlphaTradeViewTest
 
 Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. We are extending the class [AbstractDatabaseTest](/operations/testing/integration-testing/#abstractdatabasetest) to allow a proper integration testing, as well as using the [TradeView](/getting-started/developer-training/training-content-day3/#usage) we created to assert results. In summary, the new test will:
 * load the necessary data inputs from a CSV file 
@@ -327,7 +327,7 @@ You can run the test from IntelliJ by right-clicking on the test class and selec
 ./gradlew :genesisproduct-alpha:alpha-config:test --tests "global.genesis.AlphaTradeViewTest"
 ```
 
-#### Adding Testing: AlphaEventHandlerTest
+### Adding Testing: AlphaEventHandlerTest
 
 Now we will add a new automated test for checking the Trade insert method we [created](http://localhost:8080/getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](/operations/testing/integration-testing/#abstractgenesistestsupport) to allow a proper integration testing. In summary, the new test will:
 * load the necessary data inputs from a CSV file 
@@ -335,7 +335,7 @@ Now we will add a new automated test for checking the Trade insert method we [cr
 * retrieve data using [Genesis Database API](/database/)
 
 So, first, let's do the following:
-1. Add a new test class to the **alpha-script-config** module (alpha\server\jvm\alpha-script-config\src\test\kotlin\global\genesis) called `AlphaEventHandlerTest.kt`.
+1. Add a new test class to the **alpha-script-config** module (**alpha\server\jvm\alpha-script-config\src\test\kotlin\global\genesis**) called `AlphaEventHandlerTest.kt`.
 2. Add TEST_DATA.csv to a data folder (**alpha\server\jvm\alpha-script-config\src\test\resources\data**)
 
 ```csv
