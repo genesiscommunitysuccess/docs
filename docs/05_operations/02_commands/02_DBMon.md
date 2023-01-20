@@ -10,13 +10,13 @@ tags:
     - DBMon
 ---
 
-# DBMon
+# DbMon
 
-## What is DBMon?
+## What is DbMon?
 
 DbMon is the Genesis database client. It provides a unified interface to the underlying database and hides the details about the database vendor. It is not mandatory that you use DBMon, but it is available for your use nonethless.  In this article we will discuss how we can use this database in conjuction with the Genesis App.
 
-## DbMon Commands
+## DbMon commands
 
 There are many commands that can be used with DbMon. We have listed some of them for you below. Please use this table as reference if ever in doubt about which commands can be used. In this article we will go over DbMon Commands, demonstrating their use and allowing you to put them into practice.
 
@@ -45,7 +45,7 @@ There are many commands that can be used with DbMon. We have listed some of them
 | writeMode                |                                             | enables write mode                              |
 
 
-## Starting DBMon
+## Starting DbMon
 
 To start a DbMon Session you first need to sudo to the appropriate application account. Following this, you must type DbMon at the command prompt:
 
@@ -71,7 +71,7 @@ To end a DbMon Session just type [`quit`](#dbmon-commands) at the DbMon Prompt.
 
 The starting point for any work you will need to do in DbMon will start with Tables. 
 
-### Show tables
+### Show Tables
 
 To see a list of the available Tables you can use the [`showTables`](#dbmon-commands) command. This will display an alphabetical list of the available tables, as follows:
 
@@ -155,7 +155,7 @@ REGION                                                              STRING
 DbMon:BROKER>displayFields
 Display fields reset!
 ```
-### Count rows
+### Count Rows
 
 If you would like to know how many rows of data there are in a table, then you can use the [`count`](#dbmon-commands) command, but be aware for large tables this may take some time to return:
 
@@ -170,7 +170,7 @@ The table BROKER contains 114 records
 
 In DbMon you can only see one Record at a time, and to display the Record you want, you need to locate it using the [`find`](#dbmon-commands) command which searches the table’s Indexes for a given key value.  
 
-### Show Keys (Indexes)
+### Show keys (Indexes)
 
 To see the Indexes (or keys) on the selected table use the [`showKeys`](#dbmon-commands) command. This will display a list of the Index Names and the Fields you will need to supply to use Index:
 
@@ -190,7 +190,7 @@ BROKER_BY_VIEW_CODE                VIEW_CODE                                Seco
 	------------------------------------------------------------------------------------------ 
 ```
 
-### Displaying a record - Set
+### Displaying a Record - Set
 
 To display a particular record from a Table, you need to use the [`set`](#dbmon-commands) command to populate an Index field with the value you are searching for, and then use the [`find`](#dbmon-commands) command providing the appropriate Index name.
 
@@ -409,19 +409,3 @@ Once inside `DbMon`, you can run the command [`help`](#dbmon-commands), which sh
 To get help on a specific command, run `help _command_`.
 
 `DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
-
-#### Syntax
-
-```bash
-DbMon
-```
-
-```bash
-==================================
-
-Database Monitor
-
-Enter 'help' for a list of commands
-
-==================================
-```
