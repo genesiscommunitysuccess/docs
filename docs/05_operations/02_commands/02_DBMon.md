@@ -14,7 +14,7 @@ tags:
 
 ## What is DbMon?
 
-DbMon is the Genesis database client. It provides a unified interface to the underlying database and hides the details about the database vendor. It is not mandatory that you use DBMon, but it is available for your use nonethless.  In this article we will discuss how we can use this database in conjuction with the Genesis App.
+DbMon is the Genesis database client. It provides a unified interface to the underlying database and hides the details about the database vendor. It is not mandatory that you use DBMon, but it is available for your use nonetheless.  In this article we will discuss how we can use this database in conjunction with the Genesis App.
 
 ## DbMon commands
 
@@ -69,7 +69,7 @@ To end a DbMon Session just type [`quit`](#dbmon-commands) at the DbMon Prompt.
 
 ## Working with Tables
 
-The starting point for any work you will need to do in DbMon will start with Tables. 
+The starting point for any work you will need to do in DbMon will be the Tables. 
 
 ### Show Tables
 
