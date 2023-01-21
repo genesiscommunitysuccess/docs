@@ -1,6 +1,6 @@
 ---
-title: 'Operations - DBMon'
-sidebar_label: 'DBMon'
+title: 'Operations - DbMon'
+sidebar_label: 'DbMon'
 id: dbmon
 keywords: [operations, server, commands, DBMon]
 tags:
@@ -18,7 +18,7 @@ DbMon is the Genesis database client. It provides a unified interface to the und
 
 ## DbMon commands
 
-There are many commands that can be used with DbMon. We have listed some of them for you below. Please use this table as reference if ever in doubt about which commands can be used. In this article we will go over DbMon Commands, demonstrating their use and allowing you to put them into practice.
+There are many commands that can be used with DbMon. We have listed them for you below. Please use this table as reference if ever in doubt about which commands can be used. In this article we will go over DbMon Commands, demonstrating their use and allowing you to put them into practice.
 
 | Command                  | Argument                                    | Description                                     |
 |--------------------------|---------------------------------------------|-------------------------------------------------|
@@ -38,7 +38,15 @@ There are many commands that can be used with DbMon. We have listed some of them
 | last                     | `<key_name>`                                | gets the last record by key                     |
 | listAll                  | `<key_name> <num_key_fields> <max_records>` |                                                 |
 | next                     | `<key_name>`                                | gets the next record by key                     |
+| qsearch                  | `<condition> [-l <limit>]`                  ||
+| qshow                    ||||
+| search                   | `<condition> [-l <limit>]`                  ||
+| sequenceNumber           | `<sequence_name>`                           ||
 | set                      | `<field_name> <field_value>`                | sets a field                                    |
+| show                     |||
+| showKeys                 |||
+| showTables               |||
+| table                    | `<table_name>`                              ||
 | unset                    |                                             | sets a field to `null`                          |
 | update                   | `<key_name>`                                | updates the current row by key                  |
 | updateWhere              | `<condition> <assignments>`                 |                                                 |
@@ -95,7 +103,8 @@ AUDIT_TRAIL
 BROKER
 <<List Snipped For Primer>>
 ```
-### table
+
+### Table
 
 To look at the data held in a specific table you use the [`table`](#dbmon-commands) command followed by the table name, for example table `BROKER`. Once you select a table, the DbMon prompt will change to show the table name you are looking at:
 
@@ -106,7 +115,7 @@ DbMon:BROKER>
 
 ### Show
 
-To see the columns available in the selected table use the [`show`](#dbmon-commands) command. This will display the Current Record in the selected table. As you haven’t selected a Record yet, it will display an empty Record (notice the value column is not populated):
+To see the columns available in the selected table use the [`show`](#dbmon-commands) command. This will display the current record in the selected table. As you haven’t selected a record yet, it will display an empty record (notice the value column is not populated):
 
 ```javascript
 ==================================
@@ -133,7 +142,7 @@ NETTING_GROUP_ID                                                    INT
 REGION                                                              STRING
 VIEW_CODE                                                           STRING
 ```
-### Display Fields
+### Display fields
 
 If you are only interested in seeing selected columns, you can use the [`displayFields`](#dbmon-commands) command and list the names of the Columns you are interested in (separated by spaces). 
 
@@ -168,11 +177,11 @@ The table BROKER contains 114 records
 
 ### Find
 
-In DbMon you can only see one Record at a time, and to display the Record you want, you need to locate it using the [`find`](#dbmon-commands) command which searches the table’s Indexes for a given key value.  
+In DbMon you can only see one record at a time, and to display the record you want, you need to locate it using the [`find`](#dbmon-commands) command which searches the table’s indexes for a given key value.  
 
-### Show keys (Indexes)
+### Show keys (indexes)
 
-To see the Indexes (or keys) on the selected table use the [`showKeys`](#dbmon-commands) command. This will display a list of the Index Names and the Fields you will need to supply to use Index:
+To see the indexes (or keys) on the selected table use the [`showKeys`](#dbmon-commands) command. This will display a list of the index Names and the Fields you will need to supply to use index:
 
 ```javascript
 ==================================
@@ -190,14 +199,14 @@ BROKER_BY_VIEW_CODE                VIEW_CODE                                Seco
 	------------------------------------------------------------------------------------------ 
 ```
 
-### Displaying a Record - Set
+### Displaying a record - Set
 
-To display a particular record from a table, you need to use the [`set`](#dbmon-commands) command to populate an Index field with the value you are searching for, and then use the [`find`](#dbmon-commands) command providing the appropriate Index name.
+To display a particular record from a table, you need to use the [`set`](#dbmon-commands) command to populate an index field with the value you are searching for, and then use the [`find`](#dbmon-commands) command providing the appropriate index name.
 
-So for example if we are looking for a Broker that has a `VIEW_CODE` value of “HSBC” we would want to use the Key named `BROKER_BY_VIEW_CODE` and to use that key we would need to set the `VIEW_CODE` to the value `HSBC`. Hence, the commands we would use are as follows:
+So for example if we are looking for a Broker that has a `VIEW_CODE` value of “WALSH” we would want to use the Key named `BROKER_BY_VIEW_CODE` and to use that key we would need to set the `VIEW_CODE` to the value `WALSH`. Hence, the commands we would use are as follows:
 
 ```javascript
-DbMon:BROKER>set VIEW_CODE HSBC
+DbMon:BROKER>set VIEW_CODE WALSH
 DbMon:BROKER>find BROKER_BY_VIEW_CODE
 DbMon:BROKER>show
 ==================================
@@ -205,24 +214,24 @@ BROKER
 ==================================
 Field Name                Value                                     Type
 ===========================================================================================
-TIMESTAMP                 2021-07-08 14:14:26.818(n:0,s:2630)       NANO_TIMESTAMP
+TIMESTAMP                 2022-07-08 14:14:26.818(n:0,s:2630)       NANO_TIMESTAMP
 BROKER_ID                 725                                       INT
 BROKER_PARENT_ID          724                                       INT
 CODE                      114216                                    STRING
 CODE_TYPE                 Registered                                STRING
 COUNTRY_CODE              GBR                                       STRING
-CREATED_DATE              2017-12-11 11:43:53.210 +0000             DATETIME
-CREATED_USER              will.angell-james                         STRING
+CREATED_DATE              2022-12-11 11:43:53.210 +0000             DATETIME
+CREATED_USER              ismail.augustine                          STRING
 EXTERNAL_ID               725N                                      STRING
-FID_BROKER_ID             HSBC                                      STRING
+FID_BROKER_ID             WALSH                                     STRING
 IS_ACTIVE                 true                                      BOOLEAN
 LEI_NUMBER                MP6I5ZYZBEU3UXPYFY54                      STRING
-MODIFIED_DATE             2018-03-14 09:44:25.703 +0000             DATETIME
-MODIFIED_USER             terry.cannon                              STRING
-NAME                      HSBC Bank Plc                             STRING 
+MODIFIED_DATE             2022-03-14 09:44:25.703 +0000             DATETIME
+MODIFIED_USER             ismail.augustine                              STRING
+NAME                      WALSH Bank Plc                            STRING 
 NETTING_GROUP_ID                                                    INT
 REGION                    UK                                        STRING
-VIEW_CODE                 HSBC                                      STRING
+VIEW_CODE                 WALSH                                     STRING
 ```
 To then [`find`](#dbmon-commands) another record with a different `VIEW_CODE`, you need to go back to having an empty record so that you can [`set`](#dbmon-commands) the `VIEW_CODE` again and perform another [`find`](#dbmon-commands). 
 
@@ -234,13 +243,13 @@ The [`clear`](#dbmon-commands) command does not have any effect on the data itse
 
 ### Search
 
-If you wish to look for a record (or a number of records) but your criteria does not match an Index on the table, you can use the [`search`](#dbmon-commands) command.
+If you wish to look for a record (or a number of records) but your criterion does not match an index on the table, you can use the [`search`](#dbmon-commands) command.
 
 :::warning
 **BEWARE**, for larger tables this can be slow and risks causing latency to frontend users (e.g. client user).
 :::
 
-So, if we wanted to find all the records in the `BROKER` table where the `COUNTRY_CODE` was IRL, there is no Index we can use and there may be multiple results, so using the [`search`](#dbmon-commands) command would look like this:
+So, if we wanted to find all the records in the `BROKER` table where the `COUNTRY_CODE` was IRL, there is no index we can use and there may be multiple results, so using the [`search`](#dbmon-commands) command would look like this:
 
 ```javascript
 ==================================
@@ -248,21 +257,21 @@ BROKER
 ==================================
 Field Name                Value                                     Type
 ===========================================================================================
-TIMESTAMP                 2021-02-12 11:07:58.116339964             NANO_TIMESTAMP
+TIMESTAMP                 2022-02-12 11:07:58.116339964             NANO_TIMESTAMP
 BROKER_ID                 4001                                      INT
 BROKER_PARENT_ID                                                    INT
 CODE                      223987                                    STRING
 CODE_TYPE                 Registered                                STRING
 COUNTRY_CODE              IRL                                       STRING
-CREATED_DATE              2020-10-08 14:20:17.400 +0000             DATETIME
-CREATED_USER              terry.cannon                              STRING
+CREATED_DATE              2022-10-08 14:20:17.400 +0000             DATETIME
+CREATED_USER              john.clement                              STRING
 EXTERNAL_ID               4001N                                     STRING
 FID_BROKER_ID             SISS                                      STRING
 IS_ACTIVE                 true                                      BOOLEAN
-LEI_NUMBER                635400IAV22ZOU1NFS89                      STRING
-MODIFIED_DATE             2020-10-08 14:20:17.400 +0000             DATETIME
-MODIFIED_USER             terry.cannon                              STRING
-NAME                      Susquehanna Intl Securities Ltd           STRING
+LEI_NUMBER                636400IBV22ZOU1NFS87                      STRING
+MODIFIED_DATE             2022-10-08 14:20:17.400 +0000             DATETIME
+MODIFIED_USER             john.clement                              STRING
+NAME                      Phillip N Orion ltd                       STRING
 NETTING_GROUP_ID          601                                       INT
 REGION                    UK                                        STRING
 VIEW_CODE                 SISS                                      STRING
@@ -325,7 +334,7 @@ The Logical Operators available are as follows:
 
 ## Searching
 
-### Searching with Wildcards
+### Searching with wildcards
 
 DbMon allows functionality to search via a wildcard.
 Beware this might be quite slow if running against a large dataset.
@@ -343,7 +352,7 @@ Field Name                               Value                                  
 Total Results:  3
 ```
 
-## DATETIME
+## Datetime
 
 When setting a DATE or DATETIME, the format will need to be as specified below:
 
@@ -356,7 +365,7 @@ When setting a DATE or DATETIME, the format will need to be as specified below:
 -where 'LAST_ACCESS_TIME>"2022-06-20"'
 ```
 
-### Searching a Timestamp
+### Searching a timestamp
 
 You can search for a specific date using a where clause such as:
 
@@ -365,11 +374,11 @@ You can search for a specific date using a where clause such as:
 ```
 
 
-## Counting Records
+## Counting records
 
 ### Distinct
 
-Let’s assume that we need to know how many `BROKER` Records there are for each unique `COUNTRY_CODE`, we can use the [`distinct`](#dbmon-commands) command.
+Let’s assume that we need to know how many `BROKER` records there are for each unique `COUNTRY_CODE`, we can use the [`distinct`](#dbmon-commands) command.
 
 :::warning
 **BEWARE** as for large tables this can have an impact on the database performance for frontend users.
@@ -392,7 +401,7 @@ Total Results:  128
 Total Distinct Values Count:  8
 ```
 
-The [`distinct`](#dbmon-commands) command also accepts a **-where** parameter which allows us to filter the rows that are counted. If you require a count of unique `COUNTRY_CODE` for `BROKER` Records which have a `REGION` of UK, but not do not have the value of `GBP` for `COUNTRY_CODE`, we can use the following command:
+The [`distinct`](#dbmon-commands) command also accepts a **-where** parameter which allows us to filter the rows that are counted. If you require a count of unique `COUNTRY_CODE` for `BROKER` records which have a `REGION` of UK, but not do not have the value of `GBP` for `COUNTRY_CODE`, we can use the following command:
 
 ```jsx
 count
@@ -414,5 +423,41 @@ Total Distinct Values Count:  6
 
 Once inside `DbMon`, you can run the command [`help`](#dbmon-commands), which shows all the available `DbMon` commands.
 To get help on a specific command, run `help _command_`.
+
+
+```javascript
+==================================
+Help Menu
+==================================
+autoIncrementNumber <field_name>
+clear
+count
+delete
+deletelse <condition>
+displayFields <field_names>
+distinct <condition> [-where <limiting_condition>]
+find <key_name>
+first <key_name>
+forceAutoIncrementNumber <field_name> <sequence_number>
+forceSequenceNumber <sequence_name> <sequence_number>
+h
+insert
+last <key_name>
+listAll <key_name> <num_key_fields> <max_records>
+next <key_name>
+qsearch <condition> [-l <limit>]
+qshow
+search <condition> [-l <limit>]
+sequenceNumber <sequence_name>
+set <field_name> <field_value>
+show
+showKeys
+showTables
+table <table_name>
+unset
+update <key_name>
+updateWhere <condition> <assignments>
+writeMode
+```
 
 `DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
