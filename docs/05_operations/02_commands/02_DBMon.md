@@ -79,7 +79,7 @@ Most of the time, you'll be using DbMon to examine tables in one way or another.
 
 ### Show tables
 
-To see a list of available tables use the [`showtables`](#dbmon-commands) command. This displays an alphabetical list of available tables, for example:
+To see a list of available tables, use the [`showtables`](#dbmon-commands) command. This displays an alphabetical list of available tables, for example:
 
 ```javascript
 ==================================
@@ -282,7 +282,7 @@ VIEW_CODE                 SISS                                      STRING
 Total Results:  1
 ```
 
-If there are multiple records that match the search criteria, they would all be listed one after the other on the screen. To limit the number of results, you can supply the limit (-l) parameter to the [`search`](#dbmon-commands) command. In the example below, the unlimited search returns six results. The next search, which includes the `-l 3` parameter, returns only the first three results:
+If there are multiple records that match the search criteria, these would all be listed one after the other on the screen. To limit the number of results, you can supply the limit (-l) parameter to the [`search`](#dbmon-commands) command. In the example below, the unlimited search returns six results. The next search, which includes the `-l 3` parameter, returns only the first three results:
 
 ```javascript
 DbMon:BROKER>search COUNTRY_CODE=='USA'
@@ -308,7 +308,7 @@ Field Name                Value                                     Type
 Total Results:  3
 ```
 
-To string criteria together, use || for Logical OR and && for Logical AND. For example, if you want to [`search`](#dbmon-commands) for any `BROKER` where the `COUNTRY_CODE` is USA or IRL:
+To string criteria together, use || for logical OR and && for logical AND. For example, if you want to [`search`](#dbmon-commands) for any `BROKER` where the `COUNTRY_CODE` is USA or IRL:
 
 ```javascript
 DbMon:BROKER>search COUNTRY_CODE=='IRL'||COUNTRY_CODE=='USA'
@@ -323,7 +323,7 @@ Field Name                Value                                     Type
 Total Results
 ```
 
-The Logical Operators available are:
+The logical operators available are:
 
 | Symbol | Name                        |
 |--------|-----------------------------|
