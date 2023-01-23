@@ -226,53 +226,14 @@ killServer [--hostname <[hosts names]>] [--force]
 
 ## DbMon script
 
-This script enables you to navigate through the database tables from the command line.
+The DbMonscript enables you to navigate through the database tables from the command line.
 
 Once inside `DbMon`, you can run the command 'help', which shows all the available DbMon commands. 
 To get help on a specific command, run `help _command_`.
 
 `DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
 
-### Syntax
-
-```bash
-DbMon
-```
-
-```bash
-==================================
-
-Database Monitor
-
-Enter 'help' for a list of commands
-
-==================================
-```
-
-| Command                  | Argument                                    | Description                                     |
-|--------------------------|---------------------------------------------|-------------------------------------------------|
-| autoIncrementNumber      | `<field_name>`                              |                                                 |
-| clear                    |                                             | clears the current context                      |
-| count                    |                                             | counts the rows in the table                    |
-| delete                   |                                             | deletes the current row                         |
-| deleteWhere              | `<condition>`                               | deletes all matching rows in the selected table |
-| displayFields            | `<field_names>`                             |                                                 |
-| distinct                 | `<condition> [-where <limiting_condition>]` |                                                 |
-| find                     | `<key_name>`                                |                                                 |
-| first                    | `<key_name>`                                |                                                 |
-| forceAutoIncrementNumber | `<field_name> <sequence_number>`            |                                                 |
-| forceSequenceNumber      | `<sequence_name> <sequence_number>`         |                                                 |
-| help                     |                                             | lists all commands                              |
-| insert                   |                                             | inserts the current row                         |
-| last                     | `<key_name>`                                | gets the last record by key                     |
-| listAll                  | `<key_name> <num_key_fields> <max_records>` |                                                 |
-| next                     | `<key_name>`                                | gets the next record by key                     |
-| set                      | `<field_name> <field_value>`                | sets a field                                    |
-| unset                    |                                             | sets a field to `null`                          |
-| update                   | `<key_name>`                                | updates the current row by key                  |
-| updateWhere              | `<condition> <assignments>`                 |                                                 |
-| writeMode                |                                             | enables write mode                              |
-
+For full details, see our page on [DbMon](./02_DBMon.md)
 
 ## SendIt script
 
