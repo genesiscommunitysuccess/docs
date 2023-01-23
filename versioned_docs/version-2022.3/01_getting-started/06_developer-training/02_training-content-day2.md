@@ -120,7 +120,7 @@ Now, still in the **home.ts** file, let's add two constants to define:
 
 We need to declare the columns and permissions in the Home class as well. 
 
-```ts {5-10,13-39,47-48,52}
+```ts {5-10,13-39,47}
 ...
 const name = 'home-route';
 
