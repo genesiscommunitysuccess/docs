@@ -40,7 +40,6 @@ Please follow these instructions very carefully to ensure your environment is re
 | npm | 8 |
 | Gradle | 7.5 |
 | Windows Subsystem for Linux (WSL) | WSL 2 |
-| Docker Desktop | 4.11.1 |
 
 You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the Genesis Platform Abstraction Language (**GPAL**) prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
 
@@ -162,7 +161,14 @@ More information [here](https://docs.gradle.org/current/userguide/build_environm
 
 ## Local server set-up
 
-<!--
+### Start the project baseline
+
+Clone the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed).
+
+Open the project using your favorite IDE, such as IntelliJ or Visual Studio Code.
+
+### WSL 2 set-up
+
 Make sure you have completed the [Workstation setup](#workstation-setup) prior to this.
 
 We are going to set up Windows Subsystem for Linux (WSL 2) to deploy and run the application locally.
@@ -178,7 +184,7 @@ Linux CentOS 7 base, Java 11 SDK, genesis user, nginx, FoundationDB.
 
 Now create a local folder where you want to run the distro, e.g., "C:\wsl\distros\training-distro\". Unzip the package downloaded there and from that folder, run:
 ```
-wsl --import TrainingCentOS . training-wsl.backup
+wsl --import TrainingCentOS . training-wsl-fdb.backup
 ```
 
 Run the distro:
@@ -194,48 +200,34 @@ Welcome to Genesis WSL training distro!
 :::note
 From now on, whenever you see things like "from the terminal or command line" or "run this command", it means from the WSL Linux instance command line as user 'genesis' ('su genesis').
 :::
--->
-### Start the project baseline
-
-Clone the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed).
-
-Open the project using your favorite IDE, such as IntelliJ or Visual Studio Code.
-
-### Running the back end
-We are going to change the back-end and front-end code, so ideally we should have the server running to make our application work. To do that, we can simply build a Docker image from the project you just cloned.
-
-You must have Docker installed and running on your workstation.
-
-### Building the Docker images
-From the root directory of the project, run:
-```shell
-./gradlew assemble
-docker-compose build
-docker-compose up -d
-```
-
-Check on your Docker dashboard to make sure that you have the containers **gsf** and **nginx** running.
-
-### Attaching a terminal to a Docker container
-
-Attaching a terminal to a Docker container is as easy as running:
-
-```shell
-docker exec -it gsf bash
-```
-
-Now try logging in as **alpha** and running `mon` to monitor the platform services.
-```shell
-su - alpha
-
-mon
-```
-
-:::tip
-Alternatively, you can use Docker Desktop Integrated Terminal for the containers you have just created (as explained [here](https://www.docker.com/blog/integrated-terminal-for-running-containers-extended-integration-with-containerd-and-more-in-docker-desktop-4-12/)).
-:::
-
-When you run `mon`, you must see all processes up and running or in standby mode.
 
 You are good to go!
+
+:::tip FoundationDB
+In our Genesis WSL training distro we are using [FoundationDB](https://github.com/apple/foundationdb) as the database provider. FoundationDB comes with a command line interface tool called [fdbcli](https://apple.github.io/foundationdb/command-line-interface.html). You can invoke fdbcli at the command line simply by typing it. If everything is ok, you should see a message *The database is available.*
+
+```
+$ fdbcli
+Using cluster file `/etc/foundationdb/fdb.cluster'.
+
+The database is available.
+
+Welcome to the fdbcli. For help, type `help'.
+fdb>
+```
+
+In case of any issue, please double check how the FoundationDB [configuration](https://apple.github.io/foundationdb/configuration.html) can be done. E.g., each FDB cluster needs to be told some configuration information about what kind of redundancy mode it should be using, what storage engine, etc. For local development, you’ll probably want to run the command below.
+
+```shell
+fdbcli --exec "configure new single memory ; status"
+```
+
+Last but not least, feel free to try different versions of FoundationDB [here](https://apple.github.io/foundationdb/downloads.html). You may also want to re-start your local FoundationDB.
+
+```shell
+pkill fdb
+/usr/lib/foundationdb/fdbmonitor >> /tmp/fdbmonitor.log 2>&1 &
+fdbserver -p 127.0.0.1:4500 >> /tmp/fdb.log 2>&1 &
+```
+:::
 

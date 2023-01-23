@@ -45,6 +45,24 @@ dataServer {
 }
 ```
 
+## Naming
+
+You don't have to give each `query` a name. If you do provide one, it will be used exactly as you specify. If you don't, then a name is allocated automatically when the data object is created. The syntax for this allocation is "ALL_{table/view name}S". So, in the example below:
+
+- The first query is called `INSTRUMENT_DETAILS`, as this name has been specified.
+- The second query is called `ALL_COUNTERPARTYS`, because it has not had a name specified. The allocated name is based on the COUNTERPARTY table, which it queries.
+
+
+```kotlin
+dataserver {
+    // Name of the dataserver: INSTRUMENT_DETAILS
+    query("INSTRUMENT_DETAILS", INSTRUMENT_DETAILS)
+
+    // Name of the dataserver: ALL_COUNTERPARTYS
+    query(COUNTERPARTY)
+}
+```
+
 ## Specifying fields
 
 By default, all table or view fields in a query definition will be exposed. If you don't want them all to be available, you must define the fields that are required. In the example below, we specify eight fields:
