@@ -14,7 +14,7 @@ tags:
 
 ## What is DbMon?
 
-DbMon is the Genesis database client. It provides an interface to the underlying database and hides the details about the specific database technology. Generic database clients can be used with the Genesis low-code platform, but we recommend that you use DbMon.  This page gives details of all the DbMon commands and provide practical examples of how you can use them.
+DbMon is the Genesis database client. It provides an interface to the underlying database and hides the details about the specific database technology. Generic database clients can be used with the Genesis low-code platform, but we recommend that you use DbMon.  This page gives details of all the DbMon commands and provides practical examples of how you can use them.
 
 ## DbMon commands
 
