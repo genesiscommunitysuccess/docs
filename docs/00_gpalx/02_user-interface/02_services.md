@@ -41,7 +41,7 @@ ui("Alpha Trading Dashboard") {
 
 Currently GPALX only offers one service, `Login`. This will be extended to other services in the future. The `Login` service is a **_cross-cutting concern_** because it is needed in almost every module of an application. 
 
-It integrates with the [authentication module](../../../../server/access-control/introduction/) in the backend which in turn:
+It integrates with the [authentication module](../../../server/access-control/introduction/) in the backend which in turn:
 - Prompts a screen through which the user is authenticated.
 - Dictates the default page based on the configuration in the route parameter.
 - Collaborates with the `public` parameter in [pages](../../../gpalx/user-interface/pages/#page-structure) to determine accessibility for the user. If the `public` parameter is set to false, the `Login` service ensures that the page will only be viewed by authenticated users. 
@@ -82,7 +82,7 @@ The following parameters can be utilized to create your own custom services:
 - **_route_** is an optional parameter which allows you to define a route if your service needs it.
 - **_configure_** is an optional configure callback which allows for any custom logic a service may need to apply.
 
-Follow this syntax to create a custom service. 
+Follow this syntax to create a custom service: 
 
 ```ts
 {
