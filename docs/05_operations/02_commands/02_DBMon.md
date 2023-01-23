@@ -73,7 +73,7 @@ As you can see, once you are in a DbMon session, the `DbMon>` prompt is displaye
 
 ## Exiting DbMon
 
-To end a DbMon session just type [`quit`](#dbmon-commands) at the DbMon prompt.
+To end a DbMon session, just type [`quit`](#dbmon-commands) at the DbMon prompt.
 
 ## Working with tables
 
