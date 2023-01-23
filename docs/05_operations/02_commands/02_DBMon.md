@@ -77,7 +77,7 @@ To end a DbMon session, just type [`quit`](#dbmon-commands) at the DbMon prompt.
 
 ## Working with tables
 
-The starting point for any work you will need to do in DbMon will be tables. 
+Most of the time, you'll be using DbMon to examine tables in one way or another. 
 
 ### Show tables
 
@@ -284,7 +284,7 @@ VIEW_CODE                 SISS                                      STRING
 Total Results:  1
 ```
 
-If there were multiple records that matched the search criteria, they would all be listed one after the other on the screen. To limit the number of results, you can supply the limit (-l) parameter to the [`search`](#dbmon-commands) command:
+If there are multiple records that match the search criteria, they would all be listed one after the other on the screen. To limit the number of results, you can supply the limit (-l) parameter to the [`search`](#dbmon-commands) command. In the example below, the unlimited search returns six results. The next search, which includes the `-l 3` parameter, returns only the first three results:
 
 ```javascript
 DbMon:BROKER>search COUNTRY_CODE=='USA'
@@ -334,7 +334,7 @@ The Logical Operators available are:
 | >      | Greater Than                |
 | <      | Less Than                   |
 | &&     | Logical And                 |
-| //     | Logical Or                  |
+| ![](/img/logical-or.png)    | Logical Or                  |
 
 ## Searching
 
@@ -402,7 +402,7 @@ Total Distinct Values Count:  8
 
 The [`distinct`](#dbmon-commands) command also accepts a `-where` parameter, which enables you to filter the rows that are counted. 
 
-This example retries the count of unique `COUNTRY_CODE` for `BROKER` records that have a `REGION` of UK, but which do not have the value of `GBP` for `COUNTRY_CODE`:
+This example retrieves the count of unique `COUNTRY_CODE` for `BROKER` records that have a `REGION` of UK, but which do not have the value of `GBP` for `COUNTRY_CODE`:
 
 ```jsx
 count
@@ -423,7 +423,7 @@ Total Distinct Values Count:  6
 ## Help
 
 Once inside `DbMon`, you can run the command [`help`](#dbmon-commands) to show all the available `DbMon` commands.
-To get help on a specific command, run `help _command_`.
+To get help on a specific command, run the `help _command_`.
 
 
 ```javascript
