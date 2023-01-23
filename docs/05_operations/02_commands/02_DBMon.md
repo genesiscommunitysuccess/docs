@@ -14,11 +14,11 @@ tags:
 
 ## What is DbMon?
 
-DbMon is the Genesis database client. It provides a unified interface to the underlying database and hides the details about the database vendor. It is not mandatory that you use DBMon, but it is available for your use nonetheless.  Below we will discuss how we can use this database client in conjunction with the Genesis low-code Platform.
+DbMon is the Genesis database client. It provides an interface to the underlying database and hides the details about the specific database technology. Generic database clients can be used with the Genesis low-code platform, but we recommend that you use DbMon.  This page gives details of all the DbMon commands and provide practical examples of how you can use them.
 
 ## DbMon commands
 
-There are many commands that can be used with DbMon which are listed below. Please use this table as reference if ever in doubt about which commands can be used. We will go over DbMon Commands, demonstrating their use and allowing you to put them into practice.
+The commands available with DbMon are listed below. 
 
 | Command                  | Argument                                    | Description                                     |
 |--------------------------|---------------------------------------------|-------------------------------------------------|
@@ -55,7 +55,7 @@ There are many commands that can be used with DbMon which are listed below. Plea
 
 ## Starting DbMon
 
-To start a DbMon Session you first need to switch to the user that owns the Genesis Installation. Following this, you must type DbMon at the command prompt:
+To start a DbMon session, first switch to the user that owns the Genesis installation. Then type `DbMon` at the command prompt:
 
 ```javascript
 [titan] /home/titan >DbMon
@@ -69,11 +69,11 @@ Enter 'help' for a list of commands
 DbMon>
 ```
 
-As you can see, once you are in a DbMon Session, the prompt will display DbMon>
+As you can see, once you are in a DbMon session, the `DbMon>` prompt is displayed:
 
 ## Exiting DbMon
 
-To end a DbMon Session just type [`quit`](#dbmon-commands) at the DbMon prompt.
+To end a DbMon session just type [`quit`](#dbmon-commands) at the DbMon prompt.
 
 ## Working with tables
 
@@ -81,7 +81,7 @@ The starting point for any work you will need to do in DbMon will be tables.
 
 ### Show tables
 
-To see a list of the available tables you can use the [`showtables`](#dbmon-commands) command. This will display an alphabetical list of available tables, as follows:
+To see a list of available tables use the [`showtables`](#dbmon-commands) command. This displays an alphabetical list of available tables, for example:
 
 ```javascript
 ==================================
@@ -106,7 +106,7 @@ BROKER
 
 ### Table
 
-To look at the data held in a specific table you use the [`table`](#dbmon-commands) command followed by the table name, for example `table BROKER`. Once you select a table, the DbMon prompt will change to show the table name you are looking at:
+To look at the data held in a specific table, use the [`table`](#dbmon-commands) command followed by the table name: for example `table BROKER`. Once you have selected a table, the `DbMon` prompt changes to show the table name.
 
 ```javascript
 DbMon>table BROKER
@@ -115,7 +115,7 @@ DbMon:BROKER>
 
 ### Show
 
-To see the columns available in the selected table use the [`show`](#dbmon-commands) command. This will display the current record in the selected table. As you haven’t selected a record yet, it will display an empty record (notice the value column is not populated):
+To see the columns available in the selected table use the [`show`](#dbmon-commands) command. This displays the current record in the selected table. If no record has been selected, it displays an empty record (notice the value column below is not populated):
 
 ```javascript
 ==================================
@@ -144,9 +144,10 @@ VIEW_CODE                                                           STRING
 ```
 ### Display fields
 
-If you are only interested in seeing selected columns, you can use the [`displayFields`](#dbmon-commands) command and list the names of the columns you are interested in (separated by spaces). 
+If you are only interested in seeing selected columns, use the [`displayFields`](#dbmon-commands) command and list the names of the columns you are interested in (separated by spaces). 
 
-Any subsequent [`show`](#dbmon-commands) commands will only display those columns rather than the all the columns in the table (to reset back to all columns being displayed just use the [`displayFields`](#dbmon-commands) command followed by no column names):
+Any subsequent [`show`](#dbmon-commands) commands will only display those columns, rather than the all the columns in the table.
+
 
 ```javascript
 DbMon:BROKER>displayFields BROKER_ID NAME REGION COUNTRY_CODE
@@ -164,9 +165,11 @@ REGION                                                              STRING
 DbMon:BROKER>displayFields
 Display fields reset!
 ```
+To view all columns again, use the [`displayFields`](#dbmon-commands) command followed by no column names.
+
 ### Count rows
 
-If you would like to know how many rows of data there are in a table, then you can use the [`count`](#dbmon-commands) command, but be aware for large tables this may take some time to return:
+If you would like to know how many rows of data there are in a table, then use the [`count`](#dbmon-commands) command. Be aware that, for large tables, this could take some time to return:
 
 ```javascript
 DbMon:BROKER>count
@@ -177,11 +180,11 @@ The table BROKER contains 114 records
 
 ### Find
 
-In DbMon you can only see one record at a time, and to display the record you want you need to locate it using the [`find`](#dbmon-commands) command which searches the table’s indexes for a given key value.  
+In DbMon, you can only see one record at a time. To display the record you want, you must first locate it using the [`find`](#dbmon-commands) command, which searches the table’s indexes for a given key value.  
 
 ### Show keys (indexes)
 
-To see the indexes (or keys) on the selected table use the [`showKeys`](#dbmon-commands) command. This will display a list of the index names and the fields you will need to supply to use index:
+To see the indexes (or keys) on the selected table, use the [`showKeys`](#dbmon-commands) command. This displays a list of the index names and the fields you will need to supply to use the index:
 
 ```javascript
 ==================================
@@ -201,9 +204,9 @@ BROKER_BY_VIEW_CODE                VIEW_CODE                                Seco
 
 ### Displaying a record - Set
 
-To display a particular record from a table, you need to use the [`set`](#dbmon-commands) command to populate an index field with the value you are searching for, and then use the [`find`](#dbmon-commands) command providing the appropriate index name.
+To display a particular record from a table, use the [`set`](#dbmon-commands) command to populate an index field with the value you are searching for. Then use the [`find`](#dbmon-commands) command along with the appropriate index name.
 
-So for example if we are looking for a Broker that has a `VIEW_CODE` value of “WALSH” we would want to use the Key named `BROKER_BY_VIEW_CODE` and to use that key we would need to set the `VIEW_CODE` to the value `WALSH`. Hence, the commands we would use are as follows:
+The example below looks for a broker that has a `VIEW_CODE` value of “WALSH”. We have searched for the Key named `BROKER_BY_VIEW_CODE` and to use that key we whave set the `VIEW_CODE` to the value `WALSH`.
 
 ```javascript
 DbMon:BROKER>set VIEW_CODE WALSH
@@ -233,12 +236,13 @@ NETTING_GROUP_ID                                                    INT
 REGION                    UK                                        STRING
 VIEW_CODE                 WALSH                                     STRING
 ```
-To then [`find`](#dbmon-commands) another record with a different `VIEW_CODE`, you need to go back to having an empty record so that you can [`set`](#dbmon-commands) the `VIEW_CODE` again and perform another [`find`](#dbmon-commands). 
 
-To do this you use the [`clear`](#dbmon-commands) command, this resets your view onto the table allowing you to start again. 
+If you then want to [`find`](#dbmon-commands) a record with a different `VIEW_CODE`, you need to go back to having an empty record so that you can [`set`](#dbmon-commands) the `VIEW_CODE` again and perform another [`find`](#dbmon-commands). 
+
+To do this, use the [`clear`](#dbmon-commands) command.This resets your view onto the table so that you can start again. 
 
 :::note
-The [`clear`](#dbmon-commands) command does not have any effect on the data itself, just your “window” into the database.
+The [`clear`](#dbmon-commands) command does not have any effect on the data itself, just on your “window” into the database.
 :::
 
 ### Search
@@ -246,10 +250,10 @@ The [`clear`](#dbmon-commands) command does not have any effect on the data itse
 If you wish to look for a record (or a number of records) but your criterion does not match an index on the table, you can use the [`search`](#dbmon-commands) command.
 
 :::warning
-**BEWARE**, for larger tables this can be slow and risks causing latency to frontend users (e.g. client user).
+For larger tables, this can be slow and risks causing latency to your application's users.
 :::
 
-So, if we wanted to find all the records in the `BROKER` table where the `COUNTRY_CODE` was IRL, there is no index we can use and there may be multiple results, so using the [`search`](#dbmon-commands) command would look like this:
+For example, if you wanted to find all the records in the `BROKER` table where the `COUNTRY_CODE` was IRL, and there is no index that can be used (and there might be multiple results), the [`search`](#dbmon-commands) command would look like this:
 
 ```javascript
 ==================================
@@ -280,7 +284,7 @@ VIEW_CODE                 SISS                                      STRING
 Total Results:  1
 ```
 
-If there were multiple records which matched the search criteria, then they would all be listed one after the other on the screen.  To limit the number of results, you can supply the limit (-l) parameter to the [`search`](#dbmon-commands) command and control the maximum number of records returned:
+If there were multiple records that matched the search criteria, they would all be listed one after the other on the screen. To limit the number of results, you can supply the limit (-l) parameter to the [`search`](#dbmon-commands) command:
 
 ```javascript
 DbMon:BROKER>search COUNTRY_CODE=='USA'
@@ -306,7 +310,7 @@ Field Name                Value                                     Type
 Total Results:  3
 ```
 
-If you wish to string criteria together, then you can use || for Logical OR and && for Logical AND, so if you want to [`search`](#dbmon-commands) for any `BROKER` where the `COUNTRY_CODE` is USA or IRL we would use the following:
+To string criteria together, use || for Logical OR and && for Logical AND. For example, if you want to [`search`](#dbmon-commands) for any `BROKER` where the `COUNTRY_CODE` is USA or IRL:
 
 ```javascript
 DbMon:BROKER>search COUNTRY_CODE=='IRL'||COUNTRY_CODE=='USA'
@@ -321,7 +325,7 @@ Field Name                Value                                     Type
 Total Results
 ```
 
-The Logical Operators available are as follows:
+The Logical Operators available are:
 
 | Symbol | Name                        |
 |--------|-----------------------------|
@@ -336,8 +340,7 @@ The Logical Operators available are as follows:
 
 ### Searching with wildcards
 
-DbMon provides functionality to search via a wildcard.
-Beware this might be quite slow if running against a large dataset.
+You can search using the * wildcard. Note that this might be quite slow if running against a large dataset.
 
 ```jsx
 DbMon:USER_ATTRIBUTES>search USER_NAME.matches('Dealer1.*')
@@ -354,7 +357,7 @@ Total Results:  3
 
 ## Datetime
 
-When setting a DATE or DATETIME, the format will need to be as specified below:
+When setting a DATE or DATETIME, the format must be specified as follow:
 
 - DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS Z"
 - DATE_FORMAT = "yyyy-MM-dd"
@@ -367,7 +370,7 @@ When setting a DATE or DATETIME, the format will need to be as specified below:
 
 ### Searching a timestamp
 
-You can search for a specific date using a where clause such as:
+You can search for a specific date using a `where` clause, such as:
 
 ```bash
 -where == "20220202"
@@ -378,7 +381,7 @@ You can search for a specific date using a where clause such as:
 
 ### Distinct
 
-Let’s assume that we need to know how many `BROKER` records there are for each unique `COUNTRY_CODE`, we can use the [`distinct`](#dbmon-commands) command.
+In this example, the [`distinct`](#dbmon-commands) command is used to find out how many `BROKER` records there are for each unique `COUNTRY_CODE`.
 
 ```jsx
 DbMon:BROKER>distinct COUNTRY_CODE
@@ -397,7 +400,9 @@ Total Results:  128
 Total Distinct Values Count:  8
 ```
 
-The [`distinct`](#dbmon-commands) command also accepts a **-where** parameter which allows us to filter the rows that are counted. If you require a count of unique `COUNTRY_CODE` for `BROKER` records which have a `REGION` of UK, but not do not have the value of `GBP` for `COUNTRY_CODE`, we can use the following command:
+The [`distinct`](#dbmon-commands) command also accepts a `-where` parameter, which enables you to filter the rows that are counted. 
+
+This example retries the count of unique `COUNTRY_CODE` for `BROKER` records that have a `REGION` of UK, but which do not have the value of `GBP` for `COUNTRY_CODE`:
 
 ```jsx
 count
@@ -417,7 +422,7 @@ Total Distinct Values Count:  6
 
 ## Help
 
-Once inside `DbMon`, you can run the command [`help`](#dbmon-commands), which shows all the available `DbMon` commands.
+Once inside `DbMon`, you can run the command [`help`](#dbmon-commands) to show all the available `DbMon` commands.
 To get help on a specific command, run `help _command_`.
 
 
@@ -455,5 +460,5 @@ update <key_name>
 updateWhere <condition> <assignments>
 writeMode
 ```
-
+### Quiet mode
 `DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
