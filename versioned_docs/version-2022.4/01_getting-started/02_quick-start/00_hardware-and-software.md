@@ -59,6 +59,10 @@ Install node.js (npm 8)
 
 ## .npmrc set-up
 
+:::caution external users only
+The instructions below support external users only. If you are an internal user please contact support for SAML SSO login.
+:::  
+
 First, you need to configure the `@genesislcap` scope of `npm` in order to use our jfrog registry.
 
 1. Create an empty `.npmrc` file in your user home directory.

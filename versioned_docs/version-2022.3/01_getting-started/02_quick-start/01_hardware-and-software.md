@@ -51,6 +51,10 @@ Now you can configure the `@genesislcap` scope of `npm` to use our jfrog registr
 
 ### .npmrc set-up
 
+:::caution external users only
+The instructions below support external users only. If you are an internal user please contact support for SAML SSO login.
+:::  
+
 1. Create an `.npmrc` file in your user home directory.
 2. Using your jfrog credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
 3. Click on the `Welcome <username>` on the top right corner.
