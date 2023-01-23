@@ -14,11 +14,11 @@ tags:
 
 ## What is DbMon?
 
-DbMon is the Genesis database client. It provides a unified interface to the underlying database and hides the details about the database vendor. It is not mandatory that you use DBMon, but it is available for your use nonetheless.  In this article we will discuss how we can use this database in conjunction with the Genesis App.
+DbMon is the Genesis database client. It provides a unified interface to the underlying database and hides the details about the database vendor. It is not mandatory that you use DBMon, but it is available for your use nonetheless.  Below we will discuss how we can use this database client in conjunction with the Genesis low-code Platform.
 
 ## DbMon commands
 
-There are many commands that can be used with DbMon. We have listed them for you below. Please use this table as reference if ever in doubt about which commands can be used. In this article we will go over DbMon Commands, demonstrating their use and allowing you to put them into practice.
+There are many commands that can be used with DbMon which are listed below. Please use this table as reference if ever in doubt about which commands can be used. We will go over DbMon Commands, demonstrating their use and allowing you to put them into practice.
 
 | Command                  | Argument                                    | Description                                     |
 |--------------------------|---------------------------------------------|-------------------------------------------------|
@@ -55,7 +55,7 @@ There are many commands that can be used with DbMon. We have listed them for you
 
 ## Starting DbMon
 
-To start a DbMon Session you first need to sudo to the appropriate application account. Following this, you must type DbMon at the command prompt:
+To start a DbMon Session you first need to switch to the user that owns the Genesis Installation. Following this, you must type DbMon at the command prompt:
 
 ```javascript
 [titan] /home/titan >DbMon
@@ -77,11 +77,11 @@ To end a DbMon Session just type [`quit`](#dbmon-commands) at the DbMon prompt.
 
 ## Working with tables
 
-The starting point for any work you will need to do in DbMon will be the tables. 
+The starting point for any work you will need to do in DbMon will be tables. 
 
 ### Show tables
 
-To see a list of the available tables you can use the [`showtables`](#dbmon-commands) command. This will display an alphabetical list of the available tables, as follows:
+To see a list of the available tables you can use the [`showtables`](#dbmon-commands) command. This will display an alphabetical list of available tables, as follows:
 
 ```javascript
 ==================================
@@ -106,7 +106,7 @@ BROKER
 
 ### Table
 
-To look at the data held in a specific table you use the [`table`](#dbmon-commands) command followed by the table name, for example table `BROKER`. Once you select a table, the DbMon prompt will change to show the table name you are looking at:
+To look at the data held in a specific table you use the [`table`](#dbmon-commands) command followed by the table name, for example `table BROKER`. Once you select a table, the DbMon prompt will change to show the table name you are looking at:
 
 ```javascript
 DbMon>table BROKER
@@ -144,7 +144,7 @@ VIEW_CODE                                                           STRING
 ```
 ### Display fields
 
-If you are only interested in seeing selected columns, you can use the [`displayFields`](#dbmon-commands) command and list the names of the Columns you are interested in (separated by spaces). 
+If you are only interested in seeing selected columns, you can use the [`displayFields`](#dbmon-commands) command and list the names of the columns you are interested in (separated by spaces). 
 
 Any subsequent [`show`](#dbmon-commands) commands will only display those columns rather than the all the columns in the table (to reset back to all columns being displayed just use the [`displayFields`](#dbmon-commands) command followed by no column names):
 
@@ -177,11 +177,11 @@ The table BROKER contains 114 records
 
 ### Find
 
-In DbMon you can only see one record at a time, and to display the record you want, you need to locate it using the [`find`](#dbmon-commands) command which searches the table’s indexes for a given key value.  
+In DbMon you can only see one record at a time, and to display the record you want you need to locate it using the [`find`](#dbmon-commands) command which searches the table’s indexes for a given key value.  
 
 ### Show keys (indexes)
 
-To see the indexes (or keys) on the selected table use the [`showKeys`](#dbmon-commands) command. This will display a list of the index Names and the Fields you will need to supply to use index:
+To see the indexes (or keys) on the selected table use the [`showKeys`](#dbmon-commands) command. This will display a list of the index names and the fields you will need to supply to use index:
 
 ```javascript
 ==================================
@@ -336,7 +336,7 @@ The Logical Operators available are as follows:
 
 ### Searching with wildcards
 
-DbMon allows functionality to search via a wildcard.
+DbMon provides functionality to search via a wildcard.
 Beware this might be quite slow if running against a large dataset.
 
 ```jsx
@@ -379,10 +379,6 @@ You can search for a specific date using a where clause such as:
 ### Distinct
 
 Let’s assume that we need to know how many `BROKER` records there are for each unique `COUNTRY_CODE`, we can use the [`distinct`](#dbmon-commands) command.
-
-:::warning
-**BEWARE** as for large tables this can have an impact on the database performance for frontend users.
-:::
 
 ```jsx
 DbMon:BROKER>distinct COUNTRY_CODE
