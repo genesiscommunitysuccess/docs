@@ -229,12 +229,38 @@ The [entityDb](../../../database/database-interface/entity-db/) enables you to i
 :::
 
 ## 4. Prepare the server
-So far we have created an Event Handler and Data Server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
+So far, we have created an Event Handler and Data Server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on their own processes. Additionally, we will override the standard definitions to use FoundationDB (FDB) database engine instead of the default one that we cloned (Postgres). To do that, we have to change the standard definitions, the processes, and the service definition files:
 
+- **genesis-system-definition.kts**
 - **alpha-processes.xml**
 - **alpha-service-definitions.xml**
 
-At present, they are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
+At present, these files are empty or keep the default values. You need to change the standard definitions to use FDB, as well as insert the details of the Data Server and Event Handler that you have just created.
+
+### Overriding default configurations
+
+You can override the standard definitions using the site-specific folder located at **..\alpha\server\jvm\alpha-site-specific\src\main\resources\cfg**
+
+Once deployed to the server, the files from that folder are installed in the runtime folder under a sub-folder called **site-specific**. In our case, the **genesis-system-definition.kts** must be edited to use FDB database engine instead of the default one we cloned (Postgres) as the highlighted lines below: 
+
+```kotlin {6,8}
+package genesis.cfg
+
+systemDefinition {
+    global {
+        ...
+        item(name = "DbLayer", value = "FDB")
+        ...
+        item(name = "DbHost", value = "localhost")
+    }
+    ...
+}
+```
+:::tip
+If you had to add application-specific definitions, such as an API_KEY, you'd have to edit **..\server\jvm\alpha-config\src\main\resources\cfg\alpha-system-definition.kts**
+:::
+
+### Adding the processes
 
 Add the following content to the **alpha-processes.xml** file.
 
@@ -264,6 +290,9 @@ Add the following content to the **alpha-processes.xml** file.
     </process>
 </processes>
 ```
+
+### Configuring the service definitions
+
 Add the following content to the **alpha-service-definitions.xml** file.
 
 ```xml
