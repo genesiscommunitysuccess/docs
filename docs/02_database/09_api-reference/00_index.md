@@ -1,5 +1,5 @@
 ---
-title: 'API Reference - Overview'
+title: 'API reference - overview'
 sidebar_label: 'Overview'
 id: overview
 keywords: [database, api, reference, overview]
