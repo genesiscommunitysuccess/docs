@@ -77,7 +77,7 @@ To end a DbMon session, just type [`quit`](#dbmon-commands) at the DbMon prompt.
 
 ## Working with tables
 
-The starting point for any work you will need to do in DbMon will be tables. 
+Most of the time, you'll be using DbMon to examine tables in one way or another. 
 
 ### Show tables
 
