@@ -47,11 +47,6 @@ You can use a range of IDEs (for example, Eclipse) with the Genesis platform, bu
 
 ## Access to the Genesis repository
 
-For access to Genesis packages, you need a valid [jfrog artifactory](https://jfrog.com/artifactory/) username and password. 
-
-Now you can configure the `@genesislcap` scope of `npm` to use our jfrog registry.
-
-
 ### .npmrc set-up
 
 :::note
