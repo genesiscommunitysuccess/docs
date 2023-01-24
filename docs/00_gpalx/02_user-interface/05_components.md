@@ -14,7 +14,7 @@ In this section we shall look at:
 - [**Dedicated helpers**](../../../gpalx/user-interface/components/#dedicated-helpers)
 > All the components supported by GPALX, which have their own dedicated helper.
 - [**General helper element**](../../../gpalx/user-interface/components/#helper-element): 
-> A helper element that can be used for **_HTML tags_** and **_[Foundation Zero design system](https://pr-927.d3i6ahf2flvvg.amplifyapp.com/docs/next/web/web-components/overview/) components_**, which don't have their own dedicated helper.
+> A helper element that can be used for **_HTML tags_** and **_[Foundation Zero design system](../../../web/web-components/overview/) components_**, which don't have their own dedicated helper.
 - [**Attributes helper**](../../../gpalx/user-interface/components/#attributes-helper):
 > An `attributes` helper that assigns specific attributes to the elements. 
 
@@ -29,7 +29,7 @@ Here is a summary of the helpers we shall be looking at. You can scroll through 
 | [div](../../../gpalx/user-interface/components/#div--span) | Corresponds to HTML  `div` tag |
 | [span](../../../gpalx/user-interface/components/#div--span) | Corresponds to HTML  `span` tag |
 ||
-| [element](../../../gpalx/user-interface/components/#element)| A helper component that can be used for [Foundation Zero design system](https://pr-927.d3i6ahf2flvvg.amplifyapp.com/docs/next/web/web-components/overview/) components and HTML tags (`p`, `ul`, `form`, `input`, `a` etc).|
+| [element](../../../gpalx/user-interface/components/#element)| A helper component that can be used for [Foundation Zero design system](../../../web/web-components/overview/) components and HTML tags (`p`, `ul`, `form`, `input`, `a` etc).|
 ||
 | [attributes](../../../gpalx/user-interface/components/#attributes)| A helper that can modify an existing element by adding attributes to it.|
 
@@ -218,7 +218,7 @@ span("span")
 ## Helper element
 ### element
 
-`element` is a helper element or component that can be used for any **_HTML tags_** and **_components_** that don't have their own dedicated helper. In this case we can use `element` for all of the [Foundation Zero design system](https://pr-927.d3i6ahf2flvvg.amplifyapp.com/docs/next/web/web-components/overview/) components. It takes the following parameters:
+`element` is a helper element or component that can be used for any **_HTML tags_** and **_components_** that don't have their own dedicated helper. In this case we can use `element` for all of the [Foundation Zero design system](../../../web/web-components/overview/) components. It takes the following parameters:
 
 - ***element*** refers to the name of the element we want to create. This is a mandatory parameter.
 - ***text*** refers to the text we want to display within the element.
