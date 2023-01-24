@@ -13,6 +13,10 @@ tags:
 ---
 
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Setting up your workstation and a local server
 
 ### Workstation set-up
@@ -46,10 +50,6 @@ You can use a range of IDEs (for example, Eclipse) with the Genesis low-code pla
 
 ###  Accessing the Genesis repository and configuring the Genesis packages
 #### .npmrc set-up
-
-:::caution external users only
-The instructions below support external users only. If you are an internal user please contact support for SAML SSO login.
-:::  
 
 For access to Genesis packages, you need to configure the `@genesislcap` scope of `npm` to use our jfrog registry.
 
