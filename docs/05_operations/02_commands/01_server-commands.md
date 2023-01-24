@@ -233,6 +233,8 @@ To get help on a specific command, run `help _command_`.
 
 `DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
 
+For full details, see our page on [DbMon](02_DBMon.md)
+
 ## SendIt script
 
 To send data into the database, use the `SendIt` command.
