@@ -65,7 +65,7 @@ For access to Genesis packages, you need to configure the `@genesislcap` scope o
 
 This requires credentials for accessing Genesis Artifactory. If you have not been provided with the credentials, please contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login). It's not possible to complete the training without this access, because you won't be able to download the Genesis platform components and build your project.
 
-To follow the instructions below, select External User (i.e. customers, partners) or Internal User if you got an internal Genesis account.
+To follow the instructions below, select External User (i.e. customers, partners) or Internal User  (i.e. Genesis employee) if you got an internal Genesis account.
 :::
 
 <Tabs defaultValue="external" values={[{ label: 'External User', value: 'external', }, { label: 'Internal User', value: 'internal', }]}>
