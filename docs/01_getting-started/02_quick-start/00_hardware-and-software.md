@@ -63,7 +63,7 @@ For access to Genesis packages, you need to configure the `@genesislcap` scope o
 
 This requires credentials for accessing Genesis Artifactory. If you have not been provided with the credentials, please contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login). It's not possible to complete the training without this access, because you won't be able to download the Genesis platform components and build your project.
 
-To follow the instructions below, select External User (i.e. customers, partners) or Internal User  (i.e. Genesis employee) if you got an internal Genesis account.
+To follow the instructions below, select **External User** (i.e. if you are a customer or partner of Genesis).  Only select **Internal User**  if you are a Genesis employee with an internal Genesis account.
 :::
 
 <Tabs defaultValue="external" values={[{ label: 'External User', value: 'external', }, { label: 'Internal User', value: 'internal', }]}>
@@ -115,11 +115,11 @@ This setup presumes you will sign in with jfrog SAML SSO. Please follow the step
     npm config set @<genesislcap>:registry https://genesisglobal.jfrog.io/artifactory/api/npm/npm/
     ```
 7. Click edit profile → Click Generate identity token button. Copy token
-8. Open your terminal again and use this token run the curl command:
+8. Open your terminal again and use this token; run the curl command:
     ```shell
     curl -u <first>.<last>@genesis.global:<token> https://genesisglobal.jfrog.io/artifactory/api/npm/auth/
     ```	
-9. Create Base64 password from [here](https://www.base64encode.org/), and then copy encoded password and put in .npmrc
+9. Create Base64 password from [here](https://www.base64encode.org/), and then copy encoded password and put it in .npmrc
 10. Your .npmrc file should look like this:
     ```shell
     @genesislcap:registry=https://genesisglobal.jfrog.io/artifactory/api/npm/github-packages/
