@@ -100,7 +100,7 @@ Please [contact us](mailto:support@genesis.global?subject=.npmrc%20Setup) if you
 
 </TabItem>
 <TabItem value="internal">
-This setup presumes you will sign in with jfrog SAML SSO. Please follow the steps:
+This set-up presumes you will sign in with jfrog SAML SSO. Please follow the steps:
 
 1. Create an empty `.npmrc` file in your user home directory.
 2. Using SAML SSO log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
