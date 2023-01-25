@@ -12,7 +12,8 @@ https://genesisglobal.atlassian.net/browse/PTL-0
 
 **Versions affected by this change**
 
-<!--- Please put an x inside all boxes that apply -->
+<!--- Please place an x inside all boxes that apply, with no surrounding spaces, like so: [x] -->
+<!--- Once you've opened the PR you can tick and untick these boxes using the GitHub UI, so don't worry if you miss one at this stage. -->
 
 - [ ] Next (I've made changes to the `docs/` directory)
 - [ ] 2022.4 (I've made changes to the `versioned_docs/version-2022.4` directory)
@@ -31,7 +32,7 @@ If the PR does _not_ change the 'Next' version of the documentation:
 
 **Additional details**
 
-<!--- Review the list and put an x in the boxes that apply. -->
+<!--- Please place an x inside all boxes that apply, with no surrounding spaces, like so: [x] -->
 
 - [ ] I have followed the writing style guide linked in the contribution guidelines
 - [ ] I have ensured all links altered or added in this PR follow the contribution guidelines
