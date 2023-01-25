@@ -54,12 +54,12 @@ For access to Genesis packages, you need to configure the `@genesislcap` scope o
 
 This requires credentials for accessing Genesis Artifactory. If you have not been provided with the credentials, please contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login). It's not possible to complete the training without this access, because you won't be able to download the Genesis platform components and build your project.
 
-To follow the instructions below, select External User (i.e. customers, partners) or Internal User  (i.e. Genesis employee) if you got an internal Genesis account.
+To follow the instructions below, select **External User** if you are a Genesis customer or partner,  or **Internal User** if you are a Genesis employee with an internal Genesis account.
 :::
 
 <Tabs defaultValue="external" values={[{ label: 'External User', value: 'external', }, { label: 'Internal User', value: 'internal', }]}>
 <TabItem value="external">
-This setup presumes you will sign in with jfrog user and password parameters. Please follow the steps:
+This set-up presumes you will sign in with jfrog user and password parameters. Please follow the steps:
 
 1. Create an `.npmrc` file in your user home directory.
 2. Using your jfrog credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
