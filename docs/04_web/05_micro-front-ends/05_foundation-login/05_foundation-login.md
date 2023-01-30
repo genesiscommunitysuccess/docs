@@ -38,15 +38,12 @@ An example of the change password screen: <br/>
 ## Login set-up
 
 :::info
-If you build a project upon one of the Genesis seed apps, then the `Login` micro front-end will already be set up for you.
+If you build a project upon one of the Genesis seed apps, then the `Login` micro front-end will already be set-up for you.
 :::
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. 
-- Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` command again. 
-
-You can see more information on the [package.json basics](https://docs.genesis.global/secure/web/micro-front-ends/foundation-login/) page.
+- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always you run the `$ npm run bootstrap` command again. You can see more information on the [package.json basics](https://docs.genesis.global/secure/web/micro-front-ends/foundation-login/) page.
 
 ```javascript
 {
@@ -68,7 +65,7 @@ This page assumes you're using the Routing systems that are part of `foundation-
 import { Login, Settings as LoginSettings } from '@genesislcap/foundation-login';
 ```
 
-- Next you'll want to ensure that your router config uses your `LoginSettings` as its generic type so that you can configure the login route.
+- Next you'll want to ensure that your router config uses your `LoginSettings` as its generic type so you can configure the login route.
 ```javascript
 export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 	...
@@ -125,7 +122,7 @@ An example of this and other required settings for the router configuration with
 ```
 
 :::warningWarning
-By default, a route that isn't marked public is not. However, a non-public route isn't going to block non-authenticated users automatically from viewing them. This must be impelmented in the `NavigationContributor`, as shown in the [previously mentioned example](./docs/api/foundation-login.login.md#example).
+By default, a route that isn't marked public is not. However, a non-public route isn't going to block non-authenticated users automatically from viewing them. This must be impelmented in the `NavigationContributor`, as shown in the [previously mentioned example](./docs/api/foundation-login.login/#example).
 :::
 
 ## Authentication
@@ -134,15 +131,15 @@ For authentication, most configuration is set in the back end. You should famili
 
 ### Username & password
 
-The standard authentication method is where the user supplies their username and password. Even when SSO is enabled as an authentication method, the user will still have the option to sign in with their normal credentials.
+The standard authentication method is the user supplying their username and password. Even when SSO is enabled as an authentication method, the user will still have the option to sign in with their normal credentials.
 
 :::noteTip
-Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables will automatically populate the credentials in the login form. This is useful during development, so that developers don't need to write out their credentials continuously.
+Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables will automatically populate the credentials in the login form, which can be useful during development so developers don't need to write out their credentials continuously.
 :::
 
 ### SSO
 
-SSO allows the `Login` micro front-end to work with your company's existing authentication system, enabling them to have a single set of credentials - including those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
+SSO functionality allows the `Login` micro front-end to work with your company's existing authentication system, enabling them to have a single set of credentials - incluidng those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
 
 Setting up SSO is primarily [a back-end task](docs/03_server/05_access-control/04_sso_authentication.md); however, there is a small amount of configuration covered in [the customisation part of this documentation](#enable-sso).
 
@@ -152,11 +149,11 @@ The standard process of SSO is that the SSO authentication provider flow is open
 
 ## Customising login
 
-The `Login` micro front-end uses a parameterless constructor. Therefore, the configuration needs to be set via the settings javascript object in the router, as shown in the [set-up step](#login-set-up). See the full [settings API here](./docs/api/foundation-login.settings.md/#remarks).
+The `Login` micro front-end uses a parameterless constructor. Therefore, the configuration needs to be set via the settings javascript object in the router, as shown in the [set-up step](#login-set-up). See the full [settings API here](./docs/api/foundation-login.settings/#remarks).
 
-### Enabling reset password
+### Enabled functionality
 
-In the [introduction section](#introduction), the reset password functionality is shown. However, note that this workflow is only enabled if you set the `resetPassword` option to `true`.
+In the [introduction section](#introduction), the reset password functionality is shown. However, this flow must be enabled with the `resetPassword` option.
 
 ### Logo
 
