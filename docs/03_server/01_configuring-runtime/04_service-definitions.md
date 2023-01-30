@@ -1,6 +1,6 @@
 ---
 title: 'Server configuration - service definitions'
-sidebar_label: 'service definitions'
+sidebar_label: 'Service definitions'
 id: service-definitions
 keywords: [server, configuration, service definitions]
 tags:
@@ -20,7 +20,7 @@ Every application must have  a **-service-definitions.xml** file. This is where 
 </configuration>
 ```
 
-When `genesisInstall` is executed, all products have their **-service-definitions.xml** files compiled into a system-wide **$GC/global-service-definitions.xml**. Here is an example of a global-service-definitions.xml file where we have the _auth_, _genesis_ and _gcom_ products installed:
+When `genesisInstall` is executed, all products have their **-service-definitions.xml** files compiled into a system-wide **$GC/global-service-definitions.xml**. Here is an example of a **global-service-definitions.xml** file where we have the _auth_, _genesis_ and _gcom_ products installed:
 
 ```xml
 <configuration>
