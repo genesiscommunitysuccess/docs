@@ -50,7 +50,7 @@ Add the following content to the **alpha-processes.xml** file:
 </processes>
 ```
 
-Further information can be found in the **-processes.xml** [file](../../..../../../server/configuring-runtime/processes/).
+Further information can be found in our page on the [**-processes.xml** file](../../..../../../server/configuring-runtime/processes/).
 
 You can then add the following content to the **alpha-service-definitions.xml** file.
 
@@ -96,12 +96,12 @@ systemDefinition {
 
 Finally, you can build the server.
 
-In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha**/**Tasks**/**Build/Assemble**.
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**Tasks**/**Build/Assemble**.
 
 ![](/img/assemble-server.png)
 
-You can procede to the next step whilst loading.
+You can proceed to the next step whilst loading.
 
-After loading is completed you have a functional server.
+After loading is complete, you have a functional server.
 
 Congratulations! You have completed the prepare and build.
