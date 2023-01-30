@@ -148,9 +148,9 @@ page("About", default=true) {
 
 ## Landing page
 
-There are a number of ways we can set our landing page. As seen above, one way would be by utilizing the `default` parameter.
+There are a number of ways we can set our landing page. As seen above, one way would be by using the `default` parameter.
 
-However there are a few more details to know about setting the landing or default page. Some instances to account for are seen in the examples below.
+However, there are a few more details to know about setting the landing or default page. Some instances to account for are seen in the examples below.
 
 > In this example, **_Home_** will be the landing page because it is the only page.
 
