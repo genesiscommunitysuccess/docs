@@ -296,9 +296,7 @@ You can see some samples [here](https://camel.apache.org/components/3.18.x/ftp-c
 
 ## Data Pipeline
 
-:::info
-Feature included in the Genesis low-code platform version 6.1.1
-:::
+Genesis [Data Pipelines](../../../server/integration/data-pipeline/introduction/) is a feature that allows you to stream data in and/or out of your Genesis application.
 
 You can define data pipelines that map data from an external source (database, file) to [Tables](../../../database/fields-tables-views/tables/) in your application. By default, the resulting table objects are stored in the database. However, you can define [custom operations](../../../server/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity) as well.
 
@@ -306,95 +304,118 @@ Each data pipeline defines a source for the data and how that data is mapped to 
 
 Once your Genesis application is running, data ingestion will take place.
 
-Currently, the supported sources are: *PostgreSQL*, *MS SQL Server*, *Oracle Enterprise*, and *Files* that originate from the local filesystem or S3 (CSV, XML, JSON). The parameters and sample usage for each supported data source can be found [here](../../../server/integration/data-pipeline/basics/#data-source).
+Currently, the supported sources are: *PostgreSQL*, *MS SQL Server*, *Oracle Enterprise*, and *Files* that originate from the local filesystem or S3 (CSV, XML, JSON).
 
 ### Configuration
 
-- Add the configuration for the Camel module to the {applicationName}-processes.xml file:
+- Add the dependency `genesis-pal-datapipeline` to your position-alpha-script-config module (**server/jvm/alpha-script-config/build.gradle.kts**). This ensures that you are able to use the data pipeline functionality within your scripts. 
 
-```xml
+```kotlin {3}
+dependencies {
+    ...
+    api("global.genesis:genesis-pal-datapipeline")
+    ...
+}
+
+description = "alpha-script-config"
+```
+
+- Configure data pipelines in a file (i.e. alpha-data-pipeline.kts). This file must be located in your application's configuration directory (**server/jvm/alpha-script-config/src/main/resources/scripts/alpha-data-pipeline.kts**). A pipeline configuration contains a collection of [sources](../../../server/integration/data-pipeline/basics/#how-to-define-a-source), [map functions](../../../server/integration/data-pipeline/basics/#map-functions), and [sink functions](../../../server/integration/data-pipeline/basics/#sink-functions), like the sample below.
+
+```kotlin
+val postgresConfig = postgresConfiguration(
+    databaseName = "",
+    hostname = "",
+    port = 5432,
+    username = "",
+    password = ""
+)
+
+val postgresSink = sink(postgresConfig) {
+    onInsert = insertInto("tableName")
+    onModify = updateTable("tableName")
+    onDelete = deleteFrom("tableName")
+}
+
+pipelines {
+    xmlSource("xml-cdc-test") {
+        location = ""
+
+        map("mapper-name", TABLE) {
+
+        }
+    }
+
+    json("json-cdc-test") {
+        location = ""
+
+        map("mapper-name", TABLE) {
+
+        }
+    }    
+
+    genesisTableSource(TABLE_OBJECT) {
+        key = TABLE_OBJECT.KEY_FIELD
+
+        map(someMapper).sink(postgresSink)
+    }
+}
+```
+
+- Ensure that you add the following config to your alpha-processes.xml file:
+
+```xml {3-13}
 <processes>
-    <process name="DATAPIPELINE_SANDBOX">
-        <groupId>data-pipeline</groupId>
+    ...
+    <process name="ALPHA_DATAPIPELINE">
+        <groupId>ALPHA</groupId>
         <start>true</start>
-        <options>-Xmx1024m</options>
+        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
         <module>genesis-pal-datapipeline</module>
-        <script>alpha-datapipeline.kts</script>
-        <description>Trades execution</description>
+        <package>global.genesis.datapipeline.pal</package>
+        <script>alpha-data-pipeline.kts</script>
+        <description>External data ingress pipeline</description>
         <language>pal</language>
         <loggingLevel>TRACE,DATADUMP_ON</loggingLevel>
     </process>
 </processes>
 ```
 
-... where the position-camel-libs module has similar dependencies to the following:
+As well as to your alpha-service-definitions.xml file:
 
-```kotlin
-    api("org.apache.camel:camel-mail:3.14.2")
-    api("javax.mail:javax.mail-api:1.6.2")
-```
-
-- Next, add the service definition to the {applicationName}**-service-definitions.xml** file:
-
-```xml
+```xml {3}
 <configuration>
     ...
-    <service host="localhost" name="DATAPIPELINE_SANDBOX" port="11007"/>
+    <service host="localhost" name="ALPHA_DATAPIPELINE" port="11004"/>
 </configuration>
 ```
 
-- Create a Kotlin script file named **{applicationName}-datapipeline.kts** file. Here is a sample configuration using *PostgreSQL*:
-```kotlin
-sources {
+- Lastly, run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 
-    postgres("cdc-test") {
-        hostname = "localhost"
-        port = 5432
-        username = "postgres"
-        password = "docker"
-        databaseName = "postgres"
-
-        table {
-            "public.source_trades" to mapper("incoming_trades", TRADE) {
-                val tradeId = stringValue("trd_id")
-                val tradedAt = longValue("traded_at")
-
-                TRADE {
-
-                    TRADE_TYPE {
-                        sourceProperty = "side"
-                    }
-
-                    TRADE_DATE {
-                        transform {
-                            DateTime(input.get(tradedAt))
-                        }
-                    }
-
-                    RECORD_ID {
-                        transform {
-                            input.get(tradeId).removePrefix("ITS_").toLong()
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-```
-
-#### Exercise 5.3 Reading and writing using an SFTP server
+#### Exercise 5.3 Ingesting external data
 <!--
-this is pretty much here: https://docs.genesis.global/secure/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-examples/
+this is pretty much here: https://learn.genesis.global/docs/getting-started/go-to-the-next-level/data-pipeline/#verify-your-pipeline-is-working
 -->
 :::info ESTIMATED TIME
 30 mins
 :::
 
-We are now creating  a Data Pipeline to ingest trades using CSV. To do that, consider the same layout we showed in the *PostgreSQL* configuration.
+We are now creating a Data Pipeline to ingest Counterparty files using [csvSource](../../../server/integration/data-pipeline/basics/#file). 
+
+To do that, configure the location as a local filesystem source with an absolute path to the user account's `alpha` **run/runtime/fileIngress** directory. This directory should be created automatically the first time your application is started.
+
+The remaining configuration defines a mapper from our CSV to the data model of the `COUNTERPARTY` table.
+
+Follow the data pipeline definition as explained above. And as soon as you made the changes run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) again.
 
 :::tip
-Check the CSV options [here](../../../server/integration/data-pipeline/basics/#csv).
+Check the CSV options [here](../../../server/integration/data-pipeline/basics/#csv) and some [examples](../../../server/integration/data-pipeline/examples/) to do the exercise.
+
+The input CSV file should look like this
+```csv
+COUNTERPARTY_LEI,COUNTERPARTY_NAME
+435800A8HK6JBITVPA30,Test Co Ltd
+755FG0324Q4LUVJJMS11,Testing BG
+855FG0324Q4LUVJJMS11,Testing CG
+```
 :::
-
-
