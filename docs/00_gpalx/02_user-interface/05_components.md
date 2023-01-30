@@ -57,11 +57,11 @@ Implementing this element results in a grid and form in the UI, providing the us
 ```
 ![](/img/basic-em.PNG)
 
-You'll notice that the `Edit` and `Delete` buttons are not availble in the image above, even though we have set them as true. The buttons are only accessible in each row. If we add a new record by clicking on the `Add` button at the top right, we will then see the buttons.
+You'll notice that the `Edit` and `Delete` buttons are not available in the image above, even though we have set them as true. The buttons are only accessible in each row. If we add a new record by clicking on the `Add` button at the top right, we will then see the buttons.
 
 ![](/img/form.PNG)
 
-Uppon clicking `Submit`, a new record is added and we can see the `Delete` and `Edit` buttons.
+Upon clicking `Submit`, a new record is added and we can see the `Delete` and `Edit` buttons.
 
 ![](/img/add.PNG)
 
@@ -71,7 +71,7 @@ The fields exposed inside the columns are all available in the [Table](../../../
 We can use the following syntax to:
  - Apply a renderer in the already existing columns. In this case we have applied the `BuySell` renderer to the `side` column and the `TradeStatus` renderer to the `tradeStatus` column.
  - Modify the title in the already existing columns. In this case we have updated the title of `tradeStatus` to **Status** instead of its previous name **Trade Status**.
- - Add another column. In this case we have used `actionColumn` to add a `Cancel` button and determine its apperance. 
+ - Add another column. In this case we have used `actionColumn` to add a `Cancel` button and determine its appearance. 
 
 ```kotlin
   entityManager(
@@ -97,7 +97,7 @@ We can use the following syntax to:
 ```
 ![](/img/columns.PNG)
 
-There is one more thing we can do with `actionColumn`. We can disable buttons based on the permissions of the user. If the user does not have the permissions we check against, the button will be disabled. 
+There is one more thing we can do with `actionColumn`. We can disable buttons based on the user's permissions. If the user does not have the permissions we check against, the button will be disabled. 
 
 ```kotlin
 actionColumn {
@@ -131,7 +131,7 @@ As the name suggests, this helper is for adding titles/subtitles to a page. This
     ```
     ![](/img/heading-span.PNG)
 
-In this example we only give the `heading` element one parameter: `text`. The default value of the text size is 1, which is the equivalant of the `h1` HTML tag. 
+In this example we only give the `heading` element one parameter: `text`. The default value of the text size is 1, which is the equivalent of the `h1` HTML tag. 
 ```kotlin
 heading("Default Heading Size")
 ```
@@ -140,7 +140,7 @@ heading("Default Heading Size")
 We can determine the text size by applying the following syntax.
 
 :::note
-The `heading` elements are all sorrounded by a `div` element. This is necessary because a `page` can only have one top-level element.
+The `heading` elements are all surrounded by a `div` element. This is necessary because a `page` can only have one top-level element.
 :::
 
 ```kotlin
@@ -161,7 +161,7 @@ Elements `h1`, `h2`, `h3`, `h4`, `h5`, `h6` are pre-sized headings and correspon
 
 - ***text*** refers to the text we wish to display. This is a mandatory parameter.
 - ***id*** refers to a unique id for an element which sets the "id" attribute in an HTML tag.
-- optional configuration block - can be used to perform further customisation / configuration.
+- optional configuration block - can be used to perform further customisation or configuration.
 
 ```kotlin
 h1("h1")

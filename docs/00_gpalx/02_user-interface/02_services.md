@@ -5,7 +5,7 @@ id: services
 
 ## Introduction
 
-Services are **cross-cutting concerns** that provide functionality that is not specific to one page but multiple pages. 
+Services are **cross-cutting concerns** that provide functionality that is not specific to one page but to multiple pages. 
 
 Some common examples of cross-cutting concerns are:
 **monitoring**, **logging**, **security**, **caching**, **data** **validation**, **event-handling**, **communications**, **notifications** and **localisation**.
