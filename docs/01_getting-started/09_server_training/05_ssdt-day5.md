@@ -189,7 +189,7 @@ The `process()` function must be overridden and implemented in order to add busi
 ### Authentication
 The `requiresAuth()` function can be overridden to determine if the endpoint requires a `SESSION_AUTH_TOKEN` with the request, such as those made from authenticated sessions. Without a definition, this returns a default value of `true`. In the example above, this Authorisation is not required when the system is running in `TEST_MODE`, which is useful for testing these endpoints with integration tests.
 
-#### Exercise 5.1 Trade.getBulk to CSV Download Endpoint
+### Exercise 5.1 Trade.getBulk to CSV Download Endpoint
 <!--
 acho q da pra usar esse de base:
 
@@ -275,7 +275,7 @@ camel {
 The `routeHandler` defines the possible routes for information to flow into and out of our system.  The example above defines one route. First, it defines the `pathStr` using the `GenesisPaths` class to find the `GENESIS_HOME` system environment variable. Next, it defines the route itself. The route in the example comes from the filesystem determined by the `file:` specifier at the start of the string. This could be any [Apache Camel component](https://camel.apache.org/components/3.16.x/index.html) that can act as a [consumer](https://camel.apache.org/manual/camelcontext.html#_consumer). Further `routeHandler` parameters and explanation can be found [here](../../../server/integration/apache-camel/basics/#routehandler).
 
 
-#### Exercise 5.2 Reading and writing using an SFTP server
+### Exercise 5.2 Reading and writing using an SFTP server
 <!--
 this is pretty much here: http://localhost:8080/server/integration/apache-camel/examples/#reading-from-an-sftp-server
 -->
@@ -392,7 +392,7 @@ As well as to your alpha-service-definitions.xml file:
 
 - Lastly, run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 
-#### Exercise 5.3 Ingesting external data
+### Exercise 5.3 Ingesting external data
 <!--
 this is pretty much here: https://learn.genesis.global/docs/getting-started/go-to-the-next-level/data-pipeline/#verify-your-pipeline-is-working
 -->
