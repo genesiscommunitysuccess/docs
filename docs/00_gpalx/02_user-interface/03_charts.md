@@ -13,7 +13,7 @@ With charts we can:
 - condense our data into easy-to-understand formats
 - effectively communicate important points
 - display our data utilizing different chart types
-- implement the filter feature to better analyze our data 
+- implement the filter feature to better analyse our data 
 
 ![](/img/all-charts.PNG)
 
@@ -26,7 +26,7 @@ In order to implement a chart, there are a minimum of 3 parameters required.
 
 > `groupBy` (otherwise known as category axis) is the field used for grouping. 
 
-See examples below for more details:
+See the examples below for more details:
 
 <Tabs>
 <TabItem value="bar" label="Bar" default >
@@ -35,7 +35,7 @@ See examples below for more details:
 Chart type parameter is optional. If not specified, it will default to `ChartType.BAR`
 :::
 
-> Bar charts can help you compare data between different groups or to track changes over time. They are most useful when there are big changes or to show how one group compares against other groups. 
+> Bar charts can help you compare data between different groups or to track changes over time. They are most useful when there are big changes, or when you need to show how one group compares against other groups. 
 
 <zero-card style={{backgroundColor: "#101628"}}>
 <h4 style={{color: "white", paddingTop: "10px", paddingLeft: "10px" }}><b>Bar Charts</b></h4>

@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 ## Introduction
 
-With GPALX you have full control over your layouts. This is achieved by utilising two basic layout components (**vertical** & **horizontal**) along with their various parameters. The `verticalLayout` and `horizontalLayout` render their contents vertically and horizontally, respectively. 
+With GPALX you have full control over your layouts. This is achieved by using two basic layout components (**vertical** & **horizontal**) along with their various parameters. The `verticalLayout` and `horizontalLayout` render their contents vertically and horizontally, respectively. 
 
 With layouts you can:
 
@@ -58,7 +58,7 @@ ui("Vertical Layout") {
 
 ![](/img/vl-em-attr.PNG)
 
-### Horizontal Page
+### Horizontal page
 
 ```kotlin
 ui("Horizontal Layout") {
@@ -73,7 +73,7 @@ ui("Horizontal Layout") {
 ```
 
 :::tip
-  `horizontalLayout` places components left-to-right in a row. By default it stretches the children to the entire length but we can explicitly set the width or height to control that.
+  `horizontalLayout` places components left-to-right in a row. By default it stretches the children to the entire length, but we can explicitly set the width or height to control that.
 :::
 
 > The image below shows a `horizontalLayout` of two elements with default parameters
@@ -245,7 +245,7 @@ verticalLayout(...) {
 ###
 
 Now that we've seen some basic examples of page and component layouts, let's dive a little deeper.
-Not only can we determine the direction of our elements but also their positioning within a given space. 
+Not only can we determine the direction of our elements, but also their positioning within a given space. 
 Click on the tabs below for more details.
 
 <Tabs>
@@ -267,7 +267,7 @@ ui("Vertical Layout") {
 }
 ```
 
-> As mentioned above, children elements of the `verticalLayout` and `horizontalLayout` components, stretch to the entire length by default. For the following examples, we will set the width of the buttons to `13%`.
+> As mentioned above, children elements of the `verticalLayout` and `horizontalLayout` components stretch to the entire length by default. For the following examples, we will set the width of the buttons to `13%`.
 
 <zero-design-system-provider style={{ display: 'flex', justifyContent: 'center', borderRadius: '5px' }}>
     <zero-card style={{ display: 'flex', flexDirection: 'column', backgroundColor: 'rgba( 207, 207, 207, 1)' }}>
@@ -290,10 +290,10 @@ ui("Vertical Layout") {
 | Value | Description | 
 | --- | --- | 
 |**`LayoutAlignItems.START`** | Positions items at the top left |
-| **`LayoutAlignItems.CENTER`** | Centers items along the x-axis |
+| **`LayoutAlignItems.CENTER`** | Centres items along the x-axis |
 | **`LayoutAlignItems.END`** | Positions items on the far right |
 |**`LayoutAlignContent.START`** | Positions items at the top left |
-| **`LayoutAlignContent.CENTER`** | Centers content along the x-axis. It also applies flex-wrap which means, depending on the height of the parent element, the children may take up the height equally distributed among each other. However, if the height is smaller, they would be spread out in a row instead. This applies to the following alignments of content as well |
+| **`LayoutAlignContent.CENTER`** | Centres content along the x-axis. It also applies flex-wrap which means, depending on the height of the parent element, the children may take up the height equally distributed among each other. However, if the height is smaller, they would be spread out in a row instead. This applies to the following alignments of content as well |
 | **`LayoutAlignContent.END`** | Positions content on the far right.|
 | **`LayoutAlignContent.EVENLY`** | Distributes space equally among the content. From the left of the first item, between items and on the right of the last item. |
 | **`LayoutAlignContent.AROUND`** | Distributes the space equally between items. The space before the first item, and after the last, is half of that between them. |

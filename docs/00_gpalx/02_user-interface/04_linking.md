@@ -11,9 +11,9 @@ With GPALX it is possible to link UI components such as grids and form inputs. L
 
 Common use cases are:
 
-- Updating one grid, based on selected row in another one
-- Disabling one form field, based on selection in another one
-- Restricting possible options in one form field, based on selection in another one
+- Updating one grid, based on the selected row in another one
+- Disabling one form field, based on the selection in another one
+- Restricting possible options in one form field, based on the selection in another one
 
 Linking is a two-step process:
 
@@ -132,7 +132,6 @@ Grids provide an `entity` property e.g. `instrumentGrid.entity`. It refers to th
 
 Entity property conforms to the same data model you have configured for your grid. In this case, `instrumentGrid` uses `INSTRUMENT` model, so you will be able to access all the instrument model fields such as `instrumentGrid.entity.name`, `instrumentGrid.entity.instrumentId` and so on.
 
-###
 Additionally, if you need to use the same filter, you can do so by simply storing it into a variable. See example below for implementation: 
 
 <zero-card style={{backgroundColor: "#101628", padding: "4px"}}>
