@@ -20,7 +20,6 @@ import TabItem from '@theme/TabItem';
 
 This page gives you the hardware and software requirements needed in order to run a development workstation for the Genesis low-code platform. It also provides instructions for accessing the Genesis repository and configuring the Genesis packages.
 
-
 ## Recommended hardware and operating system
 
 * Operating system : Windows 10 Pro
