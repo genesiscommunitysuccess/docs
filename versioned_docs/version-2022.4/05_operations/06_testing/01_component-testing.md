@@ -2,11 +2,13 @@
 title: 'Component testing'
 sidebar_label: 'Component testing'
 id: component-testing
-keywords: [operations, component, testing]
+keywords: [operations, component, testing, curl, console]
 tags:
     - operations
     - component
     - testing
+    - curl
+    - console
 ---
 
 import Tabs from '@theme/Tabs';
@@ -17,14 +19,14 @@ There are two easy ways of testing components in your application:
 - using the Genesis Console
 - using an API client
 
-### Before you start
-Before you start, make sure your server is running. Then run `mon` to check that your particular component’s process is running. For example, if you want to test your request server, check that the _application_**_REQUEST_SERVER** process is running.
+## Before you start
+Before you start, make sure your server is running. Then run `mon` to check that your particular component’s process is running. For example, if you want to test one or more `requestReply` codeblocks (i.e. resources) in your Request Server, check that the _application_**_REQUEST_SERVER** process is running.
 
 For any testing, you need to know:
 - the IP address of name of your server
 - the user name and password that will enable you to login and authenticate yourself
 
-### Testing with Genesis Console
+## Testing with Genesis Console
 For users who have Console, the easiest way to check a component is to log into the server and subscribe to the relevant Data Server via the Resources page. You need to know the server address and have a valid user name and password.
 
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
@@ -36,7 +38,7 @@ For users who have Console, the easiest way to check a component is to log into 
 In the example below, we are testing the ability of the Event Handler EVENT_COUNTERPARTY_INSERT to insert a row of data to the table ALL_COUNTERPARTYS. The four fields in the table are listed on the left. On the right, we have supplied values for the four fields. Then you can click on **COMMIT** to send the insert. A successful insert displays an **ACK** message.
 ![](/img/test-console-add-ctpty.png)
 
-### Using an API client
+## Using an API client
 This type of software offers an easy way of testing each of your resources.
 
 Two clients that Genesis uses for component testing are:
@@ -45,7 +47,7 @@ Two clients that Genesis uses for component testing are:
 
 Broadly speaking, Postman offers more features, but Insomnia is also good and is simpler to use.
 
-#### Logging on 
+### Logging on 
 Whichever client you are using, you need to log in before you can send test requests to the server. This involves two things:
 - providing a SOURCE_REF - this can be any string that identifies all your activity while you are logged in
 - retrieving a SESSION_AUTH_TOKEN, which you can copy and use to authorise all your test requests
@@ -76,4 +78,5 @@ For example, to login using Insomnia:
 
 This returns a set of details in the right side of the Insomnia window, where you can copy the SESSION_AUTH_TOKEN, which you will need for your test requests.
 
+## Testing with curl
 

@@ -2,29 +2,32 @@
 title: 'Component testing'
 sidebar_label: 'Component testing'
 id: component-testing
-keywords: [operations, component, testing]
+keywords: [operations, component, testing, curl, console]
 tags:
     - operations
     - component
     - testing
+    - curl
+    - Console
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-There are two easy ways of testing components in your application:
+There are three easy ways of testing components in your application:
 
 - using the Genesis Console
 - using an API client
+- using the `curl` command-line tool
 
-### Before you start
-Before you start, make sure your server is running. Then run `mon` to check that your particular component’s process is running. For example, if you want to test your request server, check that the _application_**_REQUEST_SERVER** process is running.
+## Before you start
+Before you start, make sure your server is running. Then run `mon` to check that your particular component’s process is running. For example, if you want to test one or more `requestReply` codeblocks (i.e. resources) in your Request Server, check that the _application_**_REQUEST_SERVER** process is running.
 
 For any testing, you need to know:
 - the IP address of name of your server
 - the user name and password that will enable you to login and authenticate yourself
 
-### Testing with Genesis Console
+## Testing with Genesis Console
 For users who have Console, the easiest way to check a component is to log into the server and subscribe to the relevant Data Server via the Resources page. You need to know the server address and have a valid user name and password.
 
 1. In your browser, go to http://genesislcap.com/console/console-next2/.
@@ -76,4 +79,5 @@ For example, to login using Insomnia:
 
 This returns a set of details in the right side of the Insomnia window, where you can copy the SESSION_AUTH_TOKEN, which you will need for your test requests.
 
+## Testing with curl
 
