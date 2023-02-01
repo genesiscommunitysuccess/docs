@@ -112,11 +112,14 @@ systemDefinition {
 
 Additionally, it is possible to create a global custom definition to be used like the code bellow.
 
-```kotlin {3}
+```kotlin {4}
 systemDefinition {
     global {
+        ...
         item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
+        ...
     }
+    ...
 }
 ```
 
@@ -129,7 +132,7 @@ val permissionsField = SysDef.ADMIN_PERMISSION_ENTITY_FIELD
 Further information regarding the system definitions such as items defined, HashiCorp Vault, and more can be found [here](../../../server/configuring-runtime/system-definitions/).
 
 
-#### Exercise 1.1 System Definitions
+### Exercise 1.1 System Definitions
 <!--
 Answer is pretty much here: https://www.notion.so/genesisglobal/What-makes-Genesis-low-code-ccfb29a874644b8da799a8f5469efb46#6d46b3a15ee94bf8940fa54a72624766
 -->
@@ -143,9 +146,9 @@ Let´s start the hands-on training with the first exercise. We are going to crea
 Create a new item in the system definition file and use it in the fields definition file.
 
 :::tip changing genesis-system-definition configurations 
-To do this exercise, clone the Developer Training [repository](https://github.com/genesiscommunitysuccess/devtraining-alpha), go to the file **genesis-system-definition.kts** and do the changes. Then, go to the fields definition file and set the *nullable* using SysDef. 
+To do this exercise, go to the file **genesis-system-definition.kts** and do the changes. Then, go to the fields definition file and set the *nullable* using SysDef. 
 
-After the changes, don't forget to run *build*, *install-site-specific* and *deploy* tasks.
+After the changes, don't forget to run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 :::
 
 
