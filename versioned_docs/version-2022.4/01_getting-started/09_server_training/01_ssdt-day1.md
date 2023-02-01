@@ -133,10 +133,6 @@ Further information regarding the system definitions such as items defined, Hash
 
 
 ### Exercise 1.1 System Definitions
-<!--
-Answer is pretty much here: https://www.notion.so/genesisglobal/What-makes-Genesis-low-code-ccfb29a874644b8da799a8f5469efb46#6d46b3a15ee94bf8940fa54a72624766
--->
-
 :::info ESTIMATED TIME
 20 mins
 :::
@@ -156,7 +152,7 @@ After the changes, don't forget to run [build and deploy](../../../getting-start
 
 The Genesis low-code platform has a real-time event-driven architecture.
 
-Applications built on the system must respond immediately to different types of input: inputs from users, messages from other systems, market-data updates and internally calculated analytic signals. These inputs are events.
+Applications built on the system must respond immediately to different types of input such as: inputs from users, messages from other systems, market-data updates and internally calculated analytic signals. These inputs are events.
 
 All the business logic for applications built on the platform is structured around these events. When an event occurs, the business logic immediately fires into action.
 
@@ -257,20 +253,17 @@ If the underlying database supports transactions, then the entityDb provides typ
 
 Using entityDb, it is also possible to subscribe operations, starting a database listener that receives updates to tables or views. When subscribing to view updates, only updates to the root table will be published. Further details regarding subscribe operations can be found [here](../../../database/database-interface/entity-db/#subscribe-operations).
 
-#### Exercise 1.2 entityDb ReadOperation getBulk
+### Exercise 1.2 entityDb ReadOperation getBulk
 :::info ESTIMATED TIME
 40 mins
 :::
 
-Create a new event called **TRADE_STANDARDIZATION** to perform a standardization in the Trade table, setting all negative *Trade.Quantity* records to zero. This method can use the ReadOperation [getBulk](../../../database/database-interface/entity-db/#getbulk) method to list all Trades and then use the [filter](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/filter.html) method Kotlin Flow class offers.
+Create a new event called **TRADE_STANDARDIZATION** to perform a standardization in the Trade table, setting all negative *Trade.Price* records to zero. This method can use the ReadOperation [getBulk](../../../database/database-interface/entity-db/#getbulk) method to list all Trades and then use the [filter](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/filter.html) method Kotlin Flow class offers.
 
 :::tip
-After selecting the Trade records you can use the *forEach* method to set the quantities to zero, and then use entityDb method [modifyAll](../../../database/database-interface/entity-db/#modify) to update everything.
+After selecting the Trade records you can use the *forEach* method to set the prices to zero, and then use entityDb method [modifyAll](../../../database/database-interface/entity-db/#modify) to update everything.
 :::
 
-<!-- 
-C:\Users\DanielBarros\Projects\clarity-server\clarity-script-config\src\main\resources\scripts\clarity-resetmanager-eventhandler.kts
--->
 
 ### Exception handling
 
