@@ -139,10 +139,10 @@ Further information regarding the system definitions such as items defined, Hash
 
 Let´s start the hands-on training with the first exercise. We are going to create a global custom definition to set the nullability for the Trade table fields. 
 
-Create a new item in the system definition file and use it in the fields definition file.
+Create a new item in the system definition file and use it in the fields definition file. We should edit the local system definition file to do that.
 
-:::tip changing genesis-system-definition configurations 
-To do this exercise, go to the file **genesis-system-definition.kts** and do the changes. Then, go to the fields definition file and set the *nullable* using SysDef. 
+:::tip changing alpha-system-definition configurations 
+To do this exercise, go to the file **alpha-system-definition.kts** and do the changes. Then, go to the fields definition file and set the *nullable* using SysDef. 
 
 After the changes, don't forget to run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 :::
@@ -302,7 +302,7 @@ Don't forget the returns, in this case `ack()` for success, and `nack(e)` for ex
 
 If you use a custom reply message type, you won’t be able to use the default `ack()` or `validationAck()` functions.  The custom message type needs to be returned from the method.
 
-For a custom message type called `TradeEvent` defined as:
+For a class called `TradeEvent` built with your fields and tables defined as:
 
 ```kotlin
 data class TradeEvent(
@@ -316,7 +316,7 @@ data class TradeEvent(
 }
 ```
 
-... and  a custom message reply type called `CustomTradeEventReply` defined as:
+... and  a custom message reply type called `CustomTradeEventReply` added under {app-name}-messages defined as:
 
 ```kotlin
 sealed class CustomTradeEventReply : Outbound() {
@@ -350,11 +350,11 @@ sealed class CustomTradeEventReply : Outbound() {
 
 The `onException` block can capture any exceptions thrown by the `onValidate` and `onCommit` blocks and returns the expected reply message type (as shown in the last example). This function is particularly useful if you are using a custom message type; by default, Event Handlers will attempt to translate exceptions automatically to an **EventNack** message, which might cause compatibility problems if you are using custom replies.
 
-#### Exercise 1.4 Event Handler custom message
+### Exercise 1.4 Event Handler custom message
 :::info ESTIMATED TIME
 30 mins
 :::
 
-Now let's change the EVENT_TRADE_INSERT to use a custom reply message type. Create the classes `CustomTradeEventReply ` and `TradeEvent` with *price* and *quantity* required greater than zero. The Event Handler `onValidate` should ensure that *price* * *quantity* is always greater than 10.
+Now let's change the EVENT_INSTRUMENT_INSERT to use a custom reply message type. Create the classes `CustomInstrumentEventReply ` and add it under **alpha-messages** package *global.genesis.alpha.message.event*. The Event Handler `onValidate` should ensure that *instrumentName* has at least 3 characters.
 
 
