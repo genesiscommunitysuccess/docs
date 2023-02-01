@@ -46,7 +46,7 @@ You can find more information on fields [here](../../../database/fields-tables-v
 
 After you have saved this file, run genesis-generated-fields from the Gradle menu on the right of Intellij, this is:
 
- **genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-fields**/**Tasks**/**genesis**/**generateFields**
+ **genesisproduct-alpha**/**alpha-dictionary-cache**/**alpha-generated-fields**/**Tasks**/**genesis**/**generateFields**
 
 ![](/img/build-gradle-kts-fields.png)
 
@@ -79,8 +79,8 @@ You can find more information on tables [here](../../../database/fields-tables-v
 
 After you have saved this file, run genesis-generated-dao from the Gradle menu, this is:
 
-**genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDAO**
+**genesisproduct-alpha**/**alpha-dictionary-cache**/**alpha-generated-dao**/**Tasks**/**genesis**/**generateDAO**
 
 ![](/img/build-gradle-kts-generated-dao.png)
 
-Now that that is done, you can create the key modules that surround the database.
+Now that that has been done, you can create the key modules that surround the database.
