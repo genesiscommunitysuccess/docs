@@ -50,7 +50,7 @@ Add the following content to the **alpha-processes.xml** file:
 </processes>
 ```
 
-Further information can be found in our page on the [**-processes.xml** file](../../..../../../server/configuring-runtime/processes/).
+Further information can be found in our page on the [**-processes.xml** file](../../../server/configuring-runtime/processes/).
 
 You can then add the following content to the **alpha-service-definitions.xml** file.
 
