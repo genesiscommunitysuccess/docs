@@ -283,12 +283,12 @@ eventHandler {
 }
 ```
 
-#### Exercise 1.3 Exception handling
+### Exercise 1.3 Exception handling
 :::info ESTIMATED TIME
 30 mins
 :::
 
-Add an exception handler in *EVENT_COUNTERPARTY_INSERT*, logging and enriching the error message with the message as well as the cause and event name.
+Add an exception handler in *EVENT_COUNTERPARTY_INSERT*, enriching the error message with the message as well as the cause and event name.
 
 :::tip
 Don't forget the returns, in this case `ack()` for success, and `nack(e)` for exceptions.
