@@ -1,0 +1,120 @@
+---
+title: 'Web Basics - Useful Scripts'
+sidebar_label: 'Useful scripts'
+id: useful-scripts
+keywords: [web, basics, scripts]
+tags:
+    - web
+    - basics
+    - scripts
+---
+
+# Explanation of some useful scripts
+
+1. Bootstrap the packages, which installs all of their dependencies and links any cross-dependencies.
+
+**You must do this at least once to get the top level client dependencies in place.**
+
+```shell
+npm run bootstrap
+```
+
+This is a shortcut for:
+```shell
+npm run husky:install && npx lerna bootstrap --hoist
+```
+
+When run, this command will:
+- run husky:install (which installs git command hooks).
+- npm install all external dependencies of each package.
+- Symlink together all Lerna packages that are dependencies of each other.
+- npm run prepublish in all bootstrapped packages (unless --ignore-prepublish is passed).
+- npm run prepare in all bootstrapped packages.
+
+Passing `--ignore-scripts` to the bootstrap command will speed up the process as it will skip any [lifecycle scripts](https://docs.npmjs.com/cli/v9/using-npm/scripts#life-cycle-scripts) normally run (prepare, etc) in bootstrapped packages.
+
+Use this script shortcut.
+```shell
+npm run bootstrap:ignore-scripts
+```
+
+:::note
+Scripts can call other scripts.<br />
+husky:install called by bootstrap above for example is just another script.<br />
+Remember, [as discussed previously](../package-json-basics#scripts), you can see all avalable scripts and their definitions in `package.json` 
+:::
+
+2. To start the **web client** in watch mode:
+
+```shell
+npm run client:web
+```
+
+This command will clean and bootstrap all the dependencies by topological order and start the application.
+
+**If you get `Error: Cannot find module 'rimraf'` you need to remember to run bootstrap at least once before using the
+`npm run client:web` shortcut.**
+
+## Build the web application 
+
+From inside the web application's folder this time (e.g. client/web/) run this command:
+
+```shell
+npm run build
+```
+
+This will build your app using webpack (generate the bundle in the `dist` folder).
+
+It is a shortcut for:
+```shell
+cross-env NODE_ENV=production AUTO_CONNECT=true webpack
+```
+
+## Lerna add dependency examples
+
+Please do not use npm to install or manage dependencies as it will cause problems with lerna. Unfortunately lerna can
+only process one dependency at a time, so there is no command like `npm i package-a package-b package-c`.
+
+```shell
+# Install rxjs in all modules
+lerna add rxjs
+
+# Install rxjs in all modules in devDependencies
+lerna add rxjs --dev
+
+# Install rxjs in @{{kebabCase pkgScope}}/{{kebabCase pkgName}}-web-client only
+lerna add rxjs --scope=@{{kebabCase pkgScope}}/{{kebabCase pkgName}}-web-client
+```
+
+## List produced packages
+
+```shell
+npm run list
+```
+
+## Perpare packages
+
+```shell
+npm run perpare
+```
+
+## Clean
+
+Remove the node_modules directory from all packages (not the root).
+
+```shell
+npm run clean
+```
+
+After this you'll likely want to run bootstrap again.
+
+```shell
+npm run bootstrap
+```
+
+Clean the dist directory in all packages.
+
+```shell
+npm run clean:dist
+```
+
