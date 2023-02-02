@@ -535,7 +535,7 @@ fun `test add users - success`() = runBlocking {
     user assertIsAuditedBy userAudit
 
     assert(userAudit.auditEventType == "INSERT_USER") { userAudit.toString() }
-    assert(userAudit.auditEventUser == "JohnDoe") { userAudit.toString() }
+    assert(userAudit.auditEventUser == "JohnWalsh") { userAudit.toString() }
 
 }
 ```
