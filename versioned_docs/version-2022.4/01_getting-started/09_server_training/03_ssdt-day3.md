@@ -386,13 +386,14 @@ By defining your own Request Servers, you have maximum flexibility. You can spec
 
 It is recommended to locate your classes within the messages module of your application. Here, we place all the custom message types for our application. You will need to ensure that the script-config module has a dependency on the messages module.
 
-```xml
-<dependency>
-    <groupId>your.group</groupId>
-    <artifactId>your-artifact</artifactId>
-    <version>${project.version}</version>
-    <scope>provided</scope>
-</dependency>
+```kotlin {3} title='/server/jvm/{appName}-script-config/build.gradle.kts'
+dependencies {
+    ...
+    api(project(":alpha-messages"))
+    ...
+}
+
+description = "alpha-script-config"
 ```
 
 The `requestReply` code blocks in can be as simple or complex as your requirements. They are useful, for example, if you want to request data from a number of different tables and views that are not related. By nesting and joining all the relevant data in your `requestReply` statement, you create your own metadata for the Request Server, so it can then be used anywhere in the module.
@@ -425,7 +426,7 @@ requestReply<Hello, World>("HELLO_WORLD_CHECK") {
 
 Further details and examples can be found [here](../../../server/request-server/advanced/#custom-request-servers).
 
-#### Exercise 3.2 ALL_COUNTERPARTIES in Request Server
+### Exercise 3.2 ALL_COUNTERPARTIES in Request Server
 
 :::info ESTIMATED TIME
 30 mins
