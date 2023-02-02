@@ -22,7 +22,7 @@ The Genesis platform has a notification module named by default *GENESIS_NOTIFY*
 
 To do that, create a process called `ALPHA_NOTIFY` and add it to the file **alpha-processes.xml** in your project folder **server/jvm/alpha-config/src/main/resources/cfg**, using the code below.
 
-```xml
+```xml {3-12}
 <processes>
     ...
     <process name="ALPHA_NOTIFY">
@@ -39,14 +39,14 @@ To do that, create a process called `ALPHA_NOTIFY` and add it to the file **alph
 ```
 Add the `ALPHA_EVALUATOR` to the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** using the code below. 
 
-```xml
+```xml {3}
 <configuration>
     ...
-    <service host="localhost" name="ALPHA_NOTIFY" port="11004"/>
+    <service host="localhost" name="ALPHA_NOTIFY" port="11005"/>
 </configuration>
 ```
 
-Run the `assemble` and `deploy-genesisproduct-alpha` tasks to verify that the new process works as expected.
+Run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) tasks to verify that the new process works as expected.
 
 Run `mon`.
 You should be able to see the process is present.
@@ -74,7 +74,7 @@ ENTITY_ID,ENTITY_ID_TYPE,TOPIC_MATCH,GATEWAY_ID
 ### Add connection details to the system definition
 
 Open the **genesis-system-definition.kts** file and add the details of the connection for the SMTP server:
-```kotlin
+```kotlin {6-12}
 package genesis.cfg
 
 systemDefinition {
@@ -92,7 +92,7 @@ systemDefinition {
 }
 ```
 
-Run the `build`, `install-alpha-site-specific` and `deploy` tasks again.
+Run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) tasks again.
 
 ### Switch on data dumps
 
@@ -150,7 +150,7 @@ POSITION_ID,INSTRUMENT_ID,COUNTERPARTY_ID,QUANTITY,NOTIONAL
 
 Now you are ready to begin setting up your dynamic rule.
 
-#### Exercise 2.1 Trigger the event to test the rule
+### Exercise 2.1 Trigger the event to test the rule
 
 :::info ESTIMATED TIME
 15 mins
