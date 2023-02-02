@@ -20,7 +20,6 @@ import TabItem from '@theme/TabItem';
 
 This page gives you the hardware and software requirements needed in order to run a development workstation for the Genesis low-code platform. It also provides instructions for accessing the Genesis repository and configuring the Genesis packages.
 
-
 ## Recommended hardware and operating system
 
 * Operating system : Windows 10 Pro
@@ -30,13 +29,13 @@ This page gives you the hardware and software requirements needed in order to ru
 
 ## Recommended software packages
 
-| Package	| Minimum Version | 
-|--------------|:---------------:|
-| [IntelliJ](https://www.jetbrains.com/idea/download/?fromIDE=#section=windows)	| 2021.2.3 and above  |
-|[Visual Studio Code](https://code.visualstudio.com/Download)	|     1.52.1      |
-|[Java SDK or JDK](https://www.oracle.com/java/technologies/downloads/) (Choose the **x64 installer** download.)|       11        |
-| [NodeJS](https://nodejs.org/download/release/latest-gallium/)  |     16 LTS     |
-| [Postman](https://www.postman.com/downloads/) (optional)	|        8        |
+| Package	                                                                                                        |  Minimum Version   | 
+|-----------------------------------------------------------------------------------------------------------------|:------------------:|
+| [IntelliJ](https://www.jetbrains.com/idea/download/?fromIDE=#section=windows)	                                  | 2021.2.3 and above |
+| [Visual Studio Code](https://code.visualstudio.com/Download)	                                                   |       1.52.1       |
+| [Java SDK or JDK](https://www.oracle.com/java/technologies/downloads/) (Choose the **x64 installer** download.) |         11         |
+| [NodeJS](https://nodejs.org/download/release/latest-gallium/)                                                   |       16 LTS       |
+| [Postman](https://www.postman.com/downloads/) (optional)	                                                       |         8          |
 
 
 You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJIDEA enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJIDEA.
