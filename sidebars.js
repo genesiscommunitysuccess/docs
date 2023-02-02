@@ -480,6 +480,17 @@ module.exports = {
         },
       ],
     },
+    {
+      type: 'category',
+      label: 'LAYOUT',
+      collapsed: true,
+      items: [
+        {
+          type: 'doc',
+          id: 'web/dynamic-layout/foundation-layout',
+        },
+      ],
+    },
   ],
   operationsSidebar: [
     'operations/operations',
