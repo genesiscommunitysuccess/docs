@@ -462,7 +462,7 @@ The conversion process creates a folder called **/home/core/run/_name_.cfg**, wh
 
 The data from each worksheet is extracted to a separate csv file.
 
-#### Exercise 3.3 Using ExcelToGenesis
+### Exercise 3.3 Using ExcelToGenesis
 
 :::info ESTIMATED TIME
 45 mins
