@@ -35,7 +35,7 @@ The script accepts a series of [arguments](../../../operations/commands/server-c
 DictionaryBuilder -u TAS -p my_password -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
 ```
 
-Tis is what the script does:
+This is what the script does:
 - It tries to connect to the RDBMS currently specified in the arguments. 
 - It generates Genesis dictionary fields for column names and their types.
 - It creates tables with their fields and keys.
@@ -43,20 +43,20 @@ Tis is what the script does:
 There are a few considerations you should be aware of:
 
 - If a column name (e.g. DATE) is found in several tables, and it always has the same type, only one field will be specified in the dictionary. However, if the same column name is found in different tables with different types, a new field will be created for each type, keeping the column name and adding the table name (e.g. CALENDAR) in the following fashion: DATE_IN_CALENDAR. The script will output this event on screen so you can fix the name and/or type it manually later on.
-- The types are mapped from Java types [here](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html) to Genesis dictionary types. Each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate; you must check the results for correctness.
+- The types are mapped from [Java types](https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/Types.html) to [Genesis dictionary types](../../../database/fields-tables-views/fields/fields-basics/#field-types). Each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate; you must check the results for correctness.
 - If there is no mapping available for the java.sql.Type retrieved by the column metadata query, it will be mapped by default to the Genesis dictionary type STRING. This event will be shown on standard output too, so you can know that there is an uncommon type that you should take care of.
 - Every time a table is successfully parsed, the script will give feedback: TABLE USERS complete.
 - Views are not parsed.
 
 Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based. Only unique indexes will be parsed as secondary keys. There is no concept of foreign keys in Genesis, so these are ignored. Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE). Further details and type mapping are available [here](../../../operations/commands/server-commands/#type-mapping).
 
-#### Exercise 4.1 Running DictionaryBuilder from a local database
+### Exercise 4.1 Running DictionaryBuilder from a local database
 
 :::info ESTIMATED TIME
 25 mins
 :::
 
-From a local database available, let's create product that we create ref_data_app. All the files we create will start with that name. Then, run `DictionaryBuilder` using a instance in which the platform is installed.
+From a local database available, let's create the product *ref_data_app*. All the files we create will start with that name. Then, run `DictionaryBuilder` using a instance in which the platform is installed.
 
 After the run, you should check these files and adjust them to suit your application. For example, look inside the **fields-dictionary.kts** file to see if the field definitions are correct.
 
