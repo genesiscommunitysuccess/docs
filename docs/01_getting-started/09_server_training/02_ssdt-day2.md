@@ -186,10 +186,6 @@ joining(INSTRUMENT, JoinType.INNER) {
 
 - `OUTER` joins provide null references for failed joins and will still allow the row to be built.
 
-```kotlin
-joining(INSTRUMENT) {
-    on(TRADE { INSTRUMENT_ID } to INSTRUMENT { INSTRUMENT_ID })
-```
 
 #### Dictionary-joined tables
 When tables are joined in the dictionary, you are able to join to those tables in views directly, without having to specify the fields on which to join. This does not currently work with aliased tables.
@@ -281,7 +277,7 @@ After:
 }
 ```
 
-#### Exercise 2.2 Changing TRADE_VIEW JOINs
+### Exercise 2.2 Changing TRADE_VIEW JOINs
 
 :::info ESTIMATED TIME
 15 mins
