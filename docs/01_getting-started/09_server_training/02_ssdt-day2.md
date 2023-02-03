@@ -27,7 +27,7 @@ To do that, create a process called `ALPHA_NOTIFY` and add it to the file **alph
     ...
     <process name="ALPHA_NOTIFY">
         <start>true</start>
-        <groupId>GENESIS</groupId>
+        <groupId>ALPHA</groupId>
         <options>-Xmx512m -DXSD_VALIDATE=false</options>
         <module>genesis-notify</module>
         <package>global.genesis.notify</package>
