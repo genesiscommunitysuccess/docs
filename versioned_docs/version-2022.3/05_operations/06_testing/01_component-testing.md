@@ -83,7 +83,7 @@ This returns a set of details in the right side of the Insomnia window, where yo
 
 You can use the `curl` tool to test a module from the command line.
 
-The simple example below tests the resource `event-account-validate-request`. It sends a request to see if the resource event handler is able to validate an account.
+The simple example below tests the resource `event-account-validate-request`. It sends a request to see if this resource in the Event Handler is able to validate an account.
 
 ```bash
 curl --request POST 'localhost:9064/event-account-validate-request' \
