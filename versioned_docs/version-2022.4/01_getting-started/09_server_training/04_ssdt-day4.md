@@ -281,12 +281,21 @@ sendFormatted("QUOTE_HANDLER", "QUOTE_EVENT") {
 
 We are going to double-check if a record in the *TRADE* table has been audited. To do this, create a boolean field in the *TRADE* table called **BEEN_AUDITED**. Then, create a Streamer solution (Server and Client) to update **BEEN_AUDITED** as soon as the record start the auditing process. You will also have to create an event in the EVENT_HANDLER to be called by the Streamer Client to update **BEEN_AUDITED** to true. 
 
-Remember that the TRADE table has an [auditing process](../../../getting-started/developer-training/training-content-day4/#adding-audit-to-table-dictionary) that keeps tracking changes in the *TRADE_AUDIT* table.
+Create a Streamer called TRADE_AUDIT_STREAM, based on the *TRADE_AUDIT* table ordered by timestamp. The Streamer Client should call the new EVENT to update the *TRADE* field **BEEN_AUDITED**.
+
+Remember that the TRADE table has an [auditing process](../../../getting-started/developer-training/training-content-day4/#adding-audit-to-table-dictionary) that keeps tracking changes in the *TRADE_AUDIT* table. However, the auditing does not have a Timestamp Index yet, so we need to add the attribute `tsKey` as below:
+
+```kotlin {2}
+tables {
+    table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR", tsKey = true)) {
+        ...
+    }
+    ...
+}
+```
 
 :::tip
 Don't forget to change the fields and tables files, as well as run the tasks to [generateFields](../../../getting-started/developer-training/training-content-day1/#generatefields) and [generateDao](../../../getting-started/developer-training/training-content-day1/#generatedao).
-
-Create a Streamer called TRADE_AUDIT_STREAM, based on the *TRADE_AUDIT* table ordered by timestamp. The Streamer Client should call the new EVENT to update the *TRADE* field **BEEN_AUDITED**.
 :::
 
 
