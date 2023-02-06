@@ -189,24 +189,47 @@ The `process()` function must be overridden and implemented in order to add busi
 ### Authentication
 The `requiresAuth()` function can be overridden to determine if the endpoint requires a `SESSION_AUTH_TOKEN` with the request, such as those made from authenticated sessions. Without a definition, this returns a default value of `true`. In the example above, this Authorisation is not required when the system is running in `TEST_MODE`, which is useful for testing these endpoints with integration tests.
 
-### Exercise 5.1 Trade.getBulk to CSV Download Endpoint
-<!--
-acho q da pra usar esse de base:
+### Configure processes.xml
 
-https://docs.genesis.global/secure/creating-applications/defining-your-application/integrations/custom-endpoints/ce-advanced-technical-details/#attachmentdownloadendpoint
+You need to alter the GENESIS_ROUTER process configuration, which is defined in the **genesis-processes.xml** file located in the **~/run/genesis/cfg** folder.
+- Add the name of the package, where the custom endpoint is defined in the [package](../../../../server/configuring-runtime/processes/#package) tag. In the example below, this is `global.genesis.alpha.fileHandler`.
+- Add the Jar file of the submodule containing the custom endpoint to the [classpath](../../../../server/configuring-runtime/processes/#classpath) tag. In the example below, this is `alpha-file-handler*.jar`.
 
-mas eu mudaria pra ele fazer tipo um getBulk numa tabela, gerar um CSV e fazer o download
--->
+
+```xml {6,10}
+<process name="GENESIS_ROUTER">
+        <start>true</start>
+        <groupId>GENESIS</groupId>
+        <options>-Xmx512m -DXSD_VALIDATE=false</options>
+        <module>router</module>
+        <package>global.genesis.router,global.genesis.console,global.genesis.alpha.fileHandler</package>
+        <config>router-process-config.kts</config>
+        <script>genesis-router.kts</script>
+        <language>pal</language>
+        <classpath>genesis-console-*.jar,alpha-file-handler*.jar</classpath>
+        <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
+</process>
+```
+
+There is more information on how we define processes, in our page on [process.xml](../../../../server/configuring-runtime/processes).
+
+
+### Exercise 5.1 Creating CSV Upload Endpoints
+
 :::info ESTIMATED TIME
 45 mins
 :::
 
-We are going to create a new endpoint where the result of Trade.getBulk should write a CSV file and then download it. 
+We are going to create CSV Upload Endpoints. Let's create the possibility to upload *Counterparty* and *Instrument* records through CSVs. The fields are pretty much what we defined [before](../../../../getting-started/developer-training/training-content-day2/#exercise-22-extending-the-application). 
 
 Use the knowledge you have acquired so far to create a class implementing the interface `WebEndpoint`.
 
 :::tip
-There is a similar sample [here](../../../server/integration/custom-endpoints/advanced/#attachmentdownloadendpoint), which defines Attachments Download Endpoint.
+Don't forget the required configuration explained [here](#configure-processesxml).
+
+Also, there is a similar sample [here](../../../server/integration/custom-endpoints/advanced/#attachmentuploadendpoint), which defines Attachments Upload Endpoint.
+
+Lastly, you can use [this](https://www.postman.com/postman/workspace/postman-answers/documentation/13455110-00378d5c-5b08-4813-98da-bc47a2e6021d) reference to test it using Postman.
 :::
 
 
