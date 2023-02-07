@@ -81,7 +81,33 @@ The `dictionaryBuilder` script generates the **fields-dictionary.kts** and **tab
 
 To create a [Streamer](../../../server/integration/gateways-and-streamers/streamer/):
 
-1. Add the process configuration for the Streamer to the _applicationName_**-processes.xml** file. In this training our file is **alpha-processes.xml**:
+1. Add the `genesis-pal-streamer` dependency in your *{applicationName}-script-config\build.gradle.kts" file. In this training our file is **alpha-script-config\build.gradle.kts**:
+
+```kotlin {3}
+dependencies {
+    ...
+    api("global.genesis:genesis-pal-streamer")
+    ...
+}
+
+description = "alpha-script-config"
+```
+
+2. Create a Kotlin script file named {applicationName}-streamer.kts inside **{applicationName}-script-config/src/main/resources/scripts** folder. Add the following information:
+    * A stream name
+    * A GPAL index reference for a unique index with a single LONG field, this could refer to a table index or a view index.
+
+The simplest Streamer definition is:
+```kotlin
+streams {
+    stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP)  
+}
+```
+
+This example creates a stream called `ORDER_OUT`, based on the `ORDERS_OUT` table (or view). The data will be streamed, ordered by timestamp.
+
+
+3. Add the process configuration for the Streamer to the _applicationName_**-processes.xml** file. In this training our file is **alpha-processes.xml**:
 
 ```xml {3-10}
 <processes>
@@ -97,7 +123,7 @@ To create a [Streamer](../../../server/integration/gateways-and-streamers/stream
 </processes>
 ```
 
-2. Next, add the service definition to the {applicationName}-service-definitions.xml file. In this training our file is **alpha-service-definitions.xml**:
+4. Next, add the service definition to the {applicationName}-service-definitions.xml file. In this training our file is **alpha-service-definitions.xml**:
 
 ```xml {3}
 <configuration>
@@ -105,19 +131,6 @@ To create a [Streamer](../../../server/integration/gateways-and-streamers/stream
     <service host="localhost" name="ALPHA_STREAMER" port="11006"/>
 </configuration>
 ```
-
-3. Create a Kotlin script file named {applicationName}-streamer.kts inside **{applicationName}-script-config/src/main/resources/scripts** folder. Add the following information:
-    * A stream name
-    * A GPAL index reference for a unique index with a single LONG field, this could refer to a table index or a view index.
-
-The simplest Streamer definition is:
-```kotlin
-streams {
-    stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP)  
-}
-```
-
-This example creates a stream called `ORDER_OUT`, based on the `ORDERS_OUT` table (or view). The data will be streamed, ordered by timestamp.
 
 ### Parameters
 You can also specify the following optional parameters in a stream block:
@@ -201,32 +214,19 @@ Let's see how to create a Streamer Client. It also looks at the syntax of the tw
 ### Creating a Streamer Client
 To create a [Streamer-Client](../../../server/integration/gateways-and-streamers/streamer-client/):
 
-1. Add the configuration for the Streamer Client process to the {applicationName}-processes.xml file. In this training our file is **alpha-processes.xml**:
+1. Add the genesis-pal-streamerclient` dependency in your *{applicationName}-script-config\build.gradle.kts" file. In this training our file is **alpha-script-config\build.gradle.kts**:
 
-```xml {3-10}
-<processes>
+```kotlin {3}
+dependencies {
     ...
-    <process name="ALPHA_STREAMER_CLIENT">
-        <start>true</start>
-        <options>-Xmx128m -DXSD_VALIDATE=false</options>
-        <module>genesis-pal-streamerclient</module>
-        <package>global.genesis.streamerclient.pal</package>
-        <script>alpha-streamer-client.kts</script>
-        <language>pal</language>
-    </process>
-</processes>
+    api("global.genesis:genesis-pal-streamerclient")
+    ...
+}
+
+description = "alpha-script-config"
 ```
 
-2. Next, add the service definition to the {applicationName}-service-definitions.xml file. In this training our file is **alpha-service-definitions.xml**:
-
-```xml {3}
-<configuration>
-    ...
-    <service host="localhost" name="ALPHA_STREAMER_CLIENT" port="11007"/>
-</configuration>
-```
-
-3. Create a Kotlin script file named {applicationName}-streamer-client.kts inside **{applicationName}-script-config/src/main/resources/scripts** folder, and add the following details:
+2. Create a Kotlin script file named {applicationName}-streamer-client.kts inside **{applicationName}-script-config/src/main/resources/scripts** folder, and add the following details:
     * A streamer client name
     * A streamer data source process and stream name
     * One or more `onMessage` tags
@@ -273,6 +273,32 @@ sendFormatted("QUOTE_HANDLER", "QUOTE_EVENT") {
 }
 ```
 
+
+3. Add the configuration for the Streamer Client process to the {applicationName}-processes.xml file. In this training our file is **alpha-processes.xml**:
+
+```xml {3-10}
+<processes>
+    ...
+    <process name="ALPHA_STREAMER_CLIENT">
+        <start>true</start>
+        <options>-Xmx128m -DXSD_VALIDATE=false</options>
+        <module>genesis-pal-streamerclient</module>
+        <package>global.genesis.streamerclient.pal</package>
+        <script>alpha-streamer-client.kts</script>
+        <language>pal</language>
+    </process>
+</processes>
+```
+
+4. Next, add the service definition to the {applicationName}-service-definitions.xml file. In this training our file is **alpha-service-definitions.xml**:
+
+```xml {3}
+<configuration>
+    ...
+    <service host="localhost" name="ALPHA_STREAMER_CLIENT" port="11007"/>
+</configuration>
+```
+
 ## Exercise 4.2 Creating a Streamer solution to control the TRADE_AUDIT table
 
 :::info ESTIMATED TIME
@@ -297,3 +323,5 @@ tables {
 :::tip
 Don't forget to change the fields and tables files, as well as run the tasks to [generateFields](../../../getting-started/developer-training/training-content-day1/#generatefields) and [generateDao](../../../getting-started/developer-training/training-content-day1/#generatedao).
 :::
+
+
