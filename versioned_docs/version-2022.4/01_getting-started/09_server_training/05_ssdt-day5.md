@@ -222,6 +222,8 @@ There is more information on how we define processes, in our page on [process.xm
 
 We are going to create CSV Upload Endpoints. Let's create the possibility to upload *Counterparty* and *Instrument* records through CSVs. The fields are pretty much what we defined [before](../../../../getting-started/developer-training/training-content-day2/#exercise-22-extending-the-application). 
 
+To do that, create a new server module `alpha-file-handler`, and add it to be build and deployed (*server/jvm/settings.gradle.kts*, *alpha-deploy/build.gradle.kts*, *alpha-distribution/build.gradle.kts*, **). In this new module, create the classes and add your logic to complete the task.
+
 Use the knowledge you have acquired so far to create a class implementing the interface `WebEndpoint`.
 
 :::tip
@@ -236,7 +238,7 @@ Lastly, you can use [this](https://www.postman.com/postman/workspace/postman-ans
 
 ## Camel module
 
-The Genesis platform supports the use of [Apache Camel](https://camel.apache.org/) in order to integrate with external systems, using its plethora of [components](https://camel.apache.org/components/3.16.x/index.html). Genesis makes this easy to configure and set up, allowing new processors to be defined and used within GPAL.
+The Genesis platform supports the use of [Apache Camel](https://camel.apache.org/) in order to integrate with external systems, using its plethora of [components](https://camel.apache.org/docs). Genesis makes this easy to configure and set up, allowing new processors to be defined and used within GPAL.
 
 Likely uses for Apache Camel include:
 - receiving data from the local filesystem
