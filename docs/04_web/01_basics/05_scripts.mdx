@@ -1,5 +1,5 @@
 ---
-title: 'Web Basics - Useful Scripts'
+title: 'Web basics - useful scripts'
 sidebar_label: 'Useful scripts'
 id: useful-scripts
 keywords: [web, basics, scripts]
@@ -11,9 +11,9 @@ tags:
 
 # Explanation of some useful scripts
 
-1. Bootstrap the packages, which installs all of their dependencies and links any cross-dependencies.
+1. Bootstrap the packages, which installs all their dependencies and links any cross-dependencies.
 
-**You must do this at least once to get the top level client dependencies in place.**
+**You must do this at least once to get the top-level client dependencies in place.**
 
 ```shell
 npm run bootstrap
@@ -24,14 +24,14 @@ This is a shortcut for:
 npm run husky:install && npx lerna bootstrap --hoist
 ```
 
-When run, this command will:
-- run husky:install (which installs git command hooks).
-- npm install all external dependencies of each package.
-- Symlink together all Lerna packages that are dependencies of each other.
-- npm run prepublish in all bootstrapped packages (unless --ignore-prepublish is passed).
-- npm run prepare in all bootstrapped packages.
+When you run this command, it will:
+- run husky:install (which installs git command hooks)
+- npm install all external dependencies of each package
+- symlink together all Lerna packages that are dependencies of each other
+- npm run prepublish in all bootstrapped packages (unless --ignore-prepublish is passed)
+- npm run prepare in all bootstrapped packages
 
-Passing `--ignore-scripts` to the bootstrap command will speed up the process as it will skip any [lifecycle scripts](https://docs.npmjs.com/cli/v9/using-npm/scripts#life-cycle-scripts) normally run (prepare, etc) in bootstrapped packages.
+Passing `--ignore-scripts` to the bootstrap command speeds up the process, as it skips any [lifecycle scripts](https://docs.npmjs.com/cli/v9/using-npm/scripts#life-cycle-scripts) that are normally run (prepare, etc) in bootstrapped packages.
 
 Use this script shortcut.
 ```shell
@@ -41,7 +41,7 @@ npm run bootstrap:ignore-scripts
 :::note
 Scripts can call other scripts.<br />
 husky:install called by bootstrap above for example is just another script.<br />
-Remember, [as discussed previously](../package-json-basics#scripts), you can see all avalable scripts and their definitions in `package.json` 
+Remember, [as discussed previously](../package-json-basics#scripts), you can see all available scripts and their definitions in the **package.json** file. 
 :::
 
 2. To start the **web client** in watch mode:
@@ -50,20 +50,20 @@ Remember, [as discussed previously](../package-json-basics#scripts), you can see
 npm run client:web
 ```
 
-This command will clean and bootstrap all the dependencies by topological order and start the application.
+This command cleans and bootstraps all the dependencies by topological order and starts the application.
 
 **If you get `Error: Cannot find module 'rimraf'` you need to remember to run bootstrap at least once before using the
 `npm run client:web` shortcut.**
 
 ## Build the web application 
 
-From inside the web application's folder this time (e.g. client/web/) run this command:
+From inside the web application's folder (e.g. client/web/), now run this command:
 
 ```shell
 npm run build
 ```
 
-This will build your app using webpack (generate the bundle in the `dist` folder).
+This builds your app using webpack. It generates the bundle in the **dist** folder.
 
 It is a shortcut for:
 ```shell
@@ -72,7 +72,7 @@ cross-env NODE_ENV=production AUTO_CONNECT=true webpack
 
 ## Lerna add dependency examples
 
-Please do not use npm to install or manage dependencies as it will cause problems with lerna. Unfortunately lerna can
+Please do not use npm to install or manage dependencies, because it causes problems with lerna. Unfortunately, lerna can
 only process one dependency at a time, so there is no command like `npm i package-a package-b package-c`.
 
 ```shell
@@ -106,7 +106,7 @@ Remove the node_modules directory from all packages (not the root).
 npm run clean
 ```
 
-After this you'll likely want to run bootstrap again.
+After this you should (must) run bootstrap again.
 
 ```shell
 npm run bootstrap
