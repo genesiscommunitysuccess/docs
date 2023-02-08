@@ -16,6 +16,8 @@ npm run start
 
 This command starts a local development server and open up a browser window. Most changes are reflected live without having to restart the server.
 
+Note you need to prefix your url with /next/ in order to see your updated changes locally. e.g. `http://localhost:8080/next/operations/containerisation/healthchecks/`
+
 ### Build
 
 ```
