@@ -1,5 +1,5 @@
 ---
-title: 'Data Pipeline - Basics'
+title: 'Data Pipeline - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, integration, data pipeline, basics]
@@ -21,14 +21,14 @@ A pipeline configuration contains a collection of `sources`, one or many `map` f
 Each data pipeline source contains the configuration specifying how to access the data and the associated mapping and sink functionality.
 
 :::note
-Remote databases do not work with Data Pipelines by default and will require some setup/configuration to enable Change Data Capture functionality. More details can be found in the pages on [Pipeline set-up](https://learn.genesis.global/docs/operations/pipeline-setup/).
+Remote databases do not work with Data Pipelines by default and will require some setup/configuration to enable Change Data Capture functionality. More details can be found in the pages on [Pipeline set-up](../../../../operations/pipeline-setup/).
 :::
 
 The currently supported sources are:
 
 **Ingress:**
 - PostgreSQL
-- MS SQL Sever
+- MS SQL Server
 - Oracle Enterprise
 - Files
   - CSV
@@ -87,7 +87,7 @@ Genesis currently supports CSV, JSON and XML file sources. Below, you can see wh
 | location | N/A | `location = "file://runtime/testFiles?fileName=IMPORT_TRADES.csv"`| String | Set the location of the CSV file. See details below |
 | delimiter | , | `delimiter = ','` | Char | Set the value delimiter  |
 | hasHeader | true | `hasHeader = true` | Boolean | Set whether the file has headers  |
-| headerOverrides | null | `headerOverrides = arrayListOf("id", "name")` | List | Set the column names to be used. If the file has header it's ignored and the speicifed names are used  |
+| headerOverrides | null | `headerOverrides = arrayListOf("id", "name")` | List | Set the column names to be used. If the file has a header, it is ignored and the specified names are used  |
 | readLazily | false | `readLazily = true` | Boolean | Set lazy reading  |
 
 ```kotlin
@@ -461,7 +461,7 @@ pipelines {
 
 ### Egress
 
-For egress data pipelines, the only supported sink operation is SQL based JDBC databases. We have provided helper classes for Postgress, MS SQL Server and Oracle databases for convenience.
+For egress data pipelines, the only supported sink operation is SQL based JDBC databases. We have provided helper classes for Postgres, MS SQL Server and Oracle databases for convenience.
 
 In the below example, we define a postgres configuration object and pass this into our `sink` declaration. Our sink takes the database configuration and provides us with methods to describe the behaviour we would like for each operation that our pipeline might pick up.
 
