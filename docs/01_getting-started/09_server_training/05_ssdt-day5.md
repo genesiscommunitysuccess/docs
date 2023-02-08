@@ -224,6 +224,20 @@ We are going to create CSV Upload Endpoints. Let's create the possibility to upl
 
 To do that, create a new server module `alpha-file-handler`, and add it to be build and deployed (*server/jvm/settings.gradle.kts*, *alpha-deploy/build.gradle.kts*, *alpha-distribution/build.gradle.kts*, **). In this new module, create the classes and add your logic to complete the task.
 
+Create a new item to limit the size of the CSVs to 4 megabytes. You can add a new item in **genesis-system-definition.kts** as below.
+
+```kotlin {6}
+package genesis.cfg
+
+systemDefinition {
+    global {
+        ...
+        item(name = "SYS_DEF_FILE_MAX_SIZE_IN_BITS", value = "32000000")
+    }
+    ...
+}
+```
+
 Use the knowledge you have acquired so far to create a class implementing the interface `WebEndpoint`.
 
 :::tip
@@ -253,6 +267,18 @@ Apache Camel integrations are defined within your application's **-camel.kts** f
 The Genesis low-code platform only includes the `camel-core` dependency. You will want to declare additional dependencies to make best use of the different available Camel components.
 
 ### Configuration
+
+- Add the `genesis-pal-camel` dependency in your *{applicationName}-script-config\build.gradle.kts" file. In this training our file is **alpha-script-config\build.gradle.kts**:
+
+```kotlin {3}
+dependencies {
+    ...
+    api("global.genesis:genesis-pal-camel")
+    ...
+}
+
+description = "alpha-script-config"
+```
 
 - Add the configuration for the Camel module to the {applicationName}-processes.xml file:
 

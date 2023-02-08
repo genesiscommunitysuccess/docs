@@ -224,6 +224,20 @@ We are going to create CSV Upload Endpoints. Let's create the possibility to upl
 
 To do that, create a new server module `alpha-file-handler`, and add it to be build and deployed (*server/jvm/settings.gradle.kts*, *alpha-deploy/build.gradle.kts*, *alpha-distribution/build.gradle.kts*, **). In this new module, create the classes and add your logic to complete the task.
 
+Create a new item to limit the size of the CSVs to 4 megabytes. You can add a new item in **genesis-system-definition.kts** as below.
+
+```kotlin {6}
+package genesis.cfg
+
+systemDefinition {
+    global {
+        ...
+        item(name = "SYS_DEF_FILE_MAX_SIZE_IN_BITS", value = "32000000")
+    }
+    ...
+}
+```
+
 Use the knowledge you have acquired so far to create a class implementing the interface `WebEndpoint`.
 
 :::tip
@@ -255,39 +269,19 @@ The Genesis low-code platform only includes the `camel-core` dependency. You wil
 
 ### Configuration
 
-- Add the configuration for the Camel module to the {applicationName}-processes.xml file:
+- Add the `genesis-pal-camel` dependency in your *{applicationName}-script-config\build.gradle.kts" file. In this training our file is **alpha-script-config\build.gradle.kts**:
 
-```xml
-  <process name="ALPHA_CAMEL">
-    <groupId>ALPHA</groupId>
-    <start>true</start>
-    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
-    <module>genesis-pal-camel</module>
-    <package>global.genesis.eventhandler.pal</package>
-    <script>alpha-eventhandler.kts</script>
-    <description>Handles events</description>
-    <classpath>alpha-messages*,alpha-camel*,alpha-camel-libs*.jar</classpath>
-    <language>pal</language>
-  </process>
-```
-
-... where the position-camel-libs module may have similar dependencies to the following:
-
-```kotlin
-    api("org.apache.camel:camel-mail:3.14.2")
-    api("javax.mail:javax.mail-api:1.6.2")
-```
-
-- Next, add the service definition to the {applicationName}-service-definitions.xml file:
-
-```xml
-<configuration>
+```kotlin {3}
+dependencies {
     ...
-    <service host="localhost" name="ALPHA_CAMEL" port="11006"/>
-</configuration>
+    api("global.genesis:genesis-pal-camel")
+    ...
+}
+
+description = "alpha-script-config"
 ```
 
-- Create a Kotlin script file named **{applicationName}-camel.kts** file. It defines a single route using a range of Camel configuration options, which we'll explore in a little more detail below:
+- Create a Kotlin script file named *{applicationName}-camel.kts* file. In this example our file **alpha-camel.kts** defines a single route using a range of Camel configuration options, which we'll explore in a little more detail below:
 ```kotlin
 camel {
     routeHandler {
@@ -299,6 +293,37 @@ camel {
 ```
 
 The `routeHandler` defines the possible routes for information to flow into and out of our system.  The example above defines one route. First, it defines the `pathStr` using the `GenesisPaths` class to find the `GENESIS_HOME` system environment variable. Next, it defines the route itself. The route in the example comes from the filesystem determined by the `file:` specifier at the start of the string. This could be any [Apache Camel component](https://camel.apache.org/components/3.16.x/index.html) that can act as a [consumer](https://camel.apache.org/manual/camelcontext.html#_consumer). Further `routeHandler` parameters and explanation can be found [here](../../../server/integration/apache-camel/basics/#routehandler).
+
+
+- Add the configuration for the Camel module to the *{applicationName}-processes.xml* file. In this training our file is **alpha-processes.xml**:
+
+```xml {3-15}
+<processes>
+    ...
+    <process name="ALPHA_CAMEL">
+        <groupId>ALPHA</groupId>
+        <primaryOnly>true</primaryOnly>
+        <start>true</start>
+        <options>-Xmx2048m -DXSD_VALIDATE=false -DRedirectStreamsToLog=true</options>
+        <module>genesis-pal-camel</module>
+        <package>global.genesis.camel</package>
+        <script>alpha-camel.kts</script>
+        <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
+        <description>Handles inbound/outbound file consumption/production</description>
+        <language>pal</language>
+        <classpath>alpha-event*,camel-activemq-*</classpath>
+    </process>
+</processes>
+```
+
+- Add the service definition to the *{applicationName}-service-definitions.xml* file. In this training our file is **alpha-service-definitions.xml**:
+
+```xml {3}
+<configuration>
+    ...
+    <service host="localhost" name="ALPHA_CAMEL" port="11008"/>
+</configuration>
+```
 
 
 ### Exercise 5.2 Reading and writing using an SFTP server
