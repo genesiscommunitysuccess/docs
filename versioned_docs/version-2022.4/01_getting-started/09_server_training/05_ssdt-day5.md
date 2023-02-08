@@ -269,12 +269,13 @@ The Genesis low-code platform only includes the `camel-core` dependency. You wil
 
 ### Configuration
 
-- Add the `genesis-pal-camel` dependency in your *{applicationName}-script-config\build.gradle.kts" file. In this training our file is **alpha-script-config\build.gradle.kts**:
+- Add the `genesis-pal-camel` and `camel-ftp` dependencies in your *{applicationName}-script-config\build.gradle.kts" file. In this training our file is **alpha-script-config\build.gradle.kts**:
 
-```kotlin {3}
+```kotlin {3,4}
 dependencies {
     ...
     api("global.genesis:genesis-pal-camel")
+    api("org.apache.camel:camel-ftp:3.14.2")
     ...
 }
 
@@ -304,14 +305,14 @@ The `routeHandler` defines the possible routes for information to flow into and 
         <groupId>ALPHA</groupId>
         <primaryOnly>true</primaryOnly>
         <start>true</start>
-        <options>-Xmx2048m -DXSD_VALIDATE=false -DRedirectStreamsToLog=true</options>
+        <options>-Xmx512m -DXSD_VALIDATE=false -DRedirectStreamsToLog=true</options>
         <module>genesis-pal-camel</module>
         <package>global.genesis.camel</package>
         <script>alpha-camel.kts</script>
         <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
         <description>Handles inbound/outbound file consumption/production</description>
         <language>pal</language>
-        <classpath>alpha-event*,camel-activemq-*</classpath>
+        <classpath>alpha-event*,camel-ftp*</classpath>
     </process>
 </processes>
 ```
@@ -444,9 +445,6 @@ As well as to your alpha-service-definitions.xml file:
 - Lastly, run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 
 ### Exercise 5.3 Ingesting external data
-<!--
-this is pretty much here: https://learn.genesis.global/docs/getting-started/go-to-the-next-level/data-pipeline/#verify-your-pipeline-is-working
--->
 :::info ESTIMATED TIME
 30 mins
 :::

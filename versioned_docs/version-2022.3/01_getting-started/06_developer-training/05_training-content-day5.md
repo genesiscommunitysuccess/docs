@@ -251,7 +251,7 @@ The module GENESIS_NOTIFY does not run by default. To change this, we are adding
     <process name="ALPHA_NOTIFY">
         <start>true</start>
         <groupId>ALPHA</groupId>
-        <options>-Xmx512m -DXSD_VALIDATE=false</options>
+        <options>-Xmx128m -DXSD_VALIDATE=false</options>
         <module>genesis-notify</module>
         <package>global.genesis.notify</package>
         <script>genesis-notify.kts</script>
