@@ -61,13 +61,13 @@ You can then add the following content to the **alpha-service-definitions.xml** 
 </configuration>
 ```
 
-You can find more info on the **-service-defintions.xml** file [here](../../../server/configuring-runtime/service-definitions/).
+You can find more info on the **-service-definitions.xml** file [here](../../../server/configuring-runtime/service-definitions/).
 
 ## Database layer
 
 You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\**.
 
-You can find more information on the **genesis-system-defintions.kts** file [here](../../../server/configuring-runtime/system-definitions/).
+You can find more information on the **genesis-system-definitions.kts** file [here](../../../server/configuring-runtime/system-definitions/).
 
 ### Using WSL/Linux? Don't change the database layer.
 You can ignore the next section! In fact, you must not make the changes on that section. (But please note, we highly recommend using Docker.)
