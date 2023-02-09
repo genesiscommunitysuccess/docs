@@ -95,7 +95,7 @@ FoundationDesignSystem: registerFoundationDesignSystem().register(
 For the rest of this document, the components will be referred to with the `foundation-` prefix.
 :::
 
-### Custom Styling
+### Custom styling
 
 The required class, template, and base styles are exported as part of the package, allowing a client to customise the styling of the layout system via design system extensions.
 
