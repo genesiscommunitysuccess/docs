@@ -1,5 +1,5 @@
 ---
-title: 'Data Pipeline - Testing'
+title: 'Data Pipeline - testing'
 sidebar_label: 'Testing'
 id: testing
 keywords: [server, integration, data pipeline, testing]
