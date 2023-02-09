@@ -211,9 +211,19 @@ Get an object describing the current layout so it can be restored at a later dat
 
 Loads a serialised layout. All items that are described in the config to load must already be registered with the layout system either with the declarative or JavaScript API. If there are items missing (could either be due to missing items or registered names mismatc) then a `LayoutUsageError` will be thrown containing the names of the missing items.
 
-### [Events](./docs/api/foundation-layout.layoutevents.md)
+## Events
+
+### [Emitted Events](./docs/api/foundation-layout.layoutemitevents.md)
 
 Certain actions that are performed by the user interacting with the layout emit events. See the API document linked for the events and when they're emitted. Interacting with these events allows your client code to dynamically interact with the layout, such as enabling/disabling buttons to add items to the layout when they're removed/added.
+
+### [Received Events](./docs/api/foundation-layout.layoutreceiveevents.md)
+
+Certain events are listened to by the container for each component, allowing the component to interact with the layout. For example, a component could emit and event to change the title of the containing window.
+```typescript
+this.$emit(eventType, eventDetail)
+```
+Each event requires a certain detail to process the event - see [the map of events to their required details](./docs/api/foundation-layout.layoutreceiveeventsdetail.md).
 
 ## Contained Elements
 
@@ -235,7 +245,7 @@ At the very least you must run `super` calls to the life cycle methods, or else 
 
 To allow you to add multiple items from the same `registration`, the layout system clones elements to add to the layout.
 This is the case for both when items added with `.addItem()`, and the declarative API. Under the hood this uses the Node [cloneNode](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) api.
-There are certain limitation to this function, especially when using custom elements with the shadow DOM.
+There are certain limitation to this function, especially when using custom elements with the shadow DOM. [See troubleshooting example](#binding-events-inline-in-the-declarative-api).
 
 In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin` which overrides the `cloneNode` API.
 
@@ -866,4 +876,48 @@ Instead it will be added as a duplicate every time the observable is set true. A
 of the panel will be wiped as duplicates are added.
 
 To work around this you would use of FAST directives inside of custom web components inside of the layout.
-<!-- In future you would correctly implement this behaviour by interacting with the JavaScript API. -->
+
+### Binding events inline in the declarative API
+The following example is invalid:
+
+```html
+<foundation-layout>
+		<foundation-layout-item>
+			<input type="checkbox" @change=${(x,c) => x.doSomething()} />
+		</foundation-layout-item>
+</foundation-layout>
+```
+
+Due to a limitation with the [cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) event listeners are *not* copied.
+This process is part of the process of adding an item to the layout, using both the declarative HTML and JavaScript APIs. So while you will see
+a checkbox on the screen as part of the layout, the event listener will *not* fire when you `change` the checkbox. This applies to all items and events.
+
+The idiomatic FAST way of implementing this event binding is to create a custom element and attach the event internally.
+```typescript
+// template
+export const exampleComponentTemplate = html<ExampleComponent>`
+  <template>
+    <input type="checkbox" ${ref('checkbox')} @change=${(x, c) => x.doSomething()} />
+  </template>
+`;
+
+// model
+@customElement({
+  name: 'example-component',
+  template: exampleComponentTemplate,
+})
+export class ExampleComponent extends FASTElement {
+  checkbox: Checkbox;
+	doSomething() { } // do something important
+}
+```
+
+You can then use the custom component in the layout:
+```html
+<foundation-layout>
+		<foundation-layout-item>
+			<example-component><example-component/>
+		</foundation-layout-item>
+</foundation-layout>
+```
+
