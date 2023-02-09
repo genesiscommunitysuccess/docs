@@ -12,7 +12,7 @@ tags:
 
 
 
-## Enriching data from Genesis Database
+## Enriching data from the Genesis database
 
 The `transform` function of the mappers has the parameter `entityDb`, which can be used to interact with the Genesis database. It provides a CRUD interface and enables you to implement complex use cases, such as enriching data and inserting or updating missing data.
 
