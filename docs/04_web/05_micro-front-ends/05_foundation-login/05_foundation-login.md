@@ -26,14 +26,14 @@ An example of the main login screen: <br/>
 An example of authentication via SSO: <br/>
 ![Main login screen example](./docs/img/foundation-login_login-sso.png)
 
-An example of the forgotten password screen: <br/>
-![Main login screen example](./docs/img/foundation-login_forgotten-password.png)
+<!-- An example of the forgotten password screen: <br/>
+![Main login screen example](./docs/img/foundation-login_forgotten-password.png) -->
 
 An example of the change password screen: <br/>
 ![Main login screen example](./docs/img/foundation-login_change-password.png)
 
-An example of the request account screen: <br/>
-![Main login screen example](./docs/img/foundation-login_request-account.png)
+<!-- An example of the request account screen: <br/>
+![Main login screen example](./docs/img/foundation-login_request-account.png) -->
 
 ## Login set-up
 
@@ -86,8 +86,6 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 		defaultRedirectUrl: 'protected',
 		public: true,
 		resetPassword: true,
-		forgotPassword: true,
-		requestAccount: true,
 		ssoToggle: true,
 		ssoEnable: false,
 	},
@@ -155,7 +153,7 @@ The `Login` micro front-end uses a parameterless constructor. Therefore, the con
 
 ### Enabled functionality
 
-In the [introduction section](#introduction), the reset password, request account, and forgotten password functionalities are shown. However, these flows must be enabled with the `resetPassword`, `requestAccount`, `forgotPassword` options.
+In the [introduction section](#introduction), the reset password functionality is shown. However, this flow must be enabled with the `resetPassword` option.
 
 ### Logo
 

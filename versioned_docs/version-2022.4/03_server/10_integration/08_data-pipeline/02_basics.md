@@ -1,5 +1,5 @@
 ---
-title: 'Data Pipeline - Basics'
+title: 'Data Pipeline - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, integration, data pipeline, basics]
@@ -24,7 +24,7 @@ The currently supported sources are:
 
 **Ingress:**
 - PostgreSQL
-- MS SQL Sever
+- MS SQL Server
 - Oracle Enterprise
 - Files
   - CSV

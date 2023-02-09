@@ -1,5 +1,5 @@
 ---
-title: 'Sever reporting'
+title: 'Server reporting'
 sidebar_label: 'Server reporting'
 id: server-reporting
 tags:

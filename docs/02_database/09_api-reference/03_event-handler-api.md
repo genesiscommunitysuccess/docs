@@ -1,5 +1,5 @@
 ---
-title: 'API Reference - Event Handler API'
+title: 'API reference - Event Handler API'
 sidebar_label: 'Event Handler API'
 id: event-handler-api
 keywords: [database, api, reference, event handler]
@@ -31,7 +31,7 @@ Java Event Handlers can be implemented using [RxJava3](../../../database/api-ref
 
 ## Configure in processes.xml file
 
-You need to add the `global.genesis.eventhandler` package in the package tag of the process; this tag defines which package the process should refer to. For example:
+You need to add the `global.genesis.eventhandler` package to the package tag of the process; this tag defines which package the process should refer to. For example:
 
 ```xml
 <process name="POSITION_NEW_PROCESS">    

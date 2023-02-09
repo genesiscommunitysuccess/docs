@@ -546,13 +546,14 @@ Each `config` configuration has the following properties:
 | Property name | Description | Mandatory | Default value | Type |
 | --- | ------ | --- | --- | --- |
 | endpoints | Holds the token and authorization endpoints | Yes | No default value | Object |
-| verification | Holds configuration for the public key of the JWT issuer | No | No JWT verification | Object |
+| verification | Holds configuration for the public key of the JWT issuer, the allowed clock skew and whether validation is enabled | No | No JWT verification | Object |
 
 Each `remoteConfig` configuration has the following properties:
 
 | Property name | Description | Mandatory | Default value | Type |
 | --- | ------ | --- | --- | --- |
 | url | The OIDC provider configuration endpoint. | Yes | No default value | String |
+| verification | Holds configuration for the allowed clock skew and whether validation is enabled | No | No JWT verification | Object |
 
 Each `client` configuration has the following properties:
 
@@ -574,6 +575,8 @@ Each `verification` configuration has the following properties:
 | --- | ------ | --- | --- | --- |
 | publicKey  | The public key to be used to validate the JWT | No | No default value | String |
 | publicKeyUrl | URL to the public key to be used to validate the JWT | No | No default value | String |
+| enabled | Enables/disables the validation of the JWT | No | True | Boolean |
+| allowedClockSkewSeconds | The amount of clock skew in seconds to tolerate when verifying the local time against the `nbf` claim  | No | 0 | Long |
 
 :::note
 If `verification` is defined either `publicKey` or `publicKeyUrl` must be defined.
@@ -586,7 +589,7 @@ If `verification` is defined either `publicKey` or `publicKeyUrl` must be define
 ```kotlin
 oidc{
   loginEndpoint = "http://uat-host/login"
-  identityProvider("uat-oidc"){
+  identityProvider("uatOidc"){
     client{
       id = "appplication-id"
       secret = "application-secret"
@@ -611,7 +614,7 @@ oidc{
 ```kotlin
 oidc{
   loginEndpoint = "http://uat-host/login"
-  identityProvider("uat-oidc"){
+  identityProvider("uatOidc"){
     client{
       id = "appplication-id"
       secret = "application-secret"
@@ -634,7 +637,7 @@ oidc{
 ```kotlin
 oidc{
   loginEndpoint = "http://uat-host/login"
-  identityProvider("uat-oidc"){
+  identityProvider("uatOidc"){
     client{
       id = "appplication-id"
       secret = "application-secret"
