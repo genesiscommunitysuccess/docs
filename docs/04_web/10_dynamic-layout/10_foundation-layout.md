@@ -8,6 +8,7 @@ tags:
   - layout
   - foundation layout
   - frontend
+  - front end
   - ui
   - golden layout
 ---
@@ -21,7 +22,7 @@ tags:
 
 ## Declarative HTML API
 
-The following example shows the usage of the declarative API with `zero-charts` and the output it will produce.
+The following example shows the usage of the declarative API with `zero-charts` and the output that it produces.
 ```html
 <foundation-layout>
 	<foundation-layout-region>
@@ -60,13 +61,13 @@ The following example shows the usage of the declarative API with `zero-charts` 
 
 ![Example output of the declarative API with the zero charts](./docs/img/foundation-layout-example.png)
 
-## Setup
+## Set-up
 
-### Basic Install
+### Basic install
 
 To enable this module in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-layout` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. There is more information on this in the [package.json basics](https://docs.genesis.global/secure/web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-layout` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. 
 
 ```javascript
 {
@@ -78,7 +79,7 @@ To enable this module in your application, follow the steps below.
 }
 ```
 
-- Register the layout with the design system. This will likely be in a file called `components.ts`, and will be where you call `.register()` on the design system.
+2. Register the layout with the design system. This is probably in a file called **components.ts**, located where you call `.register()` on the design system.
 
 ```javascript
 FoundationDesignSystem: registerFoundationDesignSystem().register(
@@ -88,29 +89,28 @@ FoundationDesignSystem: registerFoundationDesignSystem().register(
 )
 ```
 
-- This will have registered the three custom elements for use in your application. The components will use the prefix of the design system as their prefix. For example, the root component will be `<foundation-layout>` in the `Foundation` design system, and `<zero-layout>` in the `Zero (alpha)` design system.
+- This registers the three custom elements for use in your application. The components will use the prefix of the design system as their prefix. For example, the root component will be `<foundation-layout>` in the `Foundation` design system, and `<zero-layout>` in the `Zero (alpha)` design system.
 
 :::info
-For the rest of this document the components will be referred to with the `foundation-` prefix.
+For the rest of this document, the components will be referred to with the `foundation-` prefix.
 :::
 
 ### Custom Styling
 
-The required class, template, and base styles are exported as part of the package allowing a client to customise the styling of the layout system via design system extensions. See our [design system documentation](https://learn.genesis.global/docs/web/design-systems/introduction/).
+The required class, template, and base styles are exported as part of the package, allowing a client to customise the styling of the layout system via design system extensions.
 
 :::tip
-All the customisable styles of the layout system are contained within the styles for
-[`<foundation-layout>`](./docs/api/foundation-layout.foundationlayout.md). So if you want to customise the styles in addition to setting the css variables, you only need to set the styles here.
+All the customisable styles of the layout system are contained within the styles for [`<foundation-layout>`](./docs/api/foundation-layout.foundationlayout.md). So if you want to customise the styles in addition to setting the css variables, you only need to set the styles here.
 :::
 
 ### [Top Level Component `<foundation-layout>`](./docs/api/foundation-layout.foundationlayout.md)
 
-Top level web component which is used to initialise a custom layout
+Top level web component, which is used to initialise a custom layout
 
 - **reload-buffer** : numerical attribute that controls the buffer between how long the layout is reloaded. The default
-is 500ms and in this case the layout will only be reloaded if the child elements of the layout region are manipulated
+is 500ms. In this case, the layout is only reloaded if the child elements of the layout region are manipulated
 once every 500ms. This is to stop the layout being reloaded over and over for every single item during initialisation.
-The higher the value is the more performant the component is, but the first load will appear to take longer.
+The higher the value is, the more performant the component is - but the first load will appear to take longer.
 
 ::tip
 This only applies for usage with the declarative HTML API. When the layout first loads after this amount of time,
@@ -119,14 +119,14 @@ it emits an [event](#event).
 
 ### [Layout Regions](./docs/api/foundation-layout.foundationlayoutregion.md)
 
-If you don't specify the `type` of the layout region it will default to `type="horizontal"`;
+If you don't specify the `type` of the layout region, it defaults to `type="horizontal"`;
 
 - **type**: `vertical`, `horizontal`, `tabs` (default `horizontal`).
 - **size**: optional string parameter defining size, [see here](#sizing).
 
 #### `<foundation-layout-region type="vertical">`
 
-Indicates to the layout system that all immediate children are (by default) to be split equally among the available space of this
+Indicates to the layout system that all immediate children are (by default) to be split equally within the available space of this
 component using n-1 column split(s). Can be nested within other horizontal and vertical regions.
 
 #### `<foundation-layout-region type="horizontal">`
@@ -137,19 +137,19 @@ component using n-1 row split(s). Can be nested within other horizontal and vert
 #### `<foundation-layout-region type="tabs">`
 
 Indicates to the layout system that all immediate children are to be added as tabs in the available space of this component,
-with a tab for each child. The tabs will be ordered according to which child the layout item is (e.g. the second `<foundation-layout-item>`
- of the tab split will be the second tab), and the first child will be the one which is open by default. Can be nested within horizontal
- and vertical regions, but cannot have more layout sections inside of it.
+with a tab for each child. The tabs are ordered according to which child the layout item is (e.g. the second `<foundation-layout-item>`
+ of the tab split is the second tab). The first child will be the one that is open by default. Can be nested within horizontal
+ and vertical regions, but cannot have more layout sections inside it.
 
 ### [Layout Item `<foundation-layout-item>`](./docs/api/foundation-layout.foundationlayoutitem.md)
 
-Wrapper component that lives inside of a layout section and wraps the client content. All content must be inside of a layout item
-otherwise a runtime error will be thrown when the layout is attempted to be rendered on screen
+Wrapper component that lives inside a layout section and wraps the client content. All content must be inside a layout item,
+otherwise a runtime error will be thrown when the layout attempts to render itself on screen.
 
-- **title**: string defining the title of the pane which contains the content. Defaults to `Item x`, where `x` is the pane number.
+- **title**: string defining the title of the pane that contains the content. Defaults to `Item x`, where `x` is the pane number.
 - **closable**: boolean defining whether this element is closable - Default false.
 - **size**: optional string parameter defining size, [see here](#sizing).
-- **registration**: optional string which manually sets the registered name for the pane- [see here](#dynamic-registration-and-adding-items). By default each item that doesn't have the `registration` attribute set will be a string registered sequentially starting at `"1"`.
+- **registration**: optional string, which manually sets the registered name for the pane - [see here](#dynamic-registration-and-adding-items). By default, each item that doesn't have the `registration` attribute set will be a string registered sequentially starting at `"1"`.
 
 ### Sizing
 
@@ -162,26 +162,26 @@ The layout sections and layout item all have an _optional_ attribute:
 	fractional size. All item sizes are then adjusted to bring the total back to 100%.
 
 :::info
-The size is defining the size of the component _compared_ to the siblings _within_ the context of the component's parent.
+The size defines the size of the component _compared_ to the siblings _within_ the context of the component's parent.
 :::
 
 ## JavaScript API
 
 The JavaScript API is [accessed through the methods on the root layout object](./docs/api/foundation-layout.foundationlayout.md) and allows for saving/loading the layout state, and dynamically adding items to the layout at runtime.
 
-### Dynamic Registration and Adding Items
+### Dynamic registration and adding items
 
-To have a pane displayed on the layout system it must be *registered* with the layout system. When using the [declarative API](#declarative-html-api) the layout system takes care of this for you, but as you start to dynamically add items and then serialise the layout you need to consider which panes are registered. See [this contained example](#contained-example) which allows the user to dynamically add pre-determined items to the layout.
+To have a pane displayed on the layout system, it must be *registered* with the layout system. When using the [declarative API](#declarative-html-api), the layout system takes care of this for you, but as you start to add items dynamically and then serialise the layout, you need to consider which panes are registered. See [this contained example](#contained-example), which allows the user to add pre-determined items to the layout dynamically.
 
 :::tip
-If you are only using the declarative API, and not using any dynamic integrations with JavaScript, then you shouldn't need to set the registration names of any items as all the same items will be registered when you load a previously saved layout. If you are dynamically adding items too though it is highly recommended to manually set the registration names of items to make it easier to figure out what is and is not registered.
-* When using the declarative API use the `registration` attribute on the `<foundation-layout-item>` component
-* When using the JavaScript API set the `registration` optional parameter on the [registered element config](./docs/api/foundation-layout.registeredelementconfig.md).
+If you are only using the declarative API, and not using any dynamic integrations with JavaScript, then you shouldn't need to set the registration names of any items, as all the same items will be registered when you load a previously saved layout. If you are dynamically adding items as well, it is highly recommended to set the registration names of items manually. This makes it easier to figure out what is and is not registered.
+* When using the declarative API, use the `registration` attribute on the `<foundation-layout-item>` component.
+* When using the JavaScript API, set the `registration` optional parameter on the [registered element config](./docs/api/foundation-layout.registeredelementconfig.md).
 :::
 
 #### [Register Item](./docs/api/foundation-layout.foundationlayout.registeritem.md)
 
-This API allows you to register an item at runtime, but it will not be displayed in the layout. This could be used to register components in anticipation of displaying them when loading a serialised layout - [see this example](#loading-serialised-layouts).
+This API enables you to register an item at runtime, but it will not be displayed in the layout. This could be used to register components in anticipation of displaying them when loading a serialised layout - [see this example](#loading-serialised-layouts).
 
 #### [Add Item](./docs/api/foundation-layout.foundationlayout.additem.md)
 
@@ -189,27 +189,27 @@ Add an item that has previously been registered with the layout.
 
 #### [Layout Required Registrations](./docs/api/foundation-layout.foundationlayout.layoutrequiredregistrations.md)
 
-Static function to read a layout config, and returns a list of all of the required registrations to be able to load it in the layout system. [See this example](#loading-serialised-layouts).
+Static function to read a layout config. It returns a list of all the required registrations required to load it in the layout system. [See this example](#loading-serialised-layouts).
 
 #### [Get Current Registrations](./docs/api/foundation-layout.foundationlayout.registereditems.md)
 
-Returns a list of all of the currently registered items with the layout system.
+Returns a list of all the items currently registered with the layout system.
 
 :::tip
-Use this function over `.layoutRequiredRegistrations(layout: SerialisedLayout)` to get the *current* registrations because that will miss any items which are currently registered with the layout system, but are not shown on the layout.
+Use this function over `.layoutRequiredRegistrations(layout: SerialisedLayout)` to get the *current* registrations, because that will miss any items that are currently registered with the layout system, but which are not shown on the layout.
 :::
 
-### Serialising Layout
+### Serialising layout
 
-The JavaScript API can be used to save and load layout states. This only describes the state of the dynamic layout itself, it is the responsibility of any components contained within their layout to serialise their own state if required.
+The JavaScript API can be used to save and load layout states. This only describes the state of the dynamic layout itself. It is the responsibility of any components contained within their layout to serialise their own state, if required.
 
 #### [Get Layout](./docs/api/foundation-layout.foundationlayout.getlayout.md)
 
-Get an object describing the current layout so it can be restored at a later date. This does not save any data internally to the layout, it is up to the client to store this state where appropriate for later recall (browser local storage, persistence layer, etc.)
+Get an object describing the current layout so that it can be restored at a later date. This does not save any data internally to the layout. It is up to the client to store this state where appropriate for later recall (browser local storage, persistence layer, etc.)
 
 #### [Load Layout](./docs/api/foundation-layout.foundationlayout.loadlayout.md)
 
-Loads a serialised layout. All items that are described in the config to load must already be registered with the layout system either with the declarative or JavaScript API. If there are items missing (could either be due to missing items or registered names mismatc) then a `LayoutUsageError` will be thrown containing the names of the missing items.
+Loads a serialised layout. All items that are described in the config to load must already be registered with the layout system - using either the declarative or JavaScript API. If there are items missing (could be due either to missing items or to a mismatch of registered names) then a `LayoutUsageError` will be thrown containing the names of the missing items.
 
 ## Events
 
@@ -219,33 +219,32 @@ Certain actions that are performed by the user interacting with the layout emit 
 
 ### [Received Events](./docs/api/foundation-layout.layoutreceiveevents.md)
 
-Certain events are listened to by the container for each component, allowing the component to interact with the layout. For example, a component could emit and event to change the title of the containing window.
+Certain events are listened to by the container for each component, enabling the component to interact with the layout. For example, a component could emit an event to change the title of the containing window.
 ```typescript
 this.$emit(eventType, eventDetail)
 ```
 Each event requires a certain detail to process the event - see [the map of events to their required details](./docs/api/foundation-layout.layoutreceiveeventsdetail.md).
 
-## Contained Elements
+## Contained elements
 
-This section concerns the behaviour of elements inside of the layout. If you are using simple elements or Genesis supplied elements this section is less of a concern, but is required if you are building complex custom components yourself.
+This section concerns the behaviour of elements inside the layout. If you are using simple elements or Genesis-supplied elements this section is less of a concern, but if you are building complex custom components yourself, you will need this information.
 
-### Element Life Cycle
+### Element lifecycle
 
-Due to an unavoidable implementation detail of the layout system, when an item is dragged around the layout its life cycle functions `connectedCallback` and `disconnectedCallback` are called.
+When an item is dragged around the layout, its lifecycle functions `connectedCallback` and `disconnectedCallback` are called.
 It is important that the element accounts for this, such as caching data, or resizing correctly.
 
-In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin` which exposes two protected members `shouldRunConnect` and `shouldRunDisconnect` which can be used to gate certain
-functionality. For example, if there are parts of `disconnectedCallback` that you don't want to run if the item is being dragged around the layout, you can gate it behind a `(!this.shouldRunDisconnect) return;` early return.
+In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin` which exposes two protected members `shouldRunConnect` and `shouldRunDisconnect`, which can be used to gate certain functionality. For example, if there are parts of `disconnectedCallback` that you don't want to run if the item is being dragged around the layout, you can gate it behind a `(!this.shouldRunDisconnect) return;` early return.
 
 :::warning
-At the very least you must run `super` calls to the life cycle methods, or else your custom element will not work correctly.
+At the very least, you must run `super` calls to the lifecycle methods, or else your custom element will not work correctly.
 :::
 
-### Element Cloning
+### Element cloning
 
-To allow you to add multiple items from the same `registration`, the layout system clones elements to add to the layout.
-This is the case for both when items added with `.addItem()`, and the declarative API. Under the hood this uses the Node [cloneNode](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) api.
-There are certain limitation to this function, especially when using custom elements with the shadow DOM. [See troubleshooting example](#binding-events-inline-in-the-declarative-api).
+To enable you to add multiple items from the same `registration`, the layout system clones elements to add to the layout.
+This is the case both when items are added with `.addItem()`, and when they are added using the declarative API. Under the hood, this uses the Node [cloneNode](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) api.
+There are certain limitations to this function, especially when using custom elements with the shadow DOM. [See troubleshooting example](#binding-events-inline-in-the-declarative-api).
 
 In the `@genesislcap/foundation-utils` package, there is a mix-in class `LifecycleMixin` which overrides the `cloneNode` API.
 
@@ -269,7 +268,7 @@ deepClone(): Node {
 }
 ```
 
-You can then extend the cloning functionality for your specific requirements. For example our charts component needs to copy over `config` and `data` parameters.
+You can then extend the cloning functionality for your specific requirements. For example, our charts component needs to copy over `config` and `data` parameters.
 ```typescript
 export class G2PlotChart extends LifecycleMixin(FoundationElement) {
 	...
@@ -282,11 +281,11 @@ export class G2PlotChart extends LifecycleMixin(FoundationElement) {
 	...
 }
 ```
-Some items you'll likely want to copy over are `eventListeners` and other non-attribute configuration elements on your custom element.
+Some items you'll probably want to copy over are `eventListeners` and other non-attribute configuration elements on your custom element.
 
 ## Examples
 
-### Simple Example
+### Simple example
 
 Simple example with a vertical split and two items that will take up equal space.
 
@@ -317,7 +316,7 @@ Will be rendered as:
 +-----------------------------------------------------+
 ```
 
-### Nested Example
+### Nested example
 
 A slightly more complicated example:
 
@@ -355,11 +354,10 @@ Would render the following:
 +-------------+---------------------------------------+
 ```
 
-Component 1 has a close button. By default
-component 1 would be 50% width and 2 and 3 would take up the other 50% width, but here we set `25%`
-as the width of component 1 layout item (width because it is the size in the context of a vertical split).
+Component 1 has a Close button. By default, Component 1 would be 50% width and 2 and 3 would take up the other 50% width, but here we set `25%`
+as the width of Component 1 layout item (width because it is the size in the context of a vertical split).
 
-### Multi-Nested Example
+### Multi-nested example
 
 If instead we had:
 
@@ -397,7 +395,7 @@ If instead we had:
 </foundation-layout>
 ```
 
-Would render the following:
+This would render the following:
 
 ```
 +-------------+------------+-------------+------------+
@@ -410,11 +408,10 @@ Would render the following:
 |             |                                       |
 +-------------+---------------------------------------+
 ```
-Component 1 has a close button. Component 1
-takes up 25% of the initial width. Components 2,3,4 take up a third of the _remaining_ width between them
+Component 1 has a Close button. Component 1 takes up 25% of the initial width. Components 2,3,4 take up a third of the _remaining_ width between them
 (default behaviour) and 5 and 6 are tabbed.
 
-### `repeat` Directive
+### `repeat` directive
 
 You can use [FAST template directives](https://www.fast.design/docs/fast-element/using-directives) such as `repeat`
 
@@ -440,7 +437,7 @@ const template = html<Commodities>`
 </foundation-layout>`;
 ```
 
-For an example where the `Commodities` object has three positions you will see the following output:
+For an example where the `Commodities` object has three positions, you will see the following output:
 ```
 +-----------------------------------------------------+
 |              Component 1 Contents                   |
@@ -453,10 +450,10 @@ For an example where the `Commodities` object has three positions you will see t
 
 
 :::note
-`<chart>` is just an example component, it doesn't exist within `foundation-ui`.
+`<chart>` is just an example component; it doesn't exist within `foundation-ui`.
 :::
 
-### `when` Directive
+### `when` directive
 
 Using the `when` directive:
 
@@ -506,7 +503,7 @@ layout to reinitialise incorrectly - this will duplicate the panels. For example
 See [this example](#observables-with-directives).
 :::
 
-### Multiple Instances
+### Multiple instances
 
 Consider the following example:
 ```html
@@ -549,14 +546,14 @@ Here a grid region has been used to style two completely separate instances of t
 will reflect this. You can configure each layout separately, and you cannot drag layout items from one layout into the other one.
 
 :::info
-This is just an example, you could have more than two layouts on a page or style them with a different method to the grid.
+This is just an example; you could have more than two layouts on a page or style them with a different method to the grid.
 :::
 
-### Adding Items Dynamically
+### Adding items dynamically
 
 This is an example of using the JavaScript API to add items onto the layout at runtime. Before reading this example you should familiarise yourself with the [API Section](#javascript-api).
 
-Say you want the user to be able to choose between three different types of items to be able to put onto the layout - a profile-management table, and a pie & column chart.
+Say you want the user to be able to choose between three different types of item tht can be put onto the layout - a profile-management table, and a pie & column chart.
 
 ```typescript
 // Can either create an element and initialise it completely using JavaScript
@@ -567,7 +564,7 @@ const pieChart = document.getElementById('pie-chart');
 // const colChart = this.columnChart;
 ```
 
-We can then register these elements with the layout system. Registering it with the layout system will remove it from its original location.
+We can then register these elements with the layout system. Registering it with the layout system removes it from its original location.
 ```typescript
 // Using a duplicate registration name is a runtime error
 this.layout.registerItem('profile', [profileManagement]);
@@ -589,7 +586,7 @@ Using `addItem` with a `registration` that has not been set is a runtime error. 
 Items registered using the declarative API use the same pool of registration names, so you can also use `addItem` to add them to the layout too.
 :::
 
-#### Contained Example
+#### Contained example
 
 This is a complete example of the above, omitting imports.
 
@@ -650,11 +647,10 @@ export class ContainedExample extends FASTElement {
 }
 ```
 
-### Loading Serialised Layouts
+### Loading serialised layouts
 
-This is an elaborate example of using the JavaScript API with consideration of the registered names. Before reading this example you should familiarise yourself with the [API Section](#javascript-api).
+This is an elaborate example of using the JavaScript API with consideration of the registered names. Before reading this example, you should familiarise yourself with the [API Section](#javascript-api):
 
-Consider the following example:
 ```html
 <foundation-layout>
   <foundation-layout-region type="horizontal">
@@ -668,7 +664,8 @@ Consider the following example:
 </foundation-layout>
 ```
 
-We can use `layoutRequiredRegistrations()` on the config returned from `getLayout()` to see the registered names required to load the layout.
+We can use `layoutRequiredRegistrations()` on the config returned from `getLayout()` to see the registered names that are required to load the layout.
+
 ```javascript
 const layout = document.querySelector('foundation-layout'); // as FoundatonLayout in TypeScript;
 const layoutConfig = layout.getLayout();
@@ -676,7 +673,7 @@ console.log(FoundatonLayout.layoutRequiredRegistrations(layoutConfig))
 ```
 This will log `['trades','users']` because these are the two registered panes. You can then load any layout that only contains either/both of these items.
 
-Consider the situation where we dynamically add an item to the right hand side of the layout.
+Consider the situation where we dynamically add an item to the right-hand side of the layout.
 ```javascript
 const newItem = document.createElement('p'); //simple example
 newItem.innerText = 'Test';
@@ -687,7 +684,9 @@ console.log(FoundationLayout.layoutRequiredRegistrations(layoutConfigTwo));
 ```
 Now we get `[ "test", "trades", "users"]` as the output, because to load `layoutConfigTwo` we now need all three of those registered panes.
 
-Consider now where the user refreshes the page so are back to the original state of the layout with just the two elements added but we then try and load `layoutConfigTwo`:
+Consider now where the user refreshes the page to go back to the original state of the layout with just the two elements added, but then tries to load:
+
+`layoutConfigTwo`:
 ```javascript
 // User has refreshed page
 
@@ -697,15 +696,16 @@ console.log(layout.registeredItems());
 layout.loadLayout(layoutConfigTwo);
 // Uncaught Error: Trying to load layout with extra components. The component(s) not currently loaded are "test"
 ```
-Notice the error message says that the `test` component is missing, this is because it was required as part of the layout when we used `getLayout()` but it hasn't been added as part of the layout now. If we added the item using `registerItem()` we could subsequently run `layout.loadLayout(layoutConfigTwo);` to successfully load the layout.
+Notice the error message says that the `test` component is missing. This is because it was required as part of the layout when we used `getLayout()`, but it hasn't been added as part of the layout now. If we added the item using `registerItem()` we could subsequently run `layout.loadLayout(layoutConfigTwo);` to  load the layout successfully.
 
 :::warning
-Just because an item is not displayed on the layout does not mean it is not registered. `.getLayout()` gets only the current layout config so you cannot use that to see every single item that is currently registered, unless every item is added. This is why you should use `.registeredItems()` to get the currently registered items.
+Just because an item is not displayed on the layout does not mean it is not registered. `.getLayout()` gets only the current layout config, so you cannot use it to see every single item that is currently registered (unless every item is added). This is why you should use `.registeredItems()` to get the currently registered items.
 :::
 
-#### Proactively Registering Items
+#### Proactively registering items
 
-A simple approach you could take to ensure all items are registered for when you load a layout is to loop through all of your possible items that you could load and register them.
+Here is a simple approach to ensure that all items are registered when you load a layout; loop through all the items that you could possibly load and register them.
+
 ```javascript
 const allItems = [
 	{registration: 'trades', elements: [...], },
@@ -718,11 +718,12 @@ allItems.forEach(({registration, elements}) => {
 	layout.registerItem(registration, elements);
 })
 ```
-Now all of those items will be registered with the layout for potential use when calling `loadLayout()`, or added using `addItem()`.
+Now all those items will be registered with the layout for potential use when calling `loadLayout()`, or added using `addItem()`.
 
-#### Reactively Registering Items
+#### Reactively registering items
 
-Alternatively you could query the current layout and the layout we want to load to see if there are any missing registered items, and if so we can register them. Using our previous examples:
+Alternatively, you could query the current layout and the layout you want to load to see if there are any missing registered items; you can then register the missing ones. Using our previous examples:
+
 ```javascript
 const currentRegistrations = FoundatonLayout.registeredItems();
 // ['trades','users']
@@ -734,16 +735,17 @@ layout.registerItem(test, [element]);
 ```
 
 :::info
-Only items _missing_ from the `requiredRegistrations` is an issue. If there are items in the `currentRegistrations` that are not in `requiredRegistrations` this is *not* an issue because these will simply be unused registrations.
+Only items _missing_ from the `requiredRegistrations` is an issue. If there are items in the `currentRegistrations` that are not in `requiredRegistrations`, this is *not* an issue - because these will simply be unused registrations.
 :::
 
-## Incorrect Examples
+## Incorrect examples
 
-The following section contains examples of incorrect usage for troubleshooting.
+The following section contains examples of incorrect usage, which are useful for troubleshooting.
 
-### Non-Layout Child
+### Non-layout child
 
 The following example is invalid:
+
 ```html
 <foundation-layout>
   <foundation-layout-region type="horizontal">
@@ -757,10 +759,9 @@ The following example is invalid:
   </foundation-layout-region>
 </foundation-layout>
 ```
-This is because there is a child of one of the layout regions which isn't another layout region or
-layout item (the `<h1>`). This will throw a runtime error.
+This is because there is a child of one of the layout regions which isn't another layout region or layout item (the `<h1>`). This will throw a runtime error.
 
-### Layout Region in Tabs
+### Layout region in tabs
 
 The following example is invalid:
 
@@ -784,10 +785,10 @@ The following example is invalid:
 	</foundation-layout-region>
 </foundation-layout>
 ```
-This is because you cannot have more layout regions nested inside of a tab regions. You will get undefined behaviour.
+This is because you cannot have more layout regions nested inside a tab region. You will get undefined behaviour.
 
 
-### Multiple Items in Root
+### Multiple items in root
 
 The following example is invalid:
 
@@ -806,7 +807,7 @@ The following example is invalid:
 ```
 This is because you cannot have multiple layout elements as the immediate child of the layout root. You will get a runtime error.
 
-### Nested Item
+### Nested item
 
 The following example is invalid:
 
@@ -822,9 +823,9 @@ The following example is invalid:
 		</foundation-layout-item>
 </foundation-layout>
 ```
-This is because you cannot have `<foundation-layout-item>` inside of other `<foundation-layout-item>`. You will get a runtime error.
+This is because you cannot have `<foundation-layout-item>` inside other `<foundation-layout-item>`. You will get a runtime error.
 
-### Observables with Directives
+### Observables with directives
 
 The following is invalid:
 
@@ -871,11 +872,11 @@ Initially you will see both items correctly rendered like this:
 |              Index  Chart                   |
 +---------------------------------------------+
 ```
-But as the user clicks the toggle button the `Index Chart` will not be taken away and added back in.
-Instead it will be added as a duplicate every time the observable is set true. Additionally the contents
+But as the user clicks the toggle button, the `Index Chart` will not be taken away and added back in.
+Instead, it will be added as a duplicate every time the observable is set true. Additionally, the contents
 of the panel will be wiped as duplicates are added.
 
-To work around this you would use of FAST directives inside of custom web components inside of the layout.
+To work around this, you would use FAST directives inside custom web components inside the layout.
 
 ### Binding events inline in the declarative API
 The following example is invalid:
@@ -888,11 +889,12 @@ The following example is invalid:
 </foundation-layout>
 ```
 
-Due to a limitation with the [cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) event listeners are *not* copied.
+Because of a limitation in the [cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode), event listeners are *not* copied.
 This process is part of the process of adding an item to the layout, using both the declarative HTML and JavaScript APIs. So while you will see
 a checkbox on the screen as part of the layout, the event listener will *not* fire when you `change` the checkbox. This applies to all items and events.
 
 The idiomatic FAST way of implementing this event binding is to create a custom element and attach the event internally.
+
 ```typescript
 // template
 export const exampleComponentTemplate = html<ExampleComponent>`
@@ -913,6 +915,7 @@ export class ExampleComponent extends FASTElement {
 ```
 
 You can then use the custom component in the layout:
+
 ```html
 <foundation-layout>
 		<foundation-layout-item>
