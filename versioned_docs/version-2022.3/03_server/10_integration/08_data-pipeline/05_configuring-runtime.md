@@ -1,6 +1,6 @@
 ---
-title: 'Data Pipeline - Configuring Runtime'
-sidebar_label: 'Configuring Runtime'
+title: 'Data Pipeline - configuring runtime'
+sidebar_label: 'Configuring runtime'
 id: configuring-runtime
 keywords: [server, integration, data pipeline, configuring runtime]
 tags:
@@ -10,7 +10,6 @@ tags:
   - configuring runtime
 ---
 
-[Introduction](../../../../server/integration/data-pipeline/introduction/)  | [Basics](../../../../server/integration/data-pipeline/basics) | [Advanced](../../../../server/integration/data-pipeline/advanced) | [Examples](../../../../server/integration/data-pipeline/examples) | [Configuring runtime](../../../../server/integration/data-pipeline/configuring-runtime) | [Testing](../../../../server/integration/data-pipeline/testing)
 
 ## Configure processes.xml file
 Data pipeline is a separate module that must be configured in your __application__**-processes.xml** file. Here is a sample configuration:
