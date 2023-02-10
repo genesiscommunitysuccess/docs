@@ -57,3 +57,4 @@ Front-end documentation from `foundation-ui` can be pulled in into this repo. Fo
 2. Setup the config in `./plugins/api-docs/manifest.json`
 3. Set up the sidebar
 4. Run with `$ npm run start:copy-docs`
+5. Once you've got feedback on the docs you can lock it in via `./plugins/api-docs/processedMap.js`
