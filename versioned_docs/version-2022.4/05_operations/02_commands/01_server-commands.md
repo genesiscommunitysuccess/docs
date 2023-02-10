@@ -74,6 +74,8 @@ remap [-c | --commit]
 |          | --force                | no        | Forces the unlocking of  a locked database                 | No                |
 | -c       | --commit               | no        | Applies dictionary changes to the database                 | No                |
 |          | --force-dao-generation | no        | Forces the re-generation of DAOs on the given host         | No                |
+|          | --skip-dao-generation  | no        | Skips the re-generation of DAOs on the given host          | No                |
+|          | --ask-db-password      | no        | Prompt for a DB user password to be manually enterred      | No                |
 
 If you run remap with no arguments, it simply gives a report of changes that exist in the configuration.
 
