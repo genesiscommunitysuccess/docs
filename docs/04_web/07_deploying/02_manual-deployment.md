@@ -1,5 +1,5 @@
 ---
-title: 'Web Deployment - Manual'
+title: 'Web deployment - manual'
 sidebar_label: 'Manual deployment'
 id: manual-deployment
 keywords: [web, manual deployment, deployment, introduction]

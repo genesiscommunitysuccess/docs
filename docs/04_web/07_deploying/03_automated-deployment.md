@@ -1,6 +1,6 @@
 ---
-title: 'Web Deployment - Automated'
-sidebar_label: 'Automated Deployment'
+title: 'Web deployment - automated'
+sidebar_label: 'Automated deployment'
 id: automated-deployment
 keywords: [web, automated deployment, deployment, introduction]
 tags:

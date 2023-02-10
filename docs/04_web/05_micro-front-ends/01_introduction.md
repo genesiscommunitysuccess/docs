@@ -1,5 +1,5 @@
 ---
-title: 'Micro-front-ends - Introduction'
+title: 'Micro front-ends - introduction'
 sidebar_label: 'Introduction'
 id: introduction
 keywords: [web, frontend, ui, micro-front-ends, introduction]

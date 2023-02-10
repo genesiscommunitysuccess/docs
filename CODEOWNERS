@@ -1,27 +1,4 @@
 # For reference see https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-code-owners#example-of-a-codeowners-file
 
-# Default owners for everything in the repo. Unless a later match takes precedence.
-* @nick-genesis @wjhendry @IA-Walsh
-
-# Markup files / writing.
-*.md @wjhendry @IA-Walsh
-
-# Web and config files.
-*.ts @nick-genesis @IA-Walsh
-*.js @nick-genesis @IA-Walsh
-*.css @nick-genesis @IA-Walsh
-
-# dotfiles and config files
-.* @nick-genesis @ShrutiTalewad
-*.json @nick-genesis @ShrutiTalewad
-
-# Workflows and PR template.
-/.github/ @nick-genesis @IA-Walsh @ShrutiTalewad
-
-# Training
-docs/01_getting-started/06_developer-training/ @dbarros1979 @wjhendry
-docs/01_getting-started/10_web-training/ @dbarros1979 @wjhendry
-docs/01_getting-started/09_server_training/ @dbarros1979 @wjhendry
-
-# Infra (cdk / amplify)
-/infra/ @nick-genesis @IA-Walsh @ShrutiTalewad
+# Default owners for everything in the repo.
+* @wjhendry @dbarros1979 @IA-Walsh

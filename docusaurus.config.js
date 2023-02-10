@@ -131,7 +131,6 @@ module.exports = {
         { type: 'doc', docId: 'server/server-modules', label: 'Server' },
         { type: 'doc', docId: 'web/front-end', label: 'Web' },
         { type: 'doc', docId: 'operations/operations', label: 'Operations' },
-        { type: 'doc', docId: 'gpalx/intro', label: 'Early access' },
         {
           type: "html",
           position: "right",
