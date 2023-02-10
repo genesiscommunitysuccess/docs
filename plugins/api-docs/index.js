@@ -94,7 +94,7 @@ async function copyApiDocs(manifest, processedMap) {
     const outputRootDir = path.join(process.cwd(), pkg.output.directory);
     await fs.ensureDir(outputRootDir);
 
-		const copyDirFiles = copyDirectoryFiles(packageRootDir, outputRootDir)
+    const copyDirFiles = copyDirectoryFiles(packageRootDir, outputRootDir);
 
     if (pkg.api_docs && pkg.output.api_docs) {
       await copyDirFiles({
@@ -128,9 +128,9 @@ async function copyApiDocs(manifest, processedMap) {
 }
 
 module.exports = async function (context, options) {
-	if (process.env['COPY_DOCS'] !== "true") {
-		return;
-	}
+  if (process.env["COPY_DOCS"] !== "true") {
+    return;
+  }
 
   let { manifest, processedMap } = options;
   if (!manifest) {
@@ -160,4 +160,3 @@ module.exports = async function (context, options) {
     },
   };
 };
-
