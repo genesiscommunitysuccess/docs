@@ -1,6 +1,6 @@
 ---
 title: 'Micro front-ends - Reporting'
-sidebar_label: 'Front-end reporting'
+sidebar_label: 'Front-end Reporting'
 id: front-end-reporting
 keywords: [web, frontend, ui, micro front-ends, micro-front-ends, reporting]
 tags:

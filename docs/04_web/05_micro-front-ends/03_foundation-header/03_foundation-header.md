@@ -29,19 +29,22 @@ You can customise:
 - The contents of the flyout menu
 
 Here is an example of the navigation bar with three navigation items, and all three control buttons shown.
+
 ![Header with the standard genesis logo](./docs/img/foundation-header-standard.png)
 
 This next example is the same as the previous example, except the Genesis logo is replaced with a custom icon.
+
 ![Header with a customised logo](./docs/img/foundation-header-replaced-img.png)
 
 In this next example, we have put a set of example options set in the flyout menu.
+
 ![The sidebar included with the header opened with some example content](./docs/img/foundation-header-sidebar.png)
 
 ## Header set-up
 
 ### Seed apps
 
-A lot of the Genesis seed apps come with the Header set up by default. To verify, you can do a text search in the client code for the `<foundation-header>` tag.
+A lot of the Genesis seed apps come with the Header set up by default. To verify this, you can do a text search in the client code for the `<foundation-header>` tag.
 In this case, you only need to do the customisations described in [customising the header](#customising-the-header).
 
 :::tip
@@ -52,7 +55,7 @@ The `allRoutes` array, which you need to change to set the navigation buttons on
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-header` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. There is more information in the [package.json basics](https://docs.genesis.global/secure/web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-header` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. There is more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -64,13 +67,10 @@ To enable this micro front-end in your application, follow the steps below.
 }
 ```
 
-:::note
-This page assumes you're already using the Login and Routing systems that are part of `foundation-ui` for the logout and routing functionality.
+This page assumes you're already using the [Login](../../../web/micro-front-ends/foundation-login/#customising-login) and [Routing](../../../web/basics/creating-a-new-page/#configuring-a-new-route-to-point-to-your-new-component) systems that are part of `foundation-ui` for the logout and routing functionality.
 
-It is possible for you to set up routing manually, but that won't be covered in this tutorial.
-:::
 
-- In the top level class of your application, import and dependency inject the Navigation class.
+2.  In the top-level class of your application, import and dependency inject the Navigation class.
 ```javascript {1,6}
 import { Navigation } from '@genesislcap/foundation-header';
 
@@ -85,10 +85,10 @@ export class MainApplication extends FASTElement {
 ```
 
 :::tip
-If you haven't used the `inject` annotation in your application yet, you'll need to get it from the `@microsoft/fast-foundation` package.
+If you haven't used the `inject` annotation in your application yet, you need to get it from the `@microsoft/fast-foundation` package.
 :::
 
-- Set a reference to the `navigation` object on the FAST router when you instantiate it; this will enable you to set up navigation functionality from the navigation bar in the [navigation items step](#navigation-items).
+3. Set a reference to the `navigation` object on the FAST router when you instantiate it; this will enable you to set up navigation functionality from the navigation bar in the [navigation items step](#navigation-items).
 ```javascript
 // fast-router will likely have other attributes such as :config too
 const MainTemplate: ViewTemplate<MainApplication> = html`
@@ -96,7 +96,8 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 `;
 ```
 
-- Add the `foundation-header` tag as part of the html that you set as the markup for the `defaultLayout` in your router configuration.
+4. Add the `foundation-header` tag as part of the html that you set as the markup for the `defaultLayout` in your router configuration.
+
 ```javascript {3}
 export const defaultLayout = new FASTElementLayout(html`
 <div class="container">
@@ -130,7 +131,9 @@ The `logoSrc` defines the image that you want to display. Adding this attribute 
 
 ### Navigation items
 
-You can add navigation items can be added to the left-hand side of the navigation bar. For each element, you can set `slot="routes"` attribute, so that navigation is controlled via a `@click` event. The following is a really basic example for adding a 'Home' button:
+You can add navigation items to the left-hand side of the navigation bar. For each element, you can set `slot="routes"` attribute, so that navigation is controlled via a `@click` event. 
+
+Here is a really basic example for adding a **Home** button:
 
 ```javascript
 html`
@@ -144,9 +147,9 @@ html`
 ```
 The `navigation` object referenced via the `parent` object is why the `navigation` object is added as an attribute to the `fast-router` in the [setup step](#header-set-up). From it, the `navigateTo` method can be called, which allows the user to navigate around the finished application from the navigation buttons.
 
-Moving on from this basic example, a dynamic set of routes can be configured, using the `repeat` directive from FAST.
+Moving on from this basic example, you can configure a dynamic set of routes using the `repeat` directive from FAST.
 
-- Add the routes configuration into an array in the router configuration class.
+1. Add the routes configuration into an array in the router configuration class.
 ```javascript
 export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 
@@ -161,7 +164,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 }
 ```
 
-- When setting the navigation items, use the `repeat` directive to iterate over the defined routes and create a navigation item for each.
+2. When setting the navigation items, use the `repeat` directive to iterate over the defined routes and create a navigation item for each.
 
 The following example creates a button with an associated logo for each of the three defined routes:
 

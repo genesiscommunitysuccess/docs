@@ -1,5 +1,5 @@
 ---
-title: 'Web Basics - Creating a new page'
+title: 'Web basics - creating a new page'
 sidebar_label: 'Creating a new page'
 id: creating-a-new-page
 keywords: [web, basics, creating a new page]
@@ -9,7 +9,7 @@ tags:
     - creating a new page
 ---
 
-Broadly speaking, the process can be summarised as follows:
+Broadly speaking, the process of creating a new page can be summarised as follows:
 - Create a new component for your new page.
 - Configure a new route to point to your new component.
 - Add a new button/link to the navigation bar for your new page.
