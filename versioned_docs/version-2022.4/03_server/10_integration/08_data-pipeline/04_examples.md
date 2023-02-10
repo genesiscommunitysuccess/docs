@@ -1,6 +1,6 @@
 ---
 title: 'Data Pipeline - examples'
-sidebar_label: 'examples'
+sidebar_label: 'Examples'
 id: examples
 keywords: [server, integration, data pipeline, examples]
 tags:
