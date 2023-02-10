@@ -40,11 +40,20 @@ To generate a new bundled file, simply run the following command from the packag
 
 ```
 npm run build
-``` 
+```
 
-For example, in the `foundation-ui` repo we run the command above on the `documentation-components` under the `showcase` folder. 
+For example, in the `foundation-ui` repo we run the command above on the `documentation-components` under the `showcase` folder.
 
 ***
-Ensure the package you intend to regenerate the file from, has all the necessary dependencies. 
+Ensure the package you intend to regenerate the file from, has all the necessary dependencies.
 ***
 Once you have the new regenerated file paste the contents to [docs.iife.min.js]( static/js/docs.iife.min.js)
+
+### Copy FE docs
+
+Front-end documentation from `foundation-ui` can be pulled in into this repo. Follow these steps
+
+1. Add as a dependency in `./package.json`
+2. Setup the config in `./plugins/api-docs/manifest.json`
+3. Set up the sidebar
+4. Run with `$ npm run start:copy-docs`
