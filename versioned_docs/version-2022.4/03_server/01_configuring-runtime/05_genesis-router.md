@@ -92,7 +92,7 @@ There is more information in the [netty documentation](https://netty.io/4.1/api/
 
 **Message routes**
 
-`routes`: You can redirect some microservice messages to particular processes by declaring new `route` blocks within this one.
+`routes` You can redirect some microservice messages to particular processes by declaring new `route` blocks within this one.
 
 `route` Is the defined route taking both a `messageType` and a specific `process`.
 

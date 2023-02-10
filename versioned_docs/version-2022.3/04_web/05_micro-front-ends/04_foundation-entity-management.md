@@ -18,7 +18,7 @@ API reference [can be found here](../foundation-entity-management_apiref/).
 
 ## Introduction
 
-The Entity Management micro-front-end is used to connect to a resource on the back end and manage it from the front end. Handlers can be set up for create, update, and delete events; after adding an event, a button appears to perform the action. There is a list of pre-defined events and resources to manage, but you can manage custom resources that you create on the back-end too.
+The Entity Management micro-front-end is used to connect to a resource on the back end and manage it from the front end. Handlers can be set up for create, update, and delete events; after adding an event, a button appears to perform the action. There is a list of pre-defined events and resources to manage, but you can also manage custom resources that you create on the back end.
 
 :::tip
 The buttons are conditionally accessed, based on the specified events. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to conditionally set the events based on user authorisations.
@@ -26,17 +26,19 @@ The buttons are conditionally accessed, based on the specified events. For examp
 
 Two core components are used to manage the entities - the grid and the form. The grid contains an entity on each row and data in each column.
 
-Example grid used to manage counterparties
+here is an example grid used to manage counterparties:
+
 ![Example entity management grid](/img/foundation-entity-management-grid.png)
 
-The other component is the form, and this is used to update an existing entity or create a new one. An example form is shown here.
+The other component is the form, and this is used to update an existing entity or create a new one. An example form is shown here:
+
 ![Example entity management form](/img/foundation-entity-management-form.png)
 
 ## Set-up
 
-To enable this micro-front-end in your application, follow the steps below.
+To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. For more info see the [package.json basics](../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. For more info see the [package.json basics](../../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -48,7 +50,7 @@ To enable this micro-front-end in your application, follow the steps below.
 }
 ```
 
-- Import and declare the class in the page of the class where you wish to use the Entity Manager. Then add the entity management into the template html where required:
+2. Import and declare the class in the page of the class where you wish to use the Entity Manager. Then add the entity management into the template html where required:
 ```javascript
 // Import
 import { EntityManagement, } from '@genesislcap/foundation-entity-management';
@@ -96,7 +98,7 @@ The functionality of the Entity Manager is customised through the properties you
 
 ### Resource
 
-`resourceName` refers to the name of either a `DATASERVER` query, a `ReqRep` definition or a specific `EVENT_HANDLER`. This essentially is the resource to be managed. In the [above example](#set-up), we use `ALL_COUNTERPARTYS` which is a `SDATASERVER` query, as, by convention, they all start with `ALL_`.
+`resourceName` refers to the name of either a `DATASERVER` query, a `ReqRep` definition or a specific `EVENT_HANDLER`. This essentially is the resource to be managed. In the [above example](#set-up), we use `ALL_COUNTERPARTYS` which is a `DATASERVER` query, as, by convention, they all start with `ALL_`.
 
 ### Events
 
@@ -107,7 +109,7 @@ The functionality of the Entity Manager is customised through the properties you
 Set this object to configure how the Entity Manager interacts with the resource. [See here](../foundation-entity-management_apiref/foundation-entity-management.datasourceconfiguration/#example).
 
 ### Persist column state
-`persist-column-state-key` is a string value. It is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set, then the behaviour will be to _not_ persist the column state, and  the grid will revert back to its default state every time the user navigates away from it.
+`persist-column-state-key` is a string value. It is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set, then the behaviour will be to _not_ persist the column state, and the grid will revert back to its default state every time the user navigates away from it.
 
 :::warning
 The string defines the key in which the serialised state of the columns is stored in an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). Therefore, if you are setting multiple Entity Managers in your application to persist the state you need to use unique keys or you will get undefined behaviour.
