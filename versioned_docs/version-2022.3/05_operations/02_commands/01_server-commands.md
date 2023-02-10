@@ -71,8 +71,8 @@ remap [-c | --commit]
 
 | Argument | Argument long name     | Mandatory | Description                                                | Restricted values |
 |----------|------------------------|-----------|------------------------------------------------------------|-------------------|
-|          | --force                | no        | If supplied, will unlock a locked database                 | No                |
-| -c       | --commit               | no        | If supplied, will apply dictionary changes to the database | No                |
+|          | --force                | no        | Forces the unlocking of a locked database                  | No                |
+| -c       | --commit               | no        | Applies dictionary changes to the database                 | No                |
 |          | --skip-dao-generation  | no        | Skips the re-generation of DAOs on the given host          | No                |
 |          | --ask-db-password      | no        | Prompt for a DB user password to be manually enterred      | No                |
 
