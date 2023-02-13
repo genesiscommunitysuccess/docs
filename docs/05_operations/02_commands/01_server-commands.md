@@ -1,6 +1,6 @@
 ---
-title: 'Operations - Server Commands'
-sidebar_label: 'Server Commands'
+title: 'Operations - server commands'
+sidebar_label: 'Server commands'
 id: server-commands
 keywords: [operations, server, commands]
 tags:
@@ -48,6 +48,10 @@ If any problems are found in the generated configuration files, they will be del
 To ignore errors in the configuration files, use the `--ignore` argument. This leaves the configuration files undeleted, even if errors are found.
 
 All process configuration is stored within **$GC**.
+
+### Install hooks
+
+
 
 ## remap script
 
@@ -125,7 +129,7 @@ startProcess processName [--hostname <[host names]>] [--dump]
 | -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | No        | where   the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | No                |
 | -c                         | --cluster                                   | No        | starts  the process on every node in the cluster                                                                                                                                                   | No                |
 |                            | --dump                                      | No        | displays progress of the process, which is useful for debugging                                                                                                                          | No                |	
-|                            | --coldStart                                      | No        | this is only used if you have a consolidator. Consolidators aggregate data from IN table(s) into an OUT table; a coldStart effectively zeros out values in the OUT table records and then iterating over all the IN table records and rebuilding them on startUp. After this, the consildators in their normal way
+|                            | --coldStart                                      | No        | this is only used if you have a consolidator. Consolidators aggregate data from IN table(s) into an OUT table; a coldStart effectively zeros out values in the OUT table records and then iterating over all the IN table records and rebuilding them on startUp. After this, the consolidators in their normal way
  | No                |	
 
 The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
@@ -233,7 +237,7 @@ To get help on a specific command, run `help _command_`.
 
 `DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
 
-For full details, see our page on [DbMon](02_DBMon.md)
+For full details, see our page on [DbMon](../../../operations/commands/dbmon).
 
 ## SendIt script
 

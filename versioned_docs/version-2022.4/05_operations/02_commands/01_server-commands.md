@@ -1,6 +1,6 @@
 ---
-title: 'Operations - Server Commands'
-sidebar_label: 'Server Commands'
+title: 'Operations - server commands'
+sidebar_label: 'Server commands'
 id: server-commands
 keywords: [operations, server, commands]
 tags:
@@ -48,6 +48,9 @@ If any problems are found in the generated configuration files, they will be del
 To ignore errors in the configuration files, use the `--ignore` argument. This leaves the configuration files undeleted, even if errors are found.
 
 All process configuration is stored within **$GC**.
+
+### Install hooks
+
 
 ## remap script
 
@@ -125,7 +128,7 @@ startProcess processName [--hostname <[host names]>] [--dump]
 | -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | No        | where   the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | No                |
 | -c                         | --cluster                                   | No        | starts  the process on every node in the cluster                                                                                                                                                   | No                |
 |                            | --dump                                      | No        | displays progress of the process, which is useful for debugging                                                                                                                          | No                |	
-|                            | --coldStart                                      | No        | this is only used if you have a consolidator. Consolidators aggregate data from IN table(s) into an OUT table; a coldStart effectively zeros out values in the OUT table records and then iterating over all the IN table records and rebuilding them on startUp. After this, the consildators in their normal way
+|                            | --coldStart                                      | No        | this is only used if you have a consolidator. Consolidators aggregate data from IN table(s) into an OUT table; a coldStart effectively zeros out values in the OUT table records and then iterating over all the IN table records and rebuilding them on startUp. After this, the consolidators in their normal way
  | No                |	
 
 The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
@@ -226,53 +229,14 @@ killServer [--hostname <[hosts names]>] [--force]
 
 ## DbMon script
 
-This script enables you to navigate through the database tables from the command line.
+The DbMonscript enables you to navigate through the database tables from the command line.
 
 Once inside `DbMon`, you can run the command 'help', which shows all the available DbMon commands. 
 To get help on a specific command, run `help _command_`.
 
 `DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
 
-### Syntax
-
-```bash
-DbMon
-```
-
-```bash
-==================================
-
-Database Monitor
-
-Enter 'help' for a list of commands
-
-==================================
-```
-
-| Command                  | Argument                                    | Description                                     |
-|--------------------------|---------------------------------------------|-------------------------------------------------|
-| autoIncrementNumber      | `<field_name>`                              |                                                 |
-| clear                    |                                             | clears the current context                      |
-| count                    |                                             | counts the rows in the table                    |
-| delete                   |                                             | deletes the current row                         |
-| deleteWhere              | `<condition>`                               | deletes all matching rows in the selected table |
-| displayFields            | `<field_names>`                             |                                                 |
-| distinct                 | `<condition> [-where <limiting_condition>]` |                                                 |
-| find                     | `<key_name>`                                |                                                 |
-| first                    | `<key_name>`                                |                                                 |
-| forceAutoIncrementNumber | `<field_name> <sequence_number>`            |                                                 |
-| forceSequenceNumber      | `<sequence_name> <sequence_number>`         |                                                 |
-| help                     |                                             | lists all commands                              |
-| insert                   |                                             | inserts the current row                         |
-| last                     | `<key_name>`                                | gets the last record by key                     |
-| listAll                  | `<key_name> <num_key_fields> <max_records>` |                                                 |
-| next                     | `<key_name>`                                | gets the next record by key                     |
-| set                      | `<field_name> <field_value>`                | sets a field                                    |
-| unset                    |                                             | sets a field to `null`                          |
-| update                   | `<key_name>`                                | updates the current row by key                  |
-| updateWhere              | `<condition> <assignments>`                 |                                                 |
-| writeMode                |                                             | enables write mode                              |
-
+For full details, see our page on [DbMon](../../../operations/commands/dbmon).
 
 ## SendIt script
 
