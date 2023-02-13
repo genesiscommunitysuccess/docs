@@ -128,10 +128,6 @@ async function copyApiDocs(manifest, processedMap) {
 }
 
 module.exports = async function (context, options) {
-  if (process.env["COPY_DOCS"] !== "true") {
-    return;
-  }
-
   let { manifest, processedMap } = options;
   if (!manifest) {
     throw new Error("[api-docs-plugin] Please provide a manifest file.");
