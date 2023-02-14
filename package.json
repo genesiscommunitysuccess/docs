@@ -12,6 +12,7 @@
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve",
     "start": "docusaurus start --port 8080 --host 0.0.0.0",
+    "start:copy-docs": "cross-env COPY_DOCS=true npm run start",
     "start:next": "SHOW_NEXT=true docusaurus start --port 8080 --host 0.0.0.0",
     "swizzle": "docusaurus swizzle",
     "postinstall": "patch-package --error-on-fail"
@@ -59,6 +60,7 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "patch-package": "^6.5.1"
   }

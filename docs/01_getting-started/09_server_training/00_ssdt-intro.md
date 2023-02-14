@@ -21,7 +21,7 @@ This is hands-on training for developers who are server specialists. We're going
 
 ## Programme
 
-This training is divided into 5 sessions, or days; each session covers specific advanced resources of the platform. To achieve that, we are extending the  Trade & Positions application that was created during the Developer Training; the application is available [here](https://github.com/genesiscommunitysuccess/devtraining-gama).
+This training is divided into 5 sessions, or days; each session covers specific advanced resources of the platform. To achieve that, we are extending the  Trade & Positions application that was created during the Developer Training; the application is available [here](https://github.com/genesiscommunitysuccess/devtraining-alpha).
 
 Should you need it along the course, feel free to use the [final application](https://github.com/genesiscommunitysuccess/devtraining-gama-server-spc) as a reference.
 
