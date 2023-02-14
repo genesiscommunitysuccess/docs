@@ -1,7 +1,7 @@
 ---
 title: 'Timestamps - GenesisFlake'
 sidebar_label: 'Timestamps'
-id: code-snippets
+id: timestamps
 keywords: [timestamps, flake, genesisflake]
 tags:
   - timestamps
@@ -9,9 +9,9 @@ tags:
   - genesisflake
 ---
 
-The Genesis low-code platform provides monotonically increasing timestamps while ensuring high performance levels. This is GenesisFlake, which provides id generation implementation based on Twitter’s [snowflake](https://developer.twitter.com/en/docs/basics/twitter-ids).
+The Genesis low-code platform provides monotonically increasing timestamps while ensuring high performance levels. This is GenesisFlake, which generates ids in a similar manner to Twitter’s [snowflake](https://developer.twitter.com/en/docs/basics/twitter-ids).
 
-In simple terms, GenesisFlake generates unique IDs based on the current timestamp without having to perform database-level synchronisation. Additionally, these IDs contain:
+In simple terms, GenesisFlake generates unique IDs based on the current timestamp without having to perform database-level synchronisation. These IDs contain:
 
 - a node number (which represents the node id within a genesis cluster)
 - a sequence number (used to differentiate IDs generated within the same millisecond)
