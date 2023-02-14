@@ -57,7 +57,7 @@ The scripts (hooks) you add will only run once, unless their execution fails. If
 
 The scripts must be implemented to work in an idempotent way, and the end result of executing a script means the system is (or already was) in the expected target state, whether you run it on a pre-existing environment (e.g. upgrading a server) or you run it in a completely new environment.
 
-On the server, it is located in the GENESIS_HOME/*applicationName*/**scripts/installHooks** directory. Logs are located in **GENESIS_HOME/runtime/installHooks**.
+On the server, it is located in the **GENESIS_HOME**/*applicationName*/**scripts/installHooks** directory. Logs are located in **GENESIS_HOME/runtime/installHooks**.
 
 Install hook file-name conventions:
 - We only use shell script for install hooks and inside the shell script you can call a Python script, a Kotlin script or whatever is necessary.
