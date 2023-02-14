@@ -57,13 +57,13 @@ The scripts (hooks) you add will only run once, unless their execution fails. If
 
 The scripts must be implemented to work in an idempotent way, and the end result of executing a script means the system is (or already was) in the expected target state, whether you run it on a pre-existing environment (e.g. upgrading a server) or you run it in a completely new environment.
 
-On the server, it is located in the GENESIS_HOME/*applicationName*/**scripts/installHooks** directory. Logs are located in **GENESIS_HOME/runtime/installHooks**
+On the server, it is located in the GENESIS_HOME/*applicationName*/**scripts/installHooks** directory. Logs are located in **GENESIS_HOME/runtime/installHooks**.
 
 Install hook file-name conventions:
 - We only use shell script for install hooks and inside the shell script you can call a Python script, a Kotlin script or whatever is necessary.
 - The install hook name must be unique.
-- It needs to contain a priority number at the beginning of the file name. This number should be unique. For exaxmple: 1_migrateLogFiles.sh, 2_migrateDictionary.sh
-- If you need to create a new install hook that has to execute before priority number 1 or number 2, you must increase the numbers for all the other scripts (e.g. rename 1_migrateLogFiles.sh to be 9_migrateLogFiles.sh).
+- It must have a priority number at the beginning of the file name. This number should be unique. For exaxmple: **1_migrateLogFiles.sh**, **2_migrateDictionary.sh**.
+- If you need to create a new install hook that has to execute before priority number 1 or number 2, you must increase the numbers for all the other scripts (e.g. rename **1_migrateLogFiles.sh** to be **9_migrateLogFiles.sh**).
 
 ### Practical examples 
 
