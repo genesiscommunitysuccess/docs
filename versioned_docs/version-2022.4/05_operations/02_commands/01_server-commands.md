@@ -51,8 +51,6 @@ All process configuration is stored within **$GC**.
 
 ### Install hooks
 
-### Install hooks
-
 Install hooks run as part of `genesisInstall`. You can specify the relevant scripts as part of `genesisInstall` then add those scripts to the file  *applicationName*_**config/resources/scripts/installHooks**, where *applicationName* is the name of application you are developing. 
 
 The scripts (hooks) you add will only run once, unless their execution fails. If you run `genesisInstall`again, previously successful executions of installHook scripts will not be run as part of the install. 
