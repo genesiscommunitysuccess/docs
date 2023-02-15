@@ -1,5 +1,5 @@
 ---
-title: 'Server Tooling - Code snippets'
+title: 'Server tooling - code snippets'
 sidebar_label: 'Code snippets'
 id: code-snippets
 keywords: [server, tooling, code snippets]
