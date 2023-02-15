@@ -1,6 +1,6 @@
 ---
-title: 'Operations - Server Commands'
-sidebar_label: 'Server Commands'
+title: 'Operations - server commands'
+sidebar_label: 'Server commands'
 id: server-commands
 keywords: [operations, server, commands]
 tags:
@@ -48,6 +48,66 @@ If any problems are found in the generated configuration files, they will be del
 To ignore errors in the configuration files, use the `--ignore` argument. This leaves the configuration files undeleted, even if errors are found.
 
 All process configuration is stored within **$GC**.
+
+### Install hooks
+
+Install hooks run as part of `genesisInstall`. You can specify the relevant scripts as part of `genesisInstall` then add those scripts to the file  *applicationName*_**config/resources/scripts/installHooks**, where *applicationName* is the name of application you are developing. 
+
+The scripts (hooks) you add will only run once, unless their execution fails. If you run `genesisInstall`again, previously successful executions of installHook scripts will not be run as part of the install. 
+
+The scripts must be implemented to work in an idempotent way, and the end result of executing a script means the system is (or already was) in the expected target state, whether you run it on a pre-existing environment (e.g. upgrading a server) or you run it in a completely new environment.
+
+On the server, it is located in the **GENESIS_HOME**/*applicationName*/**scripts/installHooks** directory. Logs are located in **GENESIS_HOME/runtime/installHooks**.
+
+Install hook file-name conventions:
+- We only use shell script for install hooks and inside the shell script you can call a Python script, a Kotlin script or whatever is necessary.
+- The install hook name must be unique.
+- It must have a priority number at the beginning of the file name. This number should be unique. For example: **1_migrateLogFiles.sh**, **2_migrateDictionary.sh**.
+- If you need to create a new install hook that has to execute before priority number 1 or number 2, you must increase the numbers for all the other scripts (e.g. rename **1_migrateLogFiles.sh** to be **9_migrateLogFiles.sh**).
+
+### Practical examples 
+
+You can create a new script and add it to the folder mentioned above to perform any particular functionality as part of `genesisInstall`.
+
+Any script exiting with value "0" is considered successful by the installHooks system, and any script exiting with a non-zero value is considered to have failed execution. 
+
+In a Java or Kotlin world, a simple implementation could look like this:
+
+```kotlin
+@JvmStatic
+fun main(args: Array<String>) {
+    ScriptUtils.initRootLogLevel(Level.WARN)
+
+    val genesisHome = System.getenv("GENESIS_HOME")
+
+    if (genesisHome == null || "" == genesisHome) {
+        val message = "System environment variable GENESIS_HOME is not set. Aborting migration process..."
+        // installHooks FAILURE
+        System.err.println(message)
+        exitProcess(1)
+    }
+
+    try {
+        run(args)
+        // installHooks SUCCESS
+        exitProcess(0)
+    } catch (e: Exception) {
+        // installHooks FAILURE
+        System.err.println(e.message)
+        exitProcess(1)
+    }
+}
+```
+
+Consider another example; we have a migration script called migrateDictionary.sh as an install hook; this internally executes [MigrateDictionary](01_server-commands.md/#migratedictionary) as shown below:
+
+```shell
+#!/bin/bash
+
+MigrateDictionary -dst DB
+
+exit $?
+```
 
 ## remap script
 
@@ -128,7 +188,7 @@ startProcess processName [--hostname <[host names]>] [--dump]
 | -s HOSTNAME [HOSTNAME ...] | --hostname HOSTNAME HOSTNAME [HOSTNAME ...] | No        | where   the application is running on more than one node, this identifies the node where you want to start the process (so you can start a process on a different node). Specify the Host Name | No                |
 | -c                         | --cluster                                   | No        | starts  the process on every node in the cluster                                                                                                                                                   | No                |
 |                            | --dump                                      | No        | displays progress of the process, which is useful for debugging                                                                                                                          | No                |	
-|                            | --coldStart                                      | No        | this is only used if you have a consolidator. Consolidators aggregate data from IN table(s) into an OUT table; a coldStart effectively zeros out values in the OUT table records and then iterating over all the IN table records and rebuilding them on startUp. After this, the consildators in their normal way
+|                            | --coldStart                                      | No        | this is only used if you have a consolidator. Consolidators aggregate data from IN table(s) into an OUT table; a coldStart effectively zeros out values in the OUT table records and then iterating over all the IN table records and rebuilding them on startUp. After this, the consolidators in their normal way
  | No                |	
 
 The script looks in the **processes.xml** file (see startServer below) to find out how to start the process. For example `startProcess AUTH_DATASERVER` starts the process with the correct classpath and extra arguments. Something similar to:
@@ -229,53 +289,14 @@ killServer [--hostname <[hosts names]>] [--force]
 
 ## DbMon script
 
-This script enables you to navigate through the database tables from the command line.
+The DbMonscript enables you to navigate through the database tables from the command line.
 
 Once inside `DbMon`, you can run the command 'help', which shows all the available DbMon commands. 
 To get help on a specific command, run `help _command_`.
 
 `DbMon --quietMode` performs database changes without triggering real-time updates in the update queue layer.
 
-### Syntax
-
-```bash
-DbMon
-```
-
-```bash
-==================================
-
-Database Monitor
-
-Enter 'help' for a list of commands
-
-==================================
-```
-
-| Command                  | Argument                                    | Description                                     |
-|--------------------------|---------------------------------------------|-------------------------------------------------|
-| autoIncrementNumber      | `<field_name>`                              |                                                 |
-| clear                    |                                             | clears the current context                      |
-| count                    |                                             | counts the rows in the table                    |
-| delete                   |                                             | deletes the current row                         |
-| deleteWhere              | `<condition>`                               | deletes all matching rows in the selected table |
-| displayFields            | `<field_names>`                             |                                                 |
-| distinct                 | `<condition> [-where <limiting_condition>]` |                                                 |
-| find                     | `<key_name>`                                |                                                 |
-| first                    | `<key_name>`                                |                                                 |
-| forceAutoIncrementNumber | `<field_name> <sequence_number>`            |                                                 |
-| forceSequenceNumber      | `<sequence_name> <sequence_number>`         |                                                 |
-| help                     |                                             | lists all commands                              |
-| insert                   |                                             | inserts the current row                         |
-| last                     | `<key_name>`                                | gets the last record by key                     |
-| listAll                  | `<key_name> <num_key_fields> <max_records>` |                                                 |
-| next                     | `<key_name>`                                | gets the next record by key                     |
-| set                      | `<field_name> <field_value>`                | sets a field                                    |
-| unset                    |                                             | sets a field to `null`                          |
-| update                   | `<key_name>`                                | updates the current row by key                  |
-| updateWhere              | `<condition> <assignments>`                 |                                                 |
-| writeMode                |                                             | enables write mode                              |
-
+For full details, see our page on [DbMon](../../../operations/commands/dbmon).
 
 ## SendIt script
 

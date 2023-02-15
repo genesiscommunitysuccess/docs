@@ -86,10 +86,10 @@ module.exports = {
     [require.resolve('docusaurus-gtm-plugin'), {
       id: GTM_ID,
     }],
-    ['./plugins/api-docs', {
+    (process.env["COPY_DOCS"] === 'true' ? ['./plugins/api-docs', {
       manifest: require('./plugins/api-docs/manifest.json'),
       processedMap,
-    }],
+    }] : null),
     'docusaurus-plugin-matomo'
   ],
   presets: [
