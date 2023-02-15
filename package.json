@@ -5,7 +5,7 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "build": "docusaurus build",
-    "build:next": "SHOW_NEXT=true docusaurus build",
+    "buildlc:next": "SHOW_NEXT=true docusaurus build",
     "build:base_url": "BASE_URL=/docs/ docusaurus build",
     "build:production": "BASE_URL=/docs/ BRANCH=master docusaurus build",
     "clear": "docusaurus clear",
