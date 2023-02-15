@@ -128,7 +128,6 @@ async function copyApiDocs(manifest, processedMap) {
 
     /**
      * Mark as processed
-     * TODO: is this not working
      */
     const packageJson = await fs.readJson(
       path.join(packageRootDir, "package.json")
