@@ -269,20 +269,20 @@ The Genesis low-code platform only includes the `camel-core` dependency. You wil
 
 ### Configuration
 
-- Add the `genesis-pal-camel` and `camel-ftp` dependencies in your *{applicationName}-script-config\build.gradle.kts" file. In this training our file is **alpha-script-config\build.gradle.kts**:
+- Add the `genesis-pal-camel` and `camel-core` dependencies in your *{applicationName}*-script-config\build.gradle.kts" file. In this training our file is **alpha-script-config\build.gradle.kts**:
 
 ```kotlin {3,4}
 dependencies {
     ...
     api("global.genesis:genesis-pal-camel")
-    api("org.apache.camel:camel-ftp:3.14.2")
+    api("org.apache.camel:camel-core")
     ...
 }
 
 description = "alpha-script-config"
 ```
 
-- Create a Kotlin script file named *{applicationName}-camel.kts* file. In this example our file **alpha-camel.kts** defines a single route using a range of Camel configuration options, which we'll explore in a little more detail below:
+- Create a Kotlin script file named *{applicationName}-camel.kts* file in your *{applicationName}*-script-config/src/main/resources/scripts folder. In this example our file **alpha-camel.kts** defines a single route using a range of Camel configuration options, which we'll explore in a little more detail below:
 ```kotlin
 camel {
     routeHandler {
@@ -303,16 +303,14 @@ The `routeHandler` defines the possible routes for information to flow into and 
     ...
     <process name="ALPHA_CAMEL">
         <groupId>ALPHA</groupId>
-        <primaryOnly>true</primaryOnly>
         <start>true</start>
-        <options>-Xmx512m -DXSD_VALIDATE=false -DRedirectStreamsToLog=true</options>
+        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
         <module>genesis-pal-camel</module>
-        <package>global.genesis.camel</package>
+        <package>global.genesis.camel.pal</package>
         <script>alpha-camel.kts</script>
-        <loggingLevel>INFO,DATADUMP_OFF</loggingLevel>
-        <description>Handles inbound/outbound file consumption/production</description>
+        <description>Alpha Camel integrations</description>
+        <classpath>alpha-messages*,alpha-camel*,alpha-camel-libs*.jar</classpath>
         <language>pal</language>
-        <classpath>alpha-event*,camel-ftp*</classpath>
     </process>
 </processes>
 ```
@@ -327,22 +325,19 @@ The `routeHandler` defines the possible routes for information to flow into and 
 ```
 
 
-### Exercise 5.2 Reading and writing using an SFTP server
-<!--
-this is pretty much here: http://localhost:8080/server/integration/apache-camel/examples/#reading-from-an-sftp-server
--->
+### Exercise 5.2 Reading from an SFTP server
 :::info ESTIMATED TIME
 45 mins
 :::
 
-It is your time! Use the Camel module build a Reading and Writing structure using an [SFTP](https://camel.apache.org/components/3.16.x/sftp-component.html) server. 
+It is your time! Use the Camel module to build a Reading structure using an [SFTP](https://camel.apache.org/components/3.20.x/sftp-component.html) server. Read from an SFTP server using this path */folder-inside-sftp/from.txt* adding a Camel `routeHandler` to copy the file to */home/alpha/run/runtime/inbound/alpha*.
 
-You can use any SFTP public server available to do that. [Here](https://www.sftp.net/public-online-sftp-servers) are some options.
+To do that, do the steps described above in the [configuration](#configuration), and see a similar example [here](../../../server/integration/apache-camel/examples/#reading-from-an-sftp-server).
 
-:::tip
-Use properties set in the _application_**-camel.kts**, allowing you to have site-specific variables for each instance. This is particularly useful when integrating with external services where connection details are likely to vary between environments.
+:::note
+To help you in this task, as The Genesis low-code platform only includes the camel-core dependency, the project you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed) created a new local module called `alpha-camel-libs` declaring the Camel dependencies needed as described [here](../../../server/integration/apache-camel/configuring-runtime/#dependencies).
 
-You can see some samples [here](https://camel.apache.org/components/3.18.x/ftp-component.html#_samples). 
+Also, the project you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed) has a docker conteiner with an [SFTP](https://hub.docker.com/r/atmoz/sftp) server to do this task, including the `hostname` **sftp**, `user ` **JohnDoe**, and `password` **Password11**.
 :::
 
 
