@@ -13,7 +13,7 @@ tags:
 
 ## Enriching a query
 
-Enriching data using the calling users context is a great way to build rich experiences. Below, we have the positions table and the favourite trades table. We are able to derive a field on our query by bringing the user's favourite trades into the context.
+Enriching data using the calling user's context is a great way to build rich experiences. In the example below, we have the positions table and the favourite trades table. We are able to derive a field on our query by bringing the user's favourite trades into the context.
 
 Note the casing of `FAVOURITE_TRADE` and `FavouriteTrade`. The all-caps version denotes the table definition, whereas the camel-case version denotes the generated data access object (DAO).
 
