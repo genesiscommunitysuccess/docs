@@ -50,7 +50,7 @@ Add the following content to the **alpha-processes.xml** file.
 </processes>
 ```
 
-You can find more info on the **-processes.xml** file [here](../../../server/configuring-runtime/processes/).
+You can find more info on the our page on the [**-processes.xml** file](../../../server/configuring-runtime/processes/).
 
 You can then add the following content to the **alpha-service-definitions.xml** file.
 
@@ -61,13 +61,13 @@ You can then add the following content to the **alpha-service-definitions.xml** 
 </configuration>
 ```
 
-You can find more info on the **-service-defintions.xml** file [here](../../../server/configuring-runtime/service-definitions/).
+You can find more info on the **-service-definitions.xml** file [here](../../../server/configuring-runtime/service-definitions/).
 
 ## Database layer
 
 You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\**.
 
-You can find more information on the **genesis-system-defintions.kts** file [here](../../../server/configuring-runtime/system-definitions/).
+You can find more information on the **genesis-system-definitions.kts** file [here](../../../server/configuring-runtime/system-definitions/).
 
 ### Using WSL/Linux? Don't change the database layer.
 You can ignore the next section! In fact, you must not make the changes on that section. (But please note, we highly recommend using Docker.)
@@ -96,12 +96,12 @@ systemDefinition {
 
 Finally, you can build the server.
 
-In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha**/**Tasks**/**Build/Assemble**.
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**Tasks**/**Build/Assemble**.
 
 ![](/img/assemble-server.png)
 
-You can procede to the next step whilst loading.
+You can proceed to the next step whilst loading.
 
-After loading is completed you have a functional server.
+After loading is complete, you have a functional server.
 
 Congratulations! you have completed the prepare and build.

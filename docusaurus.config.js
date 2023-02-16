@@ -86,10 +86,10 @@ module.exports = {
     [require.resolve('docusaurus-gtm-plugin'), {
       id: GTM_ID,
     }],
-    ['./plugins/api-docs', {
+    (process.env["COPY_DOCS"] === 'true' ? ['./plugins/api-docs', {
       manifest: require('./plugins/api-docs/manifest.json'),
       processedMap,
-    }],
+    }] : null),
     'docusaurus-plugin-matomo'
   ],
   presets: [
@@ -131,7 +131,6 @@ module.exports = {
         { type: 'doc', docId: 'server/server-modules', label: 'Server' },
         { type: 'doc', docId: 'web/front-end', label: 'Web' },
         { type: 'doc', docId: 'operations/operations', label: 'Operations' },
-        { type: 'doc', docId: 'gpalx/intro', label: 'Early access' },
         {
           type: "html",
           position: "right",

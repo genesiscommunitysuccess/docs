@@ -11,6 +11,74 @@ tags:
     - add data
 ---
 
+## Deploying the application
+
+Now we have to deploy our application, the positions-app-tutorial product. From Gradle, run the following commands in order:
+
+1. **/genesisproduct-positions-app-tutorial/Tasks/build/assemble**
+
+    ![](/img/deploy-assemble-positions.png)
+
+2. **/genesisproduct-positions-app-tutorial/positions-app-config/Tasks/build/assemble**
+
+    ![](/img/deploy-config-assemble-positions.png)
+
+3.  **/genesisproduct-positions-app-tutorial/positions-app-tutorial-deploy/Tasks/genesis-setup/install-positions-app-tutorial-site-specific**
+
+    ![](/img/deploy-install-site-specific-positions.png)
+
+4. **/genesisproduct-positions-app-tutorial/positions-app-tutorial-deploy/Tasks/genesisdeploy/deploy-genesisproduct-positions-app-tutorial.zip**
+
+    ![](/img/deploy-positions.png)
+
+
+
+This sequence builds, configures and deploys the application.
+
+
+## Run the server commands
+:::info Can I run server commands from the command line rather than Gradle tasks?
+Yes. Here, we've been running server commands through the gradle tasks. But alternatively, you can run server commands directly from a command line. 
+
+Assuming you are using the provided 'TrainingCentOS' WSL distribution, open PowerShell (or Windows Command Prompt). Access your WSL instance 'TrainingCentOS' and switch to user 'genesis' to have access to the Genesis commands:
+
+```shell
+wsl -d TrainingCentOS
+su genesis
+DbMon
+```
+
+Try it now!
+
+:::
+
+Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
+
+```shell
+./gradlew :genesisproduct-positions-app-tutorial:positions-app-tutorial-deploy:mon #On the IntelliJ terminal
+```
+or from the dropdown menu:
+
+![](/img/using-mon-positions.png)
+
+We should see something like this:
+
+```shell
+PID     Process Name                  Port        Status         CPU       Memory    Message
+===============================================================================================
+426     GENESIS_AUTH_CONSOLIDATOR     8005        STANDBY        36.30     1.30
+350     GENESIS_AUTH_DATASERVER       8002        RUNNING        56.70     1.70
+334     GENESIS_AUTH_MANAGER          8001        RUNNING        61.50     1.70
+368     GENESIS_AUTH_PERMS            8003        RUNNING        65.70     1.90
+403     GENESIS_AUTH_REQUEST_SERVER   8004        RUNNING        56.80     1.60
+490     GENESIS_CLUSTER               9000        RUNNING        84.30     2.50
+570     GENESIS_ROUTER                9017        RUNNING        54.70     2.00
+534     GENESIS_WEBMON                9011        RUNNING        51.30     2.50
+===============================================================================================
+664     POSITIONS_APP_TUTORIAL_DATASERVER              11000       RUNNING        58.10     1.50
+703     POSITIONS_APP_TUTORIAL_EVENT_HANDLER           11001       RUNNING        71.30     2.20
+```
+
 ## Add a user and some example data
 Let's load some very simple example data into the tables that we created previously. 
 
@@ -103,76 +171,6 @@ USER_NAME                                JaneDee                                
 -------------------------------------------------------------------------------------------
 Total Results:  1
 DbMon:USER>
-```
-
-
-
-## Deploying the application
-
-Now we have to deploy our application, the positions-app-tutorial product. From Gradle, run the following commands in order:
-
-1. **/genesisproduct-positions-app-tutorial/Tasks/build/assemble**
-
-    ![](/img/deploy-assemble-positions.png)
-
-2. **/genesisproduct-positions-app-tutorial/positions-app-config/Tasks/build/assemble**
-
-    ![](/img/deploy-config-assemble-positions.png)
-
-3.  **/genesisproduct-positions-app-tutorial/positions-app-tutorial-deploy/Tasks/genesis-setup/install-positions-app-tutorial-site-specific**
-
-    ![](/img/deploy-install-site-specific-positions.png)
-
-4. **/genesisproduct-positions-app-tutorial/positions-app-tutorial-deploy/Tasks/genesisdeploy/deploy-genesisproduct-positions-app-tutorial.zip**
-
-    ![](/img/deploy-positions.png)
-
-
-
-This sequence builds, configures and deploys the application.
-
-
-## Run the server commands
-:::info Can I run server commands from the command line rather than Gradle tasks?
-Yes. Here, we've been running server commands through the gradle tasks. But alternatively, you can run server commands directly from a command line. 
-
-Assuming you are using the provided 'TrainingCentOS' WSL distribution, open PowerShell (or Windows Command Prompt). Access your WSL instance 'TrainingCentOS' and switch to user 'genesis' to have access to the Genesis commands:
-
-```shell
-wsl -d TrainingCentOS
-su genesis
-DbMon
-```
-
-Try it now!
-
-:::
-
-Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
-
-```shell
-./gradlew :genesisproduct-positions-app-tutorial:positions-app-tutorial-deploy:mon #On the IntelliJ terminal
-```
-or from the dropdown menu:
-
-![](/img/using-mon-positions.png)
-
-We should see something like this:
-
-```shell
-PID     Process Name                  Port        Status         CPU       Memory    Message
-===============================================================================================
-426     GENESIS_AUTH_CONSOLIDATOR     8005        STANDBY        36.30     1.30
-350     GENESIS_AUTH_DATASERVER       8002        RUNNING        56.70     1.70
-334     GENESIS_AUTH_MANAGER          8001        RUNNING        61.50     1.70
-368     GENESIS_AUTH_PERMS            8003        RUNNING        65.70     1.90
-403     GENESIS_AUTH_REQUEST_SERVER   8004        RUNNING        56.80     1.60
-490     GENESIS_CLUSTER               9000        RUNNING        84.30     2.50
-570     GENESIS_ROUTER                9017        RUNNING        54.70     2.00
-534     GENESIS_WEBMON                9011        RUNNING        51.30     2.50
-===============================================================================================
-664     POSITIONS_APP_TUTORIAL_DATASERVER              11000       RUNNING        58.10     1.50
-703     POSITIONS_APP_TUTORIAL_EVENT_HANDLER           11001       RUNNING        71.30     2.20
 ```
 
 ## Conclusion

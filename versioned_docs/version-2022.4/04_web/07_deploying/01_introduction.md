@@ -13,7 +13,7 @@ tags:
 
 For Genesis application servers, the web server of choice is [nginx](https://www.nginx.com/).
 
-There is a _product user_ on each server named after the product.
+On each server named after your application, there is a _product user_.
 
 The web root (where the production build needs to end up) is `/data/${productUser}/web` by convention.
 
@@ -107,11 +107,11 @@ In this example, by looking at the 5th line we can tell that:
 - _product user_ is `client-x`
 
 
-You will need this information if you want to [manually deploy](../../../web/deploying/manual-deployment/) the front Eend from your machine to the web server.
+You need this information if you want to [manually deploy](../../../web/deploying/manual-deployment/) the front end from your machine to the web server.
 
 
-Ideally, the deployment process should be [automated](../../../web/deploying/automated-deployment/).
+Ideally, you should [automate](../../../web/deploying/automated-deployment/) the deployment process.
 
 :::note
-For apps hosted across multiple nodes or production/UAT (client facing) apps, these nodes would be accessed via a load balancer (also nginx), which performs round-robin load balancing. Where this is the case, the nginx config described above is bypassed.
+For applications hosted across multiple nodes, and for production/UAT (client-facing) apps, these nodes are accessed via a load balancer (also nginx), which performs round-robin load balancing. Where this is the case, the nginx config described above is bypassed.
 :::

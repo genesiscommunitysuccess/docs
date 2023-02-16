@@ -424,7 +424,10 @@ There are two functions for sending messages to a service:
 - one uses RxJava2 Single
 - the other uses Kotlin coroutines 
 
-Whichever one you use, shouldn’t make a whole lot of difference in your test. The method `sendMessage(…)` will return a `Single`, this will require a call to `blockingGet()` for every message you’re interested in. `sendMessageAsync` will require you to wrap your test in a `runBlocking { … }` block.
+Whichever one you use, shouldn’t make a whole lot of difference in your test. 
+
+- The method `sendMessage(…)` will return a `Single`, this will require a call to `blockingGet()` for every message you’re interested in. 
+- `sendMessageAsync` requires you to wrap your test in a `runBlocking { … }` block.
 
 ```kotlin
 @Test
@@ -492,7 +495,13 @@ val loginAuthAck = message
 ### assertIsAuditedBy
 
 This function helps assertions related to audit tables. It will check that all fields in the audited record match the audit record.
-In the test below, we build a request to insert a user. We then get the user from the database to make sure it exists. Next, we check a USER_ATTRIBUTE row has been created. Finally, we check to make sure a matching row in USER_AUDIT has been created.
+
+In the test below:
+
+- We build a request to insert a user. 
+- We then get the user from the database to make sure it exists. 
+- Next, we check a USER_ATTRIBUTE row has been created. 
+- Finally, we check to make sure a matching row in USER_AUDIT has been created.
 
 ```kotlin
 @Test
@@ -524,7 +533,7 @@ fun `test add users - success`() = runBlocking {
     user assertIsAuditedBy userAudit
 
     assert(userAudit.auditEventType == "INSERT_USER") { userAudit.toString() }
-    assert(userAudit.auditEventUser == "JohnDoe") { userAudit.toString() }
+    assert(userAudit.auditEventUser == "JohnWalsh") { userAudit.toString() }
 
 }
 ```
