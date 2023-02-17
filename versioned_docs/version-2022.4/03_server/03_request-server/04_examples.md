@@ -1,5 +1,5 @@
 ---
-title: 'Request Server - Examples'
+title: 'Request Server - examples'
 sidebar_label: 'Examples'
 id: examples
 keywords: [server, request server, examples]

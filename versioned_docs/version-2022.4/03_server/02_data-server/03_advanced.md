@@ -1,5 +1,5 @@
 ---
-title: 'Data Server - Advanced'
+title: 'Data Server - advanced'
 sidebar_label: 'Advanced'
 id: advanced
 keywords: [server, data server, dataserver, advanced]
