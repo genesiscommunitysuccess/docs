@@ -1,4 +1,4 @@
-# Guidelines for documenting the Genesis low-code platform
+# Documenting the Genesis low-code platform
 
 ## Contributions guidelines
 
