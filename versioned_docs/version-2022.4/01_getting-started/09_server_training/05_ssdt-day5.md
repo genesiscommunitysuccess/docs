@@ -298,7 +298,7 @@ The `routeHandler` defines the possible routes for information to flow into and 
 
 - Add the configuration for the Camel module to the *{applicationName}-processes.xml* file. In this training our file is **alpha-processes.xml**:
 
-```xml {3-15}
+```xml {3-13}
 <processes>
     ...
     <process name="ALPHA_CAMEL">
@@ -338,6 +338,8 @@ To do that, do the steps described above in the [configuration](#configuration),
 To help you in this task, as The Genesis low-code platform only includes the camel-core dependency, the project you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed) created a new local module called `alpha-camel-libs` declaring the Camel dependencies needed as described [here](../../../server/integration/apache-camel/configuring-runtime/#dependencies).
 
 Also, the project you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed) has a docker conteiner with an [SFTP](https://hub.docker.com/r/atmoz/sftp) server to do this task, including the `hostname` **sftp**, `user ` **JohnDoe**, and `password` **Password11**.
+
+In order to save your local resources and allow a good experience, we do recommend that you change your **alpha-processes.xml** and **alpha-system-definition.xml** leaving only ALPHA_CAMEL process as runnable. You can do that by commenting the other ones or setting them to start=false.
 :::
 
 
