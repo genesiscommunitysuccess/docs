@@ -1,5 +1,5 @@
 ---
-title: 'Request Server - Testing'
+title: 'Request Server - testing'
 sidebar_label: 'Testing'
 id: testing
 keywords: [server, request server, testing]

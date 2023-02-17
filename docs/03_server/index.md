@@ -1,5 +1,5 @@
 ---
-title: 'Server Modules'
+title: 'Server modules'
 sidebar_label: 'Overview'
 sidebar_position: 1
 id: 'server-modules'
