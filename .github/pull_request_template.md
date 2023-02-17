@@ -1,29 +1,24 @@
-**Related JIRA ticket**
+Thank you for contributing to the documentation.
 
-https://genesisglobal.atlassian.net/browse/PTL-0
+Your Jira ticket is:
+P********
 
-**What does this PR do?**
+Have you provided changes for all the relevant versions: next, 2022.3, 2022.3, etc?
+<!--- Yes / No -->
 
-<!--- Summarise this pull request so reviewers know what to look for -->
+Have you checked all new or changed links?
+<!--- Yes / No -->
 
-**Where should the reviewer start?**
+Is there anything else you would like us to know?
+<!--- Yes / No -->
 
-<!--- Add file or directory pointers. If the pull request is small in scope, you may delete this section -->
+For reference: 
 
-**Versions affected by this change**
+- We have a [contributions guide](https://www.notion.so/genesisglobal/Contributing-new-documentation-75953fb245f246ff872789035451a0c4) 
+- we have a [style guide](https://www.notion.so/genesisglobal/Documentation-style-guide-5b04ec6fe12f4262b90d192effd8059b) 
 
-<!--- Please place an x inside all boxes that apply, with no surrounding spaces, like so: [x] -->
-<!--- Once you've opened the PR you can tick and untick these boxes using the GitHub UI, so don't worry if you miss one at this stage. -->
+**This week's exciting excerpt from the style guide**
+All our headings are in sentence case. For example:
+- Really important information    **correct**
+- Really Important Information    **not correct**
 
-- [ ] These changes should be visible on the forthcoming version of the docs
-- [ ] These changes should be visible on the currently live version of the docs
-- [ ] These changes should be visible on old versions of the docs visible in the version selector dropdown
-- [ ] N/A - I've changed something else and explained what in the summary above
-
-
-**Additional details**
-
-<!--- Please place an x inside all boxes that apply, with no surrounding spaces, like so: [x] -->
-
-- [ ] I have followed the writing style guide linked in the contribution guidelines
-- [ ] I have ensured all links altered or added in this PR follow the contribution guidelines
