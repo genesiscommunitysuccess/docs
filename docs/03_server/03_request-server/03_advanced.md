@@ -1,5 +1,5 @@
 ---
-title: 'Request Server - Advanced'
+title: 'Request Server - advanced'
 sidebar_label: 'Advanced'
 id: advanced
 keywords: [server, request server, advanced]
