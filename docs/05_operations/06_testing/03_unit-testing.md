@@ -9,7 +9,7 @@ tags:
     - testing
 ---
 
-Unit testing does not require a database or the running of a Genesis service, so, as you define your application, each component should be unit tested according to standard best practice.
+Unit testing does not require a database or the running of a Genesis service. So, as you define your application, each component should be unit-tested according to standard best practice.
 
 We have included examples of unit tests in our component documentation.
 

@@ -137,6 +137,7 @@ Let´s start the hands-on training with the first exercise. We are going to crea
 
 Create a new item in the system definition file and use it in the fields definition file. We should edit the local system definition file to do that.
 
+
 :::tip changing alpha-system-definition configurations 
 To do this exercise, go to the file **alpha-system-definition.kts** and do the changes. Then, go to the fields definition file and set the *nullable* using SysDef. 
 

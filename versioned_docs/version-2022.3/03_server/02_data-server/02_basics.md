@@ -1,5 +1,5 @@
 ---
-title: 'Data Server - Basics'
+title: 'Data Server - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, data server, dataserver, basics]

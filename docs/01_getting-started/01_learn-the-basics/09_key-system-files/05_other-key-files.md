@@ -11,7 +11,7 @@ tags:
     - router
 ---
 
-Let us now mention another important system file, Genesis Router. The Genesis Router module controls the routing of the messages between the backend and the frontend of your application. You can configure this in the file **genesis-router.kts**.
+Let us now mention another important system file, Genesis Router. The Genesis Router module controls the routing of the messages between the back end and the front end of your application. You can configure this in the file **genesis-router.kts**.
 
 The file is divided into three areas:
 
@@ -19,7 +19,7 @@ The file is divided into three areas:
 
 - In the second area, you can specify the routes for the messages from the specific modules or microservices.
 
-- In the third area, you can specify the resources that are available to the frontend. If you don't specify at least one, all the resources in the server will be available.
+- In the third area, you can specify the resources that are available to the front end. If you don't specify at least one, all the resources in the server will be available.
 
 Here is an example configuration file for Genesis Router:
 

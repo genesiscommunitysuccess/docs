@@ -1,5 +1,5 @@
 ---
-title: 'Sever reporting'
+title: 'Server reporting'
 sidebar_label: 'Server reporting'
 id: server-reporting
 tags:
@@ -24,7 +24,8 @@ To enable this component on the server, pull in the [reporting-distribution-6.1.
 
 To make data available to users so that they can create reports, you must insert entries into the `REPORT_DATASOURCES` table. This table determines which data resources can be reported on. In most cases, you will have already set up queries in your [Data Server](../../../server/data-server/basics/) to provide the data, but you can add new sources by creating new queries in your _application_**-dataserver.kts**.
 
-eg: making two dataserver queries available to the reporting server
+For example, to make two dataserver queries available to the reporting server:
+
 ```bash
 SendIt -t REPORT_DATASOURCES.csv
 ```

@@ -1,5 +1,5 @@
 ---
-title: 'Data Server - Testing'
+title: 'Data Server - testing'
 sidebar_label: 'Testing'
 id: testing
 keywords: [server, data server, dataserver, testing]
@@ -69,7 +69,7 @@ POSITION_ID,INSTRUMENT_ID,QUANTITY,NOTIONAL,VALUE,PNL
 
 We are now ready to begin writing tests for our Data Server.
 
-Firstly, we send a DATA_LOGON message to our Data Sever; our Data Sever should then respond with the current snapshot of data. Any changes will then be automatically sent to us as a consumer.
+First, we send a DATA_LOGON message to our Data Server; our Data Server should then respond with the current snapshot of data. Any changes will then be automatically sent to us as a consumer.
 
 We then need to trigger a change on the database. Our Data Server will see this change and send the update to us.
 

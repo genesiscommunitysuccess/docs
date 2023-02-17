@@ -186,11 +186,11 @@ As we previously generated the fields, autocompletion helps you to define the ta
 
 ### Automated testing
 
-So far we have been testing our work manually, using Genesis Console or some HTTP client. Now the time has come to start writing some automated tests for our application. We are going to test our [TradeView](/getting-started/developer-training/training-content-day3/#usage) and the Trade insert method we [created](/getting-started/developer-training/training-content-day1/#event-handler).
+So far we have been testing our work manually, using Genesis Console or an HTTP client. Now the time has come to start writing some automated tests for our application. We are going to test our [TradeView](/getting-started/developer-training/training-content-day3/#usage) and the Trade insert method we [created](/getting-started/developer-training/training-content-day1/#event-handler).
 
 #### Configuration
 
-To test our classes we need to mock the database, as there are integrations and configurations managed by Genesis behind the scenes. To avoid any additional installation locally we will use [H2 in-memory database](https://www.h2database.com/), changing the **server/jvm/build.gradle.kts** configuration for the tests tasks like the code below. You already have the configuration needed if you cloned the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed).
+To test our classes we need to mock the database, as there are integrations and configurations managed by Genesis behind the scenes. To avoid any additional installation locally we will use [H2 in-memory database](https://www.h2database.com/), changing the **server/jvm/build.gradle.kts** configuration for the tests tasks like the code below. You already have the configuration needed if you cloned the Developer Training starting repository from [here](https://github.com/genesiscommunitysuccess/devtraining-seed).
 
 ```kotlin {6-10} title='server/jvm/build.gradle.kts'
 ...
@@ -211,12 +211,12 @@ subprojects  {
 
 #### Adding testing: AlphaTradeViewTest
 
-Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. We are extending the class [AbstractDatabaseTest](/operations/testing/integration-testing/#abstractdatabasetest) to allow a proper integration testing, as well as using the [TradeView](/getting-started/developer-training/training-content-day3/#usage) we created to assert results. In summary, the new test will:
+Let's create an automated test that inserts and retrieves some data using the platform's automated test support components. We are extending the class [AbstractDatabaseTest](../../../operations/testing/integration-testing/#abstractdatabasetest) to allow a proper integration testing, as well as using the [TradeView](/getting-started/developer-training/training-content-day3/#usage) we created to assert results. In summary, the new test will:
 * load the necessary data inputs from a CSV file 
 * retrieve data using [Genesis Database API](/database/)
 
 So, first, let's do the following:
-1. Add a new test class to the **alpha-config** module (**alpha\server\jvm\alpha-config\src\test\kotlin**) called `AlphaTradeViewTest.kt`
+1. Add a new test class to the **alpha-config** module (**alpha\server\jvm\alpha-config\src\test\kotlin\global\genesis**) called `AlphaTradeViewTest.kt`
 2. Add TEST_DATA.csv to a data folder (**alpha\server\jvm\alpha-config\src\test\resources\data**)
 
 ```csv
@@ -321,7 +321,7 @@ class AlphaTradeViewTest : AbstractDatabaseTest() {
 }
 ```
 
-You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaTradeViewTest`, or from the command line.
+You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaTradeViewTest` or from the command line.
 
 ```shell title='Running AlphaTradeViewTest from the command line'
 ./gradlew :genesisproduct-alpha:alpha-config:test --tests "global.genesis.AlphaTradeViewTest"
@@ -329,13 +329,13 @@ You can run the test from IntelliJ by right-clicking on the test class and selec
 
 #### Adding testing: AlphaEventHandlerTest
 
-Now we will add a new automated test for checking the Trade insert method we have [created](http://localhost:8080/getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](/operations/testing/integration-testing/#abstractgenesistestsupport) to allow a proper integration testing. In summary, the new test will:
+Now we will add a new automated test for checking the Trade insert method that we have [created](../../../getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](/operations/testing/integration-testing/#abstractgenesistestsupport) to allow a proper integration testing. In summary, the new test will:
 * load the necessary data inputs from a CSV file 
 * use the network API [Genesis MessageClient](/database/api-reference/network-api/#genesismessageclient) to call the Event Handler methods.
 * retrieve data using [Genesis Database API](/database/)
 
 So, first, let's do the following:
-1. Add a new test class to the **alpha-script-config** module (alpha\server\jvm\alpha-script-config\src\test\kotlin) called `AlphaEventHandlerTest.kt`.
+1. Add a new test class to the **alpha-script-config** module (alpha\server\jvm\alpha-script-config\src\test\kotlin\global\genesis) called `AlphaEventHandlerTest.kt`.
 2. Add TEST_DATA.csv to a data folder (**alpha\server\jvm\alpha-script-config\src\test\resources\data**)
 
 ```csv
@@ -437,7 +437,7 @@ class AlphaEventHandlerTest : AbstractGenesisTestSupport<GenesisSet>(
 }
 ```
 
-You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaEventHandlerTest`, or from the command line.
+You can run the test from IntelliJ by right-clicking on the test class and selecting `Run AlphaEventHandlerTest` or from the command line.
 
 ```shell title='Running AlphaTradeViewTest from the command line'
 ./gradlew :genesisproduct-alpha:alpha-script-config:test --tests "global.genesis.AlphaEventHandlerTest"
