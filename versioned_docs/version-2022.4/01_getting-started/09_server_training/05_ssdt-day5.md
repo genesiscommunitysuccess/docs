@@ -192,8 +192,8 @@ The `requiresAuth()` function can be overridden to determine if the endpoint req
 ### Configure processes.xml
 
 You need to alter the GENESIS_ROUTER process configuration, which is defined in the **genesis-processes.xml** file located in the **~/run/genesis/cfg** folder.
-- Add the name of the package, where the custom endpoint is defined in the [package](../../../../server/configuring-runtime/processes/#package) tag. In the example below, this is `global.genesis.alpha.fileHandler`.
-- Add the Jar file of the submodule containing the custom endpoint to the [classpath](../../../../server/configuring-runtime/processes/#classpath) tag. In the example below, this is `alpha-file-handler*.jar`.
+- Add the name of the package, where the custom endpoint is defined in the [package](../../../server/configuring-runtime/processes/#package) tag. In the example below, this is `global.genesis.alpha.fileHandler`.
+- Add the Jar file of the submodule containing the custom endpoint to the [classpath](../../../server/configuring-runtime/processes/#classpath) tag. In the example below, this is `alpha-file-handler*.jar`.
 
 
 ```xml {6,10}
@@ -211,7 +211,7 @@ You need to alter the GENESIS_ROUTER process configuration, which is defined in 
 </process>
 ```
 
-There is more information on how we define processes, in our page on [process.xml](../../../../server/configuring-runtime/processes).
+There is more information on how we define processes, in our page on [process.xml](../../../server/configuring-runtime/processes).
 
 
 ### Exercise 5.1 Creating CSV Upload Endpoints
@@ -220,7 +220,7 @@ There is more information on how we define processes, in our page on [process.xm
 45 mins
 :::
 
-We are going to create CSV Upload Endpoints. Let's create the possibility to upload *Counterparty* and *Instrument* records through CSVs. The fields are pretty much what we defined [before](../../../../getting-started/developer-training/training-content-day2/#exercise-22-extending-the-application). 
+We are going to create CSV Upload Endpoints. Let's create the possibility to upload *Counterparty* and *Instrument* records through CSVs. The fields are pretty much what we defined [before](../../../getting-started/developer-training/training-content-day2/#exercise-22-extending-the-application). 
 
 To do that, create a new server module `alpha-file-handler`, and add it to be build and deployed (*server/jvm/settings.gradle.kts*, *alpha-deploy/build.gradle.kts*, *alpha-distribution/build.gradle.kts*, **). In this new module, create the classes and add your logic to complete the task.
 
