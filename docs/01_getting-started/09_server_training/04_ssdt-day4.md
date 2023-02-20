@@ -174,7 +174,7 @@ streams {
 ```
 
 **Fields**
-The fields tag enables you to transform the output in a similar way to views, data server and req rep definitions. For example, here we output three fields:
+The fields tag enables you to transform the output in a similar way to views, data server and request server definitions. For example, here we output three fields:
 ```kotlin
 streams {
     stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP) {
@@ -214,7 +214,7 @@ Let's see how to create a Streamer Client. It also looks at the syntax of the tw
 ### Creating a Streamer Client
 To create a [Streamer-Client](../../../server/integration/gateways-and-streamers/streamer-client/):
 
-1. Add the genesis-pal-streamerclient` dependency in your *{applicationName}-script-config\build.gradle.kts" file. In this training our file is **alpha-script-config\build.gradle.kts**:
+1. Add the genesis-pal-streamerclient` dependency to your *{applicationName}-script-config\build.gradle.kts* file. In this training our file is **alpha-script-config\build.gradle.kts**:
 
 ```kotlin {3}
 dependencies {
