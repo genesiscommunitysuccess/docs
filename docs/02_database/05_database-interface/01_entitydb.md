@@ -39,7 +39,7 @@ The entity db is available in the kotlin Event Handler. It can be injected in Ko
 | Write (output)                                                                                         | [Write Result](../../../database/helper-classes/write-result/#entity-write-result)                              |
 | Subscribe                                                                                              | [Record Update](../../../database/helper-classes/subscription/record-update/) of entity                         |
 | Bulk or Range Subscribe                                                                                | [Bulk](../../../database/helper-classes/subscription/bulk/) of entity                                           |
-| Available in [Custom Event Handlers](../../../database/api-reference/event-handler-api/)                       | ✔️                                                                                                      |
+| Available in [Custom Event Handlers](../../../server/api-reference/event-handler-api/)                       | ✔️                                                                                                      |
 | Available in [Custom Request Servers](../../../server/request-server/advanced/#custom-request-servers) | ✔️                                                                                                      |
 
 

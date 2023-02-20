@@ -2,18 +2,19 @@
 title: 'API reference - service provider API'
 sidebar_label: 'Service provider API'
 id: service-provider-api
-keywords: [database, api, reference, service provider]
+keywords: [server, api, reference, service provider, process configuration]
 tags:
-    - database
+    - server
     - api
     - reference
     - service provider
+    - process configuration
 ---
 
 
 In this page, we look at details of the functions that enable you to interact with the Genesis services that can be specified in the [service-definition.xml](../../../getting-started/learn-the-basics/key-system-files/genesis-system-definitions/) file.
 
-Functions[​](../../../database/api-reference/service-provider-api/#functionsdirect-link-to-heading)
+Functions[​](../../../server/api-reference/service-provider-api/#functionsdirect-link-to-heading)
 ------------------------------------------------------------------------------------------------------------------------------------
 
 | Name | Signature | Description |

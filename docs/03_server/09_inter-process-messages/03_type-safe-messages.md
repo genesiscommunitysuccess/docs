@@ -9,7 +9,7 @@ tags:
   - type-safe messages
 ---
 
-The Genesis low-code platform uses type-safe messages to perform message serialisation and deserialisation. In addition to this, it automatically extracts relevant metadata to expose this to the front end. These type-safe messages are most commonly used in Request Servers, GPAL Event Handlers and Event Handlers that have been [implemented as a set of classes](../../../database/api-reference/event-handler-api/).
+The Genesis low-code platform uses type-safe messages to perform message serialisation and deserialisation. In addition to this, it automatically extracts relevant metadata to expose this to the front end. These type-safe messages are most commonly used in Request Servers, GPAL Event Handlers and Event Handlers that have been [implemented as a set of classes](../../../server/api-reference/event-handler-api/).
 
 ## Input messages
 

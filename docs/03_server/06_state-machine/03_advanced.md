@@ -172,7 +172,7 @@ eventHandler {
 
 You can also see a State Machine being created in practice in our [tutorial](../../../server/state-machine/introduction/).
 
-### Inject State Machine in Event Handler [API](../../../database/api-reference/event-handler-api/)
+### Inject State Machine in Event Handler [API](../../../server/api-reference/event-handler-api/)
 
 ```kotlin
 @Module
