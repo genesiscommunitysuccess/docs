@@ -34,7 +34,7 @@ The options for both XML and GPAL are:
 * **insertNewEntries**. If you set this to **true**, it will force the caching of new records inserted for each table. Standard behaviour won't cache records inserted if they haven't been read before. Default: false.
 * **tables**
   * **name** is the only mandatory setting for each table definition, and it is used to identify the database tables to be cached.
-  * **loadOnStart**, **update** and **insertNewEntries** options are also available at this level. The behaviour and default values are the same effect as their global settings counterparty described above, but applies at the specific table level.
+  * **loadOnStart**, **update** and **insertNewEntries** options are also available at this level. The behaviour and default values have the same effect as their global settings counterparty described above, but apply at the specific table level.
   * The **indices** setting allows you to provide a set of unique indices to be cached as part of the **update** and **loadOnStart** operations.
 
 ### XML example
