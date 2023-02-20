@@ -188,7 +188,7 @@ Note - When using logical OR in your filter, you will lose the ability to use in
 30 mins
 :::
 
-We are enriching ALL_TRADES Data Server query to improve the users experience. We shall derive a field on our query by bringing the user's favourite trades into the context.
+We are enriching the ALL_TRADES Data Server query to improve the user experience. We shall derive a field on our query by bringing the user's favourite trades into the context.
 
 To do that, create a table *FAVOURITE_TRADE* with the fields TRADE_ID and USER_NAME, as well as an index over the USER_NAME to be able to use the `byUserName` function over the FavouriteTrade DAO. Finally, create a derived field called "IS_FAVOURITE" to show whether the Trade is favourite or not.
 
