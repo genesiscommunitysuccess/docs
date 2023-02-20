@@ -19,7 +19,7 @@ Make sure you have completed the [Environment set-up](../../../getting-started/d
 Clone the Server Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/servertraining-seed). Open it using your favorite IDE such as IntelliJ or Visual Studio Code.
 
 - Make sure you are ok with all the [pre-requisites](../../../getting-started/prerequisites/introduction/).
-- Now, using the repo you just clone, [build the docker images](../../../getting-started/developer-training/environment-setup/#building-the-docker-images), and [Attach a terminal to the gsf Docker container](../../../getting-started/developer-training/environment-setup/#attaching-a-terminal-to-a-docker-container) to check the [Genesis monitor](../../../operations/commands/server-commands/#mon-script) running.
+- Now, using the repo that you just cloned, [build the docker images](../../../getting-started/developer-training/environment-setup/#building-the-docker-images), and [attach a terminal to the gsf Docker container](../../../getting-started/developer-training/environment-setup/#attaching-a-terminal-to-a-docker-container). You can then use [Genesis monitor](../../../operations/commands/server-commands/#mon-script) to check that the server is running.
 
 The application will open at `http://localhost:6060/login`.
 
