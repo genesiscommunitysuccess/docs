@@ -188,7 +188,7 @@ Note - When using logical OR in your filter, you will lose the ability to use in
 30 mins
 :::
 
-We are enriching ALL_TRADES Data Server query to improve the users experience. We shall derive a field on our query by bringing the user's favourite trades into the context.
+We are enriching the ALL_TRADES Data Server query to improve the user experience. We shall derive a field on our query by bringing the user's favourite trades into the context.
 
 To do that, create a table *FAVOURITE_TRADE* with the fields TRADE_ID and USER_NAME, as well as an index over the USER_NAME to be able to use the `byUserName` function over the FavouriteTrade DAO. Finally, create a derived field called "IS_FAVOURITE" to show whether the Trade is favourite or not.
 
@@ -362,7 +362,7 @@ requestReplies {
 
 You can specify ranges from the client of the requestReply server by postfixing the request parameter names with _FROM and _TO. 
 
-The example below shows a client building a GenesisSet request based upon the requestReplies defined from previous example. This example stipulates a price range between 1,000 and 10,000. Leaving out FROM will define a top-end range, leaving out TO will define a bottom-end range. 
+The example below shows a client building a GenesisSet request based upon the requestReplies defined from the previous example. This example stipulates a price range between 1,000 and 10,000. Leaving out FROM will define a top-end range, leaving out TO will define a bottom-end range. 
 
 
 ```kotlin
