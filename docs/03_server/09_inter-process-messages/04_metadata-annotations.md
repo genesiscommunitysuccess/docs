@@ -2,19 +2,28 @@
 title: 'Inter-process messages - metadata annotations'
 sidebar_label: 'Metadata annotations'
 id: metadata-annotations
-keywords: [server, inter-process messages, metadata, annotations]
+keywords: [server, inter-process messages, metadata, annotations, json schema]
 tags:
   - server
   - inter-process messages
   - metadata
   - annotations
+  - json schema
 ---
 
 # Metadata annotations
 
-The following annotations are found in the package `global.genesis.message.core.annotation` and can be applied when defining Kotlin data classes to be used as input `I` message types. 
+The following annotations are found in the package `global.genesis.message.core.annotation` and can be applied when defining Kotlin data classes to be used as input `I` message types.
 
-As an example, these input types can be used in Event Handlers and custom Request Servers (see [type-safe messages](../../../server/inter-process-messages/type-safe-messages/)). IMPORTANT! These annotations do not currently enforce validation checks in the back end and are informative only. As an example, if `MinLength` and `MaxLength` are used to annotate a metadata property for a String, the back end will not automatically check the size of it.
+As an example, these input types can be used in Event Handlers and custom Request Servers (see [type-safe messages](../../../server/inter-process-messages/type-safe-messages/)). 
+
+It is important to note that these annotations will influence the automatic generation of relevant [Json schema](https://json-schema.org/) definitions within the backend metadata system, as well as enforcing transparent validation checks.
+
+:::caution
+
+The `UniqueItems` annotation will generate a Json schema `uniqueItems` definition. Unfortunately, the current specification of `uniqueItems` means that only primitive values will be checked for uniqueness (i.e. string, integer, etc), as opposed to fully fledged object definitions. One of the consequences is that it is currently impossible to use Json Schema and allow for advanced `uniqueItems` checks, including unique `id` checks. See discussions around key-based uniqueness in [here](https://github.com/json-schema-org/json-schema-vocabularies/issues/22).
+
+:::
 
 | Annotation name | Targets | Parameters | Description |
 |----|----|----| --- |

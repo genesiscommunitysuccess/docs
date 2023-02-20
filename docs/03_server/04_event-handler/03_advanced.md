@@ -127,6 +127,60 @@ If the Event Handler message type is a database-generated entity that is auditab
 
 State machines, which define the conditions for moving from one state to another, are defined within your Event Handler files. See more details about these in the section on [Defining your state machines](../../../server/state-machine/introduction/).
 
+## Disabling schema validation
+
+It is possible to disable the automatic Json Schema validation enforced by default for all type-safe messages for each individual event handler.
+
+To disable schema validation for a specific event, either:
+
+- Override the `schemaValidation` method to `false` in the custom Event Handler definitions. 
+or
+- Set the `schemaValidation` property to `false` in a GPAL Event Handler.
+
+Here is an example of a custom Event Handler definition:
+```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.eventhandler.typed.async.AsyncValidatingEventHandler
+import global.genesis.message.core.event.Event
+import global.genesis.message.core.event.EventReply
+
+@Module
+class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply> {
+    // Override schemaValidation here to disable schema validation
+    override fun schemaValidation(): Boolean = false
+    
+    override suspend fun onValidate(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return ack()
+    }
+
+    override suspend fun onCommit(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return ack()
+    }
+}
+```
+
+or in a GPAL definition:
+
+```kotlin
+
+eventHandler {
+    eventHandler<Company> {
+        schemaValidation = false
+        onCommit { event ->
+            val company = event.details
+            // custom code block..
+            ack()
+        }
+    }
+}
+```
+
+See more information about how to define type-safe messages [here](../../03_server/09_inter-process-messages/03_type-safe-messages.md).
+
 ## Pending approvals
 
 
