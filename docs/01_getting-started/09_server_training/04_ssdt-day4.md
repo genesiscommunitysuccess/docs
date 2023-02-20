@@ -81,7 +81,7 @@ The `dictionaryBuilder` script generates the **fields-dictionary.kts** and **tab
 
 To create a [Streamer](../../../server/integration/gateways-and-streamers/streamer/):
 
-1. Add the `genesis-pal-streamer` dependency in your *{applicationName}-script-config\build.gradle.kts" file. In this training our file is **alpha-script-config\build.gradle.kts**:
+1. Add the `genesis-pal-streamer` dependency to your **{applicationName}-script-config\build.gradle.kts** file. In this training our file is **alpha-script-config\build.gradle.kts**:
 
 ```kotlin {3}
 dependencies {
