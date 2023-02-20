@@ -1,5 +1,5 @@
 ---
-title: 'Event Handler - Examples'
+title: 'Event Handler - examples'
 sidebar_label: 'Examples'
 id: examples
 keywords: [server, event handler, examples]

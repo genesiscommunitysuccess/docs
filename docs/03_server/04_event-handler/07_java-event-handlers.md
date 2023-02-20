@@ -179,8 +179,7 @@ If you want your  `eventHandler` to comply with ACID, you need to use the RxEnti
 
 ### Context Event Handlers
 
-In order to optimise database look-up operations, you might want to use data obtained by the `onValidate` method inside your `onCommit` method. To do this,
-implement the Rx3ContextValidatingEventHandler interface, as shown below:
+In order to optimise database look-up operations, you might want to use data obtained by the `onValidate` method inside your `onCommit` method. To do this, implement the Rx3ContextValidatingEventHandler interface, as shown below:
 
 ```java
 

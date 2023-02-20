@@ -1,5 +1,5 @@
 ---
-title: 'Event Handler - Basics'
+title: 'Event Handler - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, event handler, basics]
@@ -184,8 +184,7 @@ However, note that an `onValidate` codeblock is mandatory when using custom repl
 Kotlin’s `require` method throws an exception with a message if the boolean expression is not what is expected, and the Event Handler automatically converts that exception into a corresponding `EventNack`.
 
 ### Context Event Handlers
-In order to optimise database look-up operations, you might want to use data obtained by the `onValidate` block inside your `onCommit` block. To do this, 
-use context Event Handlers, as shown below:
+In order to optimise database look-up operations, you might want to use data obtained by the `onValidate` block inside your `onCommit` block. To do this, use context Event Handlers, as shown below:
 
 ```kotlin
     contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {

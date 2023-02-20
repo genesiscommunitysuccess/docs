@@ -54,6 +54,7 @@ The Event Handler interface is the common supertype of AsyncEventHandler, Rx3Eve
 | messageType | `fun messageType(): String?` | null | Contains the name of the Event Handler. If undefined, the Event Handler name will become `EVENT_*INPUT_CLASS_NAME*`. So, for an Event Handler using an input type called `TradeInsert`, the message type will become `EVENT_TRADE_INSERT`.                                                               |
 | overrideMetadataFields | `fun overrideMetadataFields(): Map<String, OverrideMetaField>` | emptySet() | Contains a map (key-value entries) of metadata field names to metadata field definitions in the shape of `OverrideMetaField`. This enables you to override the metadata field properties extracted from input `I`                                                                                        |
 | requiresPendingApproval | `fun requiresPendingApproval(): Boolean` | false | This is used where particular system events require a second system user to approve them ([pending approval](../../../server/event-handler/advanced/#pending-approvals) in order to take effect) |
+| schemaValidation | `fun schemaValidation(): Boolean` | true | This option enables you to disable the automatic Json Schema validation enforced by the back end. See [type-safe messages](../../03_server/09_inter-process-messages/03_type-safe-messages.md) for more information.
 
 Each custom Event Handler must define an input message type `I` and an output message type `O` (these need to be data classes), as GPAL Event Handlers do). In the examples below, `Company` is the input message and `EventReply` is the output message. The `message` object contains event message and has the following properties :
 
@@ -128,7 +129,8 @@ import global.genesis.eventhandler.typed.async.AsyncEventHandler
 import global.genesis.message.core.event.Event
 import global.genesis.message.core.event.EventReply
 
-@Moduleclass EventCompanyHandlerAsync : AsyncEventHandler<Company, EventReply> {    
+@Module
+class EventCompanyHandlerAsync : AsyncEventHandler<Company, EventReply> {    
     override suspend fun process(message: Event<Company>): EventReply {        
         val company = message.details        
         // custom code block..        
@@ -160,7 +162,8 @@ import global.genesis.eventhandler.typed.async.AsyncValidatingEventHandler
 import global.genesis.message.core.event.Event
 import global.genesis.message.core.event.EventReply
 
-@Moduleclass TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply> {
+@Module
+class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply> {
     override suspend fun onValidate(message: Event<Company>): EventReply {        
         val company = message.details        
         // custom code block..        
@@ -206,7 +209,8 @@ import global.genesis.message.core.event.Event
 import global.genesis.message.core.event.EventReply
 import global.genesis.message.core.event.ValidationResult
 
-@Moduleclass TestCompanyHandlerAsync : AsyncContextValidatingEventHandler<Company, EventReply, String> {    
+@Module
+class TestCompanyHandlerAsync : AsyncContextValidatingEventHandler<Company, EventReply, String> {    
     override suspend fun onValidate(message: Event<Company>): ValidationResult<EventReply, String> {        
         val company = message.details        
         // custom code block..        
