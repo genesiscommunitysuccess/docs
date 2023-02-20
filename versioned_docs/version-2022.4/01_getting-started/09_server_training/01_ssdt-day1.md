@@ -142,7 +142,7 @@ Let´s start the hands-on training with the first exercise. We are going to crea
 Create a new item in the system definition file and use it in the fields definition file. We should edit the local system definition file to do that.
 
 :::tip changing alpha-system-definition configurations 
-To do this exercise, go to the file **alpha-system-definition.kts** and do the changes. Then, go to the fields definition file and set the *nullable* using SysDef. 
+To do this exercise, go to the file **alpha-system-definition.kts** and do the changes. Then, go to the fields definition file and set *nullable* using SysDef. 
 
 After the changes, don't forget to run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 :::
@@ -258,7 +258,7 @@ Using entityDb, it is also possible to subscribe operations, starting a database
 40 mins
 :::
 
-Create a new event called **TRADE_STANDARDIZATION** to perform a standardization in the Trade table, setting all negative *Trade.Price* records to zero. This method can use the ReadOperation [getBulk](../../../database/database-interface/entity-db/#getbulk) method to list all Trades and then use the [filter](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/filter.html) method Kotlin Flow class offers.
+Create a new event called **TRADE_STANDARDIZATION** to perform a standardization in the Trade table, setting all negative *Trade.Price* records to zero. This method can use the ReadOperation [getBulk](../../../database/database-interface/entity-db/#getbulk) method to list all Trades and then use the [filter](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/filter.html) method that the Kotlin Flow class offers.
 
 :::tip
 After selecting the Trade records you can use the *forEach* method to set the prices to zero, and then use entityDb method [modifyAll](../../../database/database-interface/entity-db/#modify) to update everything.
@@ -355,6 +355,6 @@ The `onException` block can capture any exceptions thrown by the `onValidate` an
 30 mins
 :::
 
-Now let's change the EVENT_INSTRUMENT_INSERT to use a custom reply message type. Create the classes `CustomInstrumentEventReply ` and add it under **alpha-messages** package *global.genesis.alpha.message.event*. The Event Handler `onValidate` should ensure that *instrumentName* has at least 3 characters.
+Now let's change the EVENT_INSTRUMENT_INSERT to use a custom reply message type. Create the classes `CustomInstrumentEventReply ` and add it under **alpha-messages** package *global.genesis.alpha.message.event*. The Event Handler `onValidate` statement should ensure that *instrumentName* has at least 3 characters.
 
 
