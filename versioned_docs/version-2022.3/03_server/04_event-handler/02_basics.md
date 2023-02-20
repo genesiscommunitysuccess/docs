@@ -1,5 +1,5 @@
 ---
-title: 'Event Handler - Basics'
+title: 'Event Handler - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, event handler, basics]
