@@ -1,5 +1,5 @@
 ---
-title: 'Data Server - Advanced'
+title: 'Data Server - advanced'
 sidebar_label: 'Advanced'
 id: advanced
 keywords: [server, data server, dataserver, advanced]
@@ -11,7 +11,7 @@ tags:
 ---
 
 
-### Client-enriched data
+## Client-enriched data
 
 In some scenarios, you might want to associate the results of Data Server queries with the user who initiated the queries. You can achieve this using the ```enrich``` feature, which enables an additional table or view join (including backwards joins). With this feature, you can provide user-specific values for each row, or even perform cell-level permissioning (for example, to hide cell values), depending on entitlements.
 
@@ -106,7 +106,7 @@ query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
 
 ```
 
-### Ranged Data Server queries
+## Ranged Data Server queries
 
 Ranged Data Servers only cache a defined range within a table or view. This makes the Data Server more responsive and reduces resource requirements.
 
