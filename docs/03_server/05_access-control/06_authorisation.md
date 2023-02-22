@@ -293,23 +293,32 @@ permissioning {
 
 You can define a where clause if you only want to show a row in specific cases. These authorisation definitions first evaluate the where clause against the permission map. This functionality on its own is not that useful, because for a single auth permissions map, the content of the where clause could be moved to the query where clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
 
-The example below shows permissioning where authorisation is successful if the user satisifies one of two code blocks:
+The where clause scope is the same as the entity object so you can reference fields directly. If required, a parameter of the username can also be included.
+
+The example below shows permissioning where authorisation is successful if the user satisifies one of three code blocks:
 - The first block has a where clause that prevents the user (a permissioned buying countparty) from viewing cancelled trades.
 - The second block makes the information visible to any permissioned selling counterparty - so they can view cancelled trades.
+- The third block makes the information visible provided the trade owner is visibile to the user, excluding any trades created by TEST_USER.
 
 ```kotlin
 permissioning {
     auth(mapName = "ENTITY_VISIBILITY") {
         TRADE.BUYING_COUNTERPARTY
-        where { trade ->
-            TradeState.CANCELLED != trade.tradeState
+        where { 
+            TradeState.CANCELLED != tradeState
         }
         //Only visible to users with entity access to SELLING_COUNTERPARTY ID on the trade WHERE trade state is not CANCELLED (so buyer can't see cancelled trades effectively)
     } or
     auth(mapName = "ENTITY_VISIBILITY") {
         TRADE.SELLING_COUNTERPARTY
         //No where clause, so always visible to users with entity access to SELLING_COUNTERPARTY ID on the trade
-    }
+    } or 
+	auth(mapName = "USER_VISIBILITY) {
+		TRADE.OWNER
+		where { user ->
+			user != "TEST_USER"
+		}
+	}
 }
 ```
 
