@@ -40,8 +40,11 @@ The `authentication` function is used to define common features of all three typ
 
 For more information about each of these three authentication types please see the [authentication overview](../../../server/access-control/authentication-overview/#username-and-password-authentication).
 
-### ldap
-Within the scope of the `authentication` function, you can define an `ldap` block that can define connections to one or more LDAP servers. To define a connection to a server, call the `connection` function and set the relevant details. To define connections to more than one server, simply call the `connection` function multiple times.
+### LDAP
+Within the scope of the `authentication` function, you can define an `ldap` block that can define connections to one or more LDAP servers. 
+
+- To define a connection to a single server, call the `connection` function and set the relevant details. 
+- To define connections to more than one server, simply call the `connection` function multiple times.
 
 When using multiple LDAP connections, the connections will be used in the order specified to authenticate a login request. Only one server need return a successful result for the login to be successful.
 
