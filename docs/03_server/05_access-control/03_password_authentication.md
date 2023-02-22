@@ -40,7 +40,12 @@ The `authentication` function is used to define common features of all three typ
 
 For more information about each of these three authentication types please see the [authentication overview](../../../server/access-control/authentication-overview/#username-and-password-authentication).
 
-The following variables are used to configure an LDAP connection; these are only used when the `type` is either `AuthType.LDAP` or `AuthType.HYBRID`.
+### ldap
+Within the scope of the `authentication` function, you can define an `ldap` block that can define connections to one or more LDAP servers. To define a connection to a server, call the `connection` function and set the relevant details. To define connections to more than one server, simply call the `connection` function multiple times.
+
+When using multiple LDAP connections, the connections will be used in the order specified to authenticate a login request. Only one server need return a successful result for the login to be successful.
+
+The following variables are used to configure an LDAP connection; these are only used when the `type` is either `AuthType.LDAP` or `AuthType.HYBRID`. 
 
 * `url` specifies the LDAP server hostname. Default: `localhost`.
 * `port` specifies the LDAP server port. Default: 389.
@@ -144,17 +149,21 @@ security {
 
     authentication {
         type = AuthType.LDAP
-        url = "localhost"
-        port = 389
-        searchBase {
-            searchBase("ou=temp,dc=temp")
-        }
-        userGroups {
-        }
-        userPrefix = ""
-        bindDn = null
-        bindPassword = null
-        userIdType = "cn"
+		ldap {
+			connection {
+				url = "localhost"
+                port = 389
+                searchBase {
+                    searchBase("ou=temp,dc=temp")
+                }
+                userGroups {
+                }
+                userPrefix = ""
+                bindDn = null
+                bindPassword = null
+                userIdType = "cn"
+			}
+		}       
     }
 
     passwordValidation {

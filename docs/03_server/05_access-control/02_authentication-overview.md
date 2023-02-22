@@ -81,7 +81,7 @@ However, if you specify this, you lose control of the internal authentication fu
 
 For LDAP authentication, a username must exist inside the internal records of the application. To do this, create a user entry inside the USER table for every LDAP user of the Application. There is no password checking between this login and the Application's internal records; authentication will rely solely on LDAP.
 
-To set up LDAP authentication the `authentication` block of the **auth-preferences.kts** file will need to be configured.
+To set up LDAP authentication a connection to an LDAP server must be configured in the **auth-preferences.kts** file.
 
 For more information on configuring LDAP authentication, please see [Username and password authentication](../../../server/access-control/password-authentication/#authentication).
 
@@ -90,15 +90,20 @@ The example below shows LDAP authentication specified, with `userIdType` set to 
 ```kotlin
     authentication {
         type = AuthType.LDAP
-        url = "localhost"
-        port = 389
-        // Multiple searchBase elements are allowed -->
-        searchBase {
-            entry("ou=People,dc=example,dc=com")
-        }
-        bindDn = "CN=DTADevBindUser,ou=People,dc=example,dc=com"
-        bindPassword = "password123"
-        userIdType = "cn"
+		ldap {
+		    connection {
+		        url = "localhost"
+                port = 389
+                searchBases {
+				    searchBase {
+                        entry("ou=People,dc=example,dc=com")
+			        }
+                }
+                bindDn = "CN=DTADevBindUser,ou=People,dc=example,dc=com"
+                bindPassword = "password123"
+                userIdType = "cn"	
+			}
+		}
     }
 ```
 
@@ -115,15 +120,20 @@ The configuration file takes the same fields as LDAP. You can see this in the ex
 ```kotlin
     authentication {
         type = AuthType.HYBRID
-        url = "localhost"
-        port = 389
-        // Multiple searchBase elements are allowed -->
-        searchBase {
-            entry("ou=People,dc=example,dc=com")
-        }
-        bindDn = "CN=DTADevBindUser,ou=People,dc=example,dc=com"
-        bindPassword = "password123"
-        userIdType = "cn"
+        ldap {
+		    connection {
+		        url = "localhost"
+                port = 389
+                searchBases {
+				    searchBase {
+                        entry("ou=People,dc=example,dc=com")
+			        }
+                }
+                bindDn = "CN=DTADevBindUser,ou=People,dc=example,dc=com"
+                bindPassword = "password123"
+                userIdType = "cn"	
+			}
+		}
     }
 ```
 
