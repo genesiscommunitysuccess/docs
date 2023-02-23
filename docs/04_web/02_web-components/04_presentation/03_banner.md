@@ -40,3 +40,4 @@ provideDesignSystem().register(alphaButton());
 
 * Warning notifications
 * Advertisement
+* displaying a logo
