@@ -329,7 +329,7 @@ You can run the test from IntelliJ by right-clicking on the test class and selec
 
 #### Adding Testing: AlphaEventHandlerTest
 
-Now we will add a new automated test for checking the Trade insert method we [created](http://localhost:8080/getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](/operations/testing/integration-testing/#abstractgenesistestsupport) to allow a proper integration testing. In summary, the new test will:
+Now we will add a new automated test for checking the Trade insert method we [created](../../../getting-started/developer-training/training-content-day1/#event-handler). We are extending the class [AbstractGenesisTestSupport](/operations/testing/integration-testing/#abstractgenesistestsupport) to allow a proper integration testing. In summary, the new test will:
 * load the necessary data inputs from a CSV file 
 * use the network API [Genesis MessageClient](../../../server/api-reference/network-api/#genesismessageclient​) to call the Event Handler methods.
 * retrieve data using [Genesis Database API](/database/)
