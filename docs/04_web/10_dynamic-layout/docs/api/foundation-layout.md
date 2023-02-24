@@ -26,8 +26,8 @@
 |  --- | --- |
 |  [DEFAULT\_RELOAD\_BUFFER](./foundation-layout.default_reload_buffer.md) | <p>**_(BETA)_** Default time in milliseconds for the layout to buffer calls to reloading the layout while the declarative API is loading.</p><p>During the first load of the layout, a loading spinner will be shown.</p> |
 |  [foundationLayoutComponents](./foundation-layout.foundationlayoutcomponents.md) | **_(BETA)_** Registration object to register the layout with your design system. |
-|  [LayoutEmitEvents](./foundation-layout.layoutemitevents.md) | <p>**_(BETA)_** Defines events that the layout system emits</p><p>'first-loaded' - emitted when the layout has finished loading the first time using the declarative API after [DEFAULT\_RELOAD\_BUFFER](./foundation-layout.default_reload_buffer.md) ms. <br/> 'item-added' - emitted when an item is added to the layout' <br/> 'item-removed' - emitted when an item is removed from the layout'</p> |
-|  [LayoutReceiveEvents](./foundation-layout.layoutreceiveevents.md) | <p>**_(BETA)_** Defines events that the layout system listens for</p><p>'change-title' - emit this from a contained item to update the title of the window that contains it.</p> |
+|  [LayoutEmitEvents](./foundation-layout.layoutemitevents.md) | <p>**_(BETA)_** Defines events that the layout system emits</p><p>'firstLoaded' - emitted when the layout has finished loading the first time using the declarative API after [DEFAULT\_RELOAD\_BUFFER](./foundation-layout.default_reload_buffer.md) ms. <br/> 'itemAdded' - emitted when an item is added to the layout' <br/> 'itemRemoved' - emitted when an item is removed from the layout'</p> |
+|  [LayoutReceiveEvents](./foundation-layout.layoutreceiveevents.md) | <p>**_(BETA)_** Defines events that the layout system listens for</p><p>'changeTitle' - emit this from a contained item to update the title of the window that contains it.</p> |
 |  [layoutStyles](./foundation-layout.layoutstyles.md) | **_(BETA)_** <code>ElementStyles</code> which defines the css for [FoundationLayout](./foundation-layout.foundationlayout.md). |
 |  [layoutTemplate](./foundation-layout.layouttemplate.md) | **_(BETA)_** <code>ViewTemplate</code> which defines the html for [FoundationLayout](./foundation-layout.foundationlayout.md). |
 
@@ -35,7 +35,7 @@
 
 |  Type Alias | Description |
 |  --- | --- |
-|  [LayoutReceiveEventsDetail](./foundation-layout.layoutreceiveeventsdetail.md) | <p>**_(BETA)_** Defines the shape of the detail that the layout listens works with for events it listens on</p><p>'change-title' - <code>title</code> is the string you want to set. For <code>mode</code>: <code>replace</code> will set the title to be <code>title</code>, <code>suffix</code> will append <code>title</code> to the end of the existing title.</p> |
+|  [LayoutReceiveEventsDetail](./foundation-layout.layoutreceiveeventsdetail.md) | <p>**_(BETA)_** Defines the shape of the detail that the layout listens works with for events it listens on</p><p>'changeTitle' - <code>title</code> is the string you want to set. For <code>mode</code>: <code>replace</code> will set the title to be <code>title</code>, <code>suffix</code> will append <code>title</code> to the end of the existing title.</p> |
 |  [LayoutRegionType](./foundation-layout.layoutregiontype.md) | **_(BETA)_** Union type describing the three different types of region splits. Set on the <code>type</code> attribute on [FoundationLayoutRegion](./foundation-layout.foundationlayoutregion.md). |
 |  [Placement](./foundation-layout.placement.md) | **_(BETA)_** Where to add the new item into the layout when using the [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md) API |
 |  [SerialisedLayout](./foundation-layout.serialisedlayout.md) | **_(BETA)_** Versioned layout config objects. <code>v</code> is the version and <code>c</code> contains the layout config. |

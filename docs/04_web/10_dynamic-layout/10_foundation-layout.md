@@ -8,7 +8,6 @@ tags:
   - layout
   - foundation layout
   - frontend
-  - front end
   - ui
   - golden layout
 ---
@@ -67,7 +66,7 @@ The following example shows the usage of the declarative API with `zero-charts` 
 
 To enable this module in your application, follow the steps below.
 
-1. Add `@genesislcap/foundation-layout` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. 
+1. Add `@genesislcap/foundation-layout` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again.
 
 ```javascript
 {
@@ -923,4 +922,5 @@ You can then use the custom component in the layout:
 		</foundation-layout-item>
 </foundation-layout>
 ```
+
 

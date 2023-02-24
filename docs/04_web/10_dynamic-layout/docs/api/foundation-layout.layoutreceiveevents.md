@@ -9,12 +9,12 @@
 
 Defines events that the layout system listens for
 
-'change-title' - emit this from a contained item to update the title of the window that contains it.
+'changeTitle' - emit this from a contained item to update the title of the window that contains it.
 
 **Signature:**
 
 ```typescript
 LayoutReceiveEvents: {
-    readonly 'change-title': "change-title";
+    readonly changeTitle: "change-title";
 }
 ```

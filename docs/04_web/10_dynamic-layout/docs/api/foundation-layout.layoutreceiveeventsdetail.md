@@ -9,13 +9,13 @@
 
 Defines the shape of the detail that the layout listens works with for events it listens on
 
-'change-title' - `title` is the string you want to set. For `mode`: `replace` will set the title to be `title`, `suffix` will append `title` to the end of the existing title.
+'changeTitle' - `title` is the string you want to set. For `mode`: `replace` will set the title to be `title`, `suffix` will append `title` to the end of the existing title.
 
 **Signature:**
 
 ```typescript
 export type LayoutReceiveEventsDetail = {
-    'change-title': {
+    changeTitle: {
         title: string;
         mode: 'replace' | 'suffix';
     };

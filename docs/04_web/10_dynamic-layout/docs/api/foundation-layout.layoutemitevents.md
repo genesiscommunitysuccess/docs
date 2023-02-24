@@ -9,14 +9,14 @@
 
 Defines events that the layout system emits
 
-'first-loaded' - emitted when the layout has finished loading the first time using the declarative API after [DEFAULT\_RELOAD\_BUFFER](./foundation-layout.default_reload_buffer.md) ms. <br/> 'item-added' - emitted when an item is added to the layout' <br/> 'item-removed' - emitted when an item is removed from the layout'
+'firstLoaded' - emitted when the layout has finished loading the first time using the declarative API after [DEFAULT\_RELOAD\_BUFFER](./foundation-layout.default_reload_buffer.md) ms. <br/> 'itemAdded' - emitted when an item is added to the layout' <br/> 'itemRemoved' - emitted when an item is removed from the layout'
 
 **Signature:**
 
 ```typescript
 LayoutEmitEvents: {
-    readonly 'first-loaded': "first-loaded";
-    readonly 'item-added': "item-added";
-    readonly 'item-removed': "item-removed";
+    readonly firstLoaded: "first-loaded";
+    readonly itemAdded: "item-added";
+    readonly itemRemoved: "item-removed";
 }
 ```
