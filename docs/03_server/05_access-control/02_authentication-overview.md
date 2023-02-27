@@ -75,7 +75,7 @@ Internal authentication is the default authentication behaviour if you don't spe
 
 ### LDAP
 
-LDAP authentication leverages use of its namesake protocol to authenticate users. 
+LDAP authentication uses its namesake protocol to authenticate users. 
 
 However, if you specify this, you lose control of the internal authentication functionality. This is because the authentication relies on an external party that cannot be operated from the Application. As a direct consequence, requests to change or reset passwords won't be accepted.
 
