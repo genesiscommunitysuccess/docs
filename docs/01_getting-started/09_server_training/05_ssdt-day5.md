@@ -189,30 +189,70 @@ The `process()` function must be overridden and implemented in order to add busi
 ### Authentication
 The `requiresAuth()` function can be overridden to determine if the endpoint requires a `SESSION_AUTH_TOKEN` with the request, such as those made from authenticated sessions. Without a definition, this returns a default value of `true`. In the example above, this Authorisation is not required when the system is running in `TEST_MODE`, which is useful for testing these endpoints with integration tests.
 
-#### Exercise 5.1 Trade.getBulk to CSV Download Endpoint
-<!--
-acho q da pra usar esse de base:
+### Configure processes.xml
 
-https://docs.genesis.global/secure/creating-applications/defining-your-application/integrations/custom-endpoints/ce-advanced-technical-details/#attachmentdownloadendpoint
+You need to alter the GENESIS_ROUTER process configuration, which is defined in the **genesis-processes.xml** file located in the **~/run/genesis/cfg** folder.
+- Add the name of the package, where the custom endpoint is defined in the [package](../../../server/configuring-runtime/processes/#package) tag. In the example below, this is `global.genesis.alpha.fileHandler`.
+- Add the Jar file of the submodule containing the custom endpoint to the [classpath](../../../server/configuring-runtime/processes/#classpath) tag. In the example below, this is `alpha-file-handler*.jar`.
 
-mas eu mudaria pra ele fazer tipo um getBulk numa tabela, gerar um CSV e fazer o download
--->
+
+```xml {6,10}
+<process name="GENESIS_ROUTER">
+        <start>true</start>
+        <groupId>GENESIS</groupId>
+        <options>-Xmx512m -DXSD_VALIDATE=false</options>
+        <module>router</module>
+        <package>global.genesis.router,global.genesis.console,global.genesis.alpha.fileHandler</package>
+        <config>router-process-config.kts</config>
+        <script>genesis-router.kts</script>
+        <language>pal</language>
+        <classpath>genesis-console-*.jar,alpha-file-handler*.jar</classpath>
+        <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
+</process>
+```
+
+There is more information on how we define processes, in our page on [process.xml](../../../server/configuring-runtime/processes).
+
+
+### Exercise 5.1 Creating CSV Upload Endpoints
+
 :::info ESTIMATED TIME
 45 mins
 :::
 
-We are going to create a new endpoint where the result of Trade.getBulk should write a CSV file and then download it. 
+We are going to create CSV Upload Endpoints. Let's create the possibility to upload *Counterparty* and *Instrument* records through CSVs. The fields are pretty much what we defined [before](../../../getting-started/developer-training/training-content-day2/#exercise-22-extending-the-application). 
+
+To do that, create a new server module `alpha-file-handler`, and add it to be build and deployed (*server/jvm/settings.gradle.kts*, *alpha-deploy/build.gradle.kts*, *alpha-distribution/build.gradle.kts*, **). In this new module, create the classes and add your logic to complete the task.
+
+Create a new item to limit the size of the CSVs to 4 megabytes. You can add a new item in **genesis-system-definition.kts** as below.
+
+```kotlin {6}
+package genesis.cfg
+
+systemDefinition {
+    global {
+        ...
+        item(name = "SYS_DEF_FILE_MAX_SIZE_IN_BITS", value = "32000000")
+    }
+    ...
+}
+```
 
 Use the knowledge you have acquired so far to create a class implementing the interface `WebEndpoint`.
 
 :::tip
-There is a similar sample [here](../../../server/integration/custom-endpoints/advanced/#attachmentdownloadendpoint), which defines Attachments Download Endpoint.
+Don't forget the required configuration explained [here](#configure-processesxml).
+
+Also, there is a similar sample [here](../../../server/integration/custom-endpoints/advanced/#attachmentuploadendpoint), which defines Attachments Upload Endpoint.
+
+Lastly, you can use [this](https://www.postman.com/postman/workspace/postman-answers/documentation/13455110-00378d5c-5b08-4813-98da-bc47a2e6021d) reference to test it using Postman.
 :::
+
 
 
 ## Camel module
 
-The Genesis platform supports the use of [Apache Camel](https://camel.apache.org/) in order to integrate with external systems, using its plethora of [components](https://camel.apache.org/components/3.16.x/index.html). Genesis makes this easy to configure and set up, allowing new processors to be defined and used within GPAL.
+The Genesis platform supports the use of [Apache Camel](https://camel.apache.org/) in order to integrate with external systems, using its plethora of [components](https://camel.apache.org/docs). Genesis makes this easy to configure and set up, allowing new processors to be defined and used within GPAL.
 
 Likely uses for Apache Camel include:
 - receiving data from the local filesystem
@@ -229,39 +269,20 @@ The Genesis low-code platform only includes the `camel-core` dependency. You wil
 
 ### Configuration
 
-- Add the configuration for the Camel module to the {applicationName}-processes.xml file:
+- Add the `genesis-pal-camel` and `camel-core` dependencies in your *{applicationName}*-script-config\build.gradle.kts" file. In this training our file is **alpha-script-config\build.gradle.kts**:
 
-```xml
-  <process name="ALPHA_CAMEL">
-    <groupId>ALPHA</groupId>
-    <start>true</start>
-    <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
-    <module>genesis-pal-camel</module>
-    <package>global.genesis.eventhandler.pal</package>
-    <script>alpha-eventhandler.kts</script>
-    <description>Handles events</description>
-    <classpath>alpha-messages*,alpha-camel*,alpha-camel-libs*.jar</classpath>
-    <language>pal</language>
-  </process>
-```
-
-... where the position-camel-libs module may have similar dependencies to the following:
-
-```kotlin
-    api("org.apache.camel:camel-mail:3.14.2")
-    api("javax.mail:javax.mail-api:1.6.2")
-```
-
-- Next, add the service definition to the {applicationName}-service-definitions.xml file:
-
-```xml
-<configuration>
+```kotlin {3,4}
+dependencies {
     ...
-    <service host="localhost" name="ALPHA_CAMEL" port="11006"/>
-</configuration>
+    api("global.genesis:genesis-pal-camel")
+    api("org.apache.camel:camel-core")
+    ...
+}
+
+description = "alpha-script-config"
 ```
 
-- Create a Kotlin script file named **{applicationName}-camel.kts** file. It defines a single route using a range of Camel configuration options, which we'll explore in a little more detail below:
+- Create a Kotlin script file named *{applicationName}-camel.kts* file in your *{applicationName}*-script-config/src/main/resources/scripts folder. In this example our file **alpha-camel.kts** defines a single route using a range of Camel configuration options, which we'll explore in a little more detail below:
 ```kotlin
 camel {
     routeHandler {
@@ -275,30 +296,56 @@ camel {
 The `routeHandler` defines the possible routes for information to flow into and out of our system.  The example above defines one route. First, it defines the `pathStr` using the `GenesisPaths` class to find the `GENESIS_HOME` system environment variable. Next, it defines the route itself. The route in the example comes from the filesystem determined by the `file:` specifier at the start of the string. This could be any [Apache Camel component](https://camel.apache.org/components/3.16.x/index.html) that can act as a [consumer](https://camel.apache.org/manual/camelcontext.html#_consumer). Further `routeHandler` parameters and explanation can be found [here](../../../server/integration/apache-camel/basics/#routehandler).
 
 
-#### Exercise 5.2 Reading and writing using an SFTP server
-<!--
-this is pretty much here: http://localhost:8080/server/integration/apache-camel/examples/#reading-from-an-sftp-server
--->
+- Add the configuration for the Camel module to the *{applicationName}-processes.xml* file. In this training our file is **alpha-processes.xml**:
+
+```xml {3-13}
+<processes>
+    ...
+    <process name="ALPHA_CAMEL">
+        <groupId>ALPHA</groupId>
+        <start>true</start>
+        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
+        <module>genesis-pal-camel</module>
+        <package>global.genesis.camel.pal</package>
+        <script>alpha-camel.kts</script>
+        <description>Alpha Camel integrations</description>
+        <classpath>alpha-messages*,alpha-camel*,alpha-camel-libs*.jar</classpath>
+        <language>pal</language>
+    </process>
+</processes>
+```
+
+- Add the service definition to the *{applicationName}-service-definitions.xml* file. In this training our file is **alpha-service-definitions.xml**:
+
+```xml {3}
+<configuration>
+    ...
+    <service host="localhost" name="ALPHA_CAMEL" port="11008"/>
+</configuration>
+```
+
+
+### Exercise 5.2 Reading from an SFTP server
 :::info ESTIMATED TIME
 45 mins
 :::
 
-It is your time! Use the Camel module build a Reading and Writing structure using an [SFTP](https://camel.apache.org/components/3.16.x/sftp-component.html) server. 
+It is your time! Use the Camel module to build a Reading structure using an [SFTP](https://camel.apache.org/components/3.20.x/sftp-component.html) server. Read from an SFTP server using this path */folder-inside-sftp/from.txt* adding a Camel `routeHandler` to copy the file to */home/alpha/run/runtime/inbound/alpha*.
 
-You can use any SFTP public server available to do that. [Here](https://www.sftp.net/public-online-sftp-servers) are some options.
+To do that, do the steps described above in the [configuration](#configuration), and see a similar example [here](../../../server/integration/apache-camel/examples/#reading-from-an-sftp-server).
 
-:::tip
-Use properties set in the _application_**-camel.kts**, allowing you to have site-specific variables for each instance. This is particularly useful when integrating with external services where connection details are likely to vary between environments.
+:::note
+To help you in this task, as The Genesis low-code platform only includes the camel-core dependency, the project you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed) created a new local module called `alpha-camel-libs` declaring the Camel dependencies needed as described [here](../../../server/integration/apache-camel/configuring-runtime/#dependencies).
 
-You can see some samples [here](https://camel.apache.org/components/3.18.x/ftp-component.html#_samples). 
+Also, the project you [cloned](https://github.com/genesiscommunitysuccess/servertraining-seed) has a docker conteiner with an [SFTP](https://hub.docker.com/r/atmoz/sftp) server to do this task, including the `hostname` **sftp**, `user ` **JohnDoe**, and `password` **Password11**.
+
+In order to save your local resources and allow a good experience, we do recommend that you change your **alpha-processes.xml** and **alpha-system-definition.xml** leaving only ALPHA_CAMEL process as runnable. You can do that by commenting the other ones or setting them to start=false.
 :::
 
 
 ## Data Pipeline
 
-:::info
-Feature included in the Genesis low-code platform version 6.1.1
-:::
+Genesis [Data Pipelines](../../../server/integration/data-pipeline/introduction/) is a feature that allows you to stream data in and/or out of your Genesis application.
 
 You can define data pipelines that map data from an external source (database, file) to [Tables](../../../database/fields-tables-views/tables/) in your application. By default, the resulting table objects are stored in the database. However, you can define [custom operations](../../../server/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity) as well.
 
@@ -306,95 +353,115 @@ Each data pipeline defines a source for the data and how that data is mapped to 
 
 Once your Genesis application is running, data ingestion will take place.
 
-Currently, the supported sources are: *PostgreSQL*, *MS SQL Server*, *Oracle Enterprise*, and *Files* that originate from the local filesystem or S3 (CSV, XML, JSON). The parameters and sample usage for each supported data source can be found [here](../../../server/integration/data-pipeline/basics/#data-source).
+Currently, the supported sources are: *PostgreSQL*, *MS SQL Server*, *Oracle Enterprise*, and *Files* that originate from the local filesystem or S3 (CSV, XML, JSON).
 
 ### Configuration
 
-- Add the configuration for the Camel module to the {applicationName}-processes.xml file:
+- Add the dependency `genesis-pal-datapipeline` to your position-alpha-script-config module (**server/jvm/alpha-script-config/build.gradle.kts**). This ensures that you are able to use the data pipeline functionality within your scripts. 
 
-```xml
+```kotlin {3}
+dependencies {
+    ...
+    api("global.genesis:genesis-pal-datapipeline")
+    ...
+}
+
+description = "alpha-script-config"
+```
+
+- Configure data pipelines in a file (i.e. alpha-data-pipeline.kts). This file must be located in your application's configuration directory (**server/jvm/alpha-script-config/src/main/resources/scripts/alpha-data-pipeline.kts**). A pipeline configuration contains a collection of [sources](../../../server/integration/data-pipeline/basics/#how-to-define-a-source), [map functions](../../../server/integration/data-pipeline/basics/#map-functions), and [sink functions](../../../server/integration/data-pipeline/basics/#sink-functions), like the sample below.
+
+```kotlin
+val postgresConfig = postgresConfiguration(
+    databaseName = "",
+    hostname = "",
+    port = 5432,
+    username = "",
+    password = ""
+)
+
+val postgresSink = sink(postgresConfig) {
+    onInsert = insertInto("tableName")
+    onModify = updateTable("tableName")
+    onDelete = deleteFrom("tableName")
+}
+
+pipelines {
+    xmlSource("xml-cdc-test") {
+        location = ""
+
+        map("mapper-name", TABLE) {
+
+        }
+    }
+
+    json("json-cdc-test") {
+        location = ""
+
+        map("mapper-name", TABLE) {
+
+        }
+    }    
+
+    genesisTableSource(TABLE_OBJECT) {
+        key = TABLE_OBJECT.KEY_FIELD
+
+        map(someMapper).sink(postgresSink)
+    }
+}
+```
+
+- Ensure that you add the following config to your alpha-processes.xml file:
+
+```xml {3-13}
 <processes>
-    <process name="DATAPIPELINE_SANDBOX">
-        <groupId>data-pipeline</groupId>
+    ...
+    <process name="ALPHA_DATAPIPELINE">
+        <groupId>ALPHA</groupId>
         <start>true</start>
-        <options>-Xmx1024m</options>
+        <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
         <module>genesis-pal-datapipeline</module>
-        <script>alpha-datapipeline.kts</script>
-        <description>Trades execution</description>
+        <package>global.genesis.datapipeline.pal</package>
+        <script>alpha-data-pipeline.kts</script>
+        <description>External data ingress pipeline</description>
         <language>pal</language>
         <loggingLevel>TRACE,DATADUMP_ON</loggingLevel>
     </process>
 </processes>
 ```
 
-... where the position-camel-libs module has similar dependencies to the following:
+As well as to your alpha-service-definitions.xml file:
 
-```kotlin
-    api("org.apache.camel:camel-mail:3.14.2")
-    api("javax.mail:javax.mail-api:1.6.2")
-```
-
-- Next, add the service definition to the {applicationName}**-service-definitions.xml** file:
-
-```xml
+```xml {3}
 <configuration>
     ...
-    <service host="localhost" name="DATAPIPELINE_SANDBOX" port="11007"/>
+    <service host="localhost" name="ALPHA_DATAPIPELINE" port="11004"/>
 </configuration>
 ```
 
-- Create a Kotlin script file named **{applicationName}-datapipeline.kts** file. Here is a sample configuration using *PostgreSQL*:
-```kotlin
-sources {
+- Lastly, run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 
-    postgres("cdc-test") {
-        hostname = "localhost"
-        port = 5432
-        username = "postgres"
-        password = "docker"
-        databaseName = "postgres"
-
-        table {
-            "public.source_trades" to mapper("incoming_trades", TRADE) {
-                val tradeId = stringValue("trd_id")
-                val tradedAt = longValue("traded_at")
-
-                TRADE {
-
-                    TRADE_TYPE {
-                        sourceProperty = "side"
-                    }
-
-                    TRADE_DATE {
-                        transform {
-                            DateTime(input.get(tradedAt))
-                        }
-                    }
-
-                    RECORD_ID {
-                        transform {
-                            input.get(tradeId).removePrefix("ITS_").toLong()
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-```
-
-#### Exercise 5.3 Reading and writing using an SFTP server
-<!--
-this is pretty much here: https://docs.genesis.global/secure/creating-applications/defining-your-application/integrations/data-pipeline/datapipeline-examples/
--->
+### Exercise 5.3 Ingesting external data
 :::info ESTIMATED TIME
 30 mins
 :::
 
-We are now creating  a Data Pipeline to ingest trades using CSV. To do that, consider the same layout we showed in the *PostgreSQL* configuration.
+We are now creating a Data Pipeline to ingest Counterparty files using [csvSource](../../../server/integration/data-pipeline/basics/#file). 
+
+To do that, configure the location as a local filesystem source with an absolute path to the user account's `alpha` **run/runtime/fileIngress** directory. This directory should be created automatically the first time your application is started.
+
+The remaining configuration defines a mapper from our CSV to the data model of the `COUNTERPARTY` table.
+
+Follow the data pipeline definition as explained above. And as soon as you made the changes run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) again.
 
 :::tip
-Check the CSV options [here](../../../server/integration/data-pipeline/basics/#csv).
+Check the CSV options [here](../../../server/integration/data-pipeline/basics/#csv) and some [examples](../../../server/integration/data-pipeline/examples/) to do the exercise.
+
+The input CSV file should look like this
+```csv
+COUNTERPARTY_LEI,COUNTERPARTY_NAME
+435800A8HK6JBITVPA30,Test Co Ltd
+755FG0324Q4LUVJJMS11,Testing BG
+855FG0324Q4LUVJJMS11,Testing CG
+```
 :::
-
-
