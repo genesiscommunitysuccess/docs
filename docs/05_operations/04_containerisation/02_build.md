@@ -1,6 +1,6 @@
 ---
 title: 'Genesis Containerisation - building a container'
-sidebar_label: 'Building a Container'
+sidebar_label: 'Building a container'
 id: build
 keywords: [operations, containerisation, container, docker, build]
 tags:
