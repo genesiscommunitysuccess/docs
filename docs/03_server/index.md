@@ -13,5 +13,6 @@ Welcome to our reference documentation on the server. Here you can find informat
 
 - Integration - look at all the different ways of getting information into and out of the system so you can integrate with other systems. Check the [Data Pipeline](../server/integration/data-pipeline/introduction/), for ingesting data, or the pages on using [Apache Camel](../server/integration/apache-camel/introduction/).
 
-
 - [Tooling](../server/tooling/code-snippets/) - find a set of useful code snippets that you can copy and amend. These could save you time and typing.
+
+- You can also explore specific APIs, such as the [Event Handler API](../server/api-reference/event-handler-api/) and [Authorisation API](../server/api-reference/authorisation-api/).
