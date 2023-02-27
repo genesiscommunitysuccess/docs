@@ -11,14 +11,14 @@ tags:
 
 ## Prerequisites
 
- - Genesis Project usign server version 6.5.0 or later
+ - Genesis Project using server version 6.5.0 or later
  - Gradle project
  - Mono repo (having client and server in the same repository)
  - A database
 
 ## Installation
 
-The plugin is available from the [jet brains marketplace](https://plugins.jetbrains.com/plugin/21131-genesis-platform-support) and can be installed by searching for "Genesis Platform Support" from the plugin section of your intellij settings.
+The plugin is available from the [jet brains marketplace](https://plugins.jetbrains.com/plugin/21131-genesis-platform-support) and can be installed by searching for "Genesis Platform Support" from the plugin section of your IntelliJ settings.
 
 ## The Tools Window
 
@@ -34,7 +34,7 @@ When first using the plugin with a project you will need to create your genesis 
 
 ![Genesis Install](/img/intellij-install.png)
 
-This will generate a hidden folder called .genesis-home in your project route, ready to run your applications processes.
+This will generate a hidden folder called .genesis-home in your project root, ready to run your applications processes.
 
 This may take up to 20 minutes on the first run due to needing to perform a full build of your application.
 
@@ -44,7 +44,7 @@ Before starting the resource daemon you’ll need to run a remap to write the sc
 
 ![Genesis Install](/img/intellij-remap.png)
 
-This will open a new run window in intellij and will require you to confirm the changes by typing ‘y’ and pressing return. 
+This will open a new run window in IntelliJ and will require you to confirm the changes by typing ‘y’ and pressing return. 
 
 ### Resource Daemon
 
