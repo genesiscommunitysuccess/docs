@@ -42,7 +42,7 @@ fields {
 }
 ```
 
-You can find more information on fields [here](/database/fields-tables-views/fields/).
+You can find more information on fields [here](../../../database/fields-tables-views/fields/).
 
 After you have saved this file, run genesis-generated-fields from the Gradle menu on the right of Intellij, this is:
 
@@ -75,7 +75,7 @@ tables {
 }
 ```
 
-You can find more information on tables [here](/database/fields-tables-views/tables/).
+You can find more information on tables [here](../../../database/fields-tables-views/tables/).
 
 After you have saved this file, run genesis-generated-dao from the Gradle menu, this is:
 

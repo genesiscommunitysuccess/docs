@@ -10,7 +10,7 @@ tags:
   - introduction
 ---
 
-[Introduction](/server/integration/database-streaming-out/introduction)  | [Basics](/server/integration/database-streaming-out/basics) | [Advanced](/server/integration/database-streaming-out/advanced) | [Examples](/server/integration/database-streaming-out/examples) | [Configuring runtime](/server/integration/database-streaming-out/configuring-runtime) | [Testing](/server/integration/database-streaming-out/testing)
+[Introduction](../../../../server/integration/database-streaming-out/introduction)  | [Basics](../../../../server/integration/database-streaming-out/basics) | [Advanced](../../../../server/integration/database-streaming-out/advanced) | [Examples](../../../../server/integration/database-streaming-out/examples) | [Configuring runtime](../../../../server/integration/database-streaming-out/configuring-runtime) | [Testing](../../../../server/integration/database-streaming-out/testing)
 
 The **GenesisToDb** module enables you to stream data from the Genesis low-code platform to classic RDBMS databases, such as Oracle or MSSQL.
 

@@ -2,14 +2,17 @@
 title: 'Inter-process messages - type-safe messages'
 sidebar_label: 'Type-safe messages'
 id: type-safe-messages
-keywords: [server, inter-process messages, type-safe messages]
+keywords: [server, inter-process messages, type-safe messages, json schema]
 tags:
   - server
   - inter-process messages
   - type-safe messages
+  - json schema
 ---
 
-The Genesis low-code platform uses type-safe messages to perform message serialisation and deserialisation. In addition to this, it automatically extracts relevant metadata to expose this to the front end. These type-safe messages are most commonly used in Request Servers, GPAL Event Handlers and Event Handlers that have been [implemented as a set of classes](/database/api-reference/event-handler-api/).
+The Genesis low-code platform uses type-safe messages to perform message serialisation and deserialisation. In addition, it automatically extracts relevant metadata to expose this to the front end in the shape of a [Json Schema](https://json-schema.org/) definition that is compliant with the 2019-09 specification. These messages will be validated automatically in the back end, based on their definition. 
+
+These type-safe messages are most commonly used in Request Servers, GPAL Event Handlers and Event Handlers that have been [implemented as a set of classes](../../../server/api-reference/event-handler-api/).
 
 ## Input messages
 
@@ -33,7 +36,7 @@ data class SetLogLevel(
 In this example, the `SetLogLevel` data class has a single constructor that also defines the data class properties. Also note:
 
 - **Mandatory metadata field**. `processName` does not have a default value associated with it; therefore, a value is mandatory to construct this message. So, it will be exposed as a *mandatory* metadata field. 
-- **optional metadata fields**. `logLevel`, `datadump` and `expiration` all have default values; they will therefore be exposed as optional metadata fields.
+- **Optional metadata fields**. `logLevel`, `datadump` and `expiration` all have default values; they will therefore be exposed as optional metadata fields.
 
 You are free to use all the following types as long as they are composed using the same elements: 
 
@@ -51,7 +54,7 @@ For example:
 -	`@Title` could be used to provide a human-readable name for a metadata field to be displayed in a grid column.
 -	`@Description` could be used to provide tooltip information when hovering over that column header. 
 
-You can find more information on our page about [metadata annotations](/server/inter-process-messages/metadata-annotations/).
+You can find more information on our page about [metadata annotations](../../../server/inter-process-messages/metadata-annotations/).
 
 ## Read-only values
 Read-only values can be exposed inside a Kotlin companion object and can be as complex as any other metadata field definition. In the example below, the enhanced `SetLogLevel` class provides information about the default LogLevel:
@@ -149,5 +152,5 @@ sealed class EventSetLogLevelReply : Outbound() {
 These custom reply types allow a predetermined number of customised replies for a single `eventHandler` codeblock, with their type information exposed in the metadata system. They need to be handled carefully, as the internal error-handling mechanism for the Event Handler is only able to handle `EventReply` messages. Therefore, non-captured exceptions and errors will break the type-safety guarantees of the reply. 
 
 :::warning
-IMPORTANT! The success message should always end in `Ack` in order for the internal `eventandler` logic to handle validation correctly.
+IMPORTANT! The success message should always end in `Ack` in order for the internal `eventHandler` logic to handle validation correctly.
 :::

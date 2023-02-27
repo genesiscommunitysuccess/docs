@@ -1,5 +1,5 @@
 ---
-title: 'Event Handler - Basics'
+title: 'Event Handler - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, event handler, basics]
@@ -18,7 +18,7 @@ Let's make things really simple.
 - Each `eventHandler` can be invoked from the front end, from other `eventHandler` codeblocks, or from custom components in the application.
 - If you use AppGen to build from your dictionary, then a basic **.kts** file will be built automatically for you, creating basic insert, modify and delete `eventHandler` code blocks for all the tables and views in your data model. You can edit this file to customise the component.
 - Otherwise, you can build your **.kts** by defining each `eventHandler` codeblock from scratch.
-- For complex Event Handlers, you might prefer to use the [Event Handler API](/database/api-reference/event-handler-api/) to implement a set of classes.
+- For complex Event Handlers, you might prefer to use the [Event Handler API](../../../server/api-reference/event-handler-api/) to implement a set of classes.
 
 On this page, we'll take you through the basics of creating an Event Handler in simple stages:
 
@@ -31,17 +31,17 @@ On this page, we'll take you through the basics of creating an Event Handler in 
 - [more information on validation](#more-information-about-onvalidate)
 - [context Event Handlers](#context-event-handlers)
 
-By the end of that, you'll have some very useful knowledge, and you'll be ready to move on to the [advanced](/server/event-handler/advanced/) page.
+By the end of that, you'll have some very useful knowledge, and you'll be ready to move on to the [advanced](../../../server/event-handler/advanced/) page.
 
-It is possible to define an Event Handler in Java, and we have included Java [examples](/server/event-handler/java-event-handlers/). However, we strongly advise you to create your Event Handler using Kotlin; it is a considerably more efficient method.
+It is possible to define an Event Handler in Java, and we have included Java [examples](../../../server/event-handler/java-event-handlers/). However, we strongly advise you to create your Event Handler using Kotlin; it is a considerably more efficient method.
 
 ## A simple example of an Event Handler
 
-Here is a simple example of an Event Handler file. It defines a single `eventHandler`, which inserts a counterparty into the database, using the [entityDb](/database/database-interface/entity-db/).
+Here is a simple example of an Event Handler file. It defines a single `eventHandler`, which inserts a counterparty into the database, using the [entityDb](../../../database/database-interface/entity-db/).
 
-- First, note that there is an `eventHandler` statement for containing all your `eventHandler`codeblocks. This is necessary whether the file contains one `eventHandler`, or hundreds.
-- The single `eventHandler` is of type `<Counterparty>`, which has been created in advance for the COUNTERPARTY table. It defines a single `eventHandler` of type `<Counterparty>`.
-- The `eventHandler` inserts a counterparty into the database, using the [entityDb](/database/database-interface/entity-db/).
+- First, note that there is an `eventHandler` statement for containing all your `eventHandler`codeblocks. This is necessary whether the file contains one `eventHandler` or multiple ones.
+- For this example, the file defines a single  `eventHandler` of type `<Counterparty>`. ( `<Counterparty>` is an object that was created from the COUNTERPARTY table in the schema; this object defines the input that should be expected, such as Counterparty name and Counterparty ID.)
+- The `eventHandler` performs a single action - it inserts a counterparty as a new row into the database, using the [entityDb](../../../database/database-interface/entity-db/).
 
 ```kotlin
     eventHandler {
@@ -134,7 +134,7 @@ So far, we have seen `ack` and `nack`. There is a third type: `warningNack`. Let
 
 
 ## Transactional Event Handlers (ACID)
-If you want your  `eventHandler` to comply with [ACID](/getting-started/glossary/glossary/#acid), you can declare it to be  `transactional = true`. Any exception returned will result in a complete rollback of all parts of the `onCommit` and `onValidate` (the transaction also covers read commands) blocks. While an exception will trigger a rollback, the transaction will commit if a `nack` or `ack` is returned.
+If you want your  `eventHandler` to comply with [ACID](../../../getting-started/glossary/glossary/#acid), you can declare it to be  `transactional = true`. Any exception returned will result in a complete rollback of all parts of the `onCommit` and `onValidate` (the transaction also covers read commands) blocks. While an exception will trigger a rollback, the transaction will commit if a `nack` or `ack` is returned.
 
 ```kotlin
     eventHandler<Counterparty>(transactional = true) {
@@ -184,8 +184,7 @@ However, note that an `onValidate` codeblock is mandatory when using custom repl
 Kotlin’s `require` method throws an exception with a message if the boolean expression is not what is expected, and the Event Handler automatically converts that exception into a corresponding `EventNack`.
 
 ### Context Event Handlers
-In order to optimise database look-up operations, you might want to use data obtained by the `onValidate` block inside your `onCommit` block. To do this, 
-use context Event Handlers, as shown below:
+In order to optimise database look-up operations, you might want to use data obtained by the `onValidate` block inside your `onCommit` block. To do this, use context Event Handlers, as shown below:
 
 ```kotlin
     contextEventHandler<Company, String>(name = "CONTEXT_COMPANY_INSERT") {

@@ -1,5 +1,5 @@
 ---
-title: 'Data Pipeline - Examples'
+title: 'Data Pipeline - examples'
 sidebar_label: 'Examples'
 id: examples
 keywords: [server, integration, data pipeline, examples]
@@ -10,7 +10,7 @@ tags:
   - examples
 ---
 
-[Introduction](/server/integration/data-pipeline/introduction/)  | [Basics](/server/integration/data-pipeline/basics) | [Advanced](/server/integration/data-pipeline/advanced) | [Examples](/server/integration/data-pipeline/examples) | [Configuring runtime](/server/integration/data-pipeline/configuring-runtime) | [Testing](/server/integration/data-pipeline/testing)
+
 
 Here is a full example of ingesting trades:
 
@@ -114,7 +114,7 @@ pipelines {
 }
 ```
 
-A source definition for a CSV file with the same data would look like the following:
+A source definition for a CSV file with the same data would look like this:
 
 ```kotlin
 pipelines {

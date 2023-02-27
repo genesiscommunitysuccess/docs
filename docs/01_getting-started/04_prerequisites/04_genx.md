@@ -1,5 +1,5 @@
 ---
-title: 'Prerequisites - Genx'
+title: 'Prerequisites - genx'
 sidebar_label: 'Genx'
 id: genx
 keywords: [getting started, quick start, prerequisites, genx]
@@ -10,19 +10,53 @@ tags:
     - genx
 ---
 
+## Seed and Genx
+
+A seed is a user-friendly, buildable template by Genesis for generating an application/platform project. It can be an approved baseline for multiple applications with, of course, different owners and parameters and not just one.
+
+It is important to note that a seed acts like a standard baseline; even though it can be modified by seed owners, it should not be. However, developers and testers are free to experiment on the applications that they build on a seed.
 
 
-The GenesisX CLI GenX is a command-line interface tool that you can use to scaffold Genesis applications and workspaces directly from a terminal. 
+## Correlation between a seed and Genx
 
-With GenX, you can pull seed projects that adhere to best practices for development on the Genesis low-code platform. The seed projects available range from skeleton projects to example applications.
+Genx is a Genesis command-line utility that enables you to access a parameterised seed and generate a new project from it.
+
+This blank-app-seed is called the Quick Start Application; it is used to create a basic Genesis project.
+
+When you create an application with Genx, you will see seed listings in different versions. There are only two seed versions approved by Genesis:
+- Seed A
+- Seed A (Next/Pre-Release)
+
+When presented, these choices enable you to build on the official Seed A baseline, which is stable and provides early access to what is being prepared. The Seed A (Next/Pre-Release) version of the official seed A is for experiment or testing only.
+
+You should ignore any other seed version listings.
+
+
+**Main differences between the two seed versions**
+
+|                Seed A                                     |     Seed A (Next/Pre-Release)   |
+|                 :--:                                      |          :--------------:       |
+| Official seed for the actual application development      | For test/experimentation purpose|
+| Ongoing support, upstream fixes and upgrades available    | No support available            |
+
+
+**Some important points to note about seeds used by Genx:**
+- Any local directory/project can become a seed by adding a root level **.genx** directory (CLI API)
+- Developers may clone an existing seed to form a new one
+- Developers contribute to official seeds by cloning that seed repo
+- Select code owners manage merges
+- Available to all Genesis users
+
+
+
 
 ## Prerequisites
 
 - Recommended Operating system : Windows 10 Pro
 - [Node.js](https://nodejs.org/en/download/) version 16
-- Before installing GenX, you need to [configure the Genesis npm repository](/getting-started/quick-start/hardware-and-software/#npmrc-set-up)
+- Before installing genx, you need to [configure the Genesis npm repository](/getting-started/quick-start/hardware-and-software/#npmrc-set-up)
 
-## Installing GenX
+## Installing genx
 
 Once the repository is configured, open a terminal on your Windows machine and install the CLI tool using this:
 
@@ -38,19 +72,17 @@ genx
 
 This command presents you with a sequence of choices for creating and configuring applications.
 
-## Using GenX
+## Using genx
 
-First, you'll be prompted to supply your Genesis artifactory credentials [used when setting up your .npmrc](/getting-started/quick-start/hardware-and-software/#npmrc-set-up)
+First, you'll be prompted to supply your Genesis artifactory credentials [used when setting up your .npmrc](../../../getting-started/quick-start/hardware-and-software/#npmrc-set-up)
 
-Next, follow the instructions according to the task you're wishing to carry out.
-
-The following is the most typical example, creating a new application:
+Next, you just need to respond to the questions, which depend on the task you initially select. For example, if you want to create a new application:
 
 ```shell title="Windows Terminal"
 ? Please select an option: create application - Generates a local application.
 ```
 
-Enter the local directory you want to create the app in (where relevant, the default for these options is the letter displayed in upper case; this will be applied if nothing is entered):
+Enter the local directory where you want to create the app (where relevant, the default for these options is the letter displayed in upper case; this will be applied if nothing is entered):
 
 ```shell title="Windows Terminal"
 ? Create a app in current directory (Y/n)
@@ -61,14 +93,14 @@ Enter the local directory you want to create the app in (where relevant, the def
 ? App name alpha
 ```
 
-Next, select Seed application you wish to base your project on:
+Next, select the Seed application you wish to base your project on:
 ```shell title="Windows Terminal"
 ? App seed
 
 > Genesis Quick Start Application
 ```
 
-Choose whether to overwrite existing files. The default is **No**.
+Choose whether to overwrite existing files. Note that the default is **No**.
 ```shell title="Windows Terminal"
 ? Overwrite existing files (y/N)
 ```
@@ -76,7 +108,7 @@ Choose whether to overwrite existing files. The default is **No**.
 This will start the download of dependencies.
 
 ### Front-end prompts
-Once that is done, you will be prompted for configuring the front-end part of the project.
+Once that has been completed, you will be prompted for configuring the front-end part of the project.
 
 The first prompt is the package [scope](https://docs.npmjs.com/cli/v8/using-npm/scope). The default is **genesislcap**.
 ```shell title="Windows Terminal"
@@ -131,12 +163,12 @@ The **Quick Start Application** seed will generate:
 :::
 
 ## Workspaces
-Workspaces are top-level client monorepos that contains various packages, such as components, micro front-ends, design systems, and at least one application. All these packages can be versioned and released independently. This set-up provides an enhanced developer experience.
+Workspaces are top-level client monorepos that contain various packages, such as components, micro front-ends, design systems, and at least one application. All these packages can be versioned and released independently. This set-up provides an enhanced developer experience.
 
 The workspace generator automates the following steps for you:
 
-- creates a local workspace from a local or remote seed and configures it.
-- persists the information captured during your CLI session within the workspace filesystem for future use.
+- It creates a local workspace from a local or remote seed and configures it.
+- It persists the information captured during your CLI session within the workspace filesystem for future use.
 
 ### Workspaces and application filesystem
 Your apps are local to workspaces; they don't exist in isolation.

@@ -11,12 +11,12 @@ tags:
     - async
 ---
 
-[Async](/database/types-of-api/async/) |
-[RxJava](/database/types-of-api/rxjava/) 
+[Async](../../../database/types-of-api/async/) |
+[RxJava](../../../database/types-of-api/rxjava/) 
 
-The Genesis low-code platform relies on [Kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html) for providing high-performance applications. The Async API is the preferred API for accessing the database in Kotlin. The [RxJava API](/database/types-of-api/rxjava/) is also available. If you use Java, the asynchronous API is not available.
+The Genesis low-code platform relies on [Kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html) for providing high-performance applications. The Async API is the preferred API for accessing the database in Kotlin. The [RxJava API](../../../database/types-of-api/rxjava/) is also available. If you use Java, the asynchronous API is not available.
 
-## Coroutines overview[​](/database/types-of-api/async/#coroutines-overviewdirect-link-to-heading)
+## Coroutines overview[​](../../../database/types-of-api/async/#coroutines-overviewdirect-link-to-heading)
 
 
 Coroutines provide support for non-blocking asynchronous operations at the language level. This makes the code highly efficient; it also means that asynchronous code can be written in a style that appears synchronous.

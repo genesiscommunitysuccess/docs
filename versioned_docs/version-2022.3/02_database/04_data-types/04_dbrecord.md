@@ -36,7 +36,7 @@ DbRecord("TRADE_SUMMARY", tradeRecord)
 
 ## functions
 
-Use the functions below to set and get fields of `DbRecord`. The field type can be any of these [types](/database/fields-tables-views/fields/fields-basics/#field-types).
+Use the functions below to set and get fields of `DbRecord`. The field type can be any of these [types](../../../database/fields-tables-views/fields/fields-basics/#field-types).
 
 ### Set record
 `fun set{DataType}(column: String, value: {DataType}?)` You need to specify name and value of the column. `DataType` represents the type of the field you are trying to set.

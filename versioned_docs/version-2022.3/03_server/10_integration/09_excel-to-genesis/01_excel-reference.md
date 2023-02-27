@@ -10,7 +10,7 @@ tags:
   - reference
 ---
 
-[Excel reference](/server/integration/excel-to-genesis/excel-reference/)  | [Excel functions](/server/integration/excel-to-genesis/excel-functions)
+[Excel reference](../../../../server/integration/excel-to-genesis/excel-reference/)  | [Excel functions](../../../../server/integration/excel-to-genesis/excel-functions)
 
 The Genesis low-code platform enables you to convert existing Excel spreadsheets into Genesis data models. 
 
@@ -38,7 +38,7 @@ By default, the conversion process will convert each separate worksheet into a t
 
 ### Functions
 
-The conversion script turns Excel functions in the named workbook into Kotlin code. The [most common Excel functions](/server/integration/excel-to-genesis/excel-functions/) are all covered.
+The conversion script turns Excel functions in the named workbook into Kotlin code. The [most common Excel functions](../../../../server/integration/excel-to-genesis/excel-functions/) are all covered.
 
 
 ### Column headings and field names

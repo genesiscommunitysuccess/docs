@@ -75,30 +75,35 @@ Internal authentication is the default authentication behaviour if you don't spe
 
 ### LDAP
 
-LDAP authentication leverages use of its namesake protocol to authenticate users. 
+LDAP authentication uses its namesake protocol to authenticate users. 
 
 However, if you specify this, you lose control of the internal authentication functionality. This is because the authentication relies on an external party that cannot be operated from the Application. As a direct consequence, requests to change or reset passwords won't be accepted.
 
 For LDAP authentication, a username must exist inside the internal records of the application. To do this, create a user entry inside the USER table for every LDAP user of the Application. There is no password checking between this login and the Application's internal records; authentication will rely solely on LDAP.
 
-To set up LDAP authentication the `authentication` block of the **auth-preferences.kts** file will need to be configured.
+To set up LDAP authentication a connection to an LDAP server must be configured in the **auth-preferences.kts** file.
 
-For more information on configuring LDAP authentication, please see [Username and password authentication](/server/access-control/password-authentication/#authentication).
+For more information on configuring LDAP authentication, please see [Username and password authentication](../../../server/access-control/password-authentication/#authentication).
 
 The example below shows LDAP authentication specified, with `userIdType` set to `cn` for the search for the username.
 
 ```kotlin
     authentication {
         type = AuthType.LDAP
-        url = "localhost"
-        port = 389
-        // Multiple searchBase elements are allowed -->
-        searchBase {
-            entry("ou=People,dc=example,dc=com")
-        }
-        bindDn = "CN=DTADevBindUser,ou=People,dc=example,dc=com"
-        bindPassword = "password123"
-        userIdType = "cn"
+		ldap {
+		    connection {
+		        url = "localhost"
+                port = 389
+                searchBases {
+				    searchBase {
+                        entry("ou=People,dc=example,dc=com")
+			        }
+                }
+                bindDn = "CN=DTADevBindUser,ou=People,dc=example,dc=com"
+                bindPassword = "password123"
+                userIdType = "cn"	
+			}
+		}
     }
 ```
 
@@ -115,15 +120,20 @@ The configuration file takes the same fields as LDAP. You can see this in the ex
 ```kotlin
     authentication {
         type = AuthType.HYBRID
-        url = "localhost"
-        port = 389
-        // Multiple searchBase elements are allowed -->
-        searchBase {
-            entry("ou=People,dc=example,dc=com")
-        }
-        bindDn = "CN=DTADevBindUser,ou=People,dc=example,dc=com"
-        bindPassword = "password123"
-        userIdType = "cn"
+        ldap {
+		    connection {
+		        url = "localhost"
+                port = 389
+                searchBases {
+				    searchBase {
+                        entry("ou=People,dc=example,dc=com")
+			        }
+                }
+                bindDn = "CN=DTADevBindUser,ou=People,dc=example,dc=com"
+                bindPassword = "password123"
+                userIdType = "cn"	
+			}
+		}
     }
 ```
 
@@ -131,6 +141,6 @@ The configuration file takes the same fields as LDAP. You can see this in the ex
 
 SSO authentication allows users to use a single set of credentials to access a range of applications, including those built on the Genesis low-code platform. For more information on SSO technology, please visit the [Single-sign on Wikipedia page](https://en.wikipedia.org/wiki/Single_sign-on).
 
-SSO authentication is a more involved process to enable; thus requires additional file changes detailed in [SSO Authentication](/server/access-control/SSO-authentication/).
+SSO authentication is a more involved process to enable; thus requires additional file changes detailed in [SSO Authentication](../../../server/access-control/SSO-authentication/).
 
 Both SSO and password authentication can be used concurrently by applications built on the platform; the use of one does not mandate nor prevent the use of the other.

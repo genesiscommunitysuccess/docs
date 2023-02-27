@@ -77,4 +77,4 @@ Here is an example of a generated **processes.xml** file for an application that
 
 ```
 
-You can find more information about this subject in our reference page on the [**-process.xml**](/server/configuring-runtime/processes/) file.
+You can find more information about this subject in our reference page on the [**-process.xml**](../../../../server/configuring-runtime/processes/) file.

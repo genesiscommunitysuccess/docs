@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start - Create a new project'
+title: 'Quick start - create a new project'
 sidebar_label: 'Create a new project'
 id: create-a-new-project
 keywords: [getting started, quick start, new project]
@@ -10,7 +10,7 @@ tags:
 ---
 
 :::info
-Before you start, make sure you have checked out the [hardware and software requirements(/getting-started/quick-start/hardware-and-software/). 
+Before you start, make sure you have checked out the [hardware and software requirements(../../../getting-started/quick-start/hardware-and-software/). 
 
 Download and install all the relevant requirements.
 :::
@@ -18,7 +18,7 @@ Download and install all the relevant requirements.
 ## The genx script
 `genx` is a CLI tool that enables you to seed projects. In this case, we shall generate a full-stack application project; the key files will be empty so that you can define the details of the application.
 
-We also have step-by-step instructions on [how to install and use genx](/getting-started/prerequisites/genx/).
+We also have step-by-step instructions on [how to install and use genx](../../../getting-started/prerequisites/genx/).
 
 ## Starting
 
@@ -33,6 +33,11 @@ genx
 If this does not work, use the command `npx genx`.
 
 :::
+
+<!-- NO EDIT (NEXT 4 LINES) -->
+import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
+
+<InsecureFlag />
 
 In the `genx` script, there is a series of questions.
 
@@ -52,7 +57,10 @@ Now you can proceed using the following responses:
 ? App name alpha
 ```
 
-Then you are asked to select the App Seed. Select `Quick Start Application` from the list. Do **not** select the Positions Application.
+Then you are asked to select the App Seed. Select `Quick Start Application` from the list. 
+
+Do **not** select the Positions Application.
+
 You will be asked if you want to overwrite existing files. Select **Y**.
 
   ```shell title="Windows Terminal"

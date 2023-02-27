@@ -1,5 +1,6 @@
 const fs = require("fs-extra");
 const path = require("path");
+const { createUrlTransformerSteam } = require("./streamTransformers");
 
 /**
  * Docusaurus / mdx build can't process empty comments in markdown.
@@ -32,34 +33,36 @@ async function copyImgFile(inputFile, outputFile) {
   return fs.writeFile(outputFile, content);
 }
 
-async function createReadme(inputFile, outputDir, output) {
+async function createReadme(inputFile, outputDir, output, transformer) {
   const tags = output.tags
     ? output.tags.map((tag) => `  - ${tag}`).join("\n")
     : "";
   const keywords = output.keywords ? `[${output.keywords.join(", ")}]` : "";
   const outputFile = path.join(outputDir, output.readme);
-  const readStream = await fs.createReadStream(inputFile, { encoding: "utf8" });
-  const writeStream = await fs.createWriteStream(outputFile, {
-    encoding: "utf8",
-  });
-  await writeStream.write(
+
+  const readStream = fs.createReadStream(inputFile, { encoding: "utf8" });
+  const writeStream = fs.createWriteStream(outputFile, { encoding: "utf8" });
+
+  writeStream.write(
     `---
 title: '${output.title}'
 sidebar_label: '${output.sidebar_label}'
 id: ${output.id}
 `
   );
+
   if (keywords) {
-    await writeStream.write(`keywords: ${keywords}\n`);
+    writeStream.write(`keywords: ${keywords}\n`);
   }
   if (tags) {
-    await writeStream.write(`tags:\n${tags}\n`);
+    writeStream.write(`tags:\n${tags}\n`);
   }
-  await writeStream.write(`---\n\n`);
+  writeStream.write(`---\n\n`);
+
   /**
    * TODO: Remap any api docs links contained in the README.md file to the target outputApiDocsDir
    */
-  await readStream.pipe(writeStream);
+  readStream.pipe(transformer).pipe(writeStream);
 }
 
 function copyDirectoryFiles(packageRootDir, outputRootDir) {
@@ -94,7 +97,7 @@ async function copyApiDocs(manifest, processedMap) {
     const outputRootDir = path.join(process.cwd(), pkg.output.directory);
     await fs.ensureDir(outputRootDir);
 
-		const copyDirFiles = copyDirectoryFiles(packageRootDir, outputRootDir)
+    const copyDirFiles = copyDirectoryFiles(packageRootDir, outputRootDir);
 
     if (pkg.api_docs && pkg.output.api_docs) {
       await copyDirFiles({
@@ -114,8 +117,14 @@ async function copyApiDocs(manifest, processedMap) {
     /**
      * Write readme file, use git to merge in acceptable changes to existing file after write occurs
      */
+    const readmeStreamTransformer = createUrlTransformerSteam(pkg.output);
     const packageReadmeFile = path.join(packageRootDir, pkg.readme);
-    await createReadme(packageReadmeFile, outputRootDir, pkg.output);
+    await createReadme(
+      packageReadmeFile,
+      outputRootDir,
+      pkg.output,
+      readmeStreamTransformer
+    );
 
     /**
      * Mark as processed
@@ -156,4 +165,3 @@ module.exports = async function (context, options) {
     },
   };
 };
-

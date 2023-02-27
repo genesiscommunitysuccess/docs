@@ -11,9 +11,9 @@ tags:
     - deploy
 ---
 
-To deploy your application to your local Linux or WSL environment, see this [guide](/getting-started/quick-start/run-the-application/).
+To deploy your application to your local Linux or WSL environment, see this [guide](../../../../getting-started/quick-start/run-the-application/).
 
-To install your application to a remote server, see [this manual installation guide](/getting-started/prerequisites/manual-installation/).
+To install your application to a remote server, see [this manual installation guide](../../../../getting-started/prerequisites/manual-installation/).
 
 ## See it in action
 
@@ -25,7 +25,7 @@ INSERT INTO trades(	trd_id, inst, price, quantity, side, traded_at, trader, trad
 VALUES ('ITS_00000004', 'VOD', 126, 1500, 'sell', '2022-05-25 16:01:01', 'Trader.B', 'new', null, null, 'New trade, existing instrument' );
 ```
 
-After the trade is inserted go to the host where the Genesis platform is set up and execute [`DbMon`](/operations/commands/server-commands/#dbmon-script). Then query the `TRADE` table to see the inserted record. Useful operations:
+After the trade is inserted go to the host where the Genesis platform is set up and execute [`DbMon`](../../../../operations/commands/server-commands/#dbmon-script). Then query the `TRADE` table to see the inserted record. Useful operations:
 - To see the total count of records use `count` 
 - To see all records in the table use `search 1==1`. 
 - To query by field use `search <field_name>==<value>`, e.g. `search TRADE_ID=='000000000000013TRLO1'`

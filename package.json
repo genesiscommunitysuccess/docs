@@ -6,43 +6,46 @@
     "docusaurus": "docusaurus",
     "build": "docusaurus build",
     "build:next": "SHOW_NEXT=true docusaurus build",
-    "build:base_url": "BASE_URL=/secure/ docusaurus build",
+    "build:base_url": "BASE_URL=/docs/ docusaurus build",
+    "build:production": "BASE_URL=/docs/ BRANCH=master docusaurus build",
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve",
     "start": "docusaurus start --port 8080 --host 0.0.0.0",
+    "start:copy-docs": "cross-env COPY_DOCS=true npm run start",
     "start:next": "SHOW_NEXT=true docusaurus start --port 8080 --host 0.0.0.0",
-    "swizzle": "docusaurus swizzle"
+    "swizzle": "docusaurus swizzle",
+    "postinstall": "patch-package --error-on-fail"
   },
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^0.11.0",
-    "@docusaurus/core": "^2.1.0",
-    "@docusaurus/plugin-client-redirects": "^2.1.0",
-    "@docusaurus/preset-classic": "^2.1.0",
-    "@docusaurus/theme-live-codeblock": "^2.1.0",
-    "@emotion/react": "^11.10.4",
-    "@emotion/styled": "^11.10.4",
-    "@genesislcap/documentation-components": "5.0.2-alpha-37e13b7.0+37e13b7",
-    "@genesislcap/foundation-entity-management": "5.0.1-docs.19",
-    "@genesislcap/foundation-filters": "5.0.1-docs.19",
-    "@genesislcap/foundation-header": "5.0.1-docs.19",
-    "@genesislcap/foundation-login": "5.0.1-docs.19",
-    "@genesislcap/foundation-reporting": "5.0.1-docs.19",
-    "@genesislcap/foundation-testing": "5.0.1-docs.19",
-    "@genesislcap/foundation-zero": "5.0.1-docs.19",
-    "@mui/icons-material": "^5.10.6",
-    "@mui/material": "^5.10.8",
+    "@docusaurus/core": "^2.2.0",
+    "@docusaurus/plugin-client-redirects": "^2.2.0",
+    "@docusaurus/preset-classic": "^2.2.0",
+    "@docusaurus/theme-live-codeblock": "^2.2.0",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@genesislcap/documentation-components": "6.0.1-alpha-8c81145.0+8c81145",
+    "@genesislcap/foundation-entity-management": "6.0.0-docs.20",
+    "@genesislcap/foundation-filters": "6.0.0-docs.20",
+    "@genesislcap/foundation-header": "6.0.0-docs.20",
+    "@genesislcap/foundation-login": "6.0.0-docs.20",
+    "@genesislcap/foundation-reporting": "6.0.0-docs.20",
+    "@genesislcap/foundation-testing": "6.0.0-docs.20",
+    "@genesislcap/foundation-zero": "6.0.0-docs.20",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.6",
     "classnames": "^2.3.2",
     "docusaurus-gtm-plugin": "^0.0.2",
     "docusaurus-plugin-matomo": "^0.0.6",
-    "fs-extra": "^10.1.0",
+    "fs-extra": "^11.1.0",
     "mdx-mermaid": "1.3.2",
-    "mermaid": "9.1.7",
+    "mermaid": "^9.3.0",
     "raw-loader": "^4.0.2",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-player": "^2.11.0",
-    "tslib": "^2.4.0"
+    "tslib": "^2.4.1"
   },
   "browserslist": {
     "production": [
@@ -57,6 +60,8 @@
     ]
   },
   "devDependencies": {
-    "dotenv": "^16.0.3"
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
+    "patch-package": "^6.5.1"
   }
 }

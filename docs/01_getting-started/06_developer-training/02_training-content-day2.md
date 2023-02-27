@@ -33,11 +33,11 @@ Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](ht
 
 [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) are at the very heart of our strategy, based on native browsers and a standards-based ​component model. 
 
-Web Components are custom html elements that completely encapsulate their logic to create self-contained reusable components, that do not clash or interfere with the rest of application. They are future-proof and interoperable with traditional web frameworks such as Angular, React and Vue.
+Web Components are custom html elements that completely encapsulate their logic to create self-contained reusable components, which do not clash or interfere with the rest of application. They are future-proof and interoperable with traditional web frameworks such as Angular, React and Vue.
 
-We currently offer over 40 [web components](web/web-components/form/button/) such as Button and Text Field, which are ready to go. That number is growing (and we can work with you if you need to create bespoke web components for specific needs). 
+We currently offer around 40 Web Components such as [Button](../../../web/web-components/form/button/) and [Text Field](../../../web/web-components/form/text-field/), which are ready to go. That number is growing (and we can work with you if you need to create bespoke web components for specific needs). 
 
-Frameworks like React, Angular, Vue and so on, have traditionally offered component models to developers. However, Web Components are literally the standard component model of the web, written into the HTML specification. Applications themselves can be fully encapsulated web components too; for example, YouTube is a web component, made up of many smaller web components.
+Frameworks like React, Angular, Vue and so on, have traditionally offered component models to developers. However, Web Components are literally the standard component model of the web, written into the html specification. Applications themselves can be fully encapsulated web components too; for example, YouTube is a Web Component, made up of many smaller Web Components.
 
 ### Micro front-ends
 
@@ -52,7 +52,7 @@ At Genesis, we use a number of technologies to enable this functionality, includ
 Our components are distributed as npm packages, such as:
 
 #### `@genesislcap/foundation-ui` 
-When you generate a [design system](web/design-systems/introduction/) using the CLI, it will automatically extend a base design system that we have provided. ​This highly configurable design system is called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options to provide everythin you need for your application.
+When you generate a [design system](web/design-systems/introduction/) using the CLI, it will automatically extend a base design system that we have provided. ​This highly configurable design system is called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options to provide everything you need for your application.
 
 #### `@genesislcap/foundation-zero` 
 Our design system variant, called Zero Design System​. This provides the standard components, such as buttons and data grids (wrappers around Microsoft FAST components); these can be easily integrated with the back end using component attributes such as 'resourceName', which displays and updates data in real time from a Data Server resource.
@@ -277,11 +277,11 @@ Use all the previous knowledge you've got.
 
 As a reminder, these are the steps needed to complete this task:
 
-1. Remove all TRADE records using the [DropTable](/operations/commands/server-commands/#droptable) server command. To do that, remember the explanation on how to [run server commands](/getting-started/developer-training/training-content-day1/#running-server-commands).
-2. Edit **alpha-fields-dictionary.kts** first, and don't forget to run the [generateFields](/getting-started/developer-training/training-content-day1/#generatefields) gradle task when you finish this. Remember that fields are defined separately from tables, so that they (including their meta-data) can be re-used across multiple tables and show linkage.​
-3.  Then edit **alpha-tables-dictionary.kts** to add the new tables and the fields you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [genesis-generated-dao](/getting-started/developer-training/training-content-day1/#generatedao).
+1. Remove all TRADE records using the [DropTable](../../../operations/commands/server-commands/#droptable) server command. To do that, remember the explanation on how to [run server commands](../../../getting-started/developer-training/training-content-day1/#running-server-commands).
+2. Edit **alpha-fields-dictionary.kts** first, and don't forget to run the [generateFields](../../../getting-started/developer-training/training-content-day1/#generatefields) gradle task when you finish this. Remember that fields are defined separately from tables, so that they (including their meta-data) can be re-used across multiple tables and show linkage.​
+3.  Then edit **alpha-tables-dictionary.kts** to add the new tables and the fields you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [genesis-generated-dao](../../../getting-started/developer-training/training-content-day1/#generatedao).
 4. Add queries to the Data Server. These must point to the new tables in the **alpha-dataserver.kts** file.
-5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to [build and deploy](/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).​
+5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).​
 
 :::tip adding a new `eventHandler` block
 Example on how to add additional blocks in the `eventHandler`:
@@ -311,7 +311,7 @@ eventHandler {
 ```
 :::
 
-- [Build and deploy](/getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process). You can test by using Postman or Console (see more details in the next section) to insert:
+- [Build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process). You can test by using Postman or Console (see more details in the next section) to insert:
   - a new counterparty
   - a new instrument
   - a new trade
@@ -326,7 +326,7 @@ As an alternative to Genesis Console, take this opportunity to test your work wi
 - [Insomnia App](https://insomnia.rest/download)
 
 :::tip REST endpoints
-When we test our resources using an HTTP client as described here, we're taking advantage of the [REST endpoints](/server/integration/rest-endpoints/introduction/) provided by the platform. Without any additional code from you, it automatically exposes all configured resources, such as Data Server queries and Event Handlers, as HTTP endpoints via the GENESIS_ROUTER service. This also enables you to do some API testing automation for all your back-end components.
+When we test our resources using an HTTP client as described here, we're taking advantage of the [REST endpoints](../../../server/integration/rest-endpoints/introduction/) provided by the platform. Without any additional code from you, it automatically exposes all configured resources, such as Data Server queries and Event Handlers, as HTTP endpoints via the GENESIS_ROUTER service. This also enables you to do some API testing automation for all your back-end components.
 
 :::
 

@@ -5,40 +5,20 @@ const routeBasePath = '/';
 const processedMap = require('./plugins/api-docs/processedMap');
 const GTM_ID = process.env.GTM_ID || 'GTM-5GTR43J'; // default to uat GTM_ID, prod one should be set on CI (master)
 
+const DEV_ANALYTICS = 'https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS_dev_faea79accbcd255c7f124004.js';
+const PROD_ANALYTICS = 'https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS.js';
+const MATOMO_URL = GTM_ID ===  'GTM-5GTR43J' ? DEV_ANALYTICS : PROD_ANALYTICS;
+
 /**
  * For local / debug purposes.
- * If truthy it will include the current version (labeled as Next).
- * Adds the version dropdown to the navbar as needed.
+ * If truthy it will include the current version (labeled as Next) in the version selector dropdown.
 **/
-const SHOW_NEXT = !!process.env.SHOW_NEXT;
-
-const NAVBAR_ITEMS = [
-  { to: "getting-started", label: "Learning" },
-  { to: "database", label: "Database" },
-  { to: "server", label: "Server" },
-  { to: "web", label: "Web" },
-  { to: "operations", label: "Operations" },
-  { to: "gpalx", label: "Early access" },
-  {
-    type: "html",
-    position: "right",
-    value: '<a class="feedback" data-feedback-fish>Give us Feedback</a>',
-  },
-  {
-    href: "/resource/stackoverflow-onboarding",
-    className: "so-icon",
-    "aria-label": "StackOverflow",
-    position: "right",
-  },
-];
-
-//  Will not have to do this as soon as we have 2+ versions, for now only add the dropdown when SHOW_NEXT == true.
-if (SHOW_NEXT) {
-  NAVBAR_ITEMS.unshift({
-    type: "docsVersionDropdown",
-    className: "version-menu",
-  });
-}
+const SHOW_NEXT = !!process.env.SHOW_NEXT
+/**
+ * The above controls whether the user can see 'Next' in the dropdown, but this controls whether we actually build
+ * the Next version of the docs at all. We do *not* want Next available on the live site, but do everywhere else
+**/
+const BUILD_NEXT = SHOW_NEXT || process.env.BRANCH === undefined || process.env.BRANCH !== 'master'
 
 module.exports = {
   title: 'Low-code Platform For Financial Markets',
@@ -46,8 +26,8 @@ module.exports = {
   url: 'https://genesis.global/',
   baseUrl,
   favicon: 'img/favicon.ico',
-  organizationName: 'genesislcap', // Usually your GitHub org/user name.
-  projectName: 'docs', // Usually your repo name.
+  organizationName: 'genesislcap',
+  projectName: 'docs',
   trailingSlash: true,
   onBrokenLinks: 'throw', // please do NOT change this to 'warn', fix or remove your broken links instead
   onDuplicateRoutes: 'throw',
@@ -106,10 +86,10 @@ module.exports = {
     [require.resolve('docusaurus-gtm-plugin'), {
       id: GTM_ID,
     }],
-    ['./plugins/api-docs', {
+    (process.env["COPY_DOCS"] === 'true' ? ['./plugins/api-docs', {
       manifest: require('./plugins/api-docs/manifest.json'),
       processedMap,
-    }],
+    }] : null),
     'docusaurus-plugin-matomo'
   ],
   presets: [
@@ -122,7 +102,15 @@ module.exports = {
           routeBasePath,
           sidebarPath: require.resolve('./sidebars.js'),
           remarkPlugins: [require('mdx-mermaid')],
-          includeCurrentVersion: true, // should be SHOW_NEXT but we need to fix the broken links for that first
+          includeCurrentVersion: BUILD_NEXT,
+          versions: {
+            '2022.4': {
+              'banner': 'none'
+            },
+            '2022.3': {
+              'banner': 'none'
+            },
+          },
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -136,7 +124,25 @@ module.exports = {
       disableSwitch: true
     },
     navbar: {
-      items: [...NAVBAR_ITEMS], // preconfigured as we need to conditionally add docsVersionDropdown
+      items: [
+        { type: 'docsVersionDropdown', className: 'version-menu ' + (BUILD_NEXT && !SHOW_NEXT ? 'version-menu--hide-next' : '') },
+        { type: 'doc', docId: 'getting-started/introduction', label: 'Learning' },
+        { type: 'doc', docId: 'database/database-landing', label: 'Database' },
+        { type: 'doc', docId: 'server/server-modules', label: 'Server' },
+        { type: 'doc', docId: 'web/front-end', label: 'Web' },
+        { type: 'doc', docId: 'operations/operations', label: 'Operations' },
+        {
+          type: "html",
+          position: "right",
+          value: '<a class="feedback" data-feedback-fish>Give us Feedback</a>',
+        },
+        {
+          href: "/resource/stackoverflow-onboarding",
+          className: "so-icon",
+          "aria-label": "StackOverflow",
+          position: "right",
+        },
+      ],
       logo: {
         alt: 'Genesis Documentation',
         src: 'img/logo-icon--light.svg',
@@ -155,10 +161,7 @@ module.exports = {
       additionalLanguages: ['java', 'kotlin', 'powershell', 'groovy'],
     },
     matomo: {
-      matomoUrl: 'https://newgenesisglobal.matomo.cloud/',
-      siteId: '2',
-      phpLoader: 'matomo.php',
-      jsLoader: 'matomo.js',
+      matomoUrl: MATOMO_URL,
     },
   },
   i18n: {

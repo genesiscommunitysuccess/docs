@@ -13,6 +13,10 @@ tags:
 ---
 
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ## Setting up your workstation and a local server
 
 ### Workstation set-up
@@ -47,18 +51,24 @@ You can use a range of IDEs (for example, Eclipse) with the Genesis low-code pla
 ###  Accessing the Genesis repository and configuring the Genesis packages
 #### .npmrc set-up
 
+:::note
 For access to Genesis packages, you need to configure the `@genesislcap` scope of `npm` to use our jfrog registry.
 
-:::note
 This requires credentials for accessing Genesis Artifactory. If you have not been provided with the credentials, please contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login). It's not possible to complete the training without this access, because you won't be able to download the Genesis platform components and build your project.
+
+To follow the instructions below, select **External User** if you are Genesis customer or partner, or **Internal User** if you are a Genesis employee with an internal Genesis account.
 :::
 
+<Tabs defaultValue="external" values={[{ label: 'External User', value: 'external', }, { label: 'Internal User', value: 'internal', }]}>
+<TabItem value="external">
+This setup presumes you will sign in with jfrog user and password parameters. Please follow the steps:
+
 1. Create an `.npmrc` file in your user home directory (usually at 'C:\Users\YOUR_LOGIN_NAME\').
- 2. Using your credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
- 3. Click on the `Welcome <username>` in the top right corner.
- 4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns.
- 5. Select `npm` for both **Package Type** and **Repository**.
- 6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in to the Genesis repository on jfrog.) Then press **Enter**.
+2. Using your credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
+3. Click on the `Welcome <username>` in the top right corner.
+4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns.
+5. Select `npm` for both **Package Type** and **Repository**.
+6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in to the Genesis repository on jfrog.) Then press **Enter**.
 
 ![](/img/set-me-up.png)
 
@@ -84,21 +94,67 @@ Genesis Foundation UI
 ```
 :::caution trouble running npm?
 Please make sure:
-- you have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](/getting-started/developer-training/environment-setup/#required-software-packages). If you have an older version of npm (run 'npm -v'), make sure you uninstall it first.
-- if you're behind a corporate network, you may need to setup a proxy:
+- You have the correct versions of the software packages, especially node and npm, as explained in the [workstation setup](../../../getting-started/developer-training/environment-setup/#required-software-packages). If you have an older version of npm (run 'npm -v'), make sure you uninstall it first.
+- If you're behind a corporate network, you may need to setup a proxy:
 ```shell
 npm config set proxy http://proxy_host:port
 npm config set https-proxy https://proxy_host:port
-npm config set https-proxy http://proxy_host:port
 ```
 :::
 
-10. Install GenX CLI; this is a Genesis tool that enables you to seed projects.
+<!-- NO EDIT (NEXT 4 LINES) -->
+import StrictSSL from '../../_includes/_strict-ssl.md'
+
+<StrictSSL />
+
+</TabItem>
+<TabItem value="internal">
+This setup presumes you will sign in with jfrog SAML SSO. Please follow the steps:
+
+1. Create an empty `.npmrc` file in your user home directory.
+2. Using SAML SSO log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
+3. Click on the `Welcome <username>` on the top right corner.
+4. From the menu, select `Set Me Up`. This displays a set of packages; click on **npm**.
+5. Copy this command and run the following command directly from a command line using PowerShell (or Windows Command Prompt):
+    ```shell
+    npm config set registry https://genesisglobal.jfrog.io/artifactory/api/npm/npm/
+    ```
+6. Replace SCOPE with genesislcap:
+    ```shell
+    npm config set @<genesislcap>:registry https://genesisglobal.jfrog.io/artifactory/api/npm/npm/
+    ```
+7. Click edit profile → Click Generate identity token button. Copy token
+8. Open your terminal again and use this token run the curl command:
+    ```shell
+    curl -u <first>.<last>@genesis.global:<token> https://genesisglobal.jfrog.io/artifactory/api/npm/auth/
+    ```	
+9. Create Base64 password from [here](https://www.base64encode.org/), and then copy encoded password and put in .npmrc
+10. Your .npmrc file should look like this:
+    ```shell
+    @genesislcap:registry=https://genesisglobal.jfrog.io/artifactory/api/npm/github-packages/
+    //genesisglobal.jfrog.io/artifactory/api/npm/github-packages/:_password="Base 64 encode of Genesis MS office password"
+    //genesisglobal.jfrog.io/artifactory/api/npm/github-packages/:_auth="_auth from curl command"
+    //genesisglobal.jfrog.io/artifactory/api/npm/github-packages/:always-auth=true
+    //genesisglobal.jfrog.io/artifactory/api/npm/github-packages/:email=rimpa.choudhury@genesis.global	
+    ```	
+11. Open a new terminal under the directory path `.npmrc` file and type: `npm info @genesislcap/foundation-ui`. If the set-up was successful, you should see a response like this:
+    ```shell
+    @genesislcap/foundation-ui@5.0.1 | UNLICENSED | deps: 13 | versions: 306
+    Genesis Foundation UI
+    https://github.com/genesislcap/foundation-ui#readme
+    ```
+12. To log into the genx CLI now you need to use your Genesis email as the username and an API key as the password. You can get your API key from Jfrog [here](https://genesisglobal.jfrog.io/ui/admin/artifactory/user_profile).
+
+
+</TabItem>
+</Tabs>
+
+Install GenX CLI; this is a Genesis tool that enables you to seed projects.
 ```shell
 npm install -g @genesislcap/foundation-cli
 ```
 
-11. Check that GenX CLI is working:
+Check that GenX CLI is working:
 ```shell
 npx genx
 ```
@@ -113,7 +169,7 @@ and you should see this message:
 \____/\___/_/ /_/\___/____/_/____/_/|_|
 
 
-  GenesisX CLI V2.0.0
+  GenesisX CLI VX.X.X
 
   ? Genesis Password: 
 ```
@@ -125,13 +181,18 @@ Enter the same password you used in step 6 and then you should see this message:
 
 Feel free to abort this program for now - we'll use genx later on.
 
-:::caution trouble running GenX?
-If you run into problems running GenX, especially errors like `unable to get local issuer certificate` or `UNABLE_TO_GET_ISSUER_CERT_LOCALLY`, it means there are issues to download packages from Artifactory due to restrictions when behind a corporate proxy.
+<!-- NO EDIT (NEXT 4 LINES) -->
+import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
+
+<InsecureFlag />
+
+:::tip
 
 As an alternative, you can [download the project structure that would be generated by GenX](https://genesisglobal.jfrog.io/artifactory/community-uploads/alpha.zip) and move on with this guide.   
+
 :::
 
-#### Gradle setup
+### Gradle set-up
 Make sure you have a **gradle.properties** file inside a **.gradle** folder in your user directory; this file must contain your password in clear (unencrypted) text:
 
 ```shell

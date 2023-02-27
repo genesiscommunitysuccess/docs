@@ -24,9 +24,10 @@ Before we make any changes, you need to install your npm dependencies by running
 npm run bootstrap
 ```
 
-Once you have all dependencies installed, you can use the terminal to run your UI with the following command:
+Once you have all dependencies installed, you can use the terminal to run your UI with the following command from the **./client/web** folder:
 
-```shell title="./client"
+
+```shell title="./client/web"
 npm run dev
 ```
 

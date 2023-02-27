@@ -1,5 +1,5 @@
 ---
-title: 'Data Pipeline - Advanced'
+title: 'Data Pipeline - advanced'
 sidebar_label: 'Advanced'
 id: advanced
 keywords: [server, integration, data pipeline, advanced]
@@ -10,9 +10,9 @@ tags:
   - advanced
 ---
 
-[Introduction](/server/integration/data-pipeline/introduction/)  | [Basics](/server/integration/data-pipeline/basics) | [Advanced](/server/integration/data-pipeline/advanced) | [Examples](/server/integration/data-pipeline/examples) | [Configuring runtime](/server/integration/data-pipeline/configuring-runtime) | [Testing](/server/integration/data-pipeline/testing)
 
-## Enriching data from Genesis Database
+
+## Enriching data from the Genesis database
 
 The `transform` function of the mappers has the parameter `entityDb`, which can be used to interact with the Genesis database. It provides a CRUD interface and enables you to implement complex use cases, such as enriching data and inserting or updating missing data.
 
@@ -151,7 +151,7 @@ pipelines {
 
 ## Auditable sink operations
 
-All database operations are audited if the table is declared as [auditable](/database/data-types/table-entities/#auditable-tables). Each sink operation is then stored to the audit table with the default event type of `custom-sink-operation`. However, you can change this by passing another type as an argument to the `sink` function:
+All database operations are audited if the table is declared as [auditable](../../../../database/data-types/table-entities/#auditable-tables). Each sink operation is then stored to the audit table with the default event type of `custom-sink-operation`. However, you can change this by passing another type as an argument to the `sink` function:
 
 ```kotlin
 pipelines {

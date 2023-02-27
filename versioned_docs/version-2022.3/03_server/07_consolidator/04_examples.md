@@ -9,7 +9,7 @@ tags:
   - examples
 ---
 
-[Introduction](/server/consolidator/introduction) | [Basics](/server/consolidator/basics) |  [Advanced](/server/consolidator/advanced) | [Examples](/server/consolidator/examples) | [Configuring runtime](/server/consolidator/configuring-runtime) | [Testing](/server/consolidator/testing)
+[Introduction](../../../server/consolidator/introduction) | [Basics](../../../server/consolidator/basics) |  [Advanced](../../../server/consolidator/advanced) | [Examples](../../../server/consolidator/examples) | [Configuring runtime](../../../server/consolidator/configuring-runtime) | [Testing](../../../server/consolidator/testing)
 
 Here is an example Consolidator file that defines two Consolidators:
 
@@ -65,7 +65,7 @@ consolidators {
 }
 ```
 
-The example below comes from the Consolidator exercise in our [tutorial](/getting-started/go-to-the-next-level/calculated-data/). It has a single consolidator, called `CONSOLIDATE_POSITIONS`.
+The example below comes from the Consolidator exercise in our [tutorial](../../../getting-started/go-to-the-next-level/calculated-data/). It has a single consolidator, called `CONSOLIDATE_POSITIONS`.
 
 To give you some basic pointers to the content, the main code blocks in this Consolidator are:
 

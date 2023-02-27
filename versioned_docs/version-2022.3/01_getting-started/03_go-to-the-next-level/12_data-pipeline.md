@@ -11,8 +11,8 @@ tags:
     - pipeline
 ---
 
-So far, we have only directed you towards manual data ingestion techniques, using gradle tasks, forms, [SendIt](/operations/commands/server-commands/#sendit-script), Genesis Console or Postman.
-Here, we shall look at how you can continuously ingest data using [Data Pipelines](/server/integration/data-pipeline/introduction/).
+So far, we have only directed you towards manual data ingestion techniques, using gradle tasks, forms, [SendIt](../../../operations/commands/server-commands/#sendit-script), Genesis Console or Postman.
+Here, we shall look at how you can continuously ingest data using [Data Pipelines](../../../server/integration/data-pipeline/introduction/).
 
 Data pipelines enable you to ingest data from an external source. You configure:
 

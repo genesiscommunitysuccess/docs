@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start - Define the data model'
+title: 'Quick start - define the data model'
 sidebar_label: 'Define the data model'
 id: define-the-data-model
 keywords: [getting started, quick start, data model]
@@ -9,9 +9,9 @@ tags:
     - data model
 ---
 
-Now you are ready to define the fields and tables that make up your data model. This structures information in a simple way that can be viewed by users and processed by the application.
+Now you are ready to define the fields and tables that make up your data model. This model structures information in a simple way that can be viewed by users and processed by the application.
 
-Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/) (recommended) or your chosen IDE. In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (alpha, client, genesisproduct-alpha).
+Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/) (recommended) or your chosen IDE. In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (**alpha**, **client**, **genesisproduct-alpha**).
 
 ### Add fields
 You define your fields in the file **alpha-fields-dictionary.kts**.
@@ -42,11 +42,11 @@ fields {
 }
 ```
 
-You can find more information on fields [here](/database/fields-tables-views/fields/).
+You can find more information on fields in our [Database documentation](../../../database/fields-tables-views/fields/).
 
 After you have saved this file, run genesis-generated-fields from the Gradle menu on the right of Intellij, this is:
 
- **genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-fields**/**Tasks**/**genesis**/**generateFields**
+ **genesisproduct-alpha**/**alpha-dictionary-cache**/**alpha-generated-fields**/**Tasks**/**genesis**/**generateFields**
 
 ![](/img/build-gradle-kts-fields.png)
 
@@ -75,12 +75,12 @@ tables {
 }
 ```
 
-You can find more information on tables [here](/database/fields-tables-views/tables/).
+You can find more information on tables [here](../../../database/fields-tables-views/tables/).
 
 After you have saved this file, run genesis-generated-dao from the Gradle menu, this is:
 
-**genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDAO**
+**genesisproduct-alpha**/**alpha-dictionary-cache**/**alpha-generated-dao**/**Tasks**/**genesis**/**generateDAO**
 
 ![](/img/build-gradle-kts-generated-dao.png)
 
-Now that that is done, you can create the key modules that surround the database.
+Now that that has been done, you can create the key modules that surround the database.

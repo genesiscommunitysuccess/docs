@@ -10,7 +10,7 @@ tags:
   - advanced
 ---
 
-[Introduction](/server/integration/database-streaming-out/introduction)  | [Basics](/server/integration/database-streaming-out/basics) | [Advanced](/server/integration/database-streaming-out/advanced) | [Examples](/server/integration/database-streaming-out/examples) | [Configuring runtime](/server/integration/database-streaming-out/configuring-runtime) | [Testing](/server/integration/database-streaming-out/testing)
+[Introduction](../../../../server/integration/database-streaming-out/introduction)  | [Basics](../../../../server/integration/database-streaming-out/basics) | [Advanced](../../../../server/integration/database-streaming-out/advanced) | [Examples](../../../../server/integration/database-streaming-out/examples) | [Configuring runtime](../../../../server/integration/database-streaming-out/configuring-runtime) | [Testing](../../../../server/integration/database-streaming-out/testing)
 
 ## The generateSQLToRDB script
 

@@ -2,19 +2,21 @@
 
 Documentation is written using [Markdown format](markdown-syntax.md).
 
-### Installation
+## Installation
 
 ```
 npm i
 ```
 
-### Local Development
+## Local development
 
 ```
 npm run start
 ```
 
-This command starts a local development server and open up a browser window. Most changes are reflected live without having to restart the server.
+This command starts a local development server and opens a browser window. Most changes are reflected live without having to restart the server.
+
+Note that you need to prefix your url with `/next/` in order to see your updated changes locally. For example, `http://localhost:8080/operations/containerisation/healthchecks/` shows the most recently published docs version.  To view the next version - the one that will be published at the next platform release, add `/next/` to beginning of the url. For example, `http://localhost:8080/next/operations/containerisation/healthchecks/`
 
 ### Build
 
@@ -22,7 +24,7 @@ This command starts a local development server and open up a browser window. Mos
 npm run build
 ```
 
-This command generates static content into the `build` directory.
+This command generates static content into the **build** directory.
 
 ### Clear
 
@@ -30,19 +32,30 @@ This command generates static content into the `build` directory.
 npm run clear
 ```
 
-This command clears the Docusaurus generated assets, caches, build artifacts etc. (useful if you're not seeing your changes in the browser).
+This command clears the Docusaurus generated assets, caches, build artifacts etc. This is useful if you're not seeing your changes in the browser.
 
-### Regenerating `bundle`
+## Regenerating `bundle`
 
 To generate a new bundled file, simply run the following command from the package you wish to access.
 
 ```
 npm run build
-``` 
+```
 
-For example, in the `foundation-ui` repo we run the command above on the `documentation-components` under the `showcase` folder. 
+For example, in the `foundation-ui` repo we run the command above on the **documentation-components** under the **showcase** folder.
 
 ***
-Ensure the package you intend to regenerate the file from, has all the necessary dependencies. 
+Ensure the package you intend to regenerate the file from has all the necessary dependencies.
 ***
-Once you have the new regenerated file paste the contents to [docs.iife.min.js]( static/js/docs.iife.min.js)
+
+Once you have the new regenerated file, paste the contents to [docs.iife.min.js]( static/js/docs.iife.min.js)
+
+## Copy FE docs
+
+Front-end documentation from `foundation-ui` can be pulled into this repo. To this, follow the steps below:
+
+1. Add as a dependency in `./package.json`.
+2. Set up the config in `./plugins/api-docs/manifest.json`.
+3. Set up the sidebar.
+4. Run with `$ npm run start:copy-docs`.
+5. Once you have got feedback on the docs, you can lock it in via `./plugins/api-docs/processedMap.js`.

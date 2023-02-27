@@ -1,5 +1,5 @@
 ---
-title: 'Event Handler - Configuring runtime'
+title: 'Event Handler - configuring runtime'
 sidebar_label: 'Configuring runtime'
 id: configuring-runtime
 keywords: [server, event handler, configuring runtime]
@@ -15,7 +15,7 @@ There are two important files in your application that contain configuration inf
 - _application-name_**-processes.xml**
 - _application-name_**-service-definitions.xml**
 
-### Configuring in processes.xml
+## Configuring in processes.xml
 
 Here is an example of an Event Handler configuration in an application's **processes.xml** file:
 
@@ -33,9 +33,9 @@ Here is an example of an Event Handler configuration in an application's **proce
   </process>
 ```
 
-For more information on the tags that can be set within the configuration for your application, go to our page on [processes.xml](/server/configuring-runtime/processes/).
+For more information on the tags that can be set within the configuration for your application, go to our page on [processes.xml](../../../server/configuring-runtime/processes/).
 
-### Configuring in service-definitions.xml
+## Configuring in service-definitions.xml
 
 Here is an example of an Event Handler's service configuration:
 
@@ -43,5 +43,5 @@ Here is an example of an Event Handler's service configuration:
   <service host="localhost" name="POSITION_EVENT_HANDLER" port="11002"/>
 ```
 
-For more information on the attributes that can be set here, go to our page on [service definitions](/server/configuring-runtime/service-definitions/).
+For more information on the attributes that can be set here, go to our page on [service definitions](../../../server/configuring-runtime/service-definitions/).
 

@@ -1,5 +1,5 @@
 ---
-title: 'Data Server - Introduction'
+title: 'Data Server - introduction'
 sidebar_label: 'Introduction'
 id: introduction
 keywords: [server, data server, dataserver, introduction]
@@ -12,7 +12,7 @@ tags:
 
 
 
-Data Servers monitor specific tables or views in the database. When a change in data occurs, the Data Server sends the updates to all of its subscribers.
+Data Servers monitor specific tables or views in the database. When a change in data occurs, the Data Server sends the updates to all its subscribers.
 
 ```mermaid
 graph TD
@@ -33,4 +33,4 @@ Data Servers are conventionally defined in the file _application-name_**-dataser
 
 So, if your application is called **positions**, then the file would conventionally be named **positions-dataserver.kts**.
 
-Note, you will also need to declare your Data Server within the [runtime configuration](/server/data-server/configuring-runtime/).
+Note, you also need to declare your Data Server within the [runtime configuration](../../../server/data-server/configuring-runtime/).

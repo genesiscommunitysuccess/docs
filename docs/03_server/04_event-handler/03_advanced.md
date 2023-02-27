@@ -1,5 +1,5 @@
 ---
-title: 'Event Handler - Advanced'
+title: 'Event Handler - advanced'
 sidebar_label: 'Advanced'
 id: advanced
 keywords: [server, event handler, advanced]
@@ -40,7 +40,7 @@ sealed class CustomTradeEventReply : Outbound() {
 
 Add `CustomTradeEventReply` under **{app-name}-messages** and assemble. Once you have built, add `api(project(":alpha-messages"))` to your build.gradle.kts file under **{app-name}-script-config/build.gradle.kts**.
 
-...you can now use the following example Event Handler below:
+...you can now use the following example Event Handler:
 
 ```kotlin
     eventHandler<TradeEvent, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
@@ -62,7 +62,7 @@ Add `CustomTradeEventReply` under **{app-name}-messages** and assemble. Once you
     }
 ```
 
-The following code assumes you have built your fields and tables after you created your `TradeEvent` under **jvm/{app-name}-config** with a primary key of `tradeId`. If intelliJ can't find you `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](/getting-started/learn-the-basics/data-model/).
+The following code assumes you have built your fields and tables after you created your `TradeEvent` under **jvm/{app-name}-config** with a primary key of `tradeId`. If intelliJ can't find you `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](../../../getting-started/learn-the-basics/data-model/).
 
 ### onException
 
@@ -111,7 +111,7 @@ If you use custom class instead of generated database entities as message-type o
     }
 ```
 
-You can find out more details in our section on [authorisation](/server/access-control/authorisation-overview/).
+You can find out more details in our section on [authorisation](../../../server/access-control/authorisation-overview/).
 
 
 ## Auto auditing
@@ -125,7 +125,61 @@ If the Event Handler message type is a database-generated entity that is auditab
 
 ## Defining state machines
 
-State machines, which define the conditions for moving from one state to another, are defined within your Event Handler files. See more details about these in the section on [Defining your state machines](/server/state-machine/introduction/).
+State machines, which define the conditions for moving from one state to another, are defined within your Event Handler files. See more details about these in the section on [Defining your state machines](../../../server/state-machine/introduction/).
+
+## Disabling schema validation
+
+It is possible to disable the automatic Json Schema validation enforced by default for all type-safe messages for each individual event handler.
+
+To disable schema validation for a specific event, either:
+
+- Override the `schemaValidation` method to `false` in the custom Event Handler definitions. 
+or
+- Set the `schemaValidation` property to `false` in a GPAL Event Handler.
+
+Here is an example of a custom Event Handler definition:
+```kotlin
+import global.genesis.commons.annotation.Module
+import global.genesis.eventhandler.typed.async.AsyncValidatingEventHandler
+import global.genesis.message.core.event.Event
+import global.genesis.message.core.event.EventReply
+
+@Module
+class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply> {
+    // Override schemaValidation here to disable schema validation
+    override fun schemaValidation(): Boolean = false
+    
+    override suspend fun onValidate(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return ack()
+    }
+
+    override suspend fun onCommit(message: Event<Company>): EventReply {
+        val company = message.details
+        // custom code block..
+        return ack()
+    }
+}
+```
+
+or in a GPAL definition:
+
+```kotlin
+
+eventHandler {
+    eventHandler<Company> {
+        schemaValidation = false
+        onCommit { event ->
+            val company = event.details
+            // custom code block..
+            ack()
+        }
+    }
+}
+```
+
+See more information about how to define type-safe messages [here](../../03_server/09_inter-process-messages/03_type-safe-messages.md).
 
 ## Pending approvals
 

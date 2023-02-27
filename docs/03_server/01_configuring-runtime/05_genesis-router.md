@@ -59,9 +59,71 @@ router {
 }
 ```
 
+## Router configuration
+Let's have a look at the different options for configuring this file. You have seen some, but not all of these in the example above.
+
+`webPort` This port is used for tcp/ip socket. You must declare a port, and it cannot be below 1024.
+
+`socketPort` This port is used for http/websockets. You must declare a port, and it cannot be below 1024.
+
+`dataserverPollingTimeout` This setting contains the timeout for polling the data-server resources in the system in seconds. Default value is 60 seconds.
+
+`authDisabled` This is a dangerous setting! If set to true, it disables all authentication on the router. Typically, it is used for development mode. If you need to use this for another reason, see our section on [non-authenticated Genesis Routers](../../../server/configuring-runtime/genesis-router/#non-authenticated-routers/). Default value is false.
+
+`nettyLoggingEnabled` If set to true, this setting enables internal netty logging. Default value false.
+
+**Netty configuration**
+
+`httpServerCodecDefinition: A combination of HttpRequestDecoder and HttpResponseEncoder, which enables easier server-side HTTP implementation.
+You can find more information in the [netty documentation](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpServerCodec.html).
+
+Different decoder options
+  * `maxInitialLineLength` default value: 4096
+  * `maxHeaderSize` default value: 8192
+  * `maxChunkSize` default value: 8192
+  * `validateHeaders` default value: true
+  * `initialBufferSize` default value: 128
+
+`httpObjectAggregatorDefinition` A ChannelHandler that aggregates an HttpMessage and its following HttpContents into a single FullHttpRequest or FullHttpResponse (depending on if it used to handle requests or responses) with no following HttpContents.
+
+There is more information in the [netty documentation](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpObjectAggregator.html).
+
+  * `maxContentLength` The maximum length of the aggregated content in bytes. Default value: 262144
+  * `closeOnExpectationFailed` If a 100-continue response is detected but the content length is too large, then true means close the connection. Otherwise, the connection will remain open and data will be consumed and discarded until the next request is received. Default value: false
+
+**Message routes**
+
+`routes` You can redirect some microservice messages to particular processes by declaring new `route` blocks within this one.
+
+`route` Is the defined route taking both a `messageType` and a specific `process`.
+
+**Blocked and allowed resources**
+
+You can control which resources are exposed to the front end by the Genesis Router using either `allowList` or `blockList`.
+
+- If you specify one or more resources as `allowList`, then only these resources (and the Genesis defaults) are accessible.
+- If you specify one or more resources as `blockList`, then these resources are not exposed. All other resources (including the Genesis defaults) are accessible.
+- If you don't specify any resources as either `allowList` or `blockList`, then all resources (including  the Genesis defaults) are accessible.
+
+The `allowList` and `blockList` tags are mutually exclusive. If you specify both, it will generate an error.
+
+The default resources that are always exposed are:
+
+- EVENT_LOGIN_AUTH
+- EVENT_LOGOUT
+- MORE_ROWS
+- MORE_COLUMNS
+- DATA_LOGOFF
+- DATA_GET
+
+**Message type**
+
+`entry` Is the additional accepted `messageType`.
+
 ## Configuring runtime
 
-There are two important files in your application that contain configuration information:
+There are two important files in your application that contain configuration information; make sure that your Genesis Router is configured correctly in both of them:
+
 - _application-name_**-processes.xml**
 - _application-name_**-service-definitions.xml**
 
@@ -70,7 +132,7 @@ There are two important files in your application that contain configuration inf
 Here is an example of the Genesis Router's configuration in an application's **processes.xml** file:
 
 ```xml
-  <process name="GENESIS_ROUTER">
+<process name="GENESIS_ROUTER">
     <start>true</start>
     <scheduleRestart>true</scheduleRestart>
     <groupId>GENESIS</groupId>
@@ -85,73 +147,25 @@ Here is an example of the Genesis Router's configuration in an application's **p
 </process>
 ```
 
-For more information on the tags that can be set within the configuration for your application, go to our page on [processes.xml](/server/configuring-runtime/processes/).
+For more information on the tags that can be set within the configuration for your application in this file, go to our page on [processes.xml](../../../server/configuring-runtime/processes/).
 
 ### Configuring in service-definitions.xml
 
-Here is an example of the Genesis Router's service configuration:
+The service definition is designed to make sure that each module (service) has a unique port number for inter-process messaging. Here is an example:
 
 ```xml
   <service host="localhost" name="GENESIS_ROUTER" port="9017"/>
 ```
 
-For more information on the attributes that can be set here, go to our page on [service definitions](/server/configuring-runtime/service-definitions/).
+For more information on the attributes that can be set here, go to our page on [service definitions](../../../server/configuring-runtime/service-definitions/).
 
-## Router configuration
-Let's have a look at the different options for configuring this file. You have seen some, but not all of these in the example above.
-
-`webPort`: This port is used for tcp/ip socket. You must declare a port, and it cannot be below 1024.
-
-`socketPort`: This port is used for http/websockets. You must declare a port, and it cannot be below 1024.
-
-`dataserverPollingTimeout`: This setting contains the timeout for polling the data-server resources in the system in seconds. Default value is 60 seconds.
-
-`authDisabled`: If set to true, this setting disables all authentication, and is used for development mode. Default value is false.
-
-`nettyLoggingEnabled`: This setting if set to true, enables internal netty logging. Default value false.
-
-**Netty configuration**:
-
-`httpServerCodecDefinition`: A combination of HttpRequestDecoder and HttpResponseEncoder, which enables easier server-side HTTP implementation.
-You can find more information in the [netty documentation](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpServerCodec.html).
-
-Different decoder options
-  * `maxInitialLineLength`: default value: 4096
-  * `maxHeaderSize`: default value: 8192
-  * `maxChunkSize`: default value: 8192
-  * `validateHeaders`: default value: true
-  * `initialBufferSize`: default value: 128
-
-`httpObjectAggregatorDefinition`: A ChannelHandler that aggregates an HttpMessage and its following HttpContents into a single FullHttpRequest or FullHttpResponse (depending on if it used to handle requests or responses) with no following HttpContents.
-
-There is more information in the [netty documentation](https://netty.io/4.1/api/io/netty/handler/codec/http/HttpObjectAggregator.html).
-
-  * `maxContentLength`: the maximum length of the aggregated content in bytes. Default value: 262144
-  * `closeOnExpectationFailed`: If a 100-continue response is detected but the content length is too large, then true means close the connection. Otherwise, the connection will remain open and data will be consumed and discarded until the next request is received. Default value: false
-
-**Message routes**:
-
-`routes`: You can redirect some microservice messages to particular processes by declaring new `route` blocks within this one.
-
-`route`: Is the defined route taking both a `messageType` and a specific `process`.
-
-**Allowed resources**:
-
-
-`allowList`:  You can limit the resources exposed by the Genesis Router. Without at least one `entry` block, every resource will be available. It is important to note that the following message types will always be allowed by default, regardless of the `allowList` definition:
-
-EVENT_LOGIN_AUTH, EVENT_LOGOUT, MORE_ROWS, MORE_COLUMNS, DATA_LOGOFF, DATA_GET
-
-
-`entry:` Is the additional accepted `messageType`.
-
-### Custom endpoints
+## Custom endpoints
 
 To create a custom endpoint using the Genesis Router, simply implement the `WebEndpoint` interface provided by Genesis Router. Call upon the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
 
 In the following examples, a `FileEndpointCommon` class has also been created to hold utility methods that may be needed across multiple endpoints:
 
-#### FileEndpointCommon
+### FileEndpointCommon
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -176,7 +190,7 @@ public class FileEndpointCommon {
 </TabItem>
 </Tabs>
 
-#### FileProcessor
+### FileProcessor
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -294,11 +308,36 @@ public class FileProcessor implements WebEndpoint {
 </TabItem>
 </Tabs>
 
-### Testing the Genesis Router
+## Non-authenticated routers
+
+As we have noted, the `authDisabled` setting is dangerous. One way or another, it is essential that you  make your Genesis Router secure. If you want to disable authentication for any other reason than local testing (for example, heavy interaction with legacy systems that can be secured at a legacy level), you still need to take the greatest care to ensure security:
+
+- Use unique ports, and make sure there is no clash with other modules. By default, Genesis Router uses 9064/9065. Make sure this is correctly entered in your _application_**-service-definitions.xml** file.
+- Make sure that the firewall settings for these ports are limited, so that unwanted external traffic cannot reach it.
+- It is useful to rename your Genesis Router's **genesis-router.kts** file to **genesis-router-no-auth.kts**. In this file, you must list the event/dataserver/reqrep resource names in an `allowList` block (one entry per item) to specify the resources that can be hit. These are the only resources that can be hit.  This is critical to ensuring security. 
+
+Once you have defined a non-authenticated Genesis Router and arranged its security, you need to make sure it has a correct entry in your _application_**-processes** file; this must point at your .kts file. For best practice, clearly name the process as non-authenticated. For example:
+
+
+``` xml l1, l7
+<process name="GENESIS_ROUTER_NO_AUTH">
+    <start>true</start>
+    <groupId>GENESIS</groupId>
+    <opKons>-Xmx512m -DXSD_VALIDATE=false</opKons>
+    <module>router</module>
+    <package>global.genesis.router </package>
+    <config>genesis-router-no-auth.kts</config>
+    <classpath>genesis-console-4*.jar,ppt-pdjandler-*.jar</classpath>
+    <descripKon>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS
+microservices</descripKon>
+</process>
+``` 
+
+## Testing the Genesis Router
 
 To create unit tests for Genesis Router, you can extend the `AbstractGenesisTestSupport` class and specify the `genesis-router.kts` as the Script file name. Examples of how you would initialise a test extending this class are provided below.
 
-More information about how testing works is in our section on [Integration testing](/operations/testing/integration-testing/).
+More information about how testing works is in our section on [Integration testing](../../../operations/testing/integration-testing/).
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">

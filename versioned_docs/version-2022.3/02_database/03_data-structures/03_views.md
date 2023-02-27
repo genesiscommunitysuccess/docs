@@ -12,11 +12,11 @@ tags:
 
 
 Views are defined in the `-view-dictionary.kts` files as discussed 
-[here](/database/fields-tables-views/views/).
+[here](../../../database/fields-tables-views/views/).
 
 In Genesis, a view is one table joined to one or more other tables. The first table is the root table. Other tables can be joined on to the root table to present composite data. 
 
-Views are the Genesis equivalent of SQL select queries. Unlike [tables](/database/data-types/table-entities/), views do not have any data of their own, but present a view based on the data in one or more tables. 
+Views are the Genesis equivalent of SQL select queries. Unlike [tables](../../../database/data-types/table-entities/), views do not have any data of their own, but present a view based on the data in one or more tables. 
 
 ## Read-only
 
@@ -69,7 +69,7 @@ This is what you need to know:
 
 ## Entities
 
-During code generation, [view](/database/data-types/views-entities/) and [index](/database/data-types/index-entities/) entities are generated from the definitions in your application's **view-dictionary.kts** file. 
+During code generation, [view](../../../database/data-types/views-entities/) and [index](../../../database/data-types/index-entities/) entities are generated from the definitions in your application's **view-dictionary.kts** file. 
 
 The name of each entity generated is the same as the definition, but it is converted from snake case to camel case; for example, VIEW_NAME becomes ViewName.
 

@@ -11,7 +11,7 @@ tags:
 ---
 
 
-A more light-weight grid for scenarios where you don't need the full power of [Grid Pro](/web/web-components/grids/grid-pro/grid-pro-intro/).
+A more light-weight grid for scenarios where you don't need the full power of [Grid Pro](../../../../web/web-components/grids/grid-pro/grid-pro-intro/).
 
 The `alpha-data-grid` component is used to display tabular data. The `alpha-data-grid-row` and `alpha-data-grid-cell` components are typically created programmatically by the parent grid, but you may find it useful to create them manually.
 

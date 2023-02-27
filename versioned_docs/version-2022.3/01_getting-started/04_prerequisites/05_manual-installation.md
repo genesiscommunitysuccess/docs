@@ -12,7 +12,7 @@ tags:
 ---
 To install the Genesis low-code platform on your server, go through the following steps.
 
-1. Make sure you have the [correct infrastructure for installing the platform](/getting-started/quick-start/hardware-and-software).
+1. Make sure you have the [correct infrastructure for installing the platform](../../../getting-started/quick-start/hardware-and-software).
 2. Install the Genesis platform.
 
 That is it. Once you have an installed platform in the correct environment, you are ready to start developing. Let's look in more detail.

@@ -8,7 +8,8 @@ const standardOptions = {
     subdomain: 'test',
     zone: 'genesistest.com',
     gtmId: 'GTM-1234',
-    enablePullRequestPreviews: false
+    enablePullRequestPreviews: false,
+    oldDomain: 'olddomain.com'
 }
 
 const createStack = (overrides: any = {}) => {
@@ -31,9 +32,19 @@ describe('Documentation Stack', () => {
         })
     })
 
+    test('configures two domains', () => {
+        template.resourceCountIs('AWS::Amplify::Domain', 2)
+    })
+
     test('generates the correct domain name from the provided options', () => {
         template.hasResourceProperties('AWS::Amplify::Domain', {
             DomainName: 'test.genesistest.com'
+        })
+    })
+
+    test('generates the correct old domain', () => {
+        template.hasResourceProperties('AWS::Amplify::Domain', {
+            DomainName: 'olddomain.com'
         })
     })
 

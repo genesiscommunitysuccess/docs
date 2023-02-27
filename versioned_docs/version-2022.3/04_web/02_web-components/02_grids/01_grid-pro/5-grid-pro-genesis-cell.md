@@ -12,7 +12,7 @@ tags:
 
 This is a `slotted` component that allows a "visual approach" when configuring cell renderers. Each `grid-pro-cell` takes an `ICellRendererFunc` typed function.
 
-The `grid-pro-cell` must be used as a slot of the [Genesis Grid Pro Column](/web/web-components/grids/grid-pro/grid-pro-genesis-column/). It can't be used separately, since it's just an extra visual layer for defining the cell renderer (which can also be configured directly from the `grid-pro-column` definition prop).
+The `grid-pro-cell` must be used as a slot of the [Genesis Grid Pro Column](../../../../../web/web-components/grids/grid-pro/grid-pro-genesis-column/). It can't be used separately, since it's just an extra visual layer for defining the cell renderer (which can also be configured directly from the `grid-pro-column` definition prop).
 
 :::tip
 Using `grid-pro-cell` is not mandatory and it's for highly customised cases. Most of the features here can be achieved with just `grid-pro-column` and/or `auto-cell-renderer-by-type` prop on a given Grid Pro.

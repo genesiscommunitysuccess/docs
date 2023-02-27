@@ -13,7 +13,7 @@ Your Genesis application data model can be configured without any concern about 
 
 Genesis supports the following database technologies for the data storage:
 
-| Database | [FoundationDb](/database/database-technology/foundationdb/) | [Postgresql](/database/database-technology/sql/#postgresql) | [Aerospike](/database/database-technology/aerospike/) | [MSSQL](/database/database-technology/sql/#ms-sql) | [Oracle](/database/database-technology/sql/#oracle) |
+| Database | [FoundationDb](../../../database/database-technology/foundationdb/) | [Postgresql](../../../database/database-technology/sql/#postgresql) | [Aerospike](../../../database/database-technology/aerospike/) | [MSSQL](../../../database/database-technology/sql/#ms-sql) | [Oracle](../../../database/database-technology/sql/#oracle) |
 | --- | --- | --- | --- |---------------------------------------------------|-----------------------------------------------------|
 | Technology | NOSQL | SQL | NOSQL | SQL                                               | SQL                                                 |
 | Supports transactions | ✔️ | ✔️ | ❌ | ✔️                                                | ✔️                                                  |

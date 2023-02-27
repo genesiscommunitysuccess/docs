@@ -20,7 +20,7 @@ More specifically, we will be adding:
  
 
 :::info
-For static data, the lightweight [DataGrid](/web/web-components/grids/data-grid/) is recommended instead. 
+For static data, the lightweight [DataGrid](../../../web/web-components/grids/data-grid/) is recommended instead. 
 :::
 
 ## The wrapper class
@@ -240,5 +240,5 @@ And so we have our result:
 ![](/img/all-trades-grid-03.png)
 
 :::info
-You can read more about our grid components and configuration options under the [Web UI reference](/web/web-components/grids/grid-pro/grid-pro-intro/) for grids.
+You can read more about our grid components and configuration options under the [Web UI reference](../../../web/web-components/grids/grid-pro/grid-pro-intro/) for grids.
 :::

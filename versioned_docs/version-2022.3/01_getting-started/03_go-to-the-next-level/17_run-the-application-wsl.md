@@ -12,7 +12,7 @@ tags:
     - centos
 ---
 
-The instructions on this page are for using WSL/CentOS. If you prefer to use Docker as your environment, there are [separate instructions](/getting-started/go-to-the-next-level/run-the-application-docker/).
+The instructions on this page are for using WSL/CentOS. If you prefer to use Docker as your environment, there are [separate instructions](../../../getting-started/go-to-the-next-level/run-the-application-docker/).
 
 The Genesis deploy plugin provides several tasks that help to set up the Genesis environment so that you can deploy a project to it. It can be used on Linux machines (local and over SSH) or Windows machines with WSL support.
 
@@ -289,7 +289,7 @@ As an alternative to Genesis Console, take this opportunity to test your work wi
 - [Insomnia App](https://insomnia.rest/download)
 
 :::tip REST endpoints
-When we test our resources using an HTTP client as described here, we're taking advantage of the [REST endpoints](/server/integration/rest-endpoints/introduction/) provided by the platform. Without any additional code from you, it automatically exposes all configured resources, such as Data Server queries and Event Handlers, as HTTP endpoints via the GENESIS_ROUTER service. This also enables you to do some API testing automation for all your back-end components.
+When we test our resources using an HTTP client as described here, we're taking advantage of the [REST endpoints](../../../server/integration/rest-endpoints/introduction/) provided by the platform. Without any additional code from you, it automatically exposes all configured resources, such as Data Server queries and Event Handlers, as HTTP endpoints via the GENESIS_ROUTER service. This also enables you to do some API testing automation for all your back-end components.
 
 :::
 
@@ -407,5 +407,5 @@ docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
 
 3. Finally, run the following command:
 ```shell
-docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host host.docker.internal:host-gateway --platform linux/amd64 genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
 ```

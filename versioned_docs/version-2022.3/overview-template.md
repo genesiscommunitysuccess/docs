@@ -10,7 +10,7 @@ Welcome to the Learning area for the Genesis low-code platform.
 
 
 
-This area is **aimed at people who already have some development knowledge**. Ideally, you should have experience of Java and/or Javascript, but development experience in any object-oriented language is a good starting point.
+This area is **aimed at people who already have some development knowledge**. Ideally, you should have experience of Java and/or JavaScript, but development experience in any object-oriented language is a good starting point.
 
 
 

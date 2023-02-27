@@ -1,5 +1,5 @@
 ---
-title: 'Request Server - Basics'
+title: 'Request Server - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, request server, introduction]
@@ -19,7 +19,7 @@ Let's make things really simple.
 - If you use AppGen to build from your dictionary, then a basic kts file will be built automatically for you, covering all the tables and views in your data model. You can edit this file to add sophistication to the component.
 - Otherwise, you can build your kts by defining each `requestReply` codeblock from scratch. 
 
-### Basic definition
+## Basic definition
 
 Here is the definition of a simple Request Server file. 
 
@@ -32,12 +32,12 @@ requestReplies {
 }
 ```
 
-### Adding a name
+## Adding a name
 
 Every requestReply in your .kts must have a unique name. If you do not provide one, it will be allocated automatically. In the previous example, the requestReply will automatically be named as REQ_INSTRUMENT_DETAILS.
 If you name it as "INSTRUMENT_INFO" then it will be registered as "REQ_INSTRUMENT_INFO"
 
-### Multiple Request Servers
+## Multiple Request Servers
 
 Almost certainly, your application will need to have more than one `requestReply`. So, let us state the obvious and show you a file with two `requestReply` codeblocks. Again, each is the simplest kind you could possibly have.
 
@@ -49,7 +49,7 @@ requestReplies {
 }
 ```
 
-### Specifying fields on request and reply
+## Specifying fields on request and reply
 
 
 With all those basic `requestReply` codeblocks we have seen so far, all the fields in the table are returned.
@@ -84,7 +84,7 @@ Note the following:
 - When you do not define a `request` block, the primary key for the table or view is used as the default request field.
 - When you do not define a `reply block`, all the fields will be returned.
 
-### Specifying derived fields
+## Specifying derived fields
 
 You can define derived fields to be included on the reply, where the input for the derived field is the reply entity. 
 
@@ -102,7 +102,7 @@ requestReplies {
 }
 ```
 
-### Using an index
+## Using an index
 
 The example below uses an index as the request definition. This provides additional indexing at the request level.
 
@@ -114,7 +114,7 @@ requestReplies {
 }
 ```
 
-### Where block
+## Where block
 
 The `where` block enables you to specify the conditions for which data should be returned. The `where` block can take two optional parameters:
 * row - this represents a row from the table or view

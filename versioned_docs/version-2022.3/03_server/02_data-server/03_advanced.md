@@ -1,5 +1,5 @@
 ---
-title: 'Data Server - Advanced'
+title: 'Data Server - advanced'
 sidebar_label: 'Advanced'
 id: advanced
 keywords: [server, data server, dataserver, advanced]
@@ -11,7 +11,7 @@ tags:
 ---
 
 
-### Client-enriched data
+## Client-enriched data
 
 In some scenarios, you might want to associate the results of Data Server queries with the user who initiated the queries. You can achieve this using the ```enrich``` feature, which enables an additional table or view join (including backwards joins). With this feature, you can provide user-specific values for each row, or even perform cell-level permissioning (for example, to hide cell values), depending on entitlements.
 
@@ -106,7 +106,7 @@ query("ALL_FAVOURITE_COUNTERPARTIES", COUNTERPARTY_VIEW) {
 
 ```
 
-### Ranged Data Server queries
+## Ranged Data Server queries
 
 Ranged Data Servers only cache a defined range within a table or view. This makes the Data Server more responsive and reduces resource requirements.
 
@@ -194,8 +194,8 @@ The features of the options are explained below.
 | MOVING_VIEW    | **true**  | Defines the behaviour of the client view when new rows are received in real time. If `MOVING_VIEW` is set to `true`, and `MAX_VIEW` is reached, any new rows arriving to the query will start replacing the oldest rows in the view. This guarantees that only the most recent rows are shown by default |
 | CRITERIA_MATCH |           | Clients can send a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: `Expr.dateIsBefore(TRADE_DATE,'20150518')` or `QUANTITY > 10000` |
 | FIELDS         |           | This optional parameter enables you to select a subset of fields from the query if the client is not interested in receiving all of them. Example: `TRADE_ID QUANTITY PRICE INSTRUMENT_ID`. By default, all fields are returned if this option is not specified |
-| ORDER_BY       |           | This option can be used to select a Data Server index (defined in xml), which is especially useful if you want the data to be sorted in a specific way. By default, Data Server rows will be returned in order of creation (from oldest database record to newest) |
-| REVERSE        | **false** | This option changes the Data Server index iteration. For example, if you are using the default index, the query will return rows from newest database records to oldest |
+| ORDER_BY       |           | This option can be used to select a [Data Server index](../../../database/data-types/index-entities/) (defined in xml), which is especially useful if you want the data to be sorted in a specific way. By default, Data Server rows will be returned in order of creation (from oldest database record to newest) |
+| REVERSE        | **false** | This option changes the [Data Server index](../../../database/data-types/index-entities/) iteration. For example, if you are using the default index, the query will return rows from newest database records to oldest |
 
 ## Criteria matching
 

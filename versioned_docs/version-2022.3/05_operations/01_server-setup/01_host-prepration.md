@@ -1,6 +1,6 @@
 ---
-title: 'Server Setup - Host Preparation'
-sidebar_label: 'Host Preparation'
+title: 'Server set-up - host preparation'
+sidebar_label: 'Host preparation'
 sidebar_position: 1
 id: host-preparation
 keywords: [operations, server, setup, preparation]
@@ -14,7 +14,7 @@ This document describes preparing a host to run applications built with Genesis 
 reader with some Linux system administration experience.
 
 
-## OS Choice
+## OS choice
 
 Genesis runs a set of JVM processes and a few external pieces of software, notably [nginx](https://nginx.org/en/).  It
 requires (in all likelihood) one of a set of supported databases and Genesis Global can provide RPM packages for them
@@ -97,7 +97,7 @@ across more than a dozen hosts to accomplish scaling and resilience.  Consul at 
 downloaded from our Artifactory at the link above.
 
 Clustering is native to Genesis applications and the details of configuring it are covered
-[later](/operations/clustering/clusters).
+[later](../../../operations/clustering/clusters).
 
 Disk space required is very application dependent.  Genesis applications will by default log locally; log volumes are
 determined by application activity levels.  Genesis applications also use local disk to create local LMDB files to help

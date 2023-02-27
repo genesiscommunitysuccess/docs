@@ -19,7 +19,7 @@ All of these configuration settings are wrapped within the `security` function.
 
 The `security` function wraps all other variable and functions within the **auth-preferences.kts** file. From this top level the following variables can be set:
 
-* `sessionTimeoutMins` specifies a time out for the session. Sessions are timed out (logged out) after the value defined here. The front end of your application can monitor web movement, page changes, etc. and perform an [automatic refresh](/server/integration/rest-endpoints/advanced/#event_login_refresh) - in which case, the user is not aware of the logout and the start of the new session. Default: 30 minutes.
+* `sessionTimeoutMins` specifies a time out for the session. Sessions are timed out (logged out) after the value defined here. The front end of your application can monitor web movement, page changes, etc. and perform an [automatic refresh](../../../server/integration/rest-endpoints/advanced/#event_login_refresh) - in which case, the user is not aware of the logout and the start of the new session. Default: 30 minutes.
 * `expiryCheckMins` specifies the time interval (in minutes) used to check for idle sessions in the system. Default: 5 minutes.
 * `maxSimultaneousUserLogins` specifies the maximum number of concurrent active sessions a user can maintain. Once this limit has been reached the user cannot activate additional sessions until one or more of the active sessions has been logged out. If the value zero is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
 
@@ -38,9 +38,17 @@ The `authentication` function is used to define common features of all three typ
 
 * `type` indicates which of the three types of username and password authentication are to be used. It accepts the values of: `AuthType.INTERNAL`, `AuthType.LDAP` or `AuthType.HYBRID`. Default: `AuthType.INTERNAL`.
 
-For more information about each of these three authentication types please see the [authentication overview](/server/access-control/authentication-overview/#username-and-password-authentication).
+For more information about each of these three authentication types please see the [authentication overview](../../../server/access-control/authentication-overview/#username-and-password-authentication).
 
-The following variables are used to configure an LDAP connection; these are only used when the `type` is either `AuthType.LDAP` or `AuthType.HYBRID`.
+### LDAP
+Within the scope of the `authentication` function, you can define an `ldap` block that can define connections to one or more LDAP servers. 
+
+- To define a connection to a single server, call the `connection` function and set the relevant details. 
+- To define connections to more than one server, simply call the `connection` function multiple times.
+
+When using multiple LDAP connections, the connections will be used in the order specified to authenticate a login request. Only one server need return a successful result for the login to be successful.
+
+The following variables are used to configure an LDAP connection; these are only used when the `type` is either `AuthType.LDAP` or `AuthType.HYBRID`. 
 
 * `url` specifies the LDAP server hostname. Default: `localhost`.
 * `port` specifies the LDAP server port. Default: 389.
@@ -60,7 +68,7 @@ The following variables are used to configure an LDAP connection; these are only
 * `onLoginSuccess` this is a function which is invoked on a successful LDAP login, for example: it allows you to insert a user into the db when it exists in LDAP but not the database.
 * `useTLS` this is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
 
-For more information about the various authentication types, please see the [Authentication overview](/server/access-control/authentication-overview/).
+For more information about the various authentication types, please see the [Authentication overview](../../../server/access-control/authentication-overview/).
 
 ### passwordValidation
 The `passwordValidation` function enables password validation, and is used to set the variables relating to this validation. 
@@ -144,17 +152,21 @@ security {
 
     authentication {
         type = AuthType.LDAP
-        url = "localhost"
-        port = 389
-        searchBase {
-            searchBase("ou=temp,dc=temp")
-        }
-        userGroups {
-        }
-        userPrefix = ""
-        bindDn = null
-        bindPassword = null
-        userIdType = "cn"
+		ldap {
+			connection {
+				url = "localhost"
+                port = 389
+                searchBase {
+                    searchBase("ou=temp,dc=temp")
+                }
+                userGroups {
+                }
+                userPrefix = ""
+                bindDn = null
+                bindPassword = null
+                userIdType = "cn"
+			}
+		}       
     }
 
     passwordValidation {

@@ -11,7 +11,7 @@ tags:
     - linux
 ---
 
-You have a choice of how you run the application. The instructions on this page are for using WSL/CentOS. If you prefer to use Docker as your environment, there are [separate instructions](/getting-started/quick-start/run-the-application-docker/).
+You have a choice of how you run the application. The instructions on this page are for using WSL/CentOS. If you prefer to use Docker as your environment, there are [separate instructions](../../../getting-started/quick-start/run-the-application-docker/).
 
 Before you start this, make sure that:
 
@@ -209,7 +209,7 @@ docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
 
 3. Finally, run the following command:
 ```shell
-docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host localnode:$(hostname -I) genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
+docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host host.docker.internal:host-gateway --platform linux/amd64 genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
 ```
 
 

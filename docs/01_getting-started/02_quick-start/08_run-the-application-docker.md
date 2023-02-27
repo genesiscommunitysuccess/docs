@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start - Run the application (Docker)'
+title: 'Quick start - run the application (Docker)'
 sidebar_label: 'Run the application (Docker)'
 id: run-the-application-docker
 keywords: [getting started, quick start, run the app, docker]
@@ -10,7 +10,7 @@ tags:
     - docker
 ---
 
-You have a choice of how you run the application. The instructions on this page are for using Docker. If you prefer to use WSL/CentOS as your environment, there are [separate instructions](/getting-started/quick-start/run-the-application/).
+You have a choice of how you run the application. The instructions on this page are for using Docker. If you prefer to use WSL/CentOS as your environment, there are [separate instructions](../../../getting-started/quick-start/run-the-application/).
 
 ## Building and composing Docker images
 
@@ -84,13 +84,13 @@ ssh-port=1337
 On your IntelliJ terminal, try running the gradle task `killServer`.
 
 ```shell
-./gradlew :genesisproduct-alpha:alpha-deploy:killServer #On the IntelliJ terminal
+./gradlew :genesisproduct-alpha:alpha-deploy:killServer
 ```
 
 You can check how it is running:
 
 ```shell
-./gradlew :genesisproduct-alpha:alpha-deploy:mon #On the IntelliJ terminal
+./gradlew :genesisproduct-alpha:alpha-deploy:mon 
 ```
 Or you can run `mon` on your previously attached terminal, where you can see that all services are down.
 

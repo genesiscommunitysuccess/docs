@@ -11,7 +11,7 @@ tags:
 
 The GenX CLI tool enables you to seed projects. In this case we want to generate a blank full-stack application project.
 
-We also have step-by-step instructions on [how to install and use genx](/getting-started/prerequisites/genx/).
+We also have step-by-step instructions on [how to install and use genx](../../../getting-started/prerequisites/genx/).
 
 ## Starting
 

@@ -9,7 +9,7 @@ tags:
     - modal
 ---
 
-A modal component will prevent the user from interacting with other content on the page. An alternative is the [dialog](/web/web-components/interaction/dialog/) component.
+A modal component will prevent the user from interacting with other content on the page. An alternative is the [dialog](../../../../web/web-components/interaction/dialog/) component.
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#dialog_modal):
 

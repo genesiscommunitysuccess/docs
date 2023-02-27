@@ -1,5 +1,5 @@
 ---
-title: Server Specialist Developer Training - Day four
+title: Server Developer Training - Day four
 sidebar_label: Day four
 sidebar_position: 5
 id: 04_ssdt-day4
@@ -29,13 +29,13 @@ As a script, it reads the source database and generates the appropriate fields, 
 - **-tables-dictionary.kts**
 - **-view-dictionary.kts**
 
-The script accepts a series of [arguments](/operations/commands/server-commands/#syntax-23) to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc). Sample below.
+The script accepts a series of [arguments](../../../operations/commands/server-commands/#syntax-23) to establish a connection to the database (e.g. user, password, host, etc) and some specific behaviour (e.g. product name, single dictionary file or composed, etc). Sample below.
 
 ```shell
 DictionaryBuilder -u TAS -p my_password -db TAS -port 1433 -h db2.ad.genesis.global -t mssql -product tas -o dictionary
 ```
 
-Tis is what the script does:
+This is what the script does:
 - It tries to connect to the RDBMS currently specified in the arguments. 
 - It generates Genesis dictionary fields for column names and their types.
 - It creates tables with their fields and keys.
@@ -43,20 +43,20 @@ Tis is what the script does:
 There are a few considerations you should be aware of:
 
 - If a column name (e.g. DATE) is found in several tables, and it always has the same type, only one field will be specified in the dictionary. However, if the same column name is found in different tables with different types, a new field will be created for each type, keeping the column name and adding the table name (e.g. CALENDAR) in the following fashion: DATE_IN_CALENDAR. The script will output this event on screen so you can fix the name and/or type it manually later on.
-- The types are mapped from Java types [here](http://docs.oracle.com/javase/8/docs/api/java/sql/Types.html) to Genesis dictionary types. Each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate; you must check the results for correctness.
+- The types are mapped from [Java types](https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/Types.html) to [Genesis dictionary types](../../../database/fields-tables-views/fields/fields-basics/#field-types). Each database can have its own data types, and the JDBC may interpret them differently. For example, in an early test, TIMESTAMP(8) in an Oracle database was interpreted as type OTHER in java.sql.Types. Therefore, this tool is not 100% accurate; you must check the results for correctness.
 - If there is no mapping available for the java.sql.Type retrieved by the column metadata query, it will be mapped by default to the Genesis dictionary type STRING. This event will be shown on standard output too, so you can know that there is an uncommon type that you should take care of.
 - Every time a table is successfully parsed, the script will give feedback: TABLE USERS complete.
 - Views are not parsed.
 
-Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based. Only unique indexes will be parsed as secondary keys. There is no concept of foreign keys in Genesis, so these are ignored. Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE). Further details and type mapping are available [here](/operations/commands/server-commands/#type-mapping).
+Primary keys will be parsed as primary keys in Genesis, whether they are single-column-based or multiple-column-based. Only unique indexes will be parsed as secondary keys. There is no concept of foreign keys in Genesis, so these are ignored. Strings parsed in lower-camel-case format (camelCase) will be transformed to upper-underscore format (UPPER_UNDERSCORE). Further details and type mapping are available [here](../../../operations/commands/server-commands/#type-mapping).
 
-#### Exercise 4.1 Running DictionaryBuilder from a local database
+### Exercise 4.1 Running DictionaryBuilder from a local database
 
 :::info ESTIMATED TIME
 25 mins
 :::
 
-From a local database available, let's create product that we create ref_data_app. All the files we create will start with that name. Then, run `DictionaryBuilder` using a instance in which the platform is installed.
+From a local database available, let's create the product *ref_data_app*. All the files we create will start with that name. Then, run `DictionaryBuilder` using a instance in which the platform is installed.
 
 After the run, you should check these files and adjust them to suit your application. For example, look inside the **fields-dictionary.kts** file to see if the field definitions are correct.
 
@@ -75,35 +75,25 @@ The `dictionaryBuilder` script generates the **fields-dictionary.kts** and **tab
 
 ## Streamer​
 
-Streamer and Streamer-Client components are available to allow the application to route messages. Streamer, representing the Server part, listens to a table or view, and streams data out to streamer clients. In almost all cases, the table or view must be an audit table. It covers both inbound and outbound messages.
+[Streamer](../../../server/integration/gateways-and-streamers/streamer/) and [Streamer-Client](../../../server/integration/gateways-and-streamers/streamer-client/) components are available to allow the application to route messages. Streamer, representing the Server part, listens to a table or view, and streams data out to streamer clients. In almost all cases, the table or view must be an audit table. It covers both inbound and outbound messages.
 
 ### Creating a Streamer
 
-To create a Streamer:
+To create a [Streamer](../../../server/integration/gateways-and-streamers/streamer/):
 
-1. Add the process configuration for the Streamer to the _applicationName_**-processes.xml** file. For example:
+1. Add the `genesis-pal-streamer` dependency to your **{applicationName}-script-config\build.gradle.kts** file. In this training our file is **alpha-script-config\build.gradle.kts**:
 
-```xml
-<process name="ALPHA_STREAMER">
-    <start>true</start>
-    <options>-Xmx128m -DXSD_VALIDATE=false</options>
-    <module>genesis-pal-streamer</module>
-    <package>global.genesis.streamer.pal</package>
-    <script>alpha-streamer.kts</script>
-	<language>pal</language>
-</process>
-```
-
-2. Next, add the service definition to the {applicationName}-service-definitions.xml file:
-
-```xml
-<configuration>
+```kotlin {3}
+dependencies {
     ...
-    <service host="localhost" name="ALPHA_STREAMER" port="11004"/>
-</configuration>
+    api("global.genesis:genesis-pal-streamer")
+    ...
+}
+
+description = "alpha-script-config"
 ```
 
-3. Create a Kotlin script file named {applicationName}-streamer.kts inside **{applicationName}-config/src/main/resources/scripts** folder. Add the following information:
+2. Create a Kotlin script file named {applicationName}-streamer.kts inside **{applicationName}-script-config/src/main/resources/scripts** folder. Add the following information:
     * A stream name
     * A GPAL index reference for a unique index with a single LONG field, this could refer to a table index or a view index.
 
@@ -115,6 +105,32 @@ streams {
 ```
 
 This example creates a stream called `ORDER_OUT`, based on the `ORDERS_OUT` table (or view). The data will be streamed, ordered by timestamp.
+
+
+3. Add the process configuration for the Streamer to the _applicationName_**-processes.xml** file. In this training our file is **alpha-processes.xml**:
+
+```xml {3-10}
+<processes>
+    ...
+    <process name="ALPHA_STREAMER">
+        <start>true</start>
+        <options>-Xmx128m -DXSD_VALIDATE=false</options>
+        <module>genesis-pal-streamer</module>
+        <package>global.genesis.streamer.pal</package>
+        <script>alpha-streamer.kts</script>
+        <language>pal</language>
+    </process>
+</processes>
+```
+
+4. Next, add the service definition to the {applicationName}-service-definitions.xml file. In this training our file is **alpha-service-definitions.xml**:
+
+```xml {3}
+<configuration>
+    ...
+    <service host="localhost" name="ALPHA_STREAMER" port="11006"/>
+</configuration>
+```
 
 ### Parameters
 You can also specify the following optional parameters in a stream block:
@@ -158,7 +174,7 @@ streams {
 ```
 
 **Fields**
-The fields tag enables you to transform the output in a similar way to views, data server and req rep definitions. For example, here we output three fields:
+The fields tag enables you to transform the output in a similar way to views, data server and request server definitions. For example, here we output three fields:
 ```kotlin
 streams {
     stream("ORDERS_OUT", ORDER_OUT.BY_TIMESTAMP) {
@@ -188,7 +204,7 @@ streams {
 
 ## Streamer Client
 
-Streamer Client receives data from a streamer server. When data is received, it transforms into the relevant format. It covers both inbound and outbound messages.
+[Streamer-Client](../../../server/integration/gateways-and-streamers/streamer-client/) receives data from a streamer server. When data is received, it transforms into the relevant format. It covers both inbound and outbound messages.
 
 Let's see how to create a Streamer Client. It also looks at the syntax of the two types of Streamer Client that are available:
 
@@ -196,31 +212,21 @@ Let's see how to create a Streamer Client. It also looks at the syntax of the tw
 * GenesisSet
 
 ### Creating a Streamer Client
-To create a Streamer Client:
+To create a [Streamer-Client](../../../server/integration/gateways-and-streamers/streamer-client/):
 
-1. Add the configuration for the Streamer Client process to the {applicationName}-processes.xml file:
+1. Add the genesis-pal-streamerclient` dependency to your *{applicationName}-script-config\build.gradle.kts* file. In this training our file is **alpha-script-config\build.gradle.kts**:
 
-```xml
-<process name="ALPHA_STREAMER_CLIENT">
-    <start>true</start>
-    <options>-Xmx128m -DXSD_VALIDATE=false</options>
-    <module>genesis-pal-streamerclient</module>
-    <package>global.genesis.streamerclient.pal</package>
-    <script>alpha-streamer-client.kts</script>
-	<language>pal</language>
-</process>
-```
-
-2. Next, add the service definition to the {applicationName}-service-definitions.xml file:
-
-```xml
-<configuration>
+```kotlin {3}
+dependencies {
     ...
-    <service host="localhost" name="ALPHA_STREAMER_CLIENT" port="11005"/>
-</configuration>
+    api("global.genesis:genesis-pal-streamerclient")
+    ...
+}
+
+description = "alpha-script-config"
 ```
 
-2. Create a Kotlin script file named {applicationName}-streamer-client.kts inside **{applicationName}-config/src/main/resources/scripts** folder, and add the following details:
+2. Create a Kotlin script file named {applicationName}-streamer-client.kts inside **{applicationName}-script-config/src/main/resources/scripts** folder, and add the following details:
     * A streamer client name
     * A streamer data source process and stream name
     * One or more `onMessage` tags
@@ -256,7 +262,7 @@ There are two types of Streamer Client:
 - *Table or View entity Streamer Client* 
 - * GenesisSet Streamer Client*. 
 
-You can also set in a Streamer Client, such as `isReplayable`,  `eventHandlerBuffer`, `sentWarningRange`, and `receiveWarningRange`. Further information can be found [here](/server/integration/gateways-and-streamers/streamer-client/#properties).
+You can also set in a Streamer Client, such as `isReplayable`,  `eventHandlerBuffer`, `sentWarningRange`, and `receiveWarningRange`. Further information can be found [here](../../../server/integration/gateways-and-streamers/streamer-client/#properties).
 
 In addition, for entity streamers, you can format the message in the same way as you would define the output of a view, Data Server or Request Server. Use `sendFormatted`:
 
@@ -267,20 +273,55 @@ sendFormatted("QUOTE_HANDLER", "QUOTE_EVENT") {
 }
 ```
 
-#### Exercise 4.2 Creating a Streamer solution to control the TRADE_AUDIT table
+
+3. Add the configuration for the Streamer Client process to the {applicationName}-processes.xml file. In this training our file is **alpha-processes.xml**:
+
+```xml {3-10}
+<processes>
+    ...
+    <process name="ALPHA_STREAMER_CLIENT">
+        <start>true</start>
+        <options>-Xmx128m -DXSD_VALIDATE=false</options>
+        <module>genesis-pal-streamerclient</module>
+        <package>global.genesis.streamerclient.pal</package>
+        <script>alpha-streamer-client.kts</script>
+        <language>pal</language>
+    </process>
+</processes>
+```
+
+4. Next, add the service definition to the {applicationName}-service-definitions.xml file. In this training our file is **alpha-service-definitions.xml**:
+
+```xml {3}
+<configuration>
+    ...
+    <service host="localhost" name="ALPHA_STREAMER_CLIENT" port="11007"/>
+</configuration>
+```
+
+## Exercise 4.2 Creating a Streamer solution to control the TRADE_AUDIT table
 
 :::info ESTIMATED TIME
 45 mins
 :::
 
-We are going to double-check if a record in the *TRADE* table has been audited. To do this, create a boolean field in the *TRADE* table called **BEEN_AUDITED**, and create a Streamer solution (Server and Client) to update **BEEN_AUDITED** as soon as the record start the auditing process. You will also have to create an event in the EVENT_HANDLER to be called by the Streamer Client to update **BEEN_AUDITED** to true. 
+We are going to double-check if a record in the *TRADE* table has been audited. To do this, create a boolean field in the *TRADE* table called **BEEN_AUDITED**. Then, create a Streamer solution (Server and Client) to update **BEEN_AUDITED** as soon as the record start the auditing process. You will also have to create an event in the EVENT_HANDLER to be called by the Streamer Client to update **BEEN_AUDITED** to true. 
 
-Remember that the TRADE table has an auditing process that keeps tracking changes in the *TRADE_AUDIT* table.
+Create a Streamer called TRADE_AUDIT_STREAM, based on the *TRADE_AUDIT* table ordered by timestamp. The Streamer Client should call the new EVENT to update the *TRADE* field **BEEN_AUDITED**.
+
+Remember that the TRADE table has an [auditing process](../../../getting-started/developer-training/training-content-day4/#adding-audit-to-table-dictionary) that keeps tracking changes in the *TRADE_AUDIT* table. However, the auditing does not have a Timestamp Index yet, so we need to add the attribute `tsKey` as below:
+
+```kotlin {2}
+tables {
+    table (name = "TRADE", id = 2000, audit = details(id = 2100, sequence = "TR", tsKey = true)) {
+        ...
+    }
+    ...
+}
+```
 
 :::tip
-Don't forget to change the fields file, as well as run the task to generateFields.
-
-Create a Streamer called TRADE_AUDIT_OUT, based on the *TRADE_AUDIT* table. The Streamer Client should call the new EVENT to update the *TRADE* field **BEEN_AUDITED**.
+Don't forget to change the fields and tables files, as well as run the tasks to [generateFields](../../../getting-started/developer-training/training-content-day1/#generatefields) and [generateDao](../../../getting-started/developer-training/training-content-day1/#generatedao).
 :::
 
 

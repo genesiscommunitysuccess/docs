@@ -52,7 +52,7 @@ The `allRoutes` array, which you need to change to set the navigation buttons on
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-header` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. There is more information in the [package.json basics](https://docs.genesis.global/secure/web/basics/package-json-basics/) page.
+- Add `@genesislcap/foundation-header` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again. There is more information in the [package.json basics](../../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -232,22 +232,22 @@ To set the content of the flyout menu, add the content in the html within an ele
 		<p>GROUP SLOT</p>
 		<zero-tree-view>
 			<zero-tree-item>
-				<zero-icon variant="solid" name="location-arrow"></zero-icon>
+				<zero-icon name="location-arrow"></zero-icon>
 				Slot Tree Item
 			</zero-tree-item>
 			<zero-tree-item>
-				<zero-icon variant="solid" name="location-arrow"></zero-icon>
+				<zero-icon name="location-arrow"></zero-icon>
 				Slot Tree Item
 			</zero-tree-item>
 		</zero-tree-view>
 		<p>GROUP SLOT 2</p>
 		<zero-tree-view>
 			<zero-tree-item>
-				<zero-icon variant="solid" name="location-arrow"></zero-icon>
+				<zero-icon name="location-arrow"></zero-icon>
 				Slot Tree Item 2
 			</zero-tree-item>
 			<zero-tree-item>
-				<zero-icon variant="solid" name="location-arrow"></zero-icon>
+				<zero-icon name="location-arrow"></zero-icon>
 				Slot Tree Item 2
 			</zero-tree-item>
 		</zero-tree-view>

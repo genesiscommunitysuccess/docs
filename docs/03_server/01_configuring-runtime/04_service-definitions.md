@@ -1,6 +1,6 @@
 ---
 title: 'Server configuration - service definitions'
-sidebar_label: 'service definitions'
+sidebar_label: 'Service definitions'
 id: service-definitions
 keywords: [server, configuration, service definitions]
 tags:
@@ -20,7 +20,7 @@ Every application must have  a **-service-definitions.xml** file. This is where 
 </configuration>
 ```
 
-When `genesisInstall` is executed, all products have their **-service-definitions.xml** files compiled into a system-wide **$GC/global-service-definitions.xml**. Here is an example of a global-service-definitions.xml file where we have the _auth_, _genesis_ and _gcom_ products installed:
+When `genesisInstall` is executed, all products have their **-service-definitions.xml** files compiled into a system-wide **$GC/global-service-definitions.xml**. Here is an example of a **global-service-definitions.xml** file where we have the _auth_, _genesis_ and _gcom_ products installed:
 
 ```xml
 <configuration>
@@ -73,4 +73,13 @@ The global-service-definitions.xml file and the processes.xml file are are erase
 Therefore, it is essential that you set the **service-definitions.xml** file this way for every service or module for which you want to enable SSL.
 :::
 
+## Overriding ports at runtime
+The ports that each service uses can be overridden at runtime with an environment variable.
 
+This is particularly useful when you want to run a single build across multiple environments that have different port requirements (i.e. multiple apps running on a single host).
+
+To override the port, just use the environment variable `{PROCESS_NAME}_PORT={PORT}`.
+
+So for example, if you wanted the `GENESIS_ROUTER` to run on port 22222 you would use `GENESIS_ROUTER_PORT=22222`.
+
+This guide doesn't cover how to use environment variables, but there are many guides online such as [How to Set an Environment Variable in Linux](https://www.freecodecamp.org/news/how-to-set-an-environment-variable-in-linux/) that explain how they work.

@@ -36,13 +36,13 @@ All of the generated reports are stored for retrieval later. The report configur
 ### Server configuration
 
 To enable the Report micro-front-end, you need to configure the Reporting module on the server.
-- Configure [backend server](https://docs.genesis.global/secure/server/integration/server-reporting/)
+- Configure [backend server](../../../../server/integration/server-reporting/)
 
 ### Front-end configuration
 
 To enable this micro-front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-reporting` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. There is more information on this in the [package.json basics](https://docs.genesis.global/secure/web/basics/package-json-basics/) page.
+- Add `@genesislcap/foundation-reporting` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. There is more information on this in the [package.json basics](../../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
