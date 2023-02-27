@@ -547,9 +547,9 @@ This is just an example; you could have more than two layouts on a page or style
 
 ### Adding items dynamically
 
-This is an example of using the JavaScript API to add items onto the layout at runtime. Before reading this example you should familiarise yourself with the [API Section](#javascript-api).
+This is an example of using the JavaScript API to add items onto the layout at runtime. Before reading this example, you should familiarise yourself with the [API Section](#javascript-api).
 
-Say you want the user to be able to choose between three different types of item tht can be put onto the layout - a profile-management table, and a pie & column chart.
+Say you want the user to be able to choose between three different types of item that can be put onto the layout: a profile-management table, and a pie chart and a column chart.
 
 ```typescript
 // Can either create an element and initialise it completely using JavaScript
