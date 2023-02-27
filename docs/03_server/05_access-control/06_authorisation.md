@@ -291,25 +291,34 @@ permissioning {
 
 #### Where clauses
 
-You can define a where clause if you only want to show a row in specific cases. These authorisation definitions first evaluate the where clause against the permission map. This functionality on its own is not that useful, because for a single auth permissions map, the content of the where clause could be moved to the query where clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
+You can define a `where` clause if you only want to show a row in specific cases. These authorisation definitions first evaluate the `where` clause against the permission map. This functionality on its own is not that useful, because for a single auth permissions map, the content of the `where` clause could be moved to the query `where` clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
 
-The example below shows permissioning where authorisation is successful if the user satisifies one of two code blocks:
+The `where` clause scope is the same as the entity object so you can reference fields directly. If required, a parameter of the username can also be included.
+
+The example below shows permissioning where authorisation is successful if the user satisifies one of three code blocks:
 - The first block has a where clause that prevents the user (a permissioned buying countparty) from viewing cancelled trades.
 - The second block makes the information visible to any permissioned selling counterparty - so they can view cancelled trades.
+- The third block makes the information visible provided the trade owner is visibile to the user, excluding any trades created by TEST_USER.
 
 ```kotlin
 permissioning {
     auth(mapName = "ENTITY_VISIBILITY") {
         TRADE.BUYING_COUNTERPARTY
-        where { trade ->
-            TradeState.CANCELLED != trade.tradeState
+        where { 
+            TradeState.CANCELLED != tradeState
         }
         //Only visible to users with entity access to SELLING_COUNTERPARTY ID on the trade WHERE trade state is not CANCELLED (so buyer can't see cancelled trades effectively)
     } or
     auth(mapName = "ENTITY_VISIBILITY") {
         TRADE.SELLING_COUNTERPARTY
         //No where clause, so always visible to users with entity access to SELLING_COUNTERPARTY ID on the trade
-    }
+    } or 
+	auth(mapName = "USER_VISIBILITY) {
+		TRADE.OWNER
+		where { user ->
+			user != "TEST_USER"
+		}
+	}
 }
 ```
 
@@ -333,7 +342,7 @@ permissioning {
 
 #### enrichedAuth
 
-Our permission model could require access to client-enriched data, so data servers have an additional level of auth functionality which takes this data into account.
+Our permission model could require access to client-enriched data, so data servers have an additional level of auth functionality that takes this data into account.
 
 Here is an example:
 
@@ -386,7 +395,7 @@ We want to allow a user to view an account if one of the following is true:
 * The user is a sales officer, and is the sales officer for the given account
 * The user is an asset manager, and is the asset manager for the given account.
 
-The first thing we want to do is find out what type of user we're currently dealing with. We do this by checking the `TAG` table, and getting the `PERSON_TYPE` record for the given user. We can wrap this logic into a simple function and place it into the preExpression block:
+The first thing we want to do is find out what type of user we're dealing with. We do this by checking the `TAG` table, and getting the `PERSON_TYPE` record for the given user. We can wrap this logic into a simple function and place it into the `preExpression` block:
 
 ```groovy
 <preExpression>
@@ -472,11 +481,11 @@ Here, we're simply creating a TAG record and attempting to find the `PERSON_TYPE
     ]]>
 </entity>
 ```
-As you can see, we first get the **entityType** (note the inline null check to handle the fact the tag record may not exist). We can then check if the current user is stored against the account as either the sales officer, or the asset manager.
+As you can see, we first get the `entityType` (note the inline null check to handle the fact that the tag record might not exist). We can then check if the current user is stored against the account as either the sales officer, or the asset manager.
 
-We always emit an **AuthEntry** object within our returned Flowable, which specifies whether the user is permissioned or not.
+We always emit an `AuthEntry` object within our returned Flowable, which specifies whether the user is permissioned or not.
 
-Also note the fact we're using Flowable. We wrap the users list to be a Flowable, then we **flatMap** the **getUserType** call and return a Flowable in the form of an **AuthEntry**.
+Also note the fact we're using Flowable. We wrap the users list to be a Flowable, then we `flatMap` the `getUserType` call and return a Flowable in the form of an `AuthEntry`.
 
 We also define several items on the entity element:
 
@@ -584,7 +593,7 @@ The `user` handle readily available will contain all fields and their values fro
 
 All permission rules are held in the file **auth-permissions.xml**.  In this file, you define rules against a specific entity, and each entity is defined against a database table.
 
-We have a preExpression block inside our file, which is applied to all entities. This makes the definition `isUserEnabled` available to all entities.
+We have a `preExpression` block inside our file, which is applied to all entities. This makes the definition `isUserEnabled` available to all entities.
 
 
     <preExpression>

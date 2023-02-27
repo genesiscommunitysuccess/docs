@@ -115,6 +115,8 @@ exit $?
 
 The remap script reads all dictionary files (fields and table definitions) from **$GC** and remaps the memory-resident database accordingly.
 
+If using an SQL DB Layer, it can also be used to dump all the SQL DDL statements to the console so these can be applied by a database administrator instead of applying the changes directly from the remap script.
+
 It also generates dao objects based on the dictionary tables, so you can perform database operations in a type-safe way.
 
 Additionally, it will update the Genesis alias store (if running Aerospike or FDB).
@@ -133,12 +135,13 @@ remap [-c | --commit]
 
 | Argument | Argument long name     | Mandatory | Description                                                | Restricted values |
 |----------|------------------------|-----------|------------------------------------------------------------|-------------------|
-|          | --force                | no        | Forces the unlocking of a locked database                  | No                |
+| -f       | --force                | no        | Forces the unlocking of a locked database                  | No                |
 | -c       | --commit               | no        | Applies dictionary changes to the database                 | No                |
 |          | --force-dao-generation | no        | Forces the re-generation of DAOs on the given host         | No                |
 |          | --skip-dao-generation  | no        | Skips the re-generation of DAOs on the given host          | No                |
-|          | --ask-db-password      | no        | Prompt for a DB user password to be manually entered      | No                |
-
+|          | --ask-db-password      | no        | Prompt for a DB user password to be manually entered       | No                |
+| -d       | --dumpSQL              | no        | Outputs the SQL DDL statements to the console instead of applying to the db. | No                |
+| -m       | --metadataOnly         | no        | Only updates the GSF dictionary and alias stores, does not apply any table changes. | No                |
 If you run remap with no arguments, it simply gives a report of changes that exist in the configuration.
 
 For example:
