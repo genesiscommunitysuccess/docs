@@ -88,9 +88,9 @@ Once started, this launches a browser tab showing your application's login scree
 
 ### Making a change
 
-If you make a change the code, you can then build and run:
+If you make a change to the code, you can then build and run again:
 
-1. Click the **Deploy Genesis** button on the toolbar.
+1. Click on the **Deploy Genesis** button on the toolbar.
 
 ![Deploy](/img/intellij-deploy1.png)
 
