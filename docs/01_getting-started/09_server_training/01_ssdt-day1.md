@@ -71,7 +71,7 @@ systemDefinition {
 ### Global, System and Host levels
 
 As you can see from the example, you can define items at global, system and host level.
-* **Global**: These properties will be available to all systems. 
+* **Global**: These properties will be available to all systems. Represented by 
 * **System**: These properties contain information about a particular system and can have a free text field. Each system is associated with a host or hosts. The content should specify the type of environment the system is running in. 
 Local values can be specified in this block. **These values override the global values**.
 * **Host**: In this section you can define properties of host or hosts (if running in a cluster environment). Host block can exist under the system section as shown in the above example.
@@ -108,11 +108,14 @@ systemDefinition {
 
 Additionally, it is possible to create a global custom definition to be used like the code bellow.
 
-```kotlin {3}
+```kotlin {4}
 systemDefinition {
     global {
+        ...
         item(name = "ADMIN_PERMISSION_ENTITY_FIELD", value = "COUNTERPARTY_ID")
+        ...
     }
+    ...
 }
 ```
 
@@ -125,23 +128,20 @@ val permissionsField = SysDef.ADMIN_PERMISSION_ENTITY_FIELD
 Further information regarding the system definitions such as items defined, HashiCorp Vault, and more can be found [here](../../../server/configuring-runtime/system-definitions/).
 
 
-#### Exercise 1.1 System Definitions
-<!--
-Answer is pretty much here: https://www.notion.so/genesisglobal/What-makes-Genesis-low-code-ccfb29a874644b8da799a8f5469efb46#6d46b3a15ee94bf8940fa54a72624766
--->
-
+### Exercise 1.1 System Definitions
 :::info ESTIMATED TIME
 20 mins
 :::
 
 Let´s start the hands-on training with the first exercise. We are going to create a global custom definition to set the nullability for the Trade table fields. 
 
-Create a new item in the system definition file and use it in the fields definition file.
+Create a new item in the system definition file and use it in the fields definition file. We should edit the local system definition file to do that.
 
-:::tip changing genesis-system-definition configurations 
-To do this exercise, clone the Developer Training [repository](https://github.com/genesiscommunitysuccess/devtraining-alpha), go to the file **genesis-system-definition.kts** and do the changes. Then, go to the fields definition file and set the *nullable* using SysDef. 
 
-After the changes, don't forget to run *build*, *install-site-specific* and *deploy* tasks.
+:::tip changing alpha-system-definition configurations 
+To do this exercise, go to the file **alpha-system-definition.kts** and do the changes. Then, go to the fields definition file and set *nullable* using SysDef. 
+
+After the changes, don't forget to run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 :::
 
 
@@ -149,7 +149,7 @@ After the changes, don't forget to run *build*, *install-site-specific* and *dep
 
 The Genesis low-code platform has a real-time event-driven architecture.
 
-Applications built on the system must respond immediately to different types of input: inputs from users, messages from other systems, market-data updates and internally calculated analytic signals. These inputs are events.
+Applications built on the system must respond immediately to different types of input such as: inputs from users, messages from other systems, market-data updates and internally calculated analytic signals. These inputs are events.
 
 All the business logic for applications built on the platform is structured around these events. When an event occurs, the business logic immediately fires into action.
 
@@ -250,20 +250,17 @@ If the underlying database supports transactions, then the entityDb provides typ
 
 Using entityDb, it is also possible to subscribe operations, starting a database listener that receives updates to tables or views. When subscribing to view updates, only updates to the root table will be published. Further details regarding subscribe operations can be found [here](../../../database/database-interface/entity-db/#subscribe-operations).
 
-#### Exercise 1.2 entityDb ReadOperation getBulk
+### Exercise 1.2 entityDb ReadOperation getBulk
 :::info ESTIMATED TIME
 40 mins
 :::
 
-Create a new event called **TRADE_STANDARDIZATION** to perform a standardization in the Trade table, setting all negative *Trade.Quantity* records to zero. This method can use the ReadOperation [getBulk](../../../database/database-interface/entity-db/#getbulk) method to list all Trades and then use the [filter](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/filter.html) method Kotlin Flow class offers.
+Create a new event called **TRADE_STANDARDIZATION** to perform a standardization in the Trade table, setting all negative *Trade.Price* records to zero. This method can use the ReadOperation [getBulk](../../../database/database-interface/entity-db/#getbulk) method to list all Trades and then use the [filter](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/filter.html) method that the Kotlin Flow class offers.
 
 :::tip
-After selecting the Trade records you can use the *forEach* method to set the quantities to zero, and then use entityDb method [modifyAll](../../../database/database-interface/entity-db/#modify) to update everything.
+After selecting the Trade records you can use the *forEach* method to set the prices to zero, and then use entityDb method [modifyAll](../../../database/database-interface/entity-db/#modify) to update everything.
 :::
 
-<!-- 
-C:\Users\DanielBarros\Projects\clarity-server\clarity-script-config\src\main\resources\scripts\clarity-resetmanager-eventhandler.kts
--->
 
 ### Exception handling
 
@@ -287,12 +284,12 @@ eventHandler {
 }
 ```
 
-#### Exercise 1.3 Exception handling
+### Exercise 1.3 Exception handling
 :::info ESTIMATED TIME
 30 mins
 :::
 
-Add an exception handler in *EVENT_COUNTERPARTY_INSERT*, logging and enriching the error message with the message as well as the cause and event name.
+Add an exception handler in *EVENT_COUNTERPARTY_INSERT*, enriching the error message with the message as well as the cause and event name.
 
 :::tip
 Don't forget the returns, in this case `ack()` for success, and `nack(e)` for exceptions.
@@ -302,7 +299,7 @@ Don't forget the returns, in this case `ack()` for success, and `nack(e)` for ex
 
 If you use a custom reply message type, you won’t be able to use the default `ack()` or `validationAck()` functions.  The custom message type needs to be returned from the method.
 
-For a custom message type called `TradeEvent` defined as:
+For a class called `TradeEvent` built with your fields and tables defined as:
 
 ```kotlin
 data class TradeEvent(
@@ -316,7 +313,7 @@ data class TradeEvent(
 }
 ```
 
-... and  a custom message reply type called `CustomTradeEventReply` defined as:
+... and  a custom message reply type called `CustomTradeEventReply` added under {app-name}-messages defined as:
 
 ```kotlin
 sealed class CustomTradeEventReply : Outbound() {
@@ -350,11 +347,10 @@ sealed class CustomTradeEventReply : Outbound() {
 
 The `onException` block can capture any exceptions thrown by the `onValidate` and `onCommit` blocks and returns the expected reply message type (as shown in the last example). This function is particularly useful if you are using a custom message type; by default, Event Handlers will attempt to translate exceptions automatically to an **EventNack** message, which might cause compatibility problems if you are using custom replies.
 
-#### Exercise 1.4 Event Handler custom message
+### Exercise 1.4 Event Handler custom message
 :::info ESTIMATED TIME
 30 mins
 :::
 
-Now let's change the EVENT_TRADE_INSERT to use a custom reply message type. Create the classes `CustomTradeEventReply ` and `TradeEvent` with *price* and *quantity* required greater than zero. The Event Handler `onValidate` should ensure that *price* * *quantity* is always greater than 10.
-
+Now let's change the EVENT_INSTRUMENT_INSERT to use a custom reply message type. Create the classes `CustomInstrumentEventReply ` and add it under **alpha-messages** package *global.genesis.alpha.message.event*. The Event Handler `onValidate` statement should ensure that *instrumentName* has at least 3 characters.
 

@@ -182,13 +182,13 @@ Expr.dateIsToday(TRADE_DATE) && QUANTITY > 100
 
 Note - When using logical OR in your filter, you will lose the ability to use indexing for searches.
 
-#### Exercise 3.1 Enriching ALL_TRADES Data Server query
+### Exercise 3.1 Enriching ALL_TRADES Data Server query
 
 :::info ESTIMATED TIME
 30 mins
 :::
 
-We shall enrich ALL_TRADES Data Server query to improve the users experience. We shall derive a field on our query by bringing the user's favourite trades into the context.
+We are enriching the ALL_TRADES Data Server query to improve the user experience. We shall derive a field on our query by bringing the user's favourite trades into the context.
 
 To do that, create a table *FAVOURITE_TRADE* with the fields TRADE_ID and USER_NAME, as well as an index over the USER_NAME to be able to use the `byUserName` function over the FavouriteTrade DAO. Finally, create a derived field called "IS_FAVOURITE" to show whether the Trade is favourite or not.
 
@@ -200,10 +200,6 @@ derivedField("IS_FAVOURITE", BOOLEAN) { row, favourite ->
 }
 ```
 :::
-
-<!--
-Answer is pretty much here: http://localhost:8080/server/data-server/examples/#enriching-query
--->
 
 
 ## Advanced Request Servers
@@ -390,13 +386,14 @@ By defining your own Request Servers, you have maximum flexibility. You can spec
 
 It is recommended to locate your classes within the messages module of your application. Here, we place all the custom message types for our application. You will need to ensure that the script-config module has a dependency on the messages module.
 
-```xml
-<dependency>
-    <groupId>your.group</groupId>
-    <artifactId>your-artifact</artifactId>
-    <version>${project.version}</version>
-    <scope>provided</scope>
-</dependency>
+```kotlin {3} title='/server/jvm/{appName}-script-config/build.gradle.kts'
+dependencies {
+    ...
+    api(project(":alpha-messages"))
+    ...
+}
+
+description = "alpha-script-config"
 ```
 
 The `requestReply` code blocks in can be as simple or complex as your requirements. They are useful, for example, if you want to request data from a number of different tables and views that are not related. By nesting and joining all the relevant data in your `requestReply` statement, you create your own metadata for the Request Server, so it can then be used anywhere in the module.
@@ -429,7 +426,7 @@ requestReply<Hello, World>("HELLO_WORLD_CHECK") {
 
 Further details and examples can be found [here](../../../server/request-server/advanced/#custom-request-servers).
 
-#### Exercise 3.2 ALL_COUNTERPARTIES in Request Server
+### Exercise 3.2 ALL_COUNTERPARTIES in Request Server
 
 :::info ESTIMATED TIME
 30 mins
@@ -465,7 +462,7 @@ The conversion process creates a folder called **/home/core/run/_name_.cfg**, wh
 
 The data from each worksheet is extracted to a separate csv file.
 
-#### Exercise 3.3 Using ExcelToGenesis
+### Exercise 3.3 Using ExcelToGenesis
 
 :::info ESTIMATED TIME
 45 mins

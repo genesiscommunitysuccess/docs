@@ -16,12 +16,10 @@ Make sure you have completed the [Environment set-up](../../../getting-started/d
 
 ## Start the project baseline
 
-Clone the Developer Training repo [here](https://github.com/genesiscommunitysuccess/devtraining-alpha). Open it using IntelliJ and follow the next steps:
+Clone the Server Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/servertraining-seed). Open it using your favorite IDE such as IntelliJ or Visual Studio Code.
 
-- Build the server. In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha/Tasks/Build/Assemble**.
 - Make sure you are ok with all the [pre-requisites](../../../getting-started/prerequisites/introduction/).
-- Do the [Deployment process](../../../getting-started/developer-training/training-content-day1/#5-deployment).
-- Run the application [locally](../../../getting-started/developer-training/training-content-day2/#running-the-application-locally)
+- Now, using the repo that you just cloned, [build the docker images](../../../getting-started/developer-training/environment-setup/#building-the-docker-images), and [attach a terminal to the gsf Docker container](../../../getting-started/developer-training/environment-setup/#attaching-a-terminal-to-a-docker-container). You can then use [Genesis monitor](../../../operations/commands/server-commands/#mon-script) to check that the server is running.
 
 The application will open at `http://localhost:6060/login`.
 

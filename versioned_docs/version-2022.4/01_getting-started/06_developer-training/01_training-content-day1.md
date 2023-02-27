@@ -307,6 +307,15 @@ docker-compose build
 docker-compose up -d
 ```
 
+:::tip
+If you are experiencing any issues with the docker build, you can temporarily disable BuildKit to debug it properly.
+
+```shell
+$env:DOCKER_BUILDKIT = 0
+```
+:::
+
+
 ### User name and password
 Building and using Docker from the repo you [cloned](https://github.com/genesiscommunitysuccess/devtraining-seed), by default the following will be your login details:
 
