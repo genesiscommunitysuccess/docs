@@ -103,11 +103,14 @@ Once the build is successful you’ll be asked to start the resource daemon agai
 
 Once resource daemon starts up you can start the processes you wish to have running
 
+## Loading data in to your genesis application
+
+Using the plugin you're able to right click on CSV files or folders containing CSV files and select the "Import CSV(s) to Genesis" option.
+This will take the csv files and using the Genesis SentIt utility attempt to load the data from the CSV files in to tables with matching names.
 
 ## Docs navigation
 
 Developers can navigate to docs.genesis straight from IntelliJ:
 
-![Untitled](IntelliJ%20Plugin%20fba746d51a664415b2298792351bbb86/Untitled%2015.png)
+![Genesis Install](/img/intellij-docs.png)
 
-## Troubleshooting
