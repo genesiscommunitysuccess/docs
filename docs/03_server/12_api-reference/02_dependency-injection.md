@@ -2,9 +2,9 @@
 title: 'API reference - dependency injection'
 sidebar_label: 'Dependency injection'
 id: dependency-injection
-keywords: [database, api, reference, dependency, injection]
+keywords: [server, api, reference, dependency, injection]
 tags:
-    - database
+    - server
     - api
     - reference
     - dependency
