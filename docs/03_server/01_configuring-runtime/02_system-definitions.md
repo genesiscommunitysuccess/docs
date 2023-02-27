@@ -143,7 +143,7 @@ In this example we are fetching the value of `DbHost` from the environment varia
 
 ## Retrieving System Definition properties
 
-There are examples of how to retrieve properties from an application's System Definition in our page on [dependency injection](../../../database/api-reference/dependency-injection/#injectable-properties-from-system-definition) in the API section.
+There are examples of how to retrieve properties from an application's System Definition in our page on [dependency injection](../../../server/api-reference/dependency-injection/#injectable-properties-from-system-definition) in the API section.
 
 Genesis enables you to store encrypted values in the configuration. You can access these encrypted values from custom components using:
 

@@ -2,12 +2,14 @@
 title: 'API reference - authorisation API'
 sidebar_label: 'Authorisation API'
 id: authorisation-api
-keywords: [database, api, reference, authorisation]
+keywords: [server, api, reference, authorisation, entitlement, permission]
 tags:
-    - database
+    - server
     - api
     - reference
     - authorisation
+    - entitlement
+    - permission
 ---
 
 The authorisation API consists of two main classes that enable you to add permission checks to your custom component.
@@ -23,7 +25,8 @@ The authorisation API consists of two main classes that enable you to add permis
 package global.genesis.session
 // imports omitted for brevity
 
-@Singletonclass RightSummaryCache 
+@Singleton
+class RightSummaryCache 
 @Inject constructor(db: RxDb) : AbstractBulkTableSubscriber<RightSummaryCache.RightSummary>(
     db,
     "RIGHT_SUMMARY"

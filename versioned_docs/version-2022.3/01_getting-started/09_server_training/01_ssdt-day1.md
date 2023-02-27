@@ -126,10 +126,6 @@ Further information regarding the system definitions such as items defined, Hash
 
 
 #### Exercise 1.1 System Definitions
-<!--
-Answer is pretty much here: https://www.notion.so/genesisglobal/What-makes-Genesis-low-code-ccfb29a874644b8da799a8f5469efb46#6d46b3a15ee94bf8940fa54a72624766
--->
-
 :::info ESTIMATED TIME
 20 mins
 :::
@@ -261,9 +257,6 @@ Create a new event called **TRADE_STANDARDIZATION** to perform a standardization
 After selecting the Trade records you can use the *forEach* method to set the quantities to zero, and then use entityDb method [modifyAll](../../../database/database-interface/entity-db/#modify) to update everything.
 :::
 
-<!-- 
-C:\Users\DanielBarros\Projects\clarity-server\clarity-script-config\src\main\resources\scripts\clarity-resetmanager-eventhandler.kts
--->
 
 ### Exception handling
 
