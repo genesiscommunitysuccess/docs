@@ -22,7 +22,6 @@ Once you know the basics, you can explore the details of how you can interact wi
 - [Database Interface](../database/database-interface/database-interface/) - You can have a look at the database interface for the standard methods of interacting with the database.
 - [Helper Classes](../database/helper-classes/helper-classes/) - You can look at helper classes for details of classes such as Subscription, Write Result and Modify Details.
 - Find out more about our [Async](../database/types-of-api/async/) and [RxJava](../database/types-of-api/rxjava/) APIs.
-- You can then explore specific APIs, such as the [Event Handler API](../database/api-reference/event-handler-api/) and [Authorisation API](../database/api-reference/authorisation-api/).
 
 
 

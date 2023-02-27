@@ -2,9 +2,9 @@
 title: 'API reference - overview'
 sidebar_label: 'Overview'
 id: overview
-keywords: [database, api, reference, overview]
+keywords: [server, api, reference, overview]
 tags:
-    - database
+    - server
     - api
     - reference
     - overview

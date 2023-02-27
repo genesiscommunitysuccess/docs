@@ -2,12 +2,13 @@
 title: 'API reference - system definition API'
 sidebar_label: 'System definition API'
 id: system-definition-api
-keywords: [database, api, reference, system definition]
+keywords: [server, api, reference, system definition, configuration]
 tags:
-    - database
+    - server
     - api
     - reference
     - system definition
+    - configuration
 ---
 
 
@@ -23,7 +24,7 @@ You can access system definition properties in two ways:
 -   using existing APIs
 -   using @Named Genesis annotation
 
-## Using existing APIs[​](../../../database/api-reference/system-definition-api/#using-existing-apisdirect-link-to-heading)
+## Using existing APIs[​](../../../server/api-reference/system-definition-api/#using-existing-apisdirect-link-to-heading)
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
 | name | signature |
@@ -62,7 +63,7 @@ You can access system definition properties in two ways:
 | parseProperty | `static <T, R> Optional<R> parseProperty(Supplier<Optional<T>> property, Predicate<? super T> canBeTransformed, Function<? super T, ? extends R> transformer)` |
 | parseStringProperty | `static <R> Optional<R> parseStringProperty(Supplier<Optional<String>> property, Function<? super String, ? extends R> transformer)` |
 
-## Using @Named genesis annotation[​](../../../database/api-reference/system-definition-api/#using-named-genesis-annotationdirect-link-to-heading)
+## Using @Named genesis annotation[​](../../../server/api-reference/system-definition-api/#using-named-genesis-annotationdirect-link-to-heading)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### Injectable properties from system definition
