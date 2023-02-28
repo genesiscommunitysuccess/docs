@@ -125,6 +125,28 @@
 					"web" ,"login" ,"foundation login" ,"frontend" ,"ui" ,"micro-front-ends"
 				]
       }
+    },
+    {
+      "name": "@genesislcap/foundation-layout",
+      "enabled": true,
+      "api_docs": "./docs/api",
+			"img_dir": "docs/img",
+      "readme": "./README.md",
+      "output": {
+        "title": "Foundation Layout",
+        "sidebar_label": "Foundation Layout",
+        "id": "foundation-layout",
+        "directory": "./docs/04_web/10_dynamic-layout",
+        "api_docs": "docs/api",
+        "img_dir": "docs/img",
+        "readme": "10_foundation-layout.md",
+        "keywords": [
+					"web" ,"layout" ,"foundation layout" ,"frontend" ,"ui" ,"golden layout"
+        ],
+        "tags": [
+					"web" ,"layout" ,"foundation layout" ,"frontend" ,"ui" ,"golden layout"
+				]
+      }
     }
   ]
 }
