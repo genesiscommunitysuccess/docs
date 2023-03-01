@@ -27,6 +27,7 @@ export class AmplifyDocsStack extends cdk.Stack {
         // @see https://github.com/aws-amplify/amplify-hosting/issues/2160 for more discussion
         oauthToken: SecretValue.secretsManager('genesiscommunitysuccess-docs-prod')
       }),
+
       // We could replace this with an `amplify.yml` in the root of the project, but it'd amount to
       // the same thing. It tells Amplify how to build the project and where to find the generated
       // artifacts afterwards
