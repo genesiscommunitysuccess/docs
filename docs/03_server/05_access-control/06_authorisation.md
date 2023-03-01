@@ -295,7 +295,7 @@ You can define a `where` clause if you only want to show a row in specific cases
 
 The `where` clause scope is the same as the entity object, so you can reference fields directly. If required, a parameter of the username can also be included.
 
-The example below shows permissioning where authorisation is successful if the user satisfies one of three code blocks:
+The example below shows permissioning where authorisation is successful if the user satisfies one of four code blocks:
 
 - The first block has a `where` clause that prevents the user (a permissioned buying counterparty) from viewing cancelled trades.
 - The second block makes the information visible to any permissioned selling counterparty - so they can view cancelled trades.
