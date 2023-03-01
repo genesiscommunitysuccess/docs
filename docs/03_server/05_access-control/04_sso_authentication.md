@@ -554,6 +554,7 @@ Each `remoteConfig` configuration has the following properties:
 | --- | ------ | --- | --- | --- |
 | url | The OIDC provider configuration endpoint. | Yes | No default value | String |
 | verification | Holds configuration for the allowed clock skew and whether validation is enabled | No | No JWT verification | Object |
+| logout | Configuration for OIDC logout | No | OIDC logout is disabled by default | Object |
 
 Each `client` configuration has the following properties:
 
@@ -568,6 +569,7 @@ Each `endpoints` configuration has the following properties:
 | --- | ------ | --- | --- | --- |
 | token | The OIDC provider `token` endpoint | Yes | No default value | String |
 | authorization | The OIDC provider `authorization` endpoint | Yes | No default value | String |
+| logout | Configuration for OIDC logout | No | OIDC logout is disabled by default | Object |
 
 Each `verification` configuration has the following properties:
 
@@ -581,6 +583,180 @@ Each `verification` configuration has the following properties:
 :::note
 If `verification` is defined either `publicKey` or `publicKeyUrl` must be defined.
 :::
+
+### OIDC Logout
+
+Some applications may require functionality where the user logs out of the OIDC Provider. As this is not always required logging out of OIDC provider is optional and disabled by default.
+
+:::note
+If a user logs out of the OIDC Provider the same user will be logged out of all other applications that work with the same provider.
+:::
+
+There are several steps required to enable OIDC logout. 
+
+#### Enable OIDC support in GENESIS_AUTH_MANAGER
+
+First `GENESIS_AUTH_MANAGER` needs to know about the OIDC configuration. In **auth-processes.xml** add the oidc jars to the `classpath`, the oidc package to `package` and the OIDC configuration to `script`:
+
+```xml title='auth-processes.xml' {6,8,9}
+<process name="GENESIS_AUTH_MANAGER">
+    <groupId>AUTH</groupId>
+    <start>true</start>
+    <options>-Xmx256m -DXSD_VALIDATE=false</options>
+    <module>auth-manager</module>
+    <package>global.genesis.eventhandler,global.genesis.eventhandler.pal,global.genesis.auth.manager,global.genesis.auth.oidc</package>
+    <description>Controls the authentication/authorisation setup for users</description>
+    <script>auth-preferences.kts,auth-user-eventhandler.kts,auth-profile-eventhandler.kts,auth-mfa-eventhandler.kts,auth-password-eventhandler.kts,position-oidc-config.kts</script>
+    <classpath>auth-script-config*,auth-oidc-*.jar</classpath>
+    <language>pal</language>
+</process>
+```
+
+In the example above:
+ - the package `global.genesis.auth.oidc` is added to the `package` element
+ - the script `position-oidc-config.kts` is added to the `script` element
+ - the `auth-oidc-*.jar` files are added to the `classpath` element
+
+#### Enable OIDC Logout in GPAL
+
+The easiest way to enable OIDC logout in GPAL is by specifying the logout endpoint as shown in the sample below:
+
+```kotlin title='specifying logout endpoint'
+oidc {
+    
+    identityProvider("oidc") {
+        ...
+
+        config {
+           ...
+
+            endpoints {
+              ...
+              logout(path = "https://oidc-provider.com/logout")
+            }
+        }
+        ...
+    }
+}
+```
+
+However, there are providers that have custom logout mechanism. In this case if the provider is supported, the `mode` property can be specified along with logout endpoint:
+
+```kotlin title='specifying logout endpoint for vendor specific logout'
+oidc {
+    
+    identityProvider("oidc") {
+        ...
+
+        config {
+           ...
+
+            endpoints {
+              ...
+              logout(mode = LogoutMode.AUTH0, path = "https://oidc-provider.com/logout")
+            }
+        }
+        ...
+    }
+}
+```
+
+In all other cases when a provider has custom logout mechanism and is not supported by the platform a custom `logout` configuration can be specified as shown below:
+
+```kotlin title='specifying custom logout URL'
+oidc {
+    
+    identityProvider("oidc") {
+        ...
+
+        config {
+           ...
+
+            endpoints {
+              ...
+              logout{ 
+                path = "https://oidc-provider.com/logout"
+                addParameter("my-app", "positions")
+              }
+            }
+        }
+        ...
+    }
+}
+```
+
+For OIDC configuration that uses configuration endpoint the logout functionality can be enabled by calling `logout()`:
+
+```kotlin title='using the logout endpoint from the remote configuration'
+oidc {
+    
+    identityProvider("oidc") {
+        ...
+
+        remoteConfig {
+            ...
+            logout()
+        }
+        ...
+    }
+}
+```
+
+In this case the logout endpoint specifed for the `end_session_endpoint` property will be used. 
+
+If the used OIDC provider doesn't expose logout endpoint through the configuration endpoint then it can be specified as shown below:
+
+```kotlin title='specifying logout endpoint'
+oidc {
+    
+    identityProvider("oidc") {
+        ...
+
+        remoteConfig {
+            ...
+            logout(path = "https://oidc-provider.com/logout")
+        }
+        ...
+    }
+}
+```
+
+And for OIDC providers with custom logout mechanism the sample belowe can be used:
+
+```kotlin title='specifying logout endpoint for vendor specific logout'
+oidc {
+    
+    identityProvider("oidc") {
+        ...
+
+        remoteConfig {
+            ...
+            logout(mode = LogoutMode.AUTH0, path = "https://oidc-provider.com/logout")
+        }
+        ...
+    }
+}
+```
+
+As a last resort when a provider has custom logout mechanism and is not supported by the platform a custom `logout` configuration can be specified as shown below:
+
+```kotlin title='specifying custom logout URL'
+oidc {
+    
+    identityProvider("oidc") {
+        ...
+
+        remoteConfig {
+            ...
+            logout{ 
+              path = "https://oidc-provider.com/logout")
+              addParameter("my-app", "positions")
+            }
+        }
+        ...
+    }
+}
+```
 
 ### Sample configurations
 
