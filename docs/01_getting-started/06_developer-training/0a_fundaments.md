@@ -362,11 +362,11 @@ Web Components allow us to provide reusable building blocks and app functionalit
 - Powerful framework, runtime & tools: Full-featured framework and tools for building financial markets applications.
 - Proven enterprise-grade solutions: Range of standalone applications in production across use cases, from spreadsheet replacements to high-performance core applications.
 
-The Genesis Platform has been developed on the back of years of experience delivering software applications for some of the largest financial firms in the world. There was a clear need for a more targeted approach to support the requirements of financial markets software.​
+The Genesis Platform has been developed on the back of years of experience delivering software applications for some of the largest financial firms in the world. There was a clear need for a more targeted approach to support the requirements of financial markets software.
 
 Custom logic and behaviour can be added where needed and being built on the JVM, it enables access to a mature ecosystem of libraries used in the industry.
 
-The platform includes a modern, high-performance web application solution, enabling developers to build branded UIs quickly while leveraging data models and real-time features of the server.
+The platform includes a modern, high-performance web application solution, enabling developers to build branded UIs quickly using data models and the real-time features of the server.
 
 Our web stack is built using modern web platform features, integrating easily with existing web stacks such as Angular and React.
 
