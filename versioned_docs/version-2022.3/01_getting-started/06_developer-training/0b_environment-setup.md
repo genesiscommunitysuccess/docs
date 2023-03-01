@@ -85,7 +85,7 @@ This setup presumes you will sign in with jfrog user and password parameters. Pl
 `@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
 
 9. Save the file and under the directory path of this `.npmrc` file and type:
-`npm info @genesislcap/foundation-ui`. If the set-up wass successful, you should see a response like this:
+`npm info @genesislcap/foundation-ui`. If the set-up was successful, you should see a response like this:
 
 ```shell
 @genesislcap/foundation-ui@0.0.26 | UNLICENSED | deps: 23 | versions: 111
@@ -218,7 +218,7 @@ More information [here](https://docs.gradle.org/current/userguide/build_environm
 
 Clone the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed).
 
-Open the project using your favorite IDE, such as IntelliJ or Visual Studio Code.
+Open the project using your favourite IDE, such as IntelliJ or Visual Studio Code.
 
 ### WSL 2 set-up
 

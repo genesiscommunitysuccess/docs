@@ -157,7 +157,7 @@ import { Users, } from '@genesislcap/foundation-entity-management';
 Users;
 
 // Example html with the user management
-// You can customise this with additional fields, see futher in this documentation
+// You can customise this with additional fields, see further in this documentation
 export const AdminTemplate: ViewTemplate = html`
   <zero-tabs>
     <zero-tab-panel slot="tabpanel">

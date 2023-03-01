@@ -539,7 +539,7 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 Before defining the Consolidator, we should insert some data in the `INSTRUMENT_PRICE` table using the command [`SendIt`](../../../operations/commands/server-commands/#sendit-script). To do that, let's run server commands directly from a command line using PowerShell (or Windows Command Prompt) as we did [before](../../../getting-started/developer-training/training-content-day1/#running-server-commands).
 
-From the command line opened, in the */tmp* folder, save this csv as INSTRUMENT_PRICE.csv using your favorite editor (i.e. [vim](https://www.vim.org/) or [nano](https://www.nano-editor.org/)):
+From the command line opened, in the */tmp* folder, save this csv as INSTRUMENT_PRICE.csv using your favourite editor (i.e. [vim](https://www.vim.org/) or [nano](https://www.nano-editor.org/)):
 ```csv
 INSTRUMENT_ID,LAST_PRICE
 1,10
@@ -931,7 +931,7 @@ Note - You cannot use derived fields within a `where` block.
 
 #### Try yourself
 
-Let's add a new derivated field in the **alpha** application called *GOOD_USD_TRADE* where the currency should be USD and price greater than 10.
+Let's add a new derived field in the **alpha** application called *GOOD_USD_TRADE* where the currency should be USD and price greater than 10.
 
 :::tip
 After changing the files remember to run *assemble* and *deploy*

@@ -18,7 +18,7 @@ After running this, run mon.
 
 ![](/img/using-mon.png)
 
-This shows you ths status of your server, with all the individual services listed:
+This shows you the status of your server, with all the individual services listed:
 
 ![](/img/mon.png)
 

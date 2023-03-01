@@ -34,7 +34,7 @@ The goal of our app is to list all the orders with some filters and actions to i
 #### Fields
 | Field          | Type             | Editable | Notes
 |---------------|------------------------------|------------------------------|------------------------------|
-| Instrument          | Select or Search (autocomplete field) | Yes | Load data from ALL_INTRUMENTS Data Server
+| Instrument          | Select or Search (autocomplete field) | Yes | Load data from ALL_INSTRUMENTS Data Server
 | Market data          | Display price of the selected symbol | No | Load data from INSTRUMENT_MARKET_DATA ReqRep
 | Quantity          | Integer      | Yes | Must be positive
 | Price          | Double      | Yes | Must be positive
@@ -221,7 +221,7 @@ export class Order extends FASTElement {
 public async connectedCallback() { //add this method to Order class
     super.connectedCallback(); //FASTElement implementation
 
-    const msg = await this.connect.snapshot('ALL_INSTRUMENTS'); //get a snapshot of data from ALL_INTRUMENTS data server
+    const msg = await this.connect.snapshot('ALL_INSTRUMENTS'); //get a snapshot of data from ALL_INSTRUMENTS data server
     console.log(msg); //add this to look into the data returned and understand its structure
     this.allInstruments = msg.ROW?.map(instrument => ({
       value: instrument.INSTRUMENT_ID, label: instrument.INSTRUMENT_NAME}));

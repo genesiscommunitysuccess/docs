@@ -15,7 +15,7 @@ A design system is a collection of resources for interactive media that promotes
 
 * UX assets
 * Design tokens
-* Component libary
+* Component library
 * Documentation
 
 ### UX assets

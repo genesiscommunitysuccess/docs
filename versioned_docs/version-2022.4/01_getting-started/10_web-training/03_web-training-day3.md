@@ -62,7 +62,7 @@ export class Order extends FASTElement {
   };
 }
 ```
-:::tip ColDef and renderes
+:::tip ColDef and renderers
 Find out more about:
 - [ColDef and Genesis Grid Pro Column](../../../web/web-components/grids/grid-pro/grid-pro-genesis-column/)
 - [Cell Renderers](../../../web/web-components/grids/grid-pro/grid-pro-genesis-cell/)
@@ -276,7 +276,7 @@ Finally, create a new route called custom-order (as we did with playground, orde
 
 The way we have been using grid-pro so far is encapsulating a Genesis datasource to have access to Data Server resources. This makes it easier to retrieve data without worrying about the connection, handling update events and so on. This is called [connected data](../../../web/web-components/grids/grid-pro/grid-pro-connected/).
 
-[Genesis datasource](../../../web/web-components/grids/grid-pro/grid-pro-genesis-datasource/) offers some [attributes](../../../web/web-components/grids/grid-pro/grid-pro-genesis-datasource/#attributes-and-props) to parametrise how to retrieve the data. Some commonly used attributes are:
+[Genesis datasource](../../../web/web-components/grids/grid-pro/grid-pro-genesis-datasource/) offers some [attributes](../../../web/web-components/grids/grid-pro/grid-pro-genesis-datasource/#attributes-and-props) to parameterise how to retrieve the data. Some commonly used attributes are:
 
 - **`criteria: string`**: a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: Expr.dateIsBefore(TRADE_DATE,'20150518') or QUANTITY > 10000.
 

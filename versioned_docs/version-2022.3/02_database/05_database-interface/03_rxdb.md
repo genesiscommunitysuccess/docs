@@ -245,9 +245,9 @@ Flowable<DbRecord> tradeByPrimaryKeyEveryField = rxDb.getBulk("TRADE");
 // or with an index name to get it sorted by that
 Flowable<DbRecord> tradeByIDEveryField = rxDb.getBulk("TRADE", "TRADE_BY_ID");
 // or with a set of fields to select
-FLowable<DbRecord> tradeByPrimaryKeyIDAndPrice = rxDb.getBulk("TRADE", Set.of("ID", "PRICE"));
+Flowable<DbRecord> tradeByPrimaryKeyIDAndPrice = rxDb.getBulk("TRADE", Set.of("ID", "PRICE"));
 // or both!
-FLowable<DbRecord> tradeByIDIDAndPrice = rxDb.getBulk("TRADE", "TRADE_BY_ID", Set.of("ID", "PRICE"));
+Flowable<DbRecord> tradeByIDIDAndPrice = rxDb.getBulk("TRADE", "TRADE_BY_ID", Set.of("ID", "PRICE"));
 ```
 
 </TabItem>
@@ -284,7 +284,7 @@ val tradeByIDAndPrice = rxDb.getBulkFromEnd("TRADE", "TRADE_BY_ID", setOf("ID", 
 // we can pass in the table name and index name, to sort by that descending
 Flowable<DbRecord> tradeByIDEveryField = rxDb.getBulkFromEnd("TRADE", "TRADE_BY_ID");
 // or with a set of fields to select
-FLowable<DbRecord> tradeByIDIDAndPrice = rxDb.getBulkFromEnd("TRADE", "TRADE_BY_ID", Set.of("ID", "PRICE"));
+Flowable<DbRecord> tradeByIDIDAndPrice = rxDb.getBulkFromEnd("TRADE", "TRADE_BY_ID", Set.of("ID", "PRICE"));
 ```
 
 </TabItem>
@@ -345,7 +345,7 @@ getRxDb().getRange(startRec, endRec, "TRADE_BY_ID", 10, Set.of("TRADE_PRICE", "T
 
 ### getRangeFromEnd
 
-Works similiary to the `getRange` operation but returns the range in reverse order.
+Works similarly to the `getRange` operation but returns the range in reverse order.
 
 By providing different parameters, you can refine what information you are returned:
 * `startRecord` is needed in all cases, and defines where the range should start from.

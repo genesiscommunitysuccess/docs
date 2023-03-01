@@ -364,7 +364,7 @@ Web Components allow us to provide reusable building blocks and app functionalit
 
 The Genesis Platform has been developed on the back of years of experience delivering software applications for some of the largest financial firms in the world. There was a clear need for a more targeted approach to support the requirements of financial markets software.​
 
-Custom logic and behavior can be added where needed and being built on the JVM, it enables access to a mature ecosystem of libraries used in the industry.
+Custom logic and behaviour can be added where needed and being built on the JVM, it enables access to a mature ecosystem of libraries used in the industry.
 
 The platform includes a modern, high-performance web application solution, enabling developers to build branded UIs quickly while leveraging data models and real-time features of the server.
 

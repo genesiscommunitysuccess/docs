@@ -109,7 +109,7 @@ Here you can use specific conditions providing a function to the `cellClass` col
 
 ## Design systems
 
-A design system is a collection of resources for interactive media that promotes brand alignment of [UX assets](../../../web/design-systems/introduction/#ux-assets), [Design tokens](../../../web/design-systems/introduction/#design-tokens), [Component libary](../../../web/design-systems/introduction/#component-library), and [Documentation](../../../web/design-systems/introduction/#documentation-site).
+A design system is a collection of resources for interactive media that promotes brand alignment of [UX assets](../../../web/design-systems/introduction/#ux-assets), [Design tokens](../../../web/design-systems/introduction/#design-tokens), [Component library](../../../web/design-systems/introduction/#component-library), and [Documentation](../../../web/design-systems/introduction/#documentation-site).
 
 The Genesis [design system](../../../web/design-systems/introduction/) implementation provides the elements listed above, as well as a few additional features, such as:
 - set of reusable UI components
@@ -299,7 +299,7 @@ provideDesignSystem()
 For more information on shadow options, see [Element.attachShadow()](https://developer.mozilla.org/en-US/docs/Web/API/Element/attachShadow).
 
 :::tip key take-away
-You can register your own design system to make your app(s) look and feel cohesive accross the organization, following your company design guidelines.
+You can register your own design system to make your app(s) look and feel cohesive across the organisation, following your company design guidelines.
 
 Other developers will simply reuse the same design system.
 :::
@@ -324,7 +324,7 @@ Remember, we already provided you a folder with the main components (**client\we
 
 To register your own design system name, you have to edit the file **client\web\src\_ui-training-design-system\provide-design-system.ts** and then change the attribute `provideDesignSystem.prefix`. Thus, the components will get the defined prefix to declare (e.g. *ui-training*-text-field, *ui-training*-button, and so on).
 
-Lastly, to keep the best practices and avoid conflits, always open the system provider tag prior using the design system components like the example below.
+Lastly, to keep the best practices and avoid conflicts, always open the system provider tag prior using the design system components like the example below.
 ```html {1,4}
 <ui-training-design-system-provider>
   <ui-training-text-field required :value=${sync(x=> x.quantity)}>Quantity</ui-training-text-field>
@@ -376,7 +376,7 @@ import { Users, } from '@genesislcap/foundation-entity-management';
 Users;
 
 // Example html with the user management
-// You can customise this with additional fields, see futher in this documentation
+// You can customise this with additional fields, see further in this documentation
 export const AdminTemplate: ViewTemplate = html`
   <user-management></user-management>
 `;

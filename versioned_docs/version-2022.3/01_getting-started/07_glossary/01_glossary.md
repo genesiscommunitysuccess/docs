@@ -47,7 +47,7 @@ Akka is a set of open-source libraries for designing scalable, resilient systems
 Akka provides low-level code to deliver reliable behaviour, fault tolerance, and high performance.
 
 Aeron addresses important challenges inherent in designing distributed systems. To be successful, they must cope in an environment where components crash without responding, messages get lost without a trace on the wire, and network latency fluctuates.
-These are regular problems in carefully managed intra-data-centre environments - even more so in virtualized architectures.
+These are regular problems in carefully managed intra-data-centre environments - even more so in virtualised architectures.
 
 ## Amazon Elastic Compute Cloud
 
@@ -136,9 +136,9 @@ Genesis uses [QuickFIX](http://www.quickfixengine.org/quickfix/doc/html/?quickfi
 
 There is a standard FIX module that you can include in applications.
 
-This inlcudes the standard FIX libraries.
+This includes the standard FIX libraries.
 
-It also gives you a standard FIX inbound streamer that listens to the FIX_In table in the datbase.
+It also gives you a standard FIX inbound streamer that listens to the FIX_In table in the database.
 
 ## GPAL
 
@@ -174,7 +174,7 @@ An electronic trade capture and confirmation platform.
 A tool for building and managing Java-based projects.
 There is a very useful [Maven tutorial](https://www.tutorialspoint.com/maven/maven_overview.htm)
 
-Maven provides  default behavior for projects. When a Maven project is created, Maven creates a default project structure. As a developer, all you have to do is put the files in the right places. There is no need to define any configuration in pom.xml.
+Maven provides  default behaviour for projects. When a Maven project is created, Maven creates a default project structure. As a developer, all you have to do is put the files in the right places. There is no need to define any configuration in pom.xml.
 
 Maven plugins are generally used to:
 

@@ -181,7 +181,7 @@ First, check that you have the Evaluator running. If it is not, check the proced
 
 You need to create two csv files for this exercise.
 
-The first is the file with your rule in the correct format, similsr to the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
+The first is the file with your rule in the correct format, similar to the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
 
 ```csv
 NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
@@ -335,7 +335,7 @@ cd $L
 tail -f ALPHA_EVALUATOR.log
 ```
 :::tip
-$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Moreover, feel free to use your favorite command to view logs such as tail, less etc.
+$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Moreover, feel free to use your favourite command to view logs such as tail, less etc.
 :::
 
 #### 8. Trigger the event to test the rule
