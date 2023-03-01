@@ -205,7 +205,7 @@ You probably realized we don't have any options in our select components, so let
 #### Loading data from the server into the select fields
 Let's start with **instrument** field. We want to load the data once Order the component is initialized so, then, the ***select*** field can just iterate through the list of instruments loaded from the server. 
 
-Order is a Web Component and, as such, it supports a series of [lifecycle events](https://www.fast.design/docs/fast-element/defining-elements/#the-element-lifecycle) that you can tap into to execute custom code at specific points in time. To make the Order component load data on initialization, we can override one of the lifecycle events called `connectedCallback` that runs when the element is inserted into the DOM.
+Order is a Web Component and, as such, it supports a series of [lifecycle events](https://www.fast.design/docs/fast-element/defining-elements/#the-element-lifecycle) that you can tap into to execute custom code at specific points in time. To make the Order component load data on initialisation, we can override one of the lifecycle events called `connectedCallback` that runs when the element is inserted into the DOM.
 
 ```typescript {5,11-18} title='order.ts'
 ...
