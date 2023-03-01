@@ -24,7 +24,7 @@ Both of these include system microservices that are part of the Genesis low-code
 
 ## The server
 
-At the centrer of the server is the data persistence layer and the data model. You model your data by defining fields, then tables and then views, which can be of a single table or of more than one table, with joins.
+At the centre of the server is the data persistence layer and the data model. You model your data by defining fields, then tables and then views, which can be of a single table or of more than one table, with joins.
 
 In most cases, you will also define state machines, because key financial entities, such as the orders or the trades, usually progress from state to state (new, pending, filled, complete etc.).
 
