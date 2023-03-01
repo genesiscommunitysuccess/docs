@@ -293,13 +293,14 @@ permissioning {
 
 You can define a `where` clause if you only want to show a row in specific cases. These authorisation definitions first evaluate the `where` clause against the permission map. This functionality on its own is not that useful, because for a single auth permissions map, the content of the `where` clause could be moved to the query `where` clause instead. However, it shines when using auth grouping, because you can filter rows based on individual user permissions.
 
-The `where` clause scope is the same as the entity object so you can reference fields directly. If required, a parameter of the username can also be included.
+The `where` clause scope is the same as the entity object, so you can reference fields directly. If required, a parameter of the username can also be included.
 
 The example below shows permissioning where authorisation is successful if the user satisfies one of three code blocks:
-- The first block has a where clause that prevents the user (a permissioned buying counterparty) from viewing cancelled trades.
+
+- The first block has a `where` clause that prevents the user (a permissioned buying counterparty) from viewing cancelled trades.
 - The second block makes the information visible to any permissioned selling counterparty - so they can view cancelled trades.
 - The third block makes the information visible provided the trade owner is visible to the user, excluding any trades created by TEST_USER.
-- The fourth block does not require an auth map to be specified as it just excludes any trades created by TEST_USER.
+- The fourth block does not require an auth map to be specified, as it just excludes any trades created by TEST_USER.
 
 ```kotlin
 permissioning {
