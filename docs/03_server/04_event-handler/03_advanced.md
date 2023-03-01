@@ -579,4 +579,3 @@ val injector: Injector
 val clientConnectionsManager: ClientConnectionsManager
 val typedEventManager: TypedEventManager
 ```
-
