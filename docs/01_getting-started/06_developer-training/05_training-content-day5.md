@@ -166,7 +166,7 @@ cd $L
 tail -f ALPHA_EVALUATOR.log
 ```
 :::info What is $L?
-$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Feel free to use your favorite command to view logs such as tail, less etc.
+$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Feel free to use your favourite command to view logs such as tail, less etc.
 :::
 
 <!-- ### Dynamic rules
@@ -419,7 +419,7 @@ The RIGHT_SUMMARY table entries are automatically maintained by the system in re
 
 :::warning
 This table is only automatically maintained when profile user/right entries are maintained via GENESIS_AUTH_MANAGER business events. If you update the data in the tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. **DbMon** or **SendIt**) then the RIGHT_SUMMARY table will not be maintained automatically.
-In such situations (e.g. setting up a brand new environemnt and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in PROFILE_USER and PROFILE_RIGHT and populates RIGHT_SUMMARY withe the correct data.
+In such situations (e.g. setting up a brand new environment and bulk loading data into the tables) then the `~/run/auth/scripts/ConsolidateRights.sh` script must be run. This scans all entries in PROFILE_USER and PROFILE_RIGHT and populates RIGHT_SUMMARY with the correct data.
 :::
 
 Further information as well as a sample system set-up can be found [here](../../../server/access-control/authorisation/#sample-explanation)

@@ -391,7 +391,7 @@ When you have this in place, click on **Send** to make the call. You can see tha
 ![](/img/test-eh-insert-success-alpha.png)
 
 ## Connecting the back end and front end
-In this step, we shall configure an nginx server working as a reverse proxy. Make sure you have your artifcatory credentials available.
+In this step, we shall configure an nginx server working as a reverse proxy. Make sure you have your artifactory credentials available.
 
 In your CentOS terminal, enter following three commands:
 

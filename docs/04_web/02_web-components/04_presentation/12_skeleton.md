@@ -80,8 +80,8 @@ The following CSS variables can be used to customise the appearance.
 
 | CSS Variable                    | Expected value  |
 | ------------------------------- | --------------- |
-| `--skeleton-fill`               | Color           |
-| `--skeleton-animation-fill`     | Color           |
+| `--skeleton-fill`               | Colour           |
+| `--skeleton-animation-fill`     | Colour           |
 | `--skeleton-animation-gradient` | Linear gradient |
 | `--skeleton-animation-timing`   | Easing function |
 
