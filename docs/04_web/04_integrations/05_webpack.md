@@ -48,7 +48,7 @@ npm install --save-dev clean-webpack-plugin ts-loader typescript webpack webpack
 
 Now that we've got our basic package and dependencies set up, let's create some source files and get things configured. Since we're going to be writing a bit of code, now is a great time to involve a code editor in the process. If you're looking for a great editor for TypeScript and front end in general, we highly recommend [VS Code](https://code.visualstudio.com/).
 
-Open the `alpha-webpack` folder in your favorite editor. You should see your `package.json` along with a `package-lock.json` and a `node_modules` folder.
+Open the `alpha-webpack` folder in your favourite editor. You should see your `package.json` along with a `package-lock.json` and a `node_modules` folder.
 
 First, let's create a `src` folder where we'll put all our TypeScript code. In the `src` folder, add a `main.ts` file. You can leave the file empty for now. We'll come back it in a bit.
 

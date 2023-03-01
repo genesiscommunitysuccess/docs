@@ -135,6 +135,16 @@ The `mapName` parameter refers to a specific permission entity defined on the se
 </dynamicPermissions>
 ```
 
+In cases where you do not require the auth map and just want to define a `where` clause, you can omit it from the definition. For example:
+
+```kotlin
+        auth {
+            where { 
+                ...
+            }
+        }
+```
+
 ## Generic permissions
 
 Generic permissions is a term used to name the optional permissions configuration that is available for a Genesis application; this is included as part of the Genesis Auth Module.

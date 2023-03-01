@@ -89,7 +89,7 @@ Genesis basic Web Components, such as Button and Text Fields, were not created f
 - Highly active and responsive community.
 
 ## A deeper dive into the alpha web application structure
-The alpha application, the one we developed during the Developer training, had a basic UI with a simple page a few components. Open the project on your favorite IDE and you should see an initial project structure like this:
+The alpha application, the one we developed during the Developer training, had a basic UI with a simple page a few components. Open the project on your favourite IDE and you should see an initial project structure like this:
 
 ![](/img/web-project-structure.png)
 
@@ -134,7 +134,7 @@ When running the app on your local machine, you can adjust a few settings under 
   },
 ```
 
-Since our back end is running locally, we set the `API_HOST` to localhost. The **/gwf/** path is a [reverse proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/), configured in an nginx web server thta is running on the server (a docker container, in our case). 
+Since our back end is running locally, we set the `API_HOST` to localhost. The **/gwf/** path is a [reverse proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/), configured in an nginx web server that is running on the server (a docker container, in our case). 
 
 Essentially, the front end will connect to the back end through a websocket to **localhost/gwf**, which in turn will, internally, ***proxy pass*** the connection to an internal Genesis process called GENESIS_ROUTER. This contains a web socket adapter able to communicate with other Genesis processes, such as Data Servers, Request Servers, Event Handlers, etc. Think of this as a gateway from the front end to all services on the back end.
 
@@ -234,7 +234,7 @@ We usually follow the pattern of creating a `.template.ts`, `.ts` and `.styles.t
 
 Realistically, any application will require multiple pages and routes. 
 
-If you're not familiar with the concept of [routing](https://developpaper.com/question/what-is-front-end-routing-when-is-front-end-routing-appropriate-what-are-the-advantages-and-disadvantages-of-front-end-routing/), it's basically displaying different content or pages according to different URL addresses. In this context, it means that different routes correspond to different contents or pages on the front end; this is implmented by the server returning different pages according to the different URLs. In single-page applications, most pages are structurally unchanged and only part of the content is changed.
+If you're not familiar with the concept of [routing](https://developpaper.com/question/what-is-front-end-routing-when-is-front-end-routing-appropriate-what-are-the-advantages-and-disadvantages-of-front-end-routing/), it's basically displaying different content or pages according to different URL addresses. In this context, it means that different routes correspond to different contents or pages on the front end; this is implemented by the server returning different pages according to the different URLs. In single-page applications, most pages are structurally unchanged and only part of the content is changed.
 
 In our case, there's a `home` route pointing to the `Home` component which is the home page. The routes are set in the `config.ts` and we'll get into more details soon. 
 
