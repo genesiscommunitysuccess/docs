@@ -303,7 +303,7 @@ eventHandler {
 }
 ```
 
-Pending approval information is provided by the Data Server queries named `ALL_APPROVAL_ALERTS` and `ALL_APPROVAL_ALERTS_AUDITS`
+The platform provides two Data Server queries that contain Pending approval information: `ALL_APPROVAL_ALERTS` and `ALL_APPROVAL_ALERTS_AUDITS`
 
 
 **Example APPROVAL DB record**
