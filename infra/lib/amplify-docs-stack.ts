@@ -95,6 +95,7 @@ export class AmplifyDocsStack extends cdk.Stack {
 
     // map the main/master branch to the root of targetDomain
     domain.mapRoot(mainBranch)
+
     // map the archive branch to archive.${targetDomain}
     domain.mapSubDomain(archiveBranch, 'archive')
 
