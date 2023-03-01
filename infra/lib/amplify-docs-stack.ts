@@ -17,7 +17,7 @@ export class AmplifyDocsStack extends cdk.Stack {
       // Connect Amplify directly with a source repository on GitHub. This allows it
       // to clone and build the repository for us
       sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
-        owner: 'genesislcap',
+        owner: 'genesiscommunitysuccess',
         repository: 'docs',
         // We have to use a Personal Access Token to authenticate with GitHub. Currently
         // the token used here is generated from Nick Payne's (@makeusabrew on GitHub) account
@@ -25,7 +25,7 @@ export class AmplifyDocsStack extends cdk.Stack {
         // deploy key (to clone the repo) and webhook (for PR previews). Due to this association
         // it will stop working if the user's privileges are revoked
         // @see https://github.com/aws-amplify/amplify-hosting/issues/2160 for more discussion
-        oauthToken: SecretValue.secretsManager('genesislcap-docs-prod')
+        oauthToken: SecretValue.secretsManager('genesiscommunitysuccess-docs-prod')
       }),
       // We could replace this with an `amplify.yml` in the root of the project, but it'd amount to
       // the same thing. It tells Amplify how to build the project and where to find the generated
