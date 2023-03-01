@@ -199,9 +199,28 @@ or
 
 Both of these options, involve implementing a function with the event message as an input and a Boolean value as a return value.
 
-Here is an example of a custom Event Handler definition:
+Here is an example of a GPAL event handler definition:
 
- 
+```kotlin
+eventHandler {
+    eventHandler<Company>("COMPANY_INSERT") {
+        // Override requiresPendingApproval here to enable the "pending approval" flow.
+        // In this implementation, any user that is not "system.user" needs to go through requires going through the approval mechanism.
+        // The last line just needs to evaluate to a boolean; if false it does not require approval, if true it does
+        requiresPendingApproval { event ->
+            event.userName != "system.user"
+        }
+        onCommit { event ->
+            val company = event.details
+            // custom code block..
+            ack()
+        }
+    }
+}
+```
+
+or in a custom Event Handler definition:
+
 ```kotlin
 import global.genesis.commons.annotation.Module
 import global.genesis.eventhandler.typed.async.AsyncValidatingEventHandler
@@ -233,58 +252,55 @@ class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply>
 }
 ```
 
-or in a GPAL definition:
-
-```kotlin
-eventHandler {
-    eventHandler<Company> {
-        // Override requiresPendingApproval here to enable the "pending approval" flow.
-        // In this implementation, any user that is not "system.user" needs to go through requires going through the approval mechanism.
-        requiresPendingApproval { event ->
-            event.userName != "system.user"
-        }
-        onCommit { event ->
-            val company = event.details
-            // custom code block..
-            ack()
-        }
-    }
-}
-```
-
 ### Pending approval submission in Event Handlers
 
 Events going through a pending approval workflow are validated as usual (i.e. the `onValidate` method is run).  If the validation is successful, the “delayed” event is stored in the `APPROVAL` table in JSON format. 
 
 Assuming the event is inserting, updating or deleting a target database record, it is possible to have multiple `APPROVAL` records associated with a single database entity. So, you should use the event `onValidate` method to check for pre-existing approvals against the entities related to the event if you need to ensure there is only one pending approval per record. 
 
-The `APPROVAL` record is keyed on an auto-generated `APPROVAL_ID` and does not have a direct link to the original record(s). You have to create one or many links by adding “approval entity” details to the payload returned within an `approvableAck` inside the `onValidate` method. These details include the `entityTable` and `entityKey` as well as an optional `approvalType`. This enables you to decide how to identify the original record (e.g. creating a compound key in the case of multi-field keys). When the approval entity details are provided, the platform creates one or several records in the `APPROVAL_ENTITY` table and populates it (them) with the details provided, and the `APPROVAL_ID` of the `APPROVAL` record. There is also an `APPROVAL_ENTITY_COUNTER`, which is populated by the GENESIS_AUTH_CONSOLIDATOR process by default; this can be handy to know how many approvals are pending for a given entity.
+The `APPROVAL` record is keyed on an auto-generated `APPROVAL_ID` and does not have a direct link to the original record(s). You have to create one or many links by adding “approval entity” details to the payload returned within an `approvableAck` inside the `onValidate` method. These details include the `entityTable` (e.g COUNTERPARTY), `entityKey` (e.g. COUNTERPARTY_ID), as well as an optional `approvalType` to describe what operation is happening on the entity itself (e.g. NEW, UPDATE or REMOVE). This approach enables you to decide how to identify the original record (e.g. creating a compound key in the case of multi-field keys). When the approval entity details are provided, the platform creates one or several records in the `APPROVAL_ENTITY` table and populates it (them) with the details provided, and the `APPROVAL_ID` of the `APPROVAL` record. There is also an `APPROVAL_ENTITY_COUNTER`, which is populated by the GENESIS_AUTH_CONSOLIDATOR process by default; this can be handy to know how many approvals are pending for a given entity.
 
 There are other useful properties you can set as part of the `approvableAck` definition. They are all optional and are detailed below:
 * `entityDetails` is a list of `ApprovalEntityDetails` with their corresponding `entityTable`, `entityId` and `approvalType` properties (see previous paragraph). By default, this list is empty.
 * `approvalMessage` contains the text that is sent back to the client, assuming the event is successfully submitted for approval. By default, this is "Your request was successful and has been submitted for approval".
 * `additionalDetails` can provide context information that is only available from a server-side perspective. This information complements the `APPROVAL_MESSAGE` content provided by the front end.
-* `approvalType` functions the same way as it does within `entityDetails`. However, `entityDetails` requires an `entityId` value, which means there is an assumption that we are attempting to amend or delete an existing database record. If this is a new record insertion, you can set the `approvalType` at this level to provide additional information about what this pending approval is meant to do. Valid values are `NEW`, `UPDATE`, `REMOVE` and `UNKNOWN` (which is also the default value).
+* `approvalType` is used to state the action that will happen upon this event being approved, NEW for insertions, UPDATE for amends, REMOVE for removals (UNKNOWN will be used by default if undefined). Most events will be simple, but of course some may affect multiple entities in different ways, which is why the `entityDetails` parameter can contain many entities each with their own `approvalType`.
 
-`approvableAck` can be used in both custom EventHandler definitions and GPAL Event Handlers. Here is an example of `approvableAck` in action for a custom event handler `onValidate` block below.
+`approvableAck` can be used in both custom EventHandler definitions and GPAL Event Handlers. Here is an example of `approvableAck` in action for a GPAL event handler `onValidate` block below.
 
 ```kotlin
-    override suspend fun onValidate(message: Event<Company>): EventReply {
-        val company = message.details
-        // custom validation code block..
-        return approvableAck(
-            entityDetails = listOf(
-                ApprovalEntityDetails(
-                    entityTable = "COMPANY",
-                    entityId = event.details.companyId.toString(),
-                    approvalType = ApprovalType.UPDATE
-                )
-            ),
-            approvalMessage = "Company update for ${event.details.companyId} has been sent for approval.",
-            approvalType = ApprovalType.UPDATE,
-            additionalDetails = "Sensitive update, tread carefully"    
-        )
+eventHandler {
+  eventHandler<Company>("COMPANY_AMEND") {
+    // Override requiresPendingApproval here to enable the "pending approval" flow.
+    // In this implementation, any user that is not "system.user" needs to go through requires going through the approval mechanism.
+    // The last line just needs to evaluate to a boolean; if false it does not require approval, if true it does
+    requiresPendingApproval { event ->
+      event.userName != "system.user"
     }
+    onValidate { event ->
+      val company = event.details
+      // custom validation code block..
+      return approvableAck(
+        entityDetails = listOf(
+          // One or many entities can be affected with a single event, so we can provide the whole list here
+          ApprovalEntityDetails(
+            entityTable = "COMPANY",
+            entityId = event.details.companyId.toString(),
+            approvalType = ApprovalType.UPDATE
+          )
+        ),
+        approvalMessage = "Company update for ${event.details.companyId} has been sent for approval.",
+        approvalType = ApprovalType.UPDATE,
+        additionalDetails = "Sensitive update, tread carefully"
+      )
+    }
+    onCommit { event ->
+      val company = event.details
+      // custom code block..
+      ack()
+    }
+  }
+}
 ```
 
 Pending approval information is provided by the Data Server queries named `ALL_APPROVAL_ALERTS` and `ALL_APPROVAL_ALERTS_AUDITS`
@@ -303,10 +319,10 @@ APPROVAL_MESSAGE                         Cancelled                              
 APPROVAL_REQUESTED_AT                    2023-02-27 15:33:38.450 +0000            DATETIME            
 APPROVAL_STATUS                          CANCELLED                                ENUM[PENDING APPROVED CANCELLED REJECTED_BY_USER REJECTED_BY_SERVICE]
 APPROVAL_TYPE                            REMOVE                                   ENUM[NEW UPDATE REMOVE UNKNOWN]
-DESTINATION                              ISSUER_SERVICES_EVENT_HANDLER            STRING              
+DESTINATION                              COUNTERPARTY_EVENT_HANDLER               STRING              
 EVENT_DETAILS                            ISSUER_ID = 3                            STRING              
-EVENT_MESSAGE                            {"DETAILS":{"ISSUER_ID":3},"MESSAGE_T... STRING              
-MESSAGE_TYPE                             EVENT_ISSUER_DELETE                      STRING              
+EVENT_MESSAGE                            {"DETAILS":{"COUNTERPARTY_ID":3},"MES... STRING              
+MESSAGE_TYPE                             EVENT_COUNTERPARTY_DELETE                STRING              
 USER_NAME                                JaneDee                                  STRING              
 -------------------------------------------------------------------------------------------
 ```
@@ -319,7 +335,7 @@ TIMESTAMP                                2023-02-27 15:33:38.459(n:0,s:1004)    
 APPROVAL_ID                              fdef7802-6bd1-4c51-a232-6a4bc2325598A... STRING              
 APPROVAL_TYPE                            REMOVE                                   ENUM[NEW UPDATE REMOVE UNKNOWN]
 ENTITY_ID                                3                                        STRING              
-ENTITY_TABLE                             ISSUER                                   STRING              
+ENTITY_TABLE                             COUNTERPARTY                             STRING              
 -------------------------------------------------------------------------------------------
 ```
 
@@ -350,13 +366,18 @@ To configure the allowed approvers using server-side configuration:
 2. Add the file name to the GENESIS_CLUSTER `<script></script>` element in the site-specific version of the **genesis-processes.xml**. See the sample file below:
 
 ```kotlin
+import global.genesis.session.RightSummaryCache
+
+val rightSummaryCache = inject<RightSummaryCache>()
+
 pendingApproval {
     insert {
         true
     }
 
     accept {
-        true
+      val userAttributes = entityDb.get(UserAttributes.byName(userName))
+      userAttributes?.accessType == AccessType.INTERNAL
     }
 
     cancel {
@@ -364,12 +385,12 @@ pendingApproval {
     }
 
     reject {
-        true
+      rightSummaryCache.userHasRight(userName, "REJECT_PENDING_APPROVAL")
     }
 }
 ```
 
-You can replace the "true" return value with Kotlin code in each of the relevant blocks, or not define them at all, as they will return "true" by default.
+You can replace the "true" return values with Kotlin code in each of the relevant blocks, or not define them at all, as they will return "true" by default.
 
 The platform makes the following objects accessible to the `insert` block:
 
@@ -398,17 +419,17 @@ The following objects are accessible within the `accept`, `cancel` and `reject` 
 The following properties are automatically available for the whole scope of the **-approval.kts** file:
 
 ```kotlin
-val systemDefinition: SystemDefinitionService,
-val rxDb: RxDb,
-val entityDb: AsyncEntityDb,
-val evaluatorPool: EvaluatorPool,
-val networkConfiguration: NetworkConfiguration,
-val serviceDetailProvider: ServiceDetailProvider,
-val serviceDiscovery: ServiceDiscovery,
-val injector: Injector,
+val systemDefinition: SystemDefinitionService
+val rxDb: RxDb
+val entityDb: AsyncEntityDb
+val evaluatorPool: EvaluatorPool
+val networkConfiguration: NetworkConfiguration
+val serviceDetailProvider: ServiceDetailProvider
+val serviceDiscovery: ServiceDiscovery
+val injector: Injector
 ```
 
-With this GPAL configuration, you can look up the user's rights in the database and return `true` only if the necessary rights are in place. For example, if your system has the concept of internal and external users and you only want to allow internal users to accept pending events, then you could check your custom user "ACCESS_TYPE" field as follows:
+As show in the previous code example, you can perform database lookups to retrieve additional information and return `true` only if the necessary rights or attributes are in place. For example, if your system has the concept of internal and external users, and you only want to allow internal users to accept pending events, then you could check your custom user "ACCESS_TYPE" field as follows:
 
 ```kotlin
 pendingApproval {
@@ -427,36 +448,59 @@ You might have noticed that the original type-safe event message types are lost 
 - `onEvent` works very similarly to any other GPAL [Event Handler definition](../../server/event-handler/basics.md#adding-a-name). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
 
 
-Please see the example below:
+Please see the example below for custom logic using a table called "RESTRICTED_SYMBOL" to prevent restricted symbols from being added to the system, as well as checking user right codes:
 
 ```kotlin
+import global.genesis.session.RightSummaryCache
+
+val rightSummaryCache = inject<RightSummaryCache>()
+
 pendingApproval {
-    accept {
-        selectPredicate(        
-            onEvent<TradeInsert>("TRADE_INSERT") { event ->
-                val tradeInsert = event.details
-                // Allows acceptance of pending approval events for EVENT_TRADE_INSERT, only if the trade is for TSLA
-                tradeInsert.symbol == "TSLA"
-            },
-            onEvent<TradeAmend>("TRADE_AMEND") { event ->
-                val tradeAmend = event.details
-                // Allows acceptance of pending approval events for EVENT_TRADE_AMEND, only if the counterparty name for it is "GENESIS"
-                tradeAmend.counterpartyName == "GENESIS"
-            },
-            onEvent<TradeDelete>("TRADE_DELETE") { event ->
-                // Allows acceptance of pending approval events for EVENT_TRADE_DELETE in all scenarios.
-                true
-            },
-            // If the message can't be deserialized we will use a default fallback to genesisSet.
-            default =  { genesisSet ->
-                true
-            }
-        )
-    }
+  accept {
+    selectPredicate(
+      onEvent<TradeInsert>("TRADE_INSERT") { event ->
+        val tradeInsert = event.details
+        val stockInRestrictedList = entityDb.get(RestrictedSymbol.bySymbol(tradeInsert.symbol))
+        // Deny any operation on restricted symbols.
+        if (stockInRestrictedList != null) {
+          false
+        } else {
+          rightSummaryCache.userHasRight(userName, "TRADE_INSERT")
+        }
+      },
+      onEvent<TradeAmend>("TRADE_AMEND") { event ->
+        val tradeAmend = event.details
+        val stockInRestrictedList = entityDb.get(RestrictedSymbol.bySymbol(tradeAmend.symbol))
+        // Deny any operation on restricted symbols.
+        if (stockInRestrictedList != null) {
+          false
+        } else {
+          rightSummaryCache.userHasRight(userName, "TRADE_AMEND")
+        }
+      },
+      onEvent<TradeDelete>("TRADE_DELETE") { event ->
+        val tradeDelete = event.details
+        val stockInRestrictedList = entityDb.get(RestrictedSymbol.bySymbol(tradeDelete.symbol))
+        // Deny any operation on restricted symbols.
+        if (stockInRestrictedList != null) {
+          false
+        } else {
+          rightSummaryCache.userHasRight(userName, "TRADE_DELETE")
+        }
+      },
+      // If the message can't be deserialized we will use a default fallback to genesisSet.
+      default = { genesisSet ->
+        true
+      }
+    )
+  }
+}
 ```
 ### System rejects
 
-There is one type of event that is only accessible by the back-end services; this is called "EVENT_PENDING_APPROVAL_SYSTEM_REJECT". This event can be used programmatically to satisfy any specific requirements that fall outside the functionality of the pending approval system.
+Given the fact we are "delaying" events, it is possible that by the time a pending approval action is approved, the underlying data has changed enough as to cause the delayed event to fail when executed. When this happens, the pending approval record will be marked as REJECTED_BY_SYSTEM in its `APPROVAL_STATUS` field.
+
+Additionally, there is one type of event that is only accessible by the back-end services; this is called "EVENT_PENDING_APPROVAL_SYSTEM_REJECT". This event can be used programmatically to satisfy any specific requirements that fall outside the functionality of the pending approval system.
 
 For example, consider a solution that needs to submit trades to an external system every day at midnight for confirmation purposes. Once the trades have been submitted, their content cannot be changed anymore, unless a separate amendment process is started outside the Genesis solution. 
 
