@@ -2,11 +2,12 @@
 title: 'Event Handler - advanced'
 sidebar_label: 'Advanced'
 id: advanced
-keywords: [server, event handler, advanced]
+keywords: [server, event handler, advanced, pending approvals]
 tags:
   - server
   - event handler
   - advanced
+  - pending approvals
 ---
 
 
@@ -183,13 +184,12 @@ See more information about how to define type-safe messages [here](../../03_serv
 
 ## Pending approvals
 
-
 The Genesis low-code platform has an in-built pending approval mechanism that can be used with Event Handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check". 
 
 
 ### Set an event to require approval
 
-To enable the pending approval workflow for an event handler implementation either:
+To enable the pending approval workflow for an Event Handler implementation, either:
 
 - Override the `requiresPendingApproval` method with an appropriate function in the custom Event Handler definitions. 
 
@@ -251,21 +251,21 @@ eventHandler {
 }
 ```
 
-### Pending approval submission in event handlers
+### Pending approval submission in Event Handlers
 
-Events going through a pending approval workflow are validated as usual (i.e. the `onValidate` method is run) and, if the validation is successful, the “delayed” event is stored in the `APPROVAL` table in a JSON format. 
+Events going through a pending approval workflow are validated as usual (i.e. the `onValidate` method is run).  If the validation is successful, the “delayed” event is stored in the `APPROVAL` table in JSON format. 
 
-Assuming the event is inserting, updating or deleting a target database record, it is possible to have multiple `APPROVAL` records associated with a single database entity. Use the event `onValidate` method to check for pre-existing approvals against the entities related to the event if you need to ensure there is only one pending approval per record. 
+Assuming the event is inserting, updating or deleting a target database record, it is possible to have multiple `APPROVAL` records associated with a single database entity. So, you should use the event `onValidate` method to check for pre-existing approvals against the entities related to the event if you need to ensure there is only one pending approval per record. 
 
-The `APPROVAL` record is keyed on an auto-generated `APPROVAL_ID` and does not have a direct link to the original record(s). You have to create one or many links by adding “approval entity” details to the payload returned within an `approvableAck` inside the `onValidate` method. These details include the `entityTable` and `entityKey` as well as an optional `approvalType`. This allows you to decide how to identify the original record (e.g. creating a compound key in the case of multi-field keys). When the approval entity details are provided, the platform creates one or several records in the `APPROVAL_ENTITY` table and populates it with the details provided, and the `APPROVAL_ID` of the `APPROVAL` record. There is also an `APPROVAL_ENTITY_COUNTER`, which is populated by the GENESIS_AUTH_CONSOLIDATOR process by default; this can be handy to easily know how many approvals are pending for a given entity.
+The `APPROVAL` record is keyed on an auto-generated `APPROVAL_ID` and does not have a direct link to the original record(s). You have to create one or many links by adding “approval entity” details to the payload returned within an `approvableAck` inside the `onValidate` method. These details include the `entityTable` and `entityKey` as well as an optional `approvalType`. This enables you to decide how to identify the original record (e.g. creating a compound key in the case of multi-field keys). When the approval entity details are provided, the platform creates one or several records in the `APPROVAL_ENTITY` table and populates it (them) with the details provided, and the `APPROVAL_ID` of the `APPROVAL` record. There is also an `APPROVAL_ENTITY_COUNTER`, which is populated by the GENESIS_AUTH_CONSOLIDATOR process by default; this can be handy to know how many approvals are pending for a given entity.
 
-There are other useful properties we can set as part of the `approvableAck` definition. All of them are optional and the whole list is detailed below:
-* `entityDetails` is a list of `ApprovalEntityDetails` with their corresponding `entityTable`, `entityId` and `approvalType` properties (see previous paragraph). By default this list is empty.
-* `approvalMessage` contains the text that will be sent back to the client assuming the event is successfully submitted for approval. By default, we return "Your request was successful and has been submitted for approval".
-* `additionalDetails` can provide context information that is only available from a server-side perspective. This information complements the `APPROVAL_MESSAGE` content provided by the frontend.
+There are other useful properties you can set as part of the `approvableAck` definition. They are all optional and are detailed below:
+* `entityDetails` is a list of `ApprovalEntityDetails` with their corresponding `entityTable`, `entityId` and `approvalType` properties (see previous paragraph). By default, this list is empty.
+* `approvalMessage` contains the text that is sent back to the client, assuming the event is successfully submitted for approval. By default, this is "Your request was successful and has been submitted for approval".
+* `additionalDetails` can provide context information that is only available from a server-side perspective. This information complements the `APPROVAL_MESSAGE` content provided by the front end.
 * `approvalType` functions the same way as it does within `entityDetails`. However, `entityDetails` requires an `entityId` value, which means there is an assumption that we are attempting to amend or delete an existing database record. If this is a new record insertion, you can set the `approvalType` at this level to provide additional information about what this pending approval is meant to do. Valid values are `NEW`, `UPDATE`, `REMOVE` and `UNKNOWN` (which is also the default value).
 
-`approvableAck` can be used in both custom EventHandler definitions and GPAL event handlers. Here is an example of `approvableAck` in action example for a custom event handler `onValidate` block below.
+`approvableAck` can be used in both custom EventHandler definitions and GPAL Event Handlers. Here is an example of `approvableAck` in action for a custom event handler `onValidate` block below.
 
 ```kotlin
     override suspend fun onValidate(message: Event<Company>): EventReply {
@@ -286,7 +286,7 @@ There are other useful properties we can set as part of the `approvableAck` defi
     }
 ```
 
-Pending approval information is provided by the dataserver queries named `ALL_APPROVAL_ALERTS` and `ALL_APPROVAL_ALERTS_AUDITS`
+Pending approval information is provided by the Data Server queries named `ALL_APPROVAL_ALERTS` and `ALL_APPROVAL_ALERTS_AUDITS`
 
 
 **Example APPROVAL DB record**
@@ -332,11 +332,21 @@ Once in the `APPROVAL` table, the pending event can be cancelled, rejected or ac
 
 All messages require a valid `APPROVAL_ID` and `APPROVAL_MESSAGE` in their metadata.
 
-### Configuring allowed approvers: Basic
+### Configuring allowed approvers: basic
 
-The platform ensures that users cannot approve or reject their own events, only cancel them. Likewise, users that have not created a specific pending approval event can only accept or reject, not cancel. Additional levels of control (e.g. based on user groups) can be added to the front end, to the event `onValidate` method, or can be specified in the server-side configuration.
+The platform ensures that users cannot approve or reject their own events, but they can cancel them. Likewise, users that have not created a specific pending approval event can only accept or reject, not cancel. 
 
-To configure the allowed approvers using server-side configuration, you need to create a new GPAL approval file, and its name must end in **-approval.kts** (e.g. **_test_-approval.kts**). You need to add the file name to the GENESIS_CLUSTER `<script></script>` element in the site-specific version of the **genesis-processes.xml**. See the sample file below:
+Additional levels of control (e.g. based on user groups) can be added at three points:
+
+- to the front end
+- to the event `onValidate` method
+- specified in the server-side configuration
+
+To configure the allowed approvers using server-side configuration:
+
+1. Create a new GPAL approval file; its name must end in **-approval.kts** (e.g. **_test_-approval.kts**). 
+
+2. Add the file name to the GENESIS_CLUSTER `<script></script>` element in the site-specific version of the **genesis-processes.xml**. See the sample file below:
 
 ```kotlin
 pendingApproval {
@@ -384,7 +394,7 @@ The following objects are accessible within the `accept`, `cancel` and `reject` 
 * `messageType` - a shortcut property accessor for the `messageType` value stored inside `pendingApproval`
 * `eventMessage` - a shortcut property accessor for the `eventMessage` value stored inside `pendingApproval`
 
-Lastly, the following properties are automatically available for the whole scope of the *-approval.kts* file:
+The following properties are automatically available for the whole scope of the **-approval.kts** file:
 
 ```kotlin
 val systemDefinition: SystemDefinitionService,
@@ -408,12 +418,12 @@ pendingApproval {
 }
 ```
 
-### Configuring allowed approvers: Advanced
+### Configuring allowed approvers: advanced
 
-You might have noticed that the original type-safe event message types are lost inside the *-approval.kts* file, as the content of `eventMessage` inside `APPROVAL` table (and also inside `PendingApprovalInsert`) is a serialized JSON string. It is possible to deserialize the original type-safe objects by using the `selectPredicate` method combined with multiple `onEvent` predicates. These methods are available in all of the `pendingApproval` code blocks: `insert`, `accept`, `cancel` and `reject`.
+You might have noticed that the original type-safe event message types are lost inside the **-approval.kts** file, as the content of `eventMessage` inside `APPROVAL` table (and also inside `PendingApprovalInsert`) is a serialised JSON string. You can deserialise the original type-safe objects using the `selectPredicate` method combined with multiple `onEvent` predicates. These methods are available in all the `pendingApproval` code blocks: `insert`, `accept`, `cancel` and `reject`.
 
-- `selectPredicate` is a function that accepts an indeterminate number of functions returning a boolean value, as well as a mandatory `default` function to handle messages that do not fall into any defined category. The `default` function will provide a [GenesisSet](../../03_server/09_inter-process-messages/02_genesisset.md) object with the contents of the original message payload.
-- `onEvent` works very similarly to any other GPAL [event handler definition](../../server/event-handler/basics.md#adding-a-name). It allows us to treat the incoming message in the same way we would have done it within the original event handler, but each function must return a boolean expression.
+- `selectPredicate` is a function that accepts an indeterminate number of functions returning a boolean value, as well as a mandatory `default` function to handle messages that do not fall into any defined category. The `default` function  provides a [GenesisSet](../../03_server/09_inter-process-messages/02_genesisset.md) object with the contents of the original message payload.
+- `onEvent` works very similarly to any other GPAL [Event Handler definition](../../server/event-handler/basics.md#adding-a-name). It enables you to treat the incoming message in the same way as you would have done within the original Event Handler; however, each function must return a boolean expression.
 
 
 Please see the example below:
@@ -445,11 +455,13 @@ pendingApproval {
 ```
 ### System rejects
 
-There is one type of event that is only accessible by the backend services, and it is called "EVENT_PENDING_APPROVAL_SYSTEM_REJECT". This event can be used programmatically to satisfy any specific requirements that fall outside of the exposed functionality by our pending approval system.
+There is one type of event that is only accessible by the back-end services; this is called "EVENT_PENDING_APPROVAL_SYSTEM_REJECT". This event can be used programmatically to satisfy any specific requirements that fall outside the functionality of the pending approval system.
 
-For example, we can think of a solution that needs to submit trades to an external system every day at midnight for confirmation purposes. Once these trades have been submitted, their content cannot be changed anymore, unless a separate amendment process is started outside of the genesis solution. In such a system, it can be desirable to introduce a pending approval system to amend the content of each "Trade" database record to provide extra security. However, once a "Trade" record has been submitted at midnight, we should prevent any pending approval events from amending the content of the trade records in the system, as otherwise, we would be in an inconsistent state between the external system and the genesis system. For that purpose, you could run a job that automatically rejects all pending approval records at midnight every day.
+For example, consider a solution that needs to submit trades to an external system every day at midnight for confirmation purposes. Once the trades have been submitted, their content cannot be changed anymore, unless a separate amendment process is started outside the Genesis solution. 
 
-To use this event we need access to the "APPROVAL_KEY" value, which is another unique identifier for each pending approval record. This identifier is never exposed to the frontend, so only backend services will have access to it, therefore making this event impossible to trigger unless you have access to the database system.
+In such a system, you might have a pending approval system to amend the content of each "Trade" database record to provide extra security. However, once a "Trade" record has been submitted at midnight, we should prevent any pending approval events from amending the content of the trade records in the system, as this could cause inconsistencies between the external system and the Genesis system. To prevent this, you could run a job that automatically rejects all pending approval records at midnight every day.
+
+To use this event, we need access to the "APPROVAL_KEY" value, which is another unique identifier for each pending approval record. This identifier is never exposed to the front end, so only back-end services have access to it. That makes it impossible to trigger this event unless you have access to the database system.
 
 The GPAL sample script below could be run every day at midnight to reject all PENDING approval records:
 
