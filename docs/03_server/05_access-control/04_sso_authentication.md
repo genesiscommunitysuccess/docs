@@ -586,17 +586,23 @@ If `verification` is defined either `publicKey` or `publicKeyUrl` must be define
 
 ### OIDC Logout
 
-Some applications may require functionality where the user logs out of the OIDC Provider. As this is not always required logging out of OIDC provider is optional and disabled by default.
+Some applications may require functionality where the user logs out of the OIDC provider. By default, this is disabled.
 
 :::note
-If a user logs out of the OIDC Provider the same user will be logged out of all other applications that work with the same provider.
+If a user logs out of the OIDC Provider, she or he will also be logged out of all other applications that work with that provider.
 :::
 
 There are several steps required to enable OIDC logout. 
 
 #### Enable OIDC support in GENESIS_AUTH_MANAGER
 
-First `GENESIS_AUTH_MANAGER` needs to know about the OIDC configuration. In **auth-processes.xml** add the oidc jars to the `classpath`, the oidc package to `package` and the OIDC configuration to `script`:
+First `GENESIS_AUTH_MANAGER` needs to know about the OIDC configuration. In **auth-processes.xml**, add:
+
+- the oidc jars to the `classpath`
+- the oidc package to `package`
+- the OIDC configuration to `script`
+
+See this in the example below.
 
 ```xml title='auth-processes.xml' {6,8,9}
 <process name="GENESIS_AUTH_MANAGER">
@@ -619,7 +625,7 @@ In the example above:
 
 #### Enable OIDC Logout in GPAL
 
-The easiest way to enable OIDC logout in GPAL is by specifying the logout endpoint as shown in the sample below:
+The easiest way to enable OIDC logout in GPAL is by specifying the logout endpoint, as shown in the sample below:
 
 ```kotlin title='specifying logout endpoint'
 oidc {
@@ -640,7 +646,7 @@ oidc {
 }
 ```
 
-However, there are providers that have custom logout mechanism. In this case if the provider is supported, the `mode` property can be specified along with logout endpoint:
+However, there are providers that have a custom logout mechanism. If the provider is supported by the platform, the `mode` property can be specified, along with the logout endpoint:
 
 ```kotlin title='specifying logout endpoint for vendor specific logout'
 oidc {
@@ -661,7 +667,7 @@ oidc {
 }
 ```
 
-In all other cases when a provider has custom logout mechanism and is not supported by the platform a custom `logout` configuration can be specified as shown below:
+If the provider is not supported by the platform (and in all other cases where a provider has a custom logout mechanism), you can specify a custom `logout` configuration, as shown below:
 
 ```kotlin title='specifying custom logout URL'
 oidc {
@@ -685,7 +691,7 @@ oidc {
 }
 ```
 
-For OIDC configuration that uses configuration endpoint the logout functionality can be enabled by calling `logout()`:
+For OIDC configuration that uses a configuration endpoint, you can enable the logout functionality by calling `logout()`:
 
 ```kotlin title='using the logout endpoint from the remote configuration'
 oidc {
@@ -702,9 +708,9 @@ oidc {
 }
 ```
 
-In this case the logout endpoint specifed for the `end_session_endpoint` property will be used. 
+In this case, the logout endpoint specified for the `end_session_endpoint` property will be used. 
 
-If the used OIDC provider doesn't expose logout endpoint through the configuration endpoint then it can be specified as shown below:
+If the OIDC provider doesn't expose a logout endpoint through the configuration endpoint, then it can be specified as shown below:
 
 ```kotlin title='specifying logout endpoint'
 oidc {
@@ -721,7 +727,7 @@ oidc {
 }
 ```
 
-And for OIDC providers with custom logout mechanism the sample belowe can be used:
+And for OIDC providers with a custom logout mechanism, the sample below can be used:
 
 ```kotlin title='specifying logout endpoint for vendor specific logout'
 oidc {
@@ -738,7 +744,7 @@ oidc {
 }
 ```
 
-As a last resort when a provider has custom logout mechanism and is not supported by the platform a custom `logout` configuration can be specified as shown below:
+As a last resort, when a provider has a custom logout mechanism and is not supported by the platform, you can specify a custom `logout` configuration, as shown below:
 
 ```kotlin title='specifying custom logout URL'
 oidc {
