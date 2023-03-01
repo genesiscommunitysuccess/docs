@@ -211,7 +211,8 @@ import global.genesis.message.core.event.EventReply
 @Module
 class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply> {
     // Override requiresPendingApproval here to enable the "pending approval" flow.
-    // In this implementation, any user that is not "system.user" needs to go through requires going through the approval mechanism.
+    // In this implementation, any user that is not "system.user" needs to go through the approval mechanism.
+    // The last line just needs to evaluate to a boolean; if false it does not require approval, if true it does
     override fun requiresPendingApproval(): (suspend (Event<Company>) -> Boolean) {
         return { event ->
             event.userName != "system.user"
