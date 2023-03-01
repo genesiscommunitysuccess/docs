@@ -292,7 +292,7 @@ cd $L
 tail -f POSITIONS_APP_TUTORIAL_EVALUATOR.log
 ```
 :::tip
-$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Feel free to use your favorite command to view logs such as tail, less, etc.
+$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Feel free to use your favourite command to view logs such as tail, less, etc.
 :::
 
 ## Trigger the event to test the rule

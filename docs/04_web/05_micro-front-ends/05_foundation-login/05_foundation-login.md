@@ -122,7 +122,7 @@ An example of this and other required settings for the router configuration with
 ```
 
 :::warningWarning
-By default, a route that isn't marked public is not. However, a non-public route isn't going to block non-authenticated users automatically from viewing them. This must be impelmented in the `NavigationContributor`, as shown in the [previously mentioned example](./docs/api/foundation-login.login/#example).
+By default, a route that isn't marked public is not. However, a non-public route isn't going to block non-authenticated users automatically from viewing them. This must be implemented in the `NavigationContributor`, as shown in the [previously mentioned example](./docs/api/foundation-login.login/#example).
 :::
 
 ## Authentication
@@ -139,7 +139,7 @@ Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables will aut
 
 ### SSO
 
-SSO functionality allows the `Login` micro front-end to work with your company's existing authentication system, enabling them to have a single set of credentials - incluidng those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
+SSO functionality allows the `Login` micro front-end to work with your company's existing authentication system, enabling them to have a single set of credentials - including those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
 
 Setting up SSO is primarily [a back-end task](docs/03_server/05_access-control/04_sso_authentication.md); however, there is a small amount of configuration covered in [the customisation part of this documentation](#enable-sso).
 

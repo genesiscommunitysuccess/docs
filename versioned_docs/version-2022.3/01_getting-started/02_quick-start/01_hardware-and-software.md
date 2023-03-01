@@ -92,7 +92,7 @@ Genesis Foundation UI
 ```
 
 <!-- NO EDIT (NEXT 4 LINES) -->
-import StrictSSL from '../../_includes/_strict-ssl.md'
+import StricSSL from '../../_includes/_strict-ssl.md'
 
 <StrictSSL />
 

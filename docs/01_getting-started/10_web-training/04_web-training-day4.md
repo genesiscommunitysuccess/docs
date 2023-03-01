@@ -299,7 +299,7 @@ provideDesignSystem()
 For more information on shadow options, see [Element.attachShadow()](https://developer.mozilla.org/en-US/docs/Web/API/Element/attachShadow).
 
 :::tip key take-away
-You can register your own design system to make your app(s) look and feel cohesive accross the organization, following your company design guidelines.
+You can register your own design system to make your app(s) look and feel cohesive across the organization, following your company design guidelines.
 
 Other developers will simply reuse the same design system.
 :::
@@ -315,16 +315,16 @@ this is pretty much here: https://github.com/genesislcap/clarity-web/blob/develo
 :::
 We've been using components from Genesis Zero Design System, such as ***zero-select***, ***zero-text-field***, ***zero-button*** and so on. 
 
-Override the Zero design system, registering a new style for the ***zero-button*** so that its background color is green.
+Override the Zero design system, registering a new style for the ***zero-button*** so that its background colour is green.
 
-Additionally, register your own design system called **ui-training** and a new component `<ui-training-text-field>` whose font color is blue. Use this component in the order screen.
+Additionally, register your own design system called **ui-training** and a new component `<ui-training-text-field>` whose font colour is blue. Use this component in the order screen.
 
 :::tip
 Remember, we have already provided you a folder with the main components (**client\web\src\_ui-training-design-system**), so you need to select the required ones and customize them.
 
 To register your own design system name, you have to edit the file **client\web\src\_ui-training-design-system\provide-design-system.ts** and then change the attribute `provideDesignSystem.prefix`. Thus, the components will get the defined prefix to declare (e.g. *ui-training*-text-field, *ui-training*-button, and so on).
 
-Lastly, to keep the best practices and avoid conflits, always open the system provider tag prior using the design system components like the example below.
+Lastly, to keep the best practices and avoid conflicts, always open the system provider tag prior using the design system components like the example below.
 ```html {1,4}
 <ui-training-design-system-provider>
   <ui-training-text-field required :value=${sync(x=> x.quantity)}>Quantity</ui-training-text-field>

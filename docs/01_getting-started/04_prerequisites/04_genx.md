@@ -19,7 +19,7 @@ It is important to note that a seed acts like a standard baseline; even though i
 
 ## Correlation between a seed and Genx
 
-Genx is a Genesis command-line utility that enables you to access a parameterised seed and generate a new project from it.
+Genx is a Genesis command-line utility that enables you to access a parametrized seed and generate a new project from it.
 
 This blank-app-seed is called the Quick Start Application; it is used to create a basic Genesis project.
 

@@ -118,7 +118,7 @@ The most common variable, used for plain text or icons.
 
 #### Accent foreground
 
-This is commonly used for link text or icon. It is also used for smaller elements that might not show up well using `accentFill`: for instance, if your accent color is dark purple and you support a dark mode interface.
+This is commonly used for link text or icon. It is also used for smaller elements that might not show up well using `accentFill`: for instance, if your accent colour is dark purple and you support a dark mode interface.
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -129,7 +129,7 @@ This is commonly used for link text or icon. It is also used for smaller element
 
 #### Foreground On Accent
 
-This is either black or white based on the contrast requirements. It returns white if possible, as a common treatment for an accent button is white text over the accent color.
+This is either black or white based on the contrast requirements. It returns white if possible, as a common treatment for an accent button is white text over the accent colour.
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -160,7 +160,7 @@ Fill variables are intended to fill a larger area, commonly a component backgrou
 
 #### Accent fill
 
-The closest colors from the supplied palette that can be used for component states. For instance, colors needed to support white text and a 14px font (requires 4.5:1 contrast).
+The closest colours from the supplied palette that can be used for component states. For instance, colours needed to support white text and a 14px font (requires 4.5:1 contrast).
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -246,13 +246,13 @@ Used for strong outline, either alone or with a fill.
 
 The layer variables are used for different sections of an app or site. They are designed to be able to stack, but that is not a requirement. When stacked in sequence, the layers will lighten on top of each other.
 
-The key feature of layering is to support the primary container color for light or dark mode. This produces absolute colours, based on the `baseLayerLuminance` value, which sets the luminance for layer one.
+The key feature of layering is to support the primary container colour for light or dark mode. This produces absolute colours, based on the `baseLayerLuminance` value, which sets the luminance for layer one.
 
 The difference between each layer is defined with `neutralFillLayerRestDelta`.
 
 #### Neutral layers
 
-Absolute layer colors derived from and starting at `baseLayerLuminance`. Layer one is lightest and the values darken as the layer number increases.
+Absolute layer colours derived from and starting at `baseLayerLuminance`. Layer one is lightest and the values darken as the layer number increases.
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -263,7 +263,7 @@ Absolute layer colors derived from and starting at `baseLayerLuminance`. Layer o
 
 #### neutralLayerCardContainer
 
-A special layer to support experiences primarily built with cards, especially in light mode, so cards can be white and the container color can be one layer darker.
+A special layer to support experiences primarily built with cards, especially in light mode, so cards can be white and the container colour can be one layer darker.
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |
@@ -271,7 +271,7 @@ A special layer to support experiences primarily built with cards, especially in
 
 #### Neutral fill layer
 
-This the only layer recipe that's relative to the container color instead of absolute. The most common example of this is a Card, which will be one layer color lighter than its container.
+This the only layer recipe that's relative to the container colour instead of absolute. The most common example of this is a Card, which will be one layer colour lighter than its container.
 
 | Token | CSS Custom Property | Preview |
 | --- | --- | --- |

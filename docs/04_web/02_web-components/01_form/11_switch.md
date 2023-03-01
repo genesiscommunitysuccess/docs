@@ -32,7 +32,7 @@ provideDesignSystem().register(alphaSwitch());
 ## Use cases
 
 * Toggling visibility of a UI section
-* Disaling & enabling features
+* Disabling & enabling features
 
 ## Additional resources
 
