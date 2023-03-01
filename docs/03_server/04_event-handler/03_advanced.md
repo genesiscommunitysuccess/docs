@@ -264,7 +264,7 @@ There are other useful properties you can set as part of the `approvableAck` def
 * `entityDetails` is a list of `ApprovalEntityDetails` with their corresponding `entityTable`, `entityId` and `approvalType` properties (see previous paragraph). By default, this list is empty.
 * `approvalMessage` contains the text that is sent back to the client, assuming the event is successfully submitted for approval. By default, this is "Your request was successful and has been submitted for approval".
 * `additionalDetails` can provide context information that is only available from a server-side perspective. This information complements the `APPROVAL_MESSAGE` content provided by the front end.
-* `approvalType` is used to state the action that will happen upon this event being approved, NEW for insertions, UPDATE for amends, REMOVE for removals (UNKNOWN will be used by default if undefined). Most events will be simple, but of course some may affect multiple entities in different ways, which is why the `entityDetails` parameter can contain many entities each with their own `approvalType`.
+* `approvalType` is used to state the action that happens when this event is approved: NEW for insertions, UPDATE for amends, REMOVE for removals (UNKNOWN is used by default if undefined). Most events will be simple, but of course some may affect multiple entities in different ways, which is why the `entityDetails` parameter can contain many entities, each with their own `approvalType`.
 
 `approvableAck` can be used in both custom EventHandler definitions and GPAL Event Handlers. Here is an example of `approvableAck` in action for a GPAL event handler `onValidate` block below.
 
