@@ -28,7 +28,7 @@ describe('Documentation Stack', () => {
     })
     test('points at the correct source repository', () => {
         template.hasResourceProperties('AWS::Amplify::App', {
-            Repository: 'https://github.com/genesislcap/docs'
+            Repository: 'https://github.com/genesiscommunitysuccess/docs'
         })
     })
 
