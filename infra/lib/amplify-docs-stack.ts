@@ -13,7 +13,7 @@ export class AmplifyDocsStack extends cdk.Stack {
 
     const targetDomain = `${stackOptions.subdomain}.${stackOptions.zone}`
 
-    const amplifyApp = new amplify.App(this, stackOptions.stackPrefix + 'DocsAmplifyApp', {
+    const amplifyApp = new amplify.App(this, stackOptions.stackPrefix + 'DocsAmplifyAppPublic', {
       // Connect Amplify directly with a source repository on GitHub. This allows it
       // to clone and build the repository for us
       sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
