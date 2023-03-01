@@ -114,7 +114,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 **JVM_OPTIONS**: This defines common JVM options to be applied to all processes defined in the environment.
 
 **DbNamespace**: This item defines different things, depending on the databases in use as specified below
-- For [FoundatioDB](../../../database/database-technology/foundationdb/): It will be used when creating internal DirectoryLayers
+- For [FoundationDB](../../../database/database-technology/foundationdb/): It will be used when creating internal DirectoryLayers
 - For [Aerospike](../../../database/database-technology/aerospike/), [Postgres](../../../database/database-technology/sql/#postgresql), [MSSQL](../../../database/database-technology/sql/#ms-sql) and [ORACLE](../../../database/database-technology/sql/#oracle): It refers to namespace/schema of database. This feature allows you to segregate data from different
 genesis apps while using single database
 

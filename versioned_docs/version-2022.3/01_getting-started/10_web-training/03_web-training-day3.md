@@ -62,7 +62,7 @@ export class Order extends FASTElement {
   };
 }
 ```
-:::tip ColDef and renderes
+:::tip ColDef and renderers
 Find out more about:
 - [ColDef and Genesis Grid Pro Column](../../../web/web-components/grids/grid-pro/grid-pro-genesis-column/)
 - [Cell Renderers](../../../web/web-components/grids/grid-pro/grid-pro-genesis-cell/)

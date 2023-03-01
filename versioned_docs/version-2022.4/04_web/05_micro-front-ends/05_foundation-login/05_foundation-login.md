@@ -125,7 +125,7 @@ An example of this and other required settings for the router configuration with
 ```
 
 :::warningWarning
-By default, a route that isn't marked public is not. However, a non-public route isn't going to block non-authenticated users automatically from viewing them. This must be impelmented in the `NavigationContributor`, as shown in the [previously mentioned example](./docs/api/foundation-login.login.md#example).
+By default, a route that isn't marked public is not. However, a non-public route isn't going to block non-authenticated users automatically from viewing them. This must be implemented in the `NavigationContributor`, as shown in the [previously mentioned example](./docs/api/foundation-login.login.md#example).
 :::
 
 ## Authentication

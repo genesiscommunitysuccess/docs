@@ -345,7 +345,7 @@ getRxDb().getRange(startRec, endRec, "TRADE_BY_ID", 10, Set.of("TRADE_PRICE", "T
 
 ### getRangeFromEnd
 
-Works similiary to the `getRange` operation but returns the range in reverse order.
+Works similarly to the `getRange` operation but returns the range in reverse order.
 
 By providing different parameters, you can refine what information you are returned:
 * `startRecord` is needed in all cases, and defines where the range should start from.

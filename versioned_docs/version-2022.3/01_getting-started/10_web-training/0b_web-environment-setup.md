@@ -15,7 +15,7 @@ You must have completed the environment setup from the previous Developer Traini
 
 Clone the Web Training repo from [here](https://github.com/genesiscommunitysuccess/webtraining-seed).
 
-Open the project using your favorite IDE such as IntelliJ or Visual Studio Code.
+Open the project using your favourite IDE such as IntelliJ or Visual Studio Code.
 
 ## Running the backend
 You're not going to change any backend code, but we must have the server running to make our application work. To do that, we can simply build a docker image from the project you just cloned.

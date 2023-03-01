@@ -34,7 +34,7 @@ pipelines {
 ```
 
 :::tip
-If you don't have intelisense when editing the data pipeline file check the contents of **datapipeline-trades-script-config/build.gradle.kts**. Under **dependencies** it should contain `api("global.genesis:genesis-pal-datapipeline")`. If that entry is not present add it to the list of dependencies. Once done the file should look like:
+If you don't have intellisense when editing the data pipeline file check the contents of **datapipeline-trades-script-config/build.gradle.kts**. Under **dependencies** it should contain `api("global.genesis:genesis-pal-datapipeline")`. If that entry is not present add it to the list of dependencies. Once done the file should look like:
 ```kotlin
 dependencies {
     ...

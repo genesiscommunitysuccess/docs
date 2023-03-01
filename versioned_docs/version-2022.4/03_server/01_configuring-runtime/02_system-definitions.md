@@ -115,7 +115,7 @@ item(name = "GenesisKey", value = System.getenv("GENESIS_KEY"))
 **JVM_OPTIONS**: This defines common JVM options to be applied to all processes defined in the environment.
 
 **DbNamespace**: This item defines different things, depending on the databases in use as specified below
-- For [FoundatioDB](../../../database/database-technology/foundationdb/): It will be used when creating internal DirectoryLayers
+- For [FoundationDB](../../../database/database-technology/foundationdb/): It will be used when creating internal DirectoryLayers
 - For [Aerospike](../../../database/database-technology/aerospike/), [Postgres](../../../database/database-technology/sql/#postgresql), [MSSQL](../../../database/database-technology/sql/#ms-sql) and [ORACLE](../../../database/database-technology/sql/#oracle): This enables you to segregate data from multiple apps while using a single database.
 
 **ClusterPort**: This setting specifies the port used by GENESIS_CLUSTER to establish cluster membership between cluster nodes.
