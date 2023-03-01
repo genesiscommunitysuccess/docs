@@ -118,7 +118,7 @@ Alternatively, you could use any HTTP client to access the server resources as t
 
 One of the key objects provided by the Foundation Comms is the `Connect` object whose main methods are:
 - `connect`: 
-connects to the server through a web socket (when WS is available or http as fallback). You must pass the server host URL. In most apps, such as the one we're building in this training, the connection is already handled by the MainApplication component on initialization relying on the [config](../../../getting-started/web-training/web-training-day1/#config) provided by the app.
+connects to the server through a web socket (when WS is available or http as fallback). You must pass the server host URL. In most apps, such as the one we're building in this training, the connection is already handled by the MainApplication component on initialisation relying on the [config](../../../getting-started/web-training/web-training-day1/#config) provided by the app.
 
 - `commitEvent`: 
 use it to call event handlers on the server. You must pass the name of the event and an object with the input data required by the event. This data must be in JSON format with key **DETAILS**. See the example above of the `insertOrder` function.
