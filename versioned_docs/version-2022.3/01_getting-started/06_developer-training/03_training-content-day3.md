@@ -932,7 +932,7 @@ Note - You cannot use derived fields within a `where` block.
 
 #### Try yourself
 
-Let's add a new derivated field in the **alpha** application called *GOOD_USD_TRADE* where the currency should be USD and price greater than 10.
+Let's add a new derived field in the **alpha** application called *GOOD_USD_TRADE* where the currency should be USD and price greater than 10.
 
 :::tip
 After changing the files remember to run *assemble* and *deploy*

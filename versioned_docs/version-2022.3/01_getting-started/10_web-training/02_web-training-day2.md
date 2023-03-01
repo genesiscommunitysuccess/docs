@@ -34,7 +34,7 @@ The goal of our app is to list all the orders with some filters and actions to i
 #### Fields
 | Field          | Type             | Editable | Notes
 |---------------|------------------------------|------------------------------|------------------------------|
-| Instrument          | Select or Search (autocomplete field) | Yes | Load data from ALL_INTRUMENTS Data Server
+| Instrument          | Select or Search (autocomplete field) | Yes | Load data from ALL_INSTRUMENTS Data Server
 | Market data          | Display price of the selected symbol | No | Load data from INSTRUMENT_MARKET_DATA ReqRep
 | Quantity          | Integer      | Yes | Must be positive
 | Price          | Double      | Yes | Must be positive
@@ -118,7 +118,7 @@ Alternatively, you could use any HTTP client to access the server resources as t
 
 One of the key objects provided by the Foundation Comms is the `Connect` object whose main methods are:
 - `connect`: 
-connects to the server through a web socket (when WS is available or http as fallback). You must pass the server host URL. In most apps, such as the one we're building in this training, the connection is already handled by the MainApplication component on initilization relying on the [config](../../../getting-started/web-training/web-training-day1/#config) provided by the app.
+connects to the server through a web socket (when WS is available or http as fallback). You must pass the server host URL. In most apps, such as the one we're building in this training, the connection is already handled by the MainApplication component on initialisation relying on the [config](../../../getting-started/web-training/web-training-day1/#config) provided by the app.
 
 - `commitEvent`: 
 use it to call event handlers on the server. You must pass the name of the event and an object with the input data required by the event. This data must be in JSON format with key **DETAILS**. See the example above of the `insertOrder` function.
@@ -205,7 +205,7 @@ You probably realized we don't have any options in our select components, so let
 #### Loading data from the server into the select fields
 Let's start with **instrument** field. We want to load the data once Order the component is initialized so, then, the ***select*** field can just iterate through the list of instruments loaded from the server. 
 
-Order is a Web Component and, as such, it supports a series of [lifecycle events](https://www.fast.design/docs/fast-element/defining-elements/#the-element-lifecycle) that you can tap into to execute custom code at specific points in time. To make the Order component load data on initilization, we can override one of the lifecycle events called `connectedCallback` that runs when the element is inserted into the DOM.
+Order is a Web Component and, as such, it supports a series of [lifecycle events](https://www.fast.design/docs/fast-element/defining-elements/#the-element-lifecycle) that you can tap into to execute custom code at specific points in time. To make the Order component load data on initialisation, we can override one of the lifecycle events called `connectedCallback` that runs when the element is inserted into the DOM.
 
 ```typescript {5,11-18} title='order.ts'
 ...
@@ -221,7 +221,7 @@ export class Order extends FASTElement {
 public async connectedCallback() { //add this method to Order class
     super.connectedCallback(); //FASTElement implementation
 
-    const msg = await this.connect.snapshot('ALL_INSTRUMENTS'); //get a snapshot of data from ALL_INTRUMENTS data server
+    const msg = await this.connect.snapshot('ALL_INSTRUMENTS'); //get a snapshot of data from ALL_INSTRUMENTS data server
     console.log(msg); //add this to look into the data returned and understand its structure
     this.allInstruments = msg.ROW?.map(instrument => ({
       value: instrument.INSTRUMENT_ID, label: instrument.INSTRUMENT_NAME}));
@@ -232,7 +232,7 @@ public async connectedCallback() { //add this method to Order class
 :::tip async and await
 If you're not entirely familiar with [async function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function), it is a modern JavaScript function to enable asynchronous behaviour and the await keyword is permitted within it. They enable asynchronous, promise-based behaviour to be written in a cleaner style, avoiding the need to explicitly configure promise chains.
 
-Also, check this pratical resource on [Async Await](https://www.typescriptlang.org/pt/play#example/async-await).
+Also, check this practical resource on [Async Await](https://www.typescriptlang.org/pt/play#example/async-await).
 :::
 
 As you can see, we used `connect.snapshot` to retrieve the data from a data server resource called `ALL_INSTRUMENTS`. If you wanted to stream data in real time, you could use the `connect.stream` method instead. Remember to always use these methods to get data from data server resources.

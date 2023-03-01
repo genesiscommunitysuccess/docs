@@ -136,7 +136,7 @@ Genesis uses [QuickFIX](http://www.quickfixengine.org/quickfix/doc/html/?quickfi
 
 There is a standard FIX module that you can include in applications.
 
-This inlcudes the standard FIX libraries.
+This includes the standard FIX libraries.
 
 It also gives you a standard FIX inbound streamer that listens to the FIX_In table in the database.
 
