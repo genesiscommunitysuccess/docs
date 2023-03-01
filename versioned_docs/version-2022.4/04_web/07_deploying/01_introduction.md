@@ -1,6 +1,6 @@
 ---
 title: 'Web deployment - introduction'
-sidebar_label: 'introduction'
+sidebar_label: 'Introduction'
 id: introduction
 keywords: [web, deployment, introduction]
 tags:
