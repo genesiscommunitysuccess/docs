@@ -2,6 +2,12 @@
 
 Documentation is written using [Markdown format](markdown-syntax.md).
 
+## Contribution Guidelines
+
+First of all, thank you very much in your interest to contribute into a best version of our documentation. All accepted contribution will be published to our [official website](https://learn.genesis.global/).
+
+If you`re willing to contribute, please follow our guide [here](./how-to-contribute.md)
+
 ## Installation
 
 ```
