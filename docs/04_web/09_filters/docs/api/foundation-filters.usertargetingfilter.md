@@ -17,9 +17,9 @@ export declare function userTargetingFilter(user: User, usernames?: string[], pr
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  user | User | A user object. |
-|  usernames | string\[\] | <i>(Optional)</i> Usernames to target. |
-|  profiles | string\[\] | <i>(Optional)</i> Profiles to target. |
-|  permissions | string\[\] | <i>(Optional)</i> Permissions to target. |
+|  usernames | string\[\] | _(Optional)_ Usernames to target. |
+|  profiles | string\[\] | _(Optional)_ Profiles to target. |
+|  permissions | string\[\] | _(Optional)_ Permissions to target. |
 
 **Returns:**
 

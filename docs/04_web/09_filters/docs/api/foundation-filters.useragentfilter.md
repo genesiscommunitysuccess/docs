@@ -16,10 +16,10 @@ export declare function userAgentFilter(browsers?: string[], devices?: string[],
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  browsers | string\[\] | <i>(Optional)</i> Browser names to target. |
-|  devices | string\[\] | <i>(Optional)</i> Device types to target. |
-|  oss | string\[\] | <i>(Optional)</i> Operating system names to target. |
-|  ua | string | <i>(Optional)</i> User-agent string (required in nodejs environment). |
+|  browsers | string\[\] | _(Optional)_ Browser names to target. |
+|  devices | string\[\] | _(Optional)_ Device types to target. |
+|  oss | string\[\] | _(Optional)_ Operating system names to target. |
+|  ua | string | _(Optional)_ User-agent string (required in nodejs environment). |
 
 **Returns:**
 

@@ -16,8 +16,8 @@ export declare function timeWindowFilter(start?: string, end?: string): boolean;
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  start | string | <i>(Optional)</i> The start of the time window. |
-|  end | string | <i>(Optional)</i> The end of the time window. |
+|  start | string | _(Optional)_ The start of the time window. |
+|  end | string | _(Optional)_ The end of the time window. |
 
 **Returns:**
 

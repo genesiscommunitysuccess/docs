@@ -17,10 +17,10 @@ export declare function urlTargetingFilter(url: string, pattern?: RegExp, scheme
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  url | string | A url. |
-|  pattern | RegExp | <i>(Optional)</i> A regex. |
-|  schemes | string\[\] | <i>(Optional)</i> Schemes/protocols to target. |
-|  hosts | string\[\] | <i>(Optional)</i> Hosts to target. |
-|  paths | string\[\] | <i>(Optional)</i> Paths to target. |
+|  pattern | RegExp | _(Optional)_ A regex. |
+|  schemes | string\[\] | _(Optional)_ Schemes/protocols to target. |
+|  hosts | string\[\] | _(Optional)_ Hosts to target. |
+|  paths | string\[\] | _(Optional)_ Paths to target. |
 
 **Returns:**
 

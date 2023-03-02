@@ -17,7 +17,7 @@ export declare function percentageFilter(percent: number, random?: number): bool
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  percent | number | The percent of the time to pass, a numeric value between 0 and 1. |
-|  random | number | <i>(Optional)</i> Math.random() generated floating-point. |
+|  random | number | _(Optional)_ Math.random() generated floating-point. |
 
 **Returns:**
 
