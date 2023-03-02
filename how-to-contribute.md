@@ -7,7 +7,7 @@ The genesis platform team is working to enable its community by providing access
 **Note** To be able to contribute to the documentation, please make sure you have access to the [docs repository](https://github.com/genesiscommunitysuccess/docs)
 
 ## Guidance
-Below you`ll find the steps to contribute to the documentation. please remember to follow the [guidelines](./Type-of-contribution.md)
+Below you ll find the steps to contribute to the documentation. please remember to follow the [guidelines](./Type-of-contribution.md)
 
 
 ### 1. Access the docs repository
@@ -44,4 +44,4 @@ After all changes have been done and you ran your local website, it`s time to cr
 
 ---
 
-After you have followed the instructions, your request will be reviewed by the community team. Once your changes are accepted, approved and merged, you will be able to see the changes within 15 minutes.Thank you very much for your contribution. We very much appreciate it.
+After you have followed the instructions, your request will be reviewed by the community team. Once your changes are accepted, approved and merged, you will be able to see the changes within 15 minutes. Thank you very much for your contribution. We very much appreciate it.

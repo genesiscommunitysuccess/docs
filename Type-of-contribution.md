@@ -2,7 +2,7 @@
 
 Documentation is written using [Markdown format](markdown-syntax.md).
 
-Thank you very much for your interest in contribution to the Docs. We encourage you to contribute to docs by creating PRs on your own. To enable the community to contribute to a better documentation, we listed below some types of contribution we`re currently accepting from the community. Take a look below.
+Thank you very much for your interest in contribution to the Docs. We encourage you to contribute to docs by creating PRs on your own. To enable the community to contribute to a better documentation, we listed below some types of contribution we are currently accepting from the community. Take a look below.
 
 ## What can you contribute
 
