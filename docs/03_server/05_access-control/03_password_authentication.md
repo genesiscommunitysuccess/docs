@@ -70,17 +70,21 @@ The following variables are used to configure an LDAP connection; these are only
 
 For more information about the various authentication types, please see the [Authentication overview](../../../server/access-control/authentication-overview/).
 
-### passwordValidation
-The `passwordValidation` function enables password validation, and is used to set the variables relating to this validation. 
+### genesisPassword
+
+The `genesisPassword` groups all configuration options when using `type = AuthType.INTERNAL`. 
+
+#### validation
+The `validation` function enables password validation, and is used to set the variables relating to this validation. 
 
 These following variables are used to configure the application's password validation; thus are only used when `type` is either `AuthType.INTERNAL` or `AuthType.HYBRID`.
 
 * `passwordSalt` defines a system specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different applications built on the Genesis low-code platform are stored as different hashes. Default: empty string indicating no additional salting.
 
-In addition, from within `passwordValidation` the `passwordStrength` method can be invoked as below.
+In addition, from within `validation` the `passwordStrength` method can be invoked as below.
 
-#### passwordStrength
-The `passwordStrength` function can be called within `passwordValidation` to set many configuration variables. These enable you to specify in detail the mandatory characteristics for the password. 
+##### passwordStrength
+The `passwordStrength` function can be called within `validation` to set many configuration variables. These enable you to specify in detail the mandatory characteristics for the password. 
 
 Within this function, the following variables can be set:
 
@@ -104,11 +108,57 @@ Within this function, the following variables can be set:
 * `passwordExpiryDays` specifies how many days before a password expires. If null or undefined this assumes there is no limit. Default: null.
 * `passwordExpiryNotificationDays` specifies how many days before their password expiry, a user is notified. If null or undefined a user not notified in advance of their password expiry. Default: null.
 
-### passwordRetry
-The `passwordRetry` function allows you to configure settings for limiting the rate at which a user can retry passwords. It allows the following variables to be set:
+#### retry
+The `retry` function allows you to configure settings for limiting the rate at which a user can retry passwords. It allows the following variables to be set:
 
 * `maxAttempts` specifies the maximum number of attempts allowed if a user enters a wrong password. Default: 3 attempts.
 * `waitTimeMins` specifies the time to wait in minutes when the maximum number of incorrect attempts is reached before allowing a user to try again. Default: 5 minutes.
+
+#### selfServiceReset 
+
+The `selfServiceReset` functions allows enables the self-service reset workflow. In this, users authenticated with the 
+internal auth type, can request an email to reset their password. This workflow is dependent on having genesis notify 
+configured with a working email gateway. Once a user has request a reset, an email will be sent to their configured 
+email address, with a link to a password reset page. This link will be valid for a preconfigured timeout.
+
+:::note
+
+In the interest of security, this response will always receive an ACK, even if there is a problem in identifying
+the user or email address. In the case of a problem with the request, details will be provided in the auth manager
+log file.
+
+:::
+
+It has the following options: 
+
+* `timeoutInMinutes` - the time in minutes a reset link is valid for 
+* `coolDownInMinutes` - the time in minutes between password reset request. 
+* `notifyTopic` - the email topic in notify to use 
+* `redirectUrl` - the url to use for the redirect 
+* `acceptClientUrl` - boolean flag; if true it will use the client provided reset url
+
+:::warning
+
+In the interest of security `acceptClientUrl` should only ever be set to false in a development environment. Setting 
+this value to true in any other scenario is a serious security risk.
+
+:::
+
+##### resetMessage
+
+The `resetMessage` function allows users to configure the email sent once a reset is requested, it has the following 
+options: 
+
+* `subject` the subject line of the email
+* `body` the body of the email
+
+Both the subject and the body support templating. Values surrounded by double curly braces `{{ }}` will be replaced when 
+the email is sent. The following values are available: 
+
+* `RESET_URL` the reset url
+* `TIMEOUT` the time the url is valid for
+* `USER` the user record, properties on this record should be access using lowerCamelCase, e.g. `{{ USER.firstName }}`
+* any system definition or environment variable available. 
 
 ### mfa
 The `mfa` function allows you to configure Multi-factor Authentication (MFA). For more information on MFA please see [Wikipedia](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function the following variables can be set:
@@ -166,36 +216,38 @@ security {
                 bindPassword = null
                 userIdType = "cn"
 			}
-		}       
-    }
+		}
 
-    passwordValidation {
-        passwordSalt = ""
-        passwordStrength {
-            minimumLength = null
-            maximumLength = null
-            minDigits = null
-            maxRepeatCharacters = null
-            minUppercaseCharacters = null
-            minLowercaseCharacters = null
-            minNonAlphaNumericCharacters = null
-            restrictWhiteSpace = true
-            restrictAlphaSequences = false
-            restrictQWERTY = true
-            restrictNumericalSequences = true
-            illegalCharacters = "\$£^"
-            historicalCheck = 0
-            restrictDictionarySubstring = false
-            restrictUserName = false
-            repeatCharacterRestrictSize = null
-            passwordExpiryDays = null
-            passwordExpiryNotificationDays = null
-        }
-    }
+        genesisPassword {
+            validation {
+                passwordSalt = ""
+                passwordStrength {
+                    minimumLength = null
+                    maximumLength = null
+                    minDigits = null
+                    maxRepeatCharacters = null
+                    minUppercaseCharacters = null
+                    minLowercaseCharacters = null
+                    minNonAlphaNumericCharacters = null
+                    restrictWhiteSpace = true
+                    restrictAlphaSequences = false
+                    restrictQWERTY = true
+                    restrictNumericalSequences = true
+                    illegalCharacters = "\$£^"
+                    historicalCheck = 0
+                    restrictDictionarySubstring = false
+                    restrictUserName = false
+                    repeatCharacterRestrictSize = null
+                    passwordExpiryDays = null
+                    passwordExpiryNotificationDays = null
+                }
+            }
 
-    passwordRetry {
-        maxAttempts = 3
-        waitTimeMins = 5
+            retry {
+                maxAttempts = 3
+                waitTimeMins = 5
+            }
+        }    
     }
 
     sso {
