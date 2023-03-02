@@ -676,6 +676,20 @@ GetAutoIncrementCount
 | -h       | --help             | No        | show usage information                  | No                |
 | -p       | --print            | No        |                                         | No                |
 
+:::info
+
+This command can have different behaviour depending on which database implementation is used. 
+
+When using a NOSQL database like Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command will retrieve the value of the counter stored on disk, which if the system is currently active, does not necessarily correspond to the value of the next record inserted which references the value.
+
+Similarly when using Oracle, auto-incremented values are cached in memory in configurable block sizes. This command only retrives the current value of the counter stored on disk.
+
+When using an SQL implementation, this command will return the last value assigned by the sequence, not the next to be assigned.
+
+For predictable results, this command is best used when the system is down for maintenance.
+:::
+
+
 ## SetSequence
 
 
@@ -716,6 +730,17 @@ SetAutoIncrement
 | -s       | --field `<arg>`    | No        |                                                                                                        | No                |
 | -t       | --table `<arg>`    | No        |                                                                                                        | No                |
 | -v       | --value `<arg>`    | No        |                                                                                                        | No                |
+
+:::info
+
+This command can have different behaviour depending on which database implementation is used. 
+
+When using a NOSQL database like Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command will set the value in the database, which corresponds to the first value in the next range to be allocated.
+
+When using Oracle, direct setting of a sequence value is not supported. This command will increment the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values already assigned in the cache, as the increment is also applied to these values.
+
+For predictable results, this command is best used when the system is down for maintenance.
+:::
 
 ## GenesisRun
 
