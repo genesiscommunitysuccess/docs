@@ -28,7 +28,7 @@ Now that you have your branch locally, you can make your changes. **Remember** t
 
 **Tip**: you can easily search all the errors across all versions using the search tool in your preferred code editor.
 
-### 4. Build, Run and Check
+### 4. Build, run and check
 
 Once your changes are done, it is extremely important to build your local website to see if your changed did not introduce any errors. 
 
