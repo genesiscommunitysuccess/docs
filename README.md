@@ -6,7 +6,7 @@ Documentation is written using [Markdown format](markdown-syntax.md).
 
 Now our community team is accepting contributions from all community members of genesis. All accepted contribution will be published to our [official website](https://learn.genesis.global/).
 
-For more details about what [types of contributions](./Type-of-contribution.md) we are accepting, please follow the link. 
+For more details about what [types of contribution](./Type-of-contribution.md) we are accepting, please follow the link. 
 
 If you are willing to contribute, please follow our guide [here](./how-to-contribute.md)
 

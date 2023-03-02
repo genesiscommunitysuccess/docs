@@ -1,4 +1,4 @@
-# Genesis Docs Contribution Guide
+# Genesis docs contribution guide
 
 Documentation is written using [Markdown format](markdown-syntax.md).
 

@@ -1,10 +1,10 @@
-# Genesis Contribution Guidelines
+# Genesis contribution guidelines
 
 Documentation is written using [Markdown format](markdown-syntax.md).
 
 Thank you very much for your interest in contribution to the Docs. We encourage you to contribute to docs by creating PRs on your own. To enable the community to contribute to a better documentation, we listed below some types of contribution we are currently accepting from the community. Take a look below.
 
-## What can you contribute
+## What you can contribute
 
 The contributions below will be accepted by the community team as a PR
 
@@ -18,7 +18,7 @@ Our documentation contains plenty of links. if you see any broken links, feel fr
 ### Simple updates
 If you see anything that you believe needs a simple update such as dates, names, etc, feel free to submit a PR for review.
 
-## What you is not expected
+## What is not expected
 
 The below list will not be accepted by the community team as a PR. In this case, please contact us.
 
