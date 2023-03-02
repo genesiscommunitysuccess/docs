@@ -168,3 +168,7 @@ As mentioned in the [authentication](#sso) section, SSO must be configured on th
 
 - Finally, set `defaultRedirectUrl`, which controls where the `Login` micro front-end will take the user back to once they complete the SSO journey. For example, setting option to `/home` will take the user to the `/home` path if they successfully login via SSO.
 
+
+## License
+
+Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
