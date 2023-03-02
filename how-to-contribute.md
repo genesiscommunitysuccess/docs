@@ -44,4 +44,4 @@ After all changes have been done and you ran your local website, it`s time to cr
 
 ---
 
-After you have followed the instructions, your request will be reviewed by the community team. Thank you very much for your contribution. We very much appreciated.
+After you have followed the instructions, your request will be reviewed by the community team. Once your changes are accepted, approved and merged, you will be able to see the changes within 15 minutes.Thank you very much for your contribution. We very much appreciate it.

@@ -27,6 +27,8 @@ The below list will not be accepted by the community team as a PR. In this case,
 - Menu changes
 - Change more than one paragraph
 
+For any more complext changes, please contact mister @John Hendry
+
 ## Docs structure
 
 It is important to follow the Docs structure (folders, files, etc.) otherwise you will encounter unexpected errors and be unable to contribute. Here is a list of tips before you get started:
