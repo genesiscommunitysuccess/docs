@@ -199,9 +199,9 @@ or
 
 - Configure the `requiresPendingApproval` block in a GPAL Event Handler.
 
-Both of these options, involve implementing a function with the event message as an input and a Boolean value as a return value.
+Both of these options involve implementing a function with the event message as an input and a Boolean value as a return value.
 
-Here is an example of a GPAL event handler definition:
+Here is an example of a GPAL Event Handler definition:
 
 ```kotlin
 eventHandler {
@@ -254,21 +254,24 @@ class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply>
 }
 ```
 
-### Pending approval submission in Event Handlers
+### Pending approval workflow
 
 Events going through a pending approval workflow are validated as usual (i.e. the `onValidate` method is run).  If the validation is successful, the “delayed” event is stored in the `APPROVAL` table in JSON format. 
 
 Assuming the event is inserting, updating or deleting a target database record, it is possible to have multiple `APPROVAL` records associated with a single database entity. So, you should use the event `onValidate` method to check for pre-existing approvals against the entities related to the event if you need to ensure there is only one pending approval per record. 
 
-The `APPROVAL` record is keyed on an auto-generated `APPROVAL_ID` and does not have a direct link to the original record(s). You have to create one or many links by adding “approval entity” details to the payload returned within an `approvableAck` inside the `onValidate` method. These details include the `entityTable` (e.g COUNTERPARTY), `entityKey` (e.g. COUNTERPARTY_ID), as well as an optional `approvalType` to describe what operation is happening on the entity itself (e.g. NEW, UPDATE or REMOVE). This approach enables you to decide how to identify the original record (e.g. creating a compound key in the case of multi-field keys). When the approval entity details are provided, the platform creates one or several records in the `APPROVAL_ENTITY` table and populates it (them) with the details provided, and the `APPROVAL_ID` of the `APPROVAL` record. There is also an `APPROVAL_ENTITY_COUNTER`, which is populated by the GENESIS_AUTH_CONSOLIDATOR process by default; this can be handy to know how many approvals are pending for a given entity.
+The `APPROVAL` record is keyed on an auto-generated `APPROVAL_ID` and does not have a direct link to the original record(s). You have to create one or many links by adding “approval entity” details to the payload returned within an `approvableAck` inside the `onValidate` method. These details include the `entityTable` (e.g COUNTERPARTY), `entityKey` (e.g. COUNTERPARTY_ID), as well as an optional `approvalType` to describe what operation is happening on the entity itself (e.g. NEW, UPDATE or REMOVE). 
+
+This approach enables you to decide how to identify the original record (e.g. creating a compound key in the case of multi-field keys). When the approval entity details are provided, the platform creates one or several records in the `APPROVAL_ENTITY` table; it populates it (them) with the details provided and the `APPROVAL_ID` of the `APPROVAL` record. There is also an `APPROVAL_ENTITY_COUNTER`, which is populated by the GENESIS_AUTH_CONSOLIDATOR process by default; this can be handy when you need to know how many approvals are pending for a given entity.
 
 There are other useful properties you can set as part of the `approvableAck` definition. They are all optional and are detailed below:
-* `entityDetails` is a list of `ApprovalEntityDetails` with their corresponding `entityTable`, `entityId` and `approvalType` properties (see previous paragraph). By default, this list is empty.
-* `approvalMessage` contains the text that is sent back to the client, assuming the event is successfully submitted for approval. By default, this is "Your request was successful and has been submitted for approval".
-* `additionalDetails` can provide context information that is only available from a server-side perspective. This information complements the `APPROVAL_MESSAGE` content provided by the front end.
-* `approvalType` is used to state the action that happens when this event is approved: NEW for insertions, UPDATE for amends, REMOVE for removals (UNKNOWN is used by default if undefined). Most events will be simple, but of course some may affect multiple entities in different ways, which is why the `entityDetails` parameter can contain many entities, each with their own `approvalType`.
 
-`approvableAck` can be used in both custom EventHandler definitions and GPAL Event Handlers. Here is an example of `approvableAck` in action for a GPAL event handler `onValidate` block below.
+* `entityDetails` is a list of `ApprovalEntityDetails` with their corresponding `entityTable`, `entityId` and `approvalType` properties (see previous paragraph). By default, this list is empty.
+* `approvalMessage` contains the text that is sent back to the client, assuming the event is successfully submitted for approval. The default is "Your request was successful and has been submitted for approval".
+* `additionalDetails` can provide context information that is only available from a server-side perspective. This information complements the `APPROVAL_MESSAGE` content provided by the front end.
+* `approvalType` is used to state the action that happens when this event is approved: NEW for insertions, UPDATE for amends, REMOVE for removals. If undefined, this defaults to UNKNOWN). Most events will be simple, but of course some could affect multiple entities in different ways, which is why the `entityDetails` parameter can contain many entities, each with their own `approvalType`.
+
+One further proprty, `approvableAck`, can be used in both custom EventHandler definitions and GPAL Event Handlers. Here is an example of `approvableAck` in action for a GPAL Event Handler `onValidate` block below.
 
 ```kotlin
 eventHandler {
@@ -353,7 +356,7 @@ All messages require a valid `APPROVAL_ID` and `APPROVAL_MESSAGE` in their metad
 
 ### Configuring allowed approvers: basic
 
-The platform ensures that users cannot approve or reject their own events, but they can cancel them. Likewise, users that have not created a specific pending approval event can only accept or reject, not cancel. 
+The platform ensures that users cannot approve or reject their own events, but they can cancel them. To complement this, users that have not created a specific pending approval event can only accept or reject, not cancel. 
 
 Additional levels of control (e.g. based on user groups) can be added at three points:
 
@@ -401,22 +404,22 @@ The platform makes the following objects accessible to the `insert` block:
     * `messageType` - represents the original EVENT name (e.g. EVENT_TRADE_INSERT).
     * `destination` - is the process name this event was originally targeting (e.g. POSITION_EVENT_HANDLER).
     * `eventMessage` - contains the JSON object representing the original message payload.
-    * `approvalType` - equivalent to the property with the same name provided as part of `approvableAck` (see [earlier section](../../server/event-handler/advanced.md#pending-approval-submission-in-event-handlers))
-    * `additionalDetails` - equivalent to the property with the same name provided as part of `approvableAck` (see [earlier section](../../server/event-handler/advanced.md#pending-approval-submission-in-event-handlers))
-    * `generated` - equivalent to the property named `entityDetails` provided as part of `approvableAck` (see [earlier section](../../server/event-handler/advanced.md#pending-approval-submission-in-event-handlers))
+    * `approvalType` - equivalent to the property with the same name provided as part of `approvableAck` (see [earlier section](../../server/event-handler/advanced.md#pending-approval-submission-in-event-handlers)).
+    * `additionalDetails` - equivalent to the property with the same name provided as part of `approvableAck` (see [earlier section](../../server/event-handler/advanced.md#pending-approval-submission-in-event-handlers)).
+    * `generated` - equivalent to the property named `entityDetails` provided as part of `approvableAck` (see [earlier section](../../server/event-handler/advanced.md#pending-approval-submission-in-event-handlers)).
 * `userName` - a string property containing the user name who triggered the event.
-* `messageType` - a shortcut property accessor for the `messageType` value stored inside `insertMessage`
-* `eventMessage` - a shortcut property accessor for the `eventMessage` value stored inside `insertMessage`
+* `messageType` - a shortcut property accessor for the `messageType` value stored inside `insertMessage`.
+* `eventMessage` - a shortcut property accessor for the `eventMessage` value stored inside `insertMessage`.
 
 The following objects are accessible within the `accept`, `cancel` and `reject` blocks:
 
 * `userName` - a string property containing the user name who triggered the pending approval event (e.g. accept, reject or cancel).
-* `pendingApproval` - the pending approval record stored in the database. The type of this property is the "Approval" database entity (see [table entities](../../database/data-types/table-entities.md))
+* `pendingApproval` - the pending approval record stored in the database. The type of this property is the "Approval" database entity (see [table entities](../../database/data-types/table-entities.md)).
 * `approvalMessage` - an instance of the `ApprovalMessage` class, which represents the payload of the message sent to EVENT_PENDING_APPROVAL_ACCEPT, EVENT_PENDING_APPROVAL_CANCEL and EVENT_PENDING_APPROVAL_REJECT. It contains two properties:
-    * `approvalMessage` - the message text sent by the user who initiated this pending approval action.
-    * `approvalId` - contains the APPROVAL_ID used to identify the APPROVAL record we are handling as part of this action.
-* `messageType` - a shortcut property accessor for the `messageType` value stored inside `pendingApproval`
-* `eventMessage` - a shortcut property accessor for the `eventMessage` value stored inside `pendingApproval`
+    * `approvalMessage` - the message text sent by the user who initiated this pending approval action
+    * `approvalId` - contains the APPROVAL_ID used to identify the APPROVAL record we are handling as part of this action
+* `messageType` - a shortcut property accessor for the `messageType` value stored inside `pendingApproval`.
+* `eventMessage` - a shortcut property accessor for the `eventMessage` value stored inside `pendingApproval`.
 
 The following properties are automatically available for the whole scope of the **-approval.kts** file:
 
@@ -431,7 +434,7 @@ val serviceDiscovery: ServiceDiscovery
 val injector: Injector
 ```
 
-As show in the previous code example, you can perform database lookups to retrieve additional information and return `true` only if the necessary rights or attributes are in place. For example, if your system has the concept of internal and external users, and you only want to allow internal users to accept pending events, then you could check your custom user "ACCESS_TYPE" field as follows:
+As shown in the previous code example, you can perform database lookups to retrieve additional information and return `true` only if the necessary rights or attributes are in place. For example, if your system has the concept of internal and external users, and you only want to allow internal users to accept pending events, then you could check your custom user "ACCESS_TYPE" field as follows:
 
 ```kotlin
 pendingApproval {
@@ -500,17 +503,18 @@ pendingApproval {
 ```
 ### System rejects
 
-Given the fact we are "delaying" events, it is possible that by the time a pending approval action is approved, the underlying data has changed enough as to cause the delayed event to fail when executed. When this happens, the pending approval record will be marked as REJECTED_BY_SYSTEM in its `APPROVAL_STATUS` field.
+An approval process deliberately delays events. So it is possible that by the time a pending approval action is approved, the underlying data has changed enough to cause the delayed event to fail when executed. When this happens, the pending approval record will be marked as REJECTED_BY_SYSTEM in its `APPROVAL_STATUS` field.
 
-Additionally, there is one type of event that is only accessible by the back-end services; this is called "EVENT_PENDING_APPROVAL_SYSTEM_REJECT". This event can be used programmatically to satisfy any specific requirements that fall outside the functionality of the pending approval system.
+The platform provides an event designed to help you to reject events directly from the back end without human intervention. "EVENT_PENDING_APPROVAL_SYSTEM_REJECT" is an event that can be used to satisfy any specific requirements that fall outside the functionality of the pending approval system. The event is only accessible by back-end services. It takes two parameters:
 
-For example, consider a solution that needs to submit trades to an external system every day at midnight for confirmation purposes. Once the trades have been submitted, their content cannot be changed anymore, unless a separate amendment process is started outside the Genesis solution. 
+- `approvalMessage` is the text of the message to be sent when the message is rejected. 
+- `approvalKey` is a unique identifier for each pending approval record. This identifier is never exposed to the front end, so only back-end services have access to it. That makes it impossible to trigger this event unless you have access to the database system. You need to obtain the `approvalKey` programatically so that you can supply it as a parameter value.
 
-In such a system, you might have a pending approval system to amend the content of each "Trade" database record to provide extra security. However, once a "Trade" record has been submitted at midnight, we should prevent any pending approval events from amending the content of the trade records in the system, as this could cause inconsistencies between the external system and the Genesis system. To prevent this, you could run a job that automatically rejects all pending approval records at midnight every day.
+Let us look at an example. Consider a solution that needs to submit trades to an external system every day at midnight for confirmation purposes. Once the trades have been submitted, their content cannot be changed anymore, unless a separate amendment process is started outside the Genesis application. The system has a pending approval system that enables users to amend the content of each "Trade" database record to provide extra security.
 
-To use this event, we need access to the "APPROVAL_KEY" value, which is another unique identifier for each pending approval record. This identifier is never exposed to the front end, so only back-end services have access to it. That makes it impossible to trigger this event unless you have access to the database system.
+Once a "Trade" record has been submitted at midnight, you need to prevent any pending approval events from amending the content of the trade records in the system, as this could cause inconsistencies between the external system and the Genesis system. To prevent this, you could run a job that automatically rejects all pending approval records at midnight every day.
 
-The GPAL sample script below could be run every day at midnight to reject all PENDING approval records:
+Here is an example GPAL script that could be run every day at midnight to reject all the pending records. 
 
 ```kotlin
 import global.genesis.clustersupport.service.ServiceDiscovery
@@ -527,6 +531,7 @@ if (client == null || !client.isConnected) {
 } else {
     suspendable {
         entityDb.getBulk<Approval>()
+            .filter { it.approvalStatus == ApprovalStatus.PENDING }
             .collect { approval ->
                 val reply: EventReply? = client.suspendRequest(
                     Event(
