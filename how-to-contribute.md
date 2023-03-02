@@ -13,7 +13,7 @@ Below you`ll find the steps to contribute to the documentation. please remember 
 ### 1. Access the docs repository
 To access the docs repository, please follow [this link](https://github.com/genesiscommunitysuccess/docs). Then clone it locally.
 
-<img src="./img_src/community_repo.PNG" width="400 text-align: center">
+<img src="./img_src/community_repo.PNG" width="600" style="margin: 20px">
 
 ### 2. Create a new branch off master
 
@@ -26,4 +26,22 @@ To access the docs repository, please follow [this link](https://github.com/gene
 
 Now that you have your branch locally, you can make your changes. **Remember** to change all versions of the docs, in case your changes appears in older vertions.
 
-::Tip: you can easily search all the erros across all versions using the search tool of your preferred code editor.::
+**Tip**: you can easily search all the erros across all versions using the search tool of your preferred code editor.
+
+### 4. Build, Run and Check
+
+Once your changes are done, it is extremely important to build your local website to see if your changed did not introduce any errors. 
+
+<img src="./img_src/build_website.PNG" width="500px" style="margin: 20px">
+
+### 5. Create your pull request
+
+After all changes have been done and you ran your local website, it`s time to create your [pull request](https://github.com/genesiscommunitysuccess/docs/compare). We have a simple template to create a pull request.
+
+**Note**: You don`t need a Jira number. But make sure you can answer those main questions:
+- Have you changed all relevant versions?
+- Have you made sure the links are safe?
+
+---
+
+After you have followed the instructions, your request will be reviewed by the community team. Thank you very much for your contribution. We very much appreciated.
