@@ -2,7 +2,7 @@
 
 Documentation is written using [Markdown format](markdown-syntax.md).
 
-Thank you very much for your interest in contribution to the Docs. We encourage you to contribute to docs by creating PRs on your own. To enable the community to contribute to a better documentation, we listed below some types of contribution we are currently accepting from the community. Take a look below.
+Thank you very much for your interest in contribution to the Docs. We encourage you to contribute to docs by creating PRs on your own. To enable the community to contribute to a better documentation, we have listed below some types of contribution we are currently accepting from the community. Take a look below.
 
 ## What you can contribute
 
@@ -27,7 +27,7 @@ The below list will not be accepted by the community team as a PR. In this case,
 - Menu changes
 - Change more than one paragraph
 
-For any more complex changes, please contact mister @John Hendry
+For any more complex changes, please contact [John Hendry](john.hendry@genesis.global)
 
 ## Docs structure
 
