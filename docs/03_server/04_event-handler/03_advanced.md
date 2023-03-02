@@ -2,11 +2,13 @@
 title: 'Event Handler - advanced'
 sidebar_label: 'Advanced'
 id: advanced
-keywords: [server, event handler, advanced, pending approvals]
+keywords: [server, event handler, advanced, approval, approvals, pending approvals]
 tags:
   - server
   - event handler
   - advanced
+  - approval
+  - approvals
   - pending approvals
 ---
 
