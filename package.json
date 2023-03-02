@@ -33,7 +33,7 @@
     "@genesislcap/foundation-login": "10.4.1",
     "@genesislcap/foundation-reporting": "10.4.1",
     "@genesislcap/foundation-testing": "10.4.1",
-    "@genesislcap/foundation-zero": "6.0.0-docs.20",
+    "@genesislcap/foundation-zero": "10.4.1",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.6",
     "classnames": "^2.3.2",
