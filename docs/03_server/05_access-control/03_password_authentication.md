@@ -11,9 +11,9 @@ tags:
 ---
 
 
-We will now go through the various configuration options available for authentication. These are located in your _application-name-_**auth-preferences.kts** file.
+This page describes the various configuration options available for authentication. These are located in your _application-name-_**auth-preferences.kts** file.
 
-All of these configuration settings are wrapped within the `security` function.
+All these configuration settings are wrapped within the `security` function.
 
 ## security 
 
@@ -109,59 +109,52 @@ Within this function, the following variables can be set:
 * `passwordExpiryNotificationDays` specifies how many days before their password expiry, a user is notified. If null or undefined a user not notified in advance of their password expiry. Default: null.
 
 #### retry
-The `retry` function allows you to configure settings for limiting the rate at which a user can retry passwords. It allows the following variables to be set:
+The `retry` function allows you to configure settings for limiting the rate at which a user can retry passwords. You can set the following variables:
 
 * `maxAttempts` specifies the maximum number of attempts allowed if a user enters a wrong password. Default: 3 attempts.
 * `waitTimeMins` specifies the time to wait in minutes when the maximum number of incorrect attempts is reached before allowing a user to try again. Default: 5 minutes.
 
 #### selfServiceReset 
 
-The `selfServiceReset` functions allows enables the self-service reset workflow. In this, users authenticated with the 
-internal auth type, can request an email to reset their password. This workflow is dependent on having genesis notify 
-configured with a working email gateway. Once a user has request a reset, an email will be sent to their configured 
-email address, with a link to a password reset page. This link will be valid for a preconfigured timeout.
+The `selfServiceReset` function enables the self-service reset workflow. In this, users authenticated with the internal auth type, can request an email to reset their password. This workflow requires Genesis Notify to be configured with a working email gateway. When a user requests a reset, an email is sent to their configured 
+email address, with a link to a password reset page. This link is valid for a preconfigured timeout.
 
 :::note
 
-In the interest of security, this response will always receive an ACK, even if there is a problem in identifying
-the user or email address. In the case of a problem with the request, details will be provided in the auth manager
-log file.
+In the interest of security, this response will always receive an ACK, even if there is a problem in identifying the user or email address. In the case of a problem with the request, details will be provided in the auth manager log file.
 
 :::
 
-It has the following options: 
+The `selfServiceReset` function  has the following options: 
 
-* `timeoutInMinutes` - the time in minutes a reset link is valid for 
-* `coolDownInMinutes` - the time in minutes between password reset request. 
-* `notifyTopic` - the email topic in notify to use 
-* `redirectUrl` - the url to use for the redirect 
-* `acceptClientUrl` - boolean flag; if true it will use the client provided reset url
+* `timeoutInMinutes` - the time in minutes that a reset link remains valid. 
+* `coolDownInMinutes` - the time in minutes between before the next password reset can be made. 
+* `notifyTopic` - the email topic in Genesis Notify to be used. 
+* `redirectUrl` - the url to use for the redirect.
+* `acceptClientUrl` - boolean flag; if true, it will use the client provided reset url
 
 :::warning
 
-In the interest of security `acceptClientUrl` should only ever be set to false in a development environment. Setting 
-this value to true in any other scenario is a serious security risk.
+You can set `acceptClientUrl` to `true` in a development environment. For security, always set it to `false` in all other environments. Always. 
 
 :::
 
 ##### resetMessage
 
-The `resetMessage` function allows users to configure the email sent once a reset is requested, it has the following 
-options: 
+The `resetMessage` function allows users to configure the email sent when a reset is requested. It has the following options: 
 
 * `subject` the subject line of the email
 * `body` the body of the email
 
-Both the subject and the body support templating. Values surrounded by double curly braces `{{ }}` will be replaced when 
-the email is sent. The following values are available: 
+Both the subject and the body support templating. Values surrounded by double curly braces `{{ }}` will be replaced when the email is sent. The following values are available: 
 
 * `RESET_URL` the reset url
 * `TIMEOUT` the time the url is valid for
 * `USER` the user record, properties on this record should be access using lowerCamelCase, e.g. `{{ USER.firstName }}`
-* any system definition or environment variable available. 
+* any system definition or environment variable available
 
 ### mfa
-The `mfa` function allows you to configure Multi-factor Authentication (MFA). For more information on MFA please see [Wikipedia](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function the following variables can be set:
+The `mfa` function allows you to configure Multi-factor Authentication (MFA). There is more information on MFA on [Wikipedia](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function, you can set the following variables:
 
 * `codePeriodSeconds` specifies how many seconds a Time-based One-time Password (TOTP) remains valid. Default: 30 seconds.
 * `codePeriodDiscrepancy` specifies the allowed discrepancy to the TOTP. 1 would mean a single block of each `codePeriodSeconds` either side of the time window. Default: 1.
@@ -171,10 +164,10 @@ The `mfa` function allows you to configure Multi-factor Authentication (MFA). Fo
 * `label` specifies a label for the MFA. This is typically an email address of the issuing Entity or Organisation. Default: genesis.global.
 * `confirmWaitPeriodSecs` specifies the period of time in seconds before a secret has to be confirmed. Default: 300 seconds.
 * `secretEncryptKey` specifies the key that is used to encrypt Secrets in the database. If this is null or undefined, Secrets will not be encrypted in the database. Default: null.
-* `usernameTableLookUpSalt` specifies the salt with which a username is hashed when stored in the database with the above Secret. If this is null or undefined the username will not be hashed in the database. Default: null.
+* `usernameTableLookUpSalt` specifies the salt with which a username is hashed when stored in the database with the above Secret. If this is null or undefined, the username will not be hashed in the database. Default: null.
 
 ### loginAck
-The `loginAck` function allows you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message. When you call the `loginAck` function, you have to supply a table or view as a parameter. This is the table or view upon which the following functions will be invoked.
+The `loginAck` function allows you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message. When you call the `loginAck` function, you have to supply a table or view as a parameter. The following functions will be invoked on this table or view:
 
 #### loadRecord
 The `loadRecord` function can be invoked within the `loginAck` function to load a single record from the previously supplied table or view.
