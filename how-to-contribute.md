@@ -4,7 +4,7 @@ Documentation is written using [Markdown format](markdown-syntax.md).
 
 The genesis platform team is working to enable its community by providing access to the docs repository and encouraging everyone to be part of it.
 
-:::Note To be able to contribute to the documentation, please make sure you have access to the [docs repository](https://github.com/genesiscommunitysuccess/docs):::
+**Note** To be able to contribute to the documentation, please make sure you have access to the [docs repository](https://github.com/genesiscommunitysuccess/docs)
 
 ## Guidance
 Below you`ll find the steps to contribute to the documentation. please remember to follow the [guidelines](./Type-of-contribution.md)
