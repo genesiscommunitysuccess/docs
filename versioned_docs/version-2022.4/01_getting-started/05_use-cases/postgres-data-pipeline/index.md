@@ -7,7 +7,7 @@ sidebar_position: 1
 
 # Building a data pipeline application
 
-This tutorial will guide you through creating a Genesis application that will ingest data from a PostgreSQL server to the Genesis platform.
+The information in this section guides you through creating a Genesis application that will ingest data from a PostgreSQL server to the Genesis platform.
 
 Before you follow this tutorial, you need to have the Genesis low-code platform and your development environment fully installed, and you need to be familiar with the key information from the [quick start guide](../../../getting-started/quick-start/). You will also need to have a PostgreSQL server set up that will be used as a source for the data. The Postgres server has to meet the [required configuration](../../../server/integration/data-pipeline/advanced/#postgresql-configuration-1) to be able to capture changes. If you start PostgreSQL from a Docker image check the notes [here](../../../server/integration/data-pipeline/configuring-runtime/#starting-source-postgresql-as-a-docker-image).
 
