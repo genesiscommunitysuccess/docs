@@ -137,7 +137,7 @@ module.exports = {
           value: '<a class="feedback" data-feedback-fish>Give us Feedback</a>',
         },
         {
-          href: "/resource/stackoverflow-onboarding",
+          href: "https://stackoverflow.com/c/genesis-global/questions",
           className: "so-icon",
           "aria-label": "StackOverflow",
           position: "right",
