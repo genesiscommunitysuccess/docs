@@ -18,15 +18,15 @@ To access the docs repository, please follow [this link](https://github.com/gene
 ### 2. Create a new branch off master
 
 - Create a new branch off master, please use the following format: **EDIT-ddmmyy**
-- if someone is alread using this branch, please add A,B, etc ar the end until ou find a unit branch. Example:
+- if someone is already using this branch, please add A,B, etc at the end until you find a unit branch. Example:
    
     **EDIT-010323A**, **EDIT-010323B**, **EDIT-280223**, ...
 
 ### 3. Make your changes
 
-Now that you have your branch locally, you can make your changes. **Remember** to change all versions of the docs, in case your changes appears in older vertions.
+Now that you have your branch locally, you can make your changes. **Remember** to change all versions of the docs, in case your changes appears in older versions.
 
-**Tip**: you can easily search all the erros across all versions using the search tool of your preferred code editor.
+**Tip**: you can easily search all the errors across all versions using the search tool of your preferred code editor.
 
 ### 4. Build, Run and Check
 
@@ -36,7 +36,7 @@ Once your changes are done, it is extremely important to build your local websit
 
 ### 5. Create your pull request
 
-After all changes have been done and you ran your local website, it`s time to create your [pull request](https://github.com/genesiscommunitysuccess/docs/compare). We have a simple template to create a pull request.
+After all changes have been done and you have already run your local website, it is time to create your [pull request](https://github.com/genesiscommunitysuccess/docs/compare). We have a simple template to create a pull request.
 
 **Note**: You don`t need a Jira number. But make sure you can answer those main questions:
 - Have you changed all relevant versions?

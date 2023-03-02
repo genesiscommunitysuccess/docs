@@ -27,7 +27,7 @@ The below list will not be accepted by the community team as a PR. In this case,
 - Menu changes
 - Change more than one paragraph
 
-For any more complext changes, please contact mister @John Hendry
+For any more complex changes, please contact mister @John Hendry
 
 ## Docs structure
 
