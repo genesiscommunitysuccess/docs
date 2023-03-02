@@ -91,7 +91,11 @@ When using `ColDef` objects it's up to the application developer to decide the a
         </grid-pro-cell>
       `)}
     </grid-pro-column>
-  `)} 
+  `)}
+ 
+  <!-- You can also use a helper function to produce the same result as above -->
+  <!-- The boolean parameter controls whether the grid-pro-cell items are included; they are included by default -->
+  ${gridProColumns(multipleCustomColumnConfigArray, true)}
 
   <!-- Using separate definitions for both grid-pro-column and grid-pro-cell -->
   <grid-pro-column :definition="${x => x.customLogLevelDef}">

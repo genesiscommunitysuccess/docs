@@ -63,6 +63,10 @@ When using `ColDef` objects, it's up to you to decide the approach (array of def
     <grid-pro-column :definition=${x => x}></grid-pro-column>
   `)}
 
+  <!-- You can also use a helper function to produce the same result as above -->
+  <!-- The boolean parameter controls whether custom grid-pro-cell items are included; they are included by default -->
+  ${gridProColumns(x => x.myMultipleCustomColumnConfigArray, false)}
+
   <grid-pro-column :definition=${x => x.mySingleCustomColumnConfigObj}></grid-pro-column>
   <grid-pro-column :definition=${x => x.myOtherSingleCustomColumnConfigObj}></grid-pro-column>
 
