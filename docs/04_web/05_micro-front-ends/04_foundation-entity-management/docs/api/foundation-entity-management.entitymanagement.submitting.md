@@ -4,8 +4,6 @@
 
 ## EntityManagement.submitting property
 
-Disables the form while enabled to stop the user dispatching a large number of duplicate events
-
 **Signature:**
 
 ```typescript

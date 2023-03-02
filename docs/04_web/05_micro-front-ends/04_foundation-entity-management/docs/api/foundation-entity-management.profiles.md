@@ -9,9 +9,9 @@ Main class which defined the profile management functionality
 **Signature:**
 
 ```typescript
-export declare class Profiles extends FASTElement 
+export declare class Profiles extends EntityManagement 
 ```
-**Extends:** FASTElement
+**Extends:** [EntityManagement](./foundation-entity-management.entitymanagement.md)
 
 ## Remarks
 
@@ -29,14 +29,12 @@ You can use this class by forward declaring it in the template file where it is 
 
 |  Constructor | Modifiers | Description |
 |  --- | --- | --- |
-|  [(constructor)()](./foundation-entity-management.profiles._constructor_.md) |  | Constructor will set the [Profiles.createEvent](./foundation-entity-management.profiles.createevent.md) [Profiles.deleteEvent](./foundation-entity-management.profiles.deleteevent.md) [Profiles.updateEvent](./foundation-entity-management.profiles.updateevent.md) to match the permissions set from the server |
+|  [(constructor)()](./foundation-entity-management.profiles._constructor_.md) |  | Constructor will set the    to match the permissions set from the server |
 
-## Properties
+## Methods
 
-|  Property | Modifiers | Type | Description |
-|  --- | --- | --- | --- |
-|  [columns](./foundation-entity-management.profiles.columns.md) |  | any | Column definition, in this case will be defined from the API metadata |
-|  [createEvent](./foundation-entity-management.profiles.createevent.md) |  | string | String which contains event if we have permission to insert profile of empty string if not |
-|  [deleteEvent](./foundation-entity-management.profiles.deleteevent.md) |  | string | String which contains event if we have permission to delete profile of empty string if not |
-|  [updateEvent](./foundation-entity-management.profiles.updateevent.md) |  | string | String which contains event if we have permission to update profile of empty string if not |
+|  Method | Modifiers | Description |
+|  --- | --- | --- |
+|  [deleteEntity(e)](./foundation-entity-management.profiles.deleteentity.md) |  |  |
+|  [readProfileData(profile)](./foundation-entity-management.profiles.readprofiledata.md) |  |  |
 

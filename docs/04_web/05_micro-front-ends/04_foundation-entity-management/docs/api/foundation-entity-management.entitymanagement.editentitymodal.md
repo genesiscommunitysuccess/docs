@@ -4,8 +4,6 @@
 
 ## EntityManagement.editEntityModal property
 
-Reference to the modal which contains the add or update entity form
-
 **Signature:**
 
 ```typescript
