@@ -30,7 +30,7 @@ These can be run in isolation or as part of a chain using the [runner](./docs/ap
 
 Client side filters generally take primitive input parameters, and will return `true` or `false` based these
 values. They may also access runtime data or state to provide an outcome. They can be used for simple tasks like array
-or input filtering, to for more advanced use-cases such as driving feature flags, behaviours, directives etc.
+or input filtering, to for more advanced use-cases such as driving feature flags, behaviors, directives etc.
 
 Filters can be chained using the utilities provided in this package to handle more complex scenarios. When a filter is
 used without all the input parameters needed, we log a warning and return `true` by convention so the chain can continue.
