@@ -93,3 +93,7 @@ public async configure() {
 :::info
 If there are no reports in the database, you will see an error on the web page saying there are no reports to load  - this is expected behaviour.
 :::
+
+## License
+
+Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
