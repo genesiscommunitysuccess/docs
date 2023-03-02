@@ -13,7 +13,7 @@ Below you`ll find the steps to contribute to the documentation. please remember 
 ### 1. Access the docs repository
 To access the docs repository, please follow [this link](https://github.com/genesiscommunitysuccess/docs). Then clone it locally.
 
-[picture of the community repo](./img_src/community_repo.PNG "a tittle image")
+<img src="./img_src/community_repo.PNG" width="400 text-align: center">
 
 ### 2. Create a new branch off master
 
