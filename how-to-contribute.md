@@ -18,7 +18,7 @@ To access the docs repository, please follow [this link](https://github.com/gene
 ### 2. Create a new branch off master
 
 - Create a new branch off master, please use the following format: **EDIT-ddmmyy**
-- if someone is already using this branch, please add A,B, etc at the end until you find a unit branch. Example:
+- If someone is already using this branch, please add A,B, etc at the end until you find an unused branch. Example:
    
     **EDIT-010323A**, **EDIT-010323B**, **EDIT-280223**, ...
 
@@ -26,7 +26,7 @@ To access the docs repository, please follow [this link](https://github.com/gene
 
 Now that you have your branch locally, you can make your changes. **Remember** to change all versions of the docs, in case your changes appears in older versions.
 
-**Tip**: you can easily search all the errors across all versions using the search tool of your preferred code editor.
+**Tip**: you can easily search all the errors across all versions using the search tool in your preferred code editor.
 
 ### 4. Build, Run and Check
 
@@ -44,4 +44,4 @@ After all changes have been done and you have already run your local website, it
 
 ---
 
-After you have followed the instructions, your request will be reviewed by the community team. Once your changes are accepted, approved and merged, you will be able to see the changes within 15 minutes. Thank you very much for your contribution. We very much appreciate it.
+After you have followed the instructions, your request will be reviewed by the community team. Once your changes are accepted, approved and merged, you will be able to see the changes within a 1 hour. Thank you very much for your contribution. We appreciate it.
