@@ -4,6 +4,15 @@ Documentation is written using [Markdown format](markdown-syntax.md).
 
 Thank you very much for your interest in contribution to the Docs. We encourage you to contribute to docs by creating PRs on your own. To enable the community to contribute to a better documentation, we listed below some types of contribution we`re currently accepting from the community. Take a look below.
 
+## Docs structure
+
+It is important to follow the Docs` structure (folders, files, etc.) otherwise you will encounter unexpected errors and be unable to contribute. here is a list of tips before you get started:
+
+- The `docs` is the next version of the documentation and will be published at the end of the current release.
+- In `docs` folder, you can see that the individual markdown pages are stored according to the menus shown at the top of the `docs site` (**Learning**, **Database**, etc.).
+
+[picture of docs` structure](./img_src/Docs_structure.PNG "Docs structure")
+
 ## What can you contribute
 
 The contributions below will be accepted by the community team as a PR

@@ -7,7 +7,8 @@ The genesis platform team is working to enable its community by providing access
 :::Note To be able to contribute to the documentation, please make sure you have access to the [docs repository](https://github.com/genesiscommunitysuccess/docs):::
 
 ## Guidance
-below you`ll find the steps to contribute to the documentation. please remember to follow the [guidelines](./Type-of-contribution.md)
+Below you`ll find the steps to contribute to the documentation. please remember to follow the [guidelines](./Type-of-contribution.md)
+
 
 ### 1. Access the docs repository
 To access the docs repository, please follow [this link](https://github.com/genesiscommunitysuccess/docs). Then clone it locally.
