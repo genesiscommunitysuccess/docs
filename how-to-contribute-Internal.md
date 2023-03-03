@@ -16,7 +16,7 @@ Below you ll find the steps to contribute to the documentation. please remember 
 ### 1. Access the docs repository
 To access the docs repository, please follow [this link](https://github.com/genesiscommunitysuccess/docs). Then clone it locally.
 
-<img src="./img_src/community_repo.PNG" width="700" style="margin: 20px">
+<img src="./img_src/community_repo.PNG" width="800" style="margin: 20px">
 
 ### 2. Create a new branch off master
 
@@ -35,7 +35,7 @@ Now that you have your branch locally, you can make your changes. **Remember** t
 
 Once your changes are done, it is extremely important to build your local website to see if your changes did not introduce any errors. 
 
-<img src="./img_src/build_website.PNG" width="700px" style="margin: 20px">
+<img src="./img_src/build_website.PNG" width="800px" style="margin: 20px">
 
 ### 5. Create your pull request
 

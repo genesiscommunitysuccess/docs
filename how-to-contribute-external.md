@@ -14,12 +14,12 @@ Below you ll find the steps to contribute to the documentation being an external
 
 ### 1. Create a fork
 Create a fork out of the master branch and follow the steps to complete the fork.
-<img src="./img_src/fork_step_1.png" width="700" style="margin: 20px">
+<img src="./img_src/fork_step_1.png" width="800" style="margin: 20px">
 
 ### 2. Access the docs repository
 After step 1 you should have had the Docs repo into your github. Now it is time to clone it locally.
 
-<img src="./img_src/community_repo.PNG" width="700" style="margin: 20px">
+<img src="./img_src/community_repo.PNG" width="800" style="margin: 20px">
 
 ### 3. Make your changes
 
@@ -31,7 +31,7 @@ Now you can make your changes. **Remember** to change all versions of the docs, 
 
 Once your changes are done, it is extremely important to build your local website to see if your changes did not introduce any errors. [Check this link](./README.md) in case you don`t know how to build your website locally.
 
-<img src="./img_src/build_website.PNG" width="700px" style="margin: 20px">
+<img src="./img_src/build_website.PNG" width="800px" style="margin: 20px">
 
 ### 5. Create your pull request
 
@@ -41,7 +41,7 @@ After all changes have been done and you have already run your local website, it
 2. Open pull request
 3. Name your PR according to the following format: **EDIT-ddmmyy**
    
-<img src="./img_src/PR_External.png" width="700px" style="margin: 20px">
+<img src="./img_src/PR_External.png" width="800px" style="margin: 20px">
    
 
 **Note**: In your PR will appear a template. You can skip the a Jira number question, once you do not have one. But make sure you can answer those main questions:
