@@ -14,6 +14,7 @@ Below you ll find the steps to contribute to the documentation being an external
 
 ### 1. Create a fork
 Create a fork out of the master branch and follow the steps to complete the fork.
+
 <img src="./img_src/fork_step_1.png" width="800" style="margin: 20px">
 
 ### 2. Access the docs repository
