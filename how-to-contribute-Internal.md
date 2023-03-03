@@ -1,6 +1,9 @@
-# Genesis docs contribution guide
+# Genesis docs contribution guide for internal contributors
 
 Documentation is written using [Markdown format](markdown-syntax.md).
+
+---
+
 
 The genesis platform team is working to enable its community by providing access to the docs repository and encouraging everyone to be part of it.
 
@@ -30,7 +33,7 @@ Now that you have your branch locally, you can make your changes. **Remember** t
 
 ### 4. Build, run and check
 
-Once your changes are done, it is extremely important to build your local website to see if your changed did not introduce any errors. 
+Once your changes are done, it is extremely important to build your local website to see if your changes did not introduce any errors. 
 
 <img src="./img_src/build_website.PNG" width="500px" style="margin: 20px">
 
@@ -44,4 +47,4 @@ After all changes have been done and you have already run your local website, it
 
 ---
 
-After you have followed the instructions, your request will be reviewed by the community team. Once your changes are accepted, approved and merged, you will be able to see the changes within a 1 hour. Thank you very much for your contribution. We appreciate it.
+After you have followed these instructions, your request will be reviewed by the community team. Once your changes are accepted, approved and merged, you will be able to see the changes within a 1 hour. Thank you very much for your contribution. We appreciate it.

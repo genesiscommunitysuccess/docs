@@ -8,7 +8,7 @@ Now our community team is accepting contributions from all community members of 
 
 For more details about what [types of contribution](./Type-of-contribution.md) we are accepting, please follow the link. 
 
-If you are willing to contribute, please follow our guide [here](./how-to-contribute.md)
+If you are willing to contribute, please follow our [guide here](./how-to-contribute-Internal.md) if you are an internal contributor at Genesis, or [here](./how-to-contribute-external.md) if you`re an external contributors
 
 ## Stack Overflow
 
