@@ -163,13 +163,14 @@ customPermissions { message ->
 
 The `customPermissions` function acts as an additional permissions check which works in a similar way to  `permissionCodes`. If this function returns true, the user will be able to access the resource, otherwise the request will be rejected. The example above perfoms a database lookup on the "USER_ATTRIBUTES" table, and will only return "true" if the user has `AccessType.ALL`.
 
-The main advantage of declaring a `customPermissions` function is that you can write any sort of custom code within it. This can make integration with already existing entitlement systems a much easier task, as it allows developers to avoid replicating the correct rights and profiles hierarchy within the genesis database.
+The main advantage of declaring a `customPermissions` function is that you can write any sort of custom code within it. This can make integration with existing entitlement systems a much easier task, as it means you can avoid replicating the correct rights and profiles hierarchy within the Genesis database.
 
-All `customPermissions` functions give you access to a property called `entityDb` that provides access to the [database API](../../database/database-interface/entitydb.md). Additionally, `customPermissions` provides a function parameter which contains the request message itself. This type of this message will vary depending on where the `customPermissions` function has been declared:
-* Dataserver - the parameter will be of type `Details<DataLogon>`. This message contains all the [options](../../server/data-server/advanced.md#client-side--runtime--options) specified by the client when attempting to create a dataserver subscription, as well as the username.
-* Request reply - the parameter will be of type [GenesisSet](../../server/inter-process-messages/genesisset.md), as request reply definitions can heavily customise the inbound metadata, and it might not necessarily match any pre-existing [generated entity](../../database/data-types/table-entities.md)
-* Custom request reply - the parameter will be of type `Request<V>` where `V` is the class used to define the inbound message. More information about custom request replies can be found [here](../../server/request-server/advanced.md#custom-request-servers)
-* Event handler - the parameter will be of type `Event<V>` where `V` is the class used to define the inbound message. This parameter is also present in the `onValidate` and `onCommit` GPAL event handler functions.
+All `customPermissions` functions give you access to a property called `entityDb` that provides access to the [database API](../../database/database-interface/entitydb.md). Additionally, `customPermissions` provides a function parameter that contains the request message itself. This type of this message will vary depending on where the `customPermissions` function has been declared:
+
+* Data Server - the parameter will be of type `Details<DataLogon>`. This message contains all the [options](../../server/data-server/advanced.md#client-side--runtime--options) specified by the client when attempting to create a dataserver subscription, as well as the username.
+* Request Server - the parameter will be of type [GenesisSet](../../server/inter-process-messages/genesisset.md), as Request Server definitions can heavily customise the inbound metadata, and it might not necessarily match any pre-existing [generated entity](../../database/data-types/table-entities.md).
+* Custom Request Server - the parameter will be of type `Request<V>` where `V` is the class used to define the inbound message. More information about custom Request Servers can be found [here](../../server/request-server/advanced.md#custom-request-servers).
+* Event Handler - the parameter will be of type `Event<V>` where `V` is the class used to define the inbound message. This parameter is also present in the `onValidate` and `onCommit` GPAL Event Handler functions.
 
 ## Generic permissions
 
