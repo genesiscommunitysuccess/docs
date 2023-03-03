@@ -4,38 +4,35 @@ The Geneis documentation is written using [Markdown format](markdown-syntax.md).
 
 ---
 
-Thank you for your interest in contributing to the Genesis Documentation. The genesis platform team is working to enable its community by providing access to the docs repository and encouraging everyone to be part of it.
+Thank you for your interest in contributing to the Genesis documentation. The Genesis platform team now provides open access to the docs repository, and we encourage everyone to be part of it.
 
-Once you are an external contributor, you won`t have access to create new branches directly from the master branch. In that matter, you will need to follow the steps below to be able to add your contribuitons to the [official website](https://learn.genesis.global).
-
-## Guidance
-Below you will find the steps to contribute to the documentation being an external contributor. please remember to follow the [guidelines](./Type-of-contribution.md)
+Once you are an external contributor, you don`t have access to create new branches directly from the master branch. You just need to follow the steps below to add your contribuitons to the [official website](https://learn.genesis.global).
 
 
-### 1. Create a fork
+## 1. Create a fork
 Create a fork out of the master branch and follow the steps to complete the fork.
 
 <img src="./img_src/fork_step_1.png" width="800" style="margin: 20px">
 
-### 2. Access the docs repository
+## 2. Access the docs repository
 After step 1 you should have the Docs repo into your github. Now it is time to clone it locally.
 
 <img src="./img_src/community_repo.PNG" width="800" style="margin: 20px">
 
-### 3. Make your changes
+## 3. Make your changes
 
 Now you can make your changes. **Remember** to change all versions of the docs; the text you want to change probably appears in older versions as well.
 
 
 **Tip**: you can easily search all the errors across all versions using the search tool in your preferred code editor.
 
-### 4. Build, run and check
+## 4. Build, run and check
 
 Once your changes are done, it is extremely important to build a local website to ensure that your changes did not introduce any errors. [Check this link](./README.md) in case you don`t know how to build your website locally.
 
 <img src="./img_src/build_website.PNG" width="500px" style="margin: 20px">
 
-### 5. Create your pull request
+## 5. Create your pull request
 
 After all changes have been done and you have checked your local build, it is time to create your pull request. Follow these steps:
 
