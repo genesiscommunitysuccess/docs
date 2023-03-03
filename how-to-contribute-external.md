@@ -9,7 +9,7 @@ Thank you for your interest in contributing to the Genesis Documentation. The ge
 Once you are an external contributor, you won`t have access to create new branches directly from the master branch. In that matter, you will need to follow the steps below to be able to add your contribuitons to the [official website](https://learn.genesis.global).
 
 ## Guidance
-Below you ll find the steps to contribute to the documentation being an external contributor. please remember to follow the [guidelines](./Type-of-contribution.md)
+Below you will find the steps to contribute to the documentation being an external contributor. please remember to follow the [guidelines](./Type-of-contribution.md)
 
 
 ### 1. Create a fork
