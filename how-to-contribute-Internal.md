@@ -35,7 +35,7 @@ Now that you have your branch locally, you can make your changes. **Remember** t
 
 Once your changes are done, it is extremely important to build your local website to see if your changes did not introduce any errors. 
 
-<img src="./img_src/build_website.PNG" width="800px" style="margin: 20px">
+<img src="./img_src/build_website.PNG" width="500px" style="margin: 20px">
 
 ### 5. Create your pull request
 

@@ -31,7 +31,7 @@ Now you can make your changes. **Remember** to change all versions of the docs, 
 
 Once your changes are done, it is extremely important to build your local website to see if your changes did not introduce any errors. [Check this link](./README.md) in case you don`t know how to build your website locally.
 
-<img src="./img_src/build_website.PNG" width="800px" style="margin: 20px">
+<img src="./img_src/build_website.PNG" width="500px" style="margin: 20px">
 
 ### 5. Create your pull request
 
