@@ -680,20 +680,20 @@ GetAutoIncrementCount
 
 This command can have different behaviour depending on which database implementation is used. 
 
-When using a NOSQL database like Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command will retrieve the value of the counter stored on disk, which if the system is currently active, does not necessarily correspond to the value of the next record inserted which references the value.
+When using a NOSQL database like Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
 
 Similarly when using Oracle, auto-incremented values are cached in memory in configurable block sizes. This command only retrives the current value of the counter stored on disk.
 
 When using an SQL implementation, this command will return the last value assigned by the sequence, not the next to be assigned.
 
-For predictable results, this command is best used when the system is down for maintenance.
+To achieve predictable results, only use this command when the system is down for maintenance.
 :::
 
 
 ## SetSequence
 
 
-This enables you to set a sequence number for a table. ALternatively, you can perform a bulk change of sequence numbers for a whole csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
+This enables you to set a sequence number for a table. This can either be a single sequence number or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
 
 `SetSequence` must only be run when the system processes have been stopped. After running `SetSequence` - like all processes that write to the table - you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
 
@@ -708,14 +708,14 @@ Options:
 
 | Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
-| -f       | --file `<arg>`     | No        |  Name of csv file for batch sequence/value pairs to be read from (overrides sequence and value option) | No                |
+| -f       | --file `<arg>`     | No        |  Name of csv file containing batch sequence/value pairs (this overrides any sequence and value option supplied) | No                |
 | -h       | --help             | No        |                                                                                                        | No                |
-| -s       | --sequence `<arg>` | No        |  Two Character ID for the sequence (if setting individual value)                                       | No                |
+| -s       | --sequence `<arg>` | No        |  Two-character ID for the sequence (if setting individual value)                                       | No                |
 | -v       | --value `<arg>`    | No        |  New integer value to be set (if setting individual value)                                             | No                |
 
 ## SetAutoIncrement
 
-This works in a similar way to `SetSequence` but for auto increment INT values.
+This works in a similar way to `SetSequence`, but for auto increment INT values. You can set a single sequence number or a whole batch using a csv file. Always ensure that the system processes are down before using this command.
 
 ### Syntax
 
@@ -725,7 +725,7 @@ SetAutoIncrement
 
 | Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
-| -f       | --file `<arg>`     | No        | Name of csv file for batch sequence/value pairs to be read from (overrides sequence and value option)  | No                |
+| -f       | --file `<arg>`     | No        | Name of csv file containing batch sequence/value pairs (this overrides any sequence and value option supplied) | No                |
 | -h       | --help             | No        |                                                                                                        | No                | 
 | -s       | --field `<arg>`    | No        |                                                                                                        | No                |
 | -t       | --table `<arg>`    | No        |                                                                                                        | No                |
@@ -737,7 +737,7 @@ This command can have different behaviour depending on which database implementa
 
 When using a NOSQL database like Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command will set the value in the database, which corresponds to the first value in the next range to be allocated.
 
-When using Oracle, direct setting of a sequence value is not supported. This command will increment the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values already assigned in the cache, as the increment is also applied to these values.
+When using Oracle, you can **not** set a sequence value directly. This command will increment the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values already assigned in the cache, as the increment is also applied to these values.
 
 For predictable results, this command is best used when the system is down for maintenance.
 :::
