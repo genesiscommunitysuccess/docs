@@ -29,10 +29,15 @@ permissioning {
     
     // 'permission Code' list, users must have the permission to access the enclosing resource
     permissionCodes = listOf("TRADER", "SUPPORT")
-    
+  
     // Permission at the row and/or column level for a grid or table of data
     auth("TRADE_VISIBILITY") {
         TRADE_VIEW.TRADE_ID
+    }
+
+    // customPermissions allow you to write custom code to determine user access.
+    customPermissions { message ->
+      customFunction(message.userName)
     }
 }
 ```
@@ -42,7 +47,7 @@ Here's what you need to know:
 
 - A permissioning block can exist inside a resource (`requestReply`, `query` or `eventHandler`) definition. In this case, it applies only to that resource definition. This is specific permissioning.
 - Alternatively, you can specify a permissioning block outside any resource in the file. This is global permissioning. If you do this, the permissioning applies by default to all the resources in the file. **However, any permissioning block inside a specific resource overrides this default**.
-- The permissioning block at the global level can only contain `permissionCodes`, as the `auth` block is based on each individual resource definition.
+- The permissioning block at the global level can only contain `permissionCodes`, as the `auth` block is based on each individual resource definition and the `customPermissions` block provides access to the incoming message.
 - Every request that comes into a Genesis server will include the username of an authenticated user. Non-authenticated users will not have access to or visibility of the Genesis services.
 
 In the example below, the block applies to a specific `requestReply` within a Request Server:
@@ -80,9 +85,10 @@ requestReplies {
 
 ### Permissioning sub-blocks
 
-There are two main sub-blocks to the permissioning block that can be applied to suit your needs:
+There are three main sub-blocks to the permissioning block that can be applied to suit your needs:
 - `PermissionCodes` list
 - `auth` sub-block
+- `customPermissions` function
 
 #### PermissionCodes list
 Here is a simple example:
@@ -91,7 +97,7 @@ Here is a simple example:
 permissionCodes = listOf("TRADER", "SUPPORT")
 ```
 
-Where a `PermissionCodes`list is defined, the user must have one of the listed permission codes to access the GPAL enclosed resource.
+Where a `PermissionCodes` list is defined, the user must have one of the listed permission codes to access the GPAL enclosed resource.
 If the user does not belong to one of the listed permission codes, the subsequent auth block will essentially be ignored.
 
 To enable a user to have access to a specific `permissionCode`:
@@ -144,6 +150,26 @@ In cases where you do not require the auth map and just want to define a `where`
             }
         }
 ```
+
+#### Custom permissions function
+Here is a simple example for a dataserver block:
+
+```kotlin
+customPermissions { message ->
+  val userAttributes = entityDb.get(UserAttributes.byUserName(message.userName))
+  userAttributes?.accessType == AccessType.ALL
+}
+```
+
+The `customPermissions` function acts as an additional permissions check which works in a similar way to  `permissionCodes`. If this function returns true, the user will be able to access the resource, otherwise the request will be rejected. The example above perfoms a database lookup on the "USER_ATTRIBUTES" table, and will only return "true" if the user has `AccessType.ALL`.
+
+The main advantage of declaring a `customPermissions` function is that you can write any sort of custom code within it. This can make integration with already existing entitlement systems a much easier task, as it allows developers to avoid replicating the correct rights and profiles hierarchy within the genesis database.
+
+All `customPermissions` functions give you access to a property called `entityDb` that provides access to the [database API](../../database/database-interface/entitydb.md). Additionally, `customPermissions` provides a function parameter which contains the request message itself. This type of this message will vary depending on where the `customPermissions` function has been declared:
+* Dataserver - the parameter will be of type `Details<DataLogon>`. This message contains all the [options](../../server/data-server/advanced.md#client-side--runtime--options) specified by the client when attempting to create a dataserver subscription, as well as the username.
+* Request reply - the parameter will be of type [GenesisSet](../../server/inter-process-messages/genesisset.md), as request reply definitions can heavily customise the inbound metadata, and it might not necessarily match any pre-existing [generated entity](../../database/data-types/table-entities.md)
+* Custom request reply - the parameter will be of type `Request<V>` where `V` is the class used to define the inbound message. More information about custom request replies can be found [here](../../server/request-server/advanced.md#custom-request-servers)
+* Event handler - the parameter will be of type `Event<V>` where `V` is the class used to define the inbound message. This parameter is also present in the `onValidate` and `onCommit` GPAL event handler functions.
 
 ## Generic permissions
 

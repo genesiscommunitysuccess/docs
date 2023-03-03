@@ -175,6 +175,13 @@ The `loadRecord` function can be invoked within the `loginAck` function to load 
 #### fields
 The `fields` function can be invoked within the `loginAck` function to specify which additional fields should be sent back to the client as part of the LOGIN_ACK message.
 
+### customLoginAck
+
+The `customLoginAck` function allows you to modify the list of permissions, profiles and user preferences returned to the client as part of the `LOGIN_ACK` message. For this purpose, the `User` entity is provided as a parameter, as well as three properties:
+* permissions - a mutable list containing all the right codes associated to the user. Given its mutability, codes can be added or removed.
+* profiles - a mutable list containing all the profiles associated to the user.  Given its mutability, profiles can be added or removed.
+* userPreferences - a [GenesisSet](../../server/inter-process-messages/genesisset.md) object containing additional fields provided as part the [loginAck](../../server/access-control/password_authentication.md#loginack) function. This `GenesisSet` can be modified to provide additional fields or remove existing ones.
+
 ### Example
 Example configuration:
 
@@ -267,6 +274,16 @@ security {
             ACCESS_TYPE withPrefix "USER"
             ADDRESS_LINE1
         }
+    }
+
+    customLoginAck { user ->
+      if(user.userName == "TestUser"){
+        permissions += listOf("TEST_USER_INSERT", "TEST_USER_AMEND", "TEST_USER_DELETE")
+        profiles += listOf("TEST_ADMIN")
+        userPreferences = userPreferences.apply {
+          setString("TEST_VALUE", "TEST")
+        }
+      }
     }
 }
 ```
