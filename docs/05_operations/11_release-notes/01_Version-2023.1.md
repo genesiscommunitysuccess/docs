@@ -41,12 +41,12 @@ GSF and its modules are compiled using Kotlin 1.7.10 and Gradle 7.5.0.
 ### GSF
 
 #### Breaking changes
-- Make username available in scope within permissioning 'where' clause (see sample code in [here](../../server/access-control/authorisation.md#where-clauses))
+- Make username available in scope within permissioning 'where' clause (see sample code in [here](../../server/access-control/authorisation/#where-clauses))
 - MS SQL fields will now use the appropriate "max length" parameter when `maxSize` value goes beyond the MS SQL limit. 
 - Updated 'USER' table to have a unique index for 'REFRESH_TOKEN' field.
 - Set minimal safe TLS version to 1.2.
-- Revamp pending approval mechanism (more information [here](../../server/event-handler/advanced.md#pending-approvals)).
-- Enable JSON schema validation for event handlers in GSF. See more information in [schema validation](../../server/event-handler/advanced.md#disabling-schema-validation) and [inter-process messages](../../server/inter-process-messages/metadata-annotations.md).
+- Revamp pending approval mechanism (more information [here](../../server/event-handler/advanced/#pending-approvals)).
+- Enable JSON schema validation for event handlers in GSF. See more information in [schema validation](../../server/event-handler/advanced/#disabling-schema-validation) and [inter-process messages](../../server/inter-process-messages/metadata-annotations/).
 
 #### Features
 
@@ -58,7 +58,7 @@ GSF and its modules are compiled using Kotlin 1.7.10 and Gradle 7.5.0.
 - Allow running containers as non-root users.
 - Allow access to self-service password reset without logging in.
 - Enable case-insensitive support for username as part of login workflow in GENESIS_ROUTER.
-- Make auth map optional in permissioning GPAL (see example in [here](../../server/access-control/authorisation-overview.md#auth-sub-block)).
+- Make auth map optional in permissioning GPAL (see example in [here](../../server/access-control/authorisation-overview/#auth-sub-block)).
 - Update mon process statuses to include a new HEALTHY state when a process is passing its health checks.
 - Allow auto-increment ids shared between more than one table definition to have their own sequence value.
 
@@ -101,7 +101,7 @@ GSF and its modules are compiled using Kotlin 1.7.10 and Gradle 7.5.0.
 
 #### Features
 
-- Add "customLoginAck" block to auth-preferences, so we can further customise the login ack message (see this [page](../../server/access-control/password_authentication.md#customloginack)).
+- Add "customLoginAck" block to auth-preferences, so we can further customise the login ack message (see this [page](../../server/access-control/password_authentication/#customloginack)).
 - Add new fields to ALL_APPROVAL_ALERTS and add new query for ALL_APPROVAL_ALERTS_AUDITS as part of pending approval workflow revamp.
 - Added allowedClockSkewSeconds property to the OIDC verification configuration.
 - Added logout functionality for OIDC.
