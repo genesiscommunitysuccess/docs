@@ -27,7 +27,8 @@ The below list will not be accepted by the community team as a PR. In this case,
 - Menu changes
 - Change more than one paragraph
 
-For any more complex changes, please contact [John Hendry](john.hendry@genesis.global)
+For any more complex changes, please contact [John Hendry](mailto:john.hendry@genesis.global)
+
 
 ## Docs structure
 
