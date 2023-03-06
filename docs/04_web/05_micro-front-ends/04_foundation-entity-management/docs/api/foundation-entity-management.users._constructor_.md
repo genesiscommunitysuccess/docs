@@ -4,7 +4,7 @@
 
 ## Users.(constructor)
 
-Constructor will set the    to match the permissions set from the server
+Constructor will set the [Users.createEvent](./foundation-entity-management.users.createevent.md) [Users.deleteEvent](./foundation-entity-management.users.deleteevent.md) [Users.updateEvent](./foundation-entity-management.users.updateevent.md) to match the permissions set from the server
 
 **Signature:**
 
