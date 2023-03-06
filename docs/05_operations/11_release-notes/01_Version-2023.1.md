@@ -23,11 +23,11 @@ The basis of this version is:
 Release date: Februrary 28, 2023. 
 
 ## Feature highlights
-* **Revamped pending approval workflow** - The pending approval workflow has been revamped to support GPAL configuration and other improvements. More information [here](../../server/event-handler/advanced.md#pending-approvals).
-* **Self-service password reset functionality** - The platform now supports self-service password reset capabilities. Please see this [page](../../server/access-control/password_authentication.md#selfservicereset) for more information.
-* **JSON Schema validation** - Event Handlers now validate each incoming message based on the implicit JSON schema definition. See more information in [schema validation](../../server/event-handler/advanced.md#disabling-schema-validation) and [inter-process messages](../../server/inter-process-messages/metadata-annotations.md).
+* **Revamped pending approval workflow** - The pending approval workflow has been revamped to support GPAL configuration and other improvements. More information [here](../../server/event-handler/advanced/#pending-approvals).
+* **Self-service password reset functionality** - The platform now supports self-service password reset capabilities. Please see this [page](../../server/access-control/password_authentication/#selfservicereset) for more information.
+* **JSON Schema validation** - Event Handlers now validate each incoming message based on the implicit JSON schema definition. See more information in [schema validation](../../server/event-handler/advanced/#disabling-schema-validation) and [inter-process messages](../../server/inter-process-messages/metadata-annotations/).
 * **Case-insensitive user login** - The user name field is now case-insensitive when attempting login operations.
-* **Custom permissions support** - A new function called `customPermissions` is available within the `permissioning` block to improve integration with third-party entitlement systems. More information in this [page](../../server/access-control/authorisation-overview.md#custom-permissions-function).
+* **Custom permissions support** - A new function called `customPermissions` is available within the `permissioning` block to improve integration with third-party entitlement systems. More information in this [page](../../server/access-control/authorisation-overview/#custom-permissions-function).
 * **OpenID Connect improvements** - It is now possible to set up a new logout workflow within Genesis that also logs out the user from the underlying SSO identity provider.
 
 ## Genesis Server Framework (GSF)
