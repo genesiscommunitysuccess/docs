@@ -414,7 +414,7 @@ The platform makes the following objects accessible to the `insert` block:
 The following objects are accessible within the `accept`, `cancel` and `reject` blocks:
 
 * `userName` - a string property containing the user name who triggered the pending approval event (e.g. accept, reject or cancel).
-* `pendingApproval` - the pending approval record stored in the database. The type of this property is the "Approval" database entity (see [table entities](../../database/data-types/table-entities.md)).
+* `pendingApproval` - the pending approval record stored in the database. The type of this property is the "Approval" database entity (see [table entities](../../../database/data-types/table-entities/)).
 * `approvalMessage` - an instance of the `ApprovalMessage` class, which represents the payload of the message sent to EVENT_PENDING_APPROVAL_ACCEPT, EVENT_PENDING_APPROVAL_CANCEL and EVENT_PENDING_APPROVAL_REJECT. It contains two properties:
     * `approvalMessage` - the message text sent by the user who initiated this pending approval action
     * `approvalId` - contains the APPROVAL_ID used to identify the APPROVAL record we are handling as part of this action
