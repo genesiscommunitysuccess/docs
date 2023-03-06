@@ -633,7 +633,7 @@ GetNextSequenceNumbers >> /tmp/NextSeqNumbers.txt
 
 The `GetNextSequenceNumbers` command is often used with the `SetSequence` script [see below](../../../operations/commands/server-commands/#setsequence), for example, if you suspect that you have an error in one of your tables:
 
-1. Stop all the processes and run `GetNextSequenceNumbers` to fnd the next sequence numbers of the tables.
+1. Stop all the processes and run `GetNextSequenceNumbers` to find the next sequence numbers of the tables.
 2. Check the table contents. You might find that a row is missing or needs to be added. Make this change on the database manually. This affects the sequence numbers in those tables.
 3. Run `SetSequence` to reset the sequence numbers where relevant. 
 4. Now you can [restart your processes](../../../operations/commands/server-commands/#startserver-script).
@@ -676,10 +676,24 @@ GetAutoIncrementCount
 | -h       | --help             | No        | show usage information                  | No                |
 | -p       | --print            | No        |                                         | No                |
 
+:::info
+
+This command can have different behaviour depending on which database implementation is used. 
+
+When using a NOSQL database like Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
+
+Similarly, when using Oracle, auto-incremented values are cached in memory in configurable block sizes. This command only retrieves the current value of the counter stored on disk.
+
+When using an SQL implementation, this command will return the last value assigned by the sequence, not the next to be assigned.
+
+To achieve predictable results, only use this command when the system is down for maintenance.
+:::
+
+
 ## SetSequence
 
 
-This enables you to set a sequence number for a table. ALternatively, you can perform a bulk change of sequence numbers for a whole csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
+This enables you to set a sequence number for a table. This can either be a single sequence number or a bulk change from a csv file (for example, a file that you have exported using either `GetNextSequenceNumbers` or `GetSequenceCount`).
 
 `SetSequence` must only be run when the system processes have been stopped. After running `SetSequence` - like all processes that write to the table - you need to [restart the server](../../../operations/commands/server-commands/#startserver-script).
 
@@ -694,14 +708,14 @@ Options:
 
 | Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
-| -f       | --file `<arg>`     | No        |  Name of csv file for batch sequence/value pairs to be read from (overrides sequence and value option) | No                |
+| -f       | --file `<arg>`     | No        |  Name of csv file containing batch sequence/value pairs (this overrides any sequence and value option supplied) | No                |
 | -h       | --help             | No        |                                                                                                        | No                |
-| -s       | --sequence `<arg>` | No        |  Two Character ID for the sequence (if setting individual value)                                       | No                |
+| -s       | --sequence `<arg>` | No        |  Two-character ID for the sequence (if setting individual value)                                       | No                |
 | -v       | --value `<arg>`    | No        |  New integer value to be set (if setting individual value)                                             | No                |
 
 ## SetAutoIncrement
 
-This works in a similar way to `SetSequence` but for auto increment INT values.
+This works in a similar way to `SetSequence`, but for auto-increment INT values. You can supply a single increment value or a whole batch of values using a csv file. Always ensure that the system processes are down before using this command.
 
 ### Syntax
 
@@ -711,11 +725,22 @@ SetAutoIncrement
 
 | Argument | Argument long name | Mandatory |               Description                                                                              | Restricted values |
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
-| -f       | --file `<arg>`     | No        | Name of csv file for batch sequence/value pairs to be read from (overrides sequence and value option)  | No                |
+| -f       | --file `<arg>`     | No        | Name of csv file containing batch sequence/value pairs (this overrides any value option supplied) | No                |
 | -h       | --help             | No        |                                                                                                        | No                | 
-| -s       | --field `<arg>`    | No        |                                                                                                        | No                |
-| -t       | --table `<arg>`    | No        |                                                                                                        | No                |
-| -v       | --value `<arg>`    | No        |                                                                                                        | No                |
+| -s       | --field `<arg>`    | No        |   Name of the auto-increment field (when not inserting via CSV)                                                                                                     | No                |
+| -t       | --table `<arg>`    | No        |   Name of the table containing the auto-increment field (when not inserting via CSV)                                                                                                   | No                |
+| -v       | --value `<arg>`    | No        |                                                                                                        | No                | New integer value to be set (if setting individual value)
+
+:::info
+
+This command can have different behaviour depending on which database implementation is used. 
+
+When using a NOSQL database like Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command will set the value in the database, which corresponds to the first value in the next range to be allocated.
+
+When using Oracle, you can **not** set a sequence value directly. This command will increment the sequence value by the difference between the current counter value and the desired value. This can have unexpected effects on sequence values already assigned in the cache, as the increment is also applied to these values.
+
+For predictable results, this command is best used when the system is down for maintenance.
+:::
 
 ## GenesisRun
 
