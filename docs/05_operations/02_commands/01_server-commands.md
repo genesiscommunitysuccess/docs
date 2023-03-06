@@ -727,7 +727,7 @@ SetAutoIncrement
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
 | -f       | --file `<arg>`     | No        | Name of csv file containing batch sequence/value pairs (this overrides any value option supplied) | No                |
 | -h       | --help             | No        |                                                                                                        | No                | 
-| -s       | --field `<arg>`    | No        |   Name of the auto increment field (when not inserting via CSV)                                                                                                     | No                |
+| -s       | --field `<arg>`    | No        |   Name of the auto-increment field (when not inserting via CSV)                                                                                                     | No                |
 | -t       | --table `<arg>`    | No        |   Name of the table containing the auto-increment field (when not inserting via CSV)                                                                                                   | No                |
 | -v       | --value `<arg>`    | No        |                                                                                                        | No                | New integer value to be set (if setting individual value)
 
