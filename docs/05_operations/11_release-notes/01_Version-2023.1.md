@@ -32,6 +32,12 @@ Release date: Februrary 28, 2023.
 
 ## Genesis Server Framework (GSF)
 
+:::info
+
+GSF and it's modules are compiled using Kotlin 1.7.10 and Gradle 7.5.0.
+
+:::
+
 ### GSF
 
 #### Breaking changes
