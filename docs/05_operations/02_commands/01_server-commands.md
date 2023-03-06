@@ -682,7 +682,7 @@ This command can have different behaviour depending on which database implementa
 
 When using a NOSQL database like Foundation DB or Aerospike, auto-incremented values are assigned in blocks of 100 in order to improve performance. This command retrieves the value of the counter stored on disk. If the system is currently active, this value might not correspond to the value of the next record inserted that references the value.
 
-Similarly, when using Oracle, auto-incremented values are cached in memory in configurable block sizes. This command only retrives the current value of the counter stored on disk.
+Similarly, when using Oracle, auto-incremented values are cached in memory in configurable block sizes. This command only retrieves the current value of the counter stored on disk.
 
 When using an SQL implementation, this command will return the last value assigned by the sequence, not the next to be assigned.
 
@@ -727,8 +727,8 @@ SetAutoIncrement
 |----------|--------------------|-----------|--------------------------------------------------------------------------------------------------------|-------------------|       
 | -f       | --file `<arg>`     | No        | Name of csv file containing batch sequence/value pairs (this overrides any value option supplied) | No                |
 | -h       | --help             | No        |                                                                                                        | No                | 
-| -s       | --field `<arg>`    | No        |                                                                                                        | No                |
-| -t       | --table `<arg>`    | No        |                                                                                                        | No                |
+| -s       | --field `<arg>`    | No        |   Name of the auto increment field (when not inserting via CSV)                                                                                                     | No                |
+| -t       | --table `<arg>`    | No        |   Name of the table containing the auto-increment field (when not inserting via CSV)                                                                                                   | No                |
 | -v       | --value `<arg>`    | No        |                                                                                                        | No                | New integer value to be set (if setting individual value)
 
 :::info
