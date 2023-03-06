@@ -4,9 +4,6 @@
 
 ## LayoutRegionType type
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 Union type describing the three different types of region splits. Set on the `type` attribute on [FoundationLayoutRegion](./foundation-layout.foundationlayoutregion.md).
 
 **Signature:**

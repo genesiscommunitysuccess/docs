@@ -4,9 +4,6 @@
 
 ## DEFAULT\_RELOAD\_BUFFER variable
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 Default time in milliseconds for the layout to buffer calls to reloading the layout while the declarative API is loading.
 
 During the first load of the layout, a loading spinner will be shown.
