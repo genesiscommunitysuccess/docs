@@ -4,9 +4,6 @@
 
 ## FoundationLayoutRegion class
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 `FoundationLayoutRegion` is a custom element that represents a region in the layout.
 
 **Signature:**
@@ -28,6 +25,6 @@ This is a simple component which is only used to define the layout splits; any J
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [size](./foundation-layout.foundationlayoutregion.size.md) |  | string | **_(BETA)_** optional string describing the size of the new item (see the written documentation for more info) |
-|  [type](./foundation-layout.foundationlayoutregion.type.md) |  | [LayoutRegionType](./foundation-layout.layoutregiontype.md) | **_(BETA)_** Defines the [type](./foundation-layout.layoutregiontype.md) of the region. Defaults to <code>horizontal</code>. |
+|  [size](./foundation-layout.foundationlayoutregion.size.md) |  | string | optional string describing the size of the new item (see the written documentation for more info) |
+|  [type](./foundation-layout.foundationlayoutregion.type.md) |  | [LayoutRegionType](./foundation-layout.layoutregiontype.md) | Defines the [type](./foundation-layout.layoutregiontype.md) of the region. Defaults to <code>horizontal</code>. |
 

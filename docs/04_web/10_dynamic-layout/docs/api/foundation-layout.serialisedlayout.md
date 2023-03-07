@@ -4,9 +4,6 @@
 
 ## SerialisedLayout type
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 Versioned layout config objects. `v` is the version and `c` contains the layout config.
 
 **Signature:**

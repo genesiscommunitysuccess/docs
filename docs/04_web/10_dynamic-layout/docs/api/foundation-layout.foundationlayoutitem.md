@@ -4,9 +4,6 @@
 
 ## FoundationLayoutItem class
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 `FoundationLayoutItem` is a custom element that represents an item in the layout.
 
 **Signature:**
@@ -28,8 +25,8 @@ This is a simple component which is only used to define the layout splits; any J
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [closable](./foundation-layout.foundationlayoutitem.closable.md) |  | boolean | **_(BETA)_** Boolean attribute controls whether the window can be closed in the GUI. Defaults to <code>false</code>. |
-|  [registration](./foundation-layout.foundationlayoutitem.registration.md) |  | string | **_(BETA)_** Sets the registration name for the item, which can be used later to add the item via the JavaScript API using . |
-|  [size](./foundation-layout.foundationlayoutitem.size.md) |  | string | **_(BETA)_** optional string describing the size of the new item (see the written documentation for more info) |
-|  [title](./foundation-layout.foundationlayoutitem.title.md) |  | string | **_(BETA)_** Sets the title of the item which is displayed on the tab. |
+|  [closable](./foundation-layout.foundationlayoutitem.closable.md) |  | boolean | Boolean attribute controls whether the window can be closed in the GUI. Defaults to <code>false</code>. |
+|  [registration](./foundation-layout.foundationlayoutitem.registration.md) |  | string | Sets the registration name for the item, which can be used later to add the item via the JavaScript API using . |
+|  [size](./foundation-layout.foundationlayoutitem.size.md) |  | string | optional string describing the size of the new item (see the written documentation for more info) |
+|  [title](./foundation-layout.foundationlayoutitem.title.md) |  | string | Sets the title of the item which is displayed on the tab. |
 

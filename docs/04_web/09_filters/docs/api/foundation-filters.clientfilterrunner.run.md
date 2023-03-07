@@ -15,7 +15,7 @@ run(filters: ClientFilterSchemas[], container?: Container): boolean;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  filters | [ClientFilterSchemas](./foundation-filters.clientfilterschemas.md)\[\] |  |
-|  container | Container | <i>(Optional)</i> |
+|  container | Container | _(Optional)_ |
 
 **Returns:**
 

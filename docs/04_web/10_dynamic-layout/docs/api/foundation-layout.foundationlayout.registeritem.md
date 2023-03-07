@@ -4,9 +4,6 @@
 
 ## FoundationLayout.registerItem() method
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 Register a collection of `Element` and associate them with an `ID` with the layout system for later use.
 
 **Signature:**

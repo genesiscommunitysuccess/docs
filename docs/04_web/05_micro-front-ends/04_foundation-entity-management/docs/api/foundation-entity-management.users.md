@@ -9,9 +9,9 @@ Main class which defines the user management functionality
 **Signature:**
 
 ```typescript
-export declare class Users extends FASTElement 
+export declare class Users extends Users_base 
 ```
-**Extends:** FASTElement
+**Extends:** Users\_base
 
 ## Remarks
 
@@ -46,14 +46,24 @@ const userColumns = [
 
 |  Constructor | Modifiers | Description |
 |  --- | --- | --- |
-|  [(constructor)()](./foundation-entity-management.users._constructor_.md) |  | Constructor will set the [Profiles.createEvent](./foundation-entity-management.profiles.createevent.md) [Profiles.deleteEvent](./foundation-entity-management.profiles.deleteevent.md) [Profiles.updateEvent](./foundation-entity-management.profiles.updateevent.md) to match the permissions set from the server |
+|  [(constructor)()](./foundation-entity-management.users._constructor_.md) |  | Constructor will set the [Users.createEvent](./foundation-entity-management.users.createevent.md) [Users.deleteEvent](./foundation-entity-management.users.deleteevent.md) [Users.updateEvent](./foundation-entity-management.users.updateevent.md) to match the permissions set from the server |
 
 ## Properties
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
+|  [additionalCreateFields](./foundation-entity-management.users.additionalcreatefields.md) |  | any |  |
+|  [additionalUpdateFields](./foundation-entity-management.users.additionalupdatefields.md) |  | any |  |
+|  [allAccessType](./foundation-entity-management.users.allaccesstype.md) |  | boolean |  |
 |  [columns](./foundation-entity-management.users.columns.md) |  | any | Column definition, default to the UsersColumnConfig |
 |  [createEvent](./foundation-entity-management.users.createevent.md) |  | string | String which contains event if we have permission to insert user of empty string if not |
 |  [deleteEvent](./foundation-entity-management.users.deleteevent.md) |  | string | String which contains event if we have permission to delete user of empty string if not |
 |  [updateEvent](./foundation-entity-management.users.updateevent.md) |  | string | String which contains event if we have permission to update user of empty string if not |
+
+## Methods
+
+|  Method | Modifiers | Description |
+|  --- | --- | --- |
+|  [connectedCallback()](./foundation-entity-management.users.connectedcallback.md) |  |  |
+|  [deepClone()](./foundation-entity-management.users.deepclone.md) |  |  |
 

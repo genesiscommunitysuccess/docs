@@ -4,9 +4,6 @@
 
 ## LayoutReceiveEventsDetail type
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 Defines the shape of the detail that the layout listens works with for events it listens on
 
 'changeTitle' - `title` is the string you want to set. For `mode`: `replace` will set the title to be `title`, `suffix` will append `title` to the end of the existing title.

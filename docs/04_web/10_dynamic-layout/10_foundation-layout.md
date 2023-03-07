@@ -50,7 +50,6 @@ The following example shows the usage of the declarative API with `zero-charts` 
 				></foundation-g2plot-chart>
 			</foundation-layout-item>
 		</foundation-layout-region>
-		</foundation-layout-region>
 	</foundation-layout-region>
 </foundation-layout>
 ```
@@ -63,7 +62,7 @@ The following example shows the usage of the declarative API with `zero-charts` 
 
 To enable this module in your application, follow the steps below.
 
-1. Add `@genesislcap/foundation-layout` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again.
+1. Add `@genesislcap/foundation-layout` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -107,6 +106,8 @@ Top level web component, which is used to initialise a custom layout
 is 500ms. In this case, the layout is only reloaded if the child elements of the layout region are manipulated
 once every 500ms. This is to stop the layout being reloaded over and over for every single item during initialisation.
 The higher the value is, the more performant the component is - but the first load will appear to take longer.
+- **auto-save-key** : optional string which if set, will enable autosaving the layout under this key in local
+storage. See [here](#autosaving-layout) for more.
 
 ::tip
 This only applies for usage with the declarative HTML API. When the layout first loads after this amount of time,
@@ -197,7 +198,8 @@ Use this function over `.layoutRequiredRegistrations(layout: SerialisedLayout)` 
 
 ### Serialising layout
 
-The JavaScript API can be used to save and load layout states. This only describes the state of the dynamic layout itself. It is the responsibility of any components contained within their layout to serialise their own state, if required.
+The JavaScript API can be used to manually save and load layout states. This only describes the state of the dynamic layout itself. It is the responsibility of any components contained within their layout to serialise their own state, if required.
+To enable autosaving the layout see [here](#autosaving-layout).
 
 #### [Get Layout](./docs/api/foundation-layout.foundationlayout.getlayout.md)
 
@@ -220,6 +222,31 @@ Certain events are listened to by the container for each component, enabling the
 this.$emit(eventType, eventDetail)
 ```
 Each event requires a certain detail to process the event - see [the map of events to their required details](./docs/api/foundation-layout.layoutreceiveeventsdetail.md).
+
+## Autosaving layout
+
+There is opt-in functionality provided in the layout to autosave the layout in local storage as the user interacts with it. Set the `auto-save-key` attribute to a unique string on the root element to enable the feature, and this is the key in which the layout will be saved into. As the user performs the following actions: adding an item, removing an item, resizing items using the divider, and dragging items around the layout - the layout will be saved for later recall in local storage.
+
+When you have enabled autosave you are still able to use the manual [serialising commands](#serialising-layout).
+
+### Reloading the layout
+
+The provided function [tryLoadLayoutFromLocalStorage()](./docs/api/foundation-layout.foundationlayout.tryloadlayoutfromlocalstorage.md) is used to rehydrate the layout from local storage, if `auto-save-key` is enabled.
+If you are using the declarative API then this function is automatically called for you.
+
+If you are manually registering items (too) using the JavaScript API you must manually call this function, immediately after you have finishing registering all of the items. For an example [see here](#contained-example).
+
+### Layout placeholder
+
+If the layout is auto-loaded with items that are missing from the registration, then a placeholder item is displayed instead. Additionally, the close option is added to the pane. This accounts for you removing an item from a layout that a user has autosaved in their config.
+
+You can change the text of the placeholder using the observable binding `:missingItemPlaceholder`. This is a function which takes a string (the missing registration name) and returns the string to use as the placeholder. A default is set, but you can override it. See the override implementation [in this example](#contained-example).
+
+### Invalidating the cache
+
+As explained in the previous section, a placeholder item is added if an item is no longer registered for the auto-loaded layout. This accounts for removing an item. However, there is the reverse issue: If you are only using the declarative API and you add a new item, if the user already has an autosaved layout then that will be loaded which will effectively hide the new item you've added.
+
+In this case you must invalidate the autosaved layout cache. The cleanest and easiest implementation for you is to add a hash onto the end of your `auto-save-key` which will start a new autosave for this table (and reload the default which will contain your new layout item).
 
 ## Contained elements
 
@@ -547,9 +574,9 @@ This is just an example; you could have more than two layouts on a page or style
 
 ### Adding items dynamically
 
-This is an example of using the JavaScript API to add items onto the layout at runtime. Before reading this example, you should familiarise yourself with the [API Section](#javascript-api).
+This is an example of using the JavaScript API to add items onto the layout at runtime. Before reading this example you should familiarise yourself with the [API Section](#javascript-api).
 
-Say you want the user to be able to choose between three different types of item that can be put onto the layout: a profile-management table, and a pie chart and a column chart.
+Say you want the user to be able to choose between three different types of item tht can be put onto the layout - a profile-management table, and a pie & column chart.
 
 ```typescript
 // Can either create an element and initialise it completely using JavaScript
@@ -596,7 +623,11 @@ export const template = html<ContainedExample>`
       <foundation-button @click=${(x) => x.addItem('3')}>Test 3</foundation-button>
     </div>
     <div style="display: block; position: relative; grid-row-start: 2; grid-row-end: 12;">
-      <foundation-layout ${ref('containedExampleLayout')}></foundation-layout>
+      <foundation-layout
+        auto-save-key="layout-preview-contained-example"
+        :missingItemPlaceholder=${(x) => x.missingItemOverride()}
+        ${ref('containedExampleLayout')}
+      ></foundation-layout>
     </div>
   </div>
 `;
@@ -631,6 +662,7 @@ export class ContainedExample extends FASTElement {
     this.containedExampleLayout.registerItem('1', [h1, p1]);
     this.containedExampleLayout.registerItem('2', [h2, p2]);
     this.containedExampleLayout.registerItem('3', [h3, p3]);
+    this.containedExampleLayout.tryLoadLayoutFromLocalStorage();
   }
 
   addItem(registration: string) {
@@ -640,6 +672,8 @@ export class ContainedExample extends FASTElement {
       closable: true,
     });
   }
+
+  missingItemOverride = () => (missingItem: string) => `Missing Item: ${missingItem}`;
 }
 ```
 
@@ -732,6 +766,10 @@ layout.registerItem(test, [element]);
 
 :::info
 Only items _missing_ from the `requiredRegistrations` is an issue. If there are items in the `currentRegistrations` that are not in `requiredRegistrations`, this is *not* an issue - because these will simply be unused registrations.
+:::
+
+:::warning
+If you are calling `registerItem` manually and are using the autosave feature, [see here](#reloading-the-layout).
 :::
 
 ## Incorrect examples
@@ -920,4 +958,41 @@ You can then use the custom component in the layout:
 </foundation-layout>
 ```
 
+### New layout item not displaying
+Say you have the following layout, [the simple example](#simple-example), with autosave enabled.
+```html
+<foundation-layout auto-save-key="simple-example">
+  <foundation-layout-region type="horizontal">
+    <foundation-layout-item title="Component 1">
+      <!-- Content -->
+    </foundation-layout-item>
+    <foundation-layout-item title="Component 2">
+      <!-- Content -->
+    </foundation-layout-item>
+  </foundation-layout-region>
+</foundation-layout>
+```
 
+The user of your layout will move things around and this will cache the layout. Say you then update the layout to add an item.
+```html
+<foundation-layout auto-save-key="simple-example">
+  <foundation-layout-region type="horizontal">
+    <foundation-layout-item title="Component 1">
+      <!-- Content -->
+    </foundation-layout-item>
+    <foundation-layout-item title="Component 2">
+      <!-- Content -->
+    </foundation-layout-item>
+    <foundation-layout-item title="Component 3">
+      <!-- Content -->
+    </foundation-layout-item>
+  </foundation-layout-region>
+</foundation-layout>
+```
+
+You and the user will only see the first two items like before. This is because the cached layout is being loaded, which does not contain the
+new item. To fix this you must [invalidate the cache](#invalidating-the-cache).
+
+## License
+
+Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.

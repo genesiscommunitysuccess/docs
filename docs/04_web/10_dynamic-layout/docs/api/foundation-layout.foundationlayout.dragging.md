@@ -4,9 +4,6 @@
 
 ## FoundationLayout.dragging property
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 Set to true when the user is currently dragging the panes inside of the layout
 
 **Signature:**

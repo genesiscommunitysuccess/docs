@@ -255,3 +255,7 @@ To set the content of the flyout menu, add the content in the html within an ele
 </foundation-header>
 ```
 
+
+## License
+
+Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.

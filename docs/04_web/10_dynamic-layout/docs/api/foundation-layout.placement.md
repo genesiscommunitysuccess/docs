@@ -4,9 +4,6 @@
 
 ## Placement type
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 Where to add the new item into the layout when using the [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md) API
 
 **Signature:**
