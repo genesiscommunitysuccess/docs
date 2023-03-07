@@ -36,10 +36,11 @@ jobs:
       run: npm test
 
     - name: Install Docusaurus dependencies
-      run: npm install
+      run: |
+        npm install
+        npm list
       env:
         NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
-      run: npm list
 
     - name: Build Docusaurus and check for broken links
       run: |
