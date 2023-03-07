@@ -42,7 +42,6 @@ jobs:
 
     - name: Build Docusaurus and check for broken links
       run: |
-        npm install dayjs --save
         npm run build
       env:
           NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
