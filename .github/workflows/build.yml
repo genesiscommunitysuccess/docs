@@ -42,7 +42,6 @@ jobs:
 
     - name: Build Docusaurus and check for broken links
       run: |
-#       export NODE_OPTIONS="--max-old-space-size=8192"
         npm run build
       env:
           NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
