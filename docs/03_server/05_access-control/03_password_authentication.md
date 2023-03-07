@@ -181,7 +181,7 @@ The `customLoginAck` function enables you to modify the list of permissions, pro
 
 * permissions - a mutable list containing all the right codes associated to the user. Given its mutability, codes can be added or removed.
 * profiles - a mutable list containing all the profiles associated with the user.  Given its mutability, profiles can be added or removed.
-* userPreferences - a [GenesisSet](../../../server/inter-process-messages/genesisset/) object containing additional fields provided as part of the [loginAck](../../../server/access-control/password_authentication/#loginack) function. This `GenesisSet` can be modified to provide additional fields or remove existing ones.
+* userPreferences - a [GenesisSet](../../../server/inter-process-messages/genesisset/) object containing additional fields provided as part of the [loginAck](#loginack) function. This `GenesisSet` can be modified to provide additional fields or remove existing ones.
 
 ### Example
 Example configuration:
