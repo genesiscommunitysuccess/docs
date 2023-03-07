@@ -15,23 +15,28 @@ export declare class Login extends FASTElement
 
 ## Remarks
 
-Add the Login class as a router element and it will handle the account authentication for you. Requires use of `@genesislcap/foundation-comms` for the  and  classes.
+Add the Login class as a router element, and it will handle the account authentication for you. Requires use of `@genesislcap/foundation-comms` for the  and  classes.
 
-There are a lot of configuration options available, and different authentication types (such as login via SSO).
+There are a lot of configuration options available, and different authentication types (such as login via SSO). Use the modules exported `configure` and `define` functions for more power.
 
 ## Example
 
-The following is an example of using it in your app, setting it up in the router configuration. This isn't a complete routes confutation, but it contains all required configuration with regards to the Login functionality.
+The following is an example of using it in your app, setting it up in the router configuration. This isn't a complete routes confutation, but it contains all required configuration in regard to adding Login functionality.
 
-```javascript
+```ts
 // Import required dependencies from the foundation-login package
-import { Login, Settings as LoginSettings } from '@genesislcap/foundation-login';
+import { Login } from '@genesislcap/foundation-login';
 // Import required dependencies from the foundation-comms package
 // You could also import analytics events and set them up in the NavigationContributor
-import { Auth, Session, } from '@genesislcap/foundation-comms';
+import { Auth, Session } from '@genesislcap/foundation-comms';
 
-// Define your router config with the login settings as the type
-export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
+type RouterSettings = {
+  public?: boolean;
+  autoAuth?: boolean;
+}
+
+// Define your router config
+export class MainRouterConfig extends RouterConfiguration<RouterSettings> {
   // Ensure you inject in required dependencies
   constructor(
     @Auth private auth: Auth,
@@ -40,7 +45,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
     super();
   }
 
-  // Add the Login class onto the /login route
+  // Add Login as a route
   public configure() {
     ...
     this.routes.map(
@@ -51,16 +56,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
         title: 'Login',
         name: 'login',
         layout: loginLayout,
-        // Add settings here [1]
-        settings: {
-          defaultRedirectUrl: 'protected',
-          public: true,
-          resetPassword: true,
-          forgotPassword: true,
-          requestAccount: true,
-          ssoToggle: true,
-          ssoEnable: false,
-        },
+        settings: { public: true },
         childRouters: true,
       },
       ... // Other routes config here
@@ -91,8 +87,8 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
           return;
         }
 
-        // If allowAutoAuth and session is valid try to connect+auto-login [2]
-        if (settings && settings.allowAutoAuth && (await auth.reAuthFromSession())) {
+        // If autoAuth and session is valid try to connect+auto-login
+        if (settings && settings.autoAuth && (await auth.reAuthFromSession())) {
           return;
         }
 
@@ -109,5 +105,4 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 
 }
 ```
-\[1\],\[2\] [Settings](./foundation-login.settings.md)
 

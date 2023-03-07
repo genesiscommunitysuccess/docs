@@ -4,8 +4,6 @@
 
 ## EntityManagement.closeModal() method
 
-Closes the modal which contains the add/update entity form
-
 **Signature:**
 
 ```typescript

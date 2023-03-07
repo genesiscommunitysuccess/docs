@@ -157,7 +157,7 @@ import { Users, } from '@genesislcap/foundation-entity-management';
 Users;
 
 // Example html with the user management
-// You can customise this with additional fields, see further in this documentation
+// You can customise this with additional fields, see futher in this documentation
 export const AdminTemplate: ViewTemplate = html`
   <zero-tabs>
     <zero-tab-panel slot="tabpanel">
@@ -275,3 +275,7 @@ In contrast to Entity Management, we have a different way of displaying buttons 
 :::info
 For more information on `persist-column-state-key` see [the section in the Entity Management](#persist-column-state) page.
 :::
+
+## License
+
+Note: this project provides front end dependencies and uses licensed components listed in the next section, thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.

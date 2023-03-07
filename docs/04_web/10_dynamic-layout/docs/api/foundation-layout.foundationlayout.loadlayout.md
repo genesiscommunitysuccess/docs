@@ -4,15 +4,12 @@
 
 ## FoundationLayout.loadLayout() method
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 Restores a layout described in the config from [getLayout()](./foundation-layout.foundationlayout.getlayout.md)
 
 **Signature:**
 
 ```typescript
-loadLayout(layout: SerialisedLayout): void;
+loadLayout(layout: SerialisedLayout, handleMissingItem?: 'placeholder' | 'error'): void;
 ```
 
 ## Parameters
@@ -20,6 +17,7 @@ loadLayout(layout: SerialisedLayout): void;
 |  Parameter | Type | Description |
 |  --- | --- | --- |
 |  layout | [SerialisedLayout](./foundation-layout.serialisedlayout.md) | any version of [SerialisedLayout](./foundation-layout.serialisedlayout.md) object describing the layout |
+|  handleMissingItem | 'placeholder' \| 'error' | _(Optional)_ what to do if the layout contains items that are not currently registered with the layout system. Defaults to 'error' which will throw an error. If set to 'placeholder' then any missing items will be replaced with a placeholder element. You can control the text of the placeholder element with [FoundationLayout.missingItemPlaceholder](./foundation-layout.foundationlayout.missingitemplaceholder.md). |
 
 **Returns:**
 
@@ -27,7 +25,7 @@ void
 
 ## Exceptions
 
-[LayoutUsageError](./foundation-layout.layoutusageerror.md) if you attempt to load a layout with registered items that are not currently registered with the layout system
+[LayoutUsageError](./foundation-layout.layoutusageerror.md) if you attempt to load a layout with registered items that are not currently registered with the layout system, and handleMissingItem is set to 'error' (default).
 
 various errors if the layout string is malformed and cannot be parsed
 

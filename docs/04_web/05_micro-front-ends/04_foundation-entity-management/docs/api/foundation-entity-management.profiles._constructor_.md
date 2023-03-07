@@ -4,7 +4,7 @@
 
 ## Profiles.(constructor)
 
-Constructor will set the [Profiles.createEvent](./foundation-entity-management.profiles.createevent.md) [Profiles.deleteEvent](./foundation-entity-management.profiles.deleteevent.md) [Profiles.updateEvent](./foundation-entity-management.profiles.updateevent.md) to match the permissions set from the server
+Constructor will set the [EntityManagement.createEvent](./foundation-entity-management.entitymanagement.createevent.md) [EntityManagement.deleteEvent](./foundation-entity-management.entitymanagement.deleteevent.md) [EntityManagement.updateEvent](./foundation-entity-management.entitymanagement.updateevent.md) to match the permissions set from the server
 
 **Signature:**
 

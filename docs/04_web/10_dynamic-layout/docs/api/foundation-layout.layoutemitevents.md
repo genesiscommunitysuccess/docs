@@ -4,12 +4,9 @@
 
 ## LayoutEmitEvents variable
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 Defines events that the layout system emits
 
-'firstLoaded' - emitted when the layout has finished loading the first time using the declarative API after [DEFAULT\_RELOAD\_BUFFER](./foundation-layout.default_reload_buffer.md) ms. <br/> 'itemAdded' - emitted when an item is added to the layout' <br/> 'itemRemoved' - emitted when an item is removed from the layout'
+'firstLoaded' - emitted when the layout has finished loading the first time using the declarative API after [DEFAULT\_RELOAD\_BUFFER](./foundation-layout.default_reload_buffer.md) ms. <br/> 'itemAdded' - emitted when an item is added to the layout' <br/> 'itemRemoved' - emitted when an item is removed from the layout' <br/> 'itemResized' - emitted when the user drags the divider to resize elements
 
 **Signature:**
 
@@ -18,5 +15,6 @@ LayoutEmitEvents: {
     readonly firstLoaded: "first-loaded";
     readonly itemAdded: "item-added";
     readonly itemRemoved: "item-removed";
+    readonly itemResized: "item-resized";
 }
 ```

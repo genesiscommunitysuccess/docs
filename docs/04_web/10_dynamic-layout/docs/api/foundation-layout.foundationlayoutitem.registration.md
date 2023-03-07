@@ -4,9 +4,6 @@
 
 ## FoundationLayoutItem.registration property
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 Sets the registration name for the item, which can be used later to add the item via the JavaScript API using .
 
 **Signature:**

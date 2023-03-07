@@ -4,9 +4,6 @@
 
 ## FoundationLayout.getLayout() method
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 Gets a minified string containing the config describing the current layout of the layout object to later restore in [function](./foundation-layout.foundationlayout.loadlayout.md)
 
 **Signature:**

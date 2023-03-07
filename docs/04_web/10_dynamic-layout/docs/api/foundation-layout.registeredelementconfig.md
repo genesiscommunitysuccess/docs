@@ -4,9 +4,6 @@
 
 ## RegisteredElementConfig interface
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 The parameters that can be set on a new item when being added by the [FoundationLayout.addItem()](./foundation-layout.foundationlayout.additem.md) API
 
 **Signature:**
@@ -23,8 +20,8 @@ export interface RegisteredElementConfig
 
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
-|  [closable?](./foundation-layout.registeredelementconfig.closable.md) |  | boolean | **_(BETA)_** _(Optional)_ |
-|  [registration](./foundation-layout.registeredelementconfig.registration.md) |  | string | **_(BETA)_** |
-|  [size?](./foundation-layout.registeredelementconfig.size.md) |  | string | **_(BETA)_** _(Optional)_ |
-|  [title?](./foundation-layout.registeredelementconfig.title.md) |  | string | **_(BETA)_** _(Optional)_ |
+|  [closable?](./foundation-layout.registeredelementconfig.closable.md) |  | boolean | _(Optional)_ |
+|  [registration](./foundation-layout.registeredelementconfig.registration.md) |  | string |  |
+|  [size?](./foundation-layout.registeredelementconfig.size.md) |  | string | _(Optional)_ |
+|  [title?](./foundation-layout.registeredelementconfig.title.md) |  | string | _(Optional)_ |
 

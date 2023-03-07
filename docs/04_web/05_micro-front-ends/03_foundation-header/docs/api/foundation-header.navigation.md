@@ -22,9 +22,12 @@ export declare class Navigation extends Navigation_base
 |  Property | Modifiers | Type | Description |
 |  --- | --- | --- | --- |
 |  [auth](./foundation-header.navigation.auth.md) |  | Auth |  |
+|  [credentialManager](./foundation-header.navigation.credentialmanager.md) |  | CredentialManager |  |
+|  [hideSideBar](./foundation-header.navigation.hidesidebar.md) |  | boolean | Boolean attribute which controls whether to include the sideNav component Control via<code>hide-side-bar</code> |
 |  [logoSrc](./foundation-header.navigation.logosrc.md) |  | any | Optional attribute which controls the icon to show on the navigation bar and flyout Control via <code>logo-src</code> |
 |  [provider](./foundation-header.navigation.provider.md) |  | any |  |
 |  [ready](./foundation-header.navigation.ready.md) |  | boolean |  |
+|  [routeButtons](./foundation-header.navigation.routebuttons.md) |  | Array&lt;{ index: number; path: string; title: string; icon: string; variant: string; }&gt; | If present the defined route buttons will be rendered in the header 'routes' slot |
 |  [showLuminanceToggleButton](./foundation-header.navigation.showluminancetogglebutton.md) |  | boolean | Boolean attribute which controls whether to show the luminance (moon) icon on the navigation bar Control via<code>show-luminance-toggle-button</code> |
 |  [showMiscToggleButton](./foundation-header.navigation.showmisctogglebutton.md) |  | boolean | Boolean attribute which controls whether to show the miscellaneous (menu) icon on the navigation bar Control via <code>show-luminance-toggle-button</code> |
 |  [showNotificationsButton](./foundation-header.navigation.shownotificationsbutton.md) |  | boolean | Boolean attribute which controls whether to show the notification (bell) icon on the navigation bar Control via <code>show-notification-button</code> |

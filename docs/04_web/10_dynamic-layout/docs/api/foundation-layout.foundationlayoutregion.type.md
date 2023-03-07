@@ -4,9 +4,6 @@
 
 ## FoundationLayoutRegion.type property
 
-> This API is provided as a preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
 Defines the [type](./foundation-layout.layoutregiontype.md) of the region. Defaults to `horizontal`.
 
 **Signature:**

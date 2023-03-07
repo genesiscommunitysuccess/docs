@@ -9,9 +9,9 @@ Main class which defines the entity management functionality
 **Signature:**
 
 ```typescript
-export declare class EntityManagement extends FASTElement 
+export declare class EntityManagement extends EntityManagement_base 
 ```
-**Extends:** FASTElement
+**Extends:** EntityManagement\_base
 
 ## Remarks
 
@@ -39,23 +39,36 @@ Where:<br /> - the title of the grid is `Counterparty Management`<br /> - the na
 |  [columns](./foundation-entity-management.entitymanagement.columns.md) |  | ColDef\[\] | Array which holds the column definitions. |
 |  [connect](./foundation-entity-management.entitymanagement.connect.md) | <code>protected</code> | Connect | DI connect object which is used to interact with the backend. |
 |  [createEvent](./foundation-entity-management.entitymanagement.createevent.md) |  | string | Name of the event handler on the Genesis server which handles creating an entity |
+|  [createFormUiSchema](./foundation-entity-management.entitymanagement.createformuischema.md) |  | any |  |
 |  [datasourceConfig](./foundation-entity-management.entitymanagement.datasourceconfig.md) |  | [DatasourceConfiguration](./foundation-entity-management.datasourceconfiguration.md) | The configuration which is used when interacting with the resource on the backend |
 |  [deleteEvent](./foundation-entity-management.entitymanagement.deleteevent.md) |  | string | Name of the event handler on the Genesis server which handles deleting the entity |
 |  [editDialogTitle](./foundation-entity-management.entitymanagement.editdialogtitle.md) |  | string | String which contains the text of the popup modal when the user is adding or editing an entity |
-|  [editEntityModal](./foundation-entity-management.entitymanagement.editentitymodal.md) |  | any | Reference to the modal which contains the add or update entity form |
+|  [editedEntity](./foundation-entity-management.entitymanagement.editedentity.md) |  | any | Disables the form while enabled to stop the user dispatching a large number of duplicate events |
+|  [editEntityModal](./foundation-entity-management.entitymanagement.editentitymodal.md) |  | any |  |
+|  [editModalVisible](./foundation-entity-management.entitymanagement.editmodalvisible.md) |  | boolean |  |
+|  [enableCellFlashing](./foundation-entity-management.entitymanagement.enablecellflashing.md) |  | boolean |  |
+|  [enableFilterBar](./foundation-entity-management.entitymanagement.enablefilterbar.md) |  | boolean |  |
 |  [entityLabel](./foundation-entity-management.entitymanagement.entitylabel.md) |  | string | Label for the entity which has usages such as being shown in the title of the modal wen editing the entity |
+|  [formUiSchema](./foundation-entity-management.entitymanagement.formuischema.md) |  | any |  |
 |  [persistColumnStateKey](./foundation-entity-management.entitymanagement.persistcolumnstatekey.md) |  | string | This attribute controls whether and how the entity manager stores the state of the columns when the user edits them. Omit this attribute to disable the functionality, set it to a unique value to enable it. |
+|  [readEvent](./foundation-entity-management.entitymanagement.readevent.md) |  | string |  |
+|  [readEventFn](./foundation-entity-management.entitymanagement.readeventfn.md) |  | (...args: any\[\]) =&gt; {} |  |
+|  [readonly](./foundation-entity-management.entitymanagement.readonly.md) |  | boolean |  |
 |  [resourceName](./foundation-entity-management.entitymanagement.resourcename.md) |  | string | Name of the backend resource which contain the entities to manage |
 |  [selectedEntity](./foundation-entity-management.entitymanagement.selectedentity.md) |  | any | Reference to the currently selected entity from the grid. |
-|  [submitting](./foundation-entity-management.entitymanagement.submitting.md) |  | boolean | Disables the form while enabled to stop the user dispatching a large number of duplicate events |
+|  [sizeColumnsToFit](./foundation-entity-management.entitymanagement.sizecolumnstofit.md) |  | boolean |  |
+|  [submitting](./foundation-entity-management.entitymanagement.submitting.md) |  | boolean |  |
 |  [title](./foundation-entity-management.entitymanagement.title.md) |  | string | Title of the grid |
 |  [updateEvent](./foundation-entity-management.entitymanagement.updateevent.md) |  | string | Name of the event handler on the Genesis server which handles updating the entity |
+|  [updateFormUiSchema](./foundation-entity-management.entitymanagement.updateformuischema.md) |  | any |  |
 
 ## Methods
 
 |  Method | Modifiers | Description |
 |  --- | --- | --- |
-|  [closeModal()](./foundation-entity-management.entitymanagement.closemodal.md) |  | Closes the modal which contains the add/update entity form |
+|  [closeModal()](./foundation-entity-management.entitymanagement.closemodal.md) |  |  |
+|  [deepClone()](./foundation-entity-management.entitymanagement.deepclone.md) |  | Override the deepClone method to ensure that observable attributes are cloned |
+|  [editModalVisibleChanged()](./foundation-entity-management.entitymanagement.editmodalvisiblechanged.md) |  |  |
 |  [errorNotify(request)](./foundation-entity-management.entitymanagement.errornotify.md) |  | Show notifications if the executed event returned an error. |
 |  [submitEntityChanges(e)](./foundation-entity-management.entitymanagement.submitentitychanges.md) |  | Event handler for when the user submits the action for the currently open form, either editing or adding the entity |
 
