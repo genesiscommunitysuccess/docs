@@ -38,6 +38,7 @@ jobs:
     - name: Install Docusaurus dependencies
       run: |
         npm install
+        npm list
         npm install dayjs@1.10.7
         npm list
       env:
