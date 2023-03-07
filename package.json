@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "docusaurus": "docusaurus",
-    "build": "docusaurus build --max-old-space-size=8192",
+    "build": "docusaurus build",
     "build:next": "SHOW_NEXT=true docusaurus build",
     "build:base_url": "BASE_URL=/docs/ docusaurus build",
     "build:production": "BASE_URL=/docs/ BRANCH=master docusaurus build",
