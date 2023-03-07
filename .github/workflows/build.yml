@@ -1,6 +1,10 @@
 name: Build
 
 # Triggered on PRs against main branches
+#on:
+#  pull_request:
+#    branches:
+#      - master
 on: push
 
 jobs:
@@ -37,11 +41,10 @@ jobs:
         NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
 
     - name: Build Docusaurus and check for broken links
-      run: npm run build
+      run: |
+        export NODE_OPTIONS="--max-old-space-size=8192"
+        npm run build
       env:
           NODE_AUTH_TOKEN: ${{secrets.GPR_READ_TOKEN}}
           BRANCH: ${{ github.base_ref }}
           BASE_URL: /docs/
-          process.env.CI: true
-          run: |
-            export NODE_OPTIONS="--max-old-space-size=8192"
