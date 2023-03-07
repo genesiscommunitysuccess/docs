@@ -4,7 +4,9 @@
 
 ## FoundationLayout.autoSaveKey property
 
-Attribute which if set will auto save and load the layout as the user changes it. Omit this attribute to disable this feature. Set attribute using `auto-save-key`.
+If set, this attribute auto saves and loads the layout as the user changes it. To disable this feature, omit this attribute. 
+
+The attribute is set using `auto-save-key`.
 
 **Signature:**
 
