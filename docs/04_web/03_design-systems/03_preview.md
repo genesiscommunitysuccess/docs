@@ -9,6 +9,6 @@ tags:
   - preview
 ---
 
-<design-system-configurator>
+<design-system-editor>
     <design-system-preview></design-system-preview>
-</design-system-configurator>
+</design-system-editor>
