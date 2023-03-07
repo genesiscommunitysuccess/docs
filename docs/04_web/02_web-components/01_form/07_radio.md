@@ -1,12 +1,12 @@
 ---
-title: 'Web Components - Radio'
-sidebar_label: 'Radio'
+title: "Web Components - Radio"
+sidebar_label: "Radio"
 id: radio
 keywords: [web, web components, radio]
 tags:
-    - web
-    - web components
-    - radio
+  - web
+  - web components
+  - radio
 ---
 
 A selection input with support for selection of multiple options.
@@ -14,23 +14,22 @@ A selection input with support for selection of multiple options.
 ## Set-up
 
 ```ts
-import { provideDesignSystem, alphaPicker } from '@genesislcap/alpha-design-system';
+import {
+  provideDesignSystem,
+  alphaRadio,
+} from "@genesislcap/alpha-design-system";
 
-provideDesignSystem().register(alphaPicker());
+provideDesignSystem().register(alphaRadio());
 ```
 
 ## Usage
 
-```html
-<alpha-picker
-    default-selection=""
-    selection=""
-    options="apples,oranges,bananas,pears,pineapples,strawberries"
-    no-suggestions-text="No suggestions available"
-    suggestions-available-text="Suggestions available"
-    loading-text="Loading"
-    label="Select some things"
-></alpha-picker>
+```html live
+<div>
+  <alpha-radio alpha-radio value="apple">Apple</alpha-radio>
+  <alpha-radio alpha-radio value="mango">Mango</alpha-radio>
+  <alpha-radio alpha-radio value="orange">Orange</alpha-radio>
+</div>
 ```
 
 ## Use cases

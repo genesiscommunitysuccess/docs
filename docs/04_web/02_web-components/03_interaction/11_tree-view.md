@@ -1,12 +1,12 @@
 ---
-title: 'Web Components - Tree view'
-sidebar_label: 'Tree view'
+title: "Web Components - Tree view"
+sidebar_label: "Tree view"
 id: tree-view
 keywords: [web, web components, tree view]
 tags:
-    - web
-    - web components
-    - tree view
+  - web
+  - web components
+  - tree view
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria/#tree):
@@ -16,7 +16,11 @@ As defined by the [W3C](https://w3c.github.io/aria/#tree):
 ## Set-up
 
 ```ts
-import { provideDesignSystem, alphaTreeView, alphaTreeItem } from '@genesislcap/alpha-design-system';
+import {
+  provideDesignSystem,
+  alphaTreeView,
+  alphaTreeItem,
+} from "@genesislcap/alpha-design-system";
 
 provideDesignSystem().register(alphaTreeView(), alphaTreeItem());
 ```
@@ -24,20 +28,20 @@ provideDesignSystem().register(alphaTreeView(), alphaTreeItem());
 ## Usage
 
 ```html live
-<alpha-tree-view>
-  Root
   <alpha-tree-item>
-    Item 1
-    <alpha-tree-item>Sub-item 1</alpha-tree-item>
-    <alpha-tree-item>Sub-item 2</alpha-tree-item>
+    Root
+    <alpha-tree-item>
+      Item 1
+      <alpha-tree-item>Sub-item 1</alpha-tree-item>
+      <alpha-tree-item>Sub-item 2</alpha-tree-item>
+    </alpha-tree-item>
+    <alpha-tree-item>Item 3</alpha-tree-item>
   </alpha-tree-item>
-  <alpha-tree-item>Item 2</alpha-tree-item>
-</alpha-tree-view>
 ```
 
 ## Use cases
 
-* A hierarchical list such as a file system
+- A hierarchical list such as a file system
 
 ## Additional resources
 
