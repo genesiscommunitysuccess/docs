@@ -1,4 +1,4 @@
----
+img---
 title: 'Web Components - Connection Indicator'
 sidebar_label: 'Connection Indicator'
 id: connection-indicator
@@ -16,8 +16,8 @@ The *optional* label (enabled by the setting `show-label` attribute to `true`) d
 
 ## Basic Usage
 
-```html
-<zero-connection-indicator show-label="true" />
+```html live
+<alpha-connection-indicator show-label="true"/>
 ```
 
 ## Enabling the connection indicator on the login page
