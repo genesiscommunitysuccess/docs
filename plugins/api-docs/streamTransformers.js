@@ -2,7 +2,7 @@ const { Transform } = require("stream");
 const { StringDecoder } = require("string_decoder");
 
 const GENESIS_DOC_URL_HOST_REGEX =
-  /https?:\/\/docs\.genesis\.global\/secure\//g;
+  /https?:\/\/learn\.genesis\.global\/secure\//g;
 
 const createUrlTransformerSteam = (manifestSettings) =>
   new Transform({
