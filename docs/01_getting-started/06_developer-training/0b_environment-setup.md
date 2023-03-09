@@ -193,12 +193,16 @@ As an alternative, you can [download the project structure that would be generat
 :::
 
 ### Gradle set-up
-Make sure you have a **gradle.properties** file inside a **.gradle** folder in your user directory; this file must contain your password in clear (unencrypted) text:
+Make sure you have a **gradle.properties** file inside a **.gradle** folder in your user directory; this file must contain your encrypted password:
 
 ```shell
 genesisArtifactoryUser=<your-artifactory-user>
 genesisArtifactoryPassword=<your-artifactory-password>
 ```
+
+:::info Password
+It is also possible to input your unencrypted password, but it is *not recommended*.
+:::
 
 Use the same credential you used in *step 6* above.
 :::caution proxy settings
