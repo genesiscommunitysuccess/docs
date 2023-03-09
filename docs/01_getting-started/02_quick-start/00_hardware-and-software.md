@@ -29,10 +29,12 @@ This page gives you the hardware and software requirements needed in order to ru
 
 ## Recommended software packages
 
+[//]: # (If you change this table, make sure you change all pages that contain minimum requirements)  
+
 | Package	                                                                                                        |  Minimum Version   | 
 |-----------------------------------------------------------------------------------------------------------------|:------------------:|
-| [IntelliJ](https://www.jetbrains.com/idea/download/?fromIDE=#section=windows)	                                  | 2021.2.3 and above |
-| [Visual Studio Code](https://code.visualstudio.com/Download)	                                                   |       1.52.1       |
+| [IntelliJ](https://www.jetbrains.com/idea/download/?fromIDE=#section=windows)	                                  | 2022.3 or above|
+| [Visual Studio Code](https://code.visualstudio.com/Download)	                                                   |       1.52.1 or above      |
 | [Java SDK or JDK](https://www.oracle.com/java/technologies/downloads/) (Choose the **x64 installer** download.) |         11         |
 | [NodeJS](https://nodejs.org/download/release/latest-gallium/)                                                   |       16 LTS       |
 | [Postman](https://www.postman.com/downloads/) (optional)	                                                       |         8          |

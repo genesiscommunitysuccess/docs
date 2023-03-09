@@ -34,7 +34,7 @@ Please follow these instructions very carefully to ensure your environment is re
 
 | Package	| Minimum Version| 
 |--------------|:-----:|
-| IntelliJ Community	| 2022.2|
+| IntelliJ Community	| 2022.3|
 | Visual Studio Code	| 1.52.1|
 | Java SDK| 11|
 | Kotlin| 1.7.10|
