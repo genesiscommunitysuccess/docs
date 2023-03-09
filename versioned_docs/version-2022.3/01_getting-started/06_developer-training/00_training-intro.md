@@ -16,7 +16,7 @@ tags:
 
 ## What you'll learn​
 
-This is hands-on developer training where we're going to follow the creation ​of an application from start to finish. By completion, you will be an effective developer on the Genesis low-code platform.
+This is hands-on developer training where we're going to follow the creation ​of an application from start to finish. By completion, you will be an effective developer on the Genesis low-code platform, ok?
 
 ## Prerequisites and assumptions
 
