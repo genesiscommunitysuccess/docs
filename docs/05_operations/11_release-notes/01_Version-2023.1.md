@@ -130,12 +130,125 @@ GSF and its modules are compiled using Kotlin 1.7.10 and Gradle 7.5.0.
 This is a high-level overview of the changes.
 
 ### Features
+- The implementation of the `foundation-layout` package has now been completed, providing application- and route-based layout functionality similar to Golden Layout. This includes functionality to autosave layouts. The package has a declarative HTML API, a JavaScript API for dynamic interaction, custom styling, and more.
+- A `File Upload` component has been added. This provides the ability to upload single or multiple files. It also includes a grid to display the list of uploaded files.
+- `menu` and `menu-item` components have been added.
+- A `dropdown-menu` component has been added.
+- Stock and donut chart types have been added.
+- It is now possible to set the storage key prefix in session.
+- There is now a consistent way of handling errors using error structure builders and an error component launcher.
+- New error components such as Dialog, Snack-bar and Banner have been added.
+- `foundation-login` has been refactored to address tech debt, expose new config hooks, and use the Credential Management API. Workflow for Forgotten Password and conditional organisation (CompID) logic has been added.
+- `foundation-login` now has "easy configuration" of backgrounds. 
+- `action-renderer` now has `data-test-id` attributes to help with E2E testing on `grid-pro` instances using actions
+- `foundation-utils`
+    - `@renderOnChange` decorator has been added to remove some repetitive internal observation boilerplate.
+    - `ServerRowDTOMapper` and base `DTOMapper` utils have been added to help map DTOs to UI entities to keep the UI resilient to changes.
+    - Design system resource typing and an `assureDesignSystem` utility function have been added to check dynamically loaded modules.
+- `chart-datasource` has a new `series` field for multi-line and stacked configurations. Examples are:
 
+```
+<chart-datasource 
+   resourceName="ALL_POSITIONS" 
+   server-fields="INSTRUMENT_NAME QUANTITY"> <!-- equals to groupBy and value -->
+</chart-datasource>
+```
+
+```
+<chart-datasource 
+   resourceName="ALL_POSITIONS" 
+   server-fields="INSTRUMENT_NAME QUANTITY DATE_TIME"> <!-- equals to groupBy, value and series -->
+</chart-datasource>
+```
+
+```
+ <chart-datasource 
+   resourceName="ALL_POSITIONS" 
+   chart-fields="customGroupBy customValue customSeries"
+   server-fields="INSTRUMENT_NAME QUANTITY DATE_TIME"> <!-- equals to customGroupBy , customValue and customSeries-->
+</chart-datasource>
+```
 
 ### Maintenance
+- Improvements have been made to the lifecycles of components such as charts and grids, so they behave correctly as part of a `foundation-layout` region.
+- G2Plot-chart styling has been improved.
+- We have enabled deep linking and we now ensure that `session.captureReturnUrl()` captures search and hash from location.
+- An issue with the internal dependency mapping of named releases has been fixed.
+- Local development https is now possible.
+- Initial bundling optimisations ensure that certain third-party modules are excluded.
+- The colour-scheme of `text-field` using `date type` now works properly on dark/light modes.
+- We have fixed the issue of bootstrap warnings when using multiple versions of the same package.
+- We have fixed `grid-pro` internal `.css` imports and overall styling (matching v29 changes).
+- We have fixed `orderBy` flow when using `grid-pro-genesis-datasource`. This now correctly displays warnings when the field is invalid, and suggests possible valid fields.
+- `grid-pro-datasource-next` to get it working properly after v29 upgrades. This is still in the experimental phase, and is only missing "rich filtering`.
+- `storybook`-related `bootstrap` warnings have been fixed. We have cleaned internal node_module committed/pushed by the CI.
 
 
 ### Mapping
-
+This release maps to 10.5.0 of `foundation ui` packages.
 
 ### Migration guide
+
+- The deprecated `getPermissions()` and `getProfiles()` have been removed from the session. Use `auth.currentUser.profiles` and `auth.currentUser.permissions` instead.
+- For the `grid-pro-genesis-datasource`, the attributes have been made kebab-case rather than camelCase for consistency. The functionality from the `withGridInit` flag has been removed and replaced with `deferredGridOptions`.
+- `foundation-login`. Use the exported configure function to customise login with the available [config](https://github.com/genesislcap/foundation-ui/blob/v2023.1/packages/foundation/foundation-mf/foundation-login/docs/api/foundation-login.loginconfig.md) settings. Note you need to be running 6.5.0 of `auth` and `genesis` on the back end.
+```
+ {
+    path: 'login',
+    name: 'login',
+    title: 'Login',
+    layout: loginLayout,
+    element: async () => {
+       const { configure, Login } = await import('@genesislcap/foundation-login');
+          configure(this.container, {
+             showConnectionIndicator: true,
+             hostPath: 'auth',
+             defaultRedirectUrl: 'protected',
+             background: loginBG,
+       });
+       return Login;
+    },
+    settings: { public: true },
+    childRouters: true,
+ },
+```
+
+`Roboto` fonts. The Roboto `font-family` received some updates. In order to have everything working, you need to update the naming. It's just `Roboto` now, so old variants like `Roboto-Medium`, `Roboto-Light` or `Roboto-Bold` won't work anymore. In order to get the same effect, we suggest you use the available `mixinRobotoFont` function:
+
+```
+import { FontStyle, FontWeight } from '@genesislcap/foundation-utils';
+import { mixinRobotoFont, bodyFont, robotoFontFamily, loadRobotoFontFaces } from '@genesislcap/foundation-zero';
+import { cssPartial } from '@microsoft/fast-element';
+
+/**
+ * Ensure Roboto fonts are loaded in the document head.
+ */
+loadRobotoFontFaces();
+
+/**
+ * Explicitly set the bodyFont to Roboto for overall consistency.
+ */
+bodyFont.withDefault(robotoFontFamily);
+
+/**
+ * Create some roboto tokens to share across components.
+ */
+export const robotoRegular = cssPartial`${mixinRobotoFont(FontStyle.Normal, FontWeight.Regular)}`;
+export const robotoMedium = cssPartial`${mixinRobotoFont(FontStyle.Normal, FontWeight.Medium)}`;
+export const robotoBold = cssPartial`${mixinRobotoFont(FontStyle.Normal, FontWeight.Bold)}`;
+```
+Here are the available `FontStyle` and `FontWeight` values:
+```
+enum FontStyle {
+  Italic = 'italic',
+  Normal = 'normal',
+}
+enum FontWeight {
+  Thin = 100,
+  Light = 300,
+  Regular = 400,
+  Medium = 500,
+  Bold = 700,
+  Black = 900,
+}
+```
