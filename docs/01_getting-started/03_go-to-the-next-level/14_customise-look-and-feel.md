@@ -93,7 +93,7 @@ By default, all elements on screen will use `display: block`, but we can easily 
 </foundation-flex-layout>
 ```
 
-In the [next section](./19_dynamic_layout.md) you'll have the option to add a dynamic layout to replace the current fixed layout.
+In the [next section](./15_dynamic_layout.md) you'll have the option to add a dynamic layout to replace the current fixed layout.
 
 ## Styling other parts of application
 This was only a small part of the platform's capabilities in terms of styling. You can read more about design-system configuration [here](web/design-systems/introduction/).
