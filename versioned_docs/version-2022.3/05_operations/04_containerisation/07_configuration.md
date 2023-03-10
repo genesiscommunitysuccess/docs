@@ -1,5 +1,5 @@
 ---
-title: 'Genesis Containerisation - configutation'
+title: 'Genesis Containerisation - configuration'
 sidebar_label: 'Configuration options'
 id: configuration
 keywords: [operations, containerisation, container, docker, configuration]
