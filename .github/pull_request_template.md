@@ -14,8 +14,11 @@ Is there anything else you would like us to know?
 
 For reference: 
 
-- We have a [contributions guide](https://www.notion.so/genesisglobal/Contributing-new-documentation-75953fb245f246ff872789035451a0c4) 
-- We have a [style guide](https://www.notion.so/genesisglobal/Documentation-style-guide-5b04ec6fe12f4262b90d192effd8059b) 
+- if you are an internal contributor:
+  - We have an [internal contributions guide](https://www.notion.so/genesisglobal/Contributing-new-documentation-75953fb245f246ff872789035451a0c4)
+  - We have a [style guide](https://www.notion.so/genesisglobal/Documentation-style-guide-5b04ec6fe12f4262b90d192effd8059b) 
+- If you are an external contributor:
+  - We have an [external contribution guide](../Type-of-contribution)
 
 **This week's exciting excerpt from the style guide**
 All our headings are in sentence case. For example:
