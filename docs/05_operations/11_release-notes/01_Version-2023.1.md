@@ -213,7 +213,7 @@ This release maps to 10.5.0 of `foundation ui` packages.
  },
 ```
 
-`Roboto` fonts. The Roboto `font-family` received some updates. In order to have everything working, you need to update the naming. It's just `Roboto` now, so old variants like `Roboto-Medium`, `Roboto-Light` or `Roboto-Bold` won't work anymore. In order to get the same effect, we suggest you use the available `mixinRobotoFont` function:
+`Roboto` fonts. The Roboto `font-family` has been updated. In order to have everything working, you need to update the naming. It's just `Roboto` now, so old variants like `Roboto-Medium`, `Roboto-Light` or `Roboto-Bold` won't work anymore. In order to get the same effect, we suggest you use the available `mixinRobotoFont` function:
 
 ```
 import { FontStyle, FontWeight } from '@genesislcap/foundation-utils';
@@ -237,7 +237,7 @@ export const robotoRegular = cssPartial`${mixinRobotoFont(FontStyle.Normal, Font
 export const robotoMedium = cssPartial`${mixinRobotoFont(FontStyle.Normal, FontWeight.Medium)}`;
 export const robotoBold = cssPartial`${mixinRobotoFont(FontStyle.Normal, FontWeight.Bold)}`;
 ```
-Here are the available `FontStyle` and `FontWeight` values:
+Here area the available `FontStyle` and `FontWeight` values:
 ```
 enum FontStyle {
   Italic = 'italic',
@@ -252,3 +252,167 @@ enum FontWeight {
   Black = 900,
 }
 ```
+
+`foundation-login`.To customise login with the available config settings, use the exported configure function. Note: you must be running 6.5.0 of auth and genesis on the back end.
+
+`FontAwesome` icons. The Genesis icon component has received some updates to keep in sync with the latest `FontAwesome` packages. We're now using the same approach as their official [icons library](https://fontawesome.com/docs/apis/javascript/icon-library), allowing the following attributes:
+   - `name` this is the same as before. It must be a valid "icon name" from `FontAwesome`. Note that some of these names have been changed.
+   - `variant` defaults to `FontAwesome`'s `solid` (fas), so you don't need to always specify it (if solid is what you want!). `regular (far) and `brand` (fab) are also available. **Note: `outline` is not valid anymore; for the same style, use the `regular` variant.**
+   - `size` defaults to `FontAwesome`'s `sm` (small, 0.875em/14px). Check [the fontAwesome documentation](https://fontawesome.com/v6/docs/web/style/size) for more size values that can be used in Genesis applications. Here are some examples:
+
+```
+ <zero-icon name="glasses" size="1x"></zero-icon>
+ <zero-icon name="amazon" size="2x" variant="brand"></zero-icon>
+ <zero-icon name="amazon-pay" size="3x" variant="brand"></zero-icon>
+ <zero-icon name="apple" size="4x" variant="brand"></zero-icon>
+ <zero-icon name="chrome" size="5x" variant="brand"></zero-icon>
+ <zero-icon name="ambulance" size="xs"></zero-icon>
+ <zero-icon name="angry" size="1x"></zero-icon>
+ <zero-icon variant="regular" name="angry" size="sm"></zero-icon>
+ <zero-icon name="address-book" size="lg"></zero-icon>
+ <zero-icon variant="regular" name="address-book" size="xl"></zero-icon>
+ <zero-icon name="bookmark" size="2xl;"></zero-icon>
+ <zero-icon variant="regular" name="bookmark" size="2xs"></zero-icon>
+ 
+```
+
+### Commit details
+These are the complete changes.
+
+### New features
+- (foundation-comms): ability to set the storage key prefix 
+- (foundation-layout): add layout preview to gh pages 
+- (foundation-ui): add grid-pro preview to gh pages 
+- Add `seriesField` for multi-line and stacked charts 
+- (foundation-ui): websocket connection status visual indicator
+- Add `data-test-id` attr to action-renderer components
+- (foundation-ui): banner component 
+- (foundation-ui): error banner component 
+- Update to JS-SVG FontAwesome + Roboto upgrades + AG css
+- (foundation-errors): create foundation errors package
+- Add cloneNode implementation for charts and chart-datasource
+- (foundation-errors): using error builder in entity manager 
+- (foundation-errors): creating snackbar component 
+- (foundation-login)!: add CredentialContainer in login-form & use sessionStorage as default and remove deprecated keys 
+- feat! Smart forms 
+- Add a layout item from a previous registration 
+- (g2plot-chart): match charts styling to zeroDS + add donut/stock types 
+- (PTC-618): Improved styling for foundation-layout 
+- (foundation-comms): exponential backoff retry PTC-765 
+- (foundation-layout): add open, close, and init events 
+- (foundation-ui): file upload component 
+- (foundation-layout): update api to make it easier to load existing layouts
+- (foundation-error): error dailog structure
+- (foundation-utils): add decorator, dto mappers and remote ds check
+- (g2plot-chart): charts do not reset hidden fields on reconnect 
+- (foundation-forms): read only mode for smart forms 
+- (foundation-entity-management): enriching edited/read entity with remote data (readEvent, read function)
+- (foundation-layout): multiple copies of registered item are separate instances
+- Allow values along labels in combobox when using datasource 
+- (foundation-ui): error dialog component
+- (foundation-layout): change tiles of windows existing in the layout
+- (foundation-ui): add menu/menu-item components 
+- Allow easy foundation-login background configs
+- (foundation-errors): error handling 
+- (foundation-ui): add dropdown-menu component 
+- (foundation-ui): File upload functionality 
+- (foundation-forms): custom error mapper + client-side validation (AJV) 
+- (foundation-login)!: add forgot password workflow and organisation field 
+- (foundation-ui): data-grid styles 
+- (grid-pro): added gridProColumns 
+- (foundation-forms): invisible fields that carry a payload 
+- (foundation-entity-management): using the new hidden field logic 
+- (foundation-layout): optional autosave layout functionality 
+
+### Fixes
+- Layout Lifecycle Fix for Grids and Charts  
+- (foundation-layout): fix error when adding item to empty layout 
+- Stop closed items being restored when adding new item to layout
+- (foundation-layout): fix layout being altered when adding item
+- Address existing warn logs (bootstrap/GH delivery)
+- Update [require] usages to be imports in date-picker utils 
+- Address breaking use cases of [declare var] globals in comms/zero 
+- Address missing color-scheme for text-fields with date type 
+- Re-sync alpha DS with latest changes on FUI + CLI fixes
+- Address bootstrap warning on serve lib version 
+- (foundation-ui): fix tab and charts in client app by 
+- (foundation-layout): fix missing build step for dist package 
+- Address bootstrap warning on serve lib version 
+- (foundation-comms): redirect to login page if we don't have tokens in storage
+- Update grid-pro .css imports + extras around AG theming/upgrade 
+- (foundation-ui): file upload storybook file adapted to v7
+- (foundation-layout): fix layout styles to contain content 
+- Address invalid logic for orderBy warning 
+- (foundation-header): fixed error in navigation from merge
+- (foundation-layout): add item after dragging a lone item 
+- (foundation-comms): socket retry exceed max limit 
+- Address genesis-datasource issues when inside a layout 
+- Update breaking behavior in genesis-datasource-next 
+- (grid-pro): grid config cache regression 
+- Address missing default export breaking foundation-zero storybook build 
+- Smart forms correct schema payload  address 
+- Showcases/micro-front ends not running locally 
+- Allow to pass column config to file-upload-grid 
+- column config without overriding it by metadata 
+- (foundation-entity-management): lifecycle mixin for entitites.ts and users.ts 
+- (foundation-testing): add insertRule mock 
+- (foundation-ui): adjusting storybook versions 
+- (foundation-login): ensure autoConnect is non-blocking 
+- (foundation-ui): label made optional and fixed grid filtering issue 
+- (foundation-ui): file upload url was missing /gwf prefix. 
+- (foundation-login): add hostPath config 
+- (foundation-login): update README, logout to '/' 
+
+### Chore
+- Improve genx error/help messages  
+- Fixing linting error 
+- Update orderBy param handling with extra logger.warn
+- (grid-pro): included onSortChanged in list of events the save columnState.
+- Fixing stylelint error in zero slider
+- Address bootstrap warning on serve lib version (forms pkg) 
+- Update storybook to V7+ (@next for now)
+- Automated releases
+- Updated automated commit message format 
+- Added design-system-configurator app/package 
+- Enable CI to push version commits to protected branches 
+- (foundation-comms): delete router logic from comms 
+- ensuring PR titles are valid conventional commits 
+- (grid-pro): enableCellFlashing option and - autoCellRendererByType improvement. 
+- Separate Slack channel for Web releases
+- Update CODEOWNERS file 
+- (foundation-header): added part names to logo elements. 
+- Added design-system-export component 
+- Remove username from requests payload 
+- Publishing to public NPM registry 
+- Added designSystemConfigurator helper  
+- Temporarily disabling publishing to NPM 
+- Address versions for storybook packages + delete node_modules
+- api extractor to error when links are unresolved 
+
+### Build
+ Fix pre release step 
+- Update PR template for 2x6
+- Enable deep linking in foundation 
+- Update local development https certs
+- Only trigger NPM publishing during release 
+- Temporarily disabling release string replacement verification 
+- Exclude ag-grid packages 
+
+### Test
+- (foundation-login): E2E testing setup + extras 
+- (foundation-layout): Create testHarness decorator in foundation-testing  
+
+### Documentation
+- Remove Forgot Password and Request Account from foundation-login docs
+- (foundation-layout): add api docs 
+- (foundation-layout): finalised docs 
+- (foundation-layout): mark api as public ready for production use 
+
+
+
+
+
+
+
+
+
