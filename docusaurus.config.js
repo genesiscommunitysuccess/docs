@@ -105,6 +105,9 @@ module.exports = {
           remarkPlugins: [require('mdx-mermaid')],
           includeCurrentVersion: BUILD_NEXT,
           versions: {
+            '2023.1': {
+              'banner': 'none'
+            },            
             '2022.4': {
               'banner': 'none'
             },
