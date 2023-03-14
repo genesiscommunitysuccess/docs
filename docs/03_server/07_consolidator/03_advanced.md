@@ -9,9 +9,60 @@ tags:
   - advanced
 ---
 
-In this page, we look in more detail at the functions that are the building blocks of the select statement in a `Consolidator` specification.
+## Consolidator groups
+Consolidator groups are essential if you are using a non-transaction database (eg. Aerospike).
+
+`groupName` identifies a group of Consolidators. 
+
+```kotlin
+groupName = "_name_"
+```
+
+If you include this statement in your `consolidator` block, then the Consolidator will belong to the named group.
+
+In a non-transaction database (for example, Aerospike), a group is designed to offer consistent consolidation in the absence of ACID guarantees at the database level. Consolidators in the same group will not interfere with each other's calculations as they update - particularly where they output to the same table. 
+
+Note that this is limited to Consolidator updates within a group in a single process. Updates in other groups, other processes or other nodes could still interfere.
+
+Below is an example where we have declared two `consolidator` blocks. Each has `groupName = "ORDER"`, so they are in the same group. The two `consolidator`blocks handle different types of order - but they are aggregated into the same three output tables: `TOTAL_NOTIONAL`, `TOTAL_QUANTITY` and `TRADE_COUNT`.
+
+
+```kotlin
+    consolidator(SWAP_ORDERS, ORDER_SUMMARY) {
+        config {
+            groupName = "ORDER"
+        }
+        
+        select {
+            ORDER_SUMMARY {
+                sum { totalNotional } into TOTAL_NOTIONAL
+                sum { totalQuantity } into TOTAL_QUANTITY
+                sum { tradeCount } into TRADE_COUNT
+            }
+        }
+​
+        groupBy { OrderSummary.byGroupId("${orderDate.year}-${orderDate.monthOfYear}") }
+    }
+    consolidator(FX_ORDERS, ORDER_SUMMARY) {
+        config {
+            groupName = "ORDER"
+        }
+        
+        select {
+            ORDER_SUMMARY {
+                sum { totalNotional } into TOTAL_NOTIONAL
+                sum { totalQuantity } into TOTAL_QUANTITY
+                sum { tradeCount } into TRADE_COUNT
+            }
+        }
+​
+        groupBy { OrderSummary.byGroupId("${orderDate.year}-${orderDate.monthOfYear}") }
+    }
+```	
 
 ## Standard functions
+
+In this section, we look in more detail at the functions that are the building blocks of the select statement in a `Consolidator` specification.
 
 With one exception, all functions require input. 
 
