@@ -143,7 +143,7 @@ There are two types of input for custom functions:
 
 The function in the example above can also be implemented with `usingRow`, as shown below:
 
-```koltin
+```kotlin
 usingRow(DOUBLE) withOperations {
     onJoin { previousValue + input.feeAmount.orZero() }
     onLeave { previousValue - input.feeAmount.orZero() }
