@@ -70,7 +70,7 @@ The exception is `count`, which can either have an input or no input.
 
 The syntax for an input to a GPAL function is `sum { feeAmount }`
 
-Within the curly brackets of the function, you can access all the fields on a row, and you can use any kotlin operation on the row. The function will be applied over the result, unless the result is null, in which case it will be ignored.
+Within the curly brackets of the function, you can access all the fields on a row, and you can use any Kotlin operation on the row. The function will be applied over the result, unless the result is null, in which case it will be ignored.
 
 
 | Function      | Description                               | Input      | Output        | Index Scan    |
