@@ -18,7 +18,11 @@ tags:
 
 ## Installation
 
-The plugin is available from the [jet brains marketplace](https://plugins.jetbrains.com/plugin/21131-genesis-platform-support). You can install it by searching for **Genesis Platform Support** from the plugin section of your IntelliJ settings.
+The plugin is available from the [jet brains marketplace](https://plugins.jetbrains.com/plugin/21131-genesis-platform-support). You can install it by searching for **Genesis Platform Support** from the plugin section of your [IntelliJ settings](https://www.jetbrains.com/help/idea/managing-plugins.html).
+
+After installing **Genesis Platform Support** plugin, make sure you add it to be visible on the [Tool window bars and buttons](https://www.jetbrains.com/help/idea/tool-windows.html#bars_and_buttons).
+
+![Genesis Platform Support on Tool window](/img/genesis-plugin-intellij-toolwindow.png)
 
 ## The Tools window
 
