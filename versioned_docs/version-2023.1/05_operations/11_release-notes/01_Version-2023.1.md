@@ -70,7 +70,7 @@ GSF and its modules are compiled using Kotlin 1.7.10 and Gradle 7.5.0.
 - Check alias store type is SQL to ensure compatibility when using FILE store.
 - Various fixes for SQL operations within custom database schemas.
 - Correctly resolve dictionary when using a custom database schema in SQL.
-- Aliased fields can now be used as part of criteria expressions definitions for dataserver and request reply. 
+- Aliased fields can now be used as part of criteria expressions definitions for Data Server and Request Server. 
 - Sequences are not deleted and recreated during Oracle remap. 
 - Ensure sequences on autoincrement fields are deleted when the relevant tables are deleted (as part of a remap).
 - The issue where the main docker image and the debug docker image would both be named "debug" has been fixed.
@@ -94,8 +94,8 @@ GSF and its modules are compiled using Kotlin 1.7.10 and Gradle 7.5.0.
 - The `Env` helper for Sysdef files has been deprecated.
 - We have renamed `backwardsJoins` to `backwardsJoin` in Data Server GPAL API and deprecate `backwardsJoins`.
 - camel-bom dependency has been upgraded to version 3.18.4 and symphony-bom dependency to version 2.11.1 to avoid critical vulnerabilities.
-- Excessive logging in dataservers has been deprecated.
-- GenesisResourceDaemon script endpoint is now disabled by default to avoid security vulnerabilities.
+- Excessive logging in Data Servers has been deprecated.
+- The GenesisResourceDaemon script endpoint is now disabled by default to avoid security vulnerabilities.
 
 ## Auth
 
@@ -130,7 +130,7 @@ GSF and its modules are compiled using Kotlin 1.7.10 and Gradle 7.5.0.
 This is a high-level overview of the changes.
 
 ### Features
-- The implementation of the `foundation-layout` package has now been completed, providing application- and route-based layout functionality similar to Golden Layout. This includes functionality to autosave layouts. The package has a declarative HTML API, a JavaScript API for dynamic interaction, custom styling, and more.
+- The implementation of the `foundation-layout` package has now been completed, providing application- and route-based layout functionality similar to [Golden Layout](https://golden-layout.com/). This includes functionality to autosave layouts. The package has a declarative HTML API, a JavaScript API for dynamic interaction, custom styling, and more.
 - A `File Upload` component has been added. This provides the ability to upload single or multiple files. It also includes a grid to display the list of uploaded files.
 - `menu` and `menu-item` components have been added.
 - A `dropdown-menu` component has been added.
