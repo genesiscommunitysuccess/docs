@@ -36,7 +36,7 @@ So, what was going on there?
 ## Elements of a Consolidator
 In each `Consolidator` block, you must at least provide:
 
-- a name
+
 - an input table or view
 - an output table
 
@@ -78,6 +78,12 @@ consolidators {
     }
 }
 ```
+It is not mandatory to give your Consolidator a name. If you don't supply a name for the Consolidator, it defaults to:
+
+```kotlin
+${input.name}_TO_${output.name}_CONSOLIDATOR
+```
+
 Now we shall look at each of the possible code blocks in more detail.
 
 ### config block (optional)
