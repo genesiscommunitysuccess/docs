@@ -29,7 +29,7 @@ notify {
             smtpPort = 587
             smtpUser = "notifications@genesis.global"
             smtpPw = ""
-            smtpProtocol = "SMTP_TLS"
+            smtpProtocol = TransportStrategy.SMTP_TLS
             systemDefaultUserName = "Genesis System"
             systemDefaultEmail = "system@genesis.global"
     }
@@ -67,7 +67,7 @@ email(id = "email1") {
 	smtpPort = EMAIL_SMTP_PORT
 	smtpUser = MAIL_SMTP_USER
 	smtpPw = EMAIL_SMTP_PW
-	smtpProtocol = "SMTP_TLS"
+	smtpProtocol = TransportStrategy.SMTP_TLS
 	systemDefaultUserName = EMAIL_SYSTEM_DEFAULT_USER_NAME
 	systemDefaultEmail = EMAIL_SYSTEM_DEFAULT
 }
