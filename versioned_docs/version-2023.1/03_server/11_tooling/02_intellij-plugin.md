@@ -32,6 +32,13 @@ The first thing to set up is the Genesis system definition overrides. These are 
 
 ![Genesis Settings](/img/intellij-settings.png)
 
+:::tip
+A local PostgreSQL installation with user and password equals to `postgres` would have de **DbHost** like below
+```kotlin
+DbHost="jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres"
+```
+:::
+
 ### Initial install
 
 When first using the plugin with a project, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
@@ -89,6 +96,21 @@ To start your Genesis UI, click the Start UI button on the tool bar. This builds
 Once started, this launches a browser tab showing your application's login screen.
 
 ![Debug Window](/img/intellij-ui.png)
+
+:::info
+Please note we are using [GENESIS_ROUTER](../../../server/configuring-runtime/genesis-router/) as our API_HOST and its default port is 9064. Therefore, your API_HOST parameter in **client/web/package.json** should be set as below.
+
+```json {4}
+{
+  ...
+  "config": {
+    "API_HOST": "ws://localhost:9064",
+    ...
+  }
+  ...
+}
+```
+:::
 
 ### Making a change
 

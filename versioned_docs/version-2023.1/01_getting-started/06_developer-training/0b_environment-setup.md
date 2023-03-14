@@ -221,46 +221,26 @@ If you are unsure on what settings to use, please contact your IT support.
 More information [here](https://docs.gradle.org/current/userguide/build_environment.html#sec:accessing_the_web_via_a_proxy).
 :::
 
+### Own database for the training
+
+To do this training, you will need an individual database to create and test the backend changes we are proposing. Please make sure you get a [Database Technology supported by Genesis](../../../database/database-technology/overview/).
+
+:::tip
+You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
+
+```terminal
+docker pull postgres
+docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres
+```
+:::
+
 ## Local server set-up
 
-<!--
-Make sure you have completed the [Workstation setup](#workstation-setup) prior to this.
-
-We are going to set up Windows Subsystem for Linux (WSL 2) to deploy and run the application locally.
-
-You can install everything you need to run WSL by entering this command in an administrator PowerShell or Windows Command Prompt and then restarting your machine.
-```
-wsl --install
-```
-Microsoft provides [documentation on the WSL installation](https://docs.microsoft.com/en-us/windows/wsl/install), if you need it.
-
-Then download the [Genesis WSL training distro](https://genesisglobal.jfrog.io/artifactory/community-uploads/training-wsl.zip). This distro contains everything you need to get started, including:
-Linux CentOS 7 base, Java 11 SDK, genesis user, nginx, FoundationDB.
-
-Now create a local folder where you want to run the distro, e.g., "C:\wsl\distros\training-distro\". Unzip the package downloaded there and from that folder, run:
-```
-wsl --import TrainingCentOS . training-wsl.backup
-```
-
-Run the distro:
-```
-wsl -d TrainingCentOS
-```
-
-You should see this message:
-```bash
-Welcome to Genesis WSL training distro!
-[root@hostname training-distro]#
-```
-:::note
-From now on, whenever you see things like "from the terminal or command line" or "run this command", it means from the WSL Linux instance command line as user 'genesis' ('su genesis').
-:::
--->
 ### Start the project baseline
 
 Clone the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed).
 
-Open the project using your favourite IDE such as IntelliJ or Visual Studio Code.
+Open the project using IntelliJ.
 
 ### Running the back end
 We are going to change the back-end and front-end code, so ideally we should have the server running to make our application work. To do that, we can simply build a Docker image from the project you just cloned.
