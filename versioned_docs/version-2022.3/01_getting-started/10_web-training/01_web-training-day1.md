@@ -273,7 +273,7 @@ This component could be anything, like a custom button or even a business compon
 ### Adding a route to the new component
 Let's add a route pointing to **playground** so we can access it from the menu.
 
-2. Edit file `client\web\src\routes\config.ts` and add **playground** to **allRoutes** and **routes.map** so we'll be able to access playground from the menu:
+1. Edit file `client\web\src\routes\config.ts` and add **playground** to **allRoutes** and **routes.map** so we'll be able to access playground from the menu:
 	```ts {1,5,14} title='config.ts'
 	import { MarketdataComponent } from './playground/playground';
 	...
@@ -439,7 +439,7 @@ const marketdataComponentCSS = css`
 ...
 ```
 
-Add add the **styles** property to the customElement definition so the component will use the style given:
+Add the **styles** property to the customElement definition so the component will use the style given:
 ```typescript {1} title='playground.ts'
 @customElement({name: "marketdata-component", template: myTemplate, styles: marketdataComponentCSS}) // custom element being created
 ...
@@ -638,7 +638,7 @@ Change the logo of the header so it uses this image: `https://icotar.com/avatar/
 
 ##### Navigation items
 
-You can add navigation items can be added to the left-hand side of the navigation bar. For each element, you can set `slot="routes"` attribute, so that navigation is controlled via a `@click` event. The following is a really basic example for adding a 'Home' button:
+You can add navigation items to the left-hand side of the navigation bar. For each element, you can set `slot="routes"` attribute, so that navigation is controlled via a `@click` event. The following is a really basic example for adding a 'Home' button:
 
 ```javascript
 html`
