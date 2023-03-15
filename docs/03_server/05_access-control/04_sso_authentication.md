@@ -31,9 +31,9 @@ These following options are available from within the `security` function. For a
 The `sso` function allows you to configure and enable SSO options. It has the following variables to set:
 
 * `enabled` is a boolean value that defines whether the SSO functionality is enabled. Default: true when the `sso` function is invoked, otherwise false.
-* `onFirstLogin` is a function called the first time when a user has been authenticated and doesn't already exist in the database. Here you can define two things:
-  * How a `User` and its `UserAttributes` will be created from the token after the user has been authenticated by using `createUser` function
-  * The user permissions by using `createUserPermissions`
+* `onFirstLogin` is a function that is called when a user has been authenticated for the first time and doesn't yet exist in the database. Here you can define two things:
+  * how a `User` and its `UserAttributes` will be created from the token after the user has been authenticated using the `createUser` function
+  * which user permissions are allocated using `createUserPermissions`
 * `onLoginSuccess` is a function that is called each time the user gets authenticated. Inside the function you have access to the actual token that was used for authentication and database access.
 * `newUserMode` is now deprecated in favour of `onFirstLogin` and `onLoginSuccess`. This property defines behaviour for processing users the first time they log in with SSO. This can take the values of `NewUserMode.REJECT`, `NewUserMode.CREATE_ENABLED`, `NewUserMode.CREATE_DISABLED`. Default `NewUserMode.REJECT`.
   * In the case of `NewUserMode.REJECT`, when a user logs in for the first time with SSO, if they do not already have a user account, they are rejected.
