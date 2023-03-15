@@ -15,10 +15,11 @@ import CodeBlock from '@theme/CodeBlock';
 
 Single sign-on (SSO) authentication uses the underlying SSO technology. SSO is a mechanism that allows a user to be authenticated against a single system, and use that authenticated id across multiple applications - including those built on the Genesis low-code platform. This has the advantage that a user is required to log in only once, rather than once per system.
 
-There are two different types of SSO authentication presently supported by the Genesis low-code platform. These are as follows:
+There are three different types of SSO authentication presently supported by the Genesis low-code platform. These are as follows:
 
 * [JWT (JSON Web Token)](https://jwt.io/introduction) SSO
-* [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language).
+* [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language)
+* [OpenID Connect](https://openid.net/connect/)
 
 ## Configuring SSO
 
@@ -30,7 +31,11 @@ These following options are available from within the `security` function. For a
 The `sso` function allows you to configure and enable SSO options. It has the following variables to set:
 
 * `enabled` is a boolean value that defines whether the SSO functionality is enabled. Default: true when the `sso` function is invoked, otherwise false.
-* `newUserMode` defines behaviour for processing users the first time they log in with SSO. This can take the values of `NewUserMode.REJECT`, `NewUserMode.CREATE_ENABLED`, `NewUserMode.CREATE_DISABLED`. Default `NewUserMode.REJECT`.
+* `onFirstLogin` is a function that is called when a user has been authenticated for the first time and doesn't yet exist in the database. Here you can define two things:
+  * how a `User` and its `UserAttributes` will be created from the token after the user has been authenticated using the `createUser` function
+  * which user permissions are allocated using `createUserPermissions`
+* `onLoginSuccess` is a function that is called each time the user gets authenticated. Inside the function you have access to the actual token that was used for authentication and database access.
+* `newUserMode` is now deprecated in favour of `onFirstLogin` and `onLoginSuccess`. This property defines behaviour for processing users the first time they log in with SSO. This can take the values of `NewUserMode.REJECT`, `NewUserMode.CREATE_ENABLED`, `NewUserMode.CREATE_DISABLED`. Default `NewUserMode.REJECT`.
   * In the case of `NewUserMode.REJECT`, when a user logs in for the first time with SSO, if they do not already have a user account, they are rejected.
   * In the case of `NewUserMode.CREATE_ENABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, an active account is created for them.
   * In the case of `NewUserMode.CREATE_DISABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, a disabled account is created for them. This will be need to be activated before it can be used.
@@ -46,7 +51,7 @@ The `passwordRetry` function allows you to configure settings for limiting the r
 
 By giving the user a JWT when they authenticate with your identity provider, they can automatically have this identity verified when they attempt to access the application built on the Genesis low-code platform.
 
-By centralising this authentication, you can authorise users access only to the relevant systems using tools like the [Microsoft Azure AD](https://azure.microsoft.com/en-gb/services/active-directory/#overview) component; thus letting you control who you grant access to applications built on the Genesis low-code platform.
+By centralising this authentication, you can authorise the user's access to specific relevant systems (and no others), using tools like the [Microsoft Azure AD](https://azure.microsoft.com/en-gb/services/active-directory/#overview) component. So you have control over who has access to your Genesis applications.
 
 :::note
 
@@ -225,6 +230,22 @@ Additionally, you need a _application-name-_**saml-config.kts** file, as below:
             // optional -> add url parameter to auth request
             modifyRequest { config ->
                 addParameter("PartnerSpId", config.settings.spEntityId)
+            }
+
+            // optional -> called on first user login when the user doesn't exist in the database
+            onFirstLogin {
+              // optional -> should return a User and it UserAttributes from the SamlResponse
+              createUser {}
+
+              // optional -> configures user's permissions
+              createUserPermissions {
+                userProfiles("emp", "trader")
+              }
+            }
+
+            // optional -> called every time after successful authentication. Has access to the database and the SamlResponse returned by the IDP
+            onLoginSuccess {
+            
             }
         }
     }
@@ -488,7 +509,7 @@ Adding `global.genesis.auth.oidc` to the `packages` and `auth-oidc-*.jar` to the
 :::
 
 You can see these additions in the example below:
-```xml
+```xml title='enabling OIDC integration' {6,10}
 <process name="GENESIS_ROUTER">
     <start>true</start>
     <groupId>GENESIS</groupId>
@@ -506,7 +527,7 @@ You can see these additions in the example below:
 If you require JWT validation, you need the following jars on the `classpath` as well - `jjwt-impl-*.jar,jjwt-jackson-*.jar`
 
 Example having the required jars for JWT validation:
-```xml
+```xml title='enabling JWT validation' {10}
 <process name="GENESIS_ROUTER">
     <start>true</start>
     <groupId>GENESIS</groupId>
@@ -536,10 +557,12 @@ Each `identityProvider` configuration has the following properties:
 | config | Holds the endpoint and verification configuration for the OIDC provider | Yes if `remoteConfig` is not present | No default value | Object |
 | remoteConfig | If the OIDC provider has the configuration endpoint `remoteConfig`, this can be used to point to that endpoint for automatic `endpoint` and `verfication` configuration | Yes if `config` is not present | No default value | Object |
 | scopes | Requested scopes on authorization | No | `openid profile email` | Set |
-| onNewUser | Predefined action when a new user logs in | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
+| onNewUser | Predefined action when a new user logs in. This property is now deprecated in favour of `onFirstLogin` and `onLoginSuccess` | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
 | usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
 | tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | Yes | No default value | Int |
 | redirectUri | The URI to handle the code authorization. | Yes | No default value | String |
+| onFirstLogin | Configuration for creating `User` and its `UserAttributes`. It's called on first successful login when the user doesn't exist in the database. | No | No default value | Object |
+| onLoginSuccess | Callback that is invoked every time after successful authentication. It has access to the database and the `DecodedIdToken` returned by the OIDC Provider | No | No default value | Object |
 
 Each `config` configuration has the following properties:
 
@@ -562,6 +585,13 @@ Each `client` configuration has the following properties:
 | --- | ------ | --- | --- | --- |
 | id | The client id provided by the OIDC Provider when application was registered | Yes | No default value | String |
 | secret | The client secret provided by the OIDC Provider when application was registered | Yes | No default value | String |
+
+Each `onFirstLogin` has the following properties:
+
+| Property name | Description | Mandatory | Default value | Type |
+| --- | ------ | --- | --- | --- |
+| createUser | Returns `User` and `UserAttributes` from the `DecodedIdToken` returned by the OIDC Proider | No | No default value | Object |
+| createUserPermissions | Configuration for user permissions | No | No default value | Object |
 
 Each `endpoints` configuration has the following properties:
 
@@ -791,7 +821,7 @@ oidc{
 }
 ```
 
-### Minimal remote configuration
+#### Minimal remote configuration
 
 ```kotlin
 oidc{
@@ -813,7 +843,7 @@ oidc{
 }
 ```
 
-### Full configuration
+#### Full configuration
 
 ```kotlin
 oidc{
@@ -844,6 +874,22 @@ oidc{
     tokenLifeInSeconds = 5000
 
     redirectUri = "http://genesis-uat-host/gwf/logon"
+
+    onFirstLogin {
+        createUser {
+            User{
+              userName = idToken.subject
+            } to userAttributes
+        }
+
+        createUserPermissions {
+            userProfiles("emp", "genesis")
+        }
+    }
+
+    onLoginSuccess { 
+
+    }
   }
 }
 ```

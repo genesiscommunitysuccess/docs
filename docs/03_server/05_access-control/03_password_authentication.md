@@ -65,6 +65,9 @@ The following variables are used to configure an LDAP connection; these are only
     * using the `cn` attribute (Common Name)
     * using the `sAMAccountName` in Windows
 * `bypassLoginInternalAuth` this is a boolean flag that prevents internal authorisation checks on login
+* `onFirstLogin` is a function that is called the first time a user has been authenticated who doesn't already exist in the database. Here you can define two things:
+  * how the `User` and its `UserAttributes` will be created from the token after the user has been authenticated using the `createUser` function
+  * which user permissions are allocated using `createUserPermissions`
 * `onLoginSuccess` this is a function which is invoked on a successful LDAP login, for example: it allows you to insert a user into the db when it exists in LDAP but not the database.
 * `useTLS` this is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
 
