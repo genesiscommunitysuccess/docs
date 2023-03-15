@@ -100,7 +100,7 @@ The **server** folder follows the same structure. This contains all the server-s
 ## 2. Define the data model
 Now you are ready to define the fields and tables that make up your [data model](../../../database/fields-tables-views/fields-tables-views/). This structures information in a simple way that can be viewed by users and processed by the application.
 
-Open IntelliJ (or your chosen IDE) and open the alpha project (the devtraining-seed you cloned). After importing and indexing, you should see the files and project structure ready.
+Open IntelliJ and open the alpha project (the devtraining-seed you cloned). After importing and indexing, you should see the files and project structure ready.
 
 ### Add fields
 You define your [fields](../../../database/fields-tables-views/fields/) in the file **alpha-fields-dictionary.kts**.
@@ -130,29 +130,6 @@ fields {
 }
 ```
 
-After you have saved this file, run [genesis-generated-fields](../../../database/fields-tables-views/genesisDao/).
-
-### generateFields
-
-From the Gradle menu on the right of Intellij, this is:
-
- **genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-fields**/**Tasks**/**genesis**/**generateFields**
-
-![](/img/build-gradle-kts-fields.png)
-
-Alternatively, if you can't run the command from your IDE, you can run the Gradle tasks from the command line. Make sure to open your terminal and cd into **../server/jvm** to run them.
-
-```shell title='Running generateFields from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-fields:generateFields
-```
-
-:::note Why do I have to run this Gradle task?
-
-You are editing a kts file that needs to be compiled and built to be used from other places. In this case, we want the fields to be available to the tables (and with intellisense support from the IDE).
-
-As we go, you'll see we have different Gradle tasks, depending on the artifact we want to build.
-:::
-
 ### Add a table
 Now we have our fields, let's define a [table](../../../database/fields-tables-views/tables/) in the file **alpha-tables-dictionary.kts**.
 
@@ -177,23 +154,6 @@ tables {
     
 }
 ```
-
-After you have saved this file, run [genesis-generated-dao](../../../database/fields-tables-views/genesisDao/).
-
-### generateDao
-
-From the Gradle menu, this is:
-
-**genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDao**
-
-![](/img/build-gradle-kts-generated-dao.png)
-
-
-```shell title='Running generateDAO from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-dao:generateDao
-```
-
-After running it, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
 
 ## 3. Add business logic
 We have a table; now we want to be able to see its content and create new entries.
@@ -274,87 +234,60 @@ Add the following content to the **alpha-service-definitions.xml** file.
 ```
 
 Please see [here](../../../server/configuring-runtime/processes/) for a detailed description of the processes configuration.
-<!-- ADD THIS DO DAY 5 AS AN EXERCISE
-#### Overriding default configurations
-You can override the standard definitions using the site-specific folder located at **..\alpha\server\jvm\alpha-site-specific\src\main\resources\cfg\**
-
-Once deployed on the server, the files from that folder are installed in the runtime folder under a sub-folder called **site-specific**. This is an area of the run directory, i.e. the Platform installation directory, where you can override the standard definitions found elsewhere in the application. You supply the standard definition name and your own definition. Your application will then only use your definition.
-
-This is useful where you have used standard modules such as Auth, FIX or even the Genesis distribution itself; you should never change these modules. Any files or definitions that are listed in the site-specific area automatically take their places. In our case, the **genesis-system-definition.kts** must be edited to use postgres database engine instead of the default one (FDB) as follows: 
-
-```kotlin
-...
-item(name = "DbLayer", value = "SQL")
-...
-item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=docker")
-
-```
-:::tip
-If you wanted to add application-specific definitions, such as an API_KEY, you'd have to edit **..\server\jvm\alpha-config\src\main\resources\cfg\alpha-system-definition.kts**
-:::
--->
 
 ## 5. The build and deploy process
 
 Finally, you can build and deploy the server.
 
-The seed application includes the Dockerfiles you need; these build and deploy images of the **front end** and **back end** of the Genesis application. After assembling the application, you can run these images with the following  commands:
+### Build
 
-Usage:
-```shell title="Intellij terminal"
-./gradlew assemble
-docker-compose build
-docker-compose up -d
-```
+The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files so it can propagate the correct changes into the area processes will read the files from the Genesis process respectively. You can run genesisInstall using the Genesis IntelliJ Plugin as shown below. 
 
-:::tip
-If you are experiencing any issues with the docker build, you can temporarily disable BuildKit to debug it properly.
+![Genesis Install](/img/intellij-genesisInstall.png)
 
-```shell
-$env:DOCKER_BUILDKIT = 0
-```
-:::
+Apart from the genesisInstall, if the changes affect the Database schema (i.e. *-dictionary.kts file changes)  we would need to run [remap script](../../../operations/commands/server-commands/#remap-script) as well. This is because it implies updates to the Database Access Objects (DAOs) will need to be rebuilt. You can also run remap using the Genesis IntelliJ Plugin as shown below. 
+
+![Genesis Install](/img/intellij-remap.png)
+
+### Deploy
+
+As soon as the Build is done, you can apply the changes and run the Genesis processes again using the Genesis IntelliJ Plugin.
+
+According to the [instructions](../../../server/tooling/intellij-plugin/#making-a-change), follow the four steps:
+
+1. Click on the **Deploy Genesis** button on the toolbar.
+
+![Deploy](/img/intellij-deploy1.png)
+
+2. Rebuilding the application requires the Genesis processes to be stopped. When you are prompted for this, click **ok** to continue. 
+
+![Deploy Prompt](/img/intellij-deploy2.png)
+
+This starts the build processes and the logs will be shown below.
+
+![Deploy logs](/img/intellij-deploy3.png)
+
+3. Once the build is successful, you’ll be asked to start the Resource daemon again:
+
+![Genesis Install](/img/intellij-daemon.png)
+
+4. Once the Resource daemon starts, you can start the processes you wish to have running.
 
 ### User name and password
-Building and using Docker from the repo you [cloned](https://github.com/genesiscommunitysuccess/devtraining-seed), by default the following will be your login details:
+Using the repo you [cloned](https://github.com/genesiscommunitysuccess/devtraining-seed), by default the following will be your login details:
 
 - Username: JaneDee
 - Password: beONneON*74 (This is encrypted in the user.csv file.)
 
+However, after the first Build and Deploy, you got to add the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin as [explained](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
 
-### Running server commands
-:::info can I run server commands from the command line rather than gradle tasks?
-Yes. We've been running server commands through the Gradle tasks. Alternatively, you can run server commands directly from a command line. 
+To do that find the **USER.csv** file (it is inside the *server/jvm/alpha-site-specific/src/main/resources/data* folder), right click **USER.csv**, and then click on `Import CSV(s) to Genesis` as the image below.
 
-Open the gsf docker container terminal as explained [here](../../../getting-started/developer-training/environment-setup/#attaching-a-terminal-to-a-docker-container), and you can have access to the Genesis commands:
+![Genesis Install](/img/intellij-sendIt-USERcsv.png)
 
-```shell
-su alpha
-DbMon
-```
-
-Try it now using the [mon](../../../operations/commands/server-commands/#mon-script)! We should see something like this
-
-```shell
-PID     Process Name                  Port        Status         CPU       Memory    Message
-===============================================================================================
-426     GENESIS_AUTH_CONSOLIDATOR     8005        STANDBY        36.30     1.30
-350     GENESIS_AUTH_DATASERVER       8002        RUNNING        56.70     1.70
-334     GENESIS_AUTH_MANAGER          8001        RUNNING        61.50     1.70
-368     GENESIS_AUTH_PERMS            8003        RUNNING        65.70     1.90
-403     GENESIS_AUTH_REQUEST_SERVER   8004        RUNNING        56.80     1.60
-490     GENESIS_CLUSTER               9000        RUNNING        84.30     2.50
-570     GENESIS_ROUTER                9017        RUNNING        54.70     2.00
-534     GENESIS_WEBMON                9011        RUNNING        51.30     2.50
-===============================================================================================
-664     ALPHA_DATASERVER              11000       RUNNING        58.10     1.50
-703     ALPHA_EVENT_HANDLER           11001       RUNNING        71.30     2.20
-```
-:::
-
+Behind the scenes, the plugin option `Import CSV(s) to Genesis` uses the [SendIt script](../../../operations/commands/server-commands/#sendit-script) to load data into application.
 
 ## Testing the back end
-
 
 There are multiple ways you can test the back end of your application. It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as HTTP endpoints automatically by the Genesis low-code platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. 
 

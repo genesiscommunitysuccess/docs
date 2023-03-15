@@ -9,6 +9,8 @@ tags:
   - code snippets
 ---
 
+The Genesis Intellij plugin allows developers to run the full stack of a Genesis application locally within IntelliJ, in order to better test their development work.
+
 ## Prerequisites
 
  - Genesis Project using server version 6.5.0 or later
