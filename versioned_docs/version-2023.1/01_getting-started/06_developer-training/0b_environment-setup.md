@@ -17,9 +17,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## Setting up your workstation and a local server
-
-### Workstation set-up
+## Workstation set-up
 
 Please follow these instructions very carefully to ensure your environment is ready for a productive training. It's not necessary to have admin rights on your workstation to develop with the Genesis low-code platform, but you might have to check with your System Administrator how to install the required third-party software listed here.
 
@@ -223,7 +221,7 @@ More information [here](https://docs.gradle.org/current/userguide/build_environm
 
 ### Own database for the training
 
-To do this training, you will need an individual database to create and test the backend changes we are proposing. Please make sure you get a [Database Technology supported by Genesis](../../../database/database-technology/overview/).
+To do this training, you will need an individual database to create and test the backend changes we are proposing. Please make sure you get a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
 
 :::tip
 You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
@@ -234,49 +232,21 @@ docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POST
 ```
 :::
 
-## Local server set-up
+## Training requirements set-up
 
 ### Start the project baseline
 
-Clone the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed).
+Clone the Developer Training starting repo from [here](https://github.com/genesiscommunitysuccess/devtraining-seed), and open it using IntelliJ.
 
-Open the project using IntelliJ.
 
-### Running the back end
-We are going to change the back-end and front-end code, so ideally we should have the server running to make our application work. To do that, we can simply build a Docker image from the project you just cloned.
+### Running the back and front end
+We are going to change the back-end and front-end code, so ideally we should have the server running to make our application work. 
 
-You must have Docker installed and running on your workstation.
+To do that, we will use the [IntelliJ plugin](../../../server/tooling/intellij-plugin/) provided by Genesis. So, first step is installing the plugin following the [instructions here](../../../server/tooling/intellij-plugin/#installation). Then, have a look at the [Tools window installed](../../../server/tooling/intellij-plugin/#the-tools-window) to understand it and do the configurations asked.
 
-### Building the docker images
-From the root directory of the project, run:
-```shell
-./gradlew assemble
-docker-compose build
-docker-compose up -d
-```
+As soon as everything is done and you are ok about the Intellij plugin, double-check if you can see the processes running properly as [explained](../../../server/tooling/intellij-plugin/#starting-processes). You must see all processes up and running or in standby mode.
 
-Check on your Docker dashboard if you have the containers **gsf** and **nginx** running.
-
-### Attaching a terminal to a Docker container
-
-Attaching a terminal to a docker container is as easy as running:
-
-```shell
-docker exec -it gsf bash
-```
-
-Now try logging in as **alpha** and running `mon` to monitor the platform services.
-```shell
-su - alpha
-
-mon
-```
-
-:::tip
-Alternatively, you can use Docker Desktop Integrated Terminal for the Containers you just created as explained [here](https://www.docker.com/blog/integrated-terminal-for-running-containers-extended-integration-with-containerd-and-more-in-docker-desktop-4-12/).
-:::
-
-You must see all processes up and running or in standby mode.
+Lastly, confirm if you can get the [UI started](../../../server/tooling/intellij-plugin/#starting-the-ui) properly showing the login page as below. The application will open at `http://localhost:6060/login`.
+![](/img/btfe--positions-example--login.png)
 
 You are good to go!
-
