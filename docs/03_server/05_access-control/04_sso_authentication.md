@@ -51,7 +51,7 @@ The `passwordRetry` function allows you to configure settings for limiting the r
 
 By giving the user a JWT when they authenticate with your identity provider, they can automatically have this identity verified when they attempt to access the application built on the Genesis low-code platform.
 
-By centralising this authentication, you can authorise users access only to the relevant systems using tools like the [Microsoft Azure AD](https://azure.microsoft.com/en-gb/services/active-directory/#overview) component; thus letting you control who you grant access to applications built on the Genesis low-code platform.
+By centralising this authentication, you can authorise the user's access to specific relevant systems (and no others), using tools like the [Microsoft Azure AD](https://azure.microsoft.com/en-gb/services/active-directory/#overview) component. So you have control over who has access to your Genesis applications.
 
 :::note
 
