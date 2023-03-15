@@ -18,7 +18,7 @@ The basis of this version is:
 | part of stack | version | 
 |---------------|---------|
 | server        | 6.5.1   |  
-| web           | 6.0.0   |   
+| web           | 10.5.0  |   
 
 Release date: February 28, 2023. 
 
@@ -294,11 +294,11 @@ These are the complete changes.
 - (foundation-errors): using error builder in entity manager 
 - (foundation-errors): creating snackbar component 
 - (foundation-login)!: add CredentialContainer in login-form & use sessionStorage as default and remove deprecated keys 
-- feat! Smart forms 
+- Smart forms 
 - Add a layout item from a previous registration 
 - (g2plot-chart): match charts styling to zeroDS + add donut/stock types 
-- (PTC-618): Improved styling for foundation-layout 
-- (foundation-comms): exponential backoff retry PTC-765 
+- Improved styling for foundation-layout 
+- (foundation-comms): exponential backoff retry  
 - (foundation-layout): add open, close, and init events 
 - (foundation-ui): file upload component 
 - (foundation-layout): update api to make it easier to load existing layouts
