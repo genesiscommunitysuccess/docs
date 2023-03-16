@@ -402,6 +402,10 @@ We want to allow a user to view an account if one of the following is true:
 * The user is a sales officer, and is the sales officer for the given account
 * The user is an asset manager, and is the asset manager for the given account.
 
+Currently there are two ways to configure such permissioning - using [Groovy and XML](#dynamic-permissioning-with-groovy-and-xml) or through [GPAL](#dynamic-permissioning-with-gpal)
+
+### Dynamic permissioning with Groovy and XML
+
 The first thing we want to do is find out what type of user we're dealing with. We do this by checking the `TAG` table, and getting the `PERSON_TYPE` record for the given user. We can wrap this logic into a simple function and place it into the `preExpression` block:
 
 ```groovy
@@ -507,7 +511,7 @@ As mentioned above, we will also refresh when either the `ENTITY`, `USER` or `US
 The `user` handle readily available will contain all fields and their values from the `USER` and `USER_ATTRIBUTES` tables, meaning if you add a custom string field `FOO` to `USER_ATTRIBUTES`, `user.getString("FOO")` can be used to access it.)
 :::
 
-### Full example file
+#### Full example file
 ```groovy
 <dynamicPermissions>
 
@@ -595,10 +599,40 @@ The `user` handle readily available will contain all fields and their values fro
 </dynamicPermissions>
 ```
 
+### Dynamic permissioning with GPAL
 
-## Defining a permission rule
+The first thing we want to do is find out what type of user we're dealing with. We do this by checking the `TAG` table, and getting the `PERSON_TYPE` record for the given user. After that we check whether the user is sales officer or asset manager and then we check for a match on the username:
 
-All permission rules are held in the file **auth-permissions.xml**.  In this file, you define rules against a specific entity, and each entity is defined against a database table.
+```kotlin
+dynamicPermissions {
+    entity(ACCOUNT) {
+        maxEntries = 10000
+        batchingPeriod = 15
+        expression {
+            var allowed = false
+            val username = user.userName
+
+            val tagRec = entityDb.get(Tag.byCodeEntityId("PERSON_TYPE", username))
+            val entityType = tagRec?.tagValue
+
+            if (entityType == "SALES_OFFICE" && entity.officeId == username) {
+                allowed = true
+            }
+
+            if (entityType == "ASSET_MANAGER" && entity.assetManagerId == username) {
+                allowed = true
+            }
+
+            allowed
+        }
+    }
+}
+```
+
+
+## Defining a permission rule using Groovy and XML
+
+All permission rules are held in the **auth-permissions.xml** file.  In this file, you define rules against a specific entity, and each entity is defined against a database table.
 
 We have a `preExpression` block inside our file, which is applied to all entities. This makes the definition `isUserEnabled` available to all entities.
 
@@ -631,7 +665,7 @@ You must define an entity block for every entity you want to authorise.  Each bl
 | averageUsers         | Average number of users on the system. This setting helps to fine-tune the backing data structure for the authorisation map.                                                                                  | No. Default = 1,000                    |
 | updateOn             | Custom logic to trigger authorisation updates in specific scenarios. When tables defined in this section are modified, the authorisation map is refreshed following the configuration logic. See the example. | No                                     |
 
-### Data server snippet
+### Data Server snippet
 ```kotlin
 dataServer {
 
@@ -645,7 +679,7 @@ dataServer {
 }
 ```
 
-### Request server snippet
+### Request Server snippet
 ```kotlin
 requestReplies {
 
@@ -653,6 +687,88 @@ requestReplies {
     permissioning {
       auth(mapName = "ENTITY_VISIBILITY") {
         FUND.FUND_ID
+      }
+    }
+  }
+}
+```
+
+## Defining a permission rule using GPAL
+
+Permission rules can be held in GPAL files as well. GPAL permission files must have the suffix **auth-permissions.kts**.  In this file, you define rules against a specific entity. Each entity is defined against a database table or view.
+
+You must define an entity block for every entity you want to authorise.  Each block can have the following attributes:
+
+| Name | Description | Mandatory |
+| --- | --- | --- |
+| name | The name of the entity you want to authorise. | No. Default value is the name of the Table or the View |
+| maxEntries | The maximum number of entries that the authorisation map will contain. | Yes |
+| batchingPeriod | Period in seconds to batch records before processing | Yes  |
+| idField | Field(s) to use for keying internal collection (should be unique) | No. Default value is the primary key for the entity |
+| averageUserNameChars | Average number of characters in each username. This setting helps to fine-tune the backing data structure for the authorisation map. | No. Default = 7 |
+| averageEntityChars   | Average number of characters of each entity. This setting helps to fine-tune the backing data structure for the authorisation map. | No. Default = 20 |
+| averageUsers | Average number of users on the system. This setting helps to fine-tune the backing data structure for the authorisation map. | No. Default = 1,000 |
+| expression | Function that calculates whether an entity can be accessed by a user. The result is either `true` or `false` | Yes |
+
+Each `expression` has the following properties and should return either `true` or `false` based on whether the `user` can access the `entity`:
+
+| Name | Description |
+| --- | --- |
+| entityDb | Read only access to the database if additional data query is required. **Note:** Keep in mind that the expression is called on each data update and querying the database each time will result in performance hit. Better approach would be to define a View that joins all the Tables with relevant data|
+| entity | The entity to be evaluated for access |
+| user | The user to be evaluated for access to the `entity`  |
+| entityId | The value calculated based on the specified `idField` |
+
+
+### GPAL Auth permissions snippet
+```kotlin
+dynamicPermissions {
+    entity(POSITION_VIEW) {
+        averageEntityChars = 15
+        averageUserNameChars = 10
+        averageUsers = 10000
+        maxEntries = 10000
+        batchingPeriod = 15
+        idField = listOf("INSTRUMENT_ID") //Specifying custom field to be used as cache key instead of using the fields from the primary key
+        backwardsJoins = true
+        expression {
+            entity.companyId == user.companyId
+        }
+    }
+    entity(TRADE_TABLE) {
+        name = "INNER_TRADES" //Specifying custom entity name instead of using the name of the TRADE_TABLE
+        averageEntityChars = 150
+        averageUserNameChars = 100
+        averageUsers = 100000
+        maxEntries = 100000
+        batchingPeriod = 150
+        expression {
+            entity.allowedTraders.contains(user.userName)
+        }
+    }
+}
+```
+
+### Data server snippet
+```kotlin
+dataServer {
+  query(POSITION_VIEW) {
+    permissioning {
+      auth(mapName = "POSITION_VIEW") { 
+        POSITION_VIEW.INSTRUMENT_ID
+      }
+    }
+  }
+}
+```
+
+### Request Server snippet
+```kotlin
+requestReplies {
+  requestReply(TRADE_TABLE) {
+    permissioning {
+      auth(mapName = "INNER_TRADES") {
+        TRADE_TABLE.TRADE_ID
       }
     }
   }
