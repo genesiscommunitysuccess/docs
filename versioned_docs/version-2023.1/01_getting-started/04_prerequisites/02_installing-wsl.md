@@ -209,7 +209,7 @@ To use H2, use this JDBC URL, substituting your own path name:
 jdbc:h2:file:~/run/path/to/h2;AUTO_SERVER=TRUE
 ```
 
-In your system configuration, set `DbLayer=SQL`, `DictionarySource=FILE` and `DbQuotedIdentifiers=true`.
+In your **genesis-system-definition.kts**, set `DbLayer=SQL`, `DictionarySource=FILE` and `DbQuotedIdentifiers=true`.
 
 ### Running Aerospike from Docker
 
@@ -300,6 +300,8 @@ To connect, use this JDBC URL:
 jdbc:postgresql://localhost:5432/?user=postgres&password=docker
 ```
 
+In your **genesis-system-definition.kts** file, set `DbLayer=SQL` and set `DbHost` with above JDBC URL
+
 ### Running MSSQL from Docker
 Run the following Docker command:
 
@@ -315,3 +317,5 @@ To connect, use this JDBC URL:
 ```none title="CentOS"
 jdbc:sqlserver://localhost:1433;trustServerCertificate=true;database=master;user=sa;password=Docker@111
 ```
+
+In your **genesis-system-definition.kts** file, set `DbLayer=SQL` and set `DbHost` with above JDBC URL
