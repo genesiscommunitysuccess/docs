@@ -129,6 +129,28 @@ fields {
 
 }
 ```
+After you have saved this file, run [genesis-generated-fields](../../../database/fields-tables-views/genesisDao/) as will be explained next.
+
+### generateFields
+
+From the Gradle menu on the right of Intellij, this is:
+
+ **genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-fields**/**Tasks**/**genesis**/**generateFields**
+
+![](/img/build-gradle-kts-fields.png)
+
+Alternatively, if you can't run it from your IDE, you can run the Gradle tasks from the command line. Make sure to open your terminal and cd into **../server/jvm** to run them.
+
+```shell title='Running generateFields from the command line'
+./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-fields:generateFields
+```
+
+:::note Why do I have to run this Gradle task?
+
+You are editing a kts file that needs to be compiled and built to be used from other places. In this case, we want the fields to be available to the tables (and with intellisense support from the IDE).
+
+As we go, you'll see we have different Gradle tasks, depending on the artifact we want to build.
+:::
 
 ### Add a table
 Now we have our fields, let's define a [table](../../../database/fields-tables-views/tables/) in the file **alpha-tables-dictionary.kts**.
@@ -154,6 +176,23 @@ tables {
     
 }
 ```
+
+After you have saved this file, run [genesis-generated-dao](../../../database/fields-tables-views/genesisDao/) as will be explained next.
+
+### generateDao
+
+From the Gradle menu, this is:
+
+**genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDao**
+
+![](/img/build-gradle-kts-generated-dao.png)
+
+
+```shell title='Running generateDAO from the command line'
+./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-dao:generateDao
+```
+
+After running it, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
 
 ## 3. Add business logic
 We have a table; now we want to be able to see its content and create new entries.
@@ -240,6 +279,16 @@ Please see [here](../../../server/configuring-runtime/processes/) for a detailed
 Finally, you can build and deploy the server.
 
 ### Build
+
+In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**Tasks**/**build/assemble**.
+
+![](/img/assemble-server.png)
+
+```shell title='Running assemble from the command line'
+./gradlew :genesisproduct-alpha:assemble
+```
+
+After the Gradle task, there are two scripts (genesisInstall and remap) you can run using the Genesis IntelliJ Plugin explained next.
 
 The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files so it can propagate the correct changes into the area processes will read the files from the Genesis process respectively. You can run genesisInstall using the Genesis IntelliJ Plugin as shown below. 
 
