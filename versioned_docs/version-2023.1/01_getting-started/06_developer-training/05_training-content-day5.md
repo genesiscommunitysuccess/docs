@@ -87,12 +87,11 @@ Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside y
 
 Run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) to verify that the new process works as expected.
 
-Run [mon](../../../operations/commands/server-commands/#mon-script). You should be able to see the process is present, but on `Standby`.
-![](/img/standbysmall-alpha.png)
+Double check your [Resource daemon](../../../server/tooling/intellij-plugin/#resource-daemon) using the Genesis IntelliJ plugin. You should be able to see the ALPHA_EVALUATOR process is present, but on `Standby`.
 
 This is because the Evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the Primary node.
 
-Run [SetPrimary](../../../operations/clustering/genesis/#set-the-primary-node) and you should be able to see all processes running.
+Run [SetPrimary](../../../operations/clustering/genesis/#set-the-primary-node) script as explained [here](../../../server/tooling/intellij-plugin/#running-a-genesis-script) and you should be able to see all processes running.
 
 #### 2. Create a new class
 When the evaluator is running, create a PositionReport class to trigger the new event. This class should be created inside your project folder **server/jvm/alpha-messages/src/main/kotlin/global/genesis/alpha/message/event** as the code below.
@@ -146,28 +145,20 @@ eventHandler {
 #### 4.Load the cron rule on to the database
 Load the cron rule csv below into the database, [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) Table.
 
-Run `SendIt`.
-
+Create a new file in the same folder *USER.csv* is and name it as CRON_RULE.csv. Copy the content below into the file you just created.
 ```csv
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
 "0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
+Then import the local csv using the Genesis plugin as we saw [here](../../../getting-started/developer-training/training-content-day1/#user-name-and-password).
 
 #### 5.Change the log level to verify the execution of the events
-To do this, run the [LogLevel](../../../operations/commands/server-commands/#loglevel-script) command:
-
+To do this, run the [LogLevel](../../../operations/commands/server-commands/#loglevel-script) script as explained [here](../../../server/tooling/intellij-plugin/#running-a-genesis-script) setting the parameter as below.
 ```shell
-LogLevel -p ALPHA_EVALUATOR -DATADUMP_ON -l DEBUG
+-p ALPHA_EVALUATOR -DATADUMP_ON -l DEBUG
 ```
 
-And then to see the logs run:
-```shell
-cd $L
-tail -f ALPHA_EVALUATOR.log
-```
-:::info What is $L?
-$L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Feel free to use your favourite command to view logs such as tail, less etc.
-:::
+To check the logs, you can go to *your-app-folder*/**devtraining-alpha/.genesis-home/runtime/logs**. There you will find all Genesis processes logs you are locally running.
 
 <!-- ### Dynamic rules
 
