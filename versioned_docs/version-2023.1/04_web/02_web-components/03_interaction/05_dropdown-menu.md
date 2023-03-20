@@ -9,9 +9,9 @@ tags:
   - dropdown menu
 ---
 
-`Dropdownmenu` extends `foundationElement`
+`Dropdownmenu` extends `foundationElement`.
 
-A dropdown menu is a toggleable menu where users are allowed to choose one of its pre-defined items.
+A dropdown menu is only displayed when a user clicks to display it; the user can then choose one of its pre-defined items or click outside the menu to remove it.
 
 ## Set-up
 
@@ -27,7 +27,7 @@ provideDesignSystem().register(zeroDropdowMmenu());
 
 ## Usage
 
-To define its menu items, you should use the property `items` as it is shown below.
+To define its menu items, define the property `items`, as shown below.
 
 ```typescript
 export type DropdownMenuItem = {
