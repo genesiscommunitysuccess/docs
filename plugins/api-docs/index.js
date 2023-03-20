@@ -24,7 +24,15 @@ function cleanseMarkdownContent(input) {
 }
 
 async function createApiDoc(inputFile, outputFile) {
-  const content = await fs.readFile(inputFile, { encoding: "utf8" });
+  let content = await fs.readFile(inputFile, { encoding: "utf8" });
+  if (path.basename(outputFile) === "index.md") {
+    content =
+      (await fs.readFile("./plugins/api-docs/api-preamble.md", {
+        encoding: "utf8",
+      })) +
+      "\n" +
+      content;
+  }
   return fs.writeFile(outputFile, cleanseMarkdownContent(content));
 }
 
