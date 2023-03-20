@@ -11,7 +11,7 @@ tags:
 
 `Dropdownmenu` extends `foundationElement`.
 
-A dropdown menu is only displayed when a user clicks to display it; the user can then choose one of its pre-defined items or click outside the menu to remove it.
+The items in a dropdown menu are only displayed when a user clicks to view them; the user can then choose one of the pre-defined items or click outside the menu to remove the items from the display.
 
 ## Set-up
 
@@ -27,7 +27,7 @@ provideDesignSystem().register(zeroDropdowMmenu());
 
 ## Usage
 
-To define its menu items, define the property `items`, as shown below.
+To define the menu items, specify the property `items`, as shown below.
 
 ```typescript
 export type DropdownMenuItem = {
@@ -96,7 +96,8 @@ Below you see the description of each property and its possible values:
   </tbody>
 </table>
 
-here is an example of how to set up a `zero-dropdown-menu` with some subitems attached
+## Subitems
+Here is an example of how to set up a `zero-dropdown-menu` with some subitems attached:
 
 ### 1. Create the structure of the dropdown menu
 
@@ -104,7 +105,7 @@ here is an example of how to set up a `zero-dropdown-menu` with some subitems at
 <zero-dropdown-menu></zero-dropdown-menu>
 ```
 
-### 2. Write de codeblock which will create the subitems
+### 2. Write the codeblock that will create the subitems. In this example, menu item 3 has a submenu, which itself has two further submenus.
 
 ```ts
 const zeroDropdownMenu = document.querySelector('zero-dropdown-menu');
@@ -175,7 +176,7 @@ const showcaseDropdown = [
 ];
 ```
 
-With these 2 samples of code, you are ready to use the dropdown menu.
+With these two samples of code, you are ready to use the dropdown menu.
 
 ## Additional resources
 
