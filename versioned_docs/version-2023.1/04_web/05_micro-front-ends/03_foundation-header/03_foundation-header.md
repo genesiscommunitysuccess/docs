@@ -15,7 +15,7 @@ tags:
 
 # Foundation-Header
 
-[API](./docs/api/index.md)
+Our [API](./docs/api) documentation is separate. Click on the link if you want to view it.
 
 ## Introduction
 
