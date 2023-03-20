@@ -18,7 +18,16 @@ The Genesis Intellij plugin allows developers to run the full stack of a Genesis
  - Genesis Project using server version 6.5.0 or later
  - Gradle project
  - Mono repo (having client and server in the same repository)
- - A database
+ - A [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
+
+:::tip
+You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
+
+```terminal
+docker pull postgres
+docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres
+```
+:::
 
 ## Installation
 
