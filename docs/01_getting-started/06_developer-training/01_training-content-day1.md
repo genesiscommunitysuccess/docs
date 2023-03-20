@@ -343,8 +343,8 @@ There are multiple ways you can test the back end of your application. It's impo
 Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
 
 ### Genesis Console
-1. In your browser, go to http://genesislcap.com/console/console-next2/?host=localhost:8080.
-2. Enter the IP address of your server, in this case localhost. We should also add the port, as our web server running on the WSL instance is listening on 8080; so, the value to be entered here is `localhost:8080`
+1. In your browser, go to https://genesislcap.com/console/console-local/?host=localhost:9064.
+2. Enter the IP address of your server, in this case localhost port 9064, as we are using GENESIS_ROUTER locally through the Genesis plugin. So, the value to be entered here is `localhost:9064`
 3. Log in with your user name and password as [defined previously](../../../getting-started/developer-training/training-content-day1/#user-name-and-password). This starts Genesis Console, and you will see a list of tabs along the top of the screen.
 4. Click on the **RESOURCES** tab.
 5. Filter the **Resource type** to show only Event Handlers.
