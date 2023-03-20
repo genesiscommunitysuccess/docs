@@ -1,15 +1,6 @@
-# API Documentation
-
-Welcome to the API Documentation. These set of pages allow you to view the documentation files for the package.
-
-1. How do I view the API documentation?
-- Click the link at the bottom of this file which matches the package name.
-
-2. How do I navigate the API documentation?
-- All of the files link to each other in a tree structure. You can drill down to specific implementation details by following the links.
-
-3. What is the `home` link below this?
-- That is the start of a breadcrumb navigation section which you can use to navigate back through the tree structure as you drill down through the nodes.
-
-4. How do I leave the API documentation?
-- Either using the back action in your web browser, or following the heading links back to the standard documentation.
+# API documentation
+Welcome to the API documentation for this package.
+- To view the API documentation, click on the package name link at the bottom of this page.
+- The files are linked to each other in a tree structure. You can drill down to specific implementation details by following the links. A breadcrumb navigation area is displayed at the top of the file to help you navigate and see where you are in the structure.
+- To return to the start page for this documentation, click on the **Home** link.
+- To leave the API documentation and return to the main documentation, click on one of the links in the main documentation menu, displayed at the top of the page on a desktop or in the hamburger menu on mobile.
