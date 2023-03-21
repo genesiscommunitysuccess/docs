@@ -87,7 +87,7 @@ Add the *ALPHA_EVALUATOR* in the file **alpha-service-definitions.xml** inside y
 
 Run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process) to verify that the new process works as expected.
 
-Double check your [Resource daemon](../../../server/tooling/intellij-plugin/#resource-daemon) using the Genesis IntelliJ plugin. You should be able to see the ALPHA_EVALUATOR process is present, but on `Standby`.
+Double-check your [Resource daemon](../../../server/tooling/intellij-plugin/#resource-daemon) using the Genesis IntelliJ plugin. You should be able to see the ALPHA_EVALUATOR process is present, but on `Standby`.
 
 This is because the Evaluator process is set to run only on the primary node. Our application only has one node, but we still have to identify it as the Primary node.
 
@@ -406,7 +406,7 @@ Related to these tables, we have the RIGHT_SUMMARY table, which contains the sup
 
 ![](/img/user-profile-rights-setup.png)
 
-The RIGHT_SUMMARY table entries are automatically maintained by the system in real time. In this way, the rights are easily accessible at speed. The GENESIS_AUTH_MANAGER process manages this table's entries automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY table is updated immediately and all the users in that profile receive the new right automatically.
+The RIGHT_SUMMARY table entries are automatically maintained by the system in real time. This ensures that the rights are easily accessible at speed. The GENESIS_AUTH_MANAGER process manages this table's entries automatically. So if you add a new user or you update a profile with new rights, the RIGHT_SUMMARY table is updated immediately and all the users in that profile receive the new right automatically.
 
 :::warning
 This table is only automatically maintained when profile user/right entries are maintained via GENESIS_AUTH_MANAGER business events. If you update the data in the tables PROFILE_USER or PROFILE_RIGHT via other means (e.g. **DbMon** or **SendIt**) then the RIGHT_SUMMARY table will not be maintained automatically.
@@ -732,7 +732,7 @@ Change the log level of the ALPHA_EVENT_HANDLER process to INFO with `LogLevel` 
 To test it, check if you can see the new log you added in the alpha event handler log file.
 -->
 
-## How to get help​
+## How to get help
 
 Remember that the Search function in the [documentation](https://docs.genesis.global/) is your friend.
 
