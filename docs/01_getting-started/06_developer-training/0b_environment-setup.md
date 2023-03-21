@@ -19,7 +19,7 @@ import TabItem from '@theme/TabItem';
 
 ## Workstation set-up
 
-Please follow these instructions very carefully to ensure your environment is ready for a productive training. It's not necessary to have admin rights on your workstation to develop with the Genesis low-code platform, but you might have to check with your System Administrator how to install the required third-party software listed here.
+Please follow these instructions very carefully to ensure your environment is ready for productive training. It's not necessary to have admin rights on your workstation to develop with the Genesis low-code platform, but you might have to check with your System Administrator how to install the required third-party software listed here.
 
 ### Recommended hardware and operating system
 
@@ -219,9 +219,9 @@ If you are unsure on what settings to use, please contact your IT support.
 More information [here](https://docs.gradle.org/current/userguide/build_environment.html#sec:accessing_the_web_via_a_proxy).
 :::
 
-### Own database for the training
+### Your own database
 
-To do this training, you will need an individual database to create and test the backend changes we are proposing. Please make sure you get a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
+To do this training, you need an individual database to create and test the back-end changes we are proposing. Please make sure you have a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
 
 :::tip
 You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
