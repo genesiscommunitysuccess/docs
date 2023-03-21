@@ -539,7 +539,7 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 Before defining the Consolidator, we should insert some data in the `INSTRUMENT_PRICE` table using using [SendIt](../../../operations/commands/server-commands/#sendit-script) script as we saw [here](../../../getting-started/developer-training/training-content-day1/#user-name-and-password). 
 
-Create a new file in the same folder *USER.csv* is and name it as INSTRUMENT_PRICE.csv. Copy the content below into the file you just created.
+Create a new file in the same folder as **USER.csv** and name it as **INSTRUMENT_PRICE.csv**. Copy the content below into the file you have just created.
 ```csv
 INSTRUMENT_ID,LAST_PRICE
 1,10
@@ -547,7 +547,7 @@ INSTRUMENT_ID,LAST_PRICE
 
 Then import the local csv using the Genesis plugin as we saw [here](../../../getting-started/developer-training/training-content-day1/#user-name-and-password).
 
-Make sure you settled the INSTRUMENT_ID field as not nullable in the TRADE and POSITION tables, as the consolidations will use it.
+Make sure you specified the INSTRUMENT_ID field as not nullable in the TRADE and POSITION tables, as the consolidations will use it.
 
 ```kotlin {4,10}
 tables {
@@ -575,9 +575,9 @@ dataServer {
 }
 ```
 
-When you finish, remember to run [generatedao](../../../getting-started/developer-training/training-content-day1/#generatedao) and [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).​
+When you finish, remember to run [generatedao](../../../getting-started/developer-training/training-content-day1/#generatedao) and [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 
-So, let's define a **alpha-consolidator.kts** file inside **alpha-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
+So, let's define an **alpha-consolidator.kts** file inside **alpha-script-config/src/main/resources/scripts** folder. This is where you define the consolidator logic.
 
 The Consolidator is going to increase or decrease the quantity for POSITION records, based on the TRADE table updates. It also needs to calculate the new notional.
 
@@ -665,7 +665,7 @@ As Consolidators run on their own process, we need to add a new entry to **alpha
 ```
 ##### Update the service-definitions.xml file
 
-This file lists all the active services for the Positions application. You can see entries have been added automatically when the data server, request server and event handler were generated.
+This file lists all the active services for the Positions application. You can see entries have been added automatically when the Data Server, Request Server and Event Handler were generated.
 
 Add a new entry to **alpha-service-definitions.xml** with the consolidator details. Remember the port numbers should be free and, ideally, sequential.
 
@@ -788,7 +788,7 @@ Change the Position constant to delete the POSITION_ID, as this field does not h
 Don't forget to reload the client side to see the upgrades.
 :::
 
-<!-- Apart from building a front end, as we did [before](../../../tutorials/training-resources/training-content-day2/#intro-to-ui) the application user interface can be configured in various aspects such as data distribution, using Request Servers for static (reference) data, and Data Servers for streaming real-time data. -->
+<!-- Apart from building a front end, as we did [before](../../../tutorials/training-resources/training-content-day2/#intro-to-ui), the application user interface can be configured in various aspects such as data distribution, using Request Servers for static (reference) data, and Data Servers for streaming real-time data. -->
 
 <!-- 
 ### Request Servers
