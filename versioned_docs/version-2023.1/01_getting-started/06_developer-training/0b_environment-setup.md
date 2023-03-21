@@ -220,7 +220,7 @@ More information [here](https://docs.gradle.org/current/userguide/build_environm
 :::
 
 ### Your own database
-To do this training, you need an individual database to create and test the backend changes we are proposing. Please make sure you have a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
+To do this training, you need an individual database to create and test the back-end changes we are proposing. Please make sure you have a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
 
 :::tip
 You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
