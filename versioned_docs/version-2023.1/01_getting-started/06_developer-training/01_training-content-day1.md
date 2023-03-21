@@ -15,7 +15,7 @@ This day covers:
 
 - [Quick review of the platform​](#quick-review-of-the-platform)
 - [Developing your first application​​](#developing-your-first-application)
-- [Testing the back end​​](#testing-the-back-end)
+- [Testing the back end](#testing-the-back-end)
 
 
 ## Quick review of the platform
@@ -60,7 +60,7 @@ Surrounding the core, operational tools enable you to run and monitor the applic
 
 You will get familiar with all these concepts in the next lessons.
 
-## Developing your first application​​
+## Developing your first application
 
 This will enable you to see the basics of the Genesis low-code platform by starting with a very simple application. It is designed simply to get from start to finish as quickly as possible. It is in five main steps:
 
@@ -87,7 +87,7 @@ With a lack of imagination we hope you will find trustworthy, we are going to ca
 
 To create a new project, you can use the `genx` CLI tool, which enables you to seed projects. Further details can be found [here](../../../getting-started/quick-start/create-a-new-project/).
 
-In our case, we just want to extend a blank full-stack application project, so we are using the [training seed](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you have followed the Environment setup and done the step [Start the project baseline](../../../getting-started/developer-training/environment-setup/#start-the-project-baseline), where you cloned the repository locally. 
+In our case, we just want to extend a blank full-stack application project, so we are using the [training seed](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you have followed the Environment set-up and done the step [Start the project baseline](../../../getting-started/developer-training/environment-setup/#start-the-project-baseline), where you cloned the repository locally. 
 
 Here's a quick overview of the repository that you cloned:
 
@@ -98,7 +98,7 @@ Above, we have expanded the **client** folder. This contains all the UI-related 
 The **server** folder follows the same structure. This contains all the server-side projects.
 
 ## 2. Define the data model
-Now you are ready to define the fields and tables that make up your [data model](../../../database/fields-tables-views/fields-tables-views/). This structures information in a simple way that can be viewed by users and processed by the application.
+Now you are ready to define the fields and tables that make up your [data model](../../../database/fields-tables-views/fields-tables-views/). This model structures information in a simple way that can be viewed by users and processed by the application.
 
 Open IntelliJ and open the alpha project (the devtraining-seed you cloned). After importing and indexing, you should see the files and project structure ready.
 
@@ -228,12 +228,12 @@ The [entityDb](../../../database/database-interface/entity-db/) enables you to i
 :::
 
 ## 4. Prepare the server
-So far we have created an Event Handler and Data Server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
+So far we have created an Event Handler and Data Server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on their own process. To do that, we have to change the processes and the service definition files:
 
 - **alpha-processes.xml**
 - **alpha-service-definitions.xml**
 
-At present, they are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
+At present, these files are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
 
 Add the following content to the **alpha-processes.xml** file.
 
@@ -288,13 +288,13 @@ In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**T
 ./gradlew :genesisproduct-alpha:assemble
 ```
 
-After the Gradle task, there are two scripts (genesisInstall and remap) you can run using the Genesis IntelliJ Plugin explained next.
+After the Gradle task, there are two scripts (genesisInstall and remap) you can run using the Genesis IntelliJ Plugin, which we shall explain next.
 
-The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files so it can propagate the correct changes into the area processes will read the files from the Genesis process respectively. You can run genesisInstall using the Genesis IntelliJ Plugin as shown below. 
+The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files, so it can propagate the correct changes into the running processes. You can run it using the Genesis IntelliJ Plugin as shown below.  
 
 ![Genesis Install](/img/intellij-genesisInstall.png)
 
-Apart from the genesisInstall, if the changes affect the Database schema (i.e. *-dictionary.kts file changes)  we would need to run [remap script](../../../operations/commands/server-commands/#remap-script) as well. This is because it implies updates to the Database Access Objects (DAOs) will need to be rebuilt. You can also run remap using the Genesis IntelliJ Plugin as shown below. 
+Apart from the genesisInstall, if the changes affect the Database schema (i.e. *-dictionary.kts file changes)  we need to run [remap script](../../../operations/commands/server-commands/#remap-script) as well. This is because it implies that the Database Access Objects (DAOs) will need to be rebuilt. You can also run remap using the Genesis IntelliJ Plugin as shown below. 
 
 ![Genesis Install](/img/intellij-remap.png)
 
@@ -302,7 +302,7 @@ Apart from the genesisInstall, if the changes affect the Database schema (i.e. *
 
 As soon as the Build is done, you can apply the changes and run the Genesis processes again using the Genesis IntelliJ Plugin.
 
-According to the [instructions](../../../server/tooling/intellij-plugin/#making-a-change), follow the four steps:
+According to the [instructions](../../../server/tooling/intellij-plugin/#making-a-change), you must follow theese four steps:
 
 1. Click on the **Deploy Genesis** button on the toolbar.
 
