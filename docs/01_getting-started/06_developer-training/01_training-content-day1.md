@@ -290,11 +290,11 @@ In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**T
 
 After the Gradle task, there are two scripts (genesisInstall and remap) you can run using the Genesis IntelliJ Plugin explained next.
 
-The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files so it can propagate the correct changes into the area processes will read the files from the Genesis process respectively. You can run genesisInstall using the Genesis IntelliJ Plugin as shown below. 
+The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files, so it can propagate the correct changes into the running processes. You can run it using the Genesis IntelliJ Plugin as shown below. 
 
 ![Genesis Install](/img/intellij-genesisInstall.png)
 
-Apart from the genesisInstall, if the changes affect the Database schema (i.e. **-dictionary.kts** file changes)  we need to run [remap script](../../../operations/commands/server-commands/#remap-script) as well. This is because it implies updates to the Database Access Objects (DAOs), which will need to be rebuilt. You can also run remap using the Genesis IntelliJ Plugin, as shown below. 
+Apart from the genesisInstall, if the changes affect the Database schema (i.e. **-dictionary.kts** file changes)  we need to run [remap script](../../../operations/commands/server-commands/#remap-script) as well. This is because it implies that the Database Access Objects (DAOs) need to be rebuilt. You can also run remap using the Genesis IntelliJ Plugin, as shown below. 
 
 ![Genesis Install](/img/intellij-remap.png)
 
