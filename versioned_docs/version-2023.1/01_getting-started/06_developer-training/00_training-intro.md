@@ -35,7 +35,7 @@ Also, at any point, use the search function of the documentation for extra infor
 Estimated total effort: <b>Daily 4-hour sessions for 5 days</b>
 
 :::note 80-20 rule
-You’ll probably learn 20% of what is offered ​by the platform​, which will cover 80% of your needs.
+You’ll probably learn 20% of what is offered by the platform, which will cover 80% of your needs.
 :::
 
 ## Agenda
@@ -48,9 +48,9 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 - [Day five](../../../getting-started/developer-training/training-content-day5/): Schedulers, notifications, permissions​, key server commands​ and how to get help​.
 
 ## Genesis low-code platform version
-Backend (GSF)  6.5.2
+Back end (GSF)  6.5.2
 
-Frontend (FUI) 10.5.0
+Front end (FUI) 10.5.0
 
 ## Source code
 The complete source code of this training is available 
