@@ -21,17 +21,17 @@ sidebar_position: 4
 
 This day covers:
 
-- [An introduction to UI](#introducing-the-ui)
+- [An introduction to the UI](#introducing-the-ui)
 - [Creating a user interface](#create-a-user-interface)
 - [Extending the data model](#extending-our-initial-application)
 
 ## Introducing the UI
 
-Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](https://www.fast.design/docs/introduction/), which is a lightweight abstraction that enables you to easily ​build performant, memory-efficient, standards-compliant ​Web Components.
+Genesis provides a modern future-proofed web stack on top of [Microsoft FAST](https://www.fast.design/docs/introduction/), which is a lightweight abstraction that enables you to easily build performant, memory-efficient, standards-compliant Web Components.
 
 ### Web Components
 
-[Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) are at the very heart of our strategy, based on native browsers and a standards-based ​component model. 
+[Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components) are at the very heart of our strategy, based on native browsers and a standards-based component model. 
 
 Web Components are custom html elements that completely encapsulate their logic to create self-contained reusable components, which do not clash or interfere with the rest of application. They are future-proof and interoperable with traditional web frameworks such as Angular, React and Vue.
 
@@ -41,34 +41,34 @@ Frameworks like React, Angular, Vue and so on, have traditionally offered compon
 
 ### Micro front-ends
 
-On a higher level, the Genesis low-code platform also offers a number of re-usable Micro front-ends for common functions, such as user management, entity management ([CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)), reporting and so on. 
+On a higher level, the Genesis low-code platform also offers a number of re-usable micro front-ends for common functions, such as user management, entity management ([CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete)), reporting and so on. 
 
 This architecture is a design approach in which a front-end app is decomposed into individual, semi-independent micro applications working loosely together. The micro-front-end concept is vaguely inspired by, and named after, microservices. Independent development teams can collaborate on a front-end app more easily using this approach, and can each have their own release cadence. 
 
 At Genesis, we use a number of technologies to enable this functionality, including [Webpack 5 Module Federation](https://webpack.js.org/concepts/module-federation/).
 
-### Genesis packages​
+### Genesis packages
 
 Our components are distributed as npm packages, such as:
 
 #### `@genesislcap/foundation-ui` 
-When you generate a [design system](web/design-systems/introduction/) using the CLI, it will automatically extend a base design system that we have provided. ​This highly configurable design system is called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options to provide everything you need for your application.
+When you generate a [design system](web/design-systems/introduction/) using the CLI, it automatically extends a base design system that we have provided. This highly configurable design system is called Genesis Foundation UI. It is made up of a set of Web Components and accompanying design tokens. The visual design can be impacted in myriad ways using the tokens, CSS, element templates and shadow DOM options to provide everything you need for your application.
 
 #### `@genesislcap/foundation-zero` 
-Our design system variant, called Zero Design System​. This provides the standard components, such as buttons and data grids (wrappers around Microsoft FAST components); these can be easily integrated with the back end using component attributes such as 'resourceName', which displays and updates data in real time from a Data Server resource.
+Our design system variant is called Zero Design System. This provides the standard components, such as buttons and data grids (wrappers around Microsoft FAST components); these can be easily integrated with the back end using component attributes such as 'resourceName', which displays and updates data in real time from a Data Server resource.
 
-#### `@genesislcap/foundation-utils​` 
-Useful components like loggers, formatters, environment related components etc to be used in your templates.
+#### `@genesislcap/foundation-utils` 
+These are useful components like loggers, formatters, environment related components etc to be used in your templates.
 
 #### `@genesislcap/foundation-comms` 
-Core Foundation UI communication system with the server. This provides, among other things, connection components that you can use to connect to the server and do things like subscribing to data streams, commit events or request data.
+This is the core Foundation UI communication system with the server. It provides, among other things, connection components that you can use to connect to the server and do things like subscribing to data streams, commit events or request data.
 
 There are many more packages, but that's what we need for now to develop our application.
 
 ### Web UI design
 ![](/img/WebUIDiagram.png)
 
-Please look at the complete UI reference<!-- TODO: What is the proper link for this? --> for more details about the Web UI. In this training, we're going to use the Micro Front-ends, which are the easiest way to start working with the UI.
+Please look at the complete [UI reference](../../../learn.genesis.global/docs/web/) for more details about the Web UI. In this training, we're going to use the micro front-ends, which are the easiest way to start working with the UI.
 
 ## Create a user interface
 
@@ -92,14 +92,14 @@ For your user interface, the `genx` process has generated the following files:
 - **home.styles.ts**
 
 We are going to update the files **home.template.ts** and **home.ts**, so the application will be able to display a single page and enable you to insert a new trade.
-As we are using *Micro Front-ends*, there is no need to change the file **home.styles.ts**; the styles will be inherited from the base components.
+As we are using *micro front-ends*, there is no need to change the file **home.styles.ts**; the styles will be inherited from the base components.
 
 
 ### EntityManagement
 
-We want to be able to insert a Trade grid with data into our project. For this, we will use the *Micro Front-end* called **EntityManagement**.
+We want to be able to insert a Trade grid with data into our project. For this, we will use the *micro front-end* called **EntityManagement**.
 
-First, open the file **home.ts** to import the Micro front-ends needed, as well as declaring EntityManagement after the imports.
+First, open the file **home.ts** to import the micro front-ends needed, as well as declaring EntityManagement after the imports.
 
 ```ts {1,3,5}
 import {customElement, FASTElement, observable} from '@microsoft/fast-element';
@@ -197,11 +197,11 @@ At this point, the application is now able to display and insert data.
 
 Now you are ready to run the application you have created for the front end.
 
-Using the Genesis IntelliJ plugin click the [Start UI button](../../../server/tooling/intellij-plugin/#starting-the-ui) on the toolbar as shown below. This builds your front-end codebase and starts the webpack webserver in development mode.
+Using the Genesis IntelliJ plugin, click the [Start UI button](../../../server/tooling/intellij-plugin/#starting-the-ui) on the toolbar as shown below. This builds your front-end codebase and starts the webpack webserver in development mode.
 
 ![Debug Window](/img/intellij-ui.png)
 
-Alternatively, to start the UI manually from the workspace **alpha/client** folder, you can run the commands below.
+Alternatively, you can start the UI manually from the workspace **alpha/client** folder by running the commands below.
 
 ```
 npm run bootstrap
@@ -221,7 +221,7 @@ export NODE_OPTIONS=--openssl-legacy-provider
 :::
 
 :::tip
-If you try to run the application and there is already a process using the same port, check the process. If you are certain that it should not be running (for example, if it is the result of caching or old runs), you can run the command-line below as Administrator to search the process and kill it. 
+If you try to run the application and there is already a process using the same port, check the process. If you are certain that it should not be running (for example, if it is the result of caching or old runs), you can run the command-line below as Administrator to search for the process and kill it. 
 
 ```shell
 netstat -ano | findstr :<yourPortNumber>
@@ -241,14 +241,14 @@ Now take some time to enjoy it, play with your application for a few minutes.
 30 mins
 :::
 
-The communication between the UI and the server happens through messages sent via a web socket connection, all managed by the Genesis Platform.
+The communication between the UI and the server happens through messages sent via a web socket connection, all managed by the Genesis low-code platform.
 
 But did you know that you can inspect these messages using [Chrome DevTools](https://developer.chrome.com/docs/devtools/overview/)? That's very useful for debugging what's happening behind the scenes and capturing the data transferred for troubleshooting.
 
 Now, using the [Network tab](https://developer.chrome.com/docs/devtools/network/), try to insert a trade and see if you can find the data being sent to the server:
 
 1. Log out of the application.
-2. Press `F12` to open the Dev Tools, click on the `Network` tab and select `WS` (keep it open during this exercise).
+2. Press **F12** to open the Dev Tools, click on the `Network` tab and select `WS` (keep it open during this exercise).
 3. Navigate to your app http://localhost:6060 and in the Dev Tools, click on the `localhost` *Messages* tab.
 4. Log in and try to insert a new trade.
 5. Try to find the message containing the new trade data.
@@ -276,11 +276,11 @@ Use all the previous knowledge you've got.
 
 As a reminder, these are the steps needed to complete this task:
 
-1. Remove all TRADE records using the [DropTable](../../../operations/commands/server-commands/#droptable) server command. To do that, use the [Task view](../../../server/tooling/intellij-plugin/#task-view) on Genesis plugin and run the DropTable script as explained [here](../../../server/tooling/intellij-plugin/#running-a-genesis-script).
-2. Edit **alpha-fields-dictionary.kts** first, and don't forget to run the [generateFields](../../../getting-started/developer-training/training-content-day1/#generatefields) gradle task when you finish this. Remember that fields are defined separately from tables, so that they (including their meta-data) can be re-used across multiple tables and show linkage.​
-3.  Then edit **alpha-tables-dictionary.kts** to add the new tables and the fields you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [generateDao](../../../getting-started/developer-training/training-content-day1/#generatedao).
+1. Remove all TRADE records using the [DropTable](../../../operations/commands/server-commands/#droptable) server command. To do that, use the [Task view](../../../server/tooling/intellij-plugin/#task-view) on the Genesis plugin and run the DropTable script as explained [here](../../../server/tooling/intellij-plugin/#running-a-genesis-script).
+2. Edit **alpha-fields-dictionary.kts** first, and don't forget to run the [generateFields](../../../getting-started/developer-training/training-content-day1/#generatefields) gradle task when you finish this. Remember that fields are defined separately from tables, so that they (including their meta-data) can be re-used across multiple tables and show linkage.
+3.  Then edit **alpha-tables-dictionary.kts** to add the new tables and the fields that you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [generateDao](../../../getting-started/developer-training/training-content-day1/#generatedao).
 4. Add queries to the Data Server. These must point to the new tables in the **alpha-dataserver.kts** file.
-5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).​
+5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 
 :::tip adding a new `eventHandler` block
 Example on how to add additional blocks in the `eventHandler`:
@@ -318,9 +318,9 @@ eventHandler {
 
 ### UI formatting new fields
 
-We just added new fields into our data model, so to format better them, to insert and update data, we can define form UI schemas. Using EntityManagement, there are two properties called `createFormUiSchema` and `updateFormUiSchema` that can be declared. So, let's do it.
+We have just added new fields into our data model. To format them better, so you can insert and update data, we can define form UI schemas. Using EntityManagement, there are two properties called `createFormUiSchema` and `updateFormUiSchema` that can be declared. So, let's do it.
 
-First, create a new file **schemas.ts** in the same folder we have the *home.ts* file, and copy the content below.
+First, create a new file **schemas.ts** in the same folder as the *home.ts* file, and copy the content below.
 ```typescript
 const conditionalSchemaEntry = (predicate: boolean, entry) => {
   return predicate ? [entry] : [];
@@ -429,7 +429,7 @@ export const HomeTemplate = html<Home>`
 `;
 ```
 
-Take some time again to play with your application for a few minutes inserting new Trades. You will enjoy a better look and feel to selecting and seeing data.
+Take some time again to play with your application for a few minutes inserting new Trades. You will see that there is a better look and feel to selecting and seeing data.
 
 ### API testing with auto-generated REST endpoints
 
@@ -439,7 +439,7 @@ As an alternative to Genesis Console, take this opportunity to test your work wi
 - [Insomnia App](https://insomnia.rest/download)
 
 :::tip REST endpoints
-When we test our resources using an HTTP client as described here, we're taking advantage of the [REST endpoints](../../../server/integration/rest-endpoints/introduction/) provided by the platform. Without any additional code from you, it automatically exposes all configured resources, such as Data Server queries and Event Handlers, as HTTP endpoints via the GENESIS_ROUTER service. This also enables you to do some API testing automation for all your back-end components.
+When we test our resources using an HTTP client as described here, we're taking advantage of the [REST endpoints](../../../server/integration/rest-endpoints/introduction/) provided by the platform. Without any additional code from you, it automatically exposes all configured resources, such as Data Server queries and Event Handlers, as HTTP endpoints via the GENESIS_ROUTER service. This enables you to do some API testing automation for all your back-end components.
 
 :::
 
@@ -472,7 +472,7 @@ For example, to log in using Postman:
 
 6. When you have done this, click on the **Send** button.
 
-This returns a set of details on the bottom side of the Postman window, where you can copy the SESSION_AUTH_TOKEN, which you will need for your test requests.
+This returns a set of details at the bottom of the Postman window, where you can copy the SESSION_AUTH_TOKEN; you will need this for your test requests.
 
 Once you have the SESSION_AUTH_TOKEN, keep a copy that you can paste into each request as you make your test call.
 
