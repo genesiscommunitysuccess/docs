@@ -318,7 +318,7 @@ eventHandler {
 
 ### UI formatting new fields
 
-We just added new fields into our data model, so to format better them, to insert and update data, we can define form UI schemas. Using EntityManagement, there are two properties called `createFormUiSchema` and `updateFormUiSchema` that can be declared. So, let's do it.
+We have just added new fields into our data model. To format them better, so that they can insert and update data, we can define form UI schemas. Using EntityManagement, there are two properties called `createFormUiSchema` and `updateFormUiSchema` that can be declared. So, let's do it.
 
 First, create a new file **schemas.ts** in the same folder we have the *home.ts* file, and copy the content below.
 ```typescript
@@ -429,7 +429,7 @@ export const HomeTemplate = html<Home>`
 `;
 ```
 
-Take some time again to play with your application for a few minutes inserting new Trades. You will enjoy a better look and feel to selecting and seeing data.
+Take some time again to play with your application for a few minutes inserting new Trades. You will see that the application now has a better look and feel for selecting and seeing data.
 
 ### API testing with auto-generated REST endpoints
 
