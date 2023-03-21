@@ -46,7 +46,7 @@ The first thing to set up is the Genesis system definition overrides. These are 
 ![Genesis Settings](/img/intellij-settings.png)
 
 :::tip
-A local PostgreSQL installation with user and password equals to `postgres` would have de **DbHost** like below
+A local PostgreSQL installation with both user and password equal to `postgres` would have a **DbHost** like this:
 ```kotlin
 DbHost="jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres"
 ```
@@ -156,13 +156,13 @@ This takes the csv files and uses the Genesis `SendIt` utility to load the data 
 
 ## Task view
 
-On the plugin, apart from the **Mon** view explained here before, there is the **Task** view where it is possible to see, run and modify te configurations of Genesis services, scripts, and setup.
+On the plugin, apart from the **Mon** view explained here before, there is the **Task** view where it is possible to see, run and modify the configurations of Genesis services, scripts, and setup.
 
 ![Task view](/img/genesis-plugin-task-view.png)
 
 ### Running a Genesis script
 
-To run a Genesis script, open the folder *Scripts*, find the one you want to run, right click on it and select Run.
+To run a Genesis script, open the folder *Scripts*, find the one you want to run, right-click on it and select Run.
 
 ![Task view](/img/genesis-plugin-task-view-droptable.png)
 
