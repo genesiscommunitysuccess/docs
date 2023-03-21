@@ -145,7 +145,7 @@ eventHandler {
 #### 4.Load the cron rule on to the database
 Load the cron rule csv below into the database, [CRON_RULE](../../../server/evaluator/basics/#cron_rule-table) Table.
 
-Create a new file in the same folder *USER.csv* is and name it as CRON_RULE.csv. Copy the content below into the file you just created.
+Create a new file in the same folder as **USER.csv** and name it as **CRON_RULE.csv**. Copy the content below into the file you just created.
 ```csv
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
 "0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
