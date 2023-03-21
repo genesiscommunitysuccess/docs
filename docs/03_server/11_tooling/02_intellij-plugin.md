@@ -7,18 +7,35 @@ tags:
   - server
   - tooling
   - code snippets
+  - intellij
+  - plugin  
 ---
+
+The Genesis Intellij plugin allows developers to run the full stack of a Genesis application locally within IntelliJ, in order to better test their development work.
 
 ## Prerequisites
 
  - Genesis Project using server version 6.5.0 or later
  - Gradle project
  - Mono repo (having client and server in the same repository)
- - A database
+ - A [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
+
+:::tip
+You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
+
+```terminal
+docker pull postgres
+docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres
+```
+:::
 
 ## Installation
 
-The plugin is available from the [jet brains marketplace](https://plugins.jetbrains.com/plugin/21131-genesis-platform-support). You can install it by searching for **Genesis Platform Support** from the plugin section of your IntelliJ settings.
+The plugin is available from the [jet brains marketplace](https://plugins.jetbrains.com/plugin/21131-genesis-platform-support). You can install it by searching for **Genesis Platform Support** from the plugin section of your [IntelliJ settings](https://www.jetbrains.com/help/idea/managing-plugins.html).
+
+After installing **Genesis Platform Support** plugin, make sure you add it to be visible on the [Tool window bars and buttons](https://www.jetbrains.com/help/idea/tool-windows.html#bars_and_buttons).
+
+![Genesis Platform Support on Tool window](/img/genesis-plugin-intellij-toolwindow.png)
 
 ## The Tools window
 
@@ -27,6 +44,13 @@ The plugin is available from the [jet brains marketplace](https://plugins.jetbra
 The first thing to set up is the Genesis system definition overrides. These are needed to provide settings that override values set in your [system definition](/server/configuring-runtime/system-definitions/) configuration.
 
 ![Genesis Settings](/img/intellij-settings.png)
+
+:::tip
+A local PostgreSQL installation with user and password both equal to `postgres` would have a **DbHost** like this:
+```kotlin
+DbHost="jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres"
+```
+:::
 
 ### Initial install
 
@@ -86,6 +110,22 @@ Once started, this launches a browser tab showing your application's login scree
 
 ![Debug Window](/img/intellij-ui.png)
 
+:::info
+Please note we are using [GENESIS_ROUTER](../../../server/configuring-runtime/genesis-router/) as our API_HOST and its default port is 9064. Therefore, your API_HOST parameter in **client/web/package.json** should be set as below.
+
+```json {4}
+{
+  ...
+  "config": {
+    "API_HOST": "ws://localhost:9064",
+    ...
+  }
+  ...
+}
+```
+:::
+
+
 ### Making a change
 
 If you make a change to the code, you can then build and run again:
@@ -114,9 +154,23 @@ This starts the build processes and the logs will be shown below.
 Using the plugin, you can right-click on CSV files or folders containing CSV files and select the **Import CSV(s) to Genesis** option.
 This takes the csv files and uses the Genesis `SendIt` utility to load the data from the CSV files into tables with matching names.
 
+## Task view
+
+On the plugin, apart from the **Mon** view explained here before, there is the **Task** view where it is possible to see, run and modify the configurations of Genesis services, scripts, and setup.
+
+![Task view](/img/genesis-plugin-task-view.png)
+
+### Running a Genesis script
+
+To run a Genesis script, open the folder *Scripts*, find the one you want to run, right-click on it and select Run.
+
+![Task view](/img/genesis-plugin-task-view-droptable.png)
+
+The example above runs the [DropTable](../../../operations/commands/server-commands/#droptable) script. As it has parameters, make sure if configure them using the **"Modify Run Configuration..."** option setting the *Args* properly.
+
 ## Docs navigation
 
-Developers can navigate to **docs.genesis** straight from IntelliJ:
+Developers can navigate to **learn.genesis.global** straight from IntelliJ:
 
 ![Genesis Install](/img/intellij-docs.png)
 

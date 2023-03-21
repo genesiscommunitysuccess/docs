@@ -79,10 +79,9 @@ Before you start, check if you have set a valid API_HOST in **client/web/package
 The syntax for the API_HOST is:
 - protocol (followed by a colon delimiter)
 - secure websocketshost (followed by a colon delimiter)
-- port (443 is the port assigned for secure HTTP traffic)
-- /gwf/ (this is the standard path for Genesis platform)
+- port
 
-for example: ws://localhost:443/gwf/
+for example: ws://localhost:9064
 
 
 
@@ -120,7 +119,7 @@ Now, still in the **home.ts** file, let's add two constants to define:
 
 We need to declare the columns and permissions in the Home class as well. 
 
-```ts {5-10,13-39,47-48,52}
+```ts {5-10,13-39,47}
 ...
 const name = 'home-route';
 
@@ -177,7 +176,7 @@ export class Home extends FASTElement {
 
 We can now insert the grid into our page. Open the file **home.template.ts** and insert the *entity-management* tag using the class attributes we just created.
 
-```ts {5-12}
+```ts {5-11}
 import {html, } from '@microsoft/fast-element';
 import type {Home} from './home';
 
@@ -198,14 +197,14 @@ At this point, the application is now able to display and insert data.
 
 Now you are ready to run the application you have created for the front end.
 
-From the workspace **alpha/client** folder, run:
+Using the Genesis IntelliJ plugin click the [Start UI button](../../../server/tooling/intellij-plugin/#starting-the-ui) on the toolbar as shown below. This builds your front-end codebase and starts the webpack webserver in development mode.
+
+![Debug Window](/img/intellij-ui.png)
+
+Alternatively, to start the UI manually from the workspace **alpha/client** folder, you can run the commands below.
+
 ```
 npm run bootstrap
-```
-
-Next, spin up the dev server:
-
-```
 npm run dev
 ```
 
@@ -250,7 +249,7 @@ Now, using the [Network tab](https://developer.chrome.com/docs/devtools/network/
 
 1. Log out of the application.
 2. Press `F12` to open the Dev Tools, click on the `Network` tab and select `WS` (keep it open during this exercise).
-3. Navigate to your app http://localhost:6060 and in the Dev Tools, click on the resource `gwf/` (in the Network -> WS tab).
+3. Navigate to your app http://localhost:6060 and in the Dev Tools, click on the `localhost` *Messages* tab.
 4. Log in and try to insert a new trade.
 5. Try to find the message containing the new trade data.
 
@@ -277,9 +276,9 @@ Use all the previous knowledge you've got.
 
 As a reminder, these are the steps needed to complete this task:
 
-1. Remove all TRADE records using the [DropTable](../../../operations/commands/server-commands/#droptable) server command. To do that, remember the explanation on how to [run server commands](../../../getting-started/developer-training/training-content-day1/#running-server-commands).
+1. Remove all TRADE records using the [DropTable](../../../operations/commands/server-commands/#droptable) server command. To do that, use the [Task view](../../../server/tooling/intellij-plugin/#task-view) on Genesis plugin and run the DropTable script as explained [here](../../../server/tooling/intellij-plugin/#running-a-genesis-script).
 2. Edit **alpha-fields-dictionary.kts** first, and don't forget to run the [generateFields](../../../getting-started/developer-training/training-content-day1/#generatefields) gradle task when you finish this. Remember that fields are defined separately from tables, so that they (including their meta-data) can be re-used across multiple tables and show linkage.​
-3.  Then edit **alpha-tables-dictionary.kts** to add the new tables and the fields you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [genesis-generated-dao](../../../getting-started/developer-training/training-content-day1/#generatedao).
+3.  Then edit **alpha-tables-dictionary.kts** to add the new tables and the fields you created in the previous step. Don't forget to add COUNTERPARTY_ID and INSTRUMENT_ID in the TRADE table. When you finish, remember to run [generateDao](../../../getting-started/developer-training/training-content-day1/#generatedao).
 4. Add queries to the Data Server. These must point to the new tables in the **alpha-dataserver.kts** file.
 5. Create INSERT, MODIFY and DELETE (CRUD) events for all entities, using Event Handlers. When you finish, remember to [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).​
 
@@ -317,6 +316,120 @@ eventHandler {
   - a new trade
 
 
+### UI formatting new fields
+
+We have just added new fields into our data model. To format them better, so that they can insert and update data, we can define form UI schemas. Using EntityManagement, there are two properties called `createFormUiSchema` and `updateFormUiSchema` that can be declared. So, let's do it.
+
+First, create a new file **schemas.ts** in the same folder we have the *home.ts* file, and copy the content below.
+```typescript
+const conditionalSchemaEntry = (predicate: boolean, entry) => {
+  return predicate ? [entry] : [];
+};
+
+export const tradeFormSchema = (editing?: boolean) => ({
+  type: 'VerticalLayout',
+  elements: [
+    ...conditionalSchemaEntry(editing, {
+      type: 'Control',
+      label: 'ID',
+      scope: '#/properties/TRADE_ID',
+      options: {
+        readonly: true,
+      },
+    }),
+	{
+		"type": "Control",
+		"label": "Counterparty",
+		"scope": "#/properties/COUNTERPARTY_ID",
+        "options": {
+            allOptionsResourceName: "ALL_COUNTERPARTIES",
+            valueField: "COUNTERPARTY_ID",
+            labelField: "COUNTERPARTY_NAME",
+            data: null,
+        },
+	},
+	{
+		"type": "Control",
+		"label": "Direction",
+		"scope": "#/properties/DIRECTION"
+	},
+	{
+		"type": "Control",
+		"label": "Entered By",
+		"scope": "#/properties/ENTERED_BY"
+	},
+	{
+		"type": "Control",
+		"label": "Instrument",
+		"scope": "#/properties/INSTRUMENT_ID",
+        "options": {
+            allOptionsResourceName: "ALL_INSTRUMENTS",
+            valueField: "INSTRUMENT_ID",
+            labelField: "INSTRUMENT_NAME",
+            data: null,
+        },
+	},
+	{
+		"type": "Control",
+		"label": "Price",
+		"scope": "#/properties/PRICE"
+	},
+	{
+		"type": "Control",
+		"label": "Quantity",
+		"scope": "#/properties/QUANTITY"
+	},
+	{
+		"type": "Control",
+		"label": "Symbol",
+		"scope": "#/properties/SYMBOL"
+	},
+	{
+		"type": "Control",
+		"label": "Trade Date",
+		"scope": "#/properties/TRADE_DATE"
+	},
+	{
+		"type": "Control",
+		"label": "Status",
+		"scope": "#/properties/TRADE_STATUS"
+	}
+
+  ],
+});
+
+export const tradeFormCreateSchema = tradeFormSchema(false);
+export const tradeFormUpdateSchema = tradeFormSchema(true);
+```
+
+Note that the `tradeFormSchema` variable, declared above, pretty much describes the JSON schema for the endpoints defined including the fields and definitions. It is also possible to add filling using [Request Server](../../../server/request-server/introduction/) or [Data Server](../../../server/data-server/introduction/) queries (like Instrument and Counterparty ones), and further validation by way of annotation or custom validations on data classes.
+
+Go back to the **home.template.ts** file to import the variables schema and add the properties  `createFormUiSchema` `updateFormUiSchema`.
+```typescript {3,16,17}
+import {html, repeat, when, ref} from '@microsoft/fast-element';
+import type {Home} from './home';
+import { tradeFormCreateSchema, tradeFormUpdateSchema } from './schemas';
+...
+export const HomeTemplate = html<Home>`
+<div class="split-layout">
+    <div class="top-layout">
+        <entity-management
+          resourceName="ALL_TRADES"
+          title = "Trades"
+          entityLabel="Trades"
+          createEvent = "EVENT_TRADE_INSERT"
+          updateEvent = "EVENT_TRADE_MODIFY"
+          deleteEvent = "EVENT_TRADE_CANCELLED"
+          :columns=${x => x.columns}
+          :createFormUiSchema=${() => tradeFormCreateSchema}
+          :updateFormUiSchema=${() => tradeFormUpdateSchema}
+        ></entity-management>
+    </div>
+...
+`;
+```
+
+Take some time again to play with your application for a few minutes inserting new Trades. You will see that the application now has a better look and feel for selecting and seeing data.
 
 ### API testing with auto-generated REST endpoints
 
@@ -340,7 +453,6 @@ For example, to log in using Postman:
 2. In front of the URL, set the call to **POST**.
 3. For the URL, you need to supply your server instance, then **:9064** (which sends you to the application's Router), and then **event-login-auth**. For example:
 **http://localhost:9064/event-login-auth**. 
-Alternatively, you can use the reverse proxy already set up on the WSL instance and go with this URL: **http://localhost/gwf/event-login-auth**
 4. Set the Body to JSON and insert the message below (substituting your correct user name and password) in the main body. 
 
 ```
@@ -372,11 +484,11 @@ In front of the url, set the call to **POST**.
 The url consists of:
 
 - the address or hostname of the server
-- if necessary, some extra routing; in this case **gwf** uses a proxy to access the server
+- if necessary, some extra routing
 - the name of the event handler
 
 ```
-http://localhost/gwf/EVENT_COUNTERPARTY_INSERT
+http://localhost/EVENT_COUNTERPARTY_INSERT
 ```
 
 
@@ -414,7 +526,7 @@ In front of the url, set the call to **POST**.
 The url consists of:
 
 - the address or hostname of the server
-- if necessary, some extra routing; in this case **gwf** uses a proxy to access the server
+- if necessary, some extra routing
 - the name of the request server
 
 Set the body to **JSON**. There is no need for any information in the body. Simply insert a pair of curly brackets **{}**. 

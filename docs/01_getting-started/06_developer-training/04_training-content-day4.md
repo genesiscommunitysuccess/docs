@@ -55,7 +55,7 @@ tables {
 }
 ```
 
-If the TRADE_STATUS is missing, run [genesis-generated-fields](../../../getting-started/developer-training/training-content-day1/#generatefields) to generate the fields, AND​ [genesis-generated-dao](../../../getting-started/developer-training/training-content-day1/#generatedao) to create the DAOs.
+If the TRADE_STATUS is missing, run [generatefields](../../../getting-started/developer-training/training-content-day1/#generatefields) to generate the fields, AND​ [generatedao](../../../getting-started/developer-training/training-content-day1/#generatedao) to create the DAOs.
 
 ### 2. Create a new class for the state machine
 
@@ -318,6 +318,8 @@ export const HomeTemplate = html<Home>`
           createEvent = "EVENT_TRADE_INSERT"
           deleteEvent = "EVENT_TRADE_CANCELLED"
           :columns=${x => x.columns}
+          :createFormUiSchema=${() => tradeFormCreateSchema}
+          :updateFormUiSchema=${() => tradeFormUpdateSchema}
         ></entity-management>
     ...
     </div>
@@ -373,7 +375,7 @@ The `verify` block you see above is part of the validation helper provided by th
 Add the same verification `onValidate` as in TRADE_INSERT to the TRADE_MODIFY event handler.
 
 
-Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](../../../getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL *http://localhost/gwf/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
+Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](../../../getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL *http://localhost/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
 
 ## Auditing​
 
@@ -489,7 +491,7 @@ Now you must update the **alpha-eventhandler.kts** in order to pass the `entityD
     }
 ```
 
-Run the [dao](../../../getting-started/developer-training/training-content-day1/#generatedao), [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
+Run the [generatedao](../../../getting-started/developer-training/training-content-day1/#generatedao), [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
 
 ### Exercise 4.3: testing an audited table
 :::info ESTIMATED TIME
