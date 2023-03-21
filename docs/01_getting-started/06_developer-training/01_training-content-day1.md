@@ -294,7 +294,7 @@ The [genesisInstall script](../../../operations/commands/server-commands/#genesi
 
 ![Genesis Install](/img/intellij-genesisInstall.png)
 
-Apart from the genesisInstall, if the changes affect the Database schema (i.e. *-dictionary.kts file changes)  we would need to run [remap script](../../../operations/commands/server-commands/#remap-script) as well. This is because it implies updates to the Database Access Objects (DAOs) will need to be rebuilt. You can also run remap using the Genesis IntelliJ Plugin as shown below. 
+Apart from the genesisInstall, if the changes affect the Database schema (i.e. **-dictionary.kts** file changes)  we need to run [remap script](../../../operations/commands/server-commands/#remap-script) as well. This is because it implies updates to the Database Access Objects (DAOs), which will need to be rebuilt. You can also run remap using the Genesis IntelliJ Plugin, as shown below. 
 
 ![Genesis Install](/img/intellij-remap.png)
 
@@ -302,7 +302,7 @@ Apart from the genesisInstall, if the changes affect the Database schema (i.e. *
 
 As soon as the Build is done, you can apply the changes and run the Genesis processes again using the Genesis IntelliJ Plugin.
 
-According to the [instructions](../../../server/tooling/intellij-plugin/#making-a-change), follow the four steps:
+According to the [instructions](../../../server/tooling/intellij-plugin/#making-a-change), follow these four steps:
 
 1. Click on the **Deploy Genesis** button on the toolbar.
 
@@ -323,14 +323,14 @@ This starts the build processes and the logs will be shown below.
 4. Once the Resource daemon starts, you can start the processes you wish to have running.
 
 ### User name and password
-Using the repo you [cloned](https://github.com/genesiscommunitysuccess/devtraining-seed), by default the following will be your login details:
+Using the repo you [cloned](https://github.com/genesiscommunitysuccess/devtraining-seed), the following will be your login details:
 
 - Username: JaneDee
-- Password: beONneON*74 (This is encrypted in the user.csv file.)
+- Password: beONneON*74 (This is encrypted in the **user.csv** file.)
 
-However, after the first Build and Deploy, you got to add the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin as [explained](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
+However, after the first Build and Deploy, you added the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin, as explained in the [documentation for the plugin](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
 
-To do that find the **USER.csv** file (it is inside the *server/jvm/alpha-site-specific/src/main/resources/data* folder), right click **USER.csv**, and then click on `Import CSV(s) to Genesis` as the image below.
+To do that, find the **USER.csv** file (this is inside the **server/jvm/alpha-site-specific/src/main/resources/data** folder), right-click **USER.csv**, and then click on `Import CSV(s) to Genesis` as you can see in the image below.
 
 ![Genesis Install](/img/intellij-sendIt-USERcsv.png)
 
