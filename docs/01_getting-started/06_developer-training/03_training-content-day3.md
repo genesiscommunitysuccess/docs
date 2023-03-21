@@ -539,7 +539,7 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 Before defining the Consolidator, we should insert some data in the `INSTRUMENT_PRICE` table using using [SendIt](../../../operations/commands/server-commands/#sendit-script) script as we saw [here](../../../getting-started/developer-training/training-content-day1/#user-name-and-password). 
 
-Create a new file in the same folder *USER.csv* is and name it as INSTRUMENT_PRICE.csv. Copy the content below into the file you just created.
+Create a new file in the same folder as the **USER.csv** file and name it as **INSTRUMENT_PRICE.csv**. Copy the content below into the file that you have just created.
 ```csv
 INSTRUMENT_ID,LAST_PRICE
 1,10
