@@ -40,7 +40,7 @@ genesisInstall [--ignore]
 |----------|--------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------|
 |          | --ignore           | no        | If supplied, will ignore errors in the configuration files                                                                            | No                |
 |          | --ignoreHooks      | no        | If supplied, will ignore any install hooks found                                                                                      | No                |
-|          | --compactProcesses | no        | When set to `true`, combines compatible services into a single process which reduces the number of services running in the container  | No                |
+|          | --compactProcesses | no        | When set to `true`, combines compatible services into a single process, which reduces the number of services running in the container  | No                |
 
 Once complete, all configuration files will be copied and, where necessary, merged into the **~/run/generated/cfg** file, which we alias as **$GC**.
 
