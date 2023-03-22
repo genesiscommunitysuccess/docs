@@ -119,7 +119,7 @@ This setup presumes you will sign in with jfrog SAML SSO. Please follow the step
     ```
 6. Replace SCOPE with genesislcap:
     ```shell
-    npm config set @<genesislcap>:registry https://genesisglobal.jfrog.io/artifactory/api/npm/npm/
+    npm config set @genesislcap:registry https://genesisglobal.jfrog.io/artifactory/api/npm/npm/
     ```
 7. Click edit profile → Click Generate identity token button. Copy token
 8. Open your terminal again and use this token run the curl command:
