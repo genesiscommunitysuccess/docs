@@ -309,5 +309,127 @@ Now if everything has worked, you can go to your browser, insert the data for a 
 
 ![](/img/finished-trade-view.png)
 
+## Advanced features
+
+If you need a completely custom form you can pass `uischema` and `jsonSchema` directly to a `foundation-form` and it will be auto-generated based on these inputs.
+
+```html title='form.template.ts'
+<foundation-form
+  :uischema=${(x) => x.uischema}
+  :jsonSchema=${(x) => x.jsonSchema}
+  :data=${(x) => x.editedEntity}
+></foundation-form>
+```
+
+Example schema:
+```typescript title='form.ts'
+const uiSchema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    {
+      type: 'Control',
+      label: 'Address',
+      scope: '#/properties/COMPANY_ADDRESS',
+    },
+    {
+      type: 'Control',
+      label: 'Issuer Name',
+      scope: '#/properties/ISSUER_NAME',
+    },
+  ],
+};
+
+const jsonSchema: JSONSchema7 = {
+  type: 'object',
+  properties: {
+    COMPANY_ADDRESS: {
+      oneOf: [
+        {
+          type: 'null',
+        },
+        {
+          type: 'string',
+        },
+      ],
+      description: 'kotlin.String',
+    },
+    ISSUER_NAME: {
+      type: 'string',
+      minLength: 3,
+      description: 'kotlin.String',
+    },
+    ...
+  },
+  additionalProperties: false,
+  required: ['ISSUER_NAME'],
+};
+```
+
+The `jsonSchema` can either be defined locally (as above) or be fetched from the server based on a resource name.
+
+```jsx
+const jsonSchemaResponse = await this.connect.getJSONSchema(this.resourceName);
+this.jsonSchema = jsonSchemaResponse?.INBOUND?.properties?.DETAILS as JSONSchema7;
+```
+
+### Custom validation
+
+When defining your `jsonSchema` you can pass a custom validation function to any field, it is passed as `validateFn` in the `options` block.
+
+```typescript
+{
+  type: 'Control',
+  label: 'CEO',
+  scope: '#/properties/COMPANY_CEO',
+  options: {
+    validateFn:
+      // custom validateFn example
+      (data, path, label) => {
+        const name = data?.[path];
+        if (name?.length < CEO_MIN_LENGTH) {
+          return [
+            {
+              instancePath: `/${path}`,
+              message: `Too short`,
+              schemaPath: '',
+              keyword: '',
+              params: {},
+            },
+          ];
+        }
+        return []; // technically should always return an array (but it's handled upstream if you forget)
+      },
+  },
+},
+```
+
+In the above example `validateFn` will check the length of the CEO field and will return the error `Too short` if it is shorter than the required minumum length.
+
+You can also use helper functions provided by the genesis platform. In the below example we are using `mustMatch` to require the `Password confirmation` field and the `Password` field to match.
+
+```typescript
+import { mustMatch } from '@genesislcap/foundation-forms';
+
+...
+{
+  type: 'Control',
+  label: 'Password',
+  scope: '#/properties/PASSWORD',
+  options: {
+    isPassword: true,
+  },
+},
+{
+  type: 'Control',
+  label: 'Password confirmation',
+  scope: '#/properties/PASSWORD_CONFIRMATION',
+  options: {
+    isPassword: true,
+    validateFn: mustMatch('PASSWORD'),
+  },
+},
+...
+```
+
 ## Conclusion
 You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for the forms.
