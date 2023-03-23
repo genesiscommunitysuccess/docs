@@ -21,7 +21,13 @@ Because we abstract from the underlying technology, you can easily toggle betwee
 
 There are also tools that enable you to stream real-time data reliably to and from any classic [Oracle/SQL database](../../../database/database-technology/sql/).
 
-By default, FoundationDB is installed on the platform. If you need to use another supported database, follow the steps below.
+By default, FoundationDB is installed on the platform. You can easily change this if you want to use another supported database. Follow the steps below.
+
+:::warning 
+
+If you do not set the database correctly, this will cause fundamental errors. You will not be able to run `genesisInstall` or `remap` correctly.
+
+:::
 
 ## Changing the database technology
 
