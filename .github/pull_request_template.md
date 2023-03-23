@@ -3,7 +3,7 @@ Thank you for contributing to the documentation.
 Your Jira ticket is:
 P********
 
-Have you provided changes for all the relevant versions: next, 2022.3, 2022.4, etc?
+Have you provided changes for all the relevant versions: next, 2022.4, 2023.1, etc?
 <!--- Yes / No -->
 
 Have you checked all new or changed links?
