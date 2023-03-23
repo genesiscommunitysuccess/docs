@@ -41,8 +41,6 @@ Please follow these instructions very carefully to ensure your environment is re
 | NodeJS  | 16 LTS|
 | npm | 8 |
 | Gradle | 7.5 |
-| Windows Subsystem for Linux (WSL) | WSL 2 |
-| Docker Desktop | 4.11.1 |
 
 You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the Genesis Platform Abstraction Language (**GPAL**) prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
 
