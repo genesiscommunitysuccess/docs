@@ -14,7 +14,7 @@ tags:
 It is often useful to run tasks periodically - for example, to schedule the production of EOD reports, to change a field in the database if another field has a certain value, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](../../../server/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](../../../server/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
 
 - [Dynamic Rules](../../../getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#setting-up-the-dynamic-rules), also known as dynamic events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
-- [Static Rules](../../../getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#static-rules-cron-rules) are scheduling rules; these are static events, defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression).
+- [Static Rules](../../../getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#static-rules-cron-rules) are scheduling rules; these are static events, defined as [quartz cron expressions](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html).
 
 In both cases, you define the rules in a table in the database: `DYNAMIC_RULES` for dynamic rules and `CRON_RULES` for static rules. We're going start with dynamic rules.
 
@@ -318,7 +318,7 @@ This section showed how to trigger events based on a condition in the database. 
 
 It is often useful to run tasks periodically - for example, to schedule the production of EOD reports, or to send a warning when a defined limit is reached. For such purposes, the Genesis low-code platform provides a feature called the [Evaluator](../../../server/evaluator/introduction/). In system terms, Evaluators enable you to connect [Event Handlers](../../../server/event-handler/introduction/) to two different kinds of event: dynamic and static (cron rules): 
 
-- __Cron Rules__  are scheduling rules; these are static events, defined as [standard cron expressions](https://en.wikipedia.org/wiki/Cron#CRON_expression). 
+- __Cron Rules__  are scheduling rules; these are static events, defined as [quartz cron expressions](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html). 
 - __Dynamic Rules__, also known as dynamic events, are defined as [groovy expressions](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
 In both cases, you define the rule in a table in the database: `CRON_RULES` for static rules and `DYNAMIC_RULES` for dynamic rules. In this section, we're going to use `CRON_RULES`.
@@ -345,7 +345,7 @@ Let's look at the most important fields:
 * **MESSAGE_TYPE** is the message that needs to be sent to the specified **PROCESS_NAME**.
 * **RESULT_EXPRESSION** is the value or values that will be sent as part of the transaction to the target PROCESS_NAME; we can leave RESULT_EXPRESSION empty, as we are going to generate a report for all positions anyway.
 
-:::info
+:::caution
 We use [Quartz](http://www.quartz-scheduler.org/) to manage our cron expression. All cron expression formats should match that of Quartz specification.
 :::
 
