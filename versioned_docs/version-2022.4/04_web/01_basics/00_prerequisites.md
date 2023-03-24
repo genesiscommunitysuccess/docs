@@ -1,6 +1,6 @@
 ---
-title: 'Web Basics - Prerequisites'
-sidebar_label: 'Prerequisites'
+title: 'Web basics - prerequisites'
+sidebar_label: 'prerequisites'
 id: prerequisites
 keywords: [web, basics, prerequisites]
 tags:

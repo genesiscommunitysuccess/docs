@@ -1,5 +1,5 @@
 ---
-title: 'Web Basics - package.json'
+title: 'Web basics - package.json'
 sidebar_label: 'Package.json basics'
 id: package-json-basics
 keywords: [web, basics, package.json, scripts, dependencies]

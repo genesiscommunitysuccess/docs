@@ -17,12 +17,14 @@ This installs all the  packages' dependencies and links any cross-dependencies.
 
 **You must do this at least once to get the top-level client dependencies in place.**
 
-```shell
+From your **client** folder:
+
+```shell title='../client/'
 npm run bootstrap
 ```
 
 This is a shortcut for:
-```shell
+```shell title='../client/'
 npm run husky:install && npx lerna bootstrap --hoist
 ```
 
@@ -35,8 +37,9 @@ When you run this command, it will:
 
 Passing `--ignore-scripts` to the bootstrap command speeds up the process, as it skips any [lifecycle scripts](https://docs.npmjs.com/cli/v9/using-npm/scripts#life-cycle-scripts) that are normally run (prepare, etc) in bootstrapped packages.
 
-Use this script shortcut.
-```shell
+If you prefer to use this shortcut, run this from your **client** folder:
+
+```shell title='../client/'
 npm run bootstrap:ignore-scripts
 ```
 
@@ -61,9 +64,9 @@ This command cleans and bootstraps all the dependencies by topological order and
 
 ## Build the web application 
 
-From inside the web application's folder (e.g. client/web/), run this command:
+From inside the web application's folder (e.g. **client/web/**), run this command:
 
-```shell
+```shell title='../client/web/'
 npm run build
 ```
 
@@ -109,9 +112,9 @@ If you have build issues and you want to reset, use the following script to remo
 npm run clean
 ```
 
-After this, you should (must) run bootstrap again.
+After this, you should (must) run bootstrap again from your **client** folder.
 
-```shell
+```shell title='../client/'
 npm run bootstrap
 ```
 
