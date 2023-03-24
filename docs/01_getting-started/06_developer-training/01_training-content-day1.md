@@ -288,7 +288,27 @@ In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**T
 ./gradlew :genesisproduct-alpha:assemble
 ```
 
-After the Gradle task, there are two scripts (genesisInstall and remap) you can run using the Genesis IntelliJ Plugin explained next.
+After the Gradle task, when first using the plugin with a project, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
+
+![Genesis Install](/img/intellij-install.png)
+
+#### .genesis-home folder
+
+This generates a hidden folder called **.genesis-home** in your project root, ready to run your application's processes. This may take up to 20 minutes on the first run because it performs a full build of your application.
+
+:::tip
+If you want to keep your file search as clean as possible, it is possible to assign the **.genesis-home** folder as Excluded. To do that, follow the three steps below.
+
+1. Right-click on the directory you want to exclude in the Project pane on the left side of IntelliJ.
+
+2. Select "Mark Directory as" from the dropdown menu.
+
+3. Choose "Excluded" from the sub-menu.
+
+Further information can be found [here](https://www.jetbrains.com/help/idea/content-roots.html#configure-folders).
+:::
+
+There are two scripts (genesisInstall and remap) you can run using the Genesis IntelliJ Plugin explained next.
 
 The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files, so it can propagate the correct changes into the running processes. You can run it using the Genesis IntelliJ Plugin as shown below. 
 
