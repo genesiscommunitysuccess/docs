@@ -1,5 +1,5 @@
 ---
-title: 'Web basics - front-end'
+title: 'Web basics - front end'
 sidebar_label: 'Front-end basics'
 id: front-end-basics
 keywords: [web, basics]
