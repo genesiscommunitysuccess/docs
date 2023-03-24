@@ -17,6 +17,8 @@ This installs all the  packages' dependencies and links any cross-dependencies.
 
 **You must do this at least once to get the top-level client dependencies in place.**
 
+From your **client** folder:
+
 ```shell title='../client/'
 npm run bootstrap
 ```
@@ -35,7 +37,8 @@ When you run this command, it will:
 
 Passing `--ignore-scripts` to the bootstrap command speeds up the process, as it skips any [lifecycle scripts](https://docs.npmjs.com/cli/v9/using-npm/scripts#life-cycle-scripts) that are normally run (prepare, etc) in bootstrapped packages.
 
-Use this script shortcut.
+If you prefer to use this shortcut, run this from your **client** folder:
+
 ```shell title='../client/'
 npm run bootstrap:ignore-scripts
 ```
@@ -109,7 +112,7 @@ If you have build issues and you want to reset, use the following script to remo
 npm run clean
 ```
 
-After this, you should (must) run bootstrap again.
+After this, you should (must) run bootstrap again from your **client** folder.
 
 ```shell title='../client/'
 npm run bootstrap
