@@ -280,12 +280,26 @@ Finally, you can build and deploy the server.
 
 ### Build
 
-In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**Tasks**/**build/assemble**.
+In the Gradle menu on the right of IntelliJ, select:
 
-![](/img/assemble-server.png)
+**genesisproduct-alpha**/**alpha-config**
 
-```shell title='Running assemble from the command line'
-./gradlew :genesisproduct-alpha:assemble
+![](/img/alpha-config-gradle.png)
+
+```shell title='Running alpha-config assemble from the command line'
+./gradlew :genesisproduct-alpha:alpha-config:assemble
+./gradlew :genesisproduct-alpha:alpha-config:deployCfgToGenesisHome
+
+```
+
+**genesisproduct-alpha**/**alpha-script-config**
+
+![](/img/alpha-script-config-gradle.png)
+
+```shell title='Running alpha-script-config assemble from the command line'
+./gradlew :genesisproduct-alpha:alpha-script-config:assemble
+./gradlew :genesisproduct-alpha:alpha-script-config:deployScriptsToGenesisHome
+
 ```
 
 #### .genesis-home folder
@@ -310,11 +324,25 @@ Further information can be found [here](https://www.jetbrains.com/help/idea/cont
 
 There are two scripts (genesisInstall and remap) you can run using the Genesis IntelliJ Plugin explained next.
 
-The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files, so it can propagate the correct changes into the running processes. You can run it using the Genesis IntelliJ Plugin as shown below.  
+The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files, so it can propagate the correct changes into the running processes. You can run it using the Genesis IntelliJ Plugin, as shown below. 
 
 ![Genesis Install](/img/intellij-genesisInstall.png)
 
-Apart from the genesisInstall, if the changes affect the Database schema (i.e. *-dictionary.kts file changes)  we need to run [remap script](../../../operations/commands/server-commands/#remap-script) as well. This is because it implies that the Database Access Objects (DAOs) will need to be rebuilt. You can also run remap using the Genesis IntelliJ Plugin as shown below. 
+Apart from the genesisInstall, if the changes affect the Database schema (i.e. **-dictionary.kts** file changes)  we need to run the tasks from **dictionary-cache** module and  [remap script](../../../operations/commands/server-commands/#remap-script) as well. This is because it implies that the Database Access Objects (DAOs) need to be rebuilt. You can also run remap using the Genesis IntelliJ Plugin, as shown below. 
+
+**genesisproduct-alpha**/**alpha-dictionary-cache**
+
+![](/img/alpha-dictionary-cache-gradle.png)
+
+```shell title='Running alpha-dictionary-cache assemble from the command line'
+./gradlew :genesisproduct-alpha:alpha-dictionary-cache:assemble
+./gradlew :genesisproduct-alpha:alpha-dictionary-cache:deployDaoToGenesisHome
+
+```
+
+Run genesisInstall again and then remap.
+
+![Genesis Install](/img/intellij-genesisInstall.png)
 
 ![Genesis Install](/img/intellij-remap.png)
 
