@@ -294,7 +294,7 @@ After the Gradle task, when first using the plugin with a project, you must crea
 
 ![Genesis Install](/img/intellij-install.png)
 
-This generates a hidden folder called **.genesis-home** in your project root, ready to run your application's processes. This may take up to 20 minutes on the first run because it performs a full build of your application.
+This generates a hidden folder called **.genesis-home** in your project root, ready to run your application's processes. On the first run, this could take up to 20 minutes, because it performs a full build of your application.
 
 :::tip
 If you want to keep your file search as clean as possible, it is possible to assign the **.genesis-home** folder as Excluded. To do that, follow the three steps below.
@@ -310,7 +310,7 @@ Further information can be found [here](https://www.jetbrains.com/help/idea/cont
 
 There are two scripts (genesisInstall and remap) you can run using the Genesis IntelliJ Plugin explained next.
 
-The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files, so it can propagate the correct changes into the running processes. You can run it using the Genesis IntelliJ Plugin as shown below. 
+The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files, so it can propagate the correct changes into the running processes. You can run it using the Genesis IntelliJ Plugin, as shown below. 
 
 ![Genesis Install](/img/intellij-genesisInstall.png)
 
