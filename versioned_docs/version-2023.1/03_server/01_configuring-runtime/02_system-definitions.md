@@ -129,19 +129,19 @@ then the generated ID will be `000000000001TRLO1` where "LO" represents Location
 
 If you want to enable SSL for your process communication, this is done in the [service definition](../../../server/configuring-runtime/service-definitions/#enable-ssl-for-processes).
 
-## Setting System Definitions values from environment variables
+## Setting System-definitions value from environment variables
 
 You can override system definition values from the environments. This is preferable, for example, if you wish to set values for a given environment dynamically.
 
-To do this, you can set an environment variable which is has the same name as the system definition item name prefixed with `GENESIS_SYSDEF_` for example `GENESIS_SYSDEF_DbHost=jdbc:postgresql://localhost/genesis`
+To do this, you can set an environment variable which has the same name as the system definition item name prefixed with `GENESIS_SYSDEF_`: for example, `GENESIS_SYSDEF_DbHost=jdbc:postgresql://localhost/genesis`
 
-In this example we are fetching the value of `DbHost` from the environment variable, if the environment variable is not set then the  value from the system definitions file will be used.
+In this example, we fetch the value of `DbHost` from the environment variable. If the environment variable is not set, then the value from the system-definitions file will be used.
 
-## Retrieving System Definition properties
+## Retrieving system-definition properties
 
-There are examples of how to retrieve properties from an application's System Definition in our page on [dependency injection](../../../server/api-reference/dependency-injection/#injectable-properties-from-system-definition) in the API section.
+There are examples of how to retrieve properties from an application's system definition in our page on [dependency injection](../../../server/api-reference/dependency-injection/#injectable-properties-from-system-definition) in the API section.
 
-Genesis enables you to store encrypted values in the configuration. You can access these encrypted values from custom components using:
+Genesis enables you to store encrypted values in the configuration. You can access the encrypted values from custom components using:
 
 - `ByteArrayProvider`
 - [`getItem()`](../../inter-process-messages/genesisSet/#functions)
