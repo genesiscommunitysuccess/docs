@@ -288,11 +288,11 @@ In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**T
 ./gradlew :genesisproduct-alpha:assemble
 ```
 
+#### .genesis-home folder
+
 After the Gradle task, when first using the plugin with a project, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
 
 ![Genesis Install](/img/intellij-install.png)
-
-#### .genesis-home folder
 
 This generates a hidden folder called **.genesis-home** in your project root, ready to run your application's processes. This may take up to 20 minutes on the first run because it performs a full build of your application.
 
@@ -301,9 +301,9 @@ If you want to keep your file search as clean as possible, it is possible to ass
 
 1. Right-click on the directory you want to exclude in the Project pane on the left side of IntelliJ.
 
-2. Select "Mark Directory as" from the dropdown menu.
+2. Select **Mark Directory as** from the dropdown menu.
 
-3. Choose "Excluded" from the sub-menu.
+3. Choose **Excluded** from the sub-menu.
 
 Further information can be found [here](https://www.jetbrains.com/help/idea/content-roots.html#configure-folders).
 :::
@@ -343,14 +343,14 @@ This starts the build processes and the logs will be shown below.
 4. Once the Resource daemon starts, you can start the processes you wish to have running.
 
 ### User name and password
-Using the repo you [cloned](https://github.com/genesiscommunitysuccess/devtraining-seed), the following will be your login details:
+Using the repo that you [cloned](https://github.com/genesiscommunitysuccess/devtraining-seed), your login details are:
 
 - Username: JaneDee
 - Password: beONneON*74 (This is encrypted in the **user.csv** file.)
 
 However, after the first Build and Deploy, you added the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin, as explained in the [documentation for the plugin](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
 
-To do that, find the **USER.csv** file (this is inside the **server/jvm/alpha-site-specific/src/main/resources/data** folder), right-click **USER.csv**, and then click on `Import CSV(s) to Genesis` as you can see in the image below.
+To do that, find the **USER.csv** file (this is inside the **server/jvm/alpha-site-specific/src/main/resources/data** folder), right-click **USER.csv**, and then click on **Import CSV(s) to Genesis**, as you can see in the image below.
 
 ![Genesis Install](/img/intellij-sendIt-USERcsv.png)
 
