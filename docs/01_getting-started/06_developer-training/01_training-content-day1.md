@@ -280,21 +280,69 @@ Finally, you can build and deploy the server.
 
 ### Build
 
-In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**Tasks**/**build/assemble**.
+In the Gradle menu on the right of IntelliJ, select:
 
-![](/img/assemble-server.png)
+**genesisproduct-alpha**/**alpha-config**
 
-```shell title='Running assemble from the command line'
-./gradlew :genesisproduct-alpha:assemble
+![](/img/alpha-config-gradle.png)
+
+```shell title='Running alpha-config assemble from the command line'
+./gradlew :genesisproduct-alpha:alpha-config:assemble
+./gradlew :genesisproduct-alpha:alpha-config:deployCfgToGenesisHome
+
 ```
 
-After the Gradle task, there are two scripts (genesisInstall and remap) you can run using the Genesis IntelliJ Plugin explained next.
+**genesisproduct-alpha**/**alpha-script-config**
 
-The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files, so it can propagate the correct changes into the running processes. You can run it using the Genesis IntelliJ Plugin as shown below. 
+![](/img/alpha-script-config-gradle.png)
+
+```shell title='Running alpha-script-config assemble from the command line'
+./gradlew :genesisproduct-alpha:alpha-script-config:assemble
+./gradlew :genesisproduct-alpha:alpha-script-config:deployScriptsToGenesisHome
+
+```
+
+#### .genesis-home folder
+
+After the Gradle task, when first using the plugin with a project, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
+
+![Genesis Install](/img/intellij-install.png)
+
+This generates a hidden folder called **.genesis-home** in your project root, ready to run your application's processes. On the first run, this could take up to 20 minutes, because it performs a full build of your application.
+
+:::tip
+If you want to keep your file search as clean as possible, it is possible to assign the **.genesis-home** folder as Excluded. To do that, follow the three steps below.
+
+1. Right-click on the directory you want to exclude in the Project pane on the left side of IntelliJ.
+
+2. Select **Mark Directory as** from the dropdown menu.
+
+3. Choose **Excluded** from the sub-menu.
+
+Further information can be found [here](https://www.jetbrains.com/help/idea/content-roots.html#configure-folders).
+:::
+
+There are two scripts (genesisInstall and remap) you can run using the Genesis IntelliJ Plugin explained next.
+
+The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files, so it can propagate the correct changes into the running processes. You can run it using the Genesis IntelliJ Plugin, as shown below. 
 
 ![Genesis Install](/img/intellij-genesisInstall.png)
 
-Apart from the genesisInstall, if the changes affect the Database schema (i.e. **-dictionary.kts** file changes)  we need to run [remap script](../../../operations/commands/server-commands/#remap-script) as well. This is because it implies that the Database Access Objects (DAOs) need to be rebuilt. You can also run remap using the Genesis IntelliJ Plugin, as shown below. 
+Apart from the genesisInstall, if the changes affect the Database schema (i.e. **-dictionary.kts** file changes)  we need to run the tasks from **dictionary-cache** module and  [remap script](../../../operations/commands/server-commands/#remap-script) as well. This is because it implies that the Database Access Objects (DAOs) need to be rebuilt. You can also run remap using the Genesis IntelliJ Plugin, as shown below. 
+
+**genesisproduct-alpha**/**alpha-dictionary-cache**
+
+![](/img/alpha-dictionary-cache-gradle.png)
+
+```shell title='Running alpha-dictionary-cache assemble from the command line'
+./gradlew :genesisproduct-alpha:alpha-dictionary-cache:assemble
+./gradlew :genesisproduct-alpha:alpha-dictionary-cache:deployDaoToGenesisHome
+
+```
+
+Run genesisInstall again and then remap.
+
+![Genesis Install](/img/intellij-genesisInstall.png)
 
 ![Genesis Install](/img/intellij-remap.png)
 
@@ -323,14 +371,14 @@ This starts the build processes and the logs will be shown below.
 4. Once the Resource daemon starts, you can start the processes you wish to have running.
 
 ### User name and password
-Using the repo you [cloned](https://github.com/genesiscommunitysuccess/devtraining-seed), the following will be your login details:
+Using the repo that you [cloned](https://github.com/genesiscommunitysuccess/devtraining-seed), your login details are:
 
 - Username: JaneDee
 - Password: beONneON*74 (This is encrypted in the **user.csv** file.)
 
 However, after the first Build and Deploy, you added the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin, as explained in the [documentation for the plugin](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
 
-To do that, find the **USER.csv** file (this is inside the **server/jvm/alpha-site-specific/src/main/resources/data** folder), right-click **USER.csv**, and then click on `Import CSV(s) to Genesis` as you can see in the image below.
+To do that, find the **USER.csv** file (this is inside the **server/jvm/alpha-site-specific/src/main/resources/data** folder), right-click **USER.csv**, and then click on **Import CSV(s) to Genesis**, as you can see in the image below.
 
 ![Genesis Install](/img/intellij-sendIt-USERcsv.png)
 
