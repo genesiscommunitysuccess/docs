@@ -131,15 +131,11 @@ If you want to enable SSL for your process communication, this is done in the [s
 
 ## Setting System Definitions values from environment variables
 
-You can load system definition values from the environments. This is preferable, for example, if you wish to set values for a given environment dynamically.
+You can override system definition values from the environments. This is preferable, for example, if you wish to set values for a given environment dynamically.
 
-To do this, set the `value` attribute of an `item` to read an environment variable and fall back to a sensible default. 
+To do this, you can set an environment variable which is has the same name as the system definition item name prefixed with `GENESIS_SYSDEF_` for example `GENESIS_SYSDEF_DbHost=jdbc:postgresql://localhost/genesis`
 
-```kotlin
-item(name = "DbHost", value = System.getenv("DBHOST") ?: "localhost")
-```
-
-In this example we are fetching the value of `DbHost` from the environment variable `DBHOST`, if the environment variable is not set then the default value of `"localhost"` will be used.
+In this example we are fetching the value of `DbHost` from the environment variable, if the environment variable is not set then the  value from the system definitions file will be used.
 
 ## Retrieving System Definition properties
 
