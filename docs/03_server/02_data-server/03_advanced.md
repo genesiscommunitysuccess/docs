@@ -217,6 +217,97 @@ are always selected in the order they are specified in the index.
 
 The `index` property can have unique and non-unique [indexes](../../../database/data-types/index-entities/#types)
 
+Examples when: `numKeyFields > 1`
+
+Range is based on sorted records when numKeyFields is greater than 1
+For below table and data which is sorted already, we have shown a couple of examples of ranged query with its result
+```kotlin
+table(name = "GENESIS_PROCESS_MONITOR", id = 20) {
+    MONITOR_NAME
+    PROCESS_HOSTNAME
+    PROCESS_NAME
+
+    primaryKey(name = "GENESIS_PROCESS_MONITOR_BY_HOSTNAME", id = 1) {
+        PROCESS_HOSTNAME
+        PROCESS_NAME
+        MONITOR_NAME
+    }
+}
+```
+
+```text
+GENESIS_PROCESS_MONITOR.PROCESS_HOSTNAME,GENESIS_PROCESS_MONITOR.PROCESS_NAME,GENESIS_PROCESS_MONITOR.MONITOR_NAME
+localhost,process_a,monitor_a
+localhost,process_a,monitor_b
+localhost,process_b,monitor_a
+localhost,process_b,monitor_b
+remote_host,process_a,monitor_a
+remote_host,process_a,monitor_b
+remote_host,process_b,monitor_a
+remote_host,process_b,monitor_b
+```
+
+Example 1:
+Ranged query:
+```kotlin
+query("GENESIS_PROCESS_MONITOR_START_END_REC_2", GENESIS_PROCESS_MONITOR) {
+   ranged(GenesisProcessMonitor.ByHostname, 2) {
+      from {
+         GenesisProcessMonitor.ByHostname(
+            processHostname = "localhost",
+            processName = "process_a",
+            monitorName = "monitor_a" // monitorName values are ignored since numKeyFields is 2
+         )
+      }
+      to {
+         GenesisProcessMonitor.ByHostname(
+            processHostname = "localhost",
+            processName = "process_b",
+            monitorName = "monitor_a" // monitorName values are ignored since numKeyFields is 2
+         )
+      }
+   }
+}
+```
+Result:
+```text
+localhost,process_a,monitor_a
+localhost,process_a,monitor_b
+localhost,process_b,monitor_a
+localhost,process_b,monitor_b
+```
+
+Example 2:
+Ranged query:
+```kotlin
+    query("GENESIS_PROCESS_MONITOR_START_END_REC_3", GENESIS_PROCESS_MONITOR) {
+        ranged(GenesisProcessMonitor.ByHostname, 3) {
+            from {
+                GenesisProcessMonitor.ByHostname(
+                    processHostname = "localhost",
+                    processName = "process_a",
+                    monitorName = "monitor_a"
+                )
+            }
+            to {
+                GenesisProcessMonitor.ByHostname(
+                    processHostname = "remote_host",
+                    processName = "process_a",
+                    monitorName = "monitor_a"
+                )
+            }
+        }
+    }
+```
+Result:
+```text
+localhost,process_a,monitor_a
+localhost,process_a,monitor_b
+localhost,process_b,monitor_a
+localhost,process_b,monitor_b
+remote_host,process_a,monitor_a
+```
+
 ## Client-side (runtime) options
 
 When a client initiates a subscription to a Data Server by sending a **DATA_LOGON** message, there are several options that can be specified. None of these options is mandatory; you don't have to specify any to initiate a subscription. 
