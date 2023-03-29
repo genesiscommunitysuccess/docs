@@ -62,7 +62,7 @@ query("ALL_BUYER_SELLER_TRADES", BUYER_SELLER_TRADE_VIEW){
                     else -> ""
                 }
             }
-            // If a user belows to the buyer counterparty, "DIRECTION" will be "BUY"
+            // If a user belongs to the buyer counterparty, "DIRECTION" will be "BUY"
             // in the reverse scenario it will be "SELL"
             derivedField("DIRECTION", STRING) { row, userData ->
                 when {
@@ -216,6 +216,100 @@ The `numKeyFields` property specifies the number of fields to use from an index.
 are always selected in the order they are specified in the index.
 
 The `index` property can have unique and non-unique [indexes](../../../database/data-types/index-entities/#types)
+
+Examples when: `numKeyFields > 1`
+
+The range configuration returns a set of sorted records based on the index definition and the number of fields involved (specified by `numKeyFields`)
+Let's see a couple of examples of ranged queries with their respective results in CSV format. The table definition with associated data sorted by its primary key fields is shown below:
+
+```kotlin
+table(name = "GENESIS_PROCESS_MONITOR", id = 20) {
+    MONITOR_NAME
+    PROCESS_HOSTNAME
+    PROCESS_NAME
+
+    primaryKey(name = "GENESIS_PROCESS_MONITOR_BY_HOSTNAME", id = 1) {
+        PROCESS_HOSTNAME
+        PROCESS_NAME
+        MONITOR_NAME
+    }
+}
+```
+
+```csv
+PROCESS_HOSTNAME,PROCESS_NAME,MONITOR_NAME
+localhost,process_a,monitor_a
+localhost,process_a,monitor_b
+localhost,process_b,monitor_a
+localhost,process_b,monitor_b
+remote_host,process_a,monitor_a
+remote_host,process_a,monitor_b
+remote_host,process_b,monitor_a
+remote_host,process_b,monitor_b
+```
+
+Example 1:
+Ranged query:
+```kotlin
+query("GENESIS_PROCESS_MONITOR_NUM_KEY_FIELDS_2", GENESIS_PROCESS_MONITOR) {
+   ranged(GenesisProcessMonitor.ByHostname, 2) {
+      from {
+         GenesisProcessMonitor.ByHostname(
+            processHostname = "localhost",
+            processName = "process_a",
+            monitorName = "monitor_a" // monitorName values are ignored since numKeyFields is 2
+         )
+      }
+      to {
+         GenesisProcessMonitor.ByHostname(
+            processHostname = "localhost",
+            processName = "process_b",
+            monitorName = "monitor_a" // monitorName values are ignored since numKeyFields is 2
+         )
+      }
+   }
+}
+```
+Result:
+```csv
+PROCESS_HOSTNAME,PROCESS_NAME,MONITOR_NAME
+localhost,process_a,monitor_a
+localhost,process_a,monitor_b
+localhost,process_b,monitor_a
+localhost,process_b,monitor_b
+```
+
+Example 2:
+Ranged query:
+```kotlin
+    query("GENESIS_PROCESS_MONITOR_NUM_KEY_FIELDS_3", GENESIS_PROCESS_MONITOR) {
+        ranged(GenesisProcessMonitor.ByHostname, 3) {
+            from {
+                GenesisProcessMonitor.ByHostname(
+                    processHostname = "localhost",
+                    processName = "process_a",
+                    monitorName = "monitor_a"
+                )
+            }
+            to {
+                GenesisProcessMonitor.ByHostname(
+                    processHostname = "remote_host",
+                    processName = "process_a",
+                    monitorName = "monitor_a"
+                )
+            }
+        }
+    }
+```
+Result:
+```csv
+PROCESS_HOSTNAME,PROCESS_NAME,MONITOR_NAME
+localhost,process_a,monitor_a
+localhost,process_a,monitor_b
+localhost,process_b,monitor_a
+localhost,process_b,monitor_b
+remote_host,process_a,monitor_a
+```
 
 ## Client-side (runtime) options
 
