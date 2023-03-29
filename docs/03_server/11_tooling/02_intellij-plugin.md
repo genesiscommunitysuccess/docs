@@ -25,7 +25,7 @@ You could use, for instance, [PostgreSQL](../../../database/database-technology/
 
 ```terminal
 docker pull postgres
-docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres
+docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=10000'
 ```
 :::
 
