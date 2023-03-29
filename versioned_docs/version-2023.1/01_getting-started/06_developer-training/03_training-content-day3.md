@@ -142,7 +142,7 @@ field("PNL", type = DOUBLE)​
 
 When you finish, remember to run [generatefields](../../../getting-started/developer-training/training-content-day1/#generatefields).
 
-### updating the schemas.ts
+### Updating the schemas.ts
 
 After creating these new fields, go back to the `schemas.ts` and add this code blocks to it. so we can interact with them.
 
