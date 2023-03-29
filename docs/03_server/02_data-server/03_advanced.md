@@ -62,7 +62,7 @@ query("ALL_BUYER_SELLER_TRADES", BUYER_SELLER_TRADE_VIEW){
                     else -> ""
                 }
             }
-            // If a user belows to the buyer counterparty, "DIRECTION" will be "BUY"
+            // If a user belongs to the buyer counterparty, "DIRECTION" will be "BUY"
             // in the reverse scenario it will be "SELL"
             derivedField("DIRECTION", STRING) { row, userData ->
                 when {
@@ -219,8 +219,9 @@ The `index` property can have unique and non-unique [indexes](../../../database/
 
 Examples when: `numKeyFields > 1`
 
-The range configuration returns a set of sorted records based on the index definition and the number of fields involved (i.e. numKeyFields configuration)
-Let's see a couple of examples of ranged queries with their respective results in CSV format. The table definition with associated data sorted by its primary key fields is shown below
+The range configuration returns a set of sorted records based on the index definition and the number of fields involved (specified by `numKeyFields`)
+Let's see a couple of examples of ranged queries with their respective results in CSV format. The table definition with associated data sorted by its primary key fields is shown below:
+
 ```kotlin
 table(name = "GENESIS_PROCESS_MONITOR", id = 20) {
     MONITOR_NAME
