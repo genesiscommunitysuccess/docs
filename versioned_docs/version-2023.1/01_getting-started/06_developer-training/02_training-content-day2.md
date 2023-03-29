@@ -355,11 +355,6 @@ export const tradeFormSchema = (editing?: boolean) => ({
 	},
 	{
 		"type": "Control",
-		"label": "Entered By",
-		"scope": "#/properties/ENTERED_BY"
-	},
-	{
-		"type": "Control",
 		"label": "Instrument",
 		"scope": "#/properties/INSTRUMENT_ID",
         "options": {
@@ -383,16 +378,6 @@ export const tradeFormSchema = (editing?: boolean) => ({
 		"type": "Control",
 		"label": "Symbol",
 		"scope": "#/properties/SYMBOL"
-	},
-	{
-		"type": "Control",
-		"label": "Trade Date",
-		"scope": "#/properties/TRADE_DATE"
-	},
-	{
-		"type": "Control",
-		"label": "Status",
-		"scope": "#/properties/TRADE_STATUS"
 	}
 
   ],
