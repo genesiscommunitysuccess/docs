@@ -142,6 +142,29 @@ field("PNL", type = DOUBLE)​
 
 When you finish, remember to run [generatefields](../../../getting-started/developer-training/training-content-day1/#generatefields).
 
+### updating the schemas.ts
+
+After creating these new fields, go back to the `schemas.ts` and add this code blocks to it. so we can interact with them.
+
+``` kotlin title = "schemas.ts"
+    {
+        "type": "Control",
+        "label": "Trade Date",
+        "scope": "#/properties/TRADE_DATE"
+    },
+    {
+        "type": "Control",
+        "label": "Status",
+        "scope": "#/properties/TRADE_STATUS"
+    },
+    {
+        "type": "Control",
+        "label": "Entered By",
+        "scope": "#/properties/ENTERED_BY"
+    }
+
+```
+
 ### Extending the Trade table and adding a Position table
 
 1. Add the new fields into the TRADE table.
