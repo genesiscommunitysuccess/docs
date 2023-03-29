@@ -469,7 +469,7 @@ The url consists of:
 - the name of the event handler
 
 ```
-http://localhost/EVENT_COUNTERPARTY_INSERT
+http://localhost:9064/EVENT_COUNTERPARTY_INSERT
 ```
 
 
