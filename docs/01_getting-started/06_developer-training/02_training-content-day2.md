@@ -478,10 +478,9 @@ Set the body to **JSON**. In the body, you need to insert the details of the fie
 ```
 {
     "DETAILS": {
-      "SOURCE_REF": "BAUDOIN1",
       "COUNTERPARTY_LEI": "Thomas S Eiselberg",
       "COUNTERPARTY_ID": "EISELBERG",
-      "ENABLED": 1,
+      "ENABLED": true,
       "COUNTERPARTY_NAME": "Thomas S Eiselberg GmbH"
     }
 }
