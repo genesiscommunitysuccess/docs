@@ -219,8 +219,8 @@ The `index` property can have unique and non-unique [indexes](../../../database/
 
 Examples when: `numKeyFields > 1`
 
-Range is based on sorted records when numKeyFields is greater than 1
-For below table and data which is sorted already, we have shown a couple of examples of ranged query with its result
+The range configuration returns a set of sorted records based on the index definition and the number of fields involved (i.e. numKeyFields configuration)
+Let's see a couple of examples of ranged queries with their respective results in CSV format. The table definition with associated data sorted by its primary key fields is shown below
 ```kotlin
 table(name = "GENESIS_PROCESS_MONITOR", id = 20) {
     MONITOR_NAME
@@ -235,8 +235,8 @@ table(name = "GENESIS_PROCESS_MONITOR", id = 20) {
 }
 ```
 
-```text
-GENESIS_PROCESS_MONITOR.PROCESS_HOSTNAME,GENESIS_PROCESS_MONITOR.PROCESS_NAME,GENESIS_PROCESS_MONITOR.MONITOR_NAME
+```csv
+PROCESS_HOSTNAME,PROCESS_NAME,MONITOR_NAME
 localhost,process_a,monitor_a
 localhost,process_a,monitor_b
 localhost,process_b,monitor_a
@@ -250,7 +250,7 @@ remote_host,process_b,monitor_b
 Example 1:
 Ranged query:
 ```kotlin
-query("GENESIS_PROCESS_MONITOR_START_END_REC_2", GENESIS_PROCESS_MONITOR) {
+query("GENESIS_PROCESS_MONITOR_NUM_KEY_FIELDS_2", GENESIS_PROCESS_MONITOR) {
    ranged(GenesisProcessMonitor.ByHostname, 2) {
       from {
          GenesisProcessMonitor.ByHostname(
@@ -270,7 +270,8 @@ query("GENESIS_PROCESS_MONITOR_START_END_REC_2", GENESIS_PROCESS_MONITOR) {
 }
 ```
 Result:
-```text
+```csv
+PROCESS_HOSTNAME,PROCESS_NAME,MONITOR_NAME
 localhost,process_a,monitor_a
 localhost,process_a,monitor_b
 localhost,process_b,monitor_a
@@ -280,7 +281,7 @@ localhost,process_b,monitor_b
 Example 2:
 Ranged query:
 ```kotlin
-    query("GENESIS_PROCESS_MONITOR_START_END_REC_3", GENESIS_PROCESS_MONITOR) {
+    query("GENESIS_PROCESS_MONITOR_NUM_KEY_FIELDS_3", GENESIS_PROCESS_MONITOR) {
         ranged(GenesisProcessMonitor.ByHostname, 3) {
             from {
                 GenesisProcessMonitor.ByHostname(
@@ -300,7 +301,8 @@ Ranged query:
     }
 ```
 Result:
-```text
+```csv
+PROCESS_HOSTNAME,PROCESS_NAME,MONITOR_NAME
 localhost,process_a,monitor_a
 localhost,process_a,monitor_b
 localhost,process_b,monitor_a
