@@ -321,7 +321,7 @@ eventHandler {
 We have just added new fields into our data model. To format them better, so that they can insert and update data, we can define form UI schemas. Using EntityManagement, there are two properties called `createFormUiSchema` and `updateFormUiSchema` that can be declared. So, let's do it.
 
 First, create a new file **schemas.ts** in the same folder we have the *home.ts* file, and copy the content below.
-```typescript
+```typescript title="schemas.ts"
 const conditionalSchemaEntry = (predicate: boolean, entry) => {
   return predicate ? [entry] : [];
 };
@@ -379,7 +379,6 @@ export const tradeFormSchema = (editing?: boolean) => ({
 		"label": "Symbol",
 		"scope": "#/properties/SYMBOL"
 	}
-
   ],
 });
 
