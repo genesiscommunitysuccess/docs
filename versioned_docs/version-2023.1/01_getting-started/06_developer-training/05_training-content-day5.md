@@ -27,7 +27,7 @@ You can use the Evaluator to schedule the production of EOD reports (for example
 
 In system terms, Evaluators enable you to connect Event Handlers to two different kinds of event: dynamic and static (cron rules):
 
-- __Cron Rules__  are scheduling rules; these are defined as [standard cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression).
+- __Cron Rules__  are scheduling rules; these are defined as [quartz cron expressions](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html).
 - __Dynamic Rules__, also known as Dynamic Events, are defined as [groovy expression](https://groovy-lang.org/syntax.html), which respond to changes to database table entries.
 
 In both cases, you define the rule in a table in the database: CRON_RULES for static rules and DYNAMIC_RULES for dynamic rules. In this training, we're going to use Cron Rules, but if you're interested in the Dynamic Rules please look at [Defining a dynamic rule](../../../server/evaluator/basics/#defining-a-dynamic-rule).
