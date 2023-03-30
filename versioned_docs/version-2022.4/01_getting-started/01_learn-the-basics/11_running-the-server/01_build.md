@@ -1,5 +1,5 @@
 ---
-title: 'Learn the basics - Building the server'
+title: 'Learn the basics - building the server'
 sidebar_label: 'Build'
 id: build
 keywords: [getting started, basics, server, build]

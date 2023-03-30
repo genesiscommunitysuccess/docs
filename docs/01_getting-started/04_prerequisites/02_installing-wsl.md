@@ -1,5 +1,5 @@
 ---
-title: 'Prerequisites - Installing WSL'
+title: 'Prerequisites - installing WSL'
 sidebar_label: 'Installing WSL'
 id: installing-wsl
 keywords: [getting started, quick start, prerequisites, wsl]

@@ -1,5 +1,5 @@
 ---
-title: 'Components - Integration'
+title: 'Components - integration'
 sidebar_label: 'Integration components'
 sidebar_position: 4
 id: integration-components

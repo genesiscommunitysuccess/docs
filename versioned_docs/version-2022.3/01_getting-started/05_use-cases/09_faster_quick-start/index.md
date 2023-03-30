@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start'
+title: 'Quick start'
 sidebar_label: 'Quick start with Docker'
 sidebar_position: 1
 id: introduction

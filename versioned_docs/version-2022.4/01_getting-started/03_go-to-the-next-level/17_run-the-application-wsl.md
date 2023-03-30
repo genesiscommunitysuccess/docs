@@ -1,5 +1,5 @@
 ---
-title: 'Go to the next level - Run the application (WSL/CentOS)'
+title: 'Go to the next level - run the application (WSL/CentOS)'
 sidebar_label: 'Run the application (WSL/CentOS)'
 id: run-the-application-wsl
 keywords: [getting started, quick start, next level, run the app, wsl, centos]

@@ -1,5 +1,5 @@
 ---
-title: 'Go to the next level - Setting Genesis Evaluator rules'
+title: 'Go to the next level - setting Genesis Evaluator rules'
 sidebar_label: 'Setting Genesis Evaluator rules'
 id: setting-genesis-evaluator-rules
 keywords: [getting started, quick start, next level, evaluator, rules]

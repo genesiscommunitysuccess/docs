@@ -1,5 +1,5 @@
 ---
-title: 'Learn the Basics - Creation process'
+title: 'Learn the basics - creation process'
 sidebar_label: 'The creation process'
 id: creation-process
 keywords: [getting started, basics, creation process]

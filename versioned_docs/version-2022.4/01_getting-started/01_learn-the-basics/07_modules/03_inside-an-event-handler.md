@@ -1,5 +1,5 @@
 ---
-title: 'Modules - Inside an Event Handler'
+title: 'Modules - inside an Event Handler'
 sidebar_label: 'Inside an Event Handler'
 id: inside-an-event-handler
 keywords: [getting started, basics, modules, event handler]

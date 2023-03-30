@@ -1,5 +1,5 @@
 ---
-title: 'Key system files - service definitions.xml'
+title: 'Key system files - service-definitions.xml'
 sidebar_label: 'service definitions.xml'
 id: service-definitions
 keywords: [getting started, basics, key system files, service definitions]

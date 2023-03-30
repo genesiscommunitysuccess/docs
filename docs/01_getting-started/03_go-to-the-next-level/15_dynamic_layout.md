@@ -1,5 +1,5 @@
 ---
-title: 'Go to the next level - Add a dynamic layout'
+title: 'Go to the next level - add a dynamic layout'
 sidebar_label: 'Dynamic layout'
 id: layout
 keywords: [getting started, quick start, next level, layout]

@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start - Create a new project'
+title: 'Quick start - create a new project'
 sidebar_label: 'Create a new project'
 id: create-a-new-project
 keywords: [getting started, quick start, new project]

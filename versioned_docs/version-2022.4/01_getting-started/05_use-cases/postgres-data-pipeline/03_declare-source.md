@@ -1,6 +1,6 @@
 ---
-title: Postgres data pipeline - Declare Source and Mappers
-sidebar_label: Declare Source and Mappers
+title: Postgres data pipeline - declare source and mappers
+sidebar_label: Declare source and mappers
 sidebar_position: 4
 id: mappers
 keywords: [getting started, quick start, postgres data pipeline, mappers]

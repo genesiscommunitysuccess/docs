@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start - Run the application (WSL/Linux)'
+title: 'Quick start - run the application (WSL/Linux)'
 sidebar_label: 'Run the application (WSL/Linux)'
 id: run-the-application
 keywords: [getting started, quick start, run the app, wsl, linux]
