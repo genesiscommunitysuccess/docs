@@ -761,7 +761,7 @@ export class Home extends FASTElement {
 
 Finally, go to the file **home.template.ts** and import the required components. Then, add a constant holding the Position columns, and some `<div>`s to format the final HTML.
 
-```html {5-12,15,16,28-42}
+```html {1,5-12,15,16,28-42}
 import {html, repeat, when, ref} from '@microsoft/fast-element';
 import type {Home} from './home';
 import { tradeFormCreateSchema, tradeFormUpdateSchema } from './schemas';
