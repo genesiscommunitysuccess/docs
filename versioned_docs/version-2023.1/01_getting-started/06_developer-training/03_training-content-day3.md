@@ -546,6 +546,7 @@ consolidator(TRADE, ORDER) {
     }
     groupBy { Order.ById(orderId) } 
 }
+
 ```
 
 In the above example, we aggregate data from the TRADE table into the ORDER table. We group by orderId and we count the number of trades and sum the notional. For further details, see [here](../../../server/consolidator/introduction/).
@@ -560,7 +561,11 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 #### Define the position-keeping logic in the consolidator
 
-Before defining the Consolidator, we should insert some data in the `INSTRUMENT_PRICE` table using using [SendIt](../../../operations/commands/server-commands/#sendit-script) script as we saw [here](../../../getting-started/developer-training/training-content-day1/#user-name-and-password). 
+Before defining the Consolidator, we should insert some data in the `INSTRUMENT_PRICE` table using using [SendIt](../../../operations/commands/server-commands/#sendit-script) script as we saw [here](../../../getting-started/developer-training/training-content-day1/#user-name-and-password).
+
+:::tip
+To insert new data properly, we need to create 2 additional files called [COUNTERPARTY.csv](https://raw.githubusercontent.com/genesiscommunitysuccess/devtraining-alpha/main/server/jvm/alpha-site-specific/src/main/resources/data/COUNTERPARTY.csv) and [INSTRUMENT.csv](https://raw.githubusercontent.com/genesiscommunitysuccess/devtraining-alpha/main/server/jvm/alpha-site-specific/src/main/resources/data/INSTRUMENT.csv) and send it to genesis. this will populate the other two tables you will need.
+:::
 
 Create a new file in the same folder as **USER.csv** and name it as **INSTRUMENT_PRICE.csv**. Copy the content below into the file you have just created.
 ```csv
@@ -713,6 +718,7 @@ First, open the file **home.styles.ts** and add the code below.
     flex-direction: column;
     flex: 1;
     width: 100%;
+    height: 100%;
 }
 
 .top-layout {
@@ -755,7 +761,7 @@ export class Home extends FASTElement {
 
 Finally, go to the file **home.template.ts** and import the required components. Then, add a constant holding the Position columns, and some `<div>`s to format the final HTML.
 
-```html {5-12,15,16,28-42}
+```html {1,5-12,15,16,28-42}
 import {html, repeat, when, ref} from '@microsoft/fast-element';
 import type {Home} from './home';
 import { tradeFormCreateSchema, tradeFormUpdateSchema } from './schemas';
