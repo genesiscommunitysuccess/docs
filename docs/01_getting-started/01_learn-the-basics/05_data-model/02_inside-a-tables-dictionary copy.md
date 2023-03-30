@@ -1,5 +1,5 @@
 ---
-title: 'Data model - Inside a tables dictionary'
+title: 'Data model - inside a tables dictionary'
 sidebar_label: 'Inside a tables dictionary'
 id: inside-a-tables-dictionary
 keywords: [getting started, basics, data, model, tables dictionary]
