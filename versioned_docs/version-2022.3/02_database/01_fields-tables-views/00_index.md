@@ -5,9 +5,6 @@ sidebar_position: 1
 id: 'fields-tables-views'
 ---
 
-[Fields](../../../database/fields-tables-views/fields/)  | [Tables](../../../database/fields-tables-views/tables/)  |
- [Views](../../../database/fields-tables-views/views/)  | [Generating DAOs](../../../database/fields-tables-views/genesisDao/) 
-
 
 For any Genesis application, everything starts with the data model. 
 
