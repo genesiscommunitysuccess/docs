@@ -520,7 +520,7 @@ view("TRADE_VIEW", TRADE) {
 20 mins
 :::
 
-Let's add a new derived field in the TRADE_VIEW now. The derived field should display ASSET_CLASS from the INSTRUMENT join. If this field is null or empty, the view should display "UNKNOWN".
+Let us add a new derived field in the TRADE_VIEW now. The derived field should display ASSET_CLASS from the INSTRUMENT join. If this field is null or empty, the view should display "UNKNOWN".
 
 :::tip
 After changing the files, remember to run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
@@ -546,6 +546,7 @@ consolidator(TRADE, ORDER) {
     }
     groupBy { Order.ById(orderId) } 
 }
+
 ```
 
 In the above example, we aggregate data from the TRADE table into the ORDER table. We group by orderId and we count the number of trades and sum the notional. For further details, see [here](../../../server/consolidator/introduction/).
@@ -560,7 +561,11 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 #### Define the position-keeping logic in the consolidator
 
-Before defining the Consolidator, we should insert some data in the `INSTRUMENT_PRICE` table using using [SendIt](../../../operations/commands/server-commands/#sendit-script) script as we saw [here](../../../getting-started/developer-training/training-content-day1/#user-name-and-password). 
+Before defining the Consolidator, we should insert some data in the `INSTRUMENT_PRICE` table using using [SendIt](../../../operations/commands/server-commands/#sendit-script) script as we saw [here](../../../getting-started/developer-training/training-content-day1/#user-name-and-password).
+
+:::tip
+To insert new data properly, we need to create 2 additional files called [COUNTERPARTY.csv](https://raw.githubusercontent.com/genesiscommunitysuccess/devtraining-alpha/main/server/jvm/alpha-site-specific/src/main/resources/data/COUNTERPARTY.csv), [INSTRUMENT.csv](https://raw.githubusercontent.com/genesiscommunitysuccess/devtraining-alpha/main/server/jvm/alpha-site-specific/src/main/resources/data/INSTRUMENT.csv) and send it to genesis. this will populate the other two tables you will need.
+:::
 
 Create a new file in the same folder as **USER.csv** and name it as **INSTRUMENT_PRICE.csv**. Copy the content below into the file you have just created.
 ```csv
