@@ -1,7 +1,7 @@
 ---
 title: 'Types of API'
 sidebar_label: 'Types of API'
-id: types-of-api
+id: types-of-API
 keywords: [database, types of api, api, types]
 tags:
     - database
@@ -12,6 +12,6 @@ tags:
 
 This section outlines two types of API for interacting with the database:
 
-- Async
-- RxJava
+- [Async](../async/)
+- [RxJava](../rxJava/)
 
