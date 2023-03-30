@@ -1,5 +1,5 @@
 ---
-title: Postgres data pipeline - Conclusion
+title: Postgres data pipeline - conclusion
 sidebar_label: Conclusion
 sidebar_position: 6
 id: conclusion

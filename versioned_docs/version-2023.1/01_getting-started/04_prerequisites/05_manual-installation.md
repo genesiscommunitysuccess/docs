@@ -1,5 +1,5 @@
 ---
-title: Prerequisites - Manual installation
+title: Prerequisites - manual installation
 sidebar_label: Manual installation
 id: manual-installation
 keywords: [getting started, quick start, prerequisites, manual installation]

@@ -1,5 +1,5 @@
 ---
-title: 'Learn the Basics - Building the database'
+title: 'Learn the basics - building the database'
 sidebar_label: 'Building the database'
 id: building-the-database
 keywords: [getting started, basics, database]

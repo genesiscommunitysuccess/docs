@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start - Run the application (Docker)'
+title: 'Quick start - run the application (Docker)'
 sidebar_label: 'Run the application (Docker)'
 id: run-the-application-docker
 keywords: [getting started, quick start, run the app, docker]

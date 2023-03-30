@@ -1,5 +1,5 @@
 ---
-title: 'Loading feed data - How to load feed data into an application'
+title: 'Loading feed data - how to load feed data into an application'
 sidebar_label: 'Loading feed data'
 id: overview
 keywords: [getting started, quick start, use cases, loading feed data, overview]

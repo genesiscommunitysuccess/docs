@@ -1,5 +1,5 @@
 ---
-title: 'Components - Core'
+title: 'Components - core'
 sidebar_label: 'Core components'
 sidebar_position: 2
 id: core-components

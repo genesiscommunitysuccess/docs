@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start - Create a user interface'
+title: 'Quick start - create a user interface'
 sidebar_label: 'Create a user interface'
 id: create-a-user-interface
 keywords: [getting started, quick start, ui, create a ui]

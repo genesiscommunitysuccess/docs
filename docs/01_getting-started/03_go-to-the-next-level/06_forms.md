@@ -1,5 +1,5 @@
 ---
-title: 'Go to the next level - Create a form to input data'
+title: 'Go to the next level - create a form to input data'
 sidebar_label: 'Create a form to input data'
 id: forms
 keywords: [getting started, quick start, next level, forms]

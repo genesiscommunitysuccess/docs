@@ -1,5 +1,5 @@
 ---
-title: 'Go to the next level - Define the data model using fields, tables and views'
+title: 'Go to the next level - define the data model using fields, tables and views'
 sidebar_label: 'Fields, tables and views'
 id: data-model
 keywords: [getting started, quick start, next level, data model, fields, tables, views]

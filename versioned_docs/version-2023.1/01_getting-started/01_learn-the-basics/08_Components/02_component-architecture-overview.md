@@ -1,5 +1,5 @@
 ---
-title: 'Components - Architecture overview'
+title: 'Components - architecture overview'
 id: component-architecture-overview
 sidebar_label: 'Architecture overview'
 sidebar_position: 1

@@ -1,5 +1,5 @@
 ---
-title: 'Learn the Basics - A very simple introduction'
+title: 'Learn the basics - a very simple introduction'
 sidebar_label: 'Simple introduction'
 id: simple-introduction
 keywords: [getting started, basics, simple, introduction]

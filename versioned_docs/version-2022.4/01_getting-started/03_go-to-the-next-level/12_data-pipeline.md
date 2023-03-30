@@ -1,5 +1,5 @@
 ---
-title: 'Go to the next level - Ingest external data'
+title: 'Go to the next level - ingest external data'
 sidebar_label: 'Ingest external data'
 id: data-pipeline
 keywords: [getting started, quick start, next level, data, pipeline]

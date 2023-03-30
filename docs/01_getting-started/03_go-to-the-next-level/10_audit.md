@@ -1,6 +1,6 @@
 ---
-title: 'Go to the next level - Track the data changes using Auditable Tables'
-sidebar_label: 'Using Auditable Tables'
+title: 'Go to the next level - track the data changes using auditable tables'
+sidebar_label: 'Using auditable tables'
 id: audit
 keywords: [getting started, quick start, next level, audit]
 tags:

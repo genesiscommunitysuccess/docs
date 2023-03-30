@@ -1,5 +1,5 @@
 ---
-title: 'Components - Application'
+title: 'Components - application'
 sidebar_label: 'Application components'
 sidebar_position: 3
 id: application-components

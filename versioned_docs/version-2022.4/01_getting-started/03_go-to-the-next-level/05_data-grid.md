@@ -1,6 +1,6 @@
 ---
-title: 'Go to the next level - Show data using Data Grid'
-sidebar_label: 'Data Grid'
+title: 'Go to the next level - show data using data grid'
+sidebar_label: 'Data grid'
 id: data-grid
 keywords: [getting started, quick start, next level, data grid]
 tags:

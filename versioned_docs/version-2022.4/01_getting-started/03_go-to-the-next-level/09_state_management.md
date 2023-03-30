@@ -1,6 +1,6 @@
 ---
-title: 'Go to the next level - State Management'
-sidebar_label: 'State Management'
+title: 'Go to the next level - state management'
+sidebar_label: 'State management'
 id: state-management
 keywords: [getting started, quick start, next level, state management]
 tags:

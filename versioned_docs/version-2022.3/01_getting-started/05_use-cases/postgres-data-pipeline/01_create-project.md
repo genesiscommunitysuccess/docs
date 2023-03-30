@@ -1,6 +1,6 @@
 ---
-title: Postgres data pipeline - Create Genesis Dictionary
-sidebar_label: Create Genesis Dictionary
+title: Postgres data pipeline - create Genesis dictionary
+sidebar_label: Create Genesis dictionary
 sidebar_position: 2
 id: dictionary
 keywords: [getting started, quick start, postgres data pipeline, dictionary]

@@ -1,5 +1,5 @@
 ---
-title: 'Learn the Basics - Next steps'
+title: 'Learn the basics - next steps'
 sidebar_label: 'Next steps'
 id: next-steps
 keywords: [getting started, basics, next steps]
