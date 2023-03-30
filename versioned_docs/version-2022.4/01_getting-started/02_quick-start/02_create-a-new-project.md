@@ -10,7 +10,7 @@ tags:
 ---
 
 :::info
-Before you start, make sure you have checked out the [hardware and software requirements(/getting-started/quick-start/hardware-and-software/). 
+Before you start, make sure you have checked out the [hardware and software requirements](/getting-started/quick-start/hardware-and-software/). 
 
 Download and install all the relevant requirements.
 :::
