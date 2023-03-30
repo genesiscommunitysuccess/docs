@@ -56,7 +56,9 @@ Define the `insertTrade` function in the file **home.ts**:
   }
 ```
 
-The form is configured as required, but if you look at the page currently you will not see it. Next we need to add some sections and styling to the page. Ensure the template in **home.template.ts** looks like the following.
+The form is now configured as required - but if you look at the page currently, you will not see it. First, you need to add some sections and styling to the page. 
+
+1. Ensure that the template in **home.template.ts** looks like this:
 
 ```html {1,15-19} title='home.template.ts'
 <div class="column-split-layout">
@@ -80,7 +82,8 @@ The form is configured as required, but if you look at the page currently you wi
 </div>
 ```
 
-And then set the styling required on the `host` element, and the `column-split-layout` div in **home.styles.ts**.
+2. Set the styling required on the `host` element, and the `column-split-layout` div in **home.styles.ts**.
+
 ```typescript title='home.styles.ts'
 import { css } from '@microsoft/fast-element';
 import { mixinScreen } from '../../styles';
@@ -305,9 +308,131 @@ public async insertTrade() {
 	<zero-button @click=${(x) => x.insertTrade()}>Add Trade</zero-button>
 </div>
 ```
-Now if everything has worked, you can go to your browser, insert the data for a new trade, and then click the button. The new trade displays in the data grid of the trade view `ALL_TRADES` in the top right of the page.
+Now if everything has worked, you can go to your browser, insert the data for a new trade, and then click the button. The new trade is then displayed in the data grid of the trade view `ALL_TRADES` in the top right of the page.
 
 ![](/img/finished-trade-view.png)
+
+## Advanced features
+
+If you need a completely custom form, you can pass `uischema` and `jsonSchema` directly to a `foundation-form` and it will be auto-generated based on these inputs.
+
+```html title='form.template.ts'
+<foundation-form
+  :uischema=${(x) => x.uischema}
+  :jsonSchema=${(x) => x.jsonSchema}
+  :data=${(x) => x.editedEntity}
+></foundation-form>
+```
+
+Example schema:
+```typescript title='form.ts'
+const uiSchema: UiSchema = {
+  type: 'VerticalLayout',
+  elements: [
+    {
+      type: 'Control',
+      label: 'Address',
+      scope: '#/properties/COMPANY_ADDRESS',
+    },
+    {
+      type: 'Control',
+      label: 'Issuer Name',
+      scope: '#/properties/ISSUER_NAME',
+    },
+  ],
+};
+
+const jsonSchema: JSONSchema7 = {
+  type: 'object',
+  properties: {
+    COMPANY_ADDRESS: {
+      oneOf: [
+        {
+          type: 'null',
+        },
+        {
+          type: 'string',
+        },
+      ],
+      description: 'kotlin.String',
+    },
+    ISSUER_NAME: {
+      type: 'string',
+      minLength: 3,
+      description: 'kotlin.String',
+    },
+    ...
+  },
+  additionalProperties: false,
+  required: ['ISSUER_NAME'],
+};
+```
+
+The `jsonSchema` can either be defined locally (as above) or be fetched from the server based on a resource name.
+
+```jsx
+const jsonSchemaResponse = await this.connect.getJSONSchema(this.resourceName);
+this.jsonSchema = jsonSchemaResponse?.INBOUND?.properties?.DETAILS as JSONSchema7;
+```
+
+### Custom validation
+
+When defining your `jsonSchema`, you can pass a custom validation function to any field. it is passed as `validateFn` in the `options` block.
+
+```typescript
+{
+  type: 'Control',
+  label: 'CEO',
+  scope: '#/properties/COMPANY_CEO',
+  options: {
+    validateFn:
+      // custom validateFn example
+      (data, path, label) => {
+        const name = data?.[path];
+        if (name?.length < CEO_MIN_LENGTH) {
+          return [
+            {
+              instancePath: `/${path}`,
+              message: `Too short`,
+              schemaPath: '',
+              keyword: '',
+              params: {},
+            },
+          ];
+        }
+        return []; // technically should always return an array (but it's handled upstream if you forget)
+      },
+  },
+},
+```
+
+In the above example, `validateFn` checks the length of the CEO field. If the field is shorter than the required minumum length, it will return the error `Too short`.
+
+You can also use helper functions provided by the platform. In the example below, we use `mustMatch` to require the `Password confirmation` field and the `Password` field to match.
+
+```typescript
+import { mustMatch } from '@genesislcap/foundation-forms';
+
+...
+{
+  type: 'Control',
+  label: 'Password',
+  scope: '#/properties/PASSWORD',
+  options: {
+    isPassword: true,
+  },
+},
+{
+  type: 'Control',
+  label: 'Password confirmation',
+  scope: '#/properties/PASSWORD_CONFIRMATION',
+  options: {
+    isPassword: true,
+    validateFn: mustMatch('PASSWORD'),
+  },
+},
+...
+```
 
 ## Conclusion
 You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for the forms.
