@@ -718,6 +718,7 @@ First, open the file **home.styles.ts** and add the code below.
     flex-direction: column;
     flex: 1;
     width: 100%;
+    height: 100%;
 }
 
 .top-layout {
