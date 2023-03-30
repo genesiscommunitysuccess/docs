@@ -520,7 +520,7 @@ view("TRADE_VIEW", TRADE) {
 20 mins
 :::
 
-Let us add a new derived field in the TRADE_VIEW now. The derived field should display ASSET_CLASS from the INSTRUMENT join. If this field is null or empty, the view should display "UNKNOWN".
+Let's add a new derived field in the TRADE_VIEW now. The derived field should display ASSET_CLASS from the INSTRUMENT join. If this field is null or empty, the view should display "UNKNOWN".
 
 :::tip
 After changing the files, remember to run [build and deploy](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process).
