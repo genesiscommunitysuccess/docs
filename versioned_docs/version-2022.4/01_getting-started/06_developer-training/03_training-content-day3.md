@@ -540,8 +540,9 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 Before defining the Consolidator, we should insert some data in the `INSTRUMENT_PRICE` table using the command [`SendIt`](../../../operations/commands/server-commands/#sendit-script). To do that, let's run server commands directly from a command line using PowerShell (or Windows Command Prompt) as we did [before](../../../getting-started/developer-training/training-content-day1/#running-server-commands).
 
 :::tip
-To insert new data properly, we need to create 2 additional files called [COUNTERPARTY.csv](https://raw.githubusercontent.com/genesiscommunitysuccess/devtraining-alpha/main/server/jvm/alpha-site-specific/src/main/resources/data/COUNTERPARTY.csv), [INSTRUMENT.csv](https://raw.githubusercontent.com/genesiscommunitysuccess/devtraining-alpha/main/server/jvm/alpha-site-specific/src/main/resources/data/INSTRUMENT.csv) and send it to genesis. this will populate the other two tables you will need.
+To insert new data properly, we need to create 2 additional files called [COUNTERPARTY.csv](https://raw.githubusercontent.com/genesiscommunitysuccess/devtraining-alpha/main/server/jvm/alpha-site-specific/src/main/resources/data/COUNTERPARTY.csv) and [INSTRUMENT.csv](https://raw.githubusercontent.com/genesiscommunitysuccess/devtraining-alpha/main/server/jvm/alpha-site-specific/src/main/resources/data/INSTRUMENT.csv) and send it to genesis. this will populate the other two tables you will need.
 :::
+
 
 From the command line opened, in the */tmp* folder, save this csv as INSTRUMENT_PRICE.csv using your favourite editor (i.e. [vim](https://www.vim.org/) or [nano](https://www.nano-editor.org/)):
 ```csv
