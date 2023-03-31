@@ -73,7 +73,7 @@ You can find more information on the **genesis-system-definitions.kts** file [he
 You can ignore the next section! In fact, you must not make the changes on that section. (But please note, we highly recommend using Docker.)
 
 ### Using Docker? Change the database
-If you are going to run your application using [**Docker**](../../../getting-started/quick-start/run-the-application-docker/), you need to use the Postgres database. Add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
+If you are going to run your application using [**Docker Container**](../../../getting-started/quick-start/run-the-application-docker/), you need to use the Postgres database. Add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
 
 ```kotlin {4,10}
 systemDefinition {

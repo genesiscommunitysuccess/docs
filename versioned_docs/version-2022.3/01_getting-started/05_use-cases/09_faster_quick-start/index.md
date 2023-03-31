@@ -18,8 +18,8 @@ genesisArtifactoryUser=<your-artifactory-user>
 genesisArtifactoryPassword=<your-artifactory-password>
 ```
 
-- You must have (unsurprsingly) Docker for Desktop. For instructions on how to install this, see the [Docker documentation](https://docs.docker.com/docker-for-windows/). For a
-download, [click here](https://hub.docker.com/editions/community/docker-ce-desktop-windows/).
+- You must have (unsurprsingly) Rancher for Desktop. For instructions on how to install this, see the [Rancher documentation](https://docs.rancherdesktop.io/). For a
+download, [click here](https://rancherdesktop.io/).
 
 ## What you will build
 
