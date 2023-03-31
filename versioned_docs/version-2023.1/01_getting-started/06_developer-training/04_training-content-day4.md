@@ -21,8 +21,20 @@ sidebar_position: 6
 This day covers:
 
 - [State management​](#state-management)
-- [Adding logic to the event handler](#adding-logic-to-the-event-handler)
+  - [1. Data model](#1-data-model)
+  - [2. Create a new class for the state machine](#2-create-a-new-class-for-the-state-machine)
+  - [3. Add the module as a dependency in the *build.gradle.kts* inside **alpha-script-config** module.](#3-add-the-module-as-a-dependency-in-the-buildgradlekts-inside-alpha-script-config-module)
+  - [4. Edit the event handler to add an integrated state machine](#4-edit-the-event-handler-to-add-an-integrated-state-machine)
+  - [Exercise 4.1: state machines](#exercise-41-state-machines)
+- [Adding logic to the Event Handler](#adding-logic-to-the-event-handler)
+  - [Add the validation code](#add-the-validation-code)
+  - [Exercise 4.2: adding onValidate to event handlers](#exercise-42-adding-onvalidate-to-event-handlers)
 - [Auditing​](#auditing)
+  - [Adding basic auditing](#adding-basic-auditing)
+    - [Adding audit to table dictionary](#adding-audit-to-table-dictionary)
+    - [Updating the state machine to use auditing](#updating-the-state-machine-to-use-auditing)
+    - [Update the Event Handlers to use auditing](#update-the-event-handlers-to-use-auditing)
+  - [Exercise 4.3: testing an audited table](#exercise-43-testing-an-audited-table)
 
 ## State management​
 
@@ -375,7 +387,7 @@ The `verify` block you see above is part of the validation helper provided by th
 Add the same verification `onValidate` as in TRADE_INSERT to the TRADE_MODIFY event handler.
 
 
-Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](../../../getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL *http://localhost/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
+Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](../../../getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL *http://localhost:9064/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
 
 ## Auditing​
 
