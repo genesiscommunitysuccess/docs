@@ -375,7 +375,7 @@ The `verify` block you see above is part of the validation helper provided by th
 Add the same verification `onValidate` as in TRADE_INSERT to the TRADE_MODIFY event handler.
 
 
-Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](../../../getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL *http://localhost/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
+Implement and test the back end with Console or Postman. To do that, see the [Day 2 example](../../../getting-started/developer-training/training-content-day2/#api-testing-with-auto-generated-rest-endpoints). Basically, you should create a POST request using the URL *http://localhost:9064/EVENT_TRADE_MODIFY*, as well as setting the header accordingly (header with SOURCE_REF and SESSION_AUTH_TOKEN). 
 
 ## Auditing​
 
