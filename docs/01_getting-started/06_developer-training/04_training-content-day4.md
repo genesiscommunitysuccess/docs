@@ -21,7 +21,7 @@ sidebar_position: 6
 This day covers:
 
 - [State management​](#state-management)
-- [Adding logic to the Event Handler](#adding-logic-to-the-event-handler)
+- [Adding logic to the event handler](#adding-logic-to-the-event-handler)
 - [Auditing​](#auditing)
 
 ## State management​
