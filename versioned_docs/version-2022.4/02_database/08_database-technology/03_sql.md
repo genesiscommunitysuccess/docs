@@ -1,5 +1,5 @@
 ---
-title: 'Database Technology - SQL'
+title: 'Database technology - SQL'
 sidebar_label: 'SQL'
 id: sql
 keywords: [database, technology, sql]
