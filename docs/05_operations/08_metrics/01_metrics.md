@@ -26,7 +26,7 @@ To make use of the metric calls, you must set `MetricsEnabled` to `true` in the 
 
 ## Set-up (example using SLF4J and GRAPHITE)
 
-In this example, we use a SLF4J log and Graphite server to capture metrics. Detailed set-up of a Graphite server is beyond the scope of this document, but it can be run in a [docker container](http://docker.com) as described [here](https://registry.hub.docker.com/r/hopsoft/graphite-statsd#!)
+In this example, we use a SLF4J log and Graphite server to capture metrics. Detailed set-up of a Graphite server is beyond the scope of this document, but it can be run in a docker container as described [here](https://registry.hub.docker.com/r/hopsoft/graphite-statsd#!)
 
 ```kotlin
 item(name = "MetricsEnabled", value = "true")

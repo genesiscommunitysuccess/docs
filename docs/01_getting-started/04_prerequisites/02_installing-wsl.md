@@ -55,17 +55,17 @@ WSL2 and enables you to open an Ubuntu terminal, which helps with Microsoft's gu
 below).
 
 
-### Install Docker Desktop for Windows
+### Install Rancher Desktop for Windows
 
 Later on, you are going to need Docker in order to start your database. Also, depending on which route you choose, you might want Docker in order to Install CentOS7.
 
-For instructions on how to install, see the [Docker documentation](https://docs.docker.com/docker-for-windows/). For a
-download, [click here](https://hub.docker.com/editions/community/docker-ce-desktop-windows/).
+For instructions on how to install, see the [Rancher documentation](https://docs.rancherdesktop.io/). For a download, [click here](https://rancherdesktop.io/).
 
 Ensure that you have the WSL2 integration enabled and that you have enabled integration with your CentOS distribution. This enables you to access the Docker command, as well as any Docker container from any of the integrated distros, as well as from Windows.
 
-To check this setting, open the Docker Desktop, then go to **Settings** > **Resources** > **WSL
-Integration**.
+To check this setting, open the Rancher Desktop, then go to **File** > **Preference** > **WSL**.
+
+Since we are going to use dockered containers, you should check the session **File** > **Preference** > **Container Engine** and check **dockered (moby)**
 
 ### Install CentOS7 for WSL2
 
@@ -290,8 +290,7 @@ Running Postgres from Docker is very similar to running Aerospike:
 docker run -tid -p 5432:5432 -e POSTGRES_PASSWORD=docker -e PGDATA=/tmp postgres:12.6-alpine -c shared_buffers=80MB -c max_connections=250
 ```
 
-This downloads and runs a Postgres image for version 12.6. Other versions are available; for more
-details [see here](https://hub.docker.com/_/postgres/). For version 10, change `12.6-alpine` to `10.16-alpine`.
+This downloads and runs a Postgres image for version 12.6. Other versions are available; for more details [see here](https://hub.docker.com/_/postgres/). For version 10, change `12.6-alpine` to `10.16-alpine`.
 
 
 To connect, use this JDBC URL:

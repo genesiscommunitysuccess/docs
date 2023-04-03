@@ -20,7 +20,7 @@ Open the project using your favourite IDE such as IntelliJ or Visual Studio Code
 ## Running the backend
 You're not going to change any backend code, but we must have the server running to make our application work. To do that, we can simply build a docker image from the project you just cloned.
 
-You must have Docker installed and running on your workstation.
+You must have Rancher installed and running on your workstation.
 
 
 ### Building the docker images
@@ -31,7 +31,11 @@ docker-compose build
 docker-compose up -d
 ```
 
-Check on your Docker dashboard if you have the containers **gsf** and **nginx** running.
+Check if you have the containers **gsf** and **nginx** running. Copy and paste the following commands into the terminal
+
+```Powershell
+docker ps
+```
 
 ### Attaching a terminal to a docker container
 
