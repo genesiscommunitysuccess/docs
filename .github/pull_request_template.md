@@ -21,7 +21,10 @@ For reference:
   - We have an [external contribution guide](../Type-of-contribution)
 
 **This week's exciting excerpt from the style guide**
-All our headings are in sentence case. For example:
-- Really important information    **correct**
-- Really Important Information    **not correct**
+LISTS. Only use numbered lists when the sequence is important. Usually, that is a set of instructions.
+For example:
+1. Change the dictionary files.
+2. Run genesisInstall.
+3. Run remap.
+In all other cases, use an **unnumbered** list. OK?  
 
