@@ -1,5 +1,5 @@
 ---
-title: 'Release notes - Introduction'
+title: 'Release notes - introduction'
 sidebar_label: 'Introduction'
 sidebar_position: 1
 id: introduction
