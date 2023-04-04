@@ -12,13 +12,13 @@ tags:
 
 ## Where to define
 
-You can configure data pipelines in a file called _pipeline-name_**-data-pipeline.kts**. This must be located in your application's configuration directory.
+You can configure Data Pipelines in a file called _pipeline-name_**-data-pipeline.kts**. This must be located in your application's configuration directory.
 
 A pipeline configuration contains a collection of `sources`, one or many `map` functions and one or many `sink` functions.
 
 ## How to define a source
 
-Each data pipeline source contains the configuration specifying how to access the data and the associated mapping and sink functionality.
+Each Data Pipeline source contains the configuration specifying how to access the data and the associated mapping and sink functionality.
 
 The currently supported sources are:
 
@@ -69,7 +69,7 @@ pipelines {
 
 :::note
 
-Remote databases will not work with Data Pipelines by default and will require some setup/configuration to enable Change Data Capture functionality. Find details on setup [here](../../../../operations/pipeline-setup/)
+Remote databases will not work with Data Pipelines by default, and will require some [set-up/configuration](../../../../operations/pipeline-setup/) to enable Change Data Capture to work correctly. 
 
 :::
 
@@ -85,7 +85,7 @@ Genesis currently supports CSV, JSON and XML file sources. Below, you can see wh
 | location | N/A | `location = "file://runtime/testFiles?fileName=IMPORT_TRADES.csv"`| String | Set the location of the CSV file. See details below |
 | delimiter | , | `delimiter = ','` | Char | Set the value delimiter  |
 | hasHeader | true | `hasHeader = true` | Boolean | Set whether the file has headers  |
-| headerOverrides | null | `headerOverrides = arrayListOf("id", "name")` | List | Set the column names to be used. If the file has header it's ignored and the speicifed names are used  |
+| headerOverrides | null | `headerOverrides = arrayListOf("id", "name")` | List | Set the column names to be used. If the file has header it's ignored and the specified names are used  |
 | readLazily | false | `readLazily = true` | Boolean | Set lazy reading  |
 
 ```kotlin
@@ -204,10 +204,10 @@ pipelines {
 
 ## Map functions
 
-A map function is a step between the reading of a source event and the resulting sinking of this event. Data is read, one record at a time and is mapped to or from a Genesis Table Entity.
+A map function is a step between the reading of a source event and the resulting sinking of this event. Data is read, one record at a time, and is mapped to or from a Genesis table entity.
 
-For ingress, all data is mapped to a Table Entity before being sent to the sink operation.
-For egress, data is read from the database and mapped to an intermediary state that is used by the sink operation.
+- For ingress, all data is mapped to a table entity before being sent to the sink operation.
+- For egress, data is read from the database and mapped to an intermediate state that is used by the sink operation.
 
 ### Mapping by column name
 If the column name of the source row is the same as the field name, then there is no need for explicit mapping.
@@ -388,11 +388,11 @@ pipelines {
 
 ## Sink functions
 
-A `sink` function is where you will define the logic to do something with the data that has been picked up by your data pipelines and successfully mapped. This something usually involves storing the data into another data store (database, log, etc.) either directly or after applying some additional logic of your choosing. `transform` functions are also available for applying business logic inside your `map` functions as shown above.
+A `sink` function is where you define the logic to do something with the data that has been picked up by your data pipelines and successfully mapped. This usually involves storing the data in another data store (database, log, etc.) either directly or after applying some additional logic of your choosing. `transform` functions are also available for applying business logic inside your `map` functions, as shown above.
 
 ### Ingress
 
-The default behaviour of a ingress data pipeline is to store the mapped [Table](../../../../database/fields-tables-views/tables/) object to the Genesis database. However, there are times when you might want to delete or modify that entity, or do other conditional operations that do not interact with the database at all. For those cases, the `sink` function can be used. The function has two parameters:
+The default behaviour of a ingress data pipeline is to store the mapped [table](../../../../database/fields-tables-views/tables/) object to the Genesis database. However, there are times when you might want to delete or modify that entity, or do other conditional operations that do not interact with the database at all. For these cases, the `sink` function can be used. The function has two parameters:
 
 - `entityDb` - object to access the underlying Genesis database
 - `mappedEntity` - the mapped Table object
@@ -455,9 +455,9 @@ pipelines {
 
 ### Egress
 
-For egress data pipelines, the only supported sink operation is SQL based JDBC databases. We have provided helper classes for Postgress, MS SQL Server and Oracle databases for convenience.
+For egress Data Pipelines, the only supported sink operation is SQL-based JDBC databases. We have provided helper classes for Postgres, MS SQL Server and Oracle databases for convenience.
 
-In the below example, we define a postgres configuration object and pass this into our `sink` declaration. Our sink takes the database configuration and provides us with methods to describe the behaviour we would like for each operation that our pipeline might pick up.
+In the below example, we define a Postgres configuration object and pass this into our `sink` declaration. Our sink takes the database configuration and provides us with methods to describe the behaviour we would like for each operation that our pipeline might pick up.
 
 ```kotlin
 val postgresConfig = postgresConfiguration(
@@ -491,7 +491,7 @@ The `sink` function has three optional settings:
 | onModify | null | Operation to run on Genesis DB modify operation |
 | onDelete | null | Operation to run on Genesis DB delete operation |
 
-All of the operations are executed via SQL and take the order of the mapped field entities as they are found in your map configuration.
+All the operations are executed via SQL and take the order of the mapped field entities as they are found in your map configuration.
 
 #### onInsert 
 
