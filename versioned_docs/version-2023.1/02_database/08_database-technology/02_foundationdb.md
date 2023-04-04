@@ -1,5 +1,5 @@
 ---
-title: 'Database Technology - FoundationDb'
+title: 'Database technology - FoundationDb'
 sidebar_label: 'FoundationDb'
 id: foundationdb
 keywords: [database, technology, foundationdb]

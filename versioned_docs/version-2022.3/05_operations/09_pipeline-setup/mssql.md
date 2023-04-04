@@ -1,5 +1,5 @@
 ---
-title: 'Pipeline setup - Microsoft SQL Server'
+title: 'Pipeline set-up - Microsoft SQL Server'
 sidebar_label: 'Microsoft SQL Server'
 id: mssql
 sidebar_position: 3

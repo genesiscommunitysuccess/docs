@@ -1,8 +1,8 @@
 ---
-title: Pipeline setup - Introduction
+title: Pipeline set-up - introduction
 sidebar_label: Introduction
 sidebar_position: 1
-id: intro
+id: introduction
 keywords: [operations, pipeline, setup, introduction]
 tags:
     - operations

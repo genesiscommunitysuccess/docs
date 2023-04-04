@@ -12,7 +12,7 @@ tags:
 
 
 ## Configure processes.xml file
-Data pipeline is a separate module that must be configured in your __application__**-processes.xml** file. Here is a sample configuration:
+Data Pipeline is a separate module that must be configured in your __application__**-processes.xml** file. Here is a sample configuration:
 
 ```xml
 <processes>

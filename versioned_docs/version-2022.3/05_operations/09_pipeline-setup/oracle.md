@@ -1,5 +1,5 @@
 ---
-title: 'Pipeline setup - Oracle DB'
+title: 'Pipeline set-up - Oracle DB'
 sidebar_label: 'Oracle DB'
 id: oracle
 sidebar_position: 4

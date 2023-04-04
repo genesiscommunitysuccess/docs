@@ -1,5 +1,5 @@
 ---
-title: 'Database Technology - Aerospike'
+title: 'Database technology - Aerospike'
 sidebar_label: 'Aerospike'
 id: aerospike
 keywords: [database, technology, aerospike]

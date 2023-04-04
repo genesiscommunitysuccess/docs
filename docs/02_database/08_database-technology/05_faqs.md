@@ -1,5 +1,5 @@
 ---
-title: 'Database Technology - FAQs'
+title: 'Database technology - FAQs'
 sidebar_label: 'FAQs'
 id: faqs
 keywords: [database, technology, faq]

@@ -1,5 +1,5 @@
 ---
-title: 'Pipeline setup - Postgres'
+title: 'Pipeline set-up - Postgres'
 sidebar_label: 'PostgreSQL'
 id: postgres
 sidebar_position: 2

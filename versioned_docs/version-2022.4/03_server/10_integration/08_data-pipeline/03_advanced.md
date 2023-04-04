@@ -121,7 +121,7 @@ pipelines {
 ## Declaring multiple mapping functions
 
 If you would like to perform different mapping operations over the same data source, you can use multiple mappers.
-You can also optionally use a `where` clause to conditionally map rows from your data source. Should the `where` clause be false, no mapping will be performed. These conditional mappers allow you to create more complex and powerful data ingestion pipelines.
+You can also optionally use a `where` clause to conditionally map rows from your data source. If the `where` clause is false, no mapping will be performed. These conditional mappers allow you to create more complex and powerful data ingestion pipelines.
 
 For example, if you want to map over a trades source, you could map and transform your data in a different way, depending on the region the trade was made:
 

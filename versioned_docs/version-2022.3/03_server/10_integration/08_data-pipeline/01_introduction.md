@@ -12,19 +12,19 @@ tags:
 
 Genesis Data Pipelines is a feature that allows you to stream data in and/or out of your Genesis application.
 
-Each data pipeline defines a source, some mapping operation and a sink.
+Each Data Pipeline defines a source, some mapping operations and a sink.
 
 | term | description |
 | ---- | ----------- |
-| source | Changes in data at this location triggers your data pipeline |
+| source | Changes in data at this location trigger your Data Pipeline |
 | map | Transforms data from the data source |
 | sink | Does something with the mapped data from the data source |
 
-## Data pipeline ingress
+## Data Pipeline ingress
 
-You can define pipelines that map data from an external source (database, file) to [Tables](../../../../database/fields-tables-views/tables/) in your application. By default, the resulting Table objects are stored in the application database. Should you want to change this behaviour, you can define [custom sink operations](../../../../server/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity).
+You can Define Pipelines that map data from an external source (database, file) to [tables](../../../../database/fields-tables-views/tables/) in your application. By default, the resulting Table objects are stored in the application database. If you want to change this behaviour, you can define [custom sink operations](../../../../server/integration/data-pipeline/advanced/#custom-handler-for-the-mapped-entity).
 
-Each data pipeline defines a source for the data and how that data is mapped to each [Field](../../../../database/fields-tables-views/fields/) in the Table.
+Each Data Pipeline defines a source for the data and maps that data to each [field](../../../../database/fields-tables-views/fields/) in the table.
 
 If a field mapping is not one-to-one - e.g. complex type conversions, data obfuscation, enriched values - you can define a `transform` function that returns `Any`.
 
@@ -70,9 +70,9 @@ pipelines {
 
 Once your Genesis application is running, data ingestion will take place.
 
-## Data pipeline egress
+## Data Pipeline egress
 
-Data pipelines can also be defined to listen to changes within your application's database and react to these changes. These changes can be mapped and then sinked into an external database.
+Data Pipelines can also be defined to listen to changes within your application's database and react to these changes. These changes can be mapped and then sinked into an external database.
 
 Here is a sample configuration:
 ```kotlin
