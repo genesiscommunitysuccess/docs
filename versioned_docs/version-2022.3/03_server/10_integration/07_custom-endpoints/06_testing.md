@@ -1,5 +1,5 @@
 ---
-title: 'Custom Endpoints - testing'
+title: 'Custom endpoints - testing'
 sidebar_label: 'Testing'
 id: testing
 keywords: [server, integration, custom endpoints, testing]

@@ -13,10 +13,16 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Custom endpoints are defined within their own submodule of the project, using classes implementing the `WebEndpoint` interface provided by Genesis-Router.
-As these are additional endpoints on Genesis-Router, you need to add the `genesis-router` module as a dependency on your submodule.
+To create custom endpoints, you need to create a custom module. 
+
+Before you define the additional endpoints, you need to add a dependency on `genesis-router` within your module. Then you can define classes that implement the `WebEndpoint` interface provided by Genesis Router.
 
 In their initialisation, the classes need to call on the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
+
+:::warning
+Whenever you have a module that uses Genesis Router, it is **essential** that you [edit the Genesis Router definition](../../../../server/integration/custom-endpoints/configuring-runtime/) in your application's [processes.xml](../../../../server/configuring-runtime/processes/) file to include these modules.
+:::
+
 
 ## FileProcessor class
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -60,7 +66,7 @@ public class FileProcessor implements WebEndpoint {
 
 ## A simple example of a custom endpoint
 
-Here is a simple example of a custom endpoint class. It defines an endpoint `file-handler/upload` that takes file-uploads and responds to their success with an HTTP 200 OK message.
+Here is a simple example of a custom endpoint class. It defines an endpoint `file-handler/upload` that takes file uploads and responds to their success with an HTTP 200 OK message.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
