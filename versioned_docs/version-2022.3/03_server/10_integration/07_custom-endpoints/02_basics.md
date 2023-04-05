@@ -186,7 +186,7 @@ public class FileProcessor implements WebEndpoint {
 ## Construction and initialisation
 The constructor should contain an instance of the `WebEndpointRegistry` class in order to call upon it during initialisation. This is necessary so that Genesis Router can automatically route appropriate traffic to this endpoint.
 
-In the examples above, the initialisation step is annotated with `@PostConstruct`, and calls upon the `WebEndpointRegistry.registerEndpoint()` function with the subdirectory of the endpoint, and the endpoint itself. The registered endpoint would be reachable at a combination of this subdirectory, and the return value of the endpoint's `name()` function. In the example above, this would be `file-handler/upload`.
+In the examples above, the initialisation step is annotated with `@PostConstruct`. This step calls on the `WebEndpointRegistry.registerEndpoint()` function with the subdirectory of the endpoint, and the endpoint itself. The registered endpoint is then reachable at a combination of this subdirectory, and the return value of the endpoint's `name()` function. In the example above, this would be `file-handler/upload`.
 
 ## Endpoint name
 The `name()` method must be overridden to provide the endpoint a name.
