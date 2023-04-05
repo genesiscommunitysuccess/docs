@@ -15,7 +15,8 @@
     "start:copy-docs": "cross-env COPY_DOCS=true npm run start",
     "start:next": "SHOW_NEXT=true docusaurus start --port 8080 --host 0.0.0.0",
     "swizzle": "docusaurus swizzle",
-    "postinstall": "patch-package --error-on-fail"
+    "postinstall": "patch-package --error-on-fail",
+    "generate:iife": "rollup -c"
   },
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^0.11.0",
@@ -37,6 +38,7 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.6",
     "classnames": "^2.3.2",
+    "dayjs": "1.10.7",
     "docusaurus-gtm-plugin": "^0.0.2",
     "docusaurus-plugin-matomo": "^0.0.6",
     "fs-extra": "^11.1.0",
@@ -46,8 +48,7 @@
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-player": "^2.11.0",
-    "tslib": "^2.4.1",
-    "dayjs": "1.10.7"
+    "tslib": "^2.4.1"
   },
   "browserslist": {
     "production": [
@@ -62,8 +63,12 @@
     ]
   },
   "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.0",
+    "@types/mocha": "^10.0.1",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
-    "patch-package": "^6.5.1"
+    "patch-package": "^6.5.1",
+    "rollup": "^2.79.1",
+    "rollup-plugin-visualizer": "^5.9.0"
   }
 }
