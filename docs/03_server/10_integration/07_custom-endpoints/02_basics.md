@@ -13,10 +13,15 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Custom endpoints are defined within their own submodule of the project, using classes implementing the `WebEndpoint` interface provided by Genesis-Router.
-As these are additional endpoints on Genesis-Router, you need to add the `genesis-router` module as a dependency on your submodule.
+To create custom endpoints, you need to create a custom module. 
+
+Before you define the additional endpoints, you need to add a dependency on `genesis-router` within your module. Then you can define classes that implement the `WebEndpoint` interface provided by Genesis Router.
 
 In their initialisation, the classes need to call on the `registerEndpoint` method of an injected `WebEndpointRegistry` object.
+
+:::warning
+Whenever you have a module that uses Genesis Router, it is **essential** that you [edit the Genesis Router definition](../../../../server/integration/custom-endpoints/configuring-runtime/) in your application's [processes.xml](../../../../server/configuring-runtime/processes/) file to include these modules.
+:::
 
 ## FileProcessor class
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
@@ -60,7 +65,7 @@ public class FileProcessor implements WebEndpoint {
 
 ## A simple example of a custom endpoint
 
-Here is a simple example of a custom endpoint class. It defines an endpoint `file-handler/upload` that takes file-uploads and responds to their success with an HTTP 200 OK message.
+Here is a simple example of a custom endpoint class. It defines an endpoint `file-handler/upload` that takes file uploads and responds to their success with an HTTP 200 OK message.
 
 <Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
 <TabItem value="kotlin">
@@ -178,9 +183,9 @@ public class FileProcessor implements WebEndpoint {
 </Tabs>
 
 ## Construction and initialisation
-The constructor should contain an instance of the `WebEndpointRegistry` class in order to call upon it during initialisation. This is necessary so that Genesis Router can automatically route appropriate traffic to this endpoint.
+The constructor should contain an instance of the `WebEndpointRegistry` class in order to call it during initialisation. This enables Genesis Router to route appropriate traffic automatically to the endpoint.
 
-In the examples above, the initialisation step is annotated with `@PostConstruct`, and calls upon the `WebEndpointRegistry.registerEndpoint()` function with the subdirectory of the endpoint, and the endpoint itself. The registered endpoint would be reachable at a combination of this subdirectory, and the return value of the endpoint's `name()` function. In the example above, this would be `file-handler/upload`.
+In the examples above, the initialisation step is annotated with `@PostConstruct`. This step calls on the `WebEndpointRegistry.registerEndpoint()` function with the subdirectory of the endpoint, and the endpoint itself. The registered endpoint is then reachable at a combination of this subdirectory, and the return value of the endpoint's `name()` function. In the example above, this would be `file-handler/upload`.
 
 ## Endpoint name
 The `name()` method must be overridden to provide the endpoint a name.
@@ -189,7 +194,7 @@ The `name()` method must be overridden to provide the endpoint a name.
 The `allowedMethods()` function must be overridden and implemented to declare which of the HTTP request types are permitted for this endpoint. It must return a set of `RequestType` objects corresponding with the HTTP `GET`, `POST`, `PUT`, `PATCH`, and `DELETE` functions.
 
 ## Processing requests
-The `process()` function must be overridden and implemented in order to add business logic to the endpoint.
+The `process()` function must be overridden and implemented in order to add the required business logic to the endpoint.
 
 ## Authentication
 The `requiresAuth()` function can be overridden to determine if the endpoint requires a `SESSION_AUTH_TOKEN` with the request, such as those made from authenticated sessions. Without a definition, this returns a default value of `true`. In the example above, this Authorisation is not required when the system is running in `TEST_MODE`, which is useful for testing these endpoints with integration tests.
