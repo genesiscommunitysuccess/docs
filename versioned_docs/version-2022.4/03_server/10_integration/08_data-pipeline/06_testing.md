@@ -10,7 +10,6 @@ tags:
   - testing
 ---
 
-[Introduction](../../../../server/integration/data-pipeline/introduction/)  | [Basics](../../../../server/integration/data-pipeline/basics) | [Advanced](../../../../server/integration/data-pipeline/advanced) | [Examples](../../../../server/integration/data-pipeline/examples) | [Configuring runtime](../../../../server/integration/data-pipeline/configuring-runtime) | [Testing](../../../../server/integration/data-pipeline/testing)
 
 To test a data pipeline you need:
 
@@ -205,7 +204,7 @@ pipelines {
 There are various ways to start PostgreSQL as a test dependency. Here is a list of the most common ones:
 
 ### Testcontainers
-You can start PostgreSQL as a test rule using [Testcontainers](https://www.testcontainers.org/). It has a [Postgres Module](https://www.testcontainers.org/modules/databases/postgres/) that has a pre-configured rule to use out of the box. However, it requires additional configuration for the Write Ahead Log (WAL) level, and it has to be set to `logical`. Below is a sample rule configuration:
+You can start PostgreSQL as a test rule using [Testcontainers](https://www.testcontainers.org/). It has a [Postgres module](https://www.testcontainers.org/modules/databases/postgres/) that has a pre-configured rule to use out of the box. However, it requires additional configuration for the Write Ahead Log (WAL) level, and it has to be set to `logical`. Below is a sample rule configuration:
 
 ```kotlin
 PostgreSQLContainer("postgres:12.6-alpine")

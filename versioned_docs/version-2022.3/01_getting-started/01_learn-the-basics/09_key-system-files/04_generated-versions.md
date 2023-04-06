@@ -1,5 +1,5 @@
 ---
-title: 'Key system files - Generated versions'
+title: 'Key system files - generated versions'
 sidebar_label: 'Generated versions'
 id: generated-versions
 keywords: [getting started, basics, key system files, generated versions]

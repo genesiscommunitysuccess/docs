@@ -9,7 +9,8 @@ tags:
     - reference
     - event handler
 ---
-
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 In most cases, you will create [Event Handlers](../../../server/event-handler/introduction/) in a kts file using GPAL. This offers a method with succinct code and a good degree of flexibility.
 
@@ -255,24 +256,48 @@ The mandatory method for implementing this is:
 
 Here is an example:
 
--   Kotlin
--   Java
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
 
 ```kotlin
-import global.genesis.commons.annotation.Module    
-import global.genesis.eventhandler.typed.rx3.Rx3EventHandler    
-import global.genesis.gen.dao.Company    
-import global.genesis.message.core.event.Event    
-import global.genesis.message.core.event.EventReply    
-import io.reactivex.rxjava3.core.Single    
+    import global.genesis.commons.annotation.Module
+    import global.genesis.eventhandler.typed.rx3.Rx3EventHandler
+    import global.genesis.gen.dao.Company
+    import global.genesis.message.core.event.Event
+    import global.genesis.message.core.event.EventReply
+    import io.reactivex.rxjava3.core.Single
 
-@Module    
-class TestCompanyHandlerRx3 : Rx3EventHandler<Company, EventReply> {        
-    override fun process(message: Event<Company>): Single<EventReply> {            
-        return ack()        
-    }    
-}
+    @Module
+    class TestCompanyHandlerRx3 : Rx3EventHandler<Company, EventReply> {
+        override fun process(message: Event<Company>): Single<EventReply> {
+            return ack()
+        }
+    }
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+    import global.genesis.commons.annotation.Module;
+    import global.genesis.eventhandler.typed.rx3.Rx3EventHandler;
+    import global.genesis.gen.dao.Company;
+    import global.genesis.message.core.event.Event;
+    import global.genesis.message.core.event.EventReply;
+    import io.reactivex.rxjava3.core.Single;
+
+    @Module
+    public class TestCompanyHandlerRx3 implements Rx3EventHandler<Company, EventReply> {
+        @Override
+        public Single<EventReply> process(Event<Company> companyEvent) {
+            // custom block
+            return Single.just(new EventReply.EventAck());
+        }
+    }
+```
+
+</TabItem>
+</Tabs>
 
 ### Rx3ValidatingEventHandler
 
@@ -290,32 +315,68 @@ The same applies to an Rx3ValidatingEventHandler. It is similar to [AsyncValida
 
 Here is an example:
 
--   Kotlin
--   Java
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
 
 ```kotlin
-import global.genesis.commons.annotation.Module    
-import global.genesis.eventhandler.typed.rx3.Rx3ValidatingEventHandler    
-import global.genesis.gen.dao.Company    
-import global.genesis.message.core.event.Event    
-import global.genesis.message.core.event.EventReply    
-import io.reactivex.rxjava3.core.Single    
+    import global.genesis.commons.annotation.Module
+    import global.genesis.eventhandler.typed.rx3.Rx3ValidatingEventHandler
+    import global.genesis.gen.dao.Company
+    import global.genesis.message.core.event.Event
+    import global.genesis.message.core.event.EventReply
+    import io.reactivex.rxjava3.core.Single
 
-@Module    
-class TestCompanyHandlerRx3 : Rx3ValidatingEventHandler<Company, EventReply> {        
-    override fun onValidate(message: Event<Company>): Single<EventReply> {            
-        val company = message.details            
-        // custom code block..            
-        return ack()        
-    }        
-    
-    override fun onCommit(message: Event<Company>): Single<EventReply> {            
-        val company = message.details            
-        // custom code block..            
-        return ack()        
-    }    
-}
+    @Module
+    class TestCompanyHandlerRx3 : Rx3ValidatingEventHandler<Company, EventReply> {
+        override fun onValidate(message: Event<Company>): Single<EventReply> {
+            val company = message.details
+            // custom code block..
+            return ack()
+        }
+
+        override fun onCommit(message: Event<Company>): Single<EventReply> {
+            val company = message.details
+            // custom code block..
+            return ack()
+        }
+    }
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+    import global.genesis.commons.annotation.Module;
+    import global.genesis.eventhandler.typed.rx3.Rx3ValidatingEventHandler;
+    import global.genesis.gen.dao.Company;
+    import global.genesis.message.core.event.Event;
+    import global.genesis.message.core.event.EventReply;
+    import io.reactivex.rxjava3.core.Single;
+    import org.jetbrains.annotations.NotNull;
+
+    @Module
+    public class TestCompanyHandlerRx3 implements Rx3ValidatingEventHandler<Company, EventReply> {
+
+        @NotNull
+        @Override
+        public Single<EventReply> onValidate(@NotNull Event<Company> message) {
+            Company company = message.getDetails();
+            // custom code block..
+            return Single.just(new EventReply.EventAck());
+        }
+
+        @NotNull
+        @Override
+        public Single<EventReply> onCommit(@NotNull Event<Company> message) {
+            Company company = message.getDetails();
+            // custom code block..
+            return Single.just(new EventReply.EventAck());
+        }
+    }
+```
+
+</TabItem>
+</Tabs>
 
 ### Rx3ContextValidatingEventHandler
 
@@ -339,37 +400,79 @@ And the same goes for `Rx3ContextValidatingEventHandler` in relation to [Asyn
 
 Here is an example:
 
--   Kotlin
--   Java
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
 
 ```kotlin
-import global.genesis.commons.annotation.Module    
-import global.genesis.eventhandler.typed.rx3.Rx3ContextValidatingEventHandler    
-import global.genesis.gen.dao.Company    
-import global.genesis.message.core.event.Event    
-import global.genesis.message.core.event.EventReply    
-import global.genesis.message.core.event.ValidationResult    
-import io.reactivex.rxjava3.core.Single    
+    import global.genesis.commons.annotation.Module
+    import global.genesis.eventhandler.typed.rx3.Rx3ContextValidatingEventHandler
+    import global.genesis.gen.dao.Company
+    import global.genesis.message.core.event.Event
+    import global.genesis.message.core.event.EventReply
+    import global.genesis.message.core.event.ValidationResult
+    import io.reactivex.rxjava3.core.Single
 
-@Module    
-class TestCompanyHandlerRx3 : Rx3ContextValidatingEventHandler<Company, EventReply, String> {        
-    override fun onValidate(message: Event<Company>): Single<ValidationResult<EventReply, String>> {            
-        val company = message.details            
-        // custom code block..            
-        val companyName = company.companyName            
-        return Single.just(validationResult(EventReply.EventAck(), companyName))        
-    }        
-        
-    override fun onCommit(message: Event<Company>, context: String?): Single<EventReply> {            
-        if (context != null) {            
-            // Do something with the context            
-        }           
-        val company = message.details            
-        // custom code block..            
-        return ack()        
-    }    
-}
+    @Module
+    class TestCompanyHandlerRx3 : Rx3ContextValidatingEventHandler<Company, EventReply, String> {
+        override fun onValidate(message: Event<Company>): Single<ValidationResult<EventReply, String>> {
+            val company = message.details
+            // custom code block..
+            val companyName = company.companyName
+            return Single.just(validationResult(EventReply.EventAck(), companyName))
+        }
+
+        override fun onCommit(message: Event<Company>, context: String?): Single<EventReply> {
+            if (context != null) {
+            // Do something with the context
+            }
+            val company = message.details
+            // custom code block..
+            return ack()
+        }
+    }
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+    import global.genesis.commons.annotation.Module;
+    import global.genesis.eventhandler.typed.rx3.Rx3ContextValidatingEventHandler;
+    import global.genesis.gen.dao.Company;
+    import global.genesis.message.core.event.Event;
+    import global.genesis.message.core.event.EventReply;
+    import global.genesis.message.core.event.ValidationResult;
+    import io.reactivex.rxjava3.core.Single;
+    import org.jetbrains.annotations.NotNull;
+    import org.jetbrains.annotations.Nullable;
+
+    @Module
+    public class TestCompanyHandlerRx3 implements Rx3ContextValidatingEventHandler<Company, EventReply, String> {
+
+        @NotNull
+        @Override
+        public Single<EventReply> onCommit(@NotNull Event<Company> event, @Nullable String context) {
+            if (!context.isEmpty()) {
+                // Do something with the context
+            }
+            Company company = event.getDetails();
+            // custom code block..
+            return Single.just(new EventReply.EventAck());
+        }
+
+        @NotNull
+        @Override
+        public Single<ValidationResult<EventReply, String>> onValidate(@NotNull Event<Company> event) {
+            Company company = event.getDetails();
+            // custom code block..
+            String companyName = company.getCompanyName();
+            return Single.just(validationResult(new EventReply.EventAck(), companyName));
+        }
+    }
+```
+
+</TabItem>
+</Tabs>
 
 ## Sync
 
@@ -395,24 +498,46 @@ Sync works similarly to [Async](../../../database/api-reference/event-handler-a
 | nack | `fun <I : Any> SyncEventHandler<I, EventReply>.nack(throwable: Throwable): EventReply` |
 | nack | `fun <I : Any> SyncEventHandler<I, EventReply>.nack(error: String): EventReply` |
 
-Here is an example:
-
--   Kotlin
--   Java
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
 
 ```kotlin
-    import global.genesis.commons.annotation.Module    
-    import global.genesis.eventhandler.typed.sync.SyncEventHandler    
-    import global.genesis.gen.dao.Company    
-    import global.genesis.message.core.event.Event    
-    import global.genesis.message.core.event.EventReply    
-    @Module    
-    class TestCompanyHandlerSync : SyncEventHandler<Company, EventReply> {        
-        override fun process(message: Event<Company>): EventReply {            
-            return ack()        
-        }    
+    import global.genesis.commons.annotation.Module
+    import global.genesis.eventhandler.typed.sync.SyncEventHandler
+    import global.genesis.gen.dao.Company
+    import global.genesis.message.core.event.Event
+    import global.genesis.message.core.event.EventReply
+
+    @Module
+    class TestCompanyHandlerSync : SyncEventHandler<Company, EventReply> {
+        override fun process(message: Event<Company>): EventReply {
+            return ack()
+        }
     }
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+    import global.genesis.commons.annotation.Module;
+    import global.genesis.eventhandler.typed.sync.SyncEventHandler;
+    import global.genesis.gen.dao.Company;
+    import global.genesis.message.core.event.Event;
+    import global.genesis.message.core.event.EventReply;
+
+    @Module
+    public class TestCompanyHandlerSync implements SyncEventHandler<Company, EventReply> {
+        @Override
+        public EventReply process(Event<Company> companyEvent) {
+            // custom code block
+            return new EventReply.EventAck();
+        }
+    }
+```
+
+</TabItem>
+</Tabs>
 
 ## SyncValidatingEventHandler[​](../../../database/api-reference/event-handler-api/#syncvalidatingeventhandlerdirect-link-to-heading)
 
@@ -427,29 +552,63 @@ Here is an example:
 
 Here is an example:
 
--   Kotlin
--   Java
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
 
 ```kotlin
-    import global.genesis.commons.annotation.Module    
-    import global.genesis.eventhandler.typed.sync.SyncValidatingEventHandler    
-    import global.genesis.gen.dao.Company    
-    import global.genesis.message.core.event.Event    
-    import global.genesis.message.core.event.EventReply    
-    
-    @Module    
-    class TestCompanyHandlerSync : SyncValidatingEventHandler<Company, EventReply> {        
-        override fun onValidate(message: Event<Company>): EventReply {            
-            val company = message.details           
-            return ack()        
-        }        
-        
-        override fun onCommit(message: Event<Company>): EventReply {            
-            val company = message.details            
-            return ack()        
+    import global.genesis.commons.annotation.Module
+    import global.genesis.eventhandler.typed.sync.SyncValidatingEventHandler
+    import global.genesis.gen.dao.Company
+    import global.genesis.message.core.event.Event
+    import global.genesis.message.core.event.EventReply
+
+    @Module
+    class TestCompanyHandlerSync : SyncValidatingEventHandler<Company, EventReply> {
+        override fun onValidate(message: Event<Company>): EventReply {
+            val company = message.details
+            return ack()
+        }
+
+        override fun onCommit(message: Event<Company>): EventReply {
+            val company = message.details
+            return ack()
         }
     }
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+    import global.genesis.commons.annotation.Module;
+    import global.genesis.eventhandler.typed.sync.SyncValidatingEventHandler;
+    import global.genesis.gen.dao.Company;
+    import global.genesis.message.core.event.Event;
+    import global.genesis.message.core.event.EventReply;
+    import org.jetbrains.annotations.NotNull;
+
+    @Module
+    public class TestCompanyHandlerSync implements SyncValidatingEventHandler<Company, EventReply> {
+        @NotNull
+        @Override
+        public EventReply onCommit(@NotNull Event<Company> event) {
+            Company company = event.getDetails();
+            // custom code block
+            return new EventReply.EventAck();
+        }
+
+        @NotNull
+        @Override
+        public EventReply onValidate(@NotNull Event<Company> event) {
+            Company company = event.getDetails();
+            // custom code block
+            return new EventReply.EventAck();
+        }
+    }
+```
+
+</TabItem>
+</Tabs>
 
 ## SyncContextValidatingEventHandler[​](../../../database/api-reference/event-handler-api/#synccontextvalidatingeventhandlerdirect-link-to-heading)
 
@@ -471,33 +630,74 @@ Here is an example:
 
 Here is an example:
 
--   Kotlin
--   Java
+<Tabs defaultValue="kotlin" values={[{ label: 'Kotlin', value: 'kotlin', }, { label: 'Java', value: 'java', }]}>
+<TabItem value="kotlin">
 
 ```kotlin
-    import global.genesis.commons.annotation.Module    
-    import global.genesis.eventhandler.typed.sync.SyncContextValidatingEventHandler    
-    import global.genesis.gen.dao.Company    
-    import global.genesis.message.core.event.Event    
-    import global.genesis.message.core.event.EventReply    
-    import global.genesis.message.core.event.ValidationResult    
-    
-    @Module    
-    class TestCompanyHandlerSync : SyncContextValidatingEventHandler<Company, EventReply, String> {        
-        override fun onValidate(message: Event<Company>): ValidationResult<EventReply, String> {            
-            val company = message.details            
-            // custom code block..            
-            val companyName = company.companyName            
-            return validationResult(ack(), companyName)        
-        }        
-        
-        override fun onCommit(message: Event<Company>, context: String?): EventReply {            
-            if (context != null) {                
-                // Do something with the context            
-            }            
-            val company = message.details            
-            // custom code block..            
-            return ack()        
-        }    
+    import global.genesis.commons.annotation.Module
+    import global.genesis.eventhandler.typed.sync.SyncContextValidatingEventHandler
+    import global.genesis.gen.dao.Company
+    import global.genesis.message.core.event.Event
+    import global.genesis.message.core.event.EventReply
+    import global.genesis.message.core.event.ValidationResult
+
+    @Module
+    class TestCompanyHandlerSync : SyncContextValidatingEventHandler<Company, EventReply, String> {
+        override fun onValidate(message: Event<Company>): ValidationResult<EventReply, String> {
+            val company = message.details
+            // custom code block..
+            val companyName = company.companyName
+            return validationResult(ack(), companyName)
+        }
+
+        override fun onCommit(message: Event<Company>, context: String?): EventReply {
+            if (context != null) {
+                // Do something with the context
+            }
+            val company = message.details
+            // custom code block..
+            return ack()
+        }
     }
 ```
+
+</TabItem>
+<TabItem value="java">
+
+```java
+    import global.genesis.commons.annotation.Module;
+    import global.genesis.eventhandler.typed.sync.SyncContextValidatingEventHandler;
+    import global.genesis.gen.dao.Company;
+    import global.genesis.message.core.event.Event;
+    import global.genesis.message.core.event.EventReply;
+    import global.genesis.message.core.event.ValidationResult;
+    import org.jetbrains.annotations.NotNull;
+    import org.jetbrains.annotations.Nullable;
+
+    @Module
+    public class TestCompanyHandlerSync implements SyncContextValidatingEventHandler<Company, EventReply, String> {
+
+    @NotNull
+    @Override
+    public ValidationResult<EventReply, String> onValidate(@NotNull Event<Company> event) {
+        Company company = event.getDetails();
+        // custom code block..
+        String companyName = company.getCompanyName();
+        return validationResult(new EventReply.EventAck(), companyName);
+    }
+
+    @NotNull
+    @Override
+    public EventReply onCommit(@NotNull Event<Company> event, @Nullable String context) {
+        if (!context.isEmpty()) {
+        // Do something with the context
+        }
+        Company company = event.getDetails();
+        // custom code block..
+        return new EventReply.EventAck();
+    }
+    }
+```
+
+</TabItem>
+</Tabs>

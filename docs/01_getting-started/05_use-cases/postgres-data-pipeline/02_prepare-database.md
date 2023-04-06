@@ -1,6 +1,6 @@
 ---
-title: Postgres data pipeline - Prepare the Source Data
-sidebar_label: Prepare the Source Data
+title: Postgres data pipeline - prepare the source data
+sidebar_label: Prepare the source data
 sidebar_position: 3
 id: source-data
 keywords: [getting started, quick start, postgres data pipeline, source data]

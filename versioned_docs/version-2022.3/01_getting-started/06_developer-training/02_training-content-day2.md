@@ -68,7 +68,7 @@ There are many more packages, but that's what we need for now to develop our app
 ### Web UI design
 ![](/img/WebUIDiagram.png)
 
-Please look at the complete UI reference<!-- TODO: What is the proper link for this? --> for more details about the Web UI. In this training, we're going to use the Micro Front-ends, which are the easiest way to start working with the UI.
+Please look at the complete [UI reference](../../../web/) for more details about the Web UI. In this training, we're going to use the Micro Front-ends, which are the easiest way to start working with the UI.
 
 ## Create a user interface
 
@@ -384,10 +384,9 @@ Set the body to **JSON**. In the body, you need to insert the details of the fie
 ```
 {
     "DETAILS": {
-      "SOURCE_REF": "BAUDOIN1",
       "COUNTERPARTY_LEI": "Thomas S Eiselberg",
       "COUNTERPARTY_ID": "EISELBERG",
-      "ENABLED": 1,
+      "ENABLED": true,
       "COUNTERPARTY_NAME": "Thomas S Eiselberg GmbH"
     }
 }

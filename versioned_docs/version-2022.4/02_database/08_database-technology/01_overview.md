@@ -1,5 +1,5 @@
 ---
-title: 'Database Technology - Overview'
+title: 'Database technology - overview'
 sidebar_label: 'Overview'
 id: overview
 keywords: [database, technology, overview]

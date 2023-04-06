@@ -1,5 +1,5 @@
 ---
-title: 'Go to the next level - Data Aggregation using Consolidator'
+title: 'Go to the next level - data aggregation using consolidator'
 sidebar_label: 'Consolidators'
 id: consolidators
 keywords: [getting started, quick start, next level, data aggregation, consolidators]

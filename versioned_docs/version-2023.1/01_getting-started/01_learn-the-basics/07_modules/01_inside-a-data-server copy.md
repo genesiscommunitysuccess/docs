@@ -1,5 +1,5 @@
 ---
-title: 'Modules - Inside a Data Server'
+title: 'Modules - inside a Data Server'
 sidebar_label: 'Inside a Data Server'
 id: inside-a-data-server
 keywords: [getting started, basics, modules, data server]

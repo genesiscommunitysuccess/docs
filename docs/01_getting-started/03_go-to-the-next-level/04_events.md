@@ -1,5 +1,5 @@
 ---
-title: 'Go to the next level - User interaction using Data Servers, Request Servers and Event Handlers'
+title: 'Go to the next level - user interaction using Data Servers, Request Servers and Event Handlers'
 sidebar_label: 'User interaction'
 id: events
 keywords: [getting started, quick start, next level, user interaction, events]

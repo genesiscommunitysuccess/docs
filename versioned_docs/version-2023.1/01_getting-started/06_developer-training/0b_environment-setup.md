@@ -23,7 +23,7 @@ Please follow these instructions very carefully to ensure your environment is re
 
 ### Recommended hardware and operating system
 
-* Operating system : Windows 10 Pro version 2004 or higher with support for [WSL v2](https://docs.microsoft.com/en-us/windows/wsl/install)
+* Operating system : Windows 10 Pro version 2004 or higher
 * RAM : 32GB minimum, as we are running full applications locally
 * CPU : 8 Core
 * SSD : 250GB
@@ -41,8 +41,6 @@ Please follow these instructions very carefully to ensure your environment is re
 | NodeJS  | 16 LTS|
 | npm | 8 |
 | Gradle | 7.5 |
-| Windows Subsystem for Linux (WSL) | WSL 2 |
-| Docker Desktop | 4.11.1 |
 
 You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the Genesis Platform Abstraction Language (**GPAL**) prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
 
@@ -119,7 +117,7 @@ This setup presumes you will sign in with jfrog SAML SSO. Please follow the step
     ```
 6. Replace SCOPE with genesislcap:
     ```shell
-    npm config set @<genesislcap>:registry https://genesisglobal.jfrog.io/artifactory/api/npm/npm/
+    npm config set @genesislcap:registry https://genesisglobal.jfrog.io/artifactory/api/npm/npm/
     ```
 7. Click edit profile → Click Generate identity token button. Copy token
 8. Open your terminal again and use this token run the curl command:
@@ -227,7 +225,7 @@ You could use, for instance, [PostgreSQL](../../../database/database-technology/
 
 ```terminal
 docker pull postgres
-docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres
+docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=10000'
 ```
 :::
 

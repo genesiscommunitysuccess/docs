@@ -1,5 +1,5 @@
 ---
-title: 'Go to the next level - Run the application (Docker)'
+title: 'Go to the next level - run the application (Docker)'
 sidebar_label: 'Run the application (Docker)'
 id: run-the-application-docker
 keywords: [getting started, quick start, next level, run the app, docker]

@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start - Create a new project'
+title: 'Quick start - create a new project'
 sidebar_label: 'Create a new project'
 id: create-a-new-project
 keywords: [getting started, quick start, new project]
@@ -10,7 +10,7 @@ tags:
 ---
 
 :::info
-Before you start, make sure you have checked out the [hardware and software requirements(/getting-started/quick-start/hardware-and-software/). 
+Before you start, make sure you have checked out the [hardware and software requirements](/getting-started/quick-start/hardware-and-software/). 
 
 Download and install all the relevant requirements.
 :::

@@ -68,7 +68,7 @@ There are many more packages, but that's what we need for now to develop our app
 ### Web UI design
 ![](/img/WebUIDiagram.png)
 
-Please look at the complete UI reference<!-- TODO: What is the proper link for this? --> for more details about the Web UI. In this training, we're going to use the Micro Front-ends, which are the easiest way to start working with the UI.
+Please look at the complete [UI reference](../../../web/) for more details about the Web UI. In this training, we're going to use the Micro Front-ends, which are the easiest way to start working with the UI.
 
 ## Create a user interface
 
@@ -321,7 +321,7 @@ eventHandler {
 We have just added new fields into our data model. To format them better, so that they can insert and update data, we can define form UI schemas. Using EntityManagement, there are two properties called `createFormUiSchema` and `updateFormUiSchema` that can be declared. So, let's do it.
 
 First, create a new file **schemas.ts** in the same folder we have the *home.ts* file, and copy the content below.
-```typescript
+```typescript title="schemas.ts"
 const conditionalSchemaEntry = (predicate: boolean, entry) => {
   return predicate ? [entry] : [];
 };
@@ -355,11 +355,6 @@ export const tradeFormSchema = (editing?: boolean) => ({
 	},
 	{
 		"type": "Control",
-		"label": "Entered By",
-		"scope": "#/properties/ENTERED_BY"
-	},
-	{
-		"type": "Control",
 		"label": "Instrument",
 		"scope": "#/properties/INSTRUMENT_ID",
         "options": {
@@ -383,18 +378,7 @@ export const tradeFormSchema = (editing?: boolean) => ({
 		"type": "Control",
 		"label": "Symbol",
 		"scope": "#/properties/SYMBOL"
-	},
-	{
-		"type": "Control",
-		"label": "Trade Date",
-		"scope": "#/properties/TRADE_DATE"
-	},
-	{
-		"type": "Control",
-		"label": "Status",
-		"scope": "#/properties/TRADE_STATUS"
 	}
-
   ],
 });
 
@@ -411,21 +395,17 @@ import type {Home} from './home';
 import { tradeFormCreateSchema, tradeFormUpdateSchema } from './schemas';
 ...
 export const HomeTemplate = html<Home>`
-<div class="split-layout">
-    <div class="top-layout">
-        <entity-management
-          resourceName="ALL_TRADES"
-          title = "Trades"
-          entityLabel="Trades"
-          createEvent = "EVENT_TRADE_INSERT"
-          updateEvent = "EVENT_TRADE_MODIFY"
-          deleteEvent = "EVENT_TRADE_CANCELLED"
-          :columns=${x => x.columns}
-          :createFormUiSchema=${() => tradeFormCreateSchema}
-          :updateFormUiSchema=${() => tradeFormUpdateSchema}
-        ></entity-management>
-    </div>
-...
+  <entity-management
+    resourceName="ALL_TRADES"
+    title = "Trades"
+    entityLabel="Trades"
+    createEvent = "EVENT_TRADE_INSERT"
+    updateEvent = "EVENT_TRADE_MODIFY"
+    deleteEvent = "EVENT_TRADE_CANCELLED"
+    :columns=${x => x.columns}
+    :createFormUiSchema=${() => tradeFormCreateSchema}
+    :updateFormUiSchema=${() => tradeFormUpdateSchema}
+  ></entity-management>
 `;
 ```
 
@@ -488,7 +468,7 @@ The url consists of:
 - the name of the event handler
 
 ```
-http://localhost/EVENT_COUNTERPARTY_INSERT
+http://localhost:9064/EVENT_COUNTERPARTY_INSERT
 ```
 
 
@@ -497,10 +477,9 @@ Set the body to **JSON**. In the body, you need to insert the details of the fie
 ```
 {
     "DETAILS": {
-      "SOURCE_REF": "BAUDOIN1",
       "COUNTERPARTY_LEI": "Thomas S Eiselberg",
       "COUNTERPARTY_ID": "EISELBERG",
-      "ENABLED": 1,
+      "ENABLED": true,
       "COUNTERPARTY_NAME": "Thomas S Eiselberg GmbH"
     }
 }

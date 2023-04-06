@@ -1,5 +1,5 @@
 ---
-title: 'Web Basics - Prerequisites'
+title: 'Web basics - prerequisites'
 sidebar_label: 'Prerequisites'
 id: prerequisites
 keywords: [web, basics, prerequisites]

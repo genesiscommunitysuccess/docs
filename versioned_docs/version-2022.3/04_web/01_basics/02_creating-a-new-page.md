@@ -1,5 +1,5 @@
 ---
-title: 'Web Basics - Creating a new page'
+title: 'Web basics - creating a new page'
 sidebar_label: 'Creating a new page'
 id: creating-a-new-page
 keywords: [web, basics, creating a new page]

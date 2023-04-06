@@ -1,5 +1,5 @@
 ---
-title: 'Faster quick start - Add business logic'
+title: 'Faster quick start - add business logic'
 sidebar_label: 'Add business logic'
 id: add-business-logic
 keywords: [getting started, quick start, faster quick start, business logic, dataserver, event handler]

@@ -1,5 +1,5 @@
 ---
-title: 'Web Basics - Inserting a grid'
+title: 'Web basics - inserting a grid'
 sidebar_label: 'Inserting a grid'
 id: inserting-a-grid
 keywords: [web, basics, inserting a grid]

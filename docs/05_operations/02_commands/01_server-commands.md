@@ -38,10 +38,9 @@ genesisInstall [--ignore]
 
 | Argument | Argument long name | Mandatory | Description                                                                                                                           | Restricted values |
 |----------|--------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| -h       | --help             | no        | Show usage information                                                                                                                | No                |
 |          | --ignore           | no        | If supplied, will ignore errors in the configuration files                                                                            | No                |
 |          | --ignoreHooks      | no        | If supplied, will ignore any install hooks found                                                                                      | No                |
-|          | --compactProcesses | no        | When set to `true`, combines compatible services into a single process which reduces the number of services running in the container  | No                |
+|          | --compactProcesses | no        | When set to `true`, combines compatible services into a single process, which reduces the number of services running in the container | No                |
 |          | --repeatedHooks    | no        | If supplied, will repeat mentioned install hooks                                                                                      | No                |
 |          | --hostDiff         | no        | If supplied, will compare all the files across genesis servers that are part of a genesis cluster to make sure the files are in sync  | No                |
 
@@ -137,18 +136,16 @@ If the database crashes during a `remap` and the database remains locked (or if 
 remap [-c | --commit]
 ```
 
-| Argument | Argument long name          | Mandatory | Description                                                                                                                                                                                                                              | Restricted values |
-|----------|-----------------------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
-| -h       | --help                      | no        | Show usage information                                                                                                                                                                                                                   | No                |
-| -f       | --force                     | no        | Forces the unlocking of a locked database                                                                                                                                                                                                | No                |
-| -c       | --commit                    | no        | Applies dictionary changes to the database                                                                                                                                                                                               | No                |
-|          | --force-dao-generation      | no        | Forces the re-generation of DAOs on the given host                                                                                                                                                                                       | No                |
-|          | --skip-dao-generation       | no        | Skips the re-generation of DAOs on the given host                                                                                                                                                                                        | No                |
-|          | --ask-db-password           | no        | Prompt for a DB user password to be manually entered                                                                                                                                                                                     | No                |
-| -d       | --dumpSQL                   | no        | Outputs the SQL DDL statements to the console instead of applying to the db.                                                                                                                                                             | No                |
-| -m       | --metadata-only             | no        | Only updates the GSF dictionary and alias stores, does not apply any table changes.                                                                                                                                                      | No                |
-|          | --skip-unchanged            | no        | Forces remap to fail if the `--commit` option is used and schema changes are present.                                                                                                                                                    | No                |
-|          | --useDefaultWriterForOracle | no        | Uses the default schema migration mechanism instead of the custom Oracle schema migration mechanism. The default mechanism assumes the SQL database supports transactional DDL statements and attempts to execute all changes in one go. | No                |
+| Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values |
+|----------|------------------------|-----------|----------------------------------------------------------------------------------------|-------------------|
+| -f       | --force                | no        | Forces the unlocking of a locked database                                              | No                |
+| -c       | --commit               | no        | Applies dictionary changes to the database                                             | No                |
+|          | --force-dao-generation | no        | Forces the re-generation of DAOs on the given host                                     | No                |
+|          | --skip-dao-generation  | no        | Skips the re-generation of DAOs on the given host                                      | No                |
+|          | --ask-db-password      | no        | Prompt for a DB user password to be manually entered                                   | No                |
+| -d       | --dumpSQL              | no        | Outputs the SQL DDL statements to the console instead of applying to the db.           | No                |
+| -m       | --metadataOnly         | no        | Only updates the GSF dictionary and alias stores, does not apply any table changes.    | No                |
+|          | --skip-unchanged       | no        | Forces remap to fail if the `--commit` option is used and schema changes are present.  | No                |
 If you run remap with no arguments, it simply gives a report of changes that exist in the configuration.
 
 For example:

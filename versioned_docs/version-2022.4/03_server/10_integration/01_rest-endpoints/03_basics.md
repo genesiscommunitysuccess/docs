@@ -11,14 +11,14 @@ tags:
 ---
 
 ## Authentication
-As mentioned in the introduction, all requests to all Genesis components require you to have done an intial log in and to have retrieved the `SESSION_AUTH_TOKEN`.
+As mentioned in the introduction, all requests to all Genesis components require you to have made an initial log in and to have retrieved the `SESSION_AUTH_TOKEN`.
 
 ### EVENT_LOGIN_AUTH
 
 Log in requests are submitted via POST requests to
 `[host]:[genesis_router_port]/event-login-auth`.
 
-Intial login requests require:
+Initial login requests require:
 
 * `USER_NAME` and `PASSWORD` keys in the `DETAILS` object
 * `SOURCE_REF` header.

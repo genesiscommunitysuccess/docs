@@ -1,5 +1,5 @@
 ---
-title: 'Excel to genesis - Quick guide'
+title: 'Excel to Genesis - quick guide'
 sidebar_label: 'Quick guide'
 id: quick-guide
 keywords: [getting started, quick start, excel to genesis, quick guide]

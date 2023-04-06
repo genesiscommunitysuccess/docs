@@ -345,11 +345,10 @@ After the url, you need to move to the body. Set the body to **JSON**. Then, in 
 ```
 {
     "DETAILS": {
-      "SOURCE_REF": "BAUDOIN1",
       "COUNTERPARTY_LEI": "Thomas S Eiselberg",
       "COUNTERPARTY_ID": "EISELBERG",
-      "ENABLED": 1,
-      "NAME": "Thomas S Eiselberg GmbH"
+      "ENABLED": true,
+      "COUNTERPARTY_NAME": "Thomas S Eiselberg GmbH"
     }
 }
 ```

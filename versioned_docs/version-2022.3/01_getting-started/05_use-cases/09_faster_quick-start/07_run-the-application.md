@@ -1,5 +1,5 @@
 ---
-title: 'Faster quick start - Run the application'
+title: 'Faster quick start - run the application'
 sidebar_label: 'Run the application'
 id: run-the-application
 keywords: [getting started, quick start, faster quick start, run the app]

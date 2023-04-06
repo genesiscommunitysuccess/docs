@@ -98,7 +98,8 @@ To define a scheduled event, you need to insert a row into the `CRON_RULE` table
 | Field Name | Usage |
 | --- | --- |
 | NAME | Name of the rule |
-| CRON_EXPRESSION | [Standard Cron Expression](https://en.wikipedia.org/wiki/Cron#CRON_expression) |
+| CRON_EXPRESSION | [Quartz Cron Expressions](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html).
+ |
 | DESCRIPTION | Simple description of the function of the rule |
 | TIME_ZONE | eg Europe/London |
 | RULE_STATUS | This is either "ENABLED" or "DISABLED", respectively enables or disables the rule  |
@@ -113,7 +114,7 @@ MESSAGE_TYPE fields define the Java/Kotlin class that is instantiated and set by
 To load a static (Cron) rule into the database, create a csv file with the rule in the above format. Call the file **CRON_RULE.csv**.
 ```csv
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
-"0 * * * * *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
+"* 15 7 ? * MON-FRI *","Week days at 7.15","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVENT_HANDLER","EVENT_POSITION_REPORT"
 ```
 
 Load the cron rule **CRON_RULE.csv** file into the `CRON_RULE`  [table](../../../server/evaluator/configuring-runtime/#cron_rule-table).

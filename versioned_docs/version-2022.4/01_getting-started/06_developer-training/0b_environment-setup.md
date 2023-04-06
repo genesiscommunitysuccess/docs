@@ -43,7 +43,7 @@ Please follow these instructions very carefully to ensure your environment is re
 | npm | 8 |
 | Gradle | 7.5 |
 | Windows Subsystem for Linux (WSL) | WSL 2 |
-| Docker Desktop | 4.11.1 |
+| Rancher Desktop | 1.8.1 |
 
 You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the Genesis Platform Abstraction Language (**GPAL**) prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
 
@@ -264,7 +264,7 @@ Open the project using your favourite IDE such as IntelliJ or Visual Studio Code
 ### Running the back end
 We are going to change the back-end and front-end code, so ideally we should have the server running to make our application work. To do that, we can simply build a Docker image from the project you just cloned.
 
-You must have Docker installed and running on your workstation.
+You must have a docker container management software installed (we recommand [Rancher Desktop](https://rancherdesktop.io/)) and running on your workstation.
 
 ### Building the docker images
 From the root directory of the project, run:
@@ -274,7 +274,11 @@ docker-compose build
 docker-compose up -d
 ```
 
-Check on your Docker dashboard if you have the containers **gsf** and **nginx** running.
+Check if you have the containers **gsf** and **nginx** running. Copy and paste the following commands into the terminal
+
+```Powershell
+docker ps
+```
 
 ### Attaching a terminal to a Docker container
 
@@ -292,7 +296,7 @@ mon
 ```
 
 :::tip
-Alternatively, you can use Docker Desktop Integrated Terminal for the Containers you just created as explained [here](https://www.docker.com/blog/integrated-terminal-for-running-containers-extended-integration-with-containerd-and-more-in-docker-desktop-4-12/).
+Alternatively, you can use Rancher Desktop Integrated Terminal for the Containers you just created as explained [here](https://www.docker.com/blog/integrated-terminal-for-running-containers-extended-integration-with-containerd-and-more-in-docker-desktop-4-12/).
 :::
 
 You must see all processes up and running or in standby mode.

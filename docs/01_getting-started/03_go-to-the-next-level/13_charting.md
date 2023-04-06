@@ -1,5 +1,5 @@
 ---
-title: 'Go to the next level - Create a chart'
+title: 'Go to the next level - create a chart'
 sidebar_label: 'Create a chart'
 id: charts
 keywords: [getting started, quick start, next level, charts]

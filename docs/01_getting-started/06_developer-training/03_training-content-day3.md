@@ -142,6 +142,29 @@ field("PNL", type = DOUBLE)​
 
 When you finish, remember to run [generatefields](../../../getting-started/developer-training/training-content-day1/#generatefields).
 
+### Updating the schemas.ts
+
+After creating these new fields, go back to the `schemas.ts` and add this code blocks to it. so we can interact with them.
+
+``` kotlin title = "schemas.ts"
+    {
+        "type": "Control",
+        "label": "Trade Date",
+        "scope": "#/properties/TRADE_DATE"
+    },
+    {
+        "type": "Control",
+        "label": "Status",
+        "scope": "#/properties/TRADE_STATUS"
+    },
+    {
+        "type": "Control",
+        "label": "Entered By",
+        "scope": "#/properties/ENTERED_BY"
+    }
+
+```
+
 ### Extending the Trade table and adding a Position table
 
 1. Add the new fields into the TRADE table.
@@ -539,6 +562,11 @@ In our case, Consolidators are a good fit for consolidating a position table fro
 
 Before defining the Consolidator, we should insert some data in the `INSTRUMENT_PRICE` table using using [SendIt](../../../operations/commands/server-commands/#sendit-script) script as we saw [here](../../../getting-started/developer-training/training-content-day1/#user-name-and-password). 
 
+:::tip
+To insert new data properly, we need to create 2 additional files called [COUNTERPARTY.csv](https://raw.githubusercontent.com/genesiscommunitysuccess/devtraining-alpha/main/server/jvm/alpha-site-specific/src/main/resources/data/COUNTERPARTY.csv) and [INSTRUMENT.csv](https://raw.githubusercontent.com/genesiscommunitysuccess/devtraining-alpha/main/server/jvm/alpha-site-specific/src/main/resources/data/INSTRUMENT.csv) and send it to genesis. this will populate the other two tables you will need.
+:::
+
+
 Create a new file in the same folder as the **USER.csv** file and name it as **INSTRUMENT_PRICE.csv**. Copy the content below into the file that you have just created.
 ```csv
 INSTRUMENT_ID,LAST_PRICE
@@ -690,6 +718,7 @@ First, open the file **home.styles.ts** and add the code below.
     flex-direction: column;
     flex: 1;
     width: 100%;
+    height: 100%;
 }
 
 .top-layout {
@@ -732,7 +761,7 @@ export class Home extends FASTElement {
 
 Finally, go to the file **home.template.ts** and import the required components. Then, add a constant holding the Position columns, and some `<div>`s to format the final HTML.
 
-```html {5-12,15,16,28-42}
+```html {1,5-12,15,16,28-42}
 import {html, repeat, when, ref} from '@microsoft/fast-element';
 import type {Home} from './home';
 import { tradeFormCreateSchema, tradeFormUpdateSchema } from './schemas';

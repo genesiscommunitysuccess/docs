@@ -1,6 +1,6 @@
 ---
-title: Postgres data pipeline - Deploy the Application
-sidebar_label: Deploy the Application
+title: Postgres data pipeline - deploy the application
+sidebar_label: Deploy the application
 sidebar_position: 5
 id: deploy
 keywords: [getting started, quick start, postgres data pipeline, deploy]

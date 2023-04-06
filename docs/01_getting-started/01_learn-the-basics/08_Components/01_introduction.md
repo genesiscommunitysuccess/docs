@@ -1,5 +1,5 @@
 ---
-title: 'Components - Introduction'
+title: 'Components - introduction'
 sidebar_label: 'Genesis components: introduction'
 sidebar_position: 1
 id: introduction
@@ -12,7 +12,7 @@ tags:
 ---
 
 
-The Genesis low-code platform offers you more than 50 components that provide proven quality code which speed up your development, testing and deployment to a great extent.
+The Genesis low-code platform offers you pre-built components designed to speed up your development, testing and deployment.
 - [Component architecture](02_component-architecture-overview.md)
 - [Core components](03_core-components.md)
 - [Application components](04_application-components.md)

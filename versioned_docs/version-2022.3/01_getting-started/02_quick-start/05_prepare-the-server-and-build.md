@@ -1,5 +1,5 @@
 ---
-title: 'Quick Start - Prepare the server & build'
+title: 'Quick start - prepare the server & build'
 sidebar_label: 'Prepare the server & build'
 id: prepare-the-server-and-build
 keywords: [getting started, quick start, server, build]
@@ -69,7 +69,7 @@ You can specify which database to use in your application by editing **genesis-s
 
 You can find more information on the **genesis-system-definitions.kts** file [here](../../../server/configuring-runtime/system-definitions/).
 
-If you are running your application using [**Docker**](../../../getting-started/quick-start/run-the-application-docker/), you need to use the Postgres database. Add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
+If you are running your application using [**Docker Container**](../../../getting-started/quick-start/run-the-application-docker/), you need to use the Postgres database. Add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
 
 ```kotlin {4,10}
 systemDefinition {
