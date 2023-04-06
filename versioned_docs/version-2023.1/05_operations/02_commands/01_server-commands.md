@@ -36,10 +36,13 @@ Following this, when you start any process, the 'startProcess' command reads fro
 genesisInstall [--ignore]
 ```
 
-| Argument | Argument long name | Mandatory | Description                                                | Restricted values |
-|----------|--------------------|-----------|------------------------------------------------------------|-------------------|
-|          | --ignore           | no        | If supplied, will ignore errors in the configuration files | No                |
-|          | --ignoreHooks      | no        | If supplied, will ignore any install hooks found           | No                |
+| Argument | Argument long name | Mandatory | Description                                                                                                                           | Restricted values |
+|----------|--------------------|-----------|---------------------------------------------------------------------------------------------------------------------------------------|-------------------|
+|          | --ignore           | no        | If supplied, will ignore errors in the configuration files                                                                            | No                |
+|          | --ignoreHooks      | no        | If supplied, will ignore any install hooks found                                                                                      | No                |
+|          | --compactProcesses | no        | When set to `true`, combines compatible services into a single process, which reduces the number of services running in the container | No                |
+|          | --repeatedHooks    | no        | If supplied, will repeat mentioned install hooks                                                                                      | No                |
+|          | --hostDiff         | no        | If supplied, will compare all the files in all the Genesis servers in the cluster to make sure the files are in sync  | No                |
 
 Once complete, all configuration files will be copied and, where necessary, merged into the **~/run/generated/cfg** file, which we alias as **$GC**.
 
@@ -133,15 +136,16 @@ If the database crashes during a `remap` and the database remains locked (or if 
 remap [-c | --commit]
 ```
 
-| Argument | Argument long name     | Mandatory | Description                                                | Restricted values |
-|----------|------------------------|-----------|------------------------------------------------------------|-------------------|
-| -f       | --force                | no        | Forces the unlocking of a locked database                  | No                |
-| -c       | --commit               | no        | Applies dictionary changes to the database                 | No                |
-|          | --force-dao-generation | no        | Forces the re-generation of DAOs on the given host         | No                |
-|          | --skip-dao-generation  | no        | Skips the re-generation of DAOs on the given host          | No                |
-|          | --ask-db-password      | no        | Prompt for a DB user password to be manually entered       | No                |
-| -d       | --dumpSQL              | no        | Outputs the SQL DDL statements to the console instead of applying to the db. | No                |
-| -m       | --metadataOnly         | no        | Only updates the GSF dictionary and alias stores, does not apply any table changes. | No                |
+| Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values |
+|----------|------------------------|-----------|----------------------------------------------------------------------------------------|-------------------|
+| -f       | --force                | no        | Forces the unlocking of a locked database                                              | No                |
+| -c       | --commit               | no        | Applies dictionary changes to the database                                             | No                |
+|          | --force-dao-generation | no        | Forces the re-generation of DAOs on the given host                                     | No                |
+|          | --skip-dao-generation  | no        | Skips the re-generation of DAOs on the given host                                      | No                |
+|          | --ask-db-password      | no        | Prompt for a DB user password to be manually entered                                   | No                |
+| -d       | --dumpSQL              | no        | Outputs the SQL DDL statements to the console instead of applying to the db.           | No                |
+| -m       | --metadataOnly         | no        | Only updates the GSF dictionary and alias stores, does not apply any table changes.    | No                |
+|          | --skip-unchanged       | no        | Forces remap to fail if the `--commit` option is used and schema changes are present.  | No                |
 If you run remap with no arguments, it simply gives a report of changes that exist in the configuration.
 
 For example:
