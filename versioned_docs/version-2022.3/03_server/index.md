@@ -56,7 +56,7 @@ A lot of your focus will be on the modules that you define for your application.
 
 ## Integration
 
-Look at all the different ways of getting information into and out of the system so you can integrate with other systems. 
+Look at all the different ways of getting information into and out of the system so you can integrate with other systems. Here are just two.
 
 <Grid container>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
@@ -64,7 +64,7 @@ Look at all the different ways of getting information into and out of the system
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="State Machine" link="../server/state-machine/introduction/" text="Define the possible states of a trade or order, and how they can move from one state to another.">
+        <QuickCard heading="Apache Camel" link="../server/integration/apache-camel/introduction/" text="Integrate using Apache Camel, which has a wide range of components that make it easy to set up.">
         </QuickCard>
     </Grid>    
 </Grid>
