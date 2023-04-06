@@ -41,8 +41,8 @@ genesisInstall [--ignore]
 |          | --ignore           | no        | If supplied, will ignore errors in the configuration files                                                                            | No                |
 |          | --ignoreHooks      | no        | If supplied, will ignore any install hooks found                                                                                      | No                |
 |          | --compactProcesses | no        | When set to `true`, combines compatible services into a single process, which reduces the number of services running in the container | No                |
-|          | --repeatedHooks    | no        | If supplied, will repeat mentioned install hooks                                                                                      | No                |
-|          | --hostDiff         | no        | If supplied, will compare all the files across genesis servers that are part of a genesis cluster to make sure the files are in sync  | No                |
+|          | --repeatedHooks    | no        | If supplied, will repeat the specified install hooks                                                                                      | No                |
+|          | --hostDiff         | no        | If supplied, will compare all the files across Genesis servers in the cluster to make sure the files are in sync  | No                |
 
 Once complete, all configuration files will be copied and, where necessary, merged into the **~/run/generated/cfg** file, which we alias as **$GC**.
 
