@@ -13,65 +13,29 @@ tags:
 
 import CodeBlock from '@theme/CodeBlock';
 
-Single sign-on (SSO) authentication uses the underlying SSO technology. SSO is a mechanism that allows a user to be authenticated against a single system, and use that authenticated id across multiple applications - including those built on the Genesis low-code platform. This has the advantage that a user is required to log in only once, rather than once per system.
+SSO is a mechanism that enables a user to be authenticated against a single system, and use that authenticated id across multiple applications - including those built on the Genesis low-code platform. This has the advantage that a user is required to log in only once, rather than once per system.
 
-There are three different types of SSO authentication presently supported by the Genesis low-code platform. These are as follows:
+There are three different types of SSO authentication presently supported by the Genesis low-code platform. These are:
 
 * [JWT (JSON Web Token)](https://jwt.io/introduction) SSO
 * [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language)
 * [OpenID Connect](https://openid.net/connect/)
 
-## Configuring SSO
-
-To enable SSO, you will need to configure it in your _application-name_**-auth-preferences.kts** file.
-
-These following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Password Authentication section](../../../server/access-control/password-authentication/).
-
-### sso
-The `sso` function allows you to configure and enable SSO options. It has the following variables to set:
-
-* `enabled` is a boolean value that defines whether the SSO functionality is enabled. Default: true when the `sso` function is invoked, otherwise false.
-* `onFirstLogin` is a function that is called when a user has been authenticated for the first time and doesn't yet exist in the database. Here you can define two things:
-  * how a `User` and its `UserAttributes` will be created from the token after the user has been authenticated using the `createUser` function
-  * which user permissions are allocated using `createUserPermissions`
-* `onLoginSuccess` is a function that is called each time the user gets authenticated. Inside the function you have access to the actual token that was used for authentication and database access.
-* `newUserMode` is now deprecated in favour of `onFirstLogin` and `onLoginSuccess`. This property defines behaviour for processing users the first time they log in with SSO. This can take the values of `NewUserMode.REJECT`, `NewUserMode.CREATE_ENABLED`, `NewUserMode.CREATE_DISABLED`. Default `NewUserMode.REJECT`.
-  * In the case of `NewUserMode.REJECT`, when a user logs in for the first time with SSO, if they do not already have a user account, they are rejected.
-  * In the case of `NewUserMode.CREATE_ENABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, an active account is created for them.
-  * In the case of `NewUserMode.CREATE_DISABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, a disabled account is created for them. This will be need to be activated before it can be used.
-
-### passwordRetry
-The `passwordRetry` function allows you to configure settings for limiting the rate at which a user can retry passwords and SSO tokens. It allows the following variables to be set:
-
-* `maxAttempts` defines the maximum number of attempts allowed if a user enters an incorrect SSO token. Default: 3
-* `waitTimeMins` specifies the time to wait when the maximum number of incorrect attempts is reached. Default: 5.
-
 
 ## JWT SSO
 
-By giving the user a JWT when they authenticate with your identity provider, they can automatically have this identity verified when they attempt to access the application built on the Genesis low-code platform.
+By giving a user a JSON web token (JWT) when they authenticate with your identity provider, that can automatically have their identity verified when they attempt to access your Genesis application.
 
-By centralising this authentication, you can authorise the user's access to specific relevant systems (and no others), using tools like the [Microsoft Azure AD](https://azure.microsoft.com/en-gb/services/active-directory/#overview) component. So you have control over who has access to your Genesis applications.
+You can authorise the user's access to specific relevant systems (and no others), using tools such as the [Microsoft Azure AD](https://azure.microsoft.com/en-gb/services/active-directory/#overview) component. So you have control over who has access to your Genesis applications.
 
 :::note
 
 The IT infrastructure or security team at your organisation is usually responsible for setting up and managing your company's JWT authentication service. If a solution is not in place, Genesis can provide detailed instructions and assistance.
 
 :::
+## Message flow
 
-## Configuration details
-
-The following data points need to be shared with Genesis to complete the solution. These data points are stored in the database of your Genesis application. These are all stored on the `JWT_CONFIG` table.
-
-* The `DOMAIN` must contain the domain for which this JWT is valid.
-* The `PUBLIC_KEY` should contain the public key of the JWT key pair, (the private key is used to sign the JWT at the internal authentication service).
-* Alternatively the `PUBLIC_KEY_URL` can be set as a URL to obtain this dynamically. Public keys obtained in this way are expected to be in JSON Web Key Sets format.
-* The `REDIRECT_URL` must contain the URL for which the user is redirected to log in, should they not possess a valid JWT.
-* The `KEY_ALGORITHM` should be set either to `KeyAlgorithm.RSA` or `KeyAlgorithm.HMAC`.
-
-## How Genesis JWT SSO works
-
-The SSO workflow depends on whether CORS is configured on your internal authentication service to allow the Genesis low-code platform to make direct authentication requests, or not.
+The SSO workflow depends on whether or not CORS is configured on your internal authentication service to allow the Genesis low-code platform to make direct authentication requests, or not.
 
 ### CORS enabled
 
@@ -95,13 +59,51 @@ If CORS is not enabled, the SSO workflow is:
 3. A request is made to the Genesis back end framework to request the URL for the specific authentication service.
 4. A redirect is triggered for the browser to the internal authentication service, which will include the end user’s internal authentication parameters. A return parameter to **https://your-subdomain.genesisapplication.com/** is also part of the request.
 5. The authentication service authenticates and builds a JWT with relevant user data, signs the JWT and sends a redirect trigger to the browser for **https://your-subdomain.genesisapplication.com/**, which includes the JWT as a request parameter.
-6. The Genesis platform is reloaded. It recognises that SSO is enabled, but now with the JWT as a parameter. The platform sends an SSO authentication request with the JWT for the specific organisation. If this is successful, an active Session token is returned.
+6. The Genesis platform is reloaded. It recognises that SSO is enabled, but now with the JWT as a parameter. The platform sends an SSO authentication request with the JWT for the specific organisation. If this is successful, an active session token is returned.
+
+
+## Prerequisites
+
+Make sure that the`JWT_CONFIG` table of your application is correctly configured:
+
+* The `DOMAIN` must contain the domain for which this JWT is valid.
+* The `PUBLIC_KEY` should contain the public key of the JWT key pair, (the private key is used to sign the JWT at the internal authentication service).
+* Alternatively the `PUBLIC_KEY_URL` can be set as a URL to obtain this dynamically. Public keys obtained in this way are expected to be in JSON Web Key Sets format.
+* The `REDIRECT_URL` must contain the URL for which the user is redirected to log in, should they not possess a valid JWT.
+* The `KEY_ALGORITHM` should be set either to `KeyAlgorithm.RSA` or `KeyAlgorithm.HMAC`.
+
+## Enabling SSO
+
+To enable SSO, you need to configure it in your _application-name_**-auth-preferences.kts** file.
+
+The following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Password Authentication section](../../../server/access-control/password-authentication/).
+
+### sso
+The `sso` function enables you to configure and enable SSO options. You can set the following variables:
+
+* `enabled` is a boolean value that defines whether the SSO functionality is enabled. Default: `true` when the `sso` function is invoked, otherwise `false`.
+* `onFirstLogin` is a function that is called when a user has been authenticated for the first time and doesn't yet exist in the database. Here you can define two things:
+  * how a `User` and its `UserAttributes` will be created from the token after the user has been authenticated using the `createUser` function
+  * which user permissions are allocated using `createUserPermissions`
+* `onLoginSuccess` is a function that is called each time the user is authenticated. Inside the function, you have access to the actual token that was used for authentication and database access.
+* `newUserMode` **is now deprecated** in favour of `onFirstLogin` and `onLoginSuccess`. This property defines behaviour for processing users the first time they log in with SSO. This can take the values of `NewUserMode.REJECT`, `NewUserMode.CREATE_ENABLED`, `NewUserMode.CREATE_DISABLED`. Default `NewUserMode.REJECT`.
+  * In the case of `NewUserMode.REJECT`, when a user logs in for the first time with SSO, if they do not already have a user account, they are rejected.
+  * In the case of `NewUserMode.CREATE_ENABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, an active account is created for them.
+  * In the case of `NewUserMode.CREATE_DISABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, a disabled account is created for them. This will need to be activated before it can be used.
+
+### passwordRetry
+The `passwordRetry` function enables you to configure settings for limiting the rate at which a user can retry passwords and SSO tokens. It allows the following variables to be set:
+
+* `maxAttempts` defines the maximum number of attempts allowed if a user enters an incorrect SSO token. Default: 3
+* `waitTimeMins` specifies the time to wait when the maximum number of incorrect attempts is reached. Default: 5.
+
+
 
 ## JWT revalidation
 
 The Auth service provides an Event Handler to clients, which allows for periodic updating and revalidation of a JWT token.
 
-The Event Handler is named ```EVENT_VALIDATE_JWT``` and takes these parameters:-
+The Event Handler is named ```EVENT_VALIDATE_JWT``` and takes these parameters:
 
 ```kotlin
 data class DomainJWT(
@@ -117,7 +119,8 @@ SAML is an SSO protocol that can be used to authenticate users on the Genesis pl
 
 The SP and the IDP communicate using the user's web browser, and do not need to be accessible to each other.
 
-Once SAML is enabled, a user can click on an SSO button in the GUI. This starts the SAML authentication flow:
+## Message flow
+When SAML is enabled, a user can click on an SSO button in the GUI. This starts the SAML authentication flow:
 
 
 1. The user is directed to a Genesis endpoint, which generates the authentication (authn) request.
@@ -136,8 +139,8 @@ This workflow is described in more detail in the section on [Front-to-back flow]
 
 | Term | Meaning                                      | Example                                                                                     |
 | --- |----------------------------------------------|---------------------------------------------------------------------------------------------|
-| IDP | Identity Provider.                            | The authentication source, for example your your User management solution.                   |
-| SP | Service Provider.                             | The service for which the user needs to be authenticated, for example a Genesis application. |
+| IDP | Identity Provider                            | The authentication source, for example your your User management solution                   |
+| SP | Service Provider                             | The service for which the user needs to be authenticated, for example a Genesis application |
 | MetaData | Configuration shared between the IDP and SP. | See below.                                                                                   |
 
 
@@ -166,27 +169,29 @@ This workflow is described in more detail in the section on [Front-to-back flow]
 </md:EntityDescriptor>
 ```
 
-### Pre-requisites
+## Prerequisites
 
-Before starting, ensure you have access to the IDP metadata (this is generated by the IDP). Once you have checked this, there are two things you need to do:
+Before starting, ensure you have access to the IDP metadata (as in the example above; this metadata is generated by the IDP). 
 
-1. Enable SAML support in the Router
+Once you have checked this, there are two things you need to do:
+
+1. Enable SAML support in the Router.
 2. Configure SAML.
 
 We shall now look at these in detail.
 
-### How to enable SAML in the Genesis Router
+## Enabling SAML 
 
-You must enable SAML on the Genesis Router service. Do this by changing the router config in you _application-name-_**processes.xml** file. The process name is `GENESIS_ROUTER`.
+To enable SAML on the Genesis Router service, change the Router's config in your _application-name-_**processes.xml** file. The process name is `GENESIS_ROUTER`.
 
 Specifically, you have to add:
 
 - `global.genesis.auth.saml` to the `<package …/>` tag
 - `auth-saml-*.jar` to the `<classpath …/>` tag
 
-You can see these additions in the example below:
+You can see these additions highlighted in the example below:
 
-```xml
+```xml {6,8}
     <process name="GENESIS_ROUTER">
         <start>true</start>
         <groupId>GENESIS</groupId>
@@ -200,7 +205,7 @@ You can see these additions in the example below:
 ```
 
 
-Additionally, you need a _application-name-_**saml-config.kts** file, as below:
+Additionally, you need an _application-name-_**saml-config.kts** file, as below:
 
 ```kotlin
     saml {
@@ -250,13 +255,16 @@ Additionally, you need a _application-name-_**saml-config.kts** file, as below:
         }
     }
 ```
-Note that the 'loginEndpoint' is the URL the front-end will be redirected to once a the full SAML workflow has completed and an SSO_TOKEN has been issued. 
-If this URL is a redirect, the SSO_TOKEN query parameter may be lost. 
-Additionally, if the web server is doing routing via scripts, navigating to this URL may throw a 404 Not Found error. The remedy in this case is to add an override for 404 errors to redirect back to your application logon screen. 
+:::warning
+The `loginEndpoint` is the URL to which the front end is redirected once the full SAML workflow has been completed and an SSO_TOKEN has been issued. 
+If this URL itself is a redirect, the SSO_TOKEN query parameter could be lost.
+
+Additionally, if the web server is routing via scripts, navigating to this URL could throw a **404 Not Found** error. The remedy in this case is to add an override for 404 errors to redirect back to your application logon screen. 
 An example of how to do this in NGINX is here:
 ```
 error_page 404 =200 /index.html;
 ```
+:::
 
 Advanced configuration is defined in the file **onelogin.saml.properties**. You need to use this if - for example - you need to configure a key for signing the authn request.
 
@@ -264,7 +272,7 @@ Once this is configured, a service provider metadata endpoint will be available 
 
 Other endpoints provided are:
 
-- The `ssoLoginUrl`
+- the `ssoLoginUrl`
   - The format of this is: `https://{appHost}{ssoLoginRoute}?idp={id}` where:
     - `appHost` is hostname of the app, e.g. dev-position2
     - `ssoLoginRoute` is `/gwf/saml/login` by default (this is configurable)
@@ -292,7 +300,7 @@ In the `SSO_USER` table:
 
 The Genesis username should be the user’s email address.
 
-### Front-to-back flow
+## Front-to-back flow
 
 This section provides a more detailed description of the workflow between a Genesis application SP and an external IDP. The flow assumes the following settings:
 
@@ -323,7 +331,7 @@ this.routes.map(
 
 ```
 
-1. The front end hits **ssoListEndpoint** - by default - this is `gwf/saml/list` (This is configurable).
+1. The front end hits **ssoListEndpoint** - by default - this is `gwf/sso/listJWT/SSO` (This is configurable).
 2. **ssoListEndpoint** returns a list of identity providers:
    ```
    [
@@ -342,7 +350,7 @@ this.routes.map(
 9. The front end checks for the presence of an `SSO_TOKEN` url param. If found, it stores it in session storage and uses it to perform an ‘SSO Login’.
 10. The server responds with an ACK and the user is now logged in. If there is an error, a NACK is returned and the login fails.
 
-### Testing SAML
+## Testing SAML
 
 ### Server - setting up local SAML
 
@@ -421,14 +429,14 @@ USER_NAME = user1@example.com
 ### Running the user interface
 
 
-1. Run an NGINX proxy docker container: for example:
+1. Run an NGINX proxy docker container, for example:
 
 
 ```bash
 docker run -it --rm -d -p 80:80 -p 443:443 --name **genesis**-console-proxy --add-host localnode:$(ifconfig eth0 | grep inet | grep -v inet6 | awk '{print $2}') genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
 ```
 
-2. In **package.json**, change the API_HOST property to `"API_HOST": "wss://localhost/gwf/"`
+2. In **package.json**, change the API_HOST property to `"API_HOST": "wss://localhost/gwf/"`.
 
 3. Now you can run the front end.
 
@@ -475,37 +483,51 @@ Here is some test metadata you can use:
 
 ## OpenID Connect SSO
 
-[OpenID Connect](https://openid.net/connect/) is a simple identity layer on top of the [OAuth 2.0 protocol](https://oauth.net/2/). It allows applications to verify the identity of the End-User based on the authentication performed by an Authorization Server, as well as to obtain basic profile information about the End-User in an interoperable and REST-like manner. It works by connecting the Genesis application and the OpenID Connect (OIDC) provider. The Genesis application must be able to connect to the OIDC provider and the OIDC provder needs to be aware of the application(s) that can connect to it. 
+[OpenID Connect](https://openid.net/connect/) (OIDC) is a simple identity layer on top of the [OAuth 2.0 protocol](https://oauth.net/2/). It enables applications to:
 
-Once OIDC is configured and enabled, a user can click on an SSO button in the GUI. This starts the OIDC authentication flow:
-1. The user is re-directed to the OpenID provider authentication window
-2. The user identifies him or herself to the OIDC provider
-3. After succesful authentication the OIDC provider sends authentication code to the Genesis application
-4. Using the sent code the Genesis application retrieves user information and validates it
-5. Upon successful validation the user is redirected back to the Genesis login endpoint with a token
-6. The front end starts the login process into Genesis using this token
+- verify the identity of the end user based on the authentication performed by an Authorisation Server
+- obtain basic profile information about the end user in an interoperable and REST-like manner 
 
-### Pre-requisites
 
-Before starting, ensure you have access to the OIDC provider. Once you have checked this, there are two things you need to do:
+## Message flow
+When OIDC is configured and enabled, a user can click on an SSO button in the GUI. This starts the OIDC authentication flow:
 
-1. Enable OIDC support in the Router
+1. The user is re-directed to the OpenID provider authentication window.
+2. The user identifies him or herself to the OIDC provider.
+3. After succesful authentication,the OIDC provider sends an authentication code to the Genesis application.
+4. Using the sent code, the Genesis application retrieves the user information and validates it.
+5. Upon successful validation, the user is redirected back to the Genesis login endpoint with a token.
+6. The front end starts the login process into Genesis using this token.
+
+## Prerequisites
+
+
+OIDC works by connecting the Genesis application and the OpenID Connect (OIDC) provider. Therefore: 
+
+- The Genesis application must be able to connect to the OIDC provider.
+- The OIDC provider needs to be aware of the application(s) that can connect to it. 
+
+## Enabling OIDC
+Once you have checked the prerequisites, there are two things you need to do:
+
+1. Enable OIDC support in the Router.
 2. Configure OIDC.
 
 We shall now look at these in detail.
 
-### How to enable OIDC in the Genesis Router
+### Enabling OIDC in the Genesis Router
 
-You must enable OIDC on the Genesis Router process. Do this by changing the router config in your _application-name-_**processes.xml** file. The process name is `GENESIS_ROUTER`.
+To enable OIDC on the Genesis Router process, change the Router's config in your _application-name-_**processes.xml** file. The process name is `GENESIS_ROUTER`.
 
 Specifically, you have to add:
 - `global.genesis.auth.oidc` and `global.genesis.auth.sso.endpoint` to the `<package .../>` tag
 - `auth-oidc-*.jar` and `auth-sso-endpoint-*.jar` to the `<classpath .../>` tag
-- add the GPAL configuration to the `<script ../>` tag
-- make sure that the `<language ../>` tag say `pal`
+- the GPAL configuration to the `<script ../>` tag
+
+Finally, make sure that the `<language ../>` tag says `pal`
 
 :::note
-Adding `global.genesis.auth.oidc` to the `packages` and `auth-oidc-*.jar` to the `classpath` enables the OIDC integration. And adding `global.genesis.auth.sso.endpoint` and `auth-sso-endpoint-*.jar` enables the required endpoints by the front-end
+Adding `global.genesis.auth.oidc` to the `packages` and `auth-oidc-*.jar` to the `classpath` enables the OIDC integration. And adding `global.genesis.auth.sso.endpoint` and `auth-sso-endpoint-*.jar` enables the endpoints required by the front end.
 :::
 
 You can see these additions in the example below:
@@ -526,7 +548,8 @@ You can see these additions in the example below:
 
 If you require JWT validation, you need the following jars on the `classpath` as well - `jjwt-impl-*.jar,jjwt-jackson-*.jar`
 
-Example having the required jars for JWT validation:
+You can see that in the example below. 
+
 ```xml title='enabling JWT validation' {10}
 <process name="GENESIS_ROUTER">
     <start>true</start>
@@ -542,6 +565,7 @@ Example having the required jars for JWT validation:
 </process>
 ```
 
+## GPAL configuration
 Additionally, you need an _application-name-_**oidc-config.kts** file. This file contains the GPAL configuration. Each OIDC configuration has the following properties:
 
 | Property name | Description | Mandatory | Default value | Type |
@@ -611,12 +635,12 @@ Each `verification` configuration has the following properties:
 | allowedClockSkewSeconds | The amount of clock skew in seconds to tolerate when verifying the local time against the `nbf` claim  | No | 0 | Long |
 
 :::note
-If `verification` is defined either `publicKey` or `publicKeyUrl` must be defined.
+If `verification` is defined, either `publicKey` or `publicKeyUrl` must also be defined.
 :::
 
-### OIDC Logout
+## OIDC logout
 
-Some applications may require functionality where the user logs out of the OIDC provider. By default, this is disabled.
+Sometimes, applications require functionality where the user logs out of the OIDC provider. By default, this is disabled.
 
 :::note
 If a user logs out of the OIDC Provider, she or he will also be logged out of all other applications that work with that provider.
@@ -624,7 +648,7 @@ If a user logs out of the OIDC Provider, she or he will also be logged out of al
 
 There are several steps required to enable OIDC logout. 
 
-#### Enable OIDC support in GENESIS_AUTH_MANAGER
+### Enable OIDC support in GENESIS_AUTH_MANAGER
 
 First `GENESIS_AUTH_MANAGER` needs to know about the OIDC configuration. In **auth-processes.xml**, add:
 
@@ -653,7 +677,7 @@ In the example above:
  - the script `position-oidc-config.kts` is added to the `script` element
  - the `auth-oidc-*.jar` files are added to the `classpath` element
 
-#### Enable OIDC Logout in GPAL
+### Enable OIDC logout in GPAL
 
 The easiest way to enable OIDC logout in GPAL is by specifying the logout endpoint, as shown in the sample below:
 
@@ -774,7 +798,7 @@ oidc {
 }
 ```
 
-As a last resort, when a provider has a custom logout mechanism and is not supported by the platform, you can specify a custom `logout` configuration, as shown below:
+As a last resort, when a provider has a custom logout mechanism that is not supported by the platform, you can specify a custom `logout` configuration, as shown below:
 
 ```kotlin title='specifying custom logout URL'
 oidc {
@@ -794,9 +818,9 @@ oidc {
 }
 ```
 
-### Sample configurations
+## Sample configurations
 
-#### Minimal configuration
+### Minimal configuration
 
 ```kotlin
 oidc{
@@ -821,7 +845,7 @@ oidc{
 }
 ```
 
-#### Minimal remote configuration
+### Minimal remote configuration
 
 ```kotlin
 oidc{
@@ -843,7 +867,7 @@ oidc{
 }
 ```
 
-#### Full configuration
+### Full configuration
 
 ```kotlin
 oidc{
