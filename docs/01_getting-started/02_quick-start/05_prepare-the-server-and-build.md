@@ -69,11 +69,9 @@ You can specify which database to use in your application by editing **genesis-s
 
 Further information can be found in the **genesis-system-definitions.kts** [file](../../../server/configuring-runtime/system-definitions/).
 
-### Using WSL/Linux? Don't change the database layer.
-You can ignore the next section! In fact, you must not make the changes on that section. (But please note, we highly recommend using Docker.)
+### Run docker
 
-### Using Docker? Change the database
-If you are going to run your application using [**Docker**](../../../getting-started/quick-start/run-the-application-docker/), you need to use the Postgres database. Add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
+Since we are using a [**Docker Container**](../../../getting-started/quick-start/run-the-application-docker/), we need to use the Postgres database. Add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
 
 ```kotlin {4,10}
 systemDefinition {
@@ -94,14 +92,41 @@ systemDefinition {
 
 ```
 
-Finally, you can build the server.
+:::tip
+Do not forget to configure your [genesis plugin](../../server/tooling/intellij-plugin/).
+:::
 
-In the Gradle menu on the right of IntelliJ, select **genesisproduct-alpha**/**Tasks**/**Build/Assemble**.
+Finally, you can build the server. In the Gradle menu on the right of IntelliJ, select:
 
-![](/img/assemble-server.png)
+1. **genesisproduct-alpha**/**alpha-config**
 
-You can proceed to the next step whilst loading.
+![](/img/alpha-config-gradle.png)
 
-After loading is complete, you have a functional server.
+```shell title='Running alpha-config assemble from the command line'
+./gradlew :genesisproduct-alpha:alpha-config:assemble
+./gradlew :genesisproduct-alpha:alpha-config:deployCfgToGenesisHome
+
+```
+
+2. **genesisproduct-alpha**/**alpha-script-config**
+
+![](/img/alpha-script-config-gradle.png)
+
+```shell title='Running alpha-script-config assemble from the command line'
+./gradlew :genesisproduct-alpha:alpha-script-config:assemble
+./gradlew :genesisproduct-alpha:alpha-script-config:deployScriptsToGenesisHome
+
+```
+
+3. **Deploy aplication**
+
+![](/img/deploy.png)
+
+
+After these 3 steps, you have a functional server.
 
 Congratulations! You have completed the prepare and build.
+
+:::note
+This may take up to a few minutes to complete.
+:::
