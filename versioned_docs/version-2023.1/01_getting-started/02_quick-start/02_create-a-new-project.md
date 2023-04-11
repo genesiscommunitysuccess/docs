@@ -43,7 +43,7 @@ In the `genx` script, there is a series of questions.
 
 First, you are asked to select from a short list of seed applications. Select `create application`:
 
-```shell title="Windows Terminal"
+```shell {4} title="Windows Terminal"
 ? Please select an option: (Use arrow keys)
   create workspace - Generates a local workspace to use for your Genesis based apps.
   configure workspace - Configure a local workspace.
@@ -61,11 +61,11 @@ Then you are asked to select the App Seed. Select `Quick Start Application` from
 
 Do **not** select the Positions Application.
 
-You will be asked if you want to overwrite existing files. Select **Y**.
+If you are asked to overwrite existing files. Select **Y**.
 
-  ```shell title="Windows Terminal"
+  ```shell {2} title="Windows Terminal"
 App seed (Use arrow keys)
-> **Quick Start Application**
+> Quick Start Application
   Positions Application
   Hello World Application
   Foundation-Store Based Application
@@ -102,4 +102,18 @@ At this point, the application will be configured. On completion, you will see t
 
 ```shell title="Windows Terminal"
 i Application created successfully! 🎉 Please open the application and follow the README to complete setup.
+```
+Now let's open our application in Intellij. Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/). In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (**alpha**, **client**, **genesisproduct-alpha**).
+
+Before we finish the creation of out new project,make sure your `gradle.properties` in server>jvm has the following properties
+
+```kotlin title="server/jvm/gradle.properties"
+kotlin.code.style=official
+org.gradle.jvmargs=-Xmx6g -Xss512k -XX:+HeapDumpOnOutOfMemoryError -XX:+UseG1GC -XX:+UseStringDeduplication -XX:ReservedCodeCacheSize=512m -Dkotlin.daemon.jvm.options=-Xmx2g -Dfile.encoding=UTF-8
+bundleGeneratedClasses=true
+genesisVersion=6.5.3
+authVersion=6.5.1
+deployPluginVersion=6.5.3
+genesisArtifactoryPath=https://genesisglobal.jfrog.io/genesisglobal/libs-release-client
+enableGenesisIntellijHelperTasks=true
 ```
