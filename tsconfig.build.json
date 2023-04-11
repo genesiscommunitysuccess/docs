@@ -29,10 +29,6 @@
     "sourceMap": false,
     "strictNullChecks": false,
     "target": "ES2015",
-    "types": [
-      "node",
-      "mocha"
-    ]
   },
   "include": ["./iife.ts"],
   "exclude": [

@@ -3,32 +3,34 @@
  * Based on packages/showcase/documentation-components/src/index.ts
  */
 import {
-    provideDesignSystem as provideAlphaDesignSystem,
-    baseComponents as alphaBaseComponents,
-  } from '@genesislcap/alpha-design-system';
-  import {
-    provideDesignSystem as provideZeroDesignSystem,
-    baseComponents as zeroBaseComponents,
-  } from '@genesislcap/foundation-zero';
-  import { zeroGridComponents } from '@genesislcap/foundation-zero-grid-pro';
-  import { foundationGridComponents } from '@genesislcap/grid-pro';
-  import {
-    DesignSystemEditor,
-    ColorPalette,
-    DesignSystemPreview,
-    ColorToken,
-    TypographyTokens,
-  } from '@genesislcap/documentation-components';
-  
-  export * from '@genesislcap/documentation-components';
-  
-  provideZeroDesignSystem().register(zeroBaseComponents, zeroGridComponents);
-  
-  provideAlphaDesignSystem().register(alphaBaseComponents, foundationGridComponents);
-  
-  DesignSystemEditor;
-  DesignSystemPreview;
-  ColorPalette;
-  DesignSystemPreview;
-  ColorToken;
-  TypographyTokens;
+  baseComponents as alphaBaseComponents,
+  provideDesignSystem as provideAlphaDesignSystem,
+} from '@genesislcap/alpha-design-system';
+import {
+  ColorPalette,
+  ColorToken,
+  DesignSystemEditor,
+  DesignSystemExport,
+  DesignSystemPreview,
+  TypographyTokens
+} from '@genesislcap/documentation-components';
+import {
+  provideDesignSystem as provideZeroDesignSystem,
+  baseComponents as zeroBaseComponents,
+} from '@genesislcap/foundation-zero';
+import { zeroGridComponents } from '@genesislcap/foundation-zero-grid-pro';
+import { foundationGridComponents } from '@genesislcap/grid-pro';
+
+export * from '@genesislcap/documentation-components';
+export * from '@genesislcap/foundation-zero';
+
+provideZeroDesignSystem().register(zeroBaseComponents, zeroGridComponents);
+provideAlphaDesignSystem().register(alphaBaseComponents, foundationGridComponents);
+
+DesignSystemEditor;
+DesignSystemPreview;
+DesignSystemExport;
+ColorPalette;
+DesignSystemPreview;
+ColorToken;
+TypographyTokens;
