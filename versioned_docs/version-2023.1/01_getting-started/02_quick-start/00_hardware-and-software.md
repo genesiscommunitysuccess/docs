@@ -18,7 +18,7 @@ tags:
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-This page gives you the hardware and software requirements needed in order to run a development workstation for the Genesis low-code platform. It also provides instructions for accessing the Genesis repository and configuring the Genesis packages.
+This page gives you the hardware and software requirements needed in order to run a development workstation for the Genesis low-code platform. It also provides instructions for configuring the Genesis packages.
 
 ## Recommended hardware and operating system
 
@@ -53,24 +53,19 @@ You can use a range of IDEs (for example, Eclipse) with the Genesis platform, bu
     <p>Check if these versions are compatible with the requirements.</p>
 </details>
 
-Since version 11.3.0 of the foundation-UI, we have set our libraries public. Hence, you only need to run thie simple command to start using genesis.
+Since version 11.3.0 of the foundation-UI, we have set our libraries public. Hence, you only need to run this simple command to start using genesis.
 
 ```powershell
 npm install -g @genesislcap/foundation-cli
 ```
 
 ## gradle.properties file
-Finally, you should have a **gradle.properties** file inside a **.gradle** folder on your user directory; this file must contain your Genesis Artifactory password in a [base64 encrypted text](https://www.base64encode.org/), for example:
+You should have a **gradle.properties** file inside a **.gradle** folder on your user directory; this file must contain your Genesis Artifactory password in a [base64 encrypted text](https://www.base64encode.org/), for example:
 
 ```shell
 genesisArtifactoryUser=<JaneDee>
 genesisArtifactoryPassword=<asodjkdnaisd9893-==12>
 ```
-:::note
-For access to Genesis packages, you need to configure the `@genesislcap` scope of `npm` to use our jfrog registry.
-
-This requires credentials for accessing Genesis Artifactory. If you have not been provided with the credentials, please contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login). It's not possible to complete the training without this access, because you won't be able to download the Genesis platform components and build your project.
-:::
 
 ## Genesis Plugin
 For this quick start guide we are using the Genesis plugin, please follow the [instructions](../../server/tooling/intellij-plugin/) to have it properly installed.

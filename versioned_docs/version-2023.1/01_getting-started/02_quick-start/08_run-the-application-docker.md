@@ -14,7 +14,7 @@ To be able to follow the instructions on this page, please make sure you have su
 
 ## Building and composing Docker images
 
-First we need to start the database (in this tutorial we are using a POSTGRES db). Please do the following
+First we need to start the database (in this tutorial we are using a POSTGRES db in a docker container). Please open Rancher and do the following:
 
 ```powershell
 docker pull postgres
@@ -42,6 +42,24 @@ WARNING: Are you sure you want to import all the tables from all the csv files t
 
 After that, you have all the data to start the application.
 
+## Connect front end to server
+Since we created out project from a seed, we need to change the defaut API_HOST in the **package.json** in **client/web/** to the port we are using in the project. Change the highlighted line o your file.
+
+```kotlin {7} title="client/web/package.json"
+{
+  "name": "@genesislcap/alpha-web-client",
+  "description": "Developer Training Web Client",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "config": {
+    "API_HOST": "ws://localhost:9064",
+    "DEFAULT_USER": "JaneDee",
+    "DEFAULT_PASSWORD": "beONneON*74",
+    "PORT": 6060
+  },
+```
+
 ## Starting the server
 
 Make sure you have started the [resource deamon](../../server/tooling/intellij-plugin/#remap).
@@ -50,7 +68,7 @@ Once your resource deamon is started, you can start all genesis processes, click
 
 ![](/img/genesis_deamon.png)
 
-Wait all processes to be healthy (it may take a few minutes for the first run)
+Wait all processes to be healthy (it may take a few minutes for the first run).
 
 ## Accessing the application
 

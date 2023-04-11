@@ -69,7 +69,7 @@ You can specify which database to use in your application by editing **genesis-s
 
 Further information can be found in the **genesis-system-definitions.kts** [file](../../../server/configuring-runtime/system-definitions/).
 
-### let us run our docker
+### Run docker
 
 Since we are using a [**Docker Container**](../../../getting-started/quick-start/run-the-application-docker/), we need to use the Postgres database. Add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
 
@@ -118,7 +118,12 @@ Finally, you can build the server. In the Gradle menu on the right of IntelliJ, 
 
 ```
 
-After loading is complete, you have a functional server.
+3. **Deploy aplication**
+
+![](/img/deploy.png)
+
+
+After these 3 steps, you have a functional server.
 
 Congratulations! You have completed the prepare and build.
 

@@ -18,7 +18,7 @@ Download and install all the relevant requirements.
 ## The genx script
 `genx` is a CLI tool that enables you to seed projects. In this case, we shall generate a full-stack application project; the key files will be empty so that you can define the details of the application.
 
-We also have step-by-step instructions on [how to install and use genx](../../../getting-started/prerequisites/genx/).
+If you still don`t have genx installed, please see the session [hardware nd software](./hardware-and-software/#access-to-the-genesis-repository).
 
 ## Starting
 
@@ -105,7 +105,8 @@ i Application created successfully! 🎉 Please open the application and follow 
 ```
 Now let's open our application in Intellij. Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/). In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (**alpha**, **client**, **genesisproduct-alpha**).
 
-Before we finish the creation of out new project,make sure your `gradle.properties` in server>jvm has the following properties
+### Gradle.properties
+Before we finish the creation of out new project,make sure your `gradle.properties` in **server/jvm** has the following properties
 
 ```kotlin title="server/jvm/gradle.properties"
 kotlin.code.style=official
