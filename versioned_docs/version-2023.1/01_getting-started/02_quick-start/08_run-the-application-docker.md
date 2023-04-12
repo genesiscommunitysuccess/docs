@@ -10,11 +10,11 @@ tags:
     - docker
 ---
 
-To be able to follow the instructions on this page, please make sure you have sucessfuly installed [genesis plugin](../../../server/tooling/intellij-plugin/).
+Before you follow the instructions on this page, make sure you have sucessfully installed [genesis plugin](../../../server/tooling/intellij-plugin/).
 
 ## Building and composing Docker images
 
-First we need to start the database (in this tutorial we are using a POSTGRES db in a docker container). Make sure your docker management software (in our case Rancher desktop) is up and running and do the following:
+First, you need to start the database (in this tutorial we are using a POSTGRES db in a docker container). Make sure your docker management software (in our case Rancher desktop) is up and running and do the following:
 
 ```powershell
 docker pull postgres
@@ -29,13 +29,13 @@ docker ps | findstr "localPostgresDb"
 ## Send data to Genesis
 
 :::note
-In case you have not run the [remap command](../../../server/tooling/intellij-plugin/#remap), do it now, so that our database is updated.
+If you have not already run the [remap command](../../../server/tooling/intellij-plugin/#remap), do it now, so that our database is updated.
 :::
 Now that we have our database up and running, we need to send the login information so we can access the application we have just created. To do this, go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**
 
 ![](/img/import_csv_to_genesis.png)
 
-You will be prompted the following message. Type `y` to proceed.
+You will be prompted the following message. Type **y** to proceed.
 
 ```powershell
 WARNING: Are you sure you want to import all the tables from all the csv files to the database? (y/n)
@@ -44,7 +44,7 @@ WARNING: Are you sure you want to import all the tables from all the csv files t
 After that, you have all the data to start the application.
 
 ## Connect front end to server
-Since we created out project from a seed, we need to change the defaut API_HOST in the **package.json** in **client/web/** to the port we are using in the project. Change the highlighted line in your file.
+Since we created out project from a seed, you need to change the defaut API_HOST in the **package.json** in **client/web/** to the port we are using in the project. Change the highlighted line in your file.
 
 ```kotlin {7} title="client/web/package.json"
 {
@@ -65,11 +65,11 @@ Since we created out project from a seed, we need to change the defaut API_HOST 
 :::note
 Make sure you have started the [resource deamon](../../../server/tooling/intellij-plugin/#remap).
 :::
-Once your resource deamon is started, you can start all genesis processes, clicking on the **start** button.
+Once your resource deamon has started, you can start all genesis processes; click on the **start** button.
 
 ![](/img/genesis_deamon.png)
 
-Wait all processes to be healthy (it may take a few minutes for the first run).
+Wait for all processes to be healthy (it may take a few minutes for the first run).
 
 ## Accessing the application
 
