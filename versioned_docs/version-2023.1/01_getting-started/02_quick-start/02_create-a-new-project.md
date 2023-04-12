@@ -18,7 +18,7 @@ Download and install all the relevant requirements.
 ## The genx script
 `genx` is a CLI tool that enables you to seed projects. In this case, we shall generate a full-stack application project; the key files will be empty so that you can define the details of the application.
 
-If you still don`t have genx installed, please see the session [hardware nd software](./hardware-and-software/#access-to-the-genesis-repository).
+If you still don`t have genx installed, please see the session [access to the genesis repository](../../../getting-started/quick-start/hardware-and-software/#access-to-the-genesis-repository).
 
 ## Starting
 
@@ -57,11 +57,7 @@ Now you can proceed using the following responses:
 ? App name alpha
 ```
 
-Then you are asked to select the App Seed. Select `Quick Start Application` from the list. 
-
-Do **not** select the Positions Application.
-
-If you are asked to overwrite existing files. Select **Y**.
+Then you are asked to select the App Seed. Select `Quick Start Application` from the list. If you are asked to overwrite existing files, please select **Y**.
 
   ```shell {2} title="Windows Terminal"
 App seed (Use arrow keys)

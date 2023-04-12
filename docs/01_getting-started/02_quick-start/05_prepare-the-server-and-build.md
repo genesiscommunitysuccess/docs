@@ -61,17 +61,17 @@ You can then add the following content to the **alpha-service-definitions.xml** 
 </configuration>
 ```
 
-Further information can be found in the **-service-definitions.xml** [file](../../../server/configuring-runtime/service-definitions/).
+Further information can be found in the [**-service-definitions.xml** file](../../../server/configuring-runtime/service-definitions/).
 
 ## Database layer
 
 You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\\**.
 
-Further information can be found in the **genesis-system-definitions.kts** [file](../../../server/configuring-runtime/system-definitions/).
+Further information can be found in the [**genesis-system-definitions.kts** file](../../../server/configuring-runtime/system-definitions/).
 
 ### Run docker
 
-Since we are using a [**Docker Container**](../../../getting-started/quick-start/run-the-application-docker/), we need to use the Postgres database. Add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
+Since we are using a docker container, we need to use the Postgres database. Add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
 
 ```kotlin {4,10}
 systemDefinition {
@@ -93,7 +93,7 @@ systemDefinition {
 ```
 
 :::tip
-Do not forget to configure your [genesis plugin](../../server/tooling/intellij-plugin/).
+Do not forget to configure your [genesis plugin](../../../server/tooling/intellij-plugin/).
 :::
 
 Finally, you can build the server. In the Gradle menu on the right of IntelliJ, select:

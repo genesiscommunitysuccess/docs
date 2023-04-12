@@ -14,13 +14,13 @@ Now let's create a single page with a grid and a form for entering data.
 
 
 ### Pre-requisites
-We are going to use the port 6060 from the localhost (localhost:6060/), because of that we need to garantee that this port is availale. Please run the following command
+We are going to use the port 6060 from the localhost (localhost:6060/), because of that we need to garantee that this port is availale. Please run the following command:
 
 ```powershell
 netstat -ano | findstr "6060"
 ```
 
-This will show all processes using this port. In case nothing has been found, you can proceed to [start the local page](#Start-the-local-page)
+This will show all processes using this port. In case nothing has been found, you can proceed to [start the local page](#start-the-local-page).
 
 In case a process has shown, you will need to kill it by running the following command (you need to open your terminal in admin mode):
 
@@ -40,12 +40,12 @@ Before we make any changes, let us run the front-end using the genesis plugin:
 ![](/img/start_UI.png)
 
 :::tip
-Remember to follow this steps to have your [genesis plugin](../../server/tooling/intellij-plugin/) working
+Remember to follow these steps to have your [genesis plugin](../../../server/tooling/intellij-plugin/) working.
 :::
 
-After some minutes, you will be able to access the login page, but you won't be able to login to the page because we have not started our servers yet.
+After some minutes, you will be able to access the login page, but won't be able to login to the page because we have not started our servers yet.
 
-By clicking the "Start UI", the genesis plugin will install all dependencies required and will automatically start the local page at http://localhost:6060/login.
+By clicking the "Start UI", the genesis plugin will install all dependencies required and will automatically start the local page at [http://localhost:6060/login](http://localhost:6060/login).
 
 ### Using genesis components
 We will make use of entity-management component, which includes CRUD functionality by providing previously defined endpoints.
