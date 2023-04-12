@@ -1,5 +1,5 @@
 ---
-title: 'Genesis Containerisation - building a container'
+title: 'Genesis containerisation - building a container'
 sidebar_label: 'Building a container'
 id: build
 keywords: [operations, containerisation, container, docker, build]
@@ -26,17 +26,17 @@ The Gradle plugin provides the easiest and quickest way to get Genesis running i
 
 **There are 3 Gradle tasks that are provided to help you build your Docker image:**
 
-- `createDockerfile` - Generates the Dockerfile dynamically based on user-defined settings and dependencies. It also copies all the files needed for the context into the same folder.
-- `buildImage` - Runs **createDockerfile** as a sub-task, and then runs `docker build` on the generated Dockerfile.
-- `pushImage` - Pushes the generated image to a repository defined in **gradle.properties** (see [Genesis Containerisation - pushing the image to a registry](../../../operations/containerisation/pushing/)).
+- `createDockerfile` - generates the Dockerfile dynamically based on user-defined settings and dependencies. It also copies all the files needed for the context into the same folder.
+- `buildImage` - runs **createDockerfile** as a sub-task, and then runs `docker build` on the generated Dockerfile.
+- `pushImage` - pushes the generated image to a repository defined in **gradle.properties** (see [Genesis containerisation - pushing the image to a registry](../../../operations/containerisation/pushing/)).
 
 ## Using the plugin
 
 1. Create or use an existing Genesis project. See our [Quick Start guide](../../../getting-started/quick-start/create-a-new-project/) for details of creating a new project.
 
-2. Make sure the necessary changes to the **genesis-system-definitions.kts** are made for your dependencies, such as the location of the database. You can find more details in our page on [preparing and building the server](../../../getting-started/quick-start/prepare-the-server-and-build/).
+2. Make the necessary changes to the **genesis-system-definitions.kts** for your dependencies, such as the location of the database. You can find more details in our page on [preparing and building the server](../../../getting-started/quick-start/prepare-the-server-and-build/).
 
-Add your dependencies to the Deploy plugin **build.gradle.kts** (default location for the Blank App Seed is **server/jvm/***appname***-deploy/build.gradle.kts**)
+3. Add your dependencies to the Deploy plugin **build.gradle.kts** (default location for the Blank App Seed is **server/jvm/***appname***-deploy/build.gradle.kts**):
 
 ```kotlin
     genesisServer(
@@ -55,7 +55,7 @@ Add your dependencies to the Deploy plugin **build.gradle.kts** (default locatio
     )
 ```
 
-3. Run the `buildImage` Gradle task from the root of the **server/jvm/** project. (you can also run this task from your IDE if you prefer):
+4. Run the `buildImage` Gradle task from the root of the **server/jvm/** project. You can also run this task from your IDE if you prefer:
 
 <Tabs defaultValue="linux" values={[{ label: 'Linux/Unix', value: 'linux', }, { label: 'Windows', value: 'windows', }]}>
 <TabItem value="linux">
