@@ -77,10 +77,10 @@ In the template file, start by adding the Genesis data source pointing to the ap
 [//]: # (link to grid-pro-genesis-datasource tsdocs)
 ```html title="home.template.ts"
 <zero-grid-pro>
-    <grid-pro-genesis-datasource
-        resourceName="ALL_POSITIONS"
-        orderBy="INSTRUMENT_ID">
-    </grid-pro-genesis-datasource>
+	<grid-pro-genesis-datasource
+		resource-name="ALL_POSITIONS"
+		order-by="INSTRUMENT_ID"
+	></grid-pro-genesis-datasource>
 </zero-grid-pro>
 ```
 
@@ -95,8 +95,8 @@ To add new columns that are not part of the API, we can add additional column de
 ```html {6} title="home.template.ts"
 <zero-grid-pro>
     <grid-pro-genesis-datasource
-        resourceName="ALL_POSITIONS"
-        orderBy="INSTRUMENT_ID">
+        resource-name="ALL_POSITIONS"
+        order-by="INSTRUMENT_ID">
     </grid-pro-genesis-datasource>
     <grid-pro-column :definition="${x => x.singlePositionActionColDef}" />
 </zero-grid-pro>
@@ -149,14 +149,14 @@ To stop automatic generation of columns, you need to add the `only-template-col-
 Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive) directive; this includes all the columns from our column config array.
 
 
-```typescript {1,2,6,12-14} title="home.template.ts"
+```typescript {1,2,12-14} title="home.template.ts"
 import {positionColumnDefs} from './positionColumnDefs';
 import {repeat} from '@microsoft/fast-element';
 
 <zero-grid-pro only-template-col-defs>
     <grid-pro-genesis-datasource
-        resourceName="ALL_POSITIONS"
-        orderBy="INSTRUMENT_ID">
+        resource-name="ALL_POSITIONS"
+        order-by="INSTRUMENT_ID">
     </grid-pro-genesis-datasource>
     ${repeat(() => positionColumnDefs, html`
     <grid-pro-column :definition="${x => x}"></grid-pro-column>
@@ -182,4 +182,4 @@ You can add the `persist-column-state-key` to the zero-grid-pro to persist user 
 [//]: # (link to zero-grid-pro tsdocs)
 
 ## Conclusion
-You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for the grids. 
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for the grids.
