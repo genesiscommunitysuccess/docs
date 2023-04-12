@@ -10,7 +10,7 @@ tags:
     - docker
 ---
 
-Before you follow the instructions on this page, make sure you have sucessfuly installed [genesis plugin](../../../server/tooling/intellij-plugin/).
+Before you follow the instructions on this page, make sure you have sucessfully installed [genesis plugin](../../../server/tooling/intellij-plugin/).
 
 ## Building and composing Docker images
 
