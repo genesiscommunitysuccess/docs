@@ -225,6 +225,7 @@ To do this training, you need an individual database to create and test the back
 You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
 
 ```terminal
+docker ps --format '{{ .ID }}\t{{.Image}}\t{{ .Names }}'
 docker pull postgres
 docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=10000'
 ```

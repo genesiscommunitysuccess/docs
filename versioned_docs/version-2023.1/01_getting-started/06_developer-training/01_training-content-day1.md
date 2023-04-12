@@ -282,6 +282,14 @@ Finally, you can build and deploy the server.
 
 In the Gradle menu on the right of IntelliJ, select:
 
+**genesisproduct-alpha**
+
+![](/img/assemble-server.png)
+
+```shell title='Running assemble from the command line'
+./gradlew :genesisproduct-alpha:assemble
+```
+
 **genesisproduct-alpha**/**alpha-config**
 
 ![](/img/alpha-config-gradle.png)

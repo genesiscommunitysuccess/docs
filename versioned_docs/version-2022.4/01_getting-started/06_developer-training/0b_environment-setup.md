@@ -277,7 +277,7 @@ docker-compose up -d
 Check if you have the containers **gsf** and **nginx** running. Copy and paste the following commands into the terminal
 
 ```Powershell
-docker ps
+docker ps --format '{{ .ID }}\t{{.Image}}\t{{ .Names }}' 
 ```
 
 ### Attaching a terminal to a Docker container
