@@ -11,7 +11,7 @@ tags:
     - linux
 ---
 
-You also have the choice to run the application. The instructions on this page are for using WSL/CentOS. If you prefer to use Docker (highly recommended) as your environment, there are [separate instructions](../../../getting-started/quick-start/run-the-application-docker/).
+You have a choice of how to run the application. The instructions on this page are for using WSL/CentOS. If you prefer to use Docker (highly recommended) as your environment, there are [separate instructions](../../../getting-started/quick-start/run-the-application-docker/).
 
 Before you start, make sure that:
 
