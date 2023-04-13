@@ -241,7 +241,7 @@ In the Developer Training, we amended these files in the **client/web/src/routes
 - **home.styles.ts**
 
 :::tip
-We usually follow the pattern of creating a `.template.ts`, `.ts` and `.styles.ts` files. But it doesn't have to be that way; it could be a single file, for example, as we're going to see next.
+We usually follow the pattern of creating  **.template.ts**, **.ts** and **.styles.ts** files. But it doesn't have to be that way; it could be a single file, for example, as we're going to see next.
 :::
 
 Realistically, any application will require multiple pages and routes.
@@ -535,7 +535,7 @@ Instrument AAPL 227.12
 
 Steps:
 
-- import _observable_ and _repeat_ from from `@microsoft/fast-element`
+- import _observable_ and _repeat_ from `@microsoft/fast-element`
 - add a list called **_instruments_** to the MarketdataComponent. Feel free to initialize it with a few instruments, such as `@observable instruments: String[] = ["MSFT", "AAPL"];`
 - change the `lastPrice` attribute to a list of prices. Feel free to initialize it with corresponding prices, such as `@observable lastPrices: number[] = [101.23, 227.12];`
 - change `getLastPriceRealTime` to receive the instrument name and return the corresponding price;
@@ -600,7 +600,7 @@ In this next example, we have put a set of example options set in the flyout men
 
 To enable this micro front-end in our application, we'd have to follow the steps below.
 
-- Make sure you have `@genesislcap/foundation-header` as a dependency in your _client/web/package.json_ file.
+- Make sure you have `@genesislcap/foundation-header` as a dependency in your **client/web/package.json** file.
 
 ```js {4} title='package.json'
 {
@@ -613,7 +613,7 @@ To enable this micro front-end in our application, we'd have to follow the steps
 ```
 
 :::tip
-Whenever you change the dependencies of your project, ensure you run the bootstrap command again - from the _client_ folder:
+Whenever you change the dependencies of your project, ensure you run the bootstrap command again - from the **client** folder:
 
 ```shell
 npm run bootstrap
