@@ -57,7 +57,7 @@ Now you can proceed using the following responses:
 ? App name alpha
 ```
 
-Then you are asked to select the App Seed. Select `Quick Start Application` from the list. If you are asked to overwrite existing files, please select **Y**.
+Then you are asked to select the App Seed. Select `Quick Start Application` from the list. If you are asked to overwrite existing files, select **Y**.
 
   ```shell {2} title="Windows Terminal"
 App seed (Use arrow keys)
@@ -102,7 +102,7 @@ i Application created successfully! 🎉 Please open the application and follow 
 Now let's open our application in Intellij. Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/). In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (**alpha**, **client**, **genesisproduct-alpha**).
 
 ### Gradle.properties
-Before we finish the creation of out new project,make sure your `gradle.properties` in **server/jvm** has the following properties
+Before we finish the creation of our new project, make sure your **gradle.properties** file in **server/jvm** has the following properties:
 
 ```kotlin title="server/jvm/gradle.properties"
 kotlin.code.style=official
