@@ -142,23 +142,15 @@ Following this, there are three key sections you need to be aware of:
 When running the app on your local machine, you can adjust a few settings under the `config` section, including which host to connect to and what port to run the dev server on.
 
 ```
-"config": {
-    "API_HOST": "ws://localhost:8080/gwf/",
+  "config": {
+    "API_HOST": "ws://localhost:9064",
     "DEFAULT_USER": "JaneDee",
     "DEFAULT_PASSWORD": "beONneON*74",
-    "PORT": 6061
+    "PORT": 6060
   },
 ```
 
-Since our back end is running locally, we set the `API_HOST` to localhost. The **/gwf/** path is a [reverse proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/), configured in an nginx web server that is running on the server (a docker container, in our case).
-
-Essentially, the front end will connect to the back end through a websocket to **localhost/gwf**, which in turn will, internally, **_proxy pass_** the connection to an internal Genesis process called GENESIS_ROUTER. This contains a web socket adapter able to communicate with other Genesis processes, such as Data Servers, Request Servers, Event Handlers, etc. Think of this as a gateway from the front end to all services on the back end.
-
-Alternatively, you can connect to **ws://localhost:9064** to bypass the proxy, but this is not encouraged - it could cause firewall issues.
-
-:::tip
-On your server, the nginx configuration is at /etc/nginx/nginx.conf.
-:::
+Since our back end is running locally, we set the `API_HOST` to localhost (**ws://localhost:9064**).
 
 #### Scripts
 
@@ -195,20 +187,24 @@ This includes **@genesislcap** dependencies. This is where you can change versio
 
 ```javascript
   "dependencies": {
-    "@genesislcap/foundation-comms": "^5.0.0",
-    "@genesislcap/foundation-entity-management": "^5.0.0",
-    "@genesislcap/foundation-header": "^5.0.0",
-    "@genesislcap/foundation-login": "^5.0.0",
-    "@genesislcap/foundation-utils": "^5.0.0",
-    "@genesislcap/foundation-zero": "^5.0.0",
-    "@genesislcap/foundation-zero-grid-pro": "^5.0.0",
-    "@genesislcap/grid-pro": "^5.0.0",
-    "@microsoft/fast-components": "^2.16.6",
-    "@microsoft/fast-element": "^1.6.2",
-    "@microsoft/fast-foundation": "^2.27.1",
-    "@microsoft/fast-router": "^0.2.11",
-    "@microsoft/fast-web-utilities": "^5.0.1",
-    "rxjs": "^7.4.0",
+    "@genesislcap/foundation-comms": "14.7.0",
+    "@genesislcap/foundation-entity-management": "14.7.0",
+    "@genesislcap/foundation-forms": "14.7.0",
+    "@genesislcap/foundation-header": "14.7.0",
+    "@genesislcap/foundation-layout": "14.7.0",
+    "@genesislcap/foundation-login": "14.7.0",
+    "@genesislcap/foundation-ui": "14.7.0",
+    "@genesislcap/foundation-utils": "14.7.0",
+    "@genesislcap/foundation-zero": "14.7.0",
+    "@genesislcap/foundation-zero-grid-pro": "14.7.0",
+    "@genesislcap/foundation-reporting": "14.7.0",
+    "@genesislcap/g2plot-chart": "14.7.0",
+    "@microsoft/fast-components": "^2.21.6",
+    "@microsoft/fast-element": "^1.7.0",
+    "@microsoft/fast-foundation": "^2.33.4",
+    "@microsoft/fast-router": "^0.4.2",
+    "@microsoft/fast-web-utilities": "^5.1.0",
+    "rxjs": "^7.5.4",
     "tslib": "^2.3.1"
   }
 ```
@@ -290,7 +286,7 @@ Let's add a route pointing to **playground** so we can access it from the menu.
 
 1. Edit file `client\web\src\routes\config.ts` and add **playground** to **allRoutes** and **routes.map** so we'll be able to access playground from the menu:
 
-   ````ts {1,5,14} title='config.ts'
+   ````ts {1,5,16} title='config.ts'
    import { MarketdataComponent } from './playground/playground';
    ...
    	public allRoutes = [
@@ -304,7 +300,9 @@ Let's add a route pointing to **playground** so we can access it from the menu.
    		...
    		this.routes.map(
    		...
-   		{path: 'playground', element: MarketdataComponent, title: 'Playground', name: 'playground', settings: commonSettings},
+        { path: 'home', element: Home, title: 'Home', name: 'home' },
+        { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' },
+        {path: 'playground', element: MarketdataComponent, title: 'Playground', name: 'playground', settings: commonSettings},
    		);
    	```
    ````
@@ -315,7 +313,7 @@ You should see the **Playground** menu item now.
 
 To create an HTML template for our element, we have to import and use the html-tagged template helper and pass the template to the @customElement decorator.
 
-```ts {1,3,9} title='playground.ts'
+```ts {1,3-7,9} title='playground.ts'
 import { FASTElement, customElement, html } from "@microsoft/fast-element";
 
 const myTemplate = html<MarketdataComponent>`
@@ -332,6 +330,7 @@ As you see, we're defining a const called `myTemplate`, which contains the HTML 
 
 Try it now!
 
+<!-- Here we want IntelliJ only due to Genesis plugin
 :::tip code editors
 You're free to use any IDE or code editor you feel most comfortable with. Some of them, however, do not support syntax highlighting and IntelliSense for html inside JavaScript and TypeScript tagged template strings - like our HTML code in the `html<MarketdataComponent>` template.
 
@@ -345,6 +344,7 @@ As a tip, search for extensions in your IDE to support that. That's usually call
 
 [eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) to get static analysis before building
 :::
+-->
 
 ### Adding attributes to the component
 
@@ -366,7 +366,7 @@ export class MarketdataComponent extends FASTElement {
 
 Having the lastPrice always as zero doesn't make our MarketdataComponent very useful. Let's change the HTML template to display the price in real time and add some behaviour to the component, so that it gets the price in real time (in this example, we're simulating the exchange behaviour with a Math.random function):
 
-```typescript {6,14-20} title='playground.ts'
+```typescript {8-13,19-25} title='playground.ts'
 import {
   FASTElement,
   customElement,
@@ -460,8 +460,14 @@ FASTElement provides a **css** tagged template helper that allows for the creati
 
 Add this code:
 
-```typescript {1,3,4,5,6,7} title='playground.ts'
-import { FASTElement, customElement, html, attr, css } from "@microsoft/fast-element";
+```typescript {6,9-13} title='playground.ts'
+import {
+  FASTElement,
+  customElement,
+  html,
+  attr,
+  css,
+} from "@microsoft/fast-element";
 ...
 const marketdataComponentCSS = css`
   h4 {
@@ -610,7 +616,9 @@ To enable this micro front-end in our application, we'd have to follow the steps
 {
   ...
   "dependencies": {
-    "@genesislcap/foundation-header": "^5.0.0"
+    ...
+    "@genesislcap/foundation-header": "14.7.0",
+    ...
   },
   ...
 }
@@ -657,8 +665,9 @@ export const MainTemplate: ViewTemplate<MainApplication> = html`
 ```js {3} title='client/web/src/layouts/default.ts'
 export const defaultLayout = new FASTElementLayout(html`
 <div class="container">
-	<foundation-header></foundation-header>
-	<!-- Other markup -->
+  <alpha-button>Alpha</alpha-button>
+  <foundation-header
+  ...
 </div>`);
 
 export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
@@ -762,9 +771,9 @@ There are three control buttons that can be shown or hidden on the right-hand si
 
 | Logo          | Toggle Attribute             | Dispatched Event          | Icon                        |
 | ------------- | ---------------------------- | ------------------------- | --------------------------- |
-| Moon          | show-luminance-toggle-button | luminance-icon-clicked    | ![](./img/moon.png)         |
-| Misc          | show-misc-toggle-button      | misc-icon-clicked         | ![](./img/apps.png)         |
-| Notifications | show-notification-button     | notification-icon-clicked | ![](./img/notification.png) |
+| Moon          | show-luminance-toggle-button | luminance-icon-clicked    | ![](/img/moon.png)         |
+| Misc          | show-misc-toggle-button      | misc-icon-clicked         | ![](/img/apps.png)         |
+| Notifications | show-notification-button     | notification-icon-clicked | ![](/img/notification.png) |
 
 For instance, adding the Misc logo would look like this:
 
@@ -808,18 +817,6 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 `;
 ```
 
-### Exercise 1.3: adding the light and dark mode toggle
-
-:::info estimated time
-15min
-:::
-
-Add the Moon control button to the header that, when clicked, calls the `onDarkModeToggle`. This function is already defined in **main.ts**.
-
-:::tip
-In the last example we showed how to add the Misc Control button. Now you need to do this considering the Moon one.
-:::
-
 ##### Menu contents
 
 To set the content of the flyout menu, add the content in the html within an element that has the `slot="menu-contents"` attribute.
@@ -854,7 +851,7 @@ To set the content of the flyout menu, add the content in the html within an ele
 </foundation-header>
 ```
 
-### Exercise 1.4: adding items to the flyout menu
+### Exercise 1.3: adding items to the flyout menu
 
 :::info estimated time
 10 min
@@ -874,7 +871,7 @@ Playground
 By the way, we're using by default the Zero Design Systems. We are going to talk more about Design Systems later in this course.
 :::
 
-### Exercise 1.5: adding new routes
+### Exercise 1.4: adding new routes
 
 :::info estimated time
 30 min
