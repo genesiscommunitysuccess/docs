@@ -11,12 +11,13 @@ tags:
 
 `foundation-icon` extends `foundation-element`.
 
-The `icon` icon component allows us to display the chosen icon in three available variants, which are:
+The `icon` icon component enables you to display the chosen icon in three available variants, which are:
+
 - solid
 - regular
 - brand 
 
-The default variant is solid. We also have to choose the name and size of the icon.
+The default variant is solid. You also have to choose the name and size of the icon.
 
 :::info
 Available icon names from the listed variants can be found here: 
@@ -44,4 +45,5 @@ provideDesignSystem().register(alphaIcon());
 
 ## Use cases
 
-* An addition to presenting listbox-option, cell-renderers and many others.
+* an addition to presenting listbox-option
+* cell-renderers, and many others
