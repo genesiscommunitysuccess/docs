@@ -50,7 +50,7 @@ You’ll probably learn 20% of what is offered ​by the platform​, which will
 ## Genesis low-code platform version
 Back end (GSF)  6.5.3
 
-Front end (FUI) 11.2.0
+Front end (FUI) 14.7.0
 
 ## Source code
 The complete source code of this training is available 
