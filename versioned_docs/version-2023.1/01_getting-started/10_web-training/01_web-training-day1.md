@@ -241,7 +241,7 @@ In the Developer Training, we amended these files in the **client/web/src/routes
 - **home.styles.ts**
 
 :::tip
-We usually follow the pattern of creating a `.template.ts`, `.ts` and `.styles.ts` files. But it doesn't have to be that way; it could be a single file, for example, as we're going to see next.
+We usually follow the pattern of creating **.template.ts**, **.ts** and **.styles.ts** files. But it doesn't have to be that way; it could be a single file, for example, as we're going to see next.
 :::
 
 Realistically, any application will require multiple pages and routes.
@@ -535,7 +535,7 @@ By now, you should have a good understanding of how to build Web Components base
 :::info estimated time
 30min
 :::
-Let's change the MarkedataComponent so that it can work with multiple instruments and a fixed price for each of one them (instead of random). This is roughly what it'd look like:
+Let's change the MarketdataComponent so that it can work with multiple instruments and a fixed price for each of one them (instead of random). This is roughly what it'd look like:
 
 ```
 My Marketdata component
