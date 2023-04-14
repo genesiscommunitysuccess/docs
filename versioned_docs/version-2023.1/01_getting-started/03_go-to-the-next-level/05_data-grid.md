@@ -73,6 +73,8 @@ For your user interface, the `genx` process has generated the following files:
 - **home.styles.ts**
 
 In the template file, start by adding the Genesis data source pointing to the appropriate resource name; this must be wrapped in a grid of your choice.
+<!-- This example uses order-by which we could not make it happen at the time.
+
 
 [//]: # (link to grid-pro-genesis-datasource tsdocs)
 ```html title="home.template.ts"
@@ -83,6 +85,17 @@ In the template file, start by adding the Genesis data source pointing to the ap
 	></grid-pro-genesis-datasource>
 </zero-grid-pro>
 ```
+-->
+
+[//]: # (link to grid-pro-genesis-datasource tsdocs)
+```html title="home.template.ts"
+<zero-grid-pro>
+	<grid-pro-genesis-datasource
+		resource-name="ALL_POSITIONS"
+	></grid-pro-genesis-datasource>
+</zero-grid-pro>
+```
+
 
 This will result in a grid displaying all the columns available in the `ALL_POSITIONS` resource:
 
@@ -96,14 +109,13 @@ To add new columns that are not part of the API, we can add additional column de
 <zero-grid-pro>
     <grid-pro-genesis-datasource
         resource-name="ALL_POSITIONS"
-        order-by="INSTRUMENT_ID">
-    </grid-pro-genesis-datasource>
+    ></grid-pro-genesis-datasource>
     <grid-pro-column :definition="${x => x.singlePositionActionColDef}" />
 </zero-grid-pro>
 
 ```
 
-In the component definition file, we can provide a method that enables us to interact with the rest of the class.
+In the component definition file (inside class home), we can provide a method that enables us to interact with the rest of the class.
 The example below creates a column with a button that logs data in the row to the console.
 Here you can easily swap logging the row data with some custom logic (such as calling a back-end api, which we shall cover in more detail later on).
 
@@ -149,20 +161,22 @@ To stop automatic generation of columns, you need to add the `only-template-col-
 Then use the [repeat](https://www.fast.design/docs/fast-element/using-directives/#the-repeat-directive) directive; this includes all the columns from our column config array.
 
 
-```typescript {1,2,12-14} title="home.template.ts"
+```typescript {1,3,6,10-12} title="home.template.ts"
+import {html,repeat} from '@microsoft/fast-element';
+import type {Home} from './home';
 import {positionColumnDefs} from './positionColumnDefs';
-import {repeat} from '@microsoft/fast-element';
 
+export const HomeTemplate = html<Home>`
 <zero-grid-pro only-template-col-defs>
     <grid-pro-genesis-datasource
         resource-name="ALL_POSITIONS"
-        order-by="INSTRUMENT_ID">
-    </grid-pro-genesis-datasource>
+    ></grid-pro-genesis-datasource>
     ${repeat(() => positionColumnDefs, html`
-    <grid-pro-column :definition="${x => x}"></grid-pro-column>
-    `)}
+                <grid-pro-column :definition="${x => x}"></grid-pro-column>
+                `)}
     <grid-pro-column :definition="${x => x.singlePositionActionColDef}"></grid-pro-column>
 </zero-grid-pro>
+`;
 ```
 
 Columns will now flash green as the value inside changes:

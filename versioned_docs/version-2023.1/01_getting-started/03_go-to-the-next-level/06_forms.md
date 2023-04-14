@@ -60,26 +60,35 @@ The form is now configured as required - but if you look at the page currently, 
 
 1. Ensure that the template in **home.template.ts** looks like this:
 
-```html {1,15-19} title='home.template.ts'
+```html {1-3,7,21-27} title='home.template.ts'
+import {html,repeat} from '@microsoft/fast-element';
+import type {Home} from './home';
+import {positionColumnDefs} from './positionColumnDefs';
+
+export const HomeTemplate = html<Home>`
 <div class="column-split-layout">
-	<zero-grid-pro persist-column-state-key="position-grid-settings">
-		<grid-pro-genesis-datasource
-			resource-name="ALL_POSITIONS"
-			order-by="INSTRUMENT_ID"
-		></grid-pro-genesis-datasource>
-		${repeat(
-			() => positionColumnDefs,
-			html`
-				<grid-pro-column :definition="${(x) => x}"></grid-pro-column>
-			`
-		)}
-		<grid-pro-column :definition="${(x) => x.singlePositionActionColDef}"></grid-pro-column>
-	</zero-grid-pro>
-	<foundation-form
-		resourceName="EVENT_TRADE_INSERT"
-		@submit=${(x, c) => x.insertTrade(c.event as CustomEvent)}
-	></foundation-form>
+    <div class="row-split-layout">
+        <zero-grid-pro persist-column-state-key="position-grid-settings">
+            <grid-pro-genesis-datasource
+                resource-name="ALL_POSITIONS"
+            ></grid-pro-genesis-datasource>
+            ${repeat(
+                () => positionColumnDefs,
+                html`
+                    <grid-pro-column :definition="${(x) => x}"></grid-pro-column>
+                `
+            )}
+            <grid-pro-column :definition="${(x) => x.singlePositionActionColDef}"></grid-pro-column>
+        </zero-grid-pro>
+    </div>
+    <div class="row-split-layout">
+         <foundation-form
+                resourceName="EVENT_TRADE_INSERT"
+                @submit=${(x, c) => x.insertTrade(c.event as CustomEvent)}
+            ></foundation-form>
+    </div>
 </div>
+`;
 ```
 
 2. Set the styling required on the `host` element, and the `column-split-layout` div in **home.styles.ts**.
@@ -101,10 +110,10 @@ export const HomeStyles = css`
     flex-direction: column;
     flex: 1;
     width: 100%;
+    height: 100%;
   }
 
   .row-split-layout {
-    display: flex;
     flex-direction: row;
     flex: 1;
     width: 100%;
@@ -132,6 +141,19 @@ Start by adding the elements to the template. Instead of the `<foundation-form>`
 <zero-select></zero-select>
 <span>Side</span>
 <zero-select></zero-select>
+```
+
+Also add the following so the components fulfill the whole container:
+
+```tml title='home.styles.ts'
+  zero-text-field{
+      display: block;
+      width: 100%;
+  }
+  zero-select{
+      display: block;
+      width: 100%;
+  }
 ```
 
 Then, define the variables that will hold the values that the user enters:
@@ -214,6 +236,7 @@ We will do that in [connectedCallback](https://www.fast.design/docs/fast-element
 First, declare `tradeInstruments`. This will be used in the template later.
 
 To get the data from the API, inject:
+
 ```typescript title='home.ts'
 @observable tradeInstruments: Array<{value: string, label: string}>;
 @Connect connect: Connect;
@@ -262,7 +285,9 @@ public async insertTrade() {
   });
 }
 ```
- Let's add another data grid at the bottom of the page to show the trade view `ALL_TRADES`:
+Let's add another data grid at the bottom of the page to show the trade view `ALL_TRADES`:
+
+<!-- I stopped here, I changed some configs since it was not working the way it wasdeclared -->
 
 ```html {2,17-23}title='home.template.ts'
 <div class="column-split-layout">
@@ -270,7 +295,6 @@ public async insertTrade() {
 		<zero-grid-pro persist-column-state-key="position-grid-settings">
 			<grid-pro-genesis-datasource
 				resource-name="ALL_POSITIONS"
-				order-by="INSTRUMENT_ID"
 			></grid-pro-genesis-datasource>
 			${repeat(
 				() => positionColumnDefs,
@@ -284,7 +308,6 @@ public async insertTrade() {
 		<zero-grid-pro>
 			<grid-pro-genesis-datasource
 				resource-name="ALL_TRADES"
-				order-by="INSTRUMENT_ID"
 			></grid-pro-genesis-datasource>
 		</zero-grid-pro>
 	</div>
