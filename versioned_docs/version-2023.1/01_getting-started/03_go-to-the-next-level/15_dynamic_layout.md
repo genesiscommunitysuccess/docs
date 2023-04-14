@@ -29,19 +29,19 @@ Before we add the dynamic layout this is a good time to refactor the four compon
 excessively large.
 
 :::info
-Refactoring out the components is also required here due to a limitation with the
-[cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) and how it
+Refactoring the components is also necessary because of a limitation with the
+[cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) and the way that it
 interacts with FAST bindings and event listeners. A clean way to solve this issue is to
 wrap up your layout contents into individual components as we are about to do.
 
-If your components were interacting with each other via the parent component then it is
+If your components were interacting with each other via the parent component, then it is
 recommended to change them to interact via the `foundation-store` utility.
 :::
 
 ### Trades grid
 
 We'll start with the most straightforward component. Create a directory in the home route
-and add these two files into it.
+and add these two files to it.
 
 ```typescript title='trades-grid.ts'
 import { customElement, FASTElement } from '@microsoft/fast-element';
@@ -295,7 +295,7 @@ export const insertTradesFormStyles = css`
 
 ### Add the layout to the home template
 
-Now we have refactored out the four components, it is a trivial matter to add the dynamic layout. Change the **home.template.ts** to:
+Now we have refactored the four components, it is easy to add the dynamic layout. Change the **home.template.ts** to:
 
 ```typescript title='home.template.ts'
 import { html } from '@microsoft/fast-element';
@@ -335,21 +335,26 @@ export const HomeTemplate = html<Home>`
 `;
 ```
 
-You should now have a page looking similar to the one show [here](#declarative-api).
+You should now have a page looking similar to the one shown [here](#declarative-api).
 
 ### Registration prefix
 
-The components `<foundation-layout>`, `<foundation-layout-region>`, and `<foundation-layout-item>` are all registered with the design system you're using in the app, which requires you to prefix the components in the html with the prefix of the design system.
+The components `<foundation-layout>`, `<foundation-layout-region>`, and `<foundation-layout-item>` are all registered with the design system you're using in the app, which requires you to prefix the components in the HTML with the prefix of the design system.
 
 This is why in the [previous example](#add-the-layout-to-the-home-template) the components are `<zero-layout>`, `<zero-layout-region>`, and `<zero-layout-item>` - because this seed is using the `zero` design system.
 
 ## JavaScript API
 
-Now we are going to look at some of the dynamic interactions which are available via the layout's JavaScript API. In this example we are going to setup the component to autosave the layout as the user interacts with it, and add a button to reset the layout. To see what else you can do with the JavaScript API, see the main documentation linked in the [conclusion](#conclusion) section, and the [API documentation here](../../04_web/10_dynamic-layout/docs/api/foundation-layout.foundationlayout.md/#methods).
+Now we are going to look at some of the dynamic interactions that are available via the layout's JavaScript API. In this example, we are going to:
+
+- set up the component to autosave the layout as the user interacts with it
+- add a button to reset the layout
+
+To see what else you can do with the JavaScript API, see the main documentation linked in the [conclusion](#conclusion) section, and the [API documentation here](../../04_web/10_dynamic-layout/docs/api/foundation-layout.foundationlayout.md/#methods).
 
 ### Autosaving layout
 
-It is trivial to get the layout to autosave as the user changes it. Add a key under the `auto-save-key` attribute and the layout will take care of the rest. Ensure that the key you use is unique so it doesn't clash with any other saved layouts.
+It is easy to get the layout to autosave as the user changes it. Add a key under the `auto-save-key` attribute and the layout will take care of the rest. Ensure that the key you use is unique, so it doesn't clash with any other saved layouts.
 
 ```html {1} title='home.template.ts'
 <zero-layout auto-save-key="tutorial-app-layout-key">
@@ -362,7 +367,7 @@ It is trivial to get the layout to autosave as the user changes it. Add a key un
 Now when you're on the page, if you make a change to the layout (resize, drag, reorder, add/remove items) then the layout will be saved in local storage. Try for yourself - drag an item around and refresh the page and see it reload your layout.
 
 :::warning Warning
-The layout saving functionality is only responsible for the *layout* itself - it will not save the state of the items inside of it. Components are responsible for saving their own state if required - such as the grids [we set up earlier in the tutorial](#saving-user-preferences).
+The layout-saving functionality is only responsible for the *layout* itself - it will not save the state of the items inside it. Components are responsible for saving their own state if required - such as the grids [we set up earlier in the tutorial](#saving-user-preferences).
 :::
 
 ### Resetting the layout
@@ -401,7 +406,7 @@ export class Home extends FASTElement {
 
 ### Updating the header
 
-Next, we want to add a button to the header sidebar to reset the layout. In this seed the header is defined in a file called `default.ts`.
+Next, we want to add a button to the header sidebar to reset the layout. In this seed, the header is defined in a file called `default.ts`.
 
 ```html {4-14} title='default.ts'
 <div class="container">
@@ -426,7 +431,7 @@ Next, we want to add a button to the header sidebar to reset the layout. In this
 </div>
 ```
 
-When you load the app you can now click the hamburger menu in the top left hand corner and see the reset button. Clicking it will execute the `resetLayout()` function in the `home.ts` file, but we still need to setup the actual functionality.
+When you load the app, you can now click the hamburger menu in the top-left corner and see the reset button. Clicking it will execute the `resetLayout()` function in the `home.ts` file; but we still need to set up the actual functionality.
 
 :::info
 If you've changed the structure of your application from the default you might not be able to access `Home` via `x.lastChild` like we did in the click handler. You may need to experiment with getting a reference to the `Home` yourself, use events, or the `Foundation Store`.
@@ -437,26 +442,29 @@ If you've changed the structure of your application from the default you might n
 Finally we can now make `resetLayout()` load the default layout. The easiest way to get the default layout configuration is using the developer tools on your web browser. Open the developer tools in your browser and find the layout component (remember [from earlier](#registration-prefix) that we are looking for `<zero-layout>` in this case).
 
 :::caution
-If you've changed the layout from the default while testing your application you'll want to manually reset it back to the default. In the developer tools find the local storage and delete the `foundation-layout-autosave` value, and refresh the page.
+If you've changed the layout from the default while testing your application, you need to reset it manually back to the default. 
+
+1. In the developer tools, find the local storage and delete the `foundation-layout-autosave` value.
+2. Refresh the page.
 :::
 
-Now we need access to this component in the web console. In most browsers you can do this by right clicking on `<zero-layout>` in the element inspector and selecting an option which is similar to "use in console". This will save the layout in a variable such as `temp0`. Then to get to get the layout run this command in the web console:
+Now we need access to this component in the web console. In most browsers you can do this by right-clicking on `<zero-layout>` in the element inspector and selecting an option that is similar to "use in console". This will save the layout in a variable such as `temp0`. Then, to get to get the layout run this command in the web console:
 
 ```javascript title='web console'
 JSON.stringify(temp0.getLayout()) // temp0, or whatever your browser saved the layout in
 ```
 
 :::tip
-You can follow this process to create a range of pre-defined layouts for the user in addition to being able to restore the default layout. Or you can, for example, use the `.getLayout()` and `.loadLayout()` APIs to let the user save their own layouts.
+You can follow this process to create a range of pre-defined layouts for the user in addition to being able to restore the default layout. Or you can, for example, use the `.getLayout()` and `.loadLayout()` APIs to allow the user to save their own layouts.
 :::
 
-Now copy that generated string and paste it into a file in the project, and export it.
+Now copy that generated string and paste it into a file in the project. Then export it.
 
 ```typescript title='predefined-layouts.ts'
 export const HOME_DEFAULT_LAYOUT = ... /* Set this equal to the string from the web console */
 ```
 
-And then the final step is to wire all of this functionality together so the button loads the layout we just saved.
+The final step is to wire all of this functionality together so the button loads the layout that we have just saved.
 
 ```typescript {5,22-25,27-29} title='home.ts'
 import { customElement, FASTElement, observable } from '@microsoft/fast-element';
@@ -494,11 +502,13 @@ export class Home extends FASTElement {
 Now when you open the header sidebar and click the reset button, you should see the layout return to its default settings.
 
 :::tip
-Loading a layout with `.loadLayout()` doesn't also autosave the layout, so if you click the button and then refresh the page then the custom layout will be reloaded. To save the layout the user will need to perform an interaction such as dragging a divider. This functionality has the advantage that the user can navigate away from the layout to reload their custom layout if they accidentally loaded a layout.
+Loading a layout with `.loadLayout()` doesn't autosave the layout. So, click the button and then refresh the page to reload the custom layout. 
+
+To save the layout, the user needs to perform an interaction such as dragging a divider. And if a user loads a layout accidentally, they can simply navigate away from it to reload their custom layout.
 :::
 
 ## Conclusion
 
-If you followed this tutorial all the way through you should now have a dynamic layout that the user can resize, drag items into tabs etc. Additionally, their layout changes will be saved and can be reset with a button in the header sidebar.
+If you followed this tutorial all the way through, you should now have a dynamic layout that the user can resize, drag items into tabs etc. Additionally, their layout changes will be saved and can be reset with a button in the header sidebar.
 
-The dynamic layout component offers even more functionality that what we have discussed here. To see what else you can do with the layout, such as tab views, events, and dynamic element registrations [see here](../../04_web/10_dynamic-layout/10_foundation-layout.md).
+The dynamic layout component offers more functionality than we have discussed here. To see what else you can do, such as tab views, events, and dynamic element registrations, [see here](../../04_web/10_dynamic-layout/10_foundation-layout.md).
