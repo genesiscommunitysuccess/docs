@@ -377,7 +377,7 @@ this.jsonSchema = jsonSchemaResponse?.INBOUND?.properties?.DETAILS as JSONSchema
 
 ### Custom validation
 
-When defining your `jsonSchema`, you can pass a custom validation function to any field. it is passed as `validateFn` in the `options` block.
+When defining your `jsonSchema`, you can pass a custom validation function to any field via the  `validateFn` key n the `options` block.
 
 ```typescript
 {
