@@ -60,7 +60,7 @@ For further configuration examples please see: [here](https://g2plot.antv.vision
 
 ## Integration into home template
 
-You can add it into the flex layout from previous sections of the tutorial like the following:
+You can now integrate the chart into the existing flex layout we have made from the previous tutorial sections, and end up with the following markup:
 
 ```typescript {25,26,44,46-51} title='home.template.ts'
 <div class="column-split-layout">
