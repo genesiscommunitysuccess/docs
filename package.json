@@ -16,7 +16,7 @@
     "start:next": "SHOW_NEXT=true docusaurus start --port 8080 --host 0.0.0.0",
     "swizzle": "docusaurus swizzle",
     "postinstall": "patch-package --error-on-fail",
-    "generate:iife": "rollup -c"
+    "generate:iife": "rollup -c -f iife --no-compact --no-minifyInternalExports"
   },
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^0.11.0",
