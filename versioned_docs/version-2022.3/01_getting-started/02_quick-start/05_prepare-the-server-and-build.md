@@ -69,27 +69,6 @@ You can specify which database to use in your application by editing **genesis-s
 
 You can find more information on the **genesis-system-definitions.kts** file [here](../../../server/configuring-runtime/system-definitions/).
 
-If you are running your application using [**Docker Container**](../../../getting-started/quick-start/run-the-application-docker/), you need to use the Postgres database. Add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
-
-```kotlin {4,10}
-systemDefinition {
-    global {
-        ...
-        item(name = "DbLayer", value = "SQL")
-        item(name = "DictionarySource", value = "DB")
-        item(name = "AliasSource", value = "DB")
-        item(name = "MetricsEnabled", value = "false")
-        item(name = "ZeroMQProxyInboundPort", value = "5001")
-        item(name = "ZeroMQProxyOutboundPort", value = "5000")
-        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=postgres")
-        item(name = "DbMode", value = "VANILLA")
-        ...
-    }
-    
-}
-
-```
-
 Finally, you can build the server.
 
 In the Gradle menu on the right of IntelliJ, select **genesis-project-alpha**/**Tasks**/**Build/Assemble**.

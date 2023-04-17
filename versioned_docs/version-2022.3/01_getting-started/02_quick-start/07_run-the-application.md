@@ -1,6 +1,6 @@
 ---
-title: 'Quick start - run the application (WSL/Linux)'
-sidebar_label: 'Run the application (WSL/Linux)'
+title: 'Quick start - run the application'
+sidebar_label: 'Run the application'
 id: run-the-application
 keywords: [getting started, quick start, run the app, wsl, linux]
 tags:
@@ -11,8 +11,7 @@ tags:
     - linux
 ---
 
-You have a choice of how you run the application. The instructions on this page are for using WSL/CentOS. If you prefer to use Docker as your environment, there are [separate instructions](../../../getting-started/quick-start/run-the-application-docker/).
-
+## Pre-requisites
 Before you start this, make sure that:
 
 - you have a user with the name of the application (alpha)

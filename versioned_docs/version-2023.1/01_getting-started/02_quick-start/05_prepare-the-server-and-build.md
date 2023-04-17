@@ -69,7 +69,7 @@ You can specify which database to use in your application by editing **genesis-s
 
 Further information can be found in the [**genesis-system-definitions.kts** file](../../../server/configuring-runtime/system-definitions/).
 
-### Run docker
+### Run the database
 
 Since we are using a docker container, we need to use the Postgres database. Add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
 
@@ -96,9 +96,21 @@ systemDefinition {
 Do not forget to configure your [genesis plugin](../../../server/tooling/intellij-plugin/).
 :::
 
+#### Build
+
 Finally, you can build the server. In the Gradle menu on the right of IntelliJ, select:
 
-1. **genesisproduct-alpha**/**alpha-config**
+In the Gradle menu on the right of IntelliJ, select:
+
+1. **genesisproduct-alpha**
+
+![](/img/assemble-server.png)
+
+```shell title='Running assemble from the command line'
+./gradlew :genesisproduct-alpha:assemble
+```
+
+2. **genesisproduct-alpha**/**alpha-config**
 
 ![](/img/alpha-config-gradle.png)
 
@@ -108,7 +120,7 @@ Finally, you can build the server. In the Gradle menu on the right of IntelliJ, 
 
 ```
 
-2. **genesisproduct-alpha**/**alpha-script-config**
+3. **genesisproduct-alpha**/**alpha-script-config**
 
 ![](/img/alpha-script-config-gradle.png)
 
@@ -118,12 +130,15 @@ Finally, you can build the server. In the Gradle menu on the right of IntelliJ, 
 
 ```
 
-3. **Deploy aplication**
+4. **Deploy application**
 
 ![](/img/deploy.png)
 
+:::tip
+The deploy option won't be available until you install the [genesis plugin](../../../server/tooling/intellij-plugin/).
+:::
 
-After these 3 steps, you have a functional server.
+After these 4 steps, you have a functional server.
 
 Congratulations! You have completed the prepare and build.
 

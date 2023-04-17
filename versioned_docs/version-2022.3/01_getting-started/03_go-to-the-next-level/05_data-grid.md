@@ -59,7 +59,7 @@ The application will open at `http://localhost:6060/login`.
 
 ### API Host
 
-The `API_HOST` should be set correctly by default from the `genx` CLI, but if you are having issues see [this section](../02_quick-start/07_run-the-application.md#api-host).
+The `API_HOST` should be set correctly by default from the `genx` CLI, but if you are having issues see [this section](../../../quick-start/run-the-application).
 
 ## Section objectives
 The goal of this section is to run the UI for the first time and add a data grid.

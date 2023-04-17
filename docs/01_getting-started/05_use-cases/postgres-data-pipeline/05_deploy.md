@@ -11,7 +11,7 @@ tags:
     - deploy
 ---
 
-To deploy your application to your local Linux or WSL environment, see this [guide](../../../../getting-started/quick-start/run-the-application/).
+To deploy your application using the genesis plugin, see this [guide](../../../../getting-started/quick-start/run-the-application-docker/).
 
 To install your application to a remote server, see [this manual installation guide](../../../../getting-started/prerequisites/manual-installation/).
 

@@ -1,6 +1,6 @@
 ---
-title: 'Quick start - run the application (Docker)'
-sidebar_label: 'Run the application (Docker)'
+title: 'Quick start - run the application'
+sidebar_label: 'Run the application'
 id: run-the-application-docker
 keywords: [getting started, quick start, run the app, docker]
 tags:
@@ -9,8 +9,6 @@ tags:
     - run the app
     - docker
 ---
-
-You have a choice of how you run the application. The instructions on this page are for using Docker. If you prefer to use WSL/CentOS as your environment, there are [separate instructions](../../../getting-started/quick-start/run-the-application/).
 
 ## Building and composing Docker images
 

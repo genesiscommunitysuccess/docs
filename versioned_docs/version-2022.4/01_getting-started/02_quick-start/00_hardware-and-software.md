@@ -39,7 +39,7 @@ This page gives you the hardware and software requirements needed in order to ru
 | [Postman](https://www.postman.com/downloads/) (optional)	|        8        |
 
 
-You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJIDEA enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJIDEA.
+You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJ IDEA  enables you to make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ IDEA .
 
 ## Requirements
 

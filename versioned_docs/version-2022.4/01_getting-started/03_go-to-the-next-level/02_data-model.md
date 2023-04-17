@@ -22,7 +22,7 @@ i Application created successfully! 🎉 Please open the application and follow 
 
 Now you are ready to define the fields and tables that make up the data model. 
 
-Start IntelliJIDEA (or your chosen IDE) and then open the `positions-app-tutorial` project. This triggers importing and indexing of the files (which takes about as long as [Hotel California](https://youtu.be/jVHhV3A5C5c), so be patient). After that, you will see the files and the project structure displayed in your IDE.
+Start IntelliJ IDEA  (or your chosen IDE) and then open the `positions-app-tutorial` project. This triggers importing and indexing of the files (which takes about as long as [Hotel California](https://youtu.be/jVHhV3A5C5c), so be patient). After that, you will see the files and the project structure displayed in your IDE.
 
 ## Section objectives
 The goal of this section is to define and build our database fields, tables and views.
@@ -33,7 +33,7 @@ The fields are defined in the file **positions-app-tutorial-fields-dictionary.kt
 
 :::tip
 
-Once the project is open, there are two easy ways to find this file quickly in IntelliJIDEA:
+Once the project is open, there are two easy ways to find this file quickly in IntelliJ IDEA :
 
 - Press the **Shift** key twice, then type the name of the file you are looking for.
 - Press **Shift** + **Ctrl** + **N**, then type the name of the file you are looking for.

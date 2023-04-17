@@ -1,6 +1,6 @@
 ---
-title: 'Quick start - run the application (Docker)'
-sidebar_label: 'Run the application (Docker)'
+title: 'Quick start - run the application'
+sidebar_label: 'Run the application'
 id: run-the-application-docker
 keywords: [getting started, quick start, run the app, docker]
 tags:
