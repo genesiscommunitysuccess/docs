@@ -1,3 +1,2 @@
-export * from '@genesislcap/documentation-components';
-export * from '@genesislcap/foundation-zero';
+export {};
 //# sourceMappingURL=iife.d.ts.map

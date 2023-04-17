@@ -2,35 +2,26 @@
  * Importing stuff we need for iife generation.
  * Based on packages/showcase/documentation-components/src/index.ts
  */
-import {
-  baseComponents as alphaBaseComponents,
-  provideDesignSystem as provideAlphaDesignSystem,
-} from '@genesislcap/alpha-design-system';
-import {
-  ColorPalette,
-  ColorToken,
-  DesignSystemEditor,
-  DesignSystemExport,
-  DesignSystemPreview,
-  TypographyTokens
-} from '@genesislcap/documentation-components';
-import {
-  provideDesignSystem as provideZeroDesignSystem,
-  baseComponents as zeroBaseComponents,
-} from '@genesislcap/foundation-zero';
-import { zeroGridComponents } from '@genesislcap/foundation-zero-grid-pro';
+import { provideDesignSystem, baseComponents } from '@genesislcap/alpha-design-system';
 import { foundationGridComponents } from '@genesislcap/grid-pro';
 
-export * from '@genesislcap/documentation-components';
-export * from '@genesislcap/foundation-zero';
+provideDesignSystem().register(baseComponents, foundationGridComponents);
 
-provideZeroDesignSystem().register(zeroBaseComponents, zeroGridComponents);
-provideAlphaDesignSystem().register(alphaBaseComponents, foundationGridComponents);
+import {
+  DesignSystemEditor,
+  ColorPalette,
+  DesignSystemPreview,
+  ColorToken,
+  TypographyTokens,
+} from '@genesislcap/documentation-components';
 
 DesignSystemEditor;
 DesignSystemPreview;
-DesignSystemExport;
 ColorPalette;
 DesignSystemPreview;
 ColorToken;
 TypographyTokens;
+
+
+import { baseComponents as zeroComponents, provideDesignSystem as provideZero } from '@genesislcap/foundation-zero';
+provideZero().register(zeroComponents);
