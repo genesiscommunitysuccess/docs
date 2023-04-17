@@ -49,7 +49,7 @@ The first thing to set up is the Genesis system definition overrides. These are 
 :::tip
 A local PostgreSQL installation with both user and password equal to `postgres` would have a **DbHost** like this:
 ```kotlin
-DbHost="jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres"
+jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres
 ```
 :::
 
