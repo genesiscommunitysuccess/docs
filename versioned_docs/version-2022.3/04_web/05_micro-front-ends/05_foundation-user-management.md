@@ -14,11 +14,12 @@ tags:
 
 ## API reference
 
-API reference [can be found here](../foundation-entity-management_apiref/).
+Our API reference documentation is in a separate area, and [can be found here](../foundation-entity-management_apiref/).
 
 ## Introduction
 
 The User Management micro front-end is used to manage the users on the front end. Two core components are used to manage the entities:
+
 - the grid
 - the form
 
@@ -29,13 +30,14 @@ User Management is a concrete use case of the [Entity Management](./04_foundatio
 :::
 
 Here is an example grid view for managing users:
+
 ![Example user management grid](/img/foundation-user-management.png)
 
 ## Set-up
 
-To enable this micro-front-end in your application, follow the steps below:
+To enable this micro front-end in your application, follow the steps below:
 
-- Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
+1. Add `@genesislcap/foundation-entity-management` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, ensure you run the `$ npm run bootstrap` command again. You can find more information in the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -47,7 +49,7 @@ To enable this micro-front-end in your application, follow the steps below:
 }
 ```
 
-- Import and declare the class in the page of the class where you wish to use the user manager. Then add User Management to the template html where required:
+2. Import and declare the class in the page of the class where you wish to use the user manager. Then add User Management to the template HTML where required:
 
 ```javascript
 // Import
@@ -71,11 +73,12 @@ export const AdminTemplate: ViewTemplate = html`
 
 ## Config
 
-You can customise the functionality of User Management through the properties you set in the html. This section covers the main properties that you can customise. For a full list of all of the properties, [see here](../foundation-entity-management_apiref/foundation-entity-management.users/#properties).
+You can customise the functionality of User Management through the properties you set in the HTML. This section covers the main properties that you can customise. For a full list of all properties, [see here](../foundation-entity-management_apiref/foundation-entity-management.users/#properties).
 
 ### Columns
 
 The primary way to configure the User Management functionality is via the columns that are displayed on the grid.
+
 ```javascript
 // Default usage, will contain the "default" columns:
 //    username, first name, last name, email, last login
@@ -84,7 +87,8 @@ The primary way to configure the User Management functionality is via the column
 ```
 The default columns are contained in the [UserColumnConfig](../foundation-entity-management_apiref/foundation-entity-management.userscolumnconfig) variable. The `Entity` and `Status` columns are always added to the grid.
 
-To configure the columns yourself, set the `columns` attribute when you define the User Management in the html. You can mix in your custom column config with the default user columns config, using the javascript `spread` operator.
+To configure the columns yourself, set the `columns` attribute when you define the User Management in the HTML. You can mix in your custom column config with the default user columns config, using the javascript `spread` operator.
+
 ```javascript
 // Custom usage, will contain the "default" columns:
 //    username, first name, last name, email, last login
@@ -93,7 +97,7 @@ To configure the columns yourself, set the `columns` attribute when you define t
 <user-management :columns=${() => [...UsersColumnConfig, ...userColumns]}>
 </user-management>
 ```
-To see a more verbose version of this example, [see the second example here](../foundation-entity-management_apiref/foundation-entity-management.users/#example).
+To see a more verbose version of this example, see the [second example here](../foundation-entity-management_apiref/foundation-entity-management.users/#example).
 
 ### Permissions
 
@@ -107,5 +111,5 @@ In contrast to Entity Management, we have a different way of displaying buttons 
 `persist-column-state-key` is a string value, which is used to control how the column states are persisted through actions such as page changes or refreshes. When using this micro front-end, it is set to `entity_profiles_management`.
 
 :::info
-For more info on `persist-column-state-key` see [the section in the entity management.](./04_foundation-entity-management.md#persist-column-state)
+For more information on `persist-column-state-key` see the section in the [entity management.](./04_foundation-entity-management.md#persist-column-state) page.
 :::

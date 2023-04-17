@@ -21,7 +21,7 @@ Our [API](./docs/api/index.md) documentation is in a separate area. Click on the
 
 ### Introduction
 
-The Entity Management micro front-end is used to connect to a resource on the back end and manage it from the front end. Handlers can be set up for create, update, and delete events; after adding an event, a button appears so that the user can perform the action. There is a list of pre-defined events and resources to manage, but you can manage custom resources that you create on the back end too.
+The Entity Management micro front-end is used to connect to a resource on the back end and manage it from the front end. Handlers can be set up for create, update, and delete events; after adding an event, a button is displayed so that the user can perform the action. There is a list of pre-defined events and resources to manage, but you can manage custom resources that you create on the back end too.
 
 :::tip
 The buttons are accessed conditionally, based on the specified events. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to set the events to be conditional on user authorisation.
@@ -94,7 +94,7 @@ export const AdminTemplate: ViewTemplate = html`
 
 ### Config
 
-The functionality of the Entity Manager is customised through the properties you set in the HTML. This section covers the main properties that you need to customise. For a full list of all the properties, [see here](./docs/api/foundation-entity-management.md#properties).
+The functionality of the Entity Manager is customised through the properties you set in the HTML. This section covers the main properties that you need to customise. For a full list of all properties, [see here](./docs/api/foundation-entity-management.md#properties).
 
 #### Title
 
@@ -102,7 +102,7 @@ The functionality of the Entity Manager is customised through the properties you
 
 #### Resource
 
-`resourceName` refers to the name of either a `DATASERVER` query, a `ReqRep` definition or a specific `EVENT_HANDLER` is essentially the resource to be managed. In the [above example](#set-up), we use `ALL_COUNTERPARTYS` which is a `DATASERVER` query(by convention, all Data Server queries start with `ALL_`).
+`resourceName` refers to the name of either a `DATASERVER` query, a `ReqRep` definition or a specific `EVENT_HANDLER`. This is essentially the resource to be managed. In the [above example](#set-up), we use `ALL_COUNTERPARTYS`, which is a `DATASERVER` query (by convention, all Data Server queries start with `ALL_`).
 
 #### Events
 
@@ -176,7 +176,7 @@ export const AdminTemplate: ViewTemplate = html`
 
 ### Config
 
-You can customise the functionality of User Management through the properties you set in the HTML. This section covers the main properties that you can customise. For a full list of all the properties, [see here](./docs/api/foundation-entity-management.users.md).
+You can customise the functionality of User Management through the properties you set in the HTML. This section covers the main properties that you can customise. For a full list of all properties, [see here](./docs/api/foundation-entity-management.users.md).
 
 #### Columns
 
@@ -245,7 +245,7 @@ To enable this micro front-end in your application, follow the steps below:
 }
 ```
 
-2. Import and declare the class in the page of the class where you wish to use the Profile Manager. Then add the profile management into the template html where required:
+2. Import and declare the class in the page of the class where you wish to use the Profile Manager. Then add the profile management into the template HTML where required:
 
 ```javascript
 // Import
