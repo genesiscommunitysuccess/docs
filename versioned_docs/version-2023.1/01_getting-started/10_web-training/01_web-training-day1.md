@@ -612,7 +612,7 @@ To enable this micro front-end in our application, we'd have to follow the steps
 
 - Make sure you have `@genesislcap/foundation-header` as a dependency in your _client/web/package.json_ file.
 
-```js {4} title='package.json'
+```js {5} title='package.json'
 {
   ...
   "dependencies": {
