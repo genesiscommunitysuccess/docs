@@ -18,10 +18,10 @@ Our API reference documentation is in a separate area, which [can be found here]
 
 ## Introduction
 
-The Entity Management micro-front-end is used to connect to a resource on the back end and manage it from the front end. Handlers can be set up for create, update, and delete events; after adding an event, a button is displayed so that the user can perform the action. There is a list of pre-defined events and resources to manage, but you can manage custom resources that you create on the back-end too.
+The Entity Management micro front-end is used to connect to a resource on the back end and manage it from the front end. Handlers can be set up for create, update, and delete events; after adding an event, a button is displayed so that the user can perform the action. There is a list of pre-defined events and resources to manage, but you can manage custom resources that you create on the back end too.
 
 :::tip
-The buttons are accessed conditionally, based on the specified events. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to set the events to be conditional on user authorisations.
+The buttons are accessed conditionally, based on the specified events. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to set the events to be conditional on user authorisation.
 :::
 
 Two core components are used to manage the entities - the grid and the form. The grid contains an entity on each row and data in each column.
