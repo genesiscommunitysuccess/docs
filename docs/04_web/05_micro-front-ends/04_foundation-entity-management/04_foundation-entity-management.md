@@ -21,7 +21,9 @@ Our [API](./docs/api) documentation is separate. Click on the link if you want t
 
 ## Introduction
 
+
 The Entity Management micro-front-end is used to connect to a resource on the back end and manage it from the front end. Handlers can be set up for create, update, and delete events; after adding an event, a button appears to perform the action. There is a list of pre-defined events and resources to manage, but you can manage custom resources that you create on the back-end too.
+
 
 :::tip
 The buttons are conditionally accessed, based on the specified events. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to conditionally set the events based on user authorisations.
@@ -91,7 +93,9 @@ export const AdminTemplate: ViewTemplate = html`
 
 ## Config
 
+
 The functionality of the Entity Manager is customised through the properties you set on it in the HTML. This section covers the main properties that you need to customise. For a full list of all of the properties, [see here](./docs/api/foundation-entity-management.md#properties).
+
 
 ### Title
 
@@ -100,6 +104,7 @@ The functionality of the Entity Manager is customised through the properties you
 ### Resource
 
 `resourceName` refers to the name of either a `DATASERVER` query, a `ReqRep` definition or a specific `EVENT_HANDLER`. This essentially is the resource to be managed. In the [above example](#set-up), we use `ALL_COUNTERPARTYS` which is a `SDATASERVER` query, as, by convention, they all start with `ALL_`.
+
 
 ### Events
 
@@ -171,7 +176,9 @@ export const AdminTemplate: ViewTemplate = html`
 
 ### Config
 
+
 You can customise the functionality of User Management through the properties you set in the html. This section covers the main properties that you can customise. For a full list of all of the properties, [see here](./docs/api/foundation-entity-management.users.md).
+
 
 #### Columns
 
@@ -237,7 +244,9 @@ To enable this micro-front-end in your application, follow the steps below.
 }
 ```
 
+
 - Import and declare the class in the page of the class where you wish to use the Profile Manager. Then add the profile management into the template html where required:
+
 ```javascript
 // Import
 import { Profiles } from '@genesislcap/foundation-entity-management';
