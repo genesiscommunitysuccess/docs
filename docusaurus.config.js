@@ -130,6 +130,7 @@ module.exports = {
         optimization: {
           mangleExports: false,
           minimize: false,
+          minimizer: undefined,
           moduleIds: 'deterministic'
         },
       }
