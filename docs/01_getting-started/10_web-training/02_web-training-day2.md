@@ -57,7 +57,7 @@ import type {Order} from './order';
 export const OrderTemplate = html<Order>`
 <div class="split-layout">
     <div class="top-layout">
-      <zero-form class="order-entry-form" resourceName="EVENT_ORDER_INSERT"></zero-form>
+      <foundation-form class="order-entry-form" resourceName="EVENT_ORDER_INSERT"></foundation-form>
     </div> 
 </div>
 `;
@@ -68,7 +68,7 @@ This component is able to retrieve the meta-data from the `EVENT_ORDER_INSERT` b
 Try to run it now and you'll notice that, even though the form is displayed, nothing happens when you click on Submit. We have to bind the submit button to a function, like this:
 ```html {3} title='order.template.ts'
 <zero-form
-  resourceName="EVENT_ORDER_INSERT"
+  resource-Name="EVENT_ORDER_INSERT"
   @submit=${(x, c) => x.insertOrder(c.event as CustomEvent)}
 ></zero-form>
 ```
@@ -457,8 +457,8 @@ export const OrderTemplate = html<Order>`
   ...
 <zero-grid-pro>
     <grid-pro-genesis-datasource
-        resourceName="ALL_ORDERS"
-        orderBy="ORDER_ID">
+        resource-name="ALL_ORDERS"
+        order-by="ORDER_ID">
     </grid-pro-genesis-datasource>
 </zero-grid-pro>
   ...
