@@ -5,14 +5,63 @@ sidebar_position: 1
 id: front-end
 ---
 
+import QuickCard from '@site/src/components/Card';
+import { Grid } from '@mui/material'
+
 Welcome to our reference documentation on the web (front end) of your application. Here, you can find all the information you need to build a front end for your Genesis application.
 
-- [Basics](../web/basics/prerequisites/) - find a useful checklist of links to background information for front-end skills and knowledge. See the key concepts and files you can work with to create a front end.
+## Basics
+<Grid container>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Basics" link="../web/basics/prerequisites/" text="We have a useful checklist of technologies you need to know about to become a front-end developer, along with links.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Web Components" link="../web/web-components/overview/" text="Explore and examine in detail all the components you can use and extend to create vivid front ends for great usability.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Design systems" link="../web/design-systems/introduction/" text="Use a design system to specify things like typography, colour and sizing. There is a great Preview page where you can actively change different settings and see the effect on screen - and change them immediately.">
+        </QuickCard>
+    </Grid>
+</Grid>
 
-- [Web components](../web/web-components/overview/) - explore and examine in detail all the components you can use and extend to create vivid front ends for great usability.
+## User and Profile Management
 
-- [Design systems](../web/design-systems/introduction/) - use a design system to specify things like typography, colour and sizing. There is a great Preview page where you can actively change different settings and see the effect on screen - and change them immediately.
+<Grid container>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="User Management" link="../web/micro-front-ends/foundation-entity-management/#user-management" text="Examine the core components for managing users on the front end.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Profile Management" link="../web/micro-front-ends/foundation-entity-management/#profile-management/" text="Manage profiles on the front end using grids and forms.">
+        </QuickCard>
+    </Grid>
+</Grid>
 
-- [Micro front-end](../web/micro-front-ends/introduction/) - see our range of micro front-ends that enable you to put sophisticated components such as reporting into your user interface without complex coding.
+## Integrating
+Use FoundationUI alongside your existing or preferred stack.
 
-- [Deployment](../web/deploying/introduction/) - look at the details you'll need to consider for deploying your completed front end.
+<Grid container>
+    <Grid item xs={12} md={12} sx={{padding: '1%'}}>
+        <QuickCard heading="Integrating" link="../web/integrations/introduction/" text="Find details about how to integrate with Angular, React, Vue and Webpack.">
+        </QuickCard>
+    </Grid>
+</Grid>
+
+## Testing, deployment and more
+
+<Grid container>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Testing" link="../web/testing/foundation-testing/" text="Find out about testing using UVU and Playwright. Check out or testing API.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Deployment" link="../web/deploying/introduction/" text="Learn about the default web-server set-up, and manual and automated deployment options.">
+        </QuickCard>
+    </Grid>
+    <Grid item xs={12} md={6} sx={{padding: '1%'}}>
+        <QuickCard heading="Layout" link="../web/dynamic-layout/foundation-layout/" text="Registering elements, APIs and more">
+        </QuickCard>
+    </Grid>
+</Grid>
