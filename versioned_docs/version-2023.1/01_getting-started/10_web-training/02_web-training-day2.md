@@ -57,7 +57,7 @@ import type {Order} from './order';
 export const OrderTemplate = html<Order>`
 <div class="split-layout">
     <div class="top-layout">
-      <zero-form class="order-entry-form" resourceName="EVENT_ORDER_INSERT"></zero-form>
+      <foundation-form class="order-entry-form" resourceName="EVENT_ORDER_INSERT"></foundation-form>
     </div> 
 </div>
 `;
