@@ -14,6 +14,7 @@ Now that you have completed the [Quick Start](../../../getting-started/quick-sta
 
 Before you get going, you will need a [full developer set-up](/getting-started/prerequisites/introduction/) for this exercise. Make sure you check the requirements and set up what is necessary.
 
+For this application, you will need the [genesis plugin](../../server/tooling/intellij-plugin/). Plase make sure you have it installed.
 
 ## What you will build
 
@@ -35,24 +36,25 @@ The application will make use of the following platform features:
 - [Data pipelines](../../../getting-started/go-to-the-next-level/data-pipeline/)
 
 
-We are going to call this example application **positions-app-tutorial**. You will see this reflected in the file names throughout.
+We are going to call this example application **alpha**. You will see this reflected in the file names throughout.
 
 ## Create a new project
 Using the GenX CLI tool, we want to generate a blank full-stack application project. Go to a folder where you want your project to reside, and run:
 
+```powershell
+npm install -g @genesislcap/foundation-cli
+genx
 ```
-npx genx
-```
+
+:::tip
+Make sure you run the `install` command, so you can update your GenX CLI tool
+::: 
 
 <!-- NO EDIT (NEXT 4 LINES) -->
 import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
 
 <InsecureFlag />
 
-Follow through the series of questions. For `App name` enter `positions-app-tutorial` and for `App seed` enter `Quick Start Application`.
+Follow through the series of questions. For `App name` enter `alpha` and for `App seed` enter `Quick Start Application`.
 
 If this is the first time you are using the GenX CLI tool, check the [Quick Start](../../../getting-started/quick-start/create-a-new-project/) guide first.
-
-:::info
-This project is not a direct copy of the positions app but will contain most of its functionality.
-:::
