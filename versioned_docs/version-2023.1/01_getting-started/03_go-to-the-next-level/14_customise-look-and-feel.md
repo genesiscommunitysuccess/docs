@@ -16,7 +16,7 @@ The goal of this section is to customise our styles in the UI.
 
 ## Styling Grid Pro
 
-You might want to apply specific styles to some columns. 
+You might want to apply specific styles to some columns.
 We start by creating a stylesheet document that will have some style definitions for the grid.
 
 Create a stylesheet file called **positionsGrid.styles.ts** and provide the following code:
@@ -44,7 +44,7 @@ import {positionGridStyles} from "./positionsGrid.styles";
 
 <zero-grid-pro>
     <slotted-styles :styles=${() => positionGridStyles}></slotted-styles>
-    ...    
+    ...
     ...
 </zero-grid-pro>
 `
@@ -61,7 +61,7 @@ Remember to add the new styles to your stylesheet file.
 ```css {8-14} title='positionsGrid.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
 
-export const positionGridStyles: ElementStyles = css`    
+export const positionGridStyles: ElementStyles = css`
      .quantity-column {
          color: blue;
      }
@@ -69,7 +69,7 @@ export const positionGridStyles: ElementStyles = css`
     .profit {
         color: green;
     }
-    
+
     .loss {
         color: red;
     }
@@ -84,7 +84,7 @@ Your positions grid should be customised now:
 Don't worry too much if the data is different from yours - as long as the grid is customised as expected.
 :::
 
-## Layout 
+## Layout
 By default, all elements on screen will use `display: block`, but we can easily customise it using our custom component that supports responsive web design.
 
 ```html
@@ -93,6 +93,7 @@ By default, all elements on screen will use `display: block`, but we can easily 
 </foundation-flex-layout>
 ```
 
+In the [next section](./15_dynamic_layout.md) you'll have the option to add a dynamic layout to replace the current fixed layout.
 
 ## Styling other parts of application
 This was only a small part of the platform's capabilities in terms of styling. You can read more about design-system configuration [here](web/design-systems/introduction/).
