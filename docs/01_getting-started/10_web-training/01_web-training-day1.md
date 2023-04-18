@@ -241,7 +241,7 @@ In the Developer Training, we amended these files in the **client/web/src/routes
 - **home.styles.ts**
 
 :::tip
-We usually follow the pattern of creating  **.template.ts**, **.ts** and **.styles.ts** files. But it doesn't have to be that way; it could be a single file, for example, as we're going to see next.
+We usually follow the pattern of creating **.template.ts**, **.ts** and **.styles.ts** files. But it doesn't have to be that way; it could be a single file, for example, as we're going to see next.
 :::
 
 Realistically, any application will require multiple pages and routes.
@@ -286,7 +286,7 @@ Let's add a route pointing to **playground** so we can access it from the menu.
 
 1. Edit file `client\web\src\routes\config.ts` and add **playground** to **allRoutes** and **routes.map** so we'll be able to access playground from the menu:
 
-   ````ts {1,5,14} title='config.ts'
+   ````ts {1,5,16} title='config.ts'
    import { MarketdataComponent } from './playground/playground';
    ...
    	public allRoutes = [
@@ -300,7 +300,9 @@ Let's add a route pointing to **playground** so we can access it from the menu.
    		...
    		this.routes.map(
    		...
-   		{path: 'playground', element: MarketdataComponent, title: 'Playground', name: 'playground', settings: commonSettings},
+        { path: 'home', element: Home, title: 'Home', name: 'home' },
+        { path: 'not-found', element: NotFound, title: 'Not Found', name: 'not-found' },
+        {path: 'playground', element: MarketdataComponent, title: 'Playground', name: 'playground', settings: commonSettings},
    		);
    	```
    ````
@@ -311,7 +313,7 @@ You should see the **Playground** menu item now.
 
 To create an HTML template for our element, we have to import and use the html-tagged template helper and pass the template to the @customElement decorator.
 
-```ts {1,3,9} title='playground.ts'
+```ts {1,3-7,9} title='playground.ts'
 import { FASTElement, customElement, html } from "@microsoft/fast-element";
 
 const myTemplate = html<MarketdataComponent>`
@@ -328,6 +330,7 @@ As you see, we're defining a const called `myTemplate`, which contains the HTML 
 
 Try it now!
 
+<!-- Here we want IntelliJ only due to Genesis plugin
 :::tip code editors
 You're free to use any IDE or code editor you feel most comfortable with. Some of them, however, do not support syntax highlighting and IntelliSense for html inside JavaScript and TypeScript tagged template strings - like our HTML code in the `html<MarketdataComponent>` template.
 
@@ -341,6 +344,7 @@ As a tip, search for extensions in your IDE to support that. That's usually call
 
 [eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) to get static analysis before building
 :::
+-->
 
 ### Adding attributes to the component
 
@@ -362,7 +366,7 @@ export class MarketdataComponent extends FASTElement {
 
 Having the lastPrice always as zero doesn't make our MarketdataComponent very useful. Let's change the HTML template to display the price in real time and add some behaviour to the component, so that it gets the price in real time (in this example, we're simulating the exchange behaviour with a Math.random function):
 
-```typescript {6,14-20} title='playground.ts'
+```typescript {8-13,19-25} title='playground.ts'
 import {
   FASTElement,
   customElement,
@@ -456,8 +460,14 @@ FASTElement provides a **css** tagged template helper that allows for the creati
 
 Add this code:
 
-```typescript {1,3,4,5,6,7} title='playground.ts'
-import { FASTElement, customElement, html, attr, css } from "@microsoft/fast-element";
+```typescript {6,9-13} title='playground.ts'
+import {
+  FASTElement,
+  customElement,
+  html,
+  attr,
+  css,
+} from "@microsoft/fast-element";
 ...
 const marketdataComponentCSS = css`
   h4 {
@@ -525,7 +535,7 @@ By now, you should have a good understanding of how to build Web Components base
 :::info estimated time
 30min
 :::
-Let's change the MarkedataComponent so that it can work with multiple instruments and a fixed price for each of one them (instead of random). This is roughly what it'd look like:
+Let's change the MarketdataComponent so that it can work with multiple instruments and a fixed price for each of one them (instead of random). This is roughly what it'd look like:
 
 ```
 My Marketdata component
@@ -535,7 +545,7 @@ Instrument AAPL 227.12
 
 Steps:
 
-- import _observable_ and _repeat_ from `@microsoft/fast-element`
+- import _observable_ and _repeat_ from from `@microsoft/fast-element`
 - add a list called **_instruments_** to the MarketdataComponent. Feel free to initialize it with a few instruments, such as `@observable instruments: String[] = ["MSFT", "AAPL"];`
 - change the `lastPrice` attribute to a list of prices. Feel free to initialize it with corresponding prices, such as `@observable lastPrices: number[] = [101.23, 227.12];`
 - change `getLastPriceRealTime` to receive the instrument name and return the corresponding price;
@@ -600,20 +610,22 @@ In this next example, we have put a set of example options set in the flyout men
 
 To enable this micro front-end in our application, we'd have to follow the steps below.
 
-- Make sure you have `@genesislcap/foundation-header` as a dependency in your **client/web/package.json** file.
+- Make sure you have `@genesislcap/foundation-header` as a dependency in your _client/web/package.json_ file.
 
-```js {4} title='package.json'
+```js {5} title='package.json'
 {
   ...
   "dependencies": {
-    "@genesislcap/foundation-header": "^5.0.0"
+    ...
+    "@genesislcap/foundation-header": "14.7.0",
+    ...
   },
   ...
 }
 ```
 
 :::tip
-Whenever you change the dependencies of your project, ensure you run the bootstrap command again - from the **client** folder:
+Whenever you change the dependencies of your project, ensure you run the bootstrap command again - from the _client_ folder:
 
 ```shell
 npm run bootstrap
@@ -653,8 +665,9 @@ export const MainTemplate: ViewTemplate<MainApplication> = html`
 ```js {3} title='client/web/src/layouts/default.ts'
 export const defaultLayout = new FASTElementLayout(html`
 <div class="container">
-	<foundation-header></foundation-header>
-	<!-- Other markup -->
+  <alpha-button>Alpha</alpha-button>
+  <foundation-header
+  ...
 </div>`);
 
 export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
@@ -804,18 +817,6 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 `;
 ```
 
-### Exercise 1.3: adding the light and dark mode toggle
-
-:::info estimated time
-15min
-:::
-
-Add the Moon control button to the header that, when clicked, calls the `onDarkModeToggle`. This function is already defined in **main.ts**.
-
-:::tip
-In the last example we showed how to add the Misc Control button. Now you need to do this considering the Moon one.
-:::
-
 ##### Menu contents
 
 To set the content of the flyout menu, add the content in the html within an element that has the `slot="menu-contents"` attribute.
@@ -850,7 +851,7 @@ To set the content of the flyout menu, add the content in the html within an ele
 </foundation-header>
 ```
 
-### Exercise 1.4: adding items to the flyout menu
+### Exercise 1.3: adding items to the flyout menu
 
 :::info estimated time
 10 min
@@ -870,7 +871,7 @@ Playground
 By the way, we're using by default the Zero Design Systems. We are going to talk more about Design Systems later in this course.
 :::
 
-### Exercise 1.5: adding new routes
+### Exercise 1.4: adding new routes
 
 :::info estimated time
 30 min

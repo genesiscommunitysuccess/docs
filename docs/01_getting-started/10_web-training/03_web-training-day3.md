@@ -280,7 +280,7 @@ The way we have been using grid-pro so far is encapsulating a Genesis datasource
 
 - **`criteria: string`**: a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: Expr.dateIsBefore(TRADE_DATE,'20150518') or QUANTITY > 10000.
 
-- **`orderBy: string`**: This option can be used to select a [Data Server index](../../../database/data-types/index-entities/) (defined in tables-dictionary.kts), which is especially useful if you want the data to be sorted in a specific way. By default, data server rows will be returned in order of creation (from oldest database record to newest).
+- **`order-by: string`**: This option can be used to select a [Data Server index](../../../database/data-types/index-entities/) (defined in tables-dictionary.kts), which is especially useful if you want the data to be sorted in a specific way. By default, data server rows will be returned in order of creation (from oldest database record to newest).
 
 - **`resource-name: string`**: The target [Data Server](../../../server/data-server/introduction/) or [Request Server](../../../server/request-server/introduction/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
 
