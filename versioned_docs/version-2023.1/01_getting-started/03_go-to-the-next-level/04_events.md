@@ -21,12 +21,12 @@ The goal of this section is to define and build:
 
 
 ## Data Server
-The component that enables data to be read in real time is called the [Data Server](../../../server/data-server/introduction/). All the queries that a Data Server executes are defined in **positions-app-tutorial-dataserver.kts**. A Data Server can query both tables and views, so let's add two queries:
+The component that enables data to be read in real time is called the [Data Server](../../../server/data-server/introduction/). All the queries that a Data Server executes are defined in **alpha-dataserver.kts**. A Data Server can query both tables and views, so let's add two queries:
 
 - `ALL_POSITIONS` - this queries the `POSITION` table and returns the data stored in the table
 - `ALL_TRADES` - this queries the `TRADE_VIEW` and returns the joined data stored in the `TRADE`, `INSTRUMENT` and `COUNTERPARTY` tables
 
-```kotlin
+```kotlin title="alpha-dataserver.kts"
 dataServer {
     query("ALL_POSITIONS", POSITION)
     query("ALL_TRADES", TRADE_VIEW)
@@ -34,10 +34,10 @@ dataServer {
 ```
 
 ## Event Handler
-Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](../../../server/event-handler/introduction/) in the file **positions-app-tutorial-eventhandler.kts**.
+Next, we want to be able to insert rows into our table. For this, you need to define an [Event Handler](../../../server/event-handler/introduction/) in the file **alpha-eventhandler.kts**.
 
 
-```kotlin
+```kotlin title="alpha-eventhandler.kts"
 eventHandler {
 
     eventHandler<Trade>(name = "TRADE_INSERT") {
