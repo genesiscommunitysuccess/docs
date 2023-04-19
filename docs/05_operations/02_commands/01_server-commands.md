@@ -143,7 +143,7 @@ ConvertNonMatchingEnumValues --commit TRADE POSITION
 
 ### As an installHook
 
-To automate this process you can use an installHook to call the script before `remap` is peformed - be aware however that it will only run successfully once.
+To automate this process, you can use an installHook to call the script before `remap` is peformed - be aware however that it will only run successfully once.
 
 The following will find all String to Enum changes in all tables and commit any valid updates to the DB before `remap` is peformed.
 
@@ -157,9 +157,11 @@ ConvertNonMatchingEnumValues --commit
 exit $?
 ```
 
-Navigate to the ***appName*\server\jvm\\*appName*-config\src\main\resources\scripts\installHooks** folder
+To implement thia:
 
-Create a file called ***nextInstallHookNumber*_ConvertData.sh** or similar and add the bash script above.
+1. Navigate to the ***appName*\server\jvm\\*appName*-config\src\main\resources\scripts\installHooks** folder
+
+2. Create a file called ***nextInstallHookNumber*_ConvertData.sh** or similar and add the bash script above.
 
 The installHook will run before `remap` on your next deploy.
 
