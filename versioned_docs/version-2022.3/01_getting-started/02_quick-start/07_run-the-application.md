@@ -11,7 +11,7 @@ tags:
     - linux
 ---
 
-## Pre-requisites
+## Prerequisites
 Before you start this, make sure that:
 
 - you have a user with the name of the application (alpha)
