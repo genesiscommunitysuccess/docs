@@ -11,7 +11,7 @@ tags:
     - deploy
 ---
 
-To deploy your application using the genesis plugin, see this [guide](../../../../getting-started/quick-start/run-the-application-docker/).
+To deploy your application using the Genesis plugin, see this [guide](../../../../getting-started/quick-start/run-the-application-docker/).
 
 To install your application to a remote server, see [this manual installation guide](../../../../getting-started/prerequisites/manual-installation/).
 
