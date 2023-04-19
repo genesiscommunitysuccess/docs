@@ -13,14 +13,14 @@ tags:
 
 # Remap
 
-Remap is a schema-migration tool used to apply the current schema (defined in the deployed field and table GPAL dictionaries) to the underlying database layer used by the Genesis low-code platform.
+Remap is a schema-migration tool that applies the current schema (defined in the deployed field and table GPAL dictionaries) to the underlying database layer. 
 
 Remap should be run in the following scenarios:
 
 - If the Genesis Server Framework or any Genesis server component has been upgraded, which could include schema changes.
-- If a new version of an application is deployed and any dictionary file has changed (i.e., changes to fields, tables, or view GPAL).
+- If a new version of an application is deployed and any dictionary file has changed (this means changes to fields, tables, or views GPAL).
 
-### Syntax
+## Syntax
 
 ```bash
 remap [-c | --commit]
@@ -33,8 +33,8 @@ remap [-c | --commit]
 |          | --force-dao-generation | no        | Forces the re-generation of DAOs on the given host                                     | No                |
 |          | --skip-dao-generation  | no        | Skips the re-generation of DAOs on the given host                                      | No                |
 |          | --ask-db-password      | no        | Prompts for a DB user password to be manually entered                                   | No                |
-| -d       | --dumpSQL              | no        | Outputs the SQL DDL statements to the console instead of applying to the db          | No                |
-| -m       | --metadataOnly         | no        | Only updates the GSF dictionary and alias stores, does not apply any table changes    | No                |
+| -d       | --dumpSQL              | no        | Outputs the SQL DDL statements to the console instead of applying them to the db        | No                |
+| -m       | --metadataOnly         | no        | Only updates the GSF dictionary and alias stores; does not apply any table changes    | No                |
 |          | --skip-unchanged       | no        | Forces remap to fail if the `--commit` option is used and schema changes are present  | No                |
 
 If you run `remap` with no arguments, it simply gives a report of changes that exist in the configuration:
@@ -65,7 +65,7 @@ Key changes
 No changes
 ```
 
-To commit the changes to the database, use the **--commit** argument.
+To commit the changes to the database, use the `--commit` argument.
 
 :::note
 If no changes between the schema files and the current database schema are detected, remap will not perform any action.
@@ -73,33 +73,34 @@ If no changes between the schema files and the current database schema are detec
 
 ## How it works
 
-For clarity, we will refer to the schema being used by the database layer as "schema" and the current file system schema will be referred to as "dictionaries".
+For clarity, we refer here to the schema being used by the database layer as "schema" and the current file system schema as "dictionaries".
 
-When you initially deploy your application to the platform, `remap` will generate the schema from the dictionaries and no changes will be required as there is no existing schema.
-The next time you run `remap` this previously generated schema will be compared against the dictionaries to find any changes.
+When you initially deploy your application to the platform, `remap` generates the schema from the dictionaries. No changes will be required as there is no existing schema.
+T
+he next time you run `remap` this previously generated schema will be compared against the dictionaries to find any changes.
 
 Once it has finished the comparison, it will print the change list (see above), and if the "--commit" option was provided, it will attempt to modify the current schema to match the deployed dictionaries.
 
-Once generated, `remap` will then re-generate code (i.e. database entities and repositories) based on the schema to ensure the deployed application works as expected. This step can be time and memory-consuming, and we have already implemented the option to deploy the generated code directly as part of the application package, instead of relying on remap for re-generating the code every time.
+Once generated, `remap` then re-generates code (i.e. database entities and repositories) based on the schema to ensure that the deployed application works as expected. This step can be time- and memory-consuming, and we have already implemented the option to deploy the generated code directly as part of the application package, instead of relying on remap for re-generating the code every time.
 
-The `remap` command will return `0` if everything is successful and any other number if something has gone wrong.
+The `remap` command will return `0` if everything is successful, and any other number if something has gone wrong.
 
-### Additional Operations
+### Additional operations
 
 If using Aerospike or FoundationDB, `remap` will save the internal field and table aliases to the Alias Store.
 
-The Aerospike DB layer needs UDFs (user defined functions) to work correctly, these are also generated by `remap`.
+The Aerospike DB layer needs UDFs (user-defined functions) to work correctly, because these are also generated by `remap`.
 
 ## Rollback
 
 If a successful `remap` needs to be rolled back for any reason, you can:
 
-- Run `remap` again in an environment containing the previous genesis schema files to apply the reverse changes.
-- Use the CSV files generated during the Remap process (located in **$GENESIS_HOME/runtime/Remap**) and reload the old data using the `SendIt` tool.
-- Manually dump the database contents to CSV using `DumpIt` before performing Remap and then recover them back using `SendIt`. This would have to be done as part of the CI/CD configuration.
-- Create a database backup using native database tools (i.e., native PostgreSQL backup, native FoundationDB backup, etc.) and then use native database restore tools to return to the previous state.
+- run `remap` again in an environment containing the previous Genesis schema files to apply the reverse changes
+- use the CSV files generated during the remap process (located in **$GENESIS_HOME/runtime/Remap**) and reload the old data using the `SendIt` tool
+- manually dump the database contents to CSV using `DumpIt` before performing remap and then recover them back using `SendIt`; this would have to be done as part of the CI/CD configuration
+- create a database backup using native database tools (i.e. native PostgreSQL backup, native FoundationDB backup, etc.) and then use native database restore tools to return to the previous state
 
-## Considerations and Limitations
+## Considerations and limitations
 
 ### Locks
 
@@ -113,7 +114,7 @@ remap --force --commit
 
 ### Transactions
 
-Either all changes are applied or none are. In the case of databases that don't support transactional DDL (Oracle) or have transactional limitations (FoundationDB and Aerospike), `remap` clones each affected table and performs the changes on each cloned table instead of the original tables, this can add to the time it takes to perform the operation.
+Either all changes are applied or none are. In the case of databases that don't support transactional DDL (Oracle) or have transactional limitations (FoundationDB and Aerospike), `remap` clones each affected table and performs the changes on each cloned table instead of the original tables; this can add to the time it takes to perform the operation.
 
 ### Data migration
 
@@ -121,7 +122,7 @@ Remap does not perform any complex data migration, only schema changes. Some cus
 
 ### Field changes
 
-Renaming fields is unsupported by `remap`, as there is no way to identify individual fields (indices and tables are identified by an "id"), for that purpose we have the [rename fields script](./01_server-commands.md#renamefields-script)
+Renaming fields is unsupported by `remap`, as there is no way to identify individual fields (indices and tables are identified by an "id"). For this purpose, we have the [rename fields script](./01_server-commands.md#renamefields-script).
 
 ### Field-type migration
 
@@ -151,6 +152,4 @@ The following are valid without additional changes or caveats:
 
 ### String to Enum Conversion
 
-A common issue with type conversions is a String to Enum conversion where not all the data matches the allowed list of Enum values. Often, this mismatch is just a case of needing to capitalise the non-matching value, or add an underscore, or both.
-
-In that case you can run the `ConvertNonMatchingEnumValues` script, or add an installHook that calls it for you (See the section in [server commands](./01_server-commands.md#convertnonmatchingenumvalues))
+A common issue with type conversions is a String to Enum conversion where not all the data matches the allowed list of Enum values. Often, this mismatch is just a case of needing to capitalise the non-matching value, or add an underscore, or both. Where this is the case, you can run the `ConvertNonMatchingEnumValues` script, or add an installHook that calls it for you. See the section in [server commands](./01_server-commands.md#convertnonmatchingenumvalues)).
