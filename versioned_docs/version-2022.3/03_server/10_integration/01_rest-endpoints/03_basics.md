@@ -1,5 +1,5 @@
 ---
-title: 'REST endpoints - Basics'
+title: 'REST endpoints - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, integration, REST endpoints, basics]
@@ -10,17 +10,16 @@ tags:
   - basics
 ---
 
-[Introduction](../../../../server/integration/rest-endpoints/introduction/) | [Where to define](../../../../server/integration/rest-endpoints/where-to-define) | [Basics](../../../../server/integration/rest-endpoints/basics/) | [Advanced](../../../../server/integration/rest-endpoints/advanced/) | [Configuring runtime](../../../../server/integration/rest-endpoints/configuring-runtime/) | [Testing](../../../../server/integration/rest-endpoints/testing/)
 
 ## Authentication
-As mentioned in the introduction, all requests to all Genesis components require you to have done an intial log in and to have retrieved the `SESSION_AUTH_TOKEN`.
+As mentioned in the introduction, all requests to all Genesis components require you to have made an initial log in and to have retrieved the `SESSION_AUTH_TOKEN`.
 
 ### EVENT_LOGIN_AUTH
 
 Log in requests are submitted via POST requests to
 `[host]:[genesis_router_port]/event-login-auth`.
 
-Intial login requests require:
+Initial login requests require:
 
 * `USER_NAME` and `PASSWORD` keys in the `DETAILS` object
 * `SOURCE_REF` header.
@@ -354,9 +353,9 @@ Sample response:
 
 ## Event Handler
 Events are submitted via POST requests to
-`[host]:[genesis_router_port]/event_[<event_name>]`.
+`[host]:[genesis_router_port]/event-[<event-name>]`.
 
-All resource paths should be prefixed with `event_`. For example `localhost:9064/event_order_insert`. In this example `order_insert` is our custom event route and `event_` is the prefix.
+All resource paths should be prefixed with `event-`. For example `localhost:9064/event-order-insert`. In this example `order-insert` is our custom event route and `event-` is the prefix.
 
 Event Handler requests require:
 

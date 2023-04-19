@@ -11,14 +11,14 @@ tags:
 ---
 
 ## Authentication
-As mentioned in the introduction, all requests to all Genesis components require you to have done an intial log in and to have retrieved the `SESSION_AUTH_TOKEN`.
+As mentioned in the introduction, all requests to all Genesis components require you to have made an initial log in and to have retrieved the `SESSION_AUTH_TOKEN`.
 
 ### EVENT_LOGIN_AUTH
 
 Log in requests are submitted via POST requests to
 `[host]:[genesis_router_port]/event-login-auth`.
 
-Intial login requests require:
+Initial login requests require:
 
 * `USER_NAME` and `PASSWORD` keys in the `DETAILS` object
 * `SOURCE_REF` header.
@@ -352,9 +352,9 @@ Sample response:
 
 ## Event Handler
 Events are submitted via POST requests to
-`[host]:[genesis_router_port]/event_[<event_name>]`.
+`[host]:[genesis_router_port]/event-[<event-name>]`.
 
-All resource paths should be prefixed with `event_`. For example `localhost:9064/event_order_insert`. In this example `order_insert` is our custom event route and `event_` is the prefix.
+All resource paths should be prefixed with `event-`. For example `localhost:9064/event-order-insert`. In this example `order-insert` is our custom event route and `event-` is the prefix.
 
 Event Handler requests require:
 

@@ -1,5 +1,5 @@
 ---
-title: 'REST endpoints - Configuring Runtime'
+title: 'REST endpoints - Configuring runtime'
 sidebar_label: 'Configuring Runtime'
 id: configuring-runtime
 keywords: [server, integration, REST endpoints, configuring runtime]
@@ -10,7 +10,7 @@ tags:
   - configuring runtime
 ---
 
-[Introduction](../../../../server/integration/rest-endpoints/introduction/) | [Where to define](../../../../server/integration/rest-endpoints/where-to-define) | [Basics](../../../../server/integration/rest-endpoints/basics/) | [Advanced](../../../../server/integration/rest-endpoints/advanced/) | [Configuring runtime](../../../../server/integration/rest-endpoints/configuring-runtime/) | [Testing](../../../../server/integration/rest-endpoints/testing/)
+
 
 There are two important files in your application that contain configuration information:
 - _application-name_**-processes.xml**

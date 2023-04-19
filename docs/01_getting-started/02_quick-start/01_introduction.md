@@ -12,8 +12,8 @@ tags:
 
 The very simple application you will build will look like this:
 
-- a simple table with 5 fields
-- two front-end components: one to display data and one to insert data
+- A simple table with 5 fields
+- Two front-end components: one to display data and one to insert data
 
 That’s it. Just enough to get you up and running. Obviously, there is much more you could do, but that can wait for another day.
 
