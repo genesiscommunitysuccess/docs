@@ -128,10 +128,10 @@ module.exports = {
     webpackOptions: {
       options: { // will be merged into the final config using webpack-merge
         optimization: {
-          mangleExports: false,
-          minimize: false,
-          minimizer: undefined,
-          moduleIds: 'deterministic'
+          // TODO: remove the temporary hack where we throw the iife bundle into node_modules manually.
+          // Will likely need these to avoid minification breaking things.
+          // mangleExports: false,
+          // minimize: false,
         },
       }
     },

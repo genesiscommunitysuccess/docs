@@ -15,8 +15,12 @@
     "start:copy-docs": "cross-env COPY_DOCS=true npm run start",
     "start:next": "SHOW_NEXT=true docusaurus start --port 8080 --host 0.0.0.0",
     "swizzle": "docusaurus swizzle",
-    "postinstall": "patch-package --error-on-fail",
-    "generate:iife": "rollup -c -f iife --no-compact --no-minifyInternalExports"
+    "postinstall": "patch-package --error-on-fail && npm run generate:iife && npm run hack:iife",
+    "generate:iife": "rollup -c -f iife",
+    "hack:iife": "npm run copy:iife && npm run rename:iife && npm run package:iife",
+    "copy:iife": "copyfiles -u 2 src/client-modules/docs.iife.min.js node_modules/iife",
+    "rename:iife": "node -e \"require('fs').rename('node_modules/iife/docs.iife.min.js', 'node_modules/iife/index.js',()=>{})\"",
+    "package:iife": "node -e \"require('fs').writeFileSync('node_modules/iife/package.json', '{\\\"name\\\":\\\"iife\\\",\\\"version\\\":\\\"1.0.0\\\",\\\"main\\\":\\\"index.js\\\"}')\""
   },
   "dependencies": {
     "@cmfcmf/docusaurus-search-local": "^0.11.0",
@@ -65,6 +69,7 @@
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.0",
     "@types/mocha": "^10.0.1",
+    "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "patch-package": "^6.5.1",
