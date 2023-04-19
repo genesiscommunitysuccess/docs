@@ -26,5 +26,5 @@ With a lack of imagination we hope you will find trustworthy, we are going to ca
 ## Preparation
 Before you start, make sure you have the relevant [hardware and software](../../getting-started/quick-start/hardware-and-software/).
 
-For this tutorial please use Windows as development environment and WSL/CentOS as runtime environment. You need to [install these](../../getting-started/prerequisites/installing-wsl/). You can then proceed to the first step of the Quick start - [creating a new project](../../getting-started/quick-start/create-a-new-project/).
+For this tutorial, use Windows as development environment and WSL/CentOS as runtime environment. You need to [install these](../../getting-started/prerequisites/installing-wsl/). You can then proceed to the first step of the Quick start - [creating a new project](../../getting-started/quick-start/create-a-new-project/).
 
