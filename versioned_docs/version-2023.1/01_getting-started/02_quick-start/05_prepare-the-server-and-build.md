@@ -98,7 +98,7 @@ Do not forget to configure your [genesis plugin](../../../server/tooling/intelli
 
 #### Build
 
-Finally, you can build the server. In the Gradle menu on the right of IntelliJ, select:
+Finally, you can build the server. 
 
 In the Gradle menu on the right of IntelliJ, select:
 
