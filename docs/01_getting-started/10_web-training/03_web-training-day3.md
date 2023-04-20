@@ -29,8 +29,8 @@ export const OrderTemplate = html<Order>`
   ...
 <zero-grid-pro>
     <grid-pro-genesis-datasource
-            resourceName="ALL_ORDERS"
-            orderBy="ORDER_ID">
+            resource-name="ALL_ORDERS"
+            order-by="ORDER_ID">
     </grid-pro-genesis-datasource>
     <grid-pro-column :definition="${x => x.singleOrderActionColDef}" />
 </zero-grid-pro>
@@ -104,8 +104,8 @@ export const OrderTemplate = html<Order>`
     only-template-col-defs
     >
     <grid-pro-genesis-datasource
-        resourceName="ALL_ORDERS"
-        orderBy="ORDER_ID">
+        resource-name="ALL_ORDERS"
+        order-by="ORDER_ID">
     </grid-pro-genesis-datasource>
     ${repeat(() => orderColumnDefs, html`
     <grid-pro-column :definition="${x => x}" />
@@ -280,18 +280,18 @@ The way we have been using grid-pro so far is encapsulating a Genesis datasource
 
 - **`criteria: string`**: a Groovy expression to perform filters on the query server; these remain active for the life of the subscription. For example: Expr.dateIsBefore(TRADE_DATE,'20150518') or QUANTITY > 10000.
 
-- **`orderBy: string`**: This option can be used to select a [Data Server index](../../../database/data-types/index-entities/) (defined in tables-dictionary.kts), which is especially useful if you want the data to be sorted in a specific way. By default, data server rows will be returned in order of creation (from oldest database record to newest).
+- **`order-by: string`**: This option can be used to select a [Data Server index](../../../database/data-types/index-entities/) (defined in tables-dictionary.kts), which is especially useful if you want the data to be sorted in a specific way. By default, data server rows will be returned in order of creation (from oldest database record to newest).
 
-- **`resourceName: string`**: The target [Data Server](../../../server/data-server/introduction/) or [Request Server](../../../server/request-server/introduction/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
+- **`resource-name: string`**: The target [Data Server](../../../server/data-server/introduction/) or [Request Server](../../../server/request-server/introduction/) name. Example: "ALL_TRADES" or "ALT_COUNTERPARTY_ID"
 
-As you may have noticed, we've already used `resourceName` and `orderBy` when we used the grid-pro-genesis-datasource for the first time. 
+As you may have noticed, we've already used `resource-name` and `order-by` when we used the grid-pro-genesis-datasource for the first time. 
 
 Now, let's see how we'd use `criteria` to add some filters to the data grid. In the example below, only orders whose side is BUY would be displayed:
 
 ```ts {4} title='order.template.ts'
 <grid-pro-genesis-datasource
-    resourceName="ALL_ORDERS"
-    orderBy="ORDER_ID"
+    resource-name="ALL_ORDERS"
+    order-by="ORDER_ID"
     criteria="SIDE == 'BUY'"
 >
 </grid-pro-genesis-datasource>
@@ -303,8 +303,8 @@ Having a static filter like that is not always very useful though. Let's make it
 <zero-button @click=${x=> x.toggleSideFilter()}>Toggle SIDE filter</zero-button>
 
 <grid-pro-genesis-datasource
-        resourceName="ALL_ORDERS"
-        orderBy="ORDER_ID"
+        resource-name="ALL_ORDERS"
+        order-by="ORDER_ID"
         criteria="SIDE == '${x=>x.sideFilter}'">
 </grid-pro-genesis-datasource>
 ```
@@ -325,8 +325,8 @@ Ultimately, we can use something like the [ref directive](https://www.fast.desig
 <zero-button @click=${x=> x.customFilter()}>No filters</zero-button>
 
 <grid-pro-genesis-datasource ${ref('ordersGrid')}
-        resourceName="ALL_ORDERS"
-        orderBy="ORDER_ID"
+        resource-name="ALL_ORDERS"
+        order-by="ORDER_ID"
         criteria="SIDE == '${x=>x.sideFilter}'">
     </grid-pro-genesis-datasource>
 ```

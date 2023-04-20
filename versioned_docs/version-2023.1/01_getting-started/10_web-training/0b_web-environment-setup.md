@@ -22,7 +22,7 @@ You're not going to change any backend code, but we must have the server running
 
 Just follow the [build and deploy steps](../../../getting-started/developer-training/training-content-day1/#5-the-build-and-deploy-process), and then double-check if you can see the processes running properly as [explained](../../../server/tooling/intellij-plugin/#starting-processes). You must see all processes up and running or in standby mode.
 
-## Running the frontend
+### Running the frontend
 Next, [run the web application locally](../../../getting-started/developer-training/training-content-day2/#running-the-application-locally).
 
 If you don't get any errors, you're all set!

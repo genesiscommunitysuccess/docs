@@ -46,7 +46,7 @@ dataServer {
 Front end
 ```html
 <zero-grid-pro rowHeight="45">
-    <grid-pro-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
+    <grid-pro-genesis-datasource resource-name="ALL_TRADES" order-by="TRADE_DATETIME" />
 </zero-grid-pro>
 ```
 

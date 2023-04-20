@@ -7,7 +7,7 @@ const GTM_ID = process.env.GTM_ID || 'GTM-5GTR43J'; // default to uat GTM_ID, pr
 
 const DEV_ANALYTICS = 'https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS_dev_faea79accbcd255c7f124004.js';
 const PROD_ANALYTICS = 'https://cdn.matomo.cloud/newgenesisglobal.matomo.cloud/container_cyD5hUgS.js';
-const MATOMO_URL = GTM_ID ===  'GTM-5GTR43J' ? DEV_ANALYTICS : PROD_ANALYTICS;
+const MATOMO_URL = GTM_ID === 'GTM-5GTR43J' ? DEV_ANALYTICS : PROD_ANALYTICS;
 
 /**
  * For local / debug purposes.
@@ -91,7 +91,8 @@ module.exports = {
       manifest: require('./plugins/api-docs/manifest.json'),
       processedMap,
     }] : null),
-    'docusaurus-plugin-matomo'
+    'docusaurus-plugin-matomo',
+    './plugins/webpack-options'
   ],
   presets: [
     [
@@ -107,7 +108,7 @@ module.exports = {
           versions: {
             '2023.1': {
               'banner': 'none'
-            },            
+            },
             '2022.4': {
               'banner': 'none'
             },
@@ -124,6 +125,16 @@ module.exports = {
   ],
   themes: ['@docusaurus/theme-live-codeblock'],
   themeConfig: {
+    webpackOptions: {
+      options: { // will be merged into the final config using webpack-merge
+        optimization: {
+          // TODO: remove the temporary hack where we throw the iife bundle into node_modules manually.
+          // Will likely need these to avoid minification breaking things.
+          // mangleExports: false,
+          // minimize: false,
+        },
+      }
+    },
     colorMode: {
       disableSwitch: true
     },

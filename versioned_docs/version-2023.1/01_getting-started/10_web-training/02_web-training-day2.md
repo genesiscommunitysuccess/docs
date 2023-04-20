@@ -48,7 +48,7 @@ Insert, edit and cancel.
 
 ### Adding the new Order modal
 
-Let's start with the simplest way to create a form, using the `zero-form` component:
+Let's start with the simplest way to create a form, using the `foundation-form` component:
 
 ```ts {5-9} title='order.template.ts'
 import {html} from '@microsoft/fast-element';
@@ -57,7 +57,7 @@ import type {Order} from './order';
 export const OrderTemplate = html<Order>`
 <div class="split-layout">
     <div class="top-layout">
-      <zero-form class="order-entry-form" resourceName="EVENT_ORDER_INSERT"></zero-form>
+      <foundation-form class="order-entry-form" resourceName="EVENT_ORDER_INSERT"></foundation-form>
     </div> 
 </div>
 `;
@@ -67,10 +67,10 @@ This component is able to retrieve the meta-data from the `EVENT_ORDER_INSERT` b
 
 Try to run it now and you'll notice that, even though the form is displayed, nothing happens when you click on Submit. We have to bind the submit button to a function, like this:
 ```html {3} title='order.template.ts'
-<zero-form
-  resourceName="EVENT_ORDER_INSERT"
+<foundation-form
+  resource-name="EVENT_ORDER_INSERT"
   @submit=${(x, c) => x.insertOrder(c.event as CustomEvent)}
-></zero-form>
+></foundation-form>
 ```
 :::tip what is the @submit=${(x, c)} ?
 This is related to binding as we briefly explained in the previous day. If it's still unclear, make sure to check [Understanding bindings](https://www.fast.design/docs/fast-element/declaring-templates#understanding-bindings) and [Events](https://www.fast.design/docs/fast-element/declaring-templates#events)
@@ -123,7 +123,7 @@ connects to the server through a web socket (when WS is available or http as fal
 - `commitEvent`: 
 use it to call event handlers on the server. You must pass the name of the event and an object with the input data required by the event. This data must be in JSON format with key **DETAILS**. See the example above of the `insertOrder` function.
 
-- `getMetadata`: it retrieves the metadata of a resource, that can be an event handler, data server query or a request server. When we used the **zero-form** component previously, for example, it used internally getMetadata passing the event handler name to get all the input fields of the event.
+- `getMetadata`: it retrieves the metadata of a resource, that can be an event handler, data server query or a request server. When we used the **foundation-form** component previously, for example, it used internally getMetadata passing the event handler name to get all the input fields of the event.
 
 - `request`: use it to call a [request server](../../../server/request-server/introduction/) resource. You must pass the request server resource name.
 
@@ -133,7 +133,7 @@ Those are the most common features from Foundation Comms you will use. We're goi
 
 ### Creating a custom form
 
-Using `zero-form` is good for simple forms or prototyping, but we might realise that it is not enough for our use case, and we require much more customisation.
+Using `foundation-form` is good for simple forms or prototyping, but we might realise that it is not enough for our use case, and we require much more customisation.
 
 To enable that you will create each form element manually and take care of storing user inputted data.
 
@@ -457,8 +457,8 @@ export const OrderTemplate = html<Order>`
   ...
 <zero-grid-pro>
     <grid-pro-genesis-datasource
-        resourceName="ALL_ORDERS"
-        orderBy="ORDER_ID">
+        resource-name="ALL_ORDERS"
+        order-by="ORDER_ID">
     </grid-pro-genesis-datasource>
 </zero-grid-pro>
   ...
