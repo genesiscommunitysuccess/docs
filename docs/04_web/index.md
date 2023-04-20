@@ -3,25 +3,23 @@ title: 'Web'
 sidebar_label: 'Overview'
 sidebar_position: 1
 id: front-end
+keywords: [web, profile management, user management]
+tags:
+  - web
+  - profile management
+  - user management
+
 ---
 
 import QuickCard from '@site/src/components/Card';
 import { Grid } from '@mui/material'
 
-Welcome to our reference documentation on the web (front end) of your application. Here, you can find all the information you need to build a front end for your Genesis application.
+Welcome to the reference documentation on operating Genesis applications. Here, you will find details of a wide range of operating concerns, including specs of the complete Genesis command set and the use of Genesis Console.
 
-## Test links to be deleted
-Here's a reference to the [remap script](../operations/commands/server-commands/#remap-script) as well.
+Importantly, you can find information here on:
 
-If you get a blank page without any response, then this is probably because you don't have [NGINX configured](../operations/server-setup/config-management/#nginx-configuration).
-
-It is made up of [subtables](../database/fields-tables-views/tables/tables-advanced/#subtables).
-
-The fields, tables and views you define must be turned into [DAO](../getting-started/glossary/glossary/#dao)s (Database Access Objects).
-
-Further information can be found [here](https://www.jetbrains.com/help/idea/content-roots.html#configure-folders).
-
-Here's [profile management](../web/micro-front-ends/foundation-entity-management/#profile-management)
+- [User Management](../web/micro-front-ends/foundation-entity-management/#user-management)
+- [Profile Management](../web/micro-front-ends/foundation-entity-management/#profile-management)
 
 ## Basics
 <Grid container>
@@ -39,15 +37,16 @@ Here's [profile management](../web/micro-front-ends/foundation-entity-management
     </Grid>
 </Grid>
 
-## User and Profile Management
+## Micro front-ends
+Explore our growing range of micro front-ends for speedier development.
 
 <Grid container>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="User Management" link="../web/micro-front-ends/foundation-entity-management/#user-management" text="Examine the core components for managing users on the front end.">
+        <QuickCard heading="Front-end Reporting" link="../web/micro-front-ends/front-end-reporting/foundation-reporting" text="Enable your users to create report specifications, run them, or save them for later use.">
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Profile Management" link="../web/micro-front-ends/foundation-entity-management/#profile-management" text="Manage profiles on the front end using grids and forms.">
+        <QuickCard heading="Foundation Header" link="../web/micro-front-ends/foundation-header" text="Provide a navigation bar and flyout menu, with routing and account logout capabilities">
         </QuickCard>
     </Grid>
 </Grid>
