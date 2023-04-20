@@ -10,6 +10,17 @@ import { Grid } from '@mui/material'
 
 Welcome to our reference documentation on the web (front end) of your application. Here, you can find all the information you need to build a front end for your Genesis application.
 
+## Test links to be deleted
+Here's a reference to the [remap script](../operations/commands/server-commands/#remap-script) as well.
+
+If you get a blank page without any response, then this is probably because you don't have [NGINX configured](../operations/server-setup/config-management/#nginx-configuration).
+
+It is made up of [subtables](../database/fields-tables-views/tables/tables-advanced/#subtables).
+
+The fields, tables and views you define must be turned into [DAO](../getting-started/glossary/glossary/#dao)s (Database Access Objects).
+
+Further information can be found [here](https://www.jetbrains.com/help/idea/content-roots.html#configure-folders).
+
 ## Basics
 <Grid container>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
@@ -34,7 +45,7 @@ Welcome to our reference documentation on the web (front end) of your applicatio
         </QuickCard>
     </Grid>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
-        <QuickCard heading="Profile Management" link="../web/micro-front-ends/foundation-entity-management/#profile-management/" text="Manage profiles on the front end using grids and forms.">
+        <QuickCard heading="Profile Management" link="../web/micro-front-ends/foundation-entity-management/#profile-management" text="Manage profiles on the front end using grids and forms.">
         </QuickCard>
     </Grid>
 </Grid>
