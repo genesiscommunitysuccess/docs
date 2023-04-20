@@ -16,9 +16,9 @@ Download and install all the relevant requirements.
 :::
 
 ## The genx script
-`genx` is a CLI tool that enables you to seed projects. In this case, we shall generate a full-stack application project; the key files will be empty so that you can define the details of the application.
+`genx` is a CLI tool that enables you to seed projects. In this case, you shall generate a full-stack application project; the key files will be empty so that you can define the details of the application.
 
-If you still don`t have genx installed, please see the session [access to the genesis repository](../../../getting-started/quick-start/hardware-and-software/#access-to-the-genesis-repository).
+If you still don't have genx installed, please see the session [Installing GenX](../../../getting-started/quick-start/hardware-and-software/#installing-genx).
 
 ## Starting
 
@@ -99,18 +99,17 @@ At this point, the application will be configured. On completion, you will see t
 ```shell title="Windows Terminal"
 i Application created successfully! 🎉 Please open the application and follow the README to complete setup.
 ```
-Now let's open our application in Intellij. Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/). In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (**alpha**, **client**, **genesisproduct-alpha**).
+Now let's open your application in Intellij. Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/). In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (**alpha**, **client**, **genesisproduct-alpha**).
 
 ### Gradle.properties
-Before we finish the creation of our new project, make sure your **gradle.properties** file in **server/jvm** has the following properties:
+Before you finish the creation of your new project, make sure your **gradle.properties** file in **server/jvm** has the highlighted properties following properties:
 
-```kotlin title="server/jvm/gradle.properties"
-kotlin.code.style=official
-org.gradle.jvmargs=-Xmx6g -Xss512k -XX:+HeapDumpOnOutOfMemoryError -XX:+UseG1GC -XX:+UseStringDeduplication -XX:ReservedCodeCacheSize=512m -Dkotlin.daemon.jvm.options=-Xmx2g -Dfile.encoding=UTF-8
-bundleGeneratedClasses=true
-genesisVersion=6.5.3
-authVersion=6.5.1
-deployPluginVersion=6.5.3
+```kotlin {2,3} title="server/jvm/gradle.properties"
+                ...
 genesisArtifactoryPath=https://genesisglobal.jfrog.io/genesisglobal/libs-release-client
 enableGenesisIntellijHelperTasks=true
 ```
+
+:::note
+If you had to modify this file, make sure you `reload all gradle projects`.
+:::

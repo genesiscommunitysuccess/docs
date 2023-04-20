@@ -40,9 +40,9 @@ This page gives you the hardware and software requirements needed in order to ru
 | [Postman](https://www.postman.com/downloads/) (optional)	                                                       |         8          |
 
 
-You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJIDEA enables you to use Genesis Plugin and make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Since we are going to use this plugin, Genesis strongly recommends using IntelliJIDEA.
+You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJIDEA enables you to use Genesis Plugin and make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Since you are going to use this plugin, Genesis strongly recommends using IntelliJIDEA.
 
-## Access to the Genesis repository
+## Installing GenX
 
 <details>
   <summary>Pre-requisite check</summary>
@@ -53,14 +53,14 @@ You can use a range of IDEs (for example, Eclipse) with the Genesis platform, bu
     <p>Check if these versions are compatible with the requirements.</p>
 </details>
 
-Since version 11.3.0 of the foundation-UI, we have made our libraries public. So now you only need to run this simple command to start using Genesis:
+Since version 11.3.0 of the foundation-UI, we have set our libraries public. Hence, you only need to run this simple command to start using genesis.
 
 ```powershell
 npm install -g @genesislcap/foundation-cli
 ```
 
 ## gradle.properties file
-Make sure you have a **gradle.properties** file inside a **.gradle** folder on your user directory; this file must contain your Genesis Artifactory password in a [base64 encrypted text](https://www.base64encode.org/), for example:
+You should have a **gradle.properties** file inside a **.gradle** folder on your user directory; this file must contain your Genesis Artifactory password in a [base64 encrypted text](https://www.base64encode.org/), for example:
 
 ```shell
 genesisArtifactoryUser=<JaneDee>
@@ -68,4 +68,4 @@ genesisArtifactoryPassword=<asodjkdnaisd9893-==12>
 ```
 
 ## Genesis Plugin
-For this quick start guide we are using the Genesis plugin. Please follow the [instructions](../../../server/tooling/intellij-plugin/) to have it properly installed.
+For this quick start guide we are using the Genesis plugin, please follow the [instructions](../../../server/tooling/intellij-plugin/) to have it properly installed.

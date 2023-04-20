@@ -1,6 +1,6 @@
 ---
-title: 'Quick start - run the application (Docker)'
-sidebar_label: 'Run the application (Docker)'
+title: 'Quick start - run the application'
+sidebar_label: 'Run the application'
 id: run-the-application-docker
 keywords: [getting started, quick start, run the app, docker]
 tags:
@@ -10,28 +10,21 @@ tags:
     - docker
 ---
 
-Before you follow the instructions on this page, make sure you have sucessfully installed [genesis plugin](../../../server/tooling/intellij-plugin/).
+## Create a new Schema
 
-## Building and composing Docker images
+Before you can run your application, you need to create a new schema to you database where all tables will be created. To do that, follow these two steps:
 
-First, you need to start the database (in this tutorial we are using a POSTGRES db in a docker container). Make sure your docker management software (in our case Rancher desktop) is up and running and do the following:
+1. Run `genesis-install`.
 
-```powershell
-docker pull postgres
-docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=10000'
-```
+![Genesis Install](/img/intellij-genesisInstall.png)
 
-To confirm your docker has been created, please run:
-```powershell
-docker ps | findstr "localPostgresDb"
-```
+2. Run `remap`.
 
-## Send data to Genesis
+![Genesis Install](/img/intellij-remap.png)
 
-:::note
-If you have not already run the [remap command](../../../server/tooling/intellij-plugin/#remap), do it now, so that our database is updated.
-:::
-Now that we have our database up and running, we need to send the login information so we can access the application we have just created. To do this, go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**
+
+## Send data to genesis
+Now that you have your database up and running, you need to send the login information so you can access the application you have just created. To do this, go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**
 
 ![](/img/import_csv_to_genesis.png)
 
@@ -43,8 +36,49 @@ WARNING: Are you sure you want to import all the tables from all the csv files t
 
 After that, you have all the data to start the application.
 
+<details>
+  <summary>Want to check if your data has been sent?</summary>
+  To check your database, genesis plugin has the following script 
+
+  ![](/img/DbMon-script.png)
+
+  type `table USER` and then `search 1` you will be displayed the following:
+
+```kotlin
+==================================
+Genesis Database Monitor
+Enter 'help' for a list of commands
+==================================
+DbMon>table USER
+DbMon:USER>search 1
+==================================
+USER
+==================================
+Field Name                               Value                                    Type                
+===========================================================================================
+TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)      NANO_TIMESTAMP      
+COMPANY_ID                                                                        STRING              
+COMPANY_NAME                             GENESIS                                  STRING              
+DOMAIN                                                                            STRING              
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING              
+FIRST_NAME                               Jane                                     STRING              
+LAST_LOGIN                               2016-04-28                               DATE                
+LAST_NAME                                Dee                                      STRING              
+ONLINE                                   false                                    BOOLEAN             
+PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING              
+PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
+REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
+STATUS                                   ENABLED                                  STRING              
+USER_NAME                                JaneDee                                  STRING              
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+Total Results:  1
+DbMon:USER>
+```
+</details>
+
 ## Connect front end to server
-Since we created out project from a seed, you need to change the defaut API_HOST in the **package.json** in **client/web/** to the port we are using in the project. Change the highlighted line in your file.
+Since you created your project from a seed, you need to change the defaut API_HOST in the **package.json** in **client/web/** to the port we are using in the project. Change the highlighted line in your file.
 
 ```kotlin {7} title="client/web/package.json"
 {
