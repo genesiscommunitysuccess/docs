@@ -62,6 +62,7 @@ Use FoundationUI alongside your existing or preferred stack.
 </Grid>
 
 ## Testing, deployment and more
+Look at the details you'll need to consider for testing and deploying your completed front end.
 
 <Grid container>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
