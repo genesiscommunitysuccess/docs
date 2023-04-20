@@ -21,6 +21,8 @@ The fields, tables and views you define must be turned into [DAO](../getting-sta
 
 Further information can be found [here](https://www.jetbrains.com/help/idea/content-roots.html#configure-folders).
 
+Here's [profile management](../web/micro-front-ends/foundation-entity-management/#profile-management)
+
 ## Basics
 <Grid container>
     <Grid item xs={12} md={6} sx={{padding: '1%'}}>
