@@ -1,5 +1,5 @@
 ---
-title: 'Design Systems - Preview'
+title: 'Design systems - preview'
 sidebar_label: 'Preview'
 id: preview
 keywords: [web, design system, preview]

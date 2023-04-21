@@ -1,5 +1,5 @@
 ---
-title: 'Design Systems - Introduction'
+title: 'Design systems - introduction'
 sidebar_label: 'Introduction'
 id: introduction
 keywords: [web, design system, frontend, ui, foundation ui]

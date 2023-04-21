@@ -1,5 +1,5 @@
 ---
-title: 'Design System Tokens - Colour'
+title: 'Design system tokens - colour'
 sidebar_label: 'Colour'
 id: colour
 keywords: [web, design system, tokens, colour]

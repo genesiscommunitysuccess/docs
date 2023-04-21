@@ -58,7 +58,7 @@ To enable this micro front-end in your application, follow the steps below.
 }
 ```
 
-1. Import and declare the class in the page of the class where you wish to use the Entity Manager. Then add the entity management into the template HTML where required:
+2. Import and declare the class in the page of the class where you wish to use the Entity Manager. Then add the entity management into the template HTML where required:
 
 ```javascript
 // Import
