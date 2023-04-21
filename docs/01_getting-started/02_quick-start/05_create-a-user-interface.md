@@ -12,7 +12,7 @@ tags:
 
 Now let's create a single page with a grid and a form for entering data.
 
-### Using genesis components
+## Using genesis components
 
 For the user interface, the `genx` process has generated the following files:
 
@@ -20,7 +20,7 @@ For the user interface, the `genx` process has generated the following files:
 - **home.ts**
 - **home.styles.ts**
 
-We will make use of entity-management component, which includes CRUD functionality by providing previously defined endpoints.
+We will make use of the Entity Management component, which includes CRUD functionality by providing previously defined endpoints.
 
 Add the code below to the **home.template.ts** in the path **client/web/src/routes/home/home.template.ts**.
 
