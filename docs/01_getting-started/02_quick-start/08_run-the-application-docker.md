@@ -28,7 +28,7 @@ Now that you have your database up and running, you need to send the login infor
 
 ![](/img/import_csv_to_genesis.png)
 
-You will be prompted the following message. Type **y** to proceed.
+You will be prompted with the following message. Type **y** to proceed.
 
 ```powershell
 WARNING: Are you sure you want to import all the tables from all the csv files to the database? (y/n)
