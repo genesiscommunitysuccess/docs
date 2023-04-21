@@ -102,7 +102,7 @@ i Application created successfully! 🎉 Please open the application and follow 
 Now let's open your application in Intellij. Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/). In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (**alpha**, **client**, **genesisproduct-alpha**).
 
 ### Gradle.properties
-Before you finish the creation of your new project, make sure your **gradle.properties** file in **server/jvm** has the highlighted properties following properties:
+Before you finish the creation of your new project, make sure your **gradle.properties** file in **server/jvm** has the  following highlighted properties:
 
 ```kotlin {2,3} title="server/jvm/gradle.properties"
                 ...
