@@ -69,7 +69,7 @@ You can specify which database to use in your application by editing **genesis-s
 
 Further information can be found in the [**genesis-system-definitions.kts** file](../../../server/configuring-runtime/system-definitions/).
 
-### Run with docker
+## Run with docker
 
 Since we are using a docker container, add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
 
@@ -94,7 +94,7 @@ systemDefinition {
 
 ### Build and compose Docker images
 
-Now, you need to start the database. Make sure your docker management software (in our case Rancher desktop) is up and running and do the following:
+Now you need to start the database. Make sure your docker management software (in our case Rancher desktop) is up and running and do the following:
 
 ```powershell
 docker pull postgres
@@ -154,7 +154,7 @@ This generates a hidden folder called **.genesis-home** in your project root, re
 On the first run, this could take up to 20 minutes, because it performs a full build of your application.
 :::
 
-### Deploy
+## Deploy
 
 As soon as the Build is done, you need to deploy the application:
 
