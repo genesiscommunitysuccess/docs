@@ -10,5 +10,6 @@ tags:
 ---
 
 <design-system-editor>
-    <design-system-preview></design-system-preview>
+  <design-system-preview></design-system-preview>
+  <design-system-export slot="export"></design-system-export>
 </design-system-editor>
