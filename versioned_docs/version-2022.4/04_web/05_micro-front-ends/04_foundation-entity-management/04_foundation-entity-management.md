@@ -135,6 +135,7 @@ User Management is a concrete use case of the [Entity Management](#entity-manage
 :::
 
 Here is an example grid view for managing users:
+
 ![Example user management grid](./docs/img/foundation-user-management.png)
 
 ### Set-up
