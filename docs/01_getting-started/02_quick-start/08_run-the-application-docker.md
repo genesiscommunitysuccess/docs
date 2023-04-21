@@ -23,7 +23,7 @@ Before you can run your application, you need to create a new schema to you data
 ![Genesis Install](/img/intellij-remap.png)
 
 
-## Send data to genesis
+## Send data to Genesis
 Now that you have your database up and running, you need to send the login information so you can access the application you have just created. To do this, go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**
 
 ![](/img/import_csv_to_genesis.png)
@@ -38,11 +38,11 @@ After that, you have all the data to start the application.
 
 <details>
   <summary>Want to check if your data has been sent?</summary>
-  To check your database, genesis plugin has the following script 
+  To check your database, Genesis plugin has the following script: 
 
   ![](/img/DbMon-script.png)
 
-  type `table USER` and then `search 1` you will be displayed the following:
+  Type `table USER` and then `search 1`, which will display the following:
 
 ```kotlin
 ==================================
@@ -77,8 +77,8 @@ DbMon:USER>
 ```
 </details>
 
-## Connect front end to server
-Since you created your project from a seed, you need to change the defaut API_HOST in the **package.json** in **client/web/** to the port we are using in the project. Change the highlighted line in your file.
+## Connect the front end to the server
+Since you created your project from a seed, you need to change the default API_HOST in the **package.json** in **client/web/** to the port we are using in the project. Change the highlighted line in your file.
 
 ```kotlin {7} title="client/web/package.json"
 {
@@ -99,7 +99,7 @@ Since you created your project from a seed, you need to change the defaut API_HO
 :::note
 Make sure you have started the [resource deamon](../../../server/tooling/intellij-plugin/#remap).
 :::
-Once your resource deamon has started, you can start all genesis processes; click on the **start** button.
+Once your resource deamon has started, you can start all the Genesis processes; click on the **start** button.
 
 ![](/img/genesis_deamon.png)
 
