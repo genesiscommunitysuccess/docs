@@ -57,7 +57,7 @@ The [entityDb](../../../database/database-interface/entity-db/) enables you to i
 
 Predominantly used for serving the UI, Request Servers retrieve a snapshot of data from your tables/views on demand.
 
-We will be using the following Request Server when we build the front end. Add the following simple code to the file **positions-app-tutorial-reqrep.kts** and we will mention this in a later section.
+We will be using the following Request Server when we build the front end. Add the following simple code to the file **alpha-reqrep.kts** and we will mention this in a later section.
 
 ```kotlin
 requestReplies {
@@ -68,68 +68,87 @@ requestReplies {
 ## Prepare the server and build
 So far we have created an Event Handler and Data Server - just their definitions, but there's nothing on the runtime configuration yet. Each component, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
 
-- **positions-app-tutorial-processes.xml**
-- **positions-app-tutorial-service-definitions.xml**
+- **alpha-processes.xml**
+- **alpha-service-definitions.xml**
 
 At present, they are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
 
-Add the following content to the **positions-app-tutorial-processes.xml** file.
+Add the following content to the **alpha-processes.xml** file.
 
-```xml
+```xml title="alpha-processes.xml"
 <processes>
-    <process name="POSITIONS_APP_TUTORIAL_DATASERVER">
-        <groupId>POSITIONS_APP_TUTORIAL</groupId>
+    <process name="ALPHA_DATASERVER">
+        <groupId>ALPHA</groupId>
         <start>true</start>
         <options>-Xmx1024m -DXSD_VALIDATE=false</options>
         <module>genesis-pal-dataserver</module>
         <package>global.genesis.dataserver.pal</package>
-        <script>positions-app-tutorial-dataserver.kts</script>
+        <script>alpha-dataserver.kts</script>
         <description>Displays real-time details</description>
         <language>pal</language>
         <loggingLevel>DEBUG,DATADUMP_ON</loggingLevel>
     </process>
-    <process name="POSITIONS_APP_TUTORIAL_EVENT_HANDLER">
-        <groupId>POSITIONS_APP_TUTORIAL</groupId>
+    <process name="ALPHA_EVENT_HANDLER">
+        <groupId>ALPHA</groupId>
         <start>true</start>
         <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
         <module>genesis-pal-eventhandler</module>
         <package>global.genesis.eventhandler.pal</package>
-        <script>positions-app-tutorial-eventhandler.kts</script>
+        <script>alpha-eventhandler.kts</script>
         <description>Handles events</description>
-        <classpath>positions-app-tutorial-messages*,positions-app-tutorial-eventhandler*</classpath>
+        <classpath>alpha-messages*,alpha-eventhandler*</classpath>
         <language>pal</language>
     </process>
-    <process name="POSITIONS_APP_TUTORIAL_REQUEST_SERVER">
-        <groupId>POSITIONS_APP_TUTORIAL</groupId>
+    <process name="ALPHA_REQUEST_SERVER">
+        <groupId>ALPHA</groupId>
         <start>true</start>
         <options>-Xmx256m -DRedirectStreamsToLog=true -DXSD_VALIDATE=false</options>
         <module>genesis-pal-requestserver</module>
         <package>global.genesis.requestreply.pal</package>
-        <script>positions-app-tutorial-reqrep.kts</script>
+        <script>alpha-reqrep.kts</script>
         <description>Server one-shot requests for details</description>
         <language>pal</language>
     </process>
 </processes>
 ```
-Add the following content to the **positions-app-tutorial-service-definitions.xml** file.
+Add the following content to the **alpha-service-definitions.xml** file.
 
-```xml
+```xml title="alpha-service-definitions.xml"
 <configuration>
-    <service host="localhost" name="POSITIONS_APP_TUTORIAL_DATASERVER" port="11000"/>
-    <service host="localhost" name="POSITIONS_APP_TUTORIAL_EVENT_HANDLER" port="11001"/>
-    <service host="localhost" name="POSITIONS_APP_TUTORIAL_REQUEST_SERVER" port="11002"/>
+    <service host="localhost" name="ALPHA_DATASERVER" port="11000"/>
+    <service host="localhost" name="ALPHA_EVENT_HANDLER" port="11001"/>
+    <service host="localhost" name="ALPHA_REQUEST_SERVER" port="11002"/>
 </configuration>
 ```
 
 See [here](../../../server/configuring-runtime/processes/) for a detailed description of the processes configuration. Finally, you can build the server.
 
-From the Gradle menu on the right of Intellij, this is: **genesisproduct-positions-app-tutorial**/**Tasks**/**build/assemble**.
+From the Gradle menu on the right of Intellij, this is: **alpha-tutorial**/**Tasks**/**build/assemble**.
 
-![](/img/assemble-server-positions.png)
+![](/img/assemble-server.png)
 
+```shell title='Running assemble from the command line'
+./gradlew :genesisproduct-alpha:assemble
+```
 :::info HTTP Endpoints
  It's important to note that most resources, such as Event Handlers and Data Servers, are exposed as [HTTP endpoints](../../../server/integration/rest-endpoints/introduction/) automatically by the Genesis platform - without any additional code. This enables you to test those resources from HTTP clients, such as Postman. Alternatively, you can use Genesis Console, which gives you a simple way of testing components from a nice web UI.
 :::
+
+Now you are ready to deploy your application again.
+
+1. Click on the **Deploy Genesis** button on the toolbar.
+
+![Deploy](/img/intellij-deploy1.png)
+
+2. Rebuilding the application requires the Genesis processes to be stopped. When you are prompted for this, click **ok** to continue. 
+
+![Deploy Prompt](/img/intellij-deploy2.png)
+
+This starts the build processes and the logs will be shown below.
+
+![Deploy logs](/img/intellij-deploy3.png)
+
+Remember to start the resource deamon and start all processes again.
 
 ## Conclusion
 Data Server and Event Handler are the main components to interact with the server. Now that we have built our back end, we have something to interact with. Once you have deployed it, if you want to test what you've done so far, go to [Endpoints](../../../server/integration/rest-endpoints/introduction/).

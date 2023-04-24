@@ -13,53 +13,65 @@ tags:
 ## Prerequisites
 
 There are a couple of steps that have to be done before seeing the user interface running.
-- your database must be running
+
 - the back-end services must be deployed
+- you must have imported the login credentials in the csv files
 - you must have imported the example data in the csv files
 
 ### Connecting the back end and front end
-In this step, we shall configure an nginx server working as a reverse proxy.
 
-In your CentOS terminal, enter the following three commands:
+#### Run the database
 
-1.  Enter your artifactory credentials:
-```shell
-docker login genesisglobal-docker-internal.jfrog.io
+Go to the terminal and run your PostgreSQL database:
+
+```Powershell
+docker ps --format '{{ .ID }}\t{{.Image}}\t{{ .Names }}'
+docker pull postgres
+docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=10000'
 ```
 
-2. Pull the latest version of the Genesis software:
+#### Genesis-system-definition
 
-```shell
-docker pull genesisglobal-docker-internal.jfrog.io/genesis-console-proxy:latest
+Since we are using a Postgres database, you need to add the highlighted items DbLayer and DbHost exactly as they are specified below to genesis-system-definition.kts:
+
+```kotlin {4,10} title="genesis-system-definition.xml"
+systemDefinition {
+    global {
+        ...
+        item(name = "DbLayer", value = "SQL")
+        item(name = "DictionarySource", value = "DB")
+        item(name = "AliasSource", value = "DB")
+        item(name = "MetricsEnabled", value = "false")
+        item(name = "ZeroMQProxyInboundPort", value = "5001")
+        item(name = "ZeroMQProxyOutboundPort", value = "5000")
+        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=postgres")
+        item(name = "DbMode", value = "VANILLA")
+        ...
+    }
+    
+}
 ```
 
-3. Run the following command:
-
-```shell
-docker run -it --rm -d -p 80:80 -p 443:443 --name genesis-console-proxy --add-host host.docker.internal:host-gateway --platform linux/amd64 genesisglobal-docker-internal.jfrog.io/genesis-console-proxy
-```
-
-
-### Installing the dependencies
-
-1. Before we make any changes, you need to install your npm dependencies; run the following in your terminal:
-
-```shell title="./client"
-npm run bootstrap
-```
-
-2. Once you have all dependencies installed, use the following command in the terminal to run your UI:
-
-```shell title="./client"
-npm run dev
-```
-
-The application will open at `http://localhost:6060/login`.
-![](/img/btfe--positions-example--login.png)
+Now you can run the genesis **resource deamon** and start all the process 
 
 ### API Host
 
-The `API_HOST` should be set correctly by default from the `genx` CLI, but if you are having issues see [this section](../../../getting-started/quick-start/run-the-application-docker/).
+Go to **alpha\client\web\package.json** and make sure you override the highlighted line
+
+```kotlin {8} title="web\package.json"
+{
+  "name": "@genesislcap/alpha-web-client",
+  "description": "Blank App Web Client",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "config": {
+    "API_HOST": "ws://localhost:9064",
+    "DEFAULT_USER": "JaneDee",
+    "DEFAULT_PASSWORD": "beONneON*74",
+    "PORT": 6060
+  },
+  ```
 
 ## Section objectives
 The goal of this section is to run the UI for the first time and add a data grid.
