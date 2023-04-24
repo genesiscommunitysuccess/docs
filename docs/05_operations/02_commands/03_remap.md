@@ -152,4 +152,4 @@ The following are valid without additional changes or caveats:
 
 ### String to Enum Conversion
 
-A common issue with type conversions is a String to Enum conversion where not all the data matches the allowed list of Enum values. Often, this mismatch is just a case of needing to capitalise the non-matching value, or add an underscore, or both. Where this is the case, you can run the `ConvertNonMatchingEnumValues` script, or add an installHook that calls it for you. See the section in [server commands](./01_server-commands.md#convertnonmatchingenumvalues)).
+A common issue with type conversions is a String to Enum conversion where not all the data matches the allowed list of Enum values. Often, this mismatch is just a case of needing to capitalise the non-matching value, or add an underscore, or both. Where this is the case, you can run the `FixEnumValues` script, or add an installHook that calls it for you. See the section in [server commands](./01_server-commands.md#FixEnumValues)).

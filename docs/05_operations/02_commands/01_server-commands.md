@@ -124,7 +124,7 @@ remap [-c | --commit]
 
 For full details, see our page on [Remap](../../../operations/commands/remap).
 
-## ConvertNonMatchingEnumValues
+## FixEnumValues
 
 Converts non-matching enum values in the database to SNAKE_CASE. This script is intended to be used after a dictionary change that adds new enum values. It will only update the data if the converted value matches the list of enum values in the dictionary.
 
@@ -133,12 +133,12 @@ As with `remap`, changes will only be applied to the database if run with the **
 ### Usage
 
 ```shell
-ConvertNonMatchingEnumValues [-c | --commit] [TABLES]
+FixEnumValues [-c | --commit] [TABLES]
 ```
 ### Example
 
 ```
-ConvertNonMatchingEnumValues --commit TRADE POSITION
+FixEnumValues --commit TRADE POSITION
 ```
 
 ### As an installHook
@@ -152,7 +152,7 @@ The following will find all String to Enum changes in all tables and commit any 
 source "$HOME"/.bashrc
 shopt -s expand_aliases
 
-ConvertNonMatchingEnumValues --commit
+FixEnumValues --commit
 
 exit $?
 ```
