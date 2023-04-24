@@ -69,7 +69,7 @@ You can specify which database to use in your application by editing **genesis-s
 
 Further information can be found in the [**genesis-system-definitions.kts** file](../../../server/configuring-runtime/system-definitions/).
 
-## Run with docker
+### Run with docker
 
 Since we are using a docker container, add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
 
@@ -94,7 +94,7 @@ systemDefinition {
 
 ### Build and compose Docker images
 
-Now you need to start the database. Make sure your docker management software (in our case Rancher desktop) is up and running and do the following:
+Now, you need to start the database. Make sure your docker management software (in our case Rancher desktop) is up and running and do the following:
 
 ```powershell
 docker pull postgres
@@ -104,6 +104,24 @@ docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POST
 To confirm your docker has been created, please run:
 ```powershell
 docker ps | findstr "localPostgresDb"
+```
+
+## Connect the front end to the server
+Since you created your project from a seed, you need to change the default API_HOST in the **package.json** in **client/web/** to the port we are using in the project. Change the highlighted line in your file.
+
+```kotlin {7} title="client/web/package.json"
+{
+  "name": "@genesislcap/alpha-web-client",
+  "description": "Developer Training Web Client",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "config": {
+    "API_HOST": "ws://localhost:9064",
+    "DEFAULT_USER": "JaneDee",
+    "DEFAULT_PASSWORD": "beONneON*74",
+    "PORT": 6060
+  },
 ```
 
 ## Build and deploy
@@ -154,7 +172,7 @@ This generates a hidden folder called **.genesis-home** in your project root, re
 On the first run, this could take up to 20 minutes, because it performs a full build of your application.
 :::
 
-## Deploy
+### Deploy
 
 As soon as the Build is done, you need to deploy the application:
 

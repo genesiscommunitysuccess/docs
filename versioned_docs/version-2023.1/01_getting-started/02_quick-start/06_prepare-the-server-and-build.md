@@ -106,6 +106,24 @@ To confirm your docker has been created, please run:
 docker ps | findstr "localPostgresDb"
 ```
 
+## Connect the front end to the server
+Since you created your project from a seed, you need to change the default API_HOST in the **package.json** in **client/web/** to the port we are using in the project. Change the highlighted line in your file.
+
+```kotlin {7} title="client/web/package.json"
+{
+  "name": "@genesislcap/alpha-web-client",
+  "description": "Developer Training Web Client",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "config": {
+    "API_HOST": "ws://localhost:9064",
+    "DEFAULT_USER": "JaneDee",
+    "DEFAULT_PASSWORD": "beONneON*74",
+    "PORT": 6060
+  },
+```
+
 ## Build and deploy
 
 Finally, you can build and deploy the server.

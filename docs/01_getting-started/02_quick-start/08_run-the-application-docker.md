@@ -12,7 +12,7 @@ tags:
 
 ## Create a new Schema
 
-Before you can run your application, you need to create a new schema to you database where all tables will be created. To do that, follow these two steps:
+Before you can run your application, you need to create a new schema for the database, where all tables will be created. To do that, follow these two steps:
 
 1. Run `genesis-install`.
 
@@ -28,7 +28,7 @@ Now that you have your database up and running, you need to send the login infor
 
 ![](/img/import_csv_to_genesis.png)
 
-You will be prompted with the following message. Type **y** to proceed.
+You will be prompted the following message. Type **y** to proceed.
 
 ```powershell
 WARNING: Are you sure you want to import all the tables from all the csv files to the database? (y/n)
@@ -38,11 +38,11 @@ After that, you have all the data to start the application.
 
 <details>
   <summary>Want to check if your data has been sent?</summary>
-  To check your database, Genesis plugin has the following script: 
+  To check your database, genesis plugin has the following script 
 
   ![](/img/DbMon-script.png)
 
-  Type `table USER` and then `search 1`, which will display the following:
+  type `table USER` and then `search 1` you will be displayed the following:
 
 ```kotlin
 ==================================
@@ -77,29 +77,11 @@ DbMon:USER>
 ```
 </details>
 
-## Connect the front end to the server
-Since you created your project from a seed, you need to change the default API_HOST in the **package.json** in **client/web/** to the port we are using in the project. Change the highlighted line in your file.
-
-```kotlin {7} title="client/web/package.json"
-{
-  "name": "@genesislcap/alpha-web-client",
-  "description": "Developer Training Web Client",
-  "version": "0.0.1",
-  "private": true,
-  "license": "Apache-2.0",
-  "config": {
-    "API_HOST": "ws://localhost:9064",
-    "DEFAULT_USER": "JaneDee",
-    "DEFAULT_PASSWORD": "beONneON*74",
-    "PORT": 6060
-  },
-```
-
 ## Starting the server
 :::note
 Make sure you have started the [resource deamon](../../../server/tooling/intellij-plugin/#remap).
 :::
-Once your resource deamon has started, you can start all the Genesis processes; click on the **start** button.
+Once your resource deamon has started, you can start all Genesis processes; click on the **start** button.
 
 ![](/img/genesis_deamon.png)
 
@@ -107,7 +89,14 @@ Wait for all processes to be healthy (it may take a few minutes for the first ru
 
 ## Accessing the application
 
-After all processes are up, the front end is accessible on: [http://localhost:6060](http://localhost:6060) and you will be able to log in.
+Now you are ready to run the application you have created for the front end.
+
+Using the Genesis IntelliJ plugin click the [Start UI button](../../../server/tooling/intellij-plugin/#starting-the-ui) on the toolbar as shown below. This builds your front-end codebase and starts the webpack webserver in development mode.
+
+![Debug Window](/img/intellij-ui.png)
+
+The application will open at `http://localhost:6060/login`.
+![](/img/btfe--positions-example--login.png)
 
 ## Conclusion
 That’s it. You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.
