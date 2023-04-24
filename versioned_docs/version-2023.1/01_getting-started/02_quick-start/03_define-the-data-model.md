@@ -11,11 +11,8 @@ tags:
 
 Now you are ready to define the fields and tables that make up your data model. This model structures information in a simple way that can be viewed by users and processed by the application.
 
-Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/) (recommended) or your chosen IDE. In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (**alpha**, **client**, **genesisproduct-alpha**).
-
 ### Add fields
 You define your fields in the file **alpha-fields-dictionary.kts**.
-
 
 
 :::tip
@@ -28,7 +25,7 @@ Once the project is open, there are two easy ways to find this file quickly in I
 :::
 
 
-For our simple example, we shall add five fields:
+For your simple example, you shall add five fields:
 
 ```kotlin
 fields {
@@ -50,10 +47,16 @@ After you have saved this file, run genesis-generated-fields from the Gradle men
 
 ![](/img/build-gradle-kts-fields.png)
 
-### Add a table
-Now we have our fields, let's define a table in the file **alpha-tables-dictionary.kts**.
+Alternatively, you can run the Gradle tasks from the command line.  
 
-We are defining one single table, containing all our fields.
+```shell title='Running generateFields from the command line'
+./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-fields:generateFields
+```
+
+### Add a table
+Now you have your fields, let's define a table in the file **alpha-tables-dictionary.kts**.
+
+You are defining one single table, containing all your fields.
 
 TRADE_ID is the primaryKey, which will be auto-generated.
 
@@ -79,8 +82,13 @@ You can find more information on tables [here](../../../database/fields-tables-v
 
 After you have saved this file, run genesis-generated-dao from the Gradle menu, this is:
 
-**genesisproduct-alpha**/**alpha-dictionary-cache**/**alpha-generated-dao**/**Tasks**/**genesis**/**generateDAO**
+**genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDao**
 
 ![](/img/build-gradle-kts-generated-dao.png)
+
+
+```shell title='Running generateDAO f   rom the command line'
+./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-dao:generateDao
+```
 
 Now that that has been done, you can create the key modules that surround the database.

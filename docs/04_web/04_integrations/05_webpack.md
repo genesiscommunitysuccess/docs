@@ -8,7 +8,7 @@ tags:
     - webpack
 ---
 
-Genesis Foundation works great with TypeScript and Webpack, using a fairly standard set-up. Let's take a look at how you can set up such a project, starting from scratch.
+FoundationUI works well with TypeScript and Webpack, using a fairly standard set-up. Let's take a look at how you can set up such a project, starting from scratch.
 
 ## Setting up the package
 

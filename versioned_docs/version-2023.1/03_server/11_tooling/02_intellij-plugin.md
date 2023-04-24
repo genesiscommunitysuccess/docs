@@ -24,6 +24,7 @@ The Genesis Intellij plugin allows developers to run the full stack of a Genesis
 You could use, for instance, [PostgreSQL](../../../database/database-technology/sql/#postgresql) running a local instance or a [Docker container](https://hub.docker.com/_/postgres).
 
 ```terminal
+docker ps --format '{{ .ID }}\t{{.Image}}\t{{ .Names }}'
 docker pull postgres
 docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=10000'
 ```
@@ -48,7 +49,7 @@ The first thing to set up is the Genesis system definition overrides. These are 
 :::tip
 A local PostgreSQL installation with both user and password equal to `postgres` would have a **DbHost** like this:
 ```kotlin
-DbHost="jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres"
+jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres
 ```
 :::
 

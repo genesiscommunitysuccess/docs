@@ -1,6 +1,6 @@
 ---
-title: 'Quick start - run the application (Docker)'
-sidebar_label: 'Run the application (Docker)'
+title: 'Quick start - run the application'
+sidebar_label: 'Run the application'
 id: run-the-application-docker
 keywords: [getting started, quick start, run the app, docker]
 tags:
@@ -10,91 +10,108 @@ tags:
     - docker
 ---
 
-You have a choice of how you run the application. The instructions on this page are for using Docker. If you prefer to use WSL/CentOS as your environment, there are [separate instructions](../../../getting-started/quick-start/run-the-application/).
+## Create a new Schema
 
-## Building and composing Docker images
+Before you can run your application, you need to create a new schema to you database where all tables will be created. To do that, follow these two steps:
 
-The seed application includes the Dockerfiles you need; these build images of the **front end** and **back end** of the Genesis application. You can run these images with the following `docker-compose` command:
+1. Run `genesis-install`.
 
-Usage:
-```shell title="Intellij terminal"
-docker-compose up -d
+![Genesis Install](/img/intellij-genesisInstall.png)
+
+2. Run `remap`.
+
+![Genesis Install](/img/intellij-remap.png)
+
+
+## Send data to Genesis
+Now that you have your database up and running, you need to send the login information so you can access the application you have just created. To do this, go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**
+
+![](/img/import_csv_to_genesis.png)
+
+You will be prompted with the following message. Type **y** to proceed.
+
+```powershell
+WARNING: Are you sure you want to import all the tables from all the csv files to the database? (y/n)
 ```
+
+After that, you have all the data to start the application.
+
+<details>
+  <summary>Want to check if your data has been sent?</summary>
+  To check your database, Genesis plugin has the following script: 
+
+  ![](/img/DbMon-script.png)
+
+  Type `table USER` and then `search 1`, which will display the following:
+
+```kotlin
+==================================
+Genesis Database Monitor
+Enter 'help' for a list of commands
+==================================
+DbMon>table USER
+DbMon:USER>search 1
+==================================
+USER
+==================================
+Field Name                               Value                                    Type                
+===========================================================================================
+TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)      NANO_TIMESTAMP      
+COMPANY_ID                                                                        STRING              
+COMPANY_NAME                             GENESIS                                  STRING              
+DOMAIN                                                                            STRING              
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING              
+FIRST_NAME                               Jane                                     STRING              
+LAST_LOGIN                               2016-04-28                               DATE                
+LAST_NAME                                Dee                                      STRING              
+ONLINE                                   false                                    BOOLEAN             
+PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING              
+PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
+REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
+STATUS                                   ENABLED                                  STRING              
+USER_NAME                                JaneDee                                  STRING              
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+Total Results:  1
+DbMon:USER>
+```
+</details>
+
+## Connect the front end to the server
+Since you created your project from a seed, you need to change the default API_HOST in the **package.json** in **client/web/** to the port we are using in the project. Change the highlighted line in your file.
+
+```kotlin {7} title="client/web/package.json"
+{
+  "name": "@genesislcap/alpha-web-client",
+  "description": "Developer Training Web Client",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "config": {
+    "API_HOST": "ws://localhost:9064",
+    "DEFAULT_USER": "JaneDee",
+    "DEFAULT_PASSWORD": "beONneON*74",
+    "PORT": 6060
+  },
+```
+
+## Starting the server
+:::note
+Make sure you have started the [resource deamon](../../../server/tooling/intellij-plugin/#remap).
+:::
+Once your resource deamon has started, you can start all the Genesis processes; click on the **start** button.
+
+![](/img/genesis_deamon.png)
+
+Wait for all processes to be healthy (it may take a few minutes for the first run).
 
 ## Accessing the application
 
-After the Docker containers are up and running, the front end is accessible on: `http://localhost:6060`
-
-
-Wait until all the processes are running on the server container (it takes a couple of minutes); after this, you can log in.
+After all processes are up, the front end is accessible on: [http://localhost:6060](http://localhost:6060) and you will be able to log in.
 
 ## Conclusion
 That’s it. You have quickly built a very simple application using some fundamental Genesis components. You can see a grid of trades. Try adding a new one.
 
 ![](/img/quickstart-app-final.png)
 
-There's obviously a lot more to building enterprise-ready applications. However, you now have enough knowledge and experience of the Genesis low-code platform to look at our reference documentation and learn more there. 
-
-First, we strongly suggest that you check the following sections for some tips and tricks on local development.
-
-## Attaching a terminal to a docker container
-
-Attaching a terminal to a docker container is as easy as running:
-
-
-```shell
-docker exec -it gsf bash
-```
-
-You can try logging as "alpha" and running "mon" to monitor the platform services.
-```shell
-su - alpha
-
-mon
-```
-
-## Editing files
-
-The container running the Genesis low-code platform is able to detect changes happening on your local environment.
-
-Try editing one of the previous .kts (i.e alpha-fields-dictionary.kts). Add one more field.
-
-You may see the changes if you run the following command on a terminal attached to the Docker container (as explained just before).
-
-```shell
-cat /home/alpha/run/alpha/cfg/alpha-fields-dictionary.kts
-```
-
-### Integration with the Deployment Plugin
-
-The main Genesis server container can be accessed via SSH, which by default will be bound to your host machine on port 1337 (unless you have changed it by editing the provided docker-compose.yml file). 
-
-Now we can configure the deployment plugin to operate with the main Genesis server container.
-
-Let's add the following in the **gradle.properties** in the jvm/server directory: 
-
-```shell
-genesis-home=/home/alpha/run
-ssh-username=alpha
-ssh-password=alpha
-ssh-host=127.0.0.1
-ssh-port=1337
-```
-
-On your IntelliJ terminal, try running the gradle task `killServer`.
-
-```shell
-./gradlew :genesisproduct-alpha:alpha-deploy:killServer
-```
-
-You can check how it is running:
-
-```shell
-./gradlew :genesisproduct-alpha:alpha-deploy:mon 
-```
-Or you can run `mon` on your previously attached terminal, where you can see that all services are down.
-
-We hope you have found this useful and that you enjoy exploring further.
-
-## The end
-
+There's obviously a lot more to building enterprise-ready applications. However, you now have enough knowledge and experience of the Genesis low-code platform to look at our reference documentation and learn more there.

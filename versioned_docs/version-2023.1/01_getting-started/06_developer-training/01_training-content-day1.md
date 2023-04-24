@@ -139,7 +139,7 @@ From the Gradle menu on the right of Intellij, this is:
 
 ![](/img/build-gradle-kts-fields.png)
 
-Alternatively, if you can't run it from your IDE, you can run the Gradle tasks from the command line. Make sure to open your terminal and cd into **../server/jvm** to run them.
+Alternatively, if you can't run it from your IDE, you can run the Gradle tasks from the command line.
 
 ```shell title='Running generateFields from the command line'
 ./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-fields:generateFields
@@ -214,6 +214,7 @@ Next, we want to be able to insert rows into our table. For this, you need to de
 eventHandler {
 
     eventHandler<Trade>(name = "TRADE_INSERT") {
+        schemaValidation = false
         onCommit { event ->
             entityDb.insert(event.details)
             ack()
@@ -281,6 +282,14 @@ Finally, you can build and deploy the server.
 ### Build
 
 In the Gradle menu on the right of IntelliJ, select:
+
+**genesisproduct-alpha**
+
+![](/img/assemble-server.png)
+
+```shell title='Running assemble from the command line'
+./gradlew :genesisproduct-alpha:assemble
+```
 
 **genesisproduct-alpha**/**alpha-config**
 

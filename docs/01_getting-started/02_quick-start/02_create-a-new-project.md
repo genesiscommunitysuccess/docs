@@ -16,9 +16,9 @@ Download and install all the relevant requirements.
 :::
 
 ## The genx script
-`genx` is a CLI tool that enables you to seed projects. In this case, we shall generate a full-stack application project; the key files will be empty so that you can define the details of the application.
+`genx` is a CLI tool that enables you to seed projects. In this case, you shall generate a full-stack application project; the key files will be empty so that you can define the details of the application.
 
-We also have step-by-step instructions on [how to install and use genx](../../../getting-started/prerequisites/genx/).
+If you still don't have genx installed, please see the session [Installing GenX](../../../getting-started/quick-start/hardware-and-software/#installing-genx).
 
 ## Starting
 
@@ -43,7 +43,7 @@ In the `genx` script, there is a series of questions.
 
 First, you are asked to select from a short list of seed applications. Select `create application`:
 
-```shell title="Windows Terminal"
+```shell {4} title="Windows Terminal"
 ? Please select an option: (Use arrow keys)
   create workspace - Generates a local workspace to use for your Genesis based apps.
   configure workspace - Configure a local workspace.
@@ -57,15 +57,11 @@ Now you can proceed using the following responses:
 ? App name alpha
 ```
 
-Then you are asked to select the App Seed. Select `Quick Start Application` from the list. 
+Then you are asked to select the App Seed. Select `Quick Start Application` from the list. If you are asked to overwrite existing files, select **Y**.
 
-Do **not** select the Positions Application.
-
-You will be asked if you want to overwrite existing files. Select **Y**.
-
-  ```shell title="Windows Terminal"
+  ```shell {2} title="Windows Terminal"
 App seed (Use arrow keys)
-> **Quick Start Application**
+> Quick Start Application
   Positions Application
   Hello World Application
   Foundation-Store Based Application
@@ -103,3 +99,17 @@ At this point, the application will be configured. On completion, you will see t
 ```shell title="Windows Terminal"
 i Application created successfully! 🎉 Please open the application and follow the README to complete setup.
 ```
+Now let's open your application in Intellij. Start by opening [IntelliJ IDEA](https://www.jetbrains.com/idea/). In the alpha project, you will see the **readme** file for the project. After importing and indexing, your gradle tab (normally on the right of your window) should contain 3 folders (**alpha**, **client**, **genesisproduct-alpha**).
+
+### Gradle.properties
+Before you finish the creation of your new project, make sure your **gradle.properties** file in **server/jvm** has the highlighted properties following properties:
+
+```kotlin {2,3} title="server/jvm/gradle.properties"
+                ...
+genesisArtifactoryPath=https://genesisglobal.jfrog.io/genesisglobal/libs-release-client
+enableGenesisIntellijHelperTasks=true
+```
+
+:::note
+If you had to modify this file, make sure you `reload all gradle projects`.
+:::
