@@ -11,8 +11,7 @@ tags:
     - business logic
 ---
 
-So far, we have a table; now we want to be able to see its content and create new entries.
-
+So far, you have a table; now we want to be able to see its content and create new entries.
 
 ## Data Server
 A [Data Server](../../../server/data-server/introduction/) allows for reading of real-time data. You must define the Data Server in the file **alpha-dataserver.kts**.

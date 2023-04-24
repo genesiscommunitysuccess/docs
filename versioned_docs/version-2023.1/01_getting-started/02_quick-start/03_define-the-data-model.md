@@ -25,7 +25,7 @@ Once the project is open, there are two easy ways to find this file quickly in I
 :::
 
 
-For our simple example, we shall add five fields:
+For your simple example, you shall add five fields:
 
 ```kotlin
 fields {
@@ -54,9 +54,9 @@ Alternatively, you can run the Gradle tasks from the command line.
 ```
 
 ### Add a table
-Now we have our fields, let's define a table in the file **alpha-tables-dictionary.kts**.
+Now you have your fields, let's define a table in the file **alpha-tables-dictionary.kts**.
 
-We are defining one single table, containing all our fields.
+You are defining one single table, containing all your fields.
 
 TRADE_ID is the primaryKey, which will be auto-generated.
 
