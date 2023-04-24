@@ -18,6 +18,49 @@ The goal of this section is:
 - Import data to genesis
 - Create a query
 
+## Database layer
+
+You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\\**.
+
+Further information can be found in the [**genesis-system-definitions.kts** file](../../../server/configuring-runtime/system-definitions/).
+
+### Run with docker
+
+Since we are using a docker container, add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
+
+```kotlin {4,10}
+systemDefinition {
+    global {
+        ...
+        item(name = "DbLayer", value = "SQL")
+        item(name = "DictionarySource", value = "DB")
+        item(name = "AliasSource", value = "DB")
+        item(name = "MetricsEnabled", value = "false")
+        item(name = "ZeroMQProxyInboundPort", value = "5001")
+        item(name = "ZeroMQProxyOutboundPort", value = "5000")
+        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=postgres")
+        item(name = "DbMode", value = "VANILLA")
+        ...
+    }
+    
+}
+
+```
+
+### Build and compose Docker images
+
+Now, you need to start the database. Make sure your docker management software (in our case Rancher desktop) is up and running and do the following:
+
+```powershell
+docker pull postgres
+docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=10000'
+```
+
+To confirm your docker has been created, please run:
+```powershell
+docker ps | findstr "localPostgresDb"
+```
+
 ## The build and deploy process
 
 Finally, you can build and deploy the server.

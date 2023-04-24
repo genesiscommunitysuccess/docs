@@ -50,6 +50,19 @@ genx
 Make sure you run the `install` command, so you can update your GenX CLI tool
 ::: 
 
+### Gradle.properties
+Before you finish the creation of your new project, make sure your **gradle.properties** file in **server/jvm** has the  following highlighted properties:
+
+```kotlin {2,3} title="server/jvm/gradle.properties"
+                ...
+genesisArtifactoryPath=https://genesisglobal.jfrog.io/genesisglobal/libs-release-client
+enableGenesisIntellijHelperTasks=true
+```
+
+:::note
+If you had to modify this file, make sure you `reload all gradle projects`.
+:::
+
 <!-- NO EDIT (NEXT 4 LINES) -->
 import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
 

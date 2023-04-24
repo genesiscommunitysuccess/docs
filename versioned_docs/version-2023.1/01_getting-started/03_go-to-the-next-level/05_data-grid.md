@@ -13,46 +13,10 @@ tags:
 ## Prerequisites
 
 There are a couple of steps that have to be done before seeing the user interface running.
-
-- the back-end services must be deployed
+- your database must be running
+- the back-end services must be deployed and running
 - you must have imported the login credentials in the csv files
 - you must have imported the example data in the csv files
-
-### Connecting the back end and front end
-
-#### Run the database
-
-Go to the terminal and run your PostgreSQL database:
-
-```Powershell
-docker ps --format '{{ .ID }}\t{{.Image}}\t{{ .Names }}'
-docker pull postgres
-docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=10000'
-```
-
-#### Genesis-system-definition
-
-Since we are using a Postgres database, you need to add the highlighted items DbLayer and DbHost exactly as they are specified below to genesis-system-definition.kts:
-
-```kotlin {4,10} title="genesis-system-definition.xml"
-systemDefinition {
-    global {
-        ...
-        item(name = "DbLayer", value = "SQL")
-        item(name = "DictionarySource", value = "DB")
-        item(name = "AliasSource", value = "DB")
-        item(name = "MetricsEnabled", value = "false")
-        item(name = "ZeroMQProxyInboundPort", value = "5001")
-        item(name = "ZeroMQProxyOutboundPort", value = "5000")
-        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=postgres")
-        item(name = "DbMode", value = "VANILLA")
-        ...
-    }
-    
-}
-```
-
-Now you can run the genesis **resource deamon** and start all the process 
 
 ### API Host
 
@@ -100,12 +64,18 @@ In the template file, start by adding the Genesis data source pointing to the ap
 -->
 
 [//]: # (link to grid-pro-genesis-datasource tsdocs)
-```html title="home.template.ts"
+```html {5-9} title="home.template.ts"
+import { html } from '@microsoft/fast-element';
+import type { Home } from './home';
+
+export const HomeTemplate = html<Home>`
 <zero-grid-pro>
-	<grid-pro-genesis-datasource
-		resource-name="ALL_POSITIONS"
-	></grid-pro-genesis-datasource>
+    <grid-pro-genesis-datasource
+        resource-name="ALL_POSITIONS"
+    ></grid-pro-genesis-datasource>
 </zero-grid-pro>
+`;
+
 ```
 
 
@@ -117,7 +87,7 @@ This will result in a grid displaying all the columns available in the `ALL_POSI
 
 To add new columns that are not part of the API, we can add additional column definitions.
 
-```html {6} title="home.template.ts"
+```html {5} title="home.template.ts"
 <zero-grid-pro>
     <grid-pro-genesis-datasource
         resource-name="ALL_POSITIONS"
@@ -154,9 +124,9 @@ After refreshing the application, the grid should now also include a column cont
 
 ## Custom column config
 
-If you want to customise how each column is displayed, you can provide a column config for every column.
+You noticed that the grid has displayed all the columns available in the table `ALL_POSITIONS`. If you want to customise how each column is displayed, you can provide a column config for every column, like so:
 
-Create a new file called **positionColumnDefs.ts** in the same directory.
+Create a new file called **positionColumnDefs.ts** in the same directory as the **home.ts**.
 
 ```typescript title="positionColumnDefs.ts"
 export const positionColumnDefs = [
@@ -198,7 +168,7 @@ Columns will now flash green as the value inside changes:
 
 You can add the `persist-column-state-key` to the zero-grid-pro to persist user changes to things such as sorting, column order, and visibility on the user machine. With this, when the user reloads the browser, they get the same configuration.
 
-```html {2}
+```html {2} title="home.template.ts"
 <zero-grid-pro
     persist-column-state-key='position-grid-settings'
 >
