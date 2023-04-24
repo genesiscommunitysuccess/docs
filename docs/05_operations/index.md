@@ -10,6 +10,11 @@ import { Grid } from '@mui/material'
 
 Welcome to the reference documentation on operating Genesis applications. Here, you will find details of a wide range of operating concerns, including specs of the complete Genesis command set and the use of Genesis Console.
 
+Importantly, you can find information here on:
+
+- [User Management](../web/micro-front-ends/foundation-entity-management/#user-management)
+- [Profile Management](../web/micro-front-ends/foundation-entity-management/#profile-management)
+
 ## Basics
 
 <Grid container>

@@ -1,5 +1,5 @@
 ---
-title: 'Genesis Containerisation - configuration'
+title: 'Genesis containerisation - configuration'
 sidebar_label: 'Configuration options'
 id: configuration
 keywords: [operations, containerisation, container, docker, configuration]
@@ -28,7 +28,7 @@ The table below describes the values that can be changed:
 | `useGenesisContainerLogConfig` | Defines whether the container should use a specific log4j configuration file that is designed for our containers.<br/>When set to `true`, logs are effectively output by the container PID1, allowing most container orchestration systems to capture all the logs with default settings. | true |
 | `preCompileScripts` | When set to `true`, the build process must include a step that compiles all the .kts scripts and caches the results.<br/>This results in a slower build process, but dramatically decreases the start-up time of the container. | true |
 
-These settings should be set in the **server/jvm/***appname***-deploy/build.gradle.kts** file:
+These settings should be set in the **server/jvm/**_appname_**-deploy/build.gradle.kts** file:
 
 ```kotlin
 dockerImage {
@@ -46,7 +46,7 @@ dockerImage {
 
 The Genesis low-code platform also supports overrides of the Docker extension configuration, allowing for different values for different environments. This means that you can set your own values without changing any files that are tracked in SCM.
 
-This is done by adding **server/jvm/***appname***-deploy/gradle.properties** and ensuring that the file is ignored by SCM.
+This is done by adding **server/jvm/**_appname_**-deploy/gradle.properties** and ensuring that the file is ignored by SCM.
 
 | Extension Config | Gradle Properties Equivalent | Notes |
 | --- | --- | --- |

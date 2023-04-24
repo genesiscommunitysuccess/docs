@@ -1,5 +1,5 @@
 ---
-title: 'Genesis Containerisation - health checks'
+title: 'Genesis containerisation - health checks'
 sidebar_label: 'Health checks'
 id: healthchecks
 keywords: [operations, containerisation, container, docker, configuration, healthchecks]
@@ -17,10 +17,10 @@ This endpoint can be used for your liveliness/readiness checks if you are using 
 
 | Path | Port | Response |
 | --- | --- | --- |
-| /health/status | This is set in the [System Definition](../../../server/integration/data-pipeline/advanced/#system-definition-properties) with the item `DaemonHealthPort` and an integer value for the port chosen to serve the health status<br/><br/>Example: `item(name = "DaemonHealthPort", value = "4569")`| Either `200` for HEALTHY or `503` for UNHEALTHY if ANY of the underlying services are not in a healthy state.<br/><br/>The payload of the response is in JSON format and provides details for each underlying service configured in this container, including their individual health status |
-Note: You will need to ensure the port is accessible with either the Docker `--port` option, or check the documentation for whichever container orchestration system you use.
+| /health/status | This is set in the [System Definition](../../../server/integration/data-pipeline/advanced/#system-definition-properties) with the item `DaemonHealthPort` and an integer value for the port chosen to serve the health status<br/><br/>Example: `item(name = "DaemonHealthPort", value = "4569")`| Either `200` for HEALTHY or `503` for UNHEALTHY if ANY of the underlying services are not in a healthy state.<br/><br/>The payload of the response is in JSON format and provides details for each underlying service configured in the container, including their individual health status |
+Note: You will need to ensure the port is accessible with the Docker `--port` option; alternatively, check the documentation for whichever container orchestration system you use.
 
-# Sample response 
+## Sample response 
 ```
 [
     {

@@ -353,9 +353,9 @@ Sample response:
 
 ## Event Handler
 Events are submitted via POST requests to
-`[host]:[genesis_router_port]/event_[<event_name>]`.
+`[host]:[genesis_router_port]/event-[<event-name>]`.
 
-All resource paths should be prefixed with `event_`. For example `localhost:9064/event_order_insert`. In this example `order_insert` is our custom event route and `event_` is the prefix.
+All resource paths should be prefixed with `event-`. For example `localhost:9064/event-order-insert`. In this example `order-insert` is our custom event route and `event-` is the prefix.
 
 Event Handler requests require:
 

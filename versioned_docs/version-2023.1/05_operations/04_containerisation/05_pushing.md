@@ -12,9 +12,9 @@ tags:
     - registry
 ---
 
-If you choose to use the Gradle plugin to build the image, the Genesis low-code platform also offers a Gradle task that pushes your built image to your chosen repository.
+If you choose to use the Gradle plugin to build the image, the Genesis low-code platform provides a Gradle task that pushes your built image to your chosen repository.
 
-To configure this task, provide the following settings to your **gradle.properties**
+To configure this task, add the following settings to your **gradle.properties**:
 
 | Name | Description |
 | --- | --- |

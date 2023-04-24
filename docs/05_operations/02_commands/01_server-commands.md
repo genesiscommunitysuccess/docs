@@ -112,23 +112,9 @@ MigrateDictionary -dst DB
 exit $?
 ```
 
-
-
 ## remap script
 
-The remap script reads all dictionary files (fields and table definitions) from **$GC** and remaps the memory-resident database accordingly.
-
-If using an SQL DB Layer, it can also be used to dump all the SQL DDL statements to the console so these can be applied by a database administrator instead of applying the changes directly from the remap script.
-
-It also generates dao objects based on the dictionary tables, so you can perform database operations in a type-safe way.
-
-Additionally, it will update the Genesis alias store (if running Aerospike or FDB).
-
-The Aerospike DB layer needs UDFs (user defined functions) to work correctly, and these are also generated at this step.
-
-When you run `remap`, the database is automatically locked to ensure that no other `remap` can run concurrently. 
-
-If the database crashes during a `remap` and the database remains locked (or if the database is locked for any other reason), run `remap --force --commit` to unlock the database.
+Remap is a schema-migration tool used to apply the current schema (defined in the deployed field and table GPAL dictionaries) to the underlying database layer used by the Genesis low-code platform.
 
 ### Syntax
 
@@ -136,47 +122,48 @@ If the database crashes during a `remap` and the database remains locked (or if 
 remap [-c | --commit]
 ```
 
-| Argument | Argument long name     | Mandatory | Description                                                                            | Restricted values |
-|----------|------------------------|-----------|----------------------------------------------------------------------------------------|-------------------|
-| -f       | --force                | no        | Forces the unlocking of a locked database                                              | No                |
-| -c       | --commit               | no        | Applies dictionary changes to the database                                             | No                |
-|          | --force-dao-generation | no        | Forces the re-generation of DAOs on the given host                                     | No                |
-|          | --skip-dao-generation  | no        | Skips the re-generation of DAOs on the given host                                      | No                |
-|          | --ask-db-password      | no        | Prompts for a DB user password to be manually entered                                   | No                |
-| -d       | --dumpSQL              | no        | Outputs the SQL DDL statements to the console instead of applying to the db          | No                |
-| -m       | --metadataOnly         | no        | Only updates the GSF dictionary and alias stores, does not apply any table changes    | No                |
-|          | --skip-unchanged       | no        | Forces remap to fail if the `--commit` option is used and schema changes are present  | No                |
-If you run remap with no arguments, it simply gives a report of changes that exist in the configuration.
+For full details, see our page on [Remap](../../../operations/commands/remap).
 
-For example:
+## FixEnumValues
 
-```bash
-==================================
+Converts non-matching enum values in the database to SNAKE_CASE. This script is intended to be used after a dictionary change that adds new enum values. It will only update the data if the converted value matches the list of enum values in the dictionary.
 
-Table Changes
+As with `remap`, changes will only be applied to the database if run with the **--commit** flag.
 
-==================================
+### Usage
 
-Added ADMINISTRATOR.NAME
+```shell
+FixEnumValues [-c | --commit] [TABLES]
+```
+### Example
 
-==================================
-
-Field changes
-
-==================================
-
-No changes
-
-==================================
-
-Key changes
-
-==================================
-
-No changes
+```
+FixEnumValues --commit TRADE POSITION
 ```
 
-To commit the changes to the database, use the **--commit** argument.
+### As an installHook
+
+To automate this process, you can use an installHook to call the script before `remap` is peformed - be aware however that it will only run successfully once.
+
+The following will find all String to Enum changes in all tables and commit any valid updates to the DB before `remap` is peformed.
+
+```bash
+#!/bin/bash
+source "$HOME"/.bashrc
+shopt -s expand_aliases
+
+FixEnumValues --commit
+
+exit $?
+```
+
+To implement thia:
+
+1. Navigate to the ***appName*\server\jvm\\*appName*-config\src\main\resources\scripts\installHooks** folder
+
+2. Create a file called ***nextInstallHookNumber*_ConvertData.sh** or similar and add the bash script above.
+
+The installHook will run before `remap` on your next deploy.
 
 ## startProcess script
 

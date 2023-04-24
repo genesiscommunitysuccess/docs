@@ -58,6 +58,65 @@ Sample configuration and data for pie chart:
 
 For further configuration examples please see: [here](https://g2plot.antv.vision/en/examples/gallery).
 
+## Integration into home template
+
+You can now integrate the chart into the existing flex layout we have made from the previous tutorial sections, and end up with the following markup:
+
+```typescript {25,26,44,46-51} title='home.template.ts'
+<div class="column-split-layout">
+	<div class="row-split-layout">
+		<zero-grid-pro persist-column-state-key="position-grid-settings">
+			<grid-pro-genesis-datasource
+				resource-name="ALL_POSITIONS"
+				order-by="INSTRUMENT_ID"
+			></grid-pro-genesis-datasource>
+			${repeat(
+				() => positionColumnDefs,
+				html`
+					<grid-pro-column :definition="${(x) => x}"></grid-pro-column>
+				`
+			)}
+			<grid-pro-column :definition="${(x) => x.singlePositionActionColDef}"></grid-pro-column>
+		</zero-grid-pro>
+
+		<zero-grid-pro>
+			<grid-pro-genesis-datasource
+				resource-name="ALL_TRADES"
+				order-by="INSTRUMENT_ID"
+			></grid-pro-genesis-datasource>
+		</zero-grid-pro>
+	</div>
+
+	<div class="row-split-layout">
+		<div class="column-split-layout">
+			<zero-text-field :value=${sync((x) => x.quantity)}>Quantity</zero-text-field>
+			<zero-text-field :value=${sync((x) => x.price)} type="number">Price</zero-text-field>
+			<span>Instrument</span>
+			<zero-select :value=${sync((x) => x.instrument)}>
+				${repeat(
+					(x) => x.tradeInstruments,
+					html`
+						<zero-option value=${(x) => x.value}>${(x) => x.label}</zero-option>
+					`
+				)}
+			</zero-select>
+			<span>Side</span>
+			<zero-select :value=${sync((x) => x.side)}>
+				<zero-option>BUY</zero-option>
+				<zero-option>SELL</zero-option>
+			</zero-select>
+			<zero-button @click=${(x) => x.insertTrade()}>Add Trade</zero-button>
+		</div>
+
+		<zero-g2plot-chart
+			type="pie"
+			:config=${(x) => x.chartConfiguration}
+			:data=${(x) => x.chartData}
+		></zero-g2plot-chart>
+	</div>
+</div>
+```
+
 ## Fetching the data
 Now you will define how to fetch the data from the server.
 
@@ -82,5 +141,9 @@ Use the snippet below, where:
 You should have a data chart that resembles something like this:
 
 ![](/img/charts.png)
+
+If you have been following along the entire tutorial your page should look something like the following:
+
+![](/img/charts-whole-page.png)
 
 You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for this chapter.

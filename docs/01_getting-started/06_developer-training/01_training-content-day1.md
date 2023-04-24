@@ -46,7 +46,7 @@ dataServer {
 Front end
 ```html
 <zero-grid-pro rowHeight="45">
-    <grid-pro-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
+    <grid-pro-genesis-datasource resource-name="ALL_TRADES" order-by="TRADE_DATETIME" />
 </zero-grid-pro>
 ```
 
@@ -214,6 +214,7 @@ Next, we want to be able to insert rows into our table. For this, you need to de
 eventHandler {
 
     eventHandler<Trade>(name = "TRADE_INSERT") {
+        schemaValidation = false
         onCommit { event ->
             entityDb.insert(event.details)
             ack()
@@ -281,6 +282,14 @@ Finally, you can build and deploy the server.
 ### Build
 
 In the Gradle menu on the right of IntelliJ, select:
+
+**genesisproduct-alpha**
+
+![](/img/assemble-server.png)
+
+```shell title='Running assemble from the command line'
+./gradlew :genesisproduct-alpha:assemble
+```
 
 **genesisproduct-alpha**/**alpha-config**
 
