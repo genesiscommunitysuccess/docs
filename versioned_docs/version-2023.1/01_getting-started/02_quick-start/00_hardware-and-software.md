@@ -40,9 +40,9 @@ This page gives you the hardware and software requirements needed in order to ru
 | [Postman](https://www.postman.com/downloads/) (optional)	                                                       |         8          |
 
 
-You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJIDEA enables you to use Genesis Plugin and make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Since we are going to use this plugin, Genesis strongly recommends using IntelliJIDEA.
+You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJIDEA enables you to use Genesis Plugin and make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Since you are going to use this plugin, Genesis strongly recommends using IntelliJIDEA.
 
-## Access to the Genesis repository
+## Installing GenX
 
 <details>
   <summary>Pre-requisite check</summary>

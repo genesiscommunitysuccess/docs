@@ -1,6 +1,6 @@
 ---
-title: 'Quick start - run the application (Docker)'
-sidebar_label: 'Run the application (Docker)'
+title: 'Quick start - run the application'
+sidebar_label: 'Run the application'
 id: run-the-application-docker
 keywords: [getting started, quick start, run the app, docker]
 tags:
@@ -10,33 +10,25 @@ tags:
     - docker
 ---
 
-Before you follow the instructions on this page, make sure you have sucessfully installed [genesis plugin](../../../server/tooling/intellij-plugin/).
+## Create a new Schema
 
-## Building and composing Docker images
+Before you can run your application, you need to create a new schema to you database where all tables will be created. To do that, follow these two steps:
 
-First start the database (in this tutorial we are using a POSTGRES db in a docker container). Make sure your docker management software (in our case Rancher desktop) is up and running and do the following:
+1. Run `genesis-install`.
 
-```powershell
-docker pull postgres
-docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=10000'
-```
+![Genesis Install](/img/intellij-genesisInstall.png)
 
-To confirm your docker has been created, please run:
-```powershell
-docker ps | findstr "localPostgresDb"
-```
+2. Run `remap`.
+
+![Genesis Install](/img/intellij-remap.png)
+
 
 ## Send data to Genesis
-
-:::note
-If you haven't already run the [remap command](../../../server/tooling/intellij-plugin/#remap), do it now, so that the database is updated.
-:::
-
-Now that we have our database up and running, we need to send the login information so we can access the application we have just created. To do this, go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**.
+Now that you have your database up and running, you need to send the login information so you can access the application you have just created. To do this, go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**
 
 ![](/img/import_csv_to_genesis.png)
 
-You will be prompted the following message. Type **y** to proceed.
+You will be prompted with the following message. Type **y** to proceed.
 
 ```powershell
 WARNING: Are you sure you want to import all the tables from all the csv files to the database? (y/n)
@@ -44,8 +36,49 @@ WARNING: Are you sure you want to import all the tables from all the csv files t
 
 After that, you have all the data to start the application.
 
-## Connect front end to server
-Since we created our project from a seed, we need to change the defaut API_HOST in the **package.json** in **client/web/** to the port we are using in the project. Change the highlighted line in your file.
+<details>
+  <summary>Want to check if your data has been sent?</summary>
+  To check your database, Genesis plugin has the following script: 
+
+  ![](/img/DbMon-script.png)
+
+  Type `table USER` and then `search 1`, which will display the following:
+
+```kotlin
+==================================
+Genesis Database Monitor
+Enter 'help' for a list of commands
+==================================
+DbMon>table USER
+DbMon:USER>search 1
+==================================
+USER
+==================================
+Field Name                               Value                                    Type                
+===========================================================================================
+TIMESTAMP                                2023-04-20 18:59:04.080(n:0,s:1428)      NANO_TIMESTAMP      
+COMPANY_ID                                                                        STRING              
+COMPANY_NAME                             GENESIS                                  STRING              
+DOMAIN                                                                            STRING              
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING              
+FIRST_NAME                               Jane                                     STRING              
+LAST_LOGIN                               2016-04-28                               DATE                
+LAST_NAME                                Dee                                      STRING              
+ONLINE                                   false                                    BOOLEAN             
+PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING              
+PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
+REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
+STATUS                                   ENABLED                                  STRING              
+USER_NAME                                JaneDee                                  STRING              
+-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
+Total Results:  1
+DbMon:USER>
+```
+</details>
+
+## Connect the front end to the server
+Since you created your project from a seed, you need to change the default API_HOST in the **package.json** in **client/web/** to the port we are using in the project. Change the highlighted line in your file.
 
 ```kotlin {7} title="client/web/package.json"
 {
@@ -66,7 +99,7 @@ Since we created our project from a seed, we need to change the defaut API_HOST 
 :::note
 Make sure you have started the [resource deamon](../../../server/tooling/intellij-plugin/#remap).
 :::
-Once your resource deamon is started, you can start all genesis processes; click on the **start** button.
+Once your resource deamon has started, you can start all the Genesis processes; click on the **start** button.
 
 ![](/img/genesis_deamon.png)
 
