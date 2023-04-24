@@ -9,7 +9,7 @@ tags:
     - angular
 ---
 
-Genesis Foundation integrates nicely with Angular. Let's take a look at how you can set up an Angular project, starting from scratch.
+FoundationUI integrates nicely with Angular. Let's take a look at how you can set up an Angular project, starting from scratch.
 
 ## Setting up the Angular project
 

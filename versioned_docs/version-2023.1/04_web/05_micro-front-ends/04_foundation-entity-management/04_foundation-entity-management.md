@@ -119,7 +119,7 @@ Set this object to configure the way that the Entity Manager interacts with the 
 The string defines the key in which the serialised state of the columns is stored in an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). Therefore, if you are setting multiple Entity Managers in your application to persist the state, you need to use unique keys - otherwise, you will get undefined behaviour.
 :::
 
-# User Management
+## User Management
 
 The User Management micro front-end is used to manage the users on the front end. Two core components are used to manage the entities:
 
@@ -135,7 +135,7 @@ User Management is a concrete use case of the [Entity Management](#entity-manage
 Here is an example grid view for managing users:
 ![Example user management grid](./docs/img/foundation-user-management.png)
 
-## Set-up
+### Set-up
 
 To enable this micro front-end in your application, follow the steps below:
 
@@ -173,11 +173,11 @@ export const AdminTemplate: ViewTemplate = html`
 `;
 ```
 
-## Config
+### Config
 
 You can customise the functionality of User Management through the properties you set in the HTML. This section covers the main properties that you can customise. For a full list of all properties, [see here](./docs/api/foundation-entity-management.users.md).
 
-### Columns
+#### Columns
 
 The primary way to configure the User Management functionality is via the columns that are displayed on the grid.
 
@@ -201,7 +201,7 @@ To configure the columns yourself, set the `columns` attribute when you define t
 ```
 To see a more verbose version of this example, see the [second example here](./docs/api/foundation-entity-management.users.md).
 
-### Permissions
+#### Permissions
 
 In contrast to Entity Management, we have a different way of displaying buttons and performing actions here. In this case, they are displayed if the user has the appropriate permissions from the server.
 
@@ -209,14 +209,14 @@ In contrast to Entity Management, we have a different way of displaying buttons 
 - `DELETE_USER` - the user can delete users
 - `AMEND_USER` - the user can update existing users
 
-### Persist column state
+#### Persist column state
 `persist-column-state-key` is a string value, which is used to control how the column states are persisted through actions such as page changes or refreshes. When using this micro front-end, it is set to `entity_profiles_management`.
 
 :::info
 For more information on `persist-column-state-key` see the section in [entity management.](#persist-column-state).
 :::
 
-# Profile Management
+## Profile Management
 
 The Profile Management micro front-end is used to manage the profiles on the front end. Two core components are used to manage the profiles - the grid and the form.
 
@@ -227,7 +227,7 @@ Profile Management is a concrete use case of the [Entity Management](#entity-man
 Here is an example grid view when managing profiles:
 ![Example profile management grid](./docs/img/foundation-profile-management.png)
 
-## Set-up
+### Set-up
 
 To enable this micro front-end in your application, follow the steps below.
 
@@ -264,11 +264,11 @@ export const AdminTemplate: ViewTemplate = html`
 `;
 ```
 
-## Config
+### Config
 
 The functionality of the profile manager is customised through the properties you set in the HTML. This section covers the main properties that you will want to customise. For a full list of all properties, [see here](./docs/api/foundation-entity-management.profiles.md).
 
-### Permissions
+#### Permissions
 
 In contrast to Entity Management, we have a different way of displaying buttons and performing actions here. In this case, they are displayed only if the user has the appropriate permissions from the server.
 
@@ -276,8 +276,10 @@ In contrast to Entity Management, we have a different way of displaying buttons 
 - `DELETE_PROFILE` - the user can delete profiles
 - `AMEND_PROFILE` - the user can update existing profiles
 
-### Persist column state
-`persist-column-state-key` is a string value which is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set, then the behaviour will be to _not_ persist the column state, and the grid will revert back to its default state every time the user navigates away from it.
+
+#### Persist column state
+`persist-column-state-key` is a string value which is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set, then the behaviour will be to _not_ persist the column state, and  the grid will revert back to its default state every time the user navigates away from it.
+
 
 :::info
 For more information on `persist-column-state-key`, see the section in [Entity Management](#persist-column-state).

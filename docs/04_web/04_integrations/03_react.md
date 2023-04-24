@@ -9,7 +9,7 @@ tags:
     - angular
 ---
 
-Genesis Foundation can be used in React applications. Let's take a look at how you can set up a project, starting from scratch.
+FoundationUI can be used in React applications. Let's take a look at how you can set up a project, starting from scratch.
 
 ## Setting up the React project
 
