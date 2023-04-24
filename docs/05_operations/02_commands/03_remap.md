@@ -79,8 +79,7 @@ If no changes between the schema files and the current database schema are detec
 For clarity, we refer here to the schema being used by the database layer as "schema" and the current file system schema as "dictionaries".
 
 When you initially deploy your application to the platform, `remap` generates the schema from the dictionaries. No changes will be required as there is no existing schema.
-T
-he next time you run `remap` this previously generated schema will be compared against the dictionaries to find any changes.
+The next time you run `remap` this previously generated schema will be compared against the dictionaries to find any changes.
 
 Once it has finished the comparison, it will print the change list (see above), and if the "--commit" option was provided, it will attempt to modify the current schema to match the deployed dictionaries.
 
