@@ -141,7 +141,9 @@ Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables will aut
 
 SSO functionality allows the `Login` micro front-end to work with your company's existing authentication system, enabling them to have a single set of credentials - incluidng those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
 
-Setting up SSO is primarily [a back-end task](../../../server/access-control/SSO-authentication/); however, there is a small amount of configuration covered in [the customisation part of this documentation](#enable-sso).
+Setting up SSO is primarily [a back-end task] and it depends on whether you use [JWT](../../../server/access-control/sso-jwt/), (SAML)(../../../server/access-control/sso-saml/), or [OIDC](../../../server/access-control/sso-jwt/).
+
+However, we cover a small amount of configuration in the [customisation](#enable-sso) part of this documentation.
 
 :::noteInfo
 The standard process of SSO is that the SSO authentication provider flow is opened via a redirect in the current page. However, many authentication providers block their system when running in an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). Because of this, if the `Login` micro front-end detects that it is running in an iframe, it opens up the authentication provider in a popup instead.
