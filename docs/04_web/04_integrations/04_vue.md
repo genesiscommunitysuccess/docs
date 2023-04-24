@@ -9,7 +9,7 @@ tags:
     - angular
 ---
 
-Genesis Foundation works great with Vue. Let's take a look at how you can set up a Vue project, starting from scratch.
+FoundationUI works well with Vue. Let's take a look at how you can set up a Vue project, starting from scratch.
 
 ## Setting up the Vue project
 
