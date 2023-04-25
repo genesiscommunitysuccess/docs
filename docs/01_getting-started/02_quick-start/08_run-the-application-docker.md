@@ -39,7 +39,7 @@ After that, you have all the data to start the application.
 
 <details>
   <summary>Want to check if your data has been sent?</summary>
-  To check your database, the Genesis plugin has the following script: 
+  To check your database, the Genesis Intellij plugin has the following script: 
 
   ![](/img/DbMon-script.png)
 
