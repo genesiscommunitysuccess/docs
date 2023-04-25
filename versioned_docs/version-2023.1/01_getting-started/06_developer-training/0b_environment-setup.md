@@ -40,9 +40,9 @@ Please follow these instructions very carefully to ensure your environment is re
 | NodeJS  | 16 LTS|
 | npm | 8 |
 | Gradle | 7.5 |
-| [Genesis Plugin](../../../server/tooling/intellij-plugin/)       |         0.1.2        |
+| [Genesis Intellij plugin](../../../server/tooling/intellij-plugin/)       |         0.1.2        |
 
-You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJ IDEA enables you to use Genesis Plugin and make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Since you are going to use this plugin, Genesis strongly recommends using IntelliJ IDEA.
+You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJ IDEA enables you to use Genesis Intellij plugin and make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Since you are going to use this plugin, Genesis strongly recommends using IntelliJ IDEA.
 
 ###  Accessing the Genesis repository and configuring the Genesis packages
 
