@@ -474,7 +474,7 @@ Take a moment to play around, insert new orders and see the orders in the grid.
 30min
 :::
 Implement these changes in the order entry form:
-- there's a field ORDER_ID in the ORDER table which is generated automatically by the server. However, if a value is given, it will use the given value instead. Generate a random value on the frontend and pass the value to the EVENT_ORDER_INSERT event.
+- There's a field ORDER_ID in the ORDER table which is generated automatically by the server. However, if a value is given, it will use the given value instead. Generate a random value on the frontend and pass the value to the EVENT_ORDER_INSERT event.
 - Fields instrument, quantity and price are mandatory on the server. Whenever a null or empty value is passed, make sure to capture the error response from the server and paint the missing field label in red.
 :::tip
 To generate the ORDER_ID value you can use `Date.now()`
