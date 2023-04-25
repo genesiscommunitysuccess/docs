@@ -52,7 +52,7 @@ If you get confused by any of the terminology we use in this section, we are pro
 <!-- TODO: link to foundation-ui example when we have one -->
 
 ### General Front-end concepts
-- [Routing](https://developpaper.com/question/what-is-front-end-routing-when-is-front-end-routing-appropriate-what-are-the-advantages-and-disadvantages-of-front-end-routing/)
+- [Routing](https://javascript.plainenglish.io/take-a-look-at-how-front-end-routing-works-dd28d5bcc15e)
 - [Websockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
 - [Micro front-ends](https://martinfowler.com/articles/micro-frontends.html)
 - [State management](https://dev.to/snickdx/the-frontend-hitchhikers-guide-state-management-30ji) 

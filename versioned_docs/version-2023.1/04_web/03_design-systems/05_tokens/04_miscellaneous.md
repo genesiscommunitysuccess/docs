@@ -1,5 +1,5 @@
 ---
-title: 'Design System Tokens - Miscellaneous'
+title: 'Design system tokens - miscellaneous'
 sidebar_label: 'Miscellaneous'
 id: miscellaneous
 keywords: [web, design system, tokens, miscellaneous]
@@ -22,7 +22,7 @@ You can adjust any of the defaults in the `src/_config/values` folder of your de
 * `strokeWidth`: controls the width of the stroke of a component that has a stroke
 * `focusStrokeWidth`: controls with width of the stroke of a component that has a stroke when it has document focus
 
-### prefix
+## prefix
 
 ```ts
 export const prefix = 'alpha';
@@ -36,11 +36,11 @@ export const prefix = 'custom';
 
 You will then be able to use your component in HTML as `<custom-button>`.
 
-### direction
+## direction
 
 The primary document direction (LTR or RTL). Many CSS layout properties like [flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Basic_Concepts_of_Flexbox) and [CSS grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout/Basic_Concepts_of_Grid_Layout) automatically handle reflow depending on the [document's primary direction](https://www.w3.org/International/questions/qa-html-dir). There are also CSS [logical properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Logical_Properties/Basic_concepts) that can be used as well to apply localized margins, paddings, borders and positioning. Unfortunately, browser support for these properties is limited and there are still styling cases not covered by these properties (directional glyphs, transforms, etc). That is why FAST provides several mechanisms to apply direction-based styles.
 
-#### Usage
+### Usage
 
 <Tabs
   defaultValue="css"
@@ -73,8 +73,6 @@ const styles = css`
 ### disabledOpacity
 
 This controls the opacity of disabled controls.
-
-#### Usage
 
 <Tabs
   defaultValue="css"
@@ -109,7 +107,6 @@ const styles = css`
 
 Controls the width of the stroke of a component that has a stroke.
 
-#### Usage
 
 <Tabs
   defaultValue="css"
@@ -142,8 +139,6 @@ const styles = css`
 ### focusStrokeWidth
 
 This controls the width of the stroke of a component that has a stroke when it has document focus.
-
-#### Usage
 
 <Tabs
   defaultValue="css"
