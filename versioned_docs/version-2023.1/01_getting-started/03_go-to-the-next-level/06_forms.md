@@ -143,9 +143,9 @@ Start by adding the elements to the template. Instead of the `<foundation-form>`
 <zero-select></zero-select>
 ```
 
-Also add the following so the components fulfill the whole container:
+The components look a little messy, add the following so the components fulfill the whole container:
 
-```tml title='home.styles.ts'
+```css title='home.styles.ts'
   zero-text-field{
       display: block;
       width: 100%;
@@ -173,7 +173,7 @@ export class Home extends FASTElement {
 }
 ```
 
-Now we need to interact with the Event Handlers that respond to user changes and also store the inputted data:
+Now we need to interact with the Event Handlers that respond to user changes and also store the inputted data.
 
 We can do it in the traditional way by adding `@change` [Event Handler](https://www.fast.design/docs/fast-element/declaring-templates#events) - but we can also use the `sync` directive, which does that for us automatically.
 
@@ -184,35 +184,27 @@ import {sync} from '@genesislcap/foundation-utils';
 ```
 
 ```html {2,7,13,18} title='home.template.ts'
-<zero-text-field
-  :value=${sync(x=> x.quantity)}
->
-  Quantity
-</zero-text-field>
-<zero-text-field
-  :value=${sync(x=> x.price)}
->
-  Price
-</zero-text-field>
-<span>Instrument</span>
-<zero-select
-  :value=${sync(x=> x.instrument)}
->
-</zero-select>
-<span>Side</span>
-<zero-select
-  :value=${sync(x=> x.side)}
->
-</zero-select>
+        <zero-text-field
+          :value=${sync(x=> x.quantity)}>
+          Quantity
+        </zero-text-field>
+        <zero-text-field
+          :value=${sync(x=> x.price)}>
+          Price
+        </zero-text-field>
+        <span>Instrument</span>
+        <zero-select
+          :value=${sync(x=> x.instrument)}>
+        </zero-select>
+        <span>Side</span>
+        <zero-select
+          :value=${sync(x=> x.side)}>
+        </zero-select>
 ```
 
 You can now refresh your application; it should look something like this:
 
 ![](/img/position-form-2023_1.png)
-
-:::note
-The data in your grids may vary from the data in the example. You may also only see one grid or none at all, depending on whether you replaced or appended the xml before this.
-:::
 
 ## Adding selection options
 You probably realise that we don't have any options in our select components, so let's fix that now.
@@ -239,7 +231,6 @@ To get the data from the API, inject:
 
 ```typescript title='home.ts'
 @observable tradeInstruments: Array<{value: string, label: string}>;
-@Connect connect: Connect;
 public async connectedCallback() {
     super.connectedCallback();
 
@@ -264,8 +255,17 @@ To dynamically include a list of instruments, use the [repeat](https://www.fast.
 Now we have the data that can be selected, we need the user to be able to submit the trade:
 
 Create a simple button with a click event handler:
-```html title='home.template.ts'
-<zero-button @click=${x=> x.insertTrade()}>Add Trade</zero-button>
+```html {8} title='home.template.ts'
+                  ...
+        <span>Side</span>
+        <zero-select :value=${sync(x=> x.side)}>
+            <zero-option>BUY</zero-option>
+            <zero-option>SELL</zero-option>
+        </zero-select>
+    </div>
+    <zero-button @click=${x=> x.insertTrade()}>Add Trade</zero-button>
+</div>
+`;
 ```
 
 Then create a new API call to insert the trade (this replaces the `insertTrade()` function you previous declared):
@@ -289,7 +289,7 @@ Let's add another data grid at the bottom of the page to show the trade view `AL
 
 <!-- I stopped here, I changed some configs since it was not working the way it wasdeclared -->
 
-```html {2,17-23}title='home.template.ts'
+```html {2,16-20}title='home.template.ts'
 <div class="column-split-layout">
 	<div class="row-split-layout">
 		<zero-grid-pro persist-column-state-key="position-grid-settings">

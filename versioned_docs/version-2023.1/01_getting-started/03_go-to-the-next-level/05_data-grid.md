@@ -161,8 +161,19 @@ export const HomeTemplate = html<Home>`
 `;
 ```
 
-Columns will now flash green as the value inside changes:
-![](/img/positions-grid-with-cell-change-flash.png)
+This is what you should see in your application:
+
+![](/img/positions-grid-with-custom-columns.png)
+
+:::tip
+  You may have noticed that the grid you have just created is sorted descending by te `instrument` field. This is because we wrote this line **sort: 'desc'**.
+  ```typescript title="positionColumnDefs.ts"
+export const positionColumnDefs = [
+  {field: 'INSTRUMENT_ID', headerName: 'Instrument', sort: 'desc', flex: 2},
+             ...
+];
+  ``` 
+:::
 
 ## Saving user preferences
 
