@@ -1,7 +1,7 @@
 ---
 title: 'Access control - SSO authentication'
 sidebar_label: 'SSO authentication'
-id: SSO-authentication
+id: sso-saml
 keywords: [server, access control, SSO, authentication]
 tags:
   - server
