@@ -292,7 +292,7 @@ Now, let's see how we'd use `criteria` to add some filters to the data grid. In 
 <grid-pro-genesis-datasource
     resource-name="ALL_ORDERS"
     order-by="ORDER_ID"
-    criteria="SIDE == 'BUY'"
+    criteria="DIRECTION == 'BUY'"
 >
 </grid-pro-genesis-datasource>
 ```
