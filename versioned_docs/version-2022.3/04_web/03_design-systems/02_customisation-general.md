@@ -57,7 +57,7 @@ To help you visualise how modifying tokens impacts the component look and feel, 
 
 ### Overriding default implementation
 
-To go beyond adjusting token values, you can override the default component implementation. You can choose only to  override certain aspects of a component (such as template, styles or shadom DOM options) or provide a completely custom implementation.
+To go beyond adjusting token values, you can override the default component implementation. You can choose only to  override certain aspects of a component (such as template, styles or shadow DOM options) or provide a completely custom implementation.
 
 By default, components in your design simply re-export components from the underlying foundation design system as is (exact code can vary):
 

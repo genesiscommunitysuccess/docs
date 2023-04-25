@@ -1,5 +1,5 @@
 ---
-title: 'Design System Tokens - Typography'
+title: 'Design system tokens - typography'
 sidebar_label: 'Typography'
 id: typography
 keywords: [web, design system, tokens, typography]
