@@ -60,14 +60,14 @@ The form is now configured as required - but if you look at the page currently, 
 
 1. Ensure that the template in **home.template.ts** looks like this:
 
-```html {1-3,7,21-27} title='home.template.ts'
+```html {1-3,6-7,20-27} title='home.template.ts'
 import {html,repeat} from '@microsoft/fast-element';
 import type {Home} from './home';
 import {positionColumnDefs} from './positionColumnDefs';
 
 export const HomeTemplate = html<Home>`
-<div class="column-split-layout">
-    <div class="row-split-layout">
+<div class="row-split-layout">
+    <div class="column-split-layout">
         <zero-grid-pro persist-column-state-key="position-grid-settings">
             <grid-pro-genesis-datasource
                 resource-name="ALL_POSITIONS"
@@ -81,19 +81,19 @@ export const HomeTemplate = html<Home>`
             <grid-pro-column :definition="${(x) => x.singlePositionActionColDef}"></grid-pro-column>
         </zero-grid-pro>
     </div>
-    <div class="row-split-layout">
-         <foundation-form
-                resourceName="EVENT_TRADE_INSERT"
-                @submit=${(x, c) => x.insertTrade(c.event as CustomEvent)}
-            ></foundation-form>
-    </div>
 </div>
+    <div class="row-split-layout">
+        <foundation-form
+            resourceName="EVENT_TRADE_INSERT"
+            @submit=${(x, c) => x.insertTrade(c.event as CustomEvent)}
+        ></foundation-form>
+    </div>
 `;
 ```
 
 2. Set the styling required on the `host` element, and the `column-split-layout` div in **home.styles.ts**.
 
-```typescript title='home.styles.ts'
+```css title='home.styles.ts'
 import { css } from '@microsoft/fast-element';
 import { mixinScreen } from '../../styles';
 
@@ -109,11 +109,12 @@ export const HomeStyles = css`
     display: flex;
     flex-direction: column;
     flex: 1;
-    width: 100%;
-    height: 100%;
+    width: 50%;
   }
 
   .row-split-layout {
+    justify-content: center;
+    display: flex;
     flex-direction: row;
     flex: 1;
     width: 100%;
@@ -143,19 +144,6 @@ Start by adding the elements to the template. Instead of the `<foundation-form>`
 <zero-select></zero-select>
 ```
 
-The components look a little messy, add the following so the components fulfill the whole container:
-
-```css title='home.styles.ts'
-  zero-text-field{
-      display: block;
-      width: 100%;
-  }
-  zero-select{
-      display: block;
-      width: 100%;
-  }
-```
-
 Then, define the variables that will hold the values that the user enters:
 
 In the file **home.ts**, add the following properties to the class: `Home`:
@@ -183,7 +171,7 @@ Let's add it to each form element:
 import {sync} from '@genesislcap/foundation-utils';
 ```
 
-```html {2,7,13,18} title='home.template.ts'
+```html {2,6,11,15} title='home.template.ts'
         <zero-text-field
           :value=${sync(x=> x.quantity)}>
           Quantity
@@ -255,17 +243,8 @@ To dynamically include a list of instruments, use the [repeat](https://www.fast.
 Now we have the data that can be selected, we need the user to be able to submit the trade:
 
 Create a simple button with a click event handler:
-```html {8} title='home.template.ts'
-                  ...
-        <span>Side</span>
-        <zero-select :value=${sync(x=> x.side)}>
-            <zero-option>BUY</zero-option>
-            <zero-option>SELL</zero-option>
-        </zero-select>
-    </div>
-    <zero-button @click=${x=> x.insertTrade()}>Add Trade</zero-button>
-</div>
-`;
+```html title='home.template.ts'
+<zero-button @click=${x=> x.insertTrade()}>Add Trade</zero-button>
 ```
 
 Then create a new API call to insert the trade (this replaces the `insertTrade()` function you previous declared):
@@ -285,56 +264,62 @@ public async insertTrade() {
   });
 }
 ```
-Let's add another data grid at the bottom of the page to show the trade view `ALL_TRADES`:
+Let's add another data grid on the top right corner of the page to show the trade view `ALL_TRADES`:
 
-<!-- I stopped here, I changed some configs since it was not working the way it wasdeclared -->
-
-```html {2,16-20}title='home.template.ts'
-<div class="column-split-layout">
-	<div class="row-split-layout">
-		<zero-grid-pro persist-column-state-key="position-grid-settings">
-			<grid-pro-genesis-datasource
-				resource-name="ALL_POSITIONS"
-			></grid-pro-genesis-datasource>
-			${repeat(
-				() => positionColumnDefs,
-				html`
-					<grid-pro-column :definition="${(x) => x}"></grid-pro-column>
-				`
-			)}
-			<grid-pro-column :definition="${(x) => x.singlePositionActionColDef}"></grid-pro-column>
-		</zero-grid-pro>
-
-		<zero-grid-pro>
-			<grid-pro-genesis-datasource
-				resource-name="ALL_TRADES"
-			></grid-pro-genesis-datasource>
-		</zero-grid-pro>
-	</div>
-
-	<zero-text-field :value=${sync((x) => x.quantity)}>Quantity</zero-text-field>
-	<zero-text-field :value=${sync((x) => x.price)} type="number">Price</zero-text-field>
-	<span>Instrument</span>
-	<zero-select :value=${sync((x) => x.instrument)}>
-		${repeat(
-			(x) => x.tradeInstruments,
-			html`
-				<zero-option value=${(x) => x.value}>${(x) => x.label}</zero-option>
-			`
-		)}
-	</zero-select>
-	<span>Side</span>
-	<zero-select :value=${sync((x) => x.side)}>
-		<zero-option>BUY</zero-option>
-		<zero-option>SELL</zero-option>
-	</zero-select>
-	<zero-button @click=${(x) => x.insertTrade()}>Add Trade</zero-button>
+```html {16-22}title='home.template.ts'
+<div class="row-split-layout">
+    <div class="column-split-layout">
+        <zero-grid-pro persist-column-state-key="position-grid-settings">
+            <grid-pro-genesis-datasource
+                resource-name="ALL_POSITIONS"
+            ></grid-pro-genesis-datasource>
+            ${repeat(
+                () => positionColumnDefs,
+                html`
+                    <grid-pro-column :definition="${(x) => x}"></grid-pro-column>
+                `
+            )}
+            <grid-pro-column :definition="${(x) => x.singlePositionActionColDef}"></grid-pro-column>
+        </zero-grid-pro>
+    </div>
+    <div class="column-split-layout">
+        <zero-grid-pro persist-column-state-key="position-grid-settings">
+            <grid-pro-genesis-datasource
+                resource-name="ALL_TRADES"
+            ></grid-pro-genesis-datasource>
+        </zero-grid-pro>
+    </div>
 </div>
+<zero-text-field
+  :value=${sync(x=> x.quantity)}>
+  Quantity
+</zero-text-field>
+<zero-text-field
+  :value=${sync(x=> x.price)}>
+  Price
+</zero-text-field>
+<span>Instrument</span>
+<zero-select :value=${sync(x=> x.instrument)}>
+  ${repeat(x => x.tradeInstruments, html`
+    <zero-option value=${x => x.value}>${x => x.label}</zero-option>
+  `)}
+</zero-select>
+<span>Side</span>
+<zero-select :value=${sync(x=> x.side)}>
+    <zero-option>BUY</zero-option>
+    <zero-option>SELL</zero-option>
+</zero-select>
+<zero-button @click=${x=> x.insertTrade()}>Add Trade</zero-button>
 ```
 Now if everything has worked, you can go to your browser, insert the data for a new trade, and then click the button. The new trade is then displayed in the data grid of the trade view `ALL_TRADES` in the top right of the page.
 
 ![](/img/finished-trade-view.png)
 
+:::note
+You won't se any changes in the `ALL_POSITIONS` grid after you add a new trade because we have not created any consolidators yet. We will be doing it in the next steps.
+:::
+
+<!--- This part of the go to next level does not fit with any other part of the tutorial. Needs to be refactored to something that can be used in this tutorial
 ## Advanced features
 
 If you need a completely custom form, you can pass `uischema` and `jsonSchema` directly to a `foundation-form` and it will be auto-generated based on these inputs.
@@ -346,9 +331,11 @@ If you need a completely custom form, you can pass `uischema` and `jsonSchema` d
   :data=${(x) => x.editedEntity}
 ></foundation-form>
 ```
+Add the following code to yout home.ts
 
 Example schema:
 ```typescript title='form.ts'
+
 const uiSchema: UiSchema = {
   type: 'VerticalLayout',
   elements: [
@@ -383,8 +370,7 @@ const jsonSchema: JSONSchema7 = {
       type: 'string',
       minLength: 3,
       description: 'kotlin.String',
-    },
-    ...
+    }
   },
   additionalProperties: false,
   required: ['ISSUER_NAME'],
@@ -456,6 +442,7 @@ import { mustMatch } from '@genesislcap/foundation-forms';
 },
 ...
 ```
+--->
 
 ## Conclusion
 You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for the forms.

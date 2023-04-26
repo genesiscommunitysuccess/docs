@@ -41,6 +41,7 @@ Next, we want to be able to insert rows into our table. For this, you need to de
 eventHandler {
 
     eventHandler<Trade>(name = "TRADE_INSERT") {
+        schemaValidation = false;
         onCommit { event ->
             entityDb.insert(event.details)
             ack()
