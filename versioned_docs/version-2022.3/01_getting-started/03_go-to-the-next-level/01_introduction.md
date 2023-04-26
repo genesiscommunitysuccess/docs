@@ -38,7 +38,7 @@ We are going to call this example application **positions-app-tutorial**. You wi
 Using the GenX CLI tool, we want to generate a blank full-stack application project. Go to a folder where you want your project to reside, and run:
 
 ```
-npx genx
+npx @genesislcap/genx@latest
 ```
 
 Follow through the series of questions. For `App name` enter `positions-app-tutorial` and for `App seed` enter `Quick Start Application`.

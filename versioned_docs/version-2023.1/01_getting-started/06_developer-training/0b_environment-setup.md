@@ -126,16 +126,13 @@ This setup presumes you will sign in with jfrog SAML SSO. Please follow the step
 </TabItem>
 </Tabs>
 
-Install GenX CLI; this is a Genesis tool that enables you to seed projects.
+Launch GenX CLI; this is a Genesis tool that enables you to seed projects.
+
 ```shell
-npm install -g @genesislcap/foundation-cli
+npx @genesislcap/genx@latest
 ```
 
-Check that GenX CLI is working:
-```shell
-npx genx
-```
-and you should see this message:
+You should see this message:
 ```shell
 
 
