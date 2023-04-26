@@ -12,8 +12,6 @@ tags:
     - setup
 ---
 
----
-
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -21,28 +19,11 @@ import TabItem from '@theme/TabItem';
 
 Please follow these instructions very carefully to ensure your environment is ready for a productive training. It's not necessary to have admin rights on your workstation to develop with the Genesis low-code platform, but you might have to check with your System Administrator how to install the required third-party software listed here.
 
-### Recommended hardware and operating system
+## Recommended hardware and software packages
 
-* Operating system : Windows 10 Pro version 2004 or higher
-* RAM : 32GB minimum, as we are running full applications locally
-* CPU : 8 Core
-* SSD : 250GB
+import MinimunRequirement from '/snippet/_minimun_requirement.md'
 
-### Required software packages
-
-| Package	| Minimum Version| 
-|--------------|:-----:|
-| IntelliJ Community	| 2022.3|
-| Visual Studio Code	| 1.52.1|
-| Java SDK| 11|
-| Kotlin| 1.7.10|
-| Chrome | 88.0|
-| Postman	| 8|
-| NodeJS  | 16 LTS|
-| npm | 8 |
-| Gradle | 7.5 |
-
-You can use a range of IDEs (for example, Eclipse) with the Genesis low-code platform, but only IntelliJ enables you to make full use of the Genesis Platform Abstraction Language (**GPAL**) prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Genesis strongly recommends using IntelliJ.
+<MinimunRequirement />
 
 ###  Accessing the Genesis repository and configuring the Genesis packages
 #### .npmrc set-up
