@@ -20,27 +20,20 @@ With GenX, you can pull seed projects that adhere to best practices for developm
 
 - Recommended Operating system : Windows 10 Pro
 - [Node.js](https://nodejs.org/en/download/) version 16
-- Before installing GenX, you need to [configure the Genesis npm repository](../../../getting-started/quick-start/hardware-and-software/#npmrc-set-up)
 
-## Installing GenX
+## Launching
 
-Once the repository is configured, open a terminal on your Windows machine and install the CLI tool using this:
+Open a terminal on your machine and launch the CLI tool:
 
-```shell title="Windows Terminal"
-npm install -g @genesislcap/foundation-cli
-```
-
-Now you're ready to use the tool, simply type `genx` to start:
-
-```shell title="Windows Terminal"
-genx
+```shell title="Terminal"
+npx @genesislcap/genx@latest
 ```
 
 This command presents you with a sequence of choices for creating and configuring applications.
 
 ## Using GenX
 
-First, you'll be prompted to supply your Genesis artifactory credentials [used when setting up your .npmrc](../../../getting-started/quick-start/hardware-and-software/#npmrc-set-up)
+First, you'll be prompted to supply your Genesis artifactory credentials.
 
 Next, follow the instructions according to the task you're wishing to carry out.
 
@@ -180,9 +173,11 @@ This is a monorepo containing multiple packages. Each package can be released in
 
 ## CLI command-language syntax
 
+To learn about available CLI commands run `npx @genesislcap/genx@latest -h`.
+
 The command syntax is:
 
-`genx` _commandNameOrAlias requiredArg [optionalArg]_ [options]
+`npx @genesislcap/genx@latest` _commandNameOrAlias requiredArg [optionalArg]_ [options]
 
 
 ## Boolean options

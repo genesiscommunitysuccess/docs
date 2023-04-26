@@ -54,54 +54,47 @@ You should ignore any other seed version listings.
 
 - Recommended Operating system : Windows 10 Pro
 - [Node.js](https://nodejs.org/en/download/) version 16
-- Before installing genx, you need to [configure the Genesis npm repository](/getting-started/quick-start/hardware-and-software/#npmrc-set-up)
 
-## Installing genx
+## Launching genx
 
-Once the repository is configured, open a terminal on your Windows machine and install the CLI tool using this:
+Open a terminal on your machine and launch the CLI tool using this:
 
-```shell title="Windows Terminal"
-npm install -g @genesislcap/foundation-cli
-```
-
-Now you're ready to use the tool, simply type `genx` to start:
-
-```shell title="Windows Terminal"
-genx
+```shell title="Terminal"
+npx @genesislcap/genx@latest
 ```
 
 This command presents you with a sequence of choices for creating and configuring applications.
 
 ## Using genx
 
-First, you'll be prompted to supply your Genesis artifactory credentials [used when setting up your .npmrc](../../../getting-started/quick-start/hardware-and-software/#npmrc-set-up)
+First, you'll be prompted to supply your Genesis artifactory credentials.
 
 Next, you just need to respond to the questions, which depend on the task you initially select. For example, if you want to create a new application:
 
-```shell title="Windows Terminal"
+```shell title="Terminal"
 ? Please select an option: create application - Generates a local application.
 ```
 
 Enter the local directory where you want to create the app (where relevant, the default for these options is the letter displayed in upper case; this will be applied if nothing is entered):
 
-```shell title="Windows Terminal"
+```shell title="Terminal"
 ? Create a app in current directory (Y/n)
 ```
 
 ... and then give it an appropriate name (e.g. **alpha**):
-```shell title="Windows Terminal"
+```shell title="Terminal"
 ? App name alpha
 ```
 
 Next, select the Seed application you wish to base your project on:
-```shell title="Windows Terminal"
+```shell title="Terminal"
 ? App seed
 
 > Genesis Quick Start Application
 ```
 
 Choose whether to overwrite existing files. Note that the default is **No**.
-```shell title="Windows Terminal"
+```shell title="Terminal"
 ? Overwrite existing files (y/N)
 ```
 
@@ -111,22 +104,22 @@ This will start the download of dependencies.
 Once that has been completed, you will be prompted for configuring the front-end part of the project.
 
 The first prompt is the package [scope](https://docs.npmjs.com/cli/v8/using-npm/scope). The default is **genesislcap**.
-```shell title="Windows Terminal"
+```shell title="Terminal"
 ? Package scope (without the @) genesislcap
 ```
 
 The next question is about the package name. You can use **alpha**.
-```shell title="Windows Terminal"
+```shell title="Terminal"
 ? Package name alpha
 ```
 
 The next is whether you want to create a design system. The default is **Yes**.
-```shell title="Windows Terminal"
+```shell title="Terminal"
 ? Create design system (Yes/no)
 ```
 
 Finally, whether you want to set an API host. The default is **Yes**.
-```shell title="Windows Terminal"
+```shell title="Terminal"
 ? Set API Host (Yes/no)
 ```
 
@@ -134,12 +127,12 @@ Finally, whether you want to set an API host. The default is **Yes**.
 The next prompts concern the back-end part of the application.
 
 The first prompt is for the [group id](https://maven.apache.org/guides/mini/guide-naming-conventions.html):
-```shell title="Windows Terminal"
+```shell title="Terminal"
 ? Group Id global.genesis
 ```
 
 ... and this is followed by the application version:
-```shell title="Windows Terminal"
+```shell title="Terminal"
 ? Application Version 1.0.0-SNAPSHOT
 ```
 
@@ -191,9 +184,11 @@ This is a monorepo containing multiple packages. Each package can be released in
 
 ## CLI command-language syntax
 
+To learn about available CLI commands run `npx @genesislcap/genx@latest -h`.
+
 The command syntax is:
 
-`genx` _commandNameOrAlias requiredArg [optionalArg]_ [options]
+`npx @genesislcap/genx@latest` _commandNameOrAlias requiredArg [optionalArg]_ [options]
 
 
 ## Boolean options
