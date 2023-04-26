@@ -130,7 +130,7 @@ By default, a route that isn't marked public is not. However, a non-public route
 
 ## Authentication
 
-For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](../../../03_server/05_access-control/01_introduction.md).
+For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](../../../server/access-control/introduction/).
 
 ### Username & password
 
@@ -142,9 +142,11 @@ Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables automati
 
 ### SSO
 
-SSO allows the `Login` micro front-end to work with your company's existing authentication system, enabling users to have a single set of credentials - including those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
+SSO functionality allows the `Login` micro front-end to work with your company's existing authentication system, enabling them to have a single set of credentials - including those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
 
-Setting up SSO is primarily [a back-end task](../../../03_server/05_access-control/04_sso_authentication.md); however, there is a small amount of configuration covered in [the customisation part of this documentation](#enable-sso).
+Setting up SSO is primarily [a back-end task] and it depends on whether you use [JWT](../../../server/access-control/sso-jwt/), (SAML)(../../../server/access-control/sso-saml/), or [OIDC](../../../server/access-control/sso-jwt/).
+
+However, we cover a small amount of configuration in the [customisation](#enable-sso) part of this documentation.
 
 :::noteInfo
 The standard process of SSO is that the SSO authentication provider flow is opened via a redirect in the current page. However, many authentication providers block their system when running in an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). Because of this, if the `Login` micro front-end detects that it is running in an iframe, it opens up the authentication provider in a popup instead.

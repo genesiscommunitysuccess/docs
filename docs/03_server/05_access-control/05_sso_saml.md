@@ -1,7 +1,7 @@
 ---
 title: 'SSO - SAML'
 sidebar_label: 'SSO - SAML'
-id: SSO-saml
+id: sso-saml
 keywords: [SAML, server, access control, SSO, authentication]
 tags:
   - SAML
@@ -73,7 +73,7 @@ Once you have checked this, there are two things you need to do:
 
 We shall now look at these in detail.
 
-## Configuring SAML 
+## Configuring SAML in the Router 
 
 To enable SAML on the Genesis Router service, change the Router's config in your _application-name-_**processes.xml** file. The process name is `GENESIS_ROUTER`.
 
@@ -90,9 +90,9 @@ You can see these additions highlighted in the example below:
         <groupId>GENESIS</groupId>
         <options>-Xmx512m -DXSD_VALIDATE=false</options>
         <module>router</module>
-        <package>global.genesis.router,global.genesis.console,global.genesis.auth.saml</package>
+        <package>global.genesis.router,global.genesis.console,global.genesis.auth.saml,global.genesis.auth.sso.endpoint</package>
         <script>genesis-router.kts</script>
-        <classpath>genesis-console-5.2.*.jar,auth-saml-*.jar</classpath>
+        <classpath>genesis-console-5.2.*.jar,auth-saml-*.jar,auth-sso-endpoint-*.jar</classpath>
         <description>Socket, Websocket and HTTP proxy which routes incoming messages to GENESIS microservices</description>
     </process>
 ```

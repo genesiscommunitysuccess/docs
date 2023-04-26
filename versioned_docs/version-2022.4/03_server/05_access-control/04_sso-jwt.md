@@ -74,7 +74,7 @@ Make sure that the`JWT_CONFIG` table of your application is correctly configured
 * The `REDIRECT_URL` must contain the URL for which the user is redirected to log in, should they not possess a valid JWT.
 * The `KEY_ALGORITHM` should be set either to `KeyAlgorithm.RSA` or `KeyAlgorithm.HMAC`.
 
-## Configuring JWT SSO
+## Configuring SSO
 
 To enable SSO, you need to configure it in your _application-name_**-auth-preferences.kts** file.
 
