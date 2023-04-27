@@ -19,12 +19,13 @@ Username and Password authentication can be further specified to use one of thre
 * LDAP
 * HYBRID
 
-SSO authentication is further broken down into either:
+SSO authentication is further broken down into:
 
 * [JWT (JSON Web Token)](https://jwt.io/introduction) SSO
 * [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language)
+* [OIDC](https://openid.net/connect/)
 
-All of these, provide their own configuration settings in the _application-name-_**auth-preferences.kts** file.
+Each of these requires its own configuration settings in the _application-name-_**auth-preferences.kts** file.
 
 So, if your application is called positions, then the file would conventionally be named **positions-auth-preferences.kts**.
 
