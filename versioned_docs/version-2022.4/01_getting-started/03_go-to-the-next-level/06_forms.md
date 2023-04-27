@@ -213,4 +213,4 @@ Now if everything has worked, you can go to your browser, insert the data for a 
 
 
 ## Conclusion
-You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for the forms. 
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for the forms. Note that this repo is a complete application and may not reflect the changes made in this page.
