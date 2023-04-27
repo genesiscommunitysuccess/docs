@@ -115,6 +115,7 @@ Each `identityProvider` configuration has the following properties:
 | config | Holds the endpoint and verification configuration for the OIDC provider | Yes if `remoteConfig` is not present | No default value | Object |
 | remoteConfig | If the OIDC provider has the configuration endpoint `remoteConfig`, this can be used to point to that endpoint for automatic `endpoint` and `verification` configuration | Yes if `config` is not present | No default value | Object |
 | scopes | Requested scopes on authorization | No | `openid profile email` | Set |
+| onNewUser | Predefined action when a new user logs in | No | `ALLOW_ACCESS` - add the user to the database | Enum (`ALLOW_ACCESS`, `DO_NOTHING`) |
 | usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
 | tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | Yes | No default value | Int |
 | redirectUri | The URI to handle the code authorization. | Yes | No default value | String |
@@ -156,9 +157,107 @@ Each `verification` configuration has the following properties:
 | publicKey  | The public key to be used to validate the JWT | No | No default value | String |
 | publicKeyUrl | URL to the public key to be used to validate the JWT | No | No default value | String |
 | enabled | Enables/disables the validation of the JWT | No | True | Boolean |
-| allowedClockSkewSeconds | The amount of clock skew in seconds to tolerate when verifying the local time against the `nbf` claim  | No | 0 | Long |
 
 :::note
 If `verification` is defined, either `publicKey` or `publicKeyUrl` must also be defined.
 :::
 
+## Sample configurations
+
+### Minimal configuration
+
+```kotlin
+oidc{
+  loginEndpoint = "http://uat-host/login"
+  identityProvider("uatOidc"){
+    client{
+      id = "appplication-id"
+      secret = "application-secret"
+    }
+
+    config {
+      endpoints{
+        token = "uat-oidc:1337/token"
+        authorization = "uat-odic:1337/auth"
+      }
+    }
+
+    tokenLifeInSeconds = 5000
+
+    redirectUri = "http://genesis-uat-host/gwf/logon"
+  }
+}
+```
+
+### Minimal remote configuration
+
+```kotlin
+oidc{
+  loginEndpoint = "http://uat-host/login"
+  identityProvider("uatOidc"){
+    client{
+      id = "appplication-id"
+      secret = "application-secret"
+    }
+
+    remoteConfig {
+      url = "http://uat-oidc/.well-known/openid-configuration"
+    }
+
+    tokenLifeInSeconds = 5000
+
+    redirectUri = "http://genesis-uat-host/gwf/logon"
+  }
+}
+```
+
+### Full configuration
+
+```kotlin
+oidc{
+  loginEndpoint = "http://uat-host/login"
+  identityProvider("uatOidc"){
+    client{
+      id = "appplication-id"
+      secret = "application-secret"
+    }
+
+    config {
+      endpoints{
+        token = "uat-oidc:1337/token"
+        authorization = "uat-odic:1337/auth"
+      }
+    
+      verification {
+        publicKeyUrl = "http://uat-oidc:1377/.well_known/certs.jwks"
+      }
+    }
+    
+    scopes("openid", "profile")
+
+    onNewUser = NewUserStrategy.ALWAYS_ALLOW
+
+    usernameClaim = "name"
+
+    tokenLifeInSeconds = 5000
+
+    redirectUri = "http://genesis-uat-host/gwf/logon"
+
+    onFirstLogin {
+        createUser {
+            User{
+              userName = idToken.subject
+            } to userAttributes
+        }
+
+        createUserPermissions {
+            userProfiles("emp", "genesis")
+        }
+    }
+
+    onLoginSuccess { 
+
+    }
+  }
+}
+```
