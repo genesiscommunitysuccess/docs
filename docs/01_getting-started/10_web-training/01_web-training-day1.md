@@ -246,7 +246,7 @@ We usually follow the pattern of creating **.template.ts**, **.ts** and **.style
 
 Realistically, any application will require multiple pages and routes.
 
-If you're not familiar with the concept of [routing](https://developpaper.com/question/what-is-front-end-routing-when-is-front-end-routing-appropriate-what-are-the-advantages-and-disadvantages-of-front-end-routing/), it's basically displaying different content or pages according to different URL addresses. In this context, it means that different routes correspond to different contents or pages on the front end; this is implemented by the server returning different pages according to the different URLs. In single-page applications, most pages are structurally unchanged and only part of the content is changed.
+If you're not familiar with the concept of [routing](https://javascript.plainenglish.io/take-a-look-at-how-front-end-routing-works-dd28d5bcc15e), it's basically displaying different content or pages according to different URL addresses. In this context, it means that different routes correspond to different contents or pages on the front end; this is implemented by the server returning different pages according to the different URLs. In single-page applications, most pages are structurally unchanged and only part of the content is changed.
 
 In our case, there's a `home` route pointing to the `Home` component which is the home page. The routes are set in the `config.ts` and we'll get into more details soon.
 
@@ -593,12 +593,14 @@ You can customise:
 - the icon shown on the navigation bar and flyout menu (this shows the Genesis logo by default).
 - navigation links at the left-hand side of the navigation bar.
 - the control buttons on the right-hand side of the navigation bar can be shown or hidden, and their behaviour controlled via event listeners
-- The contents of the flyout menu.
+- the contents of the flyout menu.
 
 Here is an example of the navigation bar with three navigation items, and all three control buttons shown.
+
 ![Header with the standard genesis logo](/img/foundation-header-standard.png)
 
 This next example is the same as the previous example, except the Genesis logo is replaced with a custom icon.
+
 ![Header with a customised logo](/img/foundation-header-replaced-img.png)
 
 In this next example, we have put a set of example options set in the flyout menu.

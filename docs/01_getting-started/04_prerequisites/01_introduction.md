@@ -14,5 +14,4 @@ You can run our [Quick Start](/getting-started/quick-start/hardware-and-software
 - [Hardware and software](../../../getting-started/quick-start/hardware-and-software)
 - [Installing WSL](../../../getting-started/prerequisites/installing-wsl/)
 - [Gradle deploy plugin](../../../getting-started/prerequisites/gradle-deploy-plugin/)
-- [genx](../../../getting-started/prerequisites/genx/)
 - [Manual installation](../../../getting-started/prerequisites/manual-installation/)

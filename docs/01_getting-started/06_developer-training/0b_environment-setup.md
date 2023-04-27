@@ -21,28 +21,11 @@ import TabItem from '@theme/TabItem';
 
 Please follow these instructions very carefully to ensure your environment is ready for a productive training. It's not necessary to have admin rights on your workstation to develop with the Genesis low-code platform, but you might have to check with your System Administrator how to install the required third-party software listed here.
 
-### Recommended hardware and operating system
+## Recommended hardware and software packages
 
-* Operating system : Windows 10 Pro version 2004 or higher
-* RAM : 32GB minimum, as we are running full applications locally
-* CPU : 8 Core
-* SSD : 250GB
+import MinimunRequirement from '/snippet/_minimun_requirement.md'
 
-### Required software packages
-
-| Package	| Minimum Version| 
-|--------------|:-----:|
-| IntelliJ Community	| 2022.3|
-| Java SDK| 11|
-| Kotlin| 1.7.10|
-| Chrome | 88.0|
-| Postman	| 8|
-| NodeJS  | 16 LTS|
-| npm | 8 |
-| Gradle | 7.5 |
-| [Genesis Intellij plugin](../../../server/tooling/intellij-plugin/)       |         0.1.2        |
-
-You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJ IDEA enables you to use Genesis Intellij plugin and make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Since you are going to use this plugin, Genesis strongly recommends using IntelliJ IDEA.
+<MinimunRequirement />
 
 ###  Accessing the Genesis repository and configuring the Genesis packages
 
@@ -63,15 +46,13 @@ npm config set https-proxy https://proxy_host:port
 :::
 
 Install GenX CLI; this is a Genesis tool that enables you to seed projects.
+
 ```shell
-npm install -g @genesislcap/foundation-cli
+npx @genesislcap/genx@latest
 ```
 
-Check that GenX CLI is working:
-```shell
-genx
-```
-and you should see this message:
+You should see this message:
+
 ```shell
 
 

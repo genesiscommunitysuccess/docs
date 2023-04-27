@@ -11,11 +11,11 @@ tags:
     - core
 ---
 
-These core components are part of the Genesis low-code platform which run automatically. These components eliminate the need of the manual low-level programming which is otherwise mandatory for creating financial markets applications. Hence, you can simply focus on developing the essential value specific to your application.
+These core components run automatically on the Genesis low-code platform. They eliminate the need for much of the manual low-level programming that is otherwise mandatory for creating financial-markets applications. You can simply focus on developing the essential value specific to your application.
 
 | Name                                                                                        | Category       | Description                                                                                                             |
 |---------------------------------------------------------------------------------------------|----------------|-------------------------------------------------------------------------------------------------------------------------|
-| [Auth Manager](../../../03_server/05_access-control/02_authentication-overview.md)              | Access control | Industrial-strength authentication handler, with integrations to LDAP, SSO and more                                     |
-| [Perms](../../../03_server/05_access-control/05_authorisation-overview.md/#generic-permissions) | Access control | Enforces permissions and entitlements to data visibility & events, application-wide                                     |
-| [Cluster](../../../05_operations/03_clustering/01_clusters.md)                              | Orchestration  | Manages node communication for high availability and horizontal scaling in clustered applications                       |
-| [Router](../../../03_server/01_configuring-runtime/05_genesis-router.md)                          | Orchestration  | UI connectivity and load balancing to server services                                                                   |
+| [Auth Manager](../../../../server/access-control/authentication-overview)              | Access control | Industrial-strength authentication handler, with integrations to LDAP, SSO and more                                     |
+| [Perms](../../../../server/access-control/authorisation-overview/#generic-permissions) | Access control | Enforces permissions and entitlements to data visibility & events, application-wide                                     |
+| [Cluster](../../../../operations/clustering/clusters)                              | Orchestration  | Manages node communication for high availability and horizontal scaling in clustered applications                       |
+| [Router](../../../../server/configuring-runtime/genesis-router)                          | Orchestration  | UI connectivity and load balancing to server services                                                                   |
