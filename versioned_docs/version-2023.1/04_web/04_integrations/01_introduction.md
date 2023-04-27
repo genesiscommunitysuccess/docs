@@ -1,5 +1,5 @@
 ---
-title: 'Foundation UI - Introduction'
+title: 'Foundation UI - integration'
 sidebar_label: 'Introduction'
 id: introduction
 keywords: [web, foundation ui, introduction]

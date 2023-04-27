@@ -12,7 +12,6 @@ tags:
 ---
 
 ## Create new Genesis project
-At this point you should have `genx` installed on your machine. If you don't, then follow this [guide](../../../../getting-started/prerequisites/genx/) to set it up.
 
 Use `genx` to create new blank project following the instructions [here](../../../../getting-started/quick-start/create-a-new-project/). For the rest of the tutorial, **datapipeline-trades** will be used for the project name, but feel free to choose any name you like.
 

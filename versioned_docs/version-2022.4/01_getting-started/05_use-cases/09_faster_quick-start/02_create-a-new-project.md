@@ -6,21 +6,11 @@ id: create-a-new-project
 
 The GenX CLI tool enables you to seed projects. In this case, we just want to generate a blank full-stack application project.
 
-For step-by-step instructions on how to install and use this tool, follow the guide on GenX.
-
-Once configured, install GenX using the following command:
+Launch GenX using the following command:
 
 ```shell
-npm install -g @genesislcap/foundation-cli
+npx @genesislcap/genx@latest
 ```
-
-Once installed, from the terminal, run:
-
-```shell
-genx
-```
-
-In the `genx` script, there are a series of questions.
 
 First, you are asked to provide your username and password - these are the credentials you use to access Genesis Artifactory.
 

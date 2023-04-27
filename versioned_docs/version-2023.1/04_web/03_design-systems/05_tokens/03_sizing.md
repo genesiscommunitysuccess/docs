@@ -1,5 +1,5 @@
 ---
-title: 'Design System Tokens - Sizing'
+title: 'Design system tokens - sizing'
 sidebar_label: 'Sizing'
 id: sizing
 keywords: [web, design system, tokens, sizing]

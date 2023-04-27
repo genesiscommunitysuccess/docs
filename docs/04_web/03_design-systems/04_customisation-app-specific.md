@@ -1,5 +1,5 @@
 ---
-title: 'Design Systems - Customisation (app-specific)'
+title: 'Design systems - customisation (app-specific)'
 sidebar_label: 'Customisation (app-specific)'
 id: customisation-app-specific
 keywords: [web, design system, customisation, app-specific]

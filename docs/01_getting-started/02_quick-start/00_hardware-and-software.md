@@ -20,30 +20,11 @@ import TabItem from '@theme/TabItem';
 
 This page gives you the hardware and software requirements needed in order to run a development workstation for the Genesis low-code platform. It also provides instructions for configuring the Genesis packages.
 
-## Recommended hardware and operating system
+## Recommended hardware and software packages
 
-* Operating system : Windows 10 Pro
-* RAM : 32GB minimum
-* CPU : 8 Core
-* SSD : 250GB
+import MinimunRequirement from '/snippet/_minimun_requirement.md'
 
-## Recommended software packages
-
-[//]: # (If you change this table, make sure you change all pages that contain minimum requirements)  
-
-| Package	                                                                                                        |  Minimum Version   | 
-|-----------------------------------------------------------------------------------------------------------------|:------------------:|
-| [IntelliJ](https://www.jetbrains.com/idea/download/?fromIDE=#section=windows)	                                  | 2022.3 or above|
-| [Java SDK or JDK](https://www.oracle.com/java/technologies/downloads/) (Choose the **x64 installer** download.) |         11         |
-| [NodeJS](https://nodejs.org/download/release/latest-gallium/)                                                   |       16 LTS       |
-| [Genesis Intellij Plugin](../../../server/tooling/intellij-plugin/)       |         0.1.2        |
-| [Postman](https://www.postman.com/downloads/) (optional)	                                                       |         8          |
-| [Gradle](https://gradle.org/install/) | 7.5 |
-
-
-You can use a range of IDEs (for example, Eclipse) with the Genesis platform, but only IntelliJIDEA enables you to use Genesis Intellij plugin and make full use of the GPAL prompts and error checks in Intellisense - a major accelerator of development speed and accuracy. Since you are going to use this plugin, Genesis strongly recommends using IntelliJIDEA.
-
-## Installing GenX
+<MinimunRequirement />
 
 <details>
   <summary>Pre-requisite check</summary>
@@ -54,11 +35,9 @@ You can use a range of IDEs (for example, Eclipse) with the Genesis platform, bu
     <p>Check if these versions are compatible with the requirements.</p>
 </details>
 
-Since version 11.3.0 of the foundation-UI, we have set our libraries public. Hence, you only need to run this simple command to start using genesis.
+## .npmrc
 
-```powershell
-npm install -g @genesislcap/foundation-cli
-```
+Starting from version **10.3.0** Foundation UI libraries are published to the [public NPM registry](https://www.npmjs.com/~genesisnpm?activeTab=packages), so a custom `.npmrc` file is no longer required.
 
 ## gradle.properties file
 You should have a **gradle.properties** file inside a **.gradle** folder on your user directory; this file must contain your Genesis Artifactory password in a [base64 encrypted text](https://www.base64encode.org/), for example:

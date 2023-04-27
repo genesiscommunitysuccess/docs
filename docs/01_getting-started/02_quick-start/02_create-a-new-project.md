@@ -18,21 +18,13 @@ Download and install all the relevant requirements.
 ## The genx script
 `genx` is a CLI tool that enables you to seed projects. In this case, you shall generate a full-stack application project; the key files will be empty so that you can define the details of the application.
 
-If you still don't have genx installed, please see the session [Installing GenX](../../../getting-started/quick-start/hardware-and-software/#installing-genx).
-
 ## Starting
 
-Once configured and installed, from the Windows terminal, run:
+Launch CLI from the terminal:
 
-```shell title="Windows Terminal"
-genx
+```shell title="Terminal"
+npx @genesislcap/genx@latest
 ```
-
-:::tip
-
-If this does not work, use the command `npx genx`.
-
-:::
 
 <!-- NO EDIT (NEXT 4 LINES) -->
 import InsecureFlag from '../../_includes/_cli-insecure-flag.md'
@@ -70,7 +62,7 @@ App seed (Use arrow keys)
   Overwrite existing files (y/N)
   ```
 
-At this point, the seed application is created and the `genx` dependencies are installed.
+At this point, the seed application is created and the seed dependencies are installed.
 
 Then there are more questions, which you can respond to as follows (we have provided some notes below):
 

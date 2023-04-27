@@ -24,10 +24,15 @@ Our [API](./docs/api) documentation is in a separate area. Click on the link if 
 The Entity Management micro front-end is used to connect to a resource on the back end and manage it from the front end. Handlers can be set up for create, update, and delete events; after adding an event, a button appears to perform the action. There is a list of pre-defined events and resources to manage, but you can manage custom resources that you create on the back end too.
 
 :::tip
-The buttons are conditionally accessed, based on the specified events. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to set the events to be conditional on user authorisation.
+The buttons are accessed conditionally, based on the specified events. For example, if the current user is only able to edit the entities, then you should only set the edit event on the entity-manager - you need to set the events to be conditional on user authorisation.
 :::
 
-Two core components are used to manage the entities - the grid and the form. The grid contains an entity on each row and data in each column.
+Two core components are used to manage the entities:
+
+- the grid
+- the form
+
+The grid contains an entity on each row and data in each column.
 
 Here is an example grid used to manage counterparties:
 
@@ -53,7 +58,7 @@ To enable this micro front-end in your application, follow the steps below.
 }
 ```
 
-1. Import and declare the class in the page of the class where you wish to use the Entity Manager. Then add the entity management into the template HTML where required:
+2. Import and declare the class in the page of the class where you wish to use the Entity Manager. Then add the entity management into the template HTML where required:
 
 ```javascript
 // Import
@@ -94,7 +99,7 @@ export const AdminTemplate: ViewTemplate = html`
 
 ## Config
 
-The functionality of the Entity Manager is customised through the properties you set on it in the HTML. This section covers the main properties that you need to customise. For a full list of all properties, [see here](./docs/api/foundation-entity-management.md#properties).
+The functionality of the Entity Manager is customised through the properties you set on it in the HTML. This section covers the main properties that you need to customise. For a full list of properties, [see here](./docs/api/foundation-entity-management.md#properties).
 
 ### Title
 
@@ -116,7 +121,7 @@ Set this object to configure the way that the Entity Manager interacts with the 
 `persist-column-state-key` is a string value. It is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set, then the behaviour will be to _not_ persist the column state, and the grid will revert back to its default state every time the user navigates away from it.
 
 :::warning
-The string defines the key in which the serialised state of the columns is stored in an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). Therefore, if you are setting multiple Entity Managers in your application to persist the state, you need to use unique keys - otherwise, you will get undefined behaviour.
+The string defines the key in which the serialised state of the columns is stored in an object in [local storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage). Therefore, if you are setting multiple Entity Managers in your application to persist the state, you need to use unique keys - otherwise, you will get undefined behaviour.
 :::
 
 ## User Management
@@ -133,6 +138,7 @@ User Management is a concrete use case of the [Entity Management](#entity-manage
 :::
 
 Here is an example grid view for managing users:
+
 ![Example user management grid](./docs/img/foundation-user-management.png)
 
 ### Set-up
@@ -161,7 +167,7 @@ import { Users, } from '@genesislcap/foundation-entity-management';
 Users;
 
 // Example html with the user management
-// You can customise this with additional fields, see futher in this documentation
+// You can customise this with additional fields, see further in this documentation
 export const AdminTemplate: ViewTemplate = html`
   <zero-tabs>
     <zero-tab-panel slot="tabpanel">
@@ -225,6 +231,7 @@ Profile Management is a concrete use case of the [Entity Management](#entity-man
 :::
 
 Here is an example grid view when managing profiles:
+
 ![Example profile management grid](./docs/img/foundation-profile-management.png)
 
 ### Set-up
@@ -278,7 +285,7 @@ In contrast to Entity Management, we have a different way of displaying buttons 
 
 
 #### Persist column state
-`persist-column-state-key` is a string value which is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set, then the behaviour will be to _not_ persist the column state, and  the grid will revert back to its default state every time the user navigates away from it.
+`persist-column-state-key` is a string value, which is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set, then the behaviour will be to _not_ persist the column state, and the grid will revert back to its default state every time the user navigates away from it.
 
 
 :::info
@@ -287,4 +294,4 @@ For more information on `persist-column-state-key`, see the section in [Entity M
 
 ## License
 
-Note: this project provides front-end dependencies and uses licensed components listed in the next section.Thus licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.
+Note: this project provides front-end dependencies and uses licensed components listed in the next section. Thus, licenses for those components are required during development. Contact [Genesis Global](https://genesis.global/contact-us/) for more details.

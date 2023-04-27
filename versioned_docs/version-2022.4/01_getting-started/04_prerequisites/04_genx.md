@@ -26,16 +26,10 @@ With genx, you can pull seed projects that adhere to best practices for developm
 
 ## Installing genx
 
-Once the repository is configured, open a terminal on your Windows machine and install the CLI tool using this:
+Once the repository is configured, open a terminal on your machine and launch the CLI tool using this:
 
-```shell title="Windows Terminal"
-npm install -g @genesislcap/foundation-cli
-```
-
-Now you're ready to use the tool, simply type `genx` to start:
-
-```shell title="Windows Terminal"
-genx
+```shell title="Terminal"
+npx @genesislcap/genx@latest
 ```
 
 This command presents you with a sequence of choices for creating and configuring applications.
@@ -164,9 +158,11 @@ This is a monorepo containing multiple packages. Each package can be released in
 
 ## CLI command-language syntax
 
+To learn about available CLI commands run `npx @genesislcap/genx@latest -h`.
+
 The command syntax is:
 
-`genx` _commandNameOrAlias requiredArg [optionalArg]_ [options]
+`npx @genesislcap/genx@latest` _commandNameOrAlias requiredArg [optionalArg]_ [options]
 
 
 ## Boolean options

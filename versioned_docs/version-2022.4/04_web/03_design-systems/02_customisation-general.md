@@ -16,7 +16,7 @@ Design system can be shared across multiple applications. When performing custom
 * General - applied to the design system itself, affecting all applications that use the system. This is described below.
 * [Application-specific](../../../web/design-systems/customisation-app-specific/) - this is only applied to a single application. Other applications using the same system are not affected.
 
-### Configuring defaults
+## Configuring defaults
 
 The starting point for making general customisations is the `src/_config` folder:
 
@@ -57,7 +57,7 @@ To help you visualise how modifying tokens impacts the component look and feel, 
 
 ### Overriding default implementation
 
-To go beyond adjusting token values, you can override the default component implementation. You can choose only to  override certain aspects of a component (such as template, styles or shadom DOM options) or provide a completely custom implementation.
+To go beyond adjusting token values, you can override the default component implementation. You can choose only to  override certain aspects of a component (such as template, styles or shadow DOM options) or provide a completely custom implementation.
 
 By default, components in your design simply re-export components from the underlying foundation design system as is (exact code can vary):
 

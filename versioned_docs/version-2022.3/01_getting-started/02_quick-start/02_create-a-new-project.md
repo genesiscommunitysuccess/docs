@@ -11,21 +11,13 @@ tags:
 
 The GenX CLI tool enables you to seed projects. In this case we want to generate a blank full-stack application project.
 
-We also have step-by-step instructions on [how to install and use genx](../../../getting-started/prerequisites/genx/).
-
 ## Starting
 
-Once configured and installed, from the Windows terminal, run:
+Launch it from the terminal:
 
-```shell title="Windows Terminal"
-genx
+```shell title="Terminal"
+npx @genesislcap/genx@latest
 ```
-
-:::tip
-
-If the above command does not work, use the command `npx genx`.
-
-:::
 
 In the `genx` script, there is a series of questions.
 

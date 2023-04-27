@@ -17,7 +17,7 @@ All these configuration settings are wrapped within the `security` function.
 
 ## security 
 
-The `security` function wraps all other variable and functions within the **auth-preferences.kts** file. From this top level the following variables can be set:
+The `security` function wraps all other variable and functions within the **auth-preferences.kts** file. From this top level, you can set the following variables:
 
 * `sessionTimeoutMins` specifies a time out for the session. Sessions are timed out (logged out) after the value defined here. The front end of your application can monitor web movement, page changes, etc. and perform an [automatic refresh](../../../server/integration/rest-endpoints/advanced/#event_login_refresh) - in which case, the user is not aware of the logout and the start of the new session. Default: 30 minutes.
 * `expiryCheckMins` specifies the time interval (in minutes) used to check for idle sessions in the system. Default: 5 minutes.
@@ -119,7 +119,7 @@ The `retry` function allows you to configure settings for limiting the rate at w
 
 #### selfServiceReset 
 
-The `selfServiceReset` function enables the self-service reset workflow. In this, users authenticated with the internal auth type, can request an email to reset their password. This workflow requires Genesis Notify to be configured with a working email gateway. When a user requests a reset, an email is sent to their configured 
+The `selfServiceReset` function enables the self-service reset workflow. In this, users authenticated with the internal auth type, can request an email to reset their password. For this workflow, you must have Genesis Notify configured with a working email gateway. When a user requests a reset, an email is sent to their configured 
 email address, with a link to a password reset page. This link is valid for a preconfigured timeout.
 
 :::note
