@@ -19,7 +19,7 @@ import TabItem from '@theme/TabItem';
 
 ## Workstation set-up
 
-Please follow these instructions very carefully to ensure your environment is ready for productive training. It's not necessary to have admin rights on your workstation to develop with the Genesis low-code platform, but you might have to check with your System Administrator how to install the required third-party software listed here.
+Please follow these instructions very carefully to ensure your environment is ready for a productive training. It's not necessary to have admin rights on your workstation to develop with the Genesis low-code platform, but you might have to check with your System Administrator how to install the required third-party software listed here.
 
 ## Recommended hardware and software packages
 
@@ -28,44 +28,8 @@ import MinimunRequirement from '/snippet/_minimun_requirement.md'
 <MinimunRequirement />
 
 ###  Accessing the Genesis repository and configuring the Genesis packages
-#### .npmrc set-up
 
-:::note
-For access to Genesis packages, you need to configure the `@genesislcap` scope of `npm` to use our jfrog registry.
-
-This requires credentials for accessing Genesis Artifactory. If you have not been provided with the credentials, please contact your administrator, or [contact us](mailto:support@genesis.global?subject=Quick%20Start%20-%20Artifactory%20Login). It's not possible to complete the training without this access, because you won't be able to download the Genesis platform components and build your project.
-
-To follow the instructions below, select **External User** if you are Genesis customer or partner, or **Internal User** if you are a Genesis employee with an internal Genesis account.
-:::
-
-<Tabs defaultValue="external" values={[{ label: 'External User', value: 'external', }, { label: 'Internal User', value: 'internal', }]}>
-<TabItem value="external">
-This setup presumes you will sign in with jfrog user and password parameters. Please follow the steps:
-
-1. Create an `.npmrc` file in your user home directory (usually at 'C:\Users\YOUR_LOGIN_NAME\').
-2. Using your credentials, log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
-3. Click on the `Welcome <username>` in the top right corner.
-4. From the menu, select `Set Me Up`. This opens a window with `Package Type` and `Repository` dropdowns.
-5. Select `npm` for both **Package Type** and **Repository**.
-6. Next, type your password for jfrog in the `Type password to insert your credentials to the code snippets` field. (This is the same password you used to log in to the Genesis repository on jfrog.) Then press **Enter**.
-
-![](/img/set-me-up.png)
-
- 7. Scroll down _inside_ the Set Me Up dialog. At the bottom of the page, you will find a code sample for .npmrc, which contains your scope information, including user name an encrypted password. Copy this and paste it into the file you created in the previous step. For reference, the snippet should look something like this (but **don't copy the one below** - because it contains dummy information!):
-
-```shell
-@<SCOPE>:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/
-//genesisglobal.jfrog.io/artifactory/api/npm/npm/:_password=AAAbbbCCCdddEEEfffGGGhhhIIIjjj111222333444555666777=
-//genesisglobal.jfrog.io/artifactory/api/npm/npm/:username=john.doe
-//genesisglobal.jfrog.io/artifactory/api/npm/npm/:email=john.doe@company.com
-//genesisglobal.jfrog.io/artifactory/api/npm/npm/:always-auth=true
-```
-
-8. Replace `<SCOPE>` with `genesislcap`, so that the line reads:
-`@genesislcap:registry=http://genesisglobal.jfrog.io/artifactory/api/npm/npm/`
-
-9. Save the file and under the directory path of this `.npmrc` file and type:
-`npm info @genesislcap/foundation-ui`. If the set-up was successful, you should see a response like this:
+Since version 11.3.0 of the foundation-UI, we have set our libraries public. To verify the infos about this package, type `npm info @genesislcap/foundation-ui`. If everything is ok, you should see a response like this:
 
 ```shell
 @genesislcap/foundation-ui@0.0.26 | UNLICENSED | deps: 23 | versions: 111
@@ -81,59 +45,14 @@ npm config set https-proxy https://proxy_host:port
 ```
 :::
 
-<!-- NO EDIT (NEXT 4 LINES) -->
-import StrictSSL from '../../_includes/_strict-ssl.md'
+Install GenX CLI; this is a Genesis tool that enables you to seed projects.
 
-<StrictSSL />
-
-</TabItem>
-<TabItem value="internal">
-This setup presumes you will sign in with jfrog SAML SSO. Please follow the steps:
-
-1. Create an empty `.npmrc` file in your user home directory.
-2. Using SAML SSO log in to the [Genesis repository website](http://genesisglobal.jfrog.io).
-3. Click on the `Welcome <username>` on the top right corner.
-4. From the menu, select `Set Me Up`. This displays a set of packages; click on **npm**.
-5. Copy this command and run the following command directly from a command line using PowerShell (or Windows Command Prompt):
-    ```shell
-    npm config set registry https://genesisglobal.jfrog.io/artifactory/api/npm/npm/
-    ```
-6. Replace SCOPE with genesislcap:
-    ```shell
-    npm config set @genesislcap:registry https://genesisglobal.jfrog.io/artifactory/api/npm/npm/
-    ```
-7. Click edit profile → Click Generate identity token button. Copy token
-8. Open your terminal again and use this token run the curl command:
-    ```shell
-    curl -u <first>.<last>@genesis.global:<token> https://genesisglobal.jfrog.io/artifactory/api/npm/auth/
-    ```	
-9. Create Base64 password from [here](https://www.base64encode.org/), and then copy encoded password and put in .npmrc
-10. Your .npmrc file should look like this:
-    ```shell
-    @genesislcap:registry=https://genesisglobal.jfrog.io/artifactory/api/npm/github-packages/
-    //genesisglobal.jfrog.io/artifactory/api/npm/github-packages/:_password="Base 64 encode of Genesis MS office password"
-    //genesisglobal.jfrog.io/artifactory/api/npm/github-packages/:_auth="_auth from curl command"
-    //genesisglobal.jfrog.io/artifactory/api/npm/github-packages/:always-auth=true
-    //genesisglobal.jfrog.io/artifactory/api/npm/github-packages/:email=rimpa.choudhury@genesis.global	
-    ```	
-11. Open a new terminal under the directory path `.npmrc` file and type: `npm info @genesislcap/foundation-ui`. If the set-up was successful, you should see a response like this:
-    ```shell
-    @genesislcap/foundation-ui@5.0.1 | UNLICENSED | deps: 13 | versions: 306
-    Genesis Foundation UI
-    https://github.com/genesislcap/foundation-ui#readme
-    ```
-12. To log into the genx CLI now you need to use your Genesis email as the username and an API key as the password. You can get your API key from Jfrog [here](https://genesisglobal.jfrog.io/ui/admin/artifactory/user_profile).
-
-
-</TabItem>
-</Tabs>
-
-Launch GenX CLI; this is a Genesis tool that enables you to seed projects.
 ```shell
 npx @genesislcap/genx@latest
 ```
 
 You should see this message:
+
 ```shell
 
 
@@ -145,14 +64,7 @@ You should see this message:
 
 
   GenesisX CLI VX.X.X
-
-  ? Genesis Password: 
-```
-
-Enter the same password you used in step 6 and then you should see this message:
-```shell
-√ Logged into Genesis
-```
+  ```
 
 Feel free to abort this program for now - we'll use genx later on.
 
@@ -179,7 +91,6 @@ genesisArtifactoryPassword=<your-artifactory-password>
 It is also possible to input your unencrypted password, but it is *not recommended*.
 :::
 
-Use the same credential you used in *step 6* above.
 :::caution proxy settings
 If you are behind a corporate proxy, make sure you add your proxy settings to the **gradle.properties** file as well. For example:
 ```shell
@@ -197,7 +108,6 @@ More information [here](https://docs.gradle.org/current/userguide/build_environm
 :::
 
 ### Your own database
-
 To do this training, you need an individual database to create and test the back-end changes we are proposing. Please make sure you have a [Database Technology supported by Genesis](../../../database/database-technology/overview/) available and running.
 
 :::tip
