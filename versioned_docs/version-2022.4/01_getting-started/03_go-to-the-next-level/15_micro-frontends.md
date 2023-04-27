@@ -53,4 +53,4 @@ Now you can visit `/users` in your browser, and it should take you to the **user
 
 Read more about available micro front-ends and different ways of including them in your application in our pages on [micro front-ends](web/micro-front-ends/introduction/).
 
-You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes) as a reference point for this chapter.
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes) as a reference point for this chapter. Note that this repo is a complete application and may not reflect the changes made in this page.

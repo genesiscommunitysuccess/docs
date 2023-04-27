@@ -140,4 +140,4 @@ In this section, we have created a working data pipeline. Given everything is wo
 
 ![DbMon screenshot](/img/dbmon-datapipeline.PNG)
 
-You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-script-config/src/main/resources/scripts) as a reference point for this chapter. 
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-script-config/src/main/resources/scripts) as a reference point for this chapter. Note that this repo is a complete application and may not reflect the changes made in this page.

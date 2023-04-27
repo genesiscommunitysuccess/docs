@@ -228,7 +228,7 @@ During code generation, [view](../../../database/data-structures/views/) and [in
 
 
 ## Conclusion
-With this, our data model is defined. You can use the [positions app tutorial repository](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-config/src/main/resources/cfg) as a reference.
+With this, our data model is defined. You can use the [positions app tutorial repository](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-config/src/main/resources/cfg) as a reference. Note that this repo is a complete application and may not reflect the changes made in this page.
 
 As a next step, we shall add some data to the tables in the database.
 
