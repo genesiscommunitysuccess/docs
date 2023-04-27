@@ -164,7 +164,7 @@ import BuildAndDeploy from "/snippet/_build_and_deploy.md"
 
 ---
 
-When you reload the page, and submit  new trade, you shall the the ALL_POSITIONS grid changes
+When you reload the page, and submit new trade, you shall the the ALL_POSITIONS grid changes.
 
 ![](/img/next-level-consolidator.png)
 
