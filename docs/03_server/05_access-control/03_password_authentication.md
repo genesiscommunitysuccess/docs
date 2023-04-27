@@ -73,6 +73,9 @@ The following variables are used to configure an LDAP connection; these are only
 
 For more information about the various authentication types, please see the [Authentication overview](../../../server/access-control/authentication-overview/).
 
+### passwordRetry
+The `passwordRetry` function has been deprecated in favour of the `retry` function within the `genesisPassword` configuration.
+
 ### genesisPassword
 
 The `genesisPassword` groups all configuration options when using `type = AuthType.INTERNAL`. 
@@ -256,7 +259,6 @@ security {
 
     sso {
         enabled = false
-        newUserMode = NewUserMode.REJECT
     }
 
     mfa {
