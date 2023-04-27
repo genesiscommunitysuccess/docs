@@ -47,5 +47,5 @@ genesisArtifactoryUser=<JaneDee>
 genesisArtifactoryPassword=<asodjkdnaisd9893-==12>
 ```
 
-## Genesis Plugin
-For this quick start guide we are using the Genesis plugin, please follow the [instructions](../../../server/tooling/intellij-plugin/) to have it properly installed.
+## Genesis Intellij plugin
+For this quick start guide we are using the Genesis Intellij plugin, please follow the [instructions](../../../server/tooling/intellij-plugin/) to have it properly installed.
