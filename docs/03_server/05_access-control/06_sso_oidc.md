@@ -26,7 +26,7 @@ When OIDC is configured and enabled, a user can click on an SSO button in the GU
 
 1. The user is re-directed to the OpenID provider authentication window.
 2. The user identifies him or herself to the OIDC provider.
-3. After succesful authentication,the OIDC provider sends an authentication code to the Genesis application.
+3. After successful authentication,the OIDC provider sends an authentication code to the Genesis application.
 4. Using the sent code, the Genesis application retrieves the user information and validates it.
 5. Upon successful validation, the user is redirected back to the Genesis login endpoint with a token.
 6. The front end starts the login process into Genesis using this token.
@@ -113,9 +113,9 @@ Each `identityProvider` configuration has the following properties:
 | --- | ------ | --- | --- | --- |
 | client | The client id and secret | Yes | No default value | Object |
 | config | Holds the endpoint and verification configuration for the OIDC provider | Yes if `remoteConfig` is not present | No default value | Object |
-| remoteConfig | If the OIDC provider has the configuration endpoint `remoteConfig`, this can be used to point to that endpoint for automatic `endpoint` and `verfication` configuration | Yes if `config` is not present | No default value | Object |
+| remoteConfig | If the OIDC provider has the configuration endpoint `remoteConfig`, this can be used to point to that endpoint for automatic `endpoint` and `verification` configuration | Yes if `config` is not present | No default value | Object |
 | scopes | Requested scopes on authorization | No | `openid profile email` | Set |
-| onNewUser | Predefined action when a new user logs in. This property is now deprecated in favour of `onFirstLogin` and `onLoginSuccess` | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
+| onNewUser | Predefined action when a new user logs in. **This property is now deprecated** in favour of `onFirstLogin` and `onLoginSuccess` | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
 | usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
 | tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | Yes | No default value | Int |
 | redirectUri | The URI to handle the code authorization. | Yes | No default value | String |

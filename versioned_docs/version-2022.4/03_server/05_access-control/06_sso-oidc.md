@@ -26,7 +26,7 @@ When OIDC is configured and enabled, a user can click on an SSO button in the GU
 
 1. The user is re-directed to the OpenID provider authentication window.
 2. The user identifies him or herself to the OIDC provider.
-3. After succesful authentication,the OIDC provider sends an authentication code to the Genesis application.
+3. After successful authentication,the OIDC provider sends an authentication code to the Genesis application.
 4. Using the sent code, the Genesis application retrieves the user information and validates it.
 5. Upon successful validation, the user is redirected back to the Genesis login endpoint with a token.
 6. The front end starts the login process into Genesis using this token.
