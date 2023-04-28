@@ -29,12 +29,12 @@ The goal of this section is to:
 ## Configure the Evaluator
 
 An Evaluator is a process that runs cron jobs (static) and conditional (dynamic) rules.
-To start, create a process called `POSITIONS_APP_TUTORIAL_EVALUATOR` and add it to your **positions-app-tutorial-processes.xml** file inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. Here is the code you need to add:
+To start, create a process called `ALPHA_EVALUATOR` and add it to your **alpha-processes.xml** file inside your project folder **server/jvm/alpha-config/src/main/resources/cfg**. Here is the code you need to add:
 
-```xml title="positions-app-tutorial-processes.xml"
-<process name="POSITIONS_APP_TUTORIAL_EVALUATOR">
+```xml title="alpha-processes.xml"
+<process name="ALPHA_EVALUATOR">
     <start>true</start>
-    <groupId>POSITIONS_APP_TUTORIAL</groupId>
+    <groupId>ALPHA</groupId>
     <options>-Xmx512m -DXSD_VALIDATE=false</options>
     <module>genesis-evaluator</module>
     <primaryOnly>true</primaryOnly>
@@ -43,10 +43,10 @@ To start, create a process called `POSITIONS_APP_TUTORIAL_EVALUATOR` and add it 
 </process>
 ```
 
-Add the `POSITIONS_APP_TUTORIAL_EVALUATOR` to your **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** with the code below.
+Add the `ALPHA_EVALUATOR` to your **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** with the code below.
 
-```xml title="positions-app-tutorial-service-definitions.xml"
-<service host="localhost" name="POSITIONS_APP_TUTORIAL_EVALUATOR" port="11004"/>
+```xml title="alpha-service-definitions.xml"
+<service host="localhost" name="ALPHA_EVALUATOR" port="11004"/>
 ```
 
 We have just defined our App Evaluator. Next we're going to add our business logic.
@@ -55,7 +55,7 @@ We have just defined our App Evaluator. Next we're going to add our business log
 
 ### Create a data class
 
-Now we need to create a `PositionCancel` class. This class should be created under **server/jvm/positions-app-tutorial-messages/src/main/kotlin/global/genesis/message/event**.
+Now we need to create a `PositionCancel` class. This class should be created under **server/jvm/alpha-messages/src/main/kotlin/global/genesis/message/event**.
 
 ```kotlin
 data class PositionCancel(val positionId: String)
@@ -63,9 +63,9 @@ data class PositionCancel(val positionId: String)
 
 ### Create the eventHandler
 
-Next we need to create an `eventHandler` codeblock that will trigger Notify to send an email. Navigate to **positions-app-tutorial-script-config** and insert the following `eventHandler` codeblock:
+Next we need to create an `eventHandler` codeblock that will trigger Notify to send an email. Navigate to **alpha-script-config** and insert the following `eventHandler` codeblock:
 
-```kotlin title="positions-app-tutorial-eventhandler.kts"
+```kotlin title="alpha-eventhandler.kts"
 eventHandler<PositionCancel>(name = "POSITION_CANCEL", transactional = true) {
     onCommit { event ->
         val positionId = event.details.positionId
@@ -99,7 +99,7 @@ Navigate to **/home/genesis/run/position/data/** in your WSL terminal and create
 
 ```csv title="dynamic-rule.csv"
 NAME,DESCRIPTION,RULE_TABLE,RULE_STATUS,RULE_EXPRESSION,USER_NAME,PROCESS_NAME,MESSAGE_TYPE,RESULT_EXPRESSION
-MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),JaneDee,POSITIONS_APP_TUTORIAL_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
+MY_RULE,It’s a rule,POSITION,ENABLED,(QUANTITY > 500),JaneDee,ALPHA_EVENT_HANDLER,EVENT_POSITION_CANCEL,((QUANTITY = 0) && (POSITION_ID = POSITION_ID))
 ```
 
 The second is a csv file that enables you to test the rule. Create another file called **position.csv** with the following data:
@@ -126,7 +126,7 @@ DESCRIPTION                              It’s a rule                          
 ID                                       cbdcbb88-9fb0-4d02-8400-e9a186204a27D... STRING
 MESSAGE_TYPE                             EVENT_POSITION_CANCEL                    STRING
 NAME                                     MY_RULE                                  STRING
-PROCESS_NAME                             POSITIONS_APP_TUTORIAL_EVENT_HANDLER     STRING
+PROCESS_NAME                             ALPHA_EVENT_HANDLER     STRING
 RESULT_EXPRESSION                        ((QUANTITY = 0) && (POSITION_ID = POS... STRING
 RULE_EXPRESSION                          (QUANTITY > 500)                         STRING
 RULE_STATUS                              ENABLED                                  ENUM[ENABLED DISABLED]
@@ -148,9 +148,9 @@ For a more detailed explanation of **GENESIS_NOTIFY** and **GATEWAY**, see our [
 
 ### Add connection details
 
-The first step is to configure Notify to use the email server. Under **server/jvm/positions-app-tutorial-script-config/src/main/resources/scripts** create new file called **positions-app-tutorial-notify.kts**. Add the following code to it:
+The first step is to configure Notify to use the email server. Under **server/jvm/alpha-script-config/src/main/resources/scripts** create new file called **alpha-notify.kts**. Add the following code to it:
 
-```kotlin title="positions-app-tutorial-notify.kts"
+```kotlin title="alpha-notify.kts"
 notify {
 
     email {
@@ -171,25 +171,25 @@ We use freely available SMTP server for testing purposes. Change the email confi
 
 ### Enable Notify
 
-The **GENESIS_NOTIFY** module does not run by default. To change this, we are adding a customised module to our project. To do that, create a process called `POSITIONS_APP_TUTORIAL_NOTIFY` and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg**. The process definition should reference the Notify script created in the previous paragraph. Use the code below.
+The **GENESIS_NOTIFY** module does not run by default. To change this, we are adding a customised module to our project. To do that, create a process called `ALPHA_NOTIFY` and add it to the file **alpha-processes.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg**. The process definition should reference the Notify script created in the previous paragraph. Use the code below.
 
-```xml title="positions-app-tutorial-processes.xml"
-<process name="POSITIONS_APP_TUTORIAL_NOTIFY">
+```xml title="alpha-processes.xml"
+<process name="ALPHA_NOTIFY">
     <start>true</start>
     <groupId>GENESIS</groupId>
     <options>-Xmx512m -DXSD_VALIDATE=false</options>
     <module>genesis-notify</module>
     <package>global.genesis.notify</package>
-    <script>positions-app-tutorial-notify.kts</script>
+    <script>alpha-notify.kts</script>
     <language>pal</language>
     <description>Notify Mechanism for sending messages to external systems, such as Email and Symphony</description>
 </process>
 ```
 
-Add the `POSITIONS_APP_TUTORIAL_NOTIFY` process to your **positions-app-tutorial-service-definitions.xml**.
+Add the `ALPHA_NOTIFY` process to your **alpha-service-definitions.xml**.
 
-```xml title="positions-app-tutorial-service-definitions.xml"
-<service host="localhost" name="POSITIONS_APP_TUTORIAL_NOTIFY" port="11005"/>
+```xml title="alpha-service-definitions.xml"
+<service host="localhost" name="ALPHA_NOTIFY" port="11005"/>
 ```
 
 ## Set up GENESIS_NOTIFY in the database
@@ -264,9 +264,9 @@ Total Results:  1
 Now run the following commands in order:
 
 1. `assemble`
-2. `positions-app-tutorial-config:assemble`
-3. `install-positions-app-tutorial-site-specific`
-4. `deploy-genesisproduct-positions-app-tutorial`
+2. `alpha-config:assemble`
+3. `install-alpha-site-specific`
+4. `deploy-genesisproduct-alpha`
 
 Once deployed, run `mon`. You should be able to see the Evaluator process is present, but on `STANDBY`.
 
@@ -282,14 +282,14 @@ Run the [LogLevel](../../../operations/commands/server-commands/#loglevel-script
 <!-- TODO: add LogLevel section to Server Commands -->
 
 ```shell title="From the WSL Distribution"
-LogLevel -p POSITIONS_APP_TUTORIAL_EVALUATOR -DATADUMP_ON -l DEBUG
-LogLevel -p POSITIONS_APP_TUTORIAL_NOTIFY -DATADUMP_ON -l DEBUG
+LogLevel -p ALPHA_EVALUATOR -DATADUMP_ON -l DEBUG
+LogLevel -p ALPHA_NOTIFY -DATADUMP_ON -l DEBUG
 ```
 
 And then to see the logs run:
 ```shell title="From the WSL Distribution"
 cd $L
-tail -f POSITIONS_APP_TUTORIAL_EVALUATOR.log
+tail -f ALPHA_EVALUATOR.log
 ```
 :::tip
 $L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis Platform. Feel free to use your favourite command to view logs such as tail, less, etc.
@@ -335,7 +335,7 @@ Our cron rule takes the following form:
 
 | CRON_EXPRESSION | DESCRIPTION | TIME_ZONE | RULE_STATUS | NAME | USER_NAME | PROCESS_NAME | MESSAGE_TYPE | RESULT_EXPRESSION |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 0/30 * * * * ? * | It’s a rule | Europe/London | ENABLED | A rule | JaneDee | POSITIONS_APP_TUTORIAL_EVALUATOR | EVENT_POSITION_REPORT |  |
+| 0/30 * * * * ? * | It’s a rule | Europe/London | ENABLED | A rule | JaneDee | ALPHA_EVALUATOR | EVENT_POSITION_REPORT |  |
 
 Let's look at the most important fields:
 
@@ -352,12 +352,12 @@ We use [Quartz](http://www.quartz-scheduler.org/) to manage our cron expression.
 ### Configure the Evaluator
 
 An Evaluator is a process that runs cron jobs. 
-To start, create a process called **POSITIONS_APP_TUTORIAL_EVALUATOR** and add it to the file **positions-app-tutorial-processes.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** as the code below.
+To start, create a process called **ALPHA_EVALUATOR** and add it to the file **alpha-processes.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** as the code below.
 
 ```xml
-<process name="POSITIONS_APP_TUTORIAL_EVALUATOR">
+<process name="ALPHA_EVALUATOR">
     <start>true</start>
-    <groupId>POSITIONS_APP_TUTORIAL</groupId>
+    <groupId>ALPHA</groupId>
     <options>-Xmx512m -DXSD_VALIDATE=false</options>
     <module>genesis-evaluator</module>
     <primaryOnly>true</primaryOnly>
@@ -366,14 +366,14 @@ To start, create a process called **POSITIONS_APP_TUTORIAL_EVALUATOR** and add i
 </process>
 ```
 
-Add the `POSITIONS_APP_TUTORIAL_EVALUATOR` to the file **positions-app-tutorial-service-definitions.xml** inside your project folder **server/jvm/positions-app-tutorial-config/src/main/resources/cfg** with the code below. 
+Add the `ALPHA_EVALUATOR` to the file **alpha-service-definitions.xml** inside your project folder **server/jvm/alpha-config/src/main/resources/cfg** with the code below. 
 
 ```xml
-<service host="localhost" name="POSITIONS_APP_TUTORIAL_EVALUATOR" port="11004"/>
+<service host="localhost" name="ALPHA_EVALUATOR" port="11004"/>
 ```
 
 ### Create a new class
-Now we need to create a `PositionReport` class to trigger the new event. This class should be created under **server/jvm/positions-app-tutorial-messages/src/main/kotlin/global/genesis/messages/event**.
+Now we need to create a `PositionReport` class to trigger the new event. This class should be created under **server/jvm/alpha-messages/src/main/kotlin/global/genesis/messages/event**.
 
 ```kotlin
 class PositionReport
@@ -381,7 +381,7 @@ class PositionReport
 
 ### Create an eventHandler
 
-Next we need to create an `EventHandler` codeblock that will write the csv files to the **runtime/position-30seconds-report** folder. First, open the **positions-app-tutorial-eventhandler.kts** file and add a variable called `tradeViewRepo`, injecting the class `TradeViewAsyncRepository`:
+Next we need to create an `EventHandler` codeblock that will write the csv files to the **runtime/position-30seconds-report** folder. First, open the **alpha-eventhandler.kts** file and add a variable called `tradeViewRepo`, injecting the class `TradeViewAsyncRepository`:
 
 ```kotlin
 val tradeViewRepo = inject<TradeViewAsyncRepository>()
@@ -413,8 +413,8 @@ eventHandler<PositionReport>(name = "EVENT_POSITION_REPORT", transactional = tru
 Now run the following commands in order:
 
 1. `assemble`
-2. `positions-app-tutorial-config:assemble`
-3. `deploy-genesisproduct-positions-app-tutorial`
+2. `alpha-config:assemble`
+3. `deploy-genesisproduct-alpha`
 
 
 Once deployed, run `mon`. You should be able to see the process is present, but on `STANDBY`.
@@ -430,7 +430,7 @@ Navigate to **home/genesis/run/temp-data** in your WSL terminal and create a fil
 
 ```csv
 CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,MESSAGE_TYPE
-"0/30 * * * * ? *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","POSITIONS_APP_TUTORIAL_EVALUATOR","EVENT_POSITION_REPORT"
+"0/30 * * * * ? *","It’s a rule","Europe/London","ENABLED","A rule","JaneDee","ALPHA_EVALUATOR","EVENT_POSITION_REPORT"
 ```
 
 Now we need to import this cron rule into our `CRON_RULE` table. Run the following command in your WSL terminal:
@@ -449,7 +449,7 @@ CRON_EXPRESSION                          0/30 * * * * ? *                       
 DESCRIPTION                              It’s a rule                              STRING
 MESSAGE_TYPE                             EVENT_POSITION_REPORT                    STRING
 NAME                                     A rule                                   STRING
-PROCESS_NAME                             POSITIONS_APP_TUTORIAL_EVALUATOR         STRING
+PROCESS_NAME                             ALPHA_EVALUATOR         STRING
 RESULT_EXPRESSION                                                                 STRING
 RULE_STATUS                              ENABLED                                  ENUM[ENABLED DISABLED]
 TIME_ZONE                                Europe/London                            STRING
@@ -463,13 +463,13 @@ Total Results:  1
 You can now change the log level to verify the execution of the events. To do this, run the [LogLevel](../../../operations/commands/server-commands/#loglevel-script) command:
 
 ```shell
-LogLevel -p POSITIONS_APP_TUTORIAL_EVALUATOR -DATADUMP_ON -l DEBUG
+LogLevel -p ALPHA_EVALUATOR -DATADUMP_ON -l DEBUG
 ```
 
 And then to see the logs, run:
 ```shell
 cd $L
-tail -f POSITIONS_APP_TUTORIAL_EVALUATOR.log
+tail -f ALPHA_EVALUATOR.log
 ```
 :::info What is $L?
 $L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis low-code platform. Feel free to use your favourite command to view logs such as tail, less, etc.
@@ -478,5 +478,5 @@ $L is an alias to the logs folder (~/run/runtime/logs) provided by the Genesis l
 ### Conclusion
 This concludes generating reports for the positions application. In the next section you will see how to trigger based on a condition in the database.
 
-You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-script-config/src/main/resources/scripts) as a reference point for this chapter. 
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/alpha/tree/Complete_positions_app/server/jvm/alpha-script-config/src/main/resources/scripts) as a reference point for this chapter. 
 
