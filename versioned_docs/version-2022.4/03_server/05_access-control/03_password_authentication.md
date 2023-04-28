@@ -38,7 +38,7 @@ The `authentication` function is used to define common features of all three typ
 
 * `type` indicates which of the three types of username and password authentication are to be used. It accepts the values of: `AuthType.INTERNAL`, `AuthType.LDAP` or `AuthType.HYBRID`. Default: `AuthType.INTERNAL`.
 
-For more information about each of these three authentication types please see the [authentication overview](../../../server/access-control/authentication-overview/#username-and-password-authentication).
+For more information about each of these three authentication types please see the [authentication overview](../../../server/access-control/authentication-overview/).
 
 The following variables are used to configure an LDAP connection; these are only used when the `type` is either `AuthType.LDAP` or `AuthType.HYBRID`.
 
