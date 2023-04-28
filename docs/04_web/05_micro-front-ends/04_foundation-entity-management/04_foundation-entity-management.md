@@ -122,7 +122,7 @@ Set this object to configure how the Entity Manager interacts with the resource.
 `persist-column-state-key` is a string value. It is used to control how the column states are persisted through actions such as page changes or refreshes. If no `persist-column-state-key` property is set, then the behaviour will be to _not_ persist the column state, and the grid will revert back to its default state every time the user navigates away from it.
 
 :::warning
-The string defines the key in which the serialised state of the columns is stored in an object in [session storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage). Therefore, if you are setting multiple Entity Managers in your application to persist the state, you need to use unique keys - otherwise, you will get undefined behaviour.
+The string defines the key in which the serialised state of the columns is stored in an object in [local storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage). Therefore, if you are setting multiple Entity Managers in your application to persist the state, you need to use unique keys - otherwise, you will get undefined behaviour.
 :::
 
 ## User Management
