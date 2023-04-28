@@ -75,7 +75,11 @@ For more information about the various authentication types, please see the [Aut
 
 ### genesisPassword
 
-The `genesisPassword` groups all configuration options when using `type = AuthType.INTERNAL`. 
+### passwordRetry
+The `passwordRetry` function has been deprecated in favour of the `retry` function within the `genesisPassword` configuration.
+
+The `genesisPassword` groups all configuration options when you are using `type = AuthType.INTERNAL`. 
+
 
 #### validation
 The `validation` function enables password validation, and is used to set the variables relating to this validation. 
@@ -256,7 +260,6 @@ security {
 
     sso {
         enabled = false
-        newUserMode = NewUserMode.REJECT
     }
 
     mfa {
@@ -306,7 +309,7 @@ All requests below are capable of returning an error with a code of INTERNAL_ERR
 ## Pre-authentication
 Pre-authentication messages can be sent by a client without the user being logged in.
 ### Login preferences
-You need make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knows this before any user logs in.
+You nnewUserModeeed make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knows this before any user logs in.
 Currently, this is the only preference published.
 ### Request
     MESSAGE_TYPE = EVENT_LOGIN_PREFS
