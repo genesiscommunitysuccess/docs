@@ -64,8 +64,8 @@ Read more about available micro front-ends and the different ways of including t
 
 Now you have completed the go to the next level tutorial. You should have an up and running application with some of the most common components and features available. We recommend you to attend to our 3 trainings available:
 
-- [Developer training](../developer-training/training-intro/)
-- [Web developer training](../web-training/web-training-intro/)
-- [Server developer training](../server_training/ssdt-intro/)
+- [Developer training](../../developer-training/training-intro/)
+- [Web developer training](../../web-training/training-intro/)
+- [Server developer training](../../server_training/ssdt-intro/)
 
 These 3 trainings deepen the knowledge of the Genesis platform. 
