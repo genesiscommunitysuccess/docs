@@ -112,7 +112,7 @@ sso {
 }
 ```
 :::note
-When using a JWT, the `maxAttempts` property in the [password retry config](./03_password_authentication.md#retry) 
+When using a JWT, the `maxAttempts` property in the [password retry config](../../../server/access-control/password-authentication#passwordretry) 
 refers to the maximum number of attempts allowed if a user enters an incorrect SSO token.
 :::
 

@@ -305,9 +305,11 @@ All requests below are capable of returning an error with a code of INTERNAL_ERR
 
 ## Pre-authentication
 Pre-authentication messages can be sent by a client without the user being logged in.
+
 ### Login preferences
-You need make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knows this before any user logs in.
+You must make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knows this before any user logs in.
 Currently, this is the only preference published.
+
 ### Request
     MESSAGE_TYPE = EVENT_LOGIN_PREFS
 ### Response
@@ -318,6 +320,7 @@ Currently, this is the only preference published.
 
 ## Authentication
 Once you have a list of preferences, you can show the correct login dialog and let the user make a login attempt.  The password is provided in plain text, as it is expected you will secure the connection using TLS.
+
 ### Login request
 
     MESSAGE_TYPE = EVENT_LOGIN_AUTH
