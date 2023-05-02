@@ -90,6 +90,9 @@ Genesis currently supports CSV, JSON and XML file sources. Below, you can see wh
 | headerOverrides | null | `headerOverrides = arrayListOf("id", "name")` | List | Set the column names to be used. If the file has a header, it is ignored and the specified names are used  |
 | readLazily | false | `readLazily = true` | Boolean | Set lazy reading  |
 
+CSV also has an `onCompletion` block which can be used to specify what to do after the file has been processed. In scope is `entityDb`, plus `result` which contains information
+about which lines were processed successfully and which failed.
+
 ```kotlin
 pipelines {
   csvSource("csv-cdc-test") {
@@ -98,6 +101,13 @@ pipelines {
     map("mapper-name", TABLE) {
 
     }
+    
+    onCompletion {
+        val successfulRows = result.successfulRows
+        val failedRows = result.failedRows
+        val existingRecords = entityDb.getBulk(TABLE).toList()
+        // ...
+    }
   }
 }
 ```
@@ -105,11 +115,11 @@ pipelines {
 #### XML and JSON
 
 | Parameter | Default value | Sample usage | Value type | Description |
-|---|---|---|---|---|
-| name | N/A | `xmlSource("xml-cdc-test")` | String | Name for the source |
-| location | N/A | `location = "file://runtime/testFiles?fileName=trades_array.json"` | String | Set the location of the XML or Json file. See details below |
-| Tag Name | N/A | `tagName = "Trade"` | String | Set the root tag of the XML (does not apply to Json) |
-| rootAt | "$.[*]" | `rootAt = "$.[*]"` | String | Set the root of the Json/XML tree |
+|-----------|---|---|---|---|
+| name      | N/A | `xmlSource("xml-cdc-test")` | String | Name for the source |
+| location  | N/A | `location = "file://runtime/testFiles?fileName=trades_array.json"` | String | Set the location of the XML or Json file. See details below |
+| tagName   | N/A | `tagName = "Trade"` | String | Set the root tag of the XML (does not apply to Json) |
+| rootAt    | "$.[*]" | `rootAt = "$.[*]"` | String | Set the root of the Json/XML tree |
 
 ```kotlin
 pipelines {
