@@ -60,8 +60,6 @@ Now you can visit `/users` in your browser, and it should take you to the **user
 
 Read more about available micro front-ends and the different ways of including them in your application in our pages on [micro front-ends](web/micro-front-ends/introduction/).
 
-## Conclusion
-
 Now you have completed the go to the next level tutorial. You should have an up and running application with some of the most common components and features available. We recommend you to attend to our 3 trainings available:
 
 - [Developer training](../../developer-training/training-intro/)
@@ -69,3 +67,4 @@ Now you have completed the go to the next level tutorial. You should have an up 
 - [Server developer training](../../server_training/ssdt-intro/)
 
 These 3 trainings deepen the knowledge of the Genesis platform. 
+

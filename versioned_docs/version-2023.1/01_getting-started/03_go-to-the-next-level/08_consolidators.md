@@ -171,4 +171,4 @@ When you reload the page, and submit new trade, you shall the the ALL_POSITIONS 
 ## Conclusion
 This shows a quick example of a Consolidator. If you want to see it in action, go to [endpoints](../../../server/integration/rest-endpoints/introduction/) for information on testing the back end.
 
-You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm) as a reference point for the consolidators. 
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm) as a reference point for the consolidators. Note that this repo is a complete application and may not reflect the changes made in this page.

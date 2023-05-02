@@ -1,7 +1,7 @@
 ---
 title: 'SSO - OIDC'
 sidebar_label: 'SSO - OIDC'
-id: SSO-oidc
+id: sso-oidc
 keywords: [OIDC, server, access control, SSO, authentication]
 tags:
   - OIDC
@@ -26,7 +26,7 @@ When OIDC is configured and enabled, a user can click on an SSO button in the GU
 
 1. The user is re-directed to the OpenID provider authentication window.
 2. The user identifies him or herself to the OIDC provider.
-3. After successful authentication,the OIDC provider sends an authentication code to the Genesis application.
+3. After successful authentication, the OIDC provider sends an authentication code to the Genesis application.
 4. Using the sent code, the Genesis application retrieves the user information and validates it.
 5. Upon successful validation, the user is redirected back to the Genesis login endpoint with a token.
 6. The front end starts the login process into Genesis using this token.
@@ -115,12 +115,11 @@ Each `identityProvider` configuration has the following properties:
 | config | Holds the endpoint and verification configuration for the OIDC provider | Yes if `remoteConfig` is not present | No default value | Object |
 | remoteConfig | If the OIDC provider has the configuration endpoint `remoteConfig`, this can be used to point to that endpoint for automatic `endpoint` and `verification` configuration | Yes if `config` is not present | No default value | Object |
 | scopes | Requested scopes on authorization | No | `openid profile email` | Set |
-| onNewUser | Predefined action when a new user logs in. **This property is now deprecated** in favour of `onFirstLogin` and `onLoginSuccess` | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
+| onNewUser | Predefined action when a new user logs in. | No | `ALLOW_ACCESS` - add the user to the database  | Enum (ALLOW_ACCESS, DO_NOTHING) |
 | usernameClaim | The claim to be used as username in the Genesis database. | No | `email`  | String |
 | tokenLifeInSeconds | The life time of the issued SSO_TOKEN. | Yes | No default value | Int |
 | redirectUri | The URI to handle the code authorization. | Yes | No default value | String |
-| onFirstLogin | Configuration for creating `User` and its `UserAttributes`. It's called on first successful login when the user doesn't exist in the database. | No | No default value | Object |
-| onLoginSuccess | Callback that is invoked every time after successful authentication. It has access to the database and the `DecodedIdToken` returned by the OIDC Provider | No | No default value | Object |
+
 
 Each `config` configuration has the following properties:
 
@@ -143,13 +142,6 @@ Each `client` configuration has the following properties:
 | --- | ------ | --- | --- | --- |
 | id | The client id provided by the OIDC Provider when application was registered | Yes | No default value | String |
 | secret | The client secret provided by the OIDC Provider when application was registered | Yes | No default value | String |
-
-Each `onFirstLogin` has the following properties:
-
-| Property name | Description | Mandatory | Default value | Type |
-| --- | ------ | --- | --- | --- |
-| createUser | Returns `User` and `UserAttributes` from the `DecodedIdToken` returned by the OIDC Proider | No | No default value | Object |
-| createUserPermissions | Configuration for user permissions | No | No default value | Object |
 
 Each `endpoints` configuration has the following properties:
 

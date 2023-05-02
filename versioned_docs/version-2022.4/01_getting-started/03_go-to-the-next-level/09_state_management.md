@@ -281,4 +281,4 @@ To test it, you can try to modify a `TRADE` (assuming you already have at least 
 ## Conclusion
 With this, we finish showing how an application can add state management. If you want to see it in action, go to [Endpoints](../../../server/integration/rest-endpoints/introduction/) for information about testing the back end.
 
-You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm) as a reference point for the event handlers. 
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm) as a reference point for the event handlers. Note that this repo is a complete application and may not reflect the changes made in this page.
