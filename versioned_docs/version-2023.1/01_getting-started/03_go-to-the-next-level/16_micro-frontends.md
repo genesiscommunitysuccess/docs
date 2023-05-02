@@ -13,6 +13,13 @@ tags:
 ## Section objectives
 The goal of this section is to add a micro front-end.
 
+## Pre-requisites
+
+Before you start, make sure you have `learna` installed. In your terminal, run:
+
+```powershell
+ npm install --g lerna
+```
 
 ## Adding a micro front-end
 You can quickly add micro front-ends to you application by just adding them as a new route in your router config. 
@@ -53,4 +60,12 @@ Now you can visit `/users` in your browser, and it should take you to the **user
 
 Read more about available micro front-ends and the different ways of including them in your application in our pages on [micro front-ends](web/micro-front-ends/introduction/).
 
-You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes) as a reference point for this chapter.
+## Conclusion
+
+Now you have completed the go to the next level tutorial. You should have an up and running application with some of the most common components and features available. We recommend you to attend to our 3 trainings available:
+
+- [Developer training](../developer-training/training-intro/)
+- [Web developer training](../web-training/web-training-intro/)
+- [Server developer training](../server_training/ssdt-intro/)
+
+These 3 trainings deepen the knowledge of the Genesis platform. 

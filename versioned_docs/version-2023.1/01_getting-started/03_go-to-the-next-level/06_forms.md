@@ -11,7 +11,7 @@ tags:
 ---
 
 ## Section objectives
-The goal of this section is to add a form that enables us to insert trades into our database.
+The goal of this section is to add a form that enables us to insert trades into our database. Differently from quickstart, we are going to create a form ourselves stead of using entity-management.
 
 ## Interacting with the Event Handler
 To interact with the Event Handler that you created [previously](../../../getting-started/go-to-the-next-level/events#event-handler), you will now create a form that will collect the data from the user.

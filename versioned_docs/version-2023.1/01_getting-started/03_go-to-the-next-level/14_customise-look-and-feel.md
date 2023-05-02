@@ -16,10 +16,11 @@ The goal of this section is to customise our styles in the UI.
 
 ## Styling Grid Pro
 
-You might want to apply specific styles to some columns.
+Let's apply some specific styles to some columns.
+
 We start by creating a stylesheet document that will have some style definitions for the grid.
 
-Create a stylesheet file called **positionsGrid.styles.ts** and provide the following code:
+Create a stylesheet file called **positionsGrid.styles.ts** under the **client/web/src/routes/home/** and provide the following code:
 
 ```typescript title='positionsGrid.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
@@ -31,10 +32,10 @@ export const positionGridStyles: ElementStyles = css`
 `
 ```
 
-Configure your column to have the specific class name.
+Go to your **positionColumnDefs.ts** and add `cellClass: 'quantity-column'`
 
 ```typescript title="positionColumnDefs.ts"
- {field: 'QUANTITY', cellClass: 'quantity-column'},
+{field: 'QUANTITY', headerName: 'Quantity', type: 'rightAligned', flex: 1, cellClass: 'quantity-column', enableCellChangeFlash: true},
 ```
 
 In **home.template.ts**, in the grid tag, include the utility that will inject your stylesheet to the component:
@@ -49,14 +50,14 @@ import {positionGridStyles} from "./positionsGrid.styles";
 </zero-grid-pro>
 `
 ```
-
-If you need to provide different class names for specific conditions, you can provide a function to the `cellClass` column config, as shown in the example below:
+### Advanced styling
+If you need to provide different class names for specific conditions (e.g.: style green for buy and red for sell), you can provide a function to the `cellClass` column config, as shown in the example below:
 
 ```typescript title="positionColumnDefs.ts"
- {field: 'PNL', cellClass: (params) => params.value > 0 ? 'profit' : 'loss'},
+{field: 'PNL', headerName: 'PNL', type: 'rightAligned', flex: 1, cellClass: (params) => params.value > 0 ? 'profit' : 'loss', enableCellChangeFlash: true},
 ```
 
-Remember to add the new styles to your stylesheet file.
+Now add the new styles to your stylesheet file **positionGrid.styles.ts**.
 
 ```css {8-14} title='positionsGrid.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
@@ -84,18 +85,21 @@ Your positions grid should be customised now:
 Don't worry too much if the data is different from yours - as long as the grid is customised as expected.
 :::
 
+<!--
+
 ## Layout
 By default, all elements on screen will use `display: block`, but we can easily customise it using our custom component that supports responsive web design.
 
 ```html
 <foundation-flex-layout class="flex-row flex-sm-column spacing-2x">
     <!--content-->
-</foundation-flex-layout>
+<!-- </foundation-flex-layout>
 ```
 
 In the [next section](./15_dynamic_layout.md) you'll have the option to add a dynamic layout to replace the current fixed layout.
+-->
 
-## Styling other parts of application
+## Conclusion
 This was only a small part of the platform's capabilities in terms of styling. You can read more about design-system configuration [here](web/design-systems/introduction/).
 
 You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for this chapter.

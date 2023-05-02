@@ -63,7 +63,6 @@ export const tradesGridTemplate = html<TradesGrid>`
     <zero-grid-pro>
       <grid-pro-genesis-datasource
         resource-name="ALL_TRADES"
-        order-by="INSTRUMENT_ID"
       ></grid-pro-genesis-datasource>
     </zero-grid-pro>
   </template>
@@ -105,14 +104,13 @@ export class PositionGrid extends FASTElement {
 ```typescript title='positions-grid.template.ts'
 import { html, repeat } from '@microsoft/fast-element';
 import { positionColumnDefs } from '../positionColumnDefs';
-import { PositionGrid } from './position-grid';
+import { PositionGrid } from './positions-grid';
 
 export const positionsGridTemplate = html<PositionGrid>`
   <template>
     <zero-grid-pro persist-column-state-key="position-grid-settings">
       <grid-pro-genesis-datasource
         resource-name="ALL_POSITIONS"
-        order-by="INSTRUMENT_ID"
       ></grid-pro-genesis-datasource>
       ${repeat(
         () => positionColumnDefs,
@@ -120,7 +118,6 @@ export const positionsGridTemplate = html<PositionGrid>`
           <grid-pro-column :definition="${(x) => x}"></grid-pro-column>
         `
       )}
-      <grid-pro-column :definition="${(x) => x.singlePositionActionColDef}"></grid-pro-column>
     </zero-grid-pro>
   </template>
 `;
@@ -142,7 +139,7 @@ export class ExampleChart extends FASTElement {
   @observable chartConfiguration = {
     width: 600,
     angleField: 'value',
-    colorField: 'type',
+    colorField: 'groupBy',
     radius: 0.75,
     label: {
       type: 'spider',
@@ -154,15 +151,6 @@ export class ExampleChart extends FASTElement {
     },
     interactions: [{ type: 'element-selected' }, { type: 'element-active' }],
   };
-
-  @observable chartData = [
-    { type: 'Exam 1', value: 27 },
-    { type: 'Exam 2', value: 25 },
-    { type: 'Exam 3', value: 18 },
-    { type: 'Exam 4', value: 15 },
-    { type: 'Exam 5', value: 10 },
-    { type: 'Exam 6', value: 13 },
-  ];
 }
 ```
 
@@ -172,11 +160,13 @@ import { ExampleChart } from './example-chart';
 
 export const exampleChartTemplate = html<ExampleChart>`
   <template>
-    <zero-g2plot-chart
-      type="pie"
-      :config=${(x) => x.chartConfiguration}
-      :data=${(x) => x.chartData}
-    ></zero-g2plot-chart>
+    <zero-g2plot-chart type="pie" :config=${(x) => x.chartConfiguration}>
+        <chart-datasource
+        resourceName="ALL_POSITIONS"
+        server-fields="INSTRUMENT_ID VALUE"
+        isSnapshot
+        ></chart-datasource>
+    </zero-g2plot-chart>
   </template>
 `;
 ```
