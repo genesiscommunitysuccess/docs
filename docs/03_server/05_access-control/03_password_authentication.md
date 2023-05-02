@@ -21,7 +21,7 @@ The `security` function wraps all other variable and functions within the **auth
 
 * `sessionTimeoutMins` specifies a time out for the session. Sessions are timed out (logged out) after the value defined here. The front end of your application can monitor web movement, page changes, etc. and perform an [automatic refresh](../../../server/integration/rest-endpoints/advanced/#event_login_refresh) - in which case, the user is not aware of the logout and the start of the new session. Default: 30 minutes.
 * `expiryCheckMins` specifies the time interval (in minutes) used to check for idle sessions in the system. Default: 5 minutes.
-* `maxSimultaneousUserLogins` specifies the maximum number of concurrent active sessions a user can maintain. Once this limit has been reached the user cannot activate additional sessions until one or more of the active sessions has been logged out. If the value zero is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
+* `maxSimultaneousUserLogins` specifies the maximum number of concurrent active sessions a user can maintain. Once this limit has been reached, the user cannot activate additional sessions until one or more of the active sessions has been logged out. If the value zero is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
 
 ```kotlin
 security {
@@ -36,7 +36,12 @@ From within `security` you can also invoke further functions in order to configu
 ### authentication
 The `authentication` function is used to define common features of all three types of authentication. Within it, many variables can be set, but their use depends on the value given to the `type` variable.
 
-* `type` indicates which of the three types of username and password authentication are to be used. It accepts the values of: `AuthType.INTERNAL`, `AuthType.LDAP` or `AuthType.HYBRID`. Default: `AuthType.INTERNAL`.
+* `type` indicates which of the three types of username and password authentication are to be used. It accepts the values of: 
+- `AuthType.INTERNAL`
+- `AuthType.LDAP` 
+- `AuthType.HYBRID`
+
+The default is `AuthType.INTERNAL`.
 
 For more information about each of these three authentication types please see the [authentication overview](../../../server/access-control/authentication-overview/#username-and-password-authentication).
 
