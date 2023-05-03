@@ -16,22 +16,25 @@ tags:
 
 ## API reference
 
-API reference [can be found here.](../foundation-login_apiref/)
+Our API reference is in a separate area; it [can be found here.](../foundation-login_apiref/)
 
 ## Introduction
 
 This micro front-end includes a set of identity management functions: authentication (including via SSO) and password reset, for example. Many of the features can be turned on and off as desired, and parts of the login screen (such as the logo) can be customised.
 
-An example of the main login screen: <br/>
+Here is an example of the main login screen: <br/>
+
 ![Main login screen example](/img/foundation-login_login-standard.png)
 
-An example of authentication via SSO: <br/>
+Here is an example of authentication via SSO: <br/>
+
 ![Main login screen example](/img/foundation-login_login-sso.png)
 
 <!-- An example of the forgotten password screen: <br/>
 ![Main login screen example](./docs/img/foundation-login_forgotten-password.png) -->
 
-An example of the change password screen: <br/>
+Here is an example of the change password screen: <br/>
+
 ![Main login screen example](/img/foundation-login_change-password.png)
 
 <!-- An example of the request account screen: <br/>
@@ -64,20 +67,20 @@ You can see more information on the [package.json basics](https://docs.genesis.g
 This page assumes you're using the Routing systems that are part of `foundation-ui`, and will cover set-up as part of that routing system.
 :::
 
-- In the router configuration for your application, import the `Login` class and the `Settings` type. As shown in this example, you might want to import `Settings` with an alias to avoid name clashes.
+1. In the Router configuration for your application, import the `Login` class and the `Settings` type. As shown in this example, you might want to import `Settings` with an alias to avoid name clashes.
 
 ```javascript
 import { Login, Settings as LoginSettings } from '@genesislcap/foundation-login';
 ```
 
-- Next you'll want to ensure that your router config uses your `LoginSettings` as its generic type so that you can configure the login route.
+2. Next, you need to ensure that your Router config uses your `LoginSettings` as its generic type so that you can configure the login route.
 ```javascript
 export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 	...
 }
 ```
 
-- Then add the required config to the router config that you use. For example, you'll want to set up the `Login` class to be used on the `/login` route, and pass in its required settings. See [customising login](#customising-login).
+3. Add the required config to the Router config that you use. For example, you need to set up the `Login` class to be used on the `/login` route, and pass in its required settings. See [customising login](#customising-login).
 ```javascript
 { path: '', redirect: 'login' },
 {
@@ -98,13 +101,13 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 },
 ```
 
-- You'll also want to set up things like the `NavigationContributor` in this class.
+4. You also need to set up things like the `NavigationContributor` in this class.
 
 :::noteExample
-An example of this and other required settings for the router configuration with regard to the login system can be found in the [example in the API reference](./foundation-login_apiref/foundation-login.login.md#example).
+An example of this and other required settings for the Router configuration with regard to the login system can be found in the [example in the API reference](./foundation-login_apiref/foundation-login.login.md#example).
 :::
 
-- The functionality of the Login class is configured via the settings block on its route, but the other routes will also have customisation on them too. The main options to set here are:
+5. The functionality of the Login class is configured via the settings block on its route, but the other routes will also have customisation on them too. The main options to set here are:
 
 - `allowAutoAuth` which will log the user back in onto the page when they navigate away if they already have an authenticated session
 - `public` which will indicate that a route doesn't require the user to be authenticated to view
@@ -132,7 +135,7 @@ By default, a route that isn't marked public is not. However, a non-public route
 
 ## Authentication
 
-For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](../../03_server/05_access-control/01_introduction.md).
+For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](../../../server/access-control/introduction/).
 
 ### Username & password
 
@@ -146,7 +149,7 @@ Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables automati
 
 SSO allows the `Login` micro front-end to work with your company's existing authentication system, enabling users to have a single set of credentials - including those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
 
-Setting up SSO is primarily [a back-end task](../../03_server/05_access-control/04_sso_authentication.md); however, there is a small amount of configuration covered in [the customisation part of this documentation](#enable-sso).
+Setting up SSO is primarily [a back-end task](../../../server/access-control/sso-authentication); however, there is a small amount of configuration covered in [the customisation part of this documentation](#customising-login).
 
 :::noteInfo
 The standard process of SSO is that the SSO authentication provider flow is opened via a redirect in the current page. However, many authentication providers block their system when running in an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). Because of this, if the `Login` micro front-end detects that it is running in an iframe, it opens up the authentication provider in a popup instead.
@@ -154,7 +157,7 @@ The standard process of SSO is that the SSO authentication provider flow is open
 
 ## Customising login
 
-The `Login` micro front-end uses a parameterless constructor. Therefore, the configuration needs to be set via the settings javascript object in the router, as shown in the [set-up step](#login-set-up). See the full [settings API here](./foundation-login_apiref/foundation-login.settings.md#remarks).
+The `Login` micro front-end uses a parameterless constructor. Therefore, the configuration needs to be set via the settings javascript object in the Router, as shown in the [set-up step](#login-set-up). See the full [settings API here](./foundation-login_apiref/foundation-login.settings.md#remarks).
 
 ### Enabling reset password
 
