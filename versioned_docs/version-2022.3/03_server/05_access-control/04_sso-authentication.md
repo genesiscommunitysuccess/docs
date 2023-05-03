@@ -15,10 +15,10 @@ import CodeBlock from '@theme/CodeBlock';
 
 Single sign-on (SSO) authentication uses the underlying SSO technology. SSO is a mechanism that allows a user to be authenticated against a single system, and use that authenticated id across multiple applications - including those built on the Genesis low-code platform. This has the advantage that a user is required to log in only once, rather than once per system.
 
-There are two different types of SSO authentication presently supported by the Genesis low-code platform. These are as follows:
+There are two different types of SSO authentication presently supported by the Genesis low-code platform. These are:
 
 * [JWT (JSON Web Token)](https://jwt.io/introduction) SSO
-* [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language).
+* [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language)
 
 ## Configuring SSO
 

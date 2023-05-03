@@ -82,7 +82,7 @@ The `validation` function enables password validation, and is used to set the va
 
 These following variables are used to configure the application's password validation; thus are only used when `type` is either `AuthType.INTERNAL` or `AuthType.HYBRID`.
 
-* `passwordSalt` defines a system specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different applications built on the Genesis low-code platform are stored as different hashes. Default: empty string indicating no additional salting.
+* `passwordSalt` defines a system-specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different applications built on the Genesis low-code platform are stored as different hashes. Default: empty string indicating no additional salting.
 
 In addition, from within `validation` the `passwordStrength` method can be invoked as below.
 
@@ -187,7 +187,7 @@ The `customLoginAck` function enables you to modify the list of permissions, pro
 * userPreferences - a [GenesisSet](../../../server/inter-process-messages/genesisset/) object containing additional fields provided as part of the [loginAck](#loginack) function. This `GenesisSet` can be modified to provide additional fields or remove existing ones.
 
 ### Example
-Example configuration:
+Here is an example configuration:
 
 ```kotlin
 import global.genesis.auth.manager.AuthType
