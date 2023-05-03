@@ -77,7 +77,12 @@ pipelines {
 
 ### File
 
-Genesis currently supports CSV, JSON and XML file sources. Below, you can see what options are available for each:
+Genesis currently supports CSV, JSON and XML file sources.
+
+In addition to the configuration properties, each file type also has an optional `onCompletion` block which can be used to specify what to do after the file has been processed. In scope is `entityDb`, plus `result` which contains information
+about which lines were processed successfully and which failed.
+
+Below, you can see what options are available for each:
 
 #### CSV
 
@@ -89,9 +94,6 @@ Genesis currently supports CSV, JSON and XML file sources. Below, you can see wh
 | hasHeader | true | `hasHeader = true` | Boolean | Set whether the file has headers  |
 | headerOverrides | null | `headerOverrides = arrayListOf("id", "name")` | List | Set the column names to be used. If the file has a header, it is ignored and the specified names are used  |
 | readLazily | false | `readLazily = true` | Boolean | Set lazy reading  |
-
-CSV also has an `onCompletion` block which can be used to specify what to do after the file has been processed. In scope is `entityDb`, plus `result` which contains information
-about which lines were processed successfully and which failed.
 
 ```kotlin
 pipelines {
@@ -128,6 +130,10 @@ pipelines {
 
     map("mapper-name", TABLE) {
 
+    }
+
+    onCompletion {
+      // ...
     }
   }
 
