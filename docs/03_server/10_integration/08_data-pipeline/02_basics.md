@@ -79,7 +79,7 @@ pipelines {
 
 Genesis currently supports CSV, JSON and XML file sources.
 
-In addition to the configuration properties, each file type also has an optional `onCompletion` block which can be used to specify what to do after the file has been processed. In scope is `entityDb`, plus `result` which contains information
+In addition to the configuration properties explained below, each file type also has an optional `onCompletion` block which can be used to specify what to do after the file has been processed. In scope is `entityDb`, plus `result` which contains information
 about which lines were processed successfully and which failed.
 
 Below, you can see what options are available for each:
