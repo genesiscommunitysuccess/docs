@@ -22,16 +22,19 @@ API reference [can be found here.](../foundation-login_apiref/)
 
 This micro front-end includes a set of identity management functions: authentication (including via SSO) and password reset, for example. Many of the features can be turned on and off as desired, and parts of the login screen (such as the logo) can be customised.
 
-An example of the main login screen: <br/>
+Here is a example of the main login screen: <br/>
+
 ![Main login screen example](/img/foundation-login_login-standard.png)
 
-An example of authentication via SSO: <br/>
+Here is an example of authentication via SSO: <br/>
+
 ![Main login screen example](/img/foundation-login_login-sso.png)
 
 <!-- An example of the forgotten password screen: <br/>
 ![Main login screen example](./docs/img/foundation-login_forgotten-password.png) -->
 
-An example of the change password screen: <br/>
+Here is an example of the change password screen: <br/>
+
 ![Main login screen example](/img/foundation-login_change-password.png)
 
 <!-- An example of the request account screen: <br/>
@@ -48,7 +51,7 @@ To enable this micro front-end in your application, follow the steps below.
 - Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. 
 - Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` command again. 
 
-You can see more information on the [package.json basics](https://docs.genesis.global/secure/web/micro-front-ends/foundation-login/) page.
+You can see more information on the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -98,7 +101,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 },
 ```
 
-- You'll also want to set up things like the `NavigationContributor` in this class.
+- You also need to set up things like the `NavigationContributor` in this class.
 
 :::noteExample
 An example of this and other required settings for the router configuration with regard to the login system can be found in the [example in the API reference](./foundation-login_apiref/foundation-login.login.md#example).
@@ -132,7 +135,7 @@ By default, a route that isn't marked public is not. However, a non-public route
 
 ## Authentication
 
-For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](../../03_server/05_access-control/01_introduction.md).
+For authentication, most configuration is set in the back end. You should familiarise yourself with the [authentication section of the back-end](../../../server/access-control/authentication-overview).
 
 ### Username & password
 
@@ -146,7 +149,7 @@ Setting the `DEFAULT_USER` and `DEFAULT_PASSWORD` environment variables automati
 
 SSO allows the `Login` micro front-end to work with your company's existing authentication system, enabling users to have a single set of credentials - including those built on the Genesis low-code platform. Genesis supports SSO with both JWT and SAML.
 
-Setting up SSO is primarily [a back-end task](../../03_server/05_access-control/04_sso_authentication.md); however, there is a small amount of configuration covered in [the customisation part of this documentation](#enable-sso).
+Setting up SSO is primarily [a back-end task](../../../server/access-control/sso-authentication); however, there is a small amount of configuration covered in [the customisation part of this documentation](../../../web/micro-front-ends/foundation-login/#enable-sso).
 
 :::noteInfo
 The standard process of SSO is that the SSO authentication provider flow is opened via a redirect in the current page. However, many authentication providers block their system when running in an iframe to prevent [clickjacking attacks](https://owasp.org/www-community/attacks/Clickjacking). Because of this, if the `Login` micro front-end detects that it is running in an iframe, it opens up the authentication provider in a popup instead.
@@ -166,7 +169,7 @@ You will probably want to use your company's logo instead of the Genesis logo. A
 
 ### Enable SSO
 
-As mentioned in the [authentication](#sso) section, SSO must be configured on the server, but some front-end configuration is required too.
+As mentioned in the [authentication](../../../web/micro-front-ends/foundation-login/#authentication) section, SSO must be configured on the server, but some front-end configuration is required too.
 
 - Setting `ssoToggle` is required to enable the SSO authentication as an option for the user; the user can then enable that flow with a checkbox that controls `ssoEnable`.
 - Enabling `ssoEnable` at the route-level sets the SSO flow to be the default.

@@ -25,7 +25,7 @@ SSO authentication is further broken down into either:
 * [JWT (JSON Web Token)](https://jwt.io/introduction) SSO
 * [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language)
 
-All of these, provide their own configuration settings in the _application-name-_**auth-preferences.kts** file.
+Each of these, must have its own configuration settings in the _application-name-_**auth-preferences.kts** file.
 
 So, if your application is called positions, then the file would conventionally be named **positions-auth-preferences.kts**.
 
