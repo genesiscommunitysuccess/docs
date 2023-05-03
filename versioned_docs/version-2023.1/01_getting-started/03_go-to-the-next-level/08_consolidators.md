@@ -134,7 +134,7 @@ Now that the Consolidator logic is in place we need to update the system files.
 
 As the Consolidator runs on its own process, we need to add a new entry to **alpha-processes.xml** with the Consolidator process definition.
 
-```xml
+```xml title="alpha-processes.xml"
 <process name="ALPHA_CONSOLIDATOR">
     <groupId>ALPHA</groupId>
     <start>true</start>

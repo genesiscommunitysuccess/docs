@@ -20,7 +20,7 @@ Start with the Form component, which will generate all the inputs based on the A
 
 ```html title='home.template.ts'
 <foundation-form
-  resourceName="EVENT_TRADE_INSERT"
+  resource-name="EVENT_TRADE_INSERT"
 ></foundation-form>
 ```
 
@@ -171,23 +171,39 @@ Let's add it to each form element:
 import {sync} from '@genesislcap/foundation-utils';
 ```
 
-```html {2,6,11,15} title='home.template.ts'
-        <zero-text-field
-          :value=${sync(x=> x.quantity)}>
-          Quantity
-        </zero-text-field>
-        <zero-text-field
-          :value=${sync(x=> x.price)}>
-          Price
-        </zero-text-field>
-        <span>Instrument</span>
-        <zero-select
-          :value=${sync(x=> x.instrument)}>
-        </zero-select>
-        <span>Side</span>
-        <zero-select
-          :value=${sync(x=> x.side)}>
-        </zero-select>
+```html {17-32} title='home.template.ts'
+<div class="row-split-layout">
+    <div class="column-split-layout">
+        <zero-grid-pro persist-column-state-key="position-grid-settings">
+            <grid-pro-genesis-datasource
+                resource-name="ALL_POSITIONS"
+            ></grid-pro-genesis-datasource>
+            ${repeat(
+                () => positionColumnDefs,
+                html`
+                    <grid-pro-column :definition="${(x) => x}"></grid-pro-column>
+                `
+            )}
+            <grid-pro-column :definition="${(x) => x.singlePositionActionColDef}"></grid-pro-column>
+        </zero-grid-pro>
+    </div>
+</div>
+<zero-text-field
+  :value=${sync(x=> x.quantity)}>
+  Quantity
+</zero-text-field>
+<zero-text-field
+  :value=${sync(x=> x.price)}>
+  Price
+</zero-text-field>
+<span>Instrument</span>
+<zero-select
+  :value=${sync(x=> x.instrument)}>
+</zero-select>
+<span>Side</span>
+<zero-select
+  :value=${sync(x=> x.side)}>
+</zero-select>
 ```
 
 You can now refresh your application; it should look something like this:
@@ -264,6 +280,10 @@ public async insertTrade() {
   });
 }
 ```
+:::danger
+Remember to override the `insertTrade()` method you have previously created.
+:::
+
 Let's add another data grid on the top right corner of the page to show the trade view `ALL_TRADES`:
 
 ```html {16-22}title='home.template.ts'

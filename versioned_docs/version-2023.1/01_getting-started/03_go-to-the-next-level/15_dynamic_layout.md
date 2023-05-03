@@ -40,7 +40,7 @@ recommended to change them to interact via the `foundation-store` utility.
 
 ### Trades grid
 
-We'll start with the most straightforward component. Create a directory in the home route
+We'll start with the most straightforward component. Create a directory called **trades-grid** in the home route
 and add these two files to it.
 
 ```typescript title='trades-grid.ts'
@@ -73,17 +73,17 @@ Notice the template definition is from the old **home.template.ts**.
 
 ### Positions grid
 
-Now we need to do the same for the positions grid.
+Now we need to do the same for the positions grid. Create a directory called **positions-grid** in the home route and add these two files to it.
 
 ```typescript title='positions-grid.ts'
 import { customElement, FASTElement } from '@microsoft/fast-element';
-import { positionsGridTemplate } from './position-grid.template';
+import { positionsGridTemplate } from './positions-grid.template';
 
 @customElement({
-  name: 'position-grid',
+  name: 'positions-grid',
   template: positionsGridTemplate,
 })
-export class PositionGrid extends FASTElement {
+export class PositionsGrid extends FASTElement {
   public singlePositionActionColDef = {
     headerName: 'Action',
     minWidth: 120,
@@ -93,7 +93,7 @@ export class PositionGrid extends FASTElement {
       actionClick: async (rowData) => {
         console.log(rowData);
       },
-      actionName: 'Add Trade',
+      actionName: 'Print',
       appearance: 'primary-gradient',
     },
     pinned: 'right',
@@ -104,13 +104,14 @@ export class PositionGrid extends FASTElement {
 ```typescript title='positions-grid.template.ts'
 import { html, repeat } from '@microsoft/fast-element';
 import { positionColumnDefs } from '../positionColumnDefs';
-import { PositionGrid } from './positions-grid';
+import { PositionsGrid } from './positions-grid';
 
-export const positionsGridTemplate = html<PositionGrid>`
+export const positionsGridTemplate = html<PositionsGrid>`
   <template>
     <zero-grid-pro persist-column-state-key="position-grid-settings">
       <grid-pro-genesis-datasource
         resource-name="ALL_POSITIONS"
+      ></grid-pro-genesis-datasource>
       ></grid-pro-genesis-datasource>
       ${repeat(
         () => positionColumnDefs,
@@ -125,7 +126,7 @@ export const positionsGridTemplate = html<PositionGrid>`
 
 ### Chart
 
-Do the same for the chart:
+Do the same for the chart, create a directory called **example-chart** in the home route and add these two files to it.
 
 ```typescript title='example-chart.ts'
 import { customElement, FASTElement, observable } from '@microsoft/fast-element';
@@ -137,7 +138,7 @@ import { exampleChartTemplate } from './example-chart.template';
 })
 export class ExampleChart extends FASTElement {
   @observable chartConfiguration = {
-    width: 600,
+    width: 800,
     angleField: 'value',
     colorField: 'groupBy',
     radius: 0.75,
@@ -173,7 +174,7 @@ export const exampleChartTemplate = html<ExampleChart>`
 
 ### Insert trade form
 
-Finally we refactor out the form. This is slightly different because we need an associated styles file too.
+Finally we refactor out the form. This is slightly different because we need an associated styles file too. Create a directory called **insert-trades-form** in the home route and add these three files to it. 
 
 ```typescript title='insert-trades-form.ts'
 import { Connect } from '@genesislcap/foundation-comms';
@@ -292,13 +293,13 @@ import { html } from '@microsoft/fast-element';
 import { ExampleChart } from './example-chart/example-chart';
 import type { Home } from './home';
 import { InsertTradesForm } from './insert-trades-form/insert-trades-form';
-import { PositionGrid } from './position-grid/position-grid';
+import { PositionsGrid } from './positions-grid/positions-grid';
 import { TradesGrid } from './trades-grid/trades-grid';
 
 // Need to call custom element constructors to register them as custom elements
 ExampleChart;
 InsertTradesForm;
-PositionGrid;
+PositionsGrid;
 TradesGrid;
 
 export const HomeTemplate = html<Home>`
@@ -306,7 +307,7 @@ export const HomeTemplate = html<Home>`
     <zero-layout-region type="horizontal">
       <zero-layout-region type="vertical">
         <zero-layout-item title="Position Grid">
-          <position-grid></position-grid>
+          <positions-grid></positions-grid>
         </zero-layout-item>
         <zero-layout-item title="Trades Grid">
           <trades-grid></trades-grid>
@@ -366,6 +367,10 @@ The user's layout is now saved, but what happens if they want to reset it back t
 
 The first thing we want to do is to update the `Home` component with a reference to the layout.
 
+```ts title='home.template.ts'
+import { html, ref } from '@microsoft/fast-element';
+```
+
 ```html {1} title='home.template.ts'
 <zero-layout auto-save-key="tutorial-app-layout-key" ${ref('layout')}>
 	<zero-layout-region type="horizontal">
@@ -378,6 +383,7 @@ The first thing we want to do is to update the `Home` component with a reference
 import { customElement, FASTElement, observable } from '@microsoft/fast-element';
 import { HomeTemplate as template } from './home.template';
 import { HomeStyles as styles } from './home.styles';
+import { Connect } from '@genesislcap/foundation-comms';
 import { FoundationLayout } from '@genesislcap/foundation-layout';
 
 const name = 'home-route';
@@ -389,18 +395,18 @@ const name = 'home-route';
 })
 export class Home extends FASTElement {
   layout: FoundationLayout;
-
-  resetLayout() { /* TODO */ }
-}
 ```
 
-### Updating the header
+#### Updating the header
 
 Next, we want to add a button to the header sidebar to reset the layout. In this seed, the header is defined in a file called `default.ts`.
 
-```html {4-14} title='default.ts'
-<div class="container">
-	<foundation-header templateOption extrasOption notificationOption>
+```html {7-17} title='default.ts'
+    <div class="container">
+      <foundation-header 
+        show-luminance-toggle-button
+        show-misc-toggle-button
+        show-notification-button>
 		<!-- other header contents -->
 		<div slot="menu-contents">
 			<zero-button
@@ -427,7 +433,7 @@ When you load the app, you can now click the hamburger menu in the top-left corn
 If you've changed the structure of your application from the default you might not be able to access `Home` via `x.lastChild` like we did in the click handler. You may need to experiment with getting a reference to the `Home` yourself, use events, or the `Foundation Store`.
 :::
 
-### Reload the default
+#### Reload the default
 
 Finally we can now make `resetLayout()` load the default layout. The easiest way to get the default layout configuration is using the developer tools on your web browser. Open the developer tools in your browser and find the layout component (remember [from earlier](#registration-prefix) that we are looking for `<zero-layout>` in this case).
 
@@ -438,17 +444,26 @@ If you've changed the layout from the default while testing your application, yo
 2. Refresh the page.
 :::
 
-Now we need access to this component in the web console. In most browsers you can do this by right-clicking on `<zero-layout>` in the element inspector and selecting an option that is similar to "use in console". This will save the layout in a variable such as `temp0`. Then, to get to get the layout run this command in the web console:
+Now we need access to this component in the web console. In most browsers you can do this by right-clicking on `<zero-layout>` in the element inspector and selecting an option that is similar to "store in a global variable". 
+
+![](/img/zero-layout-select.png)
+
+
+This will save the layout in a variable such as `temp1`. 
+
+![](/img/temp1-global-variable.png)
+
+Then, to get to get the layout run this command in the web console:
 
 ```javascript title='web console'
-JSON.stringify(temp0.getLayout()) // temp0, or whatever your browser saved the layout in
+JSON.stringify(temp1.getLayout()) // temp0, or whatever your browser saved the layout in
 ```
 
 :::tip
 You can follow this process to create a range of pre-defined layouts for the user in addition to being able to restore the default layout. Or you can, for example, use the `.getLayout()` and `.loadLayout()` APIs to allow the user to save their own layouts.
 :::
 
-Now copy that generated string and paste it into a file in the project. Then export it.
+Now create a file under `home` directory called **predefined-layouts.ts**, copy the generated string and paste it into a file in the project.
 
 ```typescript title='predefined-layouts.ts'
 export const HOME_DEFAULT_LAYOUT = ... /* Set this equal to the string from the web console */
@@ -456,10 +471,11 @@ export const HOME_DEFAULT_LAYOUT = ... /* Set this equal to the string from the 
 
 The final step is to wire all of this functionality together so the button loads the layout that we have just saved.
 
-```typescript {5,22-25,27-29} title='home.ts'
+```typescript {6,23-26,28-30} title='home.ts'
 import { customElement, FASTElement, observable } from '@microsoft/fast-element';
 import { HomeTemplate as template } from './home.template';
 import { HomeStyles as styles } from './home.styles';
+import { Connect } from '@genesislcap/foundation-comms';
 import { FoundationLayout } from '@genesislcap/foundation-layout';
 import { HOME_DEFAULT_LAYOUT } from './predefined-layouts';
 
@@ -488,6 +504,10 @@ export class Home extends FASTElement {
   }
 }
 ```
+
+:::warning Warning
+You need to override the existing connectedCallback() method.
+:::
 
 Now when you open the header sidebar and click the reset button, you should see the layout return to its default settings.
 

@@ -132,12 +132,16 @@ Both data classes have a single field: `tradeId` of type `String`.
 TradeAllocated:
 
 ```kotlin title="TradeAllocated.kt"
+package global.genesis.message.event
+
 data class TradeAllocated(val tradeId: String)
 ```
 
 TradeCancelled:
 
 ```kotlin title="TradeCancelled.kt"
+package global.genesis.message.event
+
 data class TradeCancelled(val tradeId: String)
 ```
 
@@ -156,6 +160,13 @@ Finally, refresh your gradle project.
 
 Let's edit the Event Handler to add an integrated state machine. First, in the **alpha-eventhandler.kts** file, declare a variable to be visible to all events by injecting the class `TradeStateMachine` that we have just created. 
 
+```kotlin title="alpha-eventhandler.kts"
+import global.genesis.TradeStateMachine
+import global.genesis.gen.dao.Trade
+import global.genesis.message.event.TradeAllocated
+import global.genesis.message.event.TradeCancelled
+```
+
 ```kotlin {2} title="alpha-eventhandler.kts"
 eventHandler {
     val stateMachine = inject<TradeStateMachine>()
@@ -168,7 +179,7 @@ eventHandler {
 
 Then, replace the `entryDb.insert(event.details)` with the highlighted lines below in the `TRADE_INSERT` `onCommit` block.
 
-```kotlin {3,4,5} title="alpha-eventhandler.kts"
+```kotlin {4-6} title="alpha-eventhandler.kts"
 eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
     schemaValidation = false
     onCommit { event ->
@@ -228,8 +239,11 @@ eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
 
 Your **alpha-eventhandler.kts** file at the end should look like this:
 
-```kotlin {1} title="alpha-eventhandler.kts"
+```kotlin {1-4} title="alpha-eventhandler.kts"
 import global.genesis.TradeStateMachine
+import global.genesis.gen.dao.Trade
+import global.genesis.message.event.TradeAllocated
+import global.genesis.message.event.TradeCancelled
 
 eventHandler {
     val stateMachine = inject<TradeStateMachine>()

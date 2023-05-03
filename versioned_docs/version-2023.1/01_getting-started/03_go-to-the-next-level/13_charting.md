@@ -33,7 +33,7 @@ Now you need to define **chartConfigration** in the class `home` in **home.ts**.
 
 ```typescript title='home.ts'
   @observable chartConfiguration = {
-    width: 600,
+    width: 800,
     angleField: 'value',
     colorField: 'groupBy',
     radius: 0.75,
@@ -53,7 +53,7 @@ For further configuration examples please see: [here](https://g2plot.antv.antgro
 
 Your **home.template.ts** should be like this:
 
-```typescript {23,24,45-53} title='home.template.ts'
+```typescript {24,25,46-54} title='home.template.ts'
 <div class="row-split-layout">
     <div class="column-split-layout">
         <zero-grid-pro persist-column-state-key="position-grid-settings">
@@ -66,7 +66,8 @@ Your **home.template.ts** should be like this:
                     <grid-pro-column :definition="${(x) => x}"></grid-pro-column>
                 `
             )}
-            </zero-grid-pro>
+            <grid-pro-column :definition="${(x) => x.singlePositionActionColDef}"></grid-pro-column>
+        </zero-grid-pro>
     </div>
     <div class="column-split-layout">
         <zero-grid-pro persist-column-state-key="position-grid-settings">

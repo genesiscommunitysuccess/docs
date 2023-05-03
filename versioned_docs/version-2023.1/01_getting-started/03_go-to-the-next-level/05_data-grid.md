@@ -111,7 +111,7 @@ Here you can easily swap logging the row data with some custom logic (such as ca
       actionClick: async (rowData) => {
         console.log(rowData);
       },
-      actionName: 'Add Trade',
+      actionName: 'Print',
       appearance: 'primary-gradient',
     },
     pinned: 'right',

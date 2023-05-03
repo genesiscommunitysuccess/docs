@@ -50,6 +50,10 @@ import {positionGridStyles} from "./positionsGrid.styles";
 </zero-grid-pro>
 `
 ```
+You should see now your application like this
+![](/img/grid-customized.png)
+
+
 ### Advanced styling
 If you need to provide different class names for specific conditions (e.g.: style green for buy and red for sell), you can provide a function to the `cellClass` column config, as shown in the example below:
 

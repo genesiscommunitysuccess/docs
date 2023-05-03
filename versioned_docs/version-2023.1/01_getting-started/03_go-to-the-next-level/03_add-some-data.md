@@ -28,7 +28,7 @@ Further information can be found in the [**genesis-system-definitions.kts** file
 
 Since we are using a docker container, add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
 
-```kotlin {4,10}
+```kotlin {4,10} title="genesis-system-definition.kts"
 systemDefinition {
     global {
         ...
