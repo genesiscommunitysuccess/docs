@@ -67,7 +67,7 @@ You can see more information on the [package.json basics](../../../web/basics/pa
 This page assumes you're using the Routing systems that are part of `foundation-ui`, and will cover set-up as part of that routing system.
 :::
 
-- In the router configuration for your application, import the `Login` class and the `Settings` type. As shown in this example, you might want to import `Settings` with an alias to avoid name clashes.
+- In the Router configuration for your application, import the `Login` class and the `Settings` type. As shown in this example, you might want to import `Settings` with an alias to avoid name clashes.
 
 ```javascript
 import { Login, Settings as LoginSettings } from '@genesislcap/foundation-login';

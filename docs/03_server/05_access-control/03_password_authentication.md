@@ -74,12 +74,10 @@ The following variables are used to configure an LDAP connection; these are only
 For more information about the various authentication types, please see the [Authentication overview](../../../server/access-control/authentication-overview/).
 
 ### genesisPassword
+The `genesisPassword` groups all configuration options when you are using `type = AuthType.INTERNAL`. 
 
 ### passwordRetry
 The `passwordRetry` function has been deprecated in favour of the `retry` function within the `genesisPassword` configuration.
-
-The `genesisPassword` groups all configuration options when you are using `type = AuthType.INTERNAL`. 
-
 
 #### validation
 The `validation` function enables password validation, and is used to set the variables relating to this validation. 
@@ -138,7 +136,7 @@ The `selfServiceReset` function  has the following options:
 * `coolDownInMinutes` - the time in minutes between before the next password reset can be made. 
 * `notifyTopic` - the email topic in Genesis Notify to be used. 
 * `redirectUrl` - the url to use for the redirect.
-* `acceptClientUrl` - boolean flag; if true, it will use the client provided reset url
+* `acceptClientUrl` - boolean flag; if true, the reset will use the client provided reset url
 
 :::warning
 
