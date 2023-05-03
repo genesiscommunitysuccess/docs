@@ -527,3 +527,9 @@ When you have this in place, click on **Send** to make the call. You can see tha
 :::
 
 Create requests on POSTMAN for all the events created so far.
+
+:::tip
+To help trainees with postman, we have created a [public environment](https://www.postman.com/speeding-sunset-885495/workspace/genesis-developer-training).
+
+Remember to send the login request first. This automatically populates all environment variables, so you can use the other requests.
+:::

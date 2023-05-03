@@ -62,7 +62,7 @@ To enable this micro front-end in your application, follow the steps below.
 This page assumes you're using the Routing systems that are part of `foundation-ui`, and will cover set-up as part of that routing system.
 :::
 
-- In the router configuration for your application, import the `Login` class and the `Settings` type. As shown in this example, you might want to import `Settings` with an alias to avoid name clashes.
+- In the Router configuration for your application, import the `Login` class and the `Settings` type. As shown in this example, you might want to import `Settings` with an alias to avoid name clashes.
 
 ```javascript
 import { Login, Settings as LoginSettings } from '@genesislcap/foundation-login';
@@ -75,7 +75,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 }
 ```
 
-- Then add the required config to the router config that you use. For example, you'll want to set up the `Login` class to be used on the `/login` route, and pass in its required settings. See [customising login](#customising-login).
+- Then add the required config to the Router config that you use. For example, you'll want to set up the `Login` class to be used on the `/login` route, and pass in its required settings. See [customising login](#customising-login).
 ```javascript
 { path: '', redirect: 'login' },
 {
@@ -96,10 +96,10 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 },
 ```
 
-- You'll also want to set up things like the `NavigationContributor` in this class.
+- You also need to set up things like the `NavigationContributor` in this class.
 
 :::noteExample
-An example of this and other required settings for the router configuration with regard to the login system can be found in the [example in the API reference](./docs/api/foundation-login.login/#example).
+An example of this and other required settings for the Router configuration with regard to the login system can be found in the [example in the API reference](./docs/api/foundation-login.login/#example).
 :::
 
 - The functionality of the Login class is configured via the settings block on its route, but the other routes will also have customisation on them too. The main options to set here are:
