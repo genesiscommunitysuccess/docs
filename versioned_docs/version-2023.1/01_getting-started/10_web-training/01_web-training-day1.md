@@ -141,7 +141,7 @@ Following this, there are three key sections you need to be aware of:
 
 When running the app on your local machine, you can adjust a few settings under the `config` section, including which host to connect to and what port to run the dev server on.
 
-```
+```js title="client/web/package.json"
   "config": {
     "API_HOST": "ws://localhost:9064",
     "DEFAULT_USER": "JaneDee",
@@ -156,7 +156,7 @@ Since our back end is running locally, we set the `API_HOST` to localhost (**ws:
 
 The next section is `scripts`.
 
-```javascript
+```javascript title="client/web/package.json"
   "scripts": {
     "build": "npm run build:webpack",
     "build:with-host": "cross-env API_HOST=$npm_package_config_API_HOST npm run build:webpack",
@@ -185,7 +185,7 @@ Last but not least, the `dependencies` section contains a list of your app's dep
 This includes **@genesislcap** dependencies. This is where you can change versions to upgrade to a newer version of the platform.
 :::
 
-```javascript
+```javascript title="client/web/package.json"
   "dependencies": {
     "@genesislcap/foundation-comms": "14.7.0",
     "@genesislcap/foundation-entity-management": "14.7.0",
@@ -265,7 +265,7 @@ The second approach involves design systems and we will cover this topic later i
 
 Create folder **./client/web/src/routes/playground/** and create a new empty file called **playground.ts** in there. Then, add this code to **playground.ts**:
 
-```typescript
+```typescript title="../playground/playground.ts"
 import { FASTElement, customElement } from "@microsoft/fast-element";
 
 @customElement({ name: "marketdata-component" }) // custom element being created
@@ -665,7 +665,6 @@ export const MainTemplate: ViewTemplate<MainApplication> = html`
 ```js {3} title='client/web/src/layouts/default.ts'
 export const defaultLayout = new FASTElementLayout(html`
 <div class="container">
-  <alpha-button>Alpha</alpha-button>
   <foundation-header
   ...
 </div>`);
@@ -821,10 +820,10 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 
 To set the content of the flyout menu, add the content in the html within an element that has the `slot="menu-contents"` attribute.
 
-```html
+```html {3-27}
 <foundation-header>
+          ....
   <div slot="menu-contents">
-    <!-- Example markup -->
     <p>GROUP SLOT</p>
     <zero-tree-view>
       <zero-tree-item>
@@ -848,6 +847,7 @@ To set the content of the flyout menu, add the content in the html within an ele
       </zero-tree-item>
     </zero-tree-view>
   </div>
+      ...
 </foundation-header>
 ```
 
