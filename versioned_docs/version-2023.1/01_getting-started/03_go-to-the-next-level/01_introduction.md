@@ -32,8 +32,6 @@ The application will make use of the following platform features:
 - [Auditable tables](../../../getting-started/go-to-the-next-level/audit/)
 - [State management](../../../getting-started/go-to-the-next-level/state-management/)
 - [Auditable tables](../../../getting-started/go-to-the-next-level/audit/)
-- [Genesis Evaluator rules](../../../getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/) 
-- [Data pipelines](../../../getting-started/go-to-the-next-level/data-pipeline/)
 
 
 We are going to call this example application **alpha**. You will see this reflected in the file names throughout.

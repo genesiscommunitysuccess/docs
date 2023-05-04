@@ -14,6 +14,13 @@ tags:
     - views
 ---
 
+## Section objectives
+The goal of this section is to create:
+- Fields
+- Tables
+- Views
+
+
 Following on from project creation in the previous step, you have:
 
 ```
@@ -22,14 +29,14 @@ i Application created successfully! 🎉 Please open the application and follow 
 
 Now you are ready to define the fields and tables that make up the data model. 
 
-Start IntelliJIDEA (or your chosen IDE) and then open the `positions-app-tutorial` project. This triggers importing and indexing of the files (which takes about as long as [Hotel California](https://youtu.be/jVHhV3A5C5c), so be patient). After that, you will see the files and the project structure displayed in your IDE.
+Start IntelliJ IDEA and then open the `alpha` project. This triggers importing and indexing of the files (which takes about as long as [Hotel California](https://youtu.be/jVHhV3A5C5c), so be patient). After that, you will see the files and the project structure displayed.
 
 ## Section objectives
 The goal of this section is to define and build our database fields, tables and views.
 
 
 ## 1. Add fields
-The fields are defined in the file **positions-app-tutorial-fields-dictionary.kts**
+The fields are defined in the file **alpha-fields-dictionary.kts**
 
 :::tip
 
@@ -80,13 +87,10 @@ fields {
 ```
 
 ### Generate the fields
-After you have saved this file, run `generateFields`.
 
-From the Gradle menu on the right of Intellij, this is:
+import GenerateFields from '/snippet/_generate_fields.md';
 
-**genesisproduct-positions-app-tutorial**/**positions-app-tutorial-dictionary-cache**/**genesis-generated-fields**/**Tasks**/**genesis**/**generateFields**
-
-![](/img/build-gradle-kts-fields-positions.png)
+<GenerateFields />
 
 :::note Why do I have to run this Gradle task?
 
@@ -158,13 +162,10 @@ tables {
 ```
 
 ### Generate the data objects
-After you have saved the file of tables, run `generateDao`
 
-From the Gradle menu, this is:
+import GenerateDao from '/snippet/_generate_DAO.md'
 
-**genesisproduct-positions-app-tutorial**/**positions-app-tutorial-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDAO**
-
-![](/img/build-gradle-kts-generated-dao-positions.png)
+<GenerateDao />
 
 This script generates the DAOs (data repos) from the tables, and they are available to be imported in your code.
 
@@ -184,7 +185,7 @@ A view always starts with a single table, the root table. Other tables can be jo
 
 Views are very powerful and here we are going to cover just the basics. When you have a chance, have a look at the [documentation](../../../database/fields-tables-views/views/).
 
-The code below creates a view called `TRADE_VIEW`, which joins the `TRADE` table to the `INSTRUMENT` and `COUNTERPARTY` tables. Edit **positions-app-tutorial–view-dictionary.kts** file and add the view on the `TRADE` table:
+The code below creates a view called `TRADE_VIEW`, which joins the `TRADE` table to the `INSTRUMENT` and `COUNTERPARTY` tables. Edit **alpha–view-dictionary.kts** file and add the view on the `TRADE` table:
 
 ```kotlin
 views {
@@ -212,13 +213,10 @@ views {
 ```
 
 ### Generate the view
-After you have saved the view file, run `generateView`
 
-From the Gradle menu, this is:
+import GenerateView from '/snippet/_generate_view.md';
 
-**genesisproduct-positions-app-tutorial**/**positions-app-tutorial-dictionary-cache**/**genesis-generated-view**/**Tasks**/**genesis**/**generateView**
-
-![](/img/build-gradle-kts-generated-view-positions.png)
+<GenerateView />
 
 <!-- Run **positions-app-tutorial-config:assemble** to make the view ready for use. -->
 
@@ -228,7 +226,7 @@ During code generation, [view](../../../database/data-structures/views/) and [in
 
 
 ## Conclusion
-With this, our data model is defined. As a next step, we shall add some data to the tables in the database.
+With this, our data model is defined. You can use the [positions app tutorial repository](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-config/src/main/resources/cfg) as a reference. Note that this repo is a complete application and may not reflect the changes made in this page.
 
-You can use the [positions app tutorial repository](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-config/src/main/resources/cfg) as a reference. Note that this repo is a complete application and may not reflect the changes made in this page.
+As a next step, we shall add some data to the tables in the database.
 

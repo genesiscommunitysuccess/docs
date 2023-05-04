@@ -88,17 +88,9 @@ fields {
 
 ### Generate the fields
 
-After you have saved this file, run genesis-generated-fields from the Gradle menu on the right of Intellij, this is:
+import GenerateFields from '/snippet/_generate_fields.md';
 
- **genesisproduct-alpha**/**alpha-dictionary-cache**/**alpha-generated-fields**/**Tasks**/**genesis**/**generateFields**
-
-![](/img/build-gradle-kts-fields.png)
-
-Alternatively, you can run the Gradle tasks from the command line.  
-
-```shell title='Running generateFields from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-fields:generateFields
-```
+<GenerateFields />
 
 :::note Why do I have to run this Gradle task?
 
@@ -170,16 +162,10 @@ tables {
 ```
 
 ### Generate the data objects
-After you have saved this file, run genesis-generated-dao from the Gradle menu, this is:
 
-**genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDao**
+import GenerateDao from '/snippet/_generate_DAO.md'
 
-![](/img/build-gradle-kts-generated-dao.png)
-
-
-```shell title='Running generateDAO from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-dao:generateDao
-```
+<GenerateDao />
 
 This script generates the DAOs (data repos) from the tables, and they are available to be imported in your code.
 
@@ -227,19 +213,10 @@ views {
 ```
 
 ### Generate the view
-After you have saved the view file, run `generateView`
 
-From the Gradle menu, this is:
+import GenerateView from '/snippet/_generate_view.md';
 
-**alpha-app-tutorial**/**alpha-dictionary-cache**/**genesis-generated-view**/**Tasks**/**genesis**/**generateView**
-
-![](/img/build-gradle-kts-generated-view-alpha.png)
-
-
-```shell title='Running generateView from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-view:generateView
-```
-
+<GenerateView />
 
 <!-- Run **positions-app-tutorial-config:assemble** to make the view ready for use. -->
 

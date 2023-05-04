@@ -133,17 +133,9 @@ After you have saved this file, run [genesis-generated-fields](../../../database
 
 ### generateFields
 
-From the Gradle menu on the right of Intellij, this is:
+import GenerateFields from '/snippet/_generate_fields.md';
 
- **genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-fields**/**Tasks**/**genesis**/**generateFields**
-
-![](/img/build-gradle-kts-fields.png)
-
-Alternatively, if you can't run it from your IDE, you can run the Gradle tasks from the command line.
-
-```shell title='Running generateFields from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-fields:generateFields
-```
+<GenerateFields />
 
 :::note Why do I have to run this Gradle task?
 
@@ -181,16 +173,9 @@ After you have saved this file, run [genesis-generated-dao](../../../database/fi
 
 ### generateDao
 
-From the Gradle menu, this is:
+import GenerateDao from '/snippet/_generate_DAO.md'
 
-**genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDao**
-
-![](/img/build-gradle-kts-generated-dao.png)
-
-
-```shell title='Running generateDAO from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-dao:generateDao
-```
+<GenerateDao />
 
 After running it, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
 
@@ -291,29 +276,11 @@ In the Gradle menu on the right of IntelliJ, select:
 ./gradlew :genesisproduct-alpha:assemble
 ```
 
-**genesisproduct-alpha**/**alpha-config**
-
-![](/img/alpha-config-gradle.png)
-
-```shell title='Running alpha-config assemble from the command line'
-./gradlew :genesisproduct-alpha:alpha-config:assemble
-./gradlew :genesisproduct-alpha:alpha-config:deployCfgToGenesisHome
-
-```
-
-**genesisproduct-alpha**/**alpha-script-config**
-
-![](/img/alpha-script-config-gradle.png)
-
-```shell title='Running alpha-script-config assemble from the command line'
-./gradlew :genesisproduct-alpha:alpha-script-config:assemble
-./gradlew :genesisproduct-alpha:alpha-script-config:deployScriptsToGenesisHome
-
-```
-
 #### .genesis-home folder
 
-After the Gradle task, when first using the plugin with a project, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
+After the Gradle task, when first using the plugin with a project, you must configure it to be able to access your DB. For this tutorial, we are going to use POSTGRESQL. Make sure you have configured it properly following the installation guide of the [genesis plugin](../../server/tooling/intellij-plugin/). 
+
+After that, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
 
 ![Genesis Install](/img/intellij-install.png)
 
@@ -331,27 +298,9 @@ If you want to keep your file search as clean as possible, it is possible to ass
 Further information can be found [here](https://www.jetbrains.com/help/idea/content-roots.html#configure-folders).
 :::
 
-There are two scripts (genesisInstall and remap) you can run using the Genesis IntelliJ Plugin explained next.
+### Remap
 
-The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files, so it can propagate the correct changes into the running processes. You can run it using the Genesis IntelliJ Plugin, as shown below. 
-
-![Genesis Install](/img/intellij-genesisInstall.png)
-
-Apart from the genesisInstall, if the changes affect the Database schema (i.e. **-dictionary.kts** file changes)  we need to run the tasks from **dictionary-cache** module and  [remap script](../../../operations/commands/server-commands/#remap-script) as well. This is because it implies that the Database Access Objects (DAOs) need to be rebuilt. You can also run remap using the Genesis IntelliJ Plugin, as shown below. 
-
-**genesisproduct-alpha**/**alpha-dictionary-cache**
-
-![](/img/alpha-dictionary-cache-gradle.png)
-
-```shell title='Running alpha-dictionary-cache assemble from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:assemble
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:deployDaoToGenesisHome
-
-```
-
-Run genesisInstall again and then remap.
-
-![Genesis Install](/img/intellij-genesisInstall.png)
+Now you need to run the remap, so we can actually create the schema `alpha` to your database and dd all the standard tables from genesis.
 
 ![Genesis Install](/img/intellij-remap.png)
 
@@ -359,7 +308,7 @@ Run genesisInstall again and then remap.
 
 As soon as the Build is done, you can apply the changes and run the Genesis processes again using the Genesis IntelliJ Plugin.
 
-According to the [instructions](../../../server/tooling/intellij-plugin/#making-a-change), you must follow theese four steps:
+According to the [instructions](../../../server/tooling/intellij-plugin/#making-a-change), you must follow these four steps:
 
 1. Click on the **Deploy Genesis** button on the toolbar.
 
@@ -373,14 +322,8 @@ This starts the build processes and the logs will be shown below.
 
 ![Deploy logs](/img/intellij-deploy3.png)
 
-3. Once the build is successful, you’ll be asked to start the Resource daemon again:
-
-![Genesis Install](/img/intellij-daemon.png)
-
-4. Once the Resource daemon starts, you can start the processes you wish to have running.
-
 ### User name and password
-Using the repo that you [cloned](https://github.com/genesiscommunitysuccess/devtraining-seed), by default the following will be your login details:
+By default the following will be your login details:
 
 - Username: JaneDee
 - Password: beONneON*74 (This is encrypted in the user.csv file.)

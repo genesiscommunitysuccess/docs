@@ -11,80 +11,147 @@ tags:
     - add data
 ---
 
-## Deploying the application
+## Section objectives
+The goal of this section is:
+- Build and deploy the application
+- Install genesis plugin
+- Import data to genesis
+- Create a query
 
-Now we have to deploy our application, the positions-app-tutorial product. From Gradle, run the following commands in order:
+## Database layer
 
-1. **/genesisproduct-positions-app-tutorial/Tasks/build/assemble**
+You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\\**.
 
-    ![](/img/deploy-assemble-positions.png)
+Further information can be found in the [**genesis-system-definitions.kts** file](../../../server/configuring-runtime/system-definitions/).
 
-2. **/genesisproduct-positions-app-tutorial/positions-app-config/Tasks/build/assemble**
+### Run with docker
 
-    ![](/img/deploy-config-assemble-positions.png)
+Since we are using a docker container, add the highlighted items `DbLayer` and `DbHost` exactly as they are specified below to **genesis-system-definition.kts**:
 
-3.  **/genesisproduct-positions-app-tutorial/positions-app-tutorial-deploy/Tasks/genesis-setup/install-positions-app-tutorial-site-specific**
+```kotlin {4,10} title="genesis-system-definition.kts"
+systemDefinition {
+    global {
+        ...
+        item(name = "DbLayer", value = "SQL")
+        item(name = "DictionarySource", value = "DB")
+        item(name = "AliasSource", value = "DB")
+        item(name = "MetricsEnabled", value = "false")
+        item(name = "ZeroMQProxyInboundPort", value = "5001")
+        item(name = "ZeroMQProxyOutboundPort", value = "5000")
+        item(name = "DbHost", value = "jdbc:postgresql://localhost:5432/?user=postgres&password=postgres")
+        item(name = "DbMode", value = "VANILLA")
+        ...
+    }
+    
+}
 
-    ![](/img/deploy-install-site-specific-positions.png)
+```
 
-4. **/genesisproduct-positions-app-tutorial/positions-app-tutorial-deploy/Tasks/genesisdeploy/deploy-genesisproduct-positions-app-tutorial.zip**
+### Build and compose Docker images
 
-    ![](/img/deploy-positions.png)
+Now, you need to start the database. Make sure your docker management software (in our case Rancher desktop) is up and running and do the following:
 
+```powershell
+docker pull postgres
+docker run --name localPostgresDb -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres postgres -c 'max_connections=10000'
+```
 
+To confirm your docker has been created, please run:
+```powershell
+docker ps | findstr "localPostgresDb"
+```
 
-This sequence builds, configures and deploys the application.
+## The build and deploy process
+
+Finally, you can build and deploy the server.
+
+### Build
+
+In the Gradle menu on the right of IntelliJ, select:
+
+**genesisproduct-alpha**
+
+![](/img/assemble-server.png)
+
+```shell title='Running assemble from the command line'
+./gradlew :genesisproduct-alpha:assemble
+```
+
+#### .genesis-home folder
+
+After the Gradle task, when first using the plugin with a project, you must configure it to be able to access your DB. For this tutorial, we are going to use POSTGRESQL. Make sure you have configured it properly following the installation guide of the [genesis plugin](../../server/tooling/intellij-plugin/). 
+
+After that, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
+
+![Genesis Install](/img/intellij-install.png)
+
+This generates a hidden folder called **.genesis-home** in your project root, ready to run your application's processes. On the first run, this could take up to 20 minutes, because it performs a full build of your application.
+
+:::tip
+If you want to keep your file search as clean as possible, it is possible to assign the **.genesis-home** folder as Excluded. To do that, follow the three steps below.
+
+1. Right-click on the directory you want to exclude in the Project pane on the left side of IntelliJ.
+
+2. Select **Mark Directory as** from the dropdown menu.
+
+3. Choose **Excluded** from the sub-menu.
+
+Further information can be found [here](https://www.jetbrains.com/help/idea/content-roots.html#configure-folders).
+:::
+
+### Remap
+
+Now you need to run the remap, so we can actually create the schema `alpha` to your database and dd all the standard tables from genesis.
+
+![Genesis Install](/img/intellij-remap.png)
+
+### Deploy
+
+As soon as the Build is done, you can apply the changes and run the Genesis processes again using the Genesis IntelliJ Plugin.
+
+According to the [instructions](../../../server/tooling/intellij-plugin/#making-a-change), you must follow these four steps:
+
+1. Click on the **Deploy Genesis** button on the toolbar.
+
+![Deploy](/img/intellij-deploy1.png)
+
+2. Rebuilding the application requires the Genesis processes to be stopped. When you are prompted for this, click **ok** to continue. 
+
+![Deploy Prompt](/img/intellij-deploy2.png)
+
+This starts the build processes and the logs will be shown below.
+
+![Deploy logs](/img/intellij-deploy3.png)
+
+### User name and password
+By default the following will be your login details:
+
+- Username: JaneDee
+- Password: beONneON*74 (This is encrypted in the user.csv file.)
+
+However, after the first Build and Deploy, you got to add the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin as [explained](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
+
+To do that, find the **USER.csv** file (it is inside the *server/jvm/alpha-site-specific/src/main/resources/data* folder), right-click **USER.csv**, and then click on **Import CSV(s) to Genesis** as shown below.
+
+![Genesis Install](/img/intellij-sendIt-USERcsv.png)
+
+Behind the scenes, the plugin option `Import CSV(s) to Genesis` uses the [SendIt script](../../../operations/commands/server-commands/#sendit-script) to load data into application.
 
 
 ## Run the server commands
-:::info Can I run server commands from the command line rather than Gradle tasks?
-Yes. Here, we've been running server commands through the gradle tasks. But alternatively, you can run server commands directly from a command line. 
 
-Assuming you are using the provided 'TrainingCentOS' WSL distribution, open PowerShell (or Windows Command Prompt). Access your WSL instance 'TrainingCentOS' and switch to user 'genesis' to have access to the Genesis commands:
+Now, let's run the resource deamon to see all the processes available:
 
-```shell
-wsl -d TrainingCentOS
-su genesis
-DbMon
-```
+![Genesis Install](/img/intellij-daemon.png)
 
-Try it now!
+After clicking on it, run all the proceses available by clicking on start, then wait untill all processes are up.
 
-:::
-
-Now, let's run the Genesis command `mon` to see if all processes are up and running on the server:
-
-```shell
-./gradlew :genesisproduct-positions-app-tutorial:positions-app-tutorial-deploy:mon #On the IntelliJ terminal
-```
-or from the dropdown menu:
-
-![](/img/using-mon-positions.png)
-
-We should see something like this:
-
-```shell
-PID     Process Name                  Port        Status         CPU       Memory    Message
-===============================================================================================
-426     GENESIS_AUTH_CONSOLIDATOR     8005        STANDBY        36.30     1.30
-350     GENESIS_AUTH_DATASERVER       8002        RUNNING        56.70     1.70
-334     GENESIS_AUTH_MANAGER          8001        RUNNING        61.50     1.70
-368     GENESIS_AUTH_PERMS            8003        RUNNING        65.70     1.90
-403     GENESIS_AUTH_REQUEST_SERVER   8004        RUNNING        56.80     1.60
-490     GENESIS_CLUSTER               9000        RUNNING        84.30     2.50
-570     GENESIS_ROUTER                9017        RUNNING        54.70     2.00
-534     GENESIS_WEBMON                9011        RUNNING        51.30     2.50
-===============================================================================================
-664     POSITIONS_APP_TUTORIAL_DATASERVER              11000       RUNNING        58.10     1.50
-703     POSITIONS_APP_TUTORIAL_EVENT_HANDLER           11001       RUNNING        71.30     2.20
-```
-
-## Add a user and some example data
+## Add some example data
 Let's load some very simple example data into the tables that we created previously. 
 
-Copy the following into four separate csv files and save them along with the USER.csv in the **positions-app-tutorial\server\jvm\positions-app-tutorial-site-specific\src\main\resources\data** folder. 
+Copy the following into four separate csv files and save them along with the USER.csv in the **alpha\server\jvm\alpha-site-specific\src\main\resources\data** folder. 
 
-Ensure that the csv file has the same name as the table; the `loadInitialData` script is case-sensitive.
+Ensure that the csv file has the same name as the table.
 
 ```text title="TRADE.csv"
 "TRADE_ID","INSTRUMENT_ID","COUNTERPARTY_ID","QUANTITY","SIDE","PRICE","TRADE_DATETIME","ENTERED_BY","TRADE_STATUS"
@@ -127,17 +194,9 @@ The following details will be your login details:
 -	Password: beONneON*74 (This is encrypted in the USER.csv file.)
 :::
 
-Run the task `loadInitialData`. This imports the data from these csv files into the database. For example, the file called USER.csv will be imported into the USER table in your database. The USER table, among the other users and permissioning tables, is defined by the Genesis Auth module that we installed previously.
+Select all files in **alpha\server\jvm\alpha-site-specific\src\main\resources\data** and click on `import CSV(s) to genesis`.
 
-To run the task, call:
-```shell
-./gradlew :genesisproduct-positions-app-tutorial:positions-app-tutorial-deploy:loadInitialData #On the IntelliJ terminal
-```
-
-or from the dropdown menu:
-
-![](/img/load-initial-data-positions.png)
-
+![](/img/go-to-next-level-import-data.png)
 
 ## Run some queries
 
@@ -146,16 +205,11 @@ Now we are going to use Genesis `DbMon` to run some queries on the database.
 `DbMon` is the Genesis database client. It provides a unified interface to the underlying database and hides the details about the database vendor.
 :::
 
-Run `DbMon` to check that the user has been created:
+To check that the user has been created, go to the genesis plugin `Tasks`, under **Scripts** search DbMon and double click on it to run.
 
-```
-./gradlew :genesisproduct-position-app-tutorial:positions-app-tutorial-deploy:DbMon #On the IntelliJ terminal
-```
-or from the dropdown menu:
+![](/img/go-to-next-level-DbMon.png)
 
-![](/img/using-dbmon-positions.png)
-
-Once you are inside the console, type table `USER` and then `search 1`. If imported correctly, the user JaneDee should be listed:
+Once you are inside the console, type `table USER` and then `search 1`. If imported correctly, the user JaneDee should be listed:
 
 ```shell
 DbMon>table USER
@@ -165,14 +219,25 @@ USER
 ==================================
 Field Name                               Value                                    Type                
 ===========================================================================================
-...
+TIMESTAMP                                2023-04-19 19:25:29.157(n:0,s:1)         NANO_TIMESTAMP      
+COMPANY_ID                                                                        STRING              
+COMPANY_NAME                             GENESIS                                  STRING              
+DOMAIN                                                                            STRING              
+EMAIL_ADDRESS                            jane.dee@genesis.global                  STRING              
+FIRST_NAME                               Jane                                     STRING              
+LAST_LOGIN                               2016-04-28                               DATE                
+LAST_NAME                                Dee                                      STRING              
+ONLINE                                   false                                    BOOLEAN             
+PASSWORD                                 1cf46a0c2148f6399159ff576768d715b5207... STRING              
+PASSWORD_EXPIRY_DATETIME                                                          DATETIME            
+REFRESH_TOKEN                            dPbpA8ej38DzoEG44t0lyLrjeL80TMqR         STRING              
+STATUS                                   ENABLED                                  STRING              
 USER_NAME                                JaneDee                                  STRING              
 -------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------
 Total Results:  1
 DbMon:USER>
 ```
-
 
 ## Conclusion
 We now have added some viewable data to our database. As a next step, we shall add business logic to show the data and create entries.

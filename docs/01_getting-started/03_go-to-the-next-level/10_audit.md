@@ -1,6 +1,6 @@
 ---
 title: 'Go to the next level - track the data changes using auditable tables'
-sidebar_label: 'Using auditable tables'
+sidebar_label: 'Using Auditable Tables'
 id: audit
 keywords: [getting started, quick start, next level, audit]
 tags:
@@ -21,7 +21,7 @@ The goal of this section is:
 - update our Event Handlers to pass transactions to our state machine of type `AsyncMultiEntityReadWriteGenericSupport`.
 
 ### Adding audit to table dictionary
-The first step to add basic auditing is to change the relevant table dictionary. In this instance, we will be making changes to the **positions-app-tutorial-tables-dictionary.kts**, by adding the `audit` parameter. It should resemble the following:
+The first step to add basic auditing is to change the relevant table dictionary. In this instance, we will be making changes to the **alpha-tables-dictionary.kts**, by adding the `audit` parameter. It should resemble the following:
 
 ```kotlin {1}
 table (name = "TRADE", id = 11000, audit = details(id = 11002, sequence = "TR")) {
@@ -49,7 +49,9 @@ As we are using the GPAL Event Handlers, this is sufficient to enable auditing o
 
 Next we need to extend the insert and modify methods in the **TradeStateMachine.kt** file. Specifically, we need to add a transaction parameter of type `AsyncMultiEntityReadWriteGenericSupport` and use `internalState.withTransaction(transaction)`. For example:
 
-```kotlin {2,5,10,12,20,23}
+```kotlin {1,3,7,12,14,22,25}
+import global.genesis.db.rx.entity.multi.AsyncMultiEntityReadWriteGenericSupport
+
     suspend fun insert(
         transaction: AsyncMultiEntityReadWriteGenericSupport,
         trade: Trade
@@ -79,10 +81,11 @@ Next we need to extend the insert and modify methods in the **TradeStateMachine.
 
 ### Update the Event Handlers to use auditing
 
-Now we must update our `Trade` Event Handlers inside the **positions-app-tutorial-eventhandler.kts** file and pass in our `transaction` object as a parameter, in this case it's our `entityDb` object. It should resemble the example below:
+Now we must update our `Trade` Event Handlers inside the **alpha-eventhandler.kts** file and pass in our `transaction` object as a parameter, in this case it's our `entityDb` object. It should resemble the example below:
 
 ```kotlin {4,11,18,27}
     eventHandler<Trade>(name = "TRADE_INSERT") {
+        schemaValidation = false
         onCommit { event ->
             val trade = event.details
             stateMachine.insert(entityDb, trade)
@@ -116,7 +119,13 @@ Now we must update our `Trade` Event Handlers inside the **positions-app-tutoria
     }
 ```
 
-Finally we can run `generateDao`, `assemble` and `deploy-genesisproduct-positions-app-tutorial`.
+import BuildAndDeploy from '/snippet/_build_and_deploy.md'
+
+<BuildAndDeploy />
+
+:::note
+Do not forget to run remap again, because we need to create the `_AUDIT` tables in our database
+:::
 
 ### Conclusion
 With this, any changes made to `TRADE` are tracked to `TRADE_AUDIT`. To try it out, insert a new `TRADE` and see what's stored in the `TRADE_AUDIT` table via `DbMon`. Go to your terminal and run `DbMon`, `table TRADE_AUDIT` and `search 1`. For more information on testing, go to [Endpoints](../../../server/integration/rest-endpoints/introduction/).

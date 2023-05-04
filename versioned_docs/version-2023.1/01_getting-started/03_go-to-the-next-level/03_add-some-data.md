@@ -77,26 +77,6 @@ In the Gradle menu on the right of IntelliJ, select:
 ./gradlew :genesisproduct-alpha:assemble
 ```
 
-**genesisproduct-alpha**/**alpha-config**
-
-![](/img/alpha-config-gradle.png)
-
-```shell title='Running alpha-config assemble from the command line'
-./gradlew :genesisproduct-alpha:alpha-config:assemble
-./gradlew :genesisproduct-alpha:alpha-config:deployCfgToGenesisHome
-
-```
-
-**genesisproduct-alpha**/**alpha-script-config**
-
-![](/img/alpha-script-config-gradle.png)
-
-```shell title='Running alpha-script-config assemble from the command line'
-./gradlew :genesisproduct-alpha:alpha-script-config:assemble
-./gradlew :genesisproduct-alpha:alpha-script-config:deployScriptsToGenesisHome
-
-```
-
 #### .genesis-home folder
 
 After the Gradle task, when first using the plugin with a project, you must configure it to be able to access your DB. For this tutorial, we are going to use POSTGRESQL. Make sure you have configured it properly following the installation guide of the [genesis plugin](../../server/tooling/intellij-plugin/). 
@@ -119,29 +99,10 @@ If you want to keep your file search as clean as possible, it is possible to ass
 Further information can be found [here](https://www.jetbrains.com/help/idea/content-roots.html#configure-folders).
 :::
 
-There are two scripts (genesisInstall and remap) you can run using the Genesis IntelliJ Plugin explained next.
+### Remap
 
-The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files, so it can propagate the correct changes into the running processes. You can run it using the Genesis IntelliJ Plugin, as shown below. 
+Now you need to run the remap, so we can actually create the schema `alpha` to your database and dd all the standard tables from genesis.
 
-![Genesis Install](/img/intellij-genesisInstall.png)
-
-Apart from the genesisInstall, if the changes affect the Database schema (i.e. **-dictionary.kts** file changes)  we need to run the tasks from **dictionary-cache** module and  [remap script](../../../operations/commands/server-commands/#remap-script) as well. This is because it implies that the Database Access Objects (DAOs) need to be rebuilt. You can also run remap using the Genesis IntelliJ Plugin, as shown below. 
-
-**genesisproduct-alpha**/**alpha-dictionary-cache**
-
-![](/img/alpha-dictionary-cache-gradle.png)
-
-```shell title='Running alpha-dictionary-cache assemble from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:assemble
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:deployDaoToGenesisHome
-
-```
-
-Run genesisInstall again and then remap.
-
-1. 
-![Genesis Install](/img/intellij-genesisInstall.png)
-2. 
 ![Genesis Install](/img/intellij-remap.png)
 
 ### Deploy
@@ -185,7 +146,7 @@ Now, let's run the resource deamon to see all the processes available:
 
 After clicking on it, run all the proceses available by clicking on start, then wait untill all processes are up.
 
-## Add a user and some example data
+## Add some example data
 Let's load some very simple example data into the tables that we created previously. 
 
 Copy the following into four separate csv files and save them along with the USER.csv in the **alpha\server\jvm\alpha-site-specific\src\main\resources\data** folder. 
