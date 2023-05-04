@@ -43,7 +43,7 @@ In **home.template.ts**, in the grid tag, include the utility that will inject y
 ```html {1,4} title='home.template.ts'
 import {positionGridStyles} from "./positionsGrid.styles";
 
-<zero-grid-pro>
+<zero-grid-pro persist-column-state-key="position-grid-settings">
     <slotted-styles :styles=${() => positionGridStyles}></slotted-styles>
     ...
     ...
