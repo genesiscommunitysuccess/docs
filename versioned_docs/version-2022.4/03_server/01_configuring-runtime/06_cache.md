@@ -37,6 +37,10 @@ The options for both XML and GPAL are:
   * **loadOnStart**, **update** and **insertNewEntries** options are also available at this level. The behaviour and default values have the same effect as their global settings counterparty described above, but apply at the specific table level.
   * The **indices** setting allows you to provide a set of unique indices to be cached as part of the **update** and **loadOnStart** operations.
 
+:::caution
+Choosing the right index definition is paramount to improving view query performance. If you define a view on database tables, and you are joining on an index that is not part of the cache configuration, the cache will not accelerate your database read operations.
+:::
+
 ### XML example
 ```xml
         <cacheConfig>
