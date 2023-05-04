@@ -348,7 +348,7 @@ If the response is `PASSWORD_EXPIRED`, then the GUI can allow the user to change
 
 #### Change request
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD
-    DETAILS.USER_NAME = JohnDoe
+    DETAILS.USER_NAME = JohnWolf
     DETAILS.OLD_PASSWORD = Password123
     DETAILS.NEW_PASSWORD = Password456
 
@@ -373,7 +373,7 @@ This can only be called by an administrator; it simply specifies a user name and
 
 #### Reset request
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD
-    DETAILS.USER_NAME = JohnDoe
+    DETAILS.USER_NAME = JonWolf
 
 #### Reset response
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD_ACK
@@ -434,7 +434,7 @@ Note the following:
     DETAILS.RIGHT[1].ID = 00000000000002RISP0
     DETAILS.RIGHT[1].CODE = ORDAM
     DETAILS.USER[0].ID = 00000000000001USSP0
-    DETAILS.USER[0].USER_NAME = JohnDoe
+    DETAILS.USER[0].USER_NAME = JohnWolf
     DETAILS.USER[1].ID = 00000000000002USSP0
     DETAILS.USER[1].USER_NAME = james
 
@@ -504,7 +504,7 @@ Note the following:
 
 #### Delete request
     MESSAGE_TYPE = EVENT_DELETE_PROFILE
-    USER_NAME = JohnDoe
+    USER_NAME = JohnWolf
     DETAILS.NAME = SALES_TRADERS
 
 #### Delete response
@@ -515,9 +515,9 @@ Note the following:
 #### Insert request
     MESSAGE_TYPE = EVENT_INSERT_USER
     USER_NAME = mthompson
-    DETAILS.USER_NAME = JohnDoe
+    DETAILS.USER_NAME = JohnWolf
     DETAILS.FIRST_NAME = John
-    DETAILS.LAST_NAME = Doe
+    DETAILS.LAST_NAME = Wolf
     DETAILS.EMAIL_ADDRESS = john.doe@genesis.global
     DETAILS.STATUS = ENABLED
     DETAILS.RIGHT[0].ID = 00000000000001RISP0
@@ -534,7 +534,7 @@ Note the following:
     MESSAGE_TYPE = EVENT_AMEND_USER
     USER_NAME = mthompson
     DETAILS.ID = 00000000000001USSP0
-    DETAILS.USER_NAME = JohnDoe
+    DETAILS.USER_NAME = JohnWolf
     DETAILS.FIRST_NAME = John
     DETAILS.LAST_NAME = Doe
     DETAILS.EMAIL_ADDRESS = john.doe@genesis.global
