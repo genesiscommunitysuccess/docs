@@ -17,7 +17,7 @@ All these configuration settings are wrapped within the `security` function.
 
 ## The security function
 
-The `security` function wraps all other variable and functions within the **auth-preferences.kts** file. From this top level, you can set the following variables:
+The `security` function wraps all other variables and functions within the **auth-preferences.kts** file. From this top level, you can set the following variables:
 
 * `sessionTimeoutMins` specifies a time out for the session. Sessions are timed out (logged out) after the value defined here. The front end of your application can monitor web movement, page changes, etc. and perform an [automatic refresh](../../../server/integration/rest-endpoints/advanced/#event_login_refresh) - in which case, the user is not aware of the logout and the start of the new session. Default: 30 minutes.
 * `expiryCheckMins` specifies the time interval (in minutes) used to check for idle sessions in the system. Default: 5 minutes.
@@ -37,15 +37,15 @@ From within `security` there is a wide range of functions you can call in order 
 The `authentication` function is used to define common features of all three types of authentication. Within it, many variables can be set, but their use depends on the value given to the `type` variable.
 
 * `type` indicates which of the three types of username and password authentication are to be used. It accepts the values of: 
-- `AuthType.INTERNAL`
-- `AuthType.LDAP` 
-- `AuthType.HYBRID`
+    - `AuthType.INTERNAL`
+    - `AuthType.LDAP` 
+    - `AuthType.HYBRID`
 
-The default is `AuthType.INTERNAL`.
+    The default is `AuthType.INTERNAL`.
 
-For more information about each of these three authentication types please see the [authentication overview](../../../server/access-control/authentication-overview/#username-and-password-authentication).
+For more information about each of these three authentication types, see the [authentication overview](../../../server/access-control/authentication-overview/#username-and-password-authentication).
 
-## LDAP
+### LDAP
 Within the scope of the `authentication` function, you can insert an `ldap` block in order to define connections to one or more LDAP servers. 
 
 - To define a connection to a single server, call the `connection` function and set the relevant details. 
@@ -58,12 +58,12 @@ The following variables are used to configure an LDAP connection; these are only
 * `url` specifies the LDAP server hostname. Default: `localhost`.
 * `port` specifies the LDAP server port. Default: 389.
 * `searchBases` defines the location(s) in the directory in which the LDAP search begins. Default: an organisational unit of `temp` with a domain component of `temp` (`ou=temp,dc=temp`).
-  * This is set by first invoking the `searchBases` function, and repeatedly invoking `searchBase(location)` function(s) within it, where `location` is given as a distinguished name.
+  * This is set by first invoking the `searchBases` function, and repeatedly invoking `searchBase(location)` function(s) within it, where `location` is the exact name of the application on the LDAP server.
 * `userGroups` defines the group(s) that the user needs to belong with the LDAP server in order to log in. Default: no groups.
-  * This is set by first invoking the `userGroups` function, and repeatedly invoking `userGroup(group)` function(s) within it, where `group` is given as a distinguished name.
-* `userPrefix` specifies a prefix added to every username when communicated with the LDAP server. Default: an empty string.
-* `bindDn` specifies the distinguished name which represents the application within the LDAP server. Normally LDAP servers do not allow anonymous searches, and thus require this. If `bindDn` is not specified, no bindings will be used. Default: null
-* `bindPassword` specifies the password associated with the `bindDn` account. If `bindDn` is not specified, this value is not used. Default: null.
+  * This is set by first invoking the `userGroups` function, and repeatedly invoking `userGroup(group)` function(s) within it, where `group` is the specific name of a group.
+* `userPrefix` specifies a prefix added to every username when communicating with the LDAP server. Default: an empty string.
+* `bindDn` specifies the exact name of the application within the LDAP server. Normally, LDAP servers do not allow anonymous searches, so this name is essential. If `bindDn` is not specified, no bindings will be used. Default: null
+* `bindPassword` specifies the password for the `bindDn`account. If `bindDn` is not specified, this value is not used. Default: null.
 * `userIdType` defines the attribute to match in the directory search against the provided username. Default: `cn`. 
   * Amongst the most common LDAP implementations, you can find three main ways of configuring usernames:
     * using the `uid` attribute (Userid)
@@ -73,12 +73,12 @@ The following variables are used to configure an LDAP connection; these are only
 * `onFirstLogin` is a function that is called the first time a user has been authenticated who doesn't already exist in the database. Here you can define two things:
   * how the `User` and its `UserAttributes` will be created from the token after the user has been authenticated using the `createUser` function
   * which user permissions are allocated using `createUserPermissions`
-* `onLoginSuccess` this is a function which is invoked on a successful LDAP login, for example: it allows you to insert a user into the db when it exists in LDAP but not the database.
+* `onLoginSuccess` this is a function which is invoked on a successful LDAP login: for example, it allows you to insert a user into the db when it exists in LDAP but not the database.
 * `useTLS` this is a boolean value indicating whether or not to use TLS encryption on the connection to the remote LDAP server.
 
-For more information about the various authentication types, please see the [Authentication overview](../../../server/access-control/authentication-overview/).
+For more information about the various authentication types, see the [Authentication overview](../../../server/access-control/authentication-overview/).
 
-### genesisPassword
+## genesisPassword
 The `genesisPassword` groups all configuration options when you are using `type = AuthType.INTERNAL`. 
 
 ### passwordRetry
@@ -95,11 +95,11 @@ The following variables can be used to configure the application's password vali
 
     * `minimumLength` specifies the minimum length of password. If null or undefined this assumes there is no minimum limit. Default: null.
     * `maximumLength` specifies the maximum length of password. If null or undefined this assumes there is no maximum limit. Default: null.
-    * `minDigits` specifies the minimum number of numerical digits required in a password. If null or undefined this assumes there is no minimum limit. Default: null.
-    * `maxRepeatCharacters` specifies the maximum number of the same characters across an entire password. This does not just include consecutive repeat characters, which is controlled by the `repeatCharacterRestrictSize` variable below. If null or undefined this assumes there is no maximum limit. Default: null.
+    * `minDigits` specifies the minimum number of numerical digits required in a password. If null or undefined, this assumes there is no minimum limit. Default: null.
+    * `maxRepeatCharacters` specifies the maximum number of the same characters across an entire password. This does not just include consecutive repeat characters, which is controlled by the `repeatCharacterRestrictSize` variable below. If null or undefined, this assumes there is no maximum limit. Default: null.
     * `minUppercaseCharacters` specifies the minimum number of upper-case characters in a password. If null or undefined this assumes there is no minimum limit. Default: null.
     * `minLowercaseCharacters` specifies the minimum number of lower-case characters in a password. If null or undefined this assumes there is no minimum limit. Default: null.
-    * `minNonAlphaNumericCharacters` specifies the minimum number of non-alphanumeric characters, such as punctuation and other special characters. If null or undefined this assumes there is no minimum limit. Default: null.
+    * `minNonAlphaNumericCharacters` specifies the minimum number of non-alphanumeric characters, such as punctuation and other special characters. If null or undefined, this assumes there is no minimum limit. Default: null.
     * `restrictWhitespace` specifies if whitespace characters are prevented from being used in passwords. Default: true.
     * `restrictAlphaSequences` specifies if alphabetical sequences in passwords (e.g. abcdefg) are restricted. Sequences greater than or equal to five characters won't be permitted if this is true. Default: false.
     * `restrictQWERTY` specifies if QWERTY sequences in passwords (e.g. qwertyuiop) are restricted. Sequences greater or equal to five characters won't be permitted if this is true. Default: true.
@@ -132,10 +132,10 @@ In the interest of security, this response will always receive an ACK, even if t
 
 The `selfServiceReset` function  has the following options: 
 
-* `timeoutInMinutes` - the time in minutes that a reset link remains valid. 
-* `coolDownInMinutes` - the time in minutes between before the next password reset can be made. 
-* `notifyTopic` - the email topic in Genesis Notify to be used. 
-* `redirectUrl` - the url to use for the redirect.
+* `timeoutInMinutes` - the time in minutes that a reset link remains valid 
+* `coolDownInMinutes` - the time in minutes between before the next password reset can be made 
+* `notifyTopic` - the email topic in Genesis Notify to be used 
+* `redirectUrl` - the url to use for the redirect
 * `acceptClientUrl` - boolean flag; if true, the reset will use the client provided reset url
 
 :::warning
@@ -158,7 +158,7 @@ Both the subject and the body support templating. Values surrounded by double cu
 * `USER` the user record, properties on this record should be access using lowerCamelCase, e.g. `{{ USER.firstName }}`
 * any system definition or environment variable available
 
-## mfa
+### mfa
 The `mfa` function enables you to configure Multi-factor Authentication (MFA). There is more information on MFA on [Wikipedia](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function, you can set the following variables:
 
 * `codePeriodSeconds` specifies how many seconds a Time-based One-time Password (TOTP) remains valid. Default: 30 seconds.
@@ -172,7 +172,7 @@ The `mfa` function enables you to configure Multi-factor Authentication (MFA). T
 * `usernameTableLookUpSalt` specifies the salt with which a username is hashed when stored in the database with the above Secret. If this is null or undefined, the username will not be hashed in the database. Default: null.
 
 ### loginAck
-The `loginAck` function allows you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message. When you call the `loginAck` function, you have to supply a table or view as a parameter. The following functions will be invoked on this table or view:
+The `loginAck` function enables you to define additional values to be sent back to the client as part of the `LOGIN_ACK` message. When you call the `loginAck` function, you have to supply a table or view as a parameter. The following functions will be invoked on this table or view:
 
 #### loadRecord
 The `loadRecord` function can be invoked within the `loginAck` function to load a single record from the previously supplied table or view.
@@ -180,7 +180,7 @@ The `loadRecord` function can be invoked within the `loginAck` function to load 
 #### fields
 The `fields` function can be invoked within the `loginAck` function to specify which additional fields should be sent back to the client as part of the LOGIN_ACK message.
 
-### customLoginAck
+#### customLoginAck
 
 The `customLoginAck` function enables you to modify the list of permissions, profiles and user preferences returned to the client as part of the `LOGIN_ACK` message. For this purpose, the `User` entity is provided as a parameter, as well as three properties:
 
@@ -326,7 +326,7 @@ Once you have a list of preferences, you can show the correct login dialog and l
     DETAILS.USER_NAME = JohnWolf
     DETAILS.PASSWORD = FullMoon1
 
-#### Login response
+### Login response
 If successful:
 
     MESSAGE_TYPE = EVENT_LOGIN_AUTH_ACK
@@ -375,7 +375,7 @@ This can only be called by an administrator; it simply specifies a user name and
 
 #### Reset request
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD
-    DETAILS.USER_NAME = JonWolf
+    DETAILS.USER_NAME = JohnWolf
 
 #### Reset response
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD_ACK
@@ -411,7 +411,7 @@ These services should be contacted on the hosts in the order they are defined in
 ### Rights polling
 The GUI can receive rights from a process called `AUTH_DATASERVER`. The view `USER_RIGHTS` displays all users and codes. A logged-in user should automatically set the Filter expression to be `USER_NAME`=='xxx' to receive push updates to user privileges.
 
-### Entity management
+## Entity management
 In the Genesis low-code platform, there are profiles, users and rights.  A profile is a group of users, which can be permissioned.  For example, you could have a SALES_TRADER group in which all users must have the same permissions.  In all cases where you specify either a right for a user/profile, or a user in a profile, the event represents what you want the entity to look like; i.e. if you amend a profile and don't supply a user that previously was part of that profile, then that user will be removed from that profile on the server.
 
 Note the following:
@@ -422,7 +422,7 @@ Note the following:
   `PASSWORD_EXPIRED` should prompt the user to enter a new password.
   `PASSWORD_RESET` should do the same but the server expects a blank "current password" field.
 
-### Inserting a profile
+### Insert profile
 
 #### Insert request
 
@@ -443,7 +443,7 @@ Note the following:
 #### Insert response
     MESSAGE_TYPE = EVENT_INSERT_PROFILE_ACK
 
-### Amending a profile
+### Amend profile
 
 #### Amend request
   In the example below, the logged-in user (in the second line) is JohnWolf, who is modifying the profile of JaneDoe to give her the profile name JANE SMITH. 
@@ -502,7 +502,7 @@ Note the following:
 }
 ```
 
-### Deleting a profile
+### Delete profile
 
 #### Delete request
     MESSAGE_TYPE = EVENT_DELETE_PROFILE
@@ -512,7 +512,7 @@ Note the following:
 #### Delete response
     MESSAGE_TYPE = EVENT_DELETE_PROFILE_ACK
 
-### Inserting a User
+### Insert User
 
 #### Insert request
     MESSAGE_TYPE = EVENT_INSERT_USER
@@ -530,7 +530,7 @@ Note the following:
 #### Insert response
     MESSAGE_TYPE = EVENT_INSERT_USER_ACK
 
-### Amending a user
+### Amend user
 
 #### Amend request
     MESSAGE_TYPE = EVENT_AMEND_USER
@@ -549,7 +549,7 @@ Note the following:
 #### Amend response
     MESSAGE_TYPE = EVENT_AMEND_USER_ACK
 
-### Deleting a user
+### Delete user
 
 #### Delete request
     MESSAGE_TYPE = EVENT_DELETE_USER
