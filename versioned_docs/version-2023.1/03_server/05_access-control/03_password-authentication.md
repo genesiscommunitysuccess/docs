@@ -15,13 +15,13 @@ This page describes the various configuration options available for authenticati
 
 All these configuration settings are wrapped within the `security` function.
 
-## The security function
+## security 
 
 The `security` function wraps all other variable and functions within the **auth-preferences.kts** file. From this top level the following variables can be set:
 
 * `sessionTimeoutMins` specifies a time out for the session. Sessions are timed out (logged out) after the value defined here. The front end of your application can monitor web movement, page changes, etc. and perform an [automatic refresh](../../../server/integration/rest-endpoints/advanced/#event_login_refresh) - in which case, the user is not aware of the logout and the start of the new session. Default: 30 minutes.
 * `expiryCheckMins` specifies the time interval (in minutes) used to check for idle sessions in the system. Default: 5 minutes.
-* `maxSimultaneousUserLogins` specifies the maximum number of concurrent active sessions a user can maintain. Once this limit has been reached, the user cannot activate additional sessions until one or more of the active sessions has been logged out. If the value zero is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
+* `maxSimultaneousUserLogins` specifies the maximum number of concurrent active sessions a user can maintain. Once this limit has been reached the user cannot activate additional sessions until one or more of the active sessions has been logged out. If the value zero is not defined, or is not a positive integer, then any number of sessions is permitted. Default: 0.
 
 ```kotlin
 security {
@@ -31,17 +31,17 @@ security {
 }
 ```
 
-From within `security` you can also there is a wide range of functions you can call in order to configure the username and password authentication. These are detailed below.
+From within `security` you can also invoke further functions in order to configure the username and password authentication. These are detailed below.
 
-## authentication
+### authentication
 The `authentication` function is used to define common features of all three types of authentication. Within it, many variables can be set, but their use depends on the value given to the `type` variable.
 
 * `type` indicates which of the three types of username and password authentication are to be used. It accepts the values of: `AuthType.INTERNAL`, `AuthType.LDAP` or `AuthType.HYBRID`. Default: `AuthType.INTERNAL`.
 
 For more information about each of these three authentication types please see the [authentication overview](../../../server/access-control/authentication-overview/).
 
-## LDAP
-Within the scope of the `authentication` function, you can insert an `ldap` block that can define connections to one or more LDAP servers. 
+### LDAP
+Within the scope of the `authentication` function, you can define an `ldap` block that can define connections to one or more LDAP servers. 
 
 - To define a connection to a single server, call the `connection` function and set the relevant details. 
 - To define connections to more than one server, simply call the `connection` function multiple times.
@@ -70,50 +70,56 @@ The following variables are used to configure an LDAP connection; these are only
 
 For more information about the various authentication types, please see the [Authentication overview](../../../server/access-control/authentication-overview/).
 
-## genesisPassword
+### passwordRetry
+The `passwordRetry` function has been deprecated in favour of the `retry` function within the `genesisPassword` configuration.
+
+### genesisPassword
 
 The `genesisPassword` groups all configuration options when using `type = AuthType.INTERNAL`. 
 
-### validation
+#### validation
 The `validation` function enables password validation, and is used to set the variables relating to this validation. 
 
-The following variables can be used to configure the application's password validation; these can only used when `type` is either `AuthType.INTERNAL` or `AuthType.HYBRID`.
+These following variables are used to configure the application's password validation; thus are only used when `type` is either `AuthType.INTERNAL` or `AuthType.HYBRID`.
 
 * `passwordSalt` defines a system-specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different applications built on the Genesis low-code platform are stored as different hashes. Default: empty string indicating no additional salting.
 
-* `passwordSalt` defines a system-specific salt to be added to your password hashes. This is a security measure that ensures that the same combination of username and password on different applications built on the Genesis low-code platform are stored as different hashes. Default: empty string indicating no additional salting.
+In addition, from within `validation` the `passwordStrength` method can be invoked as below.
 
-* `passwordStrength` can be called to set a range of configuration variables. These enable you to specify in detail the mandatory characteristics for the password. Within this function, the following variables can be set:
+##### passwordStrength
+The `passwordStrength` function can be called within `validation` to set many configuration variables. These enable you to specify in detail the mandatory characteristics for the password. 
 
-    * `minimumLength` specifies the minimum length of password. If null or undefined this assumes there is no minimum limit. Default: null.
-    * `maximumLength` specifies the maximum length of password. If null or undefined this assumes there is no maximum limit. Default: null.
-    * `minDigits` specifies the minimum number of numerical digits required in a password. If null or undefined this assumes there is no minimum limit. Default: null.
-    * `maxRepeatCharacters` specifies the maximum number of the same characters across an entire password. This does not just include consecutive repeat characters, which is controlled by the `repeatCharacterRestrictSize` variable below. If null or undefined this assumes there is no maximum limit. Default: null.
-    * `minUppercaseCharacters` specifies the minimum number of upper-case characters in a password. If null or undefined this assumes there is no minimum limit. Default: null.
-    * `minLowercaseCharacters` specifies the minimum number of lower-case characters in a password. If null or undefined this assumes there is no minimum limit. Default: null.
-    * `minNonAlphaNumericCharacters` specifies the minimum number of non-alphanumeric characters, such as punctuation and other special characters. If null or undefined this assumes there is no minimum limit. Default: null.
-    * `restrictWhitespace` specifies if whitespace characters are prevented from being used in passwords. Default: true.
-    * `restrictAlphaSequences` specifies if alphabetical sequences in passwords (e.g. abcdefg) are restricted. Sequences greater than or equal to five characters won't be permitted if this is true. Default: false.
-    * `restrictQWERTY` specifies if QWERTY sequences in passwords (e.g. qwertyuiop) are restricted. Sequences greater or equal to five characters won't be permitted if this is true. Default: true.
-    * `restrictNumericalSequences` specifies if numerical sequences in passwords (e.g. 123456) are restricted. Sequences greater or equal to five numbers won't be allowed if active. Default: true.
-    * `illegalCharacters` specifies which characters are not permitted in user passwords. Default: empty.
-    * `historicalCheck` specifies how many previous passwords to check against, in order to prevent password re-use. If null or undefined no historical check is performed. Default: null.
-    * `restrictPassword` specifies if the password should differ from a list of the worst passwords stored within the application. Default: false.
-    * `restrictDictionarySubstring` specifies if any dictionary word of four or more characters can be included in a password (either forwards or backwards). Default: false.
-    * `restrictUserName` specifies if the user's username is restricted as part of their password. Default: false.
-    * `repeatCharacterRestrictSize` specifies the number of consecutive repeated characters that make a password restricted. If null or undefined this assumes there is no limit. Default: null.
-    * `passwordExpiryDays` specifies how many days before a password expires. If null or undefined this assumes there is no limit. Default: null.
-    * `passwordExpiryNotificationDays` specifies how many days before their password expiry, a user is notified. If null or undefined a user not notified in advance of their password expiry. Default: null.
+Within this function, the following variables can be set:
 
-### retry
+* `minimumLength` specifies the minimum length of password. If null or undefined this assumes there is no minimum limit. Default: null.
+* `maximumLength` specifies the maximum length of password. If null or undefined this assumes there is no maximum limit. Default: null.
+* `minDigits` specifies the minimum number of numerical digits required in a password. If null or undefined this assumes there is no minimum limit. Default: null.
+* `maxRepeatCharacters` specifies the maximum number of the same characters across an entire password. This does not just include consecutive repeat characters, which is controlled by the `repeatCharacterRestrictSize` variable below. If null or undefined this assumes there is no maximum limit. Default: null.
+* `minUppercaseCharacters` specifies the minimum number of upper-case characters in a password. If null or undefined this assumes there is no minimum limit. Default: null.
+* `minLowercaseCharacters` specifies the minimum number of lower-case characters in a password. If null or undefined this assumes there is no minimum limit. Default: null.
+* `minNonAlphaNumericCharacters` specifies the minimum number of non-alphanumeric characters, such as punctuation and other special characters. If null or undefined this assumes there is no minimum limit. Default: null.
+* `restrictWhitespace` specifies if whitespace characters are prevented from being used in passwords. Default: true.
+* `restrictAlphaSequences` specifies if alphabetical sequences in passwords (e.g. abcdefg) are restricted. Sequences greater than or equal to five characters won't be permitted if this is true. Default: false.
+* `restrictQWERTY` specifies if QWERTY sequences in passwords (e.g. qwertyuiop) are restricted. Sequences greater or equal to five characters won't be permitted if this is true. Default: true.
+* `restrictNumericalSequences` specifies if numerical sequences in passwords (e.g. 123456) are restricted. Sequences greater or equal to five numbers won't be allowed if active. Default: true.
+* `illegalCharacters` specifies which characters are not permitted in user passwords. Default: empty.
+* `historicalCheck` specifies how many previous passwords to check against, in order to prevent password re-use. If null or undefined no historical check is performed. Default: null.
+* `restrictPassword` specifies if the password should differ from a list of the worst passwords stored within the application. Default: false.
+* `restrictDictionarySubstring` specifies if any dictionary word of four or more characters can be included in a password (either forwards or backwards). Default: false.
+* `restrictUserName` specifies if the user's username is restricted as part of their password. Default: false.
+* `repeatCharacterRestrictSize` specifies the number of consecutive repeated characters that make a password restricted. If null or undefined this assumes there is no limit. Default: null.
+* `passwordExpiryDays` specifies how many days before a password expires. If null or undefined this assumes there is no limit. Default: null.
+* `passwordExpiryNotificationDays` specifies how many days before their password expiry, a user is notified. If null or undefined a user not notified in advance of their password expiry. Default: null.
+
+#### retry
 The `retry` function allows you to configure settings for limiting the rate at which a user can retry passwords. You can set the following variables:
 
 * `maxAttempts` specifies the maximum number of attempts allowed if a user enters a wrong password. Default: 3 attempts.
 * `waitTimeMins` specifies the time to wait in minutes when the maximum number of incorrect attempts is reached before allowing a user to try again. Default: 5 minutes.
 
-### selfServiceReset 
+#### selfServiceReset 
 
-The `selfServiceReset` function enables the self-service reset workflow. In this, users authenticated with the internal auth type can request an email to reset their password. This workflow requires Genesis Notify to be configured with a working email gateway. When a user requests a reset, an email is sent to their configured 
+The `selfServiceReset` function enables the self-service reset workflow. In this, users authenticated with the internal auth type, can request an email to reset their password. This workflow requires Genesis Notify to be configured with a working email gateway. When a user requests a reset, an email is sent to their configured 
 email address, with a link to a password reset page. This link is valid for a preconfigured timeout.
 
 :::note
@@ -136,9 +142,9 @@ You can set `acceptClientUrl` to `true` in a development environment. For securi
 
 :::
 
-### resetMessage
+##### resetMessage
 
-The `resetMessage` function enables users to configure the email sent when a reset is requested. It has the following options: 
+The `resetMessage` function allows users to configure the email sent when a reset is requested. It has the following options: 
 
 * `subject` the subject line of the email
 * `body` the body of the email
@@ -150,8 +156,8 @@ Both the subject and the body support templating. Values surrounded by double cu
 * `USER` the user record, properties on this record should be access using lowerCamelCase, e.g. `{{ USER.firstName }}`
 * any system definition or environment variable available
 
-## mfa
-The `mfa` function enables you to configure Multi-factor Authentication (MFA). There is more information on MFA on [Wikipedia](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function, you can set the following variables:
+### mfa
+The `mfa` function allows you to configure Multi-factor Authentication (MFA). There is more information on MFA on [Wikipedia](https://en.wikipedia.org/wiki/Multi-factor_authentication). From within the `mfa` function, you can set the following variables:
 
 * `codePeriodSeconds` specifies how many seconds a Time-based One-time Password (TOTP) remains valid. Default: 30 seconds.
 * `codePeriodDiscrepancy` specifies the allowed discrepancy to the TOTP. 1 would mean a single block of each `codePeriodSeconds` either side of the time window. Default: 1.
@@ -299,24 +305,27 @@ All requests below are capable of returning an error with a code of INTERNAL_ERR
 
 ## Pre-authentication
 Pre-authentication messages can be sent by a client without the user being logged in.
+
 ### Login preferences
-You need make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knows this before any user logs in.
+You must make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knows this before any user logs in.
 Currently, this is the only preference published.
-#### Request
+
+### Request
     MESSAGE_TYPE = EVENT_LOGIN_PREFS
-#### Response
+### Response
     MESSAGE_TYPE = EVENT_LOGIN_PREFS_ACK
         DETAILS.PASSWORD_RESET_TYPE = ADMIN/EMAIL
 
 ---
 
 ## Authentication
-Once you have a list of preferences, you can show the correct login dialog and let the user make a login attempt.  The password is provided in plain text, as it is expected that you will secure the connection using TLS.
+Once you have a list of preferences, you can show the correct login dialog and let the user make a login attempt.  The password is provided in plain text, as it is expected you will secure the connection using TLS.
+
 ### Login request
 
     MESSAGE_TYPE = EVENT_LOGIN_AUTH
-    DETAILS.USER_NAME = JohnWolf
-    DETAILS.PASSWORD = FullMoon1
+    DETAILS.USER_NAME = JohnDoe
+    DETAILS.PASSWORD = Password123
 
 ### Login response
 If successful:
@@ -340,19 +349,19 @@ If there is a problem the server will return the standard error set with CODE/TE
 ### Password change
 If the response is `PASSWORD_EXPIRED`, then the GUI can allow the user to change the password, provided they know their existing password.
 
-#### Change request
+### Change request
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD
-    DETAILS.USER_NAME = JohnWolf
-    DETAILS.OLD_PASSWORD = HalfMoon1
-    DETAILS.NEW_PASSWORD = FullMoon1
+    DETAILS.USER_NAME = JohnDoe
+    DETAILS.OLD_PASSWORD = Password123
+    DETAILS.NEW_PASSWORD = Password456
 
-#### Change response
+### Change response
 If successful:
 
     MESSAGE_TYPE = EVENT_CHANGE_USER_PASSWORD_ACK
 
-If there's a problem, you will receive a standard error set with type `CHANGE_USER_PASSWORD_NACK`.  The error codes that can be returned are currently:
-
+If there's a problem, you will receive a standard error set with type
+- `CHANGE_USER_PASSWORD_NACK`.  The error codes that can be returned are currently:
 - `TOO_SHORT` - Password length too short.
 - `TOO_LONG` - Password length too long.
 - `INSUFFICIENT_CHARACTERS` - Covers a few cases so text field may be required, used for things like no digits provided when 1 digit is required.
@@ -364,9 +373,9 @@ If there's a problem, you will receive a standard error set with type `CHANGE_US
 ### Reset password
 This can only be called by an administrator; it simply specifies a user name and sets the password to blank.
 
-#### Reset request
+### Reset request
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD
-    DETAILS.USER_NAME = JohnWolf
+    DETAILS.USER_NAME = JohnDoe
 
 #### Reset response
     MESSAGE_TYPE = EVENT_RESET_USER_PASSWORD_ACK
@@ -374,14 +383,14 @@ This can only be called by an administrator; it simply specifies a user name and
 ## Post-authentication
 Once the user has been authenticated, the server expects heartbeat messages, as defined in the interval setting on the ACK message.  If the GUI misses a configurable number of heartbeats, the session will automatically expire. In response to a heartbeat, the GUI will receive a list of available services and their details.
 
-These services should be contacted on the hosts in the order they are defined in the list. The ordering may change if the server implements a load-balancing strategy. Existing connections can simply ignore the ordering changes, but in the event of failover or reconnection, the ordering should be adhered to.
+These services should be contacted on the hosts in the order they are defined in the list. The ordering may change if the server implements a load-balancing strategy. Existing connections can simply ignore the ordering changes, but in a failover or reconnection scenario, the ordering should be adhered to.
 
-#### Heartbeat request
+### Heartbeat request
 
     MESSAGE_TYPE = EVENT_HEARTBEAT
-    USER_NAME = JohnWolf
+    USER_NAME = JohnDoe
 
-#### Heartbeat response
+### Heartbeat response
     MESSAGE_TYPE = EVENT_HEARTBEAT_ACK
     DETAILS.SERVICE[0].NAME = SBL_EVENT_HANDLER
     DETAILS.SERVICE[0].ENCRYPTED = false
@@ -411,12 +420,12 @@ Note the following:
   `PASSWORD_EXPIRED` should prompt the user to enter a new password.
   `PASSWORD_RESET` should do the same but the server expects a blank "current password" field.
 
-### Inserting a profile
+### Insert profile
 
-#### Insert request
+### Insert request
 
     MESSAGE_TYPE = EVENT_INSERT_PROFILE
-    USER_NAME = JohnWolf
+    USER_NAME = JohnDoe
     DETAILS.NAME = SALES_TRADERS
     DETAILS.DESCRIPTION = Sales Traders
     DETAILS.STATUS = ENABLED
@@ -425,22 +434,22 @@ Note the following:
     DETAILS.RIGHT[1].ID = 00000000000002RISP0
     DETAILS.RIGHT[1].CODE = ORDAM
     DETAILS.USER[0].ID = 00000000000001USSP0
-    DETAILS.USER[0].USER_NAME = JohnWolf
+    DETAILS.USER[0].USER_NAME = JohnDoe
     DETAILS.USER[1].ID = 00000000000002USSP0
     DETAILS.USER[1].USER_NAME = james
 
-#### Insert response
+### Insert response
     MESSAGE_TYPE = EVENT_INSERT_PROFILE_ACK
 
-### Amending a profile
+### Amend profile
 
-#### Amend request
-  In the example below, the logged-in user (in the second line) is JohnWolf, who is modifying the profile of JaneDoe to give her the profile name JANE SMITH. 
+### Amend request
+  In the example below, the logged-in user (in the second line) is JohnDoe, who is modifying the profile of JaneDoe to give her the profile name JANE SMITH. 
 
 ```
     {
   "SOURCE_REF": "1786d2ca-23fd-40c8-a52b-fe002a0fa1f6",
-  "USER_NAME": "JohnWolf",
+  "USER_NAME": "JohnDoe",
   "SESSION_AUTH_TOKEN": "sIsXX3IBqyIESUD38AgA71ycR8W7KVzg",
   "MESSAGE_TYPE": "EVENT_AMEND_USER",
   "DETAILS": {
@@ -481,7 +490,7 @@ Note the following:
 }
 ```
 
-#### Amend response
+### Amend response
 
 ```
 {
@@ -491,59 +500,59 @@ Note the following:
 }
 ```
 
-### Deleting a profile
+### Delete profile
 
-#### Delete request
+### Delete request
     MESSAGE_TYPE = EVENT_DELETE_PROFILE
-    USER_NAME = JohnWolf
+    USER_NAME = JohnDoe
     DETAILS.NAME = SALES_TRADERS
 
 ### Delete response
     MESSAGE_TYPE = EVENT_DELETE_PROFILE_ACK
 
-### Inserting a User
+### Insert User
 
-#### Insert request
+### Insert request
     MESSAGE_TYPE = EVENT_INSERT_USER
     USER_NAME = mthompson
-    DETAILS.USER_NAME = JohnWolf
+    DETAILS.USER_NAME = JohnDoe
     DETAILS.FIRST_NAME = John
-    DETAILS.LAST_NAME = Wolf
-    DETAILS.EMAIL_ADDRESS = john.wolf@genesis.global
+    DETAILS.LAST_NAME = Doe
+    DETAILS.EMAIL_ADDRESS = john.doe@genesis.global
     DETAILS.STATUS = ENABLED
     DETAILS.RIGHT[0].ID = 00000000000001RISP0
     DETAILS.RIGHT[0].CODE = ORDEN
     DETAILS.RIGHT[1].ID = 00000000000002RISP0
     DETAILS.RIGHT[1].CODE = ORDAM
 
-#### Insert response
+### Insert response
     MESSAGE_TYPE = EVENT_INSERT_USER_ACK
 
-### Amending a user
+### Amend user
 
-#### Amend request
+### Amend request
     MESSAGE_TYPE = EVENT_AMEND_USER
     USER_NAME = mthompson
     DETAILS.ID = 00000000000001USSP0
-    DETAILS.USER_NAME = JohnWolf
+    DETAILS.USER_NAME = JohnDoe
     DETAILS.FIRST_NAME = John
-    DETAILS.LAST_NAME = Wolf
-    DETAILS.EMAIL_ADDRESS = john.Wolf@genesis.global
+    DETAILS.LAST_NAME = Doe
+    DETAILS.EMAIL_ADDRESS = john.doe@genesis.global
     DETAILS.STATUS = ENABLED
     DETAILS.RIGHT[0].ID = 00000000000001RISP0
     DETAILS.RIGHT[0].CODE = ORDEN
     DETAILS.RIGHT[1].ID = 00000000000002RISP0
     DETAILS.RIGHT[1].CODE = ORDAM
 
-#### Amend response
+### Amend response
     MESSAGE_TYPE = EVENT_AMEND_USER_ACK
 
-### Deleting a user
+### Delete user
 
-#### Delete request
+### Delete request
     MESSAGE_TYPE = EVENT_DELETE_USER
-    USER_NAME = JohnWolf
+    USER_NAME = JohnDoe
     DETAILS.USER_NAME = james
 
-#### Delete response
+### Delete response
     MESSAGE_TYPE = EVENT_DELETE_USER_ACK

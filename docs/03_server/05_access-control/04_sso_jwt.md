@@ -88,18 +88,31 @@ The `sso` function enables you to configure and enable SSO options. You can set 
   * how a `User` and its `UserAttributes` will be created from the token after the user has been authenticated using the `createUser` function
   * which user permissions are allocated using `createUserPermissions`
 * `onLoginSuccess` is a function that is called each time the user is authenticated. Inside the function, you have access to the actual token that was used for authentication and database access.
-* `newUserMode` **is now deprecated** in favour of `onFirstLogin` and `onLoginSuccess`. This property defines behaviour for processing users the first time they log in with SSO. This can take the values of `NewUserMode.REJECT`, `NewUserMode.CREATE_ENABLED`, `NewUserMode.CREATE_DISABLED`. Default `NewUserMode.REJECT`.
-  * In the case of `NewUserMode.REJECT`, when a user logs in for the first time with SSO, if they do not already have a user account, they are rejected.
-  * In the case of `NewUserMode.CREATE_ENABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, an active account is created for them.
-  * In the case of `NewUserMode.CREATE_DISABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, a disabled account is created for them. This will need to be activated before it can be used.
+* `newUserMode` **is now deprecated** in favour of `onFirstLogin` and `onLoginSuccess`.
 
-### passwordRetry
-The `passwordRetry` function enables you to configure settings for limiting the rate at which a user can retry passwords and SSO tokens. It allows the following variables to be set:
-
-* `maxAttempts` defines the maximum number of attempts allowed if a user enters an incorrect SSO token. Default: 3
-* `waitTimeMins` specifies the time to wait when the maximum number of incorrect attempts is reached. Default: 5.
-
-
+### SSO Example
+```kotlin
+// applicationName-auth-preferences.kts:
+sso {
+    enabled = true
+    onFirstLogin {
+        createUser { jwtSuccessOutcome ->
+            val userName = jwtSuccessOutcome.id
+            User(userName, domain = jwtSuccessOutcome.domain) to UserAttributes(userName)
+        }
+        createUserPermissions {
+            userProfiles("default")
+        }
+    }
+    onLoginSuccess { entityDb, jwtLoginRequestToken ->
+        // Valid token received from SSO provider
+    }
+}
+```
+:::note
+When using a JWT, the `maxAttempts` property in the [password retry config](../../../server/access-control/password-authentication#passwordretry) 
+refers to the maximum number of attempts allowed if a user enters an incorrect SSO token.
+:::
 
 ## Revalidating the token
 

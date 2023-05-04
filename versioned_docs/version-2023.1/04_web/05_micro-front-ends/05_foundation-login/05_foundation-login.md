@@ -20,16 +20,19 @@ Our [API](./docs/api) documentation is separate. Click on the link if you want t
 
 This micro front-end includes a set of identity management functions: authentication (including via SSO) and password reset, for example. Many of the features can be turned on and off as desired, and parts of the login screen (such as the logo) can be customised.
 
-An example of the main login screen: <br/>
+Here is an example of the main login screen: <br/>
+
 ![Main login screen example](./docs/img/foundation-login_login-standard.png)
 
-An example of authentication via SSO: <br/>
+Here is an example of authentication via SSO: <br/>
+
 ![Main login screen example](./docs/img/foundation-login_login-sso.png)
 
 <!-- An example of the forgotten password screen: <br/>
 ![Main login screen example](./docs/img/foundation-login_forgotten-password.png) -->
 
-An example of the change password screen: <br/>
+Here is an example of the change password screen: <br/>
+
 ![Main login screen example](./docs/img/foundation-login_change-password.png)
 
 <!-- An example of the request account screen: <br/>
@@ -43,7 +46,7 @@ If you build a project upon one of the Genesis seed apps, then the `Login` micro
 
 To enable this micro front-end in your application, follow the steps below.
 
-- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always you run the `$ npm run bootstrap` command again. You can see more information on the [package.json basics](../../../web/micro-front-ends/foundation-login/) page.
+- Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. Whenever you change the dependencies of your project, always you run the `$ npm run bootstrap` command again. You can see more information on the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -59,7 +62,7 @@ To enable this micro front-end in your application, follow the steps below.
 This page assumes you're using the Routing systems that are part of `foundation-ui`, and will cover set-up as part of that routing system.
 :::
 
-- In the router configuration for your application, import the `Login` class and the `Settings` type. As shown in this example, you might want to import `Settings` with an alias to avoid name clashes.
+- In the Router configuration for your application, import the `Login` class and the `Settings` type. As shown in this example, you might want to import `Settings` with an alias to avoid name clashes.
 
 ```javascript
 import { Login, Settings as LoginSettings } from '@genesislcap/foundation-login';
@@ -72,7 +75,7 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 }
 ```
 
-- Then add the required config to the router config that you use. For example, you'll want to set up the `Login` class to be used on the `/login` route, and pass in its required settings. See [customising login](#customising-login).
+- Then add the required config to the Router config that you use. For example, you'll want to set up the `Login` class to be used on the `/login` route, and pass in its required settings. See [customising login](#customising-login).
 ```javascript
 { path: '', redirect: 'login' },
 {
@@ -93,10 +96,10 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 },
 ```
 
-- You'll also want to set up things like the `NavigationContributor` in this class.
+- You also need to set up things like the `NavigationContributor` in this class.
 
 :::noteExample
-An example of this and other required settings for the router configuration with regard to the login system can be found in the [example in the API reference](./docs/api/foundation-login.login/#example).
+An example of this and other required settings for the Router configuration with regard to the login system can be found in the [example in the API reference](./docs/api/foundation-login.login/#example).
 :::
 
 - The functionality of the Login class is configured via the settings block on its route, but the other routes will also have customisation on them too. The main options to set here are:
@@ -122,7 +125,7 @@ An example of this and other required settings for the router configuration with
 ```
 
 :::warningWarning
-By default, a route that isn't marked public is not. However, a non-public route isn't going to block non-authenticated users automatically from viewing them. This must be impelmented in the `NavigationContributor`, as shown in the [previously mentioned example](./docs/api/foundation-login.login/#example).
+By default, a route that isn't marked public is not. However, a non-public route isn't going to block non-authenticated users automatically from viewing them. This must be implemented in the `NavigationContributor`, as shown in the [previously mentioned example](./docs/api/foundation-login.login/#example).
 :::
 
 ## Authentication

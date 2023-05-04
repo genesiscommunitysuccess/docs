@@ -78,9 +78,11 @@ The following variables are used to configure an LDAP connection; these are only
 
 For more information about the various authentication types, please see the [Authentication overview](../../../server/access-control/authentication-overview/).
 
-## genesisPassword
+### genesisPassword
+The `genesisPassword` groups all configuration options when you are using `type = AuthType.INTERNAL`. 
 
-The `genesisPassword` groups all configuration options when using `type = AuthType.INTERNAL`. 
+### passwordRetry
+The `passwordRetry` function has been deprecated in favour of the `retry` function within the `genesisPassword` configuration.
 
 ### validation
 The `validation` function enables password validation, and is used to set the variables relating to this validation. 
@@ -134,7 +136,7 @@ The `selfServiceReset` function  has the following options:
 * `coolDownInMinutes` - the time in minutes between before the next password reset can be made. 
 * `notifyTopic` - the email topic in Genesis Notify to be used. 
 * `redirectUrl` - the url to use for the redirect.
-* `acceptClientUrl` - boolean flag; if true, it will use the client provided reset url
+* `acceptClientUrl` - boolean flag; if true, the reset will use the client provided reset url
 
 :::warning
 
@@ -256,7 +258,6 @@ security {
 
     sso {
         enabled = false
-        newUserMode = NewUserMode.REJECT
     }
 
     mfa {
@@ -305,8 +306,9 @@ All requests below are capable of returning an error with a code of INTERNAL_ERR
 
 ## Pre-authentication
 Pre-authentication messages can be sent by a client without the user being logged in.
+
 ### Login preferences
-You need make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knows this before any user logs in.
+You must make sure that any connecting client knows the types of functionality that you have configured on the security module. For example, you could offer the client two ways of resetting user passwords: either via an administrator or by sending an email.  This choice can affect how the login dialog is displayed, so it is vital that the connecting client knows this before any user logs in.
 Currently, this is the only preference published.
 #### Request
     MESSAGE_TYPE = EVENT_LOGIN_PREFS

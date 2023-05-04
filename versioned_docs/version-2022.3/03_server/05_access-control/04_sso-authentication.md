@@ -15,16 +15,16 @@ import CodeBlock from '@theme/CodeBlock';
 
 Single sign-on (SSO) authentication uses the underlying SSO technology. SSO is a mechanism that allows a user to be authenticated against a single system, and use that authenticated id across multiple applications - including those built on the Genesis low-code platform. This has the advantage that a user is required to log in only once, rather than once per system.
 
-There are two different types of SSO authentication presently supported by the Genesis low-code platform. These are as follows:
+There are two different types of SSO authentication presently supported by the Genesis low-code platform. These are:
 
 * [JWT (JSON Web Token)](https://jwt.io/introduction) SSO
-* [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language).
+* [SAML](https://en.wikipedia.org/wiki/Security_Assertion_Markup_Language)
 
 ## Configuring SSO
 
 To enable SSO, you will need to configure it in your _application-name_**-auth-preferences.kts** file.
 
-These following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Password Authentication section](../../../server/access-control/password-authentication/).
+The following options are available from within the `security` function. For a more detailed look at the **auth-preferences.kts** file, visit the [Password Authentication section](../../../server/access-control/password-authentication/).
 
 ### sso
 The `sso` function allows you to configure and enable SSO options. It has the following variables to set:
@@ -35,12 +35,10 @@ The `sso` function allows you to configure and enable SSO options. It has the fo
   * In the case of `NewUserMode.CREATE_ENABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, an active account is created for them.
   * In the case of `NewUserMode.CREATE_DISABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, a disabled account is created for them. This will be need to be activated before it can be used.
 
-### passwordRetry
-The `passwordRetry` function allows you to configure settings for limiting the rate at which a user can retry passwords and SSO tokens. It allows the following variables to be set:
-
-* `maxAttempts` defines the maximum number of attempts allowed if a user enters an incorrect SSO token. Default: 3
-* `waitTimeMins` specifies the time to wait when the maximum number of incorrect attempts is reached. Default: 5.
-
+:::note
+When using a JWT, the `maxAttempts` property in the [password retry config](../../../server/access-control/password-authentication#passwordretry) 
+refers to the maximum number of attempts allowed if a user enters an incorrect SSO token.
+:::
 
 ## JWT SSO
 

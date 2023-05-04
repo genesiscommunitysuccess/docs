@@ -93,13 +93,11 @@ The `sso` function enables you to configure and enable SSO options. You can set 
   * In the case of `NewUserMode.CREATE_ENABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, an active account is created for them.
   * In the case of `NewUserMode.CREATE_DISABLED`, when a user logs in for the first time with SSO, if they do not already have a user account, a disabled account is created for them. This will need to be activated before it can be used.
 
-### passwordRetry
-The `passwordRetry` function enables you to configure settings for limiting the rate at which a user can retry passwords and SSO tokens. It allows the following variables to be set:
 
-* `maxAttempts` defines the maximum number of attempts allowed if a user enters an incorrect SSO token. Default: 3
-* `waitTimeMins` specifies the time to wait when the maximum number of incorrect attempts is reached. Default: 5.
-
-
+:::note
+When using a JWT, the `maxAttempts` property in the [password retry config](../../../server/access-control/password-authentication/#passwordretry) 
+refers to the maximum number of attempts allowed if a user enters an incorrect SSO token.
+:::
 
 ## Revalidating the token
 

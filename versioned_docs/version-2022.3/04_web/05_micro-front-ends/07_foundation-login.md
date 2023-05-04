@@ -22,7 +22,7 @@ Our API reference is in a separate area; it [can be found here.](../foundation-l
 
 This micro front-end includes a set of identity management functions: authentication (including via SSO) and password reset, for example. Many of the features can be turned on and off as desired, and parts of the login screen (such as the logo) can be customised.
 
-Here is an example of the main login screen: <br/>
+Here is a example of the main login screen: <br/>
 
 ![Main login screen example](/img/foundation-login_login-standard.png)
 
@@ -51,7 +51,7 @@ To enable this micro front-end in your application, follow the steps below.
 - Add `@genesislcap/foundation-login` as a dependency in your **package.json** file. 
 - Whenever you change the dependencies of your project, always run the `$ npm run bootstrap` command again. 
 
-You can see more information on the [package.json basics](https://docs.genesis.global/secure/web/micro-front-ends/foundation-login/) page.
+You can see more information on the [package.json basics](../../../web/basics/package-json-basics/) page.
 
 ```javascript
 {
@@ -169,7 +169,7 @@ You will probably want to use your company's logo instead of the Genesis logo. A
 
 ### Enable SSO
 
-As mentioned in the [authentication](#sso) section, SSO must be configured on the server, but some front-end configuration is required too.
+As mentioned in the [authentication](../../../web/micro-front-ends/foundation-login/#authentication) section, SSO must be configured on the server, but some front-end configuration is required too.
 
 - Setting `ssoToggle` is required to enable the SSO authentication as an option for the user; the user can then enable that flow with a checkbox that controls `ssoEnable`.
 - Enabling `ssoEnable` at the route-level sets the SSO flow to be the default.
