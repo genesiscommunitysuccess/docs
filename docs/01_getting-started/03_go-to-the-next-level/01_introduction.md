@@ -14,7 +14,7 @@ Now that you have completed the [Quick Start](../../../getting-started/quick-sta
 
 Before you get going, you will need a [full developer set-up](/getting-started/prerequisites/introduction/) for this exercise. Make sure you check the requirements and set up what is necessary.
 
-For this application, you will need the [genesis plugin](../../server/tooling/intellij-plugin/). Plase make sure you have it installed.
+For this application, you will need the [genesis plugin](../../../server/tooling/intellij-plugin/). Plase make sure you have it installed.
 
 ## What you will build
 

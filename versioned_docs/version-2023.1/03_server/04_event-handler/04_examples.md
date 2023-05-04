@@ -13,7 +13,7 @@ tags:
 
 On this page, you can find useful examples of code for an Event Handler. We start with a very basic example, and then we provide further examples to cover key functions, such as exception handling and permissioning.
 
-Also, there is a nice simple example of an `eventHandler` codeblock in our [tutorial](../../../getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#create-the-eventhandler). 
+Also, there is a nice simple example of an `eventHandler` codeblock in our [tutorial](../../../getting-started/developer-training/training-content-day1/#event-handler). 
 
 
 ## Basic

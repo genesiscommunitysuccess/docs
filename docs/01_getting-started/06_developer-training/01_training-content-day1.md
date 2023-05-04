@@ -278,7 +278,7 @@ In the Gradle menu on the right of IntelliJ, select:
 
 #### .genesis-home folder
 
-After the Gradle task, when first using the plugin with a project, you must configure it to be able to access your DB. For this tutorial, we are going to use POSTGRESQL. Make sure you have configured it properly following the installation guide of the [genesis plugin](../../server/tooling/intellij-plugin/). 
+After the Gradle task, when first using the plugin with a project, you must configure it to be able to access your DB. For this tutorial, we are going to use POSTGRESQL. Make sure you have configured it properly following the installation guide of the [genesis plugin](../../../server/tooling/intellij-plugin/). 
 
 After that, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
 

@@ -87,7 +87,7 @@ eventHandler<PositionCancel> {
 
 ```
 For the example above to work, you need to set up a [Notify](../../../server/integration/notify/configuring/) process together with inserting a GATEWAY and a NOTIFY_ROUTE in the database and add the details of the connection for the SMTP server to the **genesis-system-definition.kts** file.
-You can see an example of a dynamic rule using [Notify](../../../server/integration/notify/configuring/) email messages being configured in our [tutorial](../../../getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#dynamic-rules-conditional-rules).
+You can see an example of a dynamic rule using [Notify](../../../server/integration/notify/configuring/) email messages being configured in our [tutorial](../../../getting-started/developer-training/training-content-day5/#cron-rules-static-events).
 ## Static rules
 Static rules are used to create scheduled activities. For instance to schedule the production of EOD reports, or to run a batch report on the hour.
 
@@ -97,7 +97,7 @@ To define a scheduled event, you need to insert a row into the `CRON_RULE` table
 | Field Name | Usage |
 | --- | --- |
 | NAME | Name of the rule |
-| CRON_EXPRESSION | [Quartz Cron Expression](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html) |
+| CRON_EXPRESSION | [Quartz Cron Expressions](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html).|
 | DESCRIPTION | Simple description of the function of the rule |
 | TIME_ZONE | eg Europe/London |
 | RULE_STATUS | This is either "ENABLED" or "DISABLED", respectively enables or disables the rule  |
@@ -119,4 +119,4 @@ Load the cron rule **CRON_RULE.csv** file into the `CRON_RULE`  [table](../../..
 
 Run `SendIt`
 
-You can see an example of a static rule being configured in our [tutorial](../../../getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#static-rules-cron-rules).
+You can see an example of a static rule being configured in our [tutorial](../../../getting-started/developer-training/training-content-day5/#cron-rules-static-events).
