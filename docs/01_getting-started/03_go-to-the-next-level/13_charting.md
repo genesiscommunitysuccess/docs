@@ -11,13 +11,13 @@ tags:
 ---
 
 ## Section objectives
-Now we will be focusing on the UI elements. The goal of this section is to add a data chart to the UI.
+Here we shall focus on the UI elements of the application. The goal of this section is to add a data chart to the UI.
 
 ## Adding a new chart
 
-`g2plot-chart` component is a wrapper for `@antv/g2plot`, that allows you the following types: Line, Area, Bar, Bubble, Column, Pie, Dual Axes, Rose, Scatter.
+The `g2plot-chart` component is a wrapper for `@antv/g2plot`, which allows the following types: Line, Area, Bar, Bubble, Column, Pie, Dual Axes, Rose, Scatter.
 
-You can quickly add charts to your application, go to the **home.template.ts** and add the following chart:
+You can quickly add charts to your application; go to the **home.template.ts** file and add the following chart:
 
 ```typescript title='home.template.ts'
 <zero-g2plot-chart type="pie" :config=${(x) => x.chartConfiguration}>
@@ -49,7 +49,7 @@ Now you need to define **chartConfigration** in the class `home` in **home.ts**.
   };
 ```
 
-For further configuration examples please see: [here](https://g2plot.antv.antgroup.com/en/examples).
+For further configuration examples, see: [here](https://g2plot.antv.antgroup.com/en/examples).
 
 Your **home.template.ts** should be like this:
 
@@ -111,12 +111,12 @@ Your **home.template.ts** should be like this:
 ```
 
 ## Conclusion
-You should have a data chart that resembles something like this:
+You should have a data chart that looks something like this:
 
 ![](/img/charts.png)
 
-If you have been following along the entire tutorial your page should look something like the following:
+If you have been following the entire tutorial, your page should look similar to this:
 
 ![](/img/charts-whole-page.png)
 
-You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for this chapter. Note that this repo is a complete application and may not reflect the changes made in this page.
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for this chapter. Note that this repo is a complete application and might not reflect the changes made in this page.
