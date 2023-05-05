@@ -41,9 +41,9 @@ table (name = "TRADE", id = 11000, audit = details(id = 11002, sequence = "TR"))
 }
 ```
 
-The `id` parameter inside the details function indicates the `id` of the newly created audit table, and will need to be different from any other table id.
+The `id` parameter inside the details function indicates the `id` of the newly created audit table, and it must be different from any other table id.
 
-As we are using the GPAL Event Handlers, this is sufficient to enable auditing on this table. A new table is created with the name of the original table, plus the **_AUDIT** suffix. In this instance, that would be the **TRADE_AUDIT** table.
+As we are using the GPAL Event Handlers, this is sufficient to enable auditing on this table. A new table is created with the name of the original table, plus the **_AUDIT** suffix. In this instance, that is the **TRADE_AUDIT** table.
 
 ### Updating the state machine to use auditing
 
@@ -81,7 +81,7 @@ import global.genesis.db.rx.entity.multi.AsyncMultiEntityReadWriteGenericSupport
 
 ### Update the Event Handlers to use auditing
 
-Now we must update our `Trade` Event Handlers inside the **alpha-eventhandler.kts** file and pass in our `transaction` object as a parameter, in this case it's our `entityDb` object. It should resemble the example below:
+Now we must update our `Trade` Event Handlers inside the **alpha-eventhandler.kts** file and pass in our `transaction` object as a parameter; in this case it's our `entityDb` object. It should resemble the example below:
 
 ```kotlin {4,11,18,27}
     eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -119,12 +119,12 @@ Now we must update our `Trade` Event Handlers inside the **alpha-eventhandler.kt
     }
 ```
 
-import BuildAndDeploy from '/snippet/_build_and_deploy.md'
+Import BuildAndDeploy from '/snippet/_build_and_deploy.md'
 
 <BuildAndDeploy />
 
 :::note
-Do not forget to run remap again, because we need to create the `_AUDIT` tables in our database
+Do not forget to run remap again, because we need to create the `_AUDIT` tables in our database.
 :::
 
 ### Conclusion
