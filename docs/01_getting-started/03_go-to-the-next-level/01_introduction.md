@@ -45,11 +45,11 @@ genx
 ```
 
 :::tip
-Make sure you run the `install` command, so you can update your GenX CLI tool
+Make sure you run the `install` command, so you can update your GenX CLI tool.
 ::: 
 
 ### Gradle.properties
-Before you finish the creation of your new project, make sure your **gradle.properties** file in **server/jvm** has the  following highlighted properties:
+Before you finish creating your new project, make sure your **gradle.properties** file in **server/jvm** has the  following highlighted properties:
 
 ```kotlin {2,3} title="server/jvm/gradle.properties"
                 ...
