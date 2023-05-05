@@ -1,6 +1,6 @@
 ---
 title: 'Go to the next level - track the data changes using auditable tables'
-sidebar_label: 'Using Auditable Tables'
+sidebar_label: 'Using auditable tables'
 id: audit
 keywords: [getting started, quick start, next level, audit]
 tags:
@@ -41,9 +41,9 @@ table (name = "TRADE", id = 11000, audit = details(id = 11002, sequence = "TR"))
 }
 ```
 
-The `id` parameter inside the details function indicates the `id` of the newly created audit table, and will need to be different from any other table id.
+The `id` parameter inside the details function indicates the `id` of the newly created audit table, and must be different from any other table id.
 
-As we are using the GPAL Event Handlers, this is sufficient to enable auditing on this table. A new table is created with the name of the original table, plus the **_AUDIT** suffix. In this instance, that would be the **TRADE_AUDIT** table.
+As we are using the GPAL Event Handlers, this is sufficient to enable auditing on this table. A new table is created with the name of the original table, plus the **_AUDIT** suffix. In this instance, that is the **TRADE_AUDIT** table.
 
 ### Updating the state machine to use auditing
 
@@ -81,7 +81,7 @@ import global.genesis.db.rx.entity.multi.AsyncMultiEntityReadWriteGenericSupport
 
 ### Update the Event Handlers to use auditing
 
-Now we must update our `Trade` Event Handlers inside the **alpha-eventhandler.kts** file and pass in our `transaction` object as a parameter, in this case it's our `entityDb` object. It should resemble the example below:
+Now we must update our `Trade` Event Handlers inside the **alpha-eventhandler.kts** file and pass in our `transaction` object as a parameter; in this case, it's our `entityDb` object. It should resemble the example below:
 
 ```kotlin {4,11,18,27}
     eventHandler<Trade>(name = "TRADE_INSERT") {
@@ -128,6 +128,6 @@ Do not forget to run remap again, because we need to create the `_AUDIT` tables 
 :::
 
 ### Conclusion
-With this, any changes made to `TRADE` are tracked to `TRADE_AUDIT`. To try it out, insert a new `TRADE` and see what's stored in the `TRADE_AUDIT` table via `DbMon`. Go to your terminal and run `DbMon`, `table TRADE_AUDIT` and `search 1`. For more information on testing, go to [Endpoints](../../../server/integration/rest-endpoints/introduction/).
+With this, any changes made to `TRADE` are tracked to `TRADE_AUDIT`. To try this out, insert a new `TRADE` and see what's stored in the `TRADE_AUDIT` table via `DbMon`. Go to your terminal and run `DbMon`, `table TRADE_AUDIT` and `search 1`. For more information on testing, go to [Endpoints](../../../server/integration/rest-endpoints/introduction/).
 
-You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm) as a reference point for this chapter. Note that this repo is a complete application and may not reflect the changes made in this page.
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm) as a reference point for this chapter. Note that this repo is a complete application and might not reflect the changes made in this page.
