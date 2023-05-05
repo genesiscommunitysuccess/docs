@@ -45,7 +45,7 @@ Since you have already defined a query `ALL_POSITION`, you don't need to worry a
 
 So, let's create a **alpha-consolidator.kts** file inside **alpha-script-config/src/main/resources/scripts**. This is where you define the consolidator logic.
 
-The Consolidator is going to increase or decrease the quantity for `POSITION` records, based on the `TRADE` table updates. It also needs to calculate the new notional.
+The Consolidator is going to increase or decrease the quantity for the `POSITION` records, based on the `TRADE` table updates. It also needs to calculate the new notional.
 
 ```kotlin title="alpha-consolidator.kts"
 import global.genesis.gen.config.tables.POSITION
@@ -112,7 +112,8 @@ consolidators {
 ```
 
 :::tip
-If you don't have intellisense when editing the consolidator file check the contents of **alpha-script-config/build.gradle.kts**. Under **dependencies** it should contain `api("global.genesis:genesis-pal-consolidator")`. If that entry is not present add it to the list of dependencies. Once done the file should look like:
+If you don't have intellisense when editing the consolidator file, check the contents of **alpha-script-config/build.gradle.kts**. Under **dependencies** it should contain `api("global.genesis:genesis-pal-consolidator")`. If that entry is not present, add it to the list of dependencies. Once you have done that, the file should look like:
+
 ```kotlin
 dependencies {
     ...
@@ -132,7 +133,7 @@ Now that the Consolidator logic is in place we need to update the system files.
 
 ### Update the processes.xml file
 
-As the Consolidator runs on its own process, we need to add a new entry to **alpha-processes.xml** with the Consolidator process definition.
+As the Consolidator runs on its own process, we need to add a new entry to **alpha-processes.xml** in order to define the Consolidator.
 
 ```xml title="alpha-processes.xml"
 <process name="ALPHA_CONSOLIDATOR">
@@ -149,7 +150,7 @@ As the Consolidator runs on its own process, we need to add a new entry to **alp
 ```
 ### Update the service-definitions.xml file
 
-This file lists all the active services for the Positions application. You can see entries have been added automatically when the Data Server and Event Handler were generated.
+Now we shall look at the **alpha-service-definitions.xml** file. This lists all the active services for our application. You can see entries have already been added automatically when the Data Server and Event Handler were generated.
 
 Add a new entry to **alpha-service-definitions.xml** with the Consolidator details. Remember the port numbers should be free and, ideally, sequential.
 
@@ -158,17 +159,17 @@ Add a new entry to **alpha-service-definitions.xml** with the Consolidator detai
 ```
 ### Build and Deploy
 
-import BuildAndDeploy from "/snippet/_build_and_deploy.md"
+Import BuildAndDeploy from "/snippet/_build_and_deploy.md"
 
 <BuildAndDeploy />
 
 ---
 
-When you reload the page, and submit new trade, you shall the the ALL_POSITIONS grid changes.
+When you reload the page and submit a new trade, you can see that the the ALL_POSITIONS grid changes.
 
 ![](/img/next-level-consolidator.png)
 
 ## Conclusion
 This shows a quick example of a Consolidator. If you want to see it in action, go to [endpoints](../../../server/integration/rest-endpoints/introduction/) for information on testing the back end.
 
-You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm) as a reference point for the consolidators. Note that this repo is a complete application and may not reflect the changes made in this page.
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm) as a reference point for the consolidators. Note that this repo is a complete application and might not reflect the changes made in this page.
