@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.ref }}
 
     - name: set branchname env
       id: setenvname
@@ -16,10 +18,9 @@ jobs:
         echo "##[set-output name=setbranchname;]$(echo ${GITHUB_HEAD_REF})"
 
     - name: deploy PR preview
-      uses: genesiscommunitysuccess/docs@master
-      with:
-        branch_name: ${{ steps.setenvname.outputs.setbranchname }}
-        amplify_command: deploy
+      run: |
+        git checkout ${{ steps.setenvname.outputs.setbranchname }}
+        amplify deploy
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
