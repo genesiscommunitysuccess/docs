@@ -52,7 +52,7 @@ views {
 ```
 ### Build and deploy
 
-You will need to Build and deploy again, once we re changing a view.
+Because we have changed a view, you will need to build and deploy again.
 
 import BuildAndDeploy from "/snippet/_build_and_deploy.md"
 
@@ -60,7 +60,7 @@ import BuildAndDeploy from "/snippet/_build_and_deploy.md"
 
 
 ## Conclusion
-We just added a derived field. To see it in action, follow the steps on the next page that will show you how to glue the consolidator and view together.
+We just added a derived field. To see it in action, follow the steps on the next page, which will show you how to glue the Consolidator and view together.
 
-You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-config/src/main/resources/cfg) as a reference point for the view. Note that this repo is a complete application and may not reflect the changes made in this page.
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/server/jvm/positions-app-tutorial-config/src/main/resources/cfg) as a reference point for the view. Note that this repo is a complete application and might not reflect the changes made in this page.
 
