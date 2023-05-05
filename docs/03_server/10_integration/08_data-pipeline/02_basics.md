@@ -16,6 +16,15 @@ You can configure data pipelines in a file called _pipeline-name_**-data-pipelin
 
 A pipeline configuration contains a collection of `sources`, one or many `map` functions and one or many `sink` functions.
 
+## Script properties
+
+The following properties are available to be used within the script:
+
+```kotlin
+val systemDefinition: SystemDefinitionService
+val serviceDiscovery: ServiceDiscovery
+```
+
 ## How to define a source
 
 Each data pipeline source contains the configuration specifying how to access the data and the associated mapping and sink functionality.
