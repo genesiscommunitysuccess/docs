@@ -18,7 +18,7 @@ The goal of this section is to customise our styles in the UI.
 
 Let's apply some specific styles to some columns.
 
-We start by creating a stylesheet document that will have some style definitions for the grid.
+We start by creating a stylesheet document that has some style definitions for the grid.
 
 Create a stylesheet file called **positionsGrid.styles.ts** under the **client/web/src/routes/home/** and provide the following code:
 
@@ -50,12 +50,13 @@ import {positionGridStyles} from "./positionsGrid.styles";
 </zero-grid-pro>
 `
 ```
-You should see now your application like this
+Your application should now look like this:
+
 ![](/img/grid-customized.png)
 
 
 ### Advanced styling
-If you need to provide different class names for specific conditions (e.g.: style green for buy and red for sell), you can provide a function to the `cellClass` column config, as shown in the example below:
+If you need to provide different class names for specific conditions (e.g. to style green for buy and red for sell), you can provide a function to the `cellClass` column config, as shown in the example below:
 
 ```typescript title="positionColumnDefs.ts"
 {field: 'PNL', headerName: 'PNL', type: 'rightAligned', flex: 1, cellClass: (params) => params.value > 0 ? 'profit' : 'loss', enableCellChangeFlash: true},
@@ -106,4 +107,4 @@ In the [next section](./15_dynamic_layout.md) you'll have the option to add a dy
 ## Conclusion
 This was only a small part of the platform's capabilities in terms of styling. You can read more about design-system configuration [here](web/design-systems/introduction/).
 
-You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for this chapter. Note that this repo is a complete application and may not reflect the changes made in this page.
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for this chapter. Note that this repo is a complete application and might not reflect the changes made in this page.
