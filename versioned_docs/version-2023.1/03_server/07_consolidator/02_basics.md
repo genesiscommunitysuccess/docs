@@ -90,7 +90,7 @@ properties, and Consolidator properties will overwrite both.
 | defaultLogLevel      | the default log level for the Consolidator    | TRACE, DEBUG, INFO, WARN, ERROR | TRACE               |
 | onNotFound           | what to do if an output record is not found   | BUILD, WARN, IGNORE, FAIL       | Must be specified   |
 | batchingPeriod       | the time in ms before writing to the database |                                 | Must be specified    |
-| ignoreIndexScan      | disables index scans                          |                                 | False               |
+| ignoreIndexScan      | disables index scans                          | TRUE, FALSE                     | False               |
 | defaultErrorHandling | what to do if an exception is thrown          | IGNORE, WARN, FAIL              | Must be specified   |
 
 ### select block
