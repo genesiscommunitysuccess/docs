@@ -214,7 +214,7 @@ views {
 
 ### Generate the view
 
-import GenerateView from '/snippet/_generate_view.md';
+Import GenerateView from '/snippet/_generate_view.md';
 
 <GenerateView />
 
