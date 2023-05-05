@@ -14,34 +14,27 @@ tags:
 
 # Dynamic Layout
 
-The aim of this section is to implement the `foundation-layout` component which allows the user to drag, drop, resize, maximise, and restore windows.
+The aim of this section is to implement the `foundation-layout` component, which enables the user to drag, drop, resize, maximise, and restore windows.
 
 ## Declarative API
 
-By the end of this section your app will look like the following:
+By the end of this section, your app will look like this:
 
 ![](/img/tutorial-layout.png)
 
 ### Refactor `home.ts`
 
-Before we add the dynamic layout this is a good time to refactor the four components inside
-**home.ts** we've built into their own components. This will help stop the components getting
-excessively large.
+Before we add the dynamic layout, this is a good time to refactor the four components inside **home.ts** that we've built into their own components. This will help stop the components getting excessively large.
 
 :::info
-Refactoring the components is also necessary because of a limitation with the
-[cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) and the way that it
-interacts with FAST bindings and event listeners. A clean way to solve this issue is to
-wrap up your layout contents into individual components as we are about to do.
+Refactoring the components is also necessary because of a limitation with the [cloneNode() API](https://developer.mozilla.org/en-US/docs/Web/API/Node/cloneNode) and the way that it interacts with FAST bindings and event listeners. A clean way to solve this issue is to wrap up your layout contents into individual components as we are about to do.
 
-If your components were interacting with each other via the parent component, then it is
-recommended to change them to interact via the `foundation-store` utility.
+If your components were interacting with each other via the parent component, then it is recommended to change them to interact via the `foundation-store` utility.
 :::
 
 ### Trades grid
 
-We'll start with the most straightforward component. Create a directory called **trades-grid** in the home route
-and add these two files to it.
+We'll start with the most straightforward component. Create a directory called **trades-grid** in the home route and add these two files to it.
 
 ```typescript title='trades-grid.ts'
 import { customElement, FASTElement } from '@microsoft/fast-element';
@@ -126,7 +119,7 @@ export const positionsGridTemplate = html<PositionsGrid>`
 
 ### Chart
 
-Do the same for the chart, create a directory called **example-chart** in the home route and add these two files to it.
+Do the same for the chart. Create a directory called **example-chart** in the home route and add these two files to it.
 
 ```typescript title='example-chart.ts'
 import { customElement, FASTElement, observable } from '@microsoft/fast-element';
@@ -174,7 +167,7 @@ export const exampleChartTemplate = html<ExampleChart>`
 
 ### Insert trade form
 
-Finally we refactor out the form. This is slightly different because we need an associated styles file too. Create a directory called **insert-trades-form** in the home route and add these three files to it. 
+Finally, we refactor the form. This is slightly different because we need an associated styles file too. Create a directory called **insert-trades-form** in the home route and add these three files to it. 
 
 ```typescript title='insert-trades-form.ts'
 import { Connect } from '@genesislcap/foundation-comms';
@@ -343,7 +336,7 @@ Now we are going to look at some of the dynamic interactions that are available 
 
 To see what else you can do with the JavaScript API, see the main documentation linked in the [conclusion](#conclusion) section, and the [API documentation here](../../04_web/10_dynamic-layout/docs/api/foundation-layout.foundationlayout.md/#methods).
 
-### Autosaving layout
+### Autosaving the layout
 
 It is easy to get the layout to autosave as the user changes it. Add a key under the `auto-save-key` attribute and the layout will take care of the rest. Ensure that the key you use is unique, so it doesn't clash with any other saved layouts.
 
@@ -355,7 +348,7 @@ It is easy to get the layout to autosave as the user changes it. Add a key under
 </zero-layout>
 ```
 
-Now when you're on the page, if you make a change to the layout (resize, drag, reorder, add/remove items) then the layout will be saved in local storage. Try for yourself - drag an item around and refresh the page and see it reload your layout.
+Now when you're on the page, if you make a change (resize, drag, reorder, add/remove items) then the layout will be saved in local storage. Try for yourself - drag an item around and refresh the page and see it reload your layout.
 
 :::warning Warning
 The layout-saving functionality is only responsible for the *layout* itself - it will not save the state of the items inside it. Components are responsible for saving their own state if required - such as the grids [we set up earlier in the tutorial](#saving-user-preferences).
@@ -399,7 +392,7 @@ export class Home extends FASTElement {
 
 #### Updating the header
 
-Next, we want to add a button to the header sidebar to reset the layout. In this seed, the header is defined in a file called `default.ts`.
+Next, we want to add a button to the header sidebar to reset the layout. In this seed, the header is defined in a file called **default.ts**.
 
 ```html {7-17} title='default.ts'
     <div class="container">
@@ -427,15 +420,15 @@ Next, we want to add a button to the header sidebar to reset the layout. In this
 </div>
 ```
 
-When you load the app, you can now click the hamburger menu in the top-left corner and see the reset button. Clicking it will execute the `resetLayout()` function in the `home.ts` file; but we still need to set up the actual functionality.
+When you load the app, you can now click the hamburger menu in the top-left corner and see the reset button. Clicking it will execute the `resetLayout()` function in the **home.ts** file; but we still need to set up the actual functionality.
 
 :::info
-If you've changed the structure of your application from the default you might not be able to access `Home` via `x.lastChild` like we did in the click handler. You may need to experiment with getting a reference to the `Home` yourself, use events, or the `Foundation Store`.
+If you've changed the structure of your application from the default, you might not be able to access `Home` via `x.lastChild` like we did in the click handler. You may need to experiment with getting a reference to the `Home` yourself; use events, or the `Foundation Store`.
 :::
 
 #### Reload the default
 
-Finally we can now make `resetLayout()` load the default layout. The easiest way to get the default layout configuration is using the developer tools on your web browser. Open the developer tools in your browser and find the layout component (remember [from earlier](#registration-prefix) that we are looking for `<zero-layout>` in this case).
+Finally, we can now make `resetLayout()` load the default layout. The easiest way to get the default layout configuration is using the developer tools on your web browser. Open the developer tools in your browser and find the layout component (remember [from earlier](#registration-prefix) that we are looking for `<zero-layout>` in this case).
 
 :::caution
 If you've changed the layout from the default while testing your application, you need to reset it manually back to the default. 
@@ -444,16 +437,16 @@ If you've changed the layout from the default while testing your application, yo
 2. Refresh the page.
 :::
 
-Now we need access to this component in the web console. In most browsers you can do this by right-clicking on `<zero-layout>` in the element inspector and selecting an option that is similar to "store in a global variable". 
+Now we need access to this component in the web console. In most browsers, you can do this by right-clicking on `<zero-layout>` in the element inspector and selecting an option that is similar to "store in a global variable". 
 
 ![](/img/zero-layout-select.png)
 
 
-This will save the layout in a variable such as `temp1`. 
+This saves the layout in a variable such as *temp1*. 
 
 ![](/img/temp1-global-variable.png)
 
-Then, to get to get the layout run this command in the web console:
+Then, to get to get the layout, run this command in the web console:
 
 ```javascript title='web console'
 JSON.stringify(temp1.getLayout()) // temp0, or whatever your browser saved the layout in
@@ -463,7 +456,7 @@ JSON.stringify(temp1.getLayout()) // temp0, or whatever your browser saved the l
 You can follow this process to create a range of pre-defined layouts for the user in addition to being able to restore the default layout. Or you can, for example, use the `.getLayout()` and `.loadLayout()` APIs to allow the user to save their own layouts.
 :::
 
-Now create a file under `home` directory called **predefined-layouts.ts**, copy the generated string and paste it into a file in the project.
+Now create a file under the **home** directory called **predefined-layouts.ts**. Copy the generated string and paste it into a file in the project.
 
 ```typescript title='predefined-layouts.ts'
 export const HOME_DEFAULT_LAYOUT = ... /* Set this equal to the string from the web console */
