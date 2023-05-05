@@ -558,7 +558,6 @@ You may find it useful: https://www.fast.design/docs/fast-element/using-directiv
 ```typescript
 ${(x,c) => c.parent.PROPERTY_OF_THE_CONTEXT
 ```
-
 :::
 
 ## Extending our application
@@ -735,6 +734,11 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 	...
 }
 ```
+:::tip
+If you look at the `icon` and `variant` properties, you'll see that you can change the icon displayed on the top menu bar.
+
+Take a look on the [fontawesome](https://fontawesome.com/) icons. You can customize it by changing its properties' values. Try to use `icon: 'gear'` and check.
+:::
 
 - Now, when setting the navigation items, we can use the `repeat` directive to iterate over the defined routes and create a navigation item for each.
 
@@ -859,13 +863,14 @@ To set the content of the flyout menu, add the content in the html within an ele
 Add an item pointing to the playground page.
 
 :::tip
-Look at the [interaction components](../../../web/web-components/interaction/anchor/) to see a list of available components you can use for the menu item.
-A good suggestion would be to use `Anchor`, which can be simply used as `<zero-anchor>`:
+Look at the [interaction components](../../../web/web-components/interaction/anchor/) to see a list of available components you can use for the menu item. A good suggestion would be adding the `@click` attribute to the `<zero-tree-item>`
 
 ```ts
-<zero-anchor @click=${(x) => x.navigation.navigateTo("/PUT_YOUR_ROUTE_HERE")}>
-Playground
-</zero-anchor>
+  <zero-tree-item @click=${(x) => x.navigation.navigateTo("<YOUR_PATH_TO_PLAYGROUD>")}>
+    <zero-icon variant="solid" name="location-arrow"></zero-icon> 
+    Playground
+    </zero-tree-item>
+  <zero-tree-item>
 ```
 
 By the way, we're using by default the Zero Design Systems. We are going to talk more about Design Systems later in this course.
@@ -882,8 +887,8 @@ Customise our header in such a way that we end up with these menu items:
 | ------------------ | ---------- |
 | Trades & Positions | home       |
 | Playground         | playground |
-| Orders             | orders     |
-| Reporting          | reporting  |
+| Orders             | order      |
+| Reporting          | report     |
 
 Feel free to display only empty content when you create the new pages (Orders and Reporting). We're just interested in the navigation for now.
 
