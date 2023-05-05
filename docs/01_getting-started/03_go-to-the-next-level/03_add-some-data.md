@@ -129,9 +129,11 @@ By default the following will be your login details:
 - Username: JaneDee
 - Password: beONneON*74 (This is encrypted in the user.csv file.)
 
-However, after the first Build and Deploy, you got to add the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin as [explained](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
+However, after the first Build and Deploy, you added the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin as [explained here](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
 
-To do that, find the **USER.csv** file (it is inside the *server/jvm/alpha-site-specific/src/main/resources/data* folder), right-click **USER.csv**, and then click on **Import CSV(s) to Genesis** as shown below.
+To do that:
+
+Find the **USER.csv** file (this is inside the **server/jvm/alpha-site-specific/src/main/resources/data** folder), right-click on it, and then click on **Import CSV(s) to Genesis**, as shown below.
 
 ![Genesis Install](/img/intellij-sendIt-USERcsv.png)
 
@@ -144,7 +146,7 @@ Now, let's run the resource deamon to see all the processes available:
 
 ![Genesis Install](/img/intellij-daemon.png)
 
-After clicking on it, run all the proceses available by clicking on start, then wait untill all processes are up.
+After clicking on it, run all the proceses available by clicking on start on each one. Wait until all processes are **Healthy**.
 
 ## Add some example data
 Let's load some very simple example data into the tables that we created previously. 
