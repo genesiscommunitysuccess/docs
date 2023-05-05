@@ -177,10 +177,10 @@ import GenerateDao from '/snippet/_generate_DAO.md'
 
 <GenerateDao />
 
-After running it, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
+After running this, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
 
 ## 3. Add business logic
-We have a table; now we want to be able to see its content and create new entries.
+We have a table; now we want to be able to see its contents and create new entries.
 
 
 ### Data Server
@@ -278,7 +278,7 @@ In the Gradle menu on the right of IntelliJ, select:
 
 #### .genesis-home folder
 
-After the Gradle task, when first using the plugin with a project, you must configure it to be able to access your DB. For this tutorial, we are going to use POSTGRESQL. Make sure you have configured it properly following the installation guide of the [genesis plugin](../../../server/tooling/intellij-plugin/). 
+After the Gradle task, when first using the plugin with a project, you must configure it to be able to access your DB. For this tutorial, we are going to use POSTGRESQL. Make sure you have configured it properly, following the installation guide of the [genesis plugin](../../../server/tooling/intellij-plugin/). 
 
 After that, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
 
@@ -306,7 +306,7 @@ Now you need to run the remap, so we can actually create the schema `alpha` to y
 
 ### Deploy
 
-As soon as the Build is done, you can apply the changes and run the Genesis processes again using the Genesis IntelliJ Plugin.
+As soon as the build is done, you can apply the changes and run the Genesis processes again using the Genesis IntelliJ Plugin.
 
 According to the [instructions](../../../server/tooling/intellij-plugin/#making-a-change), you must follow these four steps:
 
@@ -328,9 +328,9 @@ By default the following will be your login details:
 - Username: JaneDee
 - Password: beONneON*74 (This is encrypted in the user.csv file.)
 
-However, after the first Build and Deploy, you got to add the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin as [explained](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
+However, after the first Build and Deploy, you added the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin as [explained](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
 
-To do that, find the **USER.csv** file (it is inside the *server/jvm/alpha-site-specific/src/main/resources/data* folder), right-click **USER.csv**, and then click on **Import CSV(s) to Genesis** as shown below.
+To do that, find the **USER.csv** file (it is inside the *server/jvm/alpha-site-specific/src/main/resources/data* folder); right-click **USER.csv**, and then click on **Import CSV(s) to Genesis**, as shown below.
 
 ![Genesis Install](/img/intellij-sendIt-USERcsv.png)
 
