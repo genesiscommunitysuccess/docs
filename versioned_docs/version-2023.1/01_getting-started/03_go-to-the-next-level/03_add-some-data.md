@@ -144,7 +144,7 @@ Now, let's run the resource deamon to see all the processes available:
 
 ![Genesis Install](/img/intellij-daemon.png)
 
-After clicking on it, run all the proceses available by clicking on start, then wait untill all processes are **Healthy**.
+After clicking on it, run all the processes available by clicking on start, then wait until all processes are **Healthy**.
 
 ## Add some example data
 Let's load some very simple example data into the tables that we created previously. 
