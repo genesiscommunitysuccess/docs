@@ -124,7 +124,7 @@ After refreshing the application, the grid should now also include a column cont
 
 ## Custom column config
 
-You noticed that the grid has displayed all the columns available in the table `ALL_POSITIONS`. If you want to customise how each column is displayed, you can provide a column config for every column, like so:
+The grid has displayed all the columns in the `ALL_POSITIONS` table. If you want to customise the way that each column is displayed, you can provide a column config for every column, like this:
 
 Create a new file called **positionColumnDefs.ts** in the same directory as the **home.ts**.
 
@@ -166,7 +166,7 @@ This is what you should see in your application:
 ![](/img/positions-grid-with-custom-columns.png)
 
 :::tip
-  You may have noticed that the grid you have just created is sorted descending by te `instrument` field. This is because we wrote this line **sort: 'desc'**.
+  You may have noticed that the grid you have just created is sorted descending by the `instrument` field. This is because we included this line: **sort: 'desc'**.
   ```typescript title="positionColumnDefs.ts"
 export const positionColumnDefs = [
   {field: 'INSTRUMENT_ID', headerName: 'Instrument', sort: 'desc', flex: 2},
