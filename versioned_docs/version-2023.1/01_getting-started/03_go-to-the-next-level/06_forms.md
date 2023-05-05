@@ -11,7 +11,7 @@ tags:
 ---
 
 ## Section objectives
-The goal of this section is to add a form that enables us to insert trades into our database. Differently from quickstart, we are going to create a form ourselves stead of using entity-management.
+The goal of this section is to add a form that enables us to insert trades into our database. In the Quick Start, we used entity-management to do this. Here, we are going to create a form ourselves.
 
 ## Interacting with the Event Handler
 To interact with the Event Handler that you created [previously](../../../getting-started/go-to-the-next-level/events#event-handler), you will now create a form that will collect the data from the user.
@@ -161,7 +161,7 @@ export class Home extends FASTElement {
 }
 ```
 
-Now we need to interact with the Event Handlers that respond to user changes and also store the inputted data.
+Now we need to interact with the Event Handlers that respond to user changes and also store the data.
 
 We can do it in the traditional way by adding `@change` [Event Handler](https://www.fast.design/docs/fast-element/declaring-templates#events) - but we can also use the `sync` directive, which does that for us automatically.
 
@@ -245,7 +245,7 @@ public async connectedCallback() {
 ```
 
 Once we have the data with the list of instruments, we can make use of it in the template file.
-To dynamically include a list of instruments, use the [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items.
+To include a dynamic list of instruments, use the [repeat](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive and iterate through the items.
 
 ```typescript {2-4} title='home.template.ts'
 <zero-select :value=${sync(x=> x.instrument)}>
@@ -284,7 +284,7 @@ public async insertTrade() {
 Remember to override the `insertTrade()` method you have previously created.
 :::
 
-Let's add another data grid on the top right corner of the page to show the trade view `ALL_TRADES`:
+Let's add another data grid at the top right corner of the page to show the trade view `ALL_TRADES`:
 
 ```html {16-22}title='home.template.ts'
 <div class="row-split-layout">
@@ -336,7 +336,7 @@ Now if everything has worked, you can go to your browser, insert the data for a 
 ![](/img/finished-trade-view.png)
 
 :::note
-You won't se any changes in the `ALL_POSITIONS` grid after you add a new trade because we have not created any consolidators yet. We will be doing it in the next steps.
+You won't see any changes in the `ALL_POSITIONS` grid after you add a new trade because we have not created any Consolidators yet. We will be doing it in the next steps.
 :::
 
 <!--- This part of the go to next level does not fit with any other part of the tutorial. Needs to be refactored to something that can be used in this tutorial
@@ -351,7 +351,7 @@ If you need a completely custom form, you can pass `uischema` and `jsonSchema` d
   :data=${(x) => x.editedEntity}
 ></foundation-form>
 ```
-Add the following code to yout home.ts
+Add the following code to your **home.ts**:
 
 Example schema:
 ```typescript title='form.ts'
@@ -397,7 +397,7 @@ const jsonSchema: JSONSchema7 = {
 };
 ```
 
-The `jsonSchema` can either be defined locally (as above) or be fetched from the server based on a resource name.
+The `jsonSchema` can either be defined locally (as above) or can be fetched from the server based on a resource name.
 
 ```jsx
 const jsonSchemaResponse = await this.connect.getJSONSchema(this.resourceName);
@@ -465,4 +465,4 @@ import { mustMatch } from '@genesislcap/foundation-forms';
 --->
 
 ## Conclusion
-You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for the forms. Note that this repo is a complete application and may not reflect the changes made in this page.
+You can use the [positions app tutorial repo](https://github.com/genesiscommunitysuccess/positions-app-tutorial/tree/Complete_positions_app/client/web/src/routes/home) as a reference point for the forms. Note that this repo is a complete application and might not reflect the changes made in this page.
