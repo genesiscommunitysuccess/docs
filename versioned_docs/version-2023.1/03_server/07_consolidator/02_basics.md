@@ -85,13 +85,13 @@ Now we shall look at each of the possible code blocks in more detail.
 The config block is available at both the file and Consolidator level. File-level configuration will overwrite default
 properties, and Consolidator properties will overwrite both.
 
-| Property             | Description                                   | Supports Values                    | Default Value |
-|----------------------|-----------------------------------------------|------------------------------------|---------------|
-| defaultLogLevel      | the default log level for the Consolidator    | TRACE, DEBUG, INFO, WARN, ERROR    | TRACE           |
-| onNotFound           | what to do if an output record is not found   | BUILD, WARN, IGNORE, FAIL, DEFAULT | TBC           |
-| batchingPeriod       | the time in ms before writing to the database |                                    | TBC           |
-| ignoreIndexScan      | disables index scans                          |                                    | TBC           |
-| defaultErrorHandling | what to do if an exception is thrown          | IGNORE, WARN, FAIL                 | TBC           |
+| Property             | Description                                   | Supports Values                 | Default Value       |
+|----------------------|-----------------------------------------------|---------------------------------|---------------------|
+| defaultLogLevel      | the default log level for the Consolidator    | TRACE, DEBUG, INFO, WARN, ERROR | TRACE               |
+| onNotFound           | what to do if an output record is not found   | BUILD, WARN, IGNORE, FAIL       | Must be specified   |
+| batchingPeriod       | the time in ms before writing to the database |                                 | Must be specified    |
+| ignoreIndexScan      | disables index scans                          |                                 | False               |
+| defaultErrorHandling | what to do if an exception is thrown          | IGNORE, WARN, FAIL              | Must be specified   |
 
 ### select block
 
@@ -104,7 +104,6 @@ In the select block, you can specify functions and outputs, for example:
 ```kotlin
 select {
     // add the output table here for a more concise syntax
-    // this will go after kotlin supports multiple receivers
     COMMISSION_AND_FEES_SUMMARY {
         sum { feeAmount } into FEE_AMOUNT
         sum { originalFeeAmount } into ORIGINAL_FEE_AMOUNT
@@ -223,6 +222,24 @@ groupBy { CommissionAndFeesSummary.ByAllocationId(allocationId, feeGroup) }
 ```
 
 Consolidations support single or multiple groupings. Multiple groupings are useful when aggregating data by different levels: for example, where you want to calculate trade totals per currency as well as by counterparty.
+
+Using `tuple` and `group` in `groupBy` can later be interacted with in sub blocks such as lookup. 
+
+```kotlin
+groupBy { group(orderDate.year) } into {
+    lookup { OrderSummary.byGroupId(groupId) }
+}
+groupBy { Tuple2(orderDate.year, orderDate.monthOfYear) } into {
+    lookup { OrderSummary.byGroupId("${groupId.value1}-${groupId.value2}") }
+}
+```
+
+This can also be shortened into the following format, which is more concise and can be easier to understand:
+
+```kotlin
+groupBy { OrderSummary.byGroupId("${orderDate.year}") }
+groupBy { OrderSummary.byGroupId("${orderDate.year}-${orderDate.monthOfYear}") }
+```
 
 #### into
 
@@ -400,6 +417,8 @@ sum { feeAmount } pivotBy { feeGroup } into {
     }
 }
 ```
+
+The values within this `when` statement must be exhaustive. If this is not ideal then we would recommend using `onlyIf`.
 
 ### Shared function definitions
 
