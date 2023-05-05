@@ -133,7 +133,7 @@ After you have saved this file, run [genesis-generated-fields](../../../database
 
 ### generateFields
 
-import GenerateFields from '/snippet/_generate_fields.md';
+Import GenerateFields from '/snippet/_generate_fields.md';
 
 <GenerateFields />
 
