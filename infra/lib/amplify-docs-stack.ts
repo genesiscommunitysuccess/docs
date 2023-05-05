@@ -19,8 +19,7 @@ export class AmplifyDocsStack extends cdk.Stack {
       sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
         owner: 'genesiscommunitysuccess',
         repository: 'docs',
-        // We have to use a Personal Access Token to authenticate with GitHub. Currently
-        // the token used here is generated from Nick Payne's (@makeusabrew on GitHub) account
+        // We have to use a Personal Access Token to authenticate with GitHub. 
         // The account needs admin privileges on the repository to set up a one-time read-only
         // deploy key (to clone the repo) and webhook (for PR previews). Due to this association
         // it will stop working if the user's privileges are revoked
