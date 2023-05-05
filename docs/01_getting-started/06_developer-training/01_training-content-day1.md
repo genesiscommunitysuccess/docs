@@ -214,7 +214,7 @@ The [entityDb](../../../database/database-interface/entity-db/) enables you to i
 :::
 
 ## 4. Prepare the server
-So far we have created an Event Handler and Data Server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on their own process. To do that, we have to change the processes and the service definition files:
+So far we have created an Event Handler and Data Server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on its own process. To do that, we have to change the processes and the service definition files:
 
 - **alpha-processes.xml**
 - **alpha-service-definitions.xml**
@@ -328,7 +328,7 @@ By default the following will be your login details:
 - Username: JaneDee
 - Password: beONneON*74 (This is encrypted in the user.csv file.)
 
-However, after the first Build and Deploy, you got to add the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin as [explained](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
+However, after the first Build and Deploy, you added the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin as [explained](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
 
 To do that, find the **USER.csv** file (it is inside the *server/jvm/alpha-site-specific/src/main/resources/data* folder), right-click **USER.csv**, and then click on **Import CSV(s) to Genesis** as shown below.
 
