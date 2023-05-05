@@ -19,7 +19,7 @@ jobs:
 
     - name: deploy PR preview
       run: |
-        git checkout ${{ steps.setenvname.outputs.setbranchname }}
+        git switch ${{ steps.setenvname.outputs.setbranchname }}
         amplify deploy
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
