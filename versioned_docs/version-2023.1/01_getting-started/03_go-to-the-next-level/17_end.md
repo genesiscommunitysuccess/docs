@@ -8,7 +8,7 @@ tags:
     - quick start
     - next level
     - web training
-    - developter training
+    - developer training
     - server training
 ---
 
