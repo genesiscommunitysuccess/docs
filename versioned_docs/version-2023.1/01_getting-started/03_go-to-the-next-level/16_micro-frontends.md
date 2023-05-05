@@ -13,9 +13,9 @@ tags:
 ## Section objectives
 The goal of this section is to add a micro front-end.
 
-## Pre-requisites
+## Prerequisites
 
-Before you start, make sure you have `learna` installed. In your terminal, run:
+Before you start, make sure you have `lerna` installed. In your terminal, run:
 
 ```powershell
  npm install --g lerna
