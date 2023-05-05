@@ -131,7 +131,7 @@ By default the following will be your login details:
 
 However, after the first Build and Deploy, you added the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin as [explained](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
 
-To do that, find the **USER.csv** file (it is inside the *server/jvm/alpha-site-specific/src/main/resources/data* folder); right-click **USER.csv**, and then click on **Import CSV(s) to Genesis** as shown below.
+To do that, find the **USER.csv** file (it is inside the **server/jvm/alpha-site-specific/src/main/resources/data** folder); right-click **USER.csv**, and then click on **Import CSV(s) to Genesis** as shown below.
 
 ![Genesis Install](/img/intellij-sendIt-USERcsv.png)
 
