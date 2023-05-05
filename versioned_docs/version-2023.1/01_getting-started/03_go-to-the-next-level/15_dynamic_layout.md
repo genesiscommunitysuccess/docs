@@ -399,7 +399,7 @@ export class Home extends FASTElement {
 
 #### Updating the header
 
-Next, we want to add a button to the header sidebar to reset the layout. In this seed, the header is defined in a file called `default.ts`.
+Next, we want to add a button to the header sidebar to reset the layout. In this seed, the header is defined in a file called **default.ts**.
 
 ```html {7-17} title='default.ts'
     <div class="container">
@@ -427,10 +427,10 @@ Next, we want to add a button to the header sidebar to reset the layout. In this
 </div>
 ```
 
-When you load the app, you can now click the hamburger menu in the top-left corner and see the reset button. Clicking it will execute the `resetLayout()` function in the `home.ts` file; but we still need to set up the actual functionality.
+When you load the app, you can now click the hamburger menu in the top-left corner and see the reset button. Clicking it will execute the `resetLayout()` function in the **home.ts** file; but we still need to set up the actual functionality.
 
 :::info
-If you've changed the structure of your application from the default you might not be able to access `Home` via `x.lastChild` like we did in the click handler. You may need to experiment with getting a reference to the `Home` yourself, use events, or the `Foundation Store`.
+If you've changed the structure of your application from the default, you might not be able to access `Home` via `x.lastChild` like we did in the click handler. You may need to experiment with getting a reference to the `Home` yourself, use events, or the `Foundation Store`.
 :::
 
 #### Reload the default
@@ -463,13 +463,13 @@ JSON.stringify(temp1.getLayout()) // temp0, or whatever your browser saved the l
 You can follow this process to create a range of pre-defined layouts for the user in addition to being able to restore the default layout. Or you can, for example, use the `.getLayout()` and `.loadLayout()` APIs to allow the user to save their own layouts.
 :::
 
-Now create a file under `home` directory called **predefined-layouts.ts**, copy the generated string and paste it into a file in the project.
+Now create a file under **home** directory called **predefined-layouts.ts**; copy the generated string and paste it into a file in the project.
 
 ```typescript title='predefined-layouts.ts'
 export const HOME_DEFAULT_LAYOUT = ... /* Set this equal to the string from the web console */
 ```
 
-The final step is to wire all of this functionality together so the button loads the layout that we have just saved.
+The final step is to wire all of this functionality together so that the button loads the layout that we have just saved.
 
 ```typescript {6,23-26,28-30} title='home.ts'
 import { customElement, FASTElement, observable } from '@microsoft/fast-element';
