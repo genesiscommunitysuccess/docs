@@ -7,9 +7,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
-        ref: ${{ github.ref }}
+        repository: genesiscommunitysuccess/docs
 
     - name: set branchname env
       id: setenvname
@@ -20,6 +20,7 @@ jobs:
         git checkout ${{ steps.setenvname.outputs.setbranchname }}
 
     - name: deploy PR preview
+      uses: genesiscommunitysuccess/docs@master
       with:
         branch_name: ${{ steps.setenvname.outputs.setbranchname }}
         amplify_command: deploy
