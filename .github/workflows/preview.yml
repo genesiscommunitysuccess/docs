@@ -16,9 +16,9 @@ jobs:
         echo "##[set-output name=setbranchname;]$(echo ${GITHUB_HEAD_REF})"
 
     - name: deploy PR preview
-      uses: genesiscommunitysuccess/docs@v0
+      uses: genesiscommunitysuccess/docs@master
       with:
-        branch_name: ${{ steps.setenvname.outputs.setbranchname }}
+        branch: ${{ steps.setenvname.outputs.setbranchname }}
         amplify_command: deploy
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
