@@ -16,15 +16,14 @@ jobs:
       run: |
         # use GITHUB_HEAD_REF that is set to PR source branch
         echo "##[set-output name=setbranchname;]$(echo ${GITHUB_HEAD_REF})"
-
-    - name: deploy PR preview
-      run: |
-        npm install -g @aws-amplify/cli
-        amplify configure
-        amplify pull ${{ secrets.AMPLIFYAPPID }}
         git fetch
         git checkout ${{ steps.setenvname.outputs.setbranchname }}
-        amplify push
+
+    - name: deploy PR preview
+      uses: genesiscommunitysuccess/docs@master
+      with:
+        branch_name: ${{ steps.setenvname.outputs.setbranchname }}
+        amplify_command: deploy
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
