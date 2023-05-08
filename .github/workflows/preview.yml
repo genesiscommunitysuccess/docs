@@ -21,6 +21,7 @@ jobs:
       run: |
         npm install -g @aws-amplify/cli
         amplify configure
+        amplify pull ${{ secrets.AMPLIFYAPPID }}
         git fetch
         git checkout ${{ steps.setenvname.outputs.setbranchname }}
         amplify push
