@@ -7,7 +7,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@master
 
     - name: set branchname env
       id: setenvname
@@ -18,7 +18,7 @@ jobs:
     - name: deploy PR preview
       uses: genesiscommunitysuccess/docs@master
       with:
-        branch: ${{ steps.setenvname.outputs.setbranchname }}
+        branch_name: ${{ steps.setenvname.outputs.setbranchname }}
         amplify_command: deploy
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
