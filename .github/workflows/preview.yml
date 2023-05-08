@@ -19,6 +19,8 @@ jobs:
 
     - name: deploy PR preview
       run: |
+        npm install -g @aws-amplify/cli
+        amplify configure
         git fetch
         git checkout ${{ steps.setenvname.outputs.setbranchname }}
         amplify deploy
