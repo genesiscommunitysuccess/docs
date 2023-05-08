@@ -15,4 +15,5 @@ RUN pip install --quiet --no-cache-dir awscli==${AWSCLI_VERSION}
 RUN apk --no-cache add curl
 
 ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
