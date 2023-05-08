@@ -9,6 +9,7 @@ export interface StackOptions {
   oldDomain: string,
 }
 
+//
 export default interface StackProperties {
     cdkProps?: cdk.StackProps,
     stackOptions: StackOptions
