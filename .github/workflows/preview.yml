@@ -20,7 +20,6 @@ jobs:
         git checkout ${{ steps.setenvname.outputs.setbranchname }}
 
     - name: deploy PR preview
-      uses: genesiscommunitysuccess/docs@master
       with:
         branch_name: ${{ steps.setenvname.outputs.setbranchname }}
         amplify_command: deploy
