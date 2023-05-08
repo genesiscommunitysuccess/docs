@@ -8,19 +8,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-      with:
-        repository: genesiscommunitysuccess/docs
 
     - name: set branchname env
       id: setenvname
       run: |
         # use GITHUB_HEAD_REF that is set to PR source branch
         echo "##[set-output name=setbranchname;]$(echo ${GITHUB_HEAD_REF})"
-        git fetch
-        git checkout ${{ steps.setenvname.outputs.setbranchname }}
 
     - name: deploy PR preview
-      uses: genesiscommunitysuccess/docs@master
+      uses: genesiscommunitysuccess/docs@v0
       with:
         branch_name: ${{ steps.setenvname.outputs.setbranchname }}
         amplify_command: deploy
