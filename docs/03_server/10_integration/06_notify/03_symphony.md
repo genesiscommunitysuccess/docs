@@ -14,7 +14,7 @@ tags:
 To make Symphony services available to Genesis, you need to provision [symphony service](https://symphony.com/participate) and configure a [symphony bot](https://docs.developers.symphony.com/developer-tools/developer-tools/bdk-2.0).
 
 ## Importing Symphony
-Symphony is a separate module of the Genesis platform. This gives platform users a better way to manage third-party dependencies, as the Symphony BDK has a number of transitive dependencies.
+Symphony is a separate module of the Genesis low-code platform. This gives platform users a better way to manage third-party dependencies, as the Symphony BDK has a number of transitive dependencies.
 
 ### Adding the Symphony module data schema
 In order to add the Symphony route tables to your application, add the following in your application dictionary cache module: 
