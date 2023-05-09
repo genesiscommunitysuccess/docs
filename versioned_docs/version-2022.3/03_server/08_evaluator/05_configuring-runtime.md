@@ -1,5 +1,5 @@
 ---
-title: 'Evaluator - Configuring runtime'
+title: 'Evaluator - configuring runtime'
 sidebar_label: 'Configuring Runtime'
 id: configuring-runtime
 keywords: [server, evaluator, configuring runtime]
