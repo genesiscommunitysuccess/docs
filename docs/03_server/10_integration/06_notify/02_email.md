@@ -95,7 +95,7 @@ email(id = "email1") {
 
 | Field Name | Usage |
 | --- | --- |
-| GATEWAY_ID | This should reference the gateway `id` specified in the ```notify.kts``` file.   |
+| GATEWAY_ID | This should reference the gateway `id` specified in the **notify.kts** file.   |
 | NOTIFY_ROUTE_ID | A Unique ID for this route. |
 | TOPIC_MATCH | String value to match against the topic on inbound notifications.  |
 
