@@ -1,17 +1,15 @@
 ---
-title: 'Consolidator - Basics'
+title: 'Consolidator - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, consolidator, basics]
 tags:
-  - server
-  - consolidator
-  - basics
+- server
+- consolidator
+- basics
 ---
 
-[Introduction](../../../server/consolidator/introduction) | [Basics](../../../server/consolidator/basics) |  [Advanced](../../../server/consolidator/advanced) | [Examples](../../../server/consolidator/examples) | [Configuring runtime](../../../server/consolidator/configuring-runtime) | [Testing](../../../server/consolidator/testing)
-
-You define a Consolidator service in a **consolidator.kts** file. Within the file, you can define as many Consolidators as you like. Each one is specified in a `consolidator` block of code. 
+You define a Consolidator service in a **consolidator.kts** file. Within the file, you can define as many Consolidators as you like. Each one is specified in a `Consolidator` block of code.
 
 
 
@@ -33,10 +31,10 @@ So, what was going on there?
 - The Consolidator is listening to the `TRADE` table.
 - It is publishing its aggregation to the `ORDER` table.
 - It is grouping its aggregation by the field `orderID`.
-- It is counting the number of trades into `TRADE_COUNT` and calculating price x quantity into `TOTAL_NOTIONAL`. 
+- It is counting the number of trades into `TRADE_COUNT` and calculating price x quantity into `TOTAL_NOTIONAL`.
 
 ## Elements of a Consolidator
-In each `consolidator` block, you must at least provide:
+In each `Consolidator` block, you must at least provide:
 
 - a name
 - an input table or view
@@ -44,7 +42,7 @@ In each `consolidator` block, you must at least provide:
 
 In most cases, you will need a lot more than that. Let us look at the elements you can use to create a sophisticated, effective Consolidator.
 
-The empty structure below shows the optional and mandatory code blocks in a single `consolidator` block.  
+The empty structure below shows the optional and mandatory code blocks in a single `Consolidator` block.  
 Comments are included to provide further information:
 
 ```kotlin
@@ -87,13 +85,13 @@ Now we shall look at each of the possible code blocks in more detail.
 The config block is available at both the file and Consolidator level. File-level configuration will overwrite default
 properties, and Consolidator properties will overwrite both.
 
-| Property             | Description                                   | Supports Values                    | Default Value |
-|----------------------|-----------------------------------------------|------------------------------------|---------------|
-| defaultLogLevel      | the default log level for the Consolidator    | TRACE, DEBUG, INFO, WARN, ERROR    | TRACE           |
-| onNotFound           | what to do if an output record is not found   | BUILD, WARN, IGNORE, FAIL, DEFAULT | TBC           |
-| batchingPeriod       | the time in ms before writing to the database |                                    | TBC           |
-| ignoreIndexScan      | disables index scans                          |                                    | TBC           |
-| defaultErrorHandling | what to do if an exception is thrown          | IGNORE, WARN, FAIL                 | TBC           |
+| Property             | Description                                   | Supports Values                 | Default Value       |
+|----------------------|-----------------------------------------------|---------------------------------|---------------------|
+| defaultLogLevel      | the default log level for the Consolidator    | TRACE, DEBUG, INFO, WARN, ERROR | TRACE               |
+| onNotFound           | what to do if an output record is not found   | BUILD, WARN, IGNORE, FAIL       | Must be specified   |
+| batchingPeriod       | the time in ms before writing to the database |                                 | Must be specified    |
+| ignoreIndexScan      | disables index scans                          | TRUE, FALSE                     | False               |
+| defaultErrorHandling | what to do if an exception is thrown          | IGNORE, WARN, FAIL              | Must be specified   |
 
 ### select block
 
@@ -106,7 +104,6 @@ In the select block, you can specify functions and outputs, for example:
 ```kotlin
 select {
     // add the output table here for a more concise syntax
-    // this will go after kotlin supports multiple receivers
     COMMISSION_AND_FEES_SUMMARY {
         sum { feeAmount } into FEE_AMOUNT
         sum { originalFeeAmount } into ORIGINAL_FEE_AMOUNT
@@ -173,9 +170,9 @@ index scans, which need to be configured.
 The `groupBy`-`into` syntax determines:
 - how records are grouped `groupBy { ... } `
 - how the Consolidator interacts with the database `into { ... }`
-    * how output records are loaded from the database `into { lookup { ... } }`
-    * how output records are built when no record is found in the database `into { build { ... } }`
-    * how to look up records after an index scan `into { indexScan { ... } }`
+  * how output records are loaded from the database `into { lookup { ... } }`
+  * how output records are built when no record is found in the database `into { build { ... } }`
+  * how to look up records after an index scan `into { indexScan { ... } }`
 
 Syntax:
 ```kotlin
@@ -225,6 +222,24 @@ groupBy { CommissionAndFeesSummary.ByAllocationId(allocationId, feeGroup) }
 ```
 
 Consolidations support single or multiple groupings. Multiple groupings are useful when aggregating data by different levels: for example, where you want to calculate trade totals per currency as well as by counterparty.
+
+Using `tuple` and `group` in `groupBy` can later be interacted with in sub blocks such as lookup.
+
+```kotlin
+groupBy { group(orderDate.year) } into {
+    lookup { OrderSummary.byGroupId(groupId) }
+}
+groupBy { Tuple2(orderDate.year, orderDate.monthOfYear) } into {
+    lookup { OrderSummary.byGroupId("${groupId.value1}-${groupId.value2}") }
+}
+```
+
+This can also be shortened into the following format, which is more concise and can be easier to understand:
+
+```kotlin
+groupBy { OrderSummary.byGroupId("${orderDate.year}") }
+groupBy { OrderSummary.byGroupId("${orderDate.year}-${orderDate.monthOfYear}") }
+```
 
 #### into
 
@@ -320,7 +335,7 @@ Some consolidations might require periodic reprocessing of data. This will trigg
 
 Functions are the base building blocks of the select statement.
 
-All functions except for for `count` require an input. With `count` input is optional. 
+All functions except for for `count` require an input. With `count` input is optional.
 For the required input, use the syntax `sum { feeAmount }`.
 Within the curly brackets of the function, you can access all fields on the row, and you can use any kotlin operation on the row. The function will be applied over the result, unless the result is null, in which case it will be ignored.
 
@@ -403,6 +418,8 @@ sum { feeAmount } pivotBy { feeGroup } into {
 }
 ```
 
+The values within this `when` statement must be exhaustive. If this is not ideal then we would recommend using `onlyIf`.
+
 ### Shared function definitions
 
 Function definitions can also be assigned to variables and assigned to multiple outputs, for example:
@@ -416,7 +433,7 @@ feeSum onlyIf { feeGroup == FeeGroup.COMMISSION } into TOTAL_COMMISSION
 ### index scans
 
 Functions can sometimes trigger an index scan. This is when a Consolidator needs to re-read previously consolidated rows
-in order to calculate the correct value. 
+in order to calculate the correct value.
 - For some functions, this is never required: for example, `sum` and `count`.
 - For some functions, it is required sometimes: for example, `min` and `max`.
 - For some functions, it is always required: for example, `stDev`.
@@ -433,35 +450,36 @@ If you simply restart the Consolidator process, then any changes to data that oc
 
 ### The startProcess command (cold start)
 
-A cold start avoids the danger of losing your calculated data. To make a cold start, run the command 
+A cold start avoids the danger of losing your calculated data. To make a cold start, run the command
 
-`startProcess --coldStart`
+`startProcess GENESIS_CONSOLIDATOR --coldStart`
 
-This consolidates all records in the system before starting the real-time event-driven consolidations. 
+In this case, the Consolidator process is called `GENESIS_CONSOLIDATOR`. If in doubt, you can find the exact name of your consolidator in the [service-definitions](../../../server/configuring-runtime/service-definitions) file.
 
+This command consolidates all records in the system before starting the real-time event-driven consolidations.
 At the beginning of a cold start, all fields in `consolidationFields` of the consolidation table are zeroed (or deleted, if transient) before initiating the re-consolidation of all the records in the database.
 
 ## Troubleshooting
 
-You can set the default logging level for all the Consolidators in your _application_**-consolidator.kts** file using a config statement at the beginning. 
+You can set the default logging level for all the Consolidators in your _application_**-consolidator.kts** file using a config statement at the beginning.
 However, within any individual Consolidator, you can also set a logging level that overrides this setting.
 If a Consolidator is not functioning as expected, raise its logging level to INFO, or even higher.
 Let's see a very simple example. Here the default logging level has been set to INFO. However, Consolidator B has its own loglevel, `DEBUG`, which overrides the file-level setting:
 
 ```kotlin
 consolidators {
-    config {
-        logLevel = INFO
-    }
-    consolidator ("A", ...) {
-        ...     
-    }
-    consolidator ("B", ...) {
-        config {
-            logLevel = DEBUG
-        }
-        ...
-    }
+  config {
+    logLevel = INFO
+  }
+  consolidator ("A", ...) {
+  ...
+}
+  consolidator ("B", ...) {
+  config {
+    logLevel = DEBUG
+  }
+  ...
+}
 }
 ```
 
