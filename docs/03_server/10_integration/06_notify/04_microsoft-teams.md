@@ -74,9 +74,9 @@ TOPIC_MATCH                              TestAlerts                             
 
 ### NOTIFY
 
-Writing a record to this table which correctly points to a TOPIC, will result in a message being sent to the Teams gateway.
+Writing a record to this table, which correctly points to a TOPIC, will result in a message being sent to the Teams gateway.
 
-Equally, EVENT_NOTIFY_INSERT can be used, as opposed to a direct table write (and is the encouraged form of interaction), this event allows for the same set of fields as the DbRecord. The input fields detailed below cater for either approach.
+Equally, EVENT_NOTIFY_INSERT can be used, as opposed to a direct table write (this is the encouraged form of interaction). This event allows for the same set of fields as the DbRecord. The input fields detailed below cater for either approach.
 
 | Field Name | Usage                                                                                  |
 | --- |----------------------------------------------------------------------------------------|
