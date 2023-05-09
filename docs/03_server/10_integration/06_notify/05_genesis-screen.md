@@ -27,7 +27,7 @@ notify {
 
 ## System configuration
 
-The application will require a simple .ts file to process the alert.
+The application must have a simple .ts file to process the alert.
 
 ## Database configuration
 
@@ -38,7 +38,7 @@ You need at least one NOTIFY_ROUTE entry set up to point to the GATEWAY record, 
 | Field Name | Usage |
 | --- |--- |
 | GATEWAY_ID | Should match the ID given to the gateway in the notify.kts file. |
-| NOTIFY_ROUTE_ID | This will be auto generated if left blank. If populated be sure to include a unique value with respect to other records. |
+| NOTIFY_ROUTE_ID | This will be auto-generated if left blank. If populated, be sure to include a unique value relative to other records. |
 | TOPIC_MATCH | This can be anything. NOTIFY records will target this via the TOPIC field, and messages will be routed to all gateways with a matching TOPIC_MATCH value. |
 
 Here is an example NOTIFY_ROUTE entry:
@@ -63,14 +63,14 @@ TOPIC_MATCH                              TOPIC2                                 
 | Field Name | Usage |
 | --- | --- |
 | ENTITY_ID | String identifying the entity to send to. |
-| ENTITY_ID_TYPE | One of USER_NAME, PROFILE_NAME, ALL, SELF. An additional value will be available that matches the ENTITY_ADMIN_PERMISSION_FIELD, if it is defined in Sysdef. | 
+| ENTITY_ID_TYPE | One of USER_NAME, PROFILE_NAME, ALL, or SELF. An additional value will be available that matches the ENTITY_ADMIN_PERMISSION_FIELD, if it is defined in Sysdef. | 
 | NOTIFY_ROUTE_ID | Reference to a primary KEY in the NOTIFY_ROUTE table. |
 
 ### NOTIFY
 
-Writing a record to this table that correctly points to a TOPIC with matching routes will result in a pop-up toast being sent to the list of users detailed on the route.
+Writing a record to this table, which correctly points to a TOPIC with matching routes will result in a pop-up toast being sent to the list of users detailed on the route.
 
-Equally, EVENT_NOTIFY_INSERT can be used, as opposed to a direct table write (and is the encouraged form of interaction), this event allows for the same set of fields as the DbRecord. The input fields detailed below cater for either approach.
+Equally, EVENT_NOTIFY_INSERT can be used, as opposed to a direct table write (this is the encouraged form of interaction). This event allows for the same set of fields as the DbRecord. The input fields detailed below cater for either approach.
 
 | Field Name | Usage                                                                          |
 | --- |--------------------------------------------------------------------------------|
