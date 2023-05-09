@@ -1,5 +1,5 @@
 ---
-title: 'Consolidator - Basics'
+title: 'Consolidator - basics'
 sidebar_label: 'Basics'
 id: basics
 keywords: [server, consolidator, basics]
@@ -9,7 +9,6 @@ tags:
   - basics
 ---
 
-[Introduction](../../../server/consolidator/introduction) | [Basics](../../../server/consolidator/basics) |  [Advanced](../../../server/consolidator/advanced) | [Examples](../../../server/consolidator/examples) | [Configuring runtime](../../../server/consolidator/configuring-runtime) | [Testing](../../../server/consolidator/testing)
 
 You define a Consolidator service in a **consolidator.kts** file. Within the file, you can define as many Consolidators as you like. Each one is specified in a `consolidator` block of code. 
 
