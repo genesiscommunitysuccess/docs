@@ -1,5 +1,5 @@
 ---
-title: 'State Machine - Testing'
+title: 'State Machine - testing'
 sidebar_label: 'Testing'
 id: testing
 keywords: [server, state machine, testing]
