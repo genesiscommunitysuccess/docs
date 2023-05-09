@@ -19,13 +19,13 @@ export class AmplifyDocsStack extends cdk.Stack {
       sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
         owner: 'genesiscommunitysuccess',
         repository: 'docs',
-        // We have to use a Personal Access Token to authenticate with GitHub. Currently
-        // the token used here is generated from Nick Payne's (@makeusabrew on GitHub) account
+        // We have to use a Personal Access Token to authenticate with GitHub. 
         // The account needs admin privileges on the repository to set up a one-time read-only
         // deploy key (to clone the repo) and webhook (for PR previews). Due to this association
         // it will stop working if the user's privileges are revoked
         // @see https://github.com/aws-amplify/amplify-hosting/issues/2160 for more discussion
-        oauthToken: SecretValue.secretsManager('genesiscommunitysuccess-docs-prod')
+        // @see https://www.notion.so/genesisglobal/Handover-notes-57b7f846c46e4539bff66a006eccbb9c#3015d5bcd9f4404cbd0ced433e6070bc for internal guidance on 'Fully rotating a secret'
+        oauthToken: SecretValue.secretsManager('gcs-docs-prod-05-2023')
       }),
 
       // We could replace this with an `amplify.yml` in the root of the project, but it'd amount to
