@@ -431,7 +431,103 @@ Insert the `ALL_INSTRUMENTS` grid to the orders page. Place it on the top right 
 You can directly insert the new grid onto the order.template.ts, but it is recommended to create e new component called positions-grid and follow he previous steps. That wat you maintain your order.template.ts as clear as possible.
 :::
 
-###
+## Chart
+
+Charts is one of the must-have components in any dashboard. Because of that, Genesis created a easy way to add a series of charts into your application. Let's create our brand new chart.
+
+### Adding a new chart
+
+The `g2plot-chart` component is a wrapper for `@antv/g2plot`, which allows the following types: Line, Area, Bar, Bubble, Column, Pie, Dual Axes, Rose, Scatter.
+
+You can quickly add charts to your application. First we need to create a new component as we did in the previous exercise. Create a folder named **orders-chart** and add these two files
+
+```typescript title='orders-chart.template.ts'
+import { html } from '@microsoft/fast-element';
+import { OrdersChart } from './orders-chart';
+
+export const ordersChartTemplate = html<OrdersChart>`
+  <template>
+    <zero-g2plot-chart type="pie" :config=${(x) => x.chartConfiguration}>
+        <chart-datasource
+        resourceName="ALL_ORDERS"
+        server-fields="INSTRUMENT_ID QUANTITY"
+        isSnapshot
+        ></chart-datasource>
+    </zero-g2plot-chart>
+  </template>
+`;
+```
+
+```typescript title='orders-chart.ts'
+import { customElement, FASTElement, observable } from '@microsoft/fast-element';
+import { ordersChartTemplate } from './orders-chart.template';
+
+@customElement({
+  name: 'orders-chart',
+  template: ordersChartTemplate,
+})
+export class OrdersChart extends FASTElement {
+  @observable chartConfiguration = {
+    width: 800,
+    angleField: 'value',
+    colorField: 'groupBy',
+    radius: 0.75,
+    label: {
+      type: 'spider',
+      labelHeight: 28,
+      content: '{name}\n{percentage}',
+      style: {
+        fill: 'white',
+      },
+    },
+    interactions: [{ type: 'element-selected' }, { type: 'element-active' }],
+  };
+}
+```
+
+For further configuration examples please see: [here](https://g2plot.antv.antgroup.com/en/examples).
+
+Your **orders.template.ts** should be like this:
+
+```typescript {3-6,8-11,29-31} title='orders.template.ts'import {html, repeat, when, ref} from '@microsoft/fast-element';
+import type {Order} from './order';
+import { OrderStyles} from './order.styles';
+import { InsertOrdersForm } from './insert-orders-form/insert-orders-form';
+import { OrdersGrid } from './orders-grid/orders-grid';
+import { InstrumentsGrid } from './instruments-grid/instruments-grid';
+import { OrdersChart } from './orders-chart/orders-chart';
+
+InsertOrdersForm;
+OrdersGrid;
+InstrumentsGrid;
+OrdersChart;
+
+
+export const OrderTemplate = html<Order>`
+  <zero-layout>
+    <zero-layout-region type="horizontal">
+      <zero-layout-region type="vertical">
+        <zero-layout-item title="Orders Grid">
+            <orders-grid></orders-grid>
+        </zero-layout-item>
+        <zero-layout-item title="Orders Grid">
+            <instruments-grid></instruments-grid>
+        </zero-layout-item>
+      </zero-layout-region>
+      <zero-layout-region type="vertical">
+        <zero-layout-item title="Orders Form">
+            <insert-orders-form></insert-orders-form>>
+        </zero-layout-item>
+        <zero-layout-item title="Orders Chart">
+            <orders-chart></orders-chart>
+        </zero-layout-item>
+      </zero-layout-region>
+    </zero-layout-region>
+  </zero-layout>
+`
+```
+
+Now you show play aound with the properties of the chart, so you get used to it.
 
 ## Design systems
 
@@ -631,7 +727,7 @@ Other developers will simply reuse the same design system.
 :::
 
 
-### Exercise 4.2 Overriding some components using Design System
+### Exercise 4.3 Overriding some components using Design System
 <!--
 this is pretty much here: https://github.com/genesislcap/clarity-web/blob/develop/packages/apps/clarity/src/components/components.ts
   ====> provideZeroDS
