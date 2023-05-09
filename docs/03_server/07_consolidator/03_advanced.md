@@ -6,6 +6,7 @@ keywords: [server, consolidator, advanced]
 tags:
   - server
   - consolidator
+  - consolidator group
   - advanced
 ---
 
@@ -22,7 +23,9 @@ If you include this statement in your `consolidator` block, then the Consolidato
 
 In a non-transaction database (for example, Aerospike), a group is designed to offer consistent consolidation in the absence of ACID guarantees at the database level. Consolidators in the same group will not interfere with each other's calculations as they update - particularly where they output to the same table. 
 
-Note that this is limited to Consolidator updates within a group in a single process. Updates in other groups, other processes or other nodes could still interfere.
+:::note 
+This is limited to Consolidator updates within a group in a single process. Updates in other groups, other processes or other nodes could still interfere. You must plan this carefully.
+:::
 
 Below is an example where we have declared two `consolidator` blocks. Each has `groupName = "ORDER"`, so they are in the same group. The two `consolidator`blocks handle different types of order - but they are aggregated into the same three output tables: `TOTAL_NOTIONAL`, `TOTAL_QUANTITY` and `TRADE_COUNT`.
 
@@ -60,7 +63,7 @@ Below is an example where we have declared two `consolidator` blocks. Each has `
     }
 ```	
 
-## Standard functions
+## Select statement: standard functions
 
 In this section, we look in more detail at the functions that are the building blocks of the select statement in a `Consolidator` specification.
 

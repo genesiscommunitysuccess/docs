@@ -10,7 +10,6 @@ tags:
   - configuring runtime
 ---
 
-
 GenesisToDb must be configured in your **application-processes.xml** file. The following is an example of how to do this:
 
 ```xml

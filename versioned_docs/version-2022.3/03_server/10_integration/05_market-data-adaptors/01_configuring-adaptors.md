@@ -1,5 +1,5 @@
 ---
-title: 'Market data adaptors - Configuration'
+title: 'Market data adaptors - configuration'
 sidebar_label: 'Configuring Adaptors'
 id: configuring-adaptors
 keywords: [server, integration, market data adaptors, configuration]
