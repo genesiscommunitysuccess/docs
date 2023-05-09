@@ -10,15 +10,18 @@ tags:
   - email
 ---
 
-## Email Routes Types
-The email gateway that comes as part of the standard notify package supports two rule types.
+## Email routes
+The email gateway that comes as part of the standard Notify package supports two rule types:
 
-### Email User Routes
+- email user routes
+- email distribution routes
+
+### Email user routes
 These routes are used to send email notifications to the email addresses of users defined within the Genesis system. There must be a valid email address on the USER_ATTRIBUTES record.
 
-### Email Distribution Routes
+### Email distribution routes
 These routes are used to send email notifications to external email addresses that are not associated with users in the Genesis system. You can configure addresses to send to, as well as addresses to copy in (both CC and BCC).
-It is possible to configure a static distribution on the gateway definition in the **notify.kts** GPAL script file. If this is specified, the static distribution will be merged with the distributions specified on the matching routes. This can be useful for testing, or to ensure all emails are sent to a specific set of addresses regardless of route configuration.
+It is possible to configure a static distribution on the gateway definition in the **notify.kts** GPAL script file. If this is specified, the static distribution will be merged with the distributions specified on the matching routes. This can be useful for testing, or to ensure that all emails are sent to a specific set of addresses, regardless of the route configuration.
 
 ## Email Gateway configuration
 
