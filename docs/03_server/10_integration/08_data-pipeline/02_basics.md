@@ -16,6 +16,15 @@ You can configure data pipelines in a file called _pipeline-name_**-data-pipelin
 
 A pipeline configuration contains a collection of `sources`, one or many `map` functions and one or many `sink` functions.
 
+## Script properties
+
+The following properties are available to be used within the script:
+
+```kotlin
+val systemDefinition: SystemDefinitionService
+val serviceDiscovery: ServiceDiscovery
+```
+
 ## How to define a source
 
 Each data pipeline source contains the configuration specifying how to access the data and the associated mapping and sink functionality.
@@ -77,7 +86,11 @@ pipelines {
 
 ### File
 
-Genesis currently supports CSV, JSON and XML file sources. Below, you can see what options are available for each:
+Genesis currently supports CSV, JSON and XML file sources.
+
+In addition to the configuration properties explained below, each file type also has an optional `onCompletion` block, which can be used to specify what to do after the file has been processed. In scope is `entityDb`, plus `result`, which contains information about the lines that were processed successfully and the lines that failed.
+
+Below, you can see what options are available for each:
 
 #### CSV
 
@@ -98,6 +111,13 @@ pipelines {
     map("mapper-name", TABLE) {
 
     }
+    
+    onCompletion {
+        val successfulRows = result.successfulRows
+        val failedRows = result.failedRows
+        val existingRecords = entityDb.getBulk(TABLE).toList()
+        // ...
+    }
   }
 }
 ```
@@ -105,11 +125,11 @@ pipelines {
 #### XML and JSON
 
 | Parameter | Default value | Sample usage | Value type | Description |
-|---|---|---|---|---|
-| name | N/A | `xmlSource("xml-cdc-test")` | String | Name for the source |
-| location | N/A | `location = "file://runtime/testFiles?fileName=trades_array.json"` | String | Set the location of the XML or Json file. See details below |
-| Tag Name | N/A | `tagName = "Trade"` | String | Set the root tag of the XML (does not apply to Json) |
-| rootAt | "$.[*]" | `rootAt = "$.[*]"` | String | Set the root of the Json/XML tree |
+|-----------|---|---|---|---|
+| name      | N/A | `xmlSource("xml-cdc-test")` | String | Name for the source |
+| location  | N/A | `location = "file://runtime/testFiles?fileName=trades_array.json"` | String | Set the location of the XML or Json file. See details below |
+| tagName   | N/A | `tagName = "Trade"` | String | Set the root tag of the XML (does not apply to Json) |
+| rootAt    | "$.[*]" | `rootAt = "$.[*]"` | String | Set the root of the Json/XML tree |
 
 ```kotlin
 pipelines {
@@ -118,6 +138,10 @@ pipelines {
 
     map("mapper-name", TABLE) {
 
+    }
+
+    onCompletion {
+      // ...
     }
   }
 

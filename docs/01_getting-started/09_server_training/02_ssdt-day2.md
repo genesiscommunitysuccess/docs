@@ -132,7 +132,7 @@ Now you are going to use the Evaluator again to set up dynamic rules. In this ca
 
 ### Preparation
 
-First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron rule](../../../getting-started/go-to-the-next-level/setting-genesis-evaluator-rules/#configure-the-evaluator).
+First, check that you have the Evaluator running. If it is not, check the procedure at the beginning of the exercise on  [setting up a cron rule](../../developer-training/training-content-day5/#cron-rules-static-events).
 
 You need to create two csv files for this. The first is the file with your rule in the correct format, similar to the static cron rule in the previous exercise. Call the file DYNAMIC_RULE.csv.
 

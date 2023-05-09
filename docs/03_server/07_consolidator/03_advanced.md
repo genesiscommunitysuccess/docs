@@ -10,7 +10,7 @@ tags:
 ---
 
 ## Consolidator groups
-Consolidator groups are essential if you are using a non-transaction database (eg. Aerospike).
+Consolidator groups are essential if you are using a non-transaction database (such as Aerospike).
 
 `groupName` identifies a group of Consolidators. 
 

@@ -15,7 +15,7 @@ This day covers:
 
 - [Quick review of the platform​](#quick-review-of-the-platform)
 - [Developing your first application​​](#developing-your-first-application)
-- [Testing the back end​​](#testing-the-back-end)
+- [Testing the back end](#testing-the-back-end)
 
 
 ## Quick review of the platform
@@ -46,7 +46,7 @@ dataServer {
 Front end
 ```html
 <zero-grid-pro rowHeight="45">
-    <grid-pro-genesis-datasource resource-name="ALL_TRADES" order-by="TRADE_DATETIME" />
+    <grid-pro-genesis-datasource resourceName="ALL_TRADES" orderBy="TRADE_DATETIME" />
 </zero-grid-pro>
 ```
 
@@ -60,7 +60,7 @@ Surrounding the core, operational tools enable you to run and monitor the applic
 
 You will get familiar with all these concepts in the next lessons.
 
-## Developing your first application​​
+## Developing your first application
 
 This will enable you to see the basics of the Genesis low-code platform by starting with a very simple application. It is designed simply to get from start to finish as quickly as possible. It is in five main steps:
 
@@ -87,7 +87,7 @@ With a lack of imagination we hope you will find trustworthy, we are going to ca
 
 To create a new project, you can use the `genx` CLI tool, which enables you to seed projects. Further details can be found [here](../../../getting-started/quick-start/create-a-new-project/).
 
-In our case, we just want to extend a blank full-stack application project, so we are using the [training seed](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you have followed the Environment setup and done the step [Start the project baseline](../../../getting-started/developer-training/environment-setup/#start-the-project-baseline), where you cloned the repository locally. 
+In our case, we just want to extend a blank full-stack application project, so we are using the [training seed](https://github.com/genesiscommunitysuccess/devtraining-seed). Hopefully, you have followed the Environment set-up and done the step [Start the project baseline](../../../getting-started/developer-training/environment-setup/#start-the-project-baseline), where you cloned the repository locally. 
 
 Here's a quick overview of the repository that you cloned:
 
@@ -98,7 +98,7 @@ Above, we have expanded the **client** folder. This contains all the UI-related 
 The **server** folder follows the same structure. This contains all the server-side projects.
 
 ## 2. Define the data model
-Now you are ready to define the fields and tables that make up your [data model](../../../database/fields-tables-views/fields-tables-views/). This structures information in a simple way that can be viewed by users and processed by the application.
+Now you are ready to define the fields and tables that make up your [data model](../../../database/fields-tables-views/fields-tables-views/). This model structures information in a simple way that can be viewed by users and processed by the application.
 
 Open IntelliJ and open the alpha project (the devtraining-seed you cloned). After importing and indexing, you should see the files and project structure ready.
 
@@ -133,17 +133,9 @@ After you have saved this file, run [genesis-generated-fields](../../../database
 
 ### generateFields
 
-From the Gradle menu on the right of Intellij, this is:
+Import GenerateFields from '/snippet/_generate_fields.md';
 
- **genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-fields**/**Tasks**/**genesis**/**generateFields**
-
-![](/img/build-gradle-kts-fields.png)
-
-Alternatively, if you can't run it from your IDE, you can run the Gradle tasks from the command line. Make sure to open your terminal and cd into **../server/jvm** to run them.
-
-```shell title='Running generateFields from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-fields:generateFields
-```
+<GenerateFields />
 
 :::note Why do I have to run this Gradle task?
 
@@ -181,18 +173,11 @@ After you have saved this file, run [genesis-generated-dao](../../../database/fi
 
 ### generateDao
 
-From the Gradle menu, this is:
+Import GenerateDao from '/snippet/_generate_DAO.md'
 
-**genesisproduct-alpha**/**alpha-dictionary-cache**/**genesis-generated-dao**/**Tasks**/**genesis**/**generateDao**
+<GenerateDao />
 
-![](/img/build-gradle-kts-generated-dao.png)
-
-
-```shell title='Running generateDAO from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:alpha-generated-dao:generateDao
-```
-
-After running it, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
+After running this, you have the DAOs (i.e. data repos) automatically generated from the tables and available to be imported in your code.
 
 ## 3. Add business logic
 We have a table; now we want to be able to see its content and create new entries.
@@ -229,12 +214,12 @@ The [entityDb](../../../database/database-interface/entity-db/) enables you to i
 :::
 
 ## 4. Prepare the server
-So far we have created an Event Handler and Data Server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on their own processes. To do that, we have to change the processes and the service definition files:
+So far we have created an Event Handler and Data Server - just their definitions, but there's nothing on the runtime configuration yet. Each microservice, such as Event Handler and Data Server, must run on its own process. To do that, we have to change the processes and the service definition files:
 
 - **alpha-processes.xml**
 - **alpha-service-definitions.xml**
 
-At present, they are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
+At present, these files are empty. You need to insert the details of the Data Server and Event Handler that you have just created.
 
 Add the following content to the **alpha-processes.xml** file.
 
@@ -291,29 +276,11 @@ In the Gradle menu on the right of IntelliJ, select:
 ./gradlew :genesisproduct-alpha:assemble
 ```
 
-**genesisproduct-alpha**/**alpha-config**
-
-![](/img/alpha-config-gradle.png)
-
-```shell title='Running alpha-config assemble from the command line'
-./gradlew :genesisproduct-alpha:alpha-config:assemble
-./gradlew :genesisproduct-alpha:alpha-config:deployCfgToGenesisHome
-
-```
-
-**genesisproduct-alpha**/**alpha-script-config**
-
-![](/img/alpha-script-config-gradle.png)
-
-```shell title='Running alpha-script-config assemble from the command line'
-./gradlew :genesisproduct-alpha:alpha-script-config:assemble
-./gradlew :genesisproduct-alpha:alpha-script-config:deployScriptsToGenesisHome
-
-```
-
 #### .genesis-home folder
 
-After the Gradle task, when first using the plugin with a project, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
+After the Gradle task, when first using the plugin with a project, you must configure it to be able to access your DB. For this tutorial, we are going to use POSTGRESQL. Make sure you have configured it properly following the installation guide of the [genesis plugin](../../../server/tooling/intellij-plugin/). 
+
+After that, you must create your genesis home folder; click on the **Install Genesis** button on the Tool window.
 
 ![Genesis Install](/img/intellij-install.png)
 
@@ -331,27 +298,9 @@ If you want to keep your file search as clean as possible, it is possible to ass
 Further information can be found [here](https://www.jetbrains.com/help/idea/content-roots.html#configure-folders).
 :::
 
-There are two scripts (genesisInstall and remap) you can run using the Genesis IntelliJ Plugin explained next.
+### Remap
 
-The [genesisInstall script](../../../operations/commands/server-commands/#genesisinstall-script) step is required whenever editing files, so it can propagate the correct changes into the running processes. You can run it using the Genesis IntelliJ Plugin, as shown below. 
-
-![Genesis Install](/img/intellij-genesisInstall.png)
-
-Apart from the genesisInstall, if the changes affect the Database schema (i.e. **-dictionary.kts** file changes)  we need to run the tasks from **dictionary-cache** module and  [remap script](../../../operations/commands/server-commands/#remap-script) as well. This is because it implies that the Database Access Objects (DAOs) need to be rebuilt. You can also run remap using the Genesis IntelliJ Plugin, as shown below. 
-
-**genesisproduct-alpha**/**alpha-dictionary-cache**
-
-![](/img/alpha-dictionary-cache-gradle.png)
-
-```shell title='Running alpha-dictionary-cache assemble from the command line'
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:assemble
-./gradlew :genesisproduct-alpha:alpha-dictionary-cache:deployDaoToGenesisHome
-
-```
-
-Run genesisInstall again and then remap.
-
-![Genesis Install](/img/intellij-genesisInstall.png)
+Now you need to run the remap, so we can actually create the schema `alpha` to your database and dd all the standard tables from genesis.
 
 ![Genesis Install](/img/intellij-remap.png)
 
@@ -359,7 +308,7 @@ Run genesisInstall again and then remap.
 
 As soon as the Build is done, you can apply the changes and run the Genesis processes again using the Genesis IntelliJ Plugin.
 
-According to the [instructions](../../../server/tooling/intellij-plugin/#making-a-change), follow these four steps:
+According to the [instructions](../../../server/tooling/intellij-plugin/#making-a-change), you must follow these four steps:
 
 1. Click on the **Deploy Genesis** button on the toolbar.
 
@@ -373,21 +322,15 @@ This starts the build processes and the logs will be shown below.
 
 ![Deploy logs](/img/intellij-deploy3.png)
 
-3. Once the build is successful, you’ll be asked to start the Resource daemon again:
-
-![Genesis Install](/img/intellij-daemon.png)
-
-4. Once the Resource daemon starts, you can start the processes you wish to have running.
-
 ### User name and password
-Using the repo that you [cloned](https://github.com/genesiscommunitysuccess/devtraining-seed), your login details are:
+By default the following will be your login details:
 
 - Username: JaneDee
-- Password: beONneON*74 (This is encrypted in the **user.csv** file.)
+- Password: beONneON*74 (This is encrypted in the user.csv file.)
 
-However, after the first Build and Deploy, you added the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin, as explained in the [documentation for the plugin](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
+However, after the first Build and Deploy, you added the default login data into the application. You can load data into the application using the Genesis IntelliJ Plugin as [explained](../../../server/tooling/intellij-plugin/#loading-data-into-the-application).
 
-To do that, find the **USER.csv** file (this is inside the **server/jvm/alpha-site-specific/src/main/resources/data** folder), right-click **USER.csv**, and then click on **Import CSV(s) to Genesis**, as you can see in the image below.
+To do that, find the **USER.csv** file (it is inside the **server/jvm/alpha-site-specific/src/main/resources/data** folder). Right-click **USER.csv**, and then click on **Import CSV(s) to Genesis**, as shown below.
 
 ![Genesis Install](/img/intellij-sendIt-USERcsv.png)
 

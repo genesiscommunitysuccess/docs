@@ -30,9 +30,9 @@ The goal of this section is to:
 
 ## Data model
 
-Make sure that you added the `TRADE_STATUS` field to the `TRADE` table in the **positions-app-tutorial-tables-dictionary.kts** file.
+Make sure that you added the `TRADE_STATUS` field to the `TRADE` table in the **alpha-tables-dictionary.kts** file.
 
-```kotlin {4}
+```kotlin {5} title="alpha-tables-dictionary.kts"
 tables {
     table (name = "TRADE", id = 11000) {
 
@@ -51,11 +51,11 @@ If `TRADE_STATUS` is missing, add it in, run **generateFields** to generate the 
 
 ## Create the State Machine logic and data classes
 
-Fist we need to define our state machine class for type `Trade`. To do this, create a file called `TradeStateMachine.kt` under **positions-app-tutorial-eventhandler/src/main/kotlin/global/genesis**.
+First we need to define our state machine class for type `Trade`. To do this, create a file called `TradeStateMachine.kt` under **alpha-eventhandler/src/main/kotlin/global/genesis** (you may need to create this path yourself).
 
 Add a state machine definition and assign a field in the `onCommit` block:
 
-```kotlin
+```kotlin title="TradeStateMachine.kt"
 package global.genesis
 
 import com.google.inject.Inject
@@ -125,38 +125,49 @@ sealed class TradeEffect {
 }
 ```
 
-Next, we want to create two data classes that will be used in the cancel and allocated Event Handlers. Create two data classes called `TradeAllocated.kt` and `TradeCancelled.kt` under **positions-app-tutorial-messages/src/main/kotlin/global/genesis/message/event/**.
+Next, we want to create two data classes that will be used in the cancel and allocated Event Handlers. Create two data classes called `TradeAllocated.kt` and `TradeCancelled.kt` under **alpha-messages/src/main/kotlin/global/genesis/message/event/**.
 
 Both data classes have a single field: `tradeId` of type `String`.
 
 TradeAllocated:
 
-```kotlin
+```kotlin title="TradeAllocated.kt"
+package global.genesis.message.event
+
 data class TradeAllocated(val tradeId: String)
 ```
 
 TradeCancelled:
 
-```kotlin
+```kotlin title="TradeCancelled.kt"
+package global.genesis.message.event
+
 data class TradeCancelled(val tradeId: String)
 ```
 
-## Updating the dependencies for positions-app-tutorial-script-config
+## Updating the dependencies for alpha-script-config
 
-In order to use the following `TradeStateMachine` and data classes (`TradeAllocated` and `TradeCancelled`) we just defined, we need to add the **positions-app-tutorial-eventhandler** and **positions-app-tutorial-messages** modules as dependencies inside the **positions-app-tutorial-script-config** modules `build.gradle` file.
+In order to use the following `TradeStateMachine` and data classes (`TradeAllocated` and `TradeCancelled`) we just defined, we need to add the **alpha-eventhandler** and **alpha-messages** modules as dependencies inside the **alpha-script-config** modules `build.gradle` file.
 
-```kotlin
-api(project(":positions-app-tutorial-eventhandler"))
-api(project(":positions-app-tutorial-messages"))
+```kotlin title="alpha-script-config/build.gradle"
+api(project(":alpha-eventhandler"))
+api(project(":alpha-messages"))
 ```
 
 Finally, refresh your gradle project.
 
 ## Edit the Event Handler to add an integrated state machine
 
-Let's edit the Event Handler to add an integrated state machine. First, in the **positions-app-tutorial-eventhandler.kts** file, declare a variable to be visible to all events by injecting the class `TradeStateMachine` that we have just created. 
+Let's edit the Event Handler to add an integrated state machine. First, in the **alpha-eventhandler.kts** file, declare a variable to be visible to all events by injecting the class `TradeStateMachine` that we have just created. 
 
-```kotlin {2}
+```kotlin title="alpha-eventhandler.kts"
+import global.genesis.TradeStateMachine
+import global.genesis.gen.dao.Trade
+import global.genesis.message.event.TradeAllocated
+import global.genesis.message.event.TradeCancelled
+```
+
+```kotlin {2} title="alpha-eventhandler.kts"
 eventHandler {
     val stateMachine = inject<TradeStateMachine>()
 
@@ -168,8 +179,9 @@ eventHandler {
 
 Then, replace the `entryDb.insert(event.details)` with the highlighted lines below in the `TRADE_INSERT` `onCommit` block.
 
-```kotlin {3,4,5}
+```kotlin {4-6} title="alpha-eventhandler.kts"
 eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
+    schemaValidation = false
     onCommit { event ->
         val trade = event.details
         trade.enteredBy = event.userName
@@ -187,7 +199,7 @@ You may have noticed we are passing a `transactional = true` parameter into our 
 
 Create a new Event Handler called `TRADE_CANCELLED` to handle cancellations. Then integrate the state machine in it.
 
-```kotlin
+```kotlin title="alpha-eventhandler.kts"
 eventHandler<TradeCancelled>(name = "TRADE_CANCELLED", transactional = true) {
     onCommit { event ->
         val message = event.details
@@ -201,7 +213,7 @@ eventHandler<TradeCancelled>(name = "TRADE_CANCELLED", transactional = true) {
 
 Create a new Event Handler called `TRADE_ALLOCATED` to handle completion. Integrate the state machine in it.
 
-```kotlin
+```kotlin title="alpha-eventhandler.kts"
 eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
     onCommit { event ->
         val message = event.details
@@ -215,7 +227,7 @@ eventHandler<TradeAllocated>(name = "TRADE_ALLOCATED", transactional = true) {
 
 Create a new Event Handler called `TRADE_MODIFY` to handle modifications. Integrate the state machine in it.
 
-```kotlin {4}
+```kotlin {4} title="alpha-eventhandler.kts"
 eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
     onCommit { event ->
         val trade = event.details
@@ -225,10 +237,11 @@ eventHandler<Trade>(name = "TRADE_MODIFY", transactional = true) {
 }
 ```
 
-Your **positions-app-tutorial-eventhandler.kts** file at the end should look like this:
+Your **alpha-eventhandler.kts** file at the end should look like this:
 
-```kotlin
+```kotlin {1-4} title="alpha-eventhandler.kts"
 import global.genesis.TradeStateMachine
+import global.genesis.gen.dao.Trade
 import global.genesis.message.event.TradeAllocated
 import global.genesis.message.event.TradeCancelled
 
@@ -236,6 +249,7 @@ eventHandler {
     val stateMachine = inject<TradeStateMachine>()
 
     eventHandler<Trade>(name = "TRADE_INSERT", transactional = true) {
+        schemaValidation = false
         onCommit { event ->
             val trade = event.details
             trade.enteredBy = event.userName
@@ -276,7 +290,11 @@ eventHandler {
 
 You want to manage the state of the trade, so we don't want a delete Event Handler. If a trade is incorrect and needs to be deleted, similar functionality can be achieved by cancelling the trade.
 
-To test it, you can try to modify a `TRADE` (assuming you already have at least one trade in the database) and see the state change accordingly. 
+### Build and deploy
+
+import BuildAndDeploy from '/snippet/_build_and_deploy.md'
+
+<BuildAndDeploy />
 
 ## Conclusion
 With this, we finish showing how an application can add state management. If you want to see it in action, go to [Endpoints](../../../server/integration/rest-endpoints/introduction/) for information about testing the back end.
