@@ -17,7 +17,10 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 Ensure you have the CDK toolkit available:
 
-* `npm install -g aws-cdk`
+```terminal
+npm i -g aws-cdk
+npm i -g aws-cdk-lib
+```
 
 ## Environment variables
 
@@ -26,6 +29,11 @@ Note that you'll need to set three mandatory environment variables in order to r
 * AWS_ACCOUNT_ID - the AWS Account ID you're targeting
 * AWS_REGION - the AWS region you want to deploy into (which must contain the secrets the CDK relies upon)
 * ENVIRONMENT - this must be 'TEST' or 'PROD'
+
+To deploy you will be asked to set the environment variables as well
+
+* AWS_ACCESS_KEY_ID
+* AWS_SECRET_ACCESS_KEY
 
 How you set these environment variables is largely up to you and may depend on your Operating System. The easiest and most explicit thing to do is to provide them when running any of the above commands. For example:
 
