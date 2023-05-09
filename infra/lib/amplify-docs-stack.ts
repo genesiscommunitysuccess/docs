@@ -37,6 +37,16 @@ export class AmplifyDocsStack extends cdk.Stack {
           phases: {
             preBuild: {
               commands: [
+                'npm config set @genesiscommunitysuccess:registry https://npm.pkg.github.com',
+                // this isn't ideal, but the only rights this token has are packages:read. No amount of
+                // indirection gymnastics gets us away from the fact Amplify doesn't have the concept of
+                // environmental secrets, so however we pass this token value in, it will ultimately be visible
+                // in plaintext in the AWS Amplify console. We accept that because:
+                // 1. it's a *lot* better than leaking the token in code
+                // 2. it's a token we will rotate frequently
+                // 3. it's a token which only grants read-only access to our private npm packages (@genesislcap stuff)
+                // 4. it's only visible in the AWS console to authenticated users, just as normal secrets are
+                'npm config set //npm.pkg.github.com/:_authToken ' + SecretValue.secretsManager('npm-package-manager-05-2023').unsafeUnwrap(),
                 'npm install',
               ],
             },
