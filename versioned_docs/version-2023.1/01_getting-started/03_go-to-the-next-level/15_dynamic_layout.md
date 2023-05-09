@@ -54,7 +54,7 @@ import { tradesGridTemplate } from './trades-grid.template';
 export class TradesGrid extends FASTElement {}
 ```
 
-```typescript title='trades-grid.template.ts'
+```typescript title='orders-grid.template.ts'
 import { html } from '@microsoft/fast-element';
 import { TradesGrid } from './trades-grid';
 
@@ -70,7 +70,7 @@ export const tradesGridTemplate = html<TradesGrid>`
 `;
 ```
 
-Notice the template definition is from the old **home.template.ts**.
+Notice the template definition is from the old **order.template.ts**.
 
 ### Positions grid
 

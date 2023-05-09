@@ -26,9 +26,9 @@ You might want to customise look and feel using layout and styles. For instance,
 
 We've seen how to create custom grids, now let's see another way to further style it.
 
-Styling an grid-pro can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called **orders.styles.ts** and provide the following code:
+Styling an grid-pro can be started by creating a stylesheet document that will have some style definitions for the grid. Create a stylesheet file called **orders-grid.styles.ts** and provide the following code:
 
-```ts title='orders.styles.ts'
+```ts {4-6} title='orders-grid.styles.ts'
 import {css, ElementStyles} from '@microsoft/fast-element';
 
 export const ordersGridStyles: ElementStyles = css`
@@ -40,14 +40,16 @@ export const ordersGridStyles: ElementStyles = css`
 
 Configure your column to have the specific class name:
 
-```ts
-{field: 'NOTES', cellClass: 'notes-column'},
+```ts title="orderColumnDefs.ts"
+{field: 'NOTES', headerName: 'Notes', sort: 'desc', cellClass: 'notes-column', flex: 2},
 ```
 
 In **order.template.ts**, in the grid tag, include utility that will inject your stylesheet to the component:
 
-```ts {1,5}
+```ts {1,7} title ='order.template.ts'
 import {ordersGridStyles} from "./orders-grid.styles";
+
+...
 
 <zero-grid-pro>
     ...    
@@ -59,23 +61,23 @@ import {ordersGridStyles} from "./orders-grid.styles";
 
 If you need to provide different class names for specific conditions, you can provide a function to the `cellClass` column config, as shown in the example below:
 
-```ts
-{field: 'DIRECTION', cellClass: (params) => params.value === 'BUY' ? 'buy-direction' : 'sell-direction'},
+```ts title="orderColumnDefs.ts"
+{field: 'DIRECTION', headerName: 'Order Side', cellClass: (params) => params.value === 'BUY' ? 'buy-direction' : 'sell-direction', sort: 'desc', flex: 2},
 ```
 
 Remember to add the new styles to your stylesheet file.
 
-```ts
+```ts title="orders-grid.styles.ts"
 import {css, ElementStyles} from '@microsoft/fast-element';
 
-export const tradesGridStyles: ElementStyles = css`
-.notes-column {         
-  color: blue;     
+export const ordersGridStyles: ElementStyles = css`
+.notes-column {
+  color: blue;
 }
 
 .buy-direction {
   color: green;
-}    
+}
 
 .sell-direction {
   color: red;
@@ -106,6 +108,330 @@ Style the `quantity` field of the orders grid in such a way that if the value is
 Here you can use specific conditions providing a function to the `cellClass` column config.
 :::
 
+## Dynamic Layout
+
+The aim of this section is to implement the `foundation-layout` component which allows the user to drag, drop, resize, maximise, and restore windows.
+
+### Refactor the Order.ts
+
+In order to prevent the components to get excessivly large, we need to refactor the **orders.ts**.
+
+#### Orders grid
+
+We'll start with the most straightforward component. Create a directory called **orders-grid** in **orders** folder and add these two files to it.
+
+```typescript title='orders-grid.ts'
+import { customElement, FASTElement, observable, attr } from '@microsoft/fast-element';
+import { ordersGridTemplate } from './orders-grid.template';
+import { Connect } from '@genesislcap/foundation-comms';
+
+@customElement({
+  name: 'orders-grid',
+  template: ordersGridTemplate
+})
+
+export class OrdersGrid extends FASTElement {
+
+    @Connect connect: Connect;
+    @observable public instrument: string;
+    @observable public lastPrice: number;
+    @observable public quantity: number;
+    @observable public price: number;
+    @observable public direction: string;
+    @observable public notes: string;
+    @observable public serverResponse;
+    @observable public instrumentClass: string;
+    @observable public quantityClass: string;
+    @observable public priceClass: string;
+    @attr public Order_ID = Date.now();
+    @attr public minimumQuantity: number;
+    @attr public sideFilter = 'BUY';
+
+
+    public singleOrderActionColDef = {
+        headerName: 'Action',
+        minWidth: 150,
+        maxWidth: 150,
+        cellRenderer: 'action',
+        cellRendererParams: {
+          actionClick: async (rowData) => {
+            console.log(rowData);
+          },
+          actionName: 'Print Order',
+          appearance: 'primary-gradient',
+        },
+        pinned: 'right',
+        };
+
+        public cancelOrderActionColDef = {
+            headerName: 'Cancel',
+            minWidth: 150,
+            maxWidth: 150,
+            cellRenderer: 'action',
+            cellRendererParams: {
+              actionClick: async (rowData) => {
+                this.serverResponse = await this.connect.commitEvent('EVENT_ORDER_CANCEL', {
+                  DETAILS: {
+                    ORDER_ID: rowData.ORDER_ID,
+                    INSTRUMENT_ID: rowData.INSTRUMENT_ID,
+                    QUANTITY: rowData.QUANTITY,
+                    PRICE: rowData.PRICE,
+                    DIRECTION: rowData.direction,
+                    NOTES: rowData.NOTES,
+                  },
+                });
+            console.log(this.serverResponse);
+
+            if (this.serverResponse.MESSAGE_TYPE == 'EVENT_NACK') {
+              const errorMsg = this.serverResponse.ERROR[0].TEXT;
+              alert(errorMsg);
+            } else {
+              alert('Order canceled successfully.');
+            }
+          },
+          actionName: 'Cancel Order',
+          appearance: 'primary-gradient',
+        },
+        pinned: 'right',
+    };
+
+}
+```
+
+#### Insert trade form
+
+And now we refactor out the form. This is slightly different because we need an associated styles file too. Create a **insert-orders-form** directory and add these three files
+
+```typescript title='insert-orders-form.ts'
+import { Connect } from '@genesislcap/foundation-comms';
+import {customElement, FASTElement, observable, attr } from '@microsoft/fast-element';
+import { insertOrdersFormStyles } from './insert-orders-form.styles';
+import { insertOrdersFormTemplate } from './insert-orders-form.template';
+
+@customElement({
+  name: 'insert-orders-form',
+  template: insertOrdersFormTemplate,
+  styles: insertOrdersFormStyles,
+})
+
+
+
+export class InsertOrdersForm extends FASTElement {
+    @Connect connect: Connect;
+    @observable public instrument: string;
+    @observable public lastPrice: number;
+    @observable public quantity: number;
+    @observable public price: number;
+    @observable public direction: string;
+    @observable public notes: string;
+    @observable public allInstruments: Array<{value: string, label: string}>; //add this property
+    @observable public directionOptions: Array<{value: string, label: string}>; //add this property
+    @observable public serverResponse;
+    @observable public instrumentClass: string;
+    @observable public quantityClass: string;
+    @observable public priceClass: string;
+
+    @attr public Order_ID = Date.now();
+    @attr public minimumQuantity: number;
+    @attr public sideFilter = 'BUY';
+
+    public async getMarketData() {
+          const msg = await this.connect.request('INSTRUMENT_MARKET_DATA', {
+            REQUEST: {
+              INSTRUMENT_ID: this.instrument,
+            }});
+          console.log(msg);
+
+          this.lastPrice = msg.REPLY[0].LAST_PRICE;
+        }
+
+    @observable tradeInstruments: Array<{ value: string; label: string }>;
+
+    public async connectedCallback() { //add this method to Order class
+        super.connectedCallback(); //FASTElement implementation
+
+        const msg = await this.connect.snapshot('ALL_INSTRUMENTS'); //get a snapshot of data from ALL_INSTRUMENTS data server
+        console.log(msg); //add this to look into the data returned and understand its structure
+        this.allInstruments = msg.ROW?.map(instrument => ({
+          value: instrument.INSTRUMENT_ID, label: instrument.INSTRUMENT_NAME}));
+        const metadata = await this.connect.getMetadata('ALL_ORDERS');
+        console.log(metadata);
+        const directionField = metadata.FIELD?.find(field => field.NAME == 'DIRECTION');
+        this.directionOptions = Array.from(directionField.VALID_VALUES).map(v => ({value: v, label: v}));
+    }
+
+    public async insertOrder() {
+
+        this.Order_ID = Date.now();
+        this.instrumentClass = "";
+        this.quantityClass = "";
+        this.priceClass = "";
+
+        this.serverResponse = await this.connect.commitEvent('EVENT_ORDER_INSERT', {
+            DETAILS: {
+                ORDER_ID: this.Order_ID,
+                INSTRUMENT_ID: this.instrument,
+                QUANTITY: this.quantity,
+                PRICE: this.price,
+                DIRECTION: this.direction,
+                NOTES: this.notes,
+            },
+        });
+        console.log("serverResponse: ", this.serverResponse);
+
+        if (this.serverResponse.MESSAGE_TYPE == 'EVENT_NACK') {
+            const error = this.serverResponse.ERROR[0];
+            alert(error.TEXT);
+            switch (error.FIELD) {
+                case "INSTRUMENT_ID":
+                  this.instrumentClass = 'required-yes';
+                  break;
+
+                case "QUANTITY":
+                  this.quantityClass = 'required-yes';
+                  break;
+
+                case "PRICE":
+                  this.priceClass = 'required-yes';
+                  break;
+
+                default:
+                  console.log("FIELD not found: ", error.FIELD);
+            }
+        }
+    }
+}
+```
+
+```typescript title='insert-orders-form.template.ts'
+import { sync } from '@genesislcap/foundation-utils';
+import { html, repeat, when } from '@microsoft/fast-element';
+import { InsertOrdersForm } from './insert-orders-form';
+
+export const insertOrdersFormTemplate = html<InsertOrdersForm>`
+<template>
+    <div class = "column-split-layout">
+        <zero-anchor disabled appearance="accent">Order_ID - ${x => x.Order_ID}</zero-anchor>
+        <span class='${x => x.instrumentClass}'>Instrument</span>
+        <zero-select :value=${sync(x=> x.instrument)} @change=${x => x.getMarketData()} position="below">
+          <zero-option :selected=${sync(x => x.instrument==undefined)}>-- Select --</zero-option>
+          ${repeat(x => x.allInstruments, html`
+            <zero-option value=${x => x.value}>${x => x.label}</zero-option>
+          `)}
+        </zero-select>
+        <span>Last price: ${x => x.lastPrice}</span>
+        <zero-text-field required :value=${sync(x=> x.quantity)} :class='${x => x.quantityClass}'>Quantity</zero-text-field>
+        <zero-text-field :value=${sync(x=> x.price)} class='${x => x.priceClass}'>Price</zero-text-field>
+        <span>Total: ${x => x.quantity * x.price}</span>
+        <span>Direction</span>
+        <zero-select :value=${sync(x=> x.direction)}>
+          ${repeat(x => x.directionOptions, html`
+            <zero-option value=${x => x.value}>${x => x.label}</zero-option>
+          `)}
+        </zero-select>
+        <zero-text-area :value=${sync(x=> x.notes)}>Notes</zero-text-area>
+        <zero-button @click=${x=> x.insertOrder()}>Add Order</zero-button>
+        ${when(x => x.serverResponse, html`
+            <zero-banner id="js-banner">
+              <div slot="content">
+                ${x=> x.serverResponse.MESSAGE_TYPE == 'EVENT_ACK' ? 'Successfully added order' : 'Something went wrong'} </div>
+              </zero-banner>
+            `)}
+    </div>
+</template>
+`
+```
+and finally
+
+```typescript title='insert-orders-form.styles.ts'
+import {css, ElementStyles} from "@microsoft/fast-element";
+import { mixinScreen } from '../../../styles';
+
+export const insertOrdersFormStyles = css`
+  :host {
+    ${mixinScreen('flex')}
+    justify-content: top;
+    flex-direction: column;
+    display: block;
+  }
+
+  .required-yes {
+    color: red;
+  }
+
+  .column-split-layout {
+    margin-up: 5%;
+    display: flex;
+    flex-direction: column;
+    border-style: solid;
+    vertical-align: center;
+
+  }
+
+  span, zero-select {
+  display: block;
+  }
+
+`;
+
+```
+
+### Add the layout to the order template
+
+Now we have refactored our 2 components, it is easy to add the dynamic layout. Change the **order.template.ts** to:
+
+```typescript title='order.template.ts'
+import {html, repeat, when, ref } from '@microsoft/fast-element';
+import type {Order } from './order';
+import { sync } from '@genesislcap/foundation-utils';
+import { OrderStyles } from './order.styles';
+import { positionGridStyles } from "./positionsGrid.styles";
+import { orderColumnDefs } from './orderColumnDefs';
+import { ordersGridStyles } from "./orders-grid.styles";
+import { InsertOrdersForm } from './insert-orders-form/insert-orders-form';
+import { OrdersGrid } from './orders-grid/orders-grid';
+
+InsertOrdersForm;
+OrdersGrid;
+
+export const OrderTemplate = html<Order>`
+  <zero-layout>
+    <zero-layout-region type="horizontal">
+      <zero-layout-region type="vertical">
+        <zero-layout-item title="Orders Grid">
+            <orders-grid></orders-grid>
+        </zero-layout-item>
+      </zero-layout-region>
+      <zero-layout-region type="vertical">
+        <zero-layout-item title="Orders Form">
+            <insert-orders-form></insert-orders-form>>
+        </zero-layout-item>
+      </zero-layout-region>
+    </zero-layout-region>
+  </zero-layout>
+`
+```
+
+### Understanding the layout
+
+As you noticed, the `<zero-layout>` has 2 main components that control the layout of the page.
+
+- `<zero-layout-region>`: It divides the layout of the page equally depending on the its type. If `type` = horizontal then the layout will be splitted horizontally and if `type` = vertical then the layout will be splitted vertically. The layout is splitted equally depending on the number of items you insert between the `<zero-layout-region></zero-layout-region>` to the application.
+- `zero-layout-item`: It stores the content of each region of the page.
+
+### Exercise 4.2 insert a new grid
+
+:::info ESTIMATED TIME
+20 mins
+:::
+
+Insert the `ALL_INSTRUMENTS` grid to the orders page. Place it on the top right of the page.
+
+:::tip
+You can directly insert the new grid onto the order.template.ts, but it is recommended to create e new component called positions-grid and follow he previous steps. That wat you maintain your order.template.ts as clear as possible.
+:::
+
+###
 
 ## Design systems
 

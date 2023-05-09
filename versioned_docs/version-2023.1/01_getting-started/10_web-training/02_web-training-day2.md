@@ -172,22 +172,21 @@ export const OrderStyles = css`
     text-align: center;
     flex-direction: column;
     flex: 1;
-    width: 50%;
+    width: 100%;
   }
 
   .row-split-layout {
     justify-content: center;
-    display: flex;
+    display: block;
     flex-direction: row;
     flex: 1;
     width: 100%;
     height: 50%;
   }
 
-  zero-select, zero-text-field, zero-text-area{
+  zero-select, zero-text-area, span{
       display: block;
   }
-`
 `
 ```
 
@@ -492,11 +491,11 @@ export class Order extends FASTElement {
 In the template file, let's add the Genesis [data source](../../../web/web-components/grids/grid-pro/grid-pro-genesis-datasource/) pointing to the `ALL_ORDERS` resource and wrap it in [grid-pro](../../../web/web-components/grids/grid-pro/grid-pro-intro/).
 
 Add this code to the end of html template code:
-```html {4-9} title="order.template.ts"
+```html {4-11} title="order.template.ts"
 ...
 export const OrderTemplate = html<Order>`
   ...
-  <div class="column-split-layout">
+  <div class="row-split-layout">
       <zero-grid-pro>
           <grid-pro-genesis-datasource
               resource-name="ALL_ORDERS"
