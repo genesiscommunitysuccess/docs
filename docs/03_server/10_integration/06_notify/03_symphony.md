@@ -11,7 +11,46 @@ tags:
 ---
 
 [Symphony](http://symphony.com) is a secure instant messaging service focused on financial companies. 
-To make Symphony services available to Genesis, including the sending and receiving of messages, you need to provision [symphony service](https://symphony.com/participate) and configure a [symphony bot](https://docs.developers.symphony.com/developer-tools/developer-tools/bdk-2.0).
+To make Symphony services available to Genesis you need to provision [symphony service](https://symphony.com/participate) and configure a [symphony bot](https://docs.developers.symphony.com/developer-tools/developer-tools/bdk-2.0).
+
+## Importing Symphony
+Symphony is a separate module of the Genesis platform. This allows platform users to better manage third party dependencies, as the Symphony BDK has a number of transitive dependencies.
+
+### Adding the Symphony module data schema
+In order to add the Symphony route tables to your application, add the following in your application dictionary cache module: 
+
+```kotlin
+api("global.genesis:genesis-symphony-config")
+```
+
+### Adding the Symphony module to deployment
+In order to add the Symphony distribution to your application deployment, add the following in your application deployment module: 
+
+```kotlin
+genesisServer(
+    group = "global.genesis",
+    name = "genesis-symphony-distribution",
+    version = properties["symphonyVersion"].toString(),
+    classifier = "bin",
+    ext = "zip"
+  )
+```
+
+### Adding the Symphony module endpoints to GENESIS_NOTIFY
+In order to add the Symphony endpoints to your GENESIS_NOTIFY process, add the following package in your process definition: 
+```
+global.genesis.symphony.gateway.endpoints
+```
+and the following jar to the GENESIS_NOTIFY_PROCESS classpath
+```
+genesis-symphony-manager*
+```
+
+### Adding Symphony extensions for notify GPAL scripts
+In order to import extensions for the notify GPAL configuration to configure symphony gateways, add the following dependency to your application script-config module:
+```kotlin
+compileOnly("global.genesis:genesis-symphony-manager:$symphonyVersion")
+```
 
 ## Symphony configuration
 
@@ -23,17 +62,15 @@ Symphony must be configured in your **notify.kts** file. Here is an example conf
 
 ```kotlin
 notify {
-
-    // note: the connection 'id' will default to 'Symphony' if it's not specified, however if you have multiple connections
-    //       of the same type (in this case Symphony) then it will need to be specified. 
-    symphony(id = "symphony1") {
-
-        sessionAuthHost = "76680.p.symphony.com"
-        botUsername = "botusergenesis@genesis.global"
-        botPrivateKeyPath = "/home/priss/run/site-specific/cfg/symphony/rsa/"
-        botPrivateKeyName = "bot1.test.pem"
-        appId = "GENESIS_EXTENSION_APP"  // optional, required for Symphony OBO feature
-    }
+    gateways {
+        symphony(id = "symphony1") {
+            sessionAuthHost = "76680.p.symphony.com"
+            botUsername = "botusergenesis@genesis.global"
+            botPrivateKeyPath = "/home/priss/run/site-specific/cfg/symphony/rsa/"
+            botPrivateKeyName = "bot1.test.pem"
+            appId = "GENESIS_EXTENSION_APP"  // optional, required for Symphony OBO feature
+        }
+	}
     
     // optionally include additional connections, including additional Symphony, Email or Microsoft Teams connections 
 }
@@ -46,12 +83,13 @@ To store the private key in a DB, you need to use the `SYSTEM` table with `SYSTE
 
 ```kotlin
 notify {
+    gateways {
+        symphony(id = "symphony1") {
 
-    symphony(id = "symphony1") {
-
-        sessionAuthHost = "76680.p.symphony.com"
-        botUsername = "botusergenesis@genesis.global"
-        botPrivateKeyFromDb = true
+            sessionAuthHost = "76680.p.symphony.com"
+            botUsername = "botusergenesis@genesis.global"
+            botPrivateKeyFromDb = true
+		}
     }
     
 }
@@ -76,39 +114,17 @@ Once that is configured, you can refer to the item name directly in your **notif
 
 ```Kotlin
 notify {
-
-    symphony(id = "symphony1") {
-
-        sessionAuthHost = SESSION_AUTH_HOST
-        botUsername = BOT_USER_NAME
-        botPrivateKeyFromDb = true
+    gateways {
+        symphony(id = "symphony1") {
+            sessionAuthHost = SESSION_AUTH_HOST
+            botUsername = BOT_USER_NAME
+            botPrivateKeyFromDb = true
+		}
     }
-    
 }
 ```
 
-Where you have configured a Symphony Gateway for handling incoming messages, any attachments to incoming messages will be dropped on the server to the following configured directory parameter: `DOCUMENT_STORE_BASEDIR`. 
-
-For example:
-
-```kotlin
-item(name = "DOCUMENT_STORE_BASEDIR", value = "/home/trading/run/site-specific/incoming-docs")
-```
-
-If the incoming message is configured to publish to a topic, the file name of any attachment will be sent to the `DOCUMENT_ID` field for the topic (showing its file location on the server). In the event of clashing file names, the incoming attachment's file name will have the suffix _1, _2 added, as appropriate.
-
 ## Database configuration
-
-
-### GATEWAY
-
-| Field Name | Usage |
-| --- | --- |
-| GATEWAY_ID | A unique name for the gateway, which can be referenced in the `NOTIFY_ROUTE` table  |
-| GATEWAY_TYPE | For Symphony connection this might be SymphonyRoom, SymphonyByUserEmail, SymphonyRoomReqRep|
-| GATEWAY_VALUE | This is the room name specified as Symphony Conversation Id Or [Stream Id](https://docs.developers.symphony.com/building-bots-on-symphony/datafeed/overview-of-streams)|
-| INCOMING_TOPIC | When the `GATEWAY_TYPE` is specified as SymphonyRoom, then incoming messages are directed to this `TOPIC`. <br />  When the `GATEWAY_TYPE` is specified as SymphonyRoomReqRep then it's treated as colon-separated string specifying the `PROCESS_NAME:EVENT_HANDLER_NAME`, such that incoming messages will be directed to the named Event Handler running in the named process |
-| CONNECTION_ID | This should reference the connection `id` specified in the ```notify.kts``` file. Note if no id is specified in the connection, then you should use the default id of `Symphony`
 
 ### NOTIFY
 
@@ -119,8 +135,21 @@ If the incoming message is configured to publish to a topic, the file name of an
 | HEADER | Header that appended to beginning of every message |
 | NOTIFY_SEVERITY |  An ENUM of either, "Information", "Warning", "Serious", "Critical", which defaults to "Information". This is simply appended to a Symphony Message Header
 | BODY | Message as Symphony [MessageML](https://docs.developers.symphony.com/building-bots-on-symphony/messages/overview-of-messageml/message-format-messageml) Format |
-| NOTIFY_COMPRESSION_TYPE | Do not set. This is used internally by Genesis; it indicates if the body of the message is compressed and by which compression type |
-| DOCUMENT_ID | If set, this should refer to a server-side path and file name. This file will be attached to the outgoing message that is destined for a Symphony gateway
+
+### SYMPHONY_ROOM_NOTIFY_ROUTE_EXT
+
+| Field Name | Usage |
+| --- | --- |
+| ROOM_ID | The unique identifier of the Symphony chat room to send the notification to. | 
+| NOTIFY_ROUTE_ID | Reference to a primary KEY in the NOTIFY_ROUTE table. |
+
+
+### SYMPHONY_BY_USER_EMAIL_NOTIFY_ROUTE_EXT
+| Field Name | Usage |
+| --- | --- |
+| ENTITY_ID | String identifying the entity to send to. |
+| ENTITY_ID_TYPE | One of USER_NAME, PROFILE_NAME, ALL, SELF. An additional value will be available that matches the ENTITY_ADMIN_PERMISSION_FIELD, if it is defined in Sysdef. | 
+| NOTIFY_ROUTE_ID | Reference to a primary KEY in the NOTIFY_ROUTE table. |
 
 ## Genesis Notify operations for Symphony
 
@@ -131,7 +160,7 @@ The Notify service currently provides additional Symphony operations; these are 
 * `GATEWAY_REMOVE_MEMBER_FROM_CHANNEL` removes a user from a channel
 * `GATEWAY_ACTION_ON_CHANNEL` allows a channel to be either reactivated or deactivated
 
-Where there is more than one Symphony connection defined, these operations act upon the first listed.
+Where there is more than one Symphony gateway defined, these operations act upon the first listed.
 
 ```kotlin
 package global.genesis.message.core.event.notify
