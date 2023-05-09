@@ -1,5 +1,5 @@
 ---
-title: 'Gateways and Streamers - Examples'
+title: 'Gateways and Streamers - examples'
 sidebar_label: 'Examples'
 id: examples
 keywords: [server, integration, gateways, streamers, examples]

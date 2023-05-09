@@ -1,5 +1,5 @@
 ---
-title: 'Gateways and Streamers - Introduction'
+title: 'Gateways and Streamers - introduction'
 sidebar_label: 'Introduction'
 id: introduction
 keywords: [server, integration, gateways, streamers, introduction]
