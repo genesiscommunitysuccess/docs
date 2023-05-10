@@ -15,11 +15,11 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 ## Pre-requisites
 
-Ensure you have the CDK toolkit available:
+Ensure you have the CDK toolkit available in this folder:
 
 ```terminal
-npm i -g aws-cdk
-npm i -g aws-cdk-lib
+npm i aws-cdk
+npm i aws-cdk-lib
 ```
 
 ## Environment variables
