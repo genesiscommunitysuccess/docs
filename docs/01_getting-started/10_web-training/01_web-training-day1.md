@@ -141,7 +141,7 @@ Following this, there are three key sections you need to be aware of:
 
 When running the app on your local machine, you can adjust a few settings under the `config` section, including which host to connect to and what port to run the dev server on.
 
-```
+```js title="client/web/package.json"
   "config": {
     "API_HOST": "ws://localhost:9064",
     "DEFAULT_USER": "JaneDee",
@@ -156,7 +156,7 @@ Since our back end is running locally, we set the `API_HOST` to localhost (**ws:
 
 The next section is `scripts`.
 
-```javascript
+```javascript title="client/web/package.json"
   "scripts": {
     "build": "npm run build:webpack",
     "build:with-host": "cross-env API_HOST=$npm_package_config_API_HOST npm run build:webpack",
@@ -185,7 +185,7 @@ Last but not least, the `dependencies` section contains a list of your app's dep
 This includes **@genesislcap** dependencies. This is where you can change versions to upgrade to a newer version of the platform.
 :::
 
-```javascript
+```javascript title="client/web/package.json"
   "dependencies": {
     "@genesislcap/foundation-comms": "14.7.0",
     "@genesislcap/foundation-entity-management": "14.7.0",
@@ -265,7 +265,7 @@ The second approach involves design systems and we will cover this topic later i
 
 Create folder **./client/web/src/routes/playground/** and create a new empty file called **playground.ts** in there. Then, add this code to **playground.ts**:
 
-```typescript
+```typescript title="../playground/playground.ts"
 import { FASTElement, customElement } from "@microsoft/fast-element";
 
 @customElement({ name: "marketdata-component" }) // custom element being created
@@ -558,7 +558,6 @@ You may find it useful: https://www.fast.design/docs/fast-element/using-directiv
 ```typescript
 ${(x,c) => c.parent.PROPERTY_OF_THE_CONTEXT
 ```
-
 :::
 
 ## Extending our application
@@ -593,14 +592,12 @@ You can customise:
 - the icon shown on the navigation bar and flyout menu (this shows the Genesis logo by default).
 - navigation links at the left-hand side of the navigation bar.
 - the control buttons on the right-hand side of the navigation bar can be shown or hidden, and their behaviour controlled via event listeners
-- the contents of the flyout menu.
+- The contents of the flyout menu.
 
 Here is an example of the navigation bar with three navigation items, and all three control buttons shown.
-
 ![Header with the standard genesis logo](/img/foundation-header-standard.png)
 
 This next example is the same as the previous example, except the Genesis logo is replaced with a custom icon.
-
 ![Header with a customised logo](/img/foundation-header-replaced-img.png)
 
 In this next example, we have put a set of example options set in the flyout menu.
@@ -667,7 +664,6 @@ export const MainTemplate: ViewTemplate<MainApplication> = html`
 ```js {3} title='client/web/src/layouts/default.ts'
 export const defaultLayout = new FASTElementLayout(html`
 <div class="container">
-  <alpha-button>Alpha</alpha-button>
   <foundation-header
   ...
 </div>`);
@@ -738,6 +734,11 @@ export class MainRouterConfig extends RouterConfiguration<LoginSettings> {
 	...
 }
 ```
+:::tip
+If you look at the `icon` and `variant` properties, you'll see that you can change the icon displayed on the top menu bar.
+
+Take a look on the [fontawesome](https://fontawesome.com/) icons. You can customize it by changing its properties' values. Try to use `icon: 'gear'` and check.
+:::
 
 - Now, when setting the navigation items, we can use the `repeat` directive to iterate over the defined routes and create a navigation item for each.
 
@@ -823,10 +824,10 @@ const MainTemplate: ViewTemplate<MainApplication> = html`
 
 To set the content of the flyout menu, add the content in the html within an element that has the `slot="menu-contents"` attribute.
 
-```html
+```html {3-27}
 <foundation-header>
+          ....
   <div slot="menu-contents">
-    <!-- Example markup -->
     <p>GROUP SLOT</p>
     <zero-tree-view>
       <zero-tree-item>
@@ -850,6 +851,7 @@ To set the content of the flyout menu, add the content in the html within an ele
       </zero-tree-item>
     </zero-tree-view>
   </div>
+      ...
 </foundation-header>
 ```
 
@@ -861,13 +863,14 @@ To set the content of the flyout menu, add the content in the html within an ele
 Add an item pointing to the playground page.
 
 :::tip
-Look at the [interaction components](../../../web/web-components/interaction/anchor/) to see a list of available components you can use for the menu item.
-A good suggestion would be to use `Anchor`, which can be simply used as `<zero-anchor>`:
+Look at the [interaction components](../../../web/web-components/interaction/anchor/) to see a list of available components you can use for the menu item. A good suggestion would be adding the `@click` attribute to the `<zero-tree-item>`
 
 ```ts
-<zero-anchor @click=${(x) => x.navigation.navigateTo("/PUT_YOUR_ROUTE_HERE")}>
-Playground
-</zero-anchor>
+  <zero-tree-item @click=${(x) => x.navigation.navigateTo("<YOUR_PATH_TO_PLAYGROUD>")}>
+    <zero-icon variant="solid" name="location-arrow"></zero-icon> 
+    Playground
+    </zero-tree-item>
+  <zero-tree-item>
 ```
 
 By the way, we're using by default the Zero Design Systems. We are going to talk more about Design Systems later in this course.
@@ -884,8 +887,8 @@ Customise our header in such a way that we end up with these menu items:
 | ------------------ | ---------- |
 | Trades & Positions | home       |
 | Playground         | playground |
-| Orders             | orders     |
-| Reporting          | reporting  |
+| Orders             | order      |
+| Reporting          | report     |
 
 Feel free to display only empty content when you create the new pages (Orders and Reporting). We're just interested in the navigation for now.
 

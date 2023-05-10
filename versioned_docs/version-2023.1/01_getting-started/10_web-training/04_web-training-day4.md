@@ -1061,7 +1061,7 @@ To enable this micro front-end in your application, follow the steps below.
 }
 ```
 
-- Import the module and in case you haven't done the [exercise 2.1](./01_web-training-day1/#exercise-14-adding-new-routes) configure the route in your routes **config.ts** file.
+- Import the module and in case you haven't done the [exercise 2.1](../web-training-day1/#exercise-14-adding-new-routes) configure the route in your routes **config.ts** file.
 
 **Synchronous example**
 
