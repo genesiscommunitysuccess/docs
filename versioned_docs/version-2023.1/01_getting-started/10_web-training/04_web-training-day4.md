@@ -15,8 +15,11 @@ tags:
 This day covers:
 
 - [Styling](#styling)
+- [Dynamic layout](#dynamic-layout)
+- [Chart](#chart)
 - [Design systems](#design-systems)
 - [Micro Front-ends](#micro-front-ends)
+
 
 ## Styling
 
@@ -431,6 +434,186 @@ Insert the `ALL_INSTRUMENTS` grid to the orders page. Place it on the top right 
 You can directly insert the new grid onto the order.template.ts, but it is recommended to create e new component called positions-grid and follow he previous steps. That wat you maintain your order.template.ts as clear as possible.
 :::
 
+Now we are going to look at some of the dynamic interactions that are available via the layout's JavaScript API. In this example, we are going to:
+
+- set up the component to autosave the layout as the user interacts with it
+- add a button to reset the layout
+
+To see what else you can do with the JavaScript API, see the main documentation linked in the [API documentation here](../../04_web/10_dynamic-layout/docs/api/foundation-layout.foundationlayout.md/#methods).
+
+### Autosaving layout
+
+It is easy to get the layout to autosave as the user changes it. Add a key under the `auto-save-key` attribute and the layout will take care of the rest. Ensure that the key you use is unique, so it doesn't clash with any other saved layouts.
+
+Add this attribute to your `order.template.ts`:
+
+```html {1} title='order.template.ts'
+<zero-layout auto-save-key="training-layout-key">
+	<zero-layout-region type="horizontal">
+		<!-- other layout contents -->
+	</zero-layout-region>
+</zero-layout>
+```
+
+Now when you're on the page, if you make a change to the layout (resize, drag, reorder, add/remove items) then the layout will be saved in local storage. 
+
+Try for yourself! drag an item around and refresh the page and see it reload your layout.
+
+:::note
+The layout-saving functionality is only responsible for the *layout* itself - it will not save the state of the items inside it. Components are responsible for saving their own state if required - such as the grids [we set up earlier in the tutorial](#saving-user-preferences).
+:::
+
+### Resetting the layout
+
+The user's layout is now saved, now we need to create a reset button.Now we are going to create this button.
+
+The first thing we want to do is to update the `Order` component with a reference to the layout.
+
+```ts title='order.template.ts'
+import { ... , ref } from '@microsoft/fast-element';
+```
+
+```html {1} title='order.template.ts'
+<zero-layout auto-save-key="tutorial-app-layout-key" ${ref('layout')}>
+	<zero-layout-region type="horizontal">
+		<!-- other layout contents -->
+	</zero-layout-region>
+</zero-layout>
+```
+
+```typescript {6,17} title='order.ts'
+import {customElement, FASTElement, observable, attr } from '@microsoft/fast-element';
+import {OrderTemplate as template} from './order.template';
+import {OrderStyles as styles} from './order.styles';
+import {Connect} from '@genesislcap/foundation-comms';
+import {logger} from '../../utils';
+import { FoundationLayout } from '@genesislcap/foundation-layout';
+
+const name = 'order-route';
+
+@customElement({
+  name,
+  template,
+  styles,
+})
+
+export class Order extends FASTElement {
+  layout: FoundationLayout;
+```
+
+#### Updating the header
+
+Next, we want to add a button to the header sidebar to reset the layout. In this seed, the header is defined in a file called **default.ts**.
+
+```html {7-17} title='default.ts'
+    <div class="container">
+      <foundation-header 
+        show-luminance-toggle-button
+        show-misc-toggle-button
+        show-notification-button>
+		<!-- other header contents -->
+		<div slot="menu-contents">
+			<zero-button
+				appearance="neutral-grey"
+				@click=${(x, _) => {
+					const { resetLayout } = x.lastChild;
+					resetLayout();
+				}}
+			>
+				Reset Layout
+			</zero-button>
+		</div>
+		<!-- other header contents -->
+	</foundation-header>
+	<div class="content">
+		<slot></slot>
+	</div>
+</div>
+```
+
+When you load the app, you can now click the hamburger menu in the top-left corner and see the reset button. Clicking it will execute the `resetLayout()` function in the **order.ts** file; but we still need to set up the actual functionality.
+
+:::info
+If you've changed the structure of your application from the default, you might not be able to access `Home` via `x.lastChild` like we did in the click handler. You may need to experiment with getting a reference to the `Home` yourself, use events, or the `Foundation Store`.
+:::
+
+#### Reload the default
+
+Finally we can now make `resetLayout()` load the default layout. The easiest way to get the default layout configuration is using the developer tools on your web browser. Open the developer tools in your browser and find the layout component (remember [from earlier](#registration-prefix) that we are looking for `<zero-layout>` in this case).
+
+:::caution
+If you've changed the layout from the default while testing your application, you need to reset it manually back to the default. 
+
+1. In the developer tools, find the local storage and delete the `foundation-layout-autosave` value.
+2. Refresh the page.
+:::
+
+Now we need access to this component in the web console. In most browsers you can do this by right-clicking on `<zero-layout>` in the element inspector and selecting an option that is similar to "store in a global variable". 
+
+![](/img/zero-layout-select.png)
+
+
+This will save the layout in a variable such as `temp1`. 
+
+![](/img/temp1-global-variable.png)
+
+Then, to get to get the layout run this command in the web console:
+
+```javascript title='web console'
+JSON.stringify(temp1.getLayout()) // temp0, or whatever your browser saved the layout in
+```
+
+:::tip
+You can follow this process to create a range of pre-defined layouts for the user in addition to being able to restore the default layout. Or you can, for example, use the `.getLayout()` and `.loadLayout()` APIs to allow the user to save their own layouts.
+:::
+
+Now create a file under **order** directory called **predefined-layouts.ts**; copy the generated string and paste it into a file in the project.
+
+```typescript title='predefined-layouts.ts'
+export const ORDERS_DEFAULT_LAYOUT = ... /* Set this equal to the string from the web console */
+```
+
+The final step is to wire all of this functionality together so that the button loads the layout that we have just saved.
+
+```typescript {6,22,27-29} title='home.ts'
+import { customElement, FASTElement, observable } from '@microsoft/fast-element';
+import { HomeTemplate as template } from './home.template';
+import { HomeStyles as styles } from './home.styles';
+import { Connect } from '@genesislcap/foundation-comms';
+import { FoundationLayout } from '@genesislcap/foundation-layout';
+import { ORDERS_DEFAULT_LAYOUT } from './predefined-layouts';
+
+const name = 'order-route';
+
+@customElement({
+  name,
+  template,
+  styles,
+})
+export class Home extends FASTElement {
+  layout: FoundationLayout;
+
+  connectedCallback(): void {
+    
+    ...
+    
+    this.resetLayout = this.resetLayout.bind(this);
+    
+    ...
+  }
+
+  resetLayout() {
+    this.layout.loadLayout(JSON.parse(ORDERS_DEFAULT_LAYOUT));
+  }
+}
+```
+
+:::warning Warning
+You need to override the existing connectedCallback() method.
+:::
+
+Now when you open the header sidebar and click the reset button, you should see the layout return to its default settings.
+
 ## Chart
 
 Charts is one of the must-have components in any dashboard. Because of that, Genesis created a easy way to add a series of charts into your application. Let's create our brand new chart.
@@ -778,7 +961,7 @@ To enable this micro front-end in your application, follow the steps below:
 
 - Add `@genesislcap/foundation-entity-management` as a dependency in your *package.json* file. Whenever you change the dependencies of your project, ensure you run the bootstrap command again.
 
-```javascript
+```javascript {4} title="./client/web/package.json"
 {
   ...
   "dependencies": {
@@ -792,7 +975,7 @@ To enable this micro front-end in your application, follow the steps below:
 
 ```javascript
 // Import
-import { Users, } from '@genesislcap/foundation-entity-management';
+import { Users } from '@genesislcap/foundation-entity-management';
 
 // Declare class
 Users;
@@ -828,7 +1011,7 @@ To configure the columns yourself, set the `columns` attribute when you define t
 Further information about User Management API Ref (such as `Permissions` or `persist-column-state-key`) can be found [here](../../../web/micro-front-ends/foundation-entity-management/docs/api/).
 
 
-### Exercise 4.3 Add the User Management into the application
+### Exercise 4.4 Add the User Management into the application
 :::info ESTIMATED TIME
 30 mins
 :::
@@ -847,15 +1030,19 @@ The [Front-end reporting](../../../web/micro-front-ends/front-end-reporting/foun
 
 #### Server configuration
 
-This component requires a server side module to be installed and running. Luckily, this is already available in the WSL training distro you're using.
+This component requires a server side module to be installed and running. Please access the [reporting distribution 6.5.0](https://genesisglobal.jfrog.io/ui/native/libs-release-local/global/genesis/reporting-distribution/6.5.0/reporting-distribution-6.5.0-bin.zip) and export the files into your **.genesi-home** directory.
 
 To make data available to users so that they can create reports, you must insert entries into the `REPORT_DATASOURCES` table. This table determines which data resources can be reported on.
+
+Now import the **REPORTING_DATASOURCES.csv** into genesis.
 
 The Report Server adds the following metadata services:
 
 - ALL_SAVED_REPORTS (Data Server)
 - SAVED_REPORTS (Request Response)
 - ALL_REPORT_DATASOURCES (Request Response)
+
+go to your resource deamon and start all processes.
 
 #### Front-end configuration
  
@@ -868,13 +1055,13 @@ To enable this micro front-end in your application, follow the steps below.
   ...
   "dependencies": {
     ...
-    "@genesislcap/foundation-reporting": "^5.0.1"
+    "@genesislcap/foundation-reporting": "14.7.0",
   },
   ...
 }
 ```
 
-- Import the module and configure the route in your routes **config.ts** file.
+- Import the module and in case you haven't done the [exercise 2.1](./01_web-training-day1/#exercise-14-adding-new-routes) configure the route in your routes **config.ts** file.
 
 **Synchronous example**
 
@@ -887,7 +1074,7 @@ public configure() {
   ...
   this.routes.map(
     ...
-    {path: 'reporting', element: Reporting, title: 'Reporting', name: 'reporting'},
+    {path: 'report', element: Reporting, title: 'Report', name: 'report'},
     ...
   );
 }
@@ -907,7 +1094,7 @@ public async configure() {
 }
 ```
 
-### Exercise 4.4 Creating a new ALL_POSITIONS Report
+### Exercise 4.5 Creating a new ALL_POSITIONS Report
 :::info ESTIMATED TIME
 25 mins
 :::

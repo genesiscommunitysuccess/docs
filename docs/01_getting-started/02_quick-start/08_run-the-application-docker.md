@@ -12,7 +12,7 @@ tags:
 
 ## Create a new Schema
 
-Before you can run your application, you need to create a new schema for the database, where all the tables will be created (in our case, there is only one). To do that, follow these two steps:
+Before you can run your application, you need to create a new schema for the database, where all tables will be created. To do that, follow these two steps:
 
 1. Run `genesis-install`.
 
@@ -24,29 +24,27 @@ Before you can run your application, you need to create a new schema for the dat
 
 
 ## Send data to Genesis
-Now that you have your database up and running, you need to send the login information so that you can access the application you have just created. To do this, go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**:
+Now that you have your database up and running, you need to send the login information so you can access the application you have just created. To do this, go to **server/jvm/alpha-site-specific/src/main/resources/data/user.csv**
 
 ![](/img/import_csv_to_genesis.png)
 
-You will be prompted with the following message: 
+You will be prompted the following message. Type **y** to proceed.
 
 ```powershell
 WARNING: Are you sure you want to import all the tables from all the csv files to the database? (y/n)
 ```
-Type **y** to proceed.
 
 After that, you have all the data to start the application.
 
 <details>
   <summary>Want to check if your data has been sent?</summary>
-  To check your database, the Genesis Intellij plugin has the following script: 
+  To check your database, Genesis Intellij plugin has the following script 
 
   ![](/img/DbMon-script.png)
 
-  Type `table USER` and press **Enter**. Then type `search 1` and press **Enter**. This displays:
-  
+  type `table USER` and then `search 1` you will be displayed the following:
 
-```bash
+```kotlin
 ==================================
 Genesis Database Monitor
 Enter 'help' for a list of commands

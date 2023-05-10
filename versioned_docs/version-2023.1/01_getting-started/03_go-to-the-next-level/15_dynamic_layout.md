@@ -379,7 +379,7 @@ import { html, ref } from '@microsoft/fast-element';
 </zero-layout>
 ```
 
-```typescript {4,14,16} title='home.ts'
+```typescript {5,15} title='home.ts'
 import { customElement, FASTElement, observable } from '@microsoft/fast-element';
 import { HomeTemplate as template } from './home.template';
 import { HomeStyles as styles } from './home.styles';
