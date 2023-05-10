@@ -1,6 +1,6 @@
 ---
 title: 'DB Streaming Out - configuring runtime'
-sidebar_label: 'Configuring Runtime'
+sidebar_label: 'Configuring runtime'
 id: configuring-runtime
 keywords: [server, integration, database streaming out, configuring runtime]
 tags:

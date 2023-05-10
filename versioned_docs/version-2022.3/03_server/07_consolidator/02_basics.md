@@ -9,8 +9,7 @@ tags:
 - basics
 ---
 
-You define a Consolidator service in a **consolidator.kts** file. Within the file, you can define as many Consolidators as you like. Each one is specified in a `Consolidator` block of code.
-
+You define a Consolidator service in a **consolidator.kts** file. Within the file, you can define as many Consolidators as you like. Each one is specified in a `consolidator` block of code. 
 
 
 Here is an example of the simplest Consolidator you could define:

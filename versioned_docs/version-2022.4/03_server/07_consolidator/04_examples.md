@@ -1,5 +1,5 @@
 ---
-title: 'Consolidator - Examples'
+title: 'Consolidator - examples'
 sidebar_label: 'Examples'
 id: examples
 keywords: [server, consolidator, examples]

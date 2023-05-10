@@ -11,3 +11,4 @@ tags:
 ---
 
 You can not programmatically test integrations configured using the GenesisToDb module. However, you can manually reproduce changes by inserting, modifying or deleting data in Genesis and then querying the target RDBMS.
+

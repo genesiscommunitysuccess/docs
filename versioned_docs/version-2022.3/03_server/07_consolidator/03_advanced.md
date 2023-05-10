@@ -6,10 +6,9 @@ keywords: [server, consolidator, advanced]
 tags:
   - server
   - consolidator
-  - consolidator groups
+  - Consolidator groups
   - advanced
 ---
-
 
 ## Consolidator groups
 Consolidator groups are essential if you are using a non-transaction database (such as Aerospike).

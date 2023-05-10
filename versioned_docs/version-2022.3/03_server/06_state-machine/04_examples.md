@@ -1,5 +1,5 @@
 ---
-title: 'State Machine - Examples'
+title: 'State Machine - examples'
 sidebar_label: 'Examples'
 id: examples
 keywords: [server, state machine, examples]
