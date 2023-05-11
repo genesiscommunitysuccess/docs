@@ -187,18 +187,18 @@ This includes **@genesislcap** dependencies. This is where you can change versio
 
 ```javascript title="client/web/package.json"
   "dependencies": {
-    "@genesislcap/foundation-comms": "14.7.0",
-    "@genesislcap/foundation-entity-management": "14.7.0",
-    "@genesislcap/foundation-forms": "14.7.0",
-    "@genesislcap/foundation-header": "14.7.0",
-    "@genesislcap/foundation-layout": "14.7.0",
-    "@genesislcap/foundation-login": "14.7.0",
-    "@genesislcap/foundation-ui": "14.7.0",
-    "@genesislcap/foundation-utils": "14.7.0",
-    "@genesislcap/foundation-zero": "14.7.0",
-    "@genesislcap/foundation-zero-grid-pro": "14.7.0",
-    "@genesislcap/foundation-reporting": "14.7.0",
-    "@genesislcap/g2plot-chart": "14.7.0",
+    "@genesislcap/foundation-comms": "14.15.2",
+    "@genesislcap/foundation-entity-management": "14.15.2",
+    "@genesislcap/foundation-forms": "14.15.2",
+    "@genesislcap/foundation-header": "14.15.2",
+    "@genesislcap/foundation-layout": "14.15.2",
+    "@genesislcap/foundation-login": "14.15.2",
+    "@genesislcap/foundation-ui": "14.15.2",
+    "@genesislcap/foundation-utils": "14.15.2",
+    "@genesislcap/foundation-zero": "14.15.2",
+    "@genesislcap/foundation-zero-grid-pro": "14.15.2",
+    "@genesislcap/foundation-reporting": "14.15.2",
+    "@genesislcap/g2plot-chart": "14.15.2",
     "@microsoft/fast-components": "^2.21.6",
     "@microsoft/fast-element": "^1.7.0",
     "@microsoft/fast-foundation": "^2.33.4",
@@ -616,7 +616,7 @@ To enable this micro front-end in our application, we'd have to follow the steps
   ...
   "dependencies": {
     ...
-    "@genesislcap/foundation-header": "14.7.0",
+    "@genesislcap/foundation-header": "14.15.2",
     ...
   },
   ...

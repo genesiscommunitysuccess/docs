@@ -1055,7 +1055,7 @@ To enable this micro front-end in your application, follow the steps below.
   ...
   "dependencies": {
     ...
-    "@genesislcap/foundation-reporting": "14.7.0",
+    "@genesislcap/foundation-reporting": "14.15.2",
   },
   ...
 }
@@ -1098,7 +1098,7 @@ public async configure() {
 :::info ESTIMATED TIME
 25 mins
 :::
-Create a new report using the ALL_POSITIONS query in the Data Server.
+Create a new report using the ALL_ORDERS query in the Data Server.
 
 
 <!-- 
