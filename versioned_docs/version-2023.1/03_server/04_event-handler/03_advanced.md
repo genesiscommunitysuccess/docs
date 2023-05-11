@@ -4,12 +4,12 @@ sidebar_label: 'Advanced'
 id: advanced
 keywords: [server, event handler, advanced, approval, approvals, pending approvals]
 tags:
-  - server
-  - event handler
-  - advanced
-  - approval
-  - approvals
-  - pending approvals
+- server
+- event handler
+- advanced
+- approval
+- approvals
+- pending approvals
 ---
 
 
@@ -20,13 +20,13 @@ For a custom message type called `TradeEvent` defined as:
 
 ```kotlin
 data class TradeEvent(
-    val price: Double,
-    val quantity: Int,
+  val price: Double,
+  val quantity: Int,
 ){
-    init{
-        require(price > 0) { "Price cannot be negative "}
-        require(quantity > 0) { "Quantity cannot be negative "}
-    }
+  init{
+    require(price > 0) { "Price cannot be negative "}
+    require(quantity > 0) { "Quantity cannot be negative "}
+  }
 }
 ```
 
@@ -34,9 +34,9 @@ data class TradeEvent(
 
 ```kotlin
 sealed class CustomTradeEventReply : Outbound() {
-    class TradeEventValidateAck : CustomTradeEventReply()
-    data class TradeEventAck(val tradeId: String) : CustomTradeEventReply()
-    data class TradeEventNack(val error: String) : CustomTradeEventReply()
+  class TradeEventValidateAck : CustomTradeEventReply()
+  data class TradeEventAck(val tradeId: String) : CustomTradeEventReply()
+  data class TradeEventNack(val error: String) : CustomTradeEventReply()
 }
 ```
 
@@ -46,22 +46,22 @@ Add `CustomTradeEventReply` under **{app-name}-messages** and assemble. Once you
 
 ```kotlin
     eventHandler<TradeEvent, CustomTradeEventReply>(name = "CUSTOM_TRADE_EVENT") {
-        onException { event, throwable ->
-            CustomTradeEventReply.TradeEventNack(throwable.message!!)
-        }
-        onValidate {
-            val tradeEvent = it.details
-            val notional = tradeEvent.price?.times(tradeEvent.quantity!!.toDouble())
-            
-            require(notional!! < 1_000_000) { "Trade notional is too high" }
-            CustomTradeEventReply.TradeEventValidateAck()
-        }
-        onCommit { event ->
-            val trade = event.details
-            val result = entityDb.insert(trade)
-            CustomTradeEventReply.TradeEventAck(result.record.tradeId)
-        }
-    }
+  onException { event, throwable ->
+    CustomTradeEventReply.TradeEventNack(throwable.message!!)
+  }
+  onValidate {
+    val tradeEvent = it.details
+    val notional = tradeEvent.price?.times(tradeEvent.quantity!!.toDouble())
+
+    require(notional!! < 1_000_000) { "Trade notional is too high" }
+    CustomTradeEventReply.TradeEventValidateAck()
+  }
+  onCommit { event ->
+    val trade = event.details
+    val result = entityDb.insert(trade)
+    CustomTradeEventReply.TradeEventAck(result.record.tradeId)
+  }
+}
 ```
 
 The following code assumes you have built your fields and tables after you created your `TradeEvent` under **jvm/{app-name}-config** with a primary key of `tradeId`. If intelliJ can't find you `TradeEvent`, go back and build your fields and tables as per the [Data Model Training](../../../getting-started/learn-the-basics/data-model/).
@@ -80,18 +80,18 @@ In the below example we use a generated database entity called `Company` as mess
 
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
-        permissioning {
-            auth(mapName = "COMPANY"){
-                field { companyName } 
-            }
-        }
-
-        onCommit { event ->
-            val company = event.details
-            val result = entityDb.insert(company)
-            ack(listOf(mapOf("VALUE" to result.record.companyId)))
-        }
+  permissioning {
+    auth(mapName = "COMPANY"){
+      field { companyName }
     }
+  }
+
+  onCommit { event ->
+    val company = event.details
+    val result = entityDb.insert(company)
+    ack(listOf(mapOf("VALUE" to result.record.companyId)))
+  }
+}
 ```
 
 If you use custom class instead of generated database entities as message-type of events, we recommend that you locate your classes within the messages module of your application. This is where we place all the custom message types for our application. You need to ensure that the _app-name_**-script-config** module has a dependency on the messages module.
@@ -103,13 +103,13 @@ If you use custom class instead of generated database entities as message-type o
 
 ```kotlin
     eventHandler<Company>(name = "AUTH_COMPANY_INSERT") {
-        permissionCodes = listOf("INSERT_TRADE")
-        onCommit { event ->
-            val company = event.details
-            val result = entityDb.insert(company)
-            ack(listOf(mapOf("VALUE" to result.record.companyId)))
-        }
-    }
+  permissionCodes = listOf("INSERT_TRADE")
+  onCommit { event ->
+    val company = event.details
+    val result = entityDb.insert(company)
+    ack(listOf(mapOf("VALUE" to result.record.companyId)))
+  }
+}
 ```
 
 You can find out more details in our section on [authorisation](../../../server/access-control/authorisation-overview/).
@@ -134,8 +134,8 @@ It is possible to disable the automatic Json Schema validation enforced by defau
 
 To disable schema validation for a specific event, either:
 
-- Override the `schemaValidation` method to `false` in the custom Event Handler definitions. 
-or
+- Override the `schemaValidation` method to `false` in the custom Event Handler definitions.
+  or
 - Set the `schemaValidation` property to `false` in a GPAL Event Handler.
 
 Here is an example of a custom Event Handler definition:
@@ -147,20 +147,20 @@ import global.genesis.message.core.event.EventReply
 
 @Module
 class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply> {
-    // Override schemaValidation here to disable schema validation
-    override fun schemaValidation(): Boolean = false
-    
-    override suspend fun onValidate(message: Event<Company>): EventReply {
-        val company = message.details
-        // custom code block..
-        return ack()
-    }
+  // Override schemaValidation here to disable schema validation
+  override fun schemaValidation(): Boolean = false
 
-    override suspend fun onCommit(message: Event<Company>): EventReply {
-        val company = message.details
-        // custom code block..
-        return ack()
-    }
+  override suspend fun onValidate(message: Event<Company>): EventReply {
+    val company = message.details
+    // custom code block..
+    return ack()
+  }
+
+  override suspend fun onCommit(message: Event<Company>): EventReply {
+    val company = message.details
+    // custom code block..
+    return ack()
+  }
 }
 ```
 
@@ -169,14 +169,14 @@ or in a GPAL definition:
 ```kotlin
 
 eventHandler {
-    eventHandler<Company> {
-        schemaValidation = false
-        onCommit { event ->
-            val company = event.details
-            // custom code block..
-            ack()
-        }
+  eventHandler<Company> {
+    schemaValidation = false
+    onCommit { event ->
+      val company = event.details
+      // custom code block..
+      ack()
     }
+  }
 }
 ```
 
@@ -184,14 +184,14 @@ See more information about how to define type-safe messages [here](../../../serv
 
 ## Pending approvals
 
-The Genesis low-code platform has an in-built pending approval mechanism that can be used with Event Handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check". 
+The Genesis low-code platform has an in-built pending approval mechanism that can be used with Event Handlers. This is useful where particular events require a second user to approve them in order to take effect. Genesis Pending Approvals works with the concepts of “delayed” events and "4-eyes check".
 
 
 ### Set an event to require approval
 
 To enable the pending approval workflow for an Event Handler implementation, either:
 
-- Override the `requiresPendingApproval` method with an appropriate function in the custom Event Handler definitions. 
+- Override the `requiresPendingApproval` method with an appropriate function in the custom Event Handler definitions.
 
 or
 
@@ -203,62 +203,61 @@ Here is an example of a GPAL Event Handler definition:
 
 ```kotlin
 eventHandler {
-    eventHandler<Company>("COMPANY_INSERT") {
-        // Override requiresPendingApproval here to enable the "pending approval" flow.
-        // In this implementation, any user that is not "system.user" needs to go through requires going through the approval mechanism.
-        // The last line just needs to evaluate to a boolean; if false it does not require approval, if true it does
-        requiresPendingApproval { event ->
-            event.userName != "system.user"
-        }
-        onCommit { event ->
-            val company = event.details
-            // custom code block..
-            ack()
-        }
+  eventHandler<Company>("COMPANY_INSERT") {
+    // Override requiresPendingApproval here to enable the "pending approval" flow.
+    // In this implementation, any user that is not "system.user" needs to go through requires going through the approval mechanism.
+    // The last line just needs to evaluate to a boolean; if false it does not require approval, if true it does
+    requiresPendingApproval { event ->
+      event.userName != "system.user"
     }
+    onCommit { event ->
+      val company = event.details
+      // custom code block..
+      ack()
+    }
+  }
 }
 ```
 
 or in a custom Event Handler definition:
 
 ```kotlin
+package global.genesis.position.samples.events.async
+
 import global.genesis.commons.annotation.Module
-import global.genesis.eventhandler.typed.async.AsyncValidatingEventHandler
+import global.genesis.eventhandler.typed.async.AsyncContextValidatingEventHandler
+import global.genesis.gen.dao.Company
 import global.genesis.message.core.event.Event
 import global.genesis.message.core.event.EventReply
+import global.genesis.message.core.event.ValidationResult
 
 @Module
-class TestCompanyHandlerAsync : AsyncValidatingEventHandler<Company, EventReply> {
-    // Override requiresPendingApproval here to enable the "pending approval" flow.
-    // In this implementation, any user that is not "system.user" needs to go through the approval mechanism.
-    // The last line just needs to evaluate to a boolean; if false it does not require approval, if true it does
-    override fun requiresPendingApproval(): (suspend (Event<Company>) -> Boolean) {
-        return { event ->
-            event.userName != "system.user"
-        }
-    }
-    
-    override suspend fun onValidate(message: Event<Company>): EventReply {
-        val company = message.details
-        // custom code block..
-        return ack()
-    }
+class TestCompanyHandlerAsyncContext : AsyncContextValidatingEventHandler<Company, EventReply, String> {
+  override suspend fun onValidate(message: Event<Company>): ValidationResult<EventReply, String> {
+    val company = message.details
+    // custom code block..
+    val companyName = company.companyName
+    return validationResult(ack(), companyName)
+  }
 
-    override suspend fun onCommit(message: Event<Company>): EventReply {
-        val company = message.details
-        // custom code block..
-        return ack()
+  override suspend fun onCommit(message: Event<Company>, context: String?): EventReply {
+    if(context != null){
+      // Do something with the context
     }
+    val company = message.details
+    // custom code block..
+    return ack()
+  }
 }
 ```
 
 ### Pending approval workflow
 
-Events going through a pending approval workflow are validated as usual (i.e. the `onValidate` method is run).  If the validation is successful, the “delayed” event is stored in the `APPROVAL` table in JSON format. 
+Events going through a pending approval workflow are validated as usual (i.e. the `onValidate` method is run).  If the validation is successful, the “delayed” event is stored in the `APPROVAL` table in JSON format.
 
-Assuming the event is inserting, updating or deleting a target database record, it is possible to have multiple `APPROVAL` records associated with a single database entity. So, you should use the event `onValidate` method to check for pre-existing approvals against the entities related to the event if you need to ensure there is only one pending approval per record. 
+Assuming the event is inserting, updating or deleting a target database record, it is possible to have multiple `APPROVAL` records associated with a single database entity. So, you should use the event `onValidate` method to check for pre-existing approvals against the entities related to the event if you need to ensure there is only one pending approval per record.
 
-The `APPROVAL` record is keyed on an auto-generated `APPROVAL_ID` and does not have a direct link to the original record(s). You have to create one or many links by adding “approval entity” details to the payload returned within an `approvableAck` inside the `onValidate` method. These details include the `entityTable` (e.g COUNTERPARTY), `entityKey` (e.g. COUNTERPARTY_ID), as well as an optional `approvalType` to describe what operation is happening on the entity itself (e.g. NEW, UPDATE or REMOVE). 
+The `APPROVAL` record is keyed on an auto-generated `APPROVAL_ID` and does not have a direct link to the original record(s). You have to create one or many links by adding “approval entity” details to the payload returned within an `approvableAck` inside the `onValidate` method. These details include the `entityTable` (e.g COUNTERPARTY), `entityKey` (e.g. COUNTERPARTY_ID), as well as an optional `approvalType` to describe what operation is happening on the entity itself (e.g. NEW, UPDATE or REMOVE).
 
 This approach enables you to decide how to identify the original record (e.g. creating a compound key in the case of multi-field keys). When the approval entity details are provided, the platform creates one or several records in the `APPROVAL_ENTITY` table; it populates it (them) with the details provided and the `APPROVAL_ID` of the `APPROVAL` record. There is also an `APPROVAL_ENTITY_COUNTER`, which is populated by the GENESIS_AUTH_CONSOLIDATOR process by default; this can be handy when you need to know how many approvals are pending for a given entity.
 
@@ -344,7 +343,7 @@ ENTITY_TABLE                             COUNTERPARTY                           
 
 ### Available pending approval events
 
-Once in the `APPROVAL` table, the pending event can be cancelled, rejected or accepted by sending the following event messages to GENESIS_CLUSTER: 
+Once in the `APPROVAL` table, the pending event can be cancelled, rejected or accepted by sending the following event messages to GENESIS_CLUSTER:
 
 - EVENT_PENDING_APPROVAL_ACCEPT
 - EVENT_PENDING_APPROVAL_CANCEL
@@ -354,7 +353,7 @@ All messages require a valid `APPROVAL_ID` and `APPROVAL_MESSAGE` in their metad
 
 ### Configuring allowed approvers: basic
 
-The platform ensures that users cannot approve or reject their own events, but they can cancel them. To complement this, users that have not created a specific pending approval event can only accept or reject, not cancel. 
+The platform ensures that users cannot approve or reject their own events, but they can cancel them. To complement this, users that have not created a specific pending approval event can only accept or reject, not cancel.
 
 Additional levels of control (e.g. based on user groups) can be added at three points:
 
@@ -364,7 +363,7 @@ Additional levels of control (e.g. based on user groups) can be added at three p
 
 To configure the allowed approvers using server-side configuration:
 
-1. Create a new GPAL approval file; its name must end in **-approval.kts** (e.g. **_test_-approval.kts**). 
+1. Create a new GPAL approval file; its name must end in **-approval.kts** (e.g. **_test_-approval.kts**).
 
 2. Add the file name to the GENESIS_CLUSTER `<script></script>` element in the site-specific version of the **genesis-processes.xml**. See the sample file below:
 
@@ -398,13 +397,13 @@ You can replace the "true" return values with Kotlin code in each of the relevan
 The platform makes the following objects accessible to the `insert` block:
 
 * `insertMessage` - an instance of the `PendingApprovalInsert` class, which is used to populate the `APPROVAL` table if successful. The content of this class consists of several properties:
-    * `approvalMessage` - contains the original approval message text sent by the user who initiated the action.
-    * `messageType` - represents the original EVENT name (e.g. EVENT_TRADE_INSERT).
-    * `destination` - is the process name this event was originally targeting (e.g. POSITION_EVENT_HANDLER).
-    * `eventMessage` - contains the JSON object representing the original message payload.
-    * `approvalType` - equivalent to the property with the same name provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
-    * `additionalDetails` - equivalent to the property with the same name provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
-    * `generated` - equivalent to the property named `entityDetails` provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
+  * `approvalMessage` - contains the original approval message text sent by the user who initiated the action.
+  * `messageType` - represents the original EVENT name (e.g. EVENT_TRADE_INSERT).
+  * `destination` - is the process name this event was originally targeting (e.g. POSITION_EVENT_HANDLER).
+  * `eventMessage` - contains the JSON object representing the original message payload.
+  * `approvalType` - equivalent to the property with the same name provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
+  * `additionalDetails` - equivalent to the property with the same name provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
+  * `generated` - equivalent to the property named `entityDetails` provided as part of `approvableAck` (see [earlier section](#pending-approvals)).
 * `userName` - a string property containing the user name who triggered the event.
 * `messageType` - a shortcut property accessor for the `messageType` value stored inside `insertMessage`.
 * `eventMessage` - a shortcut property accessor for the `eventMessage` value stored inside `insertMessage`.
@@ -414,8 +413,8 @@ The following objects are accessible within the `accept`, `cancel` and `reject` 
 * `userName` - a string property containing the user name who triggered the pending approval event (e.g. accept, reject or cancel).
 * `pendingApproval` - the pending approval record stored in the database. The type of this property is the "Approval" database entity (see [table entities](../../../database/data-types/table-entities/)).
 * `approvalMessage` - an instance of the `ApprovalMessage` class, which represents the payload of the message sent to EVENT_PENDING_APPROVAL_ACCEPT, EVENT_PENDING_APPROVAL_CANCEL and EVENT_PENDING_APPROVAL_REJECT. It contains two properties:
-    * `approvalMessage` - the message text sent by the user who initiated this pending approval action
-    * `approvalId` - contains the APPROVAL_ID used to identify the APPROVAL record we are handling as part of this action
+  * `approvalMessage` - the message text sent by the user who initiated this pending approval action
+  * `approvalId` - contains the APPROVAL_ID used to identify the APPROVAL record we are handling as part of this action
 * `messageType` - a shortcut property accessor for the `messageType` value stored inside `pendingApproval`.
 * `eventMessage` - a shortcut property accessor for the `eventMessage` value stored inside `pendingApproval`.
 
@@ -505,14 +504,14 @@ An approval process deliberately delays events. So it is possible that by the ti
 
 The platform provides an event designed to help you to reject events directly from the back end without human intervention. "EVENT_PENDING_APPROVAL_SYSTEM_REJECT" is an event that can be used to satisfy any specific requirements that fall outside the functionality of the pending approval system. The event is only accessible by back-end services. It takes two parameters:
 
-- `approvalMessage` is the text of the message to be sent when the message is rejected. 
+- `approvalMessage` is the text of the message to be sent when the message is rejected.
 - `approvalKey` is a unique identifier for each pending approval record. This identifier is never exposed to the front end, so only back-end services have access to it. That makes it impossible to trigger this event unless you have access to the database system. You need to obtain the `approvalKey` programatically so that you can supply it as a parameter value.
 
 Let us look at an example. Consider a solution that needs to submit trades to an external system every day at midnight for confirmation purposes. Once the trades have been submitted, their content cannot be changed anymore, unless a separate amendment process is started outside the Genesis application. The system has a pending approval system that enables users to amend the content of each "Trade" database record to provide extra security.
 
 Once a "Trade" record has been submitted at midnight, you need to prevent any pending approval events from amending the content of the trade records in the system, as this could cause inconsistencies between the external system and the Genesis system. To prevent this, you could run a job that automatically rejects all pending approval records at midnight every day.
 
-Here is an example GPAL script that could be run every day at midnight to reject all the pending records. 
+Here is an example GPAL script that could be run every day at midnight to reject all the pending records.
 
 ```kotlin
 import global.genesis.clustersupport.service.ServiceDiscovery
@@ -556,17 +555,26 @@ if (client == null || !client.isConnected) {
 
 ## Defining an Event Handler in GPAL
 
-The following imports are automatically available inside GPAL Event Handlers:
+In most cases, you will create [Event Handlers](../../../server/event-handler/introduction/) in a kts file using GPAL. This offers a method with succinct code and a good degree of flexibility.
 
-```kotlin
-import CodeBlock from '@theme/CodeBlock';
-import Imports from '!!raw-loader!/examples/server/java/event-handlers/imports.java';
+However, you can also implement Event Handlers as a set of classes. Typically, this is useful where you have a complex requirement for business logic and database interaction. For example, a kts file of 1,000 lines is difficult to test and maintain; in this case, a set of individual classes is much more convenient.
 
-<CodeBlock className="language-java">{Imports}</CodeBlock>
-```
+For implementing an Event Handler as a set of classes, there are three different options:
 
+-   Async. This uses the Kotlin coroutine API to simplify asynchronous development. This is the underlying implementation used in GPAL Event Handlers. You can only create Async Event Handlers using Kotlin.
+-   RxJava3. This uses the RxJava3 library, which is a popular option for composing asynchronous event-based programs. You can create RxJava3 Event Handlers using either Kotlin or Java.
+-   Sync. This creates synchronous Event Handlers. You can create Sync Event Handlers using either Kotlin or Java.
 
-### Automatic import
+:::note
+
+Java Event Handlers can be implemented using [RxJava3](../../../server/api-reference/event-handler-api/#rx3eventhandler) and [Sync](../../../server/api-reference/event-handler-api/#sync) Event Handlers only. Async Event Handlers cannot be used, as there is no implementation for Kotlin coroutines in Java.
+
+**We recommend using Kotlin to implement Event Handlers.**
+:::
+
+If you would like to know more about creating an event handler in GPAL, please visit our [event-handler-api](../../../server/api-reference/event-handler-api) page.
+
+### Available properties
 
 The following properties are automatically available inside GPAL Event Handlers:
 
