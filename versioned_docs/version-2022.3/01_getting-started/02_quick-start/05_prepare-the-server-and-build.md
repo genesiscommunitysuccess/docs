@@ -65,7 +65,7 @@ You can find more info on the **-service-definitions.xml** file [here](../../../
 
 ### Database layer
 
-You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\**.
+You can specify which database to use in your application by editing **genesis-system-definition.kts**, which is located in **genesis-product\alpha-site-specific\src\main\resources\cfg\\**.
 
 You can find more information on the **genesis-system-definitions.kts** file [here](../../../server/configuring-runtime/system-definitions/).
 
