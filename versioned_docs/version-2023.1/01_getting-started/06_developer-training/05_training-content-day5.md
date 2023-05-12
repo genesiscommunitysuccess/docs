@@ -152,14 +152,6 @@ CRON_EXPRESSION,DESCRIPTION,TIME_ZONE,RULE_STATUS,NAME,USER_NAME,PROCESS_NAME,ME
 ```
 Then import the local csv using the Genesis plugin as we saw [here](../../../getting-started/developer-training/training-content-day1/#user-name-and-password).
 
-#### 5.Change the log level to verify the execution of the events
-To do this, run the [LogLevel](../../../operations/commands/server-commands/#loglevel-script) script as explained [here](../../../server/tooling/intellij-plugin/#running-a-genesis-script) setting the parameter as below.
-```shell
--p ALPHA_EVALUATOR -DATADUMP_ON -l DEBUG
-```
-
-To check the logs, you can go to *your-app-folder*/**devtraining-alpha/.genesis-home/runtime/logs**. There you will find all Genesis processes logs you are running locally.
-
 <!-- ### Dynamic rules
 
 We have now set up the Evaluator so that our application creates reports daily.
